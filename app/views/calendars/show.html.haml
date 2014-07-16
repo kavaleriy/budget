@@ -1,0 +1,25 @@
+- model_class = Calendar
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.titleize
+
+%p
+  %strong= model_class.human_attribute_name(:dt_start) + ':'
+  %br
+  = @calendar.dt_start
+%p
+  %strong= model_class.human_attribute_name(:dt_end) + ':'
+  %br
+  = @calendar.dt_end
+%p
+  %strong= model_class.human_attribute_name(:title) + ':'
+  %br
+  = @calendar.title
+%p
+  %strong= model_class.human_attribute_name(:body) + ':'
+  %br
+  = @calendar.body
+
+
+= link_to t('.back', :default => t("helpers.links.back")), calendars_path, :class => 'btn btn-default'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_calendar_path(@calendar), :class => 'btn btn-default'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), calendar_path(@calendar), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

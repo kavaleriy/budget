@@ -36,5 +36,14 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-# http://moredevideas.com/getting-started-rails-4-with-mongodb/
-gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
+
+
+# https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
+gem 'less-rails'
+gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
+
+# https://gorails.com/blog/rails-4-0-with-mongodb-and-mongoid
+gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
+
+# https://github.com/haml/haml/tree/rails_4.1.0.rc1
+gem 'haml-rails'
