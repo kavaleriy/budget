@@ -1,0 +1,52 @@
+.navbar.navbar-default.navbar-static-top
+  .container-fluid
+    %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse")
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    %a.navbar-brand(href="#") Budget
+    .navbar-collapse.collapse.navbar-responsive-collapse
+      %ul.nav.navbar-nav
+        %li= link_to "Link 1", "/path1"
+
+      %ul.nav.navbar-nav.navbar-right
+        %li.todo
+          %a.dropdown-toggle(data-toggle="dropdown" href="#")
+            %i.fa.fa-calendar
+            %span.badge.badge-grey 4
+
+          %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+            %li.nav-header
+              %i.fa.fa-calendar-o
+              4 Активні дії
+            %li
+              %a(href="#")
+                .clearfix
+                  %span.pull-left Розгляд ....
+                  %span.pull-right 65%
+                  .progress.progress-mini
+                    .bar(style="width:65%")
+            %li
+              %a(href="#")
+                Показати всі дії
+                %i.fa.fa-angle-double-right
+        %li.messages
+          %a.dropdown-toggle(data-toggle="dropdown" href="#")
+            %i.fa.fa-envelope-o
+            %span.badge.badge-grey 2
+
+          %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+            %li.nav-header
+              %i.fa.fa-calendar-o
+              2 Повідомлення
+            %li
+              %a(href="#")
+                .clearfix
+                  %span.pull-left Розгляд ....
+                  %span.pull-right 65%
+                  .progress.progress-mini
+                    .bar(style="width:65%")
+            %li
+              %a(href="#")
+                Показати всі
+                %i.fa.fa-angle-double-right
