@@ -14,6 +14,10 @@ gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+# https://github.com/joliss/jquery-ui-rails
+gem 'jquery-ui-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -47,3 +51,9 @@ gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
 
 # https://github.com/haml/haml/tree/rails_4.1.0.rc1
 gem 'haml-rails'
+
+# https://github.com/bokmann/fullcalendar-rails
+gem 'fullcalendar-rails'
+
+# https://github.com/derekprior/momentjs-rails
+gem 'momentjs-rails'

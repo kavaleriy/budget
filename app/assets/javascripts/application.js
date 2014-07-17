@@ -12,6 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
+
 //= require twitter/bootstrap
 //= require turbolinks
+
+//= require fullcalendar
+//= require moment
+//= require moment/uk.js
+
 //= require_tree .
+
