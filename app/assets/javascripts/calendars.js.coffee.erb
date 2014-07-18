@@ -35,11 +35,13 @@ $(document).ready ->
             url: '/events',
         }],
 
-        timeFormat: 'hh:mm t{ - hh:mm t} ',
+        timezone: 'UTC',
+        ignoreTimezone: false,
+        timeFormat: 'H:mm',
         dragOpacity: "0.5"
 
         droppable: true
-        drop: (date, allDay) ->
+        drop: (date) ->
             # retrieve the dropped element's stored Event Object
             originalEventObject = $(this).data("eventObject")
             $extraEventClass = $(this).attr("data-class")
@@ -49,17 +51,10 @@ $(document).ready ->
 
             # assign it the date that was reported
             copiedEventObject.start = date
-            copiedEventObject.allDay = allDay
+#            copiedEventObject.allDay = allDay
             copiedEventObject["className"] = [$extraEventClass]  if $extraEventClass
 
-            # render the event on the calendar
-            # the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $("#calendar").fullCalendar "renderEvent", copiedEventObject, true
-
-
             createEvent(copiedEventObject)
-
-            console.log copiedEventObject
 
             return
 
@@ -68,14 +63,12 @@ $(document).ready ->
         select: (start, end, allDay) ->
             $.get("/event/").done (data) ->
                 $("#eventModal .modal-content").html data
-                $('#eventModal').modal('show').on 'hidden.bs.modal', (e) ->
-                    $("#calendar").fullCalendar "refetchEvents"
+                $('#eventModal').modal('show')
 
         eventClick: (calEvent, jsEvent, view) ->
             $.get("/events/"+calEvent.id).done (data) ->
                 $("#eventModal .modal-content").html data
-                $('#eventModal').modal('show').on 'hidden.bs.modal', (e) ->
-                    $("#calendar").fullCalendar "refetchEvents"
+                $('#eventModal').modal('show')
 
         eventRender: (e, t, n) ->
             r = (if e.media then e.media else "")
@@ -84,14 +77,17 @@ $(document).ready ->
             t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
             return
 
-        eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
+        eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
             updateEvent(event);
 
-        eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
+        eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
             updateEvent(event);
 
 
     createEvent = (event) ->
+        dt_start = (if event.start? then event.start.toISOString() else "")
+        dt_end = (if event.end? then event.end.toISOString() else "")
+        all_day = (if event.allDay? then "true" else "")
         $.ajax
             url: "/events/"
             type: 'POST'
@@ -99,14 +95,19 @@ $(document).ready ->
             data:
                 event:
                     title: event.title,
-                    starts_at: "" + event.start,
-                    ends_at: "" + event.end,
+                    starts_at: dt_start,
+                    ends_at: dt_end,
                     description: event.description
-                    all_day: event.allDay
+                    all_day: all_day
         .success (data) ->
             event.id = data.id
+            $("#calendar").fullCalendar "renderEvent", event, true
+            alert 2
 
     updateEvent = (event) ->
+        dt_start = (if event.start? then event.start.toISOString() else "")
+        dt_end = (if event.end? then event.end.toISOString() else "")
+        all_day = (if event.allDay then "true" else "")
         $.ajax
             url: "/events/" + event.id
             type: 'PUT'
@@ -114,10 +115,11 @@ $(document).ready ->
             data:
                 event:
                     title: event.title,
-                    starts_at: "" + event.start,
-                    ends_at: "" + event.end,
+                    starts_at: dt_start,
+                    ends_at: dt_end,
                     description: event.description
-                    all_day: event.allDay
+                    all_day: all_day
 
-    $('#eventModal').on "ajax:success", 'form',  (e, data, status, xhr) ->
+    $('#eventModal').on "ajax:complete", 'form',  (e, data, status, xhr) ->
         $('#eventModal').modal('hide')
+        $("#calendar").fullCalendar "refetchEvents"

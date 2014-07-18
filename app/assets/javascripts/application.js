@@ -18,9 +18,14 @@
 
 //= require jquery.ui.all
 
-//= require fullcalendar
 //= require moment
 //= require moment/uk.js
+
+//= require bootstrap-datetimepicker
+//= require locales/bootstrap-datetimepicker.uk.js
+
+//= require fullcalendar/fullcalendar.min
+//= require fullcalendar/uk
 
 //= require_tree .
 

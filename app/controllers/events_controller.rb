@@ -31,6 +31,8 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    event_params[:starts_at]
+
     @event = Event.new(event_params)
 
     respond_to do |format|

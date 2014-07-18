@@ -16,7 +16,7 @@ gem 'therubyracer',  platforms: :ruby
 gem 'jquery-rails'
 
 # https://github.com/joliss/jquery-ui-rails
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '4.1.2'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -40,6 +40,10 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+group :development do
+  gem 'pry-rails'
+  gem 'better_errors'
+end
 
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
 gem 'less-rails'
@@ -51,15 +55,12 @@ gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
 # https://github.com/haml/haml/tree/rails_4.1.0.rc1
 gem 'haml-rails'
 
-# https://github.com/bokmann/fullcalendar-rails
-gem 'fullcalendar-rails'
-
 # https://github.com/derekprior/momentjs-rails
-gem 'momentjs-rails'
+gem 'momentjs-rails', '>= 2.5.0'
+
+# https://github.com/bokmann/fullcalendar-rails
+# gem 'fullcalendar-rails'
 
 
-group :development do
-  gem 'pry-rails'
-  gem 'better_errors'
-end
-
+# https://github.com/Eonasdan/bootstrap-datetimepicker/wiki/Installation#rails-
+gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'

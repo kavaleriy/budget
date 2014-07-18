@@ -16,11 +16,17 @@
     .form-group
       = f.label :starts_at, :class => 'control-label'
       .controls
-        = f.text_field :starts_at, :class => 'form-control'
+        .input-group.datetimepicker
+          = f.text_field :starts_at, :class => 'form-control'
+          %span.input-group-addon
+            %span.fa.fa-calendar
     .form-group
       = f.label :ends_at, :class => 'control-label'
       .controls
-        = f.text_field :ends_at, :class => 'form-control'
+        .input-group.datetimepicker
+          = f.text_field :ends_at, :class => 'form-control'
+          %span.input-group-addon
+            %span.fa.fa-calendar
 
     .form-group
       = f.label :all_day, :class => 'control-label'
@@ -32,5 +38,15 @@
         = f.text_field :color, :class => 'form-control'
 
   .modal-footer
-    = f.submit nil, :class => 'btn btn-primary'
-    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+    = f.submit nil, :class => 'btn btn-primary pull-right'
+    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close
+.modal-footer
+= button_to "Delete", @event, :method => :delete, :class => 'btn btn-danger pull-left'
+
+
+:javascript
+  $(function () {
+    $('.datetimepicker').datetimepicker({
+      format: 'YYYY-MM-DD'
+    });
+  });
