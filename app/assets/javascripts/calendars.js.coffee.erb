@@ -1,3 +1,123 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+
+$(document).ready ->
+
+    # initialize the external events
+    #-----------------------------------------------------------------
+    $("#external-events div.external-event").each ->
+        eventObject =
+            title: $.trim($(this).attr("data-title"))
+            className: $(this).attr("data-bg")
+            media: $(this).attr("data-media")
+            description: $(this).attr("data-desc")
+
+        $(this).data "eventObject", eventObject
+        $(this).draggable
+            zIndex: 999
+            revert: true
+            revertDuration: 0
+
+        return
+
+
+    # initialize the calendar
+    #	-----------------------------------------------------------------
+    $('#calendar').fullCalendar
+        lang: 'uk',
+        editable: true,
+        header:
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        defaultView: 'month',        eventSources: [{
+            url: '/events',
+        }],
+
+        timeFormat: 'hh:mm t{ - hh:mm t} ',
+        dragOpacity: "0.5"
+
+        droppable: true
+        drop: (date, allDay) ->
+            # retrieve the dropped element's stored Event Object
+            originalEventObject = $(this).data("eventObject")
+            $extraEventClass = $(this).attr("data-class")
+
+            # we need to copy it, so that multiple events don't have a reference to the same object
+            copiedEventObject = $.extend({}, originalEventObject)
+
+            # assign it the date that was reported
+            copiedEventObject.start = date
+            copiedEventObject.allDay = allDay
+            copiedEventObject["className"] = [$extraEventClass]  if $extraEventClass
+
+            # render the event on the calendar
+            # the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            $("#calendar").fullCalendar "renderEvent", copiedEventObject, true
+
+
+            createEvent(copiedEventObject)
+
+            console.log copiedEventObject
+
+            return
+
+        selectable: true
+        selectHelper: true
+        select: (start, end, allDay) ->
+            $.get("/event/").done (data) ->
+                $("#eventModal .modal-content").html data
+                $('#eventModal').modal('show').on 'hidden.bs.modal', (e) ->
+                    $("#calendar").fullCalendar "refetchEvents"
+
+        eventClick: (calEvent, jsEvent, view) ->
+            $.get("/events/"+calEvent.id).done (data) ->
+                $("#eventModal .modal-content").html data
+                $('#eventModal').modal('show').on 'hidden.bs.modal', (e) ->
+                    $("#calendar").fullCalendar "refetchEvents"
+
+        eventRender: (e, t, n) ->
+            r = (if e.media then e.media else "")
+            i = (if e.description then e.description else "")
+            t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(r)
+            t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
+            return
+
+        eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
+            updateEvent(event);
+
+        eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
+            updateEvent(event);
+
+
+    createEvent = (event) ->
+        $.ajax
+            url: "/events/"
+            type: 'POST'
+            dataType: 'json'
+            data:
+                event:
+                    title: event.title,
+                    starts_at: "" + event.start,
+                    ends_at: "" + event.end,
+                    description: event.description
+                    all_day: event.allDay
+        .success (data) ->
+            event.id = data.id
+
+    updateEvent = (event) ->
+        $.ajax
+            url: "/events/" + event.id
+            type: 'PUT'
+            dataType: 'json'
+            data:
+                event:
+                    title: event.title,
+                    starts_at: "" + event.start,
+                    ends_at: "" + event.end,
+                    description: event.description
+                    all_day: event.allDay
+
+    $('#eventModal').on "ajax:success", 'form',  (e, data, status, xhr) ->
+        $('#eventModal').modal('hide')

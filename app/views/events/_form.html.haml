@@ -1,0 +1,36 @@
+.modal-header
+  %button.close{"data-dismiss" => "modal", :type => "button"}
+    %span{"aria-hidden" => "true"} &times;
+    %span.sr-only Close
+  %h4#myModalLabel.modal-title Modal title
+= form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
+  .modal-body
+    .form-group
+      = f.label :title, :class => 'control-label'
+      .controls
+        = f.text_field :title, :class => 'form-control'
+    .form-group
+      = f.label :description, :class => 'control-label'
+      .controls
+        = f.text_field :description, :class => 'form-control'
+    .form-group
+      = f.label :starts_at, :class => 'control-label'
+      .controls
+        = f.text_field :starts_at, :class => 'form-control'
+    .form-group
+      = f.label :ends_at, :class => 'control-label'
+      .controls
+        = f.text_field :ends_at, :class => 'form-control'
+
+    .form-group
+      = f.label :all_day, :class => 'control-label'
+      .controls
+        = f.text_field :all_day, :class => 'form-control'
+    .form-group
+      = f.label :color, :class => 'control-label'
+      .controls
+        = f.text_field :color, :class => 'form-control'
+
+  .modal-footer
+    = f.submit nil, :class => 'btn btn-primary'
+    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

@@ -1,0 +1,21 @@
+- model_class = Event
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:title)
+      %th= model_class.human_attribute_name(:description)
+      %th= model_class.human_attribute_name(:starts_at)
+      %th= model_class.human_attribute_name(:ends_at)
+      %th= model_class.human_attribute_name(:created_at)
+  %tbody
+    - @events.each do |event|
+      %tr
+        %td= link_to event.id, event_path(event)
+        %td= event.title
+        %td= event.description
+        %td= event.starts_at
+        %td= event.ends_at
+        %td=l event.id.generation_time

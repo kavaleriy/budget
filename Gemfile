@@ -41,7 +41,6 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 
-
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
 gem 'less-rails'
 gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
@@ -57,3 +56,10 @@ gem 'fullcalendar-rails'
 
 # https://github.com/derekprior/momentjs-rails
 gem 'momentjs-rails'
+
+
+group :development do
+  gem 'pry-rails'
+  gem 'better_errors'
+end
+
