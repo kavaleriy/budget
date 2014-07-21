@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'home/pie_data'
+
+  resources :calendar_actions
+
+  resources :timelines
+
   resources :events
 
   resource :calendar, :only => [:show]

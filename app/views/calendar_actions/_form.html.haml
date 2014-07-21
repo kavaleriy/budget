@@ -1,0 +1,23 @@
+= form_for @calendar_action, :html => { :class => 'form-horizontal' } do |f|
+  .form-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title, :class => 'form-control'
+  .form-group
+    = f.label :icon, :class => 'control-label'
+    .controls
+      = f.text_field :icon, :class => 'form-control'
+  .form-group
+    = f.label :description, :class => 'control-label'
+    .controls
+      = f.text_field :description, :class => 'form-control'
+  .form-group
+    = f.label :color, :class => 'control-label'
+    .controls
+      = f.text_field :color, :class => 'form-control'
+  .form-group
+    = f.label :holder, :class => 'control-label'
+    .controls
+      = f.text_field :holder, :class => 'form-control'
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'

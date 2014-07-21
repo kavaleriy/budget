@@ -1,0 +1,21 @@
+- model_class = Timeline
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:occured_at)
+      %th= model_class.human_attribute_name(:created_at)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @timelines.each do |timeline|
+      %tr
+        %td= link_to timeline.id, timeline_path(timeline)
+        %td= timeline.occured_at
+        %td=l timeline.created_at
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_timeline_path(timeline), :class => 'btn btn-default btn-xs'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), timeline_path(timeline), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_timeline_path, :class => 'btn btn-primary'

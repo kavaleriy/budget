@@ -1,78 +1,12 @@
-= link_to "new event", new_event_path
-
 .col-md-12
   .row-fluid
-    .col-md-3
-      .widget-box.transparent
-        .widget-header1
-          %h4 Типові дії міської влади
-        .widget-main
-          #external-events.calendar-event.width-sm
-            .external-event.bg-purple.ui-draggable{"data-bg" => "bg-purple", "data-desc" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "data-media" => "<i class='fa fa-comments'></i>", "data-title" => "Discussion", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-comments.fa-lg.fa-fw
-                Дискусія......
-              %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            .external-event.bg-blue.ui-draggable{"data-bg" => "bg-blue", "data-desc" => "<b>Cum sociis</b> natoque penatibus et magnis dis parturient montes.", "data-media" => "<i class='fa fa-cutlery'></i>", "data-title" => "Обговорення", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-cutlery.fa-lg.fa-fw
-                Обговорення
-              %p Cum sociis natoque penatibus et magnis dis parturient montes.
-            .external-event.bg-blue.ui-draggable{"data-bg" => "bg-blue", "data-desc" => "<b>Cum sociis</b> natoque penatibus et magnis dis parturient montes.", "data-media" => "<i class='fa fa-cutlery'></i>", "data-title" => "Обговорення", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-cutlery.fa-lg.fa-fw
-                Обговорення
-              %p Cum sociis natoque penatibus et magnis dis parturient montes.
-            .external-event.bg-green.ui-draggable{"data-bg" => "bg-green", "data-desc" => "Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.", "data-media" => "<i class='fa fa-lightbulb-o'></i>", "data-title" => "Слухання", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-lightbulb-o.fa-lg.fa-fw
-                Слухання
-              %p Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.
-            .external-event.bg-orange.ui-draggable{"data-bg" => "bg-orange", "data-desc" => "Class aptent taciti sociosqu ad litora torquent per conubia nostra.", "data-media" => "<i class='fa fa-tasks'></i>", "data-title" => "Performance Rating", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-tasks.fa-lg.fa-fw
-                Performance Rating
-              %p Формування звітності про виконання місцевого бюджету за минулий рік. Доведення бюджетного фінансування до розпорядників коштів на поточний рік.
-            .external-event.bg-orange.ui-draggable{"data-bg" => "bg-orange", "data-desc" => "Class aptent taciti sociosqu ad litora torquent per conubia nostra.", "data-media" => "<i class='fa fa-tasks'></i>", "data-title" => "Performance Rating", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-tasks.fa-lg.fa-fw
-                Performance Rating
-              %p Формування звітності про виконання місцевого бюджету за минулий рік. Доведення бюджетного фінансування до розпорядників коштів на поточний рік.
-    .col-md-7
-      .space
-      #calendar
     .col-md-2
-      .widget-box.transparent
-        .widget-header1
-          %h4 Типові дії громадських активістів
-        .widget-main
-          #external-events.calendar-event.width-sm
-            .external-event.bg-purple.ui-draggable{"data-bg" => "bg-purple", "data-desc" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "data-media" => "<i class='fa fa-comments'></i>", "data-title" => "Discussion", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-comments.fa-lg.fa-fw
-                Діскусія......
-              %p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            .external-event.bg-blue.ui-draggable{"data-bg" => "bg-blue", "data-desc" => "Cum sociis natoque penatibus et magnis dis parturient montes.", "data-media" => "<i class='fa fa-cutlery'></i>", "data-title" => "Обговорення", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-cutlery.fa-lg.fa-fw
-                Обговорення
-              %p Cum sociis natoque penatibus et magnis dis parturient montes.
-            .external-event.bg-green.ui-draggable{"data-bg" => "bg-green", "data-desc" => "Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.", "data-media" => "<i class='fa fa-lightbulb-o'></i>", "data-title" => "Слухання", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-lightbulb-o.fa-lg.fa-fw
-                Слухання
-              %p Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.
-            .external-event.bg-green.ui-draggable{"data-bg" => "bg-green", "data-desc" => "Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.", "data-media" => "<i class='fa fa-lightbulb-o'></i>", "data-title" => "Слухання", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-lightbulb-o.fa-lg.fa-fw
-                Слухання
-              %p Mauris tristique massa eu venenatis semper. Phasellus a nibh nisi.
-            .external-event.bg-orange.ui-draggable{"data-bg" => "bg-orange", "data-desc" => "Class aptent taciti sociosqu ad litora torquent per conubia nostra.", "data-media" => "<i class='fa fa-tasks'></i>", "data-title" => "Performance Rating", :style => "position: relative;"}
-              %h5
-                %i.fa.fa-tasks.fa-lg.fa-fw
-                Performance Rating
-              %p Class aptent taciti sociosqu ad litora torquent per conubia nostra.
-
+      = render partial: "city_actions"
+    .col-md-8
+      .space
+      #calendar_admin.fc.fc-ltr
+    .col-md-2
+      = render partial: "people_actions"
 
 #eventModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog

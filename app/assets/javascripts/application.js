@@ -21,11 +21,16 @@
 //= require moment
 //= require moment/uk.js
 
+//= require fullcalendar/fullcalendar.min
+//= require fullcalendar/uk
+
 //= require bootstrap-datetimepicker
 //= require locales/bootstrap-datetimepicker.uk.js
 
-//= require fullcalendar/fullcalendar.min
-//= require fullcalendar/uk
+//= require tiny_colorpicker/jquery.tinycolorpicker.min
+
+//= require chart/chart.min
+
 
 //= require_tree .
 

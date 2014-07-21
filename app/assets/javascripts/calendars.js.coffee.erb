@@ -9,9 +9,10 @@ $(document).ready ->
     $("#external-events div.external-event").each ->
         eventObject =
             title: $.trim($(this).attr("data-title"))
-            className: $(this).attr("data-bg")
-            media: $(this).attr("data-media")
-            description: $(this).attr("data-desc")
+            icon: $.trim($(this).attr("data-icon"))
+            description: $(this).attr("data-description")
+            color: $(this).attr("data-color")
+            holder: $(this).attr("data-holder")
 
         $(this).data "eventObject", eventObject
         $(this).draggable
@@ -24,46 +25,50 @@ $(document).ready ->
 
     # initialize the calendar
     #	-----------------------------------------------------------------
-    $('#calendar').fullCalendar
+    $('#calendar_admin').fullCalendar
         lang: 'uk',
         editable: true,
         header:
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
-        defaultView: 'month',        eventSources: [{
+        defaultView: 'month',
+        events: {
             url: '/events',
-        }],
-
-        timezone: 'UTC',
-        ignoreTimezone: false,
+        },
+#        timezone: false,
+#        ignoreTimezone: true,
         timeFormat: 'H:mm',
         dragOpacity: "0.5"
 
         droppable: true
         drop: (date) ->
-            # retrieve the dropped element's stored Event Object
             originalEventObject = $(this).data("eventObject")
-            $extraEventClass = $(this).attr("data-class")
 
-            # we need to copy it, so that multiple events don't have a reference to the same object
             copiedEventObject = $.extend({}, originalEventObject)
 
             # assign it the date that was reported
             copiedEventObject.start = date
-#            copiedEventObject.allDay = allDay
-            copiedEventObject["className"] = [$extraEventClass]  if $extraEventClass
+            copiedEventObject.allDay = true
 
             createEvent(copiedEventObject)
-
+            console.log copiedEventObject
             return
 
         selectable: true
         selectHelper: true
         select: (start, end, allDay) ->
-            $.get("/event/").done (data) ->
+            dt_start = (if start? then moment(start).format("DD-MM-YYYY") else "")
+            dt_end = (if end? then moment(end).format("DD-MM-YYYY") else "")
+
+            $.get "/events/new",
+                starts_at: dt_start
+                all_day: true
+            .done (data) ->
                 $("#eventModal .modal-content").html data
                 $('#eventModal').modal('show')
+
+#            calendar.fullCalendar('unselect');
 
         eventClick: (calEvent, jsEvent, view) ->
             $.get("/events/"+calEvent.id).done (data) ->
@@ -71,9 +76,9 @@ $(document).ready ->
                 $('#eventModal').modal('show')
 
         eventRender: (e, t, n) ->
-            r = (if e.media then e.media else "")
+            icon = (if e.icon then e.icon else "")
             i = (if e.description then e.description else "")
-            t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(r)
+            t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
             t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
             return
 
@@ -85,41 +90,43 @@ $(document).ready ->
 
 
     createEvent = (event) ->
-        dt_start = (if event.start? then event.start.toISOString() else "")
-        dt_end = (if event.end? then event.end.toISOString() else "")
-        all_day = (if event.allDay? then "true" else "")
+        dt_start = (if event.start? then moment(event.start).format("YYYY-MM-DDTHH:mm:ss") else "")
+        dt_end = (if event.end? then moment(event.end).format("YYYY-MM-DDTHH:mm:ss") else "")
         $.ajax
             url: "/events/"
             type: 'POST'
             dataType: 'json'
             data:
                 event:
-                    title: event.title,
-                    starts_at: dt_start,
-                    ends_at: dt_end,
+                    icon: event.icon
+                    title: event.title
                     description: event.description
-                    all_day: all_day
+                    color: event.color
+                    starts_at_string: dt_start
+                    ends_at_string: dt_end
+                    all_day: event.allDay
+                    holder: event.holder
         .success (data) ->
             event.id = data.id
-            $("#calendar").fullCalendar "renderEvent", event, true
-            alert 2
+            $("#calendar_admin").fullCalendar "renderEvent", event, true
 
     updateEvent = (event) ->
-        dt_start = (if event.start? then event.start.toISOString() else "")
-        dt_end = (if event.end? then event.end.toISOString() else "")
-        all_day = (if event.allDay then "true" else "")
+        dt_start = (if event.start? then moment(event.start).format("YYYY-MM-DDTHH:mm:ss") else "")
+        dt_end = (if event.end? then moment(event.end).format("YYYY-MM-DDTHH:mm:ss") else "")
+
         $.ajax
             url: "/events/" + event.id
             type: 'PUT'
             dataType: 'json'
             data:
                 event:
-                    title: event.title,
-                    starts_at: dt_start,
-                    ends_at: dt_end,
-                    description: event.description
-                    all_day: all_day
+                    starts_at_string: dt_start,
+                    ends_at_string: dt_end,
+                    all_day: event.allDay
+        .success ->
+#            $("#calendar_admin").fullCalendar "refetchEvents"
 
-    $('#eventModal').on "ajax:complete", 'form',  (e, data, status, xhr) ->
+
+    $('#eventModal').on "ajax:success", 'form',  (e, data, status, xhr) ->
+        $("#calendar_admin").fullCalendar "refetchEvents"
         $('#eventModal').modal('hide')
-        $("#calendar").fullCalendar "refetchEvents"

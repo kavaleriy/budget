@@ -7,6 +7,10 @@
   %br
   = @event.title
 %p
+  %strong= model_class.human_attribute_name(:icon) + ':'
+  %br
+  = @event.icon
+%p
   %strong= model_class.human_attribute_name(:description) + ':'
   %br
   = @event.description

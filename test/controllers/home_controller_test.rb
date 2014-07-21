@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should get pie_data" do
+    get :pie_data
+    assert_response :success
+  end
+
 end

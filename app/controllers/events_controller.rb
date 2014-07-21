@@ -21,7 +21,14 @@ class EventsController < ApplicationController
 
   # GET /events/new
   def new
-    @event = Event.new
+    all_day = params[:all_day] == "true"
+    @event = Event.new( :starts_at_string => params[:starts_at],
+                        :ends_at_string => params[:ends_at],
+                        :all_day => all_day )
+
+    respond_to do |format|
+      format.html { render(:partial => 'form', status: :ok)  if request.xhr? }
+    end
   end
 
   # GET /events/1/edit
@@ -31,8 +38,6 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    event_params[:starts_at]
-
     @event = Event.new(event_params)
 
     respond_to do |format|
@@ -66,13 +71,13 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def event_params
-      params.require(:event).permit(:title, :description, :starts_at, :ends_at, :all_day, :color)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def event_params
+    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color)
+  end
 end

@@ -1,14 +1,24 @@
+
 .modal-header
   %button.close{"data-dismiss" => "modal", :type => "button"}
     %span{"aria-hidden" => "true"} &times;
     %span.sr-only Close
+
   %h4#myModalLabel.modal-title Modal title
 = form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
   .modal-body
     .form-group
+      = f.label :holder, :class => 'control-label'
+      .controls
+        = f.text_field :holder, :class => 'form-control'
+    .form-group
       = f.label :title, :class => 'control-label'
       .controls
         = f.text_field :title, :class => 'form-control'
+    .form-group
+      = f.label :icon, :class => 'control-label'
+      .controls
+        = f.text_field :icon, :class => 'form-control'
     .form-group
       = f.label :description, :class => 'control-label'
       .controls
@@ -17,14 +27,14 @@
       = f.label :starts_at, :class => 'control-label'
       .controls
         .input-group.datetimepicker
-          = f.text_field :starts_at, :class => 'form-control'
+          = f.text_field :starts_at_string, :class => 'form-control'
           %span.input-group-addon
             %span.fa.fa-calendar
     .form-group
       = f.label :ends_at, :class => 'control-label'
       .controls
         .input-group.datetimepicker
-          = f.text_field :ends_at, :class => 'form-control'
+          = f.text_field :ends_at_string, :class => 'form-control'
           %span.input-group-addon
             %span.fa.fa-calendar
 
@@ -35,18 +45,32 @@
     .form-group
       = f.label :color, :class => 'control-label'
       .controls
-        = f.text_field :color, :class => 'form-control'
+        #colorPicker
+          %a.color
+            .colorInner
+          .track
+            = f.text_field :color, :class => 'form-control colorInput', :type => "hidden"
+
 
   .modal-footer
-    = f.submit nil, :class => 'btn btn-primary pull-right'
+    = button_to "Save", @event, :method => :post, :class => 'btn btn-primary pull-right'
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close
-.modal-footer
-= button_to "Delete", @event, :method => :delete, :class => 'btn btn-danger pull-left'
 
+    = link_to t('.destroy', :default => t("helpers.links.destroy")), event_path(@event), remote: true, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
 
 :javascript
   $(function () {
     $('.datetimepicker').datetimepicker({
-      format: 'YYYY-MM-DD'
+       language: 'uk',
     });
   });
+
+:javascript
+  $(function () {
+    var $box = $('#colorPicker');
+    $box.tinycolorpicker();
+
+    color = $('#event_color').val()
+    console.log(color)
+    $('#colorPicker .colorInner').css('background-color', color)
+  })
