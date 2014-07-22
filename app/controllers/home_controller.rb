@@ -1,11 +1,10 @@
 class HomeController < ApplicationController
   def index
-
   end
 
   def pie_data
-    starts_at = Event.min(:starts_at)
-    ends_at = Event.max(:ends_at)
+    starts_at = Event.asc(:starts_at).limit(1).first.starts_at
+    ends_at = Event.desc(:ends_at).limit(1).first.ends_at
 
     events = { e1: [], e2: [] }
     Event.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| events[:e1] << build_event_for_pie(i) }

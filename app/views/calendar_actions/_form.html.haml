@@ -14,7 +14,7 @@
   .form-group
     = f.label :color, :class => 'control-label'
     .controls
-      = f.text_field :color, :class => 'form-control'
+      = f.select :color, @colors, :class => 'form-control'
   .form-group
     = f.label :holder, :class => 'control-label'
     .controls
