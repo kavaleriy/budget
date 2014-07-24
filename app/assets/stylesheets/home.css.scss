@@ -10,3 +10,40 @@
   z-index: 999;
   position: absolute;
 }
+
+.countdown {
+  z-index: 1000;
+  position: absolute;
+  text-align: center;
+  padding: 0px; margin: 0px;
+
+  .btn-default {
+    margin-left: -60px;
+  }
+}
+
+.infobox {
+  .infobox-progress {
+    padding-top: 0;
+    display: inline-block;
+    vertical-align: top;
+    width: 44px;
+
+    .chart {
+      position: relative;
+      text-align: center;
+
+      .sparkline {
+        font-size: 24px;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0
+      }
+
+    }
+  }
+}
+

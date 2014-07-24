@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
+    @timeline_events = build_timeline
   end
 
   def pie_data
@@ -13,9 +14,25 @@ class HomeController < ApplicationController
     render json: { starts_at: starts_at.strftime('%d/%m/%Y'), ends_at: ends_at.strftime('%d/%m/%Y'), days: (ends_at - starts_at) / 3600 / 24 , events1: events[:e1], events2: events[:e2] }
   end
 
-  def build_event_for_pie event
-    days  = (event.ends_at - event.starts_at).to_i
-    { label: event.title, desc: event.description, starts_at: event.starts_at.strftime('%d/%m/%Y'), ends_at: event.ends_at.strftime('%d/%m/%Y'), value: days, color: event.color, highlight: event.color }
+  protected
+    def build_event_for_pie event
+      days  = (event.ends_at - event.starts_at).to_i
+      { label: event.title, desc: event.description, starts_at: event.starts_at.strftime('%d/%m/%Y'), ends_at: event.ends_at.strftime('%d/%m/%Y'), value: days, color: event.color, highlight: event.color }
+    end
+
+
+  def build_timeline
+    events = [ ]
+    Event.all.map { |i|
+      events << { type: '1', holder: i.holder, dt: i.starts_at, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
+      events << { type: '2', holder: i.holder, dt: i.ends_at, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day } unless i.ends_at.nil?
+    }
+
+    # today = DateTime.now.strftime('%d-%m-%Y')
+    # events << { dt: today } unless events.any? {|e| e[:dt] == today }
+
+    events.sort_by { |m| m[:dt] }.reverse!
   end
+
 
 end

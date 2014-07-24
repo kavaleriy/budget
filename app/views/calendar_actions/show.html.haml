@@ -9,15 +9,15 @@
 %p
   %strong= model_class.human_attribute_name(:icon) + ':'
   %br
-  = @calendar_action.icon
+  = @calendar_action.icon.html_safe
 %p
   %strong= model_class.human_attribute_name(:description) + ':'
   %br
-  = @calendar_action.description
+  = @calendar_action.description.html_safe
 %p
   %strong= model_class.human_attribute_name(:bg_color) + ':'
   %br
-  = @calendar_action.color
+  %div{style: "width: 50px; height: 50px; border: solid; background-color: #{@calendar_action.color}" }
 %p
   %strong= model_class.human_attribute_name(:holder) + ':'
   %br

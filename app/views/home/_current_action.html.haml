@@ -1,0 +1,25 @@
+.current-action
+  %h3>Зараз:
+  .infobox.col-sm-2
+    .infobox-progress
+      .chart{'data-percent' => '73'}
+        73%
+  %span.col-sm-8
+    міська рада
+    .infobox-content
+      проводиться робота ...
+      %a.btn.btn-default{ href: '#' }
+        %i.fa.fa-info
+
+:javascript
+  $(function () {
+    $('.chart').easyPieChart({
+        barColor: $(this).data('color'),
+        trackColor: '#EEEEEE',
+        scaleColor: false,
+        lineWidth: 2,
+        animate: 700,
+        size:50
+    });
+  });
+

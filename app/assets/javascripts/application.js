@@ -31,6 +31,9 @@
 
 //= require chart/chart.min
 
+//= require jquery.easy-pie-chart.min
+
+//= require timecircles
 
 //= require_tree .
 

@@ -33,7 +33,7 @@ class Event
 
   end
 
-  def as_json(options = {})
+  def as_json (options = {})
     e = {
         :id => self.id.to_s,
         :holder => holder,

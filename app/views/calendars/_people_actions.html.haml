@@ -11,7 +11,9 @@
         "data-description" => calendar_action.description.html_safe,
         "data-color" => calendar_action.color,
         "data-holder" => calendar_action.holder}
-          %h5
+
+          %h4.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
             = calendar_action.icon.html_safe
             = calendar_action.title.html_safe
-          = calendar_action.description.html_safe
+          .body
+            = calendar_action.description.html_safe
