@@ -21,7 +21,7 @@
 %p
   %strong= model_class.human_attribute_name(:holder) + ':'
   %br
-  = @calendar_action.holder
+  = @calendar_action.holder_string
 
 
 = link_to t('.back', :default => t("helpers.links.back")), calendar_actions_path, :class => 'btn btn-default'

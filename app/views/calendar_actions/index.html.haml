@@ -20,7 +20,7 @@
           %span.fa{class: calendar_action.icon}
         %td= calendar_action.description.html_safe
         %td{style: "width: 50px; height: 50px; border: solid; background-color: #{calendar_action.color}" }
-        %td= calendar_action.holder
+        %td= calendar_action.holder_string
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(calendar_action), :class => 'btn btn-default btn-xs'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'

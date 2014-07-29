@@ -10,7 +10,7 @@
   .form-group
     = f.label :description, :class => 'control-label'
     .controls
-      = f.text_field :description, :class => 'form-control'
+      = f.text_area :description, :class => 'form-control'
   .form-group
     = f.label :color, :class => 'control-label'
     .controls
@@ -18,6 +18,9 @@
   .form-group
     = f.label :holder, :class => 'control-label'
     .controls
-      = f.text_field :holder, :class => 'form-control'
+      = f.collection_radio_buttons :holder, [[1, 'Місто'], [2, 'Громада']],
+      :first, :last, { item_wrapper_tag: false } do |b|
+        = b.radio_button + ' ' + b.label(:class => b.value == 1 ? 'fa fa-university fa-lg' : 'fa fa-child fa-lg')
+
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'

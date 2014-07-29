@@ -3,8 +3,6 @@ Rails.application.routes.draw do
 
   resources :calendar_actions
 
-  resources :timelines
-
   resources :events
 
   resource :calendars

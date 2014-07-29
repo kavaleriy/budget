@@ -1,4 +1,3 @@
-
 .modal-header
   %button.close{"data-dismiss" => "modal", :type => "button"}
     %span{"aria-hidden" => "true"} &times;
@@ -10,7 +9,9 @@
     .form-group
       = f.label :holder, :class => 'control-label'
       .controls
-        = f.text_field :holder, :class => 'form-control'
+        = f.collection_radio_buttons :holder, [[1, 'Місто'], [2, 'Громада']],
+        :first, :last, { item_wrapper_tag: false } do |b|
+          = b.radio_button + ' ' + b.label(:class => b.value == 1 ? 'fa fa-university fa-lg' : 'fa fa-child fa-lg')
     .form-group
       = f.label :title, :class => 'control-label'
       .controls
@@ -40,8 +41,7 @@
 
     .form-group
       = f.label :all_day, :class => 'control-label'
-      .controls
-        = f.text_field :all_day, :class => 'form-control'
+      = f.check_box :all_day
     .form-group
       = f.label :color, :class => 'control-label'
       .controls
