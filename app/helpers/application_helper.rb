@@ -1,10 +1,6 @@
 module ApplicationHelper
   def calendar_colors_list
     [
-        ['bg_white',
-         '#fff'
-        ],
-
         ['bg_silver',
          '#f0f3f4'
         ],

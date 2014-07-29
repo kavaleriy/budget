@@ -1,24 +1,22 @@
-%section.ui-timeline
-  .col-sm-6.pull-left
-    %h2 Дії міської влади
-  .col-sm-6
-    %h2 Дії громадських активістів
-
+.col-sm-6.pull-left
+  %h2 Дії міської влади
+.col-sm-6
+  %h2 Дії громадських активістів
+%section.ui-timeline.row
   .row
     %hr.col-md-12
 
   - @timeline_events.each do |event|
-    %article.tl-item
-      .col-sm-7{class: event[:holder] == 1 ? 'pull-right' : 'pull-left' }
-        %span.icon.col-sm-3{class: event[:holder] == 1 ? 'pull-left' : 'pull-right' }
-          %i.fa.fa-3{:class => event[:icon], :style => "background-color: #{event[:color]}" }
-          %br
-          .date.badge
+    %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right' }
+      .tl-body
+        .tl-entry{ :style => 'background-color: rgba(128,128,128, .05);'}
+          .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
+            %i.fa.fa-3{:class => event[:icon] }
+          .tl-time
             = event[:all_day] == true ? event[:dt].strftime('%d-%m-%Y') : event[:dt].strftime('%d-%m-%Y %H:%M:%S')
-      .content.col-sm-5{class: event[:holder] == 1 ? 'pull-left' : 'pull-right' }
-        %h3.title{ :style => ("color: #{event[:color]}") }
-          = event[:title]
-        %p
-          = event[:description].html_safe
-
-      .clearfix
+          .tl-content
+            %img.arrow{:src => event[:holder] == 1 ? 'assets/arrow.jpg' : 'assets/arrowL.jpg' }
+            %h4.tl-tile{ :style => ("color: #{event[:color]}") }
+              = event[:title]
+            %p
+              = event[:description].html_safe

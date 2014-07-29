@@ -2,42 +2,183 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/* Таймлайн
+============================================================== */
+
 .ui-timeline {
-  .pull-left {
-    text-align: right;
+  display: table;
+  position: relative;
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.ui-timeline:before {
+  background-color: #d5d5d5;
+  bottom: 0px;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 30px;
+  width: 1px;
+  z-index: 0;
+}
+.ui-timeline .tl-item {
+  display: table-row;
+  margin-bottom: 5px;
+}
+.ui-timeline .tl-item:before {
+  content: "";
+  display: block;
+  width: 50%;
+}
+.ui-timeline .tl-item .tl-caption {
+  width: 150px;
+  margin-left: -151px;
+}
+
+.ui-timeline .tl-item.alt {
+  text-align: right;
+  .tl-body {
+    border-right: 1px silver ridge;
   }
+}
 
-  .tl-item {
-    .icon {
-      text-align: center;
-    }
 
-    i {
-      color: white;
-      width: 55px;
-      height: 55px;
-      font-size: 32px;
-      line-height: 20px;
-      border-radius: 55px;
-      text-align: center;
-      padding-top: 17px;
-    }
-
-    .date {
-      text-align: center;
-      background-color: gray;
-      color: #ffffff;
-    }
-
-    .title {
-      font-weight: bold;
-    }
-
-    .content {
-      border: 1px ridge;
-      margin-bottom: 20px;
-      padding: 15px 10px;
-    }
-
+.ui-timeline .tl-item.right {
+  .tl-body {
+    border-left: 1px grey ridge;
   }
+}
+
+.ui-timeline .tl-item.alt:before {
+  display: none;
+}
+.ui-timeline .tl-item.alt:after {
+  content: "";
+  display: block;
+  width: 50%;
+}
+
+.ui-timeline .tl-item.alt .tl-body .tl-entry {
+  margin: 0 77px 15px 0;
+}
+
+.ui-timeline .tl-item.alt .tl-body .tl-time {
+  right: -129px;
+  left: auto;
+  text-align: center;
+}
+
+.ui-timeline .tl-item.alt .tl-body .tl-icon {
+  right: -118px;
+  left: auto;
+}
+
+.ui-timeline .tl-item.alt .tl-body .tl-content:after {
+  right: -16px;
+  left: auto;
+  border: 8px solid transparent;
+  border-left: 8px solid white;
+}
+
+.ui-timeline .tl-item .tl-body {
+  display: table-cell;
+  width: 50%;
+  vertical-align: top;
+}
+
+.ui-timeline .tl-item .tl-body .tl-entry {
+  position: relative;
+  margin: 0 0 15px 77px;
+}
+
+.ui-timeline .tl-item .tl-body .tl-time {
+  position: absolute;
+  left: -126px;
+  top: 102px;
+  width: 100px;
+  line-height: 25px;
+
+  text-align: center;
+
+  border-radius: 35px;
+  background: #566473;
+  font-size: 15px;
+  color: #fff;
+}
+
+.ui-timeline .tl-item .tl-body .tl-icon {
+  position: absolute;
+  left: -116px;
+  top: 5px;
+}
+
+/* Плашки
+============================================================== */
+
+.ui-timeline .tl-item .tl-body .tl-content {
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #DBDBDB;
+  text-align: left;
+
+  padding: 25px;
+
+  -webkit-box-shadow: inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
+  -moz-box-shadow:    inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
+  box-shadow:         inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
+}
+
+.ui-timeline .tl-item .tl-body .tl-content h4 {
+  padding: 0px 0px 12px 0px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.ui-timeline .tl-item .tl-body .tl-content p {
+  border-radius: 5px;
+  margin: 0;
+  padding: 5px 0px 0px 0px;
+  line-height: 22px;
+}
+
+.ui-timeline .tl-item .tl-body .tl-content p.tl-subtitle {
+  font-weight: 600;
+}
+
+.ui-timeline .tl-item.right .tl-body .tl-content .arrow {
+  position: absolute;
+  top: 28px;
+  left: -16px;
+}
+
+.ui-timeline .tl-item.alt .tl-body .tl-content .arrow {
+  position: absolute;
+  top: 28px;
+  right: -16px;
+}
+
+/* Круглая иконка
+============================================================== */
+
+.round-icon {
+  display: block;
+  text-align: center;
+}
+.round-icon.sm {
+  width: 80px;
+  height: 80px;
+  font-size: 34px;
+  border-radius: 80px;
+  border: 2px solid #DBDBDB;
+
+  -webkit-box-shadow:	inset 0px -3px 0px 0px rgba(0, 0, 0, 0.11);
+  -moz-box-shadow:		inset 0px -3px 0px 0px rgba(0, 0, 0, 0.11);
+  box-shadow:				inset 0px -3px 0px 0px rgba(0, 0, 0, 0.11);
+}
+
+.round-icon.sm i {
+  line-height: 80px;
+  color: #fff;
 }

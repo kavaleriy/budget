@@ -13,9 +13,9 @@
 
     width = $('.pies-container').width()
     pie1_width = width * .9 + 1
-    pie1_cut = 80
-    pie2_width = pie1_width*pie1_cut/100 + 4
-    pie2_cut = 75
+    pie1_cut = 85
+    pie2_width = pie1_width*pie1_cut/100 - 40
+    pie2_cut = 80
 
     $('#canvas-holder1').css('left', (width - pie1_width) / 2 - 1).css('top', (width - pie1_width) / 2 - 1).width(pie1_width)
     $('#canvas-holder2').css('left', (width - pie2_width) / 2 - 1).css('top', (width - pie2_width) / 2 - 1).width(pie2_width)
