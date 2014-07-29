@@ -33,5 +33,7 @@
 
 //= require timecircles
 
+//= require ckeditor/init
+
 //= require_tree .
 

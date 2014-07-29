@@ -66,3 +66,5 @@ gem 'momentjs-rails', '>= 2.5.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 
 # https://github.com/galetahub/ckeditor
+gem 'ckeditor'
+gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
