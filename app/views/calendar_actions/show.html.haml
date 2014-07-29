@@ -9,7 +9,7 @@
 %p
   %strong= model_class.human_attribute_name(:icon) + ':'
   %br
-  = @calendar_action.icon.html_safe
+  %span.fa{class: @calendar_action.icon}
 %p
   %strong= model_class.human_attribute_name(:description) + ':'
   %br

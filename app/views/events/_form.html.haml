@@ -4,7 +4,7 @@
     %span{"aria-hidden" => "true"} &times;
     %span.sr-only Close
 
-  %h4#myModalLabel.modal-title Modal title
+  %h4#myModalLabel.modal-title Редагування події
 = form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
   .modal-body
     .form-group
@@ -22,7 +22,7 @@
     .form-group
       = f.label :description, :class => 'control-label'
       .controls
-        = f.text_field :description, :class => 'form-control'
+        = f.text_area :description, :class => 'form-control'
     .form-group
       = f.label :starts_at, :class => 'control-label'
       .controls
@@ -45,12 +45,7 @@
     .form-group
       = f.label :color, :class => 'control-label'
       .controls
-        #colorPicker
-          %a.color
-            .colorInner
-          .track
-            = f.text_field :color, :class => 'form-control colorInput', :type => "hidden"
-
+        = f.select :color, calendar_colors_list, :class => 'form-control'
 
   .modal-footer
     = button_to "Save", @event, :method => :post, :class => 'btn btn-primary pull-right'
@@ -64,13 +59,3 @@
        language: 'uk',
     });
   });
-
-:javascript
-  $(function () {
-    var $box = $('#colorPicker');
-    $box.tinycolorpicker();
-
-    color = $('#event_color').val()
-    console.log(color)
-    $('#colorPicker .colorInner').css('background-color', color)
-  })

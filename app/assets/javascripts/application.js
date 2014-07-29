@@ -27,8 +27,6 @@
 //= require bootstrap-datetimepicker
 //= require locales/bootstrap-datetimepicker.uk.js
 
-//= require tiny_colorpicker/jquery.tinycolorpicker.min
-
 //= require chart/chart.min
 
 //= require jquery.easy-pie-chart.min

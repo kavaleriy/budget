@@ -11,7 +11,7 @@
         "data-holder" => calendar_action.holder}
 
           %h4.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
-            = calendar_action.icon.html_safe
+            %span.fa{class: calendar_action.icon}
             = calendar_action.title.html_safe
           .body
             = calendar_action.description.html_safe

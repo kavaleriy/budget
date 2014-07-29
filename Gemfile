@@ -64,3 +64,5 @@ gem 'momentjs-rails', '>= 2.5.0'
 
 # https://github.com/Eonasdan/bootstrap-datetimepicker/wiki/Installation#rails-
 gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+
+# https://github.com/galetahub/ckeditor
