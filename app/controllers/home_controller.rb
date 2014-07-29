@@ -24,8 +24,12 @@ class HomeController < ApplicationController
   def build_timeline
     events = [ ]
     Event.all.map { |i|
-      events << { type: '1', holder: i.holder, dt: i.starts_at, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
-      events << { type: '2', holder: i.holder, dt: i.ends_at, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day } unless i.ends_at.nil?
+      if i.ends_at
+        action = i.ends_at > Date.today ? 'закінчиться: ' + i.ends_at.strftime('%d-%m-%Y') : 'закінчилась'
+      else
+        action = 'одноденна'
+      end
+      events << { holder: i.holder, dt: i.starts_at, action: action, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
     }
 
     # today = DateTime.now.strftime('%d-%m-%Y')

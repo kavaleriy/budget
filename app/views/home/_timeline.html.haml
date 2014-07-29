@@ -18,5 +18,7 @@
             %img.arrow{:src => event[:holder] == 1 ? 'assets/arrow.jpg' : 'assets/arrowL.jpg' }
             %h4.tl-tile{ :style => ("color: #{event[:color]}") }
               = event[:title]
+            = event[:action]
+            %hr
             %p
               = event[:description].html_safe
