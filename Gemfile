@@ -68,3 +68,4 @@ gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 # https://github.com/galetahub/ckeditor
 gem 'ckeditor'
 gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
+gem 'rmagick'
