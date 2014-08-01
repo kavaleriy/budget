@@ -4,20 +4,53 @@ class HomeController < ApplicationController
   end
 
   def pie_data
-    starts_at = Event.asc(:starts_at).limit(1).first.starts_at
-    ends_at = Event.desc(:ends_at).limit(1).first.ends_at
+    starts_at = Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    ends_at = Event.desc(:ends_at).limit(1).first.ends_at.to_date
+
+    ev = { e1: [], e2: [] }
+    Event.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e1] << i }
+    Event.where(:holder => 2).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e2] << i }
 
     events = { e1: [], e2: [] }
-    Event.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| events[:e1] << build_event_for_pie(i) }
-    Event.where(:holder => 2).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| events[:e2] << build_event_for_pie(i) }
+
+    events[:e1] = build_pie starts_at, ends_at, ev[:e1]
+    events[:e2] = build_pie starts_at, ends_at, ev[:e2]
 
     render json: { starts_at: starts_at.strftime('%d/%m/%Y'), ends_at: ends_at.strftime('%d/%m/%Y'), days: (ends_at - starts_at) / 3600 / 24 , events1: events[:e1], events2: events[:e2] }
   end
 
   protected
+    def build_pie starts_at, ends_at, ev
+      events = []
+      end_at = nil
+      ev.sort_by { |e| e[:dt] }.map { |e|
+        if end_at.nil?
+          if e.starts_at > starts_at
+            new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
+            events << build_event_for_pie(new_ev)
+          end
+          end_at = starts_at
+        elsif end_at < e.starts_at
+          new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
+          events << build_event_for_pie(new_ev)
+        elsif end_at > e.starts_at
+          e.starts_at = end_at
+        end
+
+        end_at = e.ends_at
+        events << build_event_for_pie(e)
+      }
+      if end_at < ends_at
+        new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
+        events << build_event_for_pie(new_ev)
+      end
+      events
+    end
+
     def build_event_for_pie event
-      days  = (event.ends_at - event.starts_at).to_i
-      { label: event.title, desc: event.description, starts_at: event.starts_at.strftime('%d/%m/%Y'), ends_at: event.ends_at.strftime('%d/%m/%Y'), value: days, color: event.color, highlight: event.color }
+      days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
+      #binding.pry
+      { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: event[:color] }
     end
 
 
