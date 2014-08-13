@@ -6,7 +6,7 @@
   .form-group
     = f.label :icon, :class => 'control-label'
     .controls
-      = f.text_field :icon, :class => 'form-control'
+    = render :partial => 'layouts/fa_select', :locals => { :f => f }
   .form-group
     = f.label :description, :class => 'control-label'
     .controls
@@ -14,13 +14,11 @@
   .form-group
     = f.label :color, :class => 'control-label'
     .controls
-      = f.select :color, calendar_colors_list, :class => 'form-control'
+    = render :partial => 'layouts/color_select', :locals => { :f => f }
   .form-group
     = f.label :holder, :class => 'control-label'
     .controls
-      = f.collection_radio_buttons :holder, [[1, 'Місто'], [2, 'Громада']],
-      :first, :last, { item_wrapper_tag: false } do |b|
-        = b.radio_button + ' ' + b.label(:class => b.value == 1 ? 'fa fa-university fa-lg' : 'fa fa-child fa-lg')
+    = render :partial => 'layouts/eventowner_select', :locals => { :f => f }
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'

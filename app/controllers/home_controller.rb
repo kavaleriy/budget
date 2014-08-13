@@ -4,8 +4,8 @@ class HomeController < ApplicationController
   end
 
   def pie_data
-    starts_at = Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    starts_at = '2014-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    ends_at = '2015-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     ev = { e1: [], e2: [] }
     Event.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e1] << i }
