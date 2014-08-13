@@ -12,8 +12,8 @@
         "data-color" => calendar_action.color,
         "data-holder" => calendar_action.holder}
 
-          %h4.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
+          %h6.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
             %span.fa{class: calendar_action.icon}
-            = calendar_action.title.html_safe
+            = truncate calendar_action.title.html_safe, :length => 40, :omission => '...'
           .body
             = calendar_action.description.html_safe
