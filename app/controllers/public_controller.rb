@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class PublicController < ApplicationController
   def index
     @timeline_events = build_timeline
   end
@@ -20,38 +20,38 @@ class HomeController < ApplicationController
   end
 
   protected
-    def build_pie starts_at, ends_at, ev
-      events = []
-      end_at = nil
-      ev.sort_by { |e| e[:dt] }.map { |e|
-        if end_at.nil?
-          if e.starts_at > starts_at
-            new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
-            events << build_event_for_pie(new_ev)
-          end
-          end_at = starts_at
-        elsif end_at < e.starts_at
-          new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
+  def build_pie starts_at, ends_at, ev
+    events = []
+    end_at = nil
+    ev.sort_by { |e| e[:dt] }.map { |e|
+      if end_at.nil?
+        if e.starts_at > starts_at
+          new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
           events << build_event_for_pie(new_ev)
-        elsif end_at > e.starts_at
-          e.starts_at = end_at
         end
-
-        end_at = e.ends_at
-        events << build_event_for_pie(e)
-      }
-      if end_at < ends_at
-        new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
+        end_at = starts_at
+      elsif end_at < e.starts_at
+        new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
         events << build_event_for_pie(new_ev)
+      elsif end_at > e.starts_at
+        e.starts_at = end_at
       end
-      events
-    end
 
-    def build_event_for_pie event
-      days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
-      #binding.pry
-      { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: event[:color] }
+      end_at = e.ends_at
+      events << build_event_for_pie(e)
+    }
+    if end_at < ends_at
+      new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
+      events << build_event_for_pie(new_ev)
     end
+    events
+  end
+
+  def build_event_for_pie event
+    days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
+    #binding.pry
+    { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: event[:color] }
+  end
 
 
   def build_timeline

@@ -18,7 +18,7 @@ class CalendarsControllerTest < ActionController::TestCase
 
   test "should create calendar" do
     assert_difference('Calendar.count') do
-      post :create, calendar: { body: @calendar.body, dt_end: @calendar.dt_end, dt_start: @calendar.dt_start, title: @calendar.title }
+      post :create, calendar: {  }
     end
 
     assert_redirected_to calendar_path(assigns(:calendar))
@@ -35,7 +35,7 @@ class CalendarsControllerTest < ActionController::TestCase
   end
 
   test "should update calendar" do
-    patch :update, id: @calendar, calendar: { body: @calendar.body, dt_end: @calendar.dt_end, dt_start: @calendar.dt_start, title: @calendar.title }
+    patch :update, id: @calendar, calendar: {  }
     assert_redirected_to calendar_path(assigns(:calendar))
   end
 

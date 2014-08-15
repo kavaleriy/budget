@@ -1,0 +1,3 @@
+= form_for @calendar, :html => { :class => 'form-horizontal' } do |f|
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'

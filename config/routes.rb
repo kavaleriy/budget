@@ -1,18 +1,19 @@
 Rails.application.routes.draw do
-  mount Ckeditor::Engine => '/ckeditor'
-  get 'home/pie_data'
+  get 'public/pie_data'
+
+  resources :calendars
 
   resources :calendar_actions
 
   resources :events
 
-  resource :calendars
+  mount Ckeditor::Engine => '/ckeditor'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'home#index'
+  root 'public#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

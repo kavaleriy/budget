@@ -1,5 +1,8 @@
 class Event
   include Mongoid::Document
+
+  embedded_in :calendar
+
   before_validation :do_before_validation
 
   field :holder, type: Integer
