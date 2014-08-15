@@ -1,9 +1,10 @@
 .countdown
   %h3
-    До закінчення реестрації.....
-  .col-sm-offset-5.col-sm-8.date{ 'data-date' => '2014-08-01 00:00:00', style: 'width: 300px; height: 85px; padding: 0px; box-sizing: border-box'}
+  = @calendar.countdown_title
+  .col-sm-offset-5.col-sm-8.date{ 'data-date' => @calendar.countdown_title, style: 'width: 300px; height: 85px; padding: 0px; box-sizing: border-box'}
   .clearfix
-  %a.btn.btn-default{ href: '#' }
+  = if @calendar.countdown_event
+    %a.btn.btn-default{ :href => event_path(@calendar.countdown_event) }
     Детальніше
     %i.fa.fa-info
 

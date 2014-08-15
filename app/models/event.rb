@@ -2,6 +2,7 @@ class Event
   include Mongoid::Document
 
   embedded_in :calendar
+  belongs_to  :calendar
 
   before_validation :do_before_validation
 

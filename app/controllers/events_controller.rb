@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
+  before_action :set_calendar
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :set_calendar, only: [:index, :new, :create]
 
   # GET /events
   # GET /events.json
@@ -55,7 +55,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     respond_to do |format|
-      if @event.update(event_params)
+        if @event.update(event_params)
         format.json { render json: @event }
       else
         format.json { render json: @event.errors, status: :unprocessable_entity }
@@ -76,16 +76,15 @@ class EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
 
   def set_calendar
-    binding.pry
     @calendar = Calendar.find(params[:calendar_id])
   end
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = @calendar.events.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:calendar, :holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color)
+    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color)
   end
 end

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'
 
   resources :calendars

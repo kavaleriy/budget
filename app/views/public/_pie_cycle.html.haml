@@ -1,4 +1,4 @@
-.col-sm-12.pies-container
+.col-sm-12.pies-container#calendar_pies{:calendar_id => @calendar.id }
   #canvas-holder1
     %canvas#chart-area1{:height => "200", :width => "200"}
   #canvas-holder2
@@ -20,7 +20,7 @@
     $('#canvas-holder1').css('left', (width - pie1_width) / 2 - 1).css('top', (width - pie1_width) / 2 - 1).width(pie1_width)
     $('#canvas-holder2').css('left', (width - pie2_width) / 2 - 1).css('top', (width - pie2_width) / 2 - 1).width(pie2_width)
 
-    $.getJSON( "#{public_pie_data_path}", function( data ) {
+    $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
       var ctx1 = document.getElementById("chart-area1").getContext("2d");
       window.myDoughnut1 = new Chart(ctx1).Doughnut(data.events1, {
         segmentShowStroke : true,

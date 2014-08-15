@@ -1,6 +1,11 @@
 class PublicController < ApplicationController
+  before_action :set_calendar, only: [:calendar, :pie_data]
+
   def index
-    @timeline_events = build_timeline
+  end
+
+  def calendar
+    @timeline_events = build_timeline @calendar.events
   end
 
   def pie_data
@@ -8,8 +13,8 @@ class PublicController < ApplicationController
     ends_at = '2015-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     ev = { e1: [], e2: [] }
-    Event.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e1] << i }
-    Event.where(:holder => 2).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e2] << i }
+    @calendar.events.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e1] << i }
+    @calendar.events.where(:holder => 2).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e2] << i }
 
     events = { e1: [], e2: [] }
 
@@ -20,6 +25,7 @@ class PublicController < ApplicationController
   end
 
   protected
+
   def build_pie starts_at, ends_at, ev
     events = []
     end_at = nil
@@ -54,9 +60,9 @@ class PublicController < ApplicationController
   end
 
 
-  def build_timeline
+  def build_timeline calendar_events
     events = [ ]
-    Event.all.map { |i|
+    calendar_events.all.map { |i|
       if i.ends_at
         action = i.ends_at > Date.today ? 'закінчиться: ' + i.ends_at.strftime('%d-%m-%Y') : 'закінчилась'
       else
@@ -71,5 +77,10 @@ class PublicController < ApplicationController
     events.sort_by { |m| m[:dt] }.reverse!
   end
 
+  private
+
+  def set_calendar
+    @calendar = Calendar.find(params[:calendar_id])
+  end
 
 end

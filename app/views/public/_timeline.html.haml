@@ -15,7 +15,7 @@
           .tl-time
             = event[:all_day] == true ? event[:dt].strftime('%d-%m-%Y') : event[:dt].strftime('%d-%m-%Y %H:%M:%S')
           .tl-content
-            %img.arrow{:src => event[:holder] == 1 ? 'assets/arrow.jpg' : 'assets/arrowL.jpg' }
+            %img.arrow{:src => event[:holder] == 1 ? '/assets/arrow.jpg' : '/assets/arrowL.jpg' }
             %p.tl-title{ :style => ("color: #{event[:color]}") }
               = event[:title]
             = event[:action]

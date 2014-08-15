@@ -4,12 +4,21 @@
       %span.icon-bar
       %span.icon-bar
       %span.icon-bar
-    %a.navbar-brand(href=root_path)
+    .navbar-brand
       Візуалізатор бюджета
     .navbar-collapse.collapse.navbar-responsive-collapse
       %ul.nav.navbar-nav
-        %li= link_to "Calendar admin", calendars_path
-        %li= link_to "Calendar actions", calendar_actions_path
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-calendar
+              &nbsp;Бюджетний календар
+              %span.caret
+          %ul.dropdown-menu{'role' => "menu"}
+            - Calendar.each do |c|
+              %li= link_to "#{c.title || 'Calendar'}", "/public/calendar/#{c.id}"
+            %li.divider
+            %li= link_to "Calendar admin", calendars_path
+            %li= link_to "Calendar actions", calendar_actions_path
 
       %ul.nav.navbar-nav.navbar-right
         %li.todo

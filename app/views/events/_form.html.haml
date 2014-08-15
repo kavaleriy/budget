@@ -46,7 +46,7 @@
       = render :partial => 'layouts/color_select', :locals => { :f => f }
 
   .modal-footer
-    = button_to "Save", @event, :method => :post, :class => 'btn btn-primary pull-right'
+    = button_to 'Save', @event, :method => :post, :class => 'btn btn-primary pull-right', :params => {:calendar_id => @calendar.id}
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close
 
     = link_to t('.destroy', :default => t("helpers.links.destroy")), event_path(@event), remote: true, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?

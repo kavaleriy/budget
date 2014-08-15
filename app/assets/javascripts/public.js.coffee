@@ -7,10 +7,9 @@
 
 
 $(document).on 'ready page:load', ->
-
   # initialize the calendar
   #	-----------------------------------------------------------------
-  $('#calendar').fullCalendar
+  $('#calendar_view').fullCalendar
     lang: 'uk',
     editable: false,
     header:
@@ -20,6 +19,9 @@ $(document).on 'ready page:load', ->
     defaultView: 'month',
     events: {
       url: '/events',
+      data: {
+        calendar_id: $('#calendar_view').attr('calendar_id')
+      }
     },
     timeFormat: 'H:mm',
 
