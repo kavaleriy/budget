@@ -6,6 +6,7 @@ class PublicController < ApplicationController
 
   def calendar
     @timeline_events = build_timeline @calendar.events
+    @current_event = get_current_event @calendar.events.current_event.first
   end
 
   def pie_data
@@ -25,6 +26,12 @@ class PublicController < ApplicationController
   end
 
   protected
+
+  def get_current_event event
+    return {} if event.nil? || (event.ends_at.to_date - event.starts_at.to_date) == 0
+    percent = (Date.current - event.starts_at.to_date).to_f / (event.ends_at.to_date - event.starts_at.to_date).to_f * 100
+    { title: event.title, holder_text: event.holder_text, percent: percent}
+  end
 
   def build_pie starts_at, ends_at, ev
     events = []

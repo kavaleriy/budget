@@ -1,37 +1,38 @@
-.countdown
-  %h3
-  = @calendar.countdown_title
-  .col-sm-offset-5.col-sm-8.date{ 'data-date' => @calendar.countdown_title, style: 'width: 300px; height: 85px; padding: 0px; box-sizing: border-box'}
-  .clearfix
-  = if @calendar.countdown_event
-    %a.btn.btn-default{ :href => event_path(@calendar.countdown_event) }
-    Детальніше
-    %i.fa.fa-info
+- if @calendar.countdown_date > Date.current
+  .countdown
+    %h3{style: 'margin-right: 50px;'}
+      = @calendar.countdown_title.html_safe
+    .col-sm-offset-5.col-sm-1.date{ 'data-date' => @calendar.countdown_date, style: 'height: 85px; margin-right: 50px;box-sizing: border-box'}
+    .clearfix
+    - if @calendar.countdown_event
+      %a.btn.btn-default{ :href => event_path(@calendar.countdown_event, { :calendar_id => @calendar.id}) }
+        %i.fa.fa-info
+          Детальніше
 
 
-:javascript
+  :javascript
 
-  $(function() {
-    width = $('.countdown').parent().width()
+    $(function() {
+      width = $('.countdown').parent().width()
 
-    $('.countdown').css('top', width  / 2 - 100).width(width)
+      $('.countdown').css('top', width  / 2 - 100).width(width)
 
-    $('.countdown .date').TimeCircles({
-      time: {
-        Days: {
-          show: true,
-          text: "Днів",
-          color: "#FC6"
-        },
-        Hours: {
-          show: false,
-        },
-        Minutes: {
-          show: false,
-        },
-        Seconds: {
-          show: false,
+      $('.countdown .date').TimeCircles({
+        time: {
+          Days: {
+            show: true,
+            text: "Днів",
+            color: "#FC6"
+          },
+          Hours: {
+            show: false,
+          },
+          Minutes: {
+            show: false,
+          },
+          Seconds: {
+            show: false,
+          }
         }
-      }
+      });
     });
-  });

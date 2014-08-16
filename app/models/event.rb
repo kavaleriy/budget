@@ -4,6 +4,10 @@ class Event
   embedded_in :calendar
   belongs_to  :calendar
 
+  scope :current_event, lambda { where(:starts_at.lt => Date.current).order('starts_at DESC').limit(1) }
+  scope :countdown_events, lambda { where(:ends_at.gt => Date.current).order('starts_at DESC') }
+
+
   before_validation :do_before_validation
 
   field :holder, type: Integer
@@ -16,12 +20,14 @@ class Event
   field :color, type: String
   field :media, type: String
 
-  attr_accessor :starts_at_string, :ends_at_string
+  attr_accessor :holder_text, :starts_at_string, :ends_at_string
 
   after_initialize :do_after_initialize
 
 
   def do_after_initialize
+    self.holder_text = self.holder == 1 ? 'Місто' : 'Громада'
+
     self.starts_at_string = self.starts_at.strftime('%d/%m/%Y %H:%M') unless self.starts_at.nil?
     self.ends_at_string = self.ends_at.strftime('%d/%m/%Y %H:%M') unless self.ends_at.nil?
   end

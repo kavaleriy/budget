@@ -9,11 +9,11 @@
 %p
   %strong= model_class.human_attribute_name(:icon) + ':'
   %br
-  = @event.icon
+  %span.fa{class: @event.icon}
 %p
   %strong= model_class.human_attribute_name(:description) + ':'
   %br
-  = @event.description
+  = @event.description.html_safe
 %p
   %strong= model_class.human_attribute_name(:starts_at) + ':'
   %br

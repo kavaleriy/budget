@@ -1,5 +1,12 @@
-.col-md-6
+= content_for :header do
+  .header
+    %span.head
+      %i.fa.fa-calendar
+        Бюджетний календар 2014 - #{@calendar.title}
+      %span.descr
+        = @calendar.description
 
+.col-sm-6
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{href: '#home', role: 'tab', 'data-toggle' => 'tab'}
@@ -15,11 +22,11 @@
     #profile.tab-pane.fade
       = render partial: 'timeline'
 
-
 .col-sm-6
   .col-sm-12
     %h2.col-sm-7 Бюджетний цикл 2014
-    .pull-right.col-sm-5
+    .pull-right.col-sm-6
       = render partial: "current_action"
 
     = render partial: "pie_cycle"
+

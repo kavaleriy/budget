@@ -10,11 +10,14 @@
   .form-group
     = f.label :countdown_title, :class => 'control-label'
     .controls
-      = f.text_field :countdown_title, :class => 'form-control'
+      = f.text_area :countdown_title, :class => 'form-control'
   .form-group
     = f.label :countdown_date, :class => 'control-label'
     .controls
       = f.text_field :countdown_date, :class => 'form-control'
-
+  .form-group
+    = f.label :countdown_event, :class => 'control-label'
+    .controls
+      = f.select :countdown_event, @calendar.events.all.countdown_events.collect {|p| [ "#{p.holder_text}: #{p.title}, #{p.starts_at.to_date}", p.id ] }, {prompt: 'Please select an event'}, :class => 'form-control'
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'

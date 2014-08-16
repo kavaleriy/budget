@@ -3,11 +3,11 @@
   .infobox.col-sm-2
     .infobox-progress
       .chart{'data-percent' => '73'}
-        73%
-  %span.col-sm-8
-    міська рада
+        = @current_event[:percent]
+  %span.col-sm-10
+    = @current_event[:holder_text]
     .infobox-content
-      проводиться робота ...
+      = @current_event[:title]
       %a.btn.btn-default{ href: '#' }
         %i.fa.fa-info
 
