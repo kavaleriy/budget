@@ -1,25 +1,27 @@
-.current-action
-  %h3>Зараз:
-  .infobox.col-sm-2
-    .infobox-progress
-      .chart{'data-percent' => '73'}
-        = @current_event[:percent]
-  %span.col-sm-10
-    = @current_event[:holder_text]
-    .infobox-content
-      = @current_event[:title]
-      %a.btn.btn-default{ href: '#' }
-        %i.fa.fa-info
+- if @current_event[:event]
+  .current-action
+    %h3>Зараз:
+    .infobox.col-sm-2
+      .infobox-progress
+        .chart{'data-percent' => @current_event[:percent]}
+          = "#{@current_event[:percent]}%"
+    %span.col-sm-10
+      = @current_event[:holder_text]
+      .infobox-content
+        = @current_event[:title]
+        = link_to(event_path(@current_event[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do
+          %i.fa.fa-info
+            Детальніше
 
-:javascript
-  $(function () {
-    $('.chart').easyPieChart({
-        barColor: $(this).data('color'),
-        trackColor: '#EEEEEE',
-        scaleColor: false,
-        lineWidth: 2,
-        animate: 700,
-        size:50
+  :javascript
+    $(function () {
+      $('.chart').easyPieChart({
+          barColor: $(this).data('color'),
+          trackColor: '#EEEEEE',
+          scaleColor: false,
+          lineWidth: 2,
+          animate: 700,
+          size:50
+      });
     });
-  });
 

@@ -29,8 +29,8 @@ class PublicController < ApplicationController
 
   def get_current_event event
     return {} if event.nil? || (event.ends_at.to_date - event.starts_at.to_date) == 0
-    percent = (Date.current - event.starts_at.to_date).to_f / (event.ends_at.to_date - event.starts_at.to_date).to_f * 100
-    { title: event.title, holder_text: event.holder_text, percent: percent}
+    percent = 100 * (Date.current - event.starts_at.to_date).to_i / (event.ends_at.to_date - event.starts_at.to_date).to_i
+    { event: event, title: event.title, holder_text: event.holder_text, percent: percent}
   end
 
   def build_pie starts_at, ends_at, ev

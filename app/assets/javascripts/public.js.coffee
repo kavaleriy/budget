@@ -30,13 +30,14 @@ $(document).on 'ready page:load', ->
     selectable: false
 
     eventClick: (calEvent, jsEvent, view) ->
-      $.get("/events/"+calEvent.id).done (data) ->
-        $("#eventModal .modal-content").html data
-        $('#eventModal').modal('show')
+      $.get "/events/"+calEvent.id,
+        calendar_id: $('#calendar_view').attr('calendar_id')
 
     eventRender: (e, t, n) ->
+      t.css('color', e.text_color)
       icon = (if e.icon then " <i class='fa fa-lg " + e.icon + " '></i> " else "")
       i = (if e.description then e.description else "")
       t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
       t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
       return
+

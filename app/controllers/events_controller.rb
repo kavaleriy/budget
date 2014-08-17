@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  layout false
+
   before_action :set_calendar
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
@@ -16,7 +18,8 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     respond_to do |format|
-      format.html { render(:partial => 'form') if request.xhr? }
+      # format.html { render( partial: 'show') if request.xhr? }
+      format.js
     end
   end
 
@@ -26,15 +29,21 @@ class EventsController < ApplicationController
     @event = @calendar.events.new(
         :starts_at_string => params[:starts_at],
         :ends_at_string => params[:ends_at],
-        :all_day => all_day )
+        :all_day => all_day,
+        :color => '#8cc0f1',
+        :text_color => '#ffffff'
+    )
 
     respond_to do |format|
-      format.html { render(:partial => 'form', status: :ok)  if request.xhr? }
+      format.js
     end
   end
 
   # GET /events/1/edit
   def edit
+    respond_to do |format|
+      format.js
+    end
   end
 
   # POST /events
@@ -85,6 +94,6 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color)
+    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color, :text_color)
   end
 end

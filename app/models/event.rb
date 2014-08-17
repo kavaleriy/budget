@@ -4,11 +4,9 @@ class Event
   embedded_in :calendar
   belongs_to  :calendar
 
-  scope :current_event, lambda { where(:starts_at.lt => Date.current).order('starts_at DESC').limit(1) }
+  scope :current_event, lambda { where(:starts_at.lt => Date.current, :ends_at.gt => Date.current).order('starts_at DESC').limit(1) }
   scope :countdown_events, lambda { where(:ends_at.gt => Date.current).order('starts_at DESC') }
 
-
-  before_validation :do_before_validation
 
   field :holder, type: Integer
   field :title, type: String
@@ -18,7 +16,14 @@ class Event
   field :ends_at, type: DateTime
   field :all_day, type: Boolean
   field :color, type: String
-  field :media, type: String
+  field :text_color, type: String
+
+  before_validation :do_before_validation
+  validates :holder, presence: true
+  validates :title, presence: true
+  validates :starts_at, presence: true
+
+
 
   attr_accessor :holder_text, :starts_at_string, :ends_at_string
 
@@ -54,8 +59,7 @@ class Event
         :end => ends_at,
         :allDay => self.all_day,
         :color => self.color,
-        :media => self.media,
-        # :url => Rails.application.routes.url_helpers.event_path(id),
+        :text_color => self.text_color,
     }
   end
 end

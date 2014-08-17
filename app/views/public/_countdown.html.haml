@@ -5,9 +5,10 @@
     .col-sm-offset-5.col-sm-1.date{ 'data-date' => @calendar.countdown_date, style: 'height: 85px; margin-right: 50px;box-sizing: border-box'}
     .clearfix
     - if @calendar.countdown_event
-      %a.btn.btn-default{ :href => event_path(@calendar.countdown_event, { :calendar_id => @calendar.id}) }
+      = link_to(event_path(@calendar.countdown_event, { :calendar_id => @calendar.id }), :class => 'btn btn-default', :remote => true) do
         %i.fa.fa-info
           Детальніше
+
 
 
   :javascript

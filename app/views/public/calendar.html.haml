@@ -4,7 +4,7 @@
       %i.fa.fa-calendar
         Бюджетний календар 2014 - #{@calendar.title}
       %span.descr
-        = @calendar.description
+        @calendar.description
 
 .col-sm-6
   %ul.nav.nav-tabs{role: 'tablist'}
@@ -25,7 +25,7 @@
 .col-sm-6
   .col-sm-12
     %h2.col-sm-7 Бюджетний цикл 2014
-    .pull-right.col-sm-6
+    .pull-right.col-sm-5
       = render partial: "current_action"
 
     = render partial: "pie_cycle"

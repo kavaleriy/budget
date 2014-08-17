@@ -1,0 +1,48 @@
+- model_class = Event
+
+.modal-header{style: "background-color: #{@event.color}"}
+
+  %button.close{"data-dismiss" => "modal", :type => "button"}
+    %span{"aria-hidden" => "true"} &times;
+    %span.sr-only Close
+
+  %h4#myModalLabel.modal-title{style: "color: #{@event.text_color}"}
+    %span.fa{:class => @event.icon}
+    = " #{@event.title}"
+
+.modal-body
+
+  %ul.nav.nav-tabs{role: 'tablist'}
+    %li.active
+      %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        Main data
+    %li
+      %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        Date range
+    %li
+      %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        Attachments
+
+  .tab-content
+    .tab-pane.fade.in.active#show_event_main_tab
+      %p
+        = @event.description.html_safe
+
+    .tab-pane.fade#show_event_range_tab
+      %p
+        %strong= model_class.human_attribute_name(:starts_at) + ':'
+        = @event.starts_at
+      %p
+        %strong= model_class.human_attribute_name(:ends_at) + ':'
+        %br
+        = @event.ends_at
+      %p
+        %strong= model_class.human_attribute_name(:all_day) + ':'
+        %br
+        = @event.all_day
+
+    .tab-pane.fade#show_event_attach_tab
+
+
+.modal-footer
+  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close

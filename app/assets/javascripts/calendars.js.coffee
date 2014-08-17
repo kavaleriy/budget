@@ -12,6 +12,7 @@ $(document).on 'ready page:load', ->
           icon: $.trim($(this).attr("data-icon"))
           description: $(this).attr("data-description")
           color: $(this).attr("data-color")
+          text_color: '#ffffff'
           holder: $(this).attr("data-holder")
 
       $(this).data "eventObject", eventObject
@@ -29,9 +30,9 @@ $(document).on 'ready page:load', ->
       lang: 'uk',
       editable: true,
       header:
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
       defaultView: 'month',
       events: {
         url: '/events',
@@ -67,22 +68,23 @@ $(document).on 'ready page:load', ->
             calendar_id: $('#calendar').attr('calendar_id')
             starts_at: dt_start
             all_day: true
-          .done (data) ->
-            $("#eventModal .modal-content").html data
-            $('#eventModal').modal('show')
+#          .done (data) ->
+#            $("#eventModal .modal-content").html data
+#            $('#eventModal').modal('show')
 
 #            calendar.fullCalendar('unselect');
 
       eventClick: (calEvent, jsEvent, view) ->
-        $.get "/events/"+calEvent.id,
+        $.get "/events/"+calEvent.id+"/edit",
           calendar_id: $('#calendar').attr('calendar_id')
-        .done (data) ->
-          $("#eventModal .modal-content").html data
-          $('#eventModal').modal('show')
+#        .done (data) ->
+#          $("#eventModal .modal-content").html data
+#          $('#eventModal').modal('show')
 
       eventRender: (e, t, n) ->
           icon = (if e.icon then " <i class='fa " + e.icon + " '></i> " else "")
           i = (if e.description then e.description else "")
+          t.css('color', e.text_color)
           t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
           t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
           return
@@ -108,6 +110,7 @@ $(document).on 'ready page:load', ->
           title: event.title
           description: event.description
           color: event.color
+          text_color: event.text_color
           starts_at_string: dt_start
           ends_at_string: dt_end
           all_day: event.allDay
@@ -130,10 +133,14 @@ $(document).on 'ready page:load', ->
             event:
               starts_at_string: dt_start,
               ends_at_string: dt_end,
-              all_day: event.allDay
+              all_day: event.allDay,
+              text_color: event.text_color
       .success ->
 
 
   $('#eventModal').on "ajax:success", 'form',  (e, data, status, xhr) ->
       $("#calendar").fullCalendar "refetchEvents"
       $('#eventModal').modal('hide')
+  $('#eventModal').on "ajax:error", 'form',  (e, data, status, xhr) ->
+    alert data.responseText
+
