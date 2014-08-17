@@ -10,7 +10,7 @@
   .form-group
     = f.label :countdown_title, :class => 'control-label'
     .controls
-      = f.text_area :countdown_title, :class => 'form-control'
+      = f.cktext_area :countdown_title, :class => 'form-control', :ckeditor => { :language => 'uk', :toolbar => 'Pure', :uiColor => '#33ccff'}
   .form-group
     = f.label :countdown_date, :class => 'control-label'
     .controls

@@ -14,7 +14,7 @@
   .form-group
     = f.label :color, :class => 'control-label'
     .controls
-    = render :partial => 'layouts/color_select', :locals => { :f => f }
+      = f.color_field :color, :class => 'form-control'
   .form-group
     = f.label :holder, :class => 'control-label'
     .controls
