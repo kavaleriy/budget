@@ -1,5 +1,5 @@
 class CalendarsController < ApplicationController
-  before_action :set_calendar, only: [:show, :edit, :update, :destroy]
+  before_action :set_calendar, only: [:show, :edit, :update, :destroy, :subscribe]
 
   # GET /calendars
   # GET /calendars.json
@@ -61,6 +61,10 @@ class CalendarsController < ApplicationController
       format.html { redirect_to calendars_url, notice: 'Calendar was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def subscribe
+    binding.pry
   end
 
   private

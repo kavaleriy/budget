@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'public/pie_data'
 
   resources :calendars
+  post 'calendar/subscribe'  => 'calendars#subscribe'
 
   resources :calendar_actions
 

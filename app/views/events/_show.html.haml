@@ -6,9 +6,9 @@
     %span{"aria-hidden" => "true"} &times;
     %span.sr-only Close
 
-  %h4#myModalLabel.modal-title{style: "color: #{@event.text_color}"}
-    %span.fa{:class => @event.icon}
-    = " #{@event.title}"
+  %h4#myModalLabel.modal-title
+    %span.fa{:class => @event.icon, 'style' => "color: #{@event.text_color}"}
+      = @event.title
 
 .modal-body
 

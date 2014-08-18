@@ -1,0 +1,8 @@
+= form_tag calendar_subscribe_path, :remote => true, :format => :json, :html => { :class => '' } do |f|
+  .input-group.col-sm-3.pull-right
+    %input#calendar_subscribe.form-control{ :placeholder=>'Вкажіть e-mail для отримання змін календаря', :type=> 'text' }
+    %span.input-group-btn
+      = submit_tag 'Subscribe', :class => 'btn'
+
+
+

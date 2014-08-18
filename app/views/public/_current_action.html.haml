@@ -6,7 +6,8 @@
         .chart{'data-percent' => @current_event[:percent]}
           = "#{@current_event[:percent]}%"
     %span.col-sm-10
-      = @current_event[:holder_text]
+      %h4
+        = @current_event[:holder_text]
       .infobox-content
         = @current_event[:title]
         = link_to(event_path(@current_event[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do

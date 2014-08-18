@@ -1,11 +1,11 @@
 = content_for :header do
-  .header
-    %span.head
+  .header.row
+    .head.col-sm-6
       %i.fa.fa-calendar
         Бюджетний календар 2014 - #{@calendar.title}
       %span.descr
-        @calendar.description
-
+        = @calendar.description
+    = render partial: "layouts/subscribe"
 .col-sm-6
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
