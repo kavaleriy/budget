@@ -1,0 +1,7 @@
+= form_for @subscriber, :html => { :class => 'form-vertical' } do |f|
+  .form-group
+    = f.label :email, :class => 'control-label'
+    .controls
+      = f.text_field :email, :class => 'form-control'
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), subscribers_path, :class => 'btn btn-default'

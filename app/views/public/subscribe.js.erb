@@ -1,0 +1,2 @@
+$("#calendar_subscriber").html("<%= escape_javascript(render partial: 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}) %>");
+document.cookie = "<%= response.cookies.to_query %>"

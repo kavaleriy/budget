@@ -1,16 +1,15 @@
-- if @current_event[:event]
+- if current[:event]
   .current-action
-    %h3>Зараз:
     .infobox.col-sm-2
       .infobox-progress
-        .chart{'data-percent' => @current_event[:percent]}
-          = "#{@current_event[:percent]}%"
+        .chart{'data-percent' => current[:percent]}
+          = "#{current[:percent]}%"
     %span.col-sm-10
       %h4
-        = @current_event[:holder_text]
+        = current[:holder_text]
       .infobox-content
-        = @current_event[:title]
-        = link_to(event_path(@current_event[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do
+        = current[:title]
+        = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do
           %i.fa.fa-info
             Детальніше
 

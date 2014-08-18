@@ -4,7 +4,7 @@ class Event
   embedded_in :calendar
   belongs_to  :calendar
 
-  scope :current_event, lambda { where(:starts_at.lt => Date.current, :ends_at.gt => Date.current).order('starts_at DESC').limit(1) }
+  scope :current_event, lambda { |holder| where(:holder => holder, :starts_at.lt => Date.current, :ends_at.gt => Date.current).order('starts_at DESC').limit(1) }
   scope :countdown_events, lambda { where(:ends_at.gt => Date.current).order('starts_at DESC') }
 
 

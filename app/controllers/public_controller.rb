@@ -1,12 +1,14 @@
 class PublicController < ApplicationController
-  before_action :set_calendar, only: [:calendar, :pie_data]
+  before_action :set_calendar, only: [:calendar, :pie_data, :subscribe, :unsubscribe]
 
   def index
   end
 
   def calendar
     @timeline_events = build_timeline @calendar.events
-    @current_event = get_current_event @calendar.events.current_event.first
+    @current_event1 = get_current_event @calendar.events.current_event(1).first
+    @current_event2 = get_current_event @calendar.events.current_event(2).first
+    @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
   end
 
   def pie_data
@@ -23,6 +25,29 @@ class PublicController < ApplicationController
     events[:e2] = build_pie starts_at, ends_at, ev[:e2]
 
     render json: { starts_at: starts_at.strftime('%d/%m/%Y'), ends_at: ends_at.strftime('%d/%m/%Y'), days: (ends_at - starts_at) / 3600 / 24 , events1: events[:e1], events2: events[:e2] }
+  end
+
+  def subscribe
+    email = subscriber_params[:email]
+    @subscriber = Subscriber.where(:email => email).first || Subscriber.new(:email => email)
+    @calendar.subscribers << @subscriber if @calendar.subscribers.where(:email => @subscriber.email).empty?
+
+    respond_to do |format|
+      if @subscriber.save
+
+        response.set_cookie('subscriber', @subscriber.email)
+
+        format.js
+      else
+        format.json { render json: @subscriber.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def unsubscribe
+    @calendar.subscribers.delete(Subscriber.find(params[:subscriber_id]))
+    @calendar.save
+    response.delete_cookie('subscriber')
   end
 
   protected
@@ -90,4 +115,8 @@ class PublicController < ApplicationController
     @calendar = Calendar.find(params[:calendar_id])
   end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def subscriber_params
+    params.require(:subscriber).permit(:email)
+  end
 end
