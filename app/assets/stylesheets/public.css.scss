@@ -2,13 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#canvas-holder1 {
-  z-index: 999;
+#chart-area1 {
   position: absolute;
+  //z-index: -1;
+  background-color: transparent;
 }
-#canvas-holder2{
-  z-index: 999;
+#chart-area12{
   position: absolute;
+  background-color: transparent;
+  //z-index: -1;
 }
 
 .countdown {
@@ -44,5 +46,18 @@
       }
 
     }
+  }
+}
+
+
+.current-action {
+  h3 {
+    border-bottom: darkcyan solid 1px;
+    padding-bottom: 10px;
+  }
+
+  .content {
+    max-height: 100px;
+    overflow: hidden;
   }
 }

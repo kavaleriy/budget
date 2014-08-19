@@ -3,6 +3,79 @@
     %span{"aria-hidden" => "true"} &times;
     %span.sr-only Close
 
+
+
+
+  %div{:style => "max-width: 500px; margin: auto;"}
+    .panel.panel-info
+      .panel-heading Інформація
+      .panel-body
+        %form{:role => "form"}
+          .btn-group{"data-toggle" => "buttons", :style => "margin-left: 250px;"}
+            %label.btn.btn-primary.active
+              %input#option1{:checked => "checked", :name => "options", :type => "radio"}/
+              %span.glyphicon.glyphicon-home
+              Місто
+            %label.btn.btn-primary
+              %input#option2{:name => "options", :type => "radio"}/
+              %span.glyphicon.glyphicon-user
+              Громада
+          .form-group
+            %label{:for => "name"} Назва
+            .input-group
+              .input-group-addon
+                %span.glyphicon.glyphicon-pencil
+              %input#name.form-control{:placeholder => "Вкажіть назву", :type => "text"}/
+          .form-group
+            %label{:for => "opis"} Опис
+            %textarea#opis.form-control{:placeholder => "Вкажіть детальний опис", :rows => "3"}
+          .form-group
+            %label{:for => "adres"} Адреса
+            .input-group
+              .input-group-addon
+                %span.glyphicon.glyphicon-envelope
+              %input#adres.form-control{:placeholder => "Введіть адресу", :type => "text"}/
+          .form-group
+            %label{:for => "link"} Линк на мапу Гугл
+            .input-group
+              .input-group-addon
+                %span.glyphicon.glyphicon-map-marker
+              %input#link.form-control{:placeholder => "Введіть линк на мапу Гугл", :type => "text"}/
+          .form-group
+            %label{:for => "phone"} Телефон
+            .input-group
+              .input-group-addon
+                %span.glyphicon.glyphicon-earphone
+              %input#phone.form-control{:placeholder => "Введіть телефон", :type => "text"}/
+    .panel.panel-success
+      .panel-heading Файли
+      .panel-body
+        .form-group
+          %label{:for => "InputFile"} Виберіть файл
+          %input#InputFile{:type => "file"}/
+          %input#opisanie.form-control{:placeholder => "Введіть коротку опис файла", :type => "text"}/
+          %p.help-block Виберіть файл, і він додатися в список завантажених, також введіть коротку опис файла
+        %button.btn.btn.btn-xs.btn-success{:style => "float: right;", :type => "submit"} Додати файл
+        %div{:style => "clear: both; "}
+        %hr/
+        .row
+          .col-md-1
+            %img{:height => "30", :src => "icons/Microsoft Office 2003 Word.png", :width => "30"}/
+          .col-md-10 Додаток до документу та довідка
+          .col-md-1.glyphicon.glyphicon-remove
+        .row
+          .col-md-1
+            %img{:height => "30", :src => "icons/Microsoft Office 2003 Excel.png", :width => "30"}/
+          .col-md-10 Таблиця показників результатів
+          .col-md-1.glyphicon.glyphicon-remove
+        .row
+          .col-md-1
+            %img{:height => "30", :src => "icons/Adobe Acrobat CS3.png", :width => "30"}/
+          .col-md-10 Бланки заяв для реєстрації
+          .col-md-1.glyphicon.glyphicon-remove
+
+
+
   %h4#myModalLabel.modal-title Редагування події
 = form_for @event, remote: true, format: :json, :html => { :class => 'form-vertical' } do |f|
   .modal-body

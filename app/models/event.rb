@@ -4,8 +4,10 @@ class Event
   embedded_in :calendar
   belongs_to  :calendar
 
-  scope :current_event, lambda { |holder| where(:holder => holder, :starts_at.lt => Date.current, :ends_at.gt => Date.current).order('starts_at DESC').limit(1) }
-  scope :countdown_events, lambda { where(:ends_at.gt => Date.current).order('starts_at DESC') }
+  scope :event_timeline, lambda { |holder| where(:holder => holder).where(:ends_at => { '$ne' => nil}).asc(:starts_at) }
+
+  scope :current_event, lambda { |holder| where(:holder => holder, :starts_at.lt => Date.current, :ends_at.gt => Date.current).desc(:starts_at).limit(1) }
+  scope :countdown_events, lambda { where(:ends_at.gt => Date.current).desc(:starts_at) }
 
 
   field :holder, type: Integer

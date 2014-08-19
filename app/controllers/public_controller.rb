@@ -15,14 +15,10 @@ class PublicController < ApplicationController
     starts_at = '2014-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
     ends_at = '2015-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
-    ev = { e1: [], e2: [] }
-    @calendar.events.where(:holder => 1).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e1] << i }
-    @calendar.events.where(:holder => 2).where(:ends_at => { '$ne' => nil}).asc(:starts_at).map { |i| ev[:e2] << i }
-
     events = { e1: [], e2: [] }
 
-    events[:e1] = build_pie starts_at, ends_at, ev[:e1]
-    events[:e2] = build_pie starts_at, ends_at, ev[:e2]
+    events[:e1] = build_pie starts_at, ends_at, @calendar.events.event_timeline(1)
+    events[:e2] = build_pie starts_at, ends_at, @calendar.events.event_timeline(2)
 
     render json: { starts_at: starts_at.strftime('%d/%m/%Y'), ends_at: ends_at.strftime('%d/%m/%Y'), days: (ends_at - starts_at) / 3600 / 24 , events1: events[:e1], events2: events[:e2] }
   end
@@ -34,9 +30,7 @@ class PublicController < ApplicationController
 
     respond_to do |format|
       if @subscriber.save
-
         response.set_cookie('subscriber', @subscriber.email)
-
         format.js
       else
         format.json { render json: @subscriber.errors, status: :unprocessable_entity }
@@ -59,9 +53,10 @@ class PublicController < ApplicationController
   end
 
   def build_pie starts_at, ends_at, ev
+    #binding.pry
     events = []
     end_at = nil
-    ev.sort_by { |e| e[:dt] }.map { |e|
+    ev.map { |e|
       if end_at.nil?
         if e.starts_at > starts_at
           new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
@@ -88,7 +83,7 @@ class PublicController < ApplicationController
   def build_event_for_pie event
     days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
     #binding.pry
-    { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: event[:color] }
+    { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: 'rgba(100,200,100,.3)' }
   end
 
 
