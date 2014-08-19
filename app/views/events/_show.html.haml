@@ -8,7 +8,7 @@
 
   %h4#myModalLabel.modal-title
     %span.fa{:class => @event.icon, 'style' => "color: #{@event.text_color}"}
-      = @event.title
+      = "#{@event.holder_text}: #{@event.title}"
 
 .modal-body
 

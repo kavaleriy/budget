@@ -2,27 +2,30 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#chart-area1 {
-  position: absolute;
-  //z-index: -1;
-  background-color: transparent;
-}
-#chart-area12{
-  position: absolute;
-  background-color: transparent;
-  //z-index: -1;
-}
-
 .countdown {
-  z-index: 1000;
+  z-index: 1;
   position: absolute;
   text-align: center;
   padding: 0px; margin: 0px;
 
   .btn-default {
-    margin-left: -60px;
   }
 }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 220px;
+  height: 180px;
+  overflow: hidden;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
 
 .infobox {
   .infobox-progress {

@@ -1,8 +1,8 @@
 .col-sm-12.pies-container#calendar_pies{:calendar_id => @calendar.id }
-  %canvas#chart-area1{:height => "400", :width => "400"}
-  %canvas#chart-area2{:height => "200", :width => "200"}
+  %svg#svg_calendar
 
-  = render partial: "countdown"
+  .countdown
+    = render partial: "countdown"
 
 
 :javascript
@@ -10,39 +10,121 @@
   $(document).ready(function() {
 
     width = $('.pies-container').width()
-    pie1_width = width * .9 + 1
-    pie1_cut = 85
-    pie2_width = pie1_width*pie1_cut/100 - 40
-    pie2_cut = 80
 
-    $('#chart-area1').css('left', (width - pie1_width) / 2 - 1).css('top', (width - pie1_width) / 2 - 1).width(pie1_width)
-    $('#chart-area2').css('left', (width - pie2_width) / 2 - 1).css('top', (width - pie2_width) / 2 - 1).width(pie2_width)
+    countdown_width = width*60/100
+
+    $('.countdown').css('margin-left', (width - countdown_width) / 2).css('margin-right', (width - countdown_width) / 2).css('width', countdown_width).css('top', width  / 2 - 100)
+
 
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
+      build_pie(width, data)
+    })
 
-      var ctx2 = document.getElementById("chart-area2").getContext("2d");
-      window.myDoughnut2 = new Chart(ctx2).Doughnut(data.events2, {
-        segmentShowStroke: false,
-        responsive: false,
-        percentageInnerCutout: pie2_cut,
-        animateScale: true,
-        animateRotate: false,
-      });
+    function build_pie(size, data) {
+      var radius1 = Math.min(size, size) / 2;
+      var radius2 = Math.min(size, size) / 2 - 72;
+
+      var arc1 = d3.svg.arc()
+          .outerRadius(radius1 - 0)
+          .innerRadius(radius1 - 70);
+      var arc2 = d3.svg.arc()
+          .outerRadius(radius2 - 0)
+          .innerRadius(radius2 - 70);
+
+      var pie = d3.layout.pie()
+          .sort(null)
+          .value(function(d) { return d.value; });
+
+      var svg = d3.select('#svg_calendar')
+          .attr("width", size)
+          .attr("height", size)
+          .append("g")
+          .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 
 
-      var ctx1 = document.getElementById("chart-area1").getContext("2d");
-      window.myDoughnut1 = new Chart(ctx1).Doughnut(data.events1, {
-        segmentShowStroke: false,
-        responsive: false,
-        percentageInnerCutout: pie1_cut,
-        animateScale: false,
-        animateRotate: true,
-        tooltipTemplate: '<%if (label){%><%=label%>: <%}%>'
-      });
+      var g1 = svg.selectAll(".arc1")
+          .data(pie(data.events1))
+          .enter().append("g")
+          .attr("class", "arc1");
+      var g2 = svg.selectAll(".arc2")
+          .data(pie(data.events2))
+          .enter().append("g")
+          .attr("class", "arc2");
 
-    });
+
+      var div = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+      g1.append("path")
+          .attr("d", arc1)
+          .style("fill", function(d) { return d.data.color; })
+          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+          .on("click", function(d) {
+            if(d.data.id == '')
+              return
+            $.get("/events/"+d.data.id, { calendar_id: $('#calendar_view').attr('calendar_id') });
+          })
+          .on("mouseover", function(d) {
+            if(d.data.title == '')
+              return
+
+            div.transition()
+              .duration(200)
+              .style("opacity", .9);
+            div .html( get_html_for_ev(d) )
+              .style("left", (d3.event.pageX - 120) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+          })
+          .on("mouseout", function(d) {
+            div.transition()
+              .duration(500)
+              .style("opacity", 0);
+          })
+      g2.append("path")
+          .attr("d", arc2)
+          .style("fill", function(d) { return d.data.color; })
+          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+          .on("click", function(d) {
+              if(d.data.id == '')
+                return
+            $.get("/events/"+d.data.id, { calendar_id: $('#calendar_view').attr('calendar_id') });
+          })
+          .on("mouseover", function(d) {
+            if(d.data.title == '')
+              return
+
+            div.transition()
+              .duration(200)
+              .style("opacity", .9);
+            div .html( get_html_for_ev(d) )
+              .style("left", (d3.event.pageX - 120) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+          })
+          .on("mouseout", function(d) {
+              div.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+          })
+
+
+      g1.append("text")
+          .attr("transform", function(d) { return "translate(" + arc1.centroid(d) + ")"; })
+          .attr("dy", ".35em")
+          .style("text-anchor", "middle")
+          .html(function(d,i) {
+                   //return d.data.title;
+                 })
+      g2.append("text")
+          .attr("transform", function(d) { return "translate(" + arc2.centroid(d) + ")"; })
+          .attr("dy", ".35em")
+          .style("text-anchor", "middle")
+          .html(function(d,i) {
+                   //return d.data.title;
+                 })
+    }
+
+    function get_html_for_ev(d) {
+      return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b><hr/>" + d.data.desc
+    }
   })
-
-
-
-https://github.com/mbostock/d3/wiki/Gallery

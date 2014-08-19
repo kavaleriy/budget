@@ -83,7 +83,7 @@ class PublicController < ApplicationController
   def build_event_for_pie event
     days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
     #binding.pry
-    { label: event[:title], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: 'rgba(100,200,100,.3)' }
+    { id: event[:id].to_s, title: event[:title], icon: event[:icon], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: 'rgba(100,200,100,.3)' }
   end
 
 
