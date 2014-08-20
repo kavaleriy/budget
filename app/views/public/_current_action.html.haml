@@ -6,11 +6,11 @@
           #{current[:event].holder_text} #{current[:percent]}%
         .content
           %h4
-            = truncate current[:event].title.html_safe, :length => 45, :omission => '...'
+            = current[:event].title.html_safe
     - else
       .current-action
         %h3
           #{current[:percent]}% #{current[:event].holder_text}
         .content
           %h4
-            = truncate current[:event].title.html_safe, :length => 45, :omission => '...'
+            = current[:event].title.html_safe
