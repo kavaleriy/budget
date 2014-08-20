@@ -1,15 +1,15 @@
 - model_class = CalendarAction
 .page-header
-  %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+  %h1=t '.title'
 %table.table.table-striped
   %thead
     %tr
-      %th= model_class.human_attribute_name(:title)
-      %th= model_class.human_attribute_name(:icon)
-      %th= model_class.human_attribute_name(:description)
-      %th= model_class.human_attribute_name(:color)
-      %th= model_class.human_attribute_name(:holder)
-      %th=t '.actions', :default => t("helpers.actions")
+      %th= t('.name')
+      %th= t('.icon')
+      %th= t('.description')
+      %th= t('.color')
+      %th= t('.holder')
+      %th=t 'form.actions'
   %tbody
     - @calendar_actions.each do |calendar_action|
       %tr
@@ -20,7 +20,7 @@
         %td{style: "width: 50px; height: 50px; border: solid; background-color: #{calendar_action.color}" }
         %td= calendar_action.holder_string
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(calendar_action), :class => 'btn btn-default btn-xs'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+          = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(calendar_action), :class => 'btn btn-default btn-xs'
+          = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-= link_to t('.new', :default => t("helpers.links.new")), new_calendar_action_path, :class => 'btn btn-primary'
+= link_to t('form.new', :default => t("helpers.links.new")), new_calendar_action_path, :class => 'btn btn-primary'

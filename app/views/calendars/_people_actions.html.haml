@@ -1,6 +1,6 @@
 .widget-box.transparent
   .widget-header1
-    %h3 Дії громадських активістів
+    %h3= t '.title'
   .widget-main
     #external-events.calendar-event.width-sm
 
@@ -14,6 +14,6 @@
 
           %h5.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
             %span.fa{class: calendar_action.icon}
-            = truncate calendar_action.title.html_safe, :length => 40, :omission => '...'
+            = truncate calendar_action.title.html_safe, :length => 60, :omission => '...'
           .body
             = calendar_action.description.html_safe

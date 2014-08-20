@@ -1,12 +1,8 @@
-- if @calendar.countdown_date > Date.current
-  %h3.title
-    #{@calendar.countdown_title.html_safe}
-  .date.col-sm-offset-5{ 'data-date' => @calendar.countdown_date}
-  .clearfix
-  - if @calendar.countdown_event
-    = link_to(event_path(@calendar.countdown_event, { :calendar_id => @calendar.id }), :class => 'btn btn-default', :remote => true) do
-      %i.fa.fa-info
-        Детальніше
+- if @countdown_event and @countdown_event.ends_at > Date.current
+  = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
+    %h3.title
+      #{@calendar.countdown_title.html_safe}
+    .date.col-sm-offset-5{ 'data-date' => @countdown_event.ends_at}
 
 
 

@@ -1,6 +1,6 @@
 .widget-box.transparent
   .widget-header
-    %h3 Дії міської влади
+    %h3= t '.title'
   .widget-main
     #external-events.calendar-event.width-sm
       - @city_actions.each do |calendar_action|
@@ -12,6 +12,6 @@
 
           %h5.title{:style => "background-color: #{calendar_action.color}; position: relative;"}
             %span.fa{class: calendar_action.icon}
-            = calendar_action.title.html_safe
+            = truncate calendar_action.title.html_safe, :length => 50, :omission => '...'
           .body
             = calendar_action.description.html_safe

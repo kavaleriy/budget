@@ -1,7 +1,8 @@
 module ApplicationHelper
 
   def fa_icon_list
-    %w(fa-adjust
+    %w( -
+     fa-adjust
      fa-anchor
      fa-archive
      fa-arrows

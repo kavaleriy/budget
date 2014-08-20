@@ -2,7 +2,7 @@
   %button.close{"data-dismiss" => "modal", :type => "button"}
     %span{"aria-hidden" => "true"} &times;
     %span.sr-only Close
-  %h4#myModalLabel.modal-title Редагування події
+  %h4#myModalLabel.modal-title= t('.title')
 
 = form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
   .modal-body
@@ -10,7 +10,7 @@
       .input-group
         .input-group-addon
           %span.glyphicon.glyphicon-pencil
-        = f.text_field :title, {:placeholder => "Вкажіть назву", :type => "text", :class => 'form-control' }
+        = f.text_field :title, {:placeholder => t('.title_placeholder'), :type => "text", :class => 'form-control' }
 
 
     .form-group
@@ -20,33 +20,33 @@
     %ul.nav.nav-tabs.nav-justified{:role => 'tablist'}
       %li.active
         %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          Main data
+          = t('.tab1_title')
       %li
         %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          Date range
+          = t('.tab2_title')
       %li
         %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          Attachments
+          = t('.tab3_title')
       %li
         %a{:href => '#show_event_colors_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          Colors
+          = t('.tab4_title')
 
     .tab-content
       .tab-pane.fade.in.active#show_event_main_tab
         .form-group
-          = f.label :icon, :class => 'control-label'
+          = f.label :icon, t('.icon'), :class => 'control-label'
           .controls
           = render :partial => 'layouts/fa_select', :locals => { :f => f }
 
         .form-group
-          = f.label :description, :class => 'control-label'
+          = f.label :description, t('.description'), :class => 'control-label'
           .controls
             = f.cktext_area :description, :class => 'form-control', :ckeditor => { :language => 'uk', :toolbar => 'Pure', :uiColor => '#33ccff'}
 
       .tab-pane.fade#show_event_range_tab
 
         .form-group
-          = f.label :starts_at, :class => 'control-label'
+          = f.label :starts_at, t('.starts_at'), :class => 'control-label'
           .controls
             .input-group.datetimepicker
               = f.text_field :starts_at_string, :class => 'form-control'
@@ -54,7 +54,7 @@
                 %span.fa.fa-calendar
 
         .form-group
-          = f.label :ends_at, :class => 'control-label'
+          = f.label :ends_at, t('.ends_at'), :class => 'control-label'
           .controls
             .input-group.datetimepicker
               = f.text_field :ends_at_string, :class => 'form-control'
@@ -62,21 +62,17 @@
                 %span.fa.fa-calendar
 
         .form-group
-          = f.label :all_day, :class => 'control-label'
+          = f.label :all_day, t('.all_day'), :class => 'control-label'
           = f.check_box :all_day
-
-
-
 
       .tab-pane.fade#show_event_attach_tab
         .panel.panel-info
           .panel-body
             .form-group
-              %label{:for => "InputFile"} Виберіть файл
+              %label{:for => "InputFile"}= t('.browse_file')
               %input#InputFile{:type => "file"}/
-              %input#opisanie.form-control{:placeholder => "Введіть короткий опис файла", :type => "text"}/
-              %p.help-block Додайте файл в список, також введіть короткий опис файла
-            %button.btn.btn.btn-xs.btn-success{:style => "float: right;", :type => "submit"} Додати файл
+              %input#opisanie.form-control{:placeholder => t('.browse_file_placeholder'), :type => "text"}/
+            %button.btn.btn.btn-xs.btn-success{:style => "float: right;", :type => "submit"}= t('.add_file')
             %div{:style => "clear: both; "}
             %hr
             .row
@@ -97,22 +93,21 @@
 
 
       .tab-pane.fade#show_event_colors_tab
-
         .form-group
-          = f.label :color, :class => 'control-label'
+          = f.label :color, t('.color'), :class => 'control-label'
           .controls
             = f.color_field :color, :class => 'form-control'
 
         .form-group
-          = f.label :text_color, :class => 'control-label'
+          = f.label :text_color, t('.text_color'), :class => 'control-label'
           .controls
             = f.color_field :text_color, :class => 'form-control'
 
   .modal-footer
-    = button_to 'Save', @event, :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :params => {:calendar_id => @calendar.id}
-    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close
+    = button_to t('form.save', :default => t("helpers.links.save")), @event, :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :params => {:calendar_id => @calendar.id}
+    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('.close')
 
-    = link_to t('.destroy', :default => t("helpers.links.destroy")), event_path(@event, {:calendar_id => @calendar.id}), remote: true, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
+    = link_to t('form.destroy', :default => t("helpers.links.destroy")), event_path(@event, {:calendar_id => @calendar.id}), remote: true, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
 
 :javascript
   $(function () {

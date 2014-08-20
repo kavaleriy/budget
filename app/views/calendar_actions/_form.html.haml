@@ -1,6 +1,6 @@
 = form_for @calendar_action, :html => { :class => 'form-vertical' } do |f|
   .form-group
-    = f.label :title, :class => 'control-label'
+    = f.label :title, t('.title'), :class => 'control-label'
     .controls
       = f.text_field :title, :class => 'form-control'
   .form-group
@@ -11,13 +11,13 @@
     .controls
     = render :partial => 'layouts/fa_select', :locals => { :f => f }
   .form-group
-    = f.label :description, :class => 'control-label'
+    = f.label :description, t('.description'), :class => 'control-label'
     .controls
       = f.cktext_area :description, :class => 'form-control', :ckeditor => { :language => 'uk', :toolbar => 'Pure', :uiColor => '#33ccff'}
   .form-group
-    = f.label :color, :class => 'control-label'
+    = f.label :color, t('.color'), :class => 'control-label'
     .controls
       = f.color_field :color, :class => 'form-control'
 
-  = f.submit nil, :class => 'btn btn-primary'
-  = link_to t('.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'
+  = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'

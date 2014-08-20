@@ -3,27 +3,27 @@
   %h1=t '.title', :default => model_class.model_name.human.titleize
 
 %p
-  %strong= model_class.human_attribute_name(:title) + ':'
+  %strong= t('calendar_actions.index.name') + ':'
   %br
   = @calendar_action.title
 %p
-  %strong= model_class.human_attribute_name(:icon) + ':'
+  %strong= t('calendar_actions.index.icon') + ':'
   %br
   %span.fa{class: @calendar_action.icon}
 %p
-  %strong= model_class.human_attribute_name(:description) + ':'
+  %strong= t('calendar_actions.index.description') + ':'
   %br
   = @calendar_action.description.html_safe
 %p
-  %strong= model_class.human_attribute_name(:bg_color) + ':'
+  %strong= t('calendar_actions.index.color') + ':'
   %br
   %div{style: "width: 50px; height: 50px; border: solid; background-color: #{@calendar_action.color}" }
 %p
-  %strong= model_class.human_attribute_name(:holder) + ':'
+  %strong= t('calendar_actions.index.holder') + ':'
   %br
   = @calendar_action.holder_string
 
 
-= link_to t('.back', :default => t("helpers.links.back")), calendar_actions_path, :class => 'btn btn-default'
-= link_to t('.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(@calendar_action), :class => 'btn btn-default'
-= link_to t('.destroy', :default => t("helpers.links.destroy")), calendar_action_path(@calendar_action), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+= link_to t('form.back', :default => t("helpers.links.back")), calendar_actions_path, :class => 'btn btn-default'
+= link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(@calendar_action), :class => 'btn btn-default'
+= link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_action_path(@calendar_action), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

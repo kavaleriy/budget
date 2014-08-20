@@ -2,7 +2,7 @@
   .header
     .head.pull-left
       %i.fa.fa-calendar
-        Бюджетний календар 2014 - #{@calendar.title}
+        #{@calendar.title}
       %span.descr
         = @calendar.description
     #calendar_subscriber.col-sm-3.pull-right
@@ -11,10 +11,10 @@
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{href: '#home', role: 'tab', 'data-toggle' => 'tab'}
-        Календар
+        = t('.tab_calendar')
     %li
       %a{href: '#profile', role: 'tab', 'data-toggle' => 'tab'}
-        Тайм-лайн
+        = t('.tab_timeline')
   .tab-content
     #home.tab-pane.fade.in.active
       = render partial: 'calendar'

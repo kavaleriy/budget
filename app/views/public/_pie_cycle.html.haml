@@ -24,11 +24,11 @@
           .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 
 
-      var cut = size*0.06
+      var cut = size*0.05
       var radius1 = Math.min(size, size) / 2;
-      var radius2 = radius1 - cut - 2;
-      var radius3 = radius2 - cut - 2;
-      var radius4 = radius3 - cut - 2;
+      var radius2 = radius1 - cut;
+      var radius3 = radius2 - cut;
+      var radius4 = radius3 - cut;
 
       var arc1 = create_arc(radius1, radius2)
       var arc2 = create_arc(radius2, radius3)
@@ -57,7 +57,7 @@
     function create_arc(radius1, radius2) {
       return d3.svg.arc()
           .outerRadius(radius1)
-          .innerRadius(radius2);
+          .innerRadius(radius2 + 5);
     }
 
     function append_pathAndText(g, arc) {
@@ -65,8 +65,7 @@
           .attr("class", "tooltip")
           .style("opacity", 0);
 
-
-       g.append("path")
+      g.append("path")
          .attr("d", arc)
          .style("fill", function(d) { return d.data.color; })
          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
@@ -81,14 +80,16 @@
 
            div.transition()
              .duration(200)
-             .style("opacity", .9);
+             .style("opacity", .95)
+             .style("color", d.data.text_color)
+             .style("background-color", d.data.color);
            div .html( get_html_for_ev(d) )
              .style("left", (d3.event.pageX - 120) + "px")
              .style("top", (d3.event.pageY - 28) + "px");
          })
          .on("mouseout", function(d) {
            div.transition()
-             .duration(500)
+             .duration(200)
              .style("opacity", 0);
          })
 
@@ -98,8 +99,8 @@
              .style("text-anchor", "middle")
              .html(function(d,i) {
                 //return d.data.title;
-              })
-     }
+             })
+    }
 
     function get_html_for_ev(d) {
       return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b><hr/>" + d.data.desc

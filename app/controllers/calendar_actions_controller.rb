@@ -15,7 +15,7 @@ class CalendarActionsController < ApplicationController
 
   # GET /calendar_actions/new
   def new
-    @calendar_action = CalendarAction.new
+    @calendar_action = CalendarAction.new({ :color => '#c7e0f8'})
   end
 
   # GET /calendar_actions/1/edit

@@ -1,5 +1,5 @@
-= link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => '', :remote => true) do
-  - if current[:event]
+- if current[:event]
+  = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => '', :remote => true) do
     - if current[:event].holder == 1
       .current-action{ :style => 'text-align: right;'}
         %h3

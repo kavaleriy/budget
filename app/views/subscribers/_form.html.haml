@@ -3,5 +3,5 @@
     = f.label :email, :class => 'control-label'
     .controls
       = f.text_field :email, :class => 'form-control'
-  = f.submit nil, :class => 'btn btn-primary'
-  = link_to t('.cancel', :default => t("helpers.links.cancel")), subscribers_path, :class => 'btn btn-default'
+  = f.submit t('form.save'), :class => 'btn btn-primary'
+  = link_to t('form.cancel'), subscribers_path, :class => 'btn btn-default'

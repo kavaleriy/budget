@@ -5,24 +5,26 @@
       %span.icon-bar
       %span.icon-bar
     .navbar-brand
-      Візуалізатор бюджета
+      = t('.brand')
     .navbar-collapse.collapse.navbar-responsive-collapse
       %ul.nav.navbar-nav
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-calendar
-              &nbsp;Бюджетний календар
+              = t('.calendar')
               %span.caret
           %ul.dropdown-menu{'role' => "menu"}
             - Calendar.each do |c|
-              %li= link_to "#{c.title || 'Calendar'}", "/public/calendar/#{c.id}"
+              %li= link_to "#{c.title}", "/public/calendar/#{c.id}"
             %li.divider
-            %li= link_to "Calendar admin", calendars_path
-            %li= link_to "Calendar actions", calendar_actions_path
-            %li.divider
-            %li= link_to "Subscribers", subscribers_path
+            %li= link_to t('.calendars'), calendars_path
+            %li= link_to t('.actions'), calendar_actions_path
 
       %ul.nav.navbar-nav.navbar-right
+        %li
+          = link_to subscribers_path do
+            %i.fa.fa-envelope-o
+              = t('.subscribers')
         %li.todo
           %a.dropdown-toggle(data-toggle="dropdown" href="#")
             %i.fa.fa-calendar

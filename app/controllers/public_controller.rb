@@ -8,6 +8,7 @@ class PublicController < ApplicationController
     @timeline_events = build_timeline @calendar.events
     @current_event1 = get_current_event @calendar.events.current_event(1).first
     @current_event2 = get_current_event @calendar.events.current_event(2).first
+    @countdown_event = @calendar.events.find(@calendar.countdown_event) if @calendar.countdown_event
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
   end
 
@@ -83,7 +84,7 @@ class PublicController < ApplicationController
   def build_event_for_pie event
     days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
     #binding.pry
-    { id: event[:id].to_s, title: event[:title], icon: event[:icon], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], highlight: 'rgba(100,200,100,.3)' }
+    { id: event[:id].to_s, title: event[:title], icon: event[:icon], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], text_color: event[:text_color], highlight: 'rgba(100,200,100,.3)' }
   end
 
 

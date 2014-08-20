@@ -1,12 +1,15 @@
 - if subscriber.nil?
   = form_for Subscriber.new(:email => cookies['subscriber']), url: { action: 'subscribe', :calendar_id => calendar.id }, :remote => true, :html => { :class => 'form-vertical' } do |f|
     .input-group
-      = f.email_field :email, :placeholder=>'Вкажіть e-mail для отримання змін календаря', :class => 'form-control'
+      = f.email_field :email, :placeholder=>t('.subscribe_placeholder'), :class => 'form-control'
       %span.input-group-btn
-        = f.submit 'Subscribe', :class => 'btn btn-default'
+        = f.button :class => 'btn btn-default', :type => 'submit' do
+          %i.fa.fa-plus.fa-lg
+
 - else
   .form-vertical
     .input-group
       = text_field_tag 'subscriber_email', subscriber.email, { :disabled => 'disabled', :class => 'form-control' }
       %span.input-group-btn
-        = link_to "Unsubscribe", "/public/unsubscribe/#{calendar.id}/#{subscriber.id}", :method => 'delete', :remote => true, :class => 'btn btn-default'
+        = link_to "/public/unsubscribe/#{calendar.id}/#{subscriber.id}", :method => 'delete', :remote => true, :class => 'btn btn-default' do
+          %i.fa.fa-ban.fa-lg

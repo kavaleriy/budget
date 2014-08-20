@@ -1,23 +1,21 @@
 = form_for @calendar, :html => { :class => 'form-vertical' } do |f|
   .form-group
-    = f.label :title, :class => 'control-label'
+    = f.label :title, t('.name'), :class => 'control-label'
     .controls
       = f.text_field :title, :class => 'form-control'
   .form-group
-    = f.label :description, :class => 'control-label'
+    = f.label :description, t('.description'), :class => 'control-label'
     .controls
       = f.text_field :description, :class => 'form-control'
+  %hr
+  %h3= t('.countdown')
   .form-group
-    = f.label :countdown_title, :class => 'control-label'
+    = f.label :countdown_title, t('.countdown_title'), :class => 'control-label'
     .controls
       = f.cktext_area :countdown_title, :class => 'form-control', :ckeditor => { :language => 'uk', :toolbar => 'Pure', :uiColor => '#33ccff'}
   .form-group
-    = f.label :countdown_date, :class => 'control-label'
-    .controls
-      = f.text_field :countdown_date, :class => 'form-control'
-  .form-group
-    = f.label :countdown_event, :class => 'control-label'
+    = f.label :countdown_event, t('.countdown_event'), :class => 'control-label'
     .controls
       = f.select :countdown_event, @calendar.events.all.countdown_events.collect {|p| [ "#{p.holder_text}: #{p.title}, #{p.starts_at.to_date}", p.id ] }, {prompt: 'Please select an event'}, :class => 'form-control'
-  = f.submit nil, :class => 'btn btn-primary'
-  = link_to t('.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'
+  = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'
