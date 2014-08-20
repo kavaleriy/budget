@@ -8,26 +8,11 @@
 :javascript
 
   $(document).ready(function() {
-
     size = $('.pies-container').width()
-
     countdown_width = size*60/100
-
     $('.countdown').css('margin-left', (size - countdown_width) / 2).css('margin-right', (size - countdown_width) / 2).css('width', countdown_width).css('top', size  / 2 - 100)
 
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
-
-      var cut = size*0.06
-      var radius1 = Math.min(size, size) / 2;
-      var radius2 = Math.min(size, size) / 2 - cut - 2;
-
-      var arc1 = d3.svg.arc()
-          .outerRadius(radius1 - 0)
-          .innerRadius(radius1 - cut);
-      var arc2 = d3.svg.arc()
-          .outerRadius(radius2 - 0)
-          .innerRadius(radius2 - cut);
-
       var pie = d3.layout.pie()
           .sort(null)
           .value(function(d) { return d.value; });
@@ -39,87 +24,82 @@
           .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 
 
+      var cut = size*0.06
+      var radius1 = Math.min(size, size) / 2;
+      var radius2 = radius1 - cut - 2;
+      var radius3 = radius2 - cut - 2;
+      var radius4 = radius3 - cut - 2;
+
+      var arc1 = create_arc(radius1, radius2)
+      var arc2 = create_arc(radius2, radius3)
+      var arc3 = create_arc(radius3, radius4)
+
       var g1 = svg.selectAll(".arc1")
           .data(pie(data.events1))
           .enter().append("g")
-          .attr("class", "arc1");
+          .attr("class", "arc arc1");
       var g2 = svg.selectAll(".arc2")
           .data(pie(data.events2))
           .enter().append("g")
-          .attr("class", "arc2");
+          .attr("class", "arc arc2");
+      var g3 = svg.selectAll(".arc3")
+          .data(pie(data.events1))
+          .enter().append("g")
+          .attr("class", "arc arc3");
 
 
+      append_pathAndText(g1, arc1)
+      append_pathAndText(g2, arc2)
+      append_pathAndText(g3, arc3)
+
+    })
+
+    function create_arc(radius1, radius2) {
+      return d3.svg.arc()
+          .outerRadius(radius1)
+          .innerRadius(radius2);
+    }
+
+    function append_pathAndText(g, arc) {
       var div = d3.select("body").append("div")
           .attr("class", "tooltip")
           .style("opacity", 0);
 
-      g1.append("path")
-          .attr("d", arc1)
-          .style("fill", function(d) { return d.data.color; })
-          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
-          .on("click", function(d) {
-            if(d.data.id == '')
-              return
-            $.get("/events/"+d.data.id, { calendar_id: $('#calendar_view').attr('calendar_id') });
-          })
-          .on("mouseover", function(d) {
-            if(d.data.title == '')
-              return
 
-            div.transition()
-              .duration(200)
-              .style("opacity", .9);
-            div .html( get_html_for_ev(d) )
-              .style("left", (d3.event.pageX - 120) + "px")
-              .style("top", (d3.event.pageY - 28) + "px");
-          })
-          .on("mouseout", function(d) {
-            div.transition()
-              .duration(500)
-              .style("opacity", 0);
-          })
-      g2.append("path")
-          .attr("d", arc2)
-          .style("fill", function(d) { return d.data.color; })
-          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
-          .on("click", function(d) {
-              if(d.data.id == '')
-                return
-            $.get("/events/"+d.data.id, { calendar_id: $('#calendar_view').attr('calendar_id') });
-          })
-          .on("mouseover", function(d) {
-            if(d.data.title == '')
-              return
+       g.append("path")
+         .attr("d", arc)
+         .style("fill", function(d) { return d.data.color; })
+         .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+         .on("click", function(d) {
+           if(d.data.id == '')
+             return
+           $.get("/events/"+d.data.id, { calendar_id: $('#calendar_view').attr('calendar_id') });
+         })
+         .on("mouseover", function(d) {
+           if(d.data.title == '')
+             return
 
-            div.transition()
-              .duration(200)
-              .style("opacity", .9);
-            div .html( get_html_for_ev(d) )
-              .style("left", (d3.event.pageX - 120) + "px")
-              .style("top", (d3.event.pageY - 28) + "px");
-          })
-          .on("mouseout", function(d) {
-              div.transition()
-                  .duration(500)
-                  .style("opacity", 0);
-          })
+           div.transition()
+             .duration(200)
+             .style("opacity", .9);
+           div .html( get_html_for_ev(d) )
+             .style("left", (d3.event.pageX - 120) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+         })
+         .on("mouseout", function(d) {
+           div.transition()
+             .duration(500)
+             .style("opacity", 0);
+         })
 
-
-      g1.append("text")
-          .attr("transform", function(d) { return "translate(" + arc1.centroid(d) + ")"; })
-          .attr("dy", ".35em")
-          .style("text-anchor", "middle")
-          .html(function(d,i) {
-                   //return d.data.title;
-                 })
-      g2.append("text")
-          .attr("transform", function(d) { return "translate(" + arc2.centroid(d) + ")"; })
-          .attr("dy", ".35em")
-          .style("text-anchor", "middle")
-          .html(function(d,i) {
-                   //return d.data.title;
-                 })
-    })
+         g.append("text")
+             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+             .attr("dy", ".35em")
+             .style("text-anchor", "middle")
+             .html(function(d,i) {
+                //return d.data.title;
+              })
+     }
 
     function get_html_for_ev(d) {
       return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b><hr/>" + d.data.desc
