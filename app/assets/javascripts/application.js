@@ -12,11 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
 
 //= require twitter/bootstrap
 //= require turbolinks
 
-//= require jquery.ui.all
 
 //= require moment
 //= require moment/uk.js
@@ -29,8 +29,6 @@
 
 //= require chart/chart.min
 
-//= require jquery.easy-pie-chart.min
-
 //= require timecircles
 
 //= require d3
@@ -38,4 +36,3 @@
 //= require ckeditor/init
 
 //= require_tree .
-

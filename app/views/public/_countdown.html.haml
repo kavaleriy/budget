@@ -1,7 +1,7 @@
 - if @calendar.countdown_date > Date.current
   %h3
     = @calendar.countdown_title.html_safe
-  .date{ 'data-date' => @calendar.countdown_date, style: 'width: 85px; height: 85px; ;box-sizing: border-box'}
+  .date.col-sm-offset-5{ 'data-date' => @calendar.countdown_date}
   .clearfix
   - if @calendar.countdown_event
     = link_to(event_path(@calendar.countdown_event, { :calendar_id => @calendar.id }), :class => 'btn btn-default', :remote => true) do
@@ -13,8 +13,7 @@
   :javascript
 
     $(function() {
-      left = $('.countdown').width() / 2
-      $('.countdown .date').css('margin-left', left)
+      $('.countdown .date')
         .TimeCircles({
           time: {
             Days: {

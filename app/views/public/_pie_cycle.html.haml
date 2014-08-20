@@ -21,15 +21,16 @@
     })
 
     function build_pie(size, data) {
+      var cut = size*0.075
       var radius1 = Math.min(size, size) / 2;
-      var radius2 = Math.min(size, size) / 2 - 72;
+      var radius2 = Math.min(size, size) / 2 - cut - 2;
 
       var arc1 = d3.svg.arc()
           .outerRadius(radius1 - 0)
-          .innerRadius(radius1 - 70);
+          .innerRadius(radius1 - cut);
       var arc2 = d3.svg.arc()
           .outerRadius(radius2 - 0)
-          .innerRadius(radius2 - 70);
+          .innerRadius(radius2 - cut);
 
       var pie = d3.layout.pie()
           .sort(null)
