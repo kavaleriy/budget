@@ -108,16 +108,20 @@
 ============================================================== */
 
 .ui-timeline .tl-item .tl-body .tl-content {
+  padding: 25px;
   position: relative;
   border-radius: 5px;
   border: 1px solid #DBDBDB;
   text-align: left;
 
-  padding: 25px;
-
   -webkit-box-shadow: inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
   -moz-box-shadow:    inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
   box-shadow:         inset 0px -3px 0px 0px rgba(245, 245, 245, 1);
+
+  .description {
+    max-height: 200px;
+    overflow: hidden;
+  }
 }
 
 .ui-timeline .tl-item .tl-body .tl-content h4 {

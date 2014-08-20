@@ -17,8 +17,6 @@
         Тайм-лайн
   .tab-content
     #home.tab-pane.fade.in.active
-      %h2
-        Календар подій
       = render partial: 'calendar'
     #profile.tab-pane.fade
       = render partial: 'timeline'
@@ -30,5 +28,4 @@
     .pull-right.col-sm-5
       = render partial: "current_action", :locals => { current: @current_event2 }
 
-    %h2.col-sm-12 Бюджетний цикл 2014
     = render partial: "pie_cycle"

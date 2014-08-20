@@ -1,13 +1,13 @@
 .col-sm-6.pull-left
-  %h2 Дії міської влади
+  %h3 Дії міської влади
 .col-sm-6
-  %h2 Дії громадських активістів
+  %h3 Дії громадян
 %section.ui-timeline.row
   .row
     %hr.col-md-12
 
   - @timeline_events.each do |event|
-    %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right' }
+    %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right', 'event_id' => event[:id] }
       .tl-body
         .tl-entry{ :style => 'background-color: rgba(128,128,128, .05);'}
           .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
@@ -20,5 +20,23 @@
               = event[:title]
             = event[:action]
             %hr
-            %p
+            .description
               = event[:description].html_safe
+
+:javascript
+
+  $(document).ready(function() {
+    $('.ui-timeline article.tl-item').on('click', function(e) {
+      e = $(e.currentTarget)
+
+      event_id = e.attr('event_id')
+
+      if (event_id == null)
+        return
+
+      calendar_id = "#{@calendar.id}"
+      console.log(calendar_id)
+      $.get("/events/"+event_id, { calendar_id: calendar_id });
+    })
+  })
+

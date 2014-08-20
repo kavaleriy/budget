@@ -95,7 +95,7 @@ class PublicController < ApplicationController
       else
         action = 'одноденна'
       end
-      events << { holder: i.holder, dt: i.starts_at, action: action, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
+      events << { id: i.id.to_s,  holder: i.holder, dt: i.starts_at, action: action, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
     }
 
     # today = DateTime.now.strftime('%d-%m-%Y')
