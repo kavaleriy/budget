@@ -1,21 +1,16 @@
-- if current[:event]
-  - if current[:event].holder == 1
-    .current-action
-      %h3
-        = "#{current[:event].holder_text} #{current[:percent]}%"
-      .content
-        %h4
-          = truncate current[:event].title.html_safe, :length => 35, :omission => '...'
-      = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do
-        %i.fa.fa-info
-          Детальніше
-  - else
-    .current-action{ :style => 'text-align: right;'}
-      %h3
-        = "#{current[:percent]}% #{current[:event].holder_text}"
-      .content
-        %h4
-          = truncate current[:event].title.html_safe, :length => 35, :omission => '...'
-      = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'btn btn-default', :remote => true) do
-        %i.fa.fa-info
-          Детальніше
+= link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => '', :remote => true) do
+  - if current[:event]
+    - if current[:event].holder == 1
+      .current-action{ :style => 'text-align: right;'}
+        %h3
+          #{current[:event].holder_text} #{current[:percent]}%
+        .content
+          %h4
+            = truncate current[:event].title.html_safe, :length => 45, :omission => '...'
+    - else
+      .current-action
+        %h3
+          #{current[:percent]}% #{current[:event].holder_text}
+        .content
+          %h4
+            = truncate current[:event].title.html_safe, :length => 45, :omission => '...'
