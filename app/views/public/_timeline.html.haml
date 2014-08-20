@@ -35,7 +35,6 @@
         return
 
       calendar_id = "#{@calendar.id}"
-      console.log(calendar_id)
       $.get("/events/"+event_id, { calendar_id: calendar_id });
     })
   })
