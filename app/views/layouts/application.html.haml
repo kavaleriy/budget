@@ -21,7 +21,8 @@
   %body
 
     = render :partial => 'layouts/navbar'
-    = yield :header
+    .header
+      = yield :header
 
     = bootstrap_flash
     .container-fluid

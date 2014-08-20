@@ -15,13 +15,13 @@
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        Main data
+        = t('.tab1_title')
     %li
       %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        Date range
+        = t('.tab2_title')
     %li
       %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        Attachments
+        = t('.tab3_title')
 
   .tab-content
     .tab-pane.fade.in.active#show_event_main_tab
@@ -30,16 +30,16 @@
 
     .tab-pane.fade#show_event_range_tab
       %p
-        %strong= model_class.human_attribute_name(:starts_at) + ':'
+        %strong= t('.starts_at') + ':'
         = @event.starts_at
       %p
-        %strong= model_class.human_attribute_name(:ends_at) + ':'
+        %strong= t('.ends_at') + ':'
         %br
         = @event.ends_at
       %p
-        %strong= model_class.human_attribute_name(:all_day) + ':'
+        %strong= t('.all_day') + ':'
         %br
-        = @event.all_day
+        = @event.all_day ? 'так' : 'ні'
 
     .tab-pane.fade#show_event_attach_tab
 

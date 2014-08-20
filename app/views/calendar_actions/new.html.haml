@@ -1,4 +1,6 @@
 - model_class = CalendarAction
-.page-header
-  %h1=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize
+= content_for :header do
+  .head.pull-left
+    =t '.title'
+
 = render :partial => "form"

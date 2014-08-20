@@ -1,12 +1,12 @@
 = content_for :header do
-  .header
-    .head.pull-left
-      %i.fa.fa-calendar
-        #{@calendar.title}
-      %span.descr
-        = @calendar.description
-    #calendar_subscriber.col-sm-3.pull-right
-      = render partial: 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
+  .head.pull-left
+    %i.fa.fa-calendar
+      #{@calendar.title}
+    %span.descr
+      = @calendar.description
+  #calendar_subscriber
+    = render partial: 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
+
 .col-sm-6
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active

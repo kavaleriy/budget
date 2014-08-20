@@ -1,6 +1,7 @@
 - model_class = Subscriber
-.page-header
-  %h1=t '.title'
+= content_for :header do
+  .head.pull-left
+    =t '.title'
 
 %p
   %strong= model_class.human_attribute_name(:email) + ':'

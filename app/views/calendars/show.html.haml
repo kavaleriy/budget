@@ -1,6 +1,6 @@
 - model_class = Calendar
-.page-header
-  %h2
+= content_for :header do
+  .head.pull-left
     #{t('.title')}: #{@calendar.title}
 
 .col-md-12
