@@ -4,6 +4,9 @@
     .controls
       = f.text_field :title, :class => 'form-control'
   .form-group
+    .controls
+      = render :partial => 'events/eventowner_select', :locals => { :holder => @calendar_action.holder, :f => f }
+  .form-group
     = f.label :icon, :class => 'control-label'
     .controls
     = render :partial => 'layouts/fa_select', :locals => { :f => f }
@@ -15,10 +18,6 @@
     = f.label :color, :class => 'control-label'
     .controls
       = f.color_field :color, :class => 'form-control'
-  .form-group
-    = f.label :holder, :class => 'control-label'
-    .controls
-    = render :partial => 'layouts/eventowner_select', :locals => { :f => f }
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'

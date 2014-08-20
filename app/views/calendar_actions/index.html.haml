@@ -4,7 +4,6 @@
 %table.table.table-striped
   %thead
     %tr
-      %th= model_class.human_attribute_name(:id)
       %th= model_class.human_attribute_name(:title)
       %th= model_class.human_attribute_name(:icon)
       %th= model_class.human_attribute_name(:description)
@@ -14,8 +13,7 @@
   %tbody
     - @calendar_actions.each do |calendar_action|
       %tr
-        %td= link_to calendar_action.id, calendar_action_path(calendar_action)
-        %td= calendar_action.title
+        %td= link_to calendar_action.title, calendar_action_path(calendar_action)
         %td
           %span.fa{class: calendar_action.icon}
         %td= calendar_action.description.html_safe

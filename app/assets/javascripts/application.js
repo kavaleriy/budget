@@ -27,7 +27,7 @@
 //= require bootstrap-datetimepicker
 //= require locales/bootstrap-datetimepicker.uk.js
 
-//= require chart/chart.min
+// require chart/chart.min
 
 //= require timecircles
 
