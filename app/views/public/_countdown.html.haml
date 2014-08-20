@@ -1,6 +1,6 @@
 - if @calendar.countdown_date > Date.current
-  %h3
-    = @calendar.countdown_title.html_safe
+  %h3.title
+    #{@calendar.countdown_title.html_safe}
   .date.col-sm-offset-5{ 'data-date' => @calendar.countdown_date}
   .clearfix
   - if @calendar.countdown_event

@@ -9,18 +9,14 @@
 
   $(document).ready(function() {
 
-    width = $('.pies-container').width()
+    size = $('.pies-container').width()
 
-    countdown_width = width*60/100
+    countdown_width = size*60/100
 
-    $('.countdown').css('margin-left', (width - countdown_width) / 2).css('margin-right', (width - countdown_width) / 2).css('width', countdown_width).css('top', width  / 2 - 100)
-
+    $('.countdown').css('margin-left', (size - countdown_width) / 2).css('margin-right', (size - countdown_width) / 2).css('width', countdown_width).css('top', size  / 2 - 100)
 
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
-      build_pie(width, data)
-    })
 
-    function build_pie(size, data) {
       var cut = size*0.06
       var radius1 = Math.min(size, size) / 2;
       var radius2 = Math.min(size, size) / 2 - cut - 2;
@@ -123,7 +119,7 @@
           .html(function(d,i) {
                    //return d.data.title;
                  })
-    }
+    })
 
     function get_html_for_ev(d) {
       return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b><hr/>" + d.data.desc
