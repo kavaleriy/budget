@@ -66,31 +66,11 @@
           = f.check_box :all_day
 
       .tab-pane.fade#show_event_attach_tab
+
         .panel.panel-info
           .panel-body
             .form-group
-              %label{:for => "InputFile"}= t('.browse_file')
-              %input#InputFile{:type => "file"}/
-              %input#opisanie.form-control{:placeholder => t('.browse_file_placeholder'), :type => "text"}/
-            %button.btn.btn.btn-xs.btn-success{:style => "float: right;", :type => "submit"}= t('.add_file')
-            %div{:style => "clear: both; "}
-            %hr
-            .row
-              .col-md-1
-                %img{:height => "30", :src => "icons/Microsoft Office 2003 Word.png", :width => "30"}
-              .col-md-10 Додаток до документу та довідка
-              .col-md-1.glyphicon.glyphicon-remove
-            .row
-              .col-md-1
-                %img{:height => "30", :src => "icons/Microsoft Office 2003 Excel.png", :width => "30"}/
-              .col-md-10 Таблиця показників результатів
-              .col-md-1.glyphicon.glyphicon-remove
-            .row
-              .col-md-1
-                %img{:height => "30", :src => "icons/Adobe Acrobat CS3.png", :width => "30"}/
-              .col-md-10 Бланки заяв для реєстрації
-              .col-md-1.glyphicon.glyphicon-remove
-
+              = render :partial => 'layouts/file_upload'
 
       .tab-pane.fade#show_event_colors_tab
         .form-group

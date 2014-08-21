@@ -35,4 +35,8 @@
 
 //= require ckeditor/init
 
+//= require fileupload/jquery.fileupload
+//= require fileupload/jquery.fileupload-process
+//= require fileupload/jquery.fileupload-validate
+
 //= require_tree .

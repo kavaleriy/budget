@@ -86,7 +86,7 @@ $(document).on 'ready page:load', ->
           i = (if e.description then e.description else "")
           t.css('color', e.text_color)
           t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
-          t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top' title='Tooltip'>" + i + "</small>"
+          t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top'>" + i + "</small>"
           return
 
       eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
