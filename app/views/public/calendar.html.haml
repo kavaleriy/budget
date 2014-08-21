@@ -21,11 +21,22 @@
     #profile.tab-pane.fade
       = render partial: 'timeline'
 
-.col-sm-6
+.col-sm-6.cycle
   .col-sm-12
     .pull-left.col-sm-6
       = render partial: "current_action", :locals => { current: @current_event1 }
     .pull-right.col-sm-6
       = render partial: "current_action", :locals => { current: @current_event2 }
 
+
+    #logo-rays-container
+      #logo-rays
+
     = render partial: "pie_cycle"
+
+#profile.profile.blue.not_right.pause{:style => "left: 108px; transform: scale(1.5, 1.5); bottom: 114.16676347423345px; width: 250px;"}
+  %a{:href => "/profile/ryan-geldard"}
+    %img.headshot{:src => "/static/media/profiles/headshots/ryan-geldard.jpg.100x100_q85_crop.jpg"}/
+  .details
+    .name Ryan Geldard
+    .job Site Manager
