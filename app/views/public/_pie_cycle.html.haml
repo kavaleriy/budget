@@ -11,6 +11,7 @@
     size = $('.pies-container').width()
     countdown_width = size*60/100
     $('.countdown').css('margin-left', (size - countdown_width) / 2).css('margin-right', (size - countdown_width) / 2).css('width', countdown_width).css('top', size  / 2 - 100)
+    $('#logo-rays-container').css('margin-left', (size - countdown_width) / 2 - 20)
 
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
       var pie = d3.layout.pie()
