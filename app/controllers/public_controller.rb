@@ -8,7 +8,7 @@ class PublicController < ApplicationController
     @timeline_events = build_timeline @calendar.events
     @current_event1 = get_current_event @calendar.events.current_event(1).first
     @current_event2 = get_current_event @calendar.events.current_event(2).first
-    @countdown_event = @calendar.events.find(@calendar.countdown_event) if @calendar.countdown_event
+    @countdown_event = @calendar.events.where(:id => @calendar.countdown_event).first if @calendar.countdown_event
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
   end
 
