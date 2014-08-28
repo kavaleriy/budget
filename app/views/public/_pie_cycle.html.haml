@@ -14,7 +14,6 @@
     $('#logo-rays-container').css('margin-left', (size - countdown_width) / 2 - 20)
 
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
-      console.log(data)
       var pie = d3.layout.pie()
           .sort(null)
           .value(function(d) { return d.value; });
@@ -26,40 +25,33 @@
           .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 
 
-      var cut = size*0.05
-      var radius1 = Math.min(size, size) / 2;
-      var radius2 = radius1 - cut;
-      var radius3 = radius2 - cut;
-      var radius4 = radius3 - cut;
+      var cut = size*0.055
+      var radius = size / 2 - data.events1.length * cut;
 
-      var arc1 = create_arc(radius1, radius2)
-      var arc2 = create_arc(radius2, radius3)
-      var arc3 = create_arc(radius3, radius4)
+      $([{events: data.events1, radius: radius, cut: -cut },
+         {events: data.events2, radius: radius-10, cut: cut }]).each(function(i, cycle) {
+        $(cycle.events).each(function(j, c) {
+          if (cycle.radius > 0 && cycle.radius > cycle.cut) {
+            var arc = create_arc(cycle.radius, cycle.radius - cycle.cut)
+            var g = svg.selectAll(".arc"+i+j)
+                .data(pie(c.events))
+                .enter().append("g")
+                .attr("class", "arc"+i+j);
 
-      var g1 = svg.selectAll(".arc1")
-          .data(pie(data.events1))
-          .enter().append("g")
-          .attr("class", "arc arc1");
-      var g2 = svg.selectAll(".arc2")
-          .data(pie(data.events2))
-          .enter().append("g")
-          .attr("class", "arc arc2");
-      var g3 = svg.selectAll(".arc3")
-          .data(pie(data.events1))
-          .enter().append("g")
-          .attr("class", "arc arc3");
+            append_pathAndText(g, arc)
 
-
-      append_pathAndText(g1, arc1)
-      append_pathAndText(g2, arc2)
-      append_pathAndText(g3, arc3)
+            cycle.radius = cycle.radius - cycle.cut;
+          }
+        })
+        radius = radius - 10;
+      })
 
     })
 
     function create_arc(radius1, radius2) {
       return d3.svg.arc()
           .outerRadius(radius1)
-          .innerRadius(radius2 + 5);
+          .innerRadius(radius2);
     }
 
     function append_pathAndText(g, arc) {

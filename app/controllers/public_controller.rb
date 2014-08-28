@@ -70,8 +70,15 @@ class PublicController < ApplicationController
       cycle[:ends_at] = e[:ends_at]
 
     }
+
+    pie.each { |p|
+      if p[:ends_at] < ends_at
+        p[:events] << build_event_for_pie( { :title => '', :description => '', starts_at: p[:ends_at], ends_at: ends_at, color: 'transparent' } )
+      end
+    }
+
     # binding.pry
-    pie[0][:events]
+    pie
 
       # if end_at.nil?
       #   if e.starts_at > starts_at
