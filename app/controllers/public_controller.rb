@@ -18,8 +18,8 @@ class PublicController < ApplicationController
 
     events = { e1: [], e2: [] }
 
-    events[:e1] = build_pie starts_at, ends_at, @calendar.events.event_timeline(1)
-    events[:e2] = build_pie starts_at, ends_at, @calendar.events.event_timeline(2)
+    events[:e1] = build_pie starts_at, ends_at, @calendar.events.event_timeline(1, starts_at, ends_at)
+    events[:e2] = build_pie starts_at, ends_at, @calendar.events.event_timeline(2, starts_at, ends_at)
 
     render json: { starts_at: starts_at.strftime('%d/%m/%Y'), ends_at: ends_at.strftime('%d/%m/%Y'), days: (ends_at - starts_at) / 3600 / 24 , events1: events[:e1], events2: events[:e2] }
   end
