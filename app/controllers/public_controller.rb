@@ -55,30 +55,46 @@ class PublicController < ApplicationController
 
   def build_pie starts_at, ends_at, ev
     #binding.pry
-    events = []
-    end_at = nil
+    pie = [ { ends_at: starts_at, events: [] }]
     ev.map { |e|
-      if end_at.nil?
-        if e.starts_at > starts_at
-          new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
-          events << build_event_for_pie(new_ev)
-        end
-        end_at = starts_at
-      elsif end_at < e.starts_at
-        new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
-        events << build_event_for_pie(new_ev)
-      elsif end_at > e.starts_at
-        e.starts_at = end_at
+      cycle = pie.detect {|dt| dt[:ends_at] <= e[:starts_at]}
+
+      if cycle.nil?
+        new_ev = build_event_for_pie( { :title => '', :description => '', starts_at: starts_at, ends_at: e[:starts_at], color: 'transparent' } )
+        cycle = { ends_at: e[:ends_at], events: [ new_ev ] }
+        pie << cycle
       end
 
-      end_at = e.ends_at
-      events << build_event_for_pie(e)
+      cycle[:events] << build_event_for_pie( { :title => '', :description => '', starts_at: cycle[:ends_at], ends_at: e[:starts_at], color: 'transparent' } ) if cycle[:ends_at] < e[:starts_at]
+      cycle[:events] << build_event_for_pie(e)
+      cycle[:ends_at] = e[:ends_at]
+
     }
-    if end_at < ends_at
-      new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
-      events << build_event_for_pie(new_ev)
-    end
-    events
+    # binding.pry
+    pie[0][:events]
+
+      # if end_at.nil?
+      #   if e.starts_at > starts_at
+      #     new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
+      #     events << build_event_for_pie(new_ev)
+      #   end
+      #   end_at = starts_at
+      # elsif end_at < e.starts_at
+      #   new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
+      #   events << build_event_for_pie(new_ev)
+      # elsif end_at > e.starts_at
+      #   e.starts_at = end_at
+      # end
+      #
+      # end_at = e.ends_at
+
+      # events << build_event_for_pie(e)
+    # }
+    # if end_at < ends_at
+    #   new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
+    #   events << build_event_for_pie(new_ev)
+    # end
+    # events
   end
 
   def build_event_for_pie event
