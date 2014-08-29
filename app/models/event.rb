@@ -4,7 +4,7 @@ class Event
   embedded_in :calendar
   belongs_to  :calendar
 
-  scope :event_timeline, lambda { |holder, starts_at, ends_at| where(:holder => holder, :starts_at.gt => starts_at, :ends_at.lt => ends_at).where(:ends_at => { '$ne' => nil}).asc(:starts_at) }
+  scope :event_timeline, lambda { |holder, starts_at, ends_at| where(:holder => holder, :starts_at.gte => starts_at, :ends_at.lte => ends_at).where(:ends_at => { '$ne' => nil}).asc(:starts_at) }
 
   scope :current_event, lambda { |holder| where(:holder => holder, :starts_at.lt => Date.current, :ends_at.gt => Date.current).desc(:starts_at).limit(1) }
   scope :countdown_events, lambda { where(:ends_at.gt => Date.current).desc(:starts_at) }
