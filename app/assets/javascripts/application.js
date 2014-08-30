@@ -39,4 +39,7 @@
 //= require fileupload/jquery.fileupload-process
 //= require fileupload/jquery.fileupload-validate
 
+//= require timelinejs/storyjs-embed
+//= require timelinejs/locale/uk
+
 //= require_tree .

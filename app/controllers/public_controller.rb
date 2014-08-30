@@ -40,15 +40,15 @@ class PublicController < ApplicationController
   end
 
   def timelinejs
-    starts_at = '2014-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = '2015-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    starts_at = '2014,01,01' #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    ends_at = '2015,01,01' #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     timeline = {
         'timeline' => {
           'headline'=>@calendar.title,
           'type'=>'default',
           'text' => @calendar.description,
-          'startDate' => '2014,01,01',
+          'startDate' => starts_at,
           'asset'=>
               {
                   'media'=>'https=>//vine.co/v/b55LOA1dgJU',
@@ -75,51 +75,6 @@ class PublicController < ApplicationController
       timeline['timeline']['date'] << point
     }
 
-    text =
-        {
-            'timeline'=>
-                {
-                    'headline'=>'Бюджетний календар - послідовність дій',
-                    'type'=>'default',
-                    'text'=>'People say stuff',
-                    'startDate'=>'2012,1,26',
-                    'asset'=>
-                        {
-                            'media'=>'https=>//vine.co/v/b55LOA1dgJU',
-                            'credit'=>'',
-                            'caption'=>''
-                        },
-                    'date'=> [
-                        {
-                            'startDate'=>'2011,12,12',
-                            'endDate'=>'2012,1,27',
-                            'headline'=>'Vine',
-                            'text'=>'<p>Vine Test</p>',
-                            'asset'=>
-                                {
-                                    'media'=>'https=>//vine.co/v/b55LOA1dgJU',
-                                    'thumbnail'=>'',
-                                    'credit'=>'',
-                                    'caption'=>''
-                                }
-                        },
-                        {
-                            'startDate'=>'2012,3,18',
-                            'headline'=>'Sh*t New Yorkers Say',
-                            'text'=>'',
-                            'asset'=>
-                                {
-                                    'media'=>'http=>//youtu.be/yRvJylbSg7o',
-                                    'thumbnail'=>'',
-                                    'credit'=>'',
-                                    'caption'=>'Directed and Edited by Matt Mayer, Produced by Seth Keim, Written by Eliot Glazer. Featuring Eliot and Ilana Glazer, who are siblings, not married.'
-                                }
-                        }
-                    ]
-                }
-        }
-
-    #binding.pry
     render json: timeline
 
   end
