@@ -66,7 +66,7 @@ class PublicController < ApplicationController
       point['text'] = e.description
       point['asset'] =
           {
-              'media'=>'https=>//vine.co/v/b55LOA1dgJU',
+              'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
               'thumbnail'=>'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRr3edmflwvOiKZFhl9BVhZTJBR7cL2scqXW11W8AT5gPu7sQW4',
               'credit'=>'',
               'caption'=>''
