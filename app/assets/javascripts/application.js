@@ -39,10 +39,4 @@
 //= require fileupload/jquery.fileupload-process
 //= require fileupload/jquery.fileupload-validate
 
-//= require timelinejs/timeline
-//= require timelinejs/uk
-
 //= require_tree .
-
-<!-- always load the CSS -->
-
