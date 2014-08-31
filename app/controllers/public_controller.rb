@@ -40,7 +40,7 @@ class PublicController < ApplicationController
   end
 
   def timelinejs
-    starts_at = '2014,01,01' #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    starts_at = Date.current.strftime("%Y,%m,%d") #Event.asc(:starts_at).limit(1).first.starts_at.to_date
     ends_at = '2015,01,01' #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     timeline = {
