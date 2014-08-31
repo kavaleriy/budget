@@ -58,6 +58,7 @@ class PublicController < ApplicationController
           'date' => []
         }
     }
+
     @calendar.events.all.each { |e|
       point = {}
       point['startDate'] = e.starts_at.strftime("%Y,%m,%d")
