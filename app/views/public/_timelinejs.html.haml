@@ -1,5 +1,7 @@
 #timeline-embed
 
+-#= javascript_include_tag "http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"
+= javascript_include_tag '/assets/timelinejs/storyjs-embed.js'
 :javascript
   $(document).ready(function() {
     var timeline_config = {
@@ -19,5 +21,5 @@
           maptype:            'watercolor',                   //OPTIONAL MAP STYLE
         }
 
-    setTimeout(createStoryJS(timeline_config), 0);
+    setTimeout(createStoryJS(timeline_config), 1000)
   })
