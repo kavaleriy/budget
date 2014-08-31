@@ -1,11 +1,11 @@
 = content_for :head do
   = javascript_include_tag '/assets/timelinejs/storyjs-embed.js'
--#= javascript_include_tag "http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"
+  -#= javascript_include_tag "http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js", 'onreadystatechange'=>"alert(1)"
 
 #timeline-embed
 
 :javascript
-  $(document).ready(function() {
+  $(document).on('ready page:load', function(){
     createStoryJS({
                     width:              '100%',
                     height:             '600',
