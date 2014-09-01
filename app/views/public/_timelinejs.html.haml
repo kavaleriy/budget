@@ -10,7 +10,7 @@
       src: '/assets/timelinejs/storyjs-embed.js'
   });
   $(node).bind('load', function() {
-    var slide_num = 0 //$('#timeline-embed').attr('curr_slide_num')
+    var slide_num = $('#timeline-embed').attr('curr_slide_num')
     var source = "#{public_timelinejs_path}.json?calendar_id=" + $('#timeline-embed').attr('calendar_id')
     createStoryJS({
       width:              '100%',
