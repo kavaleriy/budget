@@ -10,7 +10,6 @@
       src: '/assets/timelinejs/storyjs-embed.js'
   });
   $(node).bind('load', function() {
-    var slide_num = $('#timeline-embed').attr('curr_slide_num')
     var source = "#{public_timelinejs_path}.json?calendar_id=" + $('#timeline-embed').attr('calendar_id')
     createStoryJS({
       width:              '100%',
@@ -20,9 +19,9 @@
 
       embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
       start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
-      start_at_slide:     slide_num,                            //OPTIONAL START AT SPECIFIC SLIDE
-      start_zoom_adjust:  5,                              //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-      hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
+      start_at_slide:     $('#timeline-embed').attr('curr_slide_num'),                            //OPTIONAL START AT SPECIFIC SLIDE
+      start_zoom_adjust:  '3',                              //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+      hash_bookmark:      false,                           //OPTIONAL LOCATION BAR HASHES
       font:               'Bevan-PotanoSans',             //OPTIONAL FONT
       debug:              false,                           //OPTIONAL DEBUG TO CONSOLE
       lang:               'uk',                           //OPTIONAL LANGUAGE
