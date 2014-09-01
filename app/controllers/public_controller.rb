@@ -51,7 +51,7 @@ class PublicController < ApplicationController
           'startDate' => starts_at,
           'asset'=>
               {
-                  'media'=>'https=>//vine.co/v/b55LOA1dgJU',
+                  'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
                   'credit'=>'credit',
                   'caption'=>'caption'
               },
