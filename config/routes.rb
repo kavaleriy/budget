@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'visify/index'
+  get 'visify/get_sunburst_data'
+
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'
   get 'public/timelinejs'
