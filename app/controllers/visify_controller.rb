@@ -5,7 +5,22 @@ class VisifyController < ApplicationController
   def sunburst
   end
 
+  def sunburst_seq
+  end
+
   def bubbletree
+  end
+
+  def bubblechart
+  end
+
+  def circle_packing
+  end
+
+  def treemap
+  end
+
+  def force_collapsible
   end
 
   def get_sunburst_data

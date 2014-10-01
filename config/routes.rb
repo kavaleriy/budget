@@ -2,9 +2,15 @@ Rails.application.routes.draw do
 
   get 'visify/index'
   get 'visify/sunburst'
+  get 'visify/sunburst_seq'
   get 'visify/bubbletree'
+  get 'visify/bubblechart'
+  get 'visify/circle_packing'
+  get 'visify/treemap'
+  get 'visify/force_collapsible'
   get 'visify/get_sunburst_data'
   get 'visify/get_bubbletree_data'
+  get 'visify/get_seqsunburst_data'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'
