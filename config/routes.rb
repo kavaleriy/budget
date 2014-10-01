@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   get 'visify/index'
+  get 'visify/sunburst'
+  get 'visify/bubbletree'
   get 'visify/get_sunburst_data'
+  get 'visify/get_bubbletree_data'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'

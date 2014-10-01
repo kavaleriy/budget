@@ -1,0 +1,2 @@
+Rails.application.config.assets.precompile += %w( bubbletree.css )
+Rails.application.config.assets.precompile += %w( jquery-1.5.2.min.js jquery.history.js raphael.js vis4.js Tween.js bubbletree.js cofog.js )
