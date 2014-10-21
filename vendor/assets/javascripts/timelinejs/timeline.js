@@ -5546,12 +5546,12 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				VMM.Lib.css(".slider-item .media blockquote p", "line-height", "18px" );
 				VMM.Lib.css(".slider-item .media blockquote p", "font-size", "16px" );
 				
-				VMM.Lib.css(".slider-item", "overflow-y", "auto" );
+				VMM.Lib.css(".slider-item", "overflow-y", "hidden" );
 				
 				
 			} else {
 				
-				VMM.Lib.css(".slider-item .layout-text-media .text", "width", "40%" );
+				VMM.Lib.css(".slider-item .layout-text-media .text", "width", "90%" );
 				VMM.Lib.css(".slider-item .layout-text-media .text", "display", "table-cell" );
 				VMM.Lib.css(".slider-item .layout-text-media .text .container", "display", "table-cell" );
 				VMM.Lib.css(".slider-item .layout-text-media .text .container", "width", "auto" );
@@ -5566,7 +5566,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				VMM.Lib.css(".slider-item .media blockquote p", "font-size", "28px" );
 				
 				VMM.Lib.css(".slider-item", "display", "table" );
-				VMM.Lib.css(".slider-item", "overflow-y", "auto" );
+				VMM.Lib.css(".slider-item", "overflow-y", "hidden" );
 			}
 			
 			// MEDIA FRAME
@@ -5769,7 +5769,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			/* SET Vertical Scoll
 			================================================== */
 			if (slides[current_slide].height() > config.slider_height) {
-				VMM.Lib.css(".slider", "overflow-y", "scroll" );
+				VMM.Lib.css(".slider", "overflow-y", "hidden" );
 			} else {
 				VMM.Lib.css(layout, "overflow-y", "hidden" );
 				var scroll_height = 0;

@@ -73,10 +73,10 @@ class PublicController < ApplicationController
       point['text'] = e.description
       point['asset'] =
           {
-              # 'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
+              'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
               'thumbnail'=>'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRr3edmflwvOiKZFhl9BVhZTJBR7cL2scqXW11W8AT5gPu7sQW4',
-              'credit'=>'credit',
-              'caption'=>'caption'
+              #'credit'=>'credit',
+              #'caption'=>'caption'
           }
 
       timeline['timeline']['date'] << point
