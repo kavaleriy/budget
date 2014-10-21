@@ -39,9 +39,15 @@ class PublicController < ApplicationController
     end
   end
 
+  def unsubscribe
+    @calendar.subscribers.delete(Subscriber.find(params[:subscriber_id]))
+    @calendar.save
+    response.delete_cookie('subscriber')
+  end
+
   def timelinejs
     starts_at = Date.current.strftime("%Y,%m,%d") #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = '2015,01,01' #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    # ends_at = '2015,01,01' Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     timeline = {
         'timeline' => {
@@ -67,10 +73,10 @@ class PublicController < ApplicationController
       point['text'] = e.description
       point['asset'] =
           {
-              'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
+              # 'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
               'thumbnail'=>'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRr3edmflwvOiKZFhl9BVhZTJBR7cL2scqXW11W8AT5gPu7sQW4',
-              'credit'=>'',
-              'caption'=>''
+              'credit'=>'credit',
+              'caption'=>'caption'
           }
 
       timeline['timeline']['date'] << point
@@ -80,11 +86,6 @@ class PublicController < ApplicationController
 
   end
 
-  def unsubscribe
-    @calendar.subscribers.delete(Subscriber.find(params[:subscriber_id]))
-    @calendar.save
-    response.delete_cookie('subscriber')
-  end
 
   protected
 
@@ -118,31 +119,7 @@ class PublicController < ApplicationController
       end
     }
 
-    # binding.pry
     pie
-
-      # if end_at.nil?
-      #   if e.starts_at > starts_at
-      #     new_ev = { :title => '', :description => '', starts_at: starts_at, ends_at: e.starts_at, color: 'transparent' }
-      #     events << build_event_for_pie(new_ev)
-      #   end
-      #   end_at = starts_at
-      # elsif end_at < e.starts_at
-      #   new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: e.starts_at, color: 'transparent' }
-      #   events << build_event_for_pie(new_ev)
-      # elsif end_at > e.starts_at
-      #   e.starts_at = end_at
-      # end
-      #
-      # end_at = e.ends_at
-
-      # events << build_event_for_pie(e)
-    # }
-    # if end_at < ends_at
-    #   new_ev = { :title => '', :description => '', starts_at: end_at, ends_at: ends_at, color: 'transparent' }
-    #   events << build_event_for_pie(new_ev)
-    # end
-    # events
   end
 
   def build_event_for_pie event
@@ -162,9 +139,6 @@ class PublicController < ApplicationController
       end
       events << { id: i.id.to_s,  holder: i.holder, dt: i.starts_at, action: action, title: i.title, description: i.description, icon: i.icon, color: i.color, all_day: i.all_day }
     }
-
-    # today = DateTime.now.strftime('%d-%m-%Y')
-    # events << { dt: today } unless events.any? {|e| e[:dt] == today }
 
     events.sort_by { |m| m[:dt] }.reverse!
   end

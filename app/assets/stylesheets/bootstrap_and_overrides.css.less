@@ -17,6 +17,8 @@
 // Glyphicons
 //@import "twitter/bootstrap/sprites.less";
 
+
+
 // Your custom LESS stylesheets goes here
 //
 // Since bootstrap was imported above you have access to its mixins which
@@ -30,9 +32,7 @@
 
 
 
-
-
-// Cerulean 3.2.0
+// Readable 3.2.0
 // Variables
 // --------------------------------------------------
 
@@ -44,14 +44,14 @@
 @gray-darker:            lighten(#000, 13.5%); // #222
 @gray-dark:              lighten(#000, 20%);   // #333
 @gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             lighten(#000, 60%);   // #999
+@gray-light:             lighten(#000, 70%);   // #999
 @gray-lighter:           lighten(#000, 93.5%); // #eee
 
-@brand-primary:         #2FA4E7;
-@brand-success:         #73A839;
-@brand-info:            #033C73;
-@brand-warning:         #DD5600;
-@brand-danger:          #C71C22;
+@brand-primary:         #4582EC;
+@brand-success:         #3FAD46;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
 
 
 //== Scaffolding
@@ -61,25 +61,25 @@
 //** Background color for `<body>`.
 @body-bg:               #fff;
 //** Global text color on `<body>`.
-@text-color:            @gray;
+@text-color:            @gray-dark;
 
 //** Global textual link color.
 @link-color:            @brand-primary;
 //** Link hover color set via `darken()` function.
-@link-hover-color:      darken(@link-color, 15%);
+@link-hover-color:      darken(@link-color, 20%);
 
 
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  "Ubuntu", sans-serif;
-@font-family-serif:       "Ubuntu", serif;
+@font-family-sans-serif:  "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-serif:       Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
-@font-family-base:        @font-family-sans-serif;
+@font-family-base:        @font-family-serif;
 
-@font-size-base:          14px;
+@font-size-base:          16px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -96,10 +96,10 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-base;
-@headings-font-weight:    500;
+@headings-font-family:    @font-family-sans-serif;
+@headings-font-weight:    bold;
 @headings-line-height:    1.1;
-@headings-color:          white;
+@headings-color:          inherit;
 
 
 //== Iconography
@@ -177,7 +177,7 @@
 
 @btn-default-color:              @text-color;
 @btn-default-bg:                 #fff;
-@btn-default-border:             rgba(0, 0, 0, 0.1);
+@btn-default-border:             #ddd;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
@@ -214,7 +214,7 @@
 //** Text color for `<input>`s
 @input-color:                    @text-color;
 //** `<input>` border color
-@input-border:                   #ccc;
+@input-border:                   #ddd;
 //** `<input>` border radius
 @input-border-radius:            @border-radius-base;
 //** Border color for inputs on focus
@@ -369,61 +369,61 @@
 //##
 
 // Basics of a navbar
-@navbar-height:                    50px;
+@navbar-height:                    65px;
 @navbar-margin-bottom:             @line-height-computed;
 @navbar-border-radius:             @border-radius-base;
 @navbar-padding-horizontal:        floor((@grid-gutter-width / 2));
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 @navbar-collapse-max-height:       340px;
 
-@navbar-default-color:             #ddd;
-@navbar-default-bg:                @brand-primary;
-@navbar-default-border:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-color:             @text-color;
+@navbar-default-bg:                @body-bg;
+@navbar-default-border:            #ddd;
 
 // Navbar links
-@navbar-default-link-color:                #fff;
-@navbar-default-link-hover-color:          #fff;
-@navbar-default-link-hover-bg:             darken(@navbar-default-bg, 10%);
-@navbar-default-link-active-color:         #fff;
-@navbar-default-link-active-bg:            darken(@navbar-default-bg, 10%);
-@navbar-default-link-disabled-color:       #ddd;
+@navbar-default-link-color:                @link-color;
+@navbar-default-link-hover-color:          @link-color;
+@navbar-default-link-hover-bg:             transparent;
+@navbar-default-link-active-color:         @navbar-default-link-color;
+@navbar-default-link-active-bg:            transparent;
+@navbar-default-link-disabled-color:       #333;
 @navbar-default-link-disabled-bg:          transparent;
 
 // Navbar brand label
 @navbar-default-brand-color:               @navbar-default-link-color;
-@navbar-default-brand-hover-color:         #fff;
-@navbar-default-brand-hover-bg:            none;
+@navbar-default-brand-hover-color:         @navbar-default-link-hover-color;
+@navbar-default-brand-hover-bg:            transparent;
 
 // Navbar toggle
-@navbar-default-toggle-hover-bg:           darken(@navbar-default-bg, 10%);
-@navbar-default-toggle-icon-bar-bg:        #fff;
-@navbar-default-toggle-border-color:       darken(@navbar-default-bg, 10%);
+@navbar-default-toggle-hover-bg:           #ddd;
+@navbar-default-toggle-icon-bar-bg:        #ccc;
+@navbar-default-toggle-border-color:       #ddd;
 
 
 // Inverted navbar
 // Reset inverted navbar basics
-@navbar-inverse-color:                      #fff;
-@navbar-inverse-bg:                         @brand-info;
-@navbar-inverse-border:                     darken(@navbar-inverse-bg, 5%);
+@navbar-inverse-color:                      @text-color;
+@navbar-inverse-bg:                         @body-bg;
+@navbar-inverse-border:                     #ddd;
 
 // Inverted navbar links
-@navbar-inverse-link-color:                 #fff;
-@navbar-inverse-link-hover-color:           #fff;
-@navbar-inverse-link-hover-bg:              darken(@navbar-inverse-bg, 5%);
-@navbar-inverse-link-active-color:          #fff;
-@navbar-inverse-link-active-bg:             darken(@navbar-inverse-bg, 5%);
+@navbar-inverse-link-color:                 @text-color;
+@navbar-inverse-link-hover-color:           @text-color;
+@navbar-inverse-link-hover-bg:              transparent;
+@navbar-inverse-link-active-color:          @text-color;
+@navbar-inverse-link-active-bg:             transparent;
 @navbar-inverse-link-disabled-color:        #ccc;
 @navbar-inverse-link-disabled-bg:           transparent;
 
 // Inverted navbar brand label
 @navbar-inverse-brand-color:                @navbar-inverse-link-color;
-@navbar-inverse-brand-hover-color:          #fff;
-@navbar-inverse-brand-hover-bg:             none;
+@navbar-inverse-brand-hover-color:          @navbar-inverse-link-hover-color;
+@navbar-inverse-brand-hover-bg:             transparent;
 
 // Inverted navbar toggle
-@navbar-inverse-toggle-hover-bg:            darken(@navbar-inverse-bg, 5%);
-@navbar-inverse-toggle-icon-bar-bg:         #fff;
-@navbar-inverse-toggle-border-color:        darken(@navbar-inverse-bg, 5%);
+@navbar-inverse-toggle-hover-bg:            #ddd;
+@navbar-inverse-toggle-icon-bar-bg:         #ccc;
+@navbar-inverse-toggle-border-color:        #ddd;
 
 
 //== Navs
@@ -461,17 +461,17 @@
 //
 //##
 
-@pagination-color:                     @link-color;
+@pagination-color:                     @text-color;
 @pagination-bg:                        #fff;
 @pagination-border:                    #ddd;
 
-@pagination-hover-color:               @link-hover-color;
-@pagination-hover-bg:                  @gray-lighter;
-@pagination-hover-border:              #ddd;
+@pagination-hover-color:               #fff;
+@pagination-hover-bg:                  @brand-primary;
+@pagination-hover-border:              @brand-primary;
 
-@pagination-active-color:              @gray-light;
-@pagination-active-bg:                 #f5f5f5;
-@pagination-active-border:             @pagination-hover-border;
+@pagination-active-color:              #fff;
+@pagination-active-bg:                 @brand-primary;
+@pagination-active-border:             @brand-primary;
 
 @pagination-disabled-color:            @gray-light;
 @pagination-disabled-bg:               #fff;
@@ -500,7 +500,7 @@
 
 @jumbotron-padding:              30px;
 @jumbotron-color:                inherit;
-@jumbotron-bg:                   @gray-lighter;
+@jumbotron-bg:                   darken(@body-bg, 3%);
 @jumbotron-heading-color:        inherit;
 @jumbotron-font-size:            ceil((@font-size-base * 1.5));
 
@@ -509,21 +509,21 @@
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-@state-success-text:             #468847;
+@state-success-text:             @brand-success;
 @state-success-bg:               #dff0d8;
-@state-success-border:           darken(spin(@state-success-bg, -10), 5%);
+@state-success-border:           @brand-success;
 
-@state-info-text:                #3a87ad;
+@state-info-text:                @brand-info;
 @state-info-bg:                  #d9edf7;
-@state-info-border:              darken(spin(@state-info-bg, -10), 7%);
+@state-info-border:              @brand-info;
 
-@state-warning-text:             #c09853;
+@state-warning-text:             @brand-warning;
 @state-warning-bg:               #fcf8e3;
-@state-warning-border:           darken(spin(@state-warning-bg, -10), 3%);
+@state-warning-border:           @brand-warning;
 
-@state-danger-text:              #b94a48;
+@state-danger-text:              @brand-danger;
 @state-danger-bg:                #f2dede;
-@state-danger-border:            darken(spin(@state-danger-bg, -10), 3%);
+@state-danger-border:            @brand-danger;
 
 
 //== Tooltips
@@ -578,7 +578,7 @@
 //##
 
 //** Default label background color
-@label-default-bg:            @gray-light;
+@label-default-bg:            @btn-default-bg;
 //** Primary label background color
 @label-primary-bg:            @brand-primary;
 //** Success label background color
@@ -637,20 +637,20 @@
 @alert-border-radius:         @border-radius-base;
 @alert-link-font-weight:      bold;
 
-@alert-success-bg:            @state-success-bg;
-@alert-success-text:          @state-success-text;
+@alert-success-bg:            @state-success-border;
+@alert-success-text:          #fff;
 @alert-success-border:        @state-success-border;
 
-@alert-info-bg:               @state-info-bg;
-@alert-info-text:             @state-info-text;
+@alert-info-bg:               @state-info-border;
+@alert-info-text:             #fff;
 @alert-info-border:           @state-info-border;
 
-@alert-warning-bg:            @state-warning-bg;
-@alert-warning-text:          @state-warning-text;
+@alert-warning-bg:            @state-warning-border;
+@alert-warning-text:          #fff;
 @alert-warning-border:        @state-warning-border;
 
-@alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
+@alert-danger-bg:             @state-danger-border;
+@alert-danger-text:           #fff;
 @alert-danger-border:         @state-danger-border;
 
 
@@ -721,31 +721,31 @@
 
 //** Border color for elements within panels
 @panel-inner-border:          #ddd;
-@panel-footer-bg:             #f5f5f5;
+@panel-footer-bg:             #fff;
 
-@panel-default-text:          @text-color;
+@panel-default-text:          @gray-dark;
 @panel-default-border:        #ddd;
 @panel-default-heading-bg:    #f5f5f5;
 
 @panel-primary-text:          #fff;
-@panel-primary-border:        @panel-default-border;
+@panel-primary-border:        transparent;
 @panel-primary-heading-bg:    @brand-primary;
 
 @panel-success-text:          @state-success-text;
-@panel-success-border:        @panel-default-border;
-@panel-success-heading-bg:    @brand-success;
+@panel-success-border:        transparent;
+@panel-success-heading-bg:    @state-success-border;
 
 @panel-info-text:             @state-info-text;
-@panel-info-border:           @panel-default-border;
-@panel-info-heading-bg:       @brand-info;
+@panel-info-border:           transparent;
+@panel-info-heading-bg:       @state-info-border;
 
 @panel-warning-text:          @state-warning-text;
-@panel-warning-border:        @panel-default-border;
-@panel-warning-heading-bg:    @brand-warning;
+@panel-warning-border:        transparent;
+@panel-warning-heading-bg:    @state-warning-border;
 
 @panel-danger-text:           @state-danger-text;
-@panel-danger-border:         @panel-default-border;
-@panel-danger-heading-bg:     @brand-danger;
+@panel-danger-border:         transparent;
+@panel-danger-heading-bg:     @state-danger-border;
 
 
 //== Thumbnails
@@ -771,7 +771,7 @@
 //
 //##
 
-@well-bg:                     #f5f5f5;
+@well-bg:                     darken(@body-bg, 3%);
 @well-border:                 darken(@well-bg, 7%);
 
 
@@ -832,7 +832,7 @@
 //##
 
 @close-font-weight:           bold;
-@close-color:                 #000;
+@close-color:                 #fff;
 @close-text-shadow:           0 1px 0 #fff;
 
 
@@ -865,13 +865,13 @@
 //** Headings small color
 @headings-small-color:        @gray-light;
 //** Blockquote small color
-@blockquote-small-color:      @gray-light;
+@blockquote-small-color:      @text-color;
 //** Blockquote font size
 @blockquote-font-size:        (@font-size-base * 1.25);
 //** Blockquote border color
-@blockquote-border-color:     @gray-lighter;
+@blockquote-border-color:     @brand-primary;
 //** Page header border color
-@page-header-border-color:    @gray-lighter;
+@page-header-border-color:    #ddd;
 //** Width of horizontal description list titles
 @dl-horizontal-offset:        @component-offset-horizontal;
 //** Horizontal line color.
@@ -880,54 +880,58 @@
 
 
 
-// Cerulean 3.2.0
+
+
+// Readable 3.2.0
 // Bootswatch
 // -----------------------------------------------------
 
-.btn-shadow(@color) {
-  #gradient > .vertical-three-colors(lighten(@color, 8%), @color, 60%, darken(@color, 4%));
-  filter: none;
-  border-bottom: 1px solid darken(@color, 10%);
-}
+@import url("//fonts.googleapis.com/css?family=Raleway:400,700");
 
 // Navbar =====================================================================
 
 .navbar {
-  .btn-shadow(@navbar-default-bg);
-  filter: none;
-  .box-shadow(0 1px 10px rgba(0, 0, 0, 0.1));
+  font-family: @headings-font-family;
 
-  &-default {
+  &-nav,
+  &-form {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
-    .badge {
-      background-color: #fff;
-      color: @navbar-default-bg;
+  &-nav > li > a {
+    padding: @padding-base-vertical @padding-base-horizontal;
+    margin: 12px 6px;
+    border: 1px solid transparent;
+    border-radius: @border-radius-base;
+
+    &:hover {
+      border: 1px solid #ddd;
     }
   }
 
-  &-inverse {
-    #gradient > .vertical-three-colors(lighten(@navbar-inverse-bg, 8%), lighten(@navbar-inverse-bg, 4%), 60%, darken(@navbar-inverse-bg, 2%));
-    filter: none;
-    border-bottom: 1px solid darken(@navbar-inverse-bg, 10%);
-
-    .badge {
-      background-color: #fff;
-      color: @navbar-inverse-bg;
-    }
+  &-nav > .active > a,
+  &-nav > .active > a:hover {
+    border: 1px solid #ddd;
   }
 
-  .navbar-nav > li > a,
+  &-default .navbar-nav > .active > a:hover {
+    color: @navbar-default-link-hover-color;
+  }
+
+  &-inverse .navbar-nav > .active > a:hover {
+    color: @navbar-inverse-link-hover-color;
+  }
+
   &-brand {
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
   }
 }
 
-@media (max-width: @grid-float-breakpoint-max) {
-
+@media (max-width: @grid-float-breakpoint) {
   .navbar {
-
-    .dropdown-header {
-      color: #fff;
+    .navbar-nav > li > a {
+      margin: 0;
     }
   }
 }
@@ -935,49 +939,7 @@
 // Buttons ====================================================================
 
 .btn {
-
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
-  .caret {
-    border-top-color: #fff;
-  }
-}
-
-.btn-default {
-
-  .btn-shadow(@btn-default-bg);
-
-  &:hover {
-    color: @btn-default-color;
-  }
-
-  .caret {
-    border-top-color: @text-color;
-  }
-}
-
-.btn-default {
-  .btn-shadow(@btn-default-bg);
-}
-
-.btn-primary {
-  .btn-shadow(@btn-primary-bg);
-}
-
-.btn-success {
-  .btn-shadow(@btn-success-bg);
-}
-
-.btn-info {
-  .btn-shadow(@btn-info-bg);
-}
-
-.btn-warning {
-  .btn-shadow(@btn-warning-bg);
-}
-
-.btn-danger {
-  .btn-shadow(@btn-danger-bg);
+  font-family: @headings-font-family;
 }
 
 // Typography =================================================================
@@ -986,22 +948,124 @@
 
 // Forms ======================================================================
 
+legend {
+  font-family: @headings-font-family;
+}
+
+.input-group-addon {
+  font-family: @font-family-sans-serif;
+}
+
 // Navs =======================================================================
 
+.nav {
+  .open > a,
+  .open > a:hover,
+  .open > a:focus {
+    border: 1px solid #ddd;
+  }
+}
+
+.pagination {
+
+  font-family: @headings-font-family;
+
+  &-lg > li > a,
+  &-lg > li > span {
+    padding: 14px 24px;
+  }
+}
+
+.pager {
+
+  font-family: @headings-font-family;
+
+  a {
+    color: @text-color;
+  }
+
+  a:hover {
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .disabled a {
+    border-color: @pager-border;
+  }
+}
+
 // Indicators =================================================================
+
+.close {
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  opacity: 0.4;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    opacity: 1;
+  }
+}
+
+.alert {
+  .alert-link {
+    color: @alert-success-text;
+    text-decoration: underline;
+  }
+}
+
+.label {
+  font-family: @headings-font-family;
+  font-weight: normal;
+
+  &-default {
+    border: 1px solid #ddd;
+    color: @text-color;
+  }
+
+}
+
+.badge {
+  padding: 1px 7px 5px;
+  vertical-align: 2px;
+  font-family: @headings-font-family;
+  font-weight: normal;
+}
 
 // Progress bars ==============================================================
 
 // Containers =================================================================
 
-.panel-primary,
-.panel-success,
-.panel-warning,
-.panel-danger,
-.panel-info {
+.panel {
+  .box-shadow(none);
 
-  .panel-heading,
-  .panel-title {
-    color: #fff;
+  &-default {
+    .close {
+      color: @text-color;
+    }
+  }
+
+  &-primary,
+  &-success,
+  &-warning,
+  &-danger,
+  &-info {
+    .panel-heading {
+      color: #fff;
+    }
+
+    .panel-body {
+      border: 1px solid #ddd;
+      border-top-width: 0;
+      border-radius: 0 0 @border-radius-base @border-radius-base;
+    }
+  }
+}
+
+.modal {
+  .close {
+    color: @text-color;
   }
 }

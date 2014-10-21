@@ -26,7 +26,6 @@ class Event
   validates :starts_at, presence: true
 
 
-
   attr_accessor :holder_text, :starts_at_string, :ends_at_string
   after_initialize :do_after_initialize
 
