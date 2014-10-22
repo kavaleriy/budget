@@ -6,36 +6,3 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 
-$(document).on 'ready page:load', ->
-  # initialize the calendar
-  #	-----------------------------------------------------------------
-  $('#calendar_view').fullCalendar
-    lang: 'uk',
-    editable: false,
-    header:
-      left: 'prev,next today',
-      center: 'title',
-      right: 'month,agendaWeek,agendaDay'
-    defaultView: 'month',
-    events: {
-      url: '/events',
-      data: {
-        calendar_id: $('#calendar_view').attr('calendar_id')
-      }
-    },
-    timeFormat: 'H:mm',
-
-    droppable: false
-
-    selectable: false
-
-    eventClick: (calEvent, jsEvent, view) ->
-      $.get "/events/"+calEvent.id,
-        calendar_id: $('#calendar_view').attr('calendar_id')
-
-    eventRender: (e, t, n) ->
-      t.css('color', e.text_color)
-      icon = (if e.icon then " <i class='fa fa-lg " + e.icon + " '></i> " else "")
-      t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
-      return
-

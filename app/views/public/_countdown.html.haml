@@ -1,22 +1,22 @@
 - if @countdown_event and @countdown_event.ends_at > Date.current
-  = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
-    %h3.title
-      #{@calendar.countdown_title.html_safe}
-    .date.col-sm-offset-5{ 'data-date' => @countdown_event.ends_at}
-  #logo-rays-container
-    #logo-rays
+  .countdown.col-sm-12
+    = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
+      %h4.title.col-sm-8
+        #{@calendar.countdown_title.html_safe}
+      .date.col-sm-4{ 'data-date' => @countdown_event.ends_at}
 
 
   :javascript
-
     $(function() {
       $('.countdown .date')
         .TimeCircles({
+          circle_bg_color: "#CCCCCC",
+          fg_width: 0.03,
           time: {
             Days: {
               show: true,
               text: "Днів",
-              color: "#FC6"
+              color: "#FF9933"
             },
             Hours: {
               show: false,
@@ -26,7 +26,7 @@
             },
             Seconds: {
               show: false,
-            }
+            },
           }
         });
-    });
+    })

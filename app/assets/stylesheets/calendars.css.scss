@@ -93,7 +93,6 @@
 }
 
 .fc-event-hori, .fc-event-vert {
-  border-radius: 0 !important;
   border-color: transparent
 }
 
@@ -117,7 +116,6 @@
   background-image: none;
   box-shadow: none;
   text-shadow: none;
-  border-radius: 0 !important;
   margin-left: 2px
 }
 
@@ -148,9 +146,17 @@
 }
 
 #calendar_view {
+  margin-top: 10px;
+
   .fc-event {
-    height: 35px;
+    height: 25px;
     overflow: hidden;
-    font-size: 13px;
+    font-size: 12px;
+    margin: 3px 6px;
+//    border-radius: 5px;
+
+    .fc-event-inner {
+      margin: 2px 10px;
+    }
   }
 }

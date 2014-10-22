@@ -11,28 +11,33 @@
   = render partial: 'timelinejs'
 
 
+.col-sm-3
+  = render partial: 'countdown'
+  = render partial: "current_action", :locals => { current: @current_event1 }
+  = render partial: "current_action", :locals => { current: @current_event2 }
+
+
 .col-sm-6
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
-      %a{href: '#home', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_calendar')
+      %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_calendar_year')
     %li
-      %a{href: '#profile', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_timeline')
+      %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_calendar_month')
   .tab-content
-    #home.tab-pane.fade.in.active
+    #calendar_year.tab-pane.fade.in.active
+      = render partial: 'pie_cycle'
+    #calendar_month.tab-pane.fade
       = render partial: 'calendar'
-    #profile.tab-pane.fade
-      = render partial: 'timeline'
 
-.col-sm-6.cycle
-  .col-sm-12
-    .pull-left.col-sm-6
-      = render partial: "current_action", :locals => { current: @current_event1 }
-    .pull-right.col-sm-6
-      = render partial: "current_action", :locals => { current: @current_event2 }
 
-    = render partial: "pie_cycle"
+.col-sm-3
+
+
+
+
+-#= render partial: 'timeline'
 
 -##profile.profile.blue.not_right.pause{:style => "left: 108px; transform: scale(1.5, 1.5); bottom: 114.16676347423345px; width: 250px;"}
 -#  %a{:href => "/profile/ryan-geldard"}
@@ -40,3 +45,4 @@
 -#  .details
 -#    .name Ryan Geldard
 -#    .job Site Manager
+

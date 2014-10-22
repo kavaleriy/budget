@@ -41,7 +41,7 @@
         .form-group
           = f.label :description, t('.description'), :class => 'control-label'
           .controls
-            = f.cktext_area :description, :class => 'form-control', :ckeditor => { :language => 'uk', :toolbar => 'Pure', :uiColor => '#33ccff'}
+            = f.text_area :description, :class => 'form-control'
 
       .tab-pane.fade#show_event_range_tab
 

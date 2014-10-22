@@ -27,13 +27,9 @@
 //= require bootstrap-datetimepicker
 //= require locales/bootstrap-datetimepicker.uk.js
 
-// require chart/chart.min
-
 //= require timecircles
 
 //= require d3
-
-//= require ckeditor/init
 
 //= require fileupload/jquery.fileupload
 //= require fileupload/jquery.fileupload-process

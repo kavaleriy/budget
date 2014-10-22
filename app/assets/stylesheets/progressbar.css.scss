@@ -1,0 +1,119 @@
+.progress {
+  width: 80px;
+  height: 200px;
+  position: relative;
+
+  .stripe {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .stripe-grayed {
+    z-index: 2;
+    background: repeating-linear-gradient(
+                    to bottom,
+                    #fff,
+                    #fff 60%,
+                    #CCCCCC 50%,
+                    #CCCCCC
+    );
+    background-size: 100% 20px;
+  }
+
+  .stripe-active {
+    z-index: 1;
+    background: repeating-linear-gradient(
+                    to bottom,
+                    #fff,
+                    #fff 55%,
+                    #990000 50%,
+                    #990000
+    );
+    background-size: 100% 20px;
+
+    animation: width 5s infinite;
+    -webkit-animation: width 5s infinite;
+  }
+
+  @keyframes width {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+}
+
+.progress
+.current
+
+.progress-funky
+.current
+
+
+
+HAML  SCSS   Result
+Edit on
+div {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+$backColor: #666;
+$foreColor: #465298;
+
+.progress {
+  // Using percentages prevents weird rendering, using fixed forces positioning to work, so you can align gradients across elements
+  background: repeating-linear-gradient(
+                  -45deg,
+                  $backColor,
+                  $backColor 25%,
+                  shade($backColor,10%) 25%,
+                  shade($backColor,10%) 50%,
+                  $backColor 50%
+  ) top left fixed;
+  // Then just define how big the background should be
+  background-size: 30px 30px;
+  .current {
+    width: 25%;
+    @include animation(width 5s infinite);
+    background: repeating-linear-gradient(
+                    -45deg,
+                    $foreColor,
+                    $foreColor 25%,
+                    shade($foreColor,10%) 25%,
+                    shade($foreColor,10%) 50%,
+                    $foreColor 50%
+    ) top left fixed;
+    background-size: 30px 30px;
+  }
+}
+
+// So this one is what happens when you use pixel-based gradients. At time of writing, the bars suffer from rounding errors and are uneven. Even if one day this is fixed, an argument could be made for %-based gradients being more maintainable in case the sizes need to be changed.
+.progress-funky {
+  background: repeating-linear-gradient(
+                  -45deg,
+                  $backColor,
+                  $backColor 10px,
+                  shade($backColor,10%) 10px,
+                  shade($backColor,10%) 20px,
+                  $backColor 20px
+  ) top left;
+  .current {
+    width: 25%;
+    animation: width 5s infinite;
+    background: repeating-linear-gradient(
+                    -45deg,
+                    $foreColor,
+                    $foreColor 10px,
+                    shade($foreColor,10%) 10px,
+                    shade($foreColor,10%) 20px,
+                    $foreColor 20px
+    ) top left;
+  }
+}
+
+@keyframes width {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+VIEW COMPILED

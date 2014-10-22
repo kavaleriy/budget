@@ -2,30 +2,30 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.pies-container {
+  padding: 50px;
+  margin: 50px;
+}
+
 .countdown {
-
-  z-index: 1;
-  position: absolute;
-  text-align: center;
-
   .title {
-    color: darkolivegreen;
+    margin-top: 30px;
+    color: #FF9933;
+    text-align: right;
   }
 
   .date {
-    width: 85px;
-    height: 85px;
+    width: 130px;
+    height: 130px;
     box-sizing: border-box;
-  }
-  .btn-default {
   }
 }
 
 div.tooltip {
   position: absolute;
   text-align: center;
-  width: 520px;
-  height: 340px;
+  width: 320px;
+  height: 200px;
   overflow: hidden;
   padding: 2px;
   font: 12px sans-serif;
@@ -62,17 +62,26 @@ div.tooltip {
 }
 
 .current-action {
-  margin-bottom: 15px;
+  margin: 15px 0;
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+
   h3 {
-    color: darkolivegreen;
-    border-bottom: green solid 1px;
+    color: #990000;
     padding-bottom: 10px;
   }
 
   .content {
-    word-wrap: nowrap;
-    max-height: 30px;
+    max-height: 300px;
     overflow: hidden;
+
+    h4 {
+      color: #990000;
+    }
+    p {
+      color: #666666;
+    }
   }
 }
 
