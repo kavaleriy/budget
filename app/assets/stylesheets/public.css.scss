@@ -2,20 +2,38 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.progress {
+  margin-right: 0px;
+  height: 200px;
+}
+
 .pies-container {
-  padding: 50px;
-  margin: 50px;
+  //position: relative;
+    margin: 0px;
+  background: url(calendar/circles.png) 50% no-repeat;
+  background-size: 100%;
+
+  h1 {
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    margin-right: -50px;
+    right: 50%;
+    color: #FF9933;
+
+  }
 }
 
 .countdown {
   .title {
     margin-top: 30px;
+    padding-right: 0px;
     color: #FF9933;
     text-align: right;
   }
 
   .date {
-    width: 130px;
+    color: #FF1F1F;
     height: 130px;
     box-sizing: border-box;
   }
@@ -63,6 +81,7 @@ div.tooltip {
 
 .current-action {
   margin: 15px 0;
+
   a:hover, a:focus {
     text-decoration: none;
   }

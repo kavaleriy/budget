@@ -7,17 +7,21 @@
   #calendar_subscriber
     = render partial: 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
-.col-sm-12
-  = render partial: 'timelinejs'
+= render partial: 'timelinejs'
 
 
-.col-sm-3
+.col-lg-3.col-md-6.col-sm-12.pull-left
   = render partial: 'countdown'
   = render partial: "current_action", :locals => { current: @current_event1 }
   = render partial: "current_action", :locals => { current: @current_event2 }
 
+.col-lg-3.col-md-6.col-sm-12.pull-right
+  %h3
+    ssss
 
-.col-sm-6
+
+
+.col-lg-6.col-md-12.col-sm-12
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
@@ -25,16 +29,11 @@
     %li
       %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_calendar_month')
-  .tab-content
-    #calendar_year.tab-pane.fade.in.active
-      = render partial: 'pie_cycle'
-    #calendar_month.tab-pane.fade
-      = render partial: 'calendar'
-
-
-.col-sm-3
-
-
+    .tab-content
+      #calendar_year.tab-pane.fade.in.active
+        = render partial: 'pie_cycle'
+      #calendar_month.tab-pane.fade
+        = render partial: 'calendar'
 
 
 -#= render partial: 'timeline'

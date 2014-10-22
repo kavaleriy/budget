@@ -5378,9 +5378,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			if (typeof b.left == "number") {
 				var _pos = b.left;
 				var _slide_pos = -(slides[current_slide].leftpos());
-				if (_pos < _slide_pos - (config.slider_width/3)) {
+				if (_pos < _slide_pos - (config.slider_width/4)) {
 					onNextClick();
-				} else if (_pos > _slide_pos + (config.slider_width/3)) {
+				} else if (_pos > _slide_pos + (config.slider_width/4)) {
 					onPrevClick();
 				} else {
 					VMM.Lib.animate($slider_container, config.duration, config.ease, {"left": _slide_pos });
