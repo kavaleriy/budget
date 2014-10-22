@@ -5,7 +5,12 @@
         LJV
       .progress
         .stripe.stripe-active
-        .stripe.stripe-grayed{'style' => "height: #{100 - current[:percent]}%;"}
+        .stripe.stripe-grayed{'style' => "min-height: #{100 - current[:percent]}%; height: #{100 - current[:percent]}%;"}
+
+      -#.progress-funky
+      -#  .current
+
+
       %h2
         #{current[:percent]}%
     .col-sm-9
