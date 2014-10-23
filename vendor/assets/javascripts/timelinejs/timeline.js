@@ -5812,7 +5812,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		================================================== */
 		function buildNavigation() {
 			
-			var temp_icon = "<div class='icon'>&nbsp;</div>";
+			var temp_icon = "<div class=''></div>";
 			
 			navigation.nextBtn = VMM.appendAndGetElement($slider, "<div>", "nav-next");
 			navigation.prevBtn = VMM.appendAndGetElement($slider, "<div>", "nav-previous");
