@@ -1,10 +1,10 @@
 - if current[:event]
   .current-action.col-sm-12
-    .col-md-2
+    .col-sm-2
       - if current[:event].holder == 1
-        = image_tag("calendar/city.png", height: '100%', width: '100%')
+        = image_tag("calendar/city.png", width: '100%')
       - else
-        = image_tag("calendar/citizens.png", height: '100%', width: '100%')
+        = image_tag("calendar/citizens.png", width: '100%')
       .progress
         - if current[:event].holder == 1
           .stripe.stripe-city
@@ -14,7 +14,7 @@
 
       %h3
         #{current[:percent]}%
-    .col-md-9
+    .col-sm-9
       - if current[:event].holder == 1
         %h2.city
           #{current[:event].holder_text}

@@ -4,16 +4,16 @@
 
 
 .left-panel {
-  background: url(calendar/left-line.png) 100% no-repeat;
+  background: url(calendar/left-line.png) 100% 100px no-repeat;
+  height: 900px;
 
   .progress {
     margin-right: 0px;
-    height: 200px;
+    height: 220px;
   }
 
   .countdown {
     .title {
-      margin-top: 30px;
       padding-right: 0px;
       color: #FF9933;
       text-align: right;
@@ -21,11 +21,11 @@
 
     .date {
       color: #FF1F1F;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       box-sizing: border-box;
     }
   }
-
 
   .current-action {
     margin: 15px 0px;
@@ -49,7 +49,7 @@
     }
 
     .content {
-      max-height: 250px;
+      max-height: 200px;
       overflow: hidden;
 
       h4 {
@@ -63,25 +63,52 @@
 }
 
 .right-panel {
-  background: url(calendar/left-line.png) 0% no-repeat;
-  padding-left: 40px;
-  height: 100%;
+  background: url(calendar/right-line.png) 0% 100px no-repeat;
+  height: 900px;
 
+  padding-top: 10px;
+  .circle {
+    background-color: rgba(255, 153, 51, 0);
+    border: 4px solid #FF9933;
+    height: 90px;
+    width: 90px;
+    -moz-border-radius:    45px;
+    -webkit-border-radius: 45px;
+    img {
+      margin: 17px 0 0 15px;
+    }
+  }
+  .tabs {
+    min-width: 200px;
+    max-width: 200px;
+    margin-left: -20px!important;
+  }
 }
 
-.pies-container {
-  margin: 20px;
-  background: url(calendar/circles.png) 50% no-repeat;
-  background-size: 100%;
 
-  h1 {
-    position: absolute;
-    top: 50%;
-    margin-top: -20px;
-    margin-right: -50px;
-    right: 50%;
-    color: #FF9933;
+.center {
 
+  .views {
+    li {
+      //background-color: #CCCCCC;
+    }
+  }
+
+  .pies-container {
+    margin: 0 20px;
+    background: url(calendar/circles.png) 50% no-repeat;
+    background-size: 100%;
+
+
+    h1 {
+      position: absolute;
+      top: 50%;
+      margin-top: -60px;
+      margin-right: -50px;
+      right: 50%;
+      color: #FF9933;
+
+    }
   }
 }
 

@@ -1,9 +1,9 @@
 - if @countdown_event and @countdown_event.ends_at > Date.current
   .countdown.col-sm-12
     = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
-      %h4.title.col-sm-7
+      .date.col-sm-5.pull-right{ 'data-date' => @countdown_event.ends_at}
+      %h4.title.col-sm-7.pull-right
         #{@calendar.countdown_title.html_safe}
-      .date.col-sm-5{ 'data-date' => @countdown_event.ends_at}
 
 
   :javascript
@@ -11,7 +11,7 @@
       $('.countdown .date')
         .TimeCircles({
           circle_bg_color: "#CCCCCC",
-          fg_width: 0.03,
+          fg_width: 0.04,
           time: {
             Days: {
               show: true,

@@ -10,19 +10,17 @@
 = render partial: 'timelinejs'
 
 
-.left-panel.col-lg-3.col-md-6.col-sm-12.pull-left
+.left-panel.col-lg-3.col-xs-6.pull-left
   = render partial: 'countdown'
   = render partial: "current_action", :locals => { current: @current_event1 }
   = render partial: "current_action", :locals => { current: @current_event2 }
 
-.right-panel.col-lg-3.col-md-6.col-sm-12.pull-right
+.right-panel.col-lg-3.col-xs-6.pull-right
   = render partial: 'event'
 
 
-
-
-.col-lg-6.col-md-12.col-sm-12
-  %ul.nav.nav-tabs{role: 'tablist'}
+.center.col-lg-6.col-xs-12
+  %ul.views.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_calendar_year')
@@ -35,6 +33,11 @@
       #calendar_month.tab-pane.fade
         = render partial: 'calendar'
 
+  .legend
+    .pull-left
+      = image_tag("calendar/inf-city.png", width: '200px')
+    .pull-right
+      = image_tag("calendar/inf-citizens.png", width: '200px')
 
 -#= render partial: 'timeline'
 
