@@ -2,14 +2,75 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.progress {
-  margin-right: 0px;
-  height: 200px;
+
+.left-panel {
+  background: url(calendar/left-line.png) 100% no-repeat;
+
+  .progress {
+    margin-right: 0px;
+    height: 200px;
+  }
+
+  .countdown {
+    .title {
+      margin-top: 30px;
+      padding-right: 0px;
+      color: #FF9933;
+      text-align: right;
+    }
+
+    .date {
+      color: #FF1F1F;
+      height: 130px;
+      box-sizing: border-box;
+    }
+  }
+
+
+  .current-action {
+    margin: 15px 0px;
+
+    a:hover, a:focus {
+      text-decoration: none;
+    }
+
+    h2 {
+      margin-top: 0px;
+      &.city {
+        color: #990000;
+      }
+      &.citizens {
+        color: #006633;
+      }
+    }
+    h3 {
+      color: #990000;
+      padding-bottom: 10px;
+    }
+
+    .content {
+      max-height: 250px;
+      overflow: hidden;
+
+      h4 {
+        color: #990000;
+      }
+      p {
+        color: #666666;
+      }
+    }
+  }
+}
+
+.right-panel {
+  background: url(calendar/left-line.png) 0% no-repeat;
+  padding-left: 40px;
+  height: 100%;
+
 }
 
 .pies-container {
-  //position: relative;
-    margin: 0px;
+  margin: 20px;
   background: url(calendar/circles.png) 50% no-repeat;
   background-size: 100%;
 
@@ -21,21 +82,6 @@
     right: 50%;
     color: #FF9933;
 
-  }
-}
-
-.countdown {
-  .title {
-    margin-top: 30px;
-    padding-right: 0px;
-    color: #FF9933;
-    text-align: right;
-  }
-
-  .date {
-    color: #FF1F1F;
-    height: 130px;
-    box-sizing: border-box;
   }
 }
 
@@ -79,74 +125,49 @@ div.tooltip {
   }
 }
 
-.current-action {
-  margin: 15px 0;
-
-  a:hover, a:focus {
-    text-decoration: none;
-  }
-
-  h3 {
-    color: #990000;
-    padding-bottom: 10px;
-  }
-
-  .content {
-    max-height: 300px;
-    overflow: hidden;
-
-    h4 {
-      color: #990000;
-    }
-    p {
-      color: #666666;
-    }
-  }
-}
 
 
-
-.cycle {
-  #logo-rays-container{
-    top: 0px;
-    display: block;
-    overflow: hidden;
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    z-index: -1;
-
-
-    #logo-rays {
-      -webkit-animation-delay: 0s;
-      -webkit-animation-direction: normal;
-      -webkit-animation-duration: 60s;
-      -webkit-animation-fill-mode: none;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-name: spin;
-      -webkit-animation-play-state: running;
-      -webkit-animation-timing-function: linear;
-      -webkit-background-clip: border-box;
-      -webkit-background-origin: padding-box;
-      -webkit-background-size: auto;
-      background-attachment: scroll;
-      background-clip: border-box;
-      background-color: rgba(0, 0, 0, 0);
-      background-image: url(rays2.jpg) ;
-      background-origin: padding-box;
-      background-size: 200px;
-      display: block;
-      margin-left: 0px;
-      opacity: 1;
-      height: 200px;
-      width: 200px;
-      z-index: 0;
-
-    }
-
-  }
-}
-
+//.cycle {
+//  #logo-rays-container{
+//    top: 0px;
+//    display: block;
+//    overflow: hidden;
+//    position: absolute;
+//    width: 200px;
+//    height: 200px;
+//    z-index: -1;
+//
+//
+//    #logo-rays {
+//      -webkit-animation-delay: 0s;
+//      -webkit-animation-direction: normal;
+//      -webkit-animation-duration: 60s;
+//      -webkit-animation-fill-mode: none;
+//      -webkit-animation-iteration-count: infinite;
+//      -webkit-animation-name: spin;
+//      -webkit-animation-play-state: running;
+//      -webkit-animation-timing-function: linear;
+//      -webkit-background-clip: border-box;
+//      -webkit-background-origin: padding-box;
+//      -webkit-background-size: auto;
+//      background-attachment: scroll;
+//      background-clip: border-box;
+//      background-color: rgba(0, 0, 0, 0);
+//      background-image: url(rays2.jpg) ;
+//      background-origin: padding-box;
+//      background-size: 200px;
+//      display: block;
+//      margin-left: 0px;
+//      opacity: 1;
+//      height: 200px;
+//      width: 200px;
+//      z-index: 0;
+//
+//    }
+//
+//  }
+//}
+//
 
 
 //#profile {

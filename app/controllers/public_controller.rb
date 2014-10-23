@@ -57,15 +57,17 @@ class PublicController < ApplicationController
           'startDate' => starts_at,
           'asset'=>
               {
-                  'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
-                  'credit'=>'credit',
-                  'caption'=>'caption'
+                  'media'=>'http://www.ua.undp.org/content/dam/ukraine/img/povred/20130703sk9M3oCW3tUZg6D8_pzuOo_large.jpeg',
+                  # 'credit'=>'credits',
+                  # 'caption'=>'caption'
               },
           'date' => []
         }
     }
 
     @calendar.events.all.each { |e|
+      media = e.holder == 1 ? { img: 'timeline-city.png', thumb: 'city.png' } : { img: 'timeline-citizens.png', thumb: 'timeline-citizens.png'}
+
       point = {}
       point['startDate'] = e.starts_at.strftime("%Y,%m,%d")
       point['endDate'] = e.ends_at.strftime("%Y,%m,%d") unless e.ends_at.nil?
@@ -73,8 +75,8 @@ class PublicController < ApplicationController
       point['text'] = e.description
       point['asset'] =
           {
-              'media'=>'http://www.thejournal.ru/foto/f/12924387589.jpg',
-              'thumbnail'=>'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRr3edmflwvOiKZFhl9BVhZTJBR7cL2scqXW11W8AT5gPu7sQW4',
+              'media' => "/assets/calendar/#{media[:img]}",
+              'thumbnail' => "/assets/calendar/#{media[:thumb]}",
               #'credit'=>'credit',
               #'caption'=>'caption'
           }

@@ -17,15 +17,17 @@
                     #CCCCCC 50%,
                     #CCCCCC
     );
-    background-size: 100% 20px;
+    background-size: 100% 10px;
 
     -webkit-animation: stripe-height 3s; /* Chrome, Safari, Opera */
     animation: stripe-height 3s;
   }
 
-  .stripe-active {
+  .stripe-city, .stripe-citizens {
     z-index: 1;
     bottom: 0px;
+  }
+  .stripe-city {
     background: repeating-linear-gradient(
                     to bottom,
                     transparent,
@@ -33,7 +35,17 @@
                     #990000 50%,
                     #990000
     );
-    background-size: 100% 20px;
+    background-size: 100% 10px;
+  }
+  .stripe-citizens {
+    background: repeating-linear-gradient(
+                    to bottom,
+                    transparent,
+                    transparent 60%,
+                    #006633 50%,
+                    #006633
+    );
+    background-size: 100% 10px;
   }
 }
 

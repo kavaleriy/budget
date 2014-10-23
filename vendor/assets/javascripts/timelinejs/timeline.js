@@ -5143,7 +5143,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				timeline:			false, 
 				spacing:			15,
 				slider: {
-					width:			720, 
+					width:			720,
 					height:			400, 
 					content: {
 						width:		720, 
@@ -5152,7 +5152,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 						padding_default: 120
 					}, 
 					nav: {
-						width:		100, 
+						width:		250,
 						height:		200
 					} 
 				} 
@@ -5284,6 +5284,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			positionSlides();
 			
 			// POSITION NAV
+            console.log(config.slider.nav.width)
 			VMM.Lib.css(navigation.nextBtn, "left", (current_width - config.slider.nav.width));
 			VMM.Lib.height(navigation.prevBtn, config.slider.height);
 			VMM.Lib.height(navigation.nextBtn, config.slider.height);
@@ -5378,9 +5379,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			if (typeof b.left == "number") {
 				var _pos = b.left;
 				var _slide_pos = -(slides[current_slide].leftpos());
-				if (_pos < _slide_pos - (config.slider_width/4)) {
+				if (_pos < _slide_pos - (config.slider_width/3)) {
 					onNextClick();
-				} else if (_pos > _slide_pos + (config.slider_width/4)) {
+				} else if (_pos > _slide_pos + (config.slider_width/3)) {
 					onPrevClick();
 				} else {
 					VMM.Lib.animate($slider_container, config.duration, config.ease, {"left": _slide_pos });
@@ -7043,8 +7044,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			height: 				540,
 			spacing: 				15,
 			loaded: {
-				slider: 			false, 
-				timenav: 			false, 
+				slider: 			false,
+				timenav: 			false,
 				percentloaded: 		0
 			},
 			nav: {
@@ -7085,11 +7086,11 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 				content: {
 					width: 			720,
 					height: 		400,
-					padding: 		130,
-					padding_default:130
+					padding: 		300,
+					padding_default:280
 				},
 				nav: {
-					width: 			100,
+					width: 			200,
 					height: 		200
 				}
 			},

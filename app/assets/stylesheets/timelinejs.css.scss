@@ -1,29 +1,36 @@
-@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min-device-pixel-ratio:2){.vco-slider .nav-previous .icon{background-image:url(timeline@2x.png?v4.4);background-size:352px 260px;background-repeat:no-repeat;background-position:-160px 0;width:24px;height:24px;overflow:hidden} .vco-slider .nav-next .icon{background-image:url(timeline@2x.png?v4.4);background-size:352px 260px;background-repeat:no-repeat;background-position:-184px 0;width:24px;height:24px;overflow:hidden}}.vco-slider .slider-item{position:absolute;width:500px;height:100%;padding:0;margin:0;display:table}.vco-slider .slider-item .content{display:table-cell;vertical-align:middle;}.vco-slider .slider-item .content .pad-top .text .container{padding-top:15px}
+.vco-slider .nav-previous,.vco-slider .nav-next{width:200px!important;}.vco-slider .nav-previous .nav-container,.vco-slider .nav-next .nav-container{width:200px!important}
+.vco-slider .nav-next .icon{margin-left: 160px}
 
 #timeline-embed {
   background-color: #E9E9E9;
-
-
+  overflow: hidden;
 
   .slider-item {
-    padding: 20px;
+    padding: 20px 30px!important;
     background-color: #990000;
     .content {
+      height: inherit;
       .content-container{
         width: 100%;
         .media{
-          width:20%;min-width:10%;float:left
+          float:left;
+          padding-top: 15px;
+          padding-left: 40px;
+          width:100%;
+          height: 100%;
+          background-color: transparent;
+          border-left: 0!important;
         }
 
         .text {
           .date {
             color: #FF9933;
           }
-          h3 {
+          h2, h3 {
             color: white;
           }
           p {
-            margin-left: 20px;
+            margin: 20px;
             color: #FF9933;
           }
         }

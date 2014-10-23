@@ -1,7 +1,7 @@
 = content_for :header do
   .head.pull-left
     %i.fa.fa-calendar
-      #{@calendar.title}
+      Бюджетний календар: #{@calendar.title}
     %span.descr
       = @calendar.description
   #calendar_subscriber
@@ -10,14 +10,14 @@
 = render partial: 'timelinejs'
 
 
-.col-lg-3.col-md-6.col-sm-12.pull-left
+.left-panel.col-lg-3.col-md-6.col-sm-12.pull-left
   = render partial: 'countdown'
   = render partial: "current_action", :locals => { current: @current_event1 }
   = render partial: "current_action", :locals => { current: @current_event2 }
 
-.col-lg-3.col-md-6.col-sm-12.pull-right
-  %h3
-    ssss
+.right-panel.col-lg-3.col-md-6.col-sm-12.pull-right
+  = render partial: 'event'
+
 
 
 

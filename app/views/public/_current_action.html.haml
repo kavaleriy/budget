@@ -1,21 +1,27 @@
 - if current[:event]
   .current-action.col-sm-12
-    .col-md-3
-      %h2
-        LJV
+    .col-md-2
+      - if current[:event].holder == 1
+        = image_tag("calendar/city.png", height: '100%', width: '100%')
+      - else
+        = image_tag("calendar/citizens.png", height: '100%', width: '100%')
       .progress
-        .stripe.stripe-active
+        - if current[:event].holder == 1
+          .stripe.stripe-city
+        - else
+          .stripe.stripe-citizens
         .stripe.stripe-grayed{'style' => "min-height: #{100 - current[:percent]}%; height: #{100 - current[:percent]}%;"}
 
-      -#.progress-funky
-      -#  .current
-
-
-      %h2
+      %h3
         #{current[:percent]}%
     .col-md-9
-      %h3
-        #{current[:event].holder_text}
+      - if current[:event].holder == 1
+        %h2.city
+          #{current[:event].holder_text}
+      - else
+        %h2.citizens
+          #{current[:event].holder_text}
+
       .content
         %p
           = current[:event].title.html_safe
@@ -23,10 +29,6 @@
         = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'pull-right', :remote => true) do
           докладніше >>
 
-
-      - if current[:event].holder == 1
-
-      - else
 
   :javascript
     $(document).ready(function() {
