@@ -1,14 +1,20 @@
-.pies-container#calendar_pies{:calendar_id => @calendar.id }
-  %svg#svg_calendar
-  %h1
-    2014
+.pies-container
+  #calendar_pies{:calendar_id => @calendar.id }
+    %svg#svg_calendar
+    %h1
+      2014
 
 
 :javascript
 
   $(document).ready(function() {
-    pie = $('.pies-container')
-    size = pie.width() * .76
+    size = $('#calendar_pies').width()
+
+    //$('.pies-container').css('margin-left', (size - sizeInner)/2)
+    //$('.pies-container').css('padding', (sizeOuter - size) / 2)
+    //$('#svg_calendar').css('margin-left', $('#svg_calendar').width() * .01)
+
+
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
       var pie = d3.layout.pie()
           .sort(null)
@@ -42,10 +48,6 @@
         radius = radius - 10;
       })
     })
-
-    $('.pies-container').css('margin-top', 50)
-    $('.pies-container').css('padding', $('#svg_calendar').width() * .11)
-    $('#svg_calendar').css('margin-left', $('#svg_calendar').width() * .01)
 
 
     function create_arc(radius1, radius2) {

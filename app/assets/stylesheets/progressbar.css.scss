@@ -10,13 +10,12 @@
   .stripe-grayed {
     top: 0px;
     z-index: 2;
-    background: repeating-linear-gradient(
-                    to bottom,
-                    transparent,
-                    transparent 60%,
-                    #CCCCCC 50%,
-                    #CCCCCC
-    );
+
+    background: -webkit-linear-gradient( to bottom, transparent, transparent 60%, #CCCCCC 50%, #CCCCCC );
+    background: -o-linear-gradient( to bottom, transparent, transparent 60%, #CCCCCC 50%, #CCCCCC );
+    background: -moz-linear-gradient( to bottom, transparent, transparent 60%, #CCCCCC 50%, #CCCCCC );
+    background: repeating-linear-gradient( to bottom, transparent, transparent 60%, #CCCCCC 50%, #CCCCCC );
+
     background-size: 100% 10px;
 
     -webkit-animation: stripe-height 3s; /* Chrome, Safari, Opera */
@@ -28,23 +27,17 @@
     bottom: 0px;
   }
   .stripe-city {
-    background: repeating-linear-gradient(
-                    to bottom,
-                    transparent,
-                    transparent 60%,
-                    #990000 50%,
-                    #990000
-    );
+    background: -webkit-linear-gradient( to bottom, transparent, transparent 60%, #990000 50%, #990000 );
+    background: -o-linear-gradient( to bottom, transparent, transparent 60%, #990000 50%, #990000 );
+    background: -moz-linear-gradient( to bottom, transparent, transparent 60%, #990000 50%, #990000 );
+    background: repeating-linear-gradient( to bottom, transparent, transparent 60%, #990000 50%, #990000 );
     background-size: 100% 10px;
   }
   .stripe-citizens {
-    background: repeating-linear-gradient(
-                    to bottom,
-                    transparent,
-                    transparent 60%,
-                    #006633 50%,
-                    #006633
-    );
+    background: -webkit-linear-gradient( to bottom, transparent, transparent 60%, #006633 50%, #006633 );
+    background: -o-linear-gradient( to bottom, transparent, transparent 60%, #006633 50%, #006633 );
+    background: -moz-linear-gradient( to bottom, transparent, transparent 60%, #006633 50%, #006633 );
+    background: repeating-linear-gradient( to bottom, transparent, transparent 60%, #006633 50%, #006633 );
     background-size: 100% 10px;
   }
 }

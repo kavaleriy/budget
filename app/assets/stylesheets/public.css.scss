@@ -7,9 +7,14 @@
   background: url(calendar/left-line.png) 100% 100px no-repeat;
   height: 900px;
 
-  .progress {
-    margin-right: 0px;
-    height: 220px;
+  .bar {
+    max-width: 60px;
+    padding: 0px;
+
+    .progress {
+      margin-right: 0px;
+      height: 220px;
+    }
   }
 
   .countdown {
@@ -74,6 +79,8 @@
     width: 90px;
     -moz-border-radius:    45px;
     -webkit-border-radius: 45px;
+    border-radius: 45px;
+
     img {
       margin: 17px 0 0 15px;
     }
@@ -95,19 +102,22 @@
   }
 
   .pies-container {
-    margin: 0 20px;
-    background: url(calendar/circles.png) 50% no-repeat;
+    width: 100%;
+    margin-top: 50px;
+    background: url(calendar/circles.png) 0% 0% no-repeat;
     background-size: 100%;
-
-
+    #calendar_pies {
+      margin-left: -0.4%;
+      padding: 4.5% 12%;
+      width: 100%;
+      height: 100%
+    }
     h1 {
       position: absolute;
-      top: 50%;
-      margin-top: -60px;
-      margin-right: -50px;
-      right: 50%;
+      top: 44%;
+      left: 50%;
+      margin-left: -60px;
       color: #FF9933;
-
     }
   }
 }
