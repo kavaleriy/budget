@@ -27,11 +27,11 @@
     %li
       %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_calendar_month')
-    .tab-content
-      #calendar_year.tab-pane.fade.in.active
-        = render partial: 'pie_cycle'
-      #calendar_month.tab-pane.fade
-        = render partial: 'calendar'
+  .tab-content
+    #calendar_year.tab-pane.fade.in.active
+      = render partial: 'pie_cycle'
+    #calendar_month.tab-pane.fade
+      = render partial: 'calendar'
 
   .legend
     .pull-left

@@ -1,48 +1,36 @@
 - model_class = Event
 
-.modal-header{style: "background-color: #{@event.color}"}
+.title
+  %span.fa{:class => @event.icon, 'style' => "a_color: #{@event.text_color}"}
+  = "#{@event.holder_text}: #{@event.title}"
 
-  %button.close{"data-dismiss" => "modal", :type => "button"}
-    %span{"aria-hidden" => "true"} &times;
-    %span.sr-only Close
+%ul.nav.nav-tabs{role: 'tablist'}
+  %li.active
+    %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
+      = t('.tab1_title')
+  %li
+    %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
+      = t('.tab2_title')
+  %li
+    %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
+      = t('.tab3_title')
 
-  %h4#myModalLabel.modal-title
-    %span.fa{:class => @event.icon, 'style' => "color: #{@event.text_color}"}
-      = "#{@event.holder_text}: #{@event.title}"
+.tab-content
+  .tab-pane.fade.in.active#show_event_main_tab
+    %p
+      = @event.description.html_safe
 
-.modal-body
+  .tab-pane.fade#show_event_range_tab
+    %p
+      %strong= t('.starts_at') + ':'
+      = @event.starts_at.strftime('%d/%m/%Y %H:%M')
+    %p
+      %strong= t('.ends_at') + ':'
+      %br
+      = @event.ends_at.strftime('%d/%m/%Y %H:%M')
+    %p
+      %strong= t('.all_day') + ':'
+      %br
+      = @event.all_day ? 'так' : 'ні'
 
-  %ul.nav.nav-tabs{role: 'tablist'}
-    %li.active
-      %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        = t('.tab1_title')
-    %li
-      %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        = t('.tab2_title')
-    %li
-      %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
-        = t('.tab3_title')
-
-  .tab-content
-    .tab-pane.fade.in.active#show_event_main_tab
-      %p
-        = @event.description.html_safe
-
-    .tab-pane.fade#show_event_range_tab
-      %p
-        %strong= t('.starts_at') + ':'
-        = @event.starts_at
-      %p
-        %strong= t('.ends_at') + ':'
-        %br
-        = @event.ends_at
-      %p
-        %strong= t('.all_day') + ':'
-        %br
-        = @event.all_day ? 'так' : 'ні'
-
-    .tab-pane.fade#show_event_attach_tab
-
-
-.modal-footer
-  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"} Close
+  .tab-pane.fade#show_event_attach_tab

@@ -6,6 +6,7 @@
 .left-panel {
   background: url(calendar/left-line.png) 100% 100px no-repeat;
   height: 900px;
+  overflow: hidden;
 
   .bar {
     max-width: 60px;
@@ -88,13 +89,55 @@
   .tabs {
     min-width: 200px;
     max-width: 200px;
-    margin-left: -20px!important;
+    margin-left: -22px !important;
+    padding-left: 0px;
+    a > div {
+      width: 200px;
+      height: 44px;
+    }
+
+    list-style-type: none;
+    li {
+      .news {
+        background: url(calendar/news.png) no-repeat;
+        background-size: 200px 44px;
+      }
+      .event {
+        background: url(calendar/event.png) no-repeat;
+        background-size: 200px 44px;
+      }
+    }
+    li.active {
+      .news {
+        background: url(calendar/news-active.png) no-repeat;
+        background-size: 200px 44px;
+      }
+      .event {
+        background: url(calendar/event-active.png) no-repeat;
+        background-size: 200px 44px;
+      }
+    }
+  }
+
+  #calendar_event {
+    margin: 0px 20px;
+    .title {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .nav {
+      margin-top: 20px;
+    }
+
+    .tab-content {
+      margin-top: 20px;
+    }
   }
 }
 
 
 .center {
-
   .views {
     li {
       //background-color: #CCCCCC;
@@ -125,13 +168,15 @@
 div.tooltip {
   position: absolute;
   text-align: center;
-  width: 320px;
-  height: 200px;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  max-height: 200px;
   overflow: hidden;
-  padding: 2px;
+  padding: 15px;
   font: 12px sans-serif;
   background: lightsteelblue;
-  border: 0px;
+  border: 4px;
   border-radius: 8px;
   pointer-events: none;
 }

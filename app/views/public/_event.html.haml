@@ -1,6 +1,14 @@
 .circle.pull-left
   = image_tag("calendar/timeline-city.png", width: '50px')
 
-.tabs.pull-left
-  = image_tag("calendar/news.png", width: '100%')
-  = image_tag("calendar/event-selected.png", width: '100%')
+%ul.tabs.pull-left{role: 'tablist'}
+  %li.active
+    %a{href: '#calendar_news', role: 'tab', 'data-toggle' => 'tab'}
+      .news
+  %li
+    %a{href: '#calendar_event', role: 'tab', 'data-toggle' => 'tab'}
+      .event
+
+.tab-content.col-sm-12
+  #calendar_news.tab-pane.fade.in.active
+  #calendar_event.tab-pane.fade
