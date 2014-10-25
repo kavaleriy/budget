@@ -35,5 +35,10 @@
     });
   }
 
-  $(document).on('ready page:load', init_calendar)
-  //$(document).ready(init_calendar);
+  $(document).on('ready page:load', function() {
+    init_calendar()
+
+    $('a[href="#calendar_month"]').on('shown.bs.tab', function (e) {
+      $('#calendar_view').fullCalendar('render');
+    });
+  })

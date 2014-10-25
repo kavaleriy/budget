@@ -92,7 +92,9 @@
            .attr("dy", ".35em")
            .style("text-anchor", "middle")
            .html(function(d,i) {
-              //return d.data.title;
+              // TODO: show icon
+              //return d.data.icon;
+
            })
   }
 
@@ -100,5 +102,9 @@
     return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b>"
   }
 
-  $(document).ready(init_pie)
-  $(window).resize(init_pie);
+
+  $(document).on('ready page:load', function() {
+    init_pie()
+    $(window).resize(init_pie);
+  })
+

@@ -1,8 +1,8 @@
 - model_class = Event
 
 .date
-  %strong= @event.starts_at_string
-  %strong= "- #{@event.ends_at_string}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
+  %strong= date_to_string(@event.starts_at)
+  %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
 
 %h3.title
   %span.fa{:class => @event.icon, 'style' => "a_color: #{@event.text_color}"}
