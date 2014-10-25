@@ -5284,7 +5284,6 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			positionSlides();
 			
 			// POSITION NAV
-            console.log(config.slider.nav.width)
 			VMM.Lib.css(navigation.nextBtn, "left", (current_width - config.slider.nav.width));
 			VMM.Lib.height(navigation.prevBtn, config.slider.height);
 			VMM.Lib.height(navigation.nextBtn, config.slider.height);

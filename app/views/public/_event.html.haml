@@ -1,5 +1,4 @@
 .circle.pull-left
-  = image_tag("calendar/timeline-city.png", width: '50px')
 
 %ul.tabs.pull-left{role: 'tablist'}
   %li.active
@@ -9,6 +8,9 @@
     %a{href: '#calendar_event', role: 'tab', 'data-toggle' => 'tab'}
       .event
 
-.tab-content.col-sm-12
+.tab-content.col-xs-12
   #calendar_news.tab-pane.fade.in.active
   #calendar_event.tab-pane.fade
+    %br
+    %strong
+      =t('.empty_event')

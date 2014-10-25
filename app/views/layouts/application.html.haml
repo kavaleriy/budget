@@ -20,9 +20,9 @@
 
     = yield :head
 
-  %body
-
-    = render :partial => 'layouts/navbar'
+%body
+  = render :partial => 'layouts/navbar'
+  .row-fluid
     .header
       = yield :header
 
@@ -30,10 +30,7 @@
     .main
       = yield
 
-    %footer.col-sm-12
-      %p &copy; UNDP, 2014
+  .clear
 
-    #eventModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-      .modal-dialog
-        .modal-content
-
+  .afooter.col-xs-12
+    %p &copy; UNDP, 2014

@@ -1,5 +1,11 @@
 
 $(".right-panel #calendar_event").html("<%= escape_javascript(render partial: 'show') %>");
-//$('#eventModal').modal('show')
+
+
+<% if @event.holder == 1 %>
+    $(".right-panel .circle").removeClass('citizens').addClass('city')
+<% else %>
+    $(".right-panel .circle").removeClass('city').addClass('citizens')
+<% end %>
 
 $('.right-panel .event').click()

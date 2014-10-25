@@ -6,7 +6,6 @@
 .left-panel {
   background: url(calendar/left-line.png) 100% 100px no-repeat;
   height: 900px;
-  overflow: hidden;
 
   .bar {
     max-width: 60px;
@@ -20,7 +19,7 @@
 
   .countdown {
     .title {
-      padding-right: 0px;
+      margin: 25px 0 0 0;
       color: #FF9933;
       text-align: right;
     }
@@ -29,7 +28,7 @@
       color: #FF1F1F;
       width: 120px;
       height: 120px;
-      box-sizing: border-box;
+      margin: -25px -20px 0 0 ;
     }
   }
 
@@ -41,7 +40,7 @@
     }
 
     h2 {
-      margin-top: 0px;
+      margin: 11px 0 0 0;
       &.city {
         color: #990000;
       }
@@ -55,7 +54,7 @@
     }
 
     .content {
-      max-height: 200px;
+      max-height: 210px;
       overflow: hidden;
 
       h4 {
@@ -75,6 +74,10 @@
   padding-top: 10px;
   .circle {
     background-color: rgba(255, 153, 51, 0);
+
+    background: url(calendar/city.png) 13px 13px no-repeat;
+    background-size: 60px 51px;
+
     border: 4px solid #FF9933;
     height: 90px;
     width: 90px;
@@ -82,14 +85,21 @@
     -webkit-border-radius: 45px;
     border-radius: 45px;
 
-    img {
-      margin: 17px 0 0 15px;
-    }
   }
+  .circle.city {
+    background: url(calendar/timeline-city.png) 13px 13px no-repeat;
+    background-size: 60px 51px;
+  }
+
+  .circle.citizens {
+    background: url(calendar/timeline-citizens.png) 13px 13px no-repeat;
+    background-size: 60px 51px;
+  }
+
   .tabs {
     min-width: 200px;
     max-width: 200px;
-    margin-left: -22px !important;
+    margin-left: -20px !important;
     padding-left: 0px;
     a > div {
       width: 200px;
@@ -120,7 +130,13 @@
   }
 
   #calendar_event {
-    margin: 0px 20px;
+    height: 800px;
+    overflow: hidden;
+
+    padding: 15px 0;
+    .date {
+      color: #808080;
+    }
     .title {
       margin-top: 20px;
       font-size: 18px;
@@ -132,21 +148,18 @@
 
     .tab-content {
       margin-top: 20px;
+      .description {
+        color: #808080;
+      }
     }
   }
 }
 
 
 .center {
-  .views {
-    li {
-      //background-color: #CCCCCC;
-    }
-  }
-
   .pies-container {
     width: 100%;
-    margin-top: 50px;
+    margin-top: 10px;
     background: url(calendar/circles.png) 0% 0% no-repeat;
     background-size: 100%;
     #calendar_pies {
@@ -157,7 +170,7 @@
     }
     h1 {
       position: absolute;
-      top: 44%;
+      top: 47%;
       left: 50%;
       margin-left: -60px;
       color: #FF9933;

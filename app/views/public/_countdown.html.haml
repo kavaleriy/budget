@@ -1,8 +1,8 @@
 - if @countdown_event and @countdown_event.ends_at > Date.current
-  .countdown.col-sm-12
+  .countdown
     = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
-      .date.col-sm-5.pull-right{ 'data-date' => @countdown_event.ends_at}
-      %h4.title.col-sm-7.pull-right
+      %h4.title.col-xs-12
+        .date.col-s2m-4.pull-right{ 'data-date' => @countdown_event.ends_at}
         #{@calendar.countdown_title.html_safe}
 
 

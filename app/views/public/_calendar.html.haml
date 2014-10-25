@@ -1,8 +1,8 @@
 #calendar_view.fc.fc-ltr{:calendar_id => @calendar.id }
 
 :javascript
-  //$(document).on('ready page:load', function() {
-  $(function() {
+
+  function init_calendar() {
     return $('#calendar_view').fullCalendar({
       lang: 'uk',
       editable: false,
@@ -33,4 +33,7 @@
         t.find(".fc-event-title").before($("<span class=\"fc-event-icons\"></span>").html(icon));
       }
     });
-  });
+  }
+
+  $(document).on('ready page:load', init_calendar)
+  //$(document).ready(init_calendar);

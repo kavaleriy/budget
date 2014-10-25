@@ -1,6 +1,6 @@
 - if current[:event]
-  .current-action.col-sm-12
-    .bar.col-sm-2
+  .current-action.col-xs-12
+    .bar.col-xs-2
       - if current[:event].holder == 1
         = image_tag("calendar/city.png", width: '100%')
       - else
@@ -14,7 +14,7 @@
 
       %h3
         #{current[:percent]}%
-    .col-sm-9
+    .col-xs-9
       - if current[:event].holder == 1
         %h2.city
           #{current[:event].holder_text}
@@ -22,12 +22,11 @@
         %h2.citizens
           #{current[:event].holder_text}
 
-      .content
-        %p
-          = current[:event].title.html_safe
+      %p.content
+        = current[:event].title.html_safe
 
-        = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'pull-right', :remote => true) do
-          докладніше >>
+      = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'pull-right', :remote => true) do
+        докладніше >>
 
 
   :javascript
