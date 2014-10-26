@@ -44,7 +44,7 @@
       &.city {
         color: #990000;
       }
-      &.citizens {
+      &.people {
         color: #006633;
       }
     }
@@ -67,34 +67,37 @@
   }
 }
 
+
+.circle {
+  background-color: rgba(255, 153, 51, 0);
+
+  background: url(calendar/city.png) 13px 13px no-repeat;
+  background-size: 60px 51px;
+
+  border: 4px solid #FF9933;
+  height: 90px;
+  width: 90px;
+  -moz-border-radius:    45px;
+  -webkit-border-radius: 45px;
+  border-radius: 45px;
+
+}
+.circle.city {
+  background: url(calendar/timeline-city.png) 13px 13px no-repeat;
+  background-size: 60px 51px;
+}
+
+.circle.people {
+  background: url(calendar/timeline-people.png) 13px 13px no-repeat;
+  background-size: 60px 51px;
+}
+
+
 .right-panel {
   background: url(calendar/right-line.png) 0% 100px no-repeat;
   height: 900px;
 
   padding-top: 10px;
-  .circle {
-    background-color: rgba(255, 153, 51, 0);
-
-    background: url(calendar/city.png) 13px 13px no-repeat;
-    background-size: 60px 51px;
-
-    border: 4px solid #FF9933;
-    height: 90px;
-    width: 90px;
-    -moz-border-radius:    45px;
-    -webkit-border-radius: 45px;
-    border-radius: 45px;
-
-  }
-  .circle.city {
-    background: url(calendar/timeline-city.png) 13px 13px no-repeat;
-    background-size: 60px 51px;
-  }
-
-  .circle.citizens {
-    background: url(calendar/timeline-citizens.png) 13px 13px no-repeat;
-    background-size: 60px 51px;
-  }
 
   .tabs {
     min-width: 200px;

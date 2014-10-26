@@ -36,8 +36,8 @@ class Event
   def do_after_initialize
     self.holder_text = self.holder == 1 ? 'Місто' : 'Громада'
 
-    self.starts_at_string = I18n.l(self.starts_at, format: '%-d %B %Y %H:%M').gsub(/00:00/, '') unless self.starts_at.nil?
-    self.ends_at_string = I18n.l(self.ends_at, format: '%-d %B %Y %H:%M') unless self.ends_at.nil?
+    self.starts_at_string = I18n.l(self.starts_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.starts_at.nil?
+    self.ends_at_string = I18n.l(self.ends_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.ends_at.nil?
     self.all_day_string = self.all_day ? 'так' : 'ні'
   end
 

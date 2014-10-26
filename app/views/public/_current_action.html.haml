@@ -4,12 +4,12 @@
       - if current[:event].holder == 1
         = image_tag("calendar/city.png", width: '100%')
       - else
-        = image_tag("calendar/citizens.png", width: '100%')
+        = image_tag("calendar/people.png", width: '100%')
       .progress
         - if current[:event].holder == 1
           .stripe.stripe-city
         - else
-          .stripe.stripe-citizens
+          .stripe.stripe-people
         .stripe.stripe-grayed{'style' => "min-height: #{100 - current[:percent]}%; height: #{100 - current[:percent]}%;"}
 
       %h3
@@ -19,7 +19,7 @@
         %h2.city
           #{current[:event].holder_text}
       - else
-        %h2.citizens
+        %h2.people
           #{current[:event].holder_text}
 
       %p.content

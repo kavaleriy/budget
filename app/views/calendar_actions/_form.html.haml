@@ -1,23 +1,31 @@
-= form_for @calendar_action, :html => { :class => 'form-vertical' } do |f|
-  .form-group
-    = f.label :title, t('.title'), :class => 'control-label'
-    .controls
-      = f.text_field :title, :class => 'form-control'
-  .form-group
-    .controls
-      = render :partial => 'events/eventowner_select', :locals => { :holder => @calendar_action.holder, :f => f }
-  .form-group
-    = f.label :icon, :class => 'control-label'
-    .controls
-    = render :partial => 'layouts/fa_select', :locals => { :f => f }
-  .form-group
-    = f.label :description, t('.description'), :class => 'control-label'
-    .controls
-      = f.text_area :description, :class => 'form-control'
-  .form-group
-    = f.label :color, t('.color'), :class => 'control-label'
-    .controls
-      = f.color_field :color, :class => 'form-control'
+= bootstrap_form_for @calendar_action, :html => { :class => 'form-vertical' } do |f|
+  = f.hidden_field :holder
+  -#= f.collection_radio_buttons :holder, [[1, ' Місто'], [2, ' Громада']], :first, :last, label: t('.holder')
+  -#= render :partial => 'events/eventowner_select', :locals => { :holder => @calendar_action.holder, :f => f }
+
+  = f.text_field :title, label: t('.title')
+
+  .row
+    .col-xs-12
+      .pull-left
+        = f.static_control label: t('.icon') do
+          = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @calendar_action.icon), {}, { class: 'fa-select' }
+      .pull-left
+        = f.static_control label: t('.color') do
+          = f.select_without_bootstrap :color, options_for_select(text_colors_list, @calendar_action.color), {}, { class: 'color-select' }
+      .pull-left
+        = f.static_control label: t('.bg_color') do
+          = f.select_without_bootstrap :bg_color, options_for_select(get_bg_colors_list(@calendar_action.holder), @calendar_action.bg_color), {}, { class: 'color-select' }
+      -#.col-xs-2
+      -#  = f.color_field :color, label: t('.color')
+      -#.col-xs-2
+      -#  = f.color_field :bg_color, label: t('.bg_color')
+      -#
+
+
+  = f.text_area :description, :rows => "15", label: t('.description')
+
 
   = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'
+

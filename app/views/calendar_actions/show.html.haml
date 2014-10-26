@@ -3,28 +3,7 @@
   .head.pull-left
     =t '.title'
 
-
-%p
-  %strong= t('calendar_actions.index.name') + ':'
-  %br
-  = @calendar_action.title
-%p
-  %strong= t('calendar_actions.index.icon') + ':'
-  %br
-  %span.fa{class: @calendar_action.icon}
-%p
-  %strong= t('calendar_actions.index.description') + ':'
-  %br
-  = @calendar_action.description.html_safe
-%p
-  %strong= t('calendar_actions.index.color') + ':'
-  %br
-  %div{style: "width: 50px; height: 50px; border: solid; background-color: #{@calendar_action.color}" }
-%p
-  %strong= t('calendar_actions.index.holder') + ':'
-  %br
-  = @calendar_action.holder_string
-
+= render partial: 'action', :locals => { calendar_action: @calendar_action }
 
 = link_to t('form.back', :default => t("helpers.links.back")), calendar_actions_path, :class => 'btn btn-default'
 = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(@calendar_action), :class => 'btn btn-default'

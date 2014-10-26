@@ -48,6 +48,8 @@ end
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
 gem 'less-rails'
 gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
+# https://github.com/bootstrap-ruby/rails-bootstrap-forms
+gem 'bootstrap_form'
 
 # https://gorails.com/blog/rails-4-0-with-mongodb-and-mongoid
 gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
@@ -63,8 +65,11 @@ gem 'momentjs-rails', '>= 2.5.0'
 
 
 # https://github.com/Eonasdan/bootstrap-datetimepicker/wiki/Installation#rails-
-gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+# gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
 
 # https://github.com/galetahub/ckeditor
 # gem 'ckeditor'
 # gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
+
+# https://github.com/argerim/select2-rails
+gem 'select2-rails'

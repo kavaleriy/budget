@@ -66,7 +66,7 @@ class PublicController < ApplicationController
     }
 
     @calendar.events.all.each { |e|
-      media = e.holder == 1 ? { img: 'timeline-city.png', thumb: 'city.png' } : { img: 'timeline-citizens.png', thumb: 'timeline-citizens.png'}
+      media = e.holder == 1 ? { img: 'timeline-city.png', thumb: 'city.png' } : { img: 'timeline-people.png', thumb: 'timeline-people.png'}
 
       point = {}
       point['startDate'] = e.starts_at.strftime("%Y,%m,%d")

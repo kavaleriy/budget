@@ -45,6 +45,8 @@
 
       .tab-pane.fade#show_event_range_tab
 
+        = f.datetime_select :starts_at, :class => 'form-control'
+
         .form-group
           = f.label :starts_at, t('.starts_at'), :class => 'control-label'
           .controls

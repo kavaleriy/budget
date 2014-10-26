@@ -3,9 +3,9 @@ $(".right-panel #calendar_event").html("<%= escape_javascript(render partial: 's
 
 
 <% if @event.holder == 1 %>
-    $(".right-panel .circle").removeClass('citizens').addClass('city')
+    $(".right-panel .circle").removeClass('people').addClass('city')
 <% else %>
-    $(".right-panel .circle").removeClass('city').addClass('citizens')
+    $(".right-panel .circle").removeClass('city').addClass('people')
 <% end %>
 
 $('.right-panel .event').click()

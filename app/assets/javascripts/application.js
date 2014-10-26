@@ -17,19 +17,17 @@
 //= require twitter/bootstrap
 //= require turbolinks
 
-
 //= require moment
 //= require moment/uk.js
-
 //= require fullcalendar/fullcalendar.min
 //= require fullcalendar/uk
-
-//= require bootstrap-datetimepicker
-//= require locales/bootstrap-datetimepicker.uk.js
 
 //= require timecircles
 
 //= require d3
+
+//= require select2
+//= require select2_locale_uk
 
 //= require fileupload/jquery.fileupload
 //= require fileupload/jquery.fileupload-process

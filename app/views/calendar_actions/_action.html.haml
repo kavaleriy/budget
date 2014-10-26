@@ -1,0 +1,6 @@
+.calendar_action
+  %h4.title{ 'style' => "color: #{calendar_action.color}; background-color: #{calendar_action.bg_color}"}
+    %span.fa{:class => calendar_action.icon, 'style' => "a_color: #{calendar_action.color}"}
+    %strong= calendar_action.title
+  %div.description
+    = calendar_action.description.html_safe
