@@ -10,16 +10,21 @@
 
 %ul.views.nav.nav-tabs{role: 'tablist'}
   %li.active
+    %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_bubbletree')
+  %li
     %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_sunburst')
   %li
     %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_treemap')
 .tab-content
-  #sunburst.tab-pane.fade.in.active
-    = render partial: 'sunburst'
+  #bubbletree.tab-pane.fade.in.active
+    = render partial: 'bubbletree'
+  #sunburst.tab-pane.fade
+    -#= render partial: 'sunburst'
   #treemap.tab-pane.fade
-    = render partial: 'treemap'
+    -#= render partial: 'treemap'
 
 
 = link_to t('.back', :default => t("helpers.links.back")), revenues_path, :class => 'btn btn-default'

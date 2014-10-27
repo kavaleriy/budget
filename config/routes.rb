@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   get 'revenues/get_sunburst_data/:id' => 'revenues#get_sunburst_data'
+  get 'revenues/get_bubbletree_data/:id' => 'revenues#get_bubbletree_data'
+
   post 'revenues/upload'
   resources :revenues
 

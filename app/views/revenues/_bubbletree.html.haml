@@ -1,0 +1,26 @@
+-#https://github.com/okfn/bubbletree
+
+
+= stylesheet_link_tag "bubbletree.css"
+= javascript_include_tag "jquery-1.5.2.min.js"
+= javascript_include_tag "jquery.history.js"
+= javascript_include_tag "raphael.js"
+= javascript_include_tag "vis4.js"
+= javascript_include_tag "Tween.js"
+= javascript_include_tag "bubbletree.js"
+= javascript_include_tag "cofog.js"
+
+
+.bubbletree-wrapper
+  .bubbletree
+
+:javascript
+
+  $(document).ready(function() {
+    d3.json("get_bubbletree_data/#{@revenue.id}", function(data) {
+      new BubbleTree({
+          data: data,
+          container: '.bubbletree'
+      });
+    })
+  });

@@ -1,5 +1,5 @@
 class RevenuesController < ApplicationController
-  before_action :set_revenue, only: [:show, :edit, :update, :destroy, :get_sunburst_data]
+  before_action :set_revenue, only: [:show, :edit, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
   # GET /revenues
   # GET /revenues.json
@@ -139,6 +139,60 @@ class RevenuesController < ApplicationController
     end
 
     children
+  end
+
+
+  def get_bubbletree_data
+    items = { :amount => 0 }
+
+    @revenue.revenue_rots.each do |r|
+      va = r.kkd.slice(0, 1)
+      vb = r.kkd.slice(1, 2)
+      vc = r.kkd.slice(3, 2)
+      vd = r.kkd.slice(5, 3)
+
+      items[va] = { :amount => 0 } if items[va].nil?
+
+      items[va][vb] = { :amount => 0 } if items[va][vb].nil?
+
+      items[va][vb][vc] = { :amount => 0 } if items[va][vb][vc].nil?
+
+      items[va][vb][vc][vd] = { :amount => 0, :kkd => [] } if items[va][vb][vc][vd].nil?
+
+
+      items[:amount] += r.amount
+      items[va][:amount] += r.amount
+      items[va][vb][:amount] += r.amount
+      items[va][vb][vc][:amount] += r.amount
+      items[va][vb][vc][vd][:amount] += r.amount
+      items[va][vb][vc][vd][:kkd] << { r.kkd => r.amount }
+    end
+
+
+    data = build_bubbletree_item(items, "Всього доходів", "green")
+
+    binding.pry
+
+    render json: data
+
+  end
+
+  def build_bubbletree_item(items, label, color)
+    tree = {
+        "amount" => items[:amount],
+        "label" => label,
+        "color" => color
+    }
+
+    children = items.keys.reject{|k| k == :amount}
+    unless children.empty?
+      children.each { |key|
+        item = items[key]
+        data["children"] << build_bubbletree_item(item[:amount], k, "orange")
+      }
+    end
+
+    tree
   end
 
 
