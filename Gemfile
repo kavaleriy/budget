@@ -73,3 +73,6 @@ gem 'momentjs-rails', '>= 2.5.0'
 
 # https://github.com/argerim/select2-rails
 gem 'select2-rails'
+
+# https://github.com/infused/dbf
+gem 'dbf'

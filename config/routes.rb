@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'revenues/get_sunburst_data/:id' => 'revenues#get_sunburst_data'
+  post 'revenues/upload'
+  resources :revenues
+
   get 'visify/index'
   get 'visify/sunburst'
   get 'visify/sunburst_seq'
@@ -10,7 +14,6 @@ Rails.application.routes.draw do
   get 'visify/force_collapsible'
   get 'visify/get_sunburst_data'
   get 'visify/get_bubbletree_data'
-  get 'visify/get_seqsunburst_data'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'

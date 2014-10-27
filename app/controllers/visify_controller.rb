@@ -24,7 +24,6 @@ class VisifyController < ApplicationController
   end
 
   def get_sunburst_data
-
     data = {
         "name" => "flare",
         "children" => [
@@ -404,72 +403,6 @@ class VisifyController < ApplicationController
                 ]
             }
         ]
-    }
-
-    render json: data
-
-  end
-
-  def get_bubbletree_data
-    data = {
-        "amount" => 1000000,
-        "label" => "Total budget",
-        "color" => "green",
-        "children" =>
-             [{
-                  "amount" => 650000,
-                  "label" => "Health1",
-                  "color" => "blue",
-                  "children" =>
-                      [{
-                           "amount" => 150000,
-                           "label" => "Health2",
-                           "children" => []
-                       },{
-                           "amount" => 150000,
-                           "label" => "Health",
-                           "children" => []
-                       },{
-                           "amount" => 150000,
-                           "label" => "Health",
-                           "children" => []
-                       }],
-              },{
-                 "amount" => 650000,
-                 "label" => "Health1",
-                 "color" => "red",
-                 "children" =>
-                     [{
-                          "amount" => 150000,
-                          "label" => "Health2",
-                          "children" => []
-                      },{
-                          "amount" => 150000,
-                          "label" => "Health",
-                          "children" => []
-                      }],
-             },{
-                 "amount" => 650000,
-                 "label" => "Health1",
-                 "children" =>
-                     [{
-                          "amount" => 150000,
-                          "label" => "Health2",
-                          "children" => []
-                      },{
-                          "amount" => 150000,
-                          "label" => "Health",
-                          "children" => []
-                      },{
-                          "amount" => 150000,
-                          "label" => "Health",
-                          "children" => []
-                      },{
-                          "amount" => 150000,
-                          "label" => "Health",
-                          "children" => []
-                      }],
-             }],
     }
 
     render json: data

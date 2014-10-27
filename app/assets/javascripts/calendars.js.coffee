@@ -99,6 +99,7 @@ $(document).on 'ready page:load', ->
   createEvent = (event) ->
     dt_start = (if event.start? then moment(event.start).format("YYYY-MM-DDTHH:mm:ss") else "")
     dt_end = (if event.end? then moment(event.end).format("YYYY-MM-DDTHH:mm:ss") else "")
+    console.log(dt_end)
     $.ajax
       url: "/events/"
       type: 'POST'

@@ -56,7 +56,7 @@ class Event
         :icon => self.icon,
         :description => self.description || "",
         :start => self.starts_at,
-        :end => ends_at,
+        :end => self.ends_at,
         :allDay => self.all_day,
         :text_color => self.text_color,
         :color => self.color,

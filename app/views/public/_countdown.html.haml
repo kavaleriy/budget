@@ -3,7 +3,7 @@
     = link_to(event_path(@countdown_event, { :calendar_id => @calendar.id }), :class => '', :remote => true) do
       %h4.title.col-xs-12
         .date.col-s2m-4.pull-right{ 'data-date' => @countdown_event.ends_at}
-        #{truncate(@calendar.countdown_title.html_safe, :length => 100, :omission => '...')}
+        #{truncate(@calendar.countdown_title, :length => 100, :omission => '...')}
 
 
   :javascript
