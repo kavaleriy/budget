@@ -22,6 +22,7 @@
 
 %body
   = render :partial => 'layouts/navbar'
+
   .row-fluid
     .header
       = yield :header
@@ -35,32 +36,3 @@
   .afooter.col-xs-12
     %p &copy; UNDP, 2014
 
-:javascript
-  $(document).ready(function() {
-    $(".fa-select").select2(
-      {
-          formatResult: formatFaSelect,
-          formatSelection: formatFaSelect,
-          escapeMarkup: function(m) { return m; }
-      }
-    );
-
-    function formatFaSelect(el) {
-        return "<i class='fa " + el.id + "'/> " + el.id;
-    }
-  });
-
-:javascript
-  $(document).ready(function() {
-    $(".color-select").select2(
-      {
-          formatResult: formatColorSelect,
-          formatSelection: formatColorSelect,
-          escapeMarkup: function(m) { return m; }
-      }
-    );
-
-    function formatColorSelect(el) {
-        return "<div style='width: 100%; height: 30px; background-color: " + el.id + "'/>";
-    }
-  });

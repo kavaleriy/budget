@@ -17,8 +17,8 @@ class Event
   field :starts_at, type: DateTime
   field :ends_at, type: DateTime
   field :all_day, type: Boolean
-  field :color, type: String
   field :text_color, type: String
+  field :color, type: String
 
   before_validation :do_before_validation
   validates :holder, presence: true
@@ -26,16 +26,12 @@ class Event
   validates :starts_at, presence: true
 
 
-  attr_accessor :holder_text,
-                :starts_at_string,
+  attr_accessor :starts_at_string,
                 :ends_at_string,
                 :all_day_string
   after_initialize :do_after_initialize
 
-
   def do_after_initialize
-    self.holder_text = self.holder == 1 ? 'Місто' : 'Громада'
-
     self.starts_at_string = I18n.l(self.starts_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.starts_at.nil?
     self.ends_at_string = I18n.l(self.ends_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.ends_at.nil?
     self.all_day_string = self.all_day ? 'так' : 'ні'
@@ -62,8 +58,8 @@ class Event
         :start => self.starts_at,
         :end => ends_at,
         :allDay => self.all_day,
-        :color => self.color,
         :text_color => self.text_color,
+        :color => self.color,
     }
   end
 end

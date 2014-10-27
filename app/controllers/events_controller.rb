@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  include ApplicationHelper
+
   layout false
 
   before_action :set_calendar
@@ -30,8 +32,8 @@ class EventsController < ApplicationController
         :starts_at_string => params[:starts_at],
         :ends_at_string => params[:ends_at],
         :all_day => all_day,
-        :color => '#8cc0f1',
-        :text_color => '#ffffff'
+        :text_color => '#ffffff',
+        :color => '#8cc0f1'
     )
 
     respond_to do |format|
@@ -94,6 +96,12 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :color, :text_color)
+    p = params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :text_color, :color)
+    dates = params.require(:event).permit(:starts_at, :ends_at)
+    unless dates.empty?
+      p[:starts_at_string] = extract_date_from_param('starts_at', dates)
+      p[:ends_at_string] = extract_date_from_param('ends_at', dates)
+    end
+    p
   end
 end

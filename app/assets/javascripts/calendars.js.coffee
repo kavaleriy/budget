@@ -6,13 +6,13 @@ $(document).on 'ready page:load', ->
 
   # initialize the external events
   #-----------------------------------------------------------------
-  $("#external-events div.external-event").each ->
+  $(".external-events div.external-event").each ->
       eventObject =
           title: $.trim($(this).attr("data-title"))
           icon: $.trim($(this).attr("data-icon"))
           description: $(this).attr("data-description")
+          text_color: $(this).attr("data-text_color")
           color: $(this).attr("data-color")
-          text_color: '#ffffff'
           holder: $(this).attr("data-holder")
 
       $(this).data "eventObject", eventObject
@@ -48,9 +48,7 @@ $(document).on 'ready page:load', ->
       droppable: true
       drop: (date) ->
           originalEventObject = $(this).data("eventObject")
-
           copiedEventObject = $.extend({}, originalEventObject)
-
           # assign it the date that was reported
           copiedEventObject.start = date
           copiedEventObject.allDay = true
@@ -82,12 +80,14 @@ $(document).on 'ready page:load', ->
 #          $('#eventModal').modal('show')
 
       eventRender: (e, t, n) ->
-          icon = (if e.icon then " <i class='fa " + e.icon + " '></i> " else "")
-          i = (if e.description then e.description else "")
-          t.css('color', e.text_color)
-          t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
-          t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top'>" + i + "</small>"
-          return
+        icon = (if e.icon then " <i class='fa " + e.icon + " '></i> " else "")
+        i = (if e.description then e.description else "")
+
+        t.css('color', e.text_color) if (e.color)
+
+        t.find(".fc-event-title").before $("<span class=\"fc-event-icons\"></span>").html(icon)
+        t.find(".fc-event-title").append "<br><small data-toggle='tooltip' data-placement='top'>" + i + "</small>"
+        return
 
       eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
           updateEvent(event);
@@ -109,8 +109,8 @@ $(document).on 'ready page:load', ->
           icon: event.icon
           title: event.title
           description: event.description
-          color: event.color
           text_color: event.text_color
+          color: event.color
           starts_at_string: dt_start
           ends_at_string: dt_end
           all_day: event.allDay
@@ -135,12 +135,19 @@ $(document).on 'ready page:load', ->
               ends_at_string: dt_end,
               all_day: event.allDay,
               text_color: event.text_color
+              color: event.color
       .success ->
-
 
   $('#eventModal').on "ajax:success", 'form',  (e, data, status, xhr) ->
       $("#calendar").fullCalendar "refetchEvents"
       $('#eventModal').modal('hide')
   $('#eventModal').on "ajax:error", 'form',  (e, data, status, xhr) ->
-    alert data.responseText
-
+#    if $('event_title').val()
+    eval('err=' + data.responseText)
+    if err.title
+      alert('Заголовок ' + err.title[0])
+    else if err.holder
+      alert('Власник ' + err.holder[0])
+    else
+      alert('Помилка збереження: ' + data.responseText)
+    err = 'null'

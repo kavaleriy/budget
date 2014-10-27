@@ -17,13 +17,13 @@
     .col-xs-9
       - if current[:event].holder == 1
         %h2.city
-          #{current[:event].holder_text}
+          #{holder_to_string(current[:event].holder)}
       - else
         %h2.people
-          #{current[:event].holder_text}
+          #{holder_to_string(current[:event].holder)}
 
       %p.content
-        = current[:event].title.html_safe
+        = truncate(current[:event].title.html_safe, :length => 300, :omission => '...')
 
       = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'pull-right', :remote => true) do
         докладніше >>

@@ -11,11 +11,11 @@
         = f.static_control label: t('.icon') do
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @calendar_action.icon), {}, { class: 'fa-select' }
       .pull-left
-        = f.static_control label: t('.color') do
-          = f.select_without_bootstrap :color, options_for_select(text_colors_list, @calendar_action.color), {}, { class: 'color-select' }
+        = f.static_control label: t('.text_color') do
+          = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @calendar_action.text_color), {}, { class: 'color-select' }
       .pull-left
-        = f.static_control label: t('.bg_color') do
-          = f.select_without_bootstrap :bg_color, options_for_select(get_bg_colors_list(@calendar_action.holder), @calendar_action.bg_color), {}, { class: 'color-select' }
+        = f.static_control label: t('.color') do
+          = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list(@calendar_action.holder), @calendar_action.color), {}, { class: 'color-select' }
       -#.col-xs-2
       -#  = f.color_field :color, label: t('.color')
       -#.col-xs-2

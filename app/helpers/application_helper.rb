@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def extract_date_from_param name, hash
+    d = %w(1 2 3 4 5).map { |e| hash["#{name}(#{e}i)"].to_i }
+    "#{d[2]}/#{d[1]}/#{d[0]} #{d[3]}:#{d[4]}"
+  end
+
 
   def text_colors_list
     %w(#8dd3c7

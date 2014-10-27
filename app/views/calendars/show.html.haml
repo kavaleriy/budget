@@ -6,17 +6,18 @@
 .col-md-12
   .row-fluid
     .col-md-2
-      = render partial: "city_actions"
+      %h3= t '.city_actions.title'
+      = render partial: "default_actions", :locals => { actions: @city_actions }
     .col-md-8
-      .space
+
       #calendar.fc.fc-ltr{:calendar_id => @calendar.id }
+      .actions
+        = link_to t('form.back', :default => t("helpers.links.back")), calendars_path, :class => 'btn btn-default'
+        = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_path(@calendar), :class => 'btn btn-default'
+        = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_path(@calendar), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
     .col-md-2
-      = render partial: "people_actions"
-
-
-= link_to t('form.back', :default => t("helpers.links.back")), calendars_path, :class => 'btn btn-default'
-= link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_path(@calendar), :class => 'btn btn-default'
-= link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_path(@calendar), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+      %h3= t '.people_actions.title'
+      = render partial: "default_actions", :locals => { actions: @people_actions }
 
 
 #eventModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", "data-keyboard"=>"false"}

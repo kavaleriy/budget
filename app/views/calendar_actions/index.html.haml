@@ -30,5 +30,5 @@
       .col-xs-12
         = render partial: 'action', :locals => { calendar_action: calendar_action }
       .col-xs-12.actions
-        = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger  pull-left'
+        = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left'
         = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(calendar_action), :class => 'btn btn-default pull-right'

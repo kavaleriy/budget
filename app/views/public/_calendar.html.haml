@@ -9,7 +9,7 @@
       header: {
         left: '',
         center: 'title',
-        right: 'prev,next today'
+        right: 'today prev,next month,agendaWeek,agendaDay'
       },
       defaultView: 'month',
       events: {
@@ -27,9 +27,9 @@
         });
       },
       eventRender: function(e, t, n) {
-        var icon;
-        t.css('color', e.text_color);
-        icon = (e.icon ? " <i class='fa fa-lg " + e.icon + " '></i> " : "");
+        var icon = (e.icon ? " <i class='fa fa-lg " + e.icon + " '></i> " : "");
+        if (e.color)
+          t.css('color', e.text_color)
         t.find(".fc-event-title").before($("<span class=\"fc-event-icons\"></span>").html(icon));
       }
     });

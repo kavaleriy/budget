@@ -5,8 +5,8 @@
   %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
 
 %h3.title
-  %span.fa{:class => @event.icon, 'style' => "a_color: #{@event.text_color}"}
-  %strong= "#{@event.holder_text}:"
+  %span.fa{:class => @event.icon}
+  %strong= "#{holder_to_string(@event.holder)}:"
   = @event.title
 
 %ul.nav.nav-tabs{role: 'tablist'}

@@ -15,7 +15,7 @@ class CalendarActionsController < ApplicationController
 
   # GET /calendar_actions/new
   def new
-    @calendar_action = CalendarAction.new({ holder: params[:holder], icon: params[:icon], color: '#999933', bg_color: '#c7e0f8' })
+    @calendar_action = CalendarAction.new({ holder: params[:holder], icon: params[:icon], text_color: '#999933', color: '#c7e0f8' })
   end
 
   # GET /calendar_actions/1/edit
@@ -70,6 +70,6 @@ class CalendarActionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_action_params
-      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :color, :bg_color)
+      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :text_color, :color)
     end
 end

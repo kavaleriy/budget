@@ -5,8 +5,8 @@ class CalendarAction
   field :title, type: String
   field :icon, type: String
   field :description, type: String
+  field :text_color, type: String
   field :color, type: String
-  field :bg_color, type: String
 
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }

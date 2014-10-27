@@ -4,68 +4,45 @@
     %span.sr-only Close
   %h4#myModalLabel.modal-title= t('.title')
 
-= form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
+= bootstrap_form_for @event, remote: true, format: :json, :html => { :class => 'form-horizontal' } do |f|
   .modal-body
-    .form-group
-      .input-group
-        .input-group-addon
-          %span.glyphicon.glyphicon-pencil
-        = f.text_field :title, {:placeholder => t('.title_placeholder'), :type => "text", :class => 'form-control' }
-
-
-    .form-group
-      .controls.pull-right
-        = render :partial => 'eventowner_select', :locals => { :holder => @event.holder, :f => f }
+    = f.text_field :title, label: t('.name')
 
     %ul.nav.nav-tabs.nav-justified{:role => 'tablist'}
       %li.active
         %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
           = t('.tab1_title')
       %li
-        %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        %a{:href => '#show_event_descr_tab', :role => 'tab', 'data-toggle' => 'tab'}
           = t('.tab2_title')
       %li
-        %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
           = t('.tab3_title')
       %li
-        %a{:href => '#show_event_colors_tab', :role => 'tab', 'data-toggle' => 'tab'}
+        %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
           = t('.tab4_title')
 
     .tab-content
       .tab-pane.fade.in.active#show_event_main_tab
-        .form-group
-          = f.label :icon, t('.icon'), :class => 'control-label'
-          .controls
-          = render :partial => 'layouts/fa_select', :locals => { :f => f }
+        = f.collection_radio_buttons :holder, [[1, ' Місто'], [2, ' Громада']], :first, :last, label: t('.holder')
 
-        .form-group
-          = f.label :description, t('.description'), :class => 'control-label'
-          .controls
-            = f.text_area :description, :class => 'form-control'
+        = f.static_control label: t('.icon') do
+          = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {}, { class: 'fa-select' }
+        .row
+          .col-xs-6
+            = f.color_field :color, label: t('.color')
+          .col-xs-6
+            = f.color_field :text_color, label: t('.text_color')
+
+      .tab-pane.fade#show_event_descr_tab
+        = f.text_area :description, :rows => "10", label: t('.description')
 
       .tab-pane.fade#show_event_range_tab
+        = f.datetime_select :starts_at, label: t('.starts_at')
+        = f.datetime_select :ends_at, label: t('.ends_at')
 
-        = f.datetime_select :starts_at, :class => 'form-control'
 
-        .form-group
-          = f.label :starts_at, t('.starts_at'), :class => 'control-label'
-          .controls
-            .input-group.datetimepicker
-              = f.text_field :starts_at_string, :class => 'form-control'
-              %span.input-group-addon
-                %span.fa.fa-calendar
-
-        .form-group
-          = f.label :ends_at, t('.ends_at'), :class => 'control-label'
-          .controls
-            .input-group.datetimepicker
-              = f.text_field :ends_at_string, :class => 'form-control'
-              %span.input-group-addon
-                %span.fa.fa-calendar
-
-        .form-group
-          = f.label :all_day, t('.all_day'), :class => 'control-label'
-          = f.check_box :all_day
+        = f.check_box :all_day, label: t('.all_day')
 
       .tab-pane.fade#show_event_attach_tab
 
@@ -74,16 +51,6 @@
             .form-group
               = render :partial => 'layouts/file_upload'
 
-      .tab-pane.fade#show_event_colors_tab
-        .form-group
-          = f.label :color, t('.color'), :class => 'control-label'
-          .controls
-            = f.color_field :color, :class => 'form-control'
-
-        .form-group
-          = f.label :text_color, t('.text_color'), :class => 'control-label'
-          .controls
-            = f.color_field :text_color, :class => 'form-control'
 
   .modal-footer
     = button_to t('form.save', :default => t("helpers.links.save")), @event, :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :params => {:calendar_id => @calendar.id}
@@ -93,7 +60,15 @@
 
 :javascript
   $(function () {
-    $('.datetimepicker').datetimepicker({
-       language: 'uk',
-    });
+    $(".fa-select").select2(
+      {
+          formatResult: formatFaSelect,
+          formatSelection: formatFaSelect,
+          escapeMarkup: function(m) { return m; }
+      }
+    );
+
+    function formatFaSelect(el) {
+        return "<i class='fa " + el.id + "'/> " + el.id;
+    }
   });

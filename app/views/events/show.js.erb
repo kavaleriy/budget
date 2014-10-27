@@ -1,7 +1,6 @@
 
 $(".right-panel #calendar_event").html("<%= escape_javascript(render partial: 'show') %>");
 
-
 <% if @event.holder == 1 %>
     $(".right-panel .circle").removeClass('people').addClass('city')
 <% else %>

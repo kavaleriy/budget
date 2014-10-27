@@ -1,4 +1,5 @@
 class PublicController < ApplicationController
+  include EventsHelper
   before_action :set_calendar, only: [:calendar, :pie_data, :timelinejs, :subscribe, :unsubscribe]
 
   def index
@@ -71,7 +72,7 @@ class PublicController < ApplicationController
       point = {}
       point['startDate'] = e.starts_at.strftime("%Y,%m,%d")
       point['endDate'] = e.ends_at.strftime("%Y,%m,%d") unless e.ends_at.nil?
-      point['headline'] = "#{e.holder_text} - #{e.title}"
+      point['headline'] = "#{holder_to_string(e.holder)} - #{e.title}"
       point['text'] = e.description
       point['asset'] =
           {
@@ -94,7 +95,7 @@ class PublicController < ApplicationController
   def get_current_event event
     return {} if event.nil? || (event.ends_at.to_date - event.starts_at.to_date) == 0
     percent = 100 * (Date.current - event.starts_at.to_date).to_i / (event.ends_at.to_date - event.starts_at.to_date).to_i
-    { event: event, title: event.title, holder_text: event.holder_text, percent: percent}
+    { event: event, title: event.title, holder_text: holder_to_string(event.holder), percent: percent}
   end
 
   def build_pie starts_at, ends_at, ev
