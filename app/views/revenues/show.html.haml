@@ -22,10 +22,9 @@
   #bubbletree.tab-pane.fade.in.active
     = render partial: 'bubbletree'
   #sunburst.tab-pane.fade
-    -#= render partial: 'sunburst'
+    = render partial: 'sunburst'
   #treemap.tab-pane.fade
-    -#= render partial: 'treemap'
-
+    = render partial: 'treemap'
 
 = link_to t('.back', :default => t("helpers.links.back")), revenues_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(@revenue), :class => 'btn btn-default'

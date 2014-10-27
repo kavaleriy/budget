@@ -146,38 +146,39 @@ class RevenuesController < ApplicationController
     items = { :amount => 0 }
 
     @revenue.revenue_rots.each do |r|
-      va = r.kkd.slice(0, 1)
-      vb = r.kkd.slice(0, 3)
-      vc = r.kkd.slice(0, 5)
-      vd = r.kkd.slice(0, 8)
+      if r.amount > 0
+        va = r.kkd.slice(0, 1)
+        vb = r.kkd.slice(0, 3)
+        vc = r.kkd.slice(0, 5)
+        vd = r.kkd.slice(0, 8)
 
-      items[va] = { :amount => 0 } if items[va].nil?
+        items[va] = { :amount => 0 } if items[va].nil?
 
-      items[va][vb] = { :amount => 0 } if items[va][vb].nil?
+        items[va][vb] = { :amount => 0 } if items[va][vb].nil?
 
-      items[va][vb][vc] = { :amount => 0 } if items[va][vb][vc].nil?
+        items[va][vb][vc] = { :amount => 0 } if items[va][vb][vc].nil?
 
-      items[va][vb][vc][vd] = { :amount => 0 } if items[va][vb][vc][vd].nil?
+        items[va][vb][vc][vd] = { :amount => 0 } if items[va][vb][vc][vd].nil?
 
 
-      items[:amount] += r.amount
-      items[va][:amount] += r.amount
-      items[va][vb][:amount] += r.amount
-      items[va][vb][vc][:amount] += r.amount
-      items[va][vb][vc][vd][:amount] += r.amount
-      #items[va][vb][vc][vd][r.kkd] = { :amount => r.amount }
+        items[:amount] += r.amount
+        items[va][:amount] += r.amount
+        items[va][vb][:amount] += r.amount
+        items[va][vb][vc][:amount] += r.amount
+        items[va][vb][vc][vd][:amount] += r.amount
+        #items[va][vb][vc][vd][r.kkd] = { :amount => r.amount }
+      end
     end
 
     data = build_bubbletree_item(items, "Всього доходів", "green")
 
-    binding.pry
+    # binding.pry
 
     render json: data
 
   end
 
   def build_bubbletree_item(items, label, color)
-    #binding.pry
     tree = {
         "amount" => items[:amount],
         "label" => label,
