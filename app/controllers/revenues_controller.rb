@@ -147,9 +147,9 @@ class RevenuesController < ApplicationController
 
     @revenue.revenue_rots.each do |r|
       va = r.kkd.slice(0, 1)
-      vb = r.kkd.slice(1, 2)
-      vc = r.kkd.slice(3, 2)
-      vd = r.kkd.slice(5, 3)
+      vb = r.kkd.slice(0, 3)
+      vc = r.kkd.slice(0, 5)
+      vd = r.kkd.slice(0, 8)
 
       items[va] = { :amount => 0 } if items[va].nil?
 
@@ -157,7 +157,7 @@ class RevenuesController < ApplicationController
 
       items[va][vb][vc] = { :amount => 0 } if items[va][vb][vc].nil?
 
-      items[va][vb][vc][vd] = { :amount => 0, :kkd => [] } if items[va][vb][vc][vd].nil?
+      items[va][vb][vc][vd] = { :amount => 0 } if items[va][vb][vc][vd].nil?
 
 
       items[:amount] += r.amount
@@ -165,9 +165,8 @@ class RevenuesController < ApplicationController
       items[va][vb][:amount] += r.amount
       items[va][vb][vc][:amount] += r.amount
       items[va][vb][vc][vd][:amount] += r.amount
-      items[va][vb][vc][vd][:kkd] << { r.kkd => r.amount }
+      #items[va][vb][vc][vd][r.kkd] = { :amount => r.amount }
     end
-
 
     data = build_bubbletree_item(items, "Всього доходів", "green")
 
@@ -178,6 +177,7 @@ class RevenuesController < ApplicationController
   end
 
   def build_bubbletree_item(items, label, color)
+    #binding.pry
     tree = {
         "amount" => items[:amount],
         "label" => label,
@@ -185,10 +185,12 @@ class RevenuesController < ApplicationController
     }
 
     children = items.keys.reject{|k| k == :amount}
+
+    #binding.pry
     unless children.empty?
+      tree["children"] = []
       children.each { |key|
-        item = items[key]
-        data["children"] << build_bubbletree_item(item[:amount], k, "orange")
+        tree["children"] << build_bubbletree_item(items[key], key, "orange")
       }
     end
 
