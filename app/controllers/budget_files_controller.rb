@@ -19,12 +19,11 @@ class BudgetFilesController < ApplicationController
     end
 
     @budget_file.file = file[:path]
+    @budget_file.load_file
 
     respond_to do |format|
       if @budget_file.save
-        @budget_file.load_file
-
-        format.html { redirect_to @budget_file, notice: 'Revenue was successfully created.' }
+        format.html { redirect_to @budget_file, notice: 'File was successfully uploaded.' }
         format.json { render :show, status: :created, location: @budget_file }
       else
         format.html { render :new }
@@ -34,11 +33,11 @@ class BudgetFilesController < ApplicationController
   end
 
   def get_sunburst_data
-    render json: @budget_file.get_sunburst_data
+    render json: @budget_file.sunburst
   end
 
   def get_bubbletree_data
-    render json: @budget_file.get_bubbletree_data
+    render json: @budget_file.bubbletree
   end
 
   private

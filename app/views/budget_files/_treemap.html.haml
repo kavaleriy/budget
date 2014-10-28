@@ -45,7 +45,6 @@
   d3.json("/budget_files/get_sunburst_data/#{budget_file_id}", function(data) {
     node = root = data;
 
-    console.log(treemap)
     var nodes = treemap.nodes(root)
         .filter(function(d) { return !d.children; });
 

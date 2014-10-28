@@ -52,7 +52,6 @@
   d3.json("get_sunburst_data", function(data) {
     node = root = data;
 
-    console.log(treemap)
     var nodes = treemap.nodes(root)
         .filter(function(d) { return !d.children; });
 
