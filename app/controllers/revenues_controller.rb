@@ -48,7 +48,7 @@ class RevenuesController < BudgetFilesController
   def destroy
     @revenue.destroy
     respond_to do |format|
-      format.html { redirect_to revenues_url, notice: 'Revenue was successfully destroyed.' }
+      format.html { redirect_to budget_files_url, notice: 'Revenue was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

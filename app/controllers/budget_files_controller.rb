@@ -1,6 +1,12 @@
 class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:get_sunburst_data, :get_bubbletree_data]
 
+  # GET /revenues
+  # GET /revenues.json
+  def index
+    @budget_files = BudgetFile.all
+  end
+
   # POST /revenues
   # POST /revenues.json
   def create par

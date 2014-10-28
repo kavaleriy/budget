@@ -13,7 +13,6 @@ class Revenue < BudgetFile
     end
   end
 
-
   def get_bubbletree_data
     items = { :amount => 0 }
 
@@ -66,7 +65,6 @@ class Revenue < BudgetFile
     }
   end
 
-
   protected
     def build_bubbletree_item(items, label, color)
       tree = {
@@ -107,5 +105,4 @@ class Revenue < BudgetFile
 
       children
     end
-
 end

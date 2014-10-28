@@ -1,4 +1,4 @@
-class ExpensesController < ApplicationController
+class ExpensesController < BudgetFilesController
   before_action :set_expense, only: [:show, :edit, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
   # GET /expenses
@@ -24,26 +24,10 @@ class ExpensesController < ApplicationController
   # POST /expenses
   # POST /expenses.json
   def create
-    p = expense_params
-    p[:title] = p[:file].original_filename if expense_params[:title].empty?
+    @budget_file = Expense.new()
 
-    file_name = upload expense_params[:file]
-    p[:file] = file_name
-    @expense = Expense.new(p)
-
-    respond_to do |format|
-      if @expense.save
-        load_dbf @expense
-
-        format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
-        format.json { render :show, status: :created, location: @expense }
-      else
-        format.html { render :new }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
-      end
-    end
+    super expense_params
   end
-
 
 # PATCH/PUT /expenses/1
   # PATCH/PUT /expenses/1.json
@@ -64,7 +48,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
+      format.html { redirect_to budget_files_url, notice: 'Expense was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

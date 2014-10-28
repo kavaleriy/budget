@@ -7,13 +7,15 @@
 %table.table.table-striped
   %thead
     %tr
+      %th= model_class.human_attribute_name(:id)
       %th= model_class.human_attribute_name(:title)
       %th= model_class.human_attribute_name(:file)
       %th=t '.actions', :default => t("helpers.actions")
   %tbody
     - @revenues.each do |revenue|
       %tr
-        %td= link_to revenue.title, revenue_path(revenue)
+        %td= link_to revenue.id, revenue_path(revenue)
+        %td= revenue.title
         %td= revenue.file
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(revenue), :class => 'btn btn-default btn-xs'

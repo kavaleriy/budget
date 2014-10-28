@@ -20,12 +20,12 @@
       = t('.tab_treemap')
 .tab-content
   #bubbletree.tab-pane.fade.in.active
-    = render partial: 'bubbletree'
+    = render partial: 'budget_files/bubbletree', :locals => { budget_file_id: @revenue.id }
   #sunburst.tab-pane.fade
-    = render partial: 'sunburst'
+    = render partial: 'budget_files/sunburst', :locals => { budget_file_id: @revenue.id }
   #treemap.tab-pane.fade
-    = render partial: 'treemap'
+    = render partial: 'budget_files/treemap', :locals => { budget_file_id: @revenue.id }
 
-= link_to t('.back', :default => t("helpers.links.back")), revenues_path, :class => 'btn btn-default'
+= link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(@revenue), :class => 'btn btn-default'
 = link_to t('.destroy', :default => t("helpers.links.destroy")), revenue_path(@revenue), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

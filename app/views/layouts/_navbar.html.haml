@@ -15,13 +15,11 @@
               = t('visify.budget')
               %span.caret
           %ul.dropdown-menu{'role' => "menu"}
-            - Revenue.each do |revenue|
-              %li= link_to "#{revenue.title}", revenue_path(revenue)
+            - BudgetFile.each do |budget_file|
+              %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
 
             %li.divider
-            %li= link_to t('.revenue_files'), revenues_path
-            %li.divider
-            %li= link_to t('.expenses_files'), expenses_path
+            %li= link_to t('.budget_files'), budget_files_path
 
             %li.divider
             %li= link_to t('visify.sunburst.title'), visify_sunburst_path
