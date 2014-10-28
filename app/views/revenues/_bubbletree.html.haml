@@ -8,14 +8,14 @@
 = javascript_include_tag "vis4.js"
 = javascript_include_tag "Tween.js"
 = javascript_include_tag "bubbletree.js"
--#= javascript_include_tag "cofog.js"
+= javascript_include_tag "cofog.js"
 
 .bubbletree-wrapper
   .bubbletree
 
 :javascript
 
-  $(document).ready(function() {
+  $(document).on('ready page:load', function() {
     var width = $('body').width();
     height = width * .35
 
