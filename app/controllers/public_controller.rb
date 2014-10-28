@@ -99,7 +99,6 @@ class PublicController < ApplicationController
   end
 
   def build_pie starts_at, ends_at, ev
-    #binding.pry
     pie = [ { ends_at: starts_at, events: [] }]
     ev.map { |e|
       cycle = pie.detect {|dt| dt[:ends_at] <= e[:starts_at]}
@@ -127,7 +126,6 @@ class PublicController < ApplicationController
 
   def build_event_for_pie event
     days  = (event[:ends_at].to_date - event[:starts_at].to_date).to_i
-    #binding.pry
     { id: event[:id].to_s, title: event[:title], icon: event[:icon], desc: event[:description], starts_at: event[:starts_at].strftime('%d/%m/%Y'), ends_at: event[:ends_at].strftime('%d/%m/%Y'), value: days, color: event[:color], text_color: event[:text_color], highlight: 'rgba(100,200,100,.3)' }
   end
 

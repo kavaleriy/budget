@@ -15,13 +15,15 @@
 
 :javascript
 
-  $(document).on('ready page:load', function() {
+  $(document).ready(function() {
     var width = $('body').width();
     height = width * .35
 
     $('.bubbletree').height(height)
 
-    d3.json("get_bubbletree_data/#{@revenue.id}", function(data) {
+    alert(1)
+
+    d3.json("/budget_files/get_bubbletree_data/#{@revenue.id}", function(data) {
       new BubbleTree({
           data: data,
           container: '.bubbletree'

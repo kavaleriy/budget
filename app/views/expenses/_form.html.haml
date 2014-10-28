@@ -1,0 +1,11 @@
+= form_for @expense, :html => { :class => 'form-horizontal' } do |f|
+  .form-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title, :class => 'form-control'
+  .form-group
+    = f.label :file, :class => 'control-label'
+    .controls
+      = f.text_field :file, :class => 'form-control'
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), expenses_path, :class => 'btn btn-default'

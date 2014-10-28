@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
 
-  get 'revenues/get_sunburst_data/:id' => 'revenues#get_sunburst_data'
-  get 'revenues/get_bubbletree_data/:id' => 'revenues#get_bubbletree_data'
+  get 'budget_files/get_sunburst_data/:id' => 'budget_files#get_sunburst_data'
+  get 'budget_files/get_bubbletree_data/:id' => 'budget_files#get_bubbletree_data'
+  #post 'expenses/upload'
+  resources :budget_files
 
-  post 'revenues/upload'
+  resources :expenses
+
   resources :revenues
 
   get 'visify/index'
@@ -14,8 +17,6 @@ Rails.application.routes.draw do
   get 'visify/circle_packing'
   get 'visify/treemap'
   get 'visify/force_collapsible'
-  get 'visify/get_sunburst_data'
-  get 'visify/get_bubbletree_data'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'

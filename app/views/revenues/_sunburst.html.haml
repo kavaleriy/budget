@@ -93,7 +93,7 @@
 
     // Use d3.text and d3.csv.parseRows so that we do not need to have a header
     // row, and can receive the csv as an array of arrays.
-    d3.json("get_sunburst_data/#{@revenue.id}", function(data) {
+    d3.json("/budget_files/get_sunburst_data/#{@revenue.id}", function(data) {
       createVisualization(data);
     });
 
