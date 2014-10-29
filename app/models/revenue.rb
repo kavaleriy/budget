@@ -17,6 +17,7 @@ class Revenue < BudgetFile
     self.sunburst = parse_sunburst rows
   end
 
+
   protected
     def parse_bubbletree rows
       items = { :amount => 0 }
