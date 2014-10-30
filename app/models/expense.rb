@@ -10,7 +10,7 @@ class Expense < BudgetFile
     dbf = DBF::Table.new(self.file)
     rows = []
     dbf.reject { |rec| rec.summ.nil? }.each do |rec|
-      rows << {kvk: rec.kvk, krk: rec.krk, ktfk: rec.ktfk.to_s, kekv: rec.kekv, amount: rec.summ}
+      rows << {kvk: rec.kvk, krk: rec.krk, ktfk: rec.ktfk.to_s, kekv: rec.kekv.to_s, amount: rec.summ}
     end
 
     self.bubbletree = parse_bubbletree rows
@@ -23,9 +23,15 @@ class Expense < BudgetFile
 
       rows.each do |r|
         if r[:amount] > 0
-          va = r[:ktfk].slice(0, 1)
-          vb = r[:ktfk].slice(0, 2)
-          vc = r[:ktfk].slice(0, 5)
+          va = r[:kekv]
+          va_descr = ExpenseEkvCode.where(:ekv => r[:kekv]).first
+          va = va + ' - ' + va_descr.title unless va_descr.nil?
+
+          vb = r[:ktfk].slice(0, 3)
+          vb_descr = ExpenseCode.where(:ktfk => r[:ktfk]).first
+          vb = vb + ' - ' + vb_descr.title unless vb_descr.nil?
+
+          vc = r[:ktfk].slice(0, 6)
 
           items[va] = { :amount => 0 } if items[va].nil?
 
@@ -44,7 +50,7 @@ class Expense < BudgetFile
         end
       end
 
-      self.build_bubbletree_item(items, "Всього доходів", "green")
+      self.build_bubbletree_item(items, "Всього видатків", "red")
     end
 
     def parse_sunburst rows
