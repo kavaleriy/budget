@@ -25,20 +25,25 @@ class Revenue < BudgetFile
       rows.each do |r|
         if r[:amount] > 0
 
-          va_descr = RevenueCode.where(:kkd => r[:kkd]).first.title unless r[:kkd].empty?
           va = r[:kkd].slice(0, 1)
+          va_descr = get_revenue_title(va)
 
           vb = r[:kkd].slice(0, 3)
+          vb_descr = get_revenue_title(vb)
+
           vc = r[:kkd].slice(0, 5)
+          vc_descr = get_revenue_title(vc)
+
           vd = r[:kkd].slice(0, 8)
+          vd_descr = get_revenue_title(vd)
 
-          items[va] = { :description => va_descr, :amount => 0 } if items[va].nil?
+          items[va] = create_revenue_item(va_descr) if items[va].nil?
 
-          items[va][vb] = { :amount => 0 } if items[va][vb].nil?
+          items[va][vb] = create_revenue_item(vb_descr) if items[va][vb].nil?
 
-          items[va][vb][vc] = { :amount => 0 } if items[va][vb][vc].nil?
+          items[va][vb][vc] = create_revenue_item(vc_descr) if items[va][vb][vc].nil?
 
-          items[va][vb][vc][vd] = { :amount => 0 } if items[va][vb][vc][vd].nil?
+          items[va][vb][vc][vd] = create_revenue_item(vd_descr) if items[va][vb][vc][vd].nil?
 
 
           items[:amount] += r[:amount]
@@ -52,7 +57,36 @@ class Revenue < BudgetFile
       self.build_bubbletree_item(items, "Всього доходів", "green")
     end
 
-    def parse_sunburst rows
+  def create_revenue_item(descr, amount = 0)
+    { :description => descr, :amount => amount }
+  end
+
+  def get_revenue_title(v)
+    dict = RevenueCode.where(:kkd => v.ljust(8, '0')).first
+    dict.title unless dict.nil?
+  end
+
+  def build_bubbletree_item(items, label, color)
+    items[:description] = items[:description] || ''
+    tree = {
+        "amount" => items[:amount],
+        "label" => label + items[:description],
+        "color" => color
+    }
+
+    children = items.keys.reject{|k| k == :amount || k == :description }
+    unless children.empty?
+      tree["children"] = []
+      children.each { |key|
+        tree["children"] << self.build_bubbletree_item(items[key], key, "orange")
+      }
+    end
+
+    tree
+  end
+
+
+  def parse_sunburst rows
       {
           "name" => "Доходи",
           "children" => [
@@ -74,32 +108,14 @@ class Revenue < BudgetFile
       }
     end
 
-    def build_bubbletree_item(items, label, color)
-      items[:description] = items[:description] || ''
-      tree = {
-          "amount" => items[:amount],
-          "label" => label + items[:description],
-          "color" => color
-      }
-
-      children = items.keys.reject{|k| k == :amount || k == :description }
-      unless children.empty?
-        tree["children"] = []
-        children.each { |key|
-          tree["children"] << self.build_bubbletree_item(items[key], key, "orange")
-        }
-      end
-
-      tree
-    end
-
     def get_burst_for(rows, nodes)
       children = []
       small = { "count" => 0, "amount" => 0 }
       nodes.each do |node|
         rows.reject {|r| r[:kkd] != node}.each do |r|
           if r[:amount] > 200000000
-            children << { "name" => r[:kkd], "size" => r[:amount]}
+            descr = r[:kkd] + ' - ' + get_revenue_title(r[:kkd]) || r[:kkd]
+            children << { "name" => descr, "size" => r[:amount]}
           else
             small["count"] += 1
             small["amount"] += r[:amount]
