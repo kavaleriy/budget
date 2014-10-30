@@ -24,12 +24,15 @@ class Revenue < BudgetFile
 
       rows.each do |r|
         if r[:amount] > 0
+
+          va_descr = RevenueCode.where(:kkd => r[:kkd]).first.title unless r[:kkd].empty?
           va = r[:kkd].slice(0, 1)
+
           vb = r[:kkd].slice(0, 3)
           vc = r[:kkd].slice(0, 5)
           vd = r[:kkd].slice(0, 8)
 
-          items[va] = { :amount => 0 } if items[va].nil?
+          items[va] = { :description => va_descr, :amount => 0 } if items[va].nil?
 
           items[va][vb] = { :amount => 0 } if items[va][vb].nil?
 
@@ -72,13 +75,14 @@ class Revenue < BudgetFile
     end
 
     def build_bubbletree_item(items, label, color)
+      items[:description] = items[:description] || ''
       tree = {
           "amount" => items[:amount],
-          "label" => label,
+          "label" => label + items[:description],
           "color" => color
       }
 
-      children = items.keys.reject{|k| k == :amount}
+      children = items.keys.reject{|k| k == :amount || k == :description }
       unless children.empty?
         tree["children"] = []
         children.each { |key|

@@ -24,14 +24,18 @@ class Expense < BudgetFile
       rows.each do |r|
         if r[:amount] > 0
           va = r[:kekv]
-          va_descr = ExpenseEkvCode.where(:ekv => r[:kekv]).first
+          va_descr = ExpenseEkvCode.where(:ekv => va).first
           va = va + ' - ' + va_descr.title unless va_descr.nil?
 
-          vb = r[:ktfk].slice(0, 3)
-          vb_descr = ExpenseCode.where(:ktfk => r[:ktfk]).first
+          vb = r[:kvk]
+          vb_descr = ExpenseKvkCode.where(:kvk => vb).first
           vb = vb + ' - ' + vb_descr.title unless vb_descr.nil?
 
           vc = r[:ktfk].slice(0, 6)
+          vc_descr = ExpenseCode.where(:ktfk => vc).first
+          vc = vc + ' - ' + vc_descr.title unless vc_descr.nil?
+
+          #vc = r[:ktfk].slice(0, 6)
 
           items[va] = { :amount => 0 } if items[va].nil?
 

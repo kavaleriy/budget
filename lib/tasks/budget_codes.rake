@@ -30,4 +30,13 @@ namespace :budget_codes do
       ExpenseEkvCode.create!(ekv: row[0], title: row[1])
     end
   end
+
+  desc "Load data from expense_kvk.csv"
+  task :load_expense_kvk_codes => :environment do
+    ExpenseKvkCode.delete_all
+
+    CSV.foreach('db/expense_kvk_codes.csv', {:headers => true, :col_sep => ";"}) do |row|
+      ExpenseKvkCode.create!(kvk: row[0].strip, title: row[1].strip)
+    end
+  end
 end
