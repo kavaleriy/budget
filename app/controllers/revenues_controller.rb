@@ -33,7 +33,12 @@ class RevenuesController < BudgetFilesController
   # PATCH/PUT /revenues/1.json
   def update
     respond_to do |format|
-      if @revenue.update(revenue_params)
+      revenue = revenue_params
+      params['tree_info'].each do |item|
+        binding.pry
+        revenue['tree_info'][item[0]]
+      end
+      if @revenue.update(revenue)
         format.html { redirect_to @revenue, notice: 'Revenue was successfully updated.' }
         format.json { render :show, status: :ok, location: @revenue }
       else

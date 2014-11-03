@@ -12,6 +12,7 @@
 
 .bubbletree-wrapper
   .bubbletree
+.bubbletree_tooltip
 
 :javascript
 
@@ -24,7 +25,29 @@
     d3.json("/budget_files/get_bubbletree_data/#{budget_file_id}", function(data) {
       new BubbleTree({
           data: data,
-          container: '.bubbletree'
+          container: '.bubbletree-wrapper .bubbletree',
+          tooltip: function(a) {
+            console.log(a)
+
+            title = a.node.title || ''
+            description = a.node.description || ''
+
+            if (a.type == 'SHOW') {
+              tooltip = "<div class='title'>" + a.node.label + " " + title + "</div>"
+              if (a.node.description) {
+                tooltip = tooltip + "<hr/>" +  "<div class='description'>" + description + "</div>"
+              }
+              $('.bubbletree_tooltip')
+               .css("left", a.mousePos.x)
+               .css("top", a.mousePos.y + 150)
+               .css('display', 'block')
+               .delay(200)
+               .html(tooltip)
+            } else {
+              $('.bubbletree_tooltip').html('').css('display', 'none')
+            }
+
+          }
       });
     })
   });

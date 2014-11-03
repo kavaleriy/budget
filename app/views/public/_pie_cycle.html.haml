@@ -77,7 +77,7 @@
            .style("opacity", .95)
            .style("color", d.data.text_color)
            .style("background-color", d.data.color);
-         div .html( get_html_for_ev(d) )
+         div.html(get_html_for_ev(d))
            .style("left", (d3.event.pageX - 120) + "px")
            .style("top", (d3.event.pageY - 28) + "px");
        })
