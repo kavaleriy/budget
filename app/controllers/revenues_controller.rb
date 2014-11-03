@@ -1,5 +1,5 @@
 class RevenuesController < BudgetFilesController
-  before_action :set_revenue, only: [:show, :edit, :update, :destroy]
+  before_action :set_revenue, only: [:show, :edit, :edit_bubbletree_info, :update, :destroy]
 
   # GET /revenues
   # GET /revenues.json
@@ -20,6 +20,9 @@ class RevenuesController < BudgetFilesController
   # GET /revenues/1/edit
   def edit
   end
+  # GET /revenues/1/edit_bubbletree
+  def edit_bubbletree_info
+  end
 
   # POST /revenues
   # POST /revenues.json
@@ -32,13 +35,20 @@ class RevenuesController < BudgetFilesController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    respond_to do |format|
-      revenue = revenue_params
-      params['tree_info'].each do |item|
-        binding.pry
-        revenue['tree_info'][item[0]]
+    if params['description'].nil?
+      bubble_tree_info = nil
+    else
+      bubble_tree_info = @revenue['bubble_tree_info'].deep_dup
+      params['description'].reject { |key, value| value.empty? }.each do |key, value|
+        bubble_tree_info[key]['description'] = value
       end
-      if @revenue.update(revenue)
+    end
+
+    par = revenue_params
+    par = par.merge({:bubble_tree_info => bubble_tree_info}) unless bubble_tree_info.nil?
+
+    respond_to do |format|
+      if @revenue.update(par)
         format.html { redirect_to @revenue, notice: 'Revenue was successfully updated.' }
         format.json { render :show, status: :ok, location: @revenue }
       else

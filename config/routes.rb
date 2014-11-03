@@ -2,12 +2,14 @@ Rails.application.routes.draw do
 
   get 'budget_files/get_sunburst_data/:id' => 'budget_files#get_sunburst_data'
   get 'budget_files/get_bubbletree_data/:id' => 'budget_files#get_bubbletree_data'
-  #post 'expenses/upload'
+
   resources :budget_files
 
   resources :expenses
 
-  resources :revenues
+  get 'revenues/:id/edit_bubbletree_info' => 'revenues#edit_bubbletree_info'
+  resources :revenues do
+  end
 
   get 'visify/index'
   get 'visify/sunburst'
