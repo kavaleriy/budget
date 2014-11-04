@@ -11,7 +11,7 @@
 = javascript_include_tag "cofog.js"
 
 .bubbletree-wrapper
-  .info.pull-right
+  .bubbletree-info.pull-right
   .bubbletree
   .bubbletree_tooltip
 
@@ -31,27 +31,38 @@
             if (a.type == 'HIDE' || a.node.title == null) {
               $('.bubbletree_tooltip').html('').css('display', 'none')
             } else {
-              console.log(a)
-              tooltip = "<div class='title'>" + a.node.title + "</div>"
               $('.bubbletree_tooltip')
                .css("left", a.mousePos.x)
                .css("top", a.mousePos.y + 150)
                .css('display', 'block')
-               .html(tooltip)
+               .html(getTooltipHtml(a.node))
             }
           },
           nodeClickCallback: function(node) {
-            title = node.title || ''
-            div = "<div class='title'>" + title + "</div>"
-              + "<h4 class='code' title='Пояснення............'>Код: " + node.label + "</h4>"
-              + "<h3 class='amount'>" + node.famount + "</h3>"
-
-            if (node.description) {
-              div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
-            }
-
-            $('.bubbletree-wrapper .info').html(div)
+            $('.bubbletree-wrapper .bubbletree-info').html(getItemInfoHtml(node))
           }
       });
     })
+
+    function getItemInfoHtml(node) {
+      title = node.title || ''
+      div = "<div class='title'>" + title + "</div>"
+        + "<h4 class='code' title='Пояснення............'>Код: " + node.label + "</h4>"
+        + "<h3 class='amount'>" + node.famount + "</h3>"
+
+      if (node.description) {
+        div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
+      }
+
+      return div
+    }
+
+    function getTooltipHtml(node) {
+      title = node.title || ''
+      div = "<div class='title'>" + title + "</div>"
+
+      return div
+    }
+
+
   });

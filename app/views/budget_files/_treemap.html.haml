@@ -30,7 +30,7 @@
       .round(false)
       .size([w, h])
       .sticky(true)
-      .value(function(d) { return d.size; });
+      .value(function(d) { return d.amount; });
 
   var svg = d3.select(".treemap").append("div")
       .attr("class", "chart")
@@ -77,7 +77,7 @@
   });
 
   function size(d) {
-    return d.size;
+    return d.amount;
   }
 
   function count(d) {

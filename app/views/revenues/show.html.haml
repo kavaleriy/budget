@@ -16,11 +16,16 @@
     %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_sunburst')
   %li
+    %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_sunburst_seq')
+  %li
     %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_treemap')
 .tab-content
   #bubbletree.tab-pane.fade.in.active
     = render partial: 'budget_files/bubbletree', :locals => { budget_file_id: @revenue.id }
+  #sunburst_seq.tab-pane.fade
+    = render partial: 'budget_files/sunburst_seq', :locals => { budget_file_id: @revenue.id }
   #sunburst.tab-pane.fade
     = render partial: 'budget_files/sunburst', :locals => { budget_file_id: @revenue.id }
   #treemap.tab-pane.fade

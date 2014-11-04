@@ -1,6 +1,73 @@
-.info {
+.sunburst, .sunburst-seq {
+  #sidebar {
+    padding: 10px;
+    float: right;
+    width: 300px;
+  }
+
+  #tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    max-width: 320px;
+    height: auto;
+    max-height: 200px;
+    overflow: hidden;
+    padding: 15px;
+    font-size: 12px;
+    background: lightsalmon;
+    border: 4px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  #main {
+    padding: 10px;
+    float: left;
+    background-color: white;
+  }
+
+  #sequence {
+    width: 600px;
+    height: 70px;
+  }
+
+  #sequence text {
+    font-weight: 600;
+    fill: #fff;
+  }
+
+  #chart {
+    position: relative;
+  }
+
+  #chart path {
+    stroke: #fff;
+  }
+
+  #explanation {
+    position: absolute;
+    text-align: center;
+    color: #666;
+    z-index: 1;
+  }
+
+  #percentage {
+    font-size: 2.5em;
+  }
+}
+
+.sunburst-sidebar {
   padding: 10px;
-  width: 20%;
+  width: 300px;
+  min-width: 200px;
+  float: right;
+  height: 100%;
+}
+
+.bubbletree-info {
+  padding: 10px;
+  width: 300px;
   min-width: 200px;
   float: right;
   height: 100%;
