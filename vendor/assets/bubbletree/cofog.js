@@ -3,7 +3,7 @@
  *
  */
  
-if (!BubbleTree) window.alert('You must include the BubbleTree before including the styles');
+if (!window.BubbleTree) window.alert('You must include the BubbleTree before including the styles');
 
 BubbleTree.Styles = BubbleTree.Styles || {};
 

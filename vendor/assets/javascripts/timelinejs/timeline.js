@@ -5273,7 +5273,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			
 			VMM.Lib.width($slides_items, (slides.length * config.slider.content.width));
 			
-			if (_from_start) {
+			if (_from_start && slides[current_slide]) {
 				VMM.Lib.css($slider_container, "left", slides[current_slide].leftpos());
 			}
 			
@@ -5697,8 +5697,10 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			
 			// Set current slide
 			current_slide	= n;
-			_pos			= slides[current_slide].leftpos();
-			
+            if (slides[current_slide] == null)
+                current_slide = 1
+            _pos			= slides[current_slide].leftpos();
+
 			
 			if (current_slide == 0) {is_first = true};
 			if (current_slide +1 >= slides.length) {is_last = true};

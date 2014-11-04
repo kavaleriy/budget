@@ -33,7 +33,7 @@ class RevenuesController < BudgetFilesController
   # PATCH/PUT /revenues/1.json
   def update
     tree_info = @revenue['tree_info'].deep_dup
-    params['description'].reject { |key, value| value.empty? }.each do |key, value|
+    params['description'].each do |key, value|
       tree_info[key]['description'] = value
     end
 

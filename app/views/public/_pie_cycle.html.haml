@@ -12,6 +12,7 @@
 
     size = $('#calendar_pies').width()
 
+    var calendar_id =
     $.getJSON( "#{public_pie_data_path}", { calendar_id: $('#calendar_pies').attr('calendar_id') }, function( data ) {
       var pie = d3.layout.pie()
           .sort(null)
@@ -105,6 +106,7 @@
 
   $(document).on('ready page:load', function() {
     init_pie()
-    $(window).resize(init_pie);
   })
+
+  $(window).resize(init_pie);
 
