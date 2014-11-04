@@ -1,32 +1,30 @@
 .sunburst-seq
-  #main
-    #sequence
-    #chart
-      #explanation{ style: "visibility: hidden;" }
-        %span#percentage
-        %br
-        #code
-        %br
-        Доходи бюджету в розрізі кошиків
-
   #sidebar
+  #chart
+    #sequence
+    #explanation{ style: "visibility: hidden;" }
+      %span#percentage
+      %br
+      #code
+      %br
+      Доходи бюджету в розрізі кошиків
+
 
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('body').width() - 320;
+    var width = $('body').width() - 340;
     var height = width * 0.35;
     var radius = Math.min(width, height) / 2;
 
-    if (radius < 10)
-      return
+    $(".sunburst-seq #chart").width(width).height(height + 40)
 
     color = d3.scale.category20c()
 
 
     $(".sunburst-seq").height(height + 150)
 
-    $(".sunburst-seq #explanation").width(140).css("top", height / 2 - 60).css("left", width/2 - 70);
+    $(".sunburst-seq #explanation").width(140).css("top", height / 2 ).css("left", width/2 - 70);
 
 
     // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -98,67 +96,6 @@
       totalSize = path.node().__data__.value;
      };
 
-    function mouseclick(d) {
-      $('.sunburst-seq #sidebar').html(getItemInfoHtml(d))
-    }
-
-    // Fade all but the current sequence, and show it in the breadcrumb trail.
-    function mouseover(d) {
-
-      var percentage = (100 * d.value / totalSize).toPrecision(3);
-      var percentageString = percentage + "%";
-      if (percentage < 0.1) {
-        percentageString = "< 0.1%";
-      }
-
-      d3.select(".sunburst-seq #percentage")
-          .text(percentageString);
-
-      if (d.name) {
-        $('.sunburst-seq #explanation #code').html(d.name)
-      }
-
-      d3.select(".sunburst-seq #explanation")
-          .style("visibility", "");
-
-      var sequenceArray = getAncestors(d);
-      updateBreadcrumbs(sequenceArray, percentageString);
-
-      // Fade all the segments.
-      vis.selectAll("path")
-          .style("opacity", 0.6);
-
-      // Then highlight only those that are an ancestor of the current segment.
-      vis.selectAll("path")
-          .filter(function(node) {
-                    return (sequenceArray.indexOf(node) >= 0);
-                  })
-          .style("opacity", 1);
-    }
-
-    // Restore everything to full opacity when moving off the visualization.
-    function mouseleave(d) {
-
-      // Hide the breadcrumb trail
-      d3.select(".sunburst-seq #trail")
-          .style("visibility", "hidden");
-
-      // Deactivate all segments during transition.
-      vis.selectAll("path").on("mouseover", null);
-
-      // Transition each segment to full opacity and then reactivate it.
-      vis.selectAll("path")
-          .transition()
-          .duration(1000)
-          .style("opacity", 1)
-          .each("end", function() {
-                  d3.select(this).on("mouseover", mouseover);
-                });
-
-      d3.select("#explanation")
-          .style("visibility", "hidden");
-    }
-
     // Given a node in a partition layout, return an array of all of its ancestor
     // nodes, highest first, but excluding the root.
     function getAncestors(node) {
@@ -203,7 +140,7 @@
       // Data join; key function combines name and depth (= position in sequence).
       var g = d3.select(".sunburst-seq #trail")
           .selectAll("g")
-          .data(nodeArray, function(d) { return d.name + d.depth; });
+          .data(nodeArray, function(d) { return (d.name || d.label) + d.depth; });
 
       // Add breadcrumb and label for entering nodes.
       var entering = g.enter().append("svg:g");
@@ -217,7 +154,7 @@
           .attr("y", b.h / 2)
           .attr("dy", "0.35em")
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.name; });
+          .text(function(d) { return (d.name || d.label); });
 
       // Set position for entering and updating nodes.
       g.attr("transform", function(d, i) {
@@ -241,18 +178,78 @@
 
     }
 
+    function mouseclick(d) {
+      $('.sunburst-seq #sidebar').html(getItemInfoHtml(d))
+    }
+
+    // Fade all but the current sequence, and show it in the breadcrumb trail.
+    function mouseover(d) {
+
+      var percentage = (100 * d.value / totalSize).toPrecision(3);
+      var percentageString = percentage + "%";
+      if (percentage < 0.1) {
+        percentageString = "< 0.1%";
+      }
+
+      d3.select(".sunburst-seq #percentage")
+          .text(percentageString);
+
+      d.name = d.name ||''
+      $('.sunburst-seq #explanation #code').html(d.name)
+
+      d3.select(".sunburst-seq #explanation")
+          .style("visibility", "");
+
+      var sequenceArray = getAncestors(d);
+      updateBreadcrumbs(sequenceArray, percentageString);
+
+      // Fade all the segments.
+      vis.selectAll("path")
+          .style("opacity", 0.6);
+
+      // Then highlight only those that are an ancestor of the current segment.
+      vis.selectAll("path")
+          .filter(function(node) {
+                    return (sequenceArray.indexOf(node) >= 0);
+                  })
+          .style("opacity", 1);
+    }
+
+    // Restore everything to full opacity when moving off the visualization.
+    function mouseleave(d) {
+
+      // Hide the breadcrumb trail
+      d3.select(".sunburst-seq #trail")
+          .style("visibility", "hidden");
+
+      // Deactivate all segments during transition.
+      vis.selectAll("path").on("mouseover", null);
+
+      // Transition each segment to full opacity and then reactivate it.
+      vis.selectAll("path")
+          .transition()
+          .duration(100)
+          .style("opacity", 1)
+          .each("end", function() {
+                  d3.select(this).on("mouseover", mouseover);
+                });
+
+      d3.select("#explanation")
+          .style("visibility", "hidden");
+    }
+
     function getItemInfoHtml(node) {
       percentage = (100 * node.value / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<div class='title'>" + title + "</div>"
-        + "<h4 class='code' title='Пояснення............'>Код: " + node.name + "</h4>"
-        + "<h3 class='percentage'>" + percentage + " %</h3>"
-        + "<h4 class='amount'>" + node.value + " грн</h4>"
+      name = node.name || ''
+      div = "<h4 class='code'>" + name + "</h4>"
+        + "<div class='title'>" + title + "</div>"
+        + "<h3 class='percentage'>" + percentage + "%</h3>"
+        + "<h4 class='amount'>" + node.value.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
       }
-
       return div
     }
 

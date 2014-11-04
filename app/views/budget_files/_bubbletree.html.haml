@@ -2,7 +2,6 @@
 
 
 = stylesheet_link_tag "bubbletree.css"
--#= javascript_include_tag "jquery-1.5.2.min.js"
 = javascript_include_tag "jquery.history.js"
 = javascript_include_tag "raphael.js"
 = javascript_include_tag "vis4.js"
@@ -10,36 +9,51 @@
 = javascript_include_tag "bubbletree.js"
 = javascript_include_tag "cofog.js"
 
-.bubbletree-wrapper
-  .bubbletree-info.pull-right
-  .bubbletree
-  .bubbletree_tooltip
+.bubbletree
+  #sidebar
+  #chart
 
 :javascript
 
   $(document).ready(function() {
-    var width = $('body').width();
-    height = width * .35
+    var width = $('body').width() - 360;
+    height = width * .45
 
-    $('.bubbletree').height(height)
+    $('.bubbletree #chart').width(width).height(height)
+
+    var tooltip = d3.select(".bubbletree").append("div")
+        .attr("id", "tooltip")
+        .style("opacity", 0);
 
     d3.json("/budget_files/get_bubbletree_data/#{budget_file_id}", function(data) {
       new BubbleTree({
           data: data,
-          container: '.bubbletree-wrapper .bubbletree',
+          container: '.bubbletree #chart',
           tooltip: function(a) {
             if (a.type == 'HIDE' || a.node.title == null) {
-              $('.bubbletree_tooltip').html('').css('display', 'none')
+              tooltip.transition()
+                .duration(200)
+                .style("opacity", 0);
+
+
+              //$('.bubbletree #tooltip').html('').css('display', 'none')
             } else {
-              $('.bubbletree_tooltip')
-               .css("left", a.mousePos.x)
-               .css("top", a.mousePos.y + 150)
-               .css('display', 'block')
-               .html(getTooltipHtml(a.node))
+              //$('.bubbletree #tooltip')
+              // .css("left", a.mousePos.x)
+              // .css("top", a.mousePos.y + 150)
+              // .css('display', 'block')
+              // .html(getTooltipHtml(a.node))
+
+              tooltip.html(getTooltipHtml(a.node))
+               .style("left", a.mousePos.x + "px")
+               .style("top", (a.mousePos.y + 150) + "px");
+              tooltip.transition()
+               .duration(200)
+               .style("opacity", .9)
             }
           },
           nodeClickCallback: function(node) {
-            $('.bubbletree-wrapper .bubbletree-info').html(getItemInfoHtml(node))
+            $('.bubbletree #sidebar').html(getItemInfoHtml(node))
           }
       });
     })
@@ -47,7 +61,6 @@
     function getItemInfoHtml(node) {
       title = node.title || ''
       div = "<div class='title'>" + title + "</div>"
-        + "<h4 class='code' title='Пояснення............'>Код: " + node.label + "</h4>"
         + "<h3 class='amount'>" + node.famount + "</h3>"
 
       if (node.description) {

@@ -5698,7 +5698,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			// Set current slide
 			current_slide	= n;
             if (slides[current_slide] == null)
-                current_slide = 1
+                current_slide = 0
+
             _pos			= slides[current_slide].leftpos();
 
 			

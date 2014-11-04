@@ -1,12 +1,30 @@
-.sunburst, .sunburst-seq {
-  #sidebar {
+.bubbletree, .sunburst, .sunburst-seq, .treemap {
+  margin: 20px 0px;
+
+  #chart {
+    border-right: 3px solid #FF9933;
+    position: relative;
+
+    path, rect {
+      cursor: pointer;
+      stroke: #fff;
+    }
+  }
+
+  &>#sidebar {
     padding: 10px;
     float: right;
     width: 300px;
+    overflow: hidden;
+
+    h3, h4 {
+      color: #FF9933;
+    }
   }
 
-  #tooltip {
+  &>#tooltip {
     position: absolute;
+    z-index: 9999;
     text-align: center;
     width: auto;
     max-width: 320px;
@@ -20,29 +38,17 @@
     border-radius: 8px;
     pointer-events: none;
   }
+}
 
-  #main {
-    padding: 10px;
-    float: left;
-    background-color: white;
-  }
-
+.sunburst-seq {
   #sequence {
-    width: 600px;
+    width: 100%;
     height: 70px;
-  }
 
-  #sequence text {
-    font-weight: 600;
-    fill: #fff;
-  }
-
-  #chart {
-    position: relative;
-  }
-
-  #chart path {
-    stroke: #fff;
+    text {
+      font-weight: 600;
+      fill: #fff;
+    }
   }
 
   #explanation {
@@ -50,46 +56,67 @@
     text-align: center;
     color: #666;
     z-index: 1;
-  }
 
-  #percentage {
-    font-size: 2.5em;
-  }
-}
-
-.sunburst-sidebar {
-  padding: 10px;
-  width: 300px;
-  min-width: 200px;
-  float: right;
-  height: 100%;
-}
-
-.bubbletree-info {
-  padding: 10px;
-  width: 300px;
-  min-width: 200px;
-  float: right;
-  height: 100%;
-}
-
-.bubbletree-wrapper {
-  .bubbletree_tooltip {
-    display: none;
-    position: absolute;
-    width: auto;
-    max-width: 320px;
-    height: auto;
-    max-height: 300px;
-    overflow: hidden;
-    padding: 15px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 4px;
-    border-radius: 8px;
-    pointer-events: none;
-    .title {
-      text-align: center;
+    #percentage {
+      font-size: 2.5em;
     }
+  }
+}
+
+
+.bubbletree {
+
+  #chart {
+    .label {
+      position: absolute;
+      color: #fff;
+      text-align: center;
+      cursor: default;
+    }
+
+    .amount {
+      font-size: 16px;
+    }
+
+    .desc {
+      font-size: 11px;
+    }
+
+    .label2 {
+      position: absolute;
+      color: #000;
+      text-align: center;
+      cursor: default;
+      font-size: 11px;
+      font-family: sans-serif;
+      margin-top: 5px;
+    }
+
+    .label2 span {
+      background: #fff;
+    }
+  }
+  .loading {
+    z-index: 1000;
+    position: absolute;
+    width: 700px;
+    height: 400px;
+  }
+
+}
+
+.treemap {
+  .chart {
+    display: block;
+    margin: auto;
+    margin-top: 40px;
+  }
+
+  text {
+    font-size: 11px;
+  }
+
+  rect {
+    fill: none;
   }
 }

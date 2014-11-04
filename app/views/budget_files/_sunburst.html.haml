@@ -1,13 +1,12 @@
 .sunburst
-  #main
-    #chart
   #sidebar
+  #chart
 
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('body').width() - 320;
-    var height = width * 0.35;
+    var width = $('body').width() - 340;
+    var height = width * 0.45;
     var radius = Math.min(width, height) / 2;
 
     var tooltip = d3.select(".sunburst").append("div")
@@ -16,7 +15,7 @@
 
     var totalSize = 0;
 
-    $(".sunburst").height(height + 150)
+    $(".sunburst #chart").width(width).height(height + 40)
 
     color = d3.scale.category20c();
 
@@ -119,10 +118,11 @@
     function getItemInfoHtml(node) {
       percentage = (100 * node.value / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<div class='title'>" + title + "</div>"
-        + "<h4 class='code' title='Пояснення............'>Код: " + node.name + "</h4>"
-        + "<h3 class='percentage'>" + percentage + " %</h3>"
-        + "<h4 class='amount'>" + node.value + " грн</h4>"
+      name = node.name || ''
+      div = "<h4 class='code'>" + name + "</h4>"
+        + "<div class='title'>" + title + "</div>"
+        + "<h3 class='percentage'>" + percentage + "%</h3>"
+        + "<h4 class='amount'>" + node.value.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
@@ -134,9 +134,8 @@
     function getTooltipHtml(node) {
       percentage = (100 * node.value / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<h4 class='percentage'>" + percentage + " %</h4>"
-        + "<h5 class='amount'>" + node.value + " грн</h5>"
-        + "<div class='name'>код: " + node.name + "</div>"
+      div = "<h5 class='percentage'>" + percentage + "% - " + node.value.toLocaleString() + " грн</h5>"
+        + "<hr/>"
         + "<div class='title'>" + title + "</div>"
 
 

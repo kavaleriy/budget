@@ -1033,8 +1033,8 @@ BubbleTree.MouseEventGroup = function(target, members) {
 		// since we don't know which event will receive first, the unhover of the member
 		// the mouse is leaving or the hover of the member the mouse is entering, we will
 		// delay the final check a bit
-		new vis4.DelayedTask(25, me, me.handleMemberHoverDelayed, evt);	
-		
+		new vis4.DelayedTask(25, me, me.handleMemberHoverDelayed, evt);
+
 	};
 
 	/*
@@ -1262,10 +1262,10 @@ BubbleTree.Utils.formatNumber = function(n) {
 		n = n*-1;
 		prefix = '-';
 	}
-	if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + 't';
-	if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + 'b';
-	if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + 'm';
-	if (n >= 1000) return prefix+Math.round(n / 100)/10 + 'k';
+	if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + 'трлн';
+	if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + 'млрд';
+	if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + 'млн';
+	if (n >= 1000) return prefix+Math.round(n / 100)/10 + 'тис';
 	else return prefix+n;
 	
 };
