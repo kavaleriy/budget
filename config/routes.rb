@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :expenses
 
-  get 'revenues/:id/edit_bubbletree_info' => 'revenues#edit_bubbletree_info'
+  get 'revenues/:id/edit_tree_info' => 'revenues#edit_tree_info'
   resources :revenues do
   end
 

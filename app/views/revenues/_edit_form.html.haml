@@ -1,5 +1,22 @@
 = bootstrap_form_for @revenue, :html => { :class => 'form-horizontal' } do |f|
   = f.text_field :title
 
+  %table.table.table-striped.table-hover
+    %tr
+      %th
+        Код
+      %th
+        Пояснення
+    %tr
+      - @revenue.tree_info.keys.sort_by { |item| item }.each do |key|
+        %tr
+          %td{style:'text-align: right'}
+            %h4=key
+            =@revenue.tree_info[key]['title']
+          %td
+            %textarea{name: "description[#{key}]", cols: 80, rows: 3}
+              = @revenue.tree_info[key]['description']
+
+
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

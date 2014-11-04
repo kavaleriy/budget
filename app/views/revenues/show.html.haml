@@ -28,5 +28,4 @@
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(@revenue), :class => 'btn btn-default'
-= link_to t('.edit', :default => t("helpers.links.edit")), "#{revenue_path(@revenue)}/edit_bubbletree_info", :class => 'btn btn-default'
 = link_to t('.destroy', :default => t("helpers.links.destroy")), revenue_path(@revenue), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

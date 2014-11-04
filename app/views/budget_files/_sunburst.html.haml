@@ -121,7 +121,7 @@
           .attr("display", function(d) { return d.depth ? null : "none"; })
           .attr("d", arc)
           .attr("fill-rule", "evenodd")
-          .style("fill", function(d) { return colors[d.name] || vis4color.fromHSL(.1 + Math.random(), .1 + Math.random(), .1 + Math.random()).x; })
+          .style("fill", function(d) { return d.color || vis4color.fromHSL(.1 + Math.random(), .1 + Math.random(), .1 + Math.random()).x; })
           .style("opacity", 1)
           .on("mouseover", mouseover);
 
@@ -243,7 +243,7 @@
 
       entering.append("svg:polygon")
           .attr("points", breadcrumbPoints)
-          .style("fill", function(d) { return colors[d.name]; });
+          .style("fill", function(d) { return d.color; });
 
       entering.append("svg:text")
           .attr("x", (b.w + b.t) / 2)
