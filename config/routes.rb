@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'visify/circle_packing'
   get 'visify/treemap'
   get 'visify/force_collapsible'
+  get 'visify/get_sunburst_data'
+  get 'visify/get_bubbletree_data'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'

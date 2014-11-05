@@ -1,7 +1,8 @@
-.bubbletree, .sunburst, .sunburst-seq, .treemap {
+.bubbletree, .sunburst, .sunburst-seq, .treemap, .circles {
   margin: 20px 0px;
 
   #chart {
+    padding-right: 10px;
     border-right: 3px solid #FF9933;
     position: relative;
 
@@ -12,7 +13,7 @@
   }
 
   &>#sidebar {
-    padding: 10px;
+    padding: 0px;
     float: right;
     width: 300px;
     overflow: hidden;
@@ -106,10 +107,10 @@
 }
 
 .treemap {
-  .chart {
-    display: block;
-    margin: auto;
-    margin-top: 40px;
+  #chart {
+//    display: block;
+//    margin: auto;
+//    margin-top: 40px;
   }
 
   text {
@@ -119,4 +120,39 @@
   rect {
     fill: none;
   }
+}
+
+
+.circles {
+  text {
+    font-size: 11px;
+    pointer-events: none;
+  }
+
+  text.parent {
+    fill: #1f77b4;
+  }
+
+  circle {
+    fill: #ccc;
+    stroke: #999;
+    pointer-events: all;
+  }
+
+  circle.parent {
+    fill: #1f77b4;
+    fill-opacity: .1;
+    stroke: steelblue;
+  }
+
+  circle.parent:hover {
+    stroke: #ff7f0e;
+    stroke-width: .5px;
+  }
+
+  circle.child {
+    pointer-events: none;
+  }
+
+
 }
