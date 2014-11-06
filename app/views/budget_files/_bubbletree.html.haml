@@ -8,14 +8,14 @@
 = javascript_include_tag "cofog.js"
 
 .bubbletree
-  #sidebar
+  #sidebar.col-xs-3
   #chart
 
 :javascript
 
   $(document).ready(function() {
-    var width = $('body').width() - 350;
-    height = width * .45
+    var width = $('body').width() - $('.bubbletree #sidebar').width() - 50;
+    height = width * .5
 
     $('.bubbletree #chart').width(width).height(height)
 

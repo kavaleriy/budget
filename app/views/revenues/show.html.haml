@@ -8,33 +8,37 @@
       #{@revenue.title}
 
 
-%ul.views.nav.nav-tabs{role: 'tablist'}
-  %li.active
-    %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
-      = t('.tab_bubbletree')
-  %li
-    %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
-      = t('.tab_sunburst')
-  %li
-    %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
-      = t('.tab_sunburst_seq')
-  %li
-    %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
-      = t('.tab_treemap')
-  %li
-    %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
-      = t('.tab_circles')
-.tab-content
-  #bubbletree.tab-pane.fade.in.active
-    = render partial: 'budget_files/bubbletree', :locals => { budget_file_id: @revenue.id }
-  #sunburst_seq.tab-pane.fade
-    = render partial: 'budget_files/sunburst_seq', :locals => { budget_file_id: @revenue.id }
-  #sunburst.tab-pane.fade
-    = render partial: 'budget_files/sunburst', :locals => { budget_file_id: @revenue.id }
-  #treemap.tab-pane.fade
-    = render partial: 'budget_files/treemap', :locals => { budget_file_id: @revenue.id }
-  #circles.tab-pane.fade
-    = render partial: 'budget_files/circles', :locals => { budget_file_id: @revenue.id }
+
+.revenues
+
+  %ul.views.nav.nav-tabs{role: 'tablist'}
+    %li.active
+      %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_bubbletree')
+    %li
+      %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_sunburst')
+    %li
+      %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_sunburst_seq')
+    %li
+      %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_treemap')
+    %li
+      %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_circles')
+
+  .tab-content
+    #bubbletree.tab-pane.fade.in.active
+      = render partial: 'budget_files/bubbletree', :locals => { budget_file_id: @revenue.id }
+    #sunburst_seq.tab-pane.fade
+      = render partial: 'budget_files/sunburst_seq', :locals => { budget_file_id: @revenue.id }
+    #sunburst.tab-pane.fade
+      = render partial: 'budget_files/sunburst', :locals => { budget_file_id: @revenue.id }
+    #treemap.tab-pane.fade
+      = render partial: 'budget_files/treemap', :locals => { budget_file_id: @revenue.id }
+    #circles.tab-pane.fade
+      = render partial: 'budget_files/circles', :locals => { budget_file_id: @revenue.id }
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(@revenue), :class => 'btn btn-default'

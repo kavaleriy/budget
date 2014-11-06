@@ -12,8 +12,8 @@
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-money
-              = t('visify.budget')
-              %span.caret
+            = t('visify.budget')
+            %span.caret
           %ul.dropdown-menu{'role' => "menu"}
             - BudgetFile.each do |budget_file|
               %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
@@ -33,8 +33,8 @@
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-calendar
-              = t('.calendar')
-              %span.caret
+            = t('.calendar')
+            %span.caret
           %ul.dropdown-menu{'role' => "menu"}
             - Calendar.each do |c|
               %li= link_to "#{c.title}", "/public/calendar/#{c.id}"
@@ -48,7 +48,7 @@
         %li
           = link_to subscribers_path do
             %i.fa.fa-envelope-o
-              = t('.subscribers')
+            = t('.subscribers')
         %li.todo
           %a.dropdown-toggle(data-toggle="dropdown" href="#")
             %i.fa.fa-calendar

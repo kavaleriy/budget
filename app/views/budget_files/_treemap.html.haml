@@ -1,12 +1,12 @@
 .treemap
-  #sidebar
+  #sidebar.col-xs-3
   #chart
 
 :javascript
 
   $(document).ready(function() {
-    var w = $('body').width() - 340,
-        h = w*0.4,
+    var w = $('body').width() - $('.bubbletree #sidebar').width() - 50,
+        h = w*0.5,
         x = d3.scale.linear().range([0, w]),
         y = d3.scale.linear().range([0, h]),
         color = d3.scale.category20c(),

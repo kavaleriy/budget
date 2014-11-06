@@ -5269,7 +5269,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				config.slider.content.padding	= config.slider.content.padding_default;
 			}
 			
-			config.slider.content.width = current_width - (config.slider.content.padding *2);
+			config.slider.content.width = current_width - (config.slider.content.padding *2) - 50;
 			
 			VMM.Lib.width($slides_items, (slides.length * config.slider.content.width));
 			
@@ -7089,10 +7089,10 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 					width: 			720,
 					height: 		400,
 					padding: 		300,
-					padding_default:280
+					padding_default:290
 				},
 				nav: {
-					width: 			200,
+					width: 			240,
 					height: 		200
 				}
 			},

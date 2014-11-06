@@ -1,7 +1,7 @@
 .sunburst-seq
-  #sidebar
+  #sidebar.col-xs-3
   #chart
-    #sequence
+    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @revenue.id }
     #explanation{ style: "visibility: hidden;" }
       %span#percentage
       %br
@@ -13,11 +13,13 @@
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('body').width() - 340;
-    var height = width * 0.35;
+    var width = $('body').width() - $('.bubbletree #sidebar').width() - 50;
+    var height = width * 0.5;
     var radius = Math.min(width, height) / 2;
 
-    $(".sunburst-seq #chart").width(width).height(height + 40)
+    var sequence = aSequence('.sunburst-seq')
+
+    $(".sunburst-seq #chart").width(width).height(height)
 
     color = d3.scale.category20c()
 
@@ -26,11 +28,6 @@
 
     $(".sunburst-seq #explanation").width(140).css("top", height / 2 ).css("left", width/2 - 70);
 
-
-    // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-    var b = {
-      w: 175, h: 30, s: 3, t: 10
-    };
 
     // Mapping of step names to colors.
     // Total size of all segments; we set this later, after loading the data.
@@ -63,7 +60,7 @@
     function createVisualization(json) {
 
       // Basic setup of page elements.
-      initializeBreadcrumbTrail();
+      sequence.initializeBreadcrumbTrail();
 
       // Bounding circle underneath the sunburst, to make it easier to detect
       // when the mouse leaves the parent g.
@@ -96,100 +93,13 @@
       totalSize = path.node().__data__.value;
      };
 
-    // Given a node in a partition layout, return an array of all of its ancestor
-    // nodes, highest first, but excluding the root.
-    function getAncestors(node) {
-      var path = [];
-      var current = node;
-      while (current.parent) {
-        path.unshift(current);
-        current = current.parent;
-      }
-      return path;
-    }
-
-    function initializeBreadcrumbTrail() {
-      // Add the svg area.
-      var trail = d3.select(".sunburst-seq #sequence").append("svg:svg")
-          .attr("width", width)
-          .attr("height", 50)
-          .attr("id", "trail");
-      // Add the label at the end, for the percentage.
-      trail.append("svg:text")
-        .attr("id", "endlabel")
-        .style("fill", "#000");
-    }
-
-    // Generate a string that describes the points of a breadcrumb polygon.
-    function breadcrumbPoints(d, i) {
-      var points = [];
-      points.push("0,0");
-      points.push(b.w + ",0");
-      points.push(b.w + b.t + "," + (b.h / 2));
-      points.push(b.w + "," + b.h);
-      points.push("0," + b.h);
-      if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
-        points.push(b.t + "," + (b.h / 2));
-      }
-      return points.join(" ");
-    }
-
-    // Update the breadcrumb trail to show the current sequence and percentage.
-    function updateBreadcrumbs(nodeArray, percentageString) {
-
-      // Data join; key function combines name and depth (= position in sequence).
-      var g = d3.select(".sunburst-seq #trail")
-          .selectAll("g")
-          .data(nodeArray, function(d) { return (d.name || d.label) + d.depth; });
-
-      // Add breadcrumb and label for entering nodes.
-      var entering = g.enter().append("svg:g");
-
-      entering.append("svg:polygon")
-          .attr("points", breadcrumbPoints)
-          .style("fill", function(d) { return d.color || color(d.value); })
-
-      entering.append("svg:text")
-          .attr("x", (b.w + b.t) / 2)
-          .attr("y", b.h / 2)
-          .attr("dy", "0.35em")
-          .attr("text-anchor", "middle")
-          .text(function(d) { return (d.name || d.label); });
-
-      // Set position for entering and updating nodes.
-      g.attr("transform", function(d, i) {
-        return "translate(" + i * (b.w + b.s) + ", 0)";
-      });
-
-      // Remove exiting nodes.
-      g.exit().remove();
-
-      // Now move and update the percentage at the end.
-      d3.select(".sunburst-seq #trail").select("#endlabel")
-          .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
-          .attr("y", b.h / 2)
-          .attr("dy", "0.35em")
-          .attr("text-anchor", "middle")
-          .text(percentageString);
-
-      // Make the breadcrumb trail visible, if it's hidden.
-      d3.select("#trail")
-          .style("visibility", "");
-
-    }
-
     function mouseclick(d) {
       $('.sunburst-seq #sidebar').html(getItemInfoHtml(d))
     }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
-
-      var percentage = (100 * d.value / totalSize).toPrecision(3);
-      var percentageString = percentage + "%";
-      if (percentage < 0.1) {
-        percentageString = "< 0.1%";
-      }
+      var percentageString = sequence.getPercentageString(d, totalSize)
 
       d3.select(".sunburst-seq #percentage")
           .text(percentageString);
@@ -200,8 +110,8 @@
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
 
-      var sequenceArray = getAncestors(d);
-      updateBreadcrumbs(sequenceArray, percentageString);
+      var sequenceArray = sequence.getAncestors(d);
+      sequence.updateBreadcrumbs(sequenceArray, percentageString);
 
       // Fade all the segments.
       vis.selectAll("path")
@@ -218,9 +128,7 @@
     // Restore everything to full opacity when moving off the visualization.
     function mouseleave(d) {
 
-      // Hide the breadcrumb trail
-      d3.select(".sunburst-seq #trail")
-          .style("visibility", "hidden");
+      sequence.hideBreadcrumb()
 
       // Deactivate all segments during transition.
       vis.selectAll("path").on("mouseover", null);

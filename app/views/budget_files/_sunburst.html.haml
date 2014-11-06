@@ -1,13 +1,16 @@
 .sunburst
-  #sidebar
+  #sidebar.col-xs-3
   #chart
+    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @revenue.id }
 
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('body').width() - 340;
-    var height = width * 0.45;
+    var width = $('body').width() - $('.bubbletree #sidebar').width() - 50;
+    var height = width * 0.5;
     var radius = Math.min(width, height) / 2;
+
+    var sequence = aSequence('.sunburst')
 
     var tooltip = d3.select(".sunburst").append("div")
         .attr("id", "tooltip")
@@ -44,11 +47,13 @@
           .on("click", function(d) {
             magnify(d)
             $('.sunburst #sidebar').html(getItemInfoHtml(d))
-
           })
           .on("mouseover", function(d) {
             if(d.title == '')
               return
+
+            var sequenceArray = sequence.getAncestors(d);
+            sequence.updateBreadcrumbs(sequenceArray, sequence.getPercentageString(d, totalSize));
 
             tooltip.html(getTooltipHtml(d))
              .style("left", (d3.event.pageX) + "px")
@@ -58,6 +63,7 @@
              .style("opacity", .75)
           })
           .on("mouseout", function(d) {
+             sequence.hideBreadcrumb()
              tooltip.transition()
                .duration(200)
                .style("opacity", 0);
@@ -65,6 +71,8 @@
           .each(stash);
 
       totalSize = path.node().__data__.value
+
+      sequence.initializeBreadcrumbTrail();
     });
 
     // Distort the specified node to 80% of its parent.

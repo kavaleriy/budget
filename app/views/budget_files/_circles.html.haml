@@ -1,12 +1,12 @@
 .circles
-  #sidebar
+  #sidebar.col-xs-3
   #chart
 
 :javascript
   $(document).ready(function() {
-    var w = $('body').width() - 350,
-        h = w * 0.4,
-        r = w * 0.4,
+    var w = $('body').width() - $('.bubbletree #sidebar').width() - 50,
+        h = w * 0.5,
+        r = w * 0.5,
         x = d3.scale.linear().range([0, r]),
         y = d3.scale.linear().range([0, r]),
         node,
@@ -24,7 +24,11 @@
         .size([r, r])
         .value(function(d) { return d.amount; })
 
-    var vis = d3.select(".circles #chart").insert("svg:svg", "h2")
+
+    var vis = d3.select(".circles #chart")
+        .style("width", w + "px")
+        .style("height", h + "px")
+      .append("svg:svg", 'h2')
         .attr("width", w)
         .attr("height", h)
       .append("svg:g")
@@ -55,7 +59,7 @@
              .style("top", (d3.event.pageY) + "px");
             tooltip.transition()
              .duration(200)
-             .style("opacity", .8)
+             .style("opacity", .9)
           })
           .on("mouseout", function(d) {
              tooltip.transition()

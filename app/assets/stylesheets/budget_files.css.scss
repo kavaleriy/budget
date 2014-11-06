@@ -1,50 +1,8 @@
-.bubbletree, .sunburst, .sunburst-seq, .treemap, .circles {
-  margin: 20px 0px;
-
-  #chart {
-    padding-right: 10px;
-    border-right: 3px solid #FF9933;
-    position: relative;
-
-    path, rect {
-      cursor: pointer;
-      stroke: #fff;
-    }
-  }
-
-  &>#sidebar {
-    padding: 0px;
-    float: right;
-    width: 300px;
-    overflow: hidden;
-
-    h3, h4 {
-      color: #FF9933;
-    }
-  }
-
-  &>#tooltip {
-    position: absolute;
-    z-index: 9999;
-    text-align: center;
-    width: auto;
-    max-width: 320px;
-    height: auto;
-    max-height: 200px;
-    overflow: hidden;
-    padding: 15px;
-    font-size: 12px;
-    background: lightsalmon;
-    border: 4px;
-    border-radius: 8px;
-    pointer-events: none;
-  }
-}
-
-.sunburst-seq {
+.revenues {
   #sequence {
     width: 100%;
     height: 70px;
+    margin-top: 15px;
 
     text {
       font-weight: 600;
@@ -52,107 +10,148 @@
     }
   }
 
-  #explanation {
-    position: absolute;
-    text-align: center;
-    color: #666;
-    z-index: 1;
+  .bubbletree, .sunburst, .sunburst-seq, .treemap, .circles {
+    margin: 20px 0px;
 
-    #percentage {
-      font-size: 2.5em;
+    #chart {
+      padding-right: 10px;
+      border-right: 3px solid #FF9933;
+      position: relative;
+
+      path, rect {
+        cursor: pointer;
+        stroke: #fff;
+      }
+    }
+
+    #sidebar {
+      padding: 0px;
+      float: right;
+      overflow: hidden;
+
+      h3, h4 {
+        color: #FF9933;
+      }
+    }
+
+    & > #tooltip {
+      position: absolute;
+      z-index: 9999;
+      text-align: center;
+      width: auto;
+      max-width: 320px;
+      height: auto;
+      max-height: 200px;
+      overflow: hidden;
+      padding: 15px;
+      font-size: 12px;
+      background: lightsalmon;
+      border: 4px;
+      border-radius: 8px;
+      pointer-events: none;
     }
   }
-}
 
-
-.bubbletree {
-
-  #chart {
-    .label {
+  .sunburst-seq {
+    #explanation {
       position: absolute;
-      color: #fff;
       text-align: center;
-      cursor: default;
+      color: #666;
+      z-index: 1;
+
+      #percentage {
+        font-size: 2.5em;
+      }
+    }
+  }
+
+  .bubbletree {
+
+    #chart {
+      .label {
+        position: absolute;
+        color: #fff;
+        text-align: center;
+        cursor: default;
+      }
+
+      .amount {
+        font-size: 16px;
+      }
+
+      .desc {
+        font-size: 11px;
+      }
+
+      .label2 {
+        position: absolute;
+        color: #000;
+        text-align: center;
+        cursor: default;
+        font-size: 11px;
+        font-family: sans-serif;
+        margin-top: 5px;
+      }
+
+      .label2 span {
+        background: #fff;
+      }
+    }
+    .loading {
+      z-index: 1000;
+      position: absolute;
+      width: 700px;
+      height: 400px;
     }
 
-    .amount {
-      font-size: 16px;
+  }
+
+  .treemap {
+    #chart {
+      //    display: block;
+      //    margin: auto;
+      //    margin-top: 40px;
     }
 
-    .desc {
+    text {
       font-size: 11px;
     }
 
-    .label2 {
-      position: absolute;
-      color: #000;
-      text-align: center;
-      cursor: default;
+    rect {
+      fill: none;
+    }
+  }
+
+  .circles {
+    text {
       font-size: 11px;
-      font-family: sans-serif;
-      margin-top: 5px;
+      pointer-events: none;
     }
 
-    .label2 span {
-      background: #fff;
+    text.parent {
+      fill: #1f77b4;
     }
+
+    circle {
+      fill: #ccc;
+      stroke: #999;
+      pointer-events: all;
+    }
+
+    circle.parent {
+      fill: #1f77b4;
+      fill-opacity: .1;
+      stroke: steelblue;
+    }
+
+    circle.parent:hover {
+      stroke: #ff7f0e;
+      stroke-width: .5px;
+    }
+
+    //  circle.child {
+    //    pointer-events: none;
+    //  }
+
   }
-  .loading {
-    z-index: 1000;
-    position: absolute;
-    width: 700px;
-    height: 400px;
-  }
-
-}
-
-.treemap {
-  #chart {
-//    display: block;
-//    margin: auto;
-//    margin-top: 40px;
-  }
-
-  text {
-    font-size: 11px;
-  }
-
-  rect {
-    fill: none;
-  }
-}
-
-
-.circles {
-  text {
-    font-size: 11px;
-    pointer-events: none;
-  }
-
-  text.parent {
-    fill: #1f77b4;
-  }
-
-  circle {
-    fill: #ccc;
-    stroke: #999;
-    pointer-events: all;
-  }
-
-  circle.parent {
-    fill: #1f77b4;
-    fill-opacity: .1;
-    stroke: steelblue;
-  }
-
-  circle.parent:hover {
-    stroke: #ff7f0e;
-    stroke-width: .5px;
-  }
-
-  circle.child {
-    pointer-events: none;
-  }
-
-
 }
