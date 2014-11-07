@@ -22,7 +22,7 @@
       = t('.descr')
 
 
-= javascript_include_tag "http://mbostock.github.io/d3/talk/20111116/d3/d3.geom.js"
+= javascript_include_tag "d3.geom.js"
 
 
 :javascript
@@ -43,7 +43,7 @@
       .attr("width", w)
       .attr("height", h);
 
-  d3.json("get_sunburst_data", function(json) {
+  d3.json("/budget_files/get_sunburst_data/545a0c5575627535f8000000", function(json) {
     root = json;
     root.fixed = true;
     root.x = w / 2;

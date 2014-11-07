@@ -17,6 +17,8 @@
     var width = $('body').width() - $('.bubbletree #sidebar').width() - 50;
     height = width * .5
 
+    var totalSize;
+
     $('.bubbletree #chart').width(width).height(height)
 
     var tooltip = d3.select(".bubbletree").append("div")
@@ -54,12 +56,18 @@
             $('.bubbletree #sidebar').html(getItemInfoHtml(node))
           }
       });
+
+      totalSize = data.size;
     })
 
     function getItemInfoHtml(node) {
+      percentage = (100 * node.size / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<div class='title'>" + title + "</div>"
-        + "<h3 class='amount'>" + node.famount + "</h3>"
+      name = node.name || ''
+      div = "<h4 class='code'>" + name + "</h4>"
+        + "<div class='title'>" + title + "</div>"
+        + "<h3 class='percentage'>" + percentage + "%</h3>"
+        + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
@@ -69,11 +77,13 @@
     }
 
     function getTooltipHtml(node) {
+      percentage = (100 * node.size / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<div class='title'>" + title + "</div>"
+      div = "<h5 class='percentage'>" + percentage + "% - " + node.size.toLocaleString() + " грн</h5>"
+        + "<hr/>"
+        + "<div class='title'>" + title + "</div>"
 
       return div
     }
-
 
   });

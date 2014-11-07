@@ -58,6 +58,7 @@ class Revenue < BudgetFile
 
   def get_bubble_tree_item(item)
     node = {
+        'size' => item[:amount],
         'amount' => item[:amount],
         'label' => '',
     }
@@ -107,7 +108,7 @@ class Revenue < BudgetFile
 
   def get_sunburst_tree_item(nodes)
     children = []
-    small = { "count" => 0, "amount" => 0 }
+    small = { "count" => 0, "size" => 0 }
 
     cut_amount = (self.meta_data[:max] - self.meta_data[:min]) * 0.1
 
@@ -117,7 +118,7 @@ class Revenue < BudgetFile
         if amount > cut_amount
           item = {
               "label" => node,
-              "amount" => amount
+              "size" => amount
           }
 
           info = self.tree_info[node]
@@ -131,13 +132,13 @@ class Revenue < BudgetFile
           children << item
         else
           small["count"] += 1
-          small["amount"] += amount
+          small["size"] += amount
         end
       end
     end
 
-    if small["amount"] > 0
-      children << { "name" => "АГРЕГОВАНО: #{small['count']}", "amount" => small['amount']}
+    if small["size"] > 0
+      children << { "name" => "АГРЕГОВАНО: #{small['count']}", "size" => small['size']}
     end
 
     children

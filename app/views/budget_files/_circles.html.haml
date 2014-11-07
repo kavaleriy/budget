@@ -22,7 +22,7 @@
 
     var pack = d3.layout.pack()
         .size([r, r])
-        .value(function(d) { return d.amount; })
+        .value(function(d) { return d.size; })
 
 
     var vis = d3.select(".circles #chart")
@@ -67,7 +67,7 @@
                .style("opacity", 0);
           })
 
-      totalSize = vis.selectAll("circle").node().__data__.value
+      totalSize = root.value //vis.selectAll("circle").node().__data__.value
 
       vis.selectAll("text")
           .data(nodes)

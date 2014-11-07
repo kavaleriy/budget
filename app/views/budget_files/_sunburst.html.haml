@@ -24,7 +24,7 @@
 
     var partition = d3.layout.partition()
         .size([2 * Math.PI, radius])
-        .value(function(d) { return d.amount; });
+        .value(function(d) { return d.size; });
 
     var arc = d3.svg.arc()
         .startAngle(function(d) { return d.x; })
@@ -45,8 +45,8 @@
           .attr("d", arc)
           .style("fill", function(d) { return color((d.children ? d : d.parent).value); })
           .on("click", function(d) {
-            magnify(d)
             $('.sunburst #sidebar').html(getItemInfoHtml(d))
+            magnify(d)
           })
           .on("mouseover", function(d) {
             if(d.title == '')
@@ -60,7 +60,7 @@
              .style("top", (d3.event.pageY) + "px");
             tooltip.transition()
              .duration(200)
-             .style("opacity", .75)
+             .style("opacity", .9)
           })
           .on("mouseout", function(d) {
              sequence.hideBreadcrumb()

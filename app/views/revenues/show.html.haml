@@ -27,6 +27,9 @@
     %li
       %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_circles')
+    %li
+      %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_collapsible')
 
   .tab-content
     #bubbletree.tab-pane.fade.in.active
@@ -39,6 +42,8 @@
       = render partial: 'budget_files/treemap', :locals => { budget_file_id: @revenue.id }
     #circles.tab-pane.fade
       = render partial: 'budget_files/circles', :locals => { budget_file_id: @revenue.id }
+    #collapsible.tab-pane.fade
+      = render partial: 'budget_files/collapsible', :locals => { budget_file_id: @revenue.id }
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_revenue_path(@revenue), :class => 'btn btn-default'

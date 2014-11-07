@@ -24,7 +24,7 @@
         .round(false)
         .size([w, h])
         .sticky(true)
-        .value(function(d) { return d.amount; });
+        .value(function(d) { return d.size; });
 
     var svg = d3.select(".treemap #chart")
         .style("width", w + "px")
@@ -48,7 +48,7 @@
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", function(d) {
             $('.treemap #sidebar').html(getItemInfoHtml(d))
-            return zoom(node == d.parent ? root : d.parent);
+            zoom(node == d.parent ? root : d.parent);
           })
           .on("mouseover", function(d) {
             if(d.title == '')
@@ -59,14 +59,13 @@
              .style("top", (d3.event.pageY) + "px");
             tooltip.transition()
              .duration(200)
-             .style("opacity", .8)
+             .style("opacity", .9)
           })
           .on("mouseout", function(d) {
              tooltip.transition()
                .duration(200)
                .style("opacity", 0);
           })
-
 
       cell.append("svg:rect")
           .attr("width", function(d) { return d.dx - 1; })
@@ -81,10 +80,9 @@
           .text(function(d) { return d.name; })
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
 
+      totalSize = root.value
 
-      totalSize = cell.node().__data__.value
-
-      d3.select(window).on("click", function() { zoom(root); });
+      //d3.select(window).on("click", function() { zoom(root); });
 
       d3.select("select").on("change", function() {
         treemap.value(this.value == "size" ? size : count).nodes(root);
@@ -93,7 +91,7 @@
     });
 
     function size(d) {
-      return d.amount;
+      return d.size;
     }
 
     function count(d) {
@@ -123,13 +121,13 @@
     }
 
     function getItemInfoHtml(node) {
-      percentage = (100 * node.value / totalSize).toPrecision(3);
+      percentage = (100 * node.size / totalSize).toPrecision(3);
       title = node.title || ''
       name = node.name || ''
       div = "<h4 class='code'>" + name + "</h4>"
         + "<div class='title'>" + title + "</div>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
-        + "<h4 class='amount'>" + node.value.toLocaleString() + " грн</h4>"
+        + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
