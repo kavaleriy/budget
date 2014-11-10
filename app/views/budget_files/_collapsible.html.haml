@@ -10,8 +10,8 @@
 
   $(document).ready(function() {
 
-    var w = $('body').width() - $('.bubbletree #sidebar').width() - 50,
-        h = w * 0.6,
+    var w = $('.budget').width() - $('.bubbletree #sidebar').width() - 50,
+        h = w * 0.5,
         node,
         link,
         root;
@@ -27,7 +27,7 @@
     var force = d3.layout.force()
         .on("tick", tick)
         .charge(function(d) { return -230; })
-        .linkDistance(function(d) { return d.target._children ? 150 : 50; })
+        .linkDistance(function(d) { return d.target._children ? 120 : 80; })
         .size([w, h - 160]);
 
     var vis = d3.select(".collapsible #chart").append("svg:svg")

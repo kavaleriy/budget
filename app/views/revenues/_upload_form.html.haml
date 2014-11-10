@@ -1,0 +1,6 @@
+= bootstrap_form_for @revenue, :html => { :class => 'form-horizontal' } do |f|
+  = f.text_field :title
+  = f.file_field :file
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'
+

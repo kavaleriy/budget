@@ -1,7 +1,7 @@
 class Revenue < BudgetFile
   include Mongoid::Document
 
-  field :items, :type => Hash
+  field :rows, :type => Hash
 
   field :bubble_tree, :type => Hash
   field :sunburst_tree, :type => Hash
@@ -15,30 +15,19 @@ class Revenue < BudgetFile
     self.tree_info[:meta_data] = val
   end
 
-  def load_file
-    require 'dbf'
-    dbf = DBF::Table.new(self.file)
-    titles = get_revenue_codes
+  def prepare
+    titles = Revenue.get_revenue_codes
 
     self.tree_info = { 'Всього' => { 'title' => 'Всього доходів', 'color' => 'green' }}
-
-    self.items = {}
 
     min = nil
     max = 0
 
-    dbf.reject { |rec| rec.summ.nil? || rec.summ == 0 }.each do |rec|
-      key = rec.kkd.to_s
-      amount = rec.summ / 100
+    self.rows.each do |key, val|
+      amount = val[:amount]
 
       min = amount if min.nil? || amount < min
       max = amount if amount > max
-
-      if self.items[key].nil?
-        self.items[key] = 0
-      else
-        self.items[key] += amount
-      end
 
       [key.slice(0, 1), key.slice(0, 3), key.slice(0, 5), key.slice(0, 8)].each { |v|
         self.tree_info[v] = { 'title' => titles[v.ljust(8, '0')] }
@@ -51,36 +40,56 @@ class Revenue < BudgetFile
     self.sunburst_tree = create_sunburst_tree
   end
 
+  def load_file
+    require 'dbf'
+    dbf = DBF::Table.new(self.file)
+
+    self.rows = {}
+
+    dbf.reject { |rec| rec.summ.nil? || rec.summ == 0 }.each do |rec|
+      key = rec.kkd.to_s
+      amount = rec.summ / 100
+
+      if self.rows[key].nil?
+        self.rows[key] = { :amount => amount }
+      else
+        self.rows[key][:amount] = self.rows[key][:amount] + amount
+      end
+    end
+  end
+
 
   def get_bubble_tree
     get_bubble_tree_item(self.bubble_tree)
   end
 
   def get_bubble_tree_item(item)
-    node = {
-        'size' => item[:amount],
-        'amount' => item[:amount],
-        'label' => '',
-    }
-
-    info = self.tree_info[item[:key]]
-    if info
-      node['label'] = info['name'] unless info['name'].nil?
-      node['title'] = info['title'] unless info['title'].nil?
-      node['color'] = info['color'] unless info['color'].nil?
-      node['description'] = info['description'] unless info['description'].nil?
-    end
-
-    node['color'] = 'orange' if node['color'].nil?
-
-    unless item[:children].nil?
-      node['children'] = []
-      item[:children].each { |child_node|
-        node['children'] << get_bubble_tree_item(child_node)
+    if item[:amount] > 0
+      node = {
+          'size' => item[:amount],
+          'amount' => item[:amount],
+          'label' => '',
       }
-    end
 
-    node
+      info = self.tree_info[item[:key]]
+      if info
+        node['label'] = info['name'] unless info['name'].nil?
+        node['title'] = info['title'] unless info['title'].nil?
+        node['color'] = info['color'] unless info['color'].nil?
+        node['description'] = info['description'] unless info['description'].nil?
+      end
+
+      node['color'] = 'orange' if node['color'].nil?
+
+      unless item[:children].nil?
+        node['children'] = []
+        item[:children].each { |child_node|
+          node['children'] << get_bubble_tree_item(child_node)
+        }
+      end
+
+      node
+    end
   end
 
 
@@ -110,11 +119,11 @@ class Revenue < BudgetFile
     children = []
     small = { "count" => 0, "size" => 0 }
 
-    cut_amount = (self.meta_data[:max] - self.meta_data[:min]) * 0.1
+    cut_amount = (self.meta_data[:max] - self.meta_data[:min]) * 0.01
 
-    nodes.each do |node|
-      amount = self.items[node]
-      unless amount.nil?
+    nodes.reject {|k| self.rows[k].nil?}.each do |node|
+      amount = self.rows[node][:amount]
+      unless amount.nil? || amount == 0
         if amount > cut_amount
           item = {
               "label" => node,
@@ -150,8 +159,8 @@ class Revenue < BudgetFile
   def create_bubble_tree
       tree = { :amount => 0 }
 
-      self.items.keys.each do |key|
-        amount = self.items[key]
+      self.rows.keys.reject{ |k| self.rows[k][:amount] == 0}.each do |key|
+        amount = self.rows[key][:amount]
         node = tree
         node[:amount] += amount
         [key.slice(0, 1), key.slice(0, 3), key.slice(0, 5), key.slice(0, 8)].each do |v|

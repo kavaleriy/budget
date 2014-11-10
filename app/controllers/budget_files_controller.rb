@@ -10,16 +10,27 @@ class BudgetFilesController < ApplicationController
   # POST /revenues
   # POST /revenues.json
   def create par
-    file = upload par[:file]
+    if par[:file]
+      file = upload_io par[:file]
 
-    @budget_file.title = if par[:title].empty?
-      file[:name]
+      @budget_file.title = if par[:title].empty?
+        file[:name]
+      else
+        par[:title]
+      end
+
+      @budget_file.file = file[:path]
+      @budget_file.load_file
     else
-      par[:title]
+      @budget_file.rows = {}
+      params[:rows].each{|k, v|
+        @budget_file.rows[k] = { :amount => v[:amount].to_i }
+      }
     end
 
-    @budget_file.file = file[:path]
-    @budget_file.load_file
+    @budget_file.title =  DateTime.now.strftime() if @budget_file.title.nil?
+
+    @budget_file.prepare
 
     respond_to do |format|
       if @budget_file.save
@@ -42,7 +53,7 @@ class BudgetFilesController < ApplicationController
 
   private
 
-    def upload uploaded_io
+    def upload_io uploaded_io
       file_name = uploaded_io.original_filename
       file_path = Rails.root.join('public', 'files', file_name)
 

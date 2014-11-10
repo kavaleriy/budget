@@ -1,5 +1,5 @@
 class RevenuesController < BudgetFilesController
-  before_action :set_revenue, only: [:show, :edit, :edit_bubbletree_info, :update, :destroy]
+  before_action :set_revenue, only: [:show, :edit, :editinfo, :update, :destroy]
 
   # GET /revenues
   # GET /revenues.json
@@ -15,10 +15,21 @@ class RevenuesController < BudgetFilesController
   # GET /revenues/new
   def new
     @revenue = Revenue.new
+    @revenue.rows = {}
+    Revenue.get_revenue_codes.keys.reject{|k| k.slice(5, 3) == '000'}.each { |key| @revenue.rows[key] = { amount: '' } }
+  end
+
+  # GET /revenues/upload
+  def upload
+    @revenue = Revenue.new
   end
 
   # GET /revenues/1/edit
   def edit
+  end
+
+  # GET /revenues/1/edit
+  def editinfo
   end
 
   # POST /revenues
@@ -33,12 +44,15 @@ class RevenuesController < BudgetFilesController
   # PATCH/PUT /revenues/1.json
   def update
     tree_info = @revenue['tree_info'].deep_dup
-    params['description'].each do |key, value|
-      tree_info[key]['description'] = value
-    end
+    params[:description].each { |key, value| tree_info[key]['description'] = value } unless params['description'].nil?
+
+    rows = @revenue['rows'].deep_dup
+    params[:rows].each { |key, value| rows[key]['amount'] = value[:amount].to_i }  unless params[:rows].nil?
+
+    @revenue.prepare
 
     respond_to do |format|
-      if @revenue.update(revenue_params.merge({:tree_info => tree_info}))
+      if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
         format.html { redirect_to @revenue, notice: 'Revenue was successfully updated.' }
         format.json { render :show, status: :ok, location: @revenue }
       else

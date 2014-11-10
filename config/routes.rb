@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   resources :expenses
 
-  get 'revenues/:id/edit_tree_info' => 'revenues#edit_tree_info'
+  get 'revenues/upload' => 'revenues#upload'
+  get 'revenues/:id/editinfo' => 'revenues#editinfo'
   resources :revenues do
   end
 
