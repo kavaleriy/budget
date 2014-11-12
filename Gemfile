@@ -76,3 +76,6 @@ gem 'select2-rails'
 
 # https://github.com/infused/dbf
 gem 'dbf'
+
+# https://github.com/Empact/roo
+gem 'roo'

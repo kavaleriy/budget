@@ -37,7 +37,7 @@ class RevenuesController < BudgetFilesController
   def create
     @budget_file = Revenue.new()
 
-    super revenue_params
+    super
   end
 
   # PATCH/PUT /revenues/1

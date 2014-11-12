@@ -1,13 +1,6 @@
 class Revenue < BudgetFile
   include Mongoid::Document
 
-  field :rows, :type => Hash
-
-  field :bubble_tree, :type => Hash
-  field :sunburst_tree, :type => Hash
-
-  field :tree_info, :type => Hash
-
   def meta_data
     self.tree_info[:meta_data]
   end

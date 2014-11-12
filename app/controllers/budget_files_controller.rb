@@ -1,5 +1,5 @@
 class BudgetFilesController < ApplicationController
-  before_action :set_budget_file, only: [:get_sunburst_data, :get_bubbletree_data]
+  before_action :set_budget_file, only: [:show, :get_sunburst_data, :get_bubbletree_data]
 
   # GET /revenues
   # GET /revenues.json
@@ -7,19 +7,25 @@ class BudgetFilesController < ApplicationController
     @budget_files = BudgetFile.all
   end
 
+  def show
+  end
+
+  def upload
+    @budget_file = BudgetFile.new
+  end
+
+
   # POST /revenues
   # POST /revenues.json
-  def create par
-    if par[:file]
-      file = upload_io par[:file]
+  def create
+    @budget_file = BudgetFile.new() if @budget_file.nil?
+    if budget_file_params[:file]
+      file = upload_io budget_file_params[:file]
 
-      @budget_file.title = if par[:title].empty?
-        file[:name]
-      else
-        par[:title]
-      end
+      @budget_file.title = budget_file_params[:title].empty? ? file[:name] : budget_file_params[:title]
 
       @budget_file.file = file[:path]
+
       @budget_file.load_file
     else
       @budget_file.rows = {}
@@ -68,5 +74,8 @@ class BudgetFilesController < ApplicationController
       @budget_file = BudgetFile.find(params[:id])
     end
 
+  def budget_file_params
+    params.require(:budget_file).permit(:title, :file)
+  end
 
 end
