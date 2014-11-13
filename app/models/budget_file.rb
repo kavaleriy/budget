@@ -67,7 +67,7 @@ class BudgetFile
     2.upto(raw.last_row) do |line|
       row = { :amount => raw.cell(line, raw.last_column).to_i }
       raw.first_column.upto(raw.last_column - 1) do |col|
-        row[raw.cell(1, col).to_s] = raw.cell(line,col)
+        row[raw.cell(1, col).to_s] = raw.cell(line,col).to_s
       end
       self.rows << row
     end
