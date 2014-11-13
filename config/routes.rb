@@ -4,12 +4,12 @@ Rails.application.routes.draw do
   get 'budget_files/get_bubbletree_data/:id' => 'budget_files#get_bubbletree_data'
 
   get 'budget_files/upload' => 'budget_files#upload'
+  get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
   resources :budget_files
 
   resources :expenses
 
   get 'revenues/upload' => 'revenues#upload'
-  get 'revenues/:id/editinfo' => 'revenues#editinfo'
   resources :revenues do
   end
 

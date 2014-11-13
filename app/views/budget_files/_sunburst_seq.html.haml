@@ -1,7 +1,7 @@
 .sunburst-seq
   #sidebar.col-xs-3
   #chart
-    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @revenue.id }
+    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @budget_file.id }
     #explanation{ style: "visibility: hidden;" }
       %span#percentage
       %br

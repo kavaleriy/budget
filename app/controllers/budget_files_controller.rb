@@ -1,8 +1,8 @@
 class BudgetFilesController < ApplicationController
-  before_action :set_budget_file, only: [:show, :get_sunburst_data, :get_bubbletree_data]
+  before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
   # GET /revenues
-  # GET /revenues.json
+  # GET / revenues.json
   def index
     @budget_files = BudgetFile.all
   end
@@ -14,28 +14,18 @@ class BudgetFilesController < ApplicationController
     @budget_file = BudgetFile.new
   end
 
-
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = BudgetFile.new() if @budget_file.nil?
-    if budget_file_params[:file]
-      file = upload_io budget_file_params[:file]
+    @budget_file = BudgetFile.new()
 
-      @budget_file.title = budget_file_params[:title].empty? ? file[:name] : budget_file_params[:title]
+    file = upload_io budget_file_params[:file]
 
-      @budget_file.file = file[:path]
+    @budget_file.title = budget_file_params[:title].empty? ? file[:name] : budget_file_params[:title]
 
-      @budget_file.load_file
-    else
-      @budget_file.rows = {}
-      params[:rows].each{|k, v|
-        @budget_file.rows[k] = { :amount => v[:amount].to_i }
-      }
-    end
+    @budget_file.file = file[:path]
 
-    @budget_file.title =  DateTime.now.strftime() if @budget_file.title.nil?
-
+    @budget_file.load_file
     @budget_file.prepare
 
     respond_to do |format|
@@ -48,6 +38,17 @@ class BudgetFilesController < ApplicationController
       end
     end
   end
+
+  # DELETE /revenues/1
+  # DELETE /revenues/1.json
+  def destroy
+    @budget_file.destroy
+    respond_to do |format|
+      format.html { redirect_to budget_files_url, notice: 'File was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
 
   def get_sunburst_data
     render json: @budget_file.get_sunburst_tree

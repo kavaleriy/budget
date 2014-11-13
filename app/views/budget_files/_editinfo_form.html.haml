@@ -1,0 +1,24 @@
+= bootstrap_form_for @budget_file, :html => { :class => 'form-horizontal' } do |f|
+  = f.text_field :title
+
+  %hr
+    - @budget_file.tree_info.keys.sort_by { |item| item }.each do |key|
+      %h3="Рівень: #{key}"
+
+      %table.table.table-striped.table-hover
+        %tr
+          %th
+            Код
+          %th
+            Пояснення
+        %tr
+          - @budget_file.tree_info[key].keys.sort_by { |item| item }.each do |t_key|
+            %tr
+              %td{style:'text-align: right'}
+                %h4=t_key
+              %td
+                %textarea{name: "taxonomy[#{key}]", cols: 80, rows: 3}
+                  = @budget_file.tree_info[key][t_key]['title']
+
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

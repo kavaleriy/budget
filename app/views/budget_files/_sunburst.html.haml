@@ -1,7 +1,7 @@
 .sunburst
   #sidebar.col-xs-3
   #chart
-    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @revenue.id }
+    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   $(document).ready(function() {
@@ -49,9 +49,6 @@
             magnify(d)
           })
           .on("mouseover", function(d) {
-            if(d.title == '')
-              return
-
             var sequenceArray = sequence.getAncestors(d);
             sequence.updateBreadcrumbs(sequenceArray, sequence.getPercentageString(d, totalSize));
 
@@ -140,6 +137,7 @@
     }
 
     function getTooltipHtml(node) {
+      console.log('div')
       percentage = (100 * node.value / totalSize).toPrecision(3);
       title = node.title || ''
       div = "<h5 class='percentage'>" + percentage + "% - " + node.value.toLocaleString() + " грн</h5>"

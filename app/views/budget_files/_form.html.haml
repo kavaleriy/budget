@@ -1,0 +1,21 @@
+= bootstrap_form_for @budget_file, :html => { :class => 'form-horizontal' } do |f|
+  = f.text_field :title
+
+  %table.table.table-striped.table-hover
+    %tr
+      - @budget_file.taxonomies.each do |t|
+        %th=t[:title]
+      %th
+        Сума
+    %tr
+      - @budget_file.rows.each do |row|
+        %tr
+          - @budget_file.taxonomies.each do |t|
+            %td
+              %input{class: 'form-control', name: "rows[#{t[:key]}][#{t[:key]}]", value: row[t[:key]]}
+          %td
+            %input{class: 'form-control', name: "rows[amount]", value: row[:amount]}
+
+
+  -#= f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'
