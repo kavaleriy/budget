@@ -137,7 +137,6 @@
     }
 
     function getTooltipHtml(node) {
-      console.log('div')
       percentage = (100 * node.value / totalSize).toPrecision(3);
       title = node.title || ''
       div = "<h5 class='percentage'>" + percentage + "% - " + node.value.toLocaleString() + " грн</h5>"

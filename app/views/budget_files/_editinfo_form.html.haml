@@ -2,23 +2,31 @@
   = f.text_field :title
 
   %hr
-    - @budget_file.tree_info.keys.sort_by { |item| item }.each do |key|
-      %h3="Рівень: #{key}"
+    %ul.views.nav.nav-tabs{role: 'tablist'}
+      - @budget_file.taxonomies.each do |key, val|
+        %li
+          %a{href: "#taxonnomy_#{val[:level]}", role: 'tab', 'data-toggle' => 'tab'}
+            =val[:title]
 
-      %table.table.table-striped.table-hover
-        %tr
-          %th
-            Код
-          %th
-            Пояснення
-        %tr
-          - @budget_file.tree_info[key].keys.sort_by { |item| item }.each do |t_key|
+    .tab-content
+      - @budget_file.taxonomies.each do |key, val|
+        .tab-pane.fade.in{ :id => "taxonnomy_#{val[:level]}" }
+
+          %table.table.table-striped.table-hover
             %tr
-              %td{style:'text-align: right'}
-                %h4=t_key
-              %td
-                %textarea{name: "taxonomy[#{key}]", cols: 80, rows: 3}
-                  = @budget_file.tree_info[key][t_key]['title']
+              %th{ :style => 'text-align: right'}
+                =key
+              %th
+                Пояснення
+            %tr
+              - @budget_file.tree_info[key].keys.sort_by { |item| item }.each do |t_key|
+                %tr
+                  %td{style:'text-align: right'}
+                    %h4=t_key
+                  %td
+                    %textarea{name: "taxonomy[#{key}][#{t_key}][title]", cols: 80, rows: 3}
+                      = @budget_file.tree_info[key][t_key]['title']
 
+  %hr
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

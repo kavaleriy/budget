@@ -30,7 +30,7 @@
           data: data,
           container: '.bubbletree #chart',
           tooltip: function(a) {
-            if (a.type == 'HIDE' || a.node.title == null) {
+            if (a.type == 'HIDE') {
               tooltip.transition()
                 .duration(200)
                 .style("opacity", 0);
@@ -43,7 +43,6 @@
               // .css("top", a.mousePos.y + 150)
               // .css('display', 'block')
               // .html(getTooltipHtml(a.node))
-
               tooltip.html(getTooltipHtml(a.node))
                .style("left", a.mousePos.x + "px")
                .style("top", (a.mousePos.y + 150) + "px");

@@ -26,9 +26,9 @@
 
     var force = d3.layout.force()
         .on("tick", tick)
-        .charge(function(d) { return -230; })
-        .linkDistance(function(d) { return d.target._children ? 120 : 80; })
-        .size([w, h - 160]);
+        .charge(function(d) { return -90; })
+        .linkDistance(function(d) { return d.target._children ? 80 : 20; })
+        .size([w, h - 100]);
 
     var vis = d3.select(".collapsible #chart").append("svg:svg")
         .attr("width", w)

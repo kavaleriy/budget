@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
   resources :budget_files
 
+  get 'expenses/upload' => 'expenses#upload'
   resources :expenses
 
   get 'revenues/upload' => 'revenues#upload'

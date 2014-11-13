@@ -6,10 +6,7 @@ class Revenue < BudgetFile
     dbf = DBF::Table.new(self.file)
 
     # load taxonomies
-    self.taxonomies = {}
-    %w(A BB CC DDD).each do |t|
-      self.taxonomies[t] = { :title => t }
-    end
+    self.taxonomies = get_taxonomies %w(kkd_a kkd_bb kkd_cc kkd_ddd)
 
     self.rows = []
 
@@ -18,18 +15,12 @@ class Revenue < BudgetFile
       amount = rec.summ / 100
 
       row = { :amount => amount }
-      [{t: 'A', key: key.slice(0, 1)}, {t: 'BB', key: key.slice(0, 3)}, {t: 'CC', key: key.slice(0, 5)}, {t: 'DDD', key: key.slice(0, 8)}].each do |v|
+      [{t: 'kkd_a', key: key.slice(0, 1)}, {t: 'kkd_bb', key: key.slice(0, 3)}, {t: 'kkd_cc', key: key.slice(0, 5)}, {t: 'kkd_ddd', key: key.slice(0, 8)}].each do |v|
         row[v[:t]] = v[:key]
       end
       self.rows << row
     end
   end
-
-  def get_title key
-    @titles = Revenue.get_revenue_codes if @titles.nil?
-    @titles[key.ljust(8, '0')]
-  end
-
 
   def get_sunburst_tree
     # boxes = {
