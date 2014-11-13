@@ -92,7 +92,7 @@ class BudgetFile
 
   def get_title taxonomy, key
     case taxonomy
-      when 'kkd_a', 'kkd_bb', 'kkd_cc', 'kkd_ddd'
+      when 'kkd', kkd_a', 'kkd_bb', 'kkd_cc', 'kkd_ddd'
         @kkd_titles = BudgetFile.get_revenue_codes if @kkd_titles.nil?
         @kkd_titles[key.ljust(8, '0')]
       when 'ktfk'
