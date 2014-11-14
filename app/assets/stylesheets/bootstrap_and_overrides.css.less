@@ -19,20 +19,7 @@
 
 
 
-// Your custom LESS stylesheets goes here
-//
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
-//
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://twitter.github.com/bootstrap/customize.html#variables for their names and documentation
-//
-// Example:
-// @link-color: #ff0000;
-
-
-
-// Readable 3.2.0
+// Flatly 3.3.0
 // Variables
 // --------------------------------------------------
 
@@ -41,17 +28,18 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            lighten(#000, 13.5%); // #222
-@gray-dark:              lighten(#000, 20%);   // #333
-@gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             lighten(#000, 70%);   // #999
-@gray-lighter:           lighten(#000, 93.5%); // #eee
+@gray-base:              #000;
+@gray-darker:            lighten(@gray-base, 13.5%); // #222
+@gray-dark:              #7b8a8b;   // #333
+@gray:                   #95a5a6; // #555
+@gray-light:             #b4bcc2;   // #999
+@gray-lighter:           #ecf0f1; // #eee
 
-@brand-primary:         #4582EC;
-@brand-success:         #3FAD46;
-@brand-info:            #5bc0de;
-@brand-warning:         #f0ad4e;
-@brand-danger:          #d9534f;
+@brand-primary:         #0b387c;
+@brand-success:         #66c2ff;
+@brand-info:            #3498DB;
+@brand-warning:         #F39C12;
+@brand-danger:          #E74C3C;
 
 
 //== Scaffolding
@@ -59,27 +47,29 @@
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #fff;
+@body-bg:               #F7F7F8;
 //** Global text color on `<body>`.
-@text-color:            @gray-dark;
+@text-color:            @brand-primary;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @brand-success;
 //** Link hover color set via `darken()` function.
-@link-hover-color:      darken(@link-color, 20%);
+@link-hover-color:      @link-color;
+//** Link hover decoration.
+@link-hover-decoration: underline;
 
 
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  "Optima-Cyr-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-@font-family-serif:       "Optima-Cyr-Regular", "Times New Roman", Times, serif;
+@font-family-sans-serif:  Arial, sans-serif;
+@font-family-serif:       Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
-@font-family-base:        @font-family-serif;
+@font-family-base:        @font-family-sans-serif;
 
-@font-size-base:          16px;
+@font-size-base:          15px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -96,8 +86,8 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-sans-serif;
-@headings-font-weight:    bold;
+@headings-font-family:    @font-family-base;
+@headings-font-weight:    400;
 @headings-line-height:    1.1;
 @headings-color:          inherit;
 
@@ -118,14 +108,14 @@
 //
 //## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
 
-@padding-base-vertical:     8px;
-@padding-base-horizontal:   12px;
+@padding-base-vertical:     10px;
+@padding-base-horizontal:   15px;
 
-@padding-large-vertical:    14px;
-@padding-large-horizontal:  16px;
+@padding-large-vertical:    18px;
+@padding-large-horizontal:  27px;
 
-@padding-small-vertical:    5px;
-@padding-small-horizontal:  10px;
+@padding-small-vertical:    6px;
+@padding-small-horizontal:  9px;
 
 @padding-xs-vertical:       1px;
 @padding-xs-horizontal:     5px;
@@ -162,11 +152,11 @@
 //** Background color used for `.table-striped`.
 @table-bg-accent:               #f9f9f9;
 //** Background color used for `.table-hover`.
-@table-bg-hover:                #f5f5f5;
+@table-bg-hover:                @gray-lighter;
 @table-bg-active:               @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color:            #ddd;
+@table-border-color:            @gray-lighter;
 
 
 //== Buttons
@@ -175,27 +165,27 @@
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              @text-color;
-@btn-default-bg:                 #fff;
-@btn-default-border:             #ddd;
+@btn-default-color:              #fff;
+@btn-default-bg:                 @gray;
+@btn-default-border:             @btn-default-bg;
 
-@btn-primary-color:              #fff;
+@btn-primary-color:              @btn-default-color;
 @btn-primary-bg:                 @brand-primary;
 @btn-primary-border:             @btn-primary-bg;
 
-@btn-success-color:              #fff;
+@btn-success-color:              @btn-default-color;
 @btn-success-bg:                 @brand-success;
 @btn-success-border:             @btn-success-bg;
 
-@btn-info-color:                 #fff;
+@btn-info-color:                 @btn-default-color;
 @btn-info-bg:                    @brand-info;
 @btn-info-border:                @btn-info-bg;
 
-@btn-warning-color:              #fff;
+@btn-warning-color:              @btn-default-color;
 @btn-warning-bg:                 @brand-warning;
 @btn-warning-border:             @btn-warning-bg;
 
-@btn-danger-color:               #fff;
+@btn-danger-color:               @btn-default-color;
 @btn-danger-bg:                  @brand-danger;
 @btn-danger-border:              @btn-danger-bg;
 
@@ -214,14 +204,21 @@
 //** Text color for `<input>`s
 @input-color:                    @text-color;
 //** `<input>` border color
-@input-border:                   #ddd;
-//** `<input>` border radius
+@input-border:                   #dce4ec;
+
+// TODO: Rename `@input-border-radius` to `@input-border-radius-base` in v4
+//** Default `.form-control` border radius
 @input-border-radius:            @border-radius-base;
+//** Large `.form-control` border radius
+@input-border-radius-large:      @border-radius-large;
+//** Small `.form-control` border radius
+@input-border-radius-small:      @border-radius-small;
+
 //** Border color for inputs on focus
-@input-border-focus:             #66afe9;
+@input-border-focus:             @brand-primary;
 
 //** Placeholder text color
-@input-color-placeholder:        @gray-light;
+@input-color-placeholder:        #acb6c0;
 
 //** Default `.form-control` height
 @input-height-base:              (@line-height-computed + (@padding-base-vertical * 2) + 2);
@@ -231,12 +228,15 @@
 @input-height-small:             (floor(@font-size-small * @line-height-small) + (@padding-small-vertical * 2) + 2);
 
 @legend-color:                   @text-color;
-@legend-border-color:            #e5e5e5;
+@legend-border-color:            transparent;
 
 //** Background color for textual input addons
 @input-group-addon-bg:           @gray-lighter;
 //** Border color for textual input addons
 @input-group-addon-border-color: @input-border;
+
+//** Disabled cursor for form controls and buttons.
+@cursor-disabled:                not-allowed;
 
 
 //== Dropdowns
@@ -244,7 +244,7 @@
 //## Dropdown menu container and contents.
 
 //** Background for the dropdown menu.
-@dropdown-bg:                    #fff;
+@dropdown-bg:                    #0b387c;
 //** Dropdown menu `border-color`.
 @dropdown-border:                rgba(0,0,0,.15);
 //** Dropdown menu `border-color` **for IE8**.
@@ -286,8 +286,7 @@
 @zindex-popover:           1060;
 @zindex-tooltip:           1070;
 @zindex-navbar-fixed:      1030;
-@zindex-modal-background:  1040;
-@zindex-modal:             1050;
+@zindex-modal:             1040;
 
 
 //== Media queries breakpoints
@@ -349,17 +348,17 @@
 //## Define the maximum width of `.container` for different screen sizes.
 
 // Small screen / tablet
-@container-tablet:             ((720px + @grid-gutter-width));
+@container-tablet:             (720px + @grid-gutter-width);
 //** For `@screen-sm-min` and up.
 @container-sm:                 @container-tablet;
 
 // Medium screen / desktop
-@container-desktop:            ((940px + @grid-gutter-width));
+@container-desktop:            (940px + @grid-gutter-width);
 //** For `@screen-md-min` and up.
 @container-md:                 @container-desktop;
 
 // Large screen / wide desktop
-@container-large-desktop:      ((1140px + @grid-gutter-width));
+@container-large-desktop:      (1140px + @grid-gutter-width);
 //** For `@screen-lg-min` and up.
 @container-lg:                 @container-large-desktop;
 
@@ -369,24 +368,24 @@
 //##
 
 // Basics of a navbar
-@navbar-height:                    65px;
-@navbar-margin-bottom:             0; //@line-height-computed;
+@navbar-height:                    80px;
+@navbar-margin-bottom:             0px; //@line-height-computed;
 @navbar-border-radius:             @border-radius-base;
 @navbar-padding-horizontal:        floor((@grid-gutter-width / 2));
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 @navbar-collapse-max-height:       340px;
 
-@navbar-default-color:             @text-color;
-@navbar-default-bg:                @body-bg;
-@navbar-default-border:            #ddd;
+@navbar-default-color:             #777;
+@navbar-default-bg:                @brand-primary;
+@navbar-default-border:            transparent;
 
 // Navbar links
-@navbar-default-link-color:                @link-color;
-@navbar-default-link-hover-color:          @link-color;
+@navbar-default-link-color:                #fff;
+@navbar-default-link-hover-color:          @brand-success;
 @navbar-default-link-hover-bg:             transparent;
-@navbar-default-link-active-color:         @navbar-default-link-color;
-@navbar-default-link-active-bg:            transparent;
-@navbar-default-link-disabled-color:       #333;
+@navbar-default-link-active-color:         #fff;
+@navbar-default-link-active-bg:            darken(@navbar-default-bg, 10%);
+@navbar-default-link-disabled-color:       #ccc;
 @navbar-default-link-disabled-bg:          transparent;
 
 // Navbar brand label
@@ -395,23 +394,23 @@
 @navbar-default-brand-hover-bg:            transparent;
 
 // Navbar toggle
-@navbar-default-toggle-hover-bg:           #ddd;
-@navbar-default-toggle-icon-bar-bg:        #ccc;
-@navbar-default-toggle-border-color:       #ddd;
+@navbar-default-toggle-hover-bg:           darken(@navbar-default-bg, 10%);
+@navbar-default-toggle-icon-bar-bg:        #fff;
+@navbar-default-toggle-border-color:       darken(@navbar-default-bg, 10%);
 
 
 // Inverted navbar
 // Reset inverted navbar basics
-@navbar-inverse-color:                      @text-color;
-@navbar-inverse-bg:                         @body-bg;
-@navbar-inverse-border:                     #ddd;
+@navbar-inverse-color:                      #fff;
+@navbar-inverse-bg:                         @brand-success;
+@navbar-inverse-border:                     transparent;
 
 // Inverted navbar links
-@navbar-inverse-link-color:                 @text-color;
-@navbar-inverse-link-hover-color:           @text-color;
+@navbar-inverse-link-color:                 #fff;
+@navbar-inverse-link-hover-color:           @brand-primary;
 @navbar-inverse-link-hover-bg:              transparent;
-@navbar-inverse-link-active-color:          @text-color;
-@navbar-inverse-link-active-bg:             transparent;
+@navbar-inverse-link-active-color:          #fff;
+@navbar-inverse-link-active-bg:             darken(@navbar-inverse-bg, 5%);
 @navbar-inverse-link-disabled-color:        #ccc;
 @navbar-inverse-link-disabled-bg:           transparent;
 
@@ -421,9 +420,9 @@
 @navbar-inverse-brand-hover-bg:             transparent;
 
 // Inverted navbar toggle
-@navbar-inverse-toggle-hover-bg:            #ddd;
-@navbar-inverse-toggle-icon-bar-bg:         #ccc;
-@navbar-inverse-toggle-border-color:        #ddd;
+@navbar-inverse-toggle-hover-bg:            darken(@navbar-inverse-bg, 10%);
+@navbar-inverse-toggle-icon-bar-bg:         #fff;
+@navbar-inverse-toggle-border-color:        darken(@navbar-inverse-bg, 10%);
 
 
 //== Navs
@@ -437,18 +436,16 @@
 @nav-disabled-link-color:                   @gray-light;
 @nav-disabled-link-hover-color:             @gray-light;
 
-@nav-open-link-hover-color:                 #fff;
-
 //== Tabs
-@nav-tabs-border-color:                     transparent;
+@nav-tabs-border-color:                     @gray-lighter;
 
 @nav-tabs-link-hover-border-color:          @gray-lighter;
 
-@nav-tabs-active-link-hover-bg:             #FF9933;
-@nav-tabs-active-link-hover-color:          white;
-@nav-tabs-active-link-hover-border-color:   #ddd;
+@nav-tabs-active-link-hover-bg:             @body-bg;
+@nav-tabs-active-link-hover-color:          @brand-primary;
+@nav-tabs-active-link-hover-border-color:   @gray-lighter;
 
-@nav-tabs-justified-link-border-color:            #ddd;
+@nav-tabs-justified-link-border-color:            @gray-lighter;
 @nav-tabs-justified-active-link-border-color:     @body-bg;
 
 //== Pills
@@ -461,21 +458,21 @@
 //
 //##
 
-@pagination-color:                     @text-color;
-@pagination-bg:                        #fff;
-@pagination-border:                    #ddd;
+@pagination-color:                     #fff;
+@pagination-bg:                        @brand-success;
+@pagination-border:                    transparent;
 
 @pagination-hover-color:               #fff;
-@pagination-hover-bg:                  @brand-primary;
-@pagination-hover-border:              @brand-primary;
+@pagination-hover-bg:                  darken(@brand-success, 15%);
+@pagination-hover-border:              transparent;
 
 @pagination-active-color:              #fff;
-@pagination-active-bg:                 @brand-primary;
-@pagination-active-border:             @brand-primary;
+@pagination-active-bg:                 darken(@brand-success, 15%);
+@pagination-active-border:             transparent;
 
-@pagination-disabled-color:            @gray-light;
-@pagination-disabled-bg:               #fff;
-@pagination-disabled-border:           #ddd;
+@pagination-disabled-color:            @gray-lighter;
+@pagination-disabled-bg:               lighten(@brand-success, 15%);;
+@pagination-disabled-border:           transparent;
 
 
 //== Pager
@@ -491,7 +488,7 @@
 @pager-active-bg:                      @pagination-active-bg;
 @pager-active-color:                   @pagination-active-color;
 
-@pager-disabled-color:                 @gray-light;
+@pager-disabled-color:                 #fff;
 
 
 //== Jumbotron
@@ -500,7 +497,7 @@
 
 @jumbotron-padding:              30px;
 @jumbotron-color:                inherit;
-@jumbotron-bg:                   darken(@body-bg, 3%);
+@jumbotron-bg:                   @gray-lighter;
 @jumbotron-heading-color:        inherit;
 @jumbotron-font-size:            ceil((@font-size-base * 1.5));
 
@@ -509,20 +506,20 @@
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-@state-success-text:             @brand-success;
-@state-success-bg:               #dff0d8;
+@state-success-text:             #fff;
+@state-success-bg:               @brand-success;
 @state-success-border:           @brand-success;
 
-@state-info-text:                @brand-info;
-@state-info-bg:                  #d9edf7;
+@state-info-text:                #fff;
+@state-info-bg:                  @brand-info;
 @state-info-border:              @brand-info;
 
-@state-warning-text:             @brand-warning;
-@state-warning-bg:               #fcf8e3;
+@state-warning-text:             #fff;
+@state-warning-bg:               @brand-warning;
 @state-warning-border:           @brand-warning;
 
-@state-danger-text:              @brand-danger;
-@state-danger-bg:                #f2dede;
+@state-danger-text:              #fff;
+@state-danger-bg:                @brand-danger;
 @state-danger-border:            @brand-danger;
 
 
@@ -563,7 +560,7 @@
 //** Popover arrow width
 @popover-arrow-width:                 10px;
 //** Popover arrow color
-@popover-arrow-color:                 #fff;
+@popover-arrow-color:                 @popover-bg;
 
 //** Popover outer arrow width
 @popover-arrow-outer-width:           (@popover-arrow-width + 1);
@@ -637,20 +634,20 @@
 @alert-border-radius:         @border-radius-base;
 @alert-link-font-weight:      bold;
 
-@alert-success-bg:            @state-success-border;
-@alert-success-text:          #fff;
+@alert-success-bg:            @state-success-bg;
+@alert-success-text:          @state-success-text;
 @alert-success-border:        @state-success-border;
 
-@alert-info-bg:               @state-info-border;
-@alert-info-text:             #fff;
+@alert-info-bg:               @state-info-bg;
+@alert-info-text:             @state-info-text;
 @alert-info-border:           @state-info-border;
 
-@alert-warning-bg:            @state-warning-border;
-@alert-warning-text:          #fff;
+@alert-warning-bg:            @state-warning-bg;
+@alert-warning-text:          @state-warning-text;
 @alert-warning-border:        @state-warning-border;
 
-@alert-danger-bg:             @state-danger-border;
-@alert-danger-text:           #fff;
+@alert-danger-bg:             @state-danger-bg;
+@alert-danger-text:           @state-danger-text;
 @alert-danger-border:         @state-danger-border;
 
 
@@ -659,12 +656,14 @@
 //##
 
 //** Background color of the whole progress component
-@progress-bg:                 #fff;
+@progress-bg:                 @gray-lighter;
 //** Progress bar text color
-@progress-bar-color:          #000;
+@progress-bar-color:          #fff;
+//** Variable for setting rounded corners on progress bar.
+@progress-border-radius:      @border-radius-base;
 
 //** Default progress bar color
-@progress-bar-bg:             #FF0000;
+@progress-bar-bg:             @brand-primary;
 //** Success progress bar color
 @progress-bar-success-bg:     @brand-success;
 //** Warning progress bar color
@@ -682,12 +681,12 @@
 //** Background color on `.list-group-item`
 @list-group-bg:                 #fff;
 //** `.list-group-item` border color
-@list-group-border:             #ddd;
+@list-group-border:             @gray-lighter;
 //** List group border radius
 @list-group-border-radius:      @border-radius-base;
 
 //** Background color of single list items on hover
-@list-group-hover-bg:           #f5f5f5;
+@list-group-hover-bg:           @gray-lighter;
 //** Text color of active list items
 @list-group-active-color:       @component-active-color;
 //** Background color of active list items
@@ -720,32 +719,32 @@
 @panel-border-radius:         @border-radius-base;
 
 //** Border color for elements within panels
-@panel-inner-border:          #ddd;
-@panel-footer-bg:             #fff;
+@panel-inner-border:          @gray-lighter;
+@panel-footer-bg:             @gray-lighter;
 
-@panel-default-text:          @gray-dark;
-@panel-default-border:        #ddd;
-@panel-default-heading-bg:    #f5f5f5;
+@panel-default-text:          @text-color;
+@panel-default-border:        @gray-lighter;
+@panel-default-heading-bg:    @gray-lighter;
 
 @panel-primary-text:          #fff;
-@panel-primary-border:        transparent;
+@panel-primary-border:        @brand-primary;
 @panel-primary-heading-bg:    @brand-primary;
 
 @panel-success-text:          @state-success-text;
-@panel-success-border:        transparent;
-@panel-success-heading-bg:    @state-success-border;
+@panel-success-border:        @state-success-border;
+@panel-success-heading-bg:    @state-success-bg;
 
 @panel-info-text:             @state-info-text;
-@panel-info-border:           transparent;
-@panel-info-heading-bg:       @state-info-border;
+@panel-info-border:           @state-info-border;
+@panel-info-heading-bg:       @state-info-bg;
 
 @panel-warning-text:          @state-warning-text;
-@panel-warning-border:        transparent;
-@panel-warning-heading-bg:    @state-warning-border;
+@panel-warning-border:        @state-warning-border;
+@panel-warning-heading-bg:    @state-warning-bg;
 
 @panel-danger-text:           @state-danger-text;
-@panel-danger-border:         transparent;
-@panel-danger-heading-bg:     @state-danger-border;
+@panel-danger-border:         @state-danger-border;
+@panel-danger-heading-bg:     @state-danger-bg;
 
 
 //== Thumbnails
@@ -757,7 +756,7 @@
 //** Thumbnail background color
 @thumbnail-bg:                @body-bg;
 //** Thumbnail border color
-@thumbnail-border:            #ddd;
+@thumbnail-border:            @gray-lighter;
 //** Thumbnail border radius
 @thumbnail-border-radius:     @border-radius-base;
 
@@ -771,8 +770,8 @@
 //
 //##
 
-@well-bg:                     darken(@body-bg, 3%);
-@well-border:                 darken(@well-bg, 7%);
+@well-bg:                     @gray-lighter;
+@well-border:                 transparent;
 
 
 //== Badges
@@ -785,7 +784,7 @@
 @badge-bg:                    @brand-primary;
 
 //** Badge text color in active nav link
-@badge-active-color:          @link-color;
+@badge-active-color:          @brand-primary;
 //** Badge background color in active nav link
 @badge-active-bg:             #fff;
 
@@ -801,11 +800,11 @@
 @breadcrumb-padding-vertical:   8px;
 @breadcrumb-padding-horizontal: 15px;
 //** Breadcrumb background color
-@breadcrumb-bg:                 #f5f5f5;
+@breadcrumb-bg:                 @gray-lighter;
 //** Breadcrumb text color
 @breadcrumb-color:              #ccc;
 //** Text color of current page in the breadcrumb
-@breadcrumb-active-color:       @gray-light;
+@breadcrumb-active-color:       @gray;
 //** Textual separator for between breadcrumb elements
 @breadcrumb-separator:          "/";
 
@@ -832,8 +831,8 @@
 //##
 
 @close-font-weight:           bold;
-@close-color:                 #fff;
-@close-text-shadow:           0 1px 0 #fff;
+@close-color:                 #000;
+@close-text-shadow:           none;
 
 
 //== Code
@@ -846,7 +845,7 @@
 @kbd-color:                   #fff;
 @kbd-bg:                      #333;
 
-@pre-bg:                      #f5f5f5;
+@pre-bg:                      @gray-lighter;
 @pre-color:                   @gray-dark;
 @pre-border-color:            #ccc;
 @pre-scrollable-max-height:   340px;
@@ -865,13 +864,13 @@
 //** Headings small color
 @headings-small-color:        @gray-light;
 //** Blockquote small color
-@blockquote-small-color:      @text-color;
+@blockquote-small-color:      @gray-light;
 //** Blockquote font size
 @blockquote-font-size:        (@font-size-base * 1.25);
 //** Blockquote border color
-@blockquote-border-color:     @brand-primary;
+@blockquote-border-color:     @gray-lighter;
 //** Page header border color
-@page-header-border-color:    #ddd;
+@page-header-border-color:    transparent;
 //** Width of horizontal description list titles
 @dl-horizontal-offset:        @component-offset-horizontal;
 //** Horizontal line color.
@@ -882,56 +881,373 @@
 
 
 
-// Readable 3.2.0
+
+
+//
+//
+//// Flatly 3.3.0
+//// Bootswatch
+//// -----------------------------------------------------
+//
+//@import url("//fonts.googleapis.com/css?family=Lato:400,700,400italic");
+//
+//// Navbar =====================================================================
+//
+//.navbar {
+//  border-width: 0;
+//
+//  &-default {
+//
+//    .badge {
+//      background-color: #fff;
+//      color: @navbar-default-bg;
+//    }
+//  }
+//
+//  &-inverse {
+//
+//    .badge {
+//      background-color: #fff;
+//      color: @navbar-inverse-bg;
+//    }
+//  }
+//
+//  &-brand {
+//    padding: 18.5px 15px 20.5px;
+//  }
+//}
+//
+//// Buttons ====================================================================
+//
+//.btn:active {
+//  .box-shadow(none);
+//}
+//
+//.btn-group.open .dropdown-toggle {
+//  .box-shadow(none);
+//}
+//
+//// Typography =================================================================
+//
+//.text-primary,
+//.text-primary:hover {
+//  color: @brand-primary;
+//}
+//
+//.text-success,
+//.text-success:hover {
+//  color: @brand-success;
+//}
+//
+//.text-danger,
+//.text-danger:hover {
+//  color: @brand-danger;
+//}
+//
+//.text-warning,
+//.text-warning:hover {
+//  color: @brand-warning;
+//}
+//
+//.text-info,
+//.text-info:hover {
+//  color: @brand-info;
+//}
+//
+//// Tables =====================================================================
+//
+//table,
+//.table {
+//
+//  a:not(.btn) {
+//    text-decoration: underline;
+//  }
+//
+//  .dropdown-menu a {
+//    text-decoration: none;
+//  }
+//
+//  .success,
+//  .warning,
+//  .danger,
+//  .info {
+//    color: #fff;
+//
+//    a {
+//      color: #fff;
+//    }
+//  }
+//
+//  > thead > tr > th,
+//  > tbody > tr > th,
+//  > tfoot > tr > th,
+//  > thead > tr > td,
+//  > tbody > tr > td,
+//  > tfoot > tr > td {
+//    border: none;
+//  }
+//
+//  &-bordered > thead > tr > th,
+//  &-bordered > tbody > tr > th,
+//  &-bordered > tfoot > tr > th,
+//  &-bordered > thead > tr > td,
+//  &-bordered > tbody > tr > td,
+//  &-bordered > tfoot > tr > td {
+//    border: 1px solid @table-border-color;
+//  }
+//}
+//
+//// Forms ======================================================================
+//
+//.form-control,
+//input, {
+//  border-width: 2px;
+//  .box-shadow(none);
+//
+//  &:focus {
+//    .box-shadow(none);
+//  }
+//}
+//
+//.has-warning {
+//  .help-block,
+//  .control-label,
+//  .radio,
+//  .checkbox,
+//  .radio-inline,
+//  .checkbox-inline,
+//  .form-control-feedback {
+//    color: @brand-warning;
+//  }
+//
+//  .form-control,
+//  .form-control:focus {
+//    border: 2px solid @brand-warning;
+//  }
+//
+//  .input-group-addon {
+//    border-color: @brand-warning;
+//  }
+//}
+//
+//.has-error {
+//  .help-block,
+//  .control-label,
+//  .radio,
+//  .checkbox,
+//  .radio-inline,
+//  .checkbox-inline,
+//  .form-control-feedback {
+//    color: @brand-danger;
+//  }
+//
+//  .form-control,
+//  .form-control:focus {
+//    border: 2px solid @brand-danger;
+//  }
+//
+//  .input-group-addon {
+//    border-color: @brand-danger;
+//  }
+//}
+//
+//.has-success {
+//  .help-block,
+//  .control-label,
+//  .radio,
+//  .checkbox,
+//  .radio-inline,
+//  .checkbox-inline,
+//  .form-control-feedback {
+//    color: @brand-success;
+//  }
+//
+//  .form-control,
+//  .form-control:focus {
+//    border: 2px solid @brand-success;
+//  }
+//
+//  .input-group-addon {
+//    border-color: @brand-success;
+//  }
+//}
+//
+//// Navs =======================================================================
+//
+//.nav {
+//  .open > a,
+//  .open > a:hover,
+//  .open > a:focus {
+//    border-color: transparent;
+//  }
+//}
+//
+//.pager {
+//  a,
+//  a:hover {
+//    color: #fff;
+//  }
+//
+//  .disabled {
+//    &>a,
+//    &>a:hover,
+//    &>a:focus,
+//    &>span {
+//      background-color: @pagination-disabled-bg;
+//    }
+//  }
+//}
+//
+//// Indicators =================================================================
+//
+//.close {
+//  color: #fff;
+//  text-decoration: none;
+//  opacity: 0.4;
+//
+//  &:hover,
+//  &:focus {
+//    color: #fff;
+//    opacity: 1;
+//  }
+//}
+//
+//.alert {
+//
+//  .alert-link {
+//    color: #fff;
+//    text-decoration: underline;
+//  }
+//}
+//
+//// Progress bars ==============================================================
+//
+//.progress {
+//  height: 10px;
+//  .box-shadow(none);
+//  .progress-bar {
+//    font-size: 10px;
+//    line-height: 10px;
+//  }
+//}
+//
+//// Containers =================================================================
+//
+//.well {
+//  .box-shadow(none);
+//}
+//
+//a.list-group-item {
+//
+//  &.active,
+//  &.active:hover,
+//  &.active:focus {
+//    border-color: @list-group-border;
+//  }
+//
+//  &-success {
+//    &.active {
+//      background-color: @state-success-bg;
+//    }
+//
+//    &.active:hover,
+//    &.active:focus {
+//      background-color: darken(@state-success-bg, 5%);
+//    }
+//  }
+//
+//  &-warning {
+//    &.active {
+//      background-color: @state-warning-bg;
+//    }
+//
+//    &.active:hover,
+//    &.active:focus {
+//      background-color: darken(@state-warning-bg, 5%);
+//    }
+//  }
+//
+//  &-danger {
+//    &.active {
+//      background-color: @state-danger-bg;
+//    }
+//
+//    &.active:hover,
+//    &.active:focus {
+//      background-color: darken(@state-danger-bg, 5%);
+//    }
+//  }
+//}
+//
+//.panel {
+//  &-default {
+//    .close {
+//      color: @text-color;
+//    }
+//  }
+//}
+//
+//.modal {
+//  .close {
+//    color: @text-color;
+//  }
+//}
+//
+//.popover {
+//  color: @text-color;
+//}
+//
+//
+
+
+// Cerulean 3.3.0
 // Bootswatch
 // -----------------------------------------------------
 
-//@import url("//fonts.googleapis.com/css?family=Raleway:400,700");
+.btn-shadow(@color) {
+  #gradient > .vertical-three-colors(lighten(@color, 8%), @color, 60%, darken(@color, 4%));
+  filter: none;
+  border-bottom: 1px solid darken(@color, 10%);
+}
 
 // Navbar =====================================================================
 
 .navbar {
-  font-family: @headings-font-family;
+  .btn-shadow(@navbar-default-bg);
+  filter: none;
+  .box-shadow(0 1px 10px rgba(0, 0, 0, 0.1));
 
-  &-nav,
-  &-form {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  &-default {
 
-  &-nav > li > a {
-    padding: @padding-base-vertical @padding-base-horizontal;
-    margin: 12px 6px;
-    border: 1px solid transparent;
-    border-radius: @border-radius-base;
-
-    &:hover {
-      border: 1px solid #ddd;
+    .badge {
+      background-color: #fff;
+      color: @navbar-default-bg;
     }
   }
 
-  &-nav > .active > a,
-  &-nav > .active > a:hover {
-    border: 1px solid #ddd;
+  &-inverse {
+    #gradient > .vertical-three-colors(lighten(@navbar-inverse-bg, 8%), lighten(@navbar-inverse-bg, 4%), 60%, darken(@navbar-inverse-bg, 2%));
+    filter: none;
+    border-bottom: 1px solid darken(@navbar-inverse-bg, 10%);
+
+    .badge {
+      background-color: #fff;
+      color: @navbar-inverse-bg;
+    }
   }
 
-  &-default .navbar-nav > .active > a:hover {
-    color: @navbar-default-link-hover-color;
-  }
-
-  &-inverse .navbar-nav > .active > a:hover {
-    color: @navbar-inverse-link-hover-color;
-  }
-
+  .navbar-nav > li > a,
   &-brand {
-    padding-top: 20px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   }
 }
 
-@media (max-width: @grid-float-breakpoint) {
+@media (max-width: @grid-float-breakpoint-max) {
+
   .navbar {
-    .navbar-nav > li > a {
-      margin: 0;
+
+    .dropdown-header {
+      color: #fff;
     }
   }
 }
@@ -939,7 +1255,49 @@
 // Buttons ====================================================================
 
 .btn {
-  font-family: @headings-font-family;
+
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+  .caret {
+    border-top-color: #fff;
+  }
+}
+
+.btn-default {
+
+  .btn-shadow(@btn-default-bg);
+
+  &:hover {
+    color: @btn-default-color;
+  }
+
+  .caret {
+    border-top-color: @text-color;
+  }
+}
+
+.btn-default {
+  .btn-shadow(@btn-default-bg);
+}
+
+.btn-primary {
+  .btn-shadow(@btn-primary-bg);
+}
+
+.btn-success {
+  .btn-shadow(@btn-success-bg);
+}
+
+.btn-info {
+  .btn-shadow(@btn-info-bg);
+}
+
+.btn-warning {
+  .btn-shadow(@btn-warning-bg);
+}
+
+.btn-danger {
+  .btn-shadow(@btn-danger-bg);
 }
 
 // Typography =================================================================
@@ -948,124 +1306,22 @@
 
 // Forms ======================================================================
 
-legend {
-  font-family: @headings-font-family;
-}
-
-.input-group-addon {
-  font-family: @font-family-sans-serif;
-}
-
 // Navs =======================================================================
 
-.nav {
-  .open > a,
-  .open > a:hover,
-  .open > a:focus {
-    border: 1px solid #ddd;
-  }
-}
-
-.pagination {
-
-  font-family: @headings-font-family;
-
-  &-lg > li > a,
-  &-lg > li > span {
-    padding: 14px 24px;
-  }
-}
-
-.pager {
-
-  font-family: @headings-font-family;
-
-  a {
-    color: @text-color;
-  }
-
-  a:hover {
-    border-color: transparent;
-    color: #fff;
-  }
-
-  .disabled a {
-    border-color: @pager-border;
-  }
-}
-
 // Indicators =================================================================
-
-.close {
-  color: #fff;
-  text-decoration: none;
-  text-shadow: none;
-  opacity: 0.4;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    opacity: 1;
-  }
-}
-
-.alert {
-  .alert-link {
-    color: @alert-success-text;
-    text-decoration: underline;
-  }
-}
-
-.label {
-  font-family: @headings-font-family;
-  font-weight: normal;
-
-  &-default {
-    border: 1px solid #ddd;
-    color: @text-color;
-  }
-
-}
-
-.badge {
-  padding: 1px 7px 5px;
-  vertical-align: 2px;
-  font-family: @headings-font-family;
-  font-weight: normal;
-}
 
 // Progress bars ==============================================================
 
 // Containers =================================================================
 
-.panel {
-  .box-shadow(none);
+.panel-primary,
+.panel-success,
+.panel-warning,
+.panel-danger,
+.panel-info {
 
-  &-default {
-    .close {
-      color: @text-color;
-    }
-  }
-
-  &-primary,
-  &-success,
-  &-warning,
-  &-danger,
-  &-info {
-    .panel-heading {
-      color: #fff;
-    }
-
-    .panel-body {
-      border: 1px solid #ddd;
-      border-top-width: 0;
-      border-radius: 0 0 @border-radius-base @border-radius-base;
-    }
-  }
-}
-
-.modal {
-  .close {
-    color: @text-color;
+  .panel-heading,
+  .panel-title {
+    color: #fff;
   }
 }
