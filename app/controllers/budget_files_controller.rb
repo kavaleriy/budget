@@ -1,10 +1,14 @@
 class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
+  before_action :authenticate_user!
+  #load_and_authorize_resource
+
+
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.all
+    @budget_files = BudgetFile.where(:owner_email => current_user.email) + BudgetFile.where(:owner_email => nil)
   end
 
   def show
@@ -17,7 +21,8 @@ class BudgetFilesController < ApplicationController
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = BudgetFile.new()
+    @budget_file = BudgetFile.new
+    @budget_file.owner_email = current_user.email
 
     file = upload_io budget_file_params[:file]
 

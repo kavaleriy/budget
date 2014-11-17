@@ -1,6 +1,8 @@
 class BudgetFile
   include Mongoid::Document
 
+  field :owner_email, type: String
+
   field :title, type: String
   field :file, type: String
 

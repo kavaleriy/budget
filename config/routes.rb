@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
 
   get 'budget_files/get_sunburst_data/:id' => 'budget_files#get_sunburst_data'
   get 'budget_files/get_bubbletree_data/:id' => 'budget_files#get_bubbletree_data'
