@@ -24,6 +24,7 @@ class User
   field :last_sign_in_at, :type => DateTime
   field :current_sign_in_ip
   field :last_sign_in_ip
+  field :remember_created_at
 
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
