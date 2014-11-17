@@ -28,7 +28,7 @@ module Budget
     config.i18n.default_locale = :uk
 
     config.action_dispatch.default_headers = {
-        'x-frame-options' => 'ALLOWALL!',
+        'x-frame-options' => 'ALLOWALL',
         #'Content-Security-Policy' => "default-src 'self' http://dhrp.org.ua/*"
     }
   end
