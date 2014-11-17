@@ -1,13 +1,13 @@
 .sunburst
   #sidebar.col-xs-3
   #chart
-    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @budget_file.id }
+    = render partial: 'visify/sequence', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('.budget').width() - $('.bubbletree #sidebar').width() - 50;
-    var height = width * 0.5;
+    var width = $(document).width() - $('#sidebar').width() - 50;
+    height = $(document).height() - 270
     var radius = Math.min(width, height) / 2;
 
     var sequence = aSequence('.sunburst')
@@ -18,7 +18,7 @@
 
     var totalSize = 0;
 
-    $(".sunburst #chart").width(width).height(height + 40)
+    $(".sunburst #chart").width(width).height(height + 120)
 
     color = d3.scale.category20c();
 

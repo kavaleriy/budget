@@ -14,16 +14,12 @@ Rails.application.routes.draw do
   resources :revenues do
   end
 
-  get 'visify/index'
-  get 'visify/sunburst'
-  get 'visify/sunburst_seq'
-  get 'visify/bubbletree'
-  get 'visify/bubblechart'
-  get 'visify/circle_packing'
-  get 'visify/treemap'
-  get 'visify/force_collapsible'
-  get 'visify/get_sunburst_data'
-  get 'visify/get_bubbletree_data'
+  get 'visify/sunburst/:id' => 'visify#sunburst'
+  get 'visify/sunburst_seq/:id' => 'visify#sunburst_seq'
+  get 'visify/bubbletree/:id' => 'visify#bubbletree'
+  get 'visify/circles/:id' => 'visify#circles'
+  get 'visify/treemap/:id' => 'visify#treemap'
+  get 'visify/collapsible/:id' => 'visify#collapsible'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/pie_data'

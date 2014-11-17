@@ -9,6 +9,9 @@
 
 .budget
 
+  .row
+    %input.col-xs-6(value = "<iframe width='900' height='600' src='#{root_url}visify/sunburst_seq/#{@budget_file.id}'></iframe>")
+
   %ul.views.nav.nav-tabs{role: 'tablist'}
     %li.active
       %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
@@ -31,17 +34,18 @@
 
   .tab-content
     #bubbletree.tab-pane.fade.in.active
-      = render partial: 'bubbletree', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-12{ 'height' => '600', 'src' => "http://localhost:3000/visify/bubbletree/#{@budget_file.id}" }
     #sunburst_seq.tab-pane.fade
-      = render partial: 'sunburst_seq', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-6{ 'height' => '600', 'src' => "http://localhost:3000/visify/sunburst_seq/#{@budget_file.id}" }
     #sunburst.tab-pane.fade
-      = render partial: 'sunburst', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-6{ 'height' => '600', 'src' => "http://localhost:3000/visify/sunburst/#{@budget_file.id}" }
     #treemap.tab-pane.fade
-      = render partial: 'treemap', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-4{ 'height' => '300', 'src' => "http://localhost:3000/visify/treemap/#{@budget_file.id}" }
     #circles.tab-pane.fade
-      = render partial: 'circles', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-4{ 'height' => '300', 'src' => "http://localhost:3000/visify/circles/#{@budget_file.id}" }
     #collapsible.tab-pane.fade
-      = render partial: 'collapsible', :locals => { budget_file_id: @budget_file.id }
+    %iframe.col-xs-4{ 'height' => '300', 'src' => "http://localhost:3000/visify/collapsible/#{@budget_file.id}" }
+
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(@budget_file), :class => 'btn btn-default'

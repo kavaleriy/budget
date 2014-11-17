@@ -14,8 +14,8 @@
 :javascript
 
   $(document).ready(function() {
-    var width = $('.budget').width() - $('.bubbletree #sidebar').width() - 50;
-    height = width * .5
+    var width = $(document).width() - $('#sidebar').width() - 50;
+    height = $(document).height() - 120
 
     var totalSize;
 
@@ -45,7 +45,7 @@
               // .html(getTooltipHtml(a.node))
               tooltip.html(getTooltipHtml(a.node))
                .style("left", a.mousePos.x + "px")
-               .style("top", (a.mousePos.y + 150) + "px");
+               .style("top", a.mousePos.y + "px");
               tooltip.transition()
                .duration(200)
                .style("opacity", .9)

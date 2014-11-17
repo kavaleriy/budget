@@ -10,8 +10,8 @@
 
   $(document).ready(function() {
 
-    var w = $('.budget').width() - $('.bubbletree #sidebar').width() - 50,
-        h = w * 0.5,
+    var w = $(document).width() - $('#sidebar').width() - 50,
+        h = $(document).height() - 120,
         node,
         link,
         root;

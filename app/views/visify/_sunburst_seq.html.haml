@@ -1,7 +1,7 @@
 .sunburst-seq
   #sidebar.col-xs-3
   #chart
-    = render partial: 'budget_files/sequence', :locals => { budget_file_id: @budget_file.id }
+    = render partial: 'visify/sequence', :locals => { budget_file_id: @budget_file.id }
     #explanation{ style: "visibility: hidden;" }
       %span#percentage
       %br
@@ -13,20 +13,17 @@
 :javascript
   $(document).ready(function() {
     // Dimensions of sunburst.
-    var width = $('.budget').width() - $('.bubbletree #sidebar').width() - 50;
-    var height = width * 0.45;
+    var width = $(document).width() - $('#sidebar').width() - 50;
+    var height = $(document).height() - 270
     var radius = Math.min(width, height) / 2;
 
     var sequence = aSequence('.sunburst-seq')
 
-    $(".sunburst-seq #chart").width(width).height(height)
+    $(".sunburst-seq #chart").width(width).height(height + 120)
 
     color = d3.scale.category20c()
 
-
-    $(".sunburst-seq").height(height + 150)
-
-    $(".sunburst-seq #explanation").width(140).css("top", height / 2 ).css("left", width/2 - 70);
+    $(".sunburst-seq #explanation").width(120).css("top", height / 2 ).css("left", width/2 - 70);
 
 
     // Mapping of step names to colors.
