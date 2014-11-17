@@ -22,16 +22,18 @@
 
 %body
   = render :partial => 'layouts/navbar'
-  .row-fluid
-    .header
-      = yield :header
+  .container-fluid
+    .row-fluid
+      .header
+        = yield :header
 
     = bootstrap_flash
-    .main
+
+    .main.row-fluid
       = yield
 
   .clear
 
-  .afooter.col-xs-12
-    %p &copy; UNDP, 2014
+.afooter.col-xs-12
+  %p &copy; UNDP, 2014
 
