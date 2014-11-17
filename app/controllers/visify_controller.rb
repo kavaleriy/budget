@@ -30,5 +30,7 @@ private
 
   def allow_iframe
     response.headers.except! 'X-Frame-Options'
+    #'X-Frame-Options' => 'ALLOW-FROM http://dhrp.org.ua'
+    response.headers['X-Frame-Options'] = 'ALLOWALL'
   end
 end

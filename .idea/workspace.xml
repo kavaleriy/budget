@@ -16,6 +16,8 @@
     <file path="/budget_file.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416225360285" ignored="false" />
     <file path="/_navbar.html.haml" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416226450578" ignored="false" />
     <file path="/application_helper.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416227069952" ignored="false" />
+    <file path="/application.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416229222066" ignored="false" />
+    <file path="/visify_controller.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416230062260" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,10 +146,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="user.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/user.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.87323946">
+            <state line="47" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="visify_controller.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/controllers/visify_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="51" selection-start="471" selection-end="471" vertical-scroll-proportion="0.6760563">
               <folding />
             </state>
           </provider>
@@ -156,16 +167,7 @@
       <file leaf-file-name="application.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/application.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ability.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/ability.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="23" selection-start="390" selection-end="390" vertical-scroll-proportion="0.0">
+            <state line="28" column="0" selection-start="1202" selection-end="1202" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,7 +183,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/budget_files/show.html.haml" />
         <option value="$PROJECT_DIR$/app/views/visify/_sunburst_seq.html.haml" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/config/routes.rb" />
@@ -193,10 +194,11 @@
         <option value="$PROJECT_DIR$/app/views/layouts/_navbar.html.haml" />
         <option value="$PROJECT_DIR$/app/helpers/application_helper.rb" />
         <option value="$PROJECT_DIR$/app/models/user.rb" />
-        <option value="$PROJECT_DIR$/config/application.rb" />
         <option value="$PROJECT_DIR$/config/environments/development.rb" />
         <option value="$PROJECT_DIR$/app/controllers/budget_files_controller.rb" />
         <option value="$PROJECT_DIR$/config/environments/production.rb" />
+        <option value="$PROJECT_DIR$/config/application.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/visify_controller.rb" />
       </list>
     </option>
   </component>
@@ -975,13 +977,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Gemfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="0" selection-start="2667" selection-end="2667" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/initializers/devise.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="232" column="41" selection-start="11631" selection-end="11631" vertical-scroll-proportion="0.0">
@@ -1088,13 +1083,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/application.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="110" selection-end="110" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/environments/development.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="16" selection-start="1294" selection-end="1294" vertical-scroll-proportion="0.0">
@@ -1125,7 +1113,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/user.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.87323946">
+        <state line="47" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/application.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="0" selection-start="1202" selection-end="1202" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/visify_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="51" selection-start="471" selection-end="471" vertical-scroll-proportion="0.6760563">
           <folding />
         </state>
       </provider>
