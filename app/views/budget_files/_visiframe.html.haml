@@ -1,0 +1,37 @@
+.col-xs-12
+  %h4
+    Код для вбудови візуалізації
+  %input#visiframe.col-xs-6
+
+%ul.views.nav.nav-tabs{role: 'tablist'}
+  %li.active
+    %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_bubbletree')
+  %li
+    %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_sunburst')
+  %li
+    %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_sunburst_seq')
+  %li
+    %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_treemap')
+  %li
+    %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_circles')
+  %li
+    %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
+      = t('.tab_collapsible')
+
+:javascript
+  $(document).on('ready page:load', function() {
+    function set_visiframe(visualizator) {
+      $('#visiframe').val("<iframe width='900' height='600' src='#{root_url}visify/"+ visualizator + "/#{budget_file_id}'></iframe>")
+    }
+
+    set_visiframe('bubbletree')
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_visiframe(this.href.split('#')[1])
+    });
+  })
