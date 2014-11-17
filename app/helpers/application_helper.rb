@@ -2,6 +2,7 @@ module ApplicationHelper
   def get_budget_files
     files = BudgetFile.where(:owner_email => nil)
     files += BudgetFile.where(:owner_email => current_user.email) unless current_user.nil?
+    files || []
   end
 
   def extract_date_from_param name, hash
