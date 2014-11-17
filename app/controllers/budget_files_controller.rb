@@ -1,14 +1,14 @@
 class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
   #load_and_authorize_resource
 
 
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.where(:owner_email => current_user.email) + BudgetFile.where(:owner_email => nil)
+    @budget_files = view_context.get_budget_files
   end
 
   def show
