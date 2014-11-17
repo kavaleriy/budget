@@ -15,7 +15,7 @@
             = t('visify.budget')
             %span.caret
           %ul.dropdown-menu{'role' => "menu"}
-            - (BudgetFile.where(:owner_email => current_user.email) + BudgetFile.where(:owner_email => nil)).each do |budget_file|
+            - get_budget_files.each do |budget_file|
               %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
 
             %li.divider

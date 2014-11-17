@@ -7,5 +7,4 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => "Помилка авторизації: #{exception.message}"
   end
 
-
 end

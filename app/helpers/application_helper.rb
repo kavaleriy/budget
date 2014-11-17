@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def get_budget_files
+    files = BudgetFile.where(:owner_email => nil)
+    files += BudgetFile.where(:owner_email => current_user.email) unless current_user.nil?
+  end
+
   def extract_date_from_param name, hash
     d = %w(1 2 3 4 5).map { |e| hash["#{name}(#{e}i)"].to_i }
     "#{d[2]}/#{d[1]}/#{d[0]} #{d[3]}:#{d[4]}"
