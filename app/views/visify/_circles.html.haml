@@ -34,7 +34,7 @@
       .append("svg:g")
         .attr("transform", "translate(" + (w - r) / 2 + "," + (h - r) / 2 + ")");
 
-    d3.json("/budget_files/get_sunburst_data/#{budget_file_id}", function(data) {
+    d3.json("/visify/get_sunburst_data/#{budget_file_id}", function(data) {
       node = root = data;
 
       var nodes = pack.nodes(root);

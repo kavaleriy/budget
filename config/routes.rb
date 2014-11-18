@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  get 'budget_files/get_sunburst_data/:id' => 'budget_files#get_sunburst_data'
-  get 'budget_files/get_bubbletree_data/:id' => 'budget_files#get_bubbletree_data'
+  get 'visify/get_sunburst_data/:id' => 'visify#get_sunburst_data'
+  get 'visify/get_bubbletree_data/:id' => 'visify#get_bubbletree_data'
 
   get 'budget_files/upload' => 'budget_files#upload'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'

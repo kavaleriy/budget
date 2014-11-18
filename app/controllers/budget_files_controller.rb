@@ -84,14 +84,6 @@ class BudgetFilesController < ApplicationController
   end
 
 
-  def get_sunburst_data
-    render json: @budget_file.get_sunburst_tree
-  end
-
-  def get_bubbletree_data
-    render json: @budget_file.get_bubble_tree
-  end
-
   private
 
     def upload_io uploaded_io
