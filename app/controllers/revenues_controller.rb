@@ -31,6 +31,7 @@ class RevenuesController < BudgetFilesController
   # POST /revenues.json
   def create
     @budget_file = Revenue.new()
+    @budget_file.owner_email = current_user.email unless current_user.nil?
     if budget_file_params[:file]
       file = upload_io budget_file_params[:file]
 

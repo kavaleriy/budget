@@ -85,7 +85,7 @@ class BudgetFile
         if self.tree_info[key].nil?
           self.tree_info[key] = { }
         end
-        self.tree_info[key][row[key]] = { title: get_title(key, row[key]), color: 'orange' }
+        self.tree_info[key][row[key]] = { title: get_title(key, row[key]) }
       end
     end
 
@@ -112,7 +112,7 @@ class BudgetFile
   end
 
   def get_bubble_tree
-    get_bubble_tree_item(self.tree, { 'title' => 'Всього', 'color' => 'green' })
+    get_bubble_tree_item(self.tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
   def get_bubble_tree_item(item, info)
@@ -130,14 +130,18 @@ class BudgetFile
       node['title'] = info['title'] unless info['title'].nil?
       node['color'] = info['color'] unless info['color'].nil?
       node['description'] = info['description'] unless info['description'].nil?
+      node['icon'] = info['icon'] unless info['icon'].nil?
     end
 
-    node['color'] = 'orange' if node['color'].nil?
+    if item[:children].nil? || item[:children].length < 2
+      node['color'] = '#BBBBBB'
+    else
+      node['color'] = '#265f91'
+    end if node['color'].nil?
 
     unless item[:children].nil?
       node['children'] = []
       item[:children].each { |child_node|
-        #binding.pry
         node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) if child_node[:amount] > cut_amount
       }
     end

@@ -29,6 +29,11 @@
       new BubbleTree({
           data: data,
           container: '.bubbletree #chart',
+
+          sortBy: 'label',
+
+          bubbleType: ['icon', 'plain'],
+
           tooltip: function(a) {
             if (a.type == 'HIDE') {
               tooltip.transition()
@@ -78,9 +83,10 @@
     function getTooltipHtml(node) {
       percentage = (100 * node.size / totalSize).toPrecision(3);
       title = node.title || ''
-      div = "<h5 class='percentage'>" + percentage + "% - " + node.size.toLocaleString() + " грн</h5>"
+      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
         + "<hr/>"
-        + "<div class='title'>" + title + "</div>"
+        //+ "<div class='title'>" + title +
+        "</div>"
 
       return div
     }
