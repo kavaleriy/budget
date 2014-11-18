@@ -1,29 +1,35 @@
 - model_class = BudgetFile
 
 = content_for :header do
-  .head.pull-left
+  .head.col-xs-12
     %i.fa.fa-money
     #{t('.title')}:
     %span.descr
       #{@budget_file.title}
 
-.budget
-
   = render partial: 'visiframe', :locals => { budget_file_id: @budget_file.id }
+
+.budget
 
   .tab-content
     #bubbletree.tab-pane.fade.in.active
-    %iframe.col-xs-12{ 'height' => '600', 'src' => "#{root_url}visify/bubbletree/#{@budget_file.id}" }
+      %iframe.col-xs-12{ 'height' => '600', 'src' => "#{root_url}visify/bubbletree/#{@budget_file.id}" }
     #sunburst_seq.tab-pane.fade
-    %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst_seq/#{@budget_file.id}" }
+      %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst_seq/#{@budget_file.id}" }
     #sunburst.tab-pane.fade
-    %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst/#{@budget_file.id}" }
+      %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst/#{@budget_file.id}" }
     #treemap.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/treemap/#{@budget_file.id}" }
+      %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/treemap/#{@budget_file.id}" }
     #circles.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/circles/#{@budget_file.id}" }
+      %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/circles/#{@budget_file.id}" }
     #collapsible.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/collapsible/#{@budget_file.id}" }
+      %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/collapsible/#{@budget_file.id}" }
+
+%h5.col-xs-12
+  .pull-left
+    Код для вбудови
+  %input#visiframe.col-xs-8
+
 
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
