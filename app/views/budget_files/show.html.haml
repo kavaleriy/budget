@@ -1,34 +1,43 @@
 - model_class = BudgetFile
 
 = content_for :header do
-  .head.col-xs-12
+  .head
     %i.fa.fa-money
     #{t('.title')}:
     %span.descr
       #{@budget_file.title}
 
-  = render partial: 'visiframe', :locals => { budget_file_id: @budget_file.id }
+  .row
+    %ul.views.nav.nav-tabs{role: 'tablist'}
+      %li.active
+        %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_bubbletree')
+      %li
+        %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_sunburst')
+      %li
+        %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_sunburst_seq')
+      %li
+        %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_treemap')
+      %li
+        %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_circles')
+      %li
+        %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_collapsible')
 
 .budget
 
   .tab-content
-    #bubbletree.tab-pane.fade.in.active
-    %iframe.col-xs-12{ 'height' => '600', 'src' => "#{root_url}visify/bubbletree/#{@budget_file.id}" }
-    #sunburst_seq.tab-pane.fade
-    %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst_seq/#{@budget_file.id}" }
-    #sunburst.tab-pane.fade
-    %iframe.col-xs-6{ 'height' => '600', 'src' => "#{root_url}visify/sunburst/#{@budget_file.id}" }
-    #treemap.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/treemap/#{@budget_file.id}" }
-    #circles.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/circles/#{@budget_file.id}" }
-    #collapsible.tab-pane.fade
-    %iframe.col-xs-4{ 'height' => '300', 'src' => "#{root_url}visify/collapsible/#{@budget_file.id}" }
+    %iframe{ 'width' => '100%', 'height' => '800' }
 
-%h5.col-xs-12
-  .pull-left
-    Код для вбудови
-  %input#visiframe.col-xs-8
+
+  .visiframe.input-group
+    .input-group-addon
+      Код для вбудови
+    %input#visiframe.form-control
 
 
 
@@ -36,3 +45,20 @@
 -#= link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(@budget_file), :class => 'btn btn-default'
 = link_to t('.editinfo'), "#{budget_file_path(@budget_file)}/editinfo", :class => 'btn btn-default'
 = link_to t('.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+
+
+:javascript
+  $(document).on('ready page:load', function() {
+    function set_visiframe(visualizator) {
+      frame_url = "#{root_url}visify/"+ visualizator + "/#{@budget_file.id}"
+      $('#visiframe').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
+      $('.tab-content iframe').attr('src', frame_url)
+
+    }
+
+    set_visiframe('bubbletree')
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_visiframe(this.href.split('#')[1])
+    });
+  })
