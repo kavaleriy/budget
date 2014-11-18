@@ -1,6 +1,7 @@
 module ApplicationHelper
   def get_budget_files
     files = BudgetFile.where(:owner_email => nil)
+    binding.pry
     files += BudgetFile.where(:owner_email => current_user.email) unless current_user.nil?
     files || []
   end

@@ -1,5 +1,3 @@
-#encoding: utf-8
-
 class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
