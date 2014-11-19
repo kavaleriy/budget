@@ -67,7 +67,7 @@
       cell.append("svg:rect")
           .attr("width", function(d) { return d.dx - 1; })
           .attr("height", function(d) { return d.dy - 1; })
-          .style("fill", function(d) { return color(d.parent.name); });
+          .style("fill", function(d) { return d.parent.color; });
 
       cell.append("svg:text")
           .attr("x", function(d) { return d.dx / 2; })
@@ -119,10 +119,8 @@
 
     function getItemInfoHtml(node) {
       percentage = (100 * node.size / totalSize).toPrecision(3);
-      title = node.title || ''
-      name = node.name || ''
-      div = "<h4 class='code'>" + name + "</h4>"
-        + "<div class='title'>" + title + "</div>"
+      label = node.label || ''
+      div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
         + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
@@ -134,12 +132,11 @@
     }
 
     function getTooltipHtml(node) {
-      percentage = (100 * node.value / totalSize).toPrecision(3);
-      title = node.title || ''
-      div = "<h5 class='percentage'>" + percentage + "% - " + node.value.toLocaleString() + " грн</h5>"
+      percentage = (100 * node.size / totalSize).toPrecision(3);
+      label = node.label || ''
+      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
         + "<hr/>"
-        + "<div class='title'>" + title + "</div>"
-
+        + "<div>" + label + "</div>"
 
       return div
     }

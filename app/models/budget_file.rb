@@ -71,7 +71,7 @@ class BudgetFile
       raw.first_column.upto(raw.last_column - 1) do |col|
         row[raw.cell(1, col).to_s] = raw.cell(line,col).to_s
       end
-      self.rows << row unless row[:amount] = 0 || row[:amount].empty?
+      self.rows << row unless row[:amount].to_i == 0
     end
   end
 
@@ -85,30 +85,30 @@ class BudgetFile
         if self.tree_info[key].nil?
           self.tree_info[key] = { }
         end
-        self.tree_info[key][row[key]] = { title: get_title(key, row[key]) }
+        self.tree_info[key][row[key]] = get_info(key, row[key])
       end
     end
 
     self.tree = create_tree
   end
 
-  def get_title taxonomy, key
-    case taxonomy
-      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc', 'kkd_ddd'
-        @kkd_titles = BudgetFile.get_revenue_codes if @kkd_titles.nil?
-        @kkd_titles[key.ljust(8, '0')]
-      when 'ktfk'
-        @ktfk_titles = BudgetFile.get_expense_codes if @ktfk_titles.nil?
-        @ktfk_titles[key]
-      when 'kvk'
-        @kvk_titles = BudgetFile.get_expense_kvk_codes if @kvk_titles.nil?
-        @kvk_titles[key]
-      when 'kekv'
-        @kekv_titles = BudgetFile.get_expense_ekv_codes if @kekv_titles.nil?
-        @kekv_titles[key]
-      else
-        ''
-    end
+  def get_info taxonomy, key
+    info =
+      case taxonomy
+        when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc', 'kkd_ddd'
+          @kkd_info = BudgetFile.get_revenue_codes if @kkd_info.nil?
+          @kkd_info[key.ljust(8, '0')]
+        when 'ktfk'
+          @ktfk_info = BudgetFile.get_expense_codes if @ktfk_info.nil?
+          @ktfk_info[key]
+        when 'kvk'
+          @kvk_info = BudgetFile.get_expense_kvk_codes if @kvk_info.nil?
+          @kvk_info[key]
+        when 'kekv'
+          @kekv_info = BudgetFile.get_expense_ekv_codes if @kekv_info.nil?
+          @kekv_info[key]
+      end
+    info || {}
   end
 
   def get_bubble_tree
@@ -116,33 +116,31 @@ class BudgetFile
   end
 
   def get_bubble_tree_item(item, info)
-    cut_amount = (self.meta_data[:max] - self.meta_data[:min]) * 0.00005
+    cut_amount = (self.meta_data[:max] - self.meta_data[:min]).abs * 0.00005
 
     node = {
-        'size' => item[:amount],
+        'size' => item[:amount].abs,
         'amount' => (item[:amount]).abs,
-        'name' => item[:taxonomy],
-        'label' => item[:key],
+        'label' => "Код: #{item[:key]}",
     }
 
     if info
-      node['label'] = info['name'] unless info['name'].nil?
-      node['title'] = info['title'] unless info['title'].nil?
-      node['color'] = info['color'] unless info['color'].nil?
-      node['description'] = info['description'] unless info['description'].nil?
-      node['icon'] = info['icon'] unless info['icon'].nil?
+      node['label'] = info['title'] unless info['title'].nil? or info['title'].empty?
+      node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
+      node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
+      node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
     if item[:children].nil? || item[:children].length < 2
-      node['color'] = '#BBBBBB'
-    else
+      node['color'] = '#888'
+    elsif node['color'].nil?
       node['color'] = '#265f91'
-    end if node['color'].nil?
+    end
 
     unless item[:children].nil?
       node['children'] = []
       item[:children].each { |child_node|
-        node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) # if child_node[:amount] > cut_amount
+        node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) if child_node[:amount].abs > cut_amount
       }
     end
 
@@ -158,7 +156,7 @@ class BudgetFile
     def self.load_from_csv file_name
       items = {}
       CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
-        items[row[0]] = row[1]
+        items[row[0]] = { title: row['Коротка назва'], color: row['Колір'], icon: row['Іконка'], description: row['Детальний опис'] }
       end
       items
     end

@@ -25,6 +25,7 @@
         .attr("id", "tooltip")
         .style("opacity", 0);
 
+    var tooltipTimer
     d3.json("/visify/get_bubbletree_data/#{budget_file_id}", function(data) {
       new BubbleTree({
           data: data,
@@ -35,25 +36,25 @@
           bubbleType: ['icon', 'plain'],
 
           tooltip: function(a) {
+            if (tooltipTimer) {
+              clearTimeout(tooltipTimer)
+            }
+
             if (a.type == 'HIDE') {
               tooltip.transition()
                 .duration(200)
-                .style("opacity", 0);
-
-
-              //$('.bubbletree #tooltip').html('').css('display', 'none')
+                .style("opacity", 0)
+              tooltip.style("display", 'none')
             } else {
-              //$('.bubbletree #tooltip')
-              // .css("left", a.mousePos.x)
-              // .css("top", a.mousePos.y + 150)
-              // .css('display', 'block')
-              // .html(getTooltipHtml(a.node))
-              tooltip.html(getTooltipHtml(a.node))
-               .style("left", a.mousePos.x + "px")
-               .style("top", a.mousePos.y + "px");
-              tooltip.transition()
-               .duration(200)
-               .style("opacity", .9)
+              tooltipTimer = setTimeout(function() {
+                tooltip.html(getTooltipHtml(a.node))
+                 .style("left", a.mousePos.x + "px")
+                 .style("top", a.mousePos.y + "px")
+                 .style("display", 'block')
+                tooltip.transition()
+                 .duration(200)
+                 .style("opacity", .9)
+              }, 200)
             }
           },
           nodeClickCallback: function(node) {
@@ -66,10 +67,8 @@
 
     function getItemInfoHtml(node) {
       percentage = (100 * node.size / totalSize).toPrecision(3);
-      title = node.title || ''
-      name = node.name || ''
-      div = "<h4 class='code'>" + name + "</h4>"
-        + "<div class='title'>" + title + "</div>"
+      label = node.label || ''
+      div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
         + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
@@ -82,13 +81,11 @@
 
     function getTooltipHtml(node) {
       percentage = (100 * node.size / totalSize).toPrecision(3);
-      title = node.title || ''
+      label = node.label || ''
       div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
         + "<hr/>"
-        + "<div class='title'>" + title
-        + "</div>"
+        + "<div>" + label + "</div>"
 
       return div
     }
-
   });

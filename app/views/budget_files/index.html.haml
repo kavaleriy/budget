@@ -20,7 +20,7 @@
           = " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
         %td= budget_file.file
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_polymorphic_path(budget_file), :class => 'btn btn-default btn-xs'
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
 = link_to t('.upload_revenue'), revenues_upload_path, :class => 'btn btn-primary'

@@ -21,7 +21,7 @@
 
     $(".sunburst #chart").width(width).height(height + 120)
 
-    color = d3.scale.category20c();
+    //color = d3.scale.category20c();
 
     var partition = d3.layout.partition()
         .size([2 * Math.PI, radius])
@@ -44,7 +44,7 @@
           .data(partition.nodes)
           .enter().append("svg:path")
           .attr("d", arc)
-          .style("fill", function(d) { return color((d.children ? d : d.parent).value); })
+          .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
           .on("click", function(d) {
             $('.sunburst #sidebar').html(getItemInfoHtml(d))
             magnify(d)
@@ -122,13 +122,11 @@
 
 
     function getItemInfoHtml(node) {
-      percentage = (100 * node.value / totalSize).toPrecision(3);
-      title = node.title || ''
-      name = node.name || ''
-      div = "<h4 class='code'>" + name + "</h4>"
-        + "<div class='title'>" + title + "</div>"
+      percentage = (100 * node.size / totalSize).toPrecision(3);
+      label = node.label || ''
+      div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
-        + "<h4 class='amount'>" + node.value.toLocaleString() + " грн</h4>"
+        + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
@@ -138,14 +136,12 @@
     }
 
     function getTooltipHtml(node) {
-      percentage = (100 * node.value / totalSize).toPrecision(3);
-      title = node.title || ''
-      div = "<h5 class='percentage'>" + percentage + "% - " + node.value.toLocaleString() + " грн</h5>"
+      percentage = (100 * node.size / totalSize).toPrecision(3);
+      label = node.label || ''
+      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
         + "<hr/>"
-        + "<div class='title'>" + title + "</div>"
-
+        + "<div>" + label + "</div>"
 
       return div
     }
-
   });

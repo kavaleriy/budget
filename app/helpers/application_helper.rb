@@ -17,42 +17,52 @@ module ApplicationHelper
   end
 
 
-  def text_colors_list
-    %w(#8dd3c7
-#ffffb3
-#bebada
-#fb8072
-#ffffff
-#80b1d3
-#fdb462
-#b3de69
-#fccde5
-#d9d9d9
-#bc80bd
-#ccebc5
-#ffed6f
+  def undp_colors_list
+    %w(
+#8dd3c7 #ffffb3 #bebada #fb8072 #ffffff #80b1d3 #fdb462 #b3de69 #fccde5 #d9d9d9 #bc80bd #ccebc5 #ffed6f
+#CCCCCC
+#BBBBBB
+#55bbff
+#003366
+#0055aa
+#999999
+#333333
+#0b387c
+#5a90Da
+#a8bccc
+#0088ff
+#1E427E
+#D5EDFB
+#404040
+#444444
+#666666
+#abc4bf
+#edf4fe
+#66c2ff
+#557799
+#434C55
+#555555
+#265f91
+#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026
 )
+  end
+
+  def text_colors_list
+    %w(#8dd3c7 #ffffb3 #bebada #fb8072 #ffffff #80b1d3 #fdb462 #b3de69 #fccde5 #d9d9d9 #bc80bd #ccebc5 #ffed6f)
   end
 
   def get_bg_colors_list(holder)
     if holder == 1
       %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026)
     else
-      %w(#f7fcf0
-#e0f3db
-#ccebc5
-#a8ddb5
-#7bccc4
-#4eb3d3
-#2b8cbe
-#0868ac
-#084081)
+      %w(#f7fcf0 #e0f3db #ccebc5 #a8ddb5 #7bccc4 #4eb3d3 #2b8cbe #0868ac #084081)
     end
   end
 
 
   def fa_icon_list
-    %w(fa-adjust
+    %w(
+     fa-adjust
      fa-anchor
      fa-archive
      fa-arrows

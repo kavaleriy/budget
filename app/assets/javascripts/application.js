@@ -34,3 +34,34 @@
 //= require fileupload/jquery.fileupload-validate
 
 //= require_tree .
+
+$(document).on('ready page:load', function() {
+    $(".fa-select").select2(
+        {
+            allowClear: true,
+            formatResult: formatFaSelect,
+            formatSelection: formatFaSelect,
+            escapeMarkup: function(m) { return m; }
+        }
+    );
+
+    function formatFaSelect(el) {
+        return "<i class='fa " + el.id + "'/> " + el.id;
+    }
+});
+
+
+$(document).on('ready page:load', function() {
+    $(".color-select").select2(
+        {
+            allowClear: true,
+            formatResult: formatColorSelect,
+            formatSelection: formatColorSelect,
+            escapeMarkup: function(m) { return m; },
+        }
+    );
+
+    function formatColorSelect(el) {
+        return "<div style='width: 100%; height: 30px; background-color: " + el.id + "'/>";
+    }
+});

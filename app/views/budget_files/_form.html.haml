@@ -4,7 +4,7 @@
   %table.table.table-striped.table-hover
     %tr
       - @budget_file.taxonomies.each do |t|
-        %th=t[:title]
+        %th=t[0]
       %th
         Сума
     %tr
@@ -12,9 +12,9 @@
         %tr
           - @budget_file.taxonomies.each do |t|
             %td
-              %input{class: 'form-control', name: "rows[#{t[:key]}][#{t[:key]}]", value: row[t[:key]]}
+              %input{class: 'form-control', value: row[t[0]]}
           %td
-            %input{class: 'form-control', name: "rows[amount]", value: row[:amount]}
+            %input{class: 'form-control', value: row[:amount]}
 
 
   -#= f.submit nil, :class => 'btn btn-primary'

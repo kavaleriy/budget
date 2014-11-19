@@ -47,28 +47,40 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    tree_info = @budget_file['tree_info'].deep_dup
-    params[:taxonomy].each do |key, value|
-      value.each { |val_key, val_val|
-        tree_info[key][val_key][:title] = val_val[:title]
-      }
-    end unless params[:taxonomy].nil?
+    if @budget_file.owner_email == current_user.email or current_user.has_role? :admin
 
-    #rows = @budget_file['rows'].deep_dup
-    #params[:rows].each { |key, value| rows[key]['amount'] = value[:amount].to_i }  unless params[:rows].nil?
+      tree_info = @budget_file['tree_info'].deep_dup
+      params[:taxonomy].each do |key, value|
+        value.each { |val_key, val_val|
+          val_val.keys.each { |val_key_key|
+            tree_info[key][val_key][val_key_key] = val_val[val_key_key]
+          }
+        }
+      end unless params[:taxonomy].nil?
 
-    #@budget_file.prepare
+      # rows = []
+      # params[:rows].each { |key, value|
+      #   binding.pry
+      #   rows[key]['amount'] = value[key].to_i
+      # } unless params[:rows].nil?
+      # @budget_file.prepare
 
-    respond_to do |format|
-      if @budget_file.update(budget_file_params.merge({:tree_info => tree_info}))
-      #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
-        format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
-        format.json { render :show, status: :ok, location: @budget_file }
-      else
-        format.html { render :edit }
-        format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @budget_file.update(budget_file_params.merge({:tree_info => tree_info}))
+        #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
+          format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
+          format.json { render :show, status: :ok, location: @budget_file }
+        else
+          format.html { render :edit }
+          format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @budget_file, :flash => { :error => 'Ви не маєте доступу до редагування документу.' } }
       end
     end
+
   end
 
   # DELETE /revenues/1

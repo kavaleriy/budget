@@ -22,9 +22,10 @@
 
 %body
   = render :partial => 'layouts/navbar'
-  .container-fluid
+  .flash
     = bootstrap_flash
 
+  .container-fluid
     .main.row-fluid
       = yield
 

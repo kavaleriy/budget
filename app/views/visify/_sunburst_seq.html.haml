@@ -101,8 +101,7 @@
       d3.select(".sunburst-seq #percentage")
           .text(percentageString);
 
-      d.name = d.name ||''
-      $('.sunburst-seq #explanation #code').html(d.name)
+      $('.sunburst-seq #explanation #code').html(d.label)
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
@@ -144,17 +143,16 @@
     }
 
     function getItemInfoHtml(node) {
-      percentage = (100 * node.value / totalSize).toPrecision(3);
-      title = node.title || ''
-      name = node.name || ''
-      div = "<h4 class='code'>" + name + "</h4>"
-        + "<div class='title'>" + title + "</div>"
+      percentage = (100 * node.size / totalSize).toPrecision(3);
+      label = node.label || ''
+      div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
-        + "<h4 class='amount'>" + node.value.toLocaleString() + " грн</h4>"
+        + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
       if (node.description) {
         div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
       }
+
       return div
     }
 
