@@ -1,7 +1,13 @@
 module ApplicationHelper
   def get_budget_files
-    files = BudgetFile.where(:owner_email => nil)
-    files += BudgetFile.where(:owner_email => current_user.email) unless current_user.nil?
+    if current_user.nil?
+      files = BudgetFile.where(:owner_email => nil)
+    elsif current_user.has_role? :admin
+      files = BudgetFile.all
+    else
+      files = BudgetFile.where(:owner_email => nil) + BudgetFile.where(:owner_email => current_user.email)
+    end
+
     files || []
   end
 
