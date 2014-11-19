@@ -142,7 +142,7 @@ class BudgetFile
     unless item[:children].nil?
       node['children'] = []
       item[:children].each { |child_node|
-        node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) if child_node[:amount] > cut_amount
+        node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) # if child_node[:amount] > cut_amount
       }
     end
 
