@@ -51,7 +51,7 @@ class RevenuesController < BudgetFilesController
 
     respond_to do |format|
       if @budget_file.save
-        format.html { redirect_to @budget_file, notice: 'File was successfully uploaded.' }
+        format.html { redirect_to @budget_file, notice: 'Дані успішно завантажені.' }
         format.json { render :show, status: :created, location: @budget_file }
       else
         format.html { render :new }

@@ -15,7 +15,9 @@
     - @budget_files.each do |budget_file|
       %tr
         %td= link_to budget_file.id, budget_file
-        %td= budget_file.title
+        %td
+          = link_to budget_file.title, budget_file
+          = " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
         %td= budget_file.file
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_polymorphic_path(budget_file), :class => 'btn btn-default btn-xs'

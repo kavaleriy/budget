@@ -35,7 +35,7 @@ class BudgetFilesController < ApplicationController
 
     respond_to do |format|
       if @budget_file.save
-        format.html { redirect_to @budget_file, notice: 'File was successfully uploaded.' }
+        format.html { redirect_to @budget_file, notice: 'Дані успішно завантажені.' }
         format.json { render :show, status: :created, location: @budget_file }
       else
         format.html { render :new }
@@ -62,7 +62,7 @@ class BudgetFilesController < ApplicationController
     respond_to do |format|
       if @budget_file.update(budget_file_params.merge({:tree_info => tree_info}))
       #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
-        format.html { redirect_to @budget_file, notice: 'Revenue was successfully updated.' }
+        format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
         format.json { render :show, status: :ok, location: @budget_file }
       else
         format.html { render :edit }
@@ -76,7 +76,7 @@ class BudgetFilesController < ApplicationController
   def destroy
     @budget_file.destroy
     respond_to do |format|
-      format.html { redirect_to budget_files_url, notice: 'File was successfully destroyed.' }
+      format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
       format.json { head :no_content }
     end
   end

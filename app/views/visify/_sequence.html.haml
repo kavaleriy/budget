@@ -52,6 +52,10 @@
 
       // Update the breadcrumb trail to show the current sequence and percentage.
       updateBreadcrumbs: function(nodeArray, percentageString) {
+        // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+        b = {
+          w: 175, h: 30, s: 3, t: 10
+        }
 
         // Data join; key function combines name and depth (= position in sequence).
         var g = d3.select(aContainer + " #trail")
