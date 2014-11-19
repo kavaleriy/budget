@@ -1,7 +1,7 @@
 class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
-  before_action :authenticate_user!, only: [:upload, :edit, :editinfo]
+  before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
   #load_and_authorize_resource
 
 
