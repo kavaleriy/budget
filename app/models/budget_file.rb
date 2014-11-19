@@ -120,7 +120,7 @@ class BudgetFile
 
     node = {
         'size' => item[:amount],
-        'amount' => item[:amount],
+        'amount' => (item[:amount]).abs,
         'name' => item[:taxonomy],
         'label' => item[:key],
     }
