@@ -576,7 +576,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				if (node.left) {
 					sibling = node.left;
 					srad = a2rad(sibling.amount)*tgtScale;
-					sang = twopi - Math.asin((me.paper.height*0.5 + srad - siblCut) / rad2);
+					sang = twopi - Math.asin((me.paper.height*0.4 + srad - siblCut) / rad2);
 
 					bubble = getBubble(sibling);
 					t.$(bubble).rad = rad2;
@@ -585,12 +585,13 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				if (node.right) {
 					sibling = node.right;
 					srad = a2rad(sibling.amount)*tgtScale;
-					sang = Math.asin((me.paper.height*0.5 + srad - siblCut) / rad2);
+					sang = Math.asin((me.paper.height*0.4 + srad - siblCut) / rad2);
 
 					bubble = getBubble(sibling);
 					t.$(bubble).rad = rad2;
 					t.$(bubble).angle = sa(bubble.angle, sang);
 				}
+//                console.log(sang + ' ' + twopi + ' ' + me.paper.height*1 + ' ' + srad + ' ' + siblCut+ ' ' +   rad2)
 
 				node = origNode;
 			}

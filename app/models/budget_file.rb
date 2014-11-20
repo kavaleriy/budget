@@ -116,7 +116,7 @@ class BudgetFile
   end
 
   def get_bubble_tree_item(item, info)
-    cut_amount = (self.meta_data[:max] - self.meta_data[:min]).abs * 0.00005
+    cut_amount = (self.meta_data[:max].abs - self.meta_data[:min].abs) * 0.0005
 
     node = {
         'size' => item[:amount].abs,
