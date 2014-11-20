@@ -22,9 +22,9 @@ var BubbleTree = function(config, onHover, onUnHover) {
 		// show full labels inside bubbles with min radius of 40px
 		minRadiusLabels: 40,
 		// just show the amounts inside bubbles with min radius of 20px
-		minRadiusAmounts: 20,
+		minRadiusAmounts: 40,
 		// hide labels at all for bubbles with min radius of 0 (deactivated by def)
-		minRadiusHideLabels: 0,
+		minRadiusHideLabels: 10,
 		// trim labels after 50 characters
 		cutLabelsAt: 50
 	}, config);
