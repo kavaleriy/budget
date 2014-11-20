@@ -66,7 +66,11 @@
     })
 
     function getItemInfoHtml(node) {
-      percentage = (100 * node.size / totalSize).toPrecision(3);
+      if (node.parent && node.size < node.parent.size)
+        percentage = (100 * node.size / node.parent.size).toPrecision(3)
+      else
+        percentage = '100'
+
       label = node.label || ''
       div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"
@@ -80,7 +84,11 @@
     }
 
     function getTooltipHtml(node) {
-      percentage = (100 * node.size / totalSize).toPrecision(3);
+      if (node.parent && node.size < node.parent.size)
+        percentage = (100 * node.size / node.parent.size).toPrecision(3)
+      else
+        percentage = '100'
+
       label = node.label || ''
       div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
         + "<hr/>"
