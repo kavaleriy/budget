@@ -11,6 +11,18 @@ module ApplicationHelper
     files || []
   end
 
+  def get_calendars
+    if current_user.nil?
+      calendars = Calendar.where(:owner_email => nil)
+    elsif current_user.has_role? :admin
+      calendars = Calendar.all
+    else
+      calendars = Calendar.where(:owner_email => nil) + Calendar.where(:owner_email => current_user.email)
+    end
+
+    calendars || []
+  end
+
   def extract_date_from_param name, hash
     d = %w(1 2 3 4 5).map { |e| hash["#{name}(#{e}i)"].to_i }
     "#{d[2]}/#{d[1]}/#{d[0]} #{d[3]}:#{d[4]}"

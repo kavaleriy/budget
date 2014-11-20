@@ -6,12 +6,16 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
                       # a signed-in user can do everything
+
     if user.has_role? :admin
       # an admin can do everything
       can :manage, :all
-    else
-      #can [:read], [BudgetFile, Calendar]
+    elsif user.has_role? :editor
       can :manage, :all
+    else
+      can :read, :all
+      can :manage, [Calendar, BudgetFile], :owner_email => user.email
+      can :manage, [Event]
     end
 
     # Define abilities for the passed in user here. For example:

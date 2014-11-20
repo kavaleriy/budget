@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   include ApplicationHelper
 
+  #load_and_authorize_resource
+
   layout false
 
   before_action :set_calendar
@@ -66,7 +68,6 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     respond_to do |format|
-      #binding.pry
       if @event.update(event_params)
         format.json { render json: @event }
       else

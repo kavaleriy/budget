@@ -80,7 +80,7 @@
             = t('.calendar')
             %span.caret
           %ul.dropdown-menu{'role' => "menu"}
-            - Calendar.each do |c|
+            - get_calendars.each do |c|
               %li= link_to "#{c.title}", "/public/calendar/#{c.id}"
             %li.divider
             %li= link_to t('.calendars'), calendars_path

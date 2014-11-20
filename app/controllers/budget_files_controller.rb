@@ -2,7 +2,7 @@ class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
 
   before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
-  #load_and_authorize_resource
+  load_and_authorize_resource
 
 
   # GET /revenues
@@ -47,36 +47,29 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    if current_user and (@budget_file.owner_email == current_user.email or current_user.has_role? :admin)
-      tree_info = @budget_file['tree_info'].deep_dup
-      params[:taxonomy].each do |key, value|
-        value.each { |val_key, val_val|
-          val_val.keys.each { |val_key_key|
-            tree_info[CGI.unescape key][CGI.unescape val_key][CGI.unescape val_key_key] = val_val[CGI.unescape val_key_key]
-          }
+    tree_info = @budget_file['tree_info'].deep_dup
+    params[:taxonomy].each do |key, value|
+      value.each { |val_key, val_val|
+        val_val.keys.each { |val_key_key|
+          tree_info[CGI.unescape key][CGI.unescape val_key][CGI.unescape val_key_key] = val_val[CGI.unescape val_key_key]
         }
-      end unless params[:taxonomy].nil?
+      }
+    end unless params[:taxonomy].nil?
 
-      # rows = []
-      # params[:rows].each { |key, value|
-      #   binding.pry
-      #   rows[key]['amount'] = value[key].to_i
-      # } unless params[:rows].nil?
-      # @budget_file.prepare
+    # rows = []
+    # params[:rows].each { |key, value|
+    #   rows[key]['amount'] = value[key].to_i
+    # } unless params[:rows].nil?
+    # @budget_file.prepare
 
-      respond_to do |format|
-        if @budget_file.update(budget_file_params.merge({:tree_info => tree_info}))
-        #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
-          format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
-          format.json { render :show, status: :ok, location: @budget_file }
-        else
-          format.html { render :edit }
-          format.json { render json: @budget_file.errors, status: :unprocessable_entity }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to @budget_file, :flash => { :error => 'Ви не маєте доступу до редагування документу.' } }
+    respond_to do |format|
+      if @budget_file.update(budget_file_params.merge({:tree_info => tree_info}))
+      #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))
+        format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
+        format.json { render :show, status: :ok, location: @budget_file }
+      else
+        format.html { render :edit }
+        format.json { render json: @budget_file.errors, status: :unprocessable_entity }
       end
     end
 
@@ -85,19 +78,12 @@ class BudgetFilesController < ApplicationController
   # DELETE /revenues/1
   # DELETE /revenues/1.json
   def destroy
-    if current_user and (@budget_file.owner_email == current_user.email or current_user.has_role? :admin)
-      @budget_file.destroy
-      respond_to do |format|
-        format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
-        format.json { head :no_content }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to @budget_file, :flash => { :error => 'Ви не маєте доступу до видалення документу.' } }
-      end
+    @budget_file.destroy
+    respond_to do |format|
+      format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
+      format.json { head :no_content }
     end
   end
-
 
   private
 
@@ -117,7 +103,7 @@ class BudgetFilesController < ApplicationController
     end
 
   def budget_file_params
-    params.require(:budget_file).permit(:title, :file)
+    params.require(:budget_file).permit(:authenticity_token, :title, :file)
   end
 
 end

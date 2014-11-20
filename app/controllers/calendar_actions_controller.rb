@@ -1,6 +1,9 @@
 class CalendarActionsController < ApplicationController
   before_action :set_calendar_action, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!, only: [:index, :edit]
+  load_and_authorize_resource
+
   # GET /calendar_actions
   # GET /calendar_actions.json
   def index
