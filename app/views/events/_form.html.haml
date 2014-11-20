@@ -30,7 +30,7 @@
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {}, { class: 'fa-select' }
         .row
           .col-xs-6
-            = f.select :color, options_for_select(text_colors_list, @event.color), { label: "#{t('.color')}"}, { class: 'color-select' }
+            = f.select :color, options_for_select(get_bg_colors_list, @event.color), { label: "#{t('.color')}"}, { class: 'color-select' }
           .col-xs-6
             = f.select :text_color, options_for_select(text_colors_list, @event.text_color), { label: "#{t('.text_color')}"}, { class: 'color-select' }
 

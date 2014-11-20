@@ -7,7 +7,9 @@
 //
 
 .bootstrap_flash {
-  margin: 15px;
+  &>div {
+    margin: 15px;
+  }
 }
 
 .main {
@@ -36,8 +38,11 @@
   margin-right: 5px;
 }
 
-.modal-body {
+.modal-content {
+  padding: 15px;
+}
 
+.modal-body {
   padding-top: 0px;
 }
 .afooter {
@@ -47,7 +52,8 @@
   color: white;
   background-color: #0A326E;
 }
-//
-//.btn-danger {
-//  margin-left: 30px;
-//}
+
+.btn-default, .btn-danger {
+  margin-left: 10px;
+  margin-right: 10px;
+}

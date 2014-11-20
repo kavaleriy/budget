@@ -29,7 +29,7 @@
                 %td
                   %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][title]", value: @budget_file.tree_info[key][t_key]['title'] }
                 %td
-                  = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select([nil] + undp_colors_list, @budget_file.tree_info[key][t_key]['color']), class: 'color-select'
+                  = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select(undp_colors_list, @budget_file.tree_info[key][t_key]['color']), class: 'color-select'
                 %td
                   %textarea{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][description]", cols: 80, rows: 3}
                     = @budget_file.tree_info[key][t_key]['description']

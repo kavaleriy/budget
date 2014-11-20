@@ -36,7 +36,7 @@
 //= require_tree .
 
 
-$(document).ready(function() {
+$(document).on('ready page:load', function() {
     $(".bootstrap_flash").delay(3000).fadeOut(200);
 })
 
