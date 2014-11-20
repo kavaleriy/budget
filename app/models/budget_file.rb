@@ -179,8 +179,8 @@ class BudgetFile
           node[taxonomy_value][:amount] += row[:amount]
         end
 
-        min = node[taxonomy_value][:amount] if min.nil? || node[taxonomy_value][:amount] < min
-        max = node[taxonomy_value][:amount] if node[taxonomy_value][:amount] > max
+        min = node[taxonomy_value][:amount] if min.nil? || node[taxonomy_value][:amount].abs < min
+        max = node[taxonomy_value][:amount] if node[taxonomy_value][:amount].abs > max
         node = node[taxonomy_value]
       }
     end
