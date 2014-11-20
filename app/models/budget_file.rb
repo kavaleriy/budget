@@ -132,7 +132,7 @@ class BudgetFile
     end
 
     if item[:children].nil? || item[:children].length < 2
-      node['color'] = '#888'
+      node['color'] = '#a8bccc'
     elsif node['color'].nil?
       node['color'] = '#265f91'
     end

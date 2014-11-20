@@ -35,6 +35,11 @@
 
 //= require_tree .
 
+
+$(document).ready(function() {
+    $(".bootstrap_flash").delay(5000).fadeOut(200);
+})
+
 $(document).on('ready page:load', function() {
     $(".fa-select").select2(
         {
