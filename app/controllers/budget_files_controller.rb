@@ -48,12 +48,11 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1.json
   def update
     if current_user and (@budget_file.owner_email == current_user.email or current_user.has_role? :admin)
-
       tree_info = @budget_file['tree_info'].deep_dup
       params[:taxonomy].each do |key, value|
         value.each { |val_key, val_val|
           val_val.keys.each { |val_key_key|
-            tree_info[key][val_key][val_key_key] = val_val[val_key_key]
+            tree_info[CGI.unescape key][CGI.unescape val_key][CGI.unescape val_key_key] = val_val[CGI.unescape val_key_key]
           }
         }
       end unless params[:taxonomy].nil?
