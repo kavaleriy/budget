@@ -147,6 +147,7 @@ class PublicController < ApplicationController
   private
 
   def set_calendar
+
     @calendar = Calendar.find(params[:calendar_id])
   end
 

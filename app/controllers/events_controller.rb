@@ -66,7 +66,8 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     respond_to do |format|
-        if @event.update(event_params)
+      #binding.pry
+      if @event.update(event_params)
         format.json { render json: @event }
       else
         format.json { render json: @event.errors, status: :unprocessable_entity }
