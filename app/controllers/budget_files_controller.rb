@@ -47,7 +47,7 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    if @budget_file.owner_email == current_user.email or current_user.has_role? :admin
+    if current_user and (@budget_file.owner_email == current_user.email or current_user.has_role? :admin)
 
       tree_info = @budget_file['tree_info'].deep_dup
       params[:taxonomy].each do |key, value|
@@ -86,10 +86,16 @@ class BudgetFilesController < ApplicationController
   # DELETE /revenues/1
   # DELETE /revenues/1.json
   def destroy
-    @budget_file.destroy
-    respond_to do |format|
-      format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
-      format.json { head :no_content }
+    if current_user and (@budget_file.owner_email == current_user.email or current_user.has_role? :admin)
+      @budget_file.destroy
+      respond_to do |format|
+        format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @budget_file, :flash => { :error => 'Ви не маєте доступу до видалення документу.' } }
+      end
     end
   end
 
