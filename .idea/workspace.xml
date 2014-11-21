@@ -21,6 +21,7 @@
     <file path="/revenues_controller.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416579149453" ignored="false" />
     <file path="/application_controller.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416579491408" ignored="false" />
     <file path="/budget_files_controller.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416579555554" ignored="false" />
+    <file path="/ability.rb" changelist="a73dd4b6-1faf-4b9c-8b0f-636d543f754c" time="1416580857723" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,10 +53,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application_controller.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="application_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/application_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="7" selection-start="515" selection-end="515" vertical-scroll-proportion="0.2901024">
+            <state line="17" column="7" selection-start="515" selection-end="515" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ability.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/ability.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="0" selection-start="404" selection-end="404" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -79,15 +89,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/routes.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="34" selection-start="552" selection-end="552" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="visify_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/widgets/visify_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
@@ -106,10 +107,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calendars_controller.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="calendars_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/calendars_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="69" selection-start="119" selection-end="119" vertical-scroll-proportion="0.0">
+            <state line="3" column="8" selection-start="130" selection-end="130" vertical-scroll-proportion="0.051194537">
               <folding />
             </state>
           </provider>
@@ -146,7 +147,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/widgets/calendar/_timelinejs.html.haml" />
         <option value="$PROJECT_DIR$/app/views/widgets/calendar/_current_event_city.html.haml" />
         <option value="$PROJECT_DIR$/app/views/widgets/calendar/_current_event.html.haml" />
         <option value="$PROJECT_DIR$/app/views/widgets/calendar/_pie_cycle.html.haml" />
@@ -162,6 +162,7 @@
         <option value="$PROJECT_DIR$/app/controllers/revenues_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/budget_files_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/application_controller.rb" />
+        <option value="$PROJECT_DIR$/app/models/ability.rb" />
       </list>
     </option>
   </component>
@@ -490,6 +491,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="calendar_actions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="budget" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="budget" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -838,13 +857,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/widgets/calendar/_timelinejs.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="36" selection-start="299" selection-end="317" vertical-scroll-proportion="-8.125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/widgets/calendar/_pie_cycle.html.haml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="45" selection-start="348" selection-end="348" vertical-scroll-proportion="-13.75">
@@ -883,13 +895,6 @@
     <entry file="file://$PROJECT_DIR$/app/controllers/widgets/calendar_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="7" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/calendars_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="69" selection-start="119" selection-end="119" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -948,7 +953,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/application_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="7" selection-start="515" selection-end="515" vertical-scroll-proportion="0.2901024">
+        <state line="17" column="7" selection-start="515" selection-end="515" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/ability.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="404" selection-end="404" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/calendars_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="8" selection-start="130" selection-end="130" vertical-scroll-proportion="0.051194537">
           <folding />
         </state>
       </provider>
