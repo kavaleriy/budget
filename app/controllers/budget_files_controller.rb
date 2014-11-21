@@ -1,5 +1,5 @@
 class BudgetFilesController < ApplicationController
-  before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
+  before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy]
 
   before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
   load_and_authorize_resource
@@ -103,7 +103,7 @@ class BudgetFilesController < ApplicationController
     end
 
   def budget_file_params
-    params.require(:budget_file).permit(:authenticity_token, :title, :file)
+    params.require(:budget_file).permit(:title, :file)
   end
 
 end

@@ -34,7 +34,7 @@
         .attr("width", w)
         .attr("height", h);
 
-    d3.json("/visify/get_sunburst_data/#{budget_file_id}", function(json) {
+    d3.json("/widgets/visify/get_sunburst_data/#{budget_file_id}", function(json) {
       root = json;
       root.fixed = true;
       root.x = w / 2;

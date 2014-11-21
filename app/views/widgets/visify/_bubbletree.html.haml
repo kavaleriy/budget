@@ -26,7 +26,7 @@
         .style("opacity", 0);
 
     var tooltipTimer
-    d3.json("/visify/get_bubbletree_data/#{budget_file_id}", function(data) {
+    d3.json("/widgets/visify/get_bubbletree_data/#{budget_file_id}", function(data) {
       new BubbleTree({
           data: data,
           container: '.bubbletree #chart',

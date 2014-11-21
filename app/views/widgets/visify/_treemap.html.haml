@@ -35,7 +35,7 @@
       .append("svg:g")
         .attr("transform", "translate(.5,.5)");
 
-    d3.json("/visify/get_sunburst_data/#{budget_file_id}", function(data) {
+    d3.json("/widgets/visify/get_sunburst_data/#{budget_file_id}", function(data) {
       node = root = data;
 
       var nodes = treemap.nodes(root)

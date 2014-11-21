@@ -1,6 +1,7 @@
 class CalendarsController < ApplicationController
-  before_action :set_calendar, only: [:show, :edit, :update, :destroy, :subscribe]
-  before_action :authenticate_user!, only: [:index, :edit]
+  before_action :set_calendar, only: [:show, :edit, :update, :destroy]
+
+  before_action :authenticate_user!, only: [:index, :show, :edit]
   load_and_authorize_resource
 
   # GET /calendars

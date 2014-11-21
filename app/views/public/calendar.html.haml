@@ -5,15 +5,14 @@
     %span.descr
       = @calendar.description
   #calendar_subscriber
-    = render partial: 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
+    = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
-= render partial: 'timelinejs'
-
+= render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
 
 .left-panel.col-lg-3.col-xs-6.pull-left
-  = render partial: 'countdown'
-  = render partial: "current_action", :locals => { current: @current_event1 }
-  = render partial: "current_action", :locals => { current: @current_event2 }
+  = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
+  = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+  = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
 
 .right-panel.col-lg-3.col-xs-6.pull-right
   = render partial: 'event'
@@ -29,9 +28,9 @@
         = t('.tab_calendar_month')
   .tab-content
     #calendar_year.tab-pane.fade.in.active
-      = render partial: 'pie_cycle'
+      = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
     #calendar_month.tab-pane.fade
-      = render partial: 'calendar'
+      = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
 
   .legend
     .pull-left

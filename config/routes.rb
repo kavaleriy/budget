@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  get 'visify/get_sunburst_data/:id' => 'visify#get_sunburst_data'
-  get 'visify/get_bubbletree_data/:id' => 'visify#get_bubbletree_data'
+  namespace :widgets do
+    get 'visify/get_sunburst_data/:file_id' => 'visify#get_sunburst_data'
+    get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
+    get 'visify/sunburst/:file_id' => 'visify#sunburst'
+    get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'
+    get 'visify/bubbletree/:file_id' => 'visify#bubbletree'
+    get 'visify/circles/:file_id' => 'visify#circles'
+    get 'visify/treemap/:file_id' => 'visify#treemap'
+    get 'visify/collapsible/:file_id' => 'visify#collapsible'
+
+    get 'calendar/pie_data/:calendar_id' => 'calendar#pie_data'
+    get 'calendar/timelinejs_data/:calendar_id' => 'calendar#timelinejs_data'
+  end
+
 
   get 'budget_files/upload' => 'budget_files#upload'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
@@ -15,16 +27,8 @@ Rails.application.routes.draw do
   resources :revenues do
   end
 
-  get 'visify/sunburst/:id' => 'visify#sunburst'
-  get 'visify/sunburst_seq/:id' => 'visify#sunburst_seq'
-  get 'visify/bubbletree/:id' => 'visify#bubbletree'
-  get 'visify/circles/:id' => 'visify#circles'
-  get 'visify/treemap/:id' => 'visify#treemap'
-  get 'visify/collapsible/:id' => 'visify#collapsible'
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
-  get 'public/pie_data'
-  get 'public/timelinejs'
 
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'

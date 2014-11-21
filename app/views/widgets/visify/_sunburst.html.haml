@@ -1,7 +1,7 @@
 .sunburst
   #sidebar.col-xs-3
   #chart
-    = render partial: 'visify/sequence', :locals => { budget_file_id: @budget_file.id }
+    = render partial: 'sequence', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   $(document).ready(function() {
@@ -39,7 +39,7 @@
         .append("svg:g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    d3.json("/visify/get_sunburst_data/#{budget_file_id}", function(root) {
+    d3.json("/widgets/visify/get_sunburst_data/#{budget_file_id}", function(root) {
       path = svg.data([root]).selectAll("path")
           .data(partition.nodes)
           .enter().append("svg:path")

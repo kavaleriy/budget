@@ -1,14 +1,4 @@
 class ExpensesController < BudgetFilesController
-  #before_action :set_expense, only: [:show, :edit, :update, :destroy, :get_sunburst_data, :get_bubbletree_data]
-
-  # GET /expenses
-  # GET /expenses.json
-  #def index
-  #  @expenses = Expense.all
-  #end
-
-  # GET /expenses/1
-  # GET /expenses/1.json
   def show
   end
 

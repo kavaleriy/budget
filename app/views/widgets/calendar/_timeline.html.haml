@@ -34,7 +34,7 @@
       if (event_id == null)
         return
 
-      calendar_id = "#{@calendar.id}"
+      calendar_id = "#{calendar.id}"
       $.get("/events/"+event_id, { calendar_id: calendar_id });
     })
   })

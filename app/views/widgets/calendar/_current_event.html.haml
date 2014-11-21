@@ -1,4 +1,4 @@
-- if current[:event]
+- if current and current[:event]
   .current-action.col-xs-12
     .bar.col-xs-2
       - if current[:event].holder == 1
@@ -25,7 +25,7 @@
       %p.content
         = truncate(current[:event].title.html_safe, :length => 300, :omission => '...')
 
-      = link_to(event_path(current[:event], { :calendar_id => @calendar.id}), :class => 'pull-right', :remote => true) do
+      = link_to(event_path(current[:event], { :calendar_id => calendar.id}), :class => 'pull-right', :remote => true) do
         докладніше >>
 
 

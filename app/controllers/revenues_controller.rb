@@ -1,17 +1,4 @@
 class RevenuesController < BudgetFilesController
-  # before_action :set_revenue, only: [:show, :edit, :editinfo, :update, :destroy]
-
-  # GET /revenues
-  # GET /revenues.json
-  # def index
-  #   # @revenues = Revenue.all
-  # end
-
-  # GET /revenues/1
-  # GET /revenues/1.json
-  # def show
-  # end
-
   def show
   end
 
@@ -62,8 +49,8 @@ class RevenuesController < BudgetFilesController
 
   private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def budget_file_params
-      params.require(:revenue).permit(:title, :file)
-    end
+  def budget_file_params
+    params.require(:revenue).permit(:title, :file)
+  end
+
 end

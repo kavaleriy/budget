@@ -1,9 +1,5 @@
-class VisifyController < ApplicationController
+class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_budget_file
-
-  after_action :allow_iframe
-
-  layout 'visify'
 
   def get_sunburst_data
     render json: @budget_file.get_sunburst_tree
@@ -31,14 +27,10 @@ class VisifyController < ApplicationController
   def collapsible
   end
 
-private
+  private
+
   def set_budget_file
-    @budget_file = BudgetFile.find(params[:id])
+    @budget_file = BudgetFile.find(params[:file_id])
   end
 
-  def allow_iframe
-    response.headers['x-frame-options'] = 'ALLOWALL'
-    #response.headers['X-Frame-Options'] = 'ALLOW-FROM http://dhrp.org.ua'
-
-  end
 end
