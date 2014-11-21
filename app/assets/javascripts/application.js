@@ -36,11 +36,11 @@
 //= require_tree .
 
 
-$(document).on('ready page:load', function() {
+$(document).on('ready page:change', function() {
     $(".bootstrap_flash").delay(3000).fadeOut(200);
 })
 
-$(document).on('ready page:load', function() {
+$(document).on('ready page:change', function() {
     $(".fa-select").select2(
         {
             allowClear: true,
@@ -56,7 +56,7 @@ $(document).on('ready page:load', function() {
 });
 
 
-$(document).on('ready page:load', function() {
+$(document).on('ready page:change', function() {
     $(".color-select").select2(
         {
             allowClear: true,

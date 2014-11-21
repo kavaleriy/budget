@@ -44,7 +44,7 @@
 
 
 :javascript
-  $(document).on('ready page:load', function() {
+  $(document).on('ready page:change', function() {
     function set_visiframe(visualizator) {
       frame_url = "#{root_url}widgets/visify/"+ visualizator + "/#{@budget_file.id}"
       $('.embed input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
