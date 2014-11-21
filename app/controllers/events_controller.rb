@@ -1,6 +1,4 @@
 class EventsController < ApplicationController
-  include ApplicationHelper
-
   #load_and_authorize_resource
 
   layout false
@@ -99,11 +97,10 @@ class EventsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
     p = params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :text_color, :color)
-    dates = params.require(:event).permit(:starts_at, :ends_at)
-    unless dates.empty?
-      p[:starts_at_string] = extract_date_from_param('starts_at', dates)
-      p[:ends_at_string] = extract_date_from_param('ends_at', dates)
-    end
+
+    p[:starts_at_string] = extract_date_from_param('starts_at', p) unless p[:starts_at].nil?
+    p[:ends_at_string] = extract_date_from_param('ends_at', p)  unless p[:ends_at].nil?
+
     p
   end
 end
