@@ -36,12 +36,13 @@ class User
 
 
   #def to_key
+  #  binding.pry
   #  id.to_s
   #end
   #
   #def self.serialize_from_session(key, salt)
-  #  record = to_adapter.get(key[0]["$oid"])
+  #  record = to_adapter.get(key[0])
   #  record if record && record.authenticatable_salt == salt
   #end
-  #
+
 end
