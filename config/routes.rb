@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   namespace :widgets do
     get 'visify/get_sunburst_data/:file_id' => 'visify#get_sunburst_data'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
+    get 'visify/get_icicle_data/:file_id' => 'visify#get_icicle_data'
     get 'visify/sunburst/:file_id' => 'visify#sunburst'
     get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'
     get 'visify/bubbletree/:file_id' => 'visify#bubbletree'
     get 'visify/circles/:file_id' => 'visify#circles'
     get 'visify/treemap/:file_id' => 'visify#treemap'
+    get 'visify/icicle/:file_id' => 'visify#icicle'
     get 'visify/collapsible/:file_id' => 'visify#collapsible'
 
     get 'calendar/pie_data/:calendar_id' => 'calendar#pie_data'

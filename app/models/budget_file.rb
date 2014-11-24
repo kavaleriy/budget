@@ -111,47 +111,7 @@ class BudgetFile
     info || {}
   end
 
-  def get_bubble_tree
-    get_bubble_tree_item(self.tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
-  end
-
-  def get_bubble_tree_item(item, info)
-    cut_amount = (self.meta_data[:max].abs - self.meta_data[:min].abs) * 0.0005
-
-    node = {
-        'size' => item[:amount].abs,
-        'amount' => (item[:amount]).abs,
-        'label' => "Код: #{item[:key]}",
-    }
-
-    if info
-      node['label'] = info['title'] unless info['title'].nil? or info['title'].empty?
-      node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
-      node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
-      node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
-    end
-
-    if item[:children].nil? || item[:children].length < 2
-      node['color'] = '#a8bccc'
-    elsif node['color'].nil?
-      node['color'] = '#265f91'
-    end
-
-    unless item[:children].nil?
-      node['children'] = []
-      item[:children].each { |child_node|
-        node['children'] << get_bubble_tree_item(child_node, self.tree_info[child_node[:taxonomy]][child_node[:key]]) if child_node[:amount].abs > cut_amount
-      }
-    end
-
-    node
-  end
-
-  def get_sunburst_tree
-    get_bubble_tree_item(self.tree, { 'title' => 'Всього', 'color' => 'green' })
-  end
-
-  protected
+ protected
 
     def self.load_from_csv file_name
       items = {}

@@ -7,7 +7,7 @@
     %span.descr
       #{@budget_file.title}
 
-  %ul.views.nav.nav-tabs.col-xs-5{role: 'tablist'}
+  %ul.views.nav.nav-tabs.pull-left{role: 'tablist'}
     %li.active
       %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_bubbletree')
@@ -20,6 +20,9 @@
     %li
       %a{href: '#treemap', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_treemap')
+    %li
+      %a{href: '#icicle', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_icicle')
     %li
       %a{href: '#circles', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_circles')
