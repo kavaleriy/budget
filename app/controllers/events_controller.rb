@@ -1,11 +1,12 @@
 class EventsController < ApplicationController
+  include ApplicationHelper
   layout false
 
   before_action :set_calendar
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   load_and_authorize_resource :calendar
-  #load_and_authorize_resource :event, :through => :calendar
+  load_and_authorize_resource :event, :through => :calendar
 
   # GET /events
   # GET /events.json
@@ -30,8 +31,8 @@ class EventsController < ApplicationController
   def new
     all_day = params[:all_day] == "true"
     @event = @calendar.events.new(
-        :starts_at_string => params[:starts_at],
-        :ends_at_string => params[:ends_at],
+        :starts_at => params[:starts_at],
+        :ends_at => params[:ends_at],
         :all_day => all_day,
         :text_color => '#ffffff',
         :color => '#8cc0f1'
@@ -52,7 +53,6 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    binding.pry
     @event = @calendar.events.new(event_params)
 
     respond_to do |format|
@@ -67,7 +67,6 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    binding.pry
     respond_to do |format|
       if @event.update(event_params)
         format.json { render json: @event }
@@ -99,11 +98,6 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    p = params.require(:event).permit(:holder, :title, :icon, :description, :starts_at_string, :ends_at_string, :all_day, :text_color, :color)
-
-    p[:starts_at_string] = extract_date_from_param('starts_at', p) unless p[:starts_at].nil?
-    p[:ends_at_string] = extract_date_from_param('ends_at', p)  unless p[:ends_at].nil?
-
-    p
+    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
   end
 end

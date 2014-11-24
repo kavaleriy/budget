@@ -37,7 +37,7 @@
 
 
 $(document).on('ready page:change', function() {
-    $(".bootstrap_flash").delay(3000).fadeOut(200);
+    $(".bootstrap_flash").delay(10000).fadeOut(200);
 })
 
 $(document).on('ready page:change', function() {

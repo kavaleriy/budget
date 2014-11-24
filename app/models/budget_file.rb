@@ -38,15 +38,6 @@ class BudgetFile
   end
 
 
-  def get_taxonomies cols
-    taxonomies = {}
-    cols.each { |col|
-      level = taxonomies.length + 1
-      taxonomies[col] = { :level => level, :title => "Рівень: #{level}" }
-    }
-    taxonomies
-  end
-
   def load_file
     require 'roo'
 
@@ -73,6 +64,15 @@ class BudgetFile
       end
       self.rows << row unless row[:amount].to_i == 0
     end
+  end
+
+  def get_taxonomies cols
+    taxonomies = {}
+    cols.each { |col|
+      level = taxonomies.length + 1
+      taxonomies[col] = { :level => level, :title => "Рівень: #{level}" }
+    }
+    taxonomies
   end
 
   def prepare

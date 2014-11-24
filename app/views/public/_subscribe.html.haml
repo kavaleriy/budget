@@ -1,5 +1,5 @@
 - if subscriber.nil?
-  = form_for Subscriber.new(:email => cookies['subscriber']), url: { action: 'subscribe', :calendar_id => calendar.id }, :remote => true, :html => { :class => 'form-vertical pull-right col-sm-3' } do |f|
+  = form_for Subscriber.new(:email => cookies['subscriber']), url: { action: 'subscribe', :calendar_id => calendar.id }, :remote => true, :html => { :class => 'form-vertical' } do |f|
     .input-group.input-group-sm
       = f.email_field :email, :placeholder=>t('.subscribe_placeholder'), :class => 'form-control'
       %span.input-group-btn

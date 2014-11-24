@@ -25,7 +25,7 @@
       %p.content
         = truncate(current[:event].title.html_safe, :length => 300, :omission => '...')
 
-      = link_to(event_path(current[:event], { :calendar_id => calendar.id}), :class => 'pull-right', :remote => true) do
+      = link_to(calendar_event_path(calendar, current[:event]), :class => 'pull-right', :remote => true) do
         докладніше >>
 
 

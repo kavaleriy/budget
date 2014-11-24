@@ -14,7 +14,7 @@ class Ability
     else
       can :read, :all
       can :manage, [Calendar, BudgetFile], :owner_email => user.email
-      #can :manage, [CalendarEvent]
+      can :manage, Event, :calendar => { :owner_email => user.email }
     end
 
     # Define abilities for the passed in user here. For example:

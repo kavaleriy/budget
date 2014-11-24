@@ -23,11 +23,14 @@ module ApplicationHelper
     calendars || []
   end
 
-  def extract_date_from_param name, hash
-    d = %w(1 2 3 4 5).map { |e| hash["#{name}(#{e}i)"].to_i }
-    "#{d[2]}/#{d[1]}/#{d[0]} #{d[3]}:#{d[4]}"
-  end
 
+  def date_dmY(date)
+    if date.nil?
+      ''
+    else
+      date.strftime('%d-%m-%Y')
+    end
+  end
 
   def undp_colors_list
     [nil] + %w(

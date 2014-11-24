@@ -13,18 +13,13 @@
       },
       defaultView: 'month',
       events: {
-        url: '/events',
-        data: {
-          calendar_id: $('#calendar_view').attr('calendar_id')
-        }
+        url: '/calendars/' + $('#calendar_view').attr('calendar_id') + '/events'
       },
       timeFormat: 'H:mm',
       droppable: false,
       selectable: false,
       eventClick: function(calEvent, jsEvent, view) {
-        return $.get("/events/" + calEvent.id, {
-          calendar_id: $('#calendar_view').attr('calendar_id')
-        });
+        return $.get("/calendars/" + $('#calendar_view').attr('calendar_id') + "/events/" + calEvent.id)
       },
       eventRender: function(e, t, n) {
         var icon = (e.icon ? " <i class='fa fa-lg " + e.icon + " '></i> " : "");

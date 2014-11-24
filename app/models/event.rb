@@ -20,33 +20,9 @@ class Event
   field :text_color, type: String
   field :color, type: String
 
-  before_validation :do_before_validation
   validates :holder, presence: true
   validates :title, presence: true
   validates :starts_at, presence: true
-
-
-  attr_accessor :starts_at_string,
-                :ends_at_string,
-                :all_day_string
-  after_initialize :do_after_initialize
-
-  def do_after_initialize
-    self.starts_at_string = I18n.l(self.starts_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.starts_at.nil?
-    self.ends_at_string = I18n.l(self.ends_at, format: '%d/%m/%Y %H:%M').gsub(/00:00/, '') unless self.ends_at.nil?
-    self.all_day_string = self.all_day ? 'так' : 'ні'
-  end
-
-  def do_before_validation
-    self.starts_at = (self.starts_at_string.nil? or self.starts_at_string.empty?) ?
-        "" :
-        DateTime.parse(self.starts_at_string)
-
-    self.ends_at = (self.ends_at_string.nil? or self.ends_at_string.empty?) ?
-        "" :
-        DateTime.parse(self.ends_at_string)
-
-  end
 
   def as_json (options = {})
     e = {

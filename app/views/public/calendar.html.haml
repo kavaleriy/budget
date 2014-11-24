@@ -1,13 +1,24 @@
 = content_for :header do
-  .head.pull-left
+  .head
     %i.fa.fa-calendar
-    Бюджетний календар: #{@calendar.title}
+    #{@calendar.title}
     %span.descr
       = @calendar.description
-  #calendar_subscriber
-    = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
-= render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
+  = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
+
+  %hr
+
+  %ul.views.nav.nav-tabs.col-xs-5{role: 'tablist'}
+    %li.active
+      %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_calendar_year')
+    %li
+      %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_calendar_month')
+
+  #calendar_subscriber.col-xs-3.pull-right
+    = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
 .left-panel.col-lg-3.col-xs-6.pull-left
   = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
@@ -19,13 +30,7 @@
 
 
 .center.col-lg-6.col-xs-12
-  %ul.views.nav.nav-tabs{role: 'tablist'}
-    %li.active
-      %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_calendar_year')
-    %li
-      %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_calendar_month')
+
   .tab-content
     #calendar_year.tab-pane.fade.in.active
       = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }

@@ -7,13 +7,35 @@
     -#.navbar-brand
       -#= t('.brand')
 
-    .header.pull-left
-      = yield :header
 
+    .navbar-collapse.collapse.navbar-responsive-collapse.navbar-right
+      %ul.nav.navbar-nav
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-money
+            = t('visify.budget')
+            %span.caret
+          %ul.dropdown-menu{'role' => "menu"}
+            - get_budget_files.each do |budget_file|
+              %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
 
-    .navbar-collapse.collapse.navbar-responsive-collapse
+            %li.divider
+            %li= link_to t('.budget_files'), budget_files_path
 
-      %ul.nav.navbar-nav.navbar-right
+            %li.divider
+
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-calendar
+            = t('.calendar')
+            %span.caret
+          %ul.dropdown-menu{'role' => "menu"}
+            - get_calendars.each do |c|
+              %li= link_to "#{c.title}", "/public/calendar/#{c.id}"
+            %li.divider
+            %li= link_to t('.calendars'), calendars_path
+            %li= link_to t('.actions'), calendar_actions_path
+
         %li
           = link_to subscribers_path do
             %i.fa.fa-envelope-o
@@ -59,29 +81,6 @@
                 Показати всі
                 %i.fa.fa-angle-double-right
 
-      %ul.nav.navbar-nav.navbar-right
-        %li.dropdown
-          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
-            %i.fa.fa-money
-            = t('visify.budget')
-            %span.caret
-          %ul.dropdown-menu{'role' => "menu"}
-            - get_budget_files.each do |budget_file|
-              %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
+    .header
+      = yield :header
 
-            %li.divider
-            %li= link_to t('.budget_files'), budget_files_path
-
-            %li.divider
-
-        %li.dropdown
-          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
-            %i.fa.fa-calendar
-            = t('.calendar')
-            %span.caret
-          %ul.dropdown-menu{'role' => "menu"}
-            - get_calendars.each do |c|
-              %li= link_to "#{c.title}", "/public/calendar/#{c.id}"
-            %li.divider
-            %li= link_to t('.calendars'), calendars_path
-            %li= link_to t('.actions'), calendar_actions_path

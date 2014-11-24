@@ -24,8 +24,7 @@ Rails.application.routes.draw do
   resources :expenses
 
   get 'revenues/upload' => 'revenues#upload'
-  resources :revenues do
-  end
+  resources :revenues
 
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
@@ -33,11 +32,12 @@ Rails.application.routes.draw do
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
-  resources :calendars
+  resources :calendars do
+    resources :events
+  end
 
   resources :calendar_actions
 
-  resources :events
 
   resources :subscribers
 
