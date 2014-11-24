@@ -5,7 +5,7 @@
 
 .calendar_actions.col-xs-12
 
-  .city_actions.col-xs-7
+  .city_actions.col-xs-6
     .title.col-xs-12
       .pull-left
         = link_to t('form.new', :default => t("helpers.links.new")), new_calendar_action_path(:holder => 1, :icon => 'fa-institution'), :class => 'btn btn-lg btn-primary'
@@ -19,7 +19,7 @@
         = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendar_action_path(calendar_action), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left'
         = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendar_action_path(calendar_action), :class => 'btn btn-default pull-right'
 
-  .people_actions.col-xs-5
+  .people_actions.col-xs-6
     .title.col-xs-12
       .pull-right
         = link_to t('form.new', :default => t("helpers.links.new")), new_calendar_action_path(:holder => 2, :icon => 'fa-smile-o'), :class => 'btn btn-lg btn-primary'
