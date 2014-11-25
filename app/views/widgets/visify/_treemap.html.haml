@@ -48,6 +48,8 @@
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", function(d) {
             $('.treemap #sidebar').html(getItemInfoHtml(d))
+          })
+          .on("dblclick", function(d) {
             zoom(node == d.parent ? root : d.parent);
           })
           .on("mouseover", function(d) {
@@ -74,7 +76,7 @@
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", ".35em")
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.name; })
+          .text(function(d) { return d.label; })
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
 
       totalSize = root.value
