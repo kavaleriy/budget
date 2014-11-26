@@ -12,13 +12,12 @@
       %ul.nav.navbar-nav
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
-            %i.fa.fa-money
+            %i.fa.fa-bar-chart-o
             = t('visify.budget')
             %span.caret
           %ul.dropdown-menu{'role' => "menu"}
             - get_budget_files.each do |budget_file|
               %li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
-
             %li.divider
             %li= link_to t('.budget_files'), budget_files_path
 

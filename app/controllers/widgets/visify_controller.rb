@@ -46,7 +46,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     node = {
         'size' => item[:amount].abs,
         'amount' => (item[:amount]).abs,
-        'label' => "Код: #{item[:key]}",
+        'label' => item[:key],
     }
 
     if info

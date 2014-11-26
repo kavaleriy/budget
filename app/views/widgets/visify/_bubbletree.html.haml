@@ -36,26 +36,26 @@
           bubbleType: ['icon', 'plain'],
 
           tooltip: function(a) {
-            if (tooltipTimer) {
-              clearTimeout(tooltipTimer)
-            }
-
-            if (a.type == 'HIDE') {
-              tooltip.transition()
-                .duration(200)
-                .style("opacity", 0)
-              tooltip.style("display", 'none')
-            } else {
-              tooltipTimer = setTimeout(function() {
-                tooltip.html(getTooltipHtml(a.node))
-                 .style("left", a.mousePos.x + "px")
-                 .style("top", a.mousePos.y + "px")
-                 .style("display", 'block')
-                tooltip.transition()
-                 .duration(200)
-                 .style("opacity", .9)
-              }, 200)
-            }
+            //if (tooltipTimer) {
+            //  clearTimeout(tooltipTimer)
+            //}
+            //
+            //if (a.type == 'HIDE') {
+            //  tooltip.transition()
+            //    .duration(200)
+            //    .style("opacity", 0)
+            //  tooltip.style("display", 'none')
+            //} else {
+            //  tooltipTimer = setTimeout(function() {
+            //    tooltip.html(getTooltipHtml(a.node))
+            //     .style("left", a.mousePos.x + "px")
+            //     .style("top", a.mousePos.y + "px")
+            //     .style("display", 'block')
+            //    tooltip.transition()
+            //     .duration(200)
+            //     .style("opacity", .9)
+            //  }, 200)
+            //}
           },
           nodeClickCallback: function(node) {
             $('.bubbletree #sidebar').html(getItemInfoHtml(node))
@@ -66,14 +66,18 @@
     })
 
     function getItemInfoHtml(node) {
-      if (node.parent && node.size < node.parent.size)
+      percParentTitle = ''
+      if (node.parent && node.size < node.parent.size) {
         percentage = (100 * node.size / node.parent.size).toPrecision(3)
-      else
+        percParentTitle = ' від: ' + node.parent.label || ''
+      }
+      else {
         percentage = '100'
+      }
 
       label = node.label || ''
       div = "<h3>" + label + "</h3>"
-        + "<h3 class='percentage'>" + percentage + "%</h3>"
+        + "<h3 class='percentage'>" + percentage + "%<small>" + percParentTitle + "</small></h3>"
         + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
 
       if (node.description) {
@@ -84,13 +88,18 @@
     }
 
     function getTooltipHtml(node) {
-      if (node.parent && node.size < node.parent.size)
+      percParentTitle = ''
+      if (node.parent && node.size < node.parent.size) {
         percentage = (100 * node.size / node.parent.size).toPrecision(3)
-      else
+        percParentTitle = ' від ' + node.parent.label || ''
+      }
+      else {
         percentage = '100'
+      }
 
       label = node.label || ''
-      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн</h5>"
+      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн </h5>" +
+        + percParentTitle
         + "<hr/>"
         + "<div>" + label + "</div>"
 

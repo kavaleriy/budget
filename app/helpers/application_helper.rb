@@ -1,23 +1,35 @@
 module ApplicationHelper
   def get_budget_files
-    if current_user.nil?
-      files = BudgetFile.where(:owner_email => nil)
+    files = if current_user.nil?
+      BudgetFile.where(:owner_email => nil)
     elsif current_user.has_role? :admin
-      files = BudgetFile.all
+      BudgetFile.all
     else
-      files = BudgetFile.where(:owner_email => nil) + BudgetFile.where(:owner_email => current_user.email)
+      BudgetFile.where(:owner_email => nil) + BudgetFile.where(:owner_email => current_user.email)
     end
 
     files || []
   end
 
-  def get_calendars
-    if current_user.nil?
-      calendars = Calendar.where(:owner_email => nil)
+  def get_transactions
+    trans = if current_user.nil?
+      Transaction.where(:owner_email => nil)
     elsif current_user.has_role? :admin
-      calendars = Calendar.all
+      Transaction.all
     else
-      calendars = Calendar.where(:owner_email => nil) + Calendar.where(:owner_email => current_user.email)
+      Transaction.where(:owner_email => nil) + Transaction.where(:owner_email => current_user.email)
+    end
+
+    trans || []
+  end
+
+  def get_calendars
+    calendars = if current_user.nil?
+      Calendar.where(:owner_email => nil)
+    elsif current_user.has_role? :admin
+      Calendar.all
+    else
+      Calendar.where(:owner_email => nil) + Calendar.where(:owner_email => current_user.email)
     end
 
     calendars || []
