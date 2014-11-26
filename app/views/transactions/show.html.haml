@@ -1,0 +1,25 @@
+- model_class = Transaction
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.titleize
+
+%p
+  %strong= model_class.human_attribute_name(:kvk) + ':'
+  %br
+  = @transaction.kvk
+%p
+  %strong= model_class.human_attribute_name(:kfk) + ':'
+  %br
+  = @transaction.kfk
+%p
+  %strong= model_class.human_attribute_name(:kekv) + ':'
+  %br
+  = @transaction.kekv
+%p
+  %strong= model_class.human_attribute_name(:amount) + ':'
+  %br
+  = @transaction.amount
+
+
+= link_to t('.back', :default => t("helpers.links.back")), transactions_path, :class => 'btn btn-default'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_transaction_path(@transaction), :class => 'btn btn-default'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), transaction_path(@transaction), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
