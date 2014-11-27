@@ -24,25 +24,5 @@ class Expense < BudgetFile
   end
 
   protected
-    #def get_burst_for(rows, nodes)
-    #  children = []
-    #  small = { "count" => 0, "amount" => 0 }
-    #  nodes.each do |node|
-    #    rows.reject {|r| r[:ktfk] != node}.each do |r|
-    #      if r[:amount] > 200000000
-    #        children << { "name" => r[:ktfk], "size" => r[:amount]}
-    #      else
-    #        small["count"] += 1
-    #        small["amount"] += r[:amount]
-    #      end
-    #    end
-    #  end
-    #
-    #  if small["amount"] > 0
-    #    children << { "name" => "АГРЕГОВАНО: #{small['count']} показників", "size" => small['amount']}
-    #  end
-    #
-    #  children
-    #end
 
 end
