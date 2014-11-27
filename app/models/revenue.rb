@@ -22,6 +22,10 @@ class Revenue < BudgetFile
     end
   end
 
+
+
+
+
   def get_sunburst_tree
     # boxes = {
     #     'Кошик 1' =>

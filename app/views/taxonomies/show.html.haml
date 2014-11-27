@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @taxonomy.name
+%p
+  %b Taxonomies:
+  = @taxonomy.taxonomies
+
+= link_to 'Edit', edit_taxonomy_path(@taxonomy)
+\|
+= link_to 'Back', taxonomies_path

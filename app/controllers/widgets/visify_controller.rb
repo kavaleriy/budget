@@ -65,7 +65,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     unless item[:children].nil?
       node['children'] = []
       item[:children].each { |child_node|
-        node['children'] << get_bubble_tree_item(child_node, @budget_file.tree_info[child_node[:taxonomy]][child_node[:key]]) if child_node[:amount].abs > cut_amount
+        node['children'] << get_bubble_tree_item(child_node, @budget_file.tree_info[child_node[:taxonomy]][child_node[:key]]) # if child_node[:amount].abs > cut_amount
       }
     end
 
@@ -76,27 +76,27 @@ class Widgets::VisifyController < Widgets::WidgetsController
     get_bubble_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green' })
   end
 
-  def get_icicle_tree
-    get_icicle_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green' })
-  end
-
-  def get_icicle_tree_item(item, info)
-    cut_amount = (@budget_file.meta_data[:max].abs - @budget_file.meta_data[:min].abs) * 0.0005
-
-    key = "#{item[:taxonomy]} #{item[:key]}"
-    if item[:children].nil?
-      node = item[:amount].abs
-    else
-      node = {}
-      item[:children].each { |child_node|
-        child_key = "#{child_node[:taxonomy]} #{child_node[:key]}"
-        node[child_key] = get_icicle_tree_item(child_node, @budget_file.tree_info[child_node[:taxonomy]][child_node[:key]])
-      }
-    end
-
-    node
-  end
-
+  #def get_icicle_tree
+  #  get_icicle_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green' })
+  #end
+  #
+  #def get_icicle_tree_item(item, info)
+  #  cut_amount = (@budget_file.meta_data[:max].abs - @budget_file.meta_data[:min].abs) * 0.0005
+  #
+  #  key = "#{item[:taxonomy]} #{item[:key]}"
+  #  if item[:children].nil?
+  #    node = item[:amount].abs
+  #  else
+  #    node = {}
+  #    item[:children].each { |child_node|
+  #      child_key = "#{child_node[:taxonomy]} #{child_node[:key]}"
+  #      node[child_key] = get_icicle_tree_item(child_node, @budget_file.tree_info[child_node[:taxonomy]][child_node[:key]])
+  #    }
+  #  end
+  #
+  #  node
+  #end
+  #
   def set_budget_file
     @budget_file = BudgetFile.find(params[:file_id])
   end

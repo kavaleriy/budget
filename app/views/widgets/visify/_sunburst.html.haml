@@ -122,7 +122,8 @@
 
 
     function getItemInfoHtml(node) {
-      percentage = (100 * node.size / totalSize).toPrecision(3);
+      console.log(totalSize)
+      percentage = (node.size / totalSize).toPrecision(3) * 100;
       label = node.label || ''
       div = "<h3>" + label + "</h3>"
         + "<h3 class='percentage'>" + percentage + "%</h3>"

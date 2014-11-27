@@ -10,7 +10,8 @@ class BudgetFile
   field :rows, :type => Array
 
   # list of taxonomies for tree levels
-  field :taxonomies, :type => Hash
+  has_many :taxonomies
+  #field :taxonomies, :type => Hash
 
   # calculated tree
   field :tree, :type => Hash
