@@ -4,6 +4,7 @@ class BudgetFile
   field :owner_email, type: String
 
   field :title, type: String
+  field :name, type: String
   field :file, type: String
 
   # source data
@@ -11,15 +12,27 @@ class BudgetFile
 
   # list of taxonomies for tree levels
   has_one :taxonomy
-  #field :taxonomies, :type => Hash
 
   # calculated tree
   field :tree, :type => Hash
 
-  # tree additional info
-  field :tree_info, :type => Hash
-
   field :meta_data, :type => Hash
+
+
+  before_create :set_file, :set_taxonomy
+
+  def set_owner
+    self.owner_email = current_user.email unless current_user.nil?
+  end
+
+  def set_file
+    self.title = self.name if self.title.nil?
+  end
+
+  def set_taxonomy
+
+  end
+
 
 
   def self.get_revenue_codes
@@ -55,9 +68,8 @@ class BudgetFile
         end
 
     # load taxonomies
-    if self.taxonomy.nil?
-      self.taxonomy = Taxonomy.create(self.file, raw[:cols])
-    end
+
+    self.taxonomy = get_taxonomy(self.name, raw[:cols])
 
     # load raw data
     self.rows = raw[:rows]
@@ -97,21 +109,20 @@ class BudgetFile
       rows << row unless row[:amount].to_i == 0
     end
 
-    binding.pry
     { :rows => rows, :cols => cols }
   end
 
   def prepare
-    self.tree_info = {}
+    self.taxonomy.explanation = {}
 
     self.rows.each do |row|
       amount = row[:amount]
 
       row.keys.reject{|key| key == :amount}.each do |key|
-        if self.tree_info[key].nil?
-          self.tree_info[key] = { }
+        if self.taxonomy.explanation[key].nil?
+          self.taxonomy.explanation[key] = { }
         end
-        self.tree_info[key][row[key]] = get_info(key, row[key])
+        self.taxonomy.explanation[key][row[key]] = get_info(key, row[key])
       end
     end
 

@@ -6,7 +6,7 @@ class Taxonomy
 
   field :explanation, :type => Hash
 
-  belongs_to :budget_files
+  belongs_to :budget_file
 
   def self.get_taxonomy(name, columns)
     cols = {}

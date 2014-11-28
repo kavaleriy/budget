@@ -19,14 +19,14 @@ Rails.application.routes.draw do
 
 
   get 'budget_files/upload' => 'budget_files#upload'
+  get 'budget_files/upload_rot' => 'budget_files#upload_rot'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
   resources :budget_files
+  resources :budget_file_rots
 
   get 'expenses/upload' => 'expenses#upload'
   resources :expenses
 
-  get 'revenues/upload' => 'revenues#upload'
-  resources :revenues
 
 
   get 'public/calendar/:calendar_id' => 'public#calendar'

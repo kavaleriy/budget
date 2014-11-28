@@ -1,23 +1,13 @@
-class RevenuesController < BudgetFilesController
-  def show
-  end
-
-  # GET /revenues/new
-  def new
-    @budget_file = Revenue.new
-    @budget_file.rows = []
-    Revenue.get_revenue_codes.keys.reject{|k| k.slice(5, 3) == '000'}.each { |key| @budget_file.rows[key] = { amount: '' } }
-  end
-
+class BudgetFileRotsController < BudgetFilesController
   # GET /revenues/upload
   def upload
-    @budget_file = Revenue.new
+    @budget_file = BudgetFileRot.new
   end
 
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = Revenue.new()
+    @budget_file = BudgetFileRot.new()
     fname = budget_file_params[:file].original_filename
     @budget_file.taxonomy = TaxonomyRot.get_taxonomy(fname)
     @budget_file.title =  "Доходи: #{fname} - #{DateTime.now.strftime('%B')}" if budget_file_params[:title].empty?

@@ -1,7 +1,7 @@
 class TaxonomyRot < Taxonomy
   COLUMNS = {
-      '_box' =>{:title=>'Кошик'},
-      'fond'=>{:title=>'Фонд'},
+      #'_box' =>{:title=>'Кошик'},
+      #'_fond'=>{:title=>'Фонд'},
       'kkd_a'=>{:title=>'Розряд 1'},
       'kkd_bb'=>{:title=>'Розряд 1-3'},
       'kkd_cc'=>{:title=>'Розряд 1-5'},

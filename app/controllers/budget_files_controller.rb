@@ -22,12 +22,11 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
   def create
     @budget_file = BudgetFile.new if @budget_file.nil?
-    @budget_file.owner_email = current_user.email unless current_user.nil?
 
     file = upload_io budget_file_params[:file]
 
-    @budget_file.title = budget_file_params[:title] || file[:name] if @budget_file.title.nil?
-
+    @budget_file.title = budget_file_params[:title] if @budget_file.title.nil?
+    @budget_file.name = file[:name]
     @budget_file.file = file[:path]
 
     @budget_file.load_file
@@ -48,7 +47,7 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    tree_info = @budget_file['tree_info'].deep_dup
+    explanation = @budget_file.taxonomy.explanation.deep_dup
     params[:taxonomy].each do |key, value|
       value.each { |val_key, val_val|
         val_val.keys.each { |val_key_key|
