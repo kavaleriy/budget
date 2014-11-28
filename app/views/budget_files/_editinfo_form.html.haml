@@ -3,13 +3,13 @@
 
   %hr
     %ul.views.nav.nav-tabs{role: 'tablist'}
-      - @budget_file.taxonomies.each do |key, val|
+      - @budget_file.taxonomy.columns.each do |key, val|
         %li
           %a{href: "#taxonnomy_#{val[:level]}", role: 'tab', 'data-toggle' => 'tab'}
             =val[:title]
 
     .tab-content
-      - @budget_file.taxonomies.each do |key, val|
+      - @budget_file.taxonomy.columns.each do |key, val|
         .tab-pane.fade.in{ :id => "taxonnomy_#{val[:level]}" }
 
           %table.table.table-striped.table-hover

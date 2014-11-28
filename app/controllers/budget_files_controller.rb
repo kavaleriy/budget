@@ -21,16 +21,17 @@ class BudgetFilesController < ApplicationController
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = BudgetFile.new
+    @budget_file = BudgetFile.new if @budget_file.nil?
     @budget_file.owner_email = current_user.email unless current_user.nil?
 
     file = upload_io budget_file_params[:file]
 
-    @budget_file.title = budget_file_params[:title].empty? ? file[:name] : budget_file_params[:title]
+    @budget_file.title = budget_file_params[:title] || file[:name] if @budget_file.title.nil?
 
     @budget_file.file = file[:path]
 
     @budget_file.load_file
+
     @budget_file.prepare
 
     respond_to do |format|

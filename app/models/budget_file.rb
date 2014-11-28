@@ -10,7 +10,7 @@ class BudgetFile
   field :rows, :type => Array
 
   # list of taxonomies for tree levels
-  has_many :taxonomies
+  has_one :taxonomy
   #field :taxonomies, :type => Hash
 
   # calculated tree
@@ -42,38 +42,63 @@ class BudgetFile
   def load_file
     require 'roo'
 
-    raw = nil
-
-    if File.extname(self.file).downcase == '.csv'
-      raw = Roo::CSV.new(self.file, csv_options: {col_sep: ";"})
-    else
-      raw = Roo::Excelx.new(self.file)
-      raw.default_sheet = raw.sheets.first
-    end
+    raw =
+        case File.extname(self.file).downcase
+          when '.csv'
+            read_csv_xls Roo::CSV.new(self.file, csv_options: {col_sep: ";"})
+          when '.xls', '.xlsx'
+            xls = Roo::Excelx.new(self.file)
+            xls.default_sheet = raw.sheets.first
+            read_csv_xls xls
+          when '.dbf'
+            read_dbf DBF::Table.new(self.file)
+        end
 
     # load taxonomies
-    cols = []
-    raw.first_column.upto(raw.last_column - 1) { |col| cols << raw.cell(1, col).to_s }
-    self.taxonomies = get_taxonomies cols
+    if self.taxonomy.nil?
+      self.taxonomy = Taxonomy.create(self.file, raw[:cols])
+    end
 
     # load raw data
-    self.rows = []
-    2.upto(raw.last_row) do |line|
-      row = { :amount => raw.cell(line, raw.last_column).to_i }
-      raw.first_column.upto(raw.last_column - 1) do |col|
-        row[raw.cell(1, col).to_s] = raw.cell(line,col).to_s
-      end
-      self.rows << row unless row[:amount].to_i == 0
-    end
+    self.rows = raw[:rows]
   end
 
-  def get_taxonomies cols
-    taxonomies = {}
-    cols.each { |col|
-      level = taxonomies.length + 1
-      taxonomies[col] = { :level => level, :title => "Рівень: #{level}" }
+  def read_dbf(dbf)
+    cols = dbf.columns.map {|c| c.name}
+
+    rows = []
+    dbf.reject { |rec| rec.summ.nil? || rec.summ == 0 }.each do |rec|
+      key = rec.kkd.to_s
+      amount = rec.summ / 100
+
+      row = { :amount => amount }
+      [{t: 'kkd_a', key: key.slice(0, 1)}, {t: 'kkd_bb', key: key.slice(0, 3)}, {t: 'kkd_cc', key: key.slice(0, 5)}, {t: 'kkd_ddd', key: key.slice(0, 8)}].each do |v|
+        row[v[:t]] = v[:key]
+      end
+      rows << row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def read_csv_xls(xls)
+    cols = []
+    xls.first_column.upto(xls.last_column) { |col|
+      col = xls.cell(1, col).to_s
+      cols << col unless col.upcase == 'AMOUNT'
     }
-    taxonomies
+
+    rows = []
+    2.upto(xls.last_row) do |line|
+      row = { :amount => xls.cell(line, xls.last_column).to_i }
+      xls.first_column.upto(xls.last_column - 1) do |col|
+        row[xls.cell(1, col).to_s] = xls.cell(line,col).to_s
+      end
+      rows << row unless row[:amount].to_i == 0
+    end
+
+    binding.pry
+    { :rows => rows, :cols => cols }
   end
 
   def prepare
@@ -131,7 +156,7 @@ class BudgetFile
     self.rows.each do |row|
       node = tree
       node[:amount] += row[:amount]
-      self.taxonomies.keys.each { |taxonomy_key|
+      self.taxonomy.columns.keys.each { |taxonomy_key|
         taxonomy_value = row[taxonomy_key]
 
         if node[taxonomy_value].nil?

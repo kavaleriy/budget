@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :taxonomies
-
   devise_for :users
 
   namespace :widgets do

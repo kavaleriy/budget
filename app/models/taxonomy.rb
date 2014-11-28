@@ -1,11 +1,22 @@
 class Taxonomy
   include Mongoid::Document
 
-  field :title, type: String
+  field :name, type: String
   field :columns, type: Hash
 
-  # additional info
-  field :rows_info, :type => Hash
+  field :explanation, :type => Hash
 
-  belongs_to_many :budget_files
+  belongs_to :budget_files
+
+  def self.get_taxonomy(name, columns)
+    cols = {}
+    columns.each { |col|
+      cols[col] = { :title => "Рівень: #{col}" }
+    }
+
+    Taxonomy.where(:name => name).last || Taxonomy.create(
+        :name => name,
+        :columns => columns
+    )
+  end
 end

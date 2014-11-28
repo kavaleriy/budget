@@ -18,33 +18,11 @@ class RevenuesController < BudgetFilesController
   # POST /revenues.json
   def create
     @budget_file = Revenue.new()
-    @budget_file.owner_email = current_user.email unless current_user.nil?
-    if budget_file_params[:file]
-      file = upload_io budget_file_params[:file]
+    fname = budget_file_params[:file].original_filename
+    @budget_file.taxonomy = TaxonomyRot.get_taxonomy(fname)
+    @budget_file.title =  "Доходи: #{fname} - #{DateTime.now.strftime()}" if budget_file_params[:title].empty?
 
-      @budget_file.title = budget_file_params[:title].empty? ? file[:name] : budget_file_params[:title]
-
-      @budget_file.file = file[:path]
-      @budget_file.load_file
-    else
-      @budget_file.title =  "Доходи: #{DateTime.now.strftime()}" if @budget_file.title.nil?
-      @budget_file.rows = {}
-      params[:rows].each{|k, v|
-        @revenue.rows[k] = { :amount => v[:amount].to_i }
-      }
-    end
-
-    @budget_file.prepare
-
-    respond_to do |format|
-      if @budget_file.save
-        format.html { redirect_to @budget_file, notice: 'Дані успішно завантажені.' }
-        format.json { render :show, status: :created, location: @budget_file }
-      else
-        format.html { render :new }
-        format.json { render json: @budget_file.errors, status: :unprocessable_entity }
-      end
-    end
+    super
   end
 
   private
