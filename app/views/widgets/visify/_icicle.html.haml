@@ -30,6 +30,8 @@
 
     $('.icicle #chart').width(w).height(h)
 
+    var lastClicked;
+
     var vis = d3.select(".icicle #chart")
       .append("svg:svg")
         .attr("width", w)
@@ -43,7 +45,17 @@
           .data(partition.nodes(root))
         .enter().append("svg:g")
           .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
-          .on("click", click);
+          .on("click", function(d) {
+            if (lastClicked == d) {
+              var _d = d
+              dblclick(_d)
+            } else {
+              lastClicked = d
+              $('.icicle #sidebar').html(getItemInfoHtml(d))
+            }
+          })
+          .on("dblclick", function(d) {
+          })
 
       totalSize = root.size;
 
@@ -61,13 +73,12 @@
           .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
           .text(function(d) { return d.label; })
 
-      d3.select(window)
-          .on("click", function() { click(root); })
+      function transform(d) {
+        return "translate(8," + d.dx * ky / 2 + ")";
+      }
 
-      function click(d) {
+      function dblclick(d) {
         if (!d.children) return;
-
-        $('.icicle #sidebar').html(getItemInfoHtml(d))
 
         kx = (d.y ? w - 40 : w) / (1 - d.y);
         ky = h / d.dx;
@@ -87,10 +98,6 @@
             .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
 
         d3.event.stopPropagation();
-      }
-
-      function transform(d) {
-        return "translate(8," + d.dx * ky / 2 + ")";
       }
     });
 

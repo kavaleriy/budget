@@ -8,6 +8,7 @@
 = javascript_include_tag "cofog.js"
 
 .bubbletree
+  = render partial: 'sequence', :locals => { budget_file_id: @budget_file.id }
   #sidebar.col-xs-3
   #chart
 
@@ -15,7 +16,10 @@
 
   $(document).ready(function() {
     var width = $(document).width() - $('#sidebar').width() - 50;
-    height = $(document).height() - 120
+    height = $(document).height() - 220
+
+    var sequence = aSequence('.bubbletree')
+    sequence.initializeBreadcrumbTrail();
 
     var totalSize;
 
@@ -27,6 +31,8 @@
 
     var tooltipTimer
     d3.json("/widgets/visify/get_bubbletree_data/#{budget_file_id}", function(data) {
+      // Basic setup of page elements.
+
       new BubbleTree({
           data: data,
           container: '.bubbletree #chart',
@@ -35,7 +41,16 @@
 
           bubbleType: ['icon', 'plain'],
 
-          tooltip: function(a) {
+          tooltip: function(d) {
+            if (d.type == 'HIDE') {
+              sequence.hideBreadcrumb()
+            } else {
+              var percentageString = sequence.getPercentageString(d.node, totalSize)
+              var sequenceArray = sequence.getAncestors(d.node);
+              sequence.updateBreadcrumbs(sequenceArray, percentageString);
+            }
+
+
             //if (tooltipTimer) {
             //  clearTimeout(tooltipTimer)
             //}

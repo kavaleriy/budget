@@ -19,13 +19,13 @@ Rails.application.routes.draw do
 
 
   get 'budget_files/upload' => 'budget_files#upload'
-  get 'budget_files/upload_rot' => 'budget_files#upload_rot'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
   resources :budget_files
+  get 'budget_file_rots/upload' => 'budget_file_rots#upload'
   resources :budget_file_rots
 
-  get 'expenses/upload' => 'expenses#upload'
-  resources :expenses
+  get 'budget_file_rovs/upload' => 'budget_file_rovs#upload'
+  resources :budget_file_rovs
 
 
 

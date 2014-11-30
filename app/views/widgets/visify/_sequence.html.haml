@@ -67,7 +67,7 @@
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
-            .style("fill", function(d) { return d.color || color(d.value); })
+            .style("fill", function(d) { return d.color || color(d.amount); })
 
         entering.append("svg:text")
             .attr("x", (b.w + b.t) / 2)
@@ -105,7 +105,7 @@
       },
 
       getPercentageString: function(d, totalSize) {
-        var percentage = (100 * d.value / totalSize).toPrecision(3);
+        var percentage = (100 * d.amount / totalSize).toPrecision(3);
         var percentageString = percentage + "%";
         if (percentage < 0.1) {
           percentageString = "< 0.1%";

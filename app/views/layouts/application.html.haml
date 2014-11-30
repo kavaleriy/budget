@@ -22,6 +22,9 @@
 
 %body
   = render :partial => 'layouts/navbar'
+
+  = yield :top
+
   .bootstrap_flash
     = bootstrap_flash
 

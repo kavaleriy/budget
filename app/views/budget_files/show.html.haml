@@ -7,13 +7,13 @@
     %span.descr
       #{@budget_file.title}
 
-  %ul.views.nav.nav-tabs.pull-left{role: 'tablist'}
+  %ul.nav.nav-tabs.pull-left{role: 'tablist'}
     %li.active
       %a{href: '#bubbletree', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_bubbletree')
-    %li
-      %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_sunburst')
+    -#%li
+    -#  %a{href: '#sunburst', role: 'tab', 'data-toggle' => 'tab'}
+    -#    = t('.tab_sunburst')
     %li
       %a{href: '#sunburst_seq', role: 'tab', 'data-toggle' => 'tab'}
         = t('.tab_sunburst_seq')

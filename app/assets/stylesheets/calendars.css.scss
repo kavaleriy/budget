@@ -2,6 +2,31 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+ul.views {
+  font-size: 18px;
+  li {
+    a {
+      text-align: center;
+      padding: 10px;
+      width: 100px;
+      height: 35px;
+      color: white;
+      background-color: #8b9aa3;
+      &:hover {
+        background-color: #6fb3e0;
+      }
+    }
+  }
+  li.active a {
+    border-color: #4f99c6;
+    background-color: #6fb3e0;
+    &:hover {
+      background-color: #6fb3e0;
+    }
+  }
+}
+
+
 .external-event {
   margin: 6px 0;
   padding: 0;

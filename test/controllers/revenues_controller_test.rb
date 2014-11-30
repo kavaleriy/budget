@@ -8,7 +8,7 @@ class RevenuesControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:revenues)
+    assert_not_nil assigns(:budget_file_rots)
   end
 
   test "should get new" do

@@ -2,7 +2,7 @@
   #calendar_pies
     %svg#svg_calendar
     %h1
-      2014 рік
+      2014
 
 
 :javascript
@@ -76,8 +76,8 @@
            $.get("/calendars/" + $('#calendar_view').attr('calendar_id') + "/events/" + d.data.id)
          })
          .on("mouseover", function(d) {
-           if(d.data.title == '')
-             return
+           //if(d.data.title == '')
+           return
 
            div.transition()
              .duration(200)
