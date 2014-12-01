@@ -30,6 +30,11 @@ class Taxonomy
 
     row[amount_key] = amount
 
+    row.keys.reject{|k| k == amount_key}.each {|r|
+      val = row[r].to_s.split('.')[0]
+      row[r] = val
+    }
+
     row
   end
 
