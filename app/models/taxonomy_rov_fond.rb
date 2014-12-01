@@ -24,7 +24,7 @@ class TaxonomyRovFond < TaxonomyRov
       { :amount => amount2, :fond => 'Спеціальний фонд' },
     ].map { |line|
     {
-        'amount' => line[:amount],
+        'amount' => line[:amount] / 100,
         'fond' => line[:fond],
         'source' => row['Джерело'].to_s,
         'owner' => row['Розпорядник'].to_s.split('.')[0],
