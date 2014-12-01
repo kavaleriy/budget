@@ -1,5 +1,5 @@
 class TaxonomyRov < Taxonomy
-  VERSION = 2
+  VERSION = 1
   COLUMNS = {
       'ktfk_aaa'=>{:level => 1, :title=>'Функціональний код, Розряд 1-3'},
       'ktfk'=>{:level => 2, :title=>'Функціональний код'},
@@ -17,7 +17,7 @@ class TaxonomyRov < Taxonomy
   end
 
   def readline row
-    amount = row['SUMM']
+    amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
     {

@@ -29,7 +29,6 @@ class Taxonomy
     return if amount.nil? || amount == 0
 
     row[amount_key] = amount
-    row['_month'] = '0'
 
     row
   end

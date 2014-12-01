@@ -2,8 +2,8 @@ class BudgetFilesController < ApplicationController
 
   before_action :set_budget_file, only: [:show, :edit, :editinfo, :update, :destroy]
 
-  before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
-  load_and_authorize_resource
+  #before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
+  #load_and_authorize_resource
 
   # GET /revenues
   # GET / revenues.json
@@ -15,13 +15,14 @@ class BudgetFilesController < ApplicationController
   end
 
   def upload
-    @budget_file = BudgetFile.new
+    @budget_file = get_budget_file
   end
 
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = BudgetFile.new if @budget_file.nil?
+    @budget_file = get_budget_file
+
 
     @budget_file.owner_email = current_user.email unless current_user.nil?
 
@@ -34,6 +35,7 @@ class BudgetFilesController < ApplicationController
     @budget_file.title = budget_file_params[:title].empty? ? "#{file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
 
     table = read_table_from_file file_path
+
     @budget_file.import file_name, table
 
     respond_to do |format|
@@ -96,6 +98,15 @@ class BudgetFilesController < ApplicationController
   end
 
   protected
+
+  def get_budget_file
+    BudgetFile.new
+  end
+
+  def get_taxonomy file_name, cols
+    Taxonomy.get_taxonomy(file_name, cols)
+  end
+
   def upload_file uploaded_io
     file_name = uploaded_io.original_filename
     file_path = Rails.root.join('public', 'files', file_name)

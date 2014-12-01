@@ -18,7 +18,7 @@ class TaxonomyRot < Taxonomy
   end
 
   def readline row
-    amount = row['SUMM']
+    amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
     kkd = row['KKD'].to_s

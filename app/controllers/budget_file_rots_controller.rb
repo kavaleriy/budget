@@ -1,15 +1,8 @@
 class BudgetFileRotsController < BudgetFilesController
-  # GET /revenues/upload
-  def upload
-    @budget_file = BudgetFileRot.new
-  end
+  protected
 
-  # POST /revenues
-  # POST /revenues.json
-  def create
-    @budget_file = BudgetFileRot.new
-
-    super
+  def get_budget_file
+    BudgetFileRot.new
   end
 
   private

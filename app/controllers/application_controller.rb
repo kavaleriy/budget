@@ -13,8 +13,10 @@ class ApplicationController < ActionController::Base
 
   def cancan_hack
     return if request.get?
+
     resource = controller_name.singularize.to_sym
     method = "#{resource}_params"
+
     params[resource] &&= send(method) if respond_to?(method, true)
 
     method = "budget_file_params"

@@ -23,10 +23,10 @@ class BudgetFile
 
     self.rows = table[:rows].map { |row|
       self.taxonomy.readline(row)
-    }.reject { |c| c.nil? }
+    }.reject { |c| c.nil? }.flatten
 
     self.rows.each do |row|
-      row.keys.reject{|key| key == 'amount' || key == '_month'}.each do |key|
+      row.keys.reject{|key| key == 'amount'}.each do |key|
         self.taxonomy.explain(key, row[key])
       end
     end
@@ -40,6 +40,7 @@ class BudgetFile
     Taxonomy.get_taxonomy(file_name, columns)
   end
 
+
   def create_tree
     tree = { :amount => 0 }
 
@@ -47,7 +48,7 @@ class BudgetFile
     max = 0
 
     self.rows.each do |row|
-      next unless row['_month'] == '0'
+      next unless row['_month'].nil? || row['_month'] == '0'
 
       node = tree
       node[:amount] += row['amount']

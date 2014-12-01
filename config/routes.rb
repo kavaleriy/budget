@@ -25,8 +25,9 @@ Rails.application.routes.draw do
   resources :budget_file_rots
 
   get 'budget_file_rovs/upload' => 'budget_file_rovs#upload'
+  get 'budget_file_rov_fonds/upload' => 'budget_file_rov_fonds#upload'
   resources :budget_file_rovs
-
+  resources :budget_file_rov_fonds
 
 
   get 'public/calendar/:calendar_id' => 'public#calendar'

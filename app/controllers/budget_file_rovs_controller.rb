@@ -1,12 +1,8 @@
 class BudgetFileRovsController < BudgetFilesController
-  def upload
-    @budget_file = BudgetFileRov.new
-  end
+  protected
 
-  def create
-    @budget_file = BudgetFileRov.new
-
-    super
+  def get_budget_file
+    BudgetFileRov.new
   end
 
   private
