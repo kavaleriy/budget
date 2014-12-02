@@ -42,6 +42,27 @@
       svg.selectAll("*").remove()
     }
 
+    function sort(data) {
+      var x0 = x.domain(data.sort(true
+              ? function(a, b) { return b.amount - a.amount; }
+              : function(a, b) { return d3.ascending(a.label, b.label); })
+              .map(function(d) { return d.label; }))
+              .copy();
+
+      var transition = svg.transition().duration(150),
+          delay = function(d, i) { return i * 10; };
+
+      transition.selectAll(".bar")
+          .delay(delay)
+          .attr("x", function(d) { return x0(d.label); });
+
+      transition.select(".x.axis")
+          .call(xAxis)
+        .selectAll("g")
+          .delay(delay);
+    }
+
+
     return {
       initialize: function(pHeight) {
         width = $('#sidebar_chart').width() - 40
@@ -111,6 +132,7 @@
             .attr("y", function(d) { return y(d.amount); })
             .attr("height", function(d) { return height - y(d.amount); });
 
+        sort(data)
       },
     }
   }
