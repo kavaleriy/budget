@@ -1,0 +1,24 @@
+%h3#year
+#slider{:style => 'margin-top: 50px;'}
+
+:javascript
+  function aSlider(aContainer) {
+    year = null
+
+    return {
+      initialize: function(bblchart, pYear) {
+        year = pYear
+        $(aContainer + ' #year').html(year + ' рік')
+
+        d3.select(aContainer + " #slider").call(d3.slider()
+          .axis(d3.svg.axis().orient("top"))
+          .min(0).max(12).step(1)
+          //.scale.linear().domain([3, 12])
+          .on("slide", function(evt, value) {
+            bblchart.clear()
+            bblchart.show(year, value)
+          })
+        );
+      },
+    }
+  };

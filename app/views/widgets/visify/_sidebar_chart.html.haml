@@ -1,0 +1,116 @@
+:css
+  .axis text {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+    fill-opacity: .9;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+#sidebar_chart.col-xs-11
+
+:javascript
+  function aSidebarChart() {
+    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        width = width - margin.left - margin.right,
+        height = height - margin.top - margin.bottom;
+
+    var x, y, xAxis, yAxis
+
+    var svg
+
+    function hide() {
+      $("#sidebar_chart").height(0)
+      svg.selectAll("*").remove()
+    }
+
+    return {
+      initialize: function(pHeight) {
+        width = $('#sidebar_chart').width() - 40
+        height = pHeight - 20
+
+        x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
+
+        y = d3.scale.linear()
+            .range([height, 0]);
+
+        xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .tickFormat(function(d, i){
+                return aVisify.helpers.formatNumber(d)
+            })
+
+        svg = d3.select("#sidebar_chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      },
+      hide: hide,
+      show: function(data) {
+        hide()
+
+        if (data.length < 2)
+          return
+
+        $("#sidebar_chart").height(height + margin.top + margin.bottom)
+
+        data.forEach(function(d) {
+          //d.amount = +d.amount;
+        });
+
+        x.domain(data.map(function(d) { return d.label; }));
+        y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+          .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("грн.");
+
+        svg.selectAll(".bar")
+            .data(data)
+          .enter().append("rect")
+            .attr("class", "bar")
+            .style("fill", function(d) { return d.color || 'silver'; })
+            .attr("x", function(d) { return x(d.label); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.amount); })
+            .attr("height", function(d) { return height - y(d.amount); });
+
+      },
+    }
+  }

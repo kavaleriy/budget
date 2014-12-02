@@ -1,18 +1,12 @@
 #sidebar.col-xs-4
+  #text
+  = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
+  #table
 
 :javascript
 
   function aSidebar(aContainer) {
-
-    function getPercentageString(d, totalSize) {
-      var percentage = (100 * d.amount / totalSize).toPrecision(3);
-      var percentageString = percentage + "%";
-      if (percentage < 0.1) {
-        percentageString = "< 0.1%";
-      }
-      return percentageString;
-    }
-
+    var chart
     // draw table
     function renderTable(node) {
       if (node.children == undefined)
@@ -23,8 +17,8 @@
         div += '<tr>'
           + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
           + value.label + '</td>'
-          + '<td>' + value.famount + '</td>'
-          + '<td>' + getPercentageString(value, value.parent.amount) + '</td>'
+          + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
+          + '<td>' + aVisify.helpers.getPercentageString(value, value.parent.amount) + '</td>'
           + '</tr>'
       });
       div += '</table>'
@@ -36,13 +30,21 @@
 
       initialize: function(height){
         $(aContainer + ' #sidebar').height(height)
+
+        chart = aSidebarChart()
+        chart.initialize(250)
       },
 
+      hide: function(){
+        $(aContainer + ' #sidebar #text').html('')
+        $(aContainer + ' #sidebar #table').html('')
+        chart.hide()
+      },
       show: function(node){
         label = node.label || ''
 
-        if (node.parent && node.amount < node.parent.amount) {
-          percentage = getPercentageString(node, node.parent.amount)
+        if (node.parent && node.amount <= node.parent.amount) {
+          percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
           percParentTitle = ' від ' + node.parent.label || ''
         }
         else {
@@ -52,15 +54,16 @@
 
         div = "<h3>" + label + "</h3>"
 
-        div += "<h3>" + node.famount + " - <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></spqn></h3>"
-
-        div += renderTable(node)
+        div += "<h3>" + aVisify.helpers.formatNumber(node.amount) + " - <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></spqn></h3>"
 
         if (node.description) {
           div += "<hr/>" +  "<div class='description'>" + node.description + "</div>"
         }
 
-        $(aContainer + ' #sidebar').html(div)
+        $(aContainer + ' #sidebar #text').html(div)
+        $(aContainer + ' #sidebar #table').html(renderTable(node))
+
+        chart.show(node.children)
       }
     }
   }

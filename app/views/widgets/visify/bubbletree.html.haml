@@ -1,1 +1,57 @@
-= render partial: 'bubbletree', :locals => { budget_file_id: @budget_file.id }
+-#https://github.com/okfn/bubbletree
+
+= javascript_include_tag "jquery.history.js"
+= javascript_include_tag "raphael.js"
+= javascript_include_tag "vis4.js"
+= javascript_include_tag "Tween.js"
+= javascript_include_tag "bubbletree.js"
+= javascript_include_tag "cofog.js"
+
+.bubbletree
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar) {
+    bubbleTree = null;
+    totalSize = null;
+
+    return {
+      initialize: function(width, height) {
+          $(aContainer + ' #chart').width(width).height(height)
+      },
+      clear: function() {
+        sequence.hideBreadcrumb()
+        sidebar.hide()
+        d3.select(aContainer + ' #chart').selectAll("*").remove()
+      },
+      show: function(year, month) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          if (data == null) return
+
+          bubbleTree = new BubbleTree({
+              data: data,
+              container: aContainer + ' #chart',
+              sortBy: 'label',
+              maxNodesPerLevel: 12,
+              bubbleType: ['icon', 'plain'],
+              tooltip: function(d) {
+                if (d.type == 'HIDE') {
+                  sequence.hideBreadcrumb()
+                } else {
+                  var percentageString = sequence.getPercentageString(d.node, totalSize)
+                  var sequenceArray = sequence.getAncestors(d.node);
+                  sequence.updateBreadcrumbs(sequenceArray, percentageString);
+                }
+              },
+              nodeClickCallback: function(node) {
+                sidebar.show(node)
+              }
+          });
+
+          totalSize = data.size;
+        })
+      }
+
+    }
+  }

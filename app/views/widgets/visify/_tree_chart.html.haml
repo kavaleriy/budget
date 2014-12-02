@@ -1,0 +1,52 @@
+.visify
+  = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
+  = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
+
+  .col-xs-8
+    #chart
+    .col-xs-offset-2.col-xs-8
+      = render partial: 'slider'
+
+:javascript
+  aVisify = {
+    helpers: {
+      getPercentageString: function (d, totalSize) {
+        var percentage = (100 * d.amount / totalSize).toPrecision(3);
+        var percentageString = percentage + "%";
+        if (percentage < 0.1) {
+          percentageString = "< 0.1%";
+        }
+        return percentageString;
+      },
+      formatNumber: function (n) {
+        var prefix = '';
+        if (n < 0) {
+            n = n*-1;
+            prefix = '-';
+        }
+        if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + 'трлн';
+        if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + 'млрд';
+        if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + 'млн';
+        if (n >= 1000) return prefix+Math.round(n / 100)/10 + 'тис';
+        else return prefix+n;
+      }
+    }
+  }
+
+  $(document).ready(function() {
+    var width = $(document).width() - $('.visify #sidebar').width() - 50;
+    height = $(document).height()
+
+    var sequence = aSequence('.visify')
+    sequence.initializeBreadcrumbTrail();
+
+    var sidebar = aSidebar('.visify')
+    sidebar.initialize(height - 140);
+
+    var chart = aTreeChart('.visify', sequence, sidebar)
+    chart.initialize(width, height - 250);
+    chart.show(2014, 0)
+
+    var slider = aSlider('.visify')
+    slider.initialize(chart, 2014)
+  });

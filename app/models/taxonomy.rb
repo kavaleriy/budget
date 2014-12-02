@@ -85,7 +85,7 @@ class Taxonomy
     node = {
         'amount' => items[:amount],
         'key' => key,
-        :taxonomy => items[:taxonomy]
+        'taxonomy' => items[:taxonomy]
     }
 
     children = items.keys.reject{|k| k == :amount || k == :taxonomy }
