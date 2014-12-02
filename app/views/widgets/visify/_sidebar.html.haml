@@ -1,0 +1,66 @@
+#sidebar.col-xs-4
+
+:javascript
+
+  function aSidebar(aContainer) {
+
+    function getPercentageString(d, totalSize) {
+      var percentage = (100 * d.amount / totalSize).toPrecision(3);
+      var percentageString = percentage + "%";
+      if (percentage < 0.1) {
+        percentageString = "< 0.1%";
+      }
+      return percentageString;
+    }
+
+    // draw table
+    function renderTable(node) {
+      if (node.children == undefined)
+        return ''
+
+      div = '<table class="table table-hover">'
+      $.each(node.children, function( index, value ) {
+        div += '<tr>'
+          + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
+          + value.label + '</td>'
+          + '<td>' + value.famount + '</td>'
+          + '<td>' + getPercentageString(value, value.parent.amount) + '</td>'
+          + '</tr>'
+      });
+      div += '</table>'
+      return div
+    }
+
+    return {
+      container: aContainer,
+
+      initialize: function(height){
+        $(aContainer + ' #sidebar').height(height)
+      },
+
+      show: function(node){
+        label = node.label || ''
+
+        if (node.parent && node.amount < node.parent.amount) {
+          percentage = getPercentageString(node, node.parent.amount)
+          percParentTitle = ' від ' + node.parent.label || ''
+        }
+        else {
+          percentage = '100%'
+          percParentTitle = ''
+        }
+
+        div = "<h3>" + label + "</h3>"
+
+        div += "<h3>" + node.famount + " - <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></spqn></h3>"
+
+        div += renderTable(node)
+
+        if (node.description) {
+          div += "<hr/>" +  "<div class='description'>" + node.description + "</div>"
+        }
+
+        $(aContainer + ' #sidebar').html(div)
+      }
+    }
+  }

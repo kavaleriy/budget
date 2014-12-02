@@ -127,8 +127,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				}
 				root.children = keep;
 				root.children.push({
-					'label': 'More',
-					'name': 'more',
+					'label': 'Інше',
+					'name': 'Інше',
 					'amount': moveAmount,
 					'children': move,
 					'breakdown': breakdown

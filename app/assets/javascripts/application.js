@@ -25,6 +25,7 @@
 //= require timecircles
 
 //= require d3
+//= require d3.slider
 
 //= require select2
 //= require select2_locale_uk

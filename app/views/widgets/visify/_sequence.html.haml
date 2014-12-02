@@ -67,7 +67,7 @@
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
-            .style("fill", function(d) { return d.color || color(d.amount); })
+            .style("fill", function(d) { return d.color || color(d.value); })
 
         entering.append("svg:text")
             .attr("x", (b.w + b.t) / 2)

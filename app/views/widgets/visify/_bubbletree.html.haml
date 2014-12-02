@@ -9,17 +9,59 @@
 
 .bubbletree
   = render partial: 'sequence', :locals => { budget_file_id: @budget_file.id }
-  #sidebar.col-xs-3
+  = render partial: 'sidebar', :locals => { budget_file_id: @budget_file.id }
   #chart
+.col-xs-offset-1.col-xs-6
+  #date-slider{:style => 'margin-top: 50px'}
+    :javascript
+      $(function() {
+        //$( "#date-slider" ).slider({
+        //  range: true,
+        //  axis: true,
+        //  min: 1,
+        //  max: 12,
+        //  values: [1,12],
+        //  slide: function( event, ui ) {
+        //    //var maxv = d3.min([ui.values[1], data.length]);
+        //    //var minv = d3.max([ui.values[0], 0]);;
+        //
+        //    //this is the main bit where the domain of x is readjusted
+        //    //x.domain([minv, maxv-1]);
+        //
+        //    //apply the change in x to the x-axis using a transition
+        //    //graph.transition().duration(750)
+        //    //  .select(".x.axis").call(xAxis);
+        //
+        //    //apply the change in x to the path (this would be your svg:path)
+        //    //graph.transition().duration(750)
+        //    //  .select(".path").attr("d", line(data));
+        //}});
+
+        var axis = d3.svg.axis().orient("top");
+        d3.select('#date-slider').call(d3.slider()
+          .axis(axis)
+          .min(1).max(12).step(1)
+          .on("slide", function(evt, value) {
+          })
+        );
+      });
+
 
 :javascript
 
   $(document).ready(function() {
+
+    //d3.select('#date-slider').call(d3.slider().axis(true).min(2000).max(2100).step(5));
+
+
     var width = $(document).width() - $('#sidebar').width() - 50;
-    height = $(document).height() - 220
+    height = $(document).height() - 200
 
     var sequence = aSequence('.bubbletree')
     sequence.initializeBreadcrumbTrail();
+
+    var sidebar = aSidebar('.bubbletree')
+    sidebar.initialize(height);
 
     var totalSize;
 
@@ -38,6 +80,8 @@
           container: '.bubbletree #chart',
 
           sortBy: 'label',
+
+          maxNodesPerLevel: 12,
 
           bubbleType: ['icon', 'plain'],
 
@@ -73,39 +117,27 @@
             //}
           },
           nodeClickCallback: function(node) {
-            $('.bubbletree #sidebar').html(getItemInfoHtml(node))
+            sidebar.show(node)
           }
       });
 
       totalSize = data.size;
     })
 
-    function getItemInfoHtml(node) {
-      percParentTitle = ''
-      if (node.parent && node.size < node.parent.size) {
-        percentage = (100 * node.size / node.parent.size).toPrecision(3)
-        percParentTitle = ' від: ' + node.parent.label || ''
+    function getPercentageString(d, totalSize) {
+      var percentage = (100 * d.amount / totalSize).toPrecision(2);
+      var percentageString = percentage + "%";
+      if (percentage < 0.1) {
+        percentageString = "< 0.1%";
       }
-      else {
-        percentage = '100'
-      }
-
-      label = node.label || ''
-      div = "<h3>" + label + "</h3>"
-        + "<h3 class='percentage'>" + percentage + "%<small>" + percParentTitle + "</small></h3>"
-        + "<h4 class='amount'>" + node.size.toLocaleString() + " грн</h4>"
-
-      if (node.description) {
-        div = div + "<hr/>" +  "<div class='description'>" + node.description + "</div>"
-      }
-
-      return div
+      return percentageString;
     }
+
 
     function getTooltipHtml(node) {
       percParentTitle = ''
-      if (node.parent && node.size < node.parent.size) {
-        percentage = (100 * node.size / node.parent.size).toPrecision(3)
+      if (node.parent && node.amount < node.parent.amount) {
+        percentage = (100 * node.amount / node.parent.amount).toPrecision(3)
         percParentTitle = ' від ' + node.parent.label || ''
       }
       else {
@@ -113,7 +145,7 @@
       }
 
       label = node.label || ''
-      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.size.toLocaleString() + " грн </h5>" +
+      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.amount.toLocaleString() + " грн </h5>" +
         + percParentTitle
         + "<hr/>"
         + "<div>" + label + "</div>"

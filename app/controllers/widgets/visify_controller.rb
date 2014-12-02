@@ -45,7 +45,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     node = {
         'size' => item[:amount].abs,
-        'amount' => (item[:amount]).abs,
+        'amount' => item[:amount].abs,
         'label' => item[:key],
     }
 
