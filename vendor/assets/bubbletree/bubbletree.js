@@ -814,7 +814,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 		me.loadData();
 	} else {
 		// load local tree json file
-		new vis4.DelayedTask(1000, me, me.setData, me.config.data);
+		new vis4.DelayedTask(10, me, me.setData, me.config.data);
 	}
 };
 

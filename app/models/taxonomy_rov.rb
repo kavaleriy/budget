@@ -8,9 +8,9 @@ class TaxonomyRov < Taxonomy
       # 'krk'=>{:level => 4, :title=>'Роспорядники'},
   }
 
-  def self.get_taxonomy(name)
-    TaxonomyRov.where(:name => name, :columns_id => VERSION).last || TaxonomyRov.create!(
-        :name => name,
+  def self.get_taxonomy(owner)
+    TaxonomyRov.where(:owner => owner, :columns_id => VERSION).last || TaxonomyRov.create!(
+        :owner => owner,
         :columns_id => VERSION,
         :columns => COLUMNS
     )

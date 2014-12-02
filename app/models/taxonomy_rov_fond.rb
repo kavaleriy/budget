@@ -7,9 +7,9 @@ class TaxonomyRovFond < TaxonomyRov
       'ktfk' =>{:level => 4, :title=>'Функц класифікація'},
   }
 
-  def self.get_taxonomy(name)
-    TaxonomyRovFond.where(:name => name, :columns_id => VERSION).last || TaxonomyRovFond.create!(
-        :name => name,
+  def self.get_taxonomy(owner)
+    TaxonomyRovFond.where(:owner => owner, :columns_id => VERSION).last || TaxonomyRovFond.create!(
+        :owner => owner,
         :columns_id => VERSION,
         :columns => COLUMNS
     )

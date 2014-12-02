@@ -1,7 +1,7 @@
 class Taxonomy
   include Mongoid::Document
 
-  field :name, type: String
+  field :owner, type: String
   field :columns_id, type: String
   field :columns, type: Hash
 
@@ -10,14 +10,14 @@ class Taxonomy
   # embedded_in :budget_file
   has_many :budget_files, autosave: true
 
-  def self.get_taxonomy(name, columns)
+  def self.get_taxonomy(owner, columns)
     cols = {}
     columns.each { |col|
       cols[col] = { :level => cols.length + 1, :title => col } unless col == columns[columns.length - 1]
     }
 
-    Taxonomy.where(:name => name, :columns_id => columns.join('_')).last || Taxonomy.create(
-        :name => name,
+    Taxonomy.where(:owner => owner, :columns_id => columns.join('_')).last || Taxonomy.create(
+        :owner => owner,
         :columns_id => columns.join('_'),
         :columns => cols
     )
@@ -50,7 +50,56 @@ class Taxonomy
   def get_taxonomy_info taxonomy, key
   end
 
+
+  def create_tree rows, year, month
+    tree = { :amount => 0 }
+
+    min = nil
+    max = 0
+
+    rows[year][month].each do |row|
+      node = tree
+      node[:amount] += row['amount']
+      self.columns.keys.each { |taxonomy_key|
+        taxonomy_value = row[taxonomy_key]
+
+        if node[taxonomy_value].nil?
+          node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => row['amount'] }
+        else
+          node[taxonomy_value][:amount] += row['amount']
+        end
+
+        min = node[taxonomy_value][:amount] if min.nil? || node[taxonomy_value][:amount].abs < min
+        max = node[taxonomy_value][:amount] if node[taxonomy_value][:amount].abs > max
+        node = node[taxonomy_value]
+      }
+    end
+
+    { :tree => create_tree_item(tree), :min => min, :max => max}
+  end
+
+
   protected
+
+  def create_tree_item(items, key = 'Всього')
+    node = {
+        'amount' => items[:amount],
+        'key' => key,
+        :taxonomy => items[:taxonomy]
+    }
+
+    children = items.keys.reject{|k| k == :amount || k == :taxonomy }
+
+    unless children.empty?
+      node['children'] = []
+      children.each { |item_key|
+        node['children'] << self.create_tree_item(items[item_key], item_key)
+      }
+    end
+
+    node
+  end
+
 
   def revenue_codes
     @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
@@ -71,6 +120,8 @@ class Taxonomy
     @kvk_info = load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
     @kvk_info
   end
+
+
 
   private
 

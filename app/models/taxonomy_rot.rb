@@ -9,9 +9,9 @@ class TaxonomyRot < Taxonomy
       'kkd_ddd'=>{:level => 5, :title=>'Розряд 1-8'}
   }
 
-  def self.get_taxonomy(name)
-    TaxonomyRot.where(:name => name, :columns_id => VERSION).last || TaxonomyRot.create!(
-        :name => name,
+  def self.get_taxonomy(owner)
+    TaxonomyRot.where(:owner => owner, :columns_id => VERSION).last || TaxonomyRot.create!(
+        :owner => owner,
         :columns_id => VERSION,
         :columns => COLUMNS
     )

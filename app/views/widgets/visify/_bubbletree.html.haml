@@ -13,46 +13,80 @@
   #chart
 .col-xs-offset-1.col-xs-6
   #date-slider{:style => 'margin-top: 50px'}
-    :javascript
-      $(function() {
-        //$( "#date-slider" ).slider({
-        //  range: true,
-        //  axis: true,
-        //  min: 1,
-        //  max: 12,
-        //  values: [1,12],
-        //  slide: function( event, ui ) {
-        //    //var maxv = d3.min([ui.values[1], data.length]);
-        //    //var minv = d3.max([ui.values[0], 0]);;
-        //
-        //    //this is the main bit where the domain of x is readjusted
-        //    //x.domain([minv, maxv-1]);
-        //
-        //    //apply the change in x to the x-axis using a transition
-        //    //graph.transition().duration(750)
-        //    //  .select(".x.axis").call(xAxis);
-        //
-        //    //apply the change in x to the path (this would be your svg:path)
-        //    //graph.transition().duration(750)
-        //    //  .select(".path").attr("d", line(data));
-        //}});
-
-        var axis = d3.svg.axis().orient("top");
-        d3.select('#date-slider').call(d3.slider()
-          .axis(axis)
-          .min(1).max(12).step(1)
-          .on("slide", function(evt, value) {
-          })
-        );
-      });
-
 
 :javascript
 
+  function aBubbletree(aContainer, sequence, sidebar) {
+    bubbleTree = null;
+    totalSize = null;
+
+    //function getTooltipHtml(node) {
+    //  percParentTitle = ''
+    //  if (node.parent && node.amount < node.parent.amount) {
+    //    percentage = (100 * node.amount / node.parent.amount).toPrecision(3)
+    //    percParentTitle = ' від ' + node.parent.label || ''
+    //  }
+    //  else {
+    //    percentage = '100'
+    //  }
+    //
+    //  label = node.label || ''
+    //  div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.amount.toLocaleString() + " грн </h5>" +
+    //    + percParentTitle
+    //    + "<hr/>"
+    //    + "<div>" + label + "</div>"
+    //
+    //  return div
+    //}
+    //
+
+    return {
+
+      initialize: function(width, height) {
+        $(aContainer + ' #chart').width(width).height(height)
+      },
+
+      show: function(year, month) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{budget_file_id}/"+ year+ "/" + month, function(data) {
+
+          d3.select(aContainer + ' #chart').selectAll("*").remove()
+          if (data == null) return
+
+          bubbleTree = new BubbleTree({
+              data: data,
+              container: aContainer + ' #chart',
+
+              sortBy: 'label',
+
+              maxNodesPerLevel: 12,
+
+              bubbleType: ['icon', 'plain'],
+
+              tooltip: function(d) {
+                if (d.type == 'HIDE') {
+                  sequence.hideBreadcrumb()
+                } else {
+                  var percentageString = sequence.getPercentageString(d.node, totalSize)
+                  var sequenceArray = sequence.getAncestors(d.node);
+                  sequence.updateBreadcrumbs(sequenceArray, percentageString);
+                }
+              },
+              nodeClickCallback: function(node) {
+                sidebar.show(node)
+              }
+          });
+
+          totalSize = data.size;
+        })
+      }
+
+    }
+  }
+
+:javascript
   $(document).ready(function() {
 
     //d3.select('#date-slider').call(d3.slider().axis(true).min(2000).max(2100).step(5));
-
 
     var width = $(document).width() - $('#sidebar').width() - 50;
     height = $(document).height() - 200
@@ -63,93 +97,25 @@
     var sidebar = aSidebar('.bubbletree')
     sidebar.initialize(height);
 
-    var totalSize;
-
-    $('.bubbletree #chart').width(width).height(height)
-
-    var tooltip = d3.select(".bubbletree").append("div")
-        .attr("id", "tooltip")
-        .style("opacity", 0);
-
-    var tooltipTimer
-    d3.json("/widgets/visify/get_bubbletree_data/#{budget_file_id}", function(data) {
-      // Basic setup of page elements.
-
-      new BubbleTree({
-          data: data,
-          container: '.bubbletree #chart',
-
-          sortBy: 'label',
-
-          maxNodesPerLevel: 12,
-
-          bubbleType: ['icon', 'plain'],
-
-          tooltip: function(d) {
-            if (d.type == 'HIDE') {
-              sequence.hideBreadcrumb()
-            } else {
-              var percentageString = sequence.getPercentageString(d.node, totalSize)
-              var sequenceArray = sequence.getAncestors(d.node);
-              sequence.updateBreadcrumbs(sequenceArray, percentageString);
-            }
+    var bblchart = aBubbletree('.bubbletree', sequence, sidebar)
+    bblchart.initialize(width, height);
+    bblchart.show(2014, 0)
 
 
-            //if (tooltipTimer) {
-            //  clearTimeout(tooltipTimer)
-            //}
-            //
-            //if (a.type == 'HIDE') {
-            //  tooltip.transition()
-            //    .duration(200)
-            //    .style("opacity", 0)
-            //  tooltip.style("display", 'none')
-            //} else {
-            //  tooltipTimer = setTimeout(function() {
-            //    tooltip.html(getTooltipHtml(a.node))
-            //     .style("left", a.mousePos.x + "px")
-            //     .style("top", a.mousePos.y + "px")
-            //     .style("display", 'block')
-            //    tooltip.transition()
-            //     .duration(200)
-            //     .style("opacity", .9)
-            //  }, 200)
-            //}
-          },
-          nodeClickCallback: function(node) {
-            sidebar.show(node)
-          }
-      });
-
-      totalSize = data.size;
-    })
-
-    function getPercentageString(d, totalSize) {
-      var percentage = (100 * d.amount / totalSize).toPrecision(2);
-      var percentageString = percentage + "%";
-      if (percentage < 0.1) {
-        percentageString = "< 0.1%";
-      }
-      return percentageString;
-    }
+    d3.select('#date-slider').call(d3.slider()
+      .axis(d3.svg.axis().orient("top"))
+      .min(0).max(13).step(1)
+      .on("slide", function(evt, value) {
+        console.log(bubbleTree)
+        bblchart.show(2014, value)
+      })
+    );
 
 
-    function getTooltipHtml(node) {
-      percParentTitle = ''
-      if (node.parent && node.amount < node.parent.amount) {
-        percentage = (100 * node.amount / node.parent.amount).toPrecision(3)
-        percParentTitle = ' від ' + node.parent.label || ''
-      }
-      else {
-        percentage = '100'
-      }
+    //var tooltip = d3.select(".bubbletree").append("div")
+    //    .attr("id", "tooltip")
+    //    .style("opacity", 0);
+    //
+    //var tooltipTimer
 
-      label = node.label || ''
-      div = "<h3 class='percentage'>" + percentage + "% </h3> <h5> " + node.amount.toLocaleString() + " грн </h5>" +
-        + percParentTitle
-        + "<hr/>"
-        + "<div>" + label + "</div>"
-
-      return div
-    }
   });

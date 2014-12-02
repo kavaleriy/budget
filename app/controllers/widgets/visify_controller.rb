@@ -1,5 +1,6 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_budget_file
+  #before_action :set_taxonomy_file
 
   def get_sunburst_data
     render json: get_sunburst_tree
@@ -37,16 +38,15 @@ class Widgets::VisifyController < Widgets::WidgetsController
   private
 
   def get_bubble_tree
-    get_bubble_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+    get_bubble_tree_item(@budget_file.get_tree(@year, @month)[:tree], { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
   def get_bubble_tree_item(item, info)
-    cut_amount = (@budget_file.meta_data[:max].abs - @budget_file.meta_data[:min].abs) * 0.0005
-
+    #cut_amount = (tree[:max].abs - tree[:min].abs) * 0.0005
     node = {
-        'size' => item[:amount].abs,
-        'amount' => item[:amount].abs,
-        'label' => item[:key],
+        'size' => item['amount'].abs,
+        'amount' => item['amount'].abs,
+        'label' => item['key'],
     }
 
     if info
@@ -56,15 +56,15 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
-    if item[:children].nil? || item[:children].length < 2
+    if item['children'].nil? || item['children'].length < 2
       node['color'] = '#a8bccc'
     elsif node['color'].nil?
       node['color'] = '#265f91'
     end
 
-    unless item[:children].nil?
+    unless item['children'].nil?
       node['children'] = []
-      item[:children].each { |child_node|
+      item['children'].each { |child_node|
         node['children'] << get_bubble_tree_item(child_node, @budget_file.taxonomy.explanation[child_node[:taxonomy]][child_node[:key]]) # if child_node[:amount].abs > cut_amount
       }
     end
@@ -73,7 +73,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_sunburst_tree
-    get_bubble_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green' })
+    get_bubble_tree
   end
 
   #def get_icicle_tree
@@ -98,7 +98,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
   #end
   #
   def set_budget_file
-    @budget_file = BudgetFile.find(params[:file_id])
+    @budget_file = BudgetFile.find(visify_params[:file_id])
+    @year = visify_params[:year]
+    @month = visify_params[:month]
+  end
+
+  def visify_params
+    params.permit(:file_id, :year, :month)
   end
 
 end

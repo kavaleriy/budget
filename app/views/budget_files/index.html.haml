@@ -10,6 +10,8 @@
       %th Код
       %th Назва
       %th Файл
+      %th Місто
+      %th Автор
       %th=t '.actions', :default => t("helpers.actions")
   %tbody
     - @budget_files.each do |budget_file|
@@ -17,8 +19,10 @@
         %td= link_to "#{budget_file.id} (#{budget_file.class})", budget_file
         %td
           = link_to budget_file.title, budget_file
-          = " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
+          -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
         %td= budget_file.path
+        %td= budget_file.taxonomy.owner
+        %td= budget_file.author
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'
           = link_to t('.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'

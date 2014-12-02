@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :widgets do
-    get 'visify/get_sunburst_data/:file_id' => 'visify#get_sunburst_data'
-    get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
+    get 'visify/get_sunburst_data/:file_id/:year/:month' => 'visify#get_sunburst_data'
+    get 'visify/get_bubbletree_data/:file_id/:year/:month' => 'visify#get_bubbletree_data'
     get 'visify/get_icicle_data/:file_id' => 'visify#get_icicle_data'
     get 'visify/sunburst/:file_id' => 'visify#sunburst'
     get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'

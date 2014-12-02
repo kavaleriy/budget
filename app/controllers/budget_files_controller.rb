@@ -23,8 +23,7 @@ class BudgetFilesController < ApplicationController
   def create
     @budget_file = get_budget_file
 
-
-    @budget_file.owner_email = current_user.email unless current_user.nil?
+    @budget_file.author = current_user.email unless current_user.nil?
 
     file = upload_file budget_file_params[:path]
     file_name = file[:name]
@@ -36,7 +35,7 @@ class BudgetFilesController < ApplicationController
 
     table = read_table_from_file file_path
 
-    @budget_file.import file_name, table
+    @budget_file.import current_user.town, table, '2014'
 
     respond_to do |format|
       if @budget_file.save

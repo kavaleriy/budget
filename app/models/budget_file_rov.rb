@@ -2,8 +2,8 @@ class BudgetFileRov < BudgetFile
 
   protected
 
-  def get_taxonomy file_name, columns
-    TaxonomyRov.get_taxonomy(file_name)
+  def get_taxonomy owner, columns
+    TaxonomyRov.get_taxonomy(owner)
   end
 
 end

@@ -2,8 +2,8 @@ class BudgetFileRotFond < BudgetFileRot
 
   protected
 
-  def get_taxonomy file_name, columns
-    TaxonomyRotFond.get_taxonomy(file_name)
+  def get_taxonomy owner, columns
+    TaxonomyRotFond.get_taxonomy(owner)
   end
 
 end

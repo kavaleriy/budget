@@ -8,9 +8,9 @@ class TaxonomyRotFond < TaxonomyRot
       'kkd_ddd'=>{:level => 5, :title=>'Розряд 1-8'}
   }
 
-  def self.get_taxonomy(name)
-    TaxonomyRotFond.where(:name => name, :columns_id => VERSION).last || TaxonomyRotFond.create!(
-        :name => name,
+  def self.get_taxonomy(owner)
+    TaxonomyRotFond.where(:owner => owner, :columns_id => VERSION).last || TaxonomyRotFond.create!(
+        :owner => owner,
         :columns_id => VERSION,
         :columns => COLUMNS
     )

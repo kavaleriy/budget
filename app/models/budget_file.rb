@@ -1,13 +1,13 @@
 class BudgetFile
   include Mongoid::Document
 
-  field :owner_email, type: String
+  field :author, type: String
 
   field :title, type: String
   field :path, type: String
 
   # source data
-  field :rows, :type => Array
+  field :rows, :type => Hash
 
   # list of taxonomies for tree levels
   belongs_to :taxonomy, autosave: true
@@ -18,77 +18,40 @@ class BudgetFile
   field :meta_data, :type => Hash
 
 
-  def import file_name, table
-    self.taxonomy = get_taxonomy file_name, table[:cols]
+  def import town, table, year
+    self.taxonomy = get_taxonomy town, table[:cols]
 
-    self.rows = table[:rows].map { |row|
+    rows = table[:rows].map { |row|
       self.taxonomy.readline(row)
     }.reject { |c| c.nil? }.flatten
 
-    self.rows.each do |row|
-      row.keys.reject{|key| key == 'amount'}.each do |key|
-        self.taxonomy.explain(key, row[key])
+    months = {}
+    rows.each { |row|
+      month = row['_month'] || '0'
+      months[month] = [] if months[month].nil?
+      months[month] << row.reject{|k| k == '_month'}
+    }
+
+    self.rows = { year => months}
+
+    months.keys.each do |month|
+      months[month].each do |row|
+        row.keys.reject{|key| key == 'amount'}.each { |key|
+          self.taxonomy.explain(key, row[key])
+        }
       end
     end
+  end
 
-    self.tree = create_tree
+  def get_tree year, month
+    self.taxonomy.create_tree self.rows, year, month
   end
 
   protected
 
-  def get_taxonomy file_name, columns
-    Taxonomy.get_taxonomy(file_name, columns)
+  def get_taxonomy owner, columns
+    Taxonomy.get_taxonomy(owner, columns)
   end
 
-
-  def create_tree
-    tree = { :amount => 0 }
-
-    min = nil
-    max = 0
-
-    self.rows.each do |row|
-      next unless row['_month'].nil? || row['_month'] == '0'
-
-      node = tree
-      node[:amount] += row['amount']
-      self.taxonomy.columns.keys.each { |taxonomy_key|
-        taxonomy_value = row[taxonomy_key]
-
-        if node[taxonomy_value].nil?
-          node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => row['amount'] }
-        else
-          node[taxonomy_value][:amount] += row['amount']
-        end
-
-        min = node[taxonomy_value][:amount] if min.nil? || node[taxonomy_value][:amount].abs < min
-        max = node[taxonomy_value][:amount] if node[taxonomy_value][:amount].abs > max
-        node = node[taxonomy_value]
-      }
-    end
-
-    self.meta_data = { :min => min, :max => max}
-
-    create_tree_item(tree)
-  end
-
-  def create_tree_item(items, key = 'Всього')
-    node = {
-        'amount' => items[:amount],
-        'key' => key,
-        :taxonomy => items[:taxonomy]
-    }
-
-    children = items.keys.reject{|k| k == :amount || k == :taxonomy }
-
-    unless children.empty?
-      node['children'] = []
-      children.each { |item_key|
-        node['children'] << self.create_tree_item(items[item_key], item_key)
-      }
-    end
-
-    node
-  end
 
 end
