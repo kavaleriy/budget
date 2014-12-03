@@ -31,8 +31,7 @@ class CalendarsController < ApplicationController
   # POST /calendars.json
   def create
     @calendar = Calendar.new(calendar_params)
-    @calendar.owner_email = current_user.email unless current_user.nil?
-
+    @calendar.author = current_user.email unless current_user.nil?
 
     respond_to do |format|
       if @calendar.save

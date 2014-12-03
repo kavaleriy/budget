@@ -1,7 +1,7 @@
 class Calendar
   include Mongoid::Document
 
-  field :owner_email, type: String
+  field :author, type: String
 
   field :title, type: String
   field :description, type: String
