@@ -12,7 +12,7 @@ class Ability
     elsif user.has_role? :editor
       can :manage, :all
     else
-      # can :read, :all
+      can :read, :all
       can :manage, [Calendar, BudgetFile], :author => user.email
       can :manage, Event, :calendar => { :author => user.email }
       #can :manage, :all
