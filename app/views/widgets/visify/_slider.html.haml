@@ -8,7 +8,7 @@
     return {
       initialize: function(bblchart, pYear) {
         year = pYear
-        $(aContainer + ' #year').html(year + ' рік')
+        $(aContainer + ' #year').html(year + ' рік' + '<small> з розбивкою по місяцях</small>')
 
         d3.select(aContainer + " #slider").call(d3.slider()
           .axis(d3.svg.axis().orient("top"))

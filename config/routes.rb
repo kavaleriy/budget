@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'budget_files/upload' => 'budget_files#upload'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
 
+  get 'static/budget_file_help' => 'static#budget_file_help'
+
   get 'budget_file_rots/upload' => 'budget_file_rots#upload'
   get 'budget_file_rovs/upload' => 'budget_file_rovs#upload'
   get 'budget_file_rot_fonds/upload' => 'budget_file_rot_fonds#upload'
