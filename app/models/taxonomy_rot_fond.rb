@@ -18,6 +18,7 @@ class TaxonomyRotFond < TaxonomyRot
 
   def readline row
     kkd = row['kkd'].to_s
+    return if kkd == ''
 
     amount1 = row['Загальний фонд'].to_i
     amount2 = row['Спеціальний фонд'].to_i

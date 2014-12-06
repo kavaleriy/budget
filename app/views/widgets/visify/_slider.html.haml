@@ -15,7 +15,6 @@
           .min(0).max(12).step(1)
           //.scale.linear().domain([3, 12])
           .on("slide", function(evt, value) {
-            bblchart.clear()
             bblchart.show(year, value)
           })
         );

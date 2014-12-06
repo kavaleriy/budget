@@ -38,7 +38,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   private
 
   def get_bubble_tree
-    get_bubble_tree_item(@budget_file.get_tree(@year, @month)[:tree], { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+    tree = @budget_file.get_tree(@year, @month)
+    return if tree.nil?
+
+    get_bubble_tree_item(tree[:tree], { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
   def get_bubble_tree_item(item, info)

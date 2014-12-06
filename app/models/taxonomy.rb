@@ -57,6 +57,7 @@ class Taxonomy
     min = nil
     max = 0
 
+    return nil if rows[year].nil? || rows[year][month].nil?
     rows[year][month].each do |row|
       node = tree
       node[:amount] += row['amount']

@@ -1,6 +1,6 @@
 :css
   .axis text {
-    font: 10px sans-serif;
+    font-size: 10px;
   }
 
   .axis path,
@@ -11,27 +11,15 @@
   }
 
   .bar {
-    fill: steelblue;
-    fill-opacity: .9;
+    fill-opacity: .7;
   }
 
-  .x.axis path {
-    display: none;
-  }
-
-  label {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-
-#sidebar_chart.col-xs-11
+#sidebar_chart
 
 :javascript
-  function aSidebarChart() {
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = width - margin.left - margin.right,
-        height = height - margin.top - margin.bottom;
+  function aSidebarChart(aContainer) {
+    var margin = {top: 20, right: 0, bottom: 30, left: 0},
+        width, height
 
     var x, y, xAxis, yAxis
 
@@ -43,7 +31,7 @@
     }
 
     function sort(data) {
-      var x0 = x.domain(data.sort(true
+      var x0 = y.domain(data.sort(true
               ? function(a, b) { return b.amount - a.amount; }
               : function(a, b) { return d3.ascending(a.label, b.label); })
               .map(function(d) { return d.label; }))
@@ -54,36 +42,35 @@
 
       transition.selectAll(".bar")
           .delay(delay)
-          .attr("x", function(d) { return x0(d.label); });
+          .attr("y", function(d) { return x0(d.label); });
 
-      transition.select(".x.axis")
-          .call(xAxis)
+      transition.select(".y.axis")
+          .call(yAxis)
         .selectAll("g")
           .delay(delay);
     }
 
-
     return {
       initialize: function(pHeight) {
-        width = $('#sidebar_chart').width() - 40
-        height = pHeight - 20
+        width = $(aContainer).width() - margin.left - margin.right - 50,
+        height = pHeight - margin.top - margin.bottom;
 
-        x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+        x = d3.scale.linear()
+          .range([0, width]);
 
-        y = d3.scale.linear()
-            .range([height, 0]);
+        y = d3.scale.ordinal()
+          .rangeRoundBands([0, height], .1);
 
         xAxis = d3.svg.axis()
             .scale(x)
-            .orient("bottom");
+            .orient("bottom")
+            .tickFormat(function(d){
+              return aVisify.helpers.formatNumber(d)
+            })
 
         yAxis = d3.svg.axis()
             .scale(y)
-            .orient("left")
-            .tickFormat(function(d, i){
-                return aVisify.helpers.formatNumber(d)
-            })
+            .orient("right")
 
         svg = d3.select("#sidebar_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -95,44 +82,47 @@
       show: function(data) {
         hide()
 
-        if (data.length < 2)
+        if (data == null || data.length < 2)
           return
 
         $("#sidebar_chart").height(height + margin.top + margin.bottom)
 
-        data.forEach(function(d) {
-          //d.amount = +d.amount;
-        });
+        x.domain([0, d3.max(data, function(d) { return d.amount; })]);
+        y.domain(data.map(function(d) { return d.label; }));
 
-        x.domain(data.map(function(d) { return d.label; }));
-        y.domain([0, d3.max(data, function(d) { return d.amount; })]);
 
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("грн.");
-
-        svg.selectAll(".bar")
-            .data(data)
-          .enter().append("rect")
-            .attr("class", "bar")
-            .style("fill", function(d) { return d.color || 'silver'; })
-            .attr("x", function(d) { return x(d.label); })
-            .attr("width", x.rangeBand())
-            .attr("y", function(d) { return y(d.amount); })
-            .attr("height", function(d) { return height - y(d.amount); });
+        var transition = svg.transition().duration(450),
+            delay = function(d, i) { return i * 10; };
 
         sort(data)
+
+        svg.selectAll(".bar")
+          .data(data)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .style("fill", function(d) { return d.color || 'silver'; })
+          .attr("x", 0)
+          .attr("width", 0 )
+          .attr("y", function(d) { return y(d.label); })
+          .attr("height", y.rangeBand() );
+
+        transition.selectAll(".bar")
+          //.delay(delay)
+          .attr("width", function(d) { return x(d.amount); })
+
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .style("text-anchor", "end")
+          .style("display", "block")
+
       },
     }
   }

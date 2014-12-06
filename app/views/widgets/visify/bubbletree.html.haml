@@ -16,17 +16,22 @@
     bubbleTree = null;
     totalSize = null;
 
+    function clear() {
+      sequence.hideBreadcrumb()
+      sidebar.hide()
+      d3.select(aContainer + ' #chart').selectAll("*").remove()
+    }
+
+
     return {
       initialize: function(width, height) {
           $(aContainer + ' #chart').width(width).height(height)
       },
-      clear: function() {
-        sequence.hideBreadcrumb()
-        sidebar.hide()
-        d3.select(aContainer + ' #chart').selectAll("*").remove()
-      },
+      clear: clear,
       show: function(year, month) {
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear()
+
           if (data == null) return
 
           bubbleTree = new BubbleTree({
@@ -48,8 +53,8 @@
                 sidebar.show(node)
               }
           });
-
           totalSize = data.size;
+
         })
       }
 

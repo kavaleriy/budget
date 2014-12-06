@@ -1,29 +1,59 @@
 #sidebar.col-xs-4
-  #text
-  = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
-  #table
+
+  #title
+  #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
+    .panel.panel-default
+      #heading1.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapse1', 'aria-expanded' => 'true', 'aria-controls' => 'collapse1'}
+            Пояснення
+      #collapse1.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'heading1' }
+        .panel-body
+          #description
+
+    .panel.panel-default
+      #headingCompare.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
+            Порівняння по роках
+      #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
+        .panel-body
+          = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
+
+    .panel.panel-default
+      #headingChart.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
+            Графік CHART
+      #collapseChart.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
+        .panel-body
+          = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
+
+    .panel.panel-default
+      #heading2.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse2', 'aria-expanded' => 'false', 'aria-controls' => 'collapse2'}
+            Графік PIE
+      #collapse2.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading2' }
+        .panel-body
+          = render partial: 'sidebar_pie', :locals => { budget_file_id: budget_file_id }
+
+
+    .panel.panel-default
+      #heading3.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse3', 'aria-expanded' => 'false', 'aria-controls' => 'collapse3'}
+            Таблця
+      #collapse3.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading3' }
+        .panel-body
+          = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
+
 
 :javascript
 
   function aSidebar(aContainer) {
-    var chart
+    var chart, pie, table
     // draw table
-    function renderTable(node) {
-      if (node.children == undefined)
-        return ''
-
-      div = '<table class="table table-hover">'
-      $.each(node.children, function( index, value ) {
-        div += '<tr>'
-          + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
-          + value.label + '</td>'
-          + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
-          + '<td>' + aVisify.helpers.getPercentageString(value, value.parent.amount) + '</td>'
-          + '</tr>'
-      });
-      div += '</table>'
-      return div
-    }
 
     return {
       container: aContainer,
@@ -31,14 +61,27 @@
       initialize: function(height){
         $(aContainer + ' #sidebar').height(height)
 
-        chart = aSidebarChart()
-        chart.initialize(250)
+        compare = aSidebarCompare('#sidebar')
+        compare.initialize(250)
+
+        chart = aSidebarChart('#sidebar')
+        chart.initialize(350)
+
+        pie = aSidebarPie('#sidebar')
+        pie.initialize(350)
+
+        table = aSidebarTable('#sidebar')
+        table.initialize(450)
       },
 
       hide: function(){
-        $(aContainer + ' #sidebar #text').html('')
-        $(aContainer + ' #sidebar #table').html('')
+        $(aContainer + ' #sidebar #title').html('')
+        $(aContainer + ' #sidebar #description').html('')
+
+        compare.hide()
         chart.hide()
+        pie.hide()
+        table.hide()
       },
       show: function(node){
         label = node.label || ''
@@ -52,18 +95,22 @@
           percParentTitle = ''
         }
 
-        div = "<h3>" + label + "</h3>"
+        div = '<h3>' + label
+          + ", <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></span></h3>"
+          + "<h4>план: " + aVisify.helpers.formatNumber(node.amount)
+          + ", факт: " + aVisify.helpers.formatNumber(node.amount * .95) + "</h4>"
 
-        div += "<h3>" + aVisify.helpers.formatNumber(node.amount) + " - <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></spqn></h3>"
+        $(aContainer + ' #title').html(div)
 
         if (node.description) {
-          div += "<hr/>" +  "<div class='description'>" + node.description + "</div>"
+          div_descr = "<div class='description'>" + node.description + "</div>"
+          $(aContainer + ' #description').html(div_descr)
         }
 
-        $(aContainer + ' #sidebar #text').html(div)
-        $(aContainer + ' #sidebar #table').html(renderTable(node))
-
+        compare.show(node.children)
         chart.show(node.children)
+        pie.show(node.children)
+        table.show(node.children)
       }
     }
   }

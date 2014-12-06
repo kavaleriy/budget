@@ -43,7 +43,8 @@
       d3.select("#container").on("mouseleave", mouseleave);
 
       // Get total size of the tree = value of root node from partition.
-      totalSize = path.node().__data__.value;
+      console.log(json)
+      totalSize = json.amount;
     };
 
     function mouseclick(d) {
@@ -69,7 +70,7 @@
 
 
       d3.select(".sunburst-seq #explanation #percentage")
-          .text(sidebar.formatNumber(d.amount));
+          .text(aVisify.helpers.formatNumber(d.amount));
       $('.sunburst-seq #explanation #code').html(d.label)
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
@@ -95,6 +96,13 @@
                 });
     }
 
+    function clear() {
+      sequence.hideBreadcrumb()
+      sidebar.hide()
+      vis.selectAll("*").remove()
+    }
+
+
     return {
       initialize: function(pWidth, pHeight) {
         width = pWidth
@@ -102,7 +110,7 @@
 
         $(aContainer + ' #chart').width(width).height(height)
 
-        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 70 ).css("left", width/2 - 70);
+        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 70 ).css("left", width/2 - 50 );
 
         // Dimensions of sunburst.
         radius = Math.min(width, height) / 2;
@@ -135,12 +143,9 @@
 
 
       },
-      clear: function() {
-        sequence.hideBreadcrumb()
-        sidebar.hide()
-        vis.selectAll("*").remove()
-      },
+      clear: clear,
       show: function(year, month) {
+        clear()
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
