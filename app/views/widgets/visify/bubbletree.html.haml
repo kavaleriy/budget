@@ -13,15 +13,14 @@
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar) {
-    bubbleTree = null;
-    totalSize = null;
+    var bubbleTree = null;
+    var totalSize = null;
 
     function clear() {
       sequence.hideBreadcrumb()
       sidebar.hide()
       d3.select(aContainer + ' #chart').selectAll("*").remove()
     }
-
 
     return {
       initialize: function(width, height) {
@@ -54,7 +53,6 @@
               }
           });
           totalSize = data.size;
-
         })
       }
 

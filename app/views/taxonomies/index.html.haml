@@ -1,0 +1,25 @@
+- model_class = Taxonomy
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-money
+    #{t('.title')}
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Код
+      %th Назва
+      %th Місто
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @taxonomies.each do |taxonomy|
+      %tr
+        %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
+        %td
+          = link_to taxonomy.title, taxonomy
+          -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
+        %td= taxonomy.title
+        %td= taxonomy.owner
+        %td
+          -#= link_to t('.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
+          -#= link_to t('.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'

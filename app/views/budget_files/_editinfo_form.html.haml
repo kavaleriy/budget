@@ -1,5 +1,6 @@
 = bootstrap_form_for @budget_file, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
   = f.text_field :title
+  = f.select :data_type, ['план', 'факт']
 
   %hr
     %ul.nav.nav-tabs{role: 'tablist'}

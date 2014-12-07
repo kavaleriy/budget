@@ -1,5 +1,6 @@
 = bootstrap_form_for @budget_file, :html => { :class => 'form-horizontal' } do |f|
   = f.text_field :title
+  = f.select :data_type, ['план', 'факт']
   = f.file_field :path
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

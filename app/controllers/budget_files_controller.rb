@@ -9,6 +9,7 @@ class BudgetFilesController < ApplicationController
   # GET / revenues.json
   def index
     @budget_files = view_context.get_budget_files
+    @taxonomies = Taxonomy.all
   end
 
   def show
@@ -25,6 +26,8 @@ class BudgetFilesController < ApplicationController
 
     @budget_file.author = current_user.email unless current_user.nil?
 
+    @budget_file.data_type = budget_file_params[:data_type] == '1' ? :plan : :fact
+
     file = upload_file budget_file_params[:path]
     file_name = file[:name]
     file_path = file[:path].to_s
@@ -35,7 +38,7 @@ class BudgetFilesController < ApplicationController
 
     table = read_table_from_file file_path
 
-    @budget_file.import current_user.town, table, '2014'
+    @budget_file.import current_user.town, table
 
     respond_to do |format|
       if @budget_file.save
@@ -102,8 +105,8 @@ class BudgetFilesController < ApplicationController
     BudgetFile.new
   end
 
-  def get_taxonomy file_name, cols
-    Taxonomy.get_taxonomy(file_name, cols)
+  def get_taxonomy owner, cols
+    Taxonomy.get_taxonomy(owner, cols)
   end
 
   def upload_file uploaded_io
@@ -172,7 +175,7 @@ class BudgetFilesController < ApplicationController
   end
 
   def budget_file_params
-    params.require(:budget_file).permit(:title, :path)
+    params.require(:budget_file).permit(:title, :path, :data_type)
   end
 
 end

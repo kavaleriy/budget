@@ -52,8 +52,6 @@
 :javascript
 
   function aSidebar(aContainer) {
-    var chart, pie, table
-    // draw table
 
     return {
       container: aContainer,
@@ -107,7 +105,7 @@
           $(aContainer + ' #description').html(div_descr)
         }
 
-        compare.show(node.children)
+        compare.show(node.history)
         chart.show(node.children)
         pie.show(node.children)
         table.show(node.children)

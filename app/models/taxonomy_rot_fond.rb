@@ -1,4 +1,4 @@
-class TaxonomyRotFond < TaxonomyRot
+class TaxonomyRotFond < Taxonomy
   VERSION = 1
   COLUMNS = {
       'fond'=>{:level => 1, :title=>'Фонд'},

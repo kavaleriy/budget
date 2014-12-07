@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   get 'budget_file_rovs/upload' => 'budget_file_rovs#upload'
   get 'budget_file_rot_fonds/upload' => 'budget_file_rot_fonds#upload'
   get 'budget_file_rov_fonds/upload' => 'budget_file_rov_fonds#upload'
+  resources :taxonomies
+  resources :taxonomy_rots
+  resources :taxonomy_rot_fonds
   resources :budget_files
   resources :budget_file_rots
   resources :budget_file_rovs

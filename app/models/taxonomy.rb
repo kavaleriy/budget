@@ -1,11 +1,15 @@
 class Taxonomy
   include Mongoid::Document
 
+  field :title, type: String
   field :owner, type: String
+
   field :columns_id, type: String
   field :columns, type: Hash
 
   field :explanation, :type => Hash
+
+  before_save :generate_title
 
   # embedded_in :budget_file
   has_many :budget_files, autosave: true
@@ -51,32 +55,50 @@ class Taxonomy
   end
 
 
-  def create_tree rows, year, month
-    tree = { :amount => 0 }
-
-    min = nil
-    max = 0
-
-    return nil if rows[year].nil? || rows[year][month].nil?
-    rows[year][month].each do |row|
-      node = tree
-      node[:amount] += row['amount']
-      self.columns.keys.each { |taxonomy_key|
-        taxonomy_value = row[taxonomy_key]
-
-        if node[taxonomy_value].nil?
-          node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => row['amount'] }
-        else
-          node[taxonomy_value][:amount] += row['amount']
-        end
-
-        min = node[taxonomy_value][:amount] if min.nil? || node[taxonomy_value][:amount].abs < min
-        max = node[taxonomy_value][:amount] if node[taxonomy_value][:amount].abs > max
-        node = node[taxonomy_value]
+  def get_tree
+    rows = {}
+    self.budget_files.each{ |file|
+      file.rows.keys.each {|year|
+        rows[year] = file.rows[year]
       }
+    }
+
+    create_tree rows
+  end
+
+  def create_tree rows
+    tree = { :amount => {} }
+
+    # return nil if rows[year].nil? || rows[year][month].nil?
+
+    rows.keys.each do |year|
+      rows[year].keys.each do |month|
+        rows[year][month].each do |row|
+          node = tree
+          node[:amount] = {} if node[:amount].nil?
+          node[:amount][year] = {}  if node[:amount][year].nil?
+          node[:amount][year][month] = 0  if node[:amount][year][month].nil?
+          node[:amount][year][month] += row['amount']
+
+          self.columns.keys.each { |taxonomy_key|
+            taxonomy_value = row[taxonomy_key]
+
+            if node[taxonomy_value].nil?
+              node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
+            else
+              node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
+              node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
+              node[taxonomy_value][:amount][year][month] += row['amount']
+            end
+
+            node = node[taxonomy_value]
+          }
+
+        end
+      end
     end
 
-    { :tree => create_tree_item(tree), :min => min, :max => max}
+    { :tree => create_tree_item(tree) }
   end
 
 
@@ -125,6 +147,10 @@ class Taxonomy
 
 
   private
+
+  def generate_title
+    self.title = self.class if self.title.nil?
+  end
 
   def load_from_csv file_name
     items = {}

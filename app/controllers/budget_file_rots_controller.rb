@@ -8,7 +8,7 @@ class BudgetFileRotsController < BudgetFilesController
   private
 
   def budget_file_params
-    params.require(:budget_file_rot).permit(:title, :path)
+    params.require(:budget_file_rot).permit(:title, :path, :data_type)
   end
 
 end

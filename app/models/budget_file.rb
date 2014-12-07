@@ -6,6 +6,8 @@ class BudgetFile
   field :title, type: String
   field :path, type: String
 
+  field :data_type, type: Symbol # e.g :plan or :fact
+
   # source data
   field :rows, :type => Hash
 
@@ -18,33 +20,39 @@ class BudgetFile
   field :meta_data, :type => Hash
 
 
-  def import town, table, year
+  def import town, table
     self.taxonomy = get_taxonomy town, table[:cols]
 
     rows = table[:rows].map { |row|
       self.taxonomy.readline(row)
     }.reject { |c| c.nil? }.flatten
 
-    months = {}
+    years = {}
     rows.each { |row|
+      year =  row['_year'] || Date.current.year.to_s
       month = row['_month'] || '0'
-      months[month] = [] if months[month].nil?
-      months[month] << row.reject{|k| k == '_month'}
+
+      years[year] = {} if years[year].nil?
+
+      years[year][month] = [] if years[year][month].nil?
+      years[year][month] << row.reject{|k| k.start_with?('_')}
     }
 
-    self.rows = { year => months}
+    self.rows = years
 
-    months.keys.each do |month|
-      months[month].each do |row|
-        row.keys.reject{|key| key == 'amount'}.each { |key|
-          self.taxonomy.explain(key, row[key])
-        }
+    years.keys.each do |year|
+      years[year].keys.each do |month|
+        years[year][month].each do |row|
+          row.keys.reject{|key| key == 'amount'}.each { |key|
+            self.taxonomy.explain(key, row[key])
+          }
+        end
       end
     end
   end
 
-  def get_tree year, month
-    self.taxonomy.create_tree self.rows, year, month
+  def get_tree
+    self.taxonomy.create_tree self.rows
   end
 
   protected

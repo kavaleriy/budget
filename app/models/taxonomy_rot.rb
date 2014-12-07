@@ -1,7 +1,7 @@
 class TaxonomyRot < Taxonomy
   VERSION = 1
   COLUMNS = {
-      '_box' =>{:level => 1, :title=>'Кошик'},
+      'box' =>{:level => 1, :title=>'Кошик'},
       #'_fond'=>{:title=>'Фонд'},
       'kkd_a'=>{:level => 2, :title=>'Розряд 1'},
       'kkd_bb'=>{:level => 3, :title=>'Розряд 1-3'},
@@ -23,7 +23,7 @@ class TaxonomyRot < Taxonomy
 
     kkd = row['KKD'].to_s
 
-    line = {'amount' => amount / 100, '_month' => row['MONTH'].to_s, '_box' => get_box(kkd)}
+    line = {'amount' => amount / 100, '_year' => row['DATA'].to_date.year.to_s, '_month' => row['MONTH'].to_s, 'box' => get_box(kkd)}
     [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd_ddd', key: kkd.slice(0, 8)}].map { |v|
       line[v[:t]] = v[:key]
     }

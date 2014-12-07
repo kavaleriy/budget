@@ -25,6 +25,8 @@
 
     var svg
 
+    function delay(d, i) { return i * 10; }
+
     function hide() {
       $("#sidebar_chart").height(0)
       svg.selectAll("*").remove()
@@ -90,10 +92,6 @@
         x.domain([0, d3.max(data, function(d) { return d.amount; })]);
         y.domain(data.map(function(d) { return d.label; }));
 
-
-        var transition = svg.transition().duration(450),
-            delay = function(d, i) { return i * 10; };
-
         sort(data)
 
         svg.selectAll(".bar")
@@ -106,8 +104,8 @@
           .attr("y", function(d) { return y(d.label); })
           .attr("height", y.rangeBand() );
 
-        transition.selectAll(".bar")
-          //.delay(delay)
+        svg.transition().duration(250).selectAll(".bar")
+          .delay(delay)
           .attr("width", function(d) { return x(d.amount); })
 
         svg.append("g")

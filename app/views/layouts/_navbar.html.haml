@@ -16,9 +16,9 @@
             = t('visify.budget')
             %span.caret
           %ul.dropdown-menu{'role' => "menu"}
-            - get_budget_files.each do |budget_file|
+            - Taxonomy.each do |taxonomy|
               -#%li= link_to "#{budget_file.title}", polymorphic_path(budget_file)
-              %li= link_to "#{budget_file.title}", budget_file_path(budget_file)
+              %li= link_to "#{taxonomy.title}, #{taxonomy.owner}", taxonomy_path(taxonomy)
             %li.divider
             %li= link_to t('.budget_files'), budget_files_path
 

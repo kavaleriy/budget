@@ -38,7 +38,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   private
 
   def get_bubble_tree
-    tree = @budget_file.get_tree(@year, @month)
+    tree = @budget_file.get_tree
     return if tree.nil?
 
     get_bubble_tree_item(tree[:tree], { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
@@ -46,9 +46,14 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   def get_bubble_tree_item(item, info)
     #cut_amount = (tree[:max].abs - tree[:min].abs) * 0.0005
+    amount = (item['amount'][@year][@month] rescue 0)
+
+    return {} if amount == 0
+
     node = {
-        'size' => item['amount'].abs,
-        'amount' => item['amount'].abs,
+        'size' => amount,
+        'amount' => amount,
+        'history' => item['amount'],
         'label' => item['key'],
     }
 
@@ -68,8 +73,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     unless item['children'].nil?
       node['children'] = []
       item['children'].each { |child_node|
-        # binding.pry
-        node['children'] << get_bubble_tree_item(child_node, @budget_file.taxonomy.explanation[child_node['taxonomy']][child_node['key']]) # if child_node[:amount].abs > cut_amount
+        explanation = if child_node['key'].nil?
+          {}
+        else
+          @taxonomy.explanation[child_node['taxonomy']][child_node['key']]
+        end
+        node['children'] << get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
       }
     end
 
@@ -102,7 +111,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   #end
   #
   def set_budget_file
-    @budget_file = BudgetFile.find(visify_params[:file_id])
+    @budget_file = BudgetFile.where(:id => visify_params[:file_id]).first
+    @taxonomy = Taxonomy.where(:id => visify_params[:file_id]).first || @budget_file.taxonomy
+    @budget_file = @taxonomy if @budget_file.nil?
+
     @year = visify_params[:year]
     @month = visify_params[:month]
   end
