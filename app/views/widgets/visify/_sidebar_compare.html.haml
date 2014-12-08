@@ -13,6 +13,7 @@
   .bar {
     fill: steelblue;
     fill-opacity: .9;
+    cursor: pointer;
   }
 
   .x.axis path {
@@ -37,6 +38,8 @@
     var svg
 
     var color
+
+    var data
 
     function delay(d, i) { return i * 5; }
 
@@ -81,6 +84,57 @@
     }
 
 
+    function mouseclick(d) {
+      svg.selectAll("*").remove()
+
+      if (d.months) {
+        show(d.months)
+      } else {
+        show(data)
+      }
+    }
+
+    function show(data) {
+      sort(data)
+      //data = data[0].months
+
+      $("#sidebar_compare").height(height + margin.top + margin.bottom)
+
+      x.domain(data.map(function(d) { return d.label; }));
+      y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("грн.");
+
+      svg.selectAll(".bar")
+          .data(data)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .style("fill", function(d) { return d.color || color(d.label); })
+          .attr("x", function(d) { return x(d.label); })
+          .attr("width", x.rangeBand())
+          .attr("y", height)
+          .attr("height", 0)
+        .on("click", mouseclick)
+
+      svg.transition().duration(250).selectAll(".bar")
+        .attr("height", function(d) { return height - y(d.amount); })
+          .attr("y", function(d) { return y(d.amount); })
+
+    }
+
     return {
       initialize: function(pHeight) {
         width = $(aContainer).width() - margin.left - margin.right,
@@ -114,50 +168,14 @@
       },
       hide: hide,
       show: function(_data) {
-        data = get_history_data(_data)
-
         hide()
+
+        data = get_history_data(_data)
 
         if (data == null || data.length == 0)
           return
 
-        sort(data)
-        data = data[0].months
-
-        $("#sidebar_compare").height(height + margin.top + margin.bottom)
-
-        x.domain(data.map(function(d) { return d.label; }));
-        y.domain([0, d3.max(data, function(d) { return d.amount; })]);
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("грн.");
-
-        svg.selectAll(".bar")
-            .data(data)
-          .enter().append("rect")
-            .attr("class", "bar")
-            .style("fill", function(d) { return d.color || color(d.label); })
-            .attr("x", function(d) { return x(d.label); })
-            .attr("width", x.rangeBand())
-            .attr("y", height)
-            .attr("height", 0);
-
-        svg.transition().duration(250).selectAll(".bar")
-          .attr("height", function(d) { return height - y(d.amount); })
-            .attr("y", function(d) { return y(d.amount); })
-
+        show(data)
       },
     }
   }
