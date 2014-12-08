@@ -1,21 +1,34 @@
-%h3#year
+%h3
+  = select_tag 'year', options_for_select(@range.map{|k,v| k}, @sel_year)
+  рік
+  %small
+    з розбивкою по місяцях
+
 #slider{:style => 'margin-top: 50px;'}
 
 :javascript
-  function aSlider(aContainer) {
+  function aSlider(aContainer, bblchart) {
     year = null
 
+    function update_chart(year, month) {
+      bblchart.show(year, month)
+    }
+
     return {
-      initialize: function(bblchart, pYear) {
+      initialize: function(pYear, maxMonth) {
         year = pYear
-        $(aContainer + ' #year').html(year + ' рік' + '<small> з розбивкою по місяцях</small>')
+
+        $( "#year" ).change(
+          function(e, v) {
+            update_chart(e.currentTarget.value, 0)
+        })
 
         d3.select(aContainer + " #slider").call(d3.slider()
           .axis(d3.svg.axis().orient("top"))
           .min(0).max(12).step(1)
           //.scale.linear().domain([3, 12])
           .on("slide", function(evt, value) {
-            bblchart.show(year, value)
+            update_chart($( "#year" ).val(), value)
           })
         );
       },

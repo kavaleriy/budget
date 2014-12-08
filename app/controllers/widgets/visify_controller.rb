@@ -41,12 +41,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
     tree = @budget_file.get_tree
     return if tree.nil?
 
-    get_bubble_tree_item(tree[:tree], { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+
+    get_bubble_tree_item(tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
   def get_bubble_tree_item(item, info)
     #cut_amount = (tree[:max].abs - tree[:min].abs) * 0.0005
-    amount = (item['amount'][@year][@month] rescue 0)
+    amount = (item['amount'][@sel_year][@sel_month] rescue 0)
 
     return {} if amount == 0
 
@@ -115,8 +116,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @taxonomy = Taxonomy.where(:id => visify_params[:file_id]).first || @budget_file.taxonomy
     @budget_file = @taxonomy if @budget_file.nil?
 
-    @year = visify_params[:year]
-    @month = visify_params[:month]
+    range = {}
+    @budget_file.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
+    @range = range.sort_by{|k,v| k.to_i}
+
+    @sel_year = visify_params[:year] || @range.last[0]
+    @sel_month = visify_params[:month] || @range.last[1].first
   end
 
   def visify_params

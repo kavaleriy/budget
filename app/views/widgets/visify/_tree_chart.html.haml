@@ -45,8 +45,8 @@
 
     var chart = aTreeChart('.visify', sequence, sidebar)
     chart.initialize(width, height - 250);
-    chart.show(2014, 0)
+    chart.show("#{@sel_year}", "#{@sel_month}")
 
-    var slider = aSlider('.visify')
-    slider.initialize(chart, 2014)
+    var slider = aSlider('.visify', chart)
+    slider.initialize()
   });

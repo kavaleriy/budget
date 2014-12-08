@@ -66,6 +66,10 @@ class Taxonomy
     create_tree rows
   end
 
+  def get_range
+    self.budget_files.map { |file| file.get_range }.flatten
+  end
+
   def create_tree rows
     tree = { :amount => {} }
 
@@ -98,7 +102,7 @@ class Taxonomy
       end
     end
 
-    { :tree => create_tree_item(tree) }
+    create_tree_item(tree)
   end
 
 

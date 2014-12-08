@@ -55,6 +55,21 @@ class BudgetFile
     self.taxonomy.create_tree self.rows
   end
 
+  def get_range
+    range = {}
+
+    self.rows.keys.each {|year|
+      self.rows[year].keys.each { |month|
+        range[year] = {} if range[year].nil?
+        self.rows[year][month].each { |row|
+          range[year][month] = month if range[year][month].nil?
+        }
+      }
+    }
+
+    range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
+  end
+
   protected
 
   def get_taxonomy owner, columns
