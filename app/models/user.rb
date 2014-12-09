@@ -26,7 +26,6 @@ class User
   field :last_sign_in_ip
   field :remember_created_at
 
-
   field :town
 
 

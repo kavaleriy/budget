@@ -1,4 +1,12 @@
 module ApplicationHelper
+  def get_taxonomies
+    if current_user and current_user.has_role? :admin
+      Taxonomy.all
+    else
+      Taxonomy.where(:owner => current_user.town)
+    end.reject {|t| t.budget_files.empty?}
+  end
+
   def get_budget_files
     files = if current_user.nil?
       BudgetFile.where(:author => nil)
