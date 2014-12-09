@@ -74,7 +74,7 @@
             .attr("y", b.h / 2)
             .attr("dy", "0.35em")
             .attr("text-anchor", "middle")
-            .text(function(d) { return (d.name || d.label); });
+            .html(function(d) { return (d.name || d.label); });
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {

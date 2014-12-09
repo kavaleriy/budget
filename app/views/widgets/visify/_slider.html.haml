@@ -4,33 +4,38 @@
   %small
     з розбивкою по місяцях
 
-#slider{:style => 'margin-top: 50px;'}
+.month.col-xs-12
+  %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
+    - %w(рік січ лют бер квіт трав черв лип серп вер жовт лист груд).each_with_index do |month, i|
+      %li{'class' => get_month_class(i.to_s, @sel_month)}
+        %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
+          =month
+
+
 
 :javascript
-  function aSlider(aContainer, bblchart) {
-    year = null
 
-    function update_chart(year, month) {
+  function aSlider(aContainer, bblchart) {
+    var year = "#{@sel_year}"
+    var month = "#{@sel_month}"
+
+    function update_chart() {
       bblchart.show(year, month)
     }
 
     return {
-      initialize: function(pYear, maxMonth) {
-        year = pYear
+      initialize: function() {
+        $("a[data-month-num]").click(function(e){
+          e.preventDefault()
+          month = $(this).data("month-num")
+          update_chart()
+        })
 
         $( "#year" ).change(
           function(e, v) {
-            update_chart(e.currentTarget.value, 0)
+            year = e.currentTarget.value
+            update_chart()
         })
-
-        d3.select(aContainer + " #slider").call(d3.slider()
-          .axis(d3.svg.axis().orient("top"))
-          .min(0).max(12).step(1)
-          //.scale.linear().domain([3, 12])
-          .on("slide", function(evt, value) {
-            update_chart($( "#year" ).val(), value)
-          })
-        );
       },
     }
   };

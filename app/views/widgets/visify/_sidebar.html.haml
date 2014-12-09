@@ -100,10 +100,11 @@
 
         $(aContainer + ' #title').html(div)
 
+        div_descr = ''
         if (node.description) {
           div_descr = "<div class='description'>" + node.description + "</div>"
-          $(aContainer + ' #description').html(div_descr)
         }
+        $(aContainer + ' #description').html(div_descr)
 
         if (node.history) {
           compare.show(node.history)

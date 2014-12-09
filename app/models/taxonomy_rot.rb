@@ -23,7 +23,12 @@ class TaxonomyRot < Taxonomy
 
     kkd = row['KKD'].to_s
 
-    line = {'amount' => amount / 100, '_year' => row['DATA'].to_date.year.to_s, '_month' => row['MONTH'].to_s, 'box' => get_box(kkd)}
+    line = {
+        '_year' => row['DATA'].to_date.year.to_s,
+        '_month' => row['MONTH'].to_s,
+        'amount' => amount / 100,
+        'box' => get_box(kkd),
+    }
     [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd_ddd', key: kkd.slice(0, 8)}].map { |v|
       line[v[:t]] = v[:key]
     }
