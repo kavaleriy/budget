@@ -41,7 +41,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
     tree = @budget_file.get_tree
     return if tree.nil?
 
-
     get_bubble_tree_item(tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
@@ -112,6 +111,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   #end
   #
   def set_budget_file
+    @sel_year = '0'
+    @sel_month = '0'
+    @range = {}
+
     @budget_file = BudgetFile.where(:id => visify_params[:file_id]).first
     @taxonomy = Taxonomy.where(:id => visify_params[:file_id]).first || @budget_file.taxonomy
     @budget_file = @taxonomy if @budget_file.nil?
@@ -122,6 +125,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     @sel_year = visify_params[:year] || @range.last[0]
     @sel_month = visify_params[:month] || @range.last[1].first
+  rescue => e
+    logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   end
 
   def visify_params

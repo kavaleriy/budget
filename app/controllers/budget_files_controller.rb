@@ -49,6 +49,11 @@ class BudgetFilesController < ApplicationController
         format.json { render json: @budget_file.errors, status: :unprocessable_entity }
       end
     end
+  rescue => e
+    respond_to do |format|
+      format.html { redirect_to budget_files_url, alert: "Не вдалося завантажити файл. Перевірте чи тип файлу відповідає змісту даних => #{e}" }
+      format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+    end
   end
 
   # PATCH/PUT /revenues/1

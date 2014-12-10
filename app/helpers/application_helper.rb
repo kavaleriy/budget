@@ -1,10 +1,10 @@
 module ApplicationHelper
   def get_taxonomies
-    if current_user and current_user.has_role? :admin
-      Taxonomy.all
-    else
-      Taxonomy.where(:owner => current_user.town)
-    end.reject {|t| t.budget_files.empty?}
+    #if current_user and current_user.has_role? :admin
+    Taxonomy.all.reject {|t| t.budget_files.empty?}
+    #else
+    #  Taxonomy.where(:owner => current_user.town)
+    #end
   end
 
   def get_budget_files
