@@ -1355,7 +1355,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		
 		var showIcon = false; //this.bubbleRad * this.bc.bubbleScale > 30;
 
-        console.log(me.node)
 		if (!me.node.shortLabel) me.node.shortLabel = me.node.label.length > me.bc.config.cutLabelsAt+3 ? me.node.label.substr(0, me.bc.config.cutLabelsAt)+'...' : me.node.label;
 		
 		me.initialized = true;

@@ -48,7 +48,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     #cut_amount = (tree[:max].abs - tree[:min].abs) * 0.0005
     amount = (item['amount'][@sel_year][@sel_month] rescue 0)
 
-    return {} if amount == 0
+    return nil if amount == 0
 
     node = {
         'size' => amount,
@@ -78,7 +78,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
         else
           @taxonomy.explanation[child_node['taxonomy']][child_node['key']]
         end
-        node['children'] << get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
+        ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
+        node['children'] << ti unless ti.nil?
       }
     end
 
