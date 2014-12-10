@@ -1,7 +1,7 @@
 module ApplicationHelper
   def get_taxonomies
     #if current_user and current_user.has_role? :admin
-    Taxonomy.all.reject {|t| t.budget_files.empty?}.sort_by { |t| t.owner }
+    Taxonomy.all.reject {|t| t.budget_files.empty?}.sort_by { |t| t.owner || '' }
     #else
     #  Taxonomy.where(:owner => current_user.town)
     #end
