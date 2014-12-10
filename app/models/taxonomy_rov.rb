@@ -21,8 +21,8 @@ class TaxonomyRov < Taxonomy
     return if amount.nil? || amount == 0
 
     {
-        '_year' => row['DATA'].to_date.year.to_s,
-        '_month' => row['MONTH'].to_s,
+        '_year' => row['DATA'],
+        '_month' => row['MONTH'].to_s.split('.')[0],
         'amount' => amount / 100,
         'kvk' => row['KVK'].to_s,
         'kekv' => row['KEKV'].to_s,

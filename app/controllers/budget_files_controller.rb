@@ -5,6 +5,8 @@ class BudgetFilesController < ApplicationController
   before_action :authenticate_user!, only: [:index, :upload, :edit, :editinfo]
   load_and_authorize_resource
 
+  before_action :update_user_town, only: [:create]
+
   # GET /revenues
   # GET / revenues.json
   def index
@@ -181,6 +183,11 @@ class BudgetFilesController < ApplicationController
 
   def budget_file_params
     params.require(:budget_file).permit(:title, :path, :data_type)
+  end
+
+  def update_user_town
+    current_user.town = params[:town]
+    current_user.save
   end
 
 end

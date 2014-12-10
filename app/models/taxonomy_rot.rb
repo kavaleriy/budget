@@ -24,8 +24,8 @@ class TaxonomyRot < Taxonomy
     kkd = row['KKD'].to_s
 
     line = {
-        '_year' => row['DATA'].to_date.year.to_s,
-        '_month' => row['MONTH'].to_s,
+        '_year' => row['DATA'],
+        '_month' => row['MONTH'].to_s.split('.')[0],
         'amount' => amount / 100,
         'box' => get_box(kkd),
     }

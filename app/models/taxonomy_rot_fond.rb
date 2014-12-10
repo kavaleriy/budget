@@ -32,9 +32,10 @@ class TaxonomyRotFond < Taxonomy
 
       item = {
           'amount' => amount,
-          '_year' => line['_year'].to_date.year.to_s,
-          '_month' => line['_month'].to_s,
-          'fond' => fond }
+          '_year' => line['_year'],
+          '_month' => line['_month'].to_s.split('.')[0],
+          'fond' => fond
+      }
 
       [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd_ddd', key: kkd.slice(0, 8)}].map { |v|
         item[v[:t]] = v[:key]

@@ -11,8 +11,7 @@ class Taxonomy
 
   before_save :generate_title
 
-  # embedded_in :budget_file
-  has_many :budget_files, autosave: true
+  has_many :budget_files, autosave: true, :dependent => :destroy
 
   def self.get_taxonomy(owner, columns)
     cols = {}
@@ -147,8 +146,6 @@ class Taxonomy
     @kvk_info = load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
     @kvk_info
   end
-
-
 
   private
 

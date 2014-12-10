@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   resources :taxonomies
   resources :taxonomy_rots
   resources :taxonomy_rot_fonds
+  resources :taxonomy_rovs
+  resources :taxonomy_rov_fonds
+
   resources :budget_files
   resources :budget_file_rots
   resources :budget_file_rovs
