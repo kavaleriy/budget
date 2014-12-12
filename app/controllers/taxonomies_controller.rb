@@ -6,10 +6,22 @@ class TaxonomiesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @taxonomies = Taxonomy.all
+    @taxonomies = view_context.get_taxonomies
   end
 
   def show
+  end
+
+  def update
+    respond_to do |format|
+      if @taxonomy.update(taxonomy_params)
+        format.html { redirect_to @taxonomy, notice: 'Дані збережені успішно.' }
+        format.json { render :show, status: :ok, location: @taxonomy}
+      else
+        format.html { render :edit }
+        format.json { render json: @taxonomy.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
@@ -28,7 +40,6 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    binding.pry
     params.require(:taxonomy).permit(:title)
   end
 

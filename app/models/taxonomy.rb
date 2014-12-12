@@ -22,7 +22,7 @@ class Taxonomy
     Taxonomy.where(:owner => owner, :columns_id => columns.join('_')).last || Taxonomy.create(
         :owner => owner,
         :columns_id => columns.join('_'),
-        :columns => cols
+        :columns => cols,
     )
   end
 
@@ -150,6 +150,7 @@ class Taxonomy
   private
 
   def generate_title
+    binding.pry
     self.title = self.class if self.title.nil?
   end
 
@@ -160,7 +161,5 @@ class Taxonomy
     end
     items
   end
-
-
 
 end
