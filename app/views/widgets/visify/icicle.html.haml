@@ -1,1 +1,136 @@
-= render partial: 'icicle', :locals => { budget_file_id: @budget_file.id }
+-# http://bl.ocks.org/mbostock/1005873
+-#http://bl.ocks.org/mbostock/4347473
+-#http://bl.ocks.org/mbostock/1005873
+
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+:css
+  .node {
+    fill: #ddd;
+    stroke: #fff;
+    width: 5px;
+  }
+
+.icicle
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar) {
+    var width, height
+    var color
+
+    var vis, partition;
+
+    var x, y;
+
+    var totalSize
+
+    var lastClicked;
+
+
+    // Main function to draw and set up the visualization, once we have the data.
+    function createVisualization(root) {
+      var g = vis.selectAll("g")
+          .data(partition.nodes(root))
+        .enter().append("svg:g")
+          .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
+          .on("click", function(d) {
+            if (lastClicked == d) {
+              var _d = d
+              dblclick(_d)
+            } else {
+              lastClicked = d
+              mouseclick(d)
+            }
+          })
+          .on("dblclick", function(d) {
+          })
+
+      totalSize = root.size;
+
+      var kx = width / root.dx,
+          ky = height / 1;
+
+      g.append("svg:rect")
+          .attr("width", root.dy * kx)
+          .attr("height", function(d) { return d.dx * ky; })
+          .attr("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
+
+      g.append("svg:text")
+          .attr("transform", transform)
+          .attr("dy", ".35em")
+          .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
+          .text(function(d) { return d.label; })
+
+      function transform(d) {
+        return "translate(8," + d.dx * ky / 2 + ")";
+      }
+
+      function dblclick(d) {
+        if (!d.children) return;
+
+        kx = (d.y ? width - 40 : width) / (1 - d.y);
+        ky = height / d.dx;
+        x.domain([d.y, 1]).range([d.y ? 40 : 0, width]);
+        y.domain([d.x, d.x + d.dx]);
+
+        var t = g.transition()
+            .duration(d3.event.altKey ? 7500 : 750)
+            .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+
+        t.select("rect")
+            .attr("width", d.dy * kx)
+            .attr("height", function(d) { return d.dx * ky; });
+
+        t.select("text")
+            .attr("transform", transform)
+            .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
+
+        d3.event.stopPropagation();
+      }
+    };
+
+    function mouseclick(d) {
+      sidebar.show(d)
+    }
+
+    function clear() {
+      sidebar.hide()
+      //vis.selectAll("*").remove()
+    }
+
+    return {
+      initialize: function(pWidth, pHeight) {
+        width = pWidth
+        height = pHeight
+
+        $(aContainer + ' #chart').width(width).height(height)
+
+        color = d3.scale.category20c()
+
+        totalSize = 0;
+
+        x = d3.scale.linear().range([0, width]),
+        y = d3.scale.linear().range([0, height]),
+
+        vis = d3.select(aContainer + ' #chart')
+          .append("svg:svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        partition = d3.layout.partition()
+            .value(function(d) { return d.size; });
+
+
+      },
+      clear: clear,
+      show: function(year, month) {
+        clear()
+        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
+        // row, and can receive the csv as an array of arrays.
+        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          createVisualization(data);
+        });
+      }
+    }
+  }

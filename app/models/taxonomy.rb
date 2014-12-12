@@ -150,7 +150,6 @@ class Taxonomy
   private
 
   def generate_title
-    binding.pry
     self.title = self.class if self.title.nil?
   end
 

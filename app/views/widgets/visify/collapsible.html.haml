@@ -1,1 +1,170 @@
-= render partial: 'collapsible', :locals => { budget_file_id: @budget_file.id }
+-# http://redotheweb.com/CodeFlower/
+
+= javascript_include_tag "d3.geom.js"
+
+.collapsible
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar) {
+    var width, height
+    var color
+
+    var vis, force
+
+    var root, nodes, links;
+
+    var totalSize
+
+
+    // Main function to draw and set up the visualization, once we have the data.
+    function createVisualization(json) {
+      root = json;
+      root.fixed = true;
+      root.x = width / 2;
+      root.y = height / 2 - 80;
+
+      totalSize = root.size;
+
+      update()
+
+      function update() {
+        nodes = flatten( root )
+        links = d3.layout.tree().links(nodes);
+
+        // Restart the force layout.
+        force
+            .nodes(nodes)
+            .links(links)
+            .start();
+
+        // Update the links…
+        link = vis.selectAll("line.link")
+            .data(links, function(d) { return d.target.id; });
+
+        // Enter any new links.
+        link.enter().insert("svg:line", ".node")
+            .attr("class", "link")
+            .attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
+
+        // Exit any old links.
+        link.exit().remove();
+
+        // Update the nodes…
+        node = vis.selectAll("circle.node")
+            .data(nodes, function(d) { return d.id; })
+            .style("fill", color);
+
+        node.transition()
+            .attr("r", function(d) { size = Math.sqrt(d.size) / 1500; return size < 5 ? 5 : size; });
+
+        // Enter any new nodes.
+        node.enter().append("svg:circle")
+            .attr("class", "node")
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; })
+            .attr("r", function(d) { size = Math.sqrt(d.size) / 1500; return size < 5 ? 5 : size; })
+            .style("fill", color)
+            .on("click", mouseclick)
+            .on("dblclick", dblclick)
+
+
+            .call(force.drag);
+
+        // Exit any old nodes.
+        node.exit().remove();
+
+        // Color leaf nodes orange, and packages white or blue.
+        function color(d) {
+          return d.color
+          //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
+        }
+
+        function mouseclick(d) {
+          sidebar.show(d)
+        }
+
+        function dblclick(d) {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update();
+        }
+
+        // Returns a list of all nodes under the root.
+        function flatten(root) {
+          var nodes = [], i = 0;
+
+          function recurse(node) {
+            if (node.children) {
+              $.each(node.children, function( index, value ) {
+                value.parent = node
+              })
+
+              node.size = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
+            }
+            if (!node.id) node.id = ++i;
+            nodes.push(node);
+            return node.size;
+          }
+
+          root.size = recurse(root);
+          return nodes;
+        }
+      }
+    }
+
+    function tick() {
+      link.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      node.attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; });
+    }
+
+
+    function clear() {
+      sidebar.hide()
+      vis.selectAll("*").remove()
+    }
+
+
+    return {
+      initialize: function(pWidth, pHeight) {
+        width = pWidth
+        height = pHeight
+
+        color = d3.scale.category20c()
+
+        totalSize = 0;
+
+        force = d3.layout.force()
+            .on("tick", tick)
+            .charge(function(d) { return -90; })
+            .linkDistance(function(d) { return d.target._children ? 80 : 20; })
+            .size([width, height - 100]);
+
+        vis = d3.select(".collapsible #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height);
+   },
+      clear: clear,
+      show: function(year, month) {
+        clear()
+        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
+        // row, and can receive the csv as an array of arrays.
+        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          createVisualization(data);
+        });
+      }
+    }
+  }

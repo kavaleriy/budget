@@ -78,8 +78,30 @@ class Widgets::VisifyController < Widgets::WidgetsController
         else
           @taxonomy.explanation[child_node['taxonomy']][child_node['key']]
         end
+
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
-        node['children'] << ti unless ti.nil?
+        return nil if ti.nil?
+
+        if node['children'].length > 9
+          unless ti['amount'].nil? || ti['amount'] == 0
+            if node['children'][10].nil?
+              node['children'][10] =
+                  { 'label' => 'Агреговано',
+                    'amount' => ti['amount'],
+                    'size' => ti['amount'],
+                    'color' => 'green',
+                    'icon' => '<i class="fa fa-anchor"></i>'
+                  }
+              node['children'][10]['children'] = []
+            end
+
+            node['children'][10]['amount'] += ti['amount']
+            node['children'][10]['size'] += ti['amount']
+            node['children'][10]['children'] << ti
+          end
+        else
+          node['children'] << ti unless ti.nil?
+        end
       }
     end
 
