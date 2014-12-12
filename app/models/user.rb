@@ -37,15 +37,4 @@ class User
   # roles later, always append them at the end!
   roles :admin, :guest
 
-
-  #def to_key
-  #  binding.pry
-  #  id.to_s
-  #end
-  #
-  #def self.serialize_from_session(key, salt)
-  #  record = to_adapter.get(key[0])
-  #  record if record && record.authenticatable_salt == salt
-  #end
-
 end

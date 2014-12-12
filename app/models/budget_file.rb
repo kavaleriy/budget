@@ -27,8 +27,6 @@ class BudgetFile
       self.taxonomy.readline(row)
     }.reject { |c| c.nil? }.flatten.sort_by{|row| -row['amount']}
 
-    binding.pry
-
     years = {}
     rows.each { |row|
 

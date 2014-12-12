@@ -6,7 +6,7 @@ class TaxonomyRot < Taxonomy
       'kkd_a'=>{:level => 2, :title=>'Розряд 1'},
       'kkd_bb'=>{:level => 3, :title=>'Розряд 1-3'},
       'kkd_cc'=>{:level => 4, :title=>'Розряд 1-5'},
-      'kkd_ddd'=>{:level => 5, :title=>'Розряд 1-8'}
+      'kkd'=>{:level => 5, :title=>'Розряд 1-8'}
   }
 
   def self.get_taxonomy(owner)
@@ -26,10 +26,10 @@ class TaxonomyRot < Taxonomy
     line = {
         '_year' => row['DATA'],
         '_month' => row['MONTH'].to_s.split('.')[0],
-        'amount' => amount / 100,
         'box' => get_box(kkd),
+        'amount' => amount / 100,
     }
-    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd_ddd', key: kkd.slice(0, 8)}].map { |v|
+    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd', key: kkd.slice(0, 8)}].map { |v|
       line[v[:t]] = v[:key]
     }
     line
@@ -52,9 +52,9 @@ class TaxonomyRot < Taxonomy
 
   def get_taxonomy_info taxonomy, key
     case taxonomy
-      when '_box'
+      when 'box'
         rot_box_codes[key]
-      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc', 'kkd_ddd'
+      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
         revenue_codes[key.ljust(8, '0')]
       else
         super

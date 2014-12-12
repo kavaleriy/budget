@@ -58,7 +58,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     }
 
     if info
-      node['label'] = "<i class='fa #{info['icon']}'></i> " + info['title'] unless info['title'].nil? or info['title'].empty?
+      node['label'] = info['title'] unless info['title'].nil? or info['title'].empty?
       node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
       node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
       node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
