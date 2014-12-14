@@ -14,13 +14,11 @@
     %iframe{ 'width' => '100%', 'height' => '800' }
 
   .embed
-    = render partial: 'embed'
-
+    = render partial: 'layouts/embed'
 
 
 = link_to t('.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@taxonomy), :class => 'btn btn-primary'
-
 
 :javascript
   $(document).on('ready page:change', function() {

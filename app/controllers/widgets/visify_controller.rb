@@ -60,7 +60,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
         end
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
-        return nil if ti.nil?
+        return node if ti.nil?
 
         if node['children'].length > 10
           unless ti['amount'].nil? || ti['amount'] == 0

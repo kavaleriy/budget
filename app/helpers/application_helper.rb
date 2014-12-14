@@ -5,11 +5,11 @@ module ApplicationHelper
         Taxonomy.all
       else
         Taxonomy.where(:owner => current_user.town).reject {|t| t.budget_files.empty?}
-      end
+      end.
+          sort_by { |t| t.owner || '' }
     else
-      Taxonomy.where(:owner => nil).reject {|t| t.budget_files.empty?}
-    end.
-        sort_by { |t| t.owner || '' }
+      []
+    end
   end
 
   def get_budget_files
