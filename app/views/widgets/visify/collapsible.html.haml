@@ -16,6 +16,8 @@
 
     var totalSize
 
+    var size_scale
+
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
@@ -23,6 +25,8 @@
       root.fixed = true;
       root.x = width / 2;
       root.y = height / 2 - 80;
+
+      size_scale.domain([0, root.size])
 
       totalSize = root.size;
 
@@ -40,7 +44,7 @@
 
         // Update the links…
         link = vis.selectAll("line.link")
-            .data(links, function(d) { return d.target.id; });
+          .data(links, function(d) { return d.target.id; });
 
         // Enter any new links.
         link.enter().insert("svg:line", ".node")
@@ -59,14 +63,14 @@
             .style("fill", color);
 
         node.transition()
-            .attr("r", function(d) { size = Math.sqrt(d.size) / 1500; return size < 5 ? 5 : size; });
+            .attr("r", function(d) { return size_scale(d.size) });
 
         // Enter any new nodes.
         node.enter().append("svg:circle")
             .attr("class", "node")
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .attr("r", function(d) { size = Math.sqrt(d.size) / 1500; return size < 5 ? 5 : size; })
+            .attr("r", function(d) { return size_scale(d.size) })
             .style("fill", color)
             .on("click", mouseclick)
             .on("dblclick", dblclick)
@@ -79,7 +83,7 @@
 
         // Color leaf nodes orange, and packages white or blue.
         function color(d) {
-          return d.color
+          return d.color || color(d.size)
           //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
         }
 
@@ -147,6 +151,10 @@
 
         totalSize = 0;
 
+        size_scale = d3.scale.linear()
+          .range([5, 30]);
+
+
         force = d3.layout.force()
             .on("tick", tick)
             .charge(function(d) { return -90; })
@@ -160,8 +168,6 @@
       clear: clear,
       show: function(year, month) {
         clear()
-        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
-        // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });

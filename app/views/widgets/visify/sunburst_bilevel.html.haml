@@ -1,33 +1,190 @@
 -#http://bl.ocks.org/mbostock/5944371
 
-
-.sunburst-zoomable
+.sunburst-bievel
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar) {
     var totalSize
-    var width, height, radius
-    var color
-    var vis, partition, arc
+    var width, height, margin
+    var hue, luminance
+    var svg, partition, arc
 
+    function createVisualization(root) {
+      totalSize = root.amount;
+
+      luminance = d3.scale.sqrt()
+          .domain([0, root.amount])
+          .clamp(true)
+          .range([90, 20]);
+
+      partition = d3.layout.partition()
+          .sort(function(a, b) { return d3.ascending(a.label, b.label); })
+          .size([2 * Math.PI, radius]);
+
+
+      partition
+          .value(function(d) { return d.amount; })
+          .nodes(root)
+          .forEach(function(d) {
+            d._children = d.children;
+            d.key = Math.random();
+            d.fill = fill(d);
+          });
+
+      // Now redefine the value function to use the previously-computed sum.
+      partition
+          .children(function(d, depth) { return depth < 2 ? d._children : null; })
+          .value(function(d) { return d.amount; });
+
+      var center = svg.append("circle")
+          .style("fill", 'transparent')
+          .attr("r", radius / 3)
+          .on("click", zoomOut)
+
+      center.append("title")
+          .text("повернутись");
+
+      var path = svg.selectAll("path")
+          .data(partition.nodes(root).slice(1))
+        .enter().append("path")
+          .attr("d", arc)
+          .style("fill", function(d) { return d.fill; })
+          .each(function(d) { this._current = updateArc(d); })
+          .on("click", zoomIn)
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout)
+
+      function mouseover(d) {
+        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+        var sequenceArray = sequence.getAncestors(d);
+        sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      }
+
+      // Restore everything to full opacity when moving off the visualization.
+      function mouseout(d) {
+        sequence.hideBreadcrumb()
+      }
+
+      function zoomIn(p) {
+        if (p.depth > 1) p = p.parent;
+        if (!p.children) return;
+        zoom(p, p);
+        sidebar.show(p)
+      }
+      function zoomOut(p) {
+        if (!p || !p.parent) return;
+        zoom(p.parent, p);
+        sidebar.show(p.parent)
+      }
+
+      // Zoom to the specified new root.
+      function zoom(root, p) {
+        if (document.documentElement.__transition__) return;
+
+        // Rescale outside angles to match the new layout.
+        var enterArc,
+            exitArc,
+            outsideAngle = d3.scale.linear().domain([0, 2 * Math.PI]);
+
+        function insideArc(d) {
+          return p.key > d.key
+              ? {depth: d.depth - 1, x: 0, dx: 0} : p.key < d.key
+              ? {depth: d.depth - 1, x: 2 * Math.PI, dx: 0}
+              : {depth: 0, x: 0, dx: 2 * Math.PI};
+        }
+
+        function outsideArc(d) {
+          return {depth: d.depth + 1, x: outsideAngle(d.x), dx: outsideAngle(d.x + d.dx) - outsideAngle(d.x)};
+        }
+
+        center.datum(root);
+
+        // When zooming in, arcs enter from the outside and exit to the inside.
+        // Entering outside arcs start from the old layout.
+        if (root === p) enterArc = outsideArc, exitArc = insideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+        path = path.data(partition.nodes(root).slice(1), function(d) { return d.key; });
+
+        // When zooming out, arcs enter from the inside and exit to the outside.
+        // Exiting outside arcs transition to the new layout.
+        if (root !== p) enterArc = insideArc, exitArc = outsideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+        d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+          path.exit().transition()
+              .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
+              .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
+              .remove();
+
+          path.enter().append("path")
+              .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
+              .style("fill", function(d) { return d.fill; })
+              .on("click", zoomIn)
+              .on("mouseover", mouseover)
+              .on("mouseout", mouseout)
+              .each(function(d) { this._current = enterArc(d); });
+
+          path.transition()
+              .style("fill-opacity", 1)
+              .attrTween("d", function(d) { return arcTween.call(this, updateArc(d)); });
+        });
+      }
     }
+
+    function fill(d) {
+      var p = d;
+      while (p.depth > 1) p = p.parent;
+      var c = d3.lab(p.color);
+      c.l = luminance(d.amount);
+      return c;
+    }
+
+    function arcTween(b) {
+      var i = d3.interpolate(this._current, b);
+      this._current = i(0);
+      return function(t) {
+        return arc(i(t));
+      };
+    }
+
+    function updateArc(d) {
+      return {depth: d.depth, x: d.x, dx: d.dx};
+    }
+
+    function clear() {
+      sequence.hideBreadcrumb()
+      sidebar.hide()
+      svg.selectAll("*").remove()
+    }
+
 
     return {
       initialize: function(pWidth, pHeight) {
         width = pWidth
         height = pHeight
 
-        $(aContainer + ' #chart').width(width).height(height)
         color = d3.scale.category20c()
 
+        margin = {top: 20, right: 20, bottom: 20, left: 20},
+        radius = Math.min(width, height) / 2;
+
+        hue = d3.scale.category10();
+
+        svg = d3.select(aContainer + " #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return d.x; })
+            .endAngle(function(d) { return d.x + d.dx - .01 / (d.depth + .5); })
+            .innerRadius(function(d) { return radius / 3 * d.depth; })
+            .outerRadius(function(d) { return radius / 3 * (d.depth + 1) - 1; });
       },
-      clear: function() {
-        sequence.hideBreadcrumb()
-        sidebar.hide()
-        vis.selectAll("*").remove()
-      },
+      clear: clear,
       show: function(year, month) {
+        clear()
         d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });

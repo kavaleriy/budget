@@ -1,6 +1,6 @@
 module ApplicationHelper
   def get_taxonomies
-    t = if current_user
+    if current_user
       if current_user.has_role? :admin
         Taxonomy.all
       else
@@ -8,7 +8,8 @@ module ApplicationHelper
       end
     else
       Taxonomy.where(:owner => nil).reject {|t| t.budget_files.empty?}
-    end.sort_by { |t| t.owner || '' }
+    end.
+        sort_by { |t| t.owner || '' }
   end
 
   def get_budget_files

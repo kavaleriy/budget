@@ -2,8 +2,6 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
   #explanation{ style: "visibility: hidden;" }
     %span#percentage
-    %br
-    #code
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar) {
@@ -11,7 +9,6 @@
     var width, height, radius
     var color
     var vis, partition, arc
-
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
@@ -56,7 +53,7 @@
       vis.selectAll("path")
           .style("opacity", 0.6);
 
-      var percentageString = sequence.getPercentageString(d, totalSize)
+      var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
       var sequenceArray = sequence.getAncestors(d);
       sequence.updateBreadcrumbs(sequenceArray, percentageString);
 
@@ -70,7 +67,7 @@
 
       d3.select(".sunburst-seq #explanation #percentage")
           .text(aVisify.helpers.formatNumber(d.amount));
-      $('.sunburst-seq #explanation #code').html(d.label)
+
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
     }
@@ -109,7 +106,7 @@
 
         $(aContainer + ' #chart').width(width).height(height)
 
-        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 70 ).css("left", width/2 - 50 );
+        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 20 ).css("left", width/2 - 60 );
 
         // Dimensions of sunburst.
         radius = Math.min(width, height) / 2;
@@ -139,15 +136,13 @@
             .endAngle(function(d) { return d.x + d.dx; })
             .innerRadius(function(d) { return Math.sqrt(d.y); })
             .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
-
-
       },
       clear: clear,
       show: function(year, month) {
-        clear()
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear()
           createVisualization(data);
         });
       }

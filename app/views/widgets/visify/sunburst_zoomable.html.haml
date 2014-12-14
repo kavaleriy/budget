@@ -1,0 +1,107 @@
+-#http://bl.ocks.org/mbostock/4348373
+
+.sunburst
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar) {
+    var totalSize
+    var width, height, radius
+    var color, x, y
+    var svg, partition, arc
+
+    function createVisualization(root) {
+      totalSize = root.amount;
+
+      var path = svg.selectAll("path")
+            .data(partition.nodes(root))
+          .enter().append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
+            .on("click", click)
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout)
+
+      function click(d) {
+        sidebar.show(d)
+
+        path.transition()
+          .duration(750)
+          .attrTween("d", arcTween(d));
+      }
+      function mouseover(d) {
+        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+        var sequenceArray = sequence.getAncestors(d);
+        sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      }
+
+      // Restore everything to full opacity when moving off the visualization.
+      function mouseout(d) {
+        sequence.hideBreadcrumb()
+      }
+    }
+
+    // Interpolate the scales!
+    function arcTween(d) {
+      var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+          yd = d3.interpolate(y.domain(), [d.y, 1]),
+          yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+      return function(d, i) {
+        return i
+            ? function(t) { return arc(d); }
+            : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+      };
+    }
+
+    function clear() {
+      sequence.hideBreadcrumb()
+      sidebar.hide()
+      svg.selectAll("*").remove()
+    }
+
+    return {
+      initialize: function(pWidth, pHeight) {
+        width = pWidth
+        height = pHeight
+        radius = Math.min(width, height) / 2;
+
+        color = d3.scale.category20c()
+
+        x = d3.scale.linear()
+            .range([0, 2 * Math.PI]);
+
+        y = d3.scale.sqrt()
+            .range([0, radius]);
+
+        svg = d3.select(aContainer + " #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
+
+        partition = d3.layout.partition()
+            .value(function(d) { if (d.amount > totalSize * 0.00001) return d.amount; });
+
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+            .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+            .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+            .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+
+      },
+      clear: function() {
+        sequence.hideBreadcrumb()
+        sidebar.hide()
+        svg.selectAll("*").remove()
+      },
+      show: function(year, month) {
+        clear()
+
+        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          createVisualization( data );
+        });
+      }
+    }
+  }
+
+

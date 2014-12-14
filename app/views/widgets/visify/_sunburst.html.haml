@@ -51,7 +51,7 @@
           })
           .on("mouseover", function(d) {
             var sequenceArray = sequence.getAncestors(d);
-            sequence.updateBreadcrumbs(sequenceArray, sequence.getPercentageString(d, totalSize));
+            sequence.updateBreadcrumbs(sequenceArray, sequence.getPercentageString(d, dparent));
 
             //tooltip.html(getTooltipHtml(d))
             // .style("left", (d3.event.pageX) + "px")

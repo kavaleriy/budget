@@ -3,8 +3,8 @@ class TaxonomyRov < Taxonomy
   COLUMNS = {
       'ktfk_aaa'=>{:level => 1, :title=>'Функціональний код, Розряд 1-3'},
       'ktfk'=>{:level => 2, :title=>'Функціональний код'},
-      'kekv' =>{:level => 3, :title=>'Економіка'},
-      'kvk' =>{:level => 4, :title=>'Відомства'},
+      'kvk' =>{:level => 3, :title=>'Відомства'},
+      'kekv' =>{:level => 4, :title=>'Економіка'},
       # 'krk'=>{:level => 4, :title=>'Роспорядники'},
   }
 

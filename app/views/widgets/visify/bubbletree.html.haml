@@ -42,7 +42,7 @@
                 if (d.type == 'HIDE') {
                   sequence.hideBreadcrumb()
                 } else {
-                  var percentageString = sequence.getPercentageString(d.node, totalSize)
+                  var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
                   var sequenceArray = sequence.getAncestors(d.node);
                   sequence.updateBreadcrumbs(sequenceArray, percentageString);
                 }

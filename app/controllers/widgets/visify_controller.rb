@@ -14,34 +14,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: get_bubble_tree
   end
 
-  def sunburst
-  end
-
-  def sunburst_seq
-  end
-
-  def bubbletree
-  end
-
-  def circles
-  end
-
-  def treemap
-  end
-
-  def icicle
-  end
-
-  def collapsible
-  end
-
   private
 
   def get_bubble_tree
     tree = @budget_file.get_tree
     return if tree.nil?
 
-    get_bubble_tree_item(tree, { 'title' => 'Всього', 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+    get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
   def get_bubble_tree_item(item, info)
@@ -72,6 +51,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     unless item['children'].nil?
       node['children'] = []
+
       item['children'].each { |child_node|
         explanation = if child_node['key'].nil?
           {}
@@ -82,22 +62,23 @@ class Widgets::VisifyController < Widgets::WidgetsController
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         return nil if ti.nil?
 
-        if node['children'].length > 9
+        if node['children'].length > 10
           unless ti['amount'].nil? || ti['amount'] == 0
-            if node['children'][10].nil?
-              node['children'][10] =
+            if node['children'][11].nil?
+              node['children'][11] =
                   { 'label' => 'Агреговано',
+                    'description' => '',
                     'amount' => ti['amount'],
                     'size' => ti['amount'],
                     'color' => 'green',
-                    'icon' => '<i class="fa fa-anchor"></i>'
+                    'icon' => '<i class="fa fa-folder-open-o"></i>'
                   }
-              node['children'][10]['children'] = []
+              node['children'][11]['children'] = []
             end
 
-            node['children'][10]['amount'] += ti['amount']
-            node['children'][10]['size'] += ti['amount']
-            node['children'][10]['children'] << ti
+            node['children'][11]['amount'] += ti['amount']
+            node['children'][11]['size'] += ti['amount']
+            node['children'][11]['children'] << ti
           end
         else
           node['children'] << ti unless ti.nil?

@@ -31,8 +31,8 @@
 
   #sequence {
     width: 100%;
-    height: 70px;
-    margin-top: 15px;
+    height: 40px;
+    margin-top: 5px;
 
     text {
       font-weight: 600;
@@ -41,7 +41,7 @@
   }
 
 
-  .bubbletree, .sunburst, .sunburst-seq, .treemap, .icicle, .circles, .collapsible {
+  .bubbletree, .sunburst, .sunburst-bievel, .sunburst-seq, .treemap, .icicle, .circles, .collapsible {
     margin: 20px 0px;
 
     #chart {
@@ -54,6 +54,7 @@
         stroke: #fff;
       }
       text {
+        font-size: 11px;
         word-wrap: break-word;
       }
     }
@@ -142,7 +143,7 @@
       }
 
       .label2 span {
-        background: #fff;
+        background: rgba(255, 255, 255, .85);
       }
     }
     .loading {
@@ -214,5 +215,12 @@
       stroke: #9ecae1;
       stroke-width: 1.5px;
     }
+  }
+
+  .sunburst-bievel {
+    circle {
+      cursor: pointer;
+    }
+
   }
 }

@@ -39,11 +39,13 @@
           .attr("dy", ".35em")
           .attr("text-anchor", "middle")
           .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
-          .text(function(d) { return d.name; });
+          .text(function(d) { return d.children ? '' : d.label; });
+
 
       function mouseclick(d) {
-        zoom(node == d ? root : d)
         sidebar.show(d)
+        console.log(d); 
+        zoom(node == d ? root : d)
       }
 
 
@@ -93,8 +95,6 @@
           .size([r, r])
           .value(function(d) { return d.size; })
 
-
-        console.log(aContainer)
         vis = d3.select(aContainer + ' #chart')
           .style("width", width + "px")
           .style("height", height + "px")
@@ -107,8 +107,6 @@
       clear: clear,
       show: function(year, month) {
         clear()
-        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
-        // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });

@@ -3,6 +3,11 @@
 :javascript
 
   function aSequence(aContainer) {
+    var b = {
+          w: 240, h: 30, s: 3, t: 10
+        }
+
+
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
       // nodes, highest first, but excluding the root.
@@ -33,9 +38,6 @@
       // Generate a string that describes the points of a breadcrumb polygon.
       breadcrumbPoints: function(d, i) {
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-        b = {
-          w: 175, h: 30, s: 3, t: 10
-        },
 
         points = []
         points.push("0,0");
@@ -53,28 +55,25 @@
       // Update the breadcrumb trail to show the current sequence and percentage.
       updateBreadcrumbs: function(nodeArray, percentageString) {
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-        b = {
-          w: 175, h: 30, s: 3, t: 10
-        }
 
         // Data join; key function combines name and depth (= position in sequence).
         var g = d3.select(aContainer + " #trail")
             .selectAll("g")
-            .data(nodeArray, function(d) { return (d.name || d.label) + d.depth; });
+            .data(nodeArray, function(d) { return d.label + (d.depth || d.level); });
 
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("svg:g");
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
-            .style("fill", function(d) { return d.color || color(d.value); })
+            .style("fill", function(d) { return d.color || color(d.amount); })
 
         entering.append("svg:text")
             .attr("x", (b.w + b.t) / 2)
             .attr("y", b.h / 2)
             .attr("dy", "0.35em")
             .attr("text-anchor", "middle")
-            .text(function(d) { return (d.label); });
+            .text(function(d) { return d.label; });
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {
@@ -95,7 +94,6 @@
         // Make the breadcrumb trail visible, if it's hidden.
         d3.select(aContainer + " #trail")
             .style("visibility", "");
-
       },
 
       // Hide the breadcrumb trail
