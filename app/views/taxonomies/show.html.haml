@@ -1,4 +1,4 @@
-- model_class = BudgetFile
+- model_class = Taxonomy
 
 = content_for :header do
   .head
@@ -14,7 +14,7 @@
     %iframe{ 'width' => '100%', 'height' => '800' }
 
   .embed
-    = render partial: 'layouts/embed'
+    = render partial: '/layouts/embed'
 
 
 = link_to t('.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
