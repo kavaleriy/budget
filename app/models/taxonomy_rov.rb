@@ -1,10 +1,9 @@
 class TaxonomyRov < Taxonomy
   VERSION = 1
   COLUMNS = {
-      'ktfk_aaa'=>{:level => 1, :title=>'Функціональний код, Розряд 1-3'},
+      'kvk' =>{:level => 1, :title=>'Відомства'},
       'ktfk'=>{:level => 2, :title=>'Функціональний код'},
-      'kvk' =>{:level => 3, :title=>'Відомства'},
-      'kekv' =>{:level => 4, :title=>'Економіка'},
+      'kekv' =>{:level => 3, :title=>'Економіка'},
       # 'krk'=>{:level => 4, :title=>'Роспорядники'},
   }
 
