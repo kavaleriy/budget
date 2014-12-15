@@ -2,7 +2,7 @@ class TaxonomiesController < ApplicationController
 
   before_action :set_taxonomy, only: [:show, :edit, :update, :destroy]
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :show
   load_and_authorize_resource
 
   def index

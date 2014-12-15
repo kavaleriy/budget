@@ -4,12 +4,11 @@ module ApplicationHelper
       if current_user.has_role? :admin
         Taxonomy.all
       else
-        Taxonomy.where(:owner => current_user.town).reject {|t| t.budget_files.empty?}
-      end.
-          sort_by { |t| t.owner || '' }
+        Taxonomy.where(:owner => current_user.town).not{budget_files == nil}
+      end
     else
-      []
-    end
+      Taxonomy.where(:owner => nil).not{budget_files == nil}
+    end.sort_by { |t| t.owner || '' }
   end
 
   def get_budget_files
