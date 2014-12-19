@@ -24,9 +24,9 @@ var BubbleTree = function(config, onHover, onUnHover) {
 		// just show the amounts inside bubbles with min radius of 20px
 		minRadiusAmounts: 40,
 		// hide labels at all for bubbles with min radius of 0 (deactivated by def)
-		minRadiusHideLabels: 10,
-		// trim labels after 50 characters
-		cutLabelsAt: 50
+		minRadiusHideLabels: 15,
+		// trim labels after 20 characters
+		cutLabelsAt: 20
 	}, config);
 
 	/*
@@ -143,7 +143,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
 	me.traverse = function(node, index) {
 		var c, child, pc, me = this, urlTokenSource, styles = me.config.bubbleStyles;
 
-		//if (node.amount <= 0) return;
+		if (node.amount == null) console.log(node);
+		if (node.amount == null) node.amount = 0;
 
 		if (!node.children) node.children = [];
 
@@ -1396,7 +1397,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	
 	me.draw = function() {
 		var me = this,
-			r = Math.max(5, me.bubbleRad * me.bc.bubbleScale),
+			r = Math.max(10, me.bubbleRad * me.bc.bubbleScale),
 			ox = me.pos.x,
 			oy = me.pos.y,
 			devnull = me.getXY(),

@@ -43,6 +43,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
+    # binding.pry if node['label'] == "5000"
+
     if item['children'].nil? || item['children'].length < 2
       node['color'] = '#a8bccc'
     elsif node['color'].nil?
@@ -60,33 +62,33 @@ class Widgets::VisifyController < Widgets::WidgetsController
         end
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
-        return node if ti.nil?
+        unless ti.nil?
+          if node['children'].length > 10
+            unless ti['amount'].nil? || ti['amount'] == 0
+              if node['children'][11].nil?
+                node['children'][11] =
+                    { 'label' => 'Агреговано',
+                      'description' => '',
+                      'amount' => ti['amount'],
+                      'size' => ti['amount'],
+                      'color' => 'green',
+                      'icon' => '<i class="fa fa-folder-open-o"></i>'
+                    }
+                node['children'][11]['children'] = []
+              end
 
-        if node['children'].length > 10
-          unless ti['amount'].nil? || ti['amount'] == 0
-            if node['children'][11].nil?
-              node['children'][11] =
-                  { 'label' => 'Агреговано',
-                    'description' => '',
-                    'amount' => ti['amount'],
-                    'size' => ti['amount'],
-                    'color' => 'green',
-                    'icon' => '<i class="fa fa-folder-open-o"></i>'
-                  }
-              node['children'][11]['children'] = []
+              node['children'][11]['amount'] += ti['amount']
+              node['children'][11]['size'] += ti['amount']
+              node['children'][11]['children'] << ti
             end
-
-            node['children'][11]['amount'] += ti['amount']
-            node['children'][11]['size'] += ti['amount']
-            node['children'][11]['children'] << ti
+          else
+            node['children'] << ti unless ti.nil?
           end
-        else
-          node['children'] << ti unless ti.nil?
         end
       }
     end
 
-    node
+    node unless node['amount'].nil?
   end
 
   def get_sunburst_tree

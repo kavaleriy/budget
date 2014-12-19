@@ -4,7 +4,7 @@
 
   function aSequence(aContainer) {
     var b = {
-          w: 240, h: 30, s: 3, t: 10
+          w: 240, h: 45, s: 3, t: 10
         }
 
 
@@ -66,14 +66,15 @@
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
-            .style("fill", function(d) { return d.color || color(d.amount); })
+            .style("fill", function(d) { return d.color || color(d.label); })
 
         entering.append("svg:text")
-            .attr("x", (b.w + b.t) / 2)
-            .attr("y", b.h / 2)
+            .attr("x", 0)
+            .attr("y", 10)
             .attr("dy", "0.35em")
-            .attr("text-anchor", "middle")
-            .text(function(d) { return d.label; });
+            .attr("text-anchor", "cent")
+            .text(function(d) { return d.label; })
+            .call(aVisify.helpers.wrap, b.w - 20)
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {
