@@ -6,7 +6,7 @@
 
 .month.col-xs-12
   %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
-    - %w(рік січ лют бер квіт трав черв лип серп вер жовт лист груд).each_with_index do |month, i|
+    - (I18n.t :abbr_month_names, :scope => :date).each_with_index do |month, i|
       %li{'class' => get_month_class(i.to_s, @sel_month)}
         %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
           =month

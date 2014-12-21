@@ -2,6 +2,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_budget_file
   #before_action :set_taxonomy_file
 
+  MAX_NODES_PER_LEVEL = 8
+
   def get_sunburst_data
     render json: get_sunburst_tree
   end
@@ -51,6 +53,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['color'] = '#265f91'
     end
 
+    child_count = if item['children'].nil?
+                    0
+                  else
+                    item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
+                  end
+
     unless item['children'].nil?
       node['children'] = []
 
@@ -63,10 +71,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
-          if node['children'].length > 10
+          if node['children'].length >= MAX_NODES_PER_LEVEL && child_count > MAX_NODES_PER_LEVEL + 2
             unless ti['amount'].nil? || ti['amount'] == 0
-              if node['children'][11].nil?
-                node['children'][11] =
+              if node['children'][MAX_NODES_PER_LEVEL].nil?
+                node['children'][MAX_NODES_PER_LEVEL] =
                     { 'label' => 'Агреговано',
                       'description' => '',
                       'amount' => ti['amount'],
@@ -74,12 +82,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
                       'color' => 'green',
                       'icon' => '<i class="fa fa-folder-open-o"></i>'
                     }
-                node['children'][11]['children'] = []
+                node['children'][MAX_NODES_PER_LEVEL]['children'] = []
               end
 
-              node['children'][11]['amount'] += ti['amount']
-              node['children'][11]['size'] += ti['amount']
-              node['children'][11]['children'] << ti
+              node['children'][MAX_NODES_PER_LEVEL]['amount'] += ti['amount']
+              node['children'][MAX_NODES_PER_LEVEL]['size'] += ti['amount']
+              node['children'][MAX_NODES_PER_LEVEL]['children'] << ti
             end
           else
             node['children'] << ti unless ti.nil?

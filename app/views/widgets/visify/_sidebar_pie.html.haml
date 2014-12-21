@@ -1,14 +1,18 @@
 -# http://bl.ocks.org/dbuezas/9306799
 :css
+  .labels text {
+    font-size: 9px;
+  }
+
   path.slice{
-      stroke-width:2px;
+    stroke-width:2px;
   }
 
   polyline{
-      opacity: .3;
-      stroke: black;
-      stroke-width: 2px;
-      fill: none;
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
   }
 
 #sidebar_pie.col-xs-11
@@ -50,9 +54,13 @@
             .append("g")
 
           svg.append("g")
-              .attr("class", "slices");
+              .attr("class", "slices")
+
           svg.append("g")
-              .attr("class", "labels");
+              .attr("class", "labels")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+
           svg.append("g")
               .attr("class", "lines");
 
