@@ -19,7 +19,7 @@
       droppable: false,
       selectable: false,
       eventClick: function(calEvent, jsEvent, view) {
-        return $.get("/calendars/" + $('#calendar_view').attr('calendar_id') + "/events/" + calEvent.id)
+        return $.get("/calendars/#{calendar.id}/events/" + calEvent.id)
       },
       eventRender: function(e, t, n) {
         var icon = (e.icon ? " <i class='fa fa-lg " + e.icon + " '></i> " : "");

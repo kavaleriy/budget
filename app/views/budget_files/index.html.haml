@@ -7,12 +7,18 @@
 %table.table.table-striped
   %thead
     %tr
-      %th Код
-      %th Назва
-      %th Файл
-      %th Місто
-      %th Автор
-      %th=t '.actions', :default => t("helpers.actions")
+      %th
+        = t('key')
+      %th
+        = t('budget')
+      %th
+        = t('file')
+      %th
+        = t('owner')
+      %th
+        = t('author')
+      %th
+        =t '.actions', :default => t("helpers.actions")
   %tbody
     - @budget_files.each do |budget_file|
       %tr

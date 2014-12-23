@@ -11,7 +11,7 @@
         = link_to t('form.new', :default => t("helpers.links.new")), new_calendar_action_path(:holder => 1, :icon => 'fa-institution'), :class => 'btn btn-lg btn-primary'
       .circle.city.pull-right
       %h2.pull-right
-        Дії влади
+        = t('city_actions')
     - @city_actions.order('id DESC').each do |calendar_action|
       .col-xs-12
         = render partial: 'action', :locals => { calendar_action: calendar_action }
@@ -25,7 +25,7 @@
         = link_to t('form.new', :default => t("helpers.links.new")), new_calendar_action_path(:holder => 2, :icon => 'fa-smile-o'), :class => 'btn btn-lg btn-primary'
       .circle.people.pull-left
       %h2.pull-left
-        Дії громадян
+        = t('people_actions')
     - @people_actions.order('id DESC').each do |calendar_action|
       .col-xs-12
         = render partial: 'action', :locals => { calendar_action: calendar_action }

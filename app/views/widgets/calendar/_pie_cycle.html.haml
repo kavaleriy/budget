@@ -4,11 +4,9 @@
     %h1
       2014
 
-
 :javascript
 
   $(document).ready(function() {
-
 
     init_pie()
 
@@ -73,7 +71,7 @@
          .on("click", function(d) {
            if(d.data.id == '')
              return
-           $.get("/calendars/" + $('#calendar_view').attr('calendar_id') + "/events/" + d.data.id)
+           $.get("/calendars/#{calendar.id}/events/" + d.data.id)
          })
          .on("mouseover", function(d) {
            //if(d.data.title == '')
@@ -109,5 +107,4 @@
       return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b>"
     }
   })
-
 

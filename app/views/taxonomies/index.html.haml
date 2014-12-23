@@ -7,10 +7,14 @@
 %table.table.table-striped
   %thead
     %tr
-      %th Код
-      %th Назва
-      %th Місто
-      %th=t '.actions', :default => t("helpers.actions")
+      %th
+        = t('key')
+      %th
+        = t('name')
+      %th
+        = t('owner')
+      %th
+        =t '.actions', :default => t("helpers.actions")
   %tbody
     - @taxonomies.each do |taxonomy|
       %tr

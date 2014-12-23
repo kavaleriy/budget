@@ -1,6 +1,6 @@
 = bootstrap_form_for @budget_file, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
   = f.text_field :title
-  = f.select :data_type, ['план', 'факт']
+  = f.select :data_type, %w(план факт)
 
   %hr
     %ul.nav.nav-tabs{role: 'tablist'}
@@ -18,15 +18,16 @@
               %th{ :style => 'text-align: right'}
                 =key
               %th
-                Коротка назва
+                = t('.name')
               %th
-                Іконка
+                = t('.icon')
               %th
-                Колір
+                = t('.color')
               %th
-                Кількість отримувачів
+                =t('.acceptors')
               %th
-                Детальний опис
+                = t('.description')
+
             - @budget_file.taxonomy.explanation[key].keys.sort_by { |item| item }.each do |t_key|
               %tr
                 %td{style:'text-align: right'}

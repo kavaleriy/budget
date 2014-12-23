@@ -1,6 +1,7 @@
 class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
-  before_action :set_calendar, only: [:pie_data, :timelinejs_data]
+  before_action :set_calendar
+
 
   def pie_data
     starts_at = '2014-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
@@ -57,7 +58,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
 
-  protected
+  private
 
   def build_pie starts_at, ends_at, ev
     pie = [ { ends_at: starts_at, events: [] }]
@@ -104,8 +105,6 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
     events.sort_by { |m| m[:dt] }.reverse!
   end
-
-  private
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
