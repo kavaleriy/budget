@@ -28,17 +28,19 @@ class Taxonomy
 
   def readline row
     amount_key = row.keys.last
-    amount = row[amount_key].to_i
+    amount = row[amount_key].to_f
     return if amount.nil? || amount == 0
 
-    row[amount_key] = amount
+    line = {
+        'amount' => amount,
+    }
 
     row.keys.reject{|k| k == amount_key}.each {|r|
       val = row[r].to_s.split('.')[0]
-      row[r] = val
+      line[r] = val
     }
 
-    row
+    line
   end
 
   def explain taxonomy, key

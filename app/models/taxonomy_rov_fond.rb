@@ -25,8 +25,6 @@ class TaxonomyRovFond < Taxonomy
     ].map { |line|
     {
         'amount' => line[:amount] / 100,
-        '_year' => line['_year'],
-        '_month' => line['_month'].to_s.split('.')[0],
         'fond' => line[:fond],
         'source' => row['Джерело'].to_s,
         'owner' => row['Розпорядник'].to_s.split('.')[0],

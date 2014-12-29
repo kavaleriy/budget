@@ -32,8 +32,6 @@ class TaxonomyRotFond < Taxonomy
 
       item = {
           'amount' => amount,
-          '_year' => line['_year'],
-          '_month' => line['_month'].to_s.split('.')[0],
           'fond' => fond
       }
 

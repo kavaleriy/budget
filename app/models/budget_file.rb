@@ -30,11 +30,7 @@ class BudgetFile
     years = {}
     rows.each { |row|
 
-      year = if row['_year'].nil?
-                Date.current.year.to_s
-             else
-               row['_year'].to_date.year.to_s
-             end
+      year = row['_year'] || Date.current.year.to_s
 
       month = row['_month'] || '0'
 
