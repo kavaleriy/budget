@@ -1,5 +1,6 @@
 .navbar.navbar-default.navbar-static-top
   .container-fluid
+
     %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse")
       %span.icon-bar
       %span.icon-bar
@@ -86,3 +87,10 @@
     .header
       = yield :header
 
+    .lang.pull-right
+      - if I18n.locale == I18n.default_locale
+        %b Укр
+        = link_to "En", :locale=>'en'
+      - else
+        = link_to "Укр", :locale=>'uk'
+        %b En

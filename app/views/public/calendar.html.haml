@@ -69,7 +69,11 @@
       name = $(el).attr('data-name')
       width = $(el).attr('data-width')
       height = $(el).attr('data-height')
-      frame_url = "#{root_url}widgets/calendar/"+ name + "/#{@calendar.id}"
+
+      path = "#{request.base_url}"
+      query = "#{URI.parse(request.url).query}"
+
+      frame_url = path + "/widgets/calendar/"+ name + "/#{@calendar.id}" + '/?' + query
       $(el).find('input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>")
     })
 
