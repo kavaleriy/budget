@@ -42,55 +42,60 @@
           = link_to subscribers_path do
             %i.fa.fa-envelope-o
             = t('.subscribers')
-        %li.todo
-          %a.dropdown-toggle(data-toggle="dropdown" href="#")
-            %i.fa.fa-calendar
-            %span.badge.badge-grey
-              4
 
-          %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
-            %li.nav-header
-              %i.fa.fa-calendar-o
-              4 Активні дії
-            %li
-              %a(href="#")
-                .clearfix
-                  %span.pull-left Розгляд ....
-                  %span.pull-right 65%
-                  .progress.progress-mini
-                    .bar(style="width:65%")
-            %li
-              %a(href="#")
-                Показати всі дії
-                %i.fa.fa-angle-double-right
-        %li.messages
-          %a.dropdown-toggle(data-toggle="dropdown" href="#")
-            %i.fa.fa-envelope-o
-            %span.badge.badge-grey 2
+        .lang.pull-right
+          - if I18n.locale == I18n.default_locale
+            %b Укр
+            |
+            = link_to "En", :locale=>'en'
+          - else
+            = link_to "Укр", :locale=>'uk'
+            |
+            %b En
 
-          %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
-            %li.nav-header
-              %i.fa.fa-calendar-o
-              2 Повідомлення
-            %li
-              %a(href="#")
-                .clearfix
-                  %span.pull-left Розгляд ....
-                  %span.pull-right 65%
-                  .progress.progress-mini
-                    .bar(style="width:65%")
-            %li
-              %a(href="#")
-                Показати всі
-                %i.fa.fa-angle-double-right
+
+        -#%li.todo
+        -#  %a.dropdown-toggle(data-toggle="dropdown" href="#")
+        -#    %i.fa.fa-calendar
+        -#    %span.badge.badge-grey
+        -#      4
+        -#
+        -#  %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+        -#    %li.nav-header
+        -#      %i.fa.fa-calendar-o
+        -#      4 Активні дії
+        -#    %li
+        -#      %a(href="#")
+        -#        .clearfix
+        -#          %span.pull-left Розгляд ....
+        -#          %span.pull-right 65%
+        -#          .progress.progress-mini
+        -#            .bar(style="width:65%")
+        -#    %li
+        -#      %a(href="#")
+        -#        Показати всі дії
+        -#        %i.fa.fa-angle-double-right
+        -#%li.messages
+        -#  %a.dropdown-toggle(data-toggle="dropdown" href="#")
+        -#    %i.fa.fa-envelope-o
+        -#    %span.badge.badge-grey 2
+        -#
+        -#  %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+        -#    %li.nav-header
+        -#      %i.fa.fa-calendar-o
+        -#      2 Повідомлення
+        -#    %li
+        -#      %a(href="#")
+        -#        .clearfix
+        -#          %span.pull-left Розгляд ....
+        -#          %span.pull-right 65%
+        -#          .progress.progress-mini
+        -#            .bar(style="width:65%")
+        -#    %li
+        -#      %a(href="#")
+        -#        Показати всі
+        -#        %i.fa.fa-angle-double-right
 
     .header
       = yield :header
 
-    .lang.pull-right
-      - if I18n.locale == I18n.default_locale
-        %b Укр
-        = link_to "En", :locale=>'en'
-      - else
-        = link_to "Укр", :locale=>'uk'
-        %b En

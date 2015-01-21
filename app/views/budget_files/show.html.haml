@@ -21,7 +21,7 @@
 
 = link_to t('.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 -#= link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(@budget_file), :class => 'btn btn-default'
-= link_to "#{budget_file_path(@budget_file)}/editinfo", :class => 'btn btn-primary' do
+= link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
   = t('.editinfo')
 
