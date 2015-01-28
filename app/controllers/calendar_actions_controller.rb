@@ -32,7 +32,7 @@ class CalendarActionsController < ApplicationController
 
     respond_to do |format|
       if @calendar_action.save
-        format.html { redirect_to @calendar_action, notice: 'Calendar action was successfully created.' }
+        format.html { redirect_to @calendar_action, notice: t('calendar_action.create') }
         format.json { render :show, status: :created, location: @calendar_action }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class CalendarActionsController < ApplicationController
   def update
     respond_to do |format|
       if @calendar_action.update(calendar_action_params)
-        format.html { redirect_to @calendar_action, notice: 'Calendar action was successfully updated.' }
+        format.html { redirect_to @calendar_action, notice: t('calendar_action.update') }
         format.json { render :show, status: :ok, location: @calendar_action }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class CalendarActionsController < ApplicationController
   def destroy
     @calendar_action.destroy
     respond_to do |format|
-      format.html { redirect_to calendar_actions_url, notice: 'Типова дія видалена.' }
+      format.html { redirect_to calendar_actions_url, notice: t('calendar_action.delete') }
       format.json { head :no_content }
     end
   end

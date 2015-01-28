@@ -5,9 +5,9 @@ module EventsHelper
 
   def holder_to_string(holder)
     if holder == 1
-      'Місто'
+      t('eventowner_select.town')
     else
-      'Громада'
+      t('eventowner_select.community')
     end
   end
 end

@@ -1,60 +1,60 @@
 - model_class = BudgetFile
-= content_for :header do
+=content_for :header do
   .head.pull-left
     %i.fa.fa-money
-    #{t('.title')}
+    =t('.title')
 
 %table.table.table-striped
   %thead
     %tr
       %th
-        = t('key')
+        =t('key')
       %th
-        = t('budget')
+        =t('budget')
       %th
-        = t('file')
+        =t('file')
       %th
-        = t('owner')
+        =t('owner')
       %th
-        = t('author')
+        =t('author')
       %th
-        =t '.actions', :default => t("helpers.actions")
+        =t 'form.actions', :default => t("helpers.actions")
   %tbody
     - @budget_files.each do |budget_file|
       %tr
-        %td= link_to "#{budget_file.id} (#{budget_file.class})", budget_file
+        %td=link_to "#{budget_file.id} (#{budget_file.class})", budget_file
         %td
-          = link_to budget_file.title, budget_file
+          =link_to budget_file.title, budget_file
           -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
         %td= budget_file.path
         %td= budget_file.taxonomy.owner
         %td= budget_file.author
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+          =link_to t('form.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'
+          =link_to t('form.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-= link_to t('.upload_budget_file'), budget_files_upload_path, :class => 'btn btn-primary'
+=link_to t('.upload_budget_file'), budget_files_upload_path, :class => 'btn btn-primary'
 .btn-group
   %button.btn.btn-primary.dropdown-toggle{'data-toggle'=>'dropdown', 'type' => 'button', 'aria-expanded' => 'false'}
-    = t('.upload_revenues')
+    =t('.upload_revenues')
     %span.caret
   %ul.dropdown-menu{'role'=>'menu'}
     %li
-      = link_to t('.upload_rot'), budget_file_rots_upload_path, :class => ''
+      =link_to t('.upload_rot'), budget_file_rots_upload_path, :class => ''
     %li
-      = link_to t('.upload_rot_fond'), budget_file_rot_fonds_upload_path, :class => ''
+      =link_to t('.upload_rot_fond'), budget_file_rot_fonds_upload_path, :class => ''
 
 
 .btn-group
   %button.btn.btn-primary.dropdown-toggle{'data-toggle'=>'dropdown', 'type' => 'button', 'aria-expanded' => 'false'}
-    = t('.upload_expences')
+    =t('.upload_expences')
     %span.caret
   %ul.dropdown-menu{'role'=>'menu'}
     %li
-      = link_to t('.upload_rov'), budget_file_rovs_upload_path, :class => ''
+      =link_to t('.upload_rov'), budget_file_rovs_upload_path, :class => ''
     %li
-      = link_to t('.upload_rov_fond'), budget_file_rov_fonds_upload_path, :class => ''
+      =link_to t('.upload_rov_fond'), budget_file_rov_fonds_upload_path, :class => ''
 
-= link_to static_budget_file_help_path, :class => 'btn btn-default' do
+=link_to static_budget_file_help_path, :class => 'btn btn-default' do
   %i.fa.fa-info-circle
-    = t('static.budget_file_help.help')
+    =t('static.budget_file_help.help')

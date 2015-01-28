@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
+gem 'rake'
+gem "i18n-js", ">= 3.0.0.rc8"
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -89,3 +91,4 @@ gem 'devise'
 gem 'cancan'
 gem 'role_model'
 
+gem 'yaml_db'

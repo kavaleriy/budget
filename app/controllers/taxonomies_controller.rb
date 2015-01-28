@@ -15,7 +15,7 @@ class TaxonomiesController < ApplicationController
   def update
     respond_to do |format|
       if @taxonomy.update(taxonomy_params)
-        format.html { redirect_to @taxonomy, notice: 'Дані збережені успішно.' }
+        format.html { redirect_to @taxonomy, notice: t('taxonomies_controller.save_success') }
         format.json { render :show, status: :ok, location: @taxonomy}
       else
         format.html { render :edit }
@@ -27,7 +27,7 @@ class TaxonomiesController < ApplicationController
   def destroy
     @taxonomy.destroy
     respond_to do |format|
-      format.html { redirect_to taxonomies_path, notice: 'Дані успішно видалені.' }
+      format.html { redirect_to taxonomies_path, notice: t('taxonomies_controller.delete_success') }
       format.json { head :no_content }
     end
   end

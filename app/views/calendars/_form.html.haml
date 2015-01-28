@@ -16,6 +16,6 @@
   .form-group
     = f.label :countdown_event, t('.countdown_event'), :class => 'control-label'
     .controls
-      = f.select :countdown_event, @calendar.events.all.countdown_events.collect {|p| [ "#{holder_to_string(p.holder)}: #{p.title}, #{p.starts_at.to_date}", p.id ] }, {prompt: 'Please select an event'}, :class => 'form-control'
+      = f.select :countdown_event, @calendar.events.all.countdown_events.collect {|p| [ "#{holder_to_string(p.holder)}: #{p.title}, #{p.starts_at.to_date}", p.id ] }, {prompt: t('.select_event')}, :class => 'form-control'
   = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'

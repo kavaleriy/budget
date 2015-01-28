@@ -24,7 +24,7 @@
 
     .tab-content
       .tab-pane.fade.in.active#show_event_main_tab
-        = f.collection_radio_buttons :holder, [[1, ' Місто'], [2, ' Громада']], :first, :last, label: t('.holder')
+        = f.collection_radio_buttons :holder, [[1, t('.town')], [2, t('.community')]], :first, :last, label: t('.holder')
 
         = f.static_control label: t('.icon') do
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {}, { class: 'fa-select' }
@@ -54,9 +54,9 @@
 
   .modal-footer
     = button_to t('form.save', :default => t("helpers.links.save")), [@calendar, @event], :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :params => {:calendar_id => @calendar.id}
-    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('.close')
+    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('form.close')
 
-    = link_to t('form.destroy', :default => t("helpers.links.destroy")), [@calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
+    = link_to t('form.destroy', :default => t("helpers.links.destroy")), [@calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
 
 :javascript
   $(function () {

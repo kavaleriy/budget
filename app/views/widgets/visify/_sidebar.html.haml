@@ -6,7 +6,7 @@
       #heading1.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapse1', 'aria-expanded' => 'true', 'aria-controls' => 'collapse1'}
-            Пояснення
+            =t('.explanation')
       #collapse1.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'heading1' }
         .panel-body
           #description
@@ -15,7 +15,7 @@
       #headingCompare.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
-            Порівняння по роках
+            =t('.comparison_within_years')
       #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
         .panel-body
           = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
@@ -24,7 +24,7 @@
       #headingChart.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
-            Графік CHART
+            =t('.chart')
       #collapseChart.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
         .panel-body
           = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
@@ -33,7 +33,7 @@
       #heading2.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse2', 'aria-expanded' => 'false', 'aria-controls' => 'collapse2'}
-            Графік PIE
+            =t('.pie')
       #collapse2.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading2' }
         .panel-body
           = render partial: 'sidebar_pie', :locals => { budget_file_id: budget_file_id }
@@ -43,7 +43,7 @@
       #heading3.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse3', 'aria-expanded' => 'false', 'aria-controls' => 'collapse3'}
-            Таблця
+            =t('.table')
       #collapse3.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading3' }
         .panel-body
           = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }

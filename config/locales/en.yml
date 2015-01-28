@@ -31,6 +31,7 @@ en:
     application:
       application_title: "Municipal budget"
     navbar:
+      budget: "Budget"
       budget_files: "Budget files"
       transaction: "Budget transactions"
       transactions: "Transactions"
@@ -47,6 +48,8 @@ en:
     new: "Add"
     edit: "Edit"
     destroy: "Delete"
+    close: "Close"
+    confirm: "Save changes?"
   subscribers:
     index:
       title: "Subscribers"
@@ -56,6 +59,50 @@ en:
       title: "New subscriber"
     show:
       title: "Subscription"
+
+  budget_files:
+    editinfo_form:
+      name: "Short name"
+      description: "Detailed description"
+      acceptors: "Number of recipients"
+      color: "Color"
+      icon: "Icon"
+    embed:
+      embed: "Embed code"
+    upload_form:
+      Vinnytsya: "Vinnytsya"
+      Kyiv: "Kyiv"
+      Lviv: "Lviv"
+      Ivano-Frankivsk: "Ivano-Frankivsk"
+      Zhytomyr: "Zhytomyr"
+      Ternopil: "Ternopil"
+      fact: "fact"
+      plan: "plan"
+      datatype_label: "plan/fact"
+    edit:
+      title: "Explanations for levels of detail"
+    index:
+      title: "Documents to visualize"
+      upload_budget_file: "Upload DBF/XLS/CSV"
+      upload_revenues: "Upload revenues"
+      upload_rot: "Upload revenues (ROT table)"
+      upload_rot_fond: "Upload revenues - Fund"
+      upload_expences: "Upload expenditures"
+      upload_rov: "Upload expenditures (ROV table)"
+      upload_rov_fond: "Upload expenditures - Fund"
+    show:
+      title: "Visualizing file"
+      editinfo: "Details"
+    visify_list:
+      tab_bubbletree: "Bubble tree"
+      tab_sunburst_zoomable: "Sunburst zoomable"
+      tab_sunburst: "Sunburst"
+      tab_sunburst_bilevel: "Sunburst bilevel"
+      tab_sunburst_seq: "Sunburst seq"
+      tab_treemap: "Tree map"
+      tab_icicle: "Icicle"
+      tab_circles: "Circles"
+      tab_collapsible: "Collapsible"
   calendar_actions:
     form:
       holder: "Owner"
@@ -85,6 +132,7 @@ en:
       countdown_title: "Header"
       date: "Completion date"
       countdown_event: "Action"
+      select_event: "Please select an event"
     edit:
       title: "Edit the calendar"
     index:
@@ -102,30 +150,29 @@ en:
     form:
       title: "Edit event"
       name: "Header"
-      holder: "Owner"
       tab1_title: "Options"
       tab2_title: "Description"
       tab3_title: "Date"
       tab4_title: "Attachments"
+      town: "Town"
+      community: "Community"
+      holder: "Owner"
       icon: "Icon"
+      color: "Background"
+      text_color: "Text color"
       description: "Detailed event description"
       starts_at: "Start"
       ends_at: "Completion"
       all_day: "All day"
-      browse_file: "Select file"
-      browse_file_placeholder: "Enter short file description"
-      add_file: "Add file"
-      color: "Background"
-      text_color: "Text color"
-      close: "Close"
-    index:
-      title: "Events"
+      confirm: "Save changes?"
     show:
       tab1_title: "Event details"
       tab3_title: "Attachments"
       starts_at: "Start"
       ends_at: "Completion"
       all_day: "All day"
+    index:
+      title: "Events"
   public:
     timeline:
       city: "Municipality action"
@@ -137,25 +184,33 @@ en:
       subscribe_placeholder: "Please provide your e-mail to subscribe to the calendar updates"
     event:
       empty_event: "Select an event to show"
-  visify:
-    budget: "Budget visualization"
-    bubbletree:
-      title: "Bubble-type 1"
-      descr: "Visualization"
-    sunburst:
-      title: "Pie chart type 1"
-      descr: "Visualization"
-    bubblechart:
-      title: "Bubble-type 2"
-      descr: "Visualization"
-    sunburst_seq:
-      title: "Pie chart type 2"
-    circle_packing:
-      title: "Bubble-type 3"
-    treemap:
-      title: "Map"
-    force_collapsible:
-      title: "Tree map"
+  widgets:
+    visify:
+      sidebar:
+        explanation: "Explanation"
+        comparison_within_years: "Comparison within years:"
+        chart: "Chart"
+        pie: "Pie chart"
+        table: "Table"
+      slider:
+        by_month: "by month"
+      bubbletree:
+        title: "Bubble-type 1"
+        descr: "Visualization"
+      sunburst:
+        title: "Pie chart type 1"
+        descr: "Visualization"
+      bubblechart:
+        title: "Bubble-type 2"
+        descr: "Visualization"
+      sunburst_seq:
+        title: "Pie chart type 2"
+      circle_packing:
+        title: "Bubble-type 3"
+      treemap:
+        title: "Map"
+      force_collapsible:
+        title: "Tree map"
   revenues:
     index:
       title: "Revenues"
@@ -179,41 +234,12 @@ en:
       title: "Upload expenditure file"
     edit:
       title: "Edit expenditure file"
-  budget_files:
-    index:
-      upload_revenues: "Upload revenues"
-      upload_expences: "Upload expenditures"
-      upload_rot: "Upload revenues (ROT table)"
-      upload_rov: "Upload expenditures (ROV table)"
-      upload_rot_fond: "Upload revenues - Fund"
-      upload_rov_fond: "Upload expenditures - Fund"
-      upload_budget_file: "Upload DBF/XLS/CSV"
-      title: "Documents to visualize"
-    show:
-      title: "Visualizing file"
-      editinfo: "Details"
-      tab_bubbletree: "Bubble tree"
-      tab_sunburst: "Sunburst"
-      tab_sunburst_seq: "Sunburst seq"
-      tab_treemap: "Tree map"
-      tab_circles: "Circles"
-      tab_collapsible: "Collapsible"
-    editinfo:
-      title: "Explanations for levels of detail"
-    editinfo_form:
-      name: "Short name"
-      description: "Detailed description"
-      acceptors: "Number of recipients"
-      color: "Color"
-      icon: "Icon"
-    embed:
-      embed: "Embed code"
   static:
     budget_file_help:
       help: "Instructions for file upload"
   budget_file_name: "Budget file name"
-  dat_type: "%w(factual planned)"
-  path: "Path to file"
+  dat_type: "%w()"
+  file_path: "Path to file"
   owner: "City"
   key: "Code"
   budget: "Name"
@@ -226,3 +252,35 @@ en:
   embed: "Embed code"
   name: "Name"
   footer: "UNDP and Internews Network in Ukraine"
+
+  calendar:
+    create: "Calendar was successfully created."
+    update: "Calendar was successfully updated."
+    delete: "Calendar deleted."
+
+  calendar_action:
+    create: "Calendar action was successfully created."
+    update: "Calendar action was successfully updated."
+    delete: "Calendar action was successfully deleted."
+
+  budget_files_controller:
+    load_success: "Data loaded successfully."
+    load_fail: "Cannot load a file. Check filetype =>"
+    save: "Data saved successfully."
+    delete: "Data deleted."
+
+  taxonomies_controller:
+    save_success: "Data saved successfully."
+    delete_success: "Data deleted successfully."
+
+  eventowner_select:
+    town: "Town"
+    community: "Community"
+
+  application:
+    auth_error: "Authorization error: "
+
+  calendars_err:
+    title: "Header "
+    owner: "Owner "
+    save_error: "Save error: "

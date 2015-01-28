@@ -44,7 +44,7 @@ class BudgetFilesController < ApplicationController
 
     respond_to do |format|
       if @budget_file.save
-        format.html { redirect_to @budget_file, notice: 'Дані успішно завантажені.' }
+        format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }
         format.json { render :show, status: :created, location: @budget_file }
       else
         format.html { render :new }
@@ -53,7 +53,7 @@ class BudgetFilesController < ApplicationController
     end
   rescue => e
     respond_to do |format|
-      format.html { redirect_to budget_files_url, alert: "Не вдалося завантажити файл. Перевірте чи тип файлу відповідає змісту даних => #{e}" }
+      format.html { redirect_to budget_files_url, alert: t('budget_files_controller.load_fail') + "#{e}" }
       format.json { render json: @budget_file.errors, status: :unprocessable_entity }
     end
   end
@@ -86,7 +86,7 @@ class BudgetFilesController < ApplicationController
         # @budget_file.taxonomy.explanation = explanation
         # @budget_file.taxonomy.save
 
-        format.html { redirect_to @budget_file, notice: 'Дані збережені успішно.' }
+        format.html { redirect_to @budget_file, notice: t('budget_files_controller.save') }
         format.json { render :show, status: :ok, location: @budget_file }
       else
         format.html { render :edit }
@@ -101,7 +101,7 @@ class BudgetFilesController < ApplicationController
   def destroy
     @budget_file.destroy
     respond_to do |format|
-      format.html { redirect_to budget_files_url, notice: 'Дані успішно видалені.' }
+      format.html { redirect_to budget_files_url, notice: t('budget_files_controller.delete') }
       format.json { head :no_content }
     end
   end

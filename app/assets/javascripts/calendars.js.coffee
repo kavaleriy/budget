@@ -27,7 +27,7 @@ $(document).on 'ready page:change', ->
   # initialize the calendar
   #	-----------------------------------------------------------------
   $('#calendar').fullCalendar
-    lang: 'uk',
+    lang: document.location.href.split("locale=")[1],
     editable: true,
     header:
       left: 'prev,next today',
@@ -141,9 +141,10 @@ $(document).on 'ready page:change', ->
 #    if $('event_title').val()
     eval('err=' + data.responseText)
     if err.title
-      alert('Заголовок ' + err.title[0])
+      I18n.locale = document.location.href.split("locale=")[1]
+      alert(I18n.t("calendars_err.title") + err.title[0])
     else if err.holder
-      alert('Власник ' + err.holder[0])
+      alert(I18n.t("calendars_err.owner") + err.holder[0])
     else
-      alert('Помилка збереження: ' + data.responseText)
+      alert(I18n.t("calendars_err.save_error") + data.responseText)
     err = 'null'

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :cancan_hack
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => "Помилка авторизації: #{exception.message}"
+    redirect_to root_url, :alert => t('application.auth_error') + "#{exception.message}"
   end
 
   private
@@ -23,7 +23,6 @@ class ApplicationController < ActionController::Base
     params[resource] &&= send(method) if respond_to?(method, true)
   end
 
-
   before_action :set_locale
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -32,7 +31,5 @@ class ApplicationController < ActionController::Base
   def default_url_options(options={})
     { locale: I18n.locale }.merge options
   end
-
-
 
 end

@@ -1,4 +1,4 @@
 .btn-group{"data-toggle" => "buttons"}
-  = f.collection_radio_buttons :holder, [[1, ' Місто'], [2, ' Громада']], :first, :last, { item_wrapper_tag: false } do |b|
+  = f.collection_radio_buttons :holder, [[1, t('eventowner_select.town')], [2, t('eventowner_select.community')]], :first, :last, { item_wrapper_tag: false } do |b|
     %label.btn.btn-primary.btn-sm{ :class => holder == b.value ? 'active' : ''}
       = b.radio_button + ' ' + b.label(:class => b.value == 1 ? 'fa fa-university' : 'fa fa-user')

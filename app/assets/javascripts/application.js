@@ -21,6 +21,7 @@
 //= require moment/uk.js
 //= require fullcalendar/fullcalendar.min
 //= require fullcalendar/uk
+//= require fullcalendar/en
 
 //= require timecircles
 
@@ -33,7 +34,12 @@
 //= require fileupload/jquery.fileupload
 //= require fileupload/jquery.fileupload-process
 //= require fileupload/jquery.fileupload-validate
-
+// This is optional (in case you have `I18n is not defined` error)
+// If you want to put this line, you must put it BEFORE `i18n/translations`
+//= require i18n
+//
+// This is a must
+//= require i18n/translations
 //= require_tree .
 
 

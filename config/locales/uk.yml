@@ -10,6 +10,7 @@ uk:
     application:
       application_title: "Бюджет міста"
     navbar:
+      budget: "Бюджет"
       budget_files: "Бюджетні файли"
       transaction: "Бюджетні платежі"
       transactions: "Платежі"
@@ -26,6 +27,8 @@ uk:
     new: "Додати"
     edit: "Редагувати"
     destroy: "Видалити"
+    close: "Закрити"
+    confirm: "Зберегти зміни?"
   subscribers:
     index:
       title: "Підписчики"
@@ -35,6 +38,50 @@ uk:
       title: "Новий підписчик"
     show:
       title: "Підписка"
+
+  budget_files:
+    editinfo_form:
+      name: "Коротка назва"
+      description: "Детальний опис"
+      acceptors: "Кількість отримувачів"
+      color: "Колір"
+      icon: "Іконка"
+    embed:
+      embed: "Код для вбудови"
+    upload_form:
+      Vinnytsya: "Вінниця"
+      Kyiv: "Київ"
+      Lviv: "Львів"
+      Ivano-Frankivsk: "Івано-Франківськ"
+      Zhytomyr: "Житомир"
+      Ternopil: "Тернопіль"
+      datatype_label: "план/факт"
+      fact: "факт"
+      plan: "план"
+    edit:
+      title: "Пояснення рівнів деталізації файлу"
+    index:
+      title: "Документи для візуалізації"
+      upload_budget_file: "Завантажити DBF/XLS/CSV"
+      upload_revenues: "Завантажити доходи"
+      upload_rot: "Завантажити доходи ROT"
+      upload_rot_fond: "Завантажити доходи - Фонд"
+      upload_expences: "Завантажити видатки"
+      upload_rov: "Завантажити видатки ROV"
+      upload_rov_fond: "Завантажити видатки - Фонд"
+    show:
+      title: "Візуалізація файлу"
+      editinfo: "Пояснення"
+    visify_list:
+      tab_bubbletree: "Діаграма куль"
+      tab_sunburst_zoomable: "Масштабована сонячна діаграма"
+      tab_sunburst: "Сонячна діаграма"
+      tab_sunburst_bilevel: "Двохрівнева сонячна діаграма"
+      tab_sunburst_seq: "Посл-сть сонячних діаграм"
+      tab_treemap: "Деревовидна схема"
+      tab_icicle: "Діаграма бурульками"
+      tab_circles: "Кругова діаграма"
+      tab_collapsible: "Зведена діаграма"
   calendar_actions:
     form:
       holder: "Власник"
@@ -64,6 +111,7 @@ uk:
       countdown_title: "Заголовок"
       date: "Дата закінчення"
       countdown_event: "Дія"
+      select_event: "Будь-ласка оберіть подію"
     edit:
       title: "Редагування календаря"
     index:
@@ -81,30 +129,29 @@ uk:
     form:
       title: "Редагування події"
       name: "Заголовок"
-      holder: "Виконавець"
       tab1_title: "Налаштування"
       tab2_title: "Опис"
       tab3_title: "Дата"
       tab4_title: "Вкладення"
+      town: "Місто"
+      community: "Громада"
+      holder: "Виконавець"
       icon: "Іконка"
+      color: "Колір фона"
+      text_color: "Колір текста"
       description: "Детальний опис події"
       starts_at: "Початок"
       ends_at: "Закінчення"
-      all_day: "Цілодобава"
-      browse_file: "Виберіть файл"
-      browse_file_placeholder: "Введіть короткий опис файла"
-      add_file: "Додати файл"
-      color: "Колір фона"
-      text_color: "Колір текста"
-      close: "Закрити"
-    index:
-      title: "Події"
+      all_day: "Цілодобово"
+      confirm: "Зберегти зміни?"
     show:
       tab1_title: "Деталі події"
       tab3_title: "Додатки"
       starts_at: "Початок"
       ends_at: "Закінчення"
-      all_day: "Цілодобава"
+      all_day: "Цілодобово"
+    index:
+      title: "Події"
   public:
     timeline:
       city: "Дії влади"
@@ -116,25 +163,33 @@ uk:
       subscribe_placeholder: "Вкажіть e-mail для отримання оновлень календаря"
     event:
       empty_event: "Виберіть подію для відображення."
-  visify:
-    budget: "Візуалізація бюджету"
-    bubbletree:
-      title: "Кулі 1"
-      descr: "візуалізація"
-    sunburst:
-      title: "Кругова діаграма 1"
-      descr: "візуалізація"
-    bubblechart:
-      title: "Кулі 2"
-      descr: "візуалізація"
-    sunburst_seq:
-      title: "Кругова діаграма 2"
-    circle_packing:
-      title: "Кулі 3"
-    treemap:
-      title: "Мапа"
-    force_collapsible:
-      title: "Дерево"
+  widgets:
+    visify:
+      sidebar:
+        explanation: "Пояснення"
+        comparison_within_years: "Порівняння по роках"
+        chart: "Графік"
+        pie: "Кругова діаграма"
+        table: "Таблиця"
+      slider:
+        by_month: "з розбивкою по місяцям"
+      bubbletree:
+        title: "Кулі 1"
+        descr: "візуалізація"
+      sunburst:
+        title: "Кругова діаграма 1"
+        descr: "візуалізація"
+      bubblechart:
+        title: "Кулі 2"
+        descr: "візуалізація"
+      sunburst_seq:
+        title: "Кругова діаграма 2"
+      circle_packing:
+        title: "Кулі 3"
+      treemap:
+        title: "Мапа"
+      force_collapsible:
+        title: "Дерево"
   revenues:
     index:
       title: "Доходи"
@@ -158,35 +213,6 @@ uk:
       title: "Завантажити файл з видатками"
     edit:
       title: "Редагувати файл з видатками"
-  budget_files:
-    index:
-      upload_revenues: "Завантажити доходи"
-      upload_expences: "Завантажити видатки"
-      upload_rot: "Завантажити доходи ROT"
-      upload_rov: "Завантажити видатки ROV"
-      upload_rot_fond: "Завантажити доходи - Фонд"
-      upload_rov_fond: "Завантажити видатки - Фонд"
-      upload_budget_file: "Завантажити DBF/XLS/CSV"
-      title: "Документи для візуалізації"
-    show:
-      title: "Візуалізація файлу"
-      editinfo: "Пояснення"
-      tab_bubbletree: "Bubble tree"
-      tab_sunburst: "Sunburst"
-      tab_sunburst_seq: "Sunburst seq"
-      tab_treemap: "Tree map"
-      tab_circles: "Circles"
-      tab_collapsible: "Collapsible"
-    editinfo:
-      title: "Пояснення рівнів деталізації файлу"
-    editinfo_form:
-      name: "Коротка назва"
-      description: "Детальний опис"
-      acceptors: "Кількість отримувачів"
-      color: "Колір"
-      icon: "Іконка"
-    embed:
-      embed: "Код для вбудови"
   static:
     budget_file_help:
       help: "Інструкція по завантаженню файлів"
@@ -200,8 +226,40 @@ uk:
   author: "Автор"
   city_actions: "Дії влади"
   people_actions: "Дії громадян"
-  drag_file: "перетягніть файли"
-  select_from_list: "або віберіть зі списку"
+  drag_file: "Перетягніть файли сюди"
+  select_from_list: "або виберіть зі списку"
   embed: "Код для вбудови"
   name: "Назва"
   footer: "ПРООН в Україні та Інтерньюз Нетворк"
+
+  calendar:
+    create: "Календар був успішно створений."
+    update: "Календар був успішно оновлений."
+    delete: "Календар видалено."
+
+  calendar_action:
+    create: "Дія була успішно створена."
+    update: "Дія була успішно оновлена."
+    delete: "Дія була успішно видалена."
+
+  budget_files_controller:
+    load_success: "Дані успішно завантажені."
+    load_fail: "Не вдалося завантажити файл. Перевірте чи тип файлу відповідає змісту даних =>"
+    save: "Дані збережені успішно."
+    delete: "Дані успішно видалені."
+
+  taxonomies_controller:
+    save_success: "Дані успішно збережені."
+    delete_success: "Дані успішно видалені."
+
+  eventowner_select:
+    town: "Місто"
+    community: "Громада"
+
+  application:
+    auth_error: "Помилка авторизаціЇ: "
+
+  calendars_err:
+    title: "Заголовок "
+    owner: "Виконавець  "
+    save_error: "Помилка збереження: "

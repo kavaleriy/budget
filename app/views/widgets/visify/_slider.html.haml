@@ -1,8 +1,8 @@
 %h3
   = select_tag 'year', options_for_select(@range.map{|k,v| k}, @sel_year)
-  рік
+  = t('datetime.prompts.year')
   %small
-    з розбивкою по місяцях
+  = t('.by_month')
 
 .month.col-xs-12
   %ul.views.nav.nav-pills.pull-left{role: 'tablist'}

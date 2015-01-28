@@ -14,7 +14,7 @@
       %th
         = t('owner')
       %th
-        =t '.actions', :default => t("helpers.actions")
+        =t 'form.actions', :default => t("helpers.actions")
   %tbody
     - @taxonomies.each do |taxonomy|
       %tr
@@ -24,5 +24,5 @@
           -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
         %td= taxonomy.owner
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'
+          = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
+          = link_to t('form.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'
