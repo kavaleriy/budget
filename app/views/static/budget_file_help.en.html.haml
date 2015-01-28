@@ -1,0 +1,89 @@
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-info-circle
+    = t('.help')
+
+%h4
+  General instructions
+%p
+  The system lets you load files in formats XLS, CSV та DBF.
+%p
+  Files should contain table data (columns and rows).
+%p
+  CSV files content should be in UTF-8 charset.
+%p
+  Columns fulfil the visualization levels. The first row contains level names.
+%p
+  A file can contain data for several years and in context of several months:
+  %ul
+    %li
+      column _year contains year (for example 2014).
+      By default the system takes into consideration data of the current year if column _year is not specified.
+    %li
+      column _month contains a month number [1..12] or 0 if it is current year data.
+      By default the system takes into consideration data of the current year if column _month is not specified.
+%p
+
+%hr
+
+%h4
+  Loading files with various table structure
+%p
+  The system lets to load files with various column number (menu item Budget visualization > Budget files > Load XLS, CSV and DBF)
+  The first column corresponds to the first level of specification, second - for the second etc. The last column must contain the sum.
+%p
+  See the example file free_form.xlsx.
+
+
+%hr
+
+%h4
+  Loading files with Revenues
+%ul
+  %li
+    ROT*.dbf (menu item Budget visualization > Budget files > Load revenues > Load revenues ROT). ROT*.dbf imported from external systems and has a rigid structure.
+  %li
+    File "Revenues - Fund" (menu item Budget visualization > Budget files > Load revenues > Load revenues - Fund) lets to load revenues in context of general and special funds and contains such columns: "kkd, General fund, Special fund", the last two columns are responsible for the sum of General fund and the sum of Special fund accordingly.
+    %br
+    See the example file fond_revenues.xlsx.
+
+%hr
+
+%h4
+  Loading files with Expenses:
+%ul
+  %li
+    ROV*.dbf (menu item Budget visualization > Budget files > Load expenses > Load expenses ROV). ROV*.dbf imported from external systems and has a rigid structure.
+  %li
+    File "Expenses - Fund" (menu item Budget visualization > Budget files > Load expenses > Expenses – Fund) lets to load revenues in context of general and special funds and contains such columns: «Source, Manager, Functional classification, General fund, Special fund», the last two columns are responsible for the sum of General fund and the sum of Special fund accordingly.
+    %br
+    See the example file fond_expences.xlsx.
+
+%hr
+
+%h4
+  Explanation for the budget files.
+%p
+  The visualization window opens after loading the file with correct data.
+%p
+  The explanation can be specified for every sum (button "Explanation"):
+%ul
+  %li
+    short title
+  %li
+    color
+  %li
+    detailed description
+  %li
+    visualization picture
+%p
+  %b Note:
+  Explanation can contain free html-code, iframe etc. in its' body.
+%p
+  %b Note:
+  The system has a directory with explanation if the level name matches the directory name. The system automatically loads explanation for the visualization:
+  %ul
+    %li kkd – revenues functional classification,
+    %li ktfk - expenses functional classification,
+    %li kvk – departmental classification,
+    %li ekv – economical classification
