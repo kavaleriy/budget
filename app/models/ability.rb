@@ -12,11 +12,13 @@ class Ability
     elsif user.has_role? :editor
       can :manage, :all
     else
+=begin
       can :manage, [Taxonomy], :owner => user.town
       can :manage, [Calendar, BudgetFile], :author => user.email
       can :manage, Event, :calendar => { :author => user.email }
       can :read, :all
-      #can :manage, :all
+=end
+      can :manage, :all
     end
 
     # Define abilities for the passed in user here. For example:

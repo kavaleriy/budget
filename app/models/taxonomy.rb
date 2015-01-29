@@ -109,7 +109,7 @@ class Taxonomy
 
   protected
 
-  def create_tree_item(items, key = 'Всього')
+  def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
     node = {
         'amount' => items[:amount],
         'key' => key,
@@ -158,7 +158,7 @@ class Taxonomy
   def load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
-      items[row[0]] = { title: row['Коротка назва'], color: row['Колір'], icon: row['Іконка'], description: row['Детальний опис'] }
+      items[row[0]] = { title: row[I18n.t('activerecord.models.taxonomy.short_title')], color: row[I18n.t('activerecord.models.taxonomy.color')], icon: row[I18n.t('activerecord.models.taxonomy.icon')], description: row[I18n.t('activerecord.models.taxonomy.description')] }
     end
     items
   end

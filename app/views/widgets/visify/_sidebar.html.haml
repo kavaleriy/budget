@@ -82,11 +82,12 @@
         table.hide()
       },
       show: function(node){
+        I18n.locale = document.location.href.split("locale=")[1].substr(0,2)
         label = node.label || ''
 
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
-          percParentTitle = ' від ' + node.parent.label || ''
+          percParentTitle = I18n.t("js.visify.of") + node.parent.label || ''
         }
         else {
           percentage = '100%'
@@ -95,8 +96,8 @@
 
         div = '<h3>' + label
           + ", <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></span></h3>"
-          + "<h4>план: " + aVisify.helpers.formatNumber(node.amount)
-          + ", факт: " + aVisify.helpers.formatNumber(node.amount * .95) + "</h4>"
+          + "<h4>" + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
+          + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h4>"
 
         $(aContainer + ' #title').html(div)
 

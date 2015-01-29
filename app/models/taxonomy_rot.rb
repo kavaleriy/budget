@@ -1,12 +1,12 @@
 class TaxonomyRot < Taxonomy
   VERSION = 1
   COLUMNS = {
-      'box' =>{:level => 1, :title=>'Кошик'},
+      'box' =>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rot.basket')},
       #'_fond'=>{:title=>'Фонд'},
-      'kkd_a'=>{:level => 2, :title=>'Розряд 1'},
-      'kkd_bb'=>{:level => 3, :title=>'Розряд 1-3'},
-      'kkd_cc'=>{:level => 4, :title=>'Розряд 1-5'},
-      'kkd'=>{:level => 5, :title=>'Розряд 1-8'}
+      'kkd_a'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot.rank1')},
+      'kkd_bb'=>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rot.rank3')},
+      'kkd_cc'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rot.rank5')},
+      'kkd'=>{:level => 5, :title=>I18n.t('activerecord.taxonomy_rot.rank8')}
   }
 
   def self.get_taxonomy(owner)

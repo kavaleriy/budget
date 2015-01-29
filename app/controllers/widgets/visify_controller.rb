@@ -1,6 +1,10 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_budget_file
-  #before_action :set_taxonomy_file
+
+  before_action :set_locale
+  def set_locale
+    I18n.locale = params[:locale]
+  end
 
   MAX_NODES_PER_LEVEL = 8
 

@@ -1,11 +1,11 @@
 class TaxonomyRotFond < Taxonomy
   VERSION = 1
   COLUMNS = {
-      'fond'=>{:level => 1, :title=>'Фонд'},
-      'kkd_a'=>{:level => 2, :title=>'Розряд 1'},
-      'kkd_bb'=>{:level => 3, :title=>'Розряд 1-3'},
-      'kkd_cc'=>{:level => 4, :title=>'Розряд 1-5'},
-      'kkd_ddd'=>{:level => 5, :title=>'Розряд 1-8'}
+      'fond'=>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rot_fond.fund')},
+      'kkd_a'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot_fond.rank1')},
+      'kkd_bb'=>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rot_fond.rank3')},
+      'kkd_cc'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rot_fond.rank5')},
+      'kkd_ddd'=>{:level => 5, :title=>I18n.t('activerecord.taxonomy_rot_fond.rank8')}
   }
 
   def self.get_taxonomy(owner)
@@ -20,12 +20,12 @@ class TaxonomyRotFond < Taxonomy
     kkd = row['kkd'].to_s
     return if kkd == ''
 
-    amount1 = row['Загальний фонд'].to_i
-    amount2 = row['Спеціальний фонд'].to_i
+    amount1 = row[I18n.t('activerecord.taxonomy_rot_fond.gen_fund')].to_i
+    amount2 = row[I18n.t('activerecord.taxonomy_rot_fond.spec_fund')].to_i
 
     [
-        { 'amount' => amount1, 'fond' => 'Загальний фонд' },
-        { 'amount' => amount2, 'fond' => 'Спеціальний фонд' },
+        { 'amount' => amount1, 'fond' => I18n.t('activerecord.taxonomy_rot_fond.gen_fund') },
+        { 'amount' => amount2, 'fond' => I18n.t('activerecord.taxonomy_rot_fond.spec_fund') },
     ].map { |line|
       fond = line['fond']
       amount = line['amount'] / 100
