@@ -11,13 +11,13 @@
   <% end %>
 
   <div><%= f.label t('devise.passwords.password') %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field t('devise.passwords.password'), autocomplete: "off" %></div>
+    <%= f.password_field :password, autocomplete: "off" %></div>
 
   <div><%= f.label t('devise.passwords.password_confirmation') %><br />
-    <%= f.password_field t('devise.passwords.password_confirmation'), autocomplete: "off" %></div>
+    <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
 
   <div><%= f.label t('devise.passwords.current_password') %> <i>(<%= t('devise.passwords.need_password') %>)</i><br />
-    <%= f.password_field t('devise.passwords.current_password'), autocomplete: "off" %></div>
+    <%= f.password_field :current_password, autocomplete: "off" %></div>
 
   <div><%= f.submit t('devise.passwords.update') %></div>
 <% end %>
