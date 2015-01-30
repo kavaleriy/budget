@@ -24,10 +24,10 @@
             n = n*-1;
             prefix = '-';
         }
-        if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + 'трлн';
-        if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + 'млрд';
-        if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + 'млн';
-        if (n >= 1000) return prefix+Math.round(n / 100)/10 + 'тис';
+        if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + I18n.t("short_units.trillion");
+        if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + I18n.t("short_units.billion");
+        if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + I18n.t("short_units.million");
+        if (n >= 1000) return prefix+Math.round(n / 100)/10 + I18n.t("short_units.thousand");
         else return prefix+n;
       },
 

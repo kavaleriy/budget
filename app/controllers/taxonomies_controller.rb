@@ -5,6 +5,11 @@ class TaxonomiesController < ApplicationController
   before_action :authenticate_user!, except: :show
   load_and_authorize_resource
 
+  before_action :set_locale
+  def set_locale
+    I18n.locale = params[:locale]
+  end
+
   def index
     @taxonomies = view_context.get_taxonomies
   end

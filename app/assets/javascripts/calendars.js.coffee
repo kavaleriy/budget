@@ -27,7 +27,7 @@ $(document).on 'ready page:change', ->
   # initialize the calendar
   #	-----------------------------------------------------------------
   $('#calendar').fullCalendar
-    lang: document.location.href.split("locale=")[1],
+    lang: document.location.href.split("locale=")[1].substr(0,2)
     editable: true,
     header:
       left: 'prev,next today',
