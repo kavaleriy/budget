@@ -43,6 +43,15 @@
 //= require_tree .
 
 
+window.aHelper = {
+    lang: function() {
+        locale = document.location.href.split("locale=")[1] || 'uk'
+        return locale.substr(0,2)
+    }
+}
+
+
+
 $(document).on('ready page:change', function() {
     $(".bootstrap_flash").delay(10000).fadeOut(200);
 })

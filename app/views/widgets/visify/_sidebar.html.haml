@@ -82,7 +82,7 @@
         table.hide()
       },
       show: function(node){
-        I18n.locale = document.location.href.split("locale=")[1].substr(0,2)
+        I18n.locale = window.aHelper.lang()
         label = node.label || ''
 
         if (node.parent && node.amount <= node.parent.amount) {

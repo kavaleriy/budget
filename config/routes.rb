@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  namespace :vtarnay do
+    get 'module3/index' => 'module3#index'
+    get 'module3/:id' => 'module3#show'
+  end
+
+
   namespace :widgets do
     get 'visify/get_sunburst_data/:file_id/:year/:month' => 'visify#get_sunburst_data'
     get 'visify/get_bubbletree_data/:file_id/:year/:month' => 'visify#get_bubbletree_data'
@@ -58,6 +64,7 @@ Rails.application.routes.draw do
 
 
   resources :subscribers
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
