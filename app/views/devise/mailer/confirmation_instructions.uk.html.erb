@@ -1,0 +1,5 @@
+<p>Вітаємо <%= @email %>!</p>
+
+<p>Ви можете підтвердити Ваш email за посиланням нижче:</p>
+
+<p><%= link_to "Підтвердити мій обліковий запис", confirmation_url(@resource, confirmation_token: @token) %></p>

@@ -1,57 +1,91 @@
-uk:
+en:
   errors:
     messages:
-      expired: "прострочено, створіть новий"
-      not_found: "не знайдено"
-      already_confirmed: "вже було підтверджено, спробуйте увійти"
-      not_locked: "не було заблоковано"
+      expired: "expired, create new"
+      not_found: "not found"
+      already_confirmed: "already confirmed, try to enter"
+      not_locked: "not locked"
       not_saved:
-        one: "Виникла помилка, через яку неможливо зберегти зміни:"
-        other: "Виникли помилки (загалом - %{count}), через які неможливо зберегти зміни:"
+       one: "1 error prohibited this %{resource} from being saved:"
+       other: "%{count} errors prohibited this %{resource} from being saved:"
+
+  activerecord:
+    attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
 
   devise:
     failure:
-      already_authenticated: 'Ви вже увійшли.'
-      unauthenticated: 'Ви маєте увійти або зареєструватися.'
-      unconfirmed: 'Ви маєте підтвердити Ваш обліковий запис.'
-      locked: 'Ваш обліковий запис заблоковано.'
-      invalid: 'Невірний email або пароль.'
-      invalid_token: 'Невірний токен.'
-      timeout: 'Час вашої сесії вичерпано. Увійдіть знову для продовження, будь ласка.'
-      inactive: 'Ваш обліковий запис ще не було активовано.'
+      already_authenticated: 'You are already signed in.'
+      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unconfirmed: 'You have to confirm your email address before continuing.'
+      locked: 'Your account is locked.'
+      invalid: 'Invalid %{authentication_keys} or password.'
+      invalid_token: 'Invalid token.'
+      timeout: 'Your session expired. Please sign in again to continue.'
+      inactive: 'Your account is not activated yet.'
     sessions:
-      signed_in: 'Вхід успішний.'
-      signed_out: 'Вихід успішний.'
+      sign_in: 'Sign in'
+      sign_up: 'Sign up'
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'
     passwords:
-      send_instructions: 'Ви отримаєте інструкції зі скидання паролю через декілька хвилин.'
-      updated: 'Ваш пароль було успішно змінено.'
-      updated_not_active: 'Ваш пароль було успішно змінено.'
-      send_paranoid_instructions: "Ваш email існує у нашій базі даних, Вам надіслано посилання для відновлення вашого паролю"
+      password: 'Password'
+      new_password: "New password"
+      current_password: "Current password"
+      need_password: 'we need your current password to confirm your changes'
+      password_confirmation: "Password confirmation"
+      change_password: "Change password"
+      forgot_your_password: "Forgot your password?"
+      remember_me: "Remember me"
+      reset_password_instructions: "Reset password instructions"
+      send_me_instructions: "Send me reset password instructions"
+      send_instructions: 'You will receive an email with instructions for how to unlock your account in a few minutes.'
+      update: "Update"
+      updated: 'Your password has been changed successfully. You are now signed in.'
+      updated_not_active: 'Your password has been changed successfully.'
+      send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     confirmations:
-      send_instructions: 'На Ваш email надіслано інструкції з підтвердження облікового запису.'
-      send_paranoid_instructions: 'Якщо Ваш email існує у нашій базі даних, Вам надіслано інструкції з підтвердження облікового запису.'
-      confirmed: 'Ваш обліковий запис було успішно підтверджено.'
+      title: "Resend confirmation instructions"
+      send_instructions: 'You will receive an email with instructions for how to unlock your account in a few minutes.'
+      send_paranoid_instructions: 'If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.'
+      confirmed: 'Your account has been unlocked successfully. Please sign in to continue.'
     registrations:
-      signed_up: 'Вітаємо! Ви успішно зареєструвалися.'
-      inactive_signed_up: 'Ви успішно зареєструвалися. Але, Ви не можете увійти через те, що ваш обліковий запис %{reason}.'
-      updated: 'Ви успішно оновили свій обліковий запис.'
-      update_needs_confirmation: "Ви успішно оновили свій обліковий запис, але ми маємо перевірити Ваш email. Будь ласка, перевірте Ваш email та перейдіть за посиланням для того, щоб підтвердити Ваш email."
-      destroyed: 'До побачення! Ваш обліковий запис було успішно закрито. Сподіваємось незабаром побачитись з Вами знову.'
+      waiting_confirmation: 'Currently waiting confirmation for: '
+      signed_up: 'Welcome! You have signed up successfully.'
+      inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is not yet activated.'
+      updated: 'Your account has been updated successfully.'
+      update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address."
+      destroyed: 'Bye! Your account has been successfully cancelled. We hope to see you again soon.'
       reasons:
-        inactive: 'не активний'
-        unconfirmed: 'не підтверджено'
-        locked: 'заблоковано'
+        inactive: 'inactive'
+        unconfirmed: 'unconfirmed'
+        locked: 'locked'
+      cancel_my_account: "Cancel my account"
     unlocks:
-      send_instructions: 'На Ваш email надіслано інструкції з розблокування.'
-      unlocked: 'Ваш обліковий запис було успішно розблоковано.'
-      send_paranoid_instructions: 'Якщо Ваш email існує у нашій базі даних, Вам надіслано інструкції з розблокування.'
+      resend_unlock_instructions: "Resend unlock instructions"
+      send_instructions: 'You will receive an email with instructions for how to unlock your account in a few minutes.'
+      unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
+      send_paranoid_instructions: 'If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.'
     omniauth_callbacks:
-      success: 'Вхід успішний з облікового запису %{kind}.'
-      failure: 'Неможливо увійти з облікового запису %{kind} через те, що обліковий запис "%{reason}".'
+      success: 'Successfully authenticated from %{kind} account.'
+      failure: 'Could not authenticate you from %{kind} because \"%{reason}\".'
     mailer:
+      confirm_my_account: "Confirm my account"
+      change_my_password: "Change my password"
+      unlock_my_account: "Unlock my account"
       confirmation_instructions:
-        subject: 'Інструкції з підтвердження паролю'
+         subject: "Confirmation instructions"
       reset_password_instructions:
-        subject: 'Інструкції зі скидання паролю'
+         subject: "Reset password instructions"
       unlock_instructions:
-        subject: 'Інструкції з розблокування'
+         subject: "Unlock instructions"
+    links:
+      not_receive_confirmation: "Didn't receive confirmation instructions?"
+      not_receive_unlock: "Didn't receive unlock instructions?"
+      sign_in_with: 'Sign in with'
+
+    confirm: "Are you sure?"
+    back: "Back"
