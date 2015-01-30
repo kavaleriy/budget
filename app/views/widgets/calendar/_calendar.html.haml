@@ -4,7 +4,7 @@
 
   function init_calendar() {
     return $('#calendar_view').fullCalendar({
-      lang: 'uk',
+      lang: document.location.href.split("locale=")[1].substr(0,2),
       editable: false,
       header: {
         left: '',
