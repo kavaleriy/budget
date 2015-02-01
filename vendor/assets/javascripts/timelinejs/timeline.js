@@ -7514,15 +7514,15 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			_dates = [];
 			VMM.fireEvent(global, config.events.messege, "Building Dates");
 			updateSize();
-			
+
 			for(var i = 0; i < data.date.length; i++) {
 				
 				if (data.date[i].startDate != null && data.date[i].startDate != "") {
-					
+
 					var _date		= {},
 						do_start	= VMM.Date.parse(data.date[i].startDate, true),
 						do_end;
-						
+
 					_date.startdate		= do_start.date;
 					_date.precisiondate	= do_start.precision;
 					

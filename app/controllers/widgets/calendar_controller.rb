@@ -16,7 +16,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
   def timelinejs_data
-    starts_at = Date.current.strftime("%Y,%m,%d") #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    starts_at = Date.current.strftime('%Y,%m,%d') #Event.asc(:starts_at).limit(1).first.starts_at.to_date
 
     timeline = {
         'timeline' => {
@@ -38,8 +38,8 @@ class Widgets::CalendarController < Widgets::WidgetsController
       media = e.holder == 1 ? { img: 'timeline-city.png', thumb: 'city.png' } : { img: 'timeline-people.png', thumb: 'timeline-people.png'}
 
     point = {}
-    point['startDate'] = e.starts_at.strftime("%Y,%m,%d")
-    point['endDate'] = e.ends_at.strftime("%Y,%m,%d") unless e.ends_at.nil?
+    point['startDate'] = e.starts_at.strftime('%Y,%m,%d')
+    point['endDate'] = e.ends_at.strftime('%Y,%m,%d') unless e.ends_at.nil?
     point['headline'] = "#{holder_to_string(e.holder)} - #{e.title}"
     point['text'] = e.description
     point['asset'] =

@@ -1,5 +1,5 @@
 # Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
+# All this logic will automatically be available in application.js.erb.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'ready page:change', ->
@@ -27,7 +27,7 @@ $(document).on 'ready page:change', ->
   # initialize the calendar
   #	-----------------------------------------------------------------
   $('#calendar').fullCalendar
-    lang: document.location.href.split("locale=")[1].substr(0,2)
+    lang: document.location.href.split("locale=")[1]
     editable: true,
     header:
       left: 'prev,next today',
