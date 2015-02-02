@@ -10,6 +10,7 @@
       %li{'class' => get_month_class(i.to_s, @sel_month)}
         %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
           =month
+  = render partial: 'slider_time'
 
 :javascript
 

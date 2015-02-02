@@ -1,0 +1,67 @@
+%p
+#slider_container
+  .btn-group{"aria-label" => "...", :role => "group"}
+    %button.btn.btn-default{:type => "button", :id => "slider_button_left"}
+      %span.glyphicon.glyphicon-step-backward{"aria-hidden" => "true"}
+    %button.btn.btn-default{:type => "button", :id => "slider_button_right"}
+      %span.glyphicon.glyphicon-step-forward{"aria-hidden" => "true"}
+  #slider
+  #slider_scale.steps
+    %span.tick
+      |
+      %br
+      2010
+    %span.tick{:style => "font-size: 8px; left: 6%;"}
+      |
+    %span.tick{:style => "font-size: 8px; left: 11%;"}
+      |
+    %span.tick{:style => "font-size: 8px; left: 16%;"}
+      |
+    %span.tick{:style => "left: 20%;"}
+      |
+      %br 2011
+    %span.tick{:style => "left: 40%;"}
+      |
+      %br 2012
+    %span.tick{:style => "left: 60%;"}
+      |
+      %br 2013
+    %span.tick{:style => "left: 80%;"}
+      |
+      %br 2014
+    %span.tick{:style => "left: 100%;"}
+      |
+      %br 2015
+
+:javascript
+
+  $(function() {
+
+    $('#slider_button_right').click(function(){
+      var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
+      slider.slider( "value", sliderCurrentValue + 1 );
+    })
+
+    $('#slider_button_left').click(function(){
+      var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
+      slider.slider( "value", sliderCurrentValue - 1 );
+      if (sliderCurrentValue == 0) {
+        alert("Hello");
+      }
+    })
+
+    var slider = $("#slider").slider({
+            min: 0,
+            max: 5,
+            step: 1,
+            create: function (event, ui) {
+              //var data = "<p>Hello";
+              //$('#slider_scale').html(data);
+            },
+            change: function(event, ui) {
+              var sliderValue = $("#slider").slider( "option", "value" );
+            }
+        })
+  });
+
+

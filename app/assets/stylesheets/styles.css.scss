@@ -68,3 +68,46 @@
   }
 }
 
+// --------------------- CHRONOLOGICAL SLIDER -----------------------
+
+#slider_container {
+  margin-top: 100px;
+  font-size: 11px;
+  color: #798d8f;
+}
+
+#slider {
+
+}
+
+.steps {
+  border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
+  position: relative;
+  height: 30px;
+}
+
+.tick {
+  border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
+  position: absolute;
+  width: -1em;
+  margin-left: -1em;
+  text-align: center;
+  left: 0;
+}
+
+#slider_container .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+  border-bottom-right-radius: 10px/*{cornerRadius}*/;
+  border-bottom-left-radius: 10px/*{cornerRadius}*/;
+  border-top-right-radius: 10px/*{cornerRadius}*/;
+  border-top-left-radius: 10px/*{cornerRadius}*/;
+}
+
+#slider_container .ui-slider-handle:focus {
+  outline: none;
+}
+
+#slider_container .btn {
+  margin-bottom: 10px;
+  padding: 0;
+}
+
