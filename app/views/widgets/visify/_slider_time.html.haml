@@ -7,61 +7,71 @@
       %span.glyphicon.glyphicon-step-forward{"aria-hidden" => "true"}
   #slider
   #slider_scale.steps
-    %span.tick
-      |
-      %br
-      2010
-    %span.tick{:style => "font-size: 8px; left: 6%;"}
-      |
-    %span.tick{:style => "font-size: 8px; left: 11%;"}
-      |
-    %span.tick{:style => "font-size: 8px; left: 16%;"}
-      |
-    %span.tick{:style => "left: 20%;"}
-      |
-      %br 2011
-    %span.tick{:style => "left: 40%;"}
-      |
-      %br 2012
-    %span.tick{:style => "left: 60%;"}
-      |
-      %br 2013
-    %span.tick{:style => "left: 80%;"}
-      |
-      %br 2014
-    %span.tick{:style => "left: 100%;"}
-      |
-      %br 2015
 
 :javascript
 
   $(function() {
 
+    var start_year = 2010;
+    var min_val = 0;
+    var max_val = 20;
+
     $('#slider_button_right').click(function(){
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
       slider.slider( "value", sliderCurrentValue + 1 );
+      if (sliderCurrentValue == max_val && start_year != 2010) {
+        start_year = start_year + 1;
+        create_slider(start_year);
+      } else if (sliderCurrentValue >= max_val-1 && start_year == 2010) {
+        $('#slider_button_right').attr("disabled", "disabled");
+      }
     })
 
     $('#slider_button_left').click(function(){
+      $('#slider_button_right').removeAttr("disabled", "disabled");
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
       slider.slider( "value", sliderCurrentValue - 1 );
-      if (sliderCurrentValue == 0) {
-        alert("Hello");
+      if (sliderCurrentValue == min_val) {
+        start_year = start_year - 1;
+        create_slider(start_year);
       }
     })
 
     var slider = $("#slider").slider({
-            min: 0,
-            max: 5,
+            min: min_val,
+            max: max_val,
             step: 1,
             create: function (event, ui) {
-              //var data = "<p>Hello";
-              //$('#slider_scale').html(data);
+              create_slider(start_year);
             },
             change: function(event, ui) {
-              var sliderValue = $("#slider").slider( "option", "value" );
             }
         })
+
+    function create_slider(start_year) {
+       var data = "";
+       var k = 1;
+       for(var i = 0; i <= 5; i++) {
+          data = data + "<span class=\"tick\" style=\'left: " + (i*20) + "%;\'>|<br>" + (start_year + i) + "</span>";
+          for(var j = k; j < k+3 && i!=5; j++) {
+             data = data + "<span class=\"tick\" style=\'font-size: 8px; left: " + (j*5+1) + "%;\'>|<br></span>";
+          }
+          k = j+1;
+       }
+       $('#slider_scale').html(data);
+    }
+
+  $("#slider").keyup(function (event) {
+    if (event.keyCode == 37) {
+      // go left
+      $('#slider_button_left').trigger("click");
+    } else if (event.keyCode == 39) {
+      // go right
+      $('#slider_button_right').trigger("click");
+    }
+  })
+
   });
+
 
 
