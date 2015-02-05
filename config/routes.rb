@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  get 'test/test_embed_code' # Not for production version!!!
+
   namespace :vtarnay do
     get 'module3/index' => 'module3#index'
     get 'module3/:id' => 'module3#show'
   end
-
 
   namespace :widgets do
     get 'visify/get_sunburst_data/:file_id/:year/:month' => 'visify#get_sunburst_data'
