@@ -36,7 +36,8 @@
 .afooter.col-xs-12
   .bottomlinks
     %ul
-      %li.mainlink Бюджет
+      %li.mainlink
+        = t('.budget')
       %li
         = link_to static_budget_file_help_path do
           =t('static.budget_file_help.help')
