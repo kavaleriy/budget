@@ -100,7 +100,7 @@
              })
 
          // Add text "2015 Year" into the middle of Calendar pie
-         var lang = document.location.href.split("locale=")[1];
+         var lang = document.location.href.split("locale=")[1].substr(0,2);
          if (lang === undefined) {
           I18n.locale = 'uk';
          } else {

@@ -12,7 +12,9 @@
 = content_for :top do
   .timeline
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
-    .embed{ 'data-width' => '100%', 'data-height' => '400px', 'data-name' => 'timelinejs' }
+    %a.link_to_embed_code
+      = t('iframe.show_embed_code')
+    .embed_hide.embed{ 'data-width' => '100%', 'data-height' => '400px', 'data-name' => 'timelinejs' }
       = render partial: 'embed'
 %hr
 
@@ -37,7 +39,9 @@
   .tab-content
     #calendar_year.tab-pane.fade.in.active
       = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-      .embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle' }
+      %a.link_to_embed_code
+        = t('iframe.show_embed_code')
+      .embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
         = render partial: 'embed'
     #calendar_month.tab-pane.fade
       = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
@@ -63,7 +67,16 @@
 
 
 :javascript
-  $(document).on('ready page:change', function() {
+  $(document).bind('ready page:change', function() {
+
+    var lang = document.location.href.split("locale=")[1];
+    if (lang === undefined) {
+      I18n.locale = 'uk';
+    } else {
+      I18n.locale = lang;
+    }
+
+    var pie_frame_url;
 
     $('.embed').each(function(i, el) {
       name = $(el).attr('data-name')
@@ -74,7 +87,79 @@
       query = "#{URI.parse(request.url).query}"
 
       frame_url = path + "/widgets/calendar/"+ name + "/#{@calendar.id}" + '/?' + query
+      pie_frame_url = path + "/widgets/calendar/pie_cycle_for_embed/#{@calendar.id}" + '/?' + query
+      select_frame_size = "<span class=\"embed_label\">" + I18n.t('iframe.select') + "</span>" + "<select class=\"iframe_size_select\">\
+                                                             <option value=\"300\">300x300</option>\
+                                                             <option value=\"500\">500x500</option>\
+                                                             <option value=\"default\" selected>" + parseInt(width) + "x" + parseInt(height) + "</option>\
+                                                             <option value=\"other\">" + I18n.t('iframe.size') + "</option>\
+                                                     </select>"
       $(el).find('input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>")
+
+      $(el).each(function(i, sub_el) {
+        if(name == 'pie_cycle_for_embed') {
+          if($(el).find('.iframe_size_select').length == "") {
+             $(el).append(select_frame_size);
+             $(el).append("<div class=\"iframe_other_size\"></div>");
+           }
+        }
+      })
+
+    })
+
+    $('.iframe_size_select').change(function(e) {
+      var option = $(this).find(":selected").val();
+      if(option == "other" && $(this).next().text() == "") {
+        $(this).next().append("<input autofocus type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"width\" placeholder=\"width\"'></input> X \
+                               <input type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"height\" placeholder=\"height\"'></input> px");
+      } else if (option != "other") {
+        $(this).next().html("");
+        $(this).parents('div').find('.embed').find('input').val("<iframe width='" + option + "' height='" + option + "' src='" + pie_frame_url + "'></iframe>");
+      }
+    })
+
+    // function to dynamically fill the embed code with new width and height
+    $('.iframe_other_size').on('focusout', 'input', function(event){
+        var curr_value = $(this).val();
+        var sibling_value = $(this).siblings().val();
+        if(!$.isNumeric(curr_value)) {
+          curr_value = 100;
+        } else if(curr_value < 100) {
+          curr_value = 100;
+        } else if(curr_value > 1000) {
+          curr_value = 1000;
+        }
+        if(sibling_value != "") {
+          if(sibling_value < 100) {
+             sibling_value = 100;
+           } else if(sibling_value > 1000) {
+              sibling_value = 1000;
+           }
+          var width, height;
+          if($(this).attr('name') == "width") {
+            width = curr_value;
+            height = sibling_value;
+          } else {
+            width = sibling_value;
+            height = curr_value;
+          }
+
+          $(this).parents('div').find('.embed').find('input').val("<iframe width='" + width + "' height='" + height + "' src='" + pie_frame_url + "'></iframe>");
+        }
+    });
+
+    // show/hide field with embed code
+    $('.link_to_embed_code').click(function(e) {
+      e.stopImmediatePropagation();
+      if(!$(this).next().hasClass('shown')) {
+        $(this).text(I18n.t('iframe.hide_embed_code'));
+        $(this).next().addClass('shown');
+        $(this).next().slideDown();
+      } else {
+        $(this).text(I18n.t('iframe.show_embed_code'));
+        $(this).next().removeClass('shown');
+        $(this).next().slideUp();
+      }
     })
 
   })
