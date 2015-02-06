@@ -1,5 +1,5 @@
 class TaxonomyRotFond < Taxonomy
-  VERSION = 1
+  VERSION = 2
   COLUMNS = {
       'fond'=>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rot_fond.fund')},
       'kkd_a'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot_fond.rank1')},

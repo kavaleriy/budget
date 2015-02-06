@@ -11,7 +11,9 @@
     margin: 15px;
   }
 }
-
+.clear{
+  clear:both;
+}
 .main {
   form {
     margin: 15px;
@@ -46,12 +48,47 @@
   padding-top: 0px;
 }
 .afooter {
-  height: 100px;
+  height: 120px;
   margin-top: 30px;
   padding: 20px;
   color: white;
   background-color: #0A326E;
+
+  p{
+    text-align: center;
+  }
 }
+.bottomlinks{
+  display: block;
+  float: left;
+  font-size: small;
+  margin: 0 1em 1em 1em;
+  text-align: left;
+  width: 15%;
+  ul{
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: block;
+        list-style: none outside none;
+        margin: 2px;
+      }
+      li.mainlink {
+        font-size: big;
+        font-weight: bold;
+        margin: 0;
+        padding-top: 0.5em;
+      }
+  }
+  a:hover {
+    text-decoration: none;
+    padding-left: 11px;
+    border-left: 4px solid #128576;
+  }
+}
+
 
 .btn-default, .btn-danger {
   margin-left: 10px;
