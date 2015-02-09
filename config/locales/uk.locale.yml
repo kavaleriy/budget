@@ -120,12 +120,18 @@ uk:
         one: ! '%{count} секунда'
         other: ! '%{count} секунди'
     prompts:
-      day: День
-      hour: Година
-      minute: Хвилина
-      month: Місяць
-      second: Секунда
+      day: "День"
+      hour: "Година"
+      minute: "Хвилина"
+      month: "Місяць"
+      second: "Секунда"
       year: "Рік"
+      y: "р."
+      by_year: "по рокам"
+      by_quarter: "по кварталам"
+      by_month: "по місяцям"
+      quarter: "Квартал"
+      qr: "кв."
   errors:
     format: ! '%{attribute} %{message}'
     messages:
@@ -249,9 +255,9 @@ uk:
     array:
       last_word_connector: ! ' та '
       two_words_connector: ! ' і '
-      words_connector: ! ', '
+      words_connector: "! ', '"
   time:
-    am: до полудня
+    am: "до полудня"
     formats:
       default: ! '%a, %d %b %Y, %H:%M:%S %z'
       long: ! '%d %B %Y, %H:%M'

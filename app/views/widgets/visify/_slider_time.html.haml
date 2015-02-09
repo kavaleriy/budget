@@ -5,24 +5,35 @@
       %span.glyphicon.glyphicon-step-backward{"aria-hidden" => "true"}
     %button.btn.btn-default{:type => "button", :id => "slider_button_right"}
       %span.glyphicon.glyphicon-step-forward{"aria-hidden" => "true"}
+    %select
+      %option{:value => "12"}
+        = t("datetime.prompts.by_year")
+      %option{:value => "3"}
+        = t("datetime.prompts.by_quarter")
+      %option{:value => "1", :selected => "selected"}
+        = t("datetime.prompts.by_month")
   #slider
+  #slider_scale2.steps
   #slider_scale.steps
 
 :javascript
 
   $(function() {
 
-    var start_year = 2010;
+    I18n.locale = window.aHelper.lang();
+
+    var year = 2015;
+    var step = 1;
     var min_val = 0;
-    var max_val = 20;
+    var max_val = 12;
 
     $('#slider_button_right').click(function(){
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
-      slider.slider( "value", sliderCurrentValue + 1 );
-      if (sliderCurrentValue == max_val && start_year != 2010) {
-        start_year = start_year + 1;
-        create_slider(start_year);
-      } else if (sliderCurrentValue >= max_val-1 && start_year == 2010) {
+      slider.slider( "value", sliderCurrentValue + step );
+      if (sliderCurrentValue == max_val && year != 2015) {
+        year++;
+        $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
+      } else if (sliderCurrentValue >= max_val-step && year == 2015) {
         $('#slider_button_right').attr("disabled", "disabled");
       }
     })
@@ -30,46 +41,52 @@
     $('#slider_button_left').click(function(){
       $('#slider_button_right').removeAttr("disabled", "disabled");
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
-      slider.slider( "value", sliderCurrentValue - 1 );
+      slider.slider( "value", sliderCurrentValue - step );
       if (sliderCurrentValue == min_val) {
-        start_year = start_year - 1;
-        create_slider(start_year);
+        year--;
+        $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
       }
     })
 
     var slider = $("#slider").slider({
             min: min_val,
             max: max_val,
-            step: 1,
+            step: step,
             create: function (event, ui) {
-              create_slider(start_year);
-            },
-            change: function(event, ui) {
+              create_slider();
             }
         })
 
-    function create_slider(start_year) {
-       var data = "";
-       var k = 1;
-       for(var i = 0; i <= 5; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*20) + "%;\'>|<br>" + (start_year + i) + "</span>";
-          for(var j = k; j < k+3 && i!=5; j++) {
-             data = data + "<span class=\"tick\" style=\'font-size: 8px; left: " + (j*5+1) + "%;\'>|<br></span>";
-          }
-          k = j+1;
+    function create_slider() {
+       var months = I18n.t("date.abbr_month_names");
+       var data = "<span class=\"tick\" style=\'left: 1%;\'>|1 " + I18n.t("datetime.prompts.qr") + "</span>";
+       var data2 = "<span class=\"tick\" style=\'left: 1.5%;\'>" + months[1] + "</span>";
+       for(var i = 1; i < 4; i++) {
+          data = data + "<span class=\"tick\" style=\'left: " + (i*25) + "%;\'>|" + (i + 1) + " " + I18n.t("datetime.prompts.qr") + "</span>";
+       }
+       data = data + "<span id='slider_year' class=\"tick\" style=\'font-weight: bold; left: 96%;\'>" + year + " " + I18n.t("datetime.prompts.y") + "|</span>";
+       for(var i = 1; i < 12; i++) {
+          data2 = data2 + "<span class=\"tick\" style=\'left: " + (i*8.333333333333332) + "%;\'>|" + months[i+1] + "</span>";
        }
        $('#slider_scale').html(data);
+       $('#slider_scale2').html(data2);
     }
 
-  $("#slider").keyup(function (event) {
-    if (event.keyCode == 37) {
-      // go left
-      $('#slider_button_left').trigger("click");
-    } else if (event.keyCode == 39) {
-      // go right
-      $('#slider_button_right').trigger("click");
-    }
-  })
+    //$("#slider").keyup(function (event) {
+    //  if (event.keyCode == 37) {
+    //    // go left
+    //    $('#slider_button_left').trigger("click");
+    //  } else if (event.keyCode == 39) {
+    //    // go right
+    //    $('#slider_button_right').trigger("click");
+    //  }
+    //})
+
+    $("#slider_container select").change(function(){
+      $('#slider').slider('value', 0); // reset slider to zero point
+      step = $("#slider_container select option:selected").val();
+      $("#slider").slider('option', 'step', step);
+    })
 
   });
 
