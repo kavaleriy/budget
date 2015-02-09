@@ -16,48 +16,47 @@
     .embed_hide.embed{ 'data-width' => '100%', 'data-height' => '400px', 'data-name' => 'timelinejs' }
       = render partial: 'embed'
 %hr
+.row-eq-height
+  .left-panel.col-lg-3.col-xs-6.pull-left
+    = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
+    = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+    = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
 
-.left-panel.col-lg-3.col-xs-6.pull-left
-  = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
-  = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
-  = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+  .center.col-lg-6.col-xs-12
+    %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
+      %li.active
+        %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_calendar_year')
+      %li
+        %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
+          = t('.tab_calendar_month')
 
-.right-panel.col-lg-3.col-xs-6.pull-right
-  = render partial: '/widgets/calendar/event'
+    .tab-content
+      #calendar_year.tab-pane.fade.in.active
+        = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
+        %a.link_to_embed_code=t('iframe.show_embed_code')
+        #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
+          = render partial: 'embed'
+          %span.embed_label=t('iframe.select')
+          %select.iframe_size_select#pie
+          .iframe_other_size
+      #calendar_month.tab-pane.fade
+        = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
+        %a.link_to_embed_code=t('iframe.show_embed_code')
+        #embed_calendar.embed_hide.embed{ 'data-width' => '1024px', 'data-height' => '700px', 'data-name' => 'calendar' }
+          = render partial: 'embed'
+          %span.embed_label=t('iframe.select')
+          %select.iframe_size_select#calendar
+          .iframe_other_size
 
+    .legend
+      .pull-left
+        = image_tag("calendar/inf-city.png", width: '200px')
+      .pull-right
+        = image_tag("calendar/inf-people.png", width: '200px')
 
-.center.col-lg-6.col-xs-12
-  %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
-    %li.active
-      %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_calendar_year')
-    %li
-      %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_calendar_month')
-
-  .tab-content
-    #calendar_year.tab-pane.fade.in.active
-      = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-      %a.link_to_embed_code=t('iframe.show_embed_code')
-      #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
-        = render partial: 'embed'
-        %span.embed_label=t('iframe.select')
-        %select.iframe_size_select#pie
-        .iframe_other_size
-    #calendar_month.tab-pane.fade
-      = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
-      %a.link_to_embed_code=t('iframe.show_embed_code')
-      #embed_calendar.embed_hide.embed{ 'data-width' => '1024px', 'data-height' => '700px', 'data-name' => 'calendar' }
-        = render partial: 'embed'
-        %span.embed_label=t('iframe.select')
-        %select.iframe_size_select#calendar
-        .iframe_other_size
-
-  .legend
-    .pull-left
-      = image_tag("calendar/inf-city.png", width: '200px')
-    .pull-right
-      = image_tag("calendar/inf-people.png", width: '200px')
+  .right-panel.col-lg-3.col-xs-6.pull-right
+    = render partial: '/widgets/calendar/event'
 
 .clear
 -#= render partial: 'timeline'
