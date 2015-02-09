@@ -1,0 +1,80 @@
+%p
+#slider_container2
+  .btn-group{"aria-label" => "...", :role => "group"}
+    %button.btn.btn-default{:type => "button", :id => "slider_button_left2"}
+      %span.glyphicon.glyphicon-step-backward{"aria-hidden" => "true"}
+    %button.btn.btn-default{:type => "button", :id => "slider_button_right2"}
+      %span.glyphicon.glyphicon-step-forward{"aria-hidden" => "true"}
+  #slider2
+  #slider_scale2.steps
+
+:javascript
+
+  $(function() {
+
+    var start_year = 2014;
+    var min_val = 0;
+    var max_val = 96;
+
+    $('#slider_button_right2').click(function(){
+      var sliderCurrentValue = $( "#slider2" ).slider( "option", "value" );
+      slider.slider( "value", sliderCurrentValue + 8 );
+      if (sliderCurrentValue == max_val && start_year != 2014) {
+        start_year = start_year + 1;
+        create_slider(start_year);
+      } else if (sliderCurrentValue >= max_val-8 && start_year == 2014) {
+        $('#slider_button_right2').attr("disabled", "disabled");
+      }
+    })
+
+    $('#slider_button_left2').click(function(){
+      $('#slider_button_right2').removeAttr("disabled", "disabled");
+      var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
+      slider.slider( "value", sliderCurrentValue - 8 );
+      if (sliderCurrentValue == min_val) {
+        start_year = start_year - 1;
+        create_slider(start_year);
+      }
+    })
+
+    var slider = $("#slider2").slider({
+            min: min_val,
+            max: max_val,
+            step: 8,
+            create: function (event, ui) {
+              create_slider(start_year);
+            },
+            change: function(event, ui) {
+            }
+        })
+
+    function create_slider(start_year) {
+       var data = "<span class=\"tick\" style=\'left: 0;\'>|<br>" + start_year + "</span>";
+       var k = 1;
+       for(var i = 1; i < 5; i++) {
+          if (i != 4) {
+            data = data + "<span class=\"tick\" style=\'left: " + (i*24) + "%;\'>|<br></span>";
+          }
+          for(var j = k; j < k+2; j++) {
+             data = data + "<span class=\"tick\" style=\'font-size: 8px; left: " + j*8 + "%;\'>|<br></span>";
+          }
+          k = j+1;
+       }
+       data = data + "<span class=\"tick\" style=\'left: 100%;\'>|<br>" + (start_year + 1) + "</span>";
+       $('#slider_scale2').html(data);
+    }
+
+  $("#slider2").keyup(function (event) {
+    if (event.keyCode == 37) {
+      // go left
+      $('#slider_button_left2').trigger("click");
+    } else if (event.keyCode == 39) {
+      // go right
+      $('#slider_button_right2').trigger("click");
+    }
+  })
+
+  });
+
+
+

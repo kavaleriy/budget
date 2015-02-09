@@ -14,9 +14,12 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
-  .embed
+  %a.link_to_embed_code=t('iframe.show_embed_code')
+  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
     = render partial: 'embed'
-
+    %span.embed_label=t('iframe.select')
+    %select.iframe_size_select#visual
+    .iframe_other_size
 
 
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
@@ -24,19 +27,28 @@
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
   = t('.editinfo')
-
+-#= link_to image_url("smile.png"), :class => 'btn btn-primary', :id => 'budget_svg_image' do
+  -#%i.fa.fa-file-image-o
+  -#= t('export')
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
 
 :javascript
-  $(document).on('ready page:change', function() {
+  $(document).bind('page:change', function(e) {
+
+    I18n.locale = window.aHelper.lang();
+
     function set_visiframe(visualizator) {
       path = "#{request.base_url}"
       query = "#{URI.parse(request.url).query}"
       frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
-      $('.embed input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
       $('.tab-content iframe').attr('src', frame_url)
-
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
     }
 
     set_visiframe('bubbletree')
@@ -44,4 +56,5 @@
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
       set_visiframe(this.href.split('#')[1])
     });
+
   })

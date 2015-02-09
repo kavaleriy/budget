@@ -28,8 +28,9 @@
       hash_bookmark:      false,                           //OPTIONAL LOCATION BAR HASHES
       //font:               'Ubuntu',             //OPTIONAL FONT
       debug:              false,                           //OPTIONAL DEBUG TO CONSOLE
-      lang:               document.location.href.split("locale=")[1],                           //OPTIONAL LANGUAGE
+      lang:               window.aHelper.lang(),                           //OPTIONAL LANGUAGE
       maptype:            'watercolor',                   //OPTIONAL MAP STYLE
     })
   })
   $('#timeline-embed')[0].appendChild(node);
+
