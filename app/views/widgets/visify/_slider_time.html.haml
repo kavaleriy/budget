@@ -84,7 +84,7 @@
 
     $("#slider_container select").change(function(){
       $('#slider').slider('value', 0); // reset slider to zero point
-      step = $("#slider_container select option:selected").val();
+      step = parseInt($("#slider_container select option:selected").val());
       $("#slider").slider('option', 'step', step);
     })
 
