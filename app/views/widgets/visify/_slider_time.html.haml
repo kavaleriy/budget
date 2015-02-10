@@ -22,18 +22,24 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var year = 2015;
+    var range = #{@range.to_json};
+    var years = [];
+    for(var i = 0; i < range.length; i++) {
+      years[i] = range[i][0];
+    }
+    var year = years[years.length-1]; // slider should begin from the last year
     var step = 1;
     var min_val = 0;
     var max_val = 12;
 
     $('#slider_button_right').click(function(){
+      $('#slider_button_left').removeAttr("disabled", "disabled");
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
       slider.slider( "value", sliderCurrentValue + step );
-      if (sliderCurrentValue == max_val && year != 2015) {
+      if (sliderCurrentValue == max_val && year != years[years.length-1]) {
         year++;
         $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
-      } else if (sliderCurrentValue >= max_val-step && year == 2015) {
+      } else if (sliderCurrentValue >= max_val-step && year == years[years.length-1]) {
         $('#slider_button_right').attr("disabled", "disabled");
       }
     })
@@ -42,9 +48,11 @@
       $('#slider_button_right').removeAttr("disabled", "disabled");
       var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
       slider.slider( "value", sliderCurrentValue - step );
-      if (sliderCurrentValue == min_val) {
+      if (sliderCurrentValue == min_val && year != years[0]) {
         year--;
         $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
+      } else if (sliderCurrentValue <= min_val+step && year == years[0]) {
+        $('#slider_button_left').attr("disabled", "disabled");
       }
     })
 
@@ -54,7 +62,10 @@
             step: step,
             create: function (event, ui) {
               create_slider();
-            }
+            },
+            change: function (event, ui) {
+              change_visify();
+            },
         })
 
     function create_slider() {
@@ -70,6 +81,10 @@
        }
        $('#slider_scale').html(data);
        $('#slider_scale2').html(data2);
+    }
+
+    function change_visify() {
+      month = $("#slider").slider("option", "value");
     }
 
     //$("#slider").keyup(function (event) {

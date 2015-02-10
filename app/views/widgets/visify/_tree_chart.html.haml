@@ -5,7 +5,9 @@
   .col-xs-8
     #chart
     %button#save=t('export')
-    %canvas{:height => "550", :style => "display:none", :width => "798"}
+    %canvas{:style => "display: none;"}
+    #svgdataurl
+    #pngdataurl
     .slider.col-xs-offset-1.col-xs-10
       = render partial: 'slider'
 
