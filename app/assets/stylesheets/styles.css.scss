@@ -106,29 +106,67 @@
 }
 
 // --------------------- CHRONOLOGICAL SLIDER -----------------------
+/* Phone */
+@media only screen and (max-width: 760px) {
+  .hidden-phone{
+    display: none;
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 760px) {
+  .hidden-desktop{
+    display: none;
+  }
+}
 
 #slider_container {
-  margin-top: 100px;
-  font-size: 11px;
-  color: #798d8f;
+  margin-top: 80px;
+  background-color: #6fb3e0;
+  border-radius: 10px;
+  padding: 0 20px 10px 20px;
+
+  ul {
+    margin-bottom: 20px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #ffffff;
+  }
+}
+
+.slider-vertical {
+  float: left;
+  margin-right: 30px;
+  width: 15px;
+  height: 200px;
+}
+
+.hidden-phone .slider-quarter {
+  margin-top: 20px;
 }
 
 .ui-slider-horizontal {
-  height: 1em;
+  height: 13px;
 }
 
-#slider_scale2 {
-  margin-top: -15px;
-}
-
-#slider_scale {
-  margin-top: -18px;
-}
+//#slider_scale2 {
+//  margin-top: -15px;
+//}
+//
+//#slider_scale {
+//  margin-top: -18px;
+//}
 
 .steps {
   border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
   position: relative;
   height: 30px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 .tick {
@@ -141,20 +179,20 @@
 }
 
 #slider_container .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-  border-bottom-right-radius: 10px/*{cornerRadius}*/;
-  border-bottom-left-radius: 10px/*{cornerRadius}*/;
-  border-top-right-radius: 10px/*{cornerRadius}*/;
-  border-top-left-radius: 10px/*{cornerRadius}*/;
+  border-bottom-right-radius: 15px/*{cornerRadius}*/;
+  border-bottom-left-radius: 15px/*{cornerRadius}*/;
+  border-top-right-radius: 4px/*{cornerRadius}*/;
+  border-top-left-radius: 4px/*{cornerRadius}*/;
 }
 
 #slider_container .ui-slider-handle:focus {
   outline: none;
 }
 
-#slider_container .btn {
-  margin-bottom: 10px;
-  padding: 0;
-}
+//#slider_container .btn {
+//  margin-bottom: 10px;
+//  padding: 0;
+//}
 
 // --------------------- EMBED CODE -----------------------
 

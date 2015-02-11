@@ -5,6 +5,7 @@ $(document).bind('page:change', function(e) {
 
         //console.log(html);
         var imgsrc = 'data:image/svg+xml;base64,' + window.btoa(html);
+        //var imgsrc = "<%= asset_path('smile.png') %>";
         var img = '<img src="' + imgsrc + '">';
         d3.select("#svgdataurl").html(img);
 
@@ -12,6 +13,7 @@ $(document).bind('page:change', function(e) {
         var context = canvas.getContext("2d");
 
         var img_png = new Image();
+        img_png.src = imgsrc;
         img_png.onload = img_load();
         function img_load() {
             context.drawImage(img_png, 0, 0);
@@ -23,8 +25,6 @@ $(document).bind('page:change', function(e) {
             //img_png.src = imgsrc;
             var a = document.createElement("a");
             a.download = "sample.png";
-            //a.href = canvas.toDataURL("image/png");
-            //a.href = "<%= asset_path('smile.png') %>";
             a.href = canvasdata;
             a.click();
         }

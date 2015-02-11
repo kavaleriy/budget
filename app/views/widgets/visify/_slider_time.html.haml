@@ -1,20 +1,18 @@
 %p
 #slider_container
-  .btn-group{"aria-label" => "...", :role => "group"}
-    %button.btn.btn-default{:type => "button", :id => "slider_button_left"}
-      %span.glyphicon.glyphicon-step-backward{"aria-hidden" => "true"}
-    %button.btn.btn-default{:type => "button", :id => "slider_button_right"}
-      %span.glyphicon.glyphicon-step-forward{"aria-hidden" => "true"}
-    %select
-      %option{:value => "12"}
-        = t("datetime.prompts.by_year")
-      %option{:value => "3"}
-        = t("datetime.prompts.by_quarter")
-      %option{:value => "1", :selected => "selected"}
-        = t("datetime.prompts.by_month")
-  #slider
-  #slider_scale2.steps
-  #slider_scale.steps
+  %ul.nav.nav-tabs
+    %li.active
+      %a{"data-toggle" => "tab", :href => "#tab1"} 2013
+    %li
+      %a{"data-toggle" => "tab", :href => "#tab2"} 2014
+  .hidden-phone
+    .slider-month
+    #scale-month.steps
+    .slider-quarter
+    #scale-quarter.steps
+  .hidden-desktop
+    .slider-month.slider-vertical
+    .slider-quarter.slider-vertical
 
 :javascript
 
@@ -28,63 +26,43 @@
       years[i] = range[i][0];
     }
     var year = years[years.length-1]; // slider should begin from the last year
-    var step = 1;
-    var min_val = 0;
-    var max_val = 12;
 
-    $('#slider_button_right').click(function(){
-      $('#slider_button_left').removeAttr("disabled", "disabled");
-      var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
-      slider.slider( "value", sliderCurrentValue + step );
-      if (sliderCurrentValue == max_val && year != years[years.length-1]) {
-        year++;
-        $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
-      } else if (sliderCurrentValue >= max_val-step && year == years[years.length-1]) {
-        $('#slider_button_right').attr("disabled", "disabled");
+    $(".slider-month").slider({
+      min: 0,
+      max: 12,
+      step: 1,
+      create: function( event, ui ) {
+        create_month_scale();
       }
-    })
+    });
 
-    $('#slider_button_left').click(function(){
-      $('#slider_button_right').removeAttr("disabled", "disabled");
-      var sliderCurrentValue = $( "#slider" ).slider( "option", "value" );
-      slider.slider( "value", sliderCurrentValue - step );
-      if (sliderCurrentValue == min_val && year != years[0]) {
-        year--;
-        $('#slider_year').text(year + " " + I18n.t("datetime.prompts.y") + "|");
-      } else if (sliderCurrentValue <= min_val+step && year == years[0]) {
-        $('#slider_button_left').attr("disabled", "disabled");
+    $(".slider-quarter").slider({
+      min: 0,
+      max: 4,
+      step: 1,
+      create: function( event, ui ) {
+        create_quarter_scale();
       }
-    })
+    });
 
-    var slider = $("#slider").slider({
-            min: min_val,
-            max: max_val,
-            step: step,
-            create: function (event, ui) {
-              create_slider();
-            },
-            change: function (event, ui) {
-              change_visify();
-            },
-        })
+    $(".slider-vertical").slider("option", "orientation", "vertical");
 
-    function create_slider() {
+    function create_month_scale() {
        var months = I18n.t("date.abbr_month_names");
-       var data = "<span class=\"tick\" style=\'left: 1%;\'>|1 " + I18n.t("datetime.prompts.qr") + "</span>";
-       var data2 = "<span class=\"tick\" style=\'left: 1.5%;\'>" + months[1] + "</span>";
-       for(var i = 1; i < 4; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*25) + "%;\'>|" + (i + 1) + " " + I18n.t("datetime.prompts.qr") + "</span>";
+       var data = "";
+       for(var i = 1; i <= 12; i++) {
+          data = data + "<span class=\"tick\" style=\'left: " + (i*8.32) + "%;\'>|<br>" + months[i] + "</span>";
        }
-       data = data + "<span id='slider_year' class=\"tick\" style=\'font-weight: bold; left: 96%;\'>" + year + " " + I18n.t("datetime.prompts.y") + "|</span>";
-       for(var i = 1; i < 12; i++) {
-          data2 = data2 + "<span class=\"tick\" style=\'left: " + (i*8.333333333333332) + "%;\'>|" + months[i+1] + "</span>";
-       }
-       $('#slider_scale').html(data);
-       $('#slider_scale2').html(data2);
+       $('#scale-month').html(data);
     }
 
-    function change_visify() {
-      month = $("#slider").slider("option", "value");
+    function create_quarter_scale() {
+      var qr = I18n.t("datetime.prompts.qr");
+      var data = "";
+        for(var i = 1; i <= 4; i++) {
+          data = data + "<span class=\"tick\" style=\'left: " + (i*25) + "%;\'>|<br>" + i + qr + "</span>";
+        }
+      $('#scale-quarter').html(data);
     }
 
     //$("#slider").keyup(function (event) {
@@ -96,12 +74,6 @@
     //    $('#slider_button_right').trigger("click");
     //  }
     //})
-
-    $("#slider_container select").change(function(){
-      $('#slider').slider('value', 0); // reset slider to zero point
-      step = parseInt($("#slider_container select option:selected").val());
-      $("#slider").slider('option', 'step', step);
-    })
 
   });
 
