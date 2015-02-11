@@ -1,18 +1,6 @@
-%p
-#slider_container
-  %ul.nav.nav-tabs
-    %li.active
-      %a{"data-toggle" => "tab", :href => "#tab1"} 2013
-    %li
-      %a{"data-toggle" => "tab", :href => "#tab2"} 2014
-  .hidden-phone
-    .slider-month
-    #scale-month.steps
-    .slider-quarter
-    #scale-quarter.steps
-  .hidden-desktop
-    .slider-month.slider-vertical
-    .slider-quarter.slider-vertical
+#year_group
+#month_group
+#quarter_group
 
 :javascript
 
@@ -20,62 +8,50 @@
 
     I18n.locale = window.aHelper.lang();
 
+    // years group slider
     var range = #{@range.to_json};
     var years = [];
     for(var i = 0; i < range.length; i++) {
       years[i] = range[i][0];
     }
-    var year = years[years.length-1]; // slider should begin from the last year
-
-    $(".slider-month").slider({
-      min: 0,
-      max: 12,
-      step: 1,
-      create: function( event, ui ) {
-        create_month_scale();
+    var button_group = "<div class='btn-group' data-toggle='buttons'>";
+    var year_group = button_group;
+    var label_open = "<label class='btn btn-primary'><input type='radio'>";
+    var label_close = " </input></label>";
+    for(var i = 0; i < years.length; i++) {
+      if(i == years.length-1) {
+        label_open = "<label class='btn btn-primary active'><input type='radio'>";
       }
+      year_group = year_group + label_open + years[i] + label_close;
+    }
+    year_group = year_group + "</div>";
+    $("#year_group").html(year_group);
+
+    // months group slider
+    var months = I18n.t('date.abbr_month_names');
+    label_open = "<label class='btn btn-primary'><input type='checkbox'>";
+    var month_group = button_group;
+    for(var i = 1; i <= 12; i++) {
+        month_group = month_group + label_open + months[i] + label_close;
+    }
+    month_group = month_group + "</div>";
+    $("#month_group").html(month_group);
+
+    // quarter group slider
+    var quarter_group = button_group;
+    for(var i = 1; i <= 4; i++) {
+        quarter_group = quarter_group + label_open + i + " " + I18n.t('datetime.prompts.quarter') + label_close;
+    }
+    quarter_group = quarter_group + "</div>";
+    $("#quarter_group").html(quarter_group);
+
+    $("#month_group .btn").click(function() {
+        $(this).siblings().removeClass("active");
+        $("#quarter_group .btn").removeClass("active");
     });
 
-    $(".slider-quarter").slider({
-      min: 0,
-      max: 4,
-      step: 1,
-      create: function( event, ui ) {
-        create_quarter_scale();
-      }
+    $("#quarter_group .btn").click(function() {
+        $(this).siblings().removeClass("active");
+        $("#month_group .btn").removeClass("active");
     });
-
-    $(".slider-vertical").slider("option", "orientation", "vertical");
-
-    function create_month_scale() {
-       var months = I18n.t("date.abbr_month_names");
-       var data = "";
-       for(var i = 1; i <= 12; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*8.32) + "%;\'>|<br>" + months[i] + "</span>";
-       }
-       $('#scale-month').html(data);
-    }
-
-    function create_quarter_scale() {
-      var qr = I18n.t("datetime.prompts.qr");
-      var data = "";
-        for(var i = 1; i <= 4; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*25) + "%;\'>|<br>" + i + qr + "</span>";
-        }
-      $('#scale-quarter').html(data);
-    }
-
-    //$("#slider").keyup(function (event) {
-    //  if (event.keyCode == 37) {
-    //    // go left
-    //    $('#slider_button_left').trigger("click");
-    //  } else if (event.keyCode == 39) {
-    //    // go right
-    //    $('#slider_button_right').trigger("click");
-    //  }
-    //})
-
   });
-
-
-
