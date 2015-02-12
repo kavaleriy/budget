@@ -1,16 +1,31 @@
-%h3
-  = select_tag 'year', options_for_select(@range.map{|k,v| k}, @sel_year)
-  = t('datetime.prompts.year')
-  %small
-  = t('.by_month')
-
-.month.col-xs-12
-  %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
-    - (I18n.t :abbr_month_names, :scope => :date).each_with_index do |month, i|
-      %li{'class' => get_month_class(i.to_s, @sel_month)}
-        %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
-          =month
-  = render partial: 'slider_time'
+-#%h3
+-#  = select_tag 'year', options_for_select(@range.map{|k,v| k}, @sel_year)
+-#  = t('datetime.prompts.year')
+-#  %small
+-#  = t('.by_month')
+-#
+-#.month.col-xs-12
+-#  %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
+-#    - (I18n.t :abbr_month_names, :scope => :date).each_with_index do |month, i|
+-#      %li{'class' => get_month_class(i.to_s, @sel_month)}
+-#        %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
+-#          =month
+  //= render partial: 'slider_time'
+.col-xs-12
+  %select.btn-default.btn-sm#year_button
+    = options_for_select(@range.map{|k,v| k}, @sel_year)
+  #slider_container.row.btn-group{ 'data-toggle' => 'buttons' }
+    - @month = I18n.t('date.abbr_month_names')
+    - 4.times() do |i|
+      .col-lg-3.col-md-6.col-sm-6.col-xs-12
+        .col-xs-12.btn.btn-default.quarter_button
+          %label
+          = i + 1
+          = I18n.t('datetime.prompts.quarter')
+        - 3.times() do |j|
+          .col-xs-4.btn.btn-default
+            %label
+            = @month[i * 3 + j + 1]
 
 :javascript
 
@@ -38,3 +53,10 @@
       },
     }
   };
+
+  $(document).ready(function() {
+     $("#slider_container .btn").click(function() {
+       $("#slider_container .btn").not(this).removeClass("active");
+     });
+  })
+
