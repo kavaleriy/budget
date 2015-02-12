@@ -1,18 +1,15 @@
 %p
 #slider_container
-  %ul.nav.nav-tabs
-    %li.active
-      %a{"data-toggle" => "tab", :href => "#tab1"} 2013
-    %li
-      %a{"data-toggle" => "tab", :href => "#tab2"} 2014
-  .hidden-phone
-    .slider-month
-    #scale-month.steps
-    .slider-quarter
-    #scale-quarter.steps
-  .hidden-desktop
-    .slider-month.slider-vertical
-    .slider-quarter.slider-vertical
+  .btn-group{"data-toggle" => "buttons"}
+    %label.btn.btn-primary
+      %input{:type => "checkbox"}
+        Параметр 1
+    %label.btn.btn-primary
+      %input{:type => "checkbox"}
+        Параметр 2
+    %label.btn.btn-primary
+      %input{:type => "checkbox"}
+        Параметр 3
 
 :javascript
 
@@ -27,53 +24,9 @@
     }
     var year = years[years.length-1]; // slider should begin from the last year
 
-    $(".slider-month").slider({
-      min: 0,
-      max: 12,
-      step: 1,
-      create: function( event, ui ) {
-        create_month_scale();
-      }
+    $("#slider_container .btn").click(function() {
+        $(this).siblings().removeClass("active");
     });
-
-    $(".slider-quarter").slider({
-      min: 0,
-      max: 4,
-      step: 1,
-      create: function( event, ui ) {
-        create_quarter_scale();
-      }
-    });
-
-    $(".slider-vertical").slider("option", "orientation", "vertical");
-
-    function create_month_scale() {
-       var months = I18n.t("date.abbr_month_names");
-       var data = "";
-       for(var i = 1; i <= 12; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*8.32) + "%;\'>|<br>" + months[i] + "</span>";
-       }
-       $('#scale-month').html(data);
-    }
-
-    function create_quarter_scale() {
-      var qr = I18n.t("datetime.prompts.qr");
-      var data = "";
-        for(var i = 1; i <= 4; i++) {
-          data = data + "<span class=\"tick\" style=\'left: " + (i*25) + "%;\'>|<br>" + i + qr + "</span>";
-        }
-      $('#scale-quarter').html(data);
-    }
-
-    //$("#slider").keyup(function (event) {
-    //  if (event.keyCode == 37) {
-    //    // go left
-    //    $('#slider_button_left').trigger("click");
-    //  } else if (event.keyCode == 39) {
-    //    // go right
-    //    $('#slider_button_right').trigger("click");
-    //  }
-    //})
 
   });
 

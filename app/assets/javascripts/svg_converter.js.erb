@@ -1,11 +1,21 @@
 $(document).bind('page:change', function(e) {
 
     d3.select("#save").on("click", function() {
-        var svg = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
-        var html1 = svg.split("<desc");
-        var html2 = html1[1].split("/defs>")[1];
-        var html = html1[0] + html2;
 
+        var svg = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
+        console.log(svg);
+
+        // parser of correct SVG code
+        var html = "";
+        var html1 = svg.split("<desc");
+        if(html1.length > 1) {
+            var html2 = html1[1].split("/defs>")[1];
+            html = html + html1[0] + html2;
+        } else {
+            html = svg;
+        }
+
+        // get CANVAS image and convert it to PNG
         var canvas = document.querySelector("canvas");
         var context = canvas.getContext("2d");
 

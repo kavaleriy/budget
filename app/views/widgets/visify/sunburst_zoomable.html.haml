@@ -76,6 +76,8 @@
         svg = d3.select(aContainer + " #chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
           .append("g")
             .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
