@@ -1,10 +1,10 @@
 class TaxonomyRov < Taxonomy
-  VERSION = 2
+  VERSION = 3
   COLUMNS = {
       'kvk' =>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rov.department')},
       'ktfk'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rov.func_code')},
       'kekv' =>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rov.economy')},
-      # 'krk'=>{:level => 4, :title=>I18n.t('activerecord.models.taxonomy_rov.disposer')},
+      # 'krk'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rov.disposer')},
   }
 
   def self.get_taxonomy(owner)
@@ -23,7 +23,7 @@ class TaxonomyRov < Taxonomy
         '_year' => row['DATA'].to_date.year.to_s,
         '_month' => row['MONTH'].to_s.split('.')[0],
         'amount' => amount / 100,
-        'kvk' => row['KVK'].to_s,
+        'kvk' => "#{row['KVK'].to_s}:#{row['KRK'].to_s}",
         'kekv' => row['KEKV'].to_s,
         'ktfk_aaa' => row['KTFK'].to_s.slice(0, 3),
         'ktfk' => row['KTFK'].to_s,
@@ -38,7 +38,7 @@ class TaxonomyRov < Taxonomy
       when 'ktfk', 'ktfk_aaa'
         expense_codes[key.ljust(6, '0')] || expense_codes[key.ljust(5, '0')]
       when 'kvk'
-        expense_kvk_codes[key]
+        expense_kvk_codes[key.split(':')[0]]
       when 'kekv'
         expense_ekv_codes[key]
       else
