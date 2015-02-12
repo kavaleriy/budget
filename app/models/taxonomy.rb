@@ -129,6 +129,11 @@ class Taxonomy
   end
 
 
+  def revenue_fond_codes
+    @fond_info = load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
+    @fond_info
+  end
+
   def revenue_codes
     @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
     @kkd_info
