@@ -1,12 +1,12 @@
 class TaxonomyRot < Taxonomy
-  VERSION = 2
+  VERSION = 3
   COLUMNS = {
       # 'box' =>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rot.basket')},
-      #'_fond'=>{:title=>'Фонд'},
-      'kkd_a'=>{:level => 1, :title=>I18n.t('activerecord.taxonomy_rot.rank1')},
-      'kkd_bb'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot.rank3')},
-      'kkd_cc'=>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rot.rank5')},
-      'kkd'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rot.rank8')}
+      'fond'=>{:level => 1, :title=> I18n.t('activerecord.taxonomy_rot.fond')},
+      'kkd_a'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot.rank1')},
+      'kkd_bb'=>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rot.rank3')},
+      'kkd_cc'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rot.rank5')},
+      'kkd'=>{:level => 5, :title=>I18n.t('activerecord.taxonomy_rot.rank8')}
   }
 
   def self.get_taxonomy(owner)
@@ -26,7 +26,7 @@ class TaxonomyRot < Taxonomy
     line = {
         '_year' => row['DATA'].to_date.year.to_s,
         '_month' => row['MONTH'].to_s.split('.')[0],
-        # 'box' => get_box(kkd),
+        'fond' => row['KKFN'].to_s,
         'amount' => amount / 100,
     }
     [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd', key: kkd.slice(0, 8)}].map { |v|
@@ -53,8 +53,8 @@ class TaxonomyRot < Taxonomy
 
   def get_taxonomy_info taxonomy, key
     case taxonomy
-      # when 'box'
-      #   rot_box_codes[key]
+      when 'fond'
+        revenue_fond_codes[key]
       when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
         revenue_codes[key.ljust(8, '0')]
       else
