@@ -10,7 +10,7 @@
 -#      %li{'class' => get_month_class(i.to_s, @sel_month)}
 -#        %a{'data-month-num' => "#{i}", role: 'tab', 'data-toggle' => 'tab'}
 -#          =month
-  //= render partial: 'slider_time'
+
 .col-xs-12
   %select.btn-default.btn-sm#year_button
     = options_for_select(@range.map{|k,v| k}, @sel_year)
@@ -18,12 +18,12 @@
     - @month = I18n.t('date.abbr_month_names')
     - 4.times() do |i|
       .col-lg-3.col-md-6.col-sm-6.col-xs-12
-        .col-xs-12.btn.btn-default.quarter_button
+        .col-xs-12.btn.btn-default.quarter_button{:id => (i + 1).to_s + "quarter"}
           %label
           = i + 1
           = I18n.t('datetime.prompts.quarter')
         - 3.times() do |j|
-          .col-xs-4.btn.btn-default
+          .col-xs-4.btn.btn-default.month_button{:id => (i * 3 + j + 1).to_s + "month"}
             %label
             = @month[i * 3 + j + 1]
 
@@ -39,16 +39,21 @@
 
     return {
       initialize: function() {
-        $("a[data-month-num]").click(function(e){
+
+        $(".month_button").click(function(e){
           e.preventDefault()
-          month = $(this).data("month-num")
-          update_chart()
+          if($(this).hasClass('active')) {
+            month = 0;
+          } else {
+            month = parseInt($(this).attr('id'));
+          }
+          update_chart();
         })
 
-        $( "#year" ).change(
+        $("#year_button").change(
           function(e, v) {
-            year = e.currentTarget.value
-            update_chart()
+            year = e.currentTarget.value;
+            update_chart();
         })
       },
     }
