@@ -41,6 +41,14 @@
           .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
           .text(function(d) { return d.children ? '' : d.label; });
 
+      vis.selectAll(".parent")
+          .style("fill", "#1f77b4")
+          .style("fill-opacity", ".1")
+          .style("stroke", "steelblue")
+
+      vis.selectAll(".child")
+          .style("fill", "#ccc")
+          .style("stroke", "#999")
 
       function mouseclick(d) {
         sidebar.show(d)

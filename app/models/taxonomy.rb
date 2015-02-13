@@ -92,6 +92,7 @@ class Taxonomy
               node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
             else
               node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
+              logger.info(node[taxonomy_value][:amount][year])
               node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
               node[taxonomy_value][:amount][year][month] += row['amount']
             end

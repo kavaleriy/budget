@@ -29,6 +29,8 @@
       show: function(year, month) {
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           clear()
+          //console.log(d3.keys(data["children"]));
+          //console.log(data["amount"]);
 
           if (data == null) return
 
