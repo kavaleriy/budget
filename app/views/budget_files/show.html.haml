@@ -14,6 +14,13 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
+  %button.btn.btn-primary.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :type => "button"}
+    %i.fa.fa-code
+    %span.caret
+  %ul.dropdown-menu{:role => "menu"}
+    %li{:role => "presentation"}
+      = render partial: 'embed'
+    %li
   %a.link_to_embed_code=t('iframe.show_embed_code')
   #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
     = render partial: 'embed'
@@ -27,9 +34,9 @@
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
   = t('.editinfo')
--#= link_to image_url("smile.png"), :class => 'btn btn-primary', :id => 'budget_svg_image' do
-  -#%i.fa.fa-file-image-o
-  -#= t('export')
+%button.btn.btn-primary#svg_export
+  %i.fa.fa-file-image-o
+  = t('export')
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
 
@@ -56,5 +63,9 @@
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
       set_visiframe(this.href.split('#')[1])
     });
+
+    $("#svg_export").click(function() {
+      $("iframe").contents().find("#save").trigger("click");
+    })
 
   })

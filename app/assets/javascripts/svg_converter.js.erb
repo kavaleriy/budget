@@ -3,30 +3,7 @@ $(document).bind('page:change', function(e) {
     d3.select("#save").on("click", function() {
 
         var html = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
-//        var html = '<svg width="1200" height="550" version="1.1" xmlns="http://www.w3.org/2000/svg">\
-//                <g transform="translate(325,0)">\
-//                <circle fill="#1f77b4" stroke="steelblue" fill-opacity=".1" cx="275" cy="275" r="275"></circle>\
-//                <circle fill="#1f77b4" stroke="steelblue" fill-opacity=".1" cx="190.95996010441482" cy="181.26747466660836" r="112.09902323377759"></circle>\
-//            <circle fill="#1f77b4" stroke="steelblue" fill-opacity=".1" cx="224.72399452297225" cy="185.21859862361754" r="4.443815038219013"></circle>\
-//            <circle cx="223.36996976303982" cy="186.45267161380147" r="2.6117890570681994"></circle>\
-//            <circle cx="225.3740040581102" cy="182.86787934794515" r="1.4951427715797478"></circle>\
-//            <circle cx="227.6615417578151" cy="185.65366141834662" r="0.9033257703251129"></circle>\
-//            <circle cx="226.97402545646267" cy="184.81153079958716" r="0.18380929197280782"></circle>\
-//            <circle cx="226.63701697409846" cy="184.81153079958716" r="0.15319919039140387"></circle>\
-//            <circle cx="226.77294396338155" cy="184.49622021632112" r="0.19016200475903342"></circle>\
-//            <circle cx="226.28685443482973" cy="185.36462333177573" r="0.5014191358643277"></circle>\
-//            <circle cx="227.69713353195627" cy="183.75799493431373" r="0.9926748080166078"></circle>\
-//            <circle cx="226.22753645571657" cy="184.50984429135903" r="0.35541563851271074"></circle>\
-//            <circle fill="#1f77b4" stroke="steelblue" fill-opacity=".1" cx="229.59758795725375" cy="182.72453239706476" r="1.030879410341846"></circle>\
-//            <circle cx="230.20204388867415" cy="182.95885781104317" r="0.3825929206897236"></circle>\
-//            <circle cx="229.84756124806253" cy="183.3369138236015" r="0.1356582646697389"></circle>\
-//            <circle cx="229.77996204979928" cy="183.08791637574674" r="0.058779022042635784"></circle>\
-//            <circle cx="229.83504030898678" cy="183.16541442736087" r="0.03629759253272791"></circle>\
-//            <circle cx="229.24555387281444" cy="182.61150747352912" r="0.6350147676708154"></circle>\
-//            <circle cx="229.7800236623909" cy="183.16541442736087" r="0.018719054063150047"></circle>\
-//            <circle cx="229.67648833105804" cy="183.1924098482799" r="0.08827775703327279"></circle>\
-//            </g></svg>';
-        console.log(html);
+        //console.log(html);
 
         // get CANVAS image and convert it to PNG
         var canvas = document.querySelector("canvas");
