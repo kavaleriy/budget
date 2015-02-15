@@ -14,20 +14,12 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
-  %button.btn.btn-primary.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :type => "button"}
-    %i.fa.fa-code
-    %span.caret
-  %ul.dropdown-menu{:role => "menu"}
-    %li{:role => "presentation"}
-      = render partial: 'embed'
-    %li
-  %a.link_to_embed_code=t('iframe.show_embed_code')
-  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-    = render partial: 'embed'
-    %span.embed_label=t('iframe.select')
-    %select.iframe_size_select#visual
-    .iframe_other_size
-
+  -#%a.link_to_embed_code=t('iframe.show_embed_code')
+  -##embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+  -#  = render partial: 'embed'
+  -#  %span.embed_label=t('iframe.select')
+  -#  %select.iframe_size_select#visual
+  -#  .iframe_other_size
 
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 -#= link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(@budget_file), :class => 'btn btn-default'
@@ -61,11 +53,7 @@
     set_visiframe('bubbletree')
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe(this.href.split('#')[1])
+      set_visiframe(this.href.split('#')[1]);
     });
-
-    $("#svg_export").click(function() {
-      $("iframe").contents().find("#save").trigger("click");
-    })
 
   })

@@ -4,11 +4,7 @@
 
   .col-xs-8
     #chart
-    .btn-group{:role => "group"}
-      %button#save{:style => "display: none"}
     %canvas{:width => "1200", :height => "550", :style => "display: none;"}
-    #svgdataurl
-    #pngdataurl
     .slider.col-xs-offset-1.col-xs-10
       = render partial: 'slider'
 

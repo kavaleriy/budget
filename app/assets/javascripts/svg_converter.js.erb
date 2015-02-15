@@ -24,4 +24,7 @@ $(document).bind('page:change', function(e) {
         }
     })
 
+    $("#svg_export").click(function() {
+        $("iframe").contents().find("#save").trigger("click");
+    })
 })

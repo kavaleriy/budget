@@ -64,4 +64,19 @@ $(document).bind('page:change', function(e) {
         }
     });
 
+    $('#btn_embed').click(function (e) {
+//        $("#iframe_embed").html(window.parent.$("#embed_visual").html());
+//        $('#iframe_embed input').val(window.parent.$('#embed_visual input').val());
+//        if($(this).hasClass("active")){
+//            $("#iframe_embed").slideUp();
+//        } else {
+//            $("#iframe_embed").slideDown();
+//        }
+        if($(this).hasClass("active")){
+            $("#embed_visual").slideUp();
+        } else {
+            $("#embed_visual").slideDown();
+        }
+    })
+
 })

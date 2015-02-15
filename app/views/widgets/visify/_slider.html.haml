@@ -12,6 +12,23 @@
 -#          =month
 
 .col-xs-12
+  .btn-group.pull-right
+    %button.btn.btn-primary#save
+      %i.fa.fa-file-image-o
+    %button.btn.btn-primary#btn_embed{"data-toggle" => "buttons-checkbox"}
+      %i.fa.fa-code
+.col-xs-12
+  //#iframe_embed
+  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+    .input-group
+      .input-group-addon
+        = t('embed')
+      %input.form-control
+    %span.embed_label=t('iframe.select')
+    %select.iframe_size_select#visual
+    .iframe_other_size
+
+.col-xs-12
   %select.btn-default.btn-sm#year_button
     = options_for_select(@range.map{|k,v| k}, @sel_year)
   #slider_container.row.btn-group{ 'data-toggle' => 'buttons' }
@@ -63,5 +80,30 @@
      $("#slider_container .btn").click(function() {
        $("#slider_container .btn").not(this).removeClass("active");
      });
+  })
+
+  $(document).bind('page:change', function(e) {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe(visualizator) {
+      path = "#{request.base_url}"
+      query = "#{URI.parse(request.url).query}"
+      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
+      $('.tab-content iframe').attr('src', frame_url)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe_inframe('bubbletree');
+
+    window.parent.$('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_visiframe_inframe(this.href.split('#')[1]);
+    });
+
   })
 
