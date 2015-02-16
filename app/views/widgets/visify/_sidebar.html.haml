@@ -84,6 +84,7 @@
       show: function(node){
         I18n.locale = window.aHelper.lang()
         label = node.label || ''
+        icon = node.icon || ''
 
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
@@ -94,7 +95,7 @@
           percParentTitle = ''
         }
 
-        div = '<h3>' + label
+        div = '<h3 class="fa ' + icon + '"> ' + label
           + ", <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></span></h3>"
           + "<h4>" + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
           + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h4>"

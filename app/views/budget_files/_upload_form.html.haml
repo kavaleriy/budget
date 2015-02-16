@@ -3,7 +3,7 @@
   .form-group
     %label.control-label
       = t('owner')
-  = select_tag :town, options_for_select([nil, t('.Vinnytsya'), t('.Kyiv'), t('.Lviv'), t('.Ivano-Frankivsk'), t('.Zhytomyr'), t('.Ternopil')], current_user.town), class: 'select-town form-control'
+  = select_tag :town, options_for_select([nil, t('.Vinnytsya'), t('.Kyiv'), t('.Lviv'), t('.Ivano-Frankivsk'), t('.Zhytomyr'), t('.Ternopil'), t('.Dolina')], current_user.town), class: 'select-town form-control'
   = f.select :data_type, [nil, t('.fact'), t('.plan')], label: t('.datatype_label')
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
   = f.submit nil, :class => 'btn btn-primary'
