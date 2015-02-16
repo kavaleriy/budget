@@ -12,7 +12,12 @@
 = content_for :top do
   .timeline
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
-    %a.link_to_embed_code=t('iframe.show_embed_code')
+  .col-xs-12
+    .btn-group.pull-right
+      %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+        %i.fa.fa-code
+  -#%a.link_to_embed_code=t('iframe.show_embed_code')
+  .col-xs-12
     .embed_hide.embed{ 'data-width' => '100%', 'data-height' => '400px', 'data-name' => 'timelinejs' }
       = render partial: 'embed'
 %hr
@@ -34,20 +39,32 @@
     .tab-content
       #calendar_year.tab-pane.fade.in.active
         = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-        %a.link_to_embed_code=t('iframe.show_embed_code')
-        #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
-          = render partial: 'embed'
-          %span.embed_label=t('iframe.select')
-          %select.iframe_size_select#pie
-          .iframe_other_size
+        -#%a.link_to_embed_code=t('iframe.show_embed_code')
+        .col-xs-12
+          .btn-group.pull-right
+            %button.btn.btn-primary.svg_export
+              %i.fa.fa-file-image-o
+            %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+              %i.fa.fa-code
+        .col-xs-12
+          #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
+            = render partial: 'embed'
+            %span.embed_label=t('iframe.select')
+            %select.iframe_size_select#pie
+            .iframe_other_size
       #calendar_month.tab-pane.fade
         = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
-        %a.link_to_embed_code=t('iframe.show_embed_code')
-        #embed_calendar.embed_hide.embed{ 'data-width' => '1024px', 'data-height' => '700px', 'data-name' => 'calendar' }
-          = render partial: 'embed'
-          %span.embed_label=t('iframe.select')
-          %select.iframe_size_select#calendar
-          .iframe_other_size
+        -#%a.link_to_embed_code=t('iframe.show_embed_code')
+        .col-xs-12
+          .btn-group.pull-right
+            %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+              %i.fa.fa-code
+        .col-xs-12
+          #embed_calendar.embed_hide.embed{ 'data-width' => '1024px', 'data-height' => '700px', 'data-name' => 'calendar' }
+            = render partial: 'embed'
+            %span.embed_label=t('iframe.select')
+            %select.iframe_size_select#calendar
+            .iframe_other_size
 
     .legend
       .pull-left

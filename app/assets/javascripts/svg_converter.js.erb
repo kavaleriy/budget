@@ -1,12 +1,35 @@
 $(document).bind('page:change', function(e) {
 
     d3.select("#save").on("click", function() {
+        svg_converter("frame");
+    })
 
-        var html = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
-        //console.log(html);
+    $(".svg_export").click(function() {
+        if($("#calendar_pies").length > 0) {
+            svg_converter("doc");
+        } else {
+            $("iframe").contents().find("#save").trigger("click");
+        }
+    })
+
+    function svg_converter(doc) {
+        var html, width, height;
+        if(doc == "frame") {
+            html = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
+            width = d3.select("#chart svg").attr("width");
+            height = d3.select("#chart svg").attr("height");
+        } else if(doc == "doc") {
+            html = d3.select("#calendar_pies").node().innerHTML.split('</svg>')[0] + "</svg>";
+            width = d3.select("svg").attr("width");
+            height = d3.select("svg").attr("height");
+        }
+
+        console.log(html);
 
         // get CANVAS image and convert it to PNG
+        d3.select("canvas").attr("width", width).attr("height", height);
         var canvas = document.querySelector("canvas");
+        console.log(canvas);
         var context = canvas.getContext("2d");
 
         var img_png = new Image();
@@ -22,9 +45,5 @@ $(document).bind('page:change', function(e) {
             a.href = canvasdata;
             a.click();
         }
-    })
-
-    $("#svg_export").click(function() {
-        $("iframe").contents().find("#save").trigger("click");
-    })
+    }
 })

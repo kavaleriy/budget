@@ -1,6 +1,7 @@
 .pies-container
   #calendar_pies
     %svg#svg_calendar
+  %canvas{:style => "display: none;"}
 
 :javascript
 
@@ -23,6 +24,8 @@
         var svg = d3.select('#svg_calendar')
             .attr("width", size)
             .attr("height", size)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
             .append("g")
             .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 

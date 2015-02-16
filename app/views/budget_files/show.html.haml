@@ -26,7 +26,7 @@
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
   = t('.editinfo')
-%button.btn.btn-primary#svg_export
+%button.btn.btn-primary.svg_export
   %i.fa.fa-file-image-o
   = t('export')
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
@@ -53,6 +53,7 @@
     set_visiframe('bubbletree')
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      console.log("frame");
       set_visiframe(this.href.split('#')[1]);
     });
 

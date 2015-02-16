@@ -15,7 +15,7 @@
   .btn-group.pull-right
     %button.btn.btn-primary#save
       %i.fa.fa-file-image-o
-    %button.btn.btn-primary#btn_embed{"data-toggle" => "buttons-checkbox"}
+    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
       %i.fa.fa-code
 .col-xs-12
   //#iframe_embed
@@ -86,12 +86,10 @@
 
     I18n.locale = window.aHelper.lang();
 
-    function set_visiframe_inframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
-      $('#embed_visual input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
-      $('.tab-content iframe').attr('src', frame_url)
+    function set_visiframe_inframe() {
+      src = window.location.href;
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+      $('.tab-content iframe').attr('src', src)
       $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
                                                             <option value=\"500\">500x500</option>\
                                                             <option value=\"default\" selected>900x600</option>\
@@ -99,11 +97,7 @@
       $('#embed_visual').find('.iframe_other_size').html("");
     }
 
-    set_visiframe_inframe('bubbletree');
-
-    window.parent.$('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe_inframe(this.href.split('#')[1]);
-    });
+    set_visiframe_inframe();
 
   })
 
