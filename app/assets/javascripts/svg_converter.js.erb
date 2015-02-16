@@ -24,12 +24,12 @@ $(document).bind('page:change', function(e) {
             height = d3.select("svg").attr("height");
         }
 
-        console.log(html);
+        //console.log(html);
 
         // get CANVAS image and convert it to PNG
         d3.select("canvas").attr("width", width).attr("height", height);
         var canvas = document.querySelector("canvas");
-        console.log(canvas);
+        //console.log(canvas);
         var context = canvas.getContext("2d");
 
         var img_png = new Image();
