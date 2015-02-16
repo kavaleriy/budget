@@ -51,17 +51,6 @@ class TaxonomyRot < Taxonomy
   #   end
   # end
 
-  def get_taxonomy_info taxonomy, key
-    case taxonomy
-      when 'fond'
-        revenue_fond_codes[key]
-      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
-        revenue_codes[key.ljust(8, '0')]
-      else
-        super
-    end
-  end
-
   # def rot_box_codes
   #   @rot_box_info = load_from_csv('db/revenue_boxes.csv') if @rot_box_info.nil?
   #   @rot_box_info

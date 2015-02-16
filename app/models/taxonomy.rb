@@ -53,6 +53,23 @@ class Taxonomy
   end
 
   def get_taxonomy_info taxonomy, key
+    case taxonomy
+      when 'fond'
+        revenue_fond_codes[key]
+      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
+        revenue_codes[key.ljust(8, '0')]
+
+      when 'ktfk', 'ktfk_aaa'
+        expense_codes[key.ljust(6, '0')] || expense_codes[key.ljust(5, '0')]
+      when 'kvk'
+        expense_kvk_codes[key.split(':')[0]]
+      when 'kekv'
+        expense_ekv_codes[key]
+
+      #
+      # else
+      #   super
+    end
   end
 
 

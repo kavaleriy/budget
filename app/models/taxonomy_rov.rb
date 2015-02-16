@@ -33,17 +33,4 @@ class TaxonomyRov < Taxonomy
 
   protected
 
-  def get_taxonomy_info taxonomy, key
-    case taxonomy
-      when 'ktfk', 'ktfk_aaa'
-        expense_codes[key.ljust(6, '0')] || expense_codes[key.ljust(5, '0')]
-      when 'kvk'
-        expense_kvk_codes[key.split(':')[0]]
-      when 'kekv'
-        expense_ekv_codes[key]
-      else
-        super
-    end
-  end
-
 end
