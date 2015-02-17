@@ -93,14 +93,18 @@
             .text(percentageString);
 
         // Make the breadcrumb trail visible, if it's hidden.
-        d3.select(aContainer + " #trail")
-            .style("visibility", "");
+        //d3.select(aContainer + " #trail g")
+        //    .style("visibility", "");
+        $(aContainer + " #trail g").attr("style", "visibility: ;");
       },
 
       // Hide the breadcrumb trail
       hideBreadcrumb: function() {
-        d3.select(aContainer + " #trail")
-            .style("visibility", "hidden");
+        //d3.select(aContainer + " #trail")
+        //    .style("visibility", "hidden");
+        g = $(aContainer + " #trail g");
+        g.attr("style", "visibility: ;");
+        g.last().attr("style", "visibility: hidden;");
       },
 
       getPercentageString: function(d, totalSize) {
