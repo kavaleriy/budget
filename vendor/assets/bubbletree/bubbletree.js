@@ -127,8 +127,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				}
 				root.children = keep;
 				root.children.push({
-					'label': 'Інше',
-					'name': 'Інше',
+					'label': I18n.t('other'),
+					'name': I18n.t('other'),
 					'amount': moveAmount,
 					'children': move,
 					'breakdown': breakdown
@@ -1470,7 +1470,25 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	
 		me.label = $('<div class="label '+me.node.id+'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
 		me.container.append(me.label);
-		
+
+        // add text to svg image
+//        console.log(me.circle.node);
+//        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
+//            transform: 'translate(' + 0 + "," + 0 + ')'
+//        })
+//        var text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
+//            .attr({
+//               fill: "red",
+//               x: cx,
+//               y: cy,
+//               "text-anchor": "middle"
+//            })
+//            .text("TEXT");
+//        $(me.circle.node).wrap(g);
+//        $(me.circle.node).after(me.dashedBorder.node);
+//        $(me.dashedBorder.node).after(text);
+        // -------------------------------------------------------------------------
+
 		if (me.node.children.length > 0) {
 			$(me.circle.node).css({ cursor: 'pointer'});
 			$(me.label).css({ cursor: 'pointer'});

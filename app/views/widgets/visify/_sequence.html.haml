@@ -59,7 +59,7 @@
         // Data join; key function combines name and depth (= position in sequence).
         var g = d3.select(aContainer + " #trail")
             .selectAll("g")
-            .data(nodeArray, function(d) { return d.label + (d.depth || d.level); });
+            .data(nodeArray, function(d) {console.log("parent level " + d.parent.level); console.log("level " + d.level); return d.label + (d.depth || d.level); });
 
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("svg:g");
@@ -84,6 +84,7 @@
         // Remove exiting nodes.
         g.exit().remove();
 
+
         // Now move and update the percentage at the end.
         d3.select(aContainer + " #trail").select("#endlabel")
             .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
@@ -93,18 +94,15 @@
             .text(percentageString);
 
         // Make the breadcrumb trail visible, if it's hidden.
-        //d3.select(aContainer + " #trail g")
-        //    .style("visibility", "");
         $(aContainer + " #trail g").attr("style", "visibility: ;");
       },
 
       // Hide the breadcrumb trail
       hideBreadcrumb: function() {
-        //d3.select(aContainer + " #trail")
-        //    .style("visibility", "hidden");
         g = $(aContainer + " #trail g");
         g.attr("style", "visibility: ;");
         g.last().attr("style", "visibility: hidden;");
+        $('#endlabel').text("");
       },
 
       getPercentageString: function(d, totalSize) {
