@@ -1264,10 +1264,10 @@ BubbleTree.Utils.formatNumber = function(n) {
 		n = n*-1;
 		prefix = '-';
 	}
-	if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + 'трлн';
-	if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + 'млрд';
-	if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + 'млн';
-	if (n >= 1000) return prefix+Math.round(n / 100)/10 + 'тис';
+	if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + I18n.t("short_units.trillion");
+	if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + I18n.t("short_units.billion");
+	if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + I18n.t("short_units.million");
+	if (n >= 1000) return prefix+Math.round(n / 100)/10 + I18n.t("short_units.thousand");
 	else return prefix+n;
 	
 };
@@ -1468,7 +1468,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.attr({ stroke: '#ffffff', 'stroke-dasharray': "- " });
 	
 	
-		me.label = $('<div class="label '+me.node.id+'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div></div>');
+		me.label = $('<div class="label '+me.node.id+'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
 		me.container.append(me.label);
 		
 		if (me.node.children.length > 0) {

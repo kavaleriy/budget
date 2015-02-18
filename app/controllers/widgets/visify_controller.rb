@@ -79,12 +79,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
             unless ti['amount'].nil? || ti['amount'] == 0
               if node['children'][MAX_NODES_PER_LEVEL].nil?
                 node['children'][MAX_NODES_PER_LEVEL] =
-                    { 'label' => 'Агреговано',
+                    { 'label' => I18n.t('aggregated'),
                       'description' => '',
                       'amount' => ti['amount'],
                       'size' => ti['amount'],
                       'color' => 'green',
-                      'icon' => '<i class="fa fa-folder-open-o"></i>'
+                      'icon' => 'fa-folder-open-o'
                     }
                 node['children'][MAX_NODES_PER_LEVEL]['children'] = []
               end

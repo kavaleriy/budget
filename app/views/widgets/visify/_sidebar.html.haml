@@ -73,7 +73,8 @@
       },
 
       hide: function(){
-        $(aContainer + ' #sidebar #title').html('')
+        //$(aContainer + ' #sidebar #title').html('')
+        $(aContainer + ' #sidebar #under_sequence').html('')
         $(aContainer + ' #sidebar #description').html('')
 
         compare.hide()
@@ -88,19 +89,20 @@
 
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
-          percParentTitle = I18n.t("js.visify.of") + node.parent.label || ''
+          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
         }
         else {
           percentage = '100%'
           percParentTitle = ''
         }
 
-        div = '<h3 class="fa ' + icon + '"> ' + label
-          + ", <span class='percentage'>" + percentage + "<small>" + percParentTitle + "</small></span></h3>"
-          + "<h4>" + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
-          + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h4>"
+        div = '<h5 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
+          + "</span>, <span class='percentage'>" + percentage + " " + percParentTitle + "</span></span>"
+          + ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
+          + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
-        $(aContainer + ' #title').html(div)
+        //$(aContainer + ' #title').html(div)
+        $(aContainer + ' #under_sequence').html(div)
 
         div_descr = ''
         if (node.description) {
