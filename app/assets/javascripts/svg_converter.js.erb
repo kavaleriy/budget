@@ -40,10 +40,12 @@ $(document).bind('page:change', function(e) {
             context.drawImage(img_png, 0, 0);
             var canvasdata = canvas.toDataURL("image/png");
 
+            var theEvent = document.createEvent("MouseEvent");
+            theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             var a = document.createElement("a");
             a.download = "sample.png";
             a.href = canvasdata;
-            a.click();
+            a.dispatchEvent(theEvent);
         }
     }
 })
