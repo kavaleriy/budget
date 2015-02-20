@@ -1386,7 +1386,9 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
 		e.type = 'SHOW';
-		me.bc.tooltip(e);
+        if(me.visible) {
+            me.bc.tooltip(e);
+        }
 	};
 	
 	me.onunhover = function(e) {
@@ -1398,11 +1400,15 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
-		me.bc.tooltip(e);
+        if(me.visible) {
+            me.bc.tooltip(e);
+        }
         if(window.node != "") {
             e.node = window.node;
             e.type = 'SHOW';
-            me.bc.tooltip(e);
+            if(me.visible) {
+                me.bc.tooltip(e);
+            }
         }
 	};
 	
@@ -1454,8 +1460,9 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	 */
 	me.hide = function() {
 		var me = this, i;
-//		me.circle.remove();
-//		me.dashedBorder.remove();
+		me.circle.remove();
+		me.dashedBorder.remove();
+        $(me.label).hide();
 //		me.label.remove();
 //		me.label2.remove();
 		
@@ -1507,7 +1514,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		}	
 		
 		// additional label
-		me.label2 = $('<div class="label2 '+me.node.level + "_" + me.node.shortLabel +'"><span>'+me.node.shortLabel+'</span></div>');
+		me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
 		me.container.append(me.label2);
 		
 		var list = [me.circle.node, me.label, me.dashedBorder.node];
@@ -2121,8 +2128,9 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	 */
 	me.hide = function() {
 		var me = this, i;
-//		me.circle.remove();
-//		me.dashedBorder.remove();
+		me.circle.remove();
+		me.dashedBorder.remove();
+        $(me.label).hide();
 //		me.label.remove();
 //		me.label2.remove();
 		
