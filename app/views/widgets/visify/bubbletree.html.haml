@@ -14,6 +14,8 @@
   function aTreeChart(aContainer, sequence, sidebar) {
     var bubbleTree = null;
     var totalSize = null;
+    window.node = "";          // main node in current tree - change in bubbletree.js, line 1373
+    window.main_node = "";     // main node in all tree - change in bubbletree.js, line 2141
 
     function clear() {
       sequence.hideBreadcrumb()
@@ -51,7 +53,7 @@
               },
               nodeClickCallback: function(node) {
                 sidebar.show(node)
-              }
+              },
           });
           totalSize = data.size;
         })
