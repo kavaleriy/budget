@@ -12,15 +12,19 @@
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar) {
+
     var bubbleTree = null;
     var totalSize = null;
-    window.node = "";          // main node in current tree - change in bubbletree.js, line 1373
-    window.main_node = "";     // main node in all tree - change in bubbletree.js, line 2141
 
     function clear() {
       sequence.hideBreadcrumb()
       sidebar.hide()
       d3.select(aContainer + ' #chart').selectAll("*").remove()
+    }
+
+    function nodeClick(node) {
+      sequence.show(node)
+      sidebar.show(node)
     }
 
     return {
@@ -42,27 +46,26 @@
               sortBy: 'label',
               //maxNodesPerLevel: 12,
               bubbleType: ['icon', 'plain'],
-              tooltip: function(d) {
-                if (d.type == 'HIDE') {
-                  sequence.hideBreadcrumb()
-                } else {
-                  var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
-                  var sequenceArray = sequence.getAncestors(d.node);
-                  sequence.updateBreadcrumbs(sequenceArray, percentageString);
-                }
-              },
-              nodeClickCallback: function(node) {
-                sidebar.show(node)
-              },
+              //tooltip: function(d) {
+              //  if (d.type == 'HIDE') {
+              //    sequence.hideBreadcrumb()
+              //  } else {
+              //    var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
+              //    var sequenceArray = sequence.getAncestors(d.node);
+              //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
+              //  }
+              //},
+              nodeClickCallback: nodeClick
           });
+
           totalSize = data.size;
         })
+      },
+      selectNode: function (node) {
+        nodeClick(node);
+        url = bubbleTree.getUrlForNode(node)
+        bubbleTree.navigateTo(node)
 
-      }
-
+      },
     }
   }
-
-
-
-

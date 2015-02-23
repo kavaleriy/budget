@@ -13,17 +13,23 @@
       // nodes, highest first, but excluding the root.
       container: aContainer,
 
+
+      show: function(node) {
+        this.hideBreadcrumb()
+
+        this.updateBreadcrumbs(
+          this.getAncestors(node),
+          aVisify.helpers.getPercentageString(node, node.parent ? node.parent.amount : node.amount));
+      },
+
       getAncestors: function(node) {
         var path = [];
         var current = node;
         while (current.parent) {
-          if(window.main_node == "") {
-            window.main_node = current.parent;
-          }
           path.unshift(current);
           current = current.parent;
         }
-        path.unshift(window.main_node);
+
         return path;
       },
 
@@ -68,8 +74,9 @@
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("svg:g")
                                 .attr("cursor", "pointer")
-                                .attr("class", function(d) { return d.id; })
-                                .attr("onclick", "javascript: moveToSequencePath(this);");
+                                .on('click', function(d) {
+                                  chart.selectNode(d)
+                                })
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)

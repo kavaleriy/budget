@@ -86,7 +86,7 @@
     var sidebar = aSidebar('.visify')
     sidebar.initialize(height - 140);
 
-    var chart = aTreeChart('.visify', sequence, sidebar)
+    chart = aTreeChart('.visify', sequence, sidebar)
     chart.initialize(width, height - 250);
     chart.show("#{@sel_year}", "#{@sel_month}")
 

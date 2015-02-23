@@ -8,37 +8,39 @@
     var totalSize
     var width, height, radius
     var color, x, y
-    var svg, partition, arc
+    var svg, partition, arc, path
 
     function createVisualization(root) {
       totalSize = root.amount;
 
-      var path = svg.selectAll("path")
+      path = svg.selectAll("path")
             .data(partition.nodes(root))
           .enter().append("path")
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
+            //.on("mouseover", mouseover)
+            //.on("mouseout", mouseout)
 
-      function click(d) {
-        sidebar.show(d)
+      //function mouseover(d) {
+      //  var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+      //  var sequenceArray = sequence.getAncestors(d);
+      //  sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      //}
+      //
+      //// Restore everything to full opacity when moving off the visualization.
+      //function mouseout(d) {
+      //  sequence.hideBreadcrumb()
+      //}
+    }
+    function click(d) {
+      sequence.show(d)
 
-        path.transition()
-          .duration(750)
-          .attrTween("d", arcTween(d));
-      }
-      function mouseover(d) {
-        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-        var sequenceArray = sequence.getAncestors(d);
-        sequence.updateBreadcrumbs(sequenceArray, percentageString);
-      }
+      sidebar.show(d)
 
-      // Restore everything to full opacity when moving off the visualization.
-      function mouseout(d) {
-        sequence.hideBreadcrumb()
-      }
+      path.transition()
+        .duration(750)
+        .attrTween("d", arcTween(d));
     }
 
     // Interpolate the scales!
@@ -102,6 +104,9 @@
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization( data );
         });
+      },
+      selectNode: function (node) {
+        click(node);
       }
     }
   }
