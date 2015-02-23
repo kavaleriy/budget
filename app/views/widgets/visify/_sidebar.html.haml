@@ -90,7 +90,7 @@
 
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
-          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
+          //percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
         }
         else {
           percentage = '100%'
@@ -98,7 +98,7 @@
         }
 
         div = '<h5 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + "</span>, <span class='percentage'>" + percentage + " " + percParentTitle + "</span></span>"
+          + "</span>, <span class='percentage'>" + percentage + "</span></span>"
           + ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
           + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
