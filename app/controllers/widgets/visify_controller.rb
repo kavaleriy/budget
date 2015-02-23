@@ -102,7 +102,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
               end
 
               node['children'][MAX_NODES_PER_LEVEL]['amount'] += ti['amount']
-              node['children'][MAX_NODES_PER_LEVEL]['size'] += ti['amount']
+              # node['children'][MAX_NODES_PER_LEVEL]['size'] += ti['amount']
               node['children'][MAX_NODES_PER_LEVEL]['children'] << ti
             end
           else
