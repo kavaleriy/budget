@@ -26,9 +26,9 @@
       root.x = width / 2;
       root.y = height / 2 - 80;
 
-      size_scale.domain([0, root.size])
+      totalSize = root.amount;
+      size_scale.domain([0, totalSize])
 
-      totalSize = root.size;
 
       update()
 
@@ -63,14 +63,14 @@
             .style("fill", color);
 
         node.transition()
-            .attr("r", function(d) { return size_scale(d.size) });
+            .attr("r", function(d) { return size_scale(d.amount) });
 
         // Enter any new nodes.
         node.enter().append("svg:circle")
             .attr("class", "node")
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .attr("r", function(d) { return size_scale(d.size) })
+            .attr("r", function(d) { return size_scale(d.amount) })
             .style("fill", color)
             .on("click", mouseclick)
             .on("dblclick", dblclick)
@@ -83,7 +83,7 @@
 
         // Color leaf nodes orange, and packages white or blue.
         function color(d) {
-          return d.color || color(d.size)
+          return d.color || color(d.amount)
           //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
         }
 
@@ -112,14 +112,14 @@
                 value.parent = node
               })
 
-              node.size = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
+              node.amount = node.children.reduce(function(p, v) { return p + recurse(v); }, 0);
             }
             if (!node.id) node.id = ++i;
             nodes.push(node);
-            return node.size;
+            return node.amount;
           }
 
-          root.size = recurse(root);
+          root.amount = recurse(root);
           return nodes;
         }
       }
@@ -170,7 +170,7 @@
       clear: clear,
       show: function(year, month) {
         clear()
-        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });
       }

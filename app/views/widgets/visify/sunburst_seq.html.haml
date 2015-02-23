@@ -131,7 +131,7 @@
 
         partition = d3.layout.partition()
             .size([2 * Math.PI, radius * radius])
-            .value(function(d) { return d.size; });
+            .value(function(d) { return d.amount; });
 
         arc = d3.svg.arc()
             .startAngle(function(d) { return d.x; })
@@ -143,7 +143,7 @@
       show: function(year, month) {
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
-        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           clear()
           createVisualization(data);
         });

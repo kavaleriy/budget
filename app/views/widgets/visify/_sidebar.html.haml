@@ -52,7 +52,6 @@
 :javascript
 
   function aSidebar(aContainer) {
-
     return {
       container: aContainer,
 
@@ -104,11 +103,18 @@
         //$(aContainer + ' #title').html(div)
         $(aContainer + ' #under_sequence').html(div)
 
-        div_descr = ''
-        if (node.description) {
-          div_descr = "<div class='description'>" + node.description + "</div>"
-        }
-        $(aContainer + ' #description').html(div_descr)
+        this.getLevelInfo(node)
+      },
+
+      getLevelInfo: function(node) {
+        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+          console.log(data)
+          div_descr = ''
+          if (data.description) {
+            div_descr = "<div class='description'>" + data.description + "</div>"
+          }
+          $(aContainer + ' #description').html(div_descr)
+        })
 
         if (node.history) {
           compare.show(node.history)
@@ -119,6 +125,7 @@
         chart.show(node.children)
         pie.show(node.children)
         table.show(node.children)
+
       }
     }
   }

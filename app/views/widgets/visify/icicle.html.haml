@@ -46,7 +46,7 @@
           .on("dblclick", function(d) {
           })
 
-      totalSize = root.size;
+      totalSize = root.amount;
 
       var kx = width / root.dx,
           ky = height / 1;
@@ -121,7 +121,7 @@
             .attr("xmlns", "http://www.w3.org/2000/svg");
 
         partition = d3.layout.partition()
-            .value(function(d) { return d.size; });
+            .value(function(d) { return d.amount; });
 
 
       },
@@ -130,7 +130,7 @@
         clear()
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
-        d3.json("/widgets/visify/get_sunburst_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });
       }

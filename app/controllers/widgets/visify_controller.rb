@@ -1,26 +1,36 @@
 class Widgets::VisifyController < Widgets::WidgetsController
-  before_action :set_budget_file
-
   before_action :set_locale
-  def set_locale
-    I18n.locale = params[:locale]
-  end
+
+  before_action :set_budget_file, :except => [:get_treenode_data]
+
 
   MAX_NODES_PER_LEVEL = 8
 
-  def get_sunburst_data
-    render json: get_sunburst_tree
-  end
-
-  def get_icicle_data
-    render json: get_icicle_tree
-  end
 
   def get_bubbletree_data
     render json: get_bubble_tree
   end
 
+  def get_bubbletree_nodedata
+    taxonomy = visify_params[:taxonomy]
+    key = visify_params[:key]
+
+    description =
+      if @taxonomy.explanation[taxonomy].nil? or @taxonomy.explanation[taxonomy][key].nil?
+        ''
+      else
+        @taxonomy.explanation[taxonomy][key][:description]
+      end
+
+
+    render json: { 'description' => description }
+  end
+
   private
+
+  def set_locale
+    I18n.locale = params[:locale]
+  end
 
   def get_bubble_tree
     tree = @budget_file.get_tree
@@ -36,17 +46,19 @@ class Widgets::VisifyController < Widgets::WidgetsController
     return nil if amount == 0
 
     node = {
-        'size' => amount,
+        # 'size' => amount,
         'amount' => amount,
         'history' => item['amount'],
         'label' => item['key'],
+        'key' => item['key'],
+        'taxonomy' => item['taxonomy']
     }
 
     if info
       node['label'] = info['title'] unless info['title'].nil? or info['title'].empty?
       node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
       node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
-      node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
+      # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
     # binding.pry if node['label'] == "5000"
@@ -80,9 +92,9 @@ class Widgets::VisifyController < Widgets::WidgetsController
               if node['children'][MAX_NODES_PER_LEVEL].nil?
                 node['children'][MAX_NODES_PER_LEVEL] =
                     { 'label' => I18n.t('aggregated'),
-                      'description' => '',
+                      # 'description' => '',
                       'amount' => ti['amount'],
-                      'size' => ti['amount'],
+                      # 'size' => ti['amount'],
                       'color' => 'green',
                       'icon' => 'fa-folder-open-o'
                     }
@@ -103,31 +115,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
     node unless node['amount'].nil?
   end
 
-  def get_sunburst_tree
-    get_bubble_tree
-  end
-
-  #def get_icicle_tree
-  #  get_icicle_tree_item(@budget_file.tree, { 'title' => 'Всього', 'color' => 'green' })
-  #end
-  #
-  #def get_icicle_tree_item(item, info)
-  #  cut_amount = (@budget_file.meta_data[:max].abs - @budget_file.meta_data[:min].abs) * 0.0005
-  #
-  #  key = "#{item[:taxonomy]} #{item[:key]}"
-  #  if item[:children].nil?
-  #    node = item[:amount].abs
-  #  else
-  #    node = {}
-  #    item[:children].each { |child_node|
-  #      child_key = "#{child_node[:taxonomy]} #{child_node[:key]}"
-  #      node[child_key] = get_icicle_tree_item(child_node, @budget_file.tree_info[child_node[:taxonomy]][child_node[:key]])
-  #    }
-  #  end
-  #
-  #  node
-  #end
-  #
   def set_budget_file
     @sel_year = '0'
     @sel_month = '0'
@@ -148,7 +135,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def visify_params
-    params.permit(:file_id, :year, :month)
+    params.permit(:file_id, :year, :month, :key, :taxonomy)
   end
 
 end
