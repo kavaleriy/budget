@@ -1463,6 +1463,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.circle.remove();
 		me.dashedBorder.remove();
         $(me.label).hide();
+        $(me.label2).hide();
 //		me.label.remove();
 //		me.label2.remove();
 		
@@ -2144,6 +2145,7 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	 *
 	 */
 	me.onclick = function(e) {
+        //console.log("click");
 		var me = this;
 		me.bc.onNodeClick(me.node);
 		//if (me.node.children.length > 1) {
@@ -2154,6 +2156,7 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	};
 	
 	me.onhover = function(e) {
+        //console.log("hover");
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
@@ -2164,6 +2167,7 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	};
 
 	me.onunhover = function(e) {
+        //console.log("unhover");
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
 		e.type = 'HIDE';
@@ -2175,4 +2179,5 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	
 	
 	me.init();
+
 };

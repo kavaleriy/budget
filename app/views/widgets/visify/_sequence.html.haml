@@ -35,14 +35,16 @@
 
       initializeBreadcrumbTrail: function() {
         // Add the svg area.
-        var trail = d3.select(aContainer + " #sequence").append("svg:svg")
-            .attr("width", '100%')
-            .attr("height", 50)
-            .attr("id", "trail");
-        // Add the label at the end, for the percentage.
-        trail.append("svg:text")
-          .attr("id", "endlabel")
-          .style("fill", "#000");
+        if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
+          var trail = d3.select(aContainer + " #sequence").append("svg:svg")
+              .attr("width", '100%')
+              .attr("height", 50)
+              .attr("id", "trail");
+          // Add the label at the end, for the percentage.
+          trail.append("svg:text")
+            .attr("id", "endlabel")
+            .style("fill", "#000");
+        }
       },
 
       // Generate a string that describes the points of a breadcrumb polygon.

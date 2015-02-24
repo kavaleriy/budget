@@ -1,13 +1,13 @@
-.visify
-  = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
-  #under_sequence
-  = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
-
-  .col-xs-8
+.visify.row
+  .col-xs-12.col-sm-12.col-md-8.col-lg-8
+    = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
+    #under_sequence
+  .col-xs-12.col-sm-12.col-md-8.col-lg-8
     #chart
     %canvas{:style => "display: none;"}
-    .slider.col-xs-offset-1.col-xs-10
+    .slider
       = render partial: 'slider'
+  = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
   aVisify = {
@@ -77,20 +77,35 @@
   }
 
   $(document).ready(function() {
-    var width = $(document).width() - $('.visify #sidebar').width() - 50;
-    height = $(document).height()
-
-    var sequence = aSequence('.visify')
-    sequence.initializeBreadcrumbTrail();
-
-    var sidebar = aSidebar('.visify')
-    sidebar.initialize(height - 140);
-
-    chart = aTreeChart('.visify', sequence, sidebar)
-    chart.initialize(width, height - 250);
-    chart.show("#{@sel_year}", "#{@sel_month}")
-
-    var slider = aSlider('.visify', chart)
-    slider.initialize()
-
+    iframe_resize();
   });
+
+  $(window).resize(function() {
+    iframe_resize();
+  });
+
+  // Responsive SVG charts
+  function iframe_resize() {
+    var width;
+        document_width = $(document).width();
+        sidebar_width = $('.visify #sidebar').width();
+        if(document_width > 2*sidebar_width) {
+          width = document_width - sidebar_width - document_width*0.02;
+        } else {
+          width = document_width;
+        }
+        height = width/2;
+
+        var sequence = aSequence('.visify')
+        sequence.initializeBreadcrumbTrail();
+
+        var sidebar = aSidebar('.visify')
+        sidebar.initialize(height);
+
+        var chart = aTreeChart('.visify', sequence, sidebar)
+        chart.initialize(width, height);
+        chart.show("#{@sel_year}", "#{@sel_month}")
+
+        var slider = aSlider('.visify', chart)
+        slider.initialize()
+  }
