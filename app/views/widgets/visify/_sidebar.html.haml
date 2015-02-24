@@ -110,7 +110,7 @@
 
       getLevelInfo: function(node) {
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          console.log(data)
+          //console.log(data)
           div_descr = ''
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"

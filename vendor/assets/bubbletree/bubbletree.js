@@ -1372,7 +1372,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	me.onclick = function(e) {
 		var me = this;
 		me.bc.onNodeClick(me.node);
-        window.node = me.node;          // set parent node to make static sequence bar
         //console.log(me.node);
 		//if (me.node.children.length > 1) {
 			me.bc.navigateTo(me.node);
@@ -1386,30 +1385,17 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
 		e.type = 'SHOW';
-        if(me.visible) {
-            me.bc.tooltip(e);
-        }
+        me.bc.tooltip(e);
 	};
 	
 	me.onunhover = function(e) {
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
-        if(window.node == "" || me.node.level > window.node.level) {
-            e.type = 'HIDE';
-        }
+        e.type = 'HIDE';
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
-        if(me.visible) {
-            me.bc.tooltip(e);
-        }
-        if(window.node != "") {
-            e.node = window.node;
-            e.type = 'SHOW';
-            if(me.visible) {
-                me.bc.tooltip(e);
-            }
-        }
+        me.bc.tooltip(e);
 	};
 	
 	me.draw = function() {
@@ -1462,10 +1448,8 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		var me = this, i;
 		me.circle.remove();
 		me.dashedBorder.remove();
-        $(me.label).hide();
-        $(me.label2).hide();
-//		me.label.remove();
-//		me.label2.remove();
+		me.label.remove();
+		me.label2.remove();
 		
 		//$('#bubble-chart')
 		me.visible = false;
@@ -2131,9 +2115,8 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 		var me = this, i;
 		me.circle.remove();
 		me.dashedBorder.remove();
-        $(me.label).hide();
-//		me.label.remove();
-//		me.label2.remove();
+		me.label.remove();
+		me.label2.remove();
 		
 		//me.bc.$container
 		me.visible = false;
@@ -2145,18 +2128,14 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	 *
 	 */
 	me.onclick = function(e) {
-        //console.log("click");
 		var me = this;
 		me.bc.onNodeClick(me.node);
 		//if (me.node.children.length > 1) {
 			me.bc.navigateTo(me.node);
 		//}
-        window.main_node = me.node;
-        window.node = me.node;
 	};
 	
 	me.onhover = function(e) {
-        //console.log("hover");
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
@@ -2167,7 +2146,6 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 	};
 
 	me.onunhover = function(e) {
-        //console.log("unhover");
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
 		e.type = 'HIDE';

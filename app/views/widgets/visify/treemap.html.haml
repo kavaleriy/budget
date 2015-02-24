@@ -11,6 +11,7 @@
     var x, y;
 
     var totalSize
+    var node, root;
 
 
     // Main function to draw and set up the visualization, once we have the data.
@@ -27,9 +28,7 @@
           .attr("class", "cell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
-          .on("dblclick", function(d) {
-            zoom(node == d.parent ? root : d.parent);
-          })
+          .on("dblclick", dblclick)
           //.on("mouseover", function(d) {
           //  tooltip.html(getTooltipHtml(d))
           //   .style("left", (d3.event.pageX) + "px")
@@ -69,6 +68,12 @@
 
     function mouseclick(d) {
       sidebar.show(d)
+      sequence.show(d)
+    }
+
+    function dblclick(d) {
+      zoom(node == d.parent ? root : d.parent);
+      sequence.show(d.parent);
     }
 
     function clear() {
@@ -86,7 +91,7 @@
 
     function zoom(d) {
       var kx = width / d.dx, ky = height / d.dy;
-      x.domain([d.x, d.x + d.dx]);
+      x.domain([d.x, d.x + d.dx]);dblclick
       y.domain([d.y, d.y + d.dy]);
 
       var t = svg.selectAll("g.cell").transition()
@@ -147,6 +152,13 @@
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
         });
+      },
+      selectNode: function (node) {
+        if(node.parent && node.children){
+          dblclick(node);
+        } else if(!node.parent){
+          dblclick(node.children[0]);
+        }
       }
     }
   }

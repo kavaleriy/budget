@@ -1,5 +1,5 @@
 .visify.row
-  .col-xs-12.col-sm-12.col-md-8.col-lg-8
+  .col-xs-12.col-sm-12.col-md-8.col-lg-8.sequence_hide
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
     #under_sequence
   .col-xs-12.col-sm-12.col-md-8.col-lg-8
@@ -102,7 +102,7 @@
         var sidebar = aSidebar('.visify')
         sidebar.initialize(height);
 
-        var chart = aTreeChart('.visify', sequence, sidebar)
+        chart = aTreeChart('.visify', sequence, sidebar)
         chart.initialize(width, height);
         chart.show("#{@sel_year}", "#{@sel_month}")
 

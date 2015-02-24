@@ -16,7 +16,6 @@
 
       show: function(node) {
         this.hideBreadcrumb()
-
         this.updateBreadcrumbs(
           this.getAncestors(node),
           aVisify.helpers.getPercentageString(node, node.parent ? node.parent.amount : node.amount));
@@ -29,7 +28,7 @@
           path.unshift(current);
           current = current.parent;
         }
-
+        path.unshift(current);
         return path;
       },
 
@@ -69,6 +68,7 @@
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
 
         // Data join; key function combines name and depth (= position in sequence).
+        $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
         var g = d3.select(aContainer + " #trail")
             .selectAll("g")
             .data(nodeArray, function(d) { return d.label + (d.depth || d.level); });

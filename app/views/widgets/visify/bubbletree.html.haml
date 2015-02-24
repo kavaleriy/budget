@@ -23,8 +23,8 @@
     }
 
     function nodeClick(node) {
-      sequence.show(node)
-      sidebar.show(node)
+      sequence.show(node);
+      sidebar.show(node);
     }
 
     return {
@@ -37,7 +37,6 @@
           clear()
           //console.log(d3.keys(data["amount"]));
           //console.log(data["icon"]);
-
           if (data == null) return
 
           bubbleTree = new BubbleTree({
@@ -47,9 +46,10 @@
               //maxNodesPerLevel: 12,
               bubbleType: ['icon', 'plain'],
               //tooltip: function(d) {
-              //  if (d.type == 'HIDE') {
+              //  if (d.type == 'HIDE' && root_node != d.node) {
               //    sequence.hideBreadcrumb()
-              //  } else {
+              //  }
+              //  else {
               //    var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
               //    var sequenceArray = sequence.getAncestors(d.node);
               //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
@@ -65,7 +65,6 @@
         nodeClick(node);
         url = bubbleTree.getUrlForNode(node)
         bubbleTree.navigateTo(node)
-
       },
     }
   }

@@ -45,6 +45,7 @@
 
     function mouseclick(d) {
       sidebar.show(d)
+      sequence.show(d)
     }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
@@ -147,6 +148,9 @@
           clear()
           createVisualization(data);
         });
+      },
+      selectNode: function (node) {
+        mouseclick(node);
       }
     }
   }
