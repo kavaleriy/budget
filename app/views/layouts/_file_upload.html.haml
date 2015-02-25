@@ -9,7 +9,10 @@
 #progress.progress
   .progress-bar.progress-bar-success
 
-
+%button.btn.btn-primary.start
+  %i.glyphicon.glyphicon-upload
+    %span
+      Start
 :javascript
   $(function () {
       'use strict';
@@ -56,6 +59,7 @@
           previewMaxHeight: 100,
           previewCrop: true
       }).on('fileuploadadd', function (e, data) {
+          console.log(1);
           data.context = $('<div/>').appendTo('#files');
           $.each(data.files, function (index, file) {
               var node = $("<div class='col-sm-12' style='vertical-align: middle; margin: 3px 0;'/>")
@@ -96,6 +100,7 @@
                       .prop('href', file.url);
                   $(data.context.children()[index])
                       .wrap(link);
+                      console.log(3);
               } else if (file.error) {
                   var error = $('<span class="text-danger"/>').text(file.error);
                   $(data.context.children()[index])
