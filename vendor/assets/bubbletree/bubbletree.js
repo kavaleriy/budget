@@ -127,8 +127,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				}
 				root.children = keep;
 				root.children.push({
-					'label': 'Інше',
-					'name': 'Інше',
+					'label': I18n.t('other'),
+					'name': I18n.t('other'),
 					'amount': moveAmount,
 					'children': move,
 					'breakdown': breakdown
@@ -406,6 +406,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
 
 		bubble = new me.bubbleClasses[classIndex](node, me, origin, rad, angle, color);
 		me.displayObjects.push(bubble);
+        node.id = me.displayObjects.length + "bubble";
+        //console.log(bubble.node.level + " - " + bubble.node.label + " id: " + node.id);
 		return bubble;
 	};
 
@@ -1353,7 +1355,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	me.init = function() {
 		var me = this;
 		me.getXY();
-		
+
 		var showIcon = false; //this.bubbleRad * this.bc.bubbleScale > 30;
 
 		if (!me.node.shortLabel) me.node.shortLabel = me.node.label.length > me.bc.config.cutLabelsAt+3 ? me.node.label.substr(0, me.bc.config.cutLabelsAt)+'...' : me.node.label;
@@ -1366,10 +1368,11 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	/*
 	 *
 	 */
+
 	me.onclick = function(e) {
 		var me = this;
 		me.bc.onNodeClick(me.node);
-		
+        //console.log(me.node);
 		//if (me.node.children.length > 1) {
 			me.bc.navigateTo(me.node);
 		//}
@@ -1382,17 +1385,17 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
 		e.type = 'SHOW';
-		me.bc.tooltip(e);
+        me.bc.tooltip(e);
 	};
 	
 	me.onunhover = function(e) {
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
-		e.type = 'HIDE';
+        e.type = 'HIDE';
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
-		me.bc.tooltip(e);
+        me.bc.tooltip(e);
 	};
 	
 	me.draw = function() {
@@ -1468,16 +1471,35 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.attr({ stroke: '#ffffff', 'stroke-dasharray': "- " });
 	
 	
-		me.label = $('<div class="label '+me.node.id+'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
-		me.container.append(me.label);
-		
+		me.label = $('<div class="label '+ me.node.id +'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
+		//console.log(me.node.id);
+        me.container.append(me.label);
+
+        // add text to svg image
+//        console.log(me.circle.node);
+//        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
+//            transform: 'translate(' + 0 + "," + 0 + ')'
+//        })
+//        var text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
+//            .attr({
+//               fill: "red",
+//               x: cx,
+//               y: cy,
+//               "text-anchor": "middle"
+//            })
+//            .text("TEXT");
+//        $(me.circle.node).wrap(g);
+//        $(me.circle.node).after(me.dashedBorder.node);
+//        $(me.dashedBorder.node).after(text);
+        // -------------------------------------------------------------------------
+
 		if (me.node.children.length > 0) {
 			$(me.circle.node).css({ cursor: 'pointer'});
 			$(me.label).css({ cursor: 'pointer'});
 		}	
 		
 		// additional label
-		me.label2 = $('<div class="label2 '+me.node.id+'"><span>'+me.node.shortLabel+'</span></div>');
+		me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
 		me.container.append(me.label2);
 		
 		var list = [me.circle.node, me.label, me.dashedBorder.node];
@@ -1780,7 +1802,7 @@ BubbleTree.Bubbles.Donut = function(node, bubblechart, origin, radius, angle, co
 	};
 	
 	me.arcUnhover = function(e) {
-		var me = this, c = me.bc.$container[0], i, 
+		var me = this, c = me.bc.$container[0], i,
 			arcs = me.breakdownArcs, node, 
 			bd = me.node.breakdowns;
 			
@@ -2122,7 +2144,7 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 		e.target = me;
 		me.bc.tooltip(e);
 	};
-	
+
 	me.onunhover = function(e) {
 		var me = this, c = me.bc.$container[0];
 		e.node = me.node;
@@ -2131,8 +2153,9 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
 		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
 		me.bc.tooltip(e);
-	};
+    };
 	
 	
 	me.init();
+
 };

@@ -1,4 +1,4 @@
-#sidebar.col-xs-4
+#sidebar.col-xs-12.col-sm-12.col-md-4.col-lg-4
 
   #title
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
@@ -52,6 +52,7 @@
 :javascript
 
   function aSidebar(aContainer) {
+    var compare, chart, pie, table;
 
     return {
       container: aContainer,
@@ -89,7 +90,7 @@
 
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
-          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
+          //percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
         }
         else {
           percentage = '100%'
@@ -97,18 +98,25 @@
         }
 
         div = '<h5 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + "</span>, <span class='percentage'>" + percentage + " " + percParentTitle + "</span></span>"
+          + "</span>, <span class='percentage'>" + percentage + "</span></span>"
           + ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
           + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
         //$(aContainer + ' #title').html(div)
         $(aContainer + ' #under_sequence').html(div)
 
-        div_descr = ''
-        if (node.description) {
-          div_descr = "<div class='description'>" + node.description + "</div>"
-        }
-        $(aContainer + ' #description').html(div_descr)
+        this.getLevelInfo(node)
+      },
+
+      getLevelInfo: function(node) {
+        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+          //console.log(data)
+          div_descr = ''
+          if (data.description) {
+            div_descr = "<div class='description'>" + data.description + "</div>"
+          }
+          $(aContainer + ' #description').html(div_descr)
+        })
 
         if (node.history) {
           compare.show(node.history)
@@ -119,6 +127,7 @@
         chart.show(node.children)
         pie.show(node.children)
         table.show(node.children)
+
       }
     }
   }

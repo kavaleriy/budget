@@ -13,6 +13,14 @@
       // nodes, highest first, but excluding the root.
       container: aContainer,
 
+
+      show: function(node) {
+        this.hideBreadcrumb()
+        this.updateBreadcrumbs(
+          this.getAncestors(node),
+          aVisify.helpers.getPercentageString(node, node.parent ? node.parent.amount : node.amount));
+      },
+
       getAncestors: function(node) {
         var path = [];
         var current = node;
@@ -20,19 +28,22 @@
           path.unshift(current);
           current = current.parent;
         }
+        path.unshift(current);
         return path;
       },
 
       initializeBreadcrumbTrail: function() {
         // Add the svg area.
-        var trail = d3.select(aContainer + " #sequence").append("svg:svg")
-            .attr("width", '100%')
-            .attr("height", 50)
-            .attr("id", "trail");
-        // Add the label at the end, for the percentage.
-        trail.append("svg:text")
-          .attr("id", "endlabel")
-          .style("fill", "#000");
+        if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
+          var trail = d3.select(aContainer + " #sequence").append("svg:svg")
+              .attr("width", '100%')
+              .attr("height", 50)
+              .attr("id", "trail");
+          // Add the label at the end, for the percentage.
+          trail.append("svg:text")
+            .attr("id", "endlabel")
+            .style("fill", "#000");
+        }
       },
 
       // Generate a string that describes the points of a breadcrumb polygon.
@@ -57,12 +68,17 @@
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
 
         // Data join; key function combines name and depth (= position in sequence).
+        $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
         var g = d3.select(aContainer + " #trail")
             .selectAll("g")
             .data(nodeArray, function(d) { return d.label + (d.depth || d.level); });
 
         // Add breadcrumb and label for entering nodes.
-        var entering = g.enter().append("svg:g");
+        var entering = g.enter().append("svg:g")
+                                .attr("cursor", "pointer")
+                                .on('click', function(d) {
+                                  chart.selectNode(d)
+                                })
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
@@ -93,18 +109,15 @@
             .text(percentageString);
 
         // Make the breadcrumb trail visible, if it's hidden.
-        //d3.select(aContainer + " #trail g")
-        //    .style("visibility", "");
         $(aContainer + " #trail g").attr("style", "visibility: ;");
       },
 
       // Hide the breadcrumb trail
       hideBreadcrumb: function() {
-        //d3.select(aContainer + " #trail")
-        //    .style("visibility", "hidden");
         g = $(aContainer + " #trail g");
         g.attr("style", "visibility: ;");
         g.last().attr("style", "visibility: hidden;");
+        $('#endlabel').text("");
       },
 
       getPercentageString: function(d, totalSize) {
