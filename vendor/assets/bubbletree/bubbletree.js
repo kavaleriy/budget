@@ -1416,8 +1416,8 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 
         var add_tooltip = function() {
             //Get this bar's x/y values, then augment for the tooltip
-            var xPosition = parseFloat($(me.circle.node).attr("cx"));
-            var yPosition = parseFloat($(me.circle.node).attr("cy"));
+            var xPosition = parseFloat($(me.circle.node).attr("cx") + 5);
+            var yPosition = parseFloat($(me.circle.node).attr("cy") + 5);
 
             //Update the tooltip position and value
             d3.select("#charts_tooltip")
@@ -1449,8 +1449,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		} else {
 			me.label.hide();
 			me.label2.hide();
-            // add tooltips
-            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
 		}
 
 		me.label.css({ width: 2*r+'px', opacity: me.alpha });
@@ -1459,6 +1457,15 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		var w = Math.max(70, 3*r);
 		me.label2.css({ width: w+'px', opacity: me.alpha });
 		me.label2.css({ left: (x - w*0.5)+'px', top: (y + r)+'px' });
+
+        var label_display = $(me.label).css('display');
+        var label2_display = $(me.label2).css('display');
+        if(label_display == "none" && label2_display == "none") {
+            // add tooltips
+            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
+        } else {
+            $(me.circle.node).on("mouseover", remove_tooltip).on("mouseout", remove_tooltip);
+        }
 
 		//if (me.icon) me.icon.translate(me.pos.x - ox, me.pos.y - oy);
 	
