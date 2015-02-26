@@ -28,8 +28,8 @@
         //sequence.updateBreadcrumbs(sequenceArray, percentageString);
 
         //Get this bar's x/y values, then augment for the tooltip
-        var xPosition = (window.event.clientX || window.event.pageX) + parseFloat($(d).attr("dx"));
-        var yPosition = (window.event.clientY || window.event.pageY) + parseFloat($(d).attr("dx"));
+        var xPosition = window.event.clientX || window.event.pageX;
+        var yPosition = window.event.clientY || window.event.pageY;
 
         //Update the tooltip position and value
         d3.select("#charts_tooltip")
@@ -40,15 +40,6 @@
 
         //Show the tooltip
         d3.select("#charts_tooltip").classed("hidden", false);
-
-        //var tooltipSpan = document.getElementById('#charts_tooltip');
-        //
-        //window.onmousemove = function (e) {
-        //    var x = e.clientX || e.pageX,
-        //        y = e.clientY || e.pageY;
-        //    tooltipSpan.style.top = (y + 20) + 'px';
-        //    tooltipSpan.style.left = (x + 20) + 'px';
-        //};
       }
 
       // Restore everything to full opacity when moving off the visualization.
@@ -136,5 +127,7 @@
       }
     }
   }
+
+
 
 

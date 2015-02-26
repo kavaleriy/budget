@@ -83,6 +83,16 @@
 
   $(document).ready(function() {
     iframe_resize();
+
+    window.onmousemove = function (e) {
+        var tooltipSpan = document.getElementById('charts_tooltip');
+        console.log(tooltipSpan);
+        var x = e.clientX || e.pageX,
+            y = e.clientY || e.pageY;
+        tooltipSpan.style.top = (y + 20) + 'px';
+        tooltipSpan.style.left = (x + 20) + 'px';
+    };
+
   });
 
   $(window).resize(function() {
