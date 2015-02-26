@@ -37,6 +37,8 @@
           .on("click", mouseclick)
           .on("dblclick", function(d) {
           })
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip);
 
       totalSize = root.amount;
 

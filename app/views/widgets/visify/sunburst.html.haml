@@ -26,10 +26,9 @@
         .attr("d", arc)
         .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
         .on("click", mouseclick)
-        .each(stash);
-        //.on("mouseover", mouseover)
-        //.on("mouseout", mouseout)
-        //.each(stash);
+        .each(stash)
+        .on("mouseover", add_tooltip)
+        .on("mouseout", remove_tooltip);
 
     };
 
@@ -62,11 +61,12 @@
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
+
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseout(d) {
-      sequence.hideBreadcrumb()
+      sequence.hideBreadcrumb();
     }
 
     // Distort the specified node to 80% of its parent.

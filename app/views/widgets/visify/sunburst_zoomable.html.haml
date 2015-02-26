@@ -19,35 +19,18 @@
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
+            .on("mouseover", add_tooltip)
+            .on("mouseout", remove_tooltip)
 
       function mouseover(d) {
-        //var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-        //var sequenceArray = sequence.getAncestors(d);
-        //sequence.updateBreadcrumbs(sequenceArray, percentageString);
-
-        //Get this bar's x/y values, then augment for the tooltip
-        var xPosition = window.event.clientX || window.event.pageX;
-        var yPosition = window.event.clientY || window.event.pageY;
-
-        //Update the tooltip position and value
-        d3.select("#charts_tooltip")
-            .style("left", xPosition + "px")
-            .style("top", yPosition + "px")
-            .select("#value")
-            .html(d.label + "<br />" + d.amount);
-
-        //Show the tooltip
-        d3.select("#charts_tooltip").classed("hidden", false);
+        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+        var sequenceArray = sequence.getAncestors(d);
+        sequence.updateBreadcrumbs(sequenceArray, percentageString);
       }
 
       // Restore everything to full opacity when moving off the visualization.
       function mouseout(d) {
-        //sequence.hideBreadcrumb()
-
-        //Hide the tooltip
-        d3.select("#charts_tooltip").classed("hidden", true);
+        sequence.hideBreadcrumb()
       }
     }
     function click(d) {

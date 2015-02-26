@@ -29,6 +29,8 @@
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
           .on("dblclick", dblclick)
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip);
           //.on("mouseover", function(d) {
           //  tooltip.html(getTooltipHtml(d))
           //   .style("left", (d3.event.pageX) + "px")

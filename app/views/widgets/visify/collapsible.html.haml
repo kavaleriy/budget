@@ -101,6 +101,8 @@
           .style("fill", color)
           .on("click", mouseclick)
           .on("dblclick", dblclick)
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip)
           .call(force.drag);
 
       // Exit any old nodes.

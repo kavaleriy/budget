@@ -52,8 +52,8 @@
           .style("fill", function(d) { return d.fill; })
           .each(function(d) { this._current = updateArc(d); })
           .on("click", zoomIn)
-          //.on("mouseover", mouseover)
-          //.on("mouseout", mouseout)
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip);
 
       //function mouseover(d) {
       //  var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
@@ -68,8 +68,13 @@
     }
 
     function zoomIn(p) {
-      if (p.depth > 1) p = p.parent;
-      if (!p.children) {sequence.show(p); return;}
+      if (p.depth > 1) {
+        p = p.parent;
+      }
+      if (!p.children) {
+        sequence.show(p);
+        return;
+      }
       zoom(p, p);
       sidebar.show(p)
       sequence.show(p)
@@ -124,9 +129,9 @@
             .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
             .style("fill", function(d) { return d.fill; })
             .on("click", zoomIn)
-            .each(function(d) { this._current = enterArc(d); });
-            //.on("mouseover", mouseover)
-            //.on("mouseout", mouseout)
+            .each(function(d) { this._current = enterArc(d); })
+            .on("mouseover", add_tooltip)
+            .on("mouseout", remove_tooltip);
 
 
         path.transition()

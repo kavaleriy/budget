@@ -67,7 +67,7 @@
 
 
       d3.select(".sunburst-seq #explanation #percentage")
-          .text(aVisify.helpers.formatNumber(d.amount));
+          .html(d.label + "<br />" + aVisify.helpers.formatNumber(d.amount));
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");

@@ -27,6 +27,8 @@
           .attr("cy", function(d) { return d.y; })
           .attr("r", function(d) { return d.r; })
           .on("click", mouseclick)
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip);
 
       totalSize = root.value //vis.selectAll("circle").node().__data__.value
 
