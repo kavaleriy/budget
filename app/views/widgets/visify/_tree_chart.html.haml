@@ -5,6 +5,11 @@
   .col-xs-12.col-sm-12.col-md-8.col-lg-8
     #chart
     %canvas{:style => "display: none;"}
+    #charts_tooltip.hidden
+      -#%p
+      -#  %strong Important Label Heading
+      %p
+        %span#value
     .slider
       = render partial: 'slider'
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }

@@ -1413,7 +1413,28 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		
 
 		//me.label.attr({ x: me.pos.x, y: me.pos.y, 'font-size': Math.max(4, me.bubbleRad * me.bc.bubbleScale * 0.25) });
-		
+
+        var add_tooltip = function() {
+            //Get this bar's x/y values, then augment for the tooltip
+            var xPosition = parseFloat($(me.circle.node).attr("cx"));
+            var yPosition = parseFloat($(me.circle.node).attr("cy"));
+
+            //Update the tooltip position and value
+            d3.select("#charts_tooltip")
+                .style("left", xPosition + "px")
+                .style("top", yPosition + "px")
+                .select("#value")
+                .html(me.node.label + "<br />" + utils.formatNumber(me.node.amount));
+
+            //Show the tooltip
+            d3.select("#charts_tooltip").classed("hidden", false);
+        }
+
+        var remove_tooltip = function() {
+            //Hide the tooltip
+            d3.select("#charts_tooltip").classed("hidden", true);
+        }
+
 		me.label.show();
 		me.label.find('*').show();
 		me.label2.show();
@@ -1428,6 +1449,8 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		} else {
 			me.label.hide();
 			me.label2.hide();
+            // add tooltips
+            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
 		}
 
 		me.label.css({ width: 2*r+'px', opacity: me.alpha });
@@ -1496,8 +1519,8 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		if (me.node.children.length > 0) {
 			$(me.circle.node).css({ cursor: 'pointer'});
 			$(me.label).css({ cursor: 'pointer'});
-		}	
-		
+		}
+
 		// additional label
 		me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
 		me.container.append(me.label2);
