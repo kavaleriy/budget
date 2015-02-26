@@ -19,19 +19,45 @@
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            //.on("mouseover", mouseover)
-            //.on("mouseout", mouseout)
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout)
 
-      //function mouseover(d) {
-      //  var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-      //  var sequenceArray = sequence.getAncestors(d);
-      //  sequence.updateBreadcrumbs(sequenceArray, percentageString);
-      //}
-      //
-      //// Restore everything to full opacity when moving off the visualization.
-      //function mouseout(d) {
-      //  sequence.hideBreadcrumb()
-      //}
+      function mouseover(d) {
+        //var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+        //var sequenceArray = sequence.getAncestors(d);
+        //sequence.updateBreadcrumbs(sequenceArray, percentageString);
+
+        //Get this bar's x/y values, then augment for the tooltip
+        var xPosition = (window.event.clientX || window.event.pageX) + parseFloat($(d).attr("dx"));
+        var yPosition = (window.event.clientY || window.event.pageY) + parseFloat($(d).attr("dx"));
+
+        //Update the tooltip position and value
+        d3.select("#charts_tooltip")
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .html(d.label + "<br />" + d.amount);
+
+        //Show the tooltip
+        d3.select("#charts_tooltip").classed("hidden", false);
+
+        //var tooltipSpan = document.getElementById('#charts_tooltip');
+        //
+        //window.onmousemove = function (e) {
+        //    var x = e.clientX || e.pageX,
+        //        y = e.clientY || e.pageY;
+        //    tooltipSpan.style.top = (y + 20) + 'px';
+        //    tooltipSpan.style.left = (x + 20) + 'px';
+        //};
+      }
+
+      // Restore everything to full opacity when moving off the visualization.
+      function mouseout(d) {
+        //sequence.hideBreadcrumb()
+
+        //Hide the tooltip
+        d3.select("#charts_tooltip").classed("hidden", true);
+      }
     }
     function click(d) {
       sequence.show(d)
