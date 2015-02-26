@@ -1,10 +1,15 @@
 .visify.row
-  .col-xs-12.col-sm-12.col-md-8.col-lg-8.sequence_hide
+  .col-xs-12.col-sm-12.col-md-12.col-lg-12.sequence_hide
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
     #under_sequence
   .col-xs-12.col-sm-12.col-md-8.col-lg-8
     #chart
     %canvas{:style => "display: none;"}
+    #charts_tooltip.hidden
+      -#%p
+      -#  %strong Important Label Heading
+      %p
+        %span#value
     .slider
       = render partial: 'slider'
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
@@ -87,25 +92,25 @@
   // Responsive SVG charts
   function iframe_resize() {
     var width;
-        document_width = $(document).width();
-        sidebar_width = $('.visify #sidebar').width();
-        if(document_width > 2*sidebar_width) {
-          width = document_width - sidebar_width - document_width*0.02;
-        } else {
-          width = document_width;
-        }
-        height = width/2;
+    document_width = $(document).width();
+    sidebar_width = $('.visify #sidebar').width();
+    if(document_width > 2*sidebar_width) {
+      width = document_width - sidebar_width - document_width*0.02;
+    } else {
+      width = document_width;
+    }
+    height = width/2;
 
-        var sequence = aSequence('.visify')
-        sequence.initializeBreadcrumbTrail();
+    var sequence = aSequence('.visify')
+    sequence.initializeBreadcrumbTrail();
 
-        var sidebar = aSidebar('.visify')
-        sidebar.initialize(height);
+    var sidebar = aSidebar('.visify')
+    sidebar.initialize(height);
 
-        chart = aTreeChart('.visify', sequence, sidebar)
-        chart.initialize(width, height);
-        chart.show("#{@sel_year}", "#{@sel_month}")
+    chart = aTreeChart('.visify', sequence, sidebar)
+    chart.initialize(width, height);
+    chart.show("#{@sel_year}", "#{@sel_month}")
 
-        var slider = aSlider('.visify', chart)
-        slider.initialize()
+    var slider = aSlider('.visify', chart)
+    slider.initialize()
   }

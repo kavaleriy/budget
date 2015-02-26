@@ -6,6 +6,7 @@
 
   path.slice{
     stroke-width:2px;
+    cursor: pointer;
   }
 
   polyline{
@@ -108,7 +109,8 @@
               slice.enter()
                   .insert("path")
                   .style("fill", function(d) { return d.data.color; })
-                  .attr("class", "slice");
+                  .attr("class", "slice")
+                  .on("click", function(d, i){chart.selectNode(_data[i]);});
 
               slice
                   .transition().duration(1000)
