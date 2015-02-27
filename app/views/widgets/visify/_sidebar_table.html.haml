@@ -25,22 +25,34 @@
 
         $("#sidebar_table").height(height + margin.top + margin.bottom)
 
+
         div = '<table class="table table-hover">'
         $.each(data, function( index, value ) {
-          div += '<tr style="cursor: pointer;">'
+          var totalSize;
+          if (value.parent) {
+            totalSize = value.parent.amount;
+          } else {
+            totalSize = value.amount;
+          }
+          div += '<tr>'
             + '<td class="col-sm-8"><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
             + value.label + '</td>'
             + '<td class="col-sm-2" align="right">' + aVisify.helpers.formatNumber(value.amount) + '</td>'
-            + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(value, value.parent.amount) + '</td>'
+            + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(value, totalSize) + '</td>'
             + '</tr>'
         });
         div += '</table>'
 
         $('#sidebar_table').html(div);
 
-        d3.selectAll("#sidebar_table tr").on("click", function(d, i) {
-           chart.selectNode(data[i]);
-        });
+        d3.selectAll("#sidebar_table tr")
+            .style("cursor", function(d, i) {
+                               if(i < data.length && data[i].children.length > 0) return "pointer";
+                               return "default";
+                             })
+            .on("click", function(d, i) {
+                 if(i < data.length && data[i].children.length > 0) chart.selectNode(data[i]);
+               });
       },
     }
   }

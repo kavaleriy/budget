@@ -110,7 +110,13 @@
                   .insert("path")
                   .style("fill", function(d) { return d.data.color; })
                   .attr("class", "slice")
-                  .on("click", function(d, i){chart.selectNode(_data[i]);});
+                  .style("cursor", function(d, i) {
+                                    if(i < _data.length && _data[i].children.length > 0) return "pointer";
+                                    return "default";
+                                  })
+                  .on("click", function(d, i) {
+                      if(i < _data.length && _data[i].children.length > 0) chart.selectNode(_data[i]);
+                    });
 
               slice
                   .transition().duration(1000)

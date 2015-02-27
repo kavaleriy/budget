@@ -12,6 +12,7 @@
         %span#value
     .slider
       = render partial: 'slider'
+      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
