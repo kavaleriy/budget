@@ -9,7 +9,7 @@ class Event
   scope :current_event, lambda { |holder| where(:holder => holder, :starts_at.lt => Date.current, :ends_at.gt => Date.current).desc(:starts_at).limit(1) }
   scope :countdown_events, lambda { where(:ends_at.gt => Date.current).desc(:starts_at) }
 
-
+  embeds_many :files
   field :holder, type: Integer
   field :title, type: String
   field :icon, type: String
@@ -19,7 +19,7 @@ class Event
   field :all_day, type: Boolean
   field :text_color, type: String
   field :color, type: String
-
+  field :countdown_file, type: File
   validates :holder, presence: true
   validates :title, presence: true
   validates :starts_at, presence: true
@@ -38,4 +38,5 @@ class Event
         :color => self.color,
     }
   end
+
 end

@@ -1,0 +1,46 @@
+= form_for :file, :html => { :multipart => true, :id => "fileupload"} do |f|
+  #files.files
+    %span.dragandrop=t('drag_file')
+
+  %span.btn.btn-success.fileinput-button.col-xs-offset-5
+    %i.glyphicon.glyphicon-plus
+    %span=t('select_from_list')
+    %input#upload_upload{:multiple => "", :name => "files[]", :type => "file"}
+
+  #progress.progress
+    .progress-bar.progress-bar-success
+
+  %buttons.btn.btn-primary.start{:type => "submit"}
+    %i.glyphicon.glyphicon-upload
+      %span
+        Start
+
+:javascript
+  var fileUploadErrors = {
+  maxFileSize: 'File is too big',
+  minFileSize: 'File is too small',
+  acceptFileTypes: 'Filetype not allowed',
+  maxNumberOfFiles: 'Max number of files exceeded',
+  uploadedBytes: 'Uploaded bytes exceed file size',
+  emptyResult: 'Empty file upload result'
+  };
+  console.log(3);
+
+
+
+
+:javascript
+  $(function () {
+
+    /// Initialize the jQuery File Upload widget:
+
+      $('#fileupload').fileupload({
+        //url: ''
+      });
+
+
+    //
+
+
+  });
+

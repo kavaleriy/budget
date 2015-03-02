@@ -81,6 +81,27 @@ class EventsController < ApplicationController
     end
   end
 
+  # POST/PUT /events/1
+  # POST/PUT /events/1.json
+  def update_files
+    #@file = @event.files.new(params[:file])
+    @file = @event.files.new(
+        :name=>'new',
+        :description=>'d1'
+    )
+    respond_to do |format|
+      if @file.save
+        format.html {
+          render :json => [to_jq_upload].to_json,
+                 :content_type => 'text/html',
+                 :layout => false
+        }
+      else
+        format.json { render json: {files: [@file.to_jq_upload]}, status: :created, location: @file }
+      end
+
+    end
+  end
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
@@ -95,6 +116,15 @@ class EventsController < ApplicationController
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
+  end
+
+  def to_jq_upload
+    {
+        "name" => '1',
+        "size" => '50',
+        "url" => 'kk',
+
+    }
   end
 
   def set_event
