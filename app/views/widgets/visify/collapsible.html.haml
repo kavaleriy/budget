@@ -49,6 +49,7 @@
 
     function dblclick(d) {
       if (d.children) {
+        sidebar.show(d);
         d._children = d.children;
         d.children = null;
       } else {
@@ -115,7 +116,6 @@
       }
 
       function mouseclick(d) {
-        sidebar.show(d)
         sequence.show(d);
       }
 
@@ -171,6 +171,7 @@
         clear()
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
+          sidebar.show(data);
         });
       },
       selectNode: function (node) {

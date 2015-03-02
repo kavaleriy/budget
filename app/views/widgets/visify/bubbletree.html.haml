@@ -24,7 +24,9 @@
 
     function nodeClick(node) {
       sequence.show(node);
-      sidebar.show(node);
+      if(node.children.length > 0) {
+        sidebar.show(node);
+      }
     }
 
     return {

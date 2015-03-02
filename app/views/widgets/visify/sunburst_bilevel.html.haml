@@ -76,7 +76,11 @@
         return;
       }
       zoom(p, p);
-      sidebar.show(p)
+      if(p.children) {
+        sidebar.show(p);
+      } else  {
+        sidebar.show(p.parent);
+      }
       sequence.show(p)
     }
 
@@ -197,6 +201,7 @@
         clear()
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
+          sidebar.show(data);
         });
       },
       selectNode: function (node) {

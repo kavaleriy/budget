@@ -86,10 +86,9 @@
       },
       hide: hide,
       show: function(data) {
-        hide()
+        hide();
 
-        if (data == null || data.length < 1)
-          return
+        if (data == null || data.length < 1) return;
 
         $("#sidebar_chart").height(height + margin.top + margin.bottom)
 
@@ -108,11 +107,11 @@
           .attr("y", function(d) { return y(d.label); })
           .attr("height", y.rangeBand() )
           .style("cursor", function(d, i) {
-                              if(i < data.length && data[i].children.length > 0) return "pointer";
+                              if(i < data.length && data[i].children) return "pointer";
                               return "default";
                             })
           .on("click", function(d, i) {
-                if(i < data.length && data[i].children.length > 0) chart.selectNode(data[i]);
+                if(i < data.length && data[i].children) chart.selectNode(data[i]);
               });
 
         svg.transition().duration(250).selectAll(".bar")
@@ -134,11 +133,11 @@
 
         d3.selectAll(".y.axis text")
            .style("cursor", function(d, i) {
-                              if(i < data.length && data[i].children.length > 0) return "pointer";
+                              if(i < data.length && data[i].children) return "pointer";
                               return "default";
                             })
            .on("click", function(d, i) {
-                if(i < data.length && data[i].children.length > 0) chart.selectNode(data[i]);
+                if(i < data.length && data[i].children) chart.selectNode(data[i]);
               });
       },
     }
