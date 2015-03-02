@@ -29,6 +29,8 @@
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
           .on("dblclick", dblclick)
+          .on("mouseover", add_tooltip)
+          .on("mouseout", remove_tooltip);
           //.on("mouseover", function(d) {
           //  tooltip.html(getTooltipHtml(d))
           //   .style("left", (d3.event.pageX) + "px")
@@ -67,13 +69,11 @@
     };
 
     function mouseclick(d) {
-      sidebar.show(d)
       sequence.show(d)
     }
 
     function dblclick(d) {
-      zoom(node == d.parent ? root : d.parent);
-      sequence.show(d.parent);
+      zoom(d);
     }
 
     function clear() {
@@ -108,6 +108,8 @@
           .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
 
       node = d;
+      sequence.show(d);
+      sidebar.show(d);
       d3.event.stopPropagation();
     }
 
@@ -151,14 +153,11 @@
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization(data);
+          sidebar.show(data);
         });
       },
       selectNode: function (node) {
-        if(node.parent && node.children){
-          dblclick(node);
-        } else if(!node.parent){
-          dblclick(node.children[0]);
-        }
+        dblclick(node);
       }
     }
   }

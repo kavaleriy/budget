@@ -12,6 +12,7 @@
         %span#value
     .slider
       = render partial: 'slider'
+      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
@@ -82,10 +83,28 @@
   }
 
   $(document).ready(function() {
+
+    // create chart according to the window size
     iframe_resize();
+
+    // make tooltip movable with mouse
+    var visifier = $(".visify").parent().attr('class');
+
+    if(visifier != "bubbletree") {
+        window.onmousemove = function (e) {
+          var tooltipSpan = document.getElementById('charts_tooltip');
+          var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
+          var x = e.clientX || e.pageX,
+              y = (e.clientY || e.pageY) - sequence_height;
+          tooltipSpan.style.top = y + 'px';
+          tooltipSpan.style.left = x + 'px';
+        };
+    }
+
   });
 
   $(window).resize(function() {
+    // create chart according to the window size
     iframe_resize();
   });
 

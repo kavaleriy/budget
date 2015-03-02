@@ -3,29 +3,27 @@
   #title
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
     .panel.panel-default
-      #heading1.panel-heading{'role' => 'tab'}
+      #heading1.panel-heading
         %h4.panel-title
-          %a{'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href' => '#collapse1', 'aria-expanded' => 'true', 'aria-controls' => 'collapse1'}
-            =t('.explanation')
-      #collapse1.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'heading1' }
-        .panel-body
-          #description
+          =t('.explanation')
+      .panel-body
+        #description
 
-    .panel.panel-default
-      #headingCompare.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
-            =t('.comparison_within_years')
-      #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
-        .panel-body
-          = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
+    -#.panel.panel-default
+    -#  #headingCompare.panel-heading{'role' => 'tab'}
+    -#    %h4.panel-title
+    -#      %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
+    -#        =t('.comparison_within_years')
+    -#  #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
+    -#    .panel-body
+    -#      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
 
     .panel.panel-default
       #headingChart.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
             =t('.chart')
-      #collapseChart.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
+      #collapseChart.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
         .panel-body
           = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
 
@@ -106,7 +104,6 @@
 
         //$(aContainer + ' #title').html(div)
         $(aContainer + ' #under_sequence').html(div)
-
         this.getLevelInfo(node)
       },
 
@@ -126,9 +123,9 @@
           compare.hide()
         }
 
-        chart.show(node.children)
-        pie.show(node.children)
-        table.show(node.children)
+        chart.show(node.children);
+        pie.show(node.children);
+        table.show(node.children);
 
       }
     }
