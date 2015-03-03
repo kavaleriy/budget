@@ -1,4 +1,41 @@
-- model_class = BudgetFile
+:css
+  #chart1, #chart2 {
+    height: 500px;
+  }
+
+  .node rect {
+    cursor: move;
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+  }
+
+  .node text {
+    pointer-events: none;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  .link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+  }
+
+  .link:hover {
+    stroke-opacity: .5;
+  }
+
+:css
+  svg text{
+    font-size:12px;
+  }
+  rect{
+    shape-rendering:crispEdges;
+  }
+
+
+= javascript_include_tag "biPartite.js"
+= javascript_include_tag "sankey.js"
+
 
 = content_for :header do
   .head
@@ -8,21 +45,343 @@
       #{@budget_file.title}
 
 .budget
+  #chart1
 
-  .tab-content
-    %iframe{ 'width' => '100%', 'height' => '800'  }
-
+  #chart2
 
 
 :javascript
-  $(document).on('ready page:change', function() {
-    function set_visiframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
-      $('.embed input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
-      $('.tab-content iframe').attr('src', frame_url)
-    }
+  $(document).on('ready', function() {
 
-    set_visiframe('bubbletree')
+    energy = {"nodes":[
+    {"name":"Agricultural 'waste'"},
+    {"name":"Bio-conversion"},
+    {"name":"Liquid"},
+    {"name":"Losses"},
+    {"name":"Solid"},
+    {"name":"Gas"},
+    {"name":"Biofuel imports"},
+    {"name":"Biomass imports"},
+    {"name":"Coal imports"},
+    {"name":"Coal"},
+    {"name":"Coal reserves"},
+    {"name":"District heating"},
+    {"name":"Industry"},
+    {"name":"Heating and cooling - commercial"},
+    {"name":"Heating and cooling - homes"},
+    {"name":"Electricity grid"},
+    {"name":"Over generation / exports"},
+    {"name":"H2 conversion"},
+    {"name":"Road transport"},
+    {"name":"Agriculture"},
+    {"name":"Rail transport"},
+    {"name":"Lighting & appliances - commercial"},
+    {"name":"Lighting & appliances - homes"},
+    {"name":"Gas imports"},
+    {"name":"Ngas"},
+    {"name":"Gas reserves"},
+    {"name":"Thermal generation"},
+    {"name":"Geothermal"},
+    {"name":"H2"},
+    {"name":"Hydro"},
+    {"name":"International shipping"},
+    {"name":"Domestic aviation"},
+    {"name":"International aviation"},
+    {"name":"National navigation"},
+    {"name":"Marine algae"},
+    {"name":"Nuclear"},
+    {"name":"Oil imports"},
+    {"name":"Oil"},
+    {"name":"Oil reserves"},
+    {"name":"Other waste"},
+    {"name":"Pumped heat"},
+    {"name":"Solar PV"},
+    {"name":"Solar Thermal"},
+    {"name":"Solar"},
+    {"name":"Tidal"},
+    {"name":"UK land based bioenergy"},
+    {"name":"Wave"},
+    {"name":"Wind"}
+    ],
+    "links":[
+    {"source":0,"target":21,"value":124.729},
+    {"source":21,"target":2,"value":30.597},
+    {"source":1,"target":3,"value":26.862},
+    {"source":1,"target":4,"value":280.322},
+    {"source":1,"target":5,"value":81.144},
+    {"source":6,"target":2,"value":35},
+    {"source":7,"target":4,"value":35},
+    {"source":8,"target":9,"value":11.606},
+    {"source":10,"target":9,"value":63.965},
+    {"source":9,"target":4,"value":75.571},
+    {"source":11,"target":12,"value":10.639},
+    {"source":11,"target":13,"value":22.505},
+    {"source":11,"target":14,"value":46.184},
+    {"source":15,"target":16,"value":104.453},
+    {"source":15,"target":14,"value":113.726},
+    {"source":15,"target":17,"value":27.14},
+    {"source":15,"target":12,"value":342.165},
+    {"source":15,"target":18,"value":37.797},
+    {"source":15,"target":19,"value":4.412},
+    {"source":15,"target":13,"value":40.858},
+    {"source":15,"target":3,"value":56.691},
+    {"source":15,"target":20,"value":7.863},
+    {"source":15,"target":21,"value":90.008},
+    {"source":15,"target":22,"value":93.494},
+    {"source":23,"target":24,"value":40.719},
+    {"source":25,"target":24,"value":82.233},
+    {"source":5,"target":13,"value":0.129},
+    {"source":5,"target":3,"value":1.401},
+    {"source":5,"target":26,"value":151.891},
+    {"source":5,"target":19,"value":2.096},
+    {"source":5,"target":12,"value":48.58},
+    {"source":27,"target":15,"value":7.013},
+    {"source":17,"target":28,"value":20.897},
+    {"source":17,"target":3,"value":6.242},
+    {"source":28,"target":18,"value":20.897},
+    {"source":29,"target":15,"value":6.995},
+    {"source":2,"target":12,"value":121.066},
+    {"source":2,"target":30,"value":128.69},
+    {"source":2,"target":18,"value":135.835},
+    {"source":2,"target":31,"value":14.458},
+    {"source":2,"target":32,"value":206.267},
+    {"source":2,"target":19,"value":3.64},
+    {"source":2,"target":33,"value":33.218},
+    {"source":2,"target":20,"value":4.413},
+    {"source":34,"target":1,"value":4.375},
+    {"source":24,"target":5,"value":122.952},
+    {"source":35,"target":26,"value":839.978},
+    {"source":36,"target":37,"value":504.287},
+    {"source":38,"target":37,"value":107.703},
+    {"source":37,"target":2,"value":611.99},
+    {"source":39,"target":4,"value":56.587},
+    {"source":39,"target":1,"value":77.81},
+    {"source":40,"target":14,"value":193.026},
+    {"source":40,"target":13,"value":70.672},
+    {"source":41,"target":15,"value":59.901},
+    {"source":42,"target":14,"value":19.263},
+    {"source":43,"target":42,"value":19.263},
+    {"source":43,"target":41,"value":59.901},
+    {"source":4,"target":19,"value":0.882},
+    {"source":4,"target":26,"value":400.12},
+    {"source":4,"target":12,"value":46.477},
+    {"source":26,"target":15,"value":525.531},
+    {"source":26,"target":3,"value":787.129},
+    {"source":26,"target":11,"value":79.329},
+    {"source":44,"target":15,"value":9.452},
+    {"source":45,"target":1,"value":182.01},
+    {"source":46,"target":15,"value":19.013},
+    {"source":47,"target":15,"value":289.366}
+    ]}
+
+
+    var margin = {top: 1, right: 1, bottom: 6, left: 1},
+      width = 1600 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    var formatNumber = d3.format(",.0f"),
+      format = function(d) { return formatNumber(d) + " TWh"; },
+      color = d3.scale.category20();
+
+    var svg = d3.select("#chart1").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var sankey = d3.sankey()
+      .nodeWidth(15)
+      .nodePadding(10)
+      .size([width, height]);
+
+    var path = sankey.link();
+
+    //d3.json("energy.json", function(energy) {
+
+      sankey
+        .nodes(energy.nodes)
+        .links(energy.links)
+        .layout(32);
+
+      var link = svg.append("g").selectAll(".link")
+        .data(energy.links)
+        .enter().append("path")
+          .attr("class", "link")
+          .attr("d", path)
+          .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+          .sort(function(a, b) { return b.dy - a.dy; });
+
+      link.append("title")
+        .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
+      var node = svg.append("g").selectAll(".node")
+        .data(energy.nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .call(d3.behavior.drag()
+          .origin(function(d) { return d; })
+          .on("dragstart", function() { this.parentNode.appendChild(this); })
+          .on("drag", dragmove));
+
+      node.append("rect")
+        .attr("height", function(d) { return d.dy; })
+        .attr("width", sankey.nodeWidth())
+        .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+        .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+        .append("title")
+          .text(function(d) { return d.name + "\n" + format(d.value); });
+
+      node.append("text")
+        .attr("x", -6)
+        .attr("y", function(d) { return d.dy / 2; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .attr("transform", null)
+        .text(function(d) { return d.name; })
+        .filter(function(d) { return d.x < width / 2; })
+          .attr("x", 6 + sankey.nodeWidth())
+          .attr("text-anchor", "start");
+
+      function dragmove(d) {
+        d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+        sankey.relayout();
+        link.attr("d", path);
+      }
+
+    //});
+
+
+  })
+
+
+
+  $(document).on('ready page:change', function() {
+
+    var sales_data=[
+    ['AC','CA',116,0],
+    ['AC','CA',216,0],
+    ['AC','CA',316,0],
+    ['AC','CA',416,0],
+    ['Lite','AC',16,0],
+    ['Small','CA',1278,4],
+    ['Medium','CA',27,0],
+    ['Plus','CA',58,0],
+    ['Grand','CA',1551,15],
+    ['Elite','CA',141,0],
+    ['Lite','AZ',5453,35],
+    ['Small','AZ',683,1],
+    ['Medium','AZ',862,0],
+    ['Grand','AZ',6228,30],
+    ['Lite','AL',15001,449],
+    ['Small','AL',527,3],
+    ['Medium','AL',836,0],
+    ['Plus','AL',28648,1419],
+    ['Grand','AL',3,0],
+    ['Lite','CO',13,0],
+    ['Small','CO',396,0],
+    ['Medium','CO',362,0],
+    ['Plus','CO',78,10],
+    ['Grand','CO',2473,32],
+    ['Elite','CO',2063,64],
+    ['Medium','DE',203,0],
+    ['Grand','DE',686,2],
+    ['Elite','DE',826,0],
+    ['Lite','KS',1738,110],
+    ['Small','KS',12925,13],
+    ['Medium','KS',15413,0],
+    ['Small','GA',2166,2],
+    ['Medium','GA',86,0],
+    ['Plus','GA',348,3],
+    ['Grand','GA',4244,18],
+    ['Elite','GA',1536,1],
+    ['Small','IA',351,0],
+    ['Grand','IA',405,1],
+    ['Small','IL',914,1],
+    ['Medium','IL',127,0],
+    ['Grand','IL',1470,7],
+    ['Elite','IL',516,1],
+    ['Lite','IN',43,0],
+    ['Small','IN',667,1],
+    ['Medium','IN',172,0],
+    ['Plus','IN',149,1],
+    ['Grand','IN',1380,5],
+    ['Elite','IN',791,23],
+    ['Small','FL',1,0],
+    ['Grand','FL',1,0],
+    ['Small','MD',1070,1],
+    ['Grand','MD',1171,2],
+    ['Elite','MD',33,0],
+    ['Plus','TX',1,0],
+    ['Small','MS',407,0],
+    ['Medium','MS',3,0],
+    ['Grand','MS',457,2],
+    ['Elite','MS',20,0],
+    ['Small','NC',557,0],
+    ['Medium','NC',167,0],
+    ['Plus','NC',95,1],
+    ['Grand','NC',1090,5],
+    ['Elite','NC',676,6],
+    ['Lite','NM',1195,99],
+    ['Small','NM',350,3],
+    ['Medium','NM',212,0],
+    ['Grand','NM',1509,8],
+    ['Lite','NV',3899,389],
+    ['Small','NV',147,0],
+    ['Medium','NV',455,0],
+    ['Plus','NV',1,1],
+    ['Grand','NV',4100,16],
+    ['Lite','OH',12,0],
+    ['Small','OH',634,2],
+    ['Medium','OH',749,0],
+    ['Plus','OH',119,1],
+    ['Grand','OH',3705,19],
+    ['Elite','OH',3456,25],
+    ['Small','PA',828,2],
+    ['Medium','PA',288,0],
+    ['Plus','PA',141,0],
+    ['Grand','PA',2625,7],
+    ['Elite','PA',1920,10],
+    ['Small','SC',1146,2],
+    ['Medium','SC',212,0],
+    ['Plus','SC',223,4],
+    ['Grand','SC',1803,6],
+    ['Elite','SC',761,8],
+    ['Small','TN',527,0],
+    ['Medium','TN',90,0],
+    ['Grand','TN',930,4],
+    ['Elite','TN',395,1],
+    ['Lite','ME',7232,58],
+    ['Small','ME',1272,0],
+    ['Medium','ME',1896,0],
+    ['Plus','ME',1,0],
+    ['Grand','ME',10782,33],
+    ['Elite','ME',1911,3],
+    ['Small','VA',495,0],
+    ['Medium','VA',32,0],
+    ['Plus','VA',7,0],
+    ['Grand','VA',1557,12],
+    ['Elite','VA',24,0],
+    ['Small','WA',460,1],
+    ['Plus','WA',88,3],
+    ['Grand','WA',956,3],
+    ['Small','WV',232,0],
+    ['Medium','WV',71,0],
+    ['Grand','WV',575,2],
+    ['Elite','WV',368,3]
+    ];
+
+    var width = 1100, height = 610, margin ={b:0, t:40, l:170, r:50};
+
+    var svg = d3.select("#chart2")
+      .append("svg").attr('width',width).attr('height',(height+margin.b+margin.t))
+      .append("g").attr("transform","translate("+ margin.l+","+margin.t+")");
+
+    var data = [
+      {data:bP.partData(sales_data,2), id:'SalesAttempts', header:["Channel","State", "Sales Attempts"]},
+      {data:bP.partData(sales_data,3), id:'Sales', header:["Channel","State", "Sales"]},
+    ];
+
+    bP.draw(data, svg);
+
   })
