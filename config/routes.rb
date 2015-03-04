@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   get 'test/test_embed_code' # Not for production version!!!
 
   namespace :vtarnay do
-    get 'module3/index' => 'module3#index'
+    get 'module2' => 'module2#index'
+    get 'module2/:id' => 'module2#show'
+
+    get 'module3' => 'module3#index'
     get 'module3/:id' => 'module3#show'
   end
 

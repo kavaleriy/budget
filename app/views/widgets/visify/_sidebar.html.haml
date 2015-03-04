@@ -95,10 +95,12 @@
           percParentTitle = ''
         }
 
-        div = '<h5 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + "</span>, <span class='percentage'>" + percentage + "</span>" + percParentTitle + "</span>"
-          + ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
-          + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
+        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
+          + ": " + aVisify.helpers.formatNumber(node.amount)
+          + ", <small class='percentage'>" + percentage + percParentTitle + "</small>"
+          //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
+          + "</h4>"
+          //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
         //$(aContainer + ' #title').html(div)
         $(aContainer + ' #under_sequence').html(div)
