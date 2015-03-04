@@ -15,39 +15,47 @@
 
     var bubbleTree = null;
     var totalSize = null;
+    var centerNode = null;
 
     function clear() {
-      sequence.hideBreadcrumb()
-      sidebar.hide()
-      d3.select(aContainer + ' #chart').selectAll("*").remove()
+      sequence.hideBreadcrumb();
+      sidebar.hide();
+      d3.select(aContainer + ' #chart').selectAll("*").remove();
     }
 
     function nodeClick(node) {
       sequence.show(node);
       if(node.children.length > 0) {
         sidebar.show(node);
+      } else {
+        sidebar.show(node.parent);
       }
     }
 
     return {
       initialize: function(width, height) {
-          $(aContainer + ' #chart').width(width).height(height)
+          $(aContainer + ' #chart').width(width).height(height);
       },
       clear: clear,
       show: function(year, month) {
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          clear()
+          clear();
+
           //console.log(d3.keys(data["amount"]));
-          //console.log(data["icon"]);
-          if (data == null) return
+          if (data == null) return;
+
           sidebar.show(data);
 
+          if(bubbleTree !== null) {
+            centerNode = bubbleTree.currentCenter;
+          }
           bubbleTree = new BubbleTree({
               data: data,
               container: aContainer + ' #chart',
               sortBy: 'label',
               //maxNodesPerLevel: 12,
               bubbleType: ['icon', 'plain'],
+              centerNode: centerNode,
               //tooltip: function(d) {
               //  if (d.type == 'HIDE' && root_node != d.node) {
               //    sequence.hideBreadcrumb()
@@ -60,14 +68,13 @@
               //},
               nodeClickCallback: nodeClick
           });
-
           totalSize = data.size;
         })
       },
       selectNode: function (node) {
         nodeClick(node);
-        url = bubbleTree.getUrlForNode(node)
-        bubbleTree.navigateTo(node)
+        url = bubbleTree.getUrlForNode(node);
+        bubbleTree.navigateTo(node);
       },
     }
   }
