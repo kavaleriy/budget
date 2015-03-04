@@ -36,15 +36,15 @@
 :javascript
   function aSidebarCompare(aContainer) {
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
-        width, height
+        width, height;
 
-    var x, y, xAxis, yAxis
+    var x, y, xAxis, yAxis;
 
-    var svg
+    var svg;
 
-    var color
+    var color;
 
-    var data
+    var data, year;
 
     function delay(d, i) { return i * 5; }
 
@@ -79,7 +79,7 @@
         compare_months = []
         $.each( months, function( month, amount ) {
           if (month > 0) {
-            compare_months.push({ label: month, amount: amount })
+            compare_months.push({ label: month, amount: amount });
           }
         })
 
@@ -90,13 +90,16 @@
 
 
     function mouseclick(d) {
-      svg.selectAll("*").remove()
+      svg.selectAll("*").remove();
 
-      if (d.months) {
-        show(d.months)
-      } else {
-        show(data)
-      }
+      console.log(d);
+      chart.show(year, d.label);
+
+      //if (d.months) {
+      //  show(d.months);
+      //} else {
+      //  show(data);
+      //}
     }
 
     function get_month_by_num(month) {
@@ -104,9 +107,10 @@
     }
 
     function show(data) {
-      sort(data)
 
-      $("#sidebar_compare").height(height + margin.top + margin.bottom)
+      sort(data);
+
+      $("#sidebar_compare").height(height + margin.top + margin.bottom);
 
       x.domain(data.map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
       y.domain([0, d3.max(data, function(d) { return d.amount; })]);
@@ -135,7 +139,7 @@
           .attr("width", x.rangeBand())
           .attr("y", height)
           .attr("height", 0)
-        .on("click", mouseclick)
+          .on("click", mouseclick);
 
       svg.selectAll(".bartext")
         .data(data)
@@ -191,14 +195,17 @@
       },
       hide: hide,
       show: function(_data) {
-        hide()
 
-        data = get_history_data(_data)
+        hide();
 
-        if (data == null || data.length == 0)
-          return
+        data = get_history_data(_data);
 
-        show(data)
+        if (data == null || data.length == 0){
+          return;
+        }
+
+        year = data[data.length-1].label;
+        show(data[data.length-1].months);             // show months compare for the last year
       },
     }
   }

@@ -73,13 +73,13 @@
 
       hide: function(){
         //$(aContainer + ' #sidebar #title').html('')
-        $(aContainer + ' #sidebar #under_sequence').html('')
-        $(aContainer + ' #sidebar #description').html('')
+        $(aContainer + ' #sidebar #under_sequence').html('');
+        $(aContainer + ' #sidebar #description').html('');
 
-        compare.hide()
-        chart.hide()
-        pie.hide()
-        table.hide()
+        //compare.hide();
+        chart.hide();
+        pie.hide();
+        table.hide();
       },
       show: function(node){
         I18n.locale = window.aHelper.lang()
@@ -118,9 +118,9 @@
         })
 
         if (node.history) {
-          compare.show(node.history)
+          compare.show(node.history);
         } else {
-          compare.hide()
+          compare.hide();
         }
 
         chart.show(node.children);
