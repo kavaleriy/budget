@@ -1,6 +1,5 @@
 #sidebar.col-xs-12.col-sm-12.col-md-4.col-lg-4
 
-  #title
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
     .panel.panel-default
       #heading1.panel-heading
@@ -8,15 +7,6 @@
           =t('.explanation')
       .panel-body
         #description
-
-    -#.panel.panel-default
-    -#  #headingCompare.panel-heading{'role' => 'tab'}
-    -#    %h4.panel-title
-    -#      %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
-    -#        =t('.comparison_within_years')
-    -#  #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
-    -#    .panel-body
-    -#      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
 
     .panel.panel-default
       #headingChart.panel-heading{'role' => 'tab'}
@@ -56,11 +46,6 @@
       container: aContainer,
 
       initialize: function(height){
-        //$(aContainer + ' #sidebar').height(height)
-
-        compare = aSidebarCompare('#sidebar')
-        compare.initialize(250)
-
         chart = aSidebarChart('#sidebar')
         chart.initialize(350)
 
@@ -72,11 +57,9 @@
       },
 
       hide: function(){
-        //$(aContainer + ' #sidebar #title').html('')
         $(aContainer + ' #sidebar #under_sequence').html('');
         $(aContainer + ' #sidebar #description').html('');
 
-        //compare.hide();
         chart.hide();
         pie.hide();
         table.hide();
@@ -102,26 +85,18 @@
           + "</h4>"
           //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
-        //$(aContainer + ' #title').html(div)
         $(aContainer + ' #under_sequence').html(div)
         this.getLevelInfo(node)
       },
 
       getLevelInfo: function(node) {
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          //console.log(data)
           div_descr = ''
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
           }
           $(aContainer + ' #description').html(div_descr)
         })
-
-        if (node.history) {
-          compare.show(node.history);
-        } else {
-          compare.hide();
-        }
 
         chart.show(node.children);
         pie.show(node.children);

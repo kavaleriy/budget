@@ -11,7 +11,7 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
+  function aTreeChart(aContainer, sequence, sidebar, slider) {
 
     var bubbleTree = null;
     var totalSize = null;
@@ -30,6 +30,9 @@
       } else {
         sidebar.show(node.parent);
       }
+      if(centerNode && centerNode.label != node.label) {
+        slider.show(node);
+      }
     }
 
     return {
@@ -44,11 +47,13 @@
           //console.log(d3.keys(data["amount"]));
           if (data == null) return;
 
-          sidebar.show(data);
-
           if(bubbleTree !== null) {
             centerNode = bubbleTree.currentCenter;
+          } else {
+            sidebar.show(data);
+            slider.show(data);
           }
+
           bubbleTree = new BubbleTree({
               data: data,
               container: aContainer + ' #chart',

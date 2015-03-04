@@ -6,13 +6,10 @@
     #chart
     %canvas{:style => "display: none;"}
     #charts_tooltip.hidden
-      -#%p
-      -#  %strong Important Label Heading
       %p
         %span#value
     .slider
-      = render partial: 'slider'
-      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
+      = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
@@ -126,10 +123,12 @@
     var sidebar = aSidebar('.visify')
     sidebar.initialize(height);
 
-    chart = aTreeChart('.visify', sequence, sidebar);
+    var slider = aSliderCompare('#slider_compare');
+    slider.initialize(250);
+
+    chart = aTreeChart('.visify', sequence, sidebar, slider);
     chart.initialize(width, height);
     chart.show("#{@sel_year}", "#{@sel_month}");
 
-    var slider = aSlider('.visify', chart)
-    slider.initialize()
+
   }
