@@ -12,7 +12,7 @@
 
   .bar {
     fill: steelblue;
-    fill-opacity: .9;
+    fill-opacity: 1.0;
     cursor: pointer;
   }
 
@@ -106,11 +106,18 @@
       return compare_years
     }
 
-
     function mouseclick(d) {
-
+      $("#slider_compare").find("rect").css("pointer-events", "auto");
+      $(this).css("pointer-events", "none");
       chart.show(year, d.label);
+    }
 
+    function mouseover(d) {
+      $(this).css("opacity", "0.5");
+    }
+
+    function mouseout(d) {
+      $(this).css("opacity", "1.0");
     }
 
     function get_month_by_num(month) {
@@ -141,6 +148,8 @@
           .attr("width", x.rangeBand())
           .attr("y", height)
           .attr("height", 0)
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout)
           .on("click", mouseclick);
 
       svg.selectAll(".bartext")
