@@ -109,9 +109,14 @@
     }
 
     function mouseclick(d) {
-      $("#slider_compare").find("rect").css("pointer-events", "auto").css("fill-opacity", "0.5").css("stroke", "none");
-      $(this).css("pointer-events", "none").css("fill-opacity", "1.0").css("stroke", "red");
-      month = d.label;
+      if(d.label != month) {
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("stroke", "none");
+        $(this).css("fill-opacity", "1.0").css("stroke", "red");
+        month = d.label;
+      } else {
+        month = 0;
+        $(this).css("fill-opacity", "0.5").css("stroke", "none");
+      }
       chart.show(year, month);
     }
 
@@ -120,7 +125,7 @@
     }
 
     function mouseout(d) {
-      if($(this).css("pointer-events") != "none") {
+      if(d.label != month) {
         $(this).css("fill-opacity", "0.5");
       }
     }
@@ -149,7 +154,6 @@
         .enter().append("rect")
           .attr("class", "bar")
           .style("fill", function(d) { return d.color || color(d.label); })
-          .style("pointer-events", function(d) { return d.label == month ? "none" : "auto"; })
           .style("fill-opacity", function(d) { return d.label == month ? "1.0" : "0.5"; })
           .style("stroke", function(d) { return d.label == month ? "red" : "none"; })
           .attr("x", function(d) { return x(d.label); })
