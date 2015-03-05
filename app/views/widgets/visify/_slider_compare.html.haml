@@ -12,7 +12,7 @@
 
   .bar {
     fill: steelblue;
-    fill-opacity: 1.0;
+    fill-opacity: 0.5;
     cursor: pointer;
   }
 
@@ -64,6 +64,8 @@
 
     var data, year;
 
+    var month = 0;
+
     function delay(d, i) { return i * 5; }
 
     function hide() {
@@ -107,17 +109,20 @@
     }
 
     function mouseclick(d) {
-      $("#slider_compare").find("rect").css("pointer-events", "auto");
-      $(this).css("pointer-events", "none");
-      chart.show(year, d.label);
+      $("#slider_compare").find("rect").css("pointer-events", "auto").css("fill-opacity", "0.5").css("stroke", "none");
+      $(this).css("pointer-events", "none").css("fill-opacity", "1.0").css("stroke", "red");
+      month = d.label;
+      chart.show(year, month);
     }
 
     function mouseover(d) {
-      $(this).css("opacity", "0.5");
+      $(this).css("fill-opacity", "1.0");
     }
 
     function mouseout(d) {
-      $(this).css("opacity", "1.0");
+      if($(this).css("pointer-events") != "none") {
+        $(this).css("fill-opacity", "0.5");
+      }
     }
 
     function get_month_by_num(month) {
@@ -144,6 +149,9 @@
         .enter().append("rect")
           .attr("class", "bar")
           .style("fill", function(d) { return d.color || color(d.label); })
+          .style("pointer-events", function(d) { return d.label == month ? "none" : "auto"; })
+          .style("fill-opacity", function(d) { return d.label == month ? "1.0" : "0.5"; })
+          .style("stroke", function(d) { return d.label == month ? "red" : "none"; })
           .attr("x", function(d) { return x(d.label); })
           .attr("width", x.rangeBand())
           .attr("y", height)
