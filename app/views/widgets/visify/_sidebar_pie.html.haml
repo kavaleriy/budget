@@ -29,7 +29,10 @@
 
           data = []
           _data.forEach(function(d, index) {
-            data.push( { label: d.label, value: d.amount, color: d.color || 'silver', index: index } )
+            item = { label: d.label, value: d.amount, index: index }
+            console.log(d.color)
+            if (d.color) item.color = d.color
+            data.push( item )
           });
 
           draw_data(data);
