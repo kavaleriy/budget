@@ -11,9 +11,8 @@
 
 
     return {
-      initialize: function(pHeight) {
-        width = $('#sidebar_chart').width() - margin.left - margin.right,
-        height = pHeight - margin.top - margin.bottom;
+      initialize: function() {
+        width = $('#sidebar_chart').width() - margin.left - margin.right
 
       },
       hide: hide,
@@ -23,7 +22,7 @@
         if (data == null)
           return
 
-        $("#sidebar_table").height(height + margin.top + margin.bottom)
+        $("#sidebar_table").height('auto')
 
 
         div = '<table class="table table-hover">'

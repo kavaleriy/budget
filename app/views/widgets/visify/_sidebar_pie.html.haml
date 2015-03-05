@@ -1,201 +1,93 @@
--# http://bl.ocks.org/dbuezas/9306799
-:css
-  .labels text {
-    font-size: 9px;
-  }
+-#https://github.com/benkeen/d3pie
 
-  path.slice{
-    stroke-width:2px;
-    cursor: pointer;
-  }
+= javascript_include_tag "d3pie.js"
 
-  polyline{
-    opacity: .3;
-    stroke: black;
-    stroke-width: 2px;
-    fill: none;
-  }
-
-#sidebar_pie.col-xs-11
+#sidebar_pie
 
 :javascript
+
     function aSidebarPie(aContainer) {
+      _self = this
+
       var margin = {top: 10, right: 0, bottom: 10, left: 0},
           width, height, radius
-      var svg, pie, arc, outerArc
 
-      var key = function(d){ return d.data.label; };
-
-      function hide() {
-        $("#sidebar_pie").height(0)
-        //svg.selectAll("*").remove()
-      }
-
-      function mergeWithFirstEqualZero(first, second){
-        var secondSet = d3.set(); second.forEach(function(d) { secondSet.add(d.label); });
-
-        var onlyFirst = first
-            .filter(function(d){ return !secondSet.has(d.label) })
-            .map(function(d) { return {label: d.label, value: 0}; });
-        return d3.merge([ second, onlyFirst ])
-            .sort(function(a,b) {
-                return d3.ascending(a.label, b.label);
-            });
-      }
 
       return {
         initialize: function(pHeight) {
-        width = $(aContainer).width() - margin.left - margin.right,
-        height = pHeight - margin.top - margin.bottom;
-
-          svg = d3.select("#sidebar_pie")
-            .append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-
-          svg.append("g")
-              .attr("class", "slices")
-
-          svg.append("g")
-              .attr("class", "labels")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-
-          svg.append("g")
-              .attr("class", "lines");
-
-          radius = Math.min(width, height) / 2;
-
-          pie = d3.layout.pie()
-              .value(function(d) {
-                  return d.amount;
-              });
-
-          arc = d3.svg.arc()
-              .outerRadius(radius * 0.8)
-              .innerRadius(radius * 0.4);
-
-          outerArc = d3.svg.arc()
-              .innerRadius(radius * 0.9)
-              .outerRadius(radius * 0.9);
-
-          svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
+          height = pHeight - margin.top - margin.bottom;
         },
-        hide: hide,
+        hide: function(){
+          if (_self.pie)
+            _self.pie.destroy()
+        },
         show: function(_data) {
-          hide()
+          this.hide()
 
           if (_data == null || _data.length < 1)
             return
 
           data = []
-          _data.forEach(function(d) {
-            data.push( { label: d.label, amount: d.amount, color: d.color || 'silver' } )
+          _data.forEach(function(d, index) {
+            data.push( { label: d.label, value: d.amount, color: d.color || 'silver', index: index } )
           });
-
-
-          $("#sidebar_pie").height(height + margin.top + margin.bottom)
 
           draw_data(data);
 
           function draw_data(data) {
+            _self.pie = new d3pie("sidebar_pie", {
+              header: {
+                title: {
+                  text: ""
+                },
+                location: "pie-center"
+              },
+              size: {
+                pieInnerRadius: "50%",
+                pieOuterRadius: "100%",
+                canvasHeight: height
+              },
+              data: {
+                  sortOrder: "value-asc",
+                  smallSegmentGrouping: {
+                      //enabled: true,
+                      //value: 2,
+                      //valueType: "percentage",
+                      //label: "Other"
+                  },
+                  content: data
+              },
+              callbacks: {
+                onClickSegment: function(segment) {
+                  index = segment.data.index
+                  if(index < _data.length && _data[index].children) chart.selectNode(_data[index]);
+                }
+              },
+              tooltips: {
+                  enabled: true,
+                  type: "placeholder",
+                  string: "{label}: {value}",
 
-              /* ------- PIE SLICES -------*/
-              var slice = svg.select(".slices").selectAll("path.slice")
-                  .data(pie(data), key);
+                  // data is an object with the three properties listed below. Just modify the properties
+                  // directly - there's no need to return anything
+                  placeholderParser: function(index, data) {
+                    data.label = data.label + "!";
+                    //data.percentage = data.percentage.toFixed(2);
+                    data.value = aVisify.helpers.formatNumber(data.value);
+                   },
+                   styles: {
+                     fadeInSpeed: 300,
+                     backgroundColor: "#00cc99",
+                     backgroundOpacity: 0.8,
+                     color: "#ffffcc",
+                     borderRadius: 4,
+                     //font: "verdana",
+                     fontSize: 14,
+                     //padding: 10
+                   }
 
-              slice.enter()
-                  .insert("path")
-                  .style("fill", function(d) { return d.data.color; })
-                  .attr("class", "slice")
-                  .style("cursor", function(d, i) {
-                                    if(i < _data.length && _data[i].children) return "pointer";
-                                    return "default";
-                                  })
-                  .on("click", function(d, i) {
-                      if(i < _data.length && _data[i].children) chart.selectNode(_data[i]);
-                    });
-
-              slice
-                  .transition().duration(1000)
-                  .attrTween("d", function(d) {
-                      this._current = this._current || d;
-                      var interpolate = d3.interpolate(this._current, d);
-                      this._current = interpolate(0);
-                      return function(t) {
-                          return arc(interpolate(t));
-                      };
-                  })
-
-              slice.exit()
-                  .remove();
-
-              /* ------- TEXT LABELS -------*/
-
-              var text = svg.select(".labels").selectAll("text")
-                  .data(pie(data), key);
-
-              text.enter()
-                  .append("text")
-                  .attr("dy", ".35em")
-                  .text(function(d) {
-                      return d.data.label;
-                  });
-
-              function midAngle(d){
-                  return d.startAngle + (d.endAngle - d.startAngle)/2;
-              }
-
-              text.transition().duration(1000)
-                  .attrTween("transform", function(d) {
-                      this._current = this._current || d;
-                      var interpolate = d3.interpolate(this._current, d);
-                      this._current = interpolate(0);
-                      return function(t) {
-                          var d2 = interpolate(t);
-                          var pos = outerArc.centroid(d2);
-                          pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-                          return "translate("+ pos +")";
-                      };
-                  })
-                  .styleTween("text-anchor", function(d){
-                      this._current = this._current || d;
-                      var interpolate = d3.interpolate(this._current, d);
-                      this._current = interpolate(0);
-                      return function(t) {
-                          var d2 = interpolate(t);
-                          return midAngle(d2) < Math.PI ? "start":"end";
-                      };
-                  });
-
-              text.exit()
-                  .remove();
-
-              /* ------- SLICE TO TEXT POLYLINES -------*/
-
-              var polyline = svg.select(".lines").selectAll("polyline")
-                  .data(pie(data), key);
-
-              polyline.enter()
-                  .append("polyline");
-
-              polyline.transition().duration(1000)
-                  .attrTween("points", function(d){
-                      this._current = this._current || d;
-                      var interpolate = d3.interpolate(this._current, d);
-                      this._current = interpolate(0);
-                      return function(t) {
-                          var d2 = interpolate(t);
-                          var pos = outerArc.centroid(d2);
-                          pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-                          return [arc.centroid(d2), outerArc.centroid(d2), pos];
-                      };
-                  });
-
-              polyline.exit()
-                  .remove();
+                }
+            });
           };
         }
       }

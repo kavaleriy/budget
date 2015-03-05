@@ -2,13 +2,6 @@
 
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
     .panel.panel-default
-      #heading1.panel-heading
-        %h4.panel-title
-          =t('.explanation')
-      .panel-body
-        #description
-
-    .panel.panel-default
       #headingChart.panel-heading{'role' => 'tab'}
         %h4.panel-title
           %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
@@ -36,11 +29,14 @@
         .panel-body
           = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
 
+  %hr
+    #description
+
 
 :javascript
 
   function aSidebar(aContainer) {
-    var compare, chart, pie, table;
+    var chart, pie, table;
 
     return {
       container: aContainer,
