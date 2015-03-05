@@ -31,28 +31,12 @@
     right: 10px;
   }
 
-.col-xs-12
-  .btn-group.pull-right
-    %button.btn.btn-primary#save
-      %i.fa.fa-file-image-o
-    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
-      %i.fa.fa-code
-
-.col-xs-12
-  //#iframe_embed
-  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-    .input-group
-      .input-group-addon
-        = t('embed')
-      %input.form-control
-    %span.embed_label=t('iframe.select')
-    %select.iframe_size_select#visual
-    .iframe_other_size
-
-#slider_compare.col-xs-12
+#slider_year_chart.col-xs-12
+-#%svg{:height => "200", :width => "500"}
+-#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
 
 :javascript
-  function aSliderCompare(aContainer) {
+  function aSliderYearChart(aContainer) {
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
 
@@ -69,7 +53,7 @@
     function delay(d, i) { return i * 5; }
 
     function hide() {
-      $("#slider_compare").height(0)
+      $("#slider_year_chart").height(0)
       svg.selectAll("*").remove()
     }
 
@@ -94,24 +78,17 @@
     }
 
     function get_history_data(data) {
-      compare_months = []
-      $.each( data, function( month, amount ) {
-        if (month > 0) {
-          compare_months.push({ label: month, amount: amount });
-        }
+      compare_years = []
+      $.each( data, function( year, months ) {
+        compare_years.push( { label: year, amount: months['0'] } )
       })
-      return compare_months
+      return compare_years
     }
 
     function mouseclick(d) {
-      if(d.label != current_month) {
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("stroke", "none");
-        $(this).css("fill-opacity", "1.0").css("stroke", "red");
-        current_month = d.label;
-      } else {
-        current_month = 0;
-        $(this).css("fill-opacity", "0.5").css("stroke", "none");
-      }
+      $("#slider_year_chart").find("rect").css("fill-opacity", "0.5").css("stroke", "none").css("pointer-events", "auto");
+      $(this).css("fill-opacity", "1.0").css("stroke", "red").css("pointer-events", "none");
+      current_year = d.label;
       chart.show(current_year, current_month);
     }
 
@@ -120,7 +97,7 @@
     }
 
     function mouseout(d) {
-      if(d.label != current_month) {
+      if(d.label != current_year) {
         $(this).css("fill-opacity", "0.5");
       }
     }
@@ -134,9 +111,9 @@
       sort(data);
 
       svg.selectAll("*").remove();
-      $("#slider_compare").height(height + margin.top + margin.bottom);
+      $("#slider_year_chart").height(height + margin.top + margin.bottom);
 
-      x.domain(data.map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
+      x.domain(data.map(function(d) { return d.label; }));
       y.domain([0, d3.max(data, function(d) { return d.amount; })]);
 
       svg.append("g")
@@ -149,8 +126,9 @@
         .enter().append("rect")
           .attr("class", "bar")
           .style("fill", function(d) { return d.color || color(d.label); })
-          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
-          .style("stroke", function(d) { return d.label == current_month ? "red" : "none"; })
+          .style("fill-opacity", function(d) { return d.label == current_year ? "1.0" : "0.5"; })
+          .style("pointer-events", function(d) { return d.label == current_year ? "none" : "auto"; })
+          .style("stroke", function(d) { return d.label == current_year ? "red" : "none"; })
           .attr("x", function(d) { return x(d.label); })
           .attr("width", x.rangeBand())
           .attr("y", height)
@@ -194,7 +172,7 @@
             .scale(x)
             .orient("bottom");
 
-        svg = d3.select("#slider_compare").append("svg")
+        svg = d3.select("#slider_year_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -205,36 +183,21 @@
       },
       hide: hide,
       show: function(node, month, year) {
-        data = get_history_data(node.history[year]);
+
+        data = get_history_data(node.history);
 
         if (data == null || data.length == 0){
           return;
         }
         current_month = month;
         current_year = year;
-        show(data);             // show months compare for the last year
+        show(data);
       },
-      current_year: function() {
-        return current_year;
+      current_month: function() {
+        return current_month;
+      },
+      set_month: function(month) {
+        current_month = month;
       }
     }
   }
-
-  $(document).bind('page:change', function(e) {
-
-    I18n.locale = window.aHelper.lang();
-
-    function set_visiframe_inframe() {
-      src = window.location.href;
-      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
-      $('.tab-content iframe').attr('src', src)
-      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
-                                                            <option value=\"default\" selected>900x600</option>\
-                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $('#embed_visual').find('.iframe_other_size').html("");
-    }
-
-    set_visiframe_inframe();
-
-  })

@@ -10,6 +10,7 @@
         %span#value
     .slider
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+      = render partial: 'slider_year_chart'
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
@@ -126,9 +127,10 @@
     var slider = aSliderCompare('#slider_compare');
     slider.initialize(250);
 
-    chart = aTreeChart('.visify', sequence, sidebar, slider);
+    var slider_year = aSliderYearChart('#slider_year_chart');
+    slider_year.initialize(250);
+
+    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_year);
     chart.initialize(width, height);
     chart.show("#{@sel_year}", "#{@sel_month}");
-
-
   }

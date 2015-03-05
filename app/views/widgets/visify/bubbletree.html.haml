@@ -11,11 +11,13 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider) {
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
 
     var bubbleTree = null;
     var totalSize = null;
     var centerNode = null;
+    var current_year = null;
+    var current_month = null;
 
     function clear() {
       sequence.hideBreadcrumb();
@@ -30,8 +32,20 @@
       } else {
         sidebar.show(node.parent);
       }
-      if(centerNode && centerNode.label != node.label) {
-        slider.show(node);
+
+      if(centerNode === null) {
+        slider.show(node, current_month, current_year);
+        slider_year.show(node, current_month, current_year);
+      } else if(centerNode != node) {
+        if(current_year == slider.current_year() && current_month == slider_year.current_month())
+        {
+          slider.show(node, current_month, current_year);
+          slider_year.show(node, current_month, current_year);
+        } else if(current_year != slider.current_year()) {
+          slider.show(node, current_month, current_year);
+        } else if(current_month != slider_year.current_month()) {
+          slider_year.set_month(current_month);
+        }
       }
     }
 
@@ -47,11 +61,11 @@
           //console.log(d3.keys(data["amount"]));
           if (data == null) return;
 
+          current_year = year;
+          current_month = month;
+
           if(bubbleTree !== null) {
             centerNode = bubbleTree.currentCenter;
-          } else {
-            sidebar.show(data);
-            slider.show(data);
           }
 
           bubbleTree = new BubbleTree({
