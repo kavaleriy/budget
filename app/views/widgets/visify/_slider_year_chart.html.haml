@@ -12,13 +12,11 @@
 
   .bar {
     fill: steelblue;
-    fill-opacity: 0.5;
     cursor: pointer;
   }
 
-  .bartext {
-    color: black;
-    font-size: 9px;
+  #slider_year_chart .bartext {
+    font-size: 0.6em;
   }
 
   .x.axis path {
@@ -31,13 +29,31 @@
     right: 10px;
   }
 
-#slider_year_chart.col-xs-12
+.col-xs-12
+  .btn-group.pull-right
+    %button.btn.btn-primary#save
+      %i.fa.fa-file-image-o
+    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+      %i.fa.fa-code
+
+.col-xs-12
+  //#iframe_embed
+  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+    .input-group
+      .input-group-addon
+        = t('embed')
+      %input.form-control
+    %span.embed_label=t('iframe.select')
+    %select.iframe_size_select#visual
+    .iframe_other_size
+
+#slider_year_chart.col-xs-4
 -#%svg{:height => "200", :width => "500"}
 -#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
 
 :javascript
   function aSliderYearChart(aContainer) {
-    var margin = {top: 20, right: 20, bottom: 30, left: 20},
+    var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
     var x, y, xAxis, yAxis;
@@ -50,7 +66,7 @@
 
     var current_month = 0, current_year = 0;
 
-    function delay(d, i) { return i * 5; }
+    function delay(d, i) { return i * 10; }
 
     function hide() {
       $("#slider_year_chart").height(0)
@@ -58,7 +74,7 @@
     }
 
     function sort(data) {
-      var x0 = x.domain(data.sort(false
+      var x0 = y.domain(data.sort(false
               ? function(a, b) { return a.amount - b.amount; }
               : function(a, b) { return d3.ascending(parseInt(a.label), parseInt(b.label)); })
               .map(function(d) { return d.label; }))
@@ -69,10 +85,10 @@
 
       transition.selectAll(".bar")
           .delay(delay)
-          .attr("x", function(d) { return x0(d.label); });
+          .attr("y", function(d) { return x0(d.label); });
 
-      transition.select(".x.axis")
-          .call(xAxis)
+      transition.select(".y.axis")
+          .call(yAxis)
         .selectAll("g")
           .delay(delay);
     }
@@ -86,19 +102,19 @@
     }
 
     function mouseclick(d) {
-      $("#slider_year_chart").find("rect").css("fill-opacity", "0.5").css("stroke", "none").css("pointer-events", "auto");
-      $(this).css("fill-opacity", "1.0").css("stroke", "red").css("pointer-events", "none");
+      $("#slider_year_chart").find("rect").css("fill", "#9ecae1").css("pointer-events", "auto");
+      $(this).css("fill", "#3182bd").css("pointer-events", "none");
       current_year = d.label;
       chart.show(current_year, current_month);
     }
 
     function mouseover(d) {
-      $(this).css("fill-opacity", "1.0");
+      $(this).css("fill", "#3182bd");
     }
 
     function mouseout(d) {
       if(d.label != current_year) {
-        $(this).css("fill-opacity", "0.5");
+        $(this).css("fill", "#9ecae1");
       }
     }
 
@@ -113,26 +129,24 @@
       svg.selectAll("*").remove();
       $("#slider_year_chart").height(height + margin.top + margin.bottom);
 
-      x.domain(data.map(function(d) { return d.label; }));
-      y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+      x.domain([0, d3.max(data, function(d) { return d.amount; })]);
+      y.domain(data.map(function(d) { return d.label; }));
 
       svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis);
+          .attr("class", "y axis")
+          .attr("transform", "translate(0,0)")
+          .call(yAxis);
 
       svg.selectAll(".bar")
           .data(data)
         .enter().append("rect")
           .attr("class", "bar")
-          .style("fill", function(d) { return d.color || color(d.label); })
-          .style("fill-opacity", function(d) { return d.label == current_year ? "1.0" : "0.5"; })
+          .style("fill", function(d) { return d.label == current_year ? "#3182bd" : "#9ecae1"; })
           .style("pointer-events", function(d) { return d.label == current_year ? "none" : "auto"; })
-          .style("stroke", function(d) { return d.label == current_year ? "red" : "none"; })
-          .attr("x", function(d) { return x(d.label); })
-          .attr("width", x.rangeBand())
-          .attr("y", height)
-          .attr("height", 0)
+          .attr("x", 0)
+          .attr("width", 0)
+          .attr("y", function(d) { return y(d.label); })
+          .attr("height", y.rangeBand())
           .on("mouseover", mouseover)
           .on("mouseout", mouseout)
           .on("click", mouseclick);
@@ -141,49 +155,50 @@
         .data(data)
       .enter().append("text")
         .attr("class", "bartext")
-        .attr("text-anchor", "middle")
-        .attr("x", function(d) { return x(d.label) + x.rangeBand() / 2; })
-        .attr("y", function(d) { return height; })
+        .attr("text-anchor", "end")
+        .text(function(d) { return aVisify.helpers.formatNumber(d.amount); })
 
       svg.transition().duration(250).selectAll(".bar")
-        .attr("height", function(d) { return height - y(d.amount); })
-        .attr("y", function(d) { return y(d.amount); })
+          .delay(delay)
+          .attr("width", function(d) { return x(d.amount); })
 
       svg.transition().duration(250).selectAll(".bartext")
-        .attr("y", function(d) { return y(d.amount) - 5; })
-        .text(function(d){
-          return aVisify.helpers.formatNumber(d.amount);
-        })
-
+        .attr("y", function(d) { return (y(d.label)+margin.top); })
+        .attr("x", function(d) { return (x(d.amount)+margin.left); })
     }
 
     return {
       initialize: function(pHeight) {
+        var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
-        height = pHeight - margin.top - margin.bottom;
+        height = pHeight*number_of_years;
 
-        x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+        x = d3.scale.linear()
+          .range([0, width]);
 
-        y = d3.scale.linear()
-            .range([height, 0]);
+        y = d3.scale.ordinal()
+          .rangeRoundBands([0, height], .1);
 
         xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
 
+        yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+
         svg = d3.select("#slider_year_chart").append("svg")
-            .attr("width", width + margin.left + margin.right)
+            .attr("width", width + 2*margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        color = d3.scale.category20c();
-
       },
       hide: hide,
       show: function(node, month, year) {
-
+        if(!node.history) {
+          hide();
+          return;
+        }
         data = get_history_data(node.history);
 
         if (data == null || data.length == 0){
@@ -201,3 +216,22 @@
       }
     }
   }
+
+  $(document).bind('page:change', function(e) {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe() {
+      src = window.location.href;
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+      $('.tab-content iframe').attr('src', src)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe_inframe();
+
+  })

@@ -4,11 +4,12 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var totalSize
-    var width, height, radius
-    var color, x, y
-    var svg, partition, arc, path
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var totalSize;
+    var width, height, radius;
+    var color, x, y;
+    var svg, partition, arc, path;
+    var current_year, current_month;
 
     function createVisualization(root) {
       totalSize = root.amount;
@@ -41,7 +42,8 @@
       } else {
         sidebar.show(d.parent);
       }
-
+      slider.show(d, current_month, current_year);
+      slider_year.show(d, current_month, current_year);
       path.transition()
         .duration(750)
         .attrTween("d", arcTween(d));
@@ -103,11 +105,15 @@
         svg.selectAll("*").remove()
       },
       show: function(year, month) {
-        clear()
+        clear();
+        current_year = year;
+        current_month = month;
 
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
           createVisualization( data );
           sidebar.show( data );
+          slider.show(data, current_month, current_year);
+          slider_year.show(data, current_month, current_year);
         });
       },
       selectNode: function (node) {
