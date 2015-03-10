@@ -102,10 +102,16 @@
     }
 
     function mouseclick(d) {
-      $("#slider_year_chart").find("rect").css("fill", "#9ecae1").css("pointer-events", "auto");
-      $(this).css("fill", "#3182bd").css("pointer-events", "none");
-      current_year = d.label;
-      chart.show(current_year, current_month);
+      if(d.label != current_year) {
+        $("#slider_year_chart").find("rect").css("fill", "#9ecae1");
+        $(this).css("fill", "#3182bd");
+        current_year = d.label;
+        chart.show(current_year, current_month);
+      } else if(current_month != 0) {
+        current_month = 0;
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        chart.show(current_year, current_month);
+      }
     }
 
     function mouseover(d) {
@@ -142,7 +148,6 @@
         .enter().append("rect")
           .attr("class", "bar")
           .style("fill", function(d) { return d.label == current_year ? "#3182bd" : "#9ecae1"; })
-          .style("pointer-events", function(d) { return d.label == current_year ? "none" : "auto"; })
           .attr("x", 0)
           .attr("width", 0)
           .attr("y", function(d) { return y(d.label); })

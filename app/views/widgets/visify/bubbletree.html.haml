@@ -42,7 +42,11 @@
           slider.show(node, current_month, current_year);
           slider_year.show(node, current_month, current_year);
         } else if(current_year != slider.current_year()) {
-          slider.show(node, current_month, current_year);
+          if(slider_year.current_month() == 0) {
+            slider.set_month(current_month);
+          } else {
+            slider.show(node, current_month, current_year);
+          }
         } else if(current_month != slider_year.current_month()) {
           slider_year.set_month(current_month);
         }

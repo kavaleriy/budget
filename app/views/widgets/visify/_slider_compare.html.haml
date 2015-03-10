@@ -130,9 +130,6 @@
           .data(data)
         .enter().append("rect")
           .attr("class", "bar")
-          //.style("fill", function(d) { return d.color || color(d.label); })
-          //.style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
-          //.style("stroke", function(d) { return d.label == current_month ? "red" : "none"; })
           .style("fill", function(d) { return d.label == current_month ? "#3182bd" : "#9ecae1"; })
           .attr("x", function(d) { return x(d.label); })
           .attr("width", x.rangeBand())
@@ -203,6 +200,9 @@
       },
       current_year: function() {
         return current_year;
+      },
+      set_month: function(month) {
+        current_month = month;
       }
     }
   }
