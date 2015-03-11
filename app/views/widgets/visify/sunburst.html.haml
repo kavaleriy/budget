@@ -4,16 +4,38 @@
     %span#percentage
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var totalSize
-    var width, height, radius
-    var color
-    var svg, partition, arc
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var totalSize;
+    var width, height, radius;
+    var color;
+    var svg, partition, arc;
+    var current_year, current_month;
+    var center_node = null;
 
+    function getCenterNode(data) {
+      var nodes = partition(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      //console.log("node not found");
+    }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-      root = json
+      if(center_node === null) {
+        center_node = json;
+      }
+      slider_year.set_month(current_month);
+
+      root = json;
       totalSize = json.amount;
 
       partition = d3.layout.partition()
@@ -39,7 +61,15 @@
       } else {
         sidebar.show(d.parent);
       }
-      sequence.show(d)
+      sequence.show(d);
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+
+      center_node = d;
     }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
@@ -167,12 +197,22 @@
       },
       clear: clear,
       show: function(year, month) {
-        clear()
+        clear();
+        current_year = year;
+        current_month = month;
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          if(center_node === null) {
+            sidebar.show(data);
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            mouseclick(node);
+          }
         });
       },
       selectNode: function (node) {
