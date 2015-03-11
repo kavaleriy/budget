@@ -127,7 +127,7 @@
     var slider = aSliderCompare('#slider_compare');
     slider.initialize(250);
 
-    var slider_year = aSliderYearChart('#slider_year_chart');
+    var slider_year = aSliderYearChart('#slider_year_chart', slider);
     slider_year.initialize(30);
 
     chart = aTreeChart('.visify', sequence, sidebar, slider, slider_year);

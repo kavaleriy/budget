@@ -52,7 +52,7 @@
 -#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
 
 :javascript
-  function aSliderYearChart(aContainer) {
+  function aSliderYearChart(aContainer, slider) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
@@ -62,7 +62,7 @@
 
     var color;
 
-    var data;
+    var data, center_node;
 
     var current_month = 0, current_year = 0;
 
@@ -106,10 +106,12 @@
         $("#slider_year_chart").find("rect").css("fill", "#9ecae1");
         $(this).css("fill", "#3182bd");
         current_year = d.label;
+        slider.show(center_node, current_month, current_year);
         chart.show(current_year, current_month);
       } else if(current_month != 0) {
         current_month = 0;
         $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        slider.set_month(0);
         chart.show(current_year, current_month);
       }
     }
@@ -204,6 +206,7 @@
           hide();
           return;
         }
+        center_node = node;
         data = get_history_data(node.history);
 
         if (data == null || data.length == 0){

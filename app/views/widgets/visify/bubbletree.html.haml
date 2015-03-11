@@ -33,24 +33,13 @@
         sidebar.show(node.parent);
       }
 
-      if(centerNode === null) {
+      if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {
         slider.show(node, current_month, current_year);
         slider_year.show(node, current_month, current_year);
-      } else if(centerNode != node) {
-        if(current_year == slider.current_year() && current_month == slider_year.current_month())
-        {
-          slider.show(node, current_month, current_year);
-          slider_year.show(node, current_month, current_year);
-        } else if(current_year != slider.current_year()) {
-          if(slider_year.current_month() == 0) {
-            slider.set_month(current_month);
-          } else {
-            slider.show(node, current_month, current_year);
-          }
-        } else if(current_month != slider_year.current_month()) {
-          slider_year.set_month(current_month);
-        }
+      } else {
+        slider_year.set_month(current_month);
       }
+      centerNode = node;
     }
 
     return {
@@ -70,6 +59,7 @@
 
           if(bubbleTree !== null) {
             centerNode = bubbleTree.currentCenter;
+            console.log("centerNode", centerNode);
           }
 
           bubbleTree = new BubbleTree({
