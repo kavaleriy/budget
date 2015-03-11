@@ -29,6 +29,10 @@
     }
 
     function createVisualization(root) {
+      if(center_node === null) {
+        center_node = root;
+      }
+      slider_year.set_month(current_month);
       totalSize = root.amount;
 
       path = svg.selectAll("path")
@@ -52,7 +56,6 @@
       }
     }
     function click(d) {
-      center_node = d;
       sequence.show(d);
 
       if(d.children) {
@@ -60,8 +63,16 @@
       } else {
         sidebar.show(d.parent);
       }
-      slider.show(d, current_month, current_year);
-      slider_year.show(d, current_month, current_year);
+
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+
+      center_node = d;
+
       path.transition()
         .duration(750)
         .attrTween("d", arcTween(d));
@@ -128,14 +139,15 @@
         current_month = month;
 
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          createVisualization(data);
-          if(center_node) {
-            var node = getCenterNode(data);
-            click(node);
-          } else {
+          if(center_node === null) {
             sidebar.show(data);
             slider.show(data, current_month, current_year);
             slider_year.show(data, current_month, current_year);
+          }
+          createVisualization(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            click(node);
           }
         });
       },
