@@ -48,7 +48,7 @@
           .attr("class", "cell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
-          .on("dblclick", dblclick)
+          //.on("dblclick", dblclick)
           .on("mouseover", mouseover)
           .on("mouseleave", mouseleave);
 
@@ -141,7 +141,7 @@
           .attr("y", function(d) { return ky * d.dy / 2; })
           .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
 
-      //node = d;
+      node = d;
       //sequence.show(d);
       //sidebar.show(d);
       if(d3.event) {
