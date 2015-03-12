@@ -254,6 +254,9 @@
           var node = getCenterNode(data);
           if(node != data) {
             zoomIn(node);
+          } else {
+            sequence.show(data);
+            sidebar.show(data);
           }
         });
       },

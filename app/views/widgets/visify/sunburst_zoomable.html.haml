@@ -73,9 +73,16 @@
 
       center_node = d;
 
-      path.transition()
-        .duration(750)
-        .attrTween("d", arcTween(d));
+      if(d3.event) {
+        path.transition()
+          .duration(d3.event.altKey ? 7500 : 750)
+          .attrTween("d", arcTween(d));
+        d3.event.stopPropagation();
+      } else {
+        path.transition()
+          .duration(750)
+          .attrTween("d", arcTween(d));
+      }
     }
 
     // Interpolate the scales!
@@ -134,11 +141,11 @@
         svg.selectAll("*").remove()
       },
       show: function(year, month) {
-        clear();
         current_year = year;
         current_month = month;
 
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear();
           if(center_node === null) {
             sidebar.show(data);
             slider.show(data, current_month, current_year);
@@ -148,6 +155,9 @@
           var node = getCenterNode(data);
           if(node != data) {
             click(node);
+          } else {
+            sequence.show(data);
+            sidebar.show(data);
           }
         });
       },
