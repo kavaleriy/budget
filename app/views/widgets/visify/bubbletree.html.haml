@@ -11,7 +11,7 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year, slider_chart) {
 
     var bubbleTree = null;
     var totalSize = null;
@@ -36,8 +36,10 @@
       if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {
         slider.show(node, current_month, current_year);
         slider_year.show(node, current_month, current_year);
+        slider_chart.show(node, current_month, current_year);
       } else {
         slider_year.set_month(current_month);
+        slider_chart.set_month(current_month);
       }
       centerNode = node;
     }

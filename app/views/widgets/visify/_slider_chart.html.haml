@@ -6,7 +6,8 @@
   .axis path,
   .axis line {
     fill: none;
-    stroke: #000;
+    stroke: grey;
+    stroke-width: 1;
     shape-rendering: crispEdges;
   }
 
@@ -15,12 +16,8 @@
     cursor: pointer;
   }
 
-  #slider_year_chart .bartext {
+  #slider_chart .bartext {
     font-size: 0.6em;
-  }
-
-  #slider_year_chart .x.axis path {
-    display: none;
   }
 
   label {
@@ -29,27 +26,12 @@
     right: 10px;
   }
 
-.col-xs-12
-  .btn-group.pull-right
-    %button.btn.btn-primary#save
-      %i.fa.fa-file-image-o
-    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
-      %i.fa.fa-code
-
-.col-xs-12
-  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-    .input-group
-      .input-group-addon
-        = t('embed')
-      %input.form-control
-    %span.embed_label=t('iframe.select')
-    %select.iframe_size_select#visual
-    .iframe_other_size
-
-#slider_year_chart.col-xs-4
+#slider_chart.col-xs-4
+-#%svg{:height => "200", :width => "500"}
+-#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
 
 :javascript
-  function aSliderYearChart(aContainer, slider) {
+  function aSliderChart(aContainer, slider) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
@@ -66,7 +48,7 @@
     function delay(d, i) { return i * 10; }
 
     function hide() {
-      $("#slider_year_chart").height(0)
+      $("#slider_chart").height(0)
       svg.selectAll("*").remove()
     }
 
@@ -100,7 +82,7 @@
 
     function mouseclick(d) {
       if(d.label != current_year) {
-        $("#slider_year_chart").find("rect").css("fill", "#9ecae1");
+        $("#slider_chart").find("rect").css("fill", "#9ecae1");
         $(this).css("fill", "#3182bd");
         current_year = d.label;
         slider.show(center_node, current_month, current_year);
@@ -129,69 +111,96 @@
 
     function show(data) {
 
-      sort(data);
+      //sort(data);
 
-      svg.selectAll("*").remove();
-      $("#slider_year_chart").height(height + margin.top + margin.bottom);
+      //svg.selectAll("*").remove();
+      //$("#slider_chart").height(height + margin.top + margin.bottom);
 
-      x.domain([0, d3.max(data, function(d) { return d.amount; })]);
-      y.domain(data.map(function(d) { return d.label; }));
+      //x.domain([years[0]-1, years[years.length-1]+1]);
+      //y.domain([map[0], map[map.length-1]]);
+
+      x.domain(data.map(function(d) { return d.label; }));
+      y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+
+      //svg.append("text")
+      //   .attr("text-anchor", "end")
+      //   .attr("y", -10)
+      //   .text(y_label);
+
+      var line = d3.svg.line()
+                .x(function(d) { return x(d.label); })
+                .y(function(d) { return y(d.amount); });
+
+      svg.append("path")
+          .attr("class", "line")
+          .attr("d", line(data))
+          .attr("stroke", "blue")
+          .attr("stroke-width", 2)
+          .attr("fill", "none");;
 
       svg.append("g")
-          .attr("class", "y axis")
-          .attr("transform", "translate(0,0)")
-          .call(yAxis);
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-      svg.selectAll(".bar")
-          .data(data)
-        .enter().append("rect")
-          .attr("class", "bar")
-          .style("fill", function(d) { return d.label == current_year ? "#3182bd" : "#9ecae1"; })
-          .attr("x", 0)
-          .attr("width", 0)
-          .attr("y", function(d) { return y(d.label); })
-          .attr("height", y.rangeBand())
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("click", mouseclick);
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(0,0)")
+        .call(yAxis);
 
-      svg.selectAll(".bartext")
-        .data(data)
-      .enter().append("text")
-        .attr("class", "bartext")
-        .attr("text-anchor", "end")
-        .text(function(d) { return aVisify.helpers.formatNumber(d.amount); })
-
-      svg.transition().duration(250).selectAll(".bar")
-          .delay(delay)
-          .attr("width", function(d) { return x(d.amount); })
-
-      svg.transition().duration(250).selectAll(".bartext")
-        .attr("y", function(d) { return (y(d.label)+margin.top); })
-        .attr("x", function(d) { return (x(d.amount)+margin.left); })
+      //svg.selectAll(".bar")
+      //    .data(data)
+      //  .enter().append("rect")
+      //    .attr("class", "bar")
+      //    .style("fill", function(d) { return d.label == current_year ? "#3182bd" : "#9ecae1"; })
+      //    .attr("x", 0)
+      //    .attr("width", 0)
+      //    .attr("y", function(d) { return y(d.label); })
+      //    .attr("height", y.rangeBand())
+      //    .on("mouseover", mouseover)
+      //    .on("mouseout", mouseout)
+      //    .on("click", mouseclick);
+      //
+      //svg.selectAll(".bartext")
+      //  .data(data)
+      //.enter().append("text")
+      //  .attr("class", "bartext")
+      //  .attr("text-anchor", "end")
+      //  .text(function(d) { return aVisify.helpers.formatNumber(d.amount); })
+      //
+      //svg.transition().duration(250).selectAll(".bar")
+      //    .delay(delay)
+      //    .attr("width", function(d) { return x(d.amount); })
+      //
+      //svg.transition().duration(250).selectAll(".bartext")
+      //  .attr("y", function(d) { return (y(d.label)+margin.top); })
+      //  .attr("x", function(d) { return (x(d.amount)+margin.left); })
     }
 
     return {
       initialize: function(pHeight) {
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
-        height = pHeight*number_of_years;
+        height = 250;
 
         x = d3.scale.linear()
           .range([0, width]);
 
-        y = d3.scale.ordinal()
-          .rangeRoundBands([0, height], .1);
+        y = d3.scale.linear()
+          .range([height, 0]);
 
         xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
+          .scale(x)
+          .ticks(number_of_years+2)
+          .tickFormat(d3.format("d"))
+          .orient("bottom");
 
         yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left");
+          .scale(y)
+          .ticks(number_of_years)
+          .orient("left");
 
-        svg = d3.select("#slider_year_chart").append("svg")
+        svg = d3.select("#slider_chart").append("svg")
             .attr("width", width + 2*margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -221,22 +230,3 @@
       }
     }
   }
-
-  $(document).bind('page:change', function(e) {
-
-    I18n.locale = window.aHelper.lang();
-
-    function set_visiframe_inframe() {
-      src = window.location.href;
-      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
-      $('.tab-content iframe').attr('src', src)
-      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
-                                                            <option value=\"default\" selected>900x600</option>\
-                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $('#embed_visual').find('.iframe_other_size').html("");
-    }
-
-    set_visiframe_inframe();
-
-  })

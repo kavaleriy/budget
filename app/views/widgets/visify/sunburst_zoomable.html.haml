@@ -41,18 +41,19 @@
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            .on("mouseover", add_tooltip)
-            .on("mouseout", remove_tooltip)
+            .on("mouseover", mouseover)
+            .on("mouseleave", mouseleave)
 
       function mouseover(d) {
-        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-        var sequenceArray = sequence.getAncestors(d);
-        sequence.updateBreadcrumbs(sequenceArray, percentageString);
+        //var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+        //var sequenceArray = sequence.getAncestors(d);
+        //sequence.updateBreadcrumbs(sequenceArray, percentageString);
+        add_tooltip(event, d);
       }
 
       // Restore everything to full opacity when moving off the visualization.
-      function mouseout(d) {
-        sequence.hideBreadcrumb();
+      function mouseleave(d) {
+        remove_tooltip(d);
       }
     }
     function click(d) {
