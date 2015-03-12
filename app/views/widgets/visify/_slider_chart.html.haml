@@ -26,6 +26,11 @@
     right: 10px;
   }
 
+  .active_point {
+    stroke: blue;
+    stroke-width: 2;
+  }
+
 #slider_chart.col-xs-4
 -#%svg{:height => "200", :width => "500"}
 -#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
@@ -35,7 +40,7 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
-    var x, y, xAxis, yAxis;
+    var x, y, xAxis, yAxis, size_scale;
 
     var svg;
 
@@ -82,8 +87,8 @@
 
     function mouseclick(d) {
       if(d.label != current_year) {
-        $("#slider_chart").find("rect").css("fill", "#9ecae1");
-        $(this).css("fill", "#3182bd");
+        $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
+        $(this).attr("class", "active_point");
         current_year = d.label;
         slider.show(center_node, current_month, current_year);
         chart.show(current_year, current_month);
@@ -96,12 +101,16 @@
     }
 
     function mouseover(d) {
-      $(this).css("fill", "#3182bd");
+      d3.select(this)
+        .attr("stroke", "blue")
+        .attr("cursor", "pointer")
+        .attr("stroke-width", 2);
     }
 
     function mouseout(d) {
       if(d.label != current_year) {
-        $(this).css("fill", "#9ecae1");
+        d3.select(this)
+          .attr("stroke", "none");
       }
     }
 
@@ -111,32 +120,47 @@
 
     function show(data) {
 
-      //sort(data);
+      var k, y_label;
+      totalSize = d3.max(data, function(d) { return d.amount; });
+      if (totalSize >= 1000000000000) {k = 1000000000000; y_label = I18n.t("short_units.trillion");}
+      else if (totalSize >= 1000000000) {k = 1000000000; y_label = I18n.t("short_units.billion");}
+      else if (totalSize >= 1000000) {k = 1000000; y_label = I18n.t("short_units.million");}
+      else if (totalSize >= 1000) {k = 1000; y_label = I18n.t("short_units.thousand");}
+      else {k = 1; y_label = I18n.t("short_units.unit");}
+      svg.selectAll("*").remove();
 
-      //svg.selectAll("*").remove();
-      //$("#slider_chart").height(height + margin.top + margin.bottom);
+      if(#{@range}.length > 1) {
+        x.domain(data.map(function(d) { return d.label; }));
+      } else {
+        var year = #{@range}[0][0];
+        x.domain([0, year]);
+      }
 
-      //x.domain([years[0]-1, years[years.length-1]+1]);
-      //y.domain([map[0], map[map.length-1]]);
-
-      x.domain(data.map(function(d) { return d.label; }));
-      y.domain([0, d3.max(data, function(d) { return d.amount; })]);
-
-      //svg.append("text")
-      //   .attr("text-anchor", "end")
-      //   .attr("y", -10)
-      //   .text(y_label);
+      y.domain([0, d3.max(data, function(d) { return d.amount/k; })]);
+      size_scale.domain(d3.extent(data, function(d) { return d.amount/k; }));
 
       var line = d3.svg.line()
                 .x(function(d) { return x(d.label); })
-                .y(function(d) { return y(d.amount); });
+                .y(function(d) { return y(d.amount/k); });
 
       svg.append("path")
           .attr("class", "line")
           .attr("d", line(data))
           .attr("stroke", "blue")
           .attr("stroke-width", 2)
-          .attr("fill", "none");;
+          .attr("fill", "none");
+
+      svg.selectAll("dot")
+        .data(data)
+      .enter().append("circle")
+        .attr("class", function(d) { return d.label == current_year ? "active_point" : ""; })
+        .attr("r", function(d) { return size_scale(d.amount/k); })
+        .attr("cx", function(d) { return x(d.label); })
+        .attr("cy", function(d) { return y(d.amount/k); })
+        .attr("fill", "gray")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", mouseclick);
 
       svg.append("g")
         .attr("class", "x axis")
@@ -148,40 +172,22 @@
         .attr("transform", "translate(0,0)")
         .call(yAxis);
 
-      //svg.selectAll(".bar")
-      //    .data(data)
-      //  .enter().append("rect")
-      //    .attr("class", "bar")
-      //    .style("fill", function(d) { return d.label == current_year ? "#3182bd" : "#9ecae1"; })
-      //    .attr("x", 0)
-      //    .attr("width", 0)
-      //    .attr("y", function(d) { return y(d.label); })
-      //    .attr("height", y.rangeBand())
-      //    .on("mouseover", mouseover)
-      //    .on("mouseout", mouseout)
-      //    .on("click", mouseclick);
-      //
-      //svg.selectAll(".bartext")
-      //  .data(data)
-      //.enter().append("text")
-      //  .attr("class", "bartext")
-      //  .attr("text-anchor", "end")
-      //  .text(function(d) { return aVisify.helpers.formatNumber(d.amount); })
-      //
-      //svg.transition().duration(250).selectAll(".bar")
-      //    .delay(delay)
-      //    .attr("width", function(d) { return x(d.amount); })
-      //
-      //svg.transition().duration(250).selectAll(".bartext")
-      //  .attr("y", function(d) { return (y(d.label)+margin.top); })
-      //  .attr("x", function(d) { return (x(d.amount)+margin.left); })
+      svg.append("text")
+          .attr("x", -10)
+          .attr("y", -10)
+          .attr("text-anchor", "end")
+          .text(y_label);
+
     }
 
     return {
       initialize: function(pHeight) {
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
-        height = 250;
+        height = 100;
+
+        size_scale = d3.scale.linear()
+                       .range([6, 12]);
 
         x = d3.scale.linear()
           .range([0, width]);
@@ -191,7 +197,7 @@
 
         xAxis = d3.svg.axis()
           .scale(x)
-          .ticks(number_of_years+2)
+          .ticks(number_of_years-1)
           .tickFormat(d3.format("d"))
           .orient("bottom");
 
