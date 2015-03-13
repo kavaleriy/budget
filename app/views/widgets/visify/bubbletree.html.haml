@@ -24,7 +24,9 @@
 
     function nodeClick(node) {
       sequence.show(node);
-      sidebar.show(node);
+      if(node.children.length > 0) {
+        sidebar.show(node);
+      }
     }
 
     return {
@@ -38,6 +40,7 @@
           //console.log(d3.keys(data["amount"]));
           //console.log(data["icon"]);
           if (data == null) return
+          sidebar.show(data);
 
           bubbleTree = new BubbleTree({
               data: data,
@@ -68,3 +71,4 @@
       },
     }
   }
+

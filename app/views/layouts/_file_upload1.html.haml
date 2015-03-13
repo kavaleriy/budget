@@ -1,7 +1,13 @@
 = form_for :file, :html => { :multipart => true, :id => "fileupload"} do |f|
   #files.files
     %span.dragandrop=t('drag_file')
-
+    -attachments.each do |attachment|
+      //-if File.exists?('public/files/' + event_id + '/' + attachment.name);
+      %div
+        .col-sm-12{:style=>"vertical-align: middle; margin: 3px 0;"}
+          %b.col-sm-4
+            = attachment.name
+          %input.col-sm-6.att_description{:placeholder=>'Короткий опис файла', :type=>'text', :value=>attachment.description, :att_id=>attachment.id}
   %span.btn.btn-success.fileinput-button.col-xs-offset-5
     %i.glyphicon.glyphicon-plus
     %span=t('select_from_list')
@@ -10,10 +16,7 @@
   #progress.progress
     .progress-bar.progress-bar-success
 
-  %buttons.btn.btn-primary.start{:type => "submit"}
-    %i.glyphicon.glyphicon-upload
-      %span
-        Start
+
 
 :javascript
   var fileUploadErrors = {
@@ -33,14 +36,61 @@
   $(function () {
 
     /// Initialize the jQuery File Upload widget:
-
+      var att_add_id;
       $('#fileupload').fileupload({
         //url: ''
+        done: function(e, data) {
+            var r = JSON.parse(data.result);
+            console.log(r);
+            att_add_id = r['_id']['$oid'];
+            $('input[att_id="1"]').attr("att_id", att_add_id);
+            //alert(att_add_id);
+        },
+      }).on('fileuploadadd', function (e, data) {
+          console.log(1);
+          data.context = $('<div/>').appendTo('#files');
+          $.each(data.files, function (index, file) {
+              var node = $("<div class='col-sm-12' style='vertical-align: middle; margin: 3px 0;'/>")
+                      .append($("<b class='col-sm-4'/>").text(file.name))
+                      .append($("<input class='col-sm-6 att_description' placeholder='Короткий опис файла' type='text' att_id='1'></input>"))
+
+              node.appendTo(data.context);
+          });
+          $('.att_description').bind('click', function(event){
+            event.preventDefault();
+            click_on_input($(this));
+          });
       });
+
+    $('.att_description').on('click', function(){
+      click_on_input($(this));
+    });
 
 
     //
+    function click_on_input(input_element){
+      input_element.after($("<a href='#' class='save_description'>OK</a>"));
+      att_id = input_element.attr('att_id');
+      $('.save_description').bind('click', function(event){
+        event.preventDefault();
+        click_save($(this),att_id)
+      });
+    }
 
+    function click_save(link, att_id){
+              //alert('dfdfrr');
+              url = $('#fileupload').attr('action');
+              $.ajax({
+                 type: "POST",
+                 url: url.split('?')[0] + '/attachments/' + att_id,
+                 data: "description=" + link.parent().children('input').val(),
+                 success: function(msg){
+                   alert( "Data Saved: " + msg );
+                 }
+              });
+              link.remove();
+              return false;
+    }
 
   });
 

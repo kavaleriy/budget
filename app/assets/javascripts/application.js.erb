@@ -34,6 +34,9 @@
 //= require fileupload/jquery.fileupload
 //= require fileupload/jquery.fileupload-process
 //= require fileupload/jquery.fileupload-validate
+
+
+
 // This is optional (in case you have `I18n is not defined` error)
 // If you want to put this line, you must put it BEFORE `i18n/translations`
 //= require i18n
@@ -56,60 +59,5 @@ $(document).on('ready page:change', function() {
     $(".bootstrap_flash").delay(10000).fadeOut(200);
 })
 
-/* Loading colors and icons once while loading the page.*/
 
-var icons, colors = "";
-$.getJSON( "<%= asset_path('enums.json') %>", function( data ) {
-    $.each( data['fa_icon_list'], function(key,val) {
-        icons = icons + "<option value='" + val + "'>" + val + "</option>";
-    })
-    $.each( data['undp_colors_list'], function(key,val) {
-        colors = colors + "<option value='" + val + "'>" + val + "</option>";
-    })
-});
-
-/* Using icons on a page */
-
-$(document).on('ready page:change', function() {
-    $(".fa-select").select2(
-        {
-            allowClear: true,
-            formatResult: formatFaSelect,
-            formatSelection: formatFaSelect,
-            escapeMarkup: function(m) { return m; }
-        }
-    ).on("select2-focus", function() {
-            if(!$(this).hasClass('icon-loaded')){
-                $(this).append(icons).addClass('icon-loaded');
-            }
-        });
-
-    function formatFaSelect(el) {
-        return "<i class='fa " + el.id + "'/> " + el.id;
-    }
-});
-
-/* Using colors on a page */
-
-$(document).on('ready page:change', function() {
-
-    $(".color-select").select2(
-        {
-            allowClear: true,
-            formatResult: formatColorSelect,
-            formatSelection: formatColorSelect,
-            escapeMarkup: function(m) { return m; }
-        }
-    ).on("select2-focus", function() {
-            if(!$(this).hasClass('color-loaded')){
-                $(this).append(colors).addClass('color-loaded');
-            }
-     });
-
-    function formatColorSelect(el) {
-        console.log(el.id);
-        return "<div style='width: 100%; height: 43px; background-color: " + el.id + "'/>";
-    }
-
-});
 

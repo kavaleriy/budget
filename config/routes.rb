@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   post 'calendars/:calendar_id/events/:id' => 'events#update_files'
+  post 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#update_files_description'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
   resources :calendars do

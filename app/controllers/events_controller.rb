@@ -3,7 +3,9 @@ class EventsController < ApplicationController
   layout false
 
   before_action :set_calendar
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_files_description]
+  before_action :set_attachments, only: [:show]
+  before_action :set_attachment, only: [:update_files_description]
   before_action :set_locale
 
   def set_locale
@@ -26,6 +28,8 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    #binding.pry
+
     respond_to do |format|
       # format.html { render( partial: 'show') if request.xhr? }
       format.js
@@ -85,23 +89,53 @@ class EventsController < ApplicationController
   # POST/PUT /events/1.json
   def update_files
     #@file = @event.files.new(params[:file])
-    @file = @event.files.new(
-        :name=>'new',
-        :description=>'d1'
+  #binding.pry
+    attachments = params[:files]
+
+
+    attachments.each do |attachment|
+      upload_file attachment, @event.id
+      file = @event.event_attachments.new(
+          :name=>attachment.original_filename,
+      )
+      respond_to do |format|
+        if file.save
+          format.html {
+            render :json => file,
+                   :content_type => 'text/html',
+                   :layout => false
+          }
+          format.json { render json: {files: [file.to_jq_upload]}, status: :created, location: file }
+        else
+          format.json { render json: {files: [file.to_jq_upload]}, status: :created, location: file }
+        end
+
+      end
+    end
+
+  end
+
+
+  def update_files_description
+    binding.pry
+    @attachment.update(
+        :name=>@attachment.name,
+        :description=>params[:description],
     )
-    respond_to do |format|
-      if @file.save
+    #binding.pry
+    if @attachment.save
+      respond_to do |format|
         format.html {
-          render :json => [to_jq_upload].to_json,
+          render :json => @attachment,
                  :content_type => 'text/html',
                  :layout => false
         }
-      else
-        format.json { render json: {files: [@file.to_jq_upload]}, status: :created, location: @file }
-      end
 
+
+      end
     end
   end
+
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
@@ -114,23 +148,45 @@ class EventsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
 
-  def set_calendar
-    @calendar = Calendar.find(params[:calendar_id])
-  end
 
-  def to_jq_upload
+
+  def to_jq_upload file
+    binding.pry
     {
-        "name" => '1',
-        "size" => '50',
-        "url" => 'kk',
+        "id" => file._id,
+        "name" => file.name,
+
 
     }
+  end
+
+  def upload_file (attachment, event_id)
+    file_name = attachment.original_filename
+
+    Dir.mkdir('public/files/' + event_id) unless File.exists?('public/files/' + event_id)
+    file_path = Rails.root.join('public', 'files', event_id, file_name)
+
+    File.open(file_path, 'wb') do |file|
+      file.write(attachment.read)
+    end
+
+    { name: file_name, path: file_path }
+  end
+
+  def set_calendar
+    @calendar = Calendar.find(params[:calendar_id])
   end
 
   def set_event
     @event = @calendar.events.find(params[:id])
   end
 
+  def set_attachment
+    @attachment = @event.event_attachments.find(params[:attachment_id])
+  end
+  def set_attachments
+    @attachments = @event.event_attachments
+  end
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
     params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
