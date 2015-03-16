@@ -58,7 +58,7 @@
           .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
           .on("click", mouseclick)
           //.on("dblclick", function(d) {})
-          .on("mouseover", mouseover)
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
           .on("mouseleave", mouseleave);
 
       totalSize = root.amount;
@@ -79,8 +79,8 @@
 
     };
 
-    function mouseover(d) {
-      add_tooltip(d);
+    function mouseover(event, d) {
+      add_tooltip(event, d);
       sequence.show(d);
     }
 

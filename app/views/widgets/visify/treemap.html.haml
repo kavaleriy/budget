@@ -49,7 +49,7 @@
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
           //.on("dblclick", dblclick)
-          .on("mouseover", mouseover)
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
           .on("mouseleave", mouseleave);
 
       cell.append("svg:rect")
@@ -89,8 +89,8 @@
       center_node = d;
     }
 
-    function mouseover(d) {
-      add_tooltip(d);
+    function mouseover(event, d) {
+      add_tooltip(event, d);
       sequence.show(d);
     }
 

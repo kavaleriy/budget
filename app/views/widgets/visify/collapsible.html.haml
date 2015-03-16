@@ -132,7 +132,7 @@
           .style("fill", color)
           .on("click", mouseclick)
           //.on("dblclick", dblclick)
-          .on("mouseover", mouseover)
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
           .on("mouseleave", mouseleave)
           .call(force.drag);
 
@@ -145,8 +145,8 @@
         //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
       }
 
-      function mouseover(d) {
-        add_tooltip(d);
+      function mouseover(event, d) {
+        add_tooltip(event, d);
         sequence.show(d);
       }
 

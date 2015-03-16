@@ -74,7 +74,7 @@
           .style("fill", function(d) { return d.fill; })
           .each(function(d) { this._current = updateArc(d); })
           .on("click", zoomIn)
-          .on("mouseover", add_tooltip)
+          .on("mouseover", function(d){ add_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip);
 
       //function mouseover(d) {
@@ -178,7 +178,7 @@
             .style("fill", function(d) { return d.fill; })
             .on("click", zoomIn)
             .each(function(d) { this._current = enterArc(d); })
-            .on("mouseover", add_tooltip)
+            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
             .on("mouseout", remove_tooltip);
 
         path.transition()

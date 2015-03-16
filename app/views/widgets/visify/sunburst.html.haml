@@ -49,7 +49,7 @@
         .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
         .on("click", mouseclick)
         .each(stash)
-        .on("mouseover", add_tooltip)
+        .on("mouseover", function(d){ add_tooltip(d3.event, d) })
         .on("mouseout", remove_tooltip);
 
     };

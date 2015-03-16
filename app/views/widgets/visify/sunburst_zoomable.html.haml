@@ -41,15 +41,8 @@
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            .on("mouseover", mouseover)
+            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
             .on("mouseleave", mouseleave)
-
-      function mouseover(d) {
-        //var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-        //var sequenceArray = sequence.getAncestors(d);
-        //sequence.updateBreadcrumbs(sequenceArray, percentageString);
-        add_tooltip(event, d);
-      }
 
       // Restore everything to full opacity when moving off the visualization.
       function mouseleave(d) {
