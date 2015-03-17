@@ -8,6 +8,24 @@
     #charts_tooltip.hidden
       %p
         %span#value
+
+    .col-xs-12
+      .btn-group.pull-right
+        %button.btn.btn-primary#save
+          %i.fa.fa-file-image-o
+        %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+          %i.fa.fa-code
+    .col-xs-12
+      //#iframe_embed
+      #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+        .input-group
+          .input-group-addon
+            = t('embed')
+          %input.form-control
+        %span.embed_label=t('iframe.select')
+        %select.iframe_size_select#visual
+        .iframe_other_size
+
     .slider.row
       = render partial: 'slider_chart'
       = render partial: 'slider_year_chart'
@@ -126,7 +144,7 @@
     sidebar.initialize(height);
 
     var slider = aSliderCompare('#slider_compare');
-    slider.initialize(250);
+    slider.initialize(100);
 
     var slider_year = aSliderYearChart('#slider_year_chart', slider);
     slider_year.initialize(30);

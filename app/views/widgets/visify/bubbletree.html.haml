@@ -41,6 +41,12 @@
         slider_year.set_month(current_month);
         slider_chart.set_month(current_month);
       }
+
+      if(node.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
       centerNode = node;
     }
 

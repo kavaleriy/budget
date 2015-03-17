@@ -12,23 +12,6 @@
 -#          =month
 
 .col-xs-12
-  .btn-group.pull-right
-    %button.btn.btn-primary#save
-      %i.fa.fa-file-image-o
-    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
-      %i.fa.fa-code
-.col-xs-12
-  //#iframe_embed
-  #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-    .input-group
-      .input-group-addon
-        = t('embed')
-      %input.form-control
-    %span.embed_label=t('iframe.select')
-    %select.iframe_size_select#visual
-    .iframe_other_size
-
-.col-xs-12
   %select.btn-default.btn-sm#year_button
     = options_for_select(@range.map{|k,v| k}, @sel_year)
   #slider_container.row.btn-group{ 'data-toggle' => 'buttons' }
