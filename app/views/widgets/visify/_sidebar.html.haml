@@ -86,6 +86,7 @@
       },
 
       getLevelInfo: function(node) {
+        $(aContainer + ' #description').html('');
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = ''
           if (data.description) {
