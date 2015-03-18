@@ -88,6 +88,11 @@
 
       slider.show(d, current_month, current_year);
       slider_year.show(d, current_month, current_year);
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
     }
 
     // Restore everything to full opacity when moving off the visualization.

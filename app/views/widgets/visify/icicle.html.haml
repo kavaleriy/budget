@@ -105,7 +105,11 @@
       } else {
         slider_year.set_month(current_month);
       }
-
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
       center_node = d;
       //if (lastClicked == d) {
       //  var _d = d
