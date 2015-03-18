@@ -30,7 +30,7 @@
       if(node.children.length > 0) {
         sidebar.show(node);
       } else {
-        sidebar.show(node.parent);
+        sidebar.hide();
       }
 
       if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {

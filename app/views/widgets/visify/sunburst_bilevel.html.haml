@@ -95,14 +95,14 @@
       }
       if (!p.children) {
         sequence.show(p);
+        sidebar.hide();
         return;
       }
       zoom(p, p);
       if(p.children) {
         sidebar.show(p);
-      } else  {
-        sidebar.show(p.parent);
       }
+
       sequence.show(p);
       if(center_node && (center_node.label != p.label || center_node.level != p.level)) {
         slider.show(p, current_month, current_year);

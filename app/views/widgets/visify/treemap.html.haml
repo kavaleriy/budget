@@ -76,7 +76,12 @@
     };
 
     function mouseclick(d) {
+    if(d.children) {
       sidebar.show(d);
+    } else {
+      sidebar.hide();
+    }
+
       zoom(d);
 
       if(center_node && (center_node.label != d.label || center_node.level != d.level)) {

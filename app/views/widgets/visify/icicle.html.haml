@@ -90,7 +90,12 @@
     }
 
     function mouseclick(d) {
-      sidebar.show(d);
+      if(d.children) {
+        sidebar.show(d);
+      } else {
+        sidebar.hide();
+      }
+
       sequence.show(d);
       dblclick(d);
 

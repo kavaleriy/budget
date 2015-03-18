@@ -84,6 +84,8 @@
     function mouseclick(d) {
       if(d.children) {
         sidebar.show(d);
+      } else {
+        sidebar.hide();
       }
       //console.log(d);
       zoom(node == d ? root : d)

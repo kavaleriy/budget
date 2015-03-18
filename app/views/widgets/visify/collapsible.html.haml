@@ -64,8 +64,8 @@
     }
 
     function clear() {
-      sidebar.hide()
-      vis.selectAll("*").remove()
+      sidebar.hide();
+      vis.selectAll("*").remove();
     }
 
     function dblclick(d) {
@@ -75,10 +75,12 @@
         d.children = null;
       } else {
         d.children = d._children;
+        sidebar.show(d);
         d._children = null;
       }
       update();
       sequence.show(d);
+
 
       if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
         slider.show(d, current_month, current_year);

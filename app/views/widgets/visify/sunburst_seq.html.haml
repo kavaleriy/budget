@@ -79,7 +79,13 @@
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
-      sidebar.show(d);
+
+      if(d.children) {
+        sidebar.show(d);
+      } else {
+        sidebar.hide();
+      }
+
       slider.show(d, current_month, current_year);
       slider_year.show(d, current_month, current_year);
     }
