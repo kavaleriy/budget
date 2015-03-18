@@ -25,7 +25,7 @@ $(document).bind('page:change', function(e) {
             $(this).next().html("");
             var el_id = "#embed_" + $(this).attr('id');
             var frame_url = $(el_id + ' input').val().split("src='")[1];
-            $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url);
+            document.querySelector(el_id + ' input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
         }
     })
 
@@ -56,7 +56,7 @@ $(document).bind('page:change', function(e) {
             }
             var el_id = "#embed_" + $(this).parent().siblings("select").attr('id');
             var frame_url = $(el_id + ' input').val().split("src='")[1];
-            $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url);
+            document.querySelector(el_id + ' input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
         }
     });
 
