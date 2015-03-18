@@ -35,8 +35,7 @@
           .attr("fill-rule", "evenodd")
           .style("fill", function(d) { return d.color || color(d.value); })
           .style("opacity", 1)
-          .on("mouseover", mouseover)
-          .on("click", mouseclick);
+          .on("mouseover", mouseover);
 
       // Add the mouseleave handler to the bounding circle.
       d3.select("#container").on("mouseleave", mouseleave);
@@ -46,15 +45,6 @@
       center_node = json;
       slider_year.set_month(current_month);
     };
-
-    function mouseclick(d) {
-      //if(d.children) {
-      //  sidebar.show(d);
-      //} else {
-      //  sidebar.show(d.parent);
-      //}
-      //sequence.show(d);
-    }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
@@ -183,7 +173,7 @@
         });
       },
       selectNode: function (node) {
-        mouseclick(node);
+        mouseover(node);
       }
     }
   }

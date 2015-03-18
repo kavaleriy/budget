@@ -45,12 +45,9 @@
         $('#sidebar_table').html(div);
 
         d3.selectAll("#sidebar_table tr")
-            .style("cursor", function(d, i) {
-                               if(i < data.length && data[i].children) return "pointer";
-                               return "default";
-                             })
+            .style("cursor", "pointer")
             .on("click", function(d, i) {
-                 if(i < data.length && data[i].children) chart.selectNode(data[i]);
+                 chart.selectNode(data[i]);
                });
       },
     }

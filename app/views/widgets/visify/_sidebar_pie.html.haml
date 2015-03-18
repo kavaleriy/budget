@@ -63,7 +63,7 @@
               callbacks: {
                 onClickSegment: function(segment) {
                   index = segment.data.index
-                  if(index < _data.length && _data[index].children) chart.selectNode(_data[index]);
+                  chart.selectNode(_data[index]);
                 }
               },
               tooltips: {
@@ -86,7 +86,7 @@
                      borderRadius: 4,
                      //font: "verdana",
                      fontSize: 14,
-                     //padding: 10
+                     //padding: 10,
                    }
 
                 }
