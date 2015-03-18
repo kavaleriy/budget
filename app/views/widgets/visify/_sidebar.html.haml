@@ -53,7 +53,6 @@
       },
 
       hide: function(){
-        $(aContainer + ' #sidebar #under_sequence').html('');
         $(aContainer + ' #sidebar #description').html('');
 
         chart.hide();
@@ -61,6 +60,27 @@
         table.hide();
       },
       show: function(node){
+        this.showUndersequence(node);
+        this.getLevelInfo(node)
+      },
+
+      getLevelInfo: function(node) {
+        $(aContainer + ' #description').html('');
+        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+          div_descr = ''
+          if (data.description) {
+            div_descr = "<div class='description'>" + data.description + "</div>"
+          }
+          $(aContainer + ' #description').html(div_descr)
+        })
+
+        chart.show(node.children);
+        pie.show(node.children);
+        table.show(node.children);
+
+      },
+
+      showUndersequence: function(node) {
         I18n.locale = window.aHelper.lang()
         label = node.label || ''
         icon = node.icon || ''
@@ -82,23 +102,6 @@
           //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
         $(aContainer + ' #under_sequence').html(div)
-        this.getLevelInfo(node)
       },
-
-      getLevelInfo: function(node) {
-        $(aContainer + ' #description').html('');
-        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          div_descr = ''
-          if (data.description) {
-            div_descr = "<div class='description'>" + data.description + "</div>"
-          }
-          $(aContainer + ' #description').html(div_descr)
-        })
-
-        chart.show(node.children);
-        pie.show(node.children);
-        table.show(node.children);
-
-      }
     }
   }
