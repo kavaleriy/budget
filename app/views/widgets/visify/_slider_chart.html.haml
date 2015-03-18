@@ -32,9 +32,8 @@
     stroke-width: 2;
   }
 
-.col-xs-4
+.col-xs-12.col-md-4
   #slider_chart
-  -##slider_bubble_chart{:style => "height: 400px; min-width: 310px; max-width: 600px; margin: 0 auto"}
 
 :javascript
   function aSliderChart(aContainer, slider) {
@@ -251,7 +250,6 @@
         current_month = month;
         current_year = year;
         show(data);
-        //show_bubble_chart(data);
       },
       current_month: function() {
         return current_month;
@@ -260,41 +258,4 @@
         current_month = month;
       }
     }
-  }
-
-  function show_bubble_chart (data) {
-
-      console.log(data);
-      series_data = [];
-      for(i in data) {
-        series_data.push([parseInt(data[i].label), data[i].amount]);
-      }
-
-      $('#slider_bubble_chart').highcharts({
-
-          chart: {
-              type: 'bubble',
-              zoomType: 'xy'
-          },
-
-          title: {
-              text: 'Порівняння по рокам'
-          },
-
-          legend: {
-              enabled: false
-          },
-
-          plotOptions: {
-            bubble: {
-              allowPointSelect: true
-            },
-          },
-
-          series: [{
-              data: series_data
-          }]
-      });
-
-      //$('.highcharts-container svg text').last().remove();
   }

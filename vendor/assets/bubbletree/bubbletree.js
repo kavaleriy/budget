@@ -764,8 +764,9 @@ var BubbleTree = function(config, onHover, onUnHover) {
 		me.freshUrl = hash;
 
 		if (tr && tr.running) {
-			//vis4.log('transition is running at the moment, adding listener');
+			//console.log('transition is running at the moment, adding listener', me.currentCenter);
 			tr.onComplete(me.changeUrl.bind(me));
+            me.navigateTo(me.getCenterNode("bubble", me.currentCenter));
 		} else {
 			me.changeUrl();
 		}
@@ -910,7 +911,7 @@ BubbleTree.Layout = function() {
 	 * the transition
 	 */
 	me.hide = function(obj) {
-		var me = this;
+        var me = this;
 		me.toHide.push(obj);
 	};
 	

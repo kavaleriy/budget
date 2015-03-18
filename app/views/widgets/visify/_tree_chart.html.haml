@@ -28,7 +28,6 @@
 
     .slider.row
       = render partial: 'slider_chart'
-      = render partial: 'slider_year_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
@@ -146,13 +145,30 @@
     var slider = aSliderCompare('#slider_compare');
     slider.initialize(100);
 
-    var slider_year = aSliderYearChart('#slider_year_chart', slider);
-    slider_year.initialize(30);
-
     var slider_chart = aSliderChart('#slider_chart', slider);
     slider_chart.initialize(250);
 
-    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_year, slider_chart);
+    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_chart);
     chart.initialize(width, height);
     chart.show("#{@sel_year}", "#{@sel_month}");
   }
+
+
+  $(document).bind('page:change', function(e) {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe() {
+      src = window.location.href;
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+      $('.tab-content iframe').attr('src', src)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe_inframe();
+
+  })
