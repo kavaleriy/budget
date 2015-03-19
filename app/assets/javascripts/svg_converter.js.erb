@@ -29,14 +29,11 @@ $(document).bind('page:change', function(e) {
         // get CANVAS image and convert it to PNG
         d3.select("canvas").attr("width", width).attr("height", height);
         var canvas = document.querySelector("canvas");
-        //console.log(canvas);
         var context = canvas.getContext("2d");
 
         var img_png = new Image();
-        img_png.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(html)));
-        img_png.onload = img_load();
-        function img_load() {
-
+        img_png.src = 'data:image/svg+xml;base64,' + b64EncodeUnicode(html);
+        img_png.addEventListener("load", function() {
             context.drawImage(img_png, 0, 0);
             var canvasdata = canvas.toDataURL("image/png");
 
@@ -46,6 +43,12 @@ $(document).bind('page:change', function(e) {
             a.download = "sample.png";
             a.href = canvasdata;
             a.dispatchEvent(theEvent);
+        }, false);
+
+        function b64EncodeUnicode(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
         }
     }
 })

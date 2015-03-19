@@ -31,7 +31,7 @@
     right: 10px;
   }
 
-#slider_compare.col-xs-8
+#slider_compare.col-xs-12.col-md-8
 
 :javascript
   function aSliderCompare(aContainer) {
@@ -51,8 +51,8 @@
     function delay(d, i) { return i * 5; }
 
     function hide() {
-      $("#slider_compare").height(0)
-      svg.selectAll("*").remove()
+      $("#slider_compare").height(0);
+      svg.selectAll("*").remove();
     }
 
     function sort(data) {
@@ -185,6 +185,7 @@
       },
       hide: hide,
       show: function(node, month, year) {
+
         if(!node.history) {
           hide();
           return;
@@ -192,6 +193,7 @@
         data = get_history_data(node.history[year]);
 
         if (data == null || data.length == 0){
+          hide();
           return;
         }
         current_month = month;

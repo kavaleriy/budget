@@ -1,12 +1,13 @@
 :css
-  .axis text {
+  #slider_chart .axis text {
     font: 10px sans-serif;
+    fill: #888888;
   }
 
-  .axis path,
-  .axis line {
+  #slider_chart .axis path,
+  #slider_chart .axis line {
     fill: none;
-    stroke: grey;
+    stroke: #C8C8C8;
     stroke-width: 1;
     shape-rendering: crispEdges;
   }
@@ -27,13 +28,12 @@
   }
 
   .active_point {
-    stroke: blue;
+    stroke: #3182bd;
     stroke-width: 2;
   }
 
-#slider_chart.col-xs-4
--#%svg{:height => "200", :width => "500"}
--#  %polyline{:points => "20,20 40,25 60,40 80,120 120,140 200,180", :style => "fill:none;stroke:black;stroke-width:3"}
+.col-xs-12.col-md-4
+  #slider_chart
 
 :javascript
   function aSliderChart(aContainer, slider) {
@@ -101,8 +101,9 @@
     }
 
     function mouseover(d) {
+
       d3.select(this)
-        .attr("stroke", "blue")
+        .attr("stroke", "#3182bd")
         .attr("cursor", "pointer")
         .attr("stroke-width", 2);
     }
@@ -112,7 +113,7 @@
         d3.select(this)
           .attr("stroke", "none");
       }
-    }
+     }
 
     function get_month_by_num(month) {
       return #{I18n.t :abbr_month_names, :scope => :date}[month]
@@ -121,7 +122,9 @@
     function show(data) {
 
       var k, y_label;
-      totalSize = d3.max(data, function(d) { return d.amount; });
+      var totalSize = d3.max(data, function(d) { return d.amount; });
+      var maxLabel = d3.max(data, function(d) { return parseInt(d.label); });
+      var minLabel = d3.min(data, function(d) { return parseInt(d.label); });
       if (totalSize >= 1000000000000) {k = 1000000000000; y_label = I18n.t("short_units.trillion");}
       else if (totalSize >= 1000000000) {k = 1000000000; y_label = I18n.t("short_units.billion");}
       else if (totalSize >= 1000000) {k = 1000000; y_label = I18n.t("short_units.million");}
@@ -129,14 +132,18 @@
       else {k = 1; y_label = I18n.t("short_units.unit");}
       svg.selectAll("*").remove();
 
+      var maxSize = totalSize/k;
+      var minSize = d3.min(data, function(d) { return d.amount; })/k;
+
       if(#{@range}.length > 1) {
-        x.domain(data.map(function(d) { return d.label; }));
+        x.domain([minLabel-1, maxLabel+1]);
       } else {
-        var year = #{@range}[0][0];
-        x.domain([0, year]);
+        var year = parseInt(#{@range}[0][0]);
+        x.domain([year-1, year+1]);
+        yAxis.ticks(2);
       }
 
-      y.domain([0, d3.max(data, function(d) { return d.amount/k; })]);
+      y.domain([minSize-minSize/4, maxSize]);
       size_scale.domain(d3.extent(data, function(d) { return d.amount/k; }));
 
       var line = d3.svg.line()
@@ -146,8 +153,8 @@
       svg.append("path")
           .attr("class", "line")
           .attr("d", line(data))
-          .attr("stroke", "blue")
-          .attr("stroke-width", 2)
+          .attr("stroke", "#9ecae1")
+          .attr("stroke-width", 1)
           .attr("fill", "none");
 
       svg.selectAll("dot")
@@ -157,10 +164,14 @@
         .attr("r", function(d) { return size_scale(d.amount/k); })
         .attr("cx", function(d) { return x(d.label); })
         .attr("cy", function(d) { return y(d.amount/k); })
-        .attr("fill", "gray")
+        .attr("fill", "#9ecae1")
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
-        .on("click", mouseclick);
+        .on("click", mouseclick)
+        .append("title")
+           .text(function(d) {
+                 return aVisify.helpers.formatNumber(d.amount);
+           });;
 
       svg.append("g")
         .attr("class", "x axis")
@@ -176,15 +187,27 @@
           .attr("x", -10)
           .attr("y", -10)
           .attr("text-anchor", "end")
+          .attr("fill", "#888888")
           .text(y_label);
 
+      //// Draw Y-axis grid lines
+      //svg.selectAll("line.y")
+      //  .data(y.ticks(2))
+      //.enter().append("line")
+      //  .attr("class", "y")
+      //  .attr("x1", 0)
+      //  .attr("x2", 450)
+      //  .attr("y1", y)
+      //  .attr("y2", y)
+      //  .style("stroke", "#ccc")
+      //  .style("stroke-width", 1);
     }
 
     return {
       initialize: function(pHeight) {
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
-        height = 100;
+        height = 50;
 
         size_scale = d3.scale.linear()
                        .range([6, 12]);
@@ -197,7 +220,7 @@
 
         xAxis = d3.svg.axis()
           .scale(x)
-          .ticks(number_of_years-1)
+          .ticks(number_of_years+2)
           .tickFormat(d3.format("d"))
           .orient("bottom");
 
