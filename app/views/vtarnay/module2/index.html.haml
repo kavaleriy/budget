@@ -22,7 +22,7 @@
   %tbody
     - @budget_files.each do |budget_file|
       %tr
-        %td=link_to "#{budget_file.id} (#{budget_file.class})", "module3/#{budget_file.id}"
+        %td=link_to "#{budget_file.id} (#{budget_file.class})", "module2/#{budget_file.id}"
         %td
           =budget_file.title
         -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email

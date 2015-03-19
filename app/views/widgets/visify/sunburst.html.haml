@@ -1,126 +1,217 @@
-.sunburst
+-#http://bl.ocks.org/mbostock/5944371
+
+.sunburst-bievel
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
-  #explanation{ style: "visibility: hidden;" }
-    %span#percentage
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
     var totalSize
-    var width, height, radius
-    var color
-    var svg, partition, arc
+    var width, height, margin
+    var hue, luminance
+    var svg, partition, arc, path, center
+    var current_year, current_month;
+    var center_node = null;
 
+    function getCenterNode(data) {
+      var nodes = partition(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      console.log("node not found");
+    }
 
-    // Main function to draw and set up the visualization, once we have the data.
-    function createVisualization(json) {
-      root = json
-      totalSize = json.amount;
+    function createVisualization(root) {
+      if(center_node === null) {
+        center_node = root;
+      }
+      slider_year.set_month(current_month);
+      totalSize = root.amount;
+
+      luminance = d3.scale.sqrt()
+          .domain([0, root.amount])
+          .clamp(true)
+          .range([90, 20]);
 
       partition = d3.layout.partition()
-        .size([2 * Math.PI, radius])
-        .value(function(d) { if (d.amount > totalSize * 0.001) return d.amount; });
+          .sort(function(a, b) { return d3.ascending(a.label, b.label); })
+          .size([2 * Math.PI, radius]);
 
-      path = svg.data([root]).selectAll("path")
-        .data(partition.nodes)
-        .enter().append("svg:path")
-        .attr("d", arc)
-        .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
-        .on("click", mouseclick)
-        .each(stash)
-        .on("mouseover", add_tooltip)
-        .on("mouseout", remove_tooltip);
 
-    };
+      partition
+          .value(function(d) { return d.amount; })
+          .nodes(root)
+          .forEach(function(d) {
+            d._children = d.children;
+            d.key = Math.random();
+            d.fill = fill(d);
+          });
 
-    function mouseclick(d) {
-      magnify(d)
-      if(d.children) {
-        sidebar.show(d);
-      } else {
-        sidebar.show(d.parent);
+      // Now redefine the value function to use the previously-computed sum.
+      partition
+          .children(function(d, depth) { return depth < 2 ? d._children : null; })
+          .value(function(d) { return d.amount; });
+
+      center = svg.append("circle")
+          .style("fill", 'transparent')
+          .attr("r", radius / 3)
+          .on("click", zoomOut);
+
+      center.append("title")
+          .text("повернутись");
+
+      path = svg.selectAll("path")
+          .data(partition.nodes(root).slice(1))
+        .enter().append("path")
+          .attr("d", arc)
+          .style("fill", function(d) { return d.fill; })
+          .each(function(d) { this._current = updateArc(d); })
+          .on("click", zoomIn)
+          .on("mouseover", function(d){ add_tooltip(d3.event, d) })
+          .on("mouseout", remove_tooltip);
+
+      //function mouseover(d) {
+      //  var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
+      //  var sequenceArray = sequence.getAncestors(d);
+      //  sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      //}
+      //
+      //// Restore everything to full opacity when moving off the visualization.
+      //function mouseout(d) {
+      //  sequence.hideBreadcrumb()
+      //}
+    }
+
+    function zoomIn(p) {
+      if (p.depth > 1) {
+        p = p.parent;
       }
-      sequence.show(d)
+      if (!p.children) {
+        sequence.show(p);
+        sidebar.hide();
+        sidebar.showUndersequence(p);
+        return;
+      }
+      zoom(p, p);
+      if(p.children) {
+        sidebar.show(p);
+      }
+
+      sequence.show(p);
+      if(center_node && (center_node.label != p.label || center_node.level != p.level)) {
+        slider.show(p, current_month, current_year);
+        slider_year.show(p, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(p.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = p;
     }
 
-    // Fade all but the current sequence, and show it in the breadcrumb trail.
-    function mouseover(d) {
-      // Fade all the segments.
-      svg.selectAll("path")
-          .style("opacity", 0.6);
-
-      var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-      var sequenceArray = sequence.getAncestors(d);
-      sequence.updateBreadcrumbs(sequenceArray, percentageString);
-
-      // Then highlight only those that are an ancestor of the current segment.
-      svg.selectAll("path")
-          .filter(function(node) {
-                    return (sequenceArray.indexOf(node) >= 0);
-                  })
-          .style("opacity", 1);
-
-
-      d3.select(".sunburst-seq #explanation #percentage")
-          .text(aVisify.helpers.formatNumber(d.amount));
-
-      d3.select(".sunburst-seq #explanation")
-          .style("visibility", "");
-
+    function zoomOut(p) {
+      if (!p || !p.parent) return;
+      zoom(p.parent, p);
+      sidebar.show(p.parent);
+      sequence.show(p.parent);
+      if(center_node && (center_node.label != p.parent.label || center_node.level != p.parent.level)) {
+        slider.show(p.parent, current_month, current_year);
+        slider_year.show(p.parent, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      center_node = p.parent;
     }
 
-    // Restore everything to full opacity when moving off the visualization.
-    function mouseout(d) {
-      sequence.hideBreadcrumb();
-    }
+    // Zoom to the specified new root.
+    function zoom(root, p) {
+      if (document.documentElement.__transition__) return;
 
-    // Distort the specified node to 80% of its parent.
-    function magnify(node) {
-      if (parent = node.parent) {
-        var parent,
-            x = parent.x,
-            k = .8;
-        parent.children.forEach(function(sibling) {
-          x += reposition(sibling, x, sibling === node
-              ? parent.dx * k / node.value
-              : parent.dx * (1 - k) / (parent.value - node.value));
+      // Rescale outside angles to match the new layout.
+      var enterArc,
+          exitArc,
+          outsideAngle = d3.scale.linear().domain([0, 2 * Math.PI]);
+
+      function insideArc(d) {
+        return p.key > d.key
+            ? {depth: d.depth - 1, x: 0, dx: 0} : p.key < d.key
+            ? {depth: d.depth - 1, x: 2 * Math.PI, dx: 0}
+            : {depth: 0, x: 0, dx: 2 * Math.PI};
+      }
+
+      function outsideArc(d) {
+        return {depth: d.depth + 1, x: outsideAngle(d.x), dx: outsideAngle(d.x + d.dx) - outsideAngle(d.x)};
+      }
+
+      center.datum(root);
+
+      // When zooming in, arcs enter from the outside and exit to the inside.
+      // Entering outside arcs start from the old layout.
+      if (root === p) enterArc = outsideArc, exitArc = insideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+      path = path.data(partition.nodes(root).slice(1), function(d) { return d.key; });
+
+      // When zooming out, arcs enter from the inside and exit to the outside.
+      // Exiting outside arcs transition to the new layout.
+      if (root !== p) enterArc = insideArc, exitArc = outsideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+      if(d3.event) {
+        d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+          move_to_node();
         });
       } else {
-        reposition(node, 0, node.dx / node.value);
+        move_to_node();
       }
 
-      path.transition()
-          .duration(750)
-          .attrTween("d", arcTween);
-    }
+      function move_to_node() {
+        path.exit().transition()
+            .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
+            .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
+            .remove();
 
-    // Recursively reposition the node at position x with scale k.
-    function reposition(node, x, k) {
-      node.x = x;
-      if (node.children && (n = node.children.length)) {
-        var i = -1, n;
-        while (++i < n) x += reposition(node.children[i], x, k);
+        path.enter().append("path")
+            .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
+            .style("fill", function(d) { return d.fill; })
+            .on("click", zoomIn)
+            .each(function(d) { this._current = enterArc(d); })
+            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
+            .on("mouseout", remove_tooltip);
+
+        path.transition()
+            .style("fill-opacity", 1)
+            .attrTween("d", function(d) { return arcTween.call(this, updateArc(d)); });
       }
-      return node.dx = node.value * k;
     }
 
-    // Stash the old values for transition.
-    function stash(d) {
-      d.x0 = d.x;
-      d.dx0 = d.dx;
+    function fill(d) {
+      var p = d;
+      while (p.depth > 1) p = p.parent;
+      var c = d3.lab(p.color);
+      c.l = luminance(d.amount);
+      return c;
     }
 
-    // Interpolate the arcs in data space.
-    function arcTween(a) {
-      var i = d3.interpolate({x: a.x0, dx: a.dx0}, a);
+    function arcTween(b) {
+      var i = d3.interpolate(this._current, b);
+      this._current = i(0);
       return function(t) {
-        var b = i(t);
-        a.x0 = b.x;
-        a.dx0 = b.dx;
-        return arc(b);
+        return arc(i(t));
       };
     }
 
-
+    function updateArc(d) {
+      return {depth: d.depth, x: d.x, dx: d.dx};
+    }
 
     function clear() {
       sequence.hideBreadcrumb()
@@ -128,55 +219,57 @@
       svg.selectAll("*").remove()
     }
 
-
     return {
       initialize: function(pWidth, pHeight) {
         width = pWidth
         height = pHeight
 
-        $(aContainer + ' #chart').width(width).height(height)
-
-        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 60 ).css("left", width/2 - 60 );
-
-        // Dimensions of sunburst.
-        radius = Math.min(width, height) / 2;
-
         color = d3.scale.category20c()
 
-        //$(".sunburst-seq #explanation").width(120).css("top", height / 2 ).css("left", width/2 - 70);
+        margin = {top: 20, right: 20, bottom: 20, left: 20},
+        radius = Math.min(width, height) / 2;
 
+        hue = d3.scale.category10();
 
-        // Mapping of step names to colors.
-        // Total size of all segments; we set this later, after loading the data.
-        totalSize = 0;
+        svg = d3.select(aContainer + " #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-       arc = d3.svg.arc()
-         .startAngle(function(d) { return d.x; })
-         .endAngle(function(d) { return d.x + d.dx; })
-         .innerRadius(function(d) { return d.y; })
-         .outerRadius(function(d) { return d.y + d.dy; });
-
-       svg = d3.select(".sunburst #chart").append("svg:svg")
-         .attr("width", width)
-         .attr("height", height)
-         .attr("version", 1.1)
-         .attr("xmlns", "http://www.w3.org/2000/svg")
-         .append("svg:g")
-         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return d.x; })
+            .endAngle(function(d) { return d.x + d.dx - .01 / (d.depth + .5); })
+            .innerRadius(function(d) { return radius / 3 * d.depth; })
+            .outerRadius(function(d) { return radius / 3 * (d.depth + 1) - 1; });
       },
       clear: clear,
       show: function(year, month) {
-        clear()
-        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
-        // row, and can receive the csv as an array of arrays.
+        clear();
+        current_year = year;
+        current_month = month;
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          if(center_node === null) {
+            sidebar.show(data);
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            zoomIn(node);
+          } else {
+            sequence.show(data);
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {
-        mouseclick(node);
+        zoomIn(node);
       }
     }
   }
+
+

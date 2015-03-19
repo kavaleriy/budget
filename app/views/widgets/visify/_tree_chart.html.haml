@@ -6,13 +6,31 @@
     #chart
     %canvas{:style => "display: none;"}
     #charts_tooltip.hidden
-      -#%p
-      -#  %strong Important Label Heading
       %p
         %span#value
-    .slider
-      = render partial: 'slider'
-      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
+
+    .col-xs-12
+      -#btn #save used to recieve trigger from out of iframe to get url for SVG image
+      %button.btn.btn-primary#save{:style => "display: none"}
+        %i.fa.fa-file-image-o
+      .btn-group.pull-right
+        %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+          %i.fa.fa-code
+
+    .col-xs-12
+      //#iframe_embed
+      #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+        .input-group
+          .input-group-addon
+            = t('embed')
+          %input.form-control
+          %span.embed_label=t('iframe.select')
+          %select.iframe_size_select#visual
+          .iframe_other_size
+
+    .slider.row
+      = render partial: 'slider_chart'
+      = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
 :javascript
@@ -126,10 +144,33 @@
     var sidebar = aSidebar('.visify')
     sidebar.initialize(height);
 
-    chart = aTreeChart('.visify', sequence, sidebar)
-    chart.initialize(width, height);
-    chart.show("#{@sel_year}", "#{@sel_month}")
+    var slider = aSliderCompare('#slider_compare');
+    slider.initialize(100);
 
-    var slider = aSlider('.visify', chart)
-    slider.initialize()
+    var slider_chart = aSliderChart('#slider_chart', slider);
+    slider_chart.initialize(250);
+
+    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_chart);
+    chart.initialize(width, height);
+    chart.show("#{@sel_year}", "#{@sel_month}");
   }
+
+
+  $(document).bind('page:change', function(e) {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe() {
+      src = window.location.href;
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+      $('.tab-content iframe').attr('src', src)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe_inframe();
+
+  })

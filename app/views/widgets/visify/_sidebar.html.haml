@@ -1,23 +1,6 @@
 #sidebar.col-xs-12.col-sm-12.col-md-4.col-lg-4
 
-  #title
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
-    .panel.panel-default
-      #heading1.panel-heading
-        %h4.panel-title
-          =t('.explanation')
-      .panel-body
-        #description
-
-    -#.panel.panel-default
-    -#  #headingCompare.panel-heading{'role' => 'tab'}
-    -#    %h4.panel-title
-    -#      %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseCompare', 'aria-expanded' => 'false', 'aria-controls' => 'collapseCompare'}
-    -#        =t('.comparison_within_years')
-    -#  #collapseCompare.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingCompare' }
-    -#    .panel-body
-    -#      = render partial: 'sidebar_compare', :locals => { budget_file_id: budget_file_id }
-
     .panel.panel-default
       #headingChart.panel-heading{'role' => 'tab'}
         %h4.panel-title
@@ -46,21 +29,19 @@
         .panel-body
           = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
 
+  %hr
+    #description
+
 
 :javascript
 
   function aSidebar(aContainer) {
-    var compare, chart, pie, table;
+    var chart, pie, table;
 
     return {
       container: aContainer,
 
       initialize: function(height){
-        $(aContainer + ' #sidebar').height(height)
-
-        compare = aSidebarCompare('#sidebar')
-        compare.initialize(250)
-
         chart = aSidebarChart('#sidebar')
         chart.initialize(350)
 
@@ -72,42 +53,20 @@
       },
 
       hide: function(){
-        //$(aContainer + ' #sidebar #title').html('')
-        $(aContainer + ' #sidebar #under_sequence').html('')
-        $(aContainer + ' #sidebar #description').html('')
+        $(aContainer + ' #sidebar #description').html('');
 
-        compare.hide()
-        chart.hide()
-        pie.hide()
-        table.hide()
+        chart.hide();
+        pie.hide();
+        table.hide();
       },
       show: function(node){
-        I18n.locale = window.aHelper.lang()
-        label = node.label || ''
-        icon = node.icon || ''
-
-        if (node.parent && node.amount <= node.parent.amount) {
-          percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
-          //percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
-        }
-        else {
-          percentage = '100%'
-          percParentTitle = ''
-        }
-
-        div = '<h5 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + "</span>, <span class='percentage'>" + percentage + "</span></span>"
-          + ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
-          + ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
-
-        //$(aContainer + ' #title').html(div)
-        $(aContainer + ' #under_sequence').html(div)
+        this.showUndersequence(node);
         this.getLevelInfo(node)
       },
 
       getLevelInfo: function(node) {
+        $(aContainer + ' #description').html('');
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          //console.log(data)
           div_descr = ''
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
@@ -115,16 +74,34 @@
           $(aContainer + ' #description').html(div_descr)
         })
 
-        if (node.history) {
-          compare.show(node.history)
-        } else {
-          compare.hide()
-        }
-
         chart.show(node.children);
         pie.show(node.children);
         table.show(node.children);
 
-      }
+      },
+
+      showUndersequence: function(node) {
+        I18n.locale = window.aHelper.lang()
+        label = node.label || ''
+        icon = node.icon || ''
+
+        if (node.parent && node.amount <= node.parent.amount) {
+          percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
+          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
+        }
+        else {
+          percentage = '100%'
+          percParentTitle = ''
+        }
+
+        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
+          + ": " + aVisify.helpers.formatNumber(node.amount)
+          + ", <small class='percentage'>" + percentage + percParentTitle + "</small>"
+          //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
+          + "</h4>"
+          //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
+
+        $(aContainer + ' #under_sequence').html(div)
+      },
     }
   }

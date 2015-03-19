@@ -4,13 +4,35 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var totalSize
-    var width, height, radius
-    var color, x, y
-    var svg, partition, arc, path
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var totalSize;
+    var width, height, radius;
+    var color, x, y;
+    var svg, partition, arc, path;
+    var current_year, current_month;
+    var center_node = null;
+
+    function getCenterNode(data) {
+      var nodes = partition(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      //console.log("node not found");
+    }
 
     function createVisualization(root) {
+      if(center_node === null) {
+        center_node = root;
+      }
+      slider_year.set_month(current_month);
       totalSize = root.amount;
 
       path = svg.selectAll("path")
@@ -19,18 +41,12 @@
             .attr("d", arc)
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
-            .on("mouseover", add_tooltip)
-            .on("mouseout", remove_tooltip)
-
-      function mouseover(d) {
-        var percentageString = aVisify.helpers.getPercentageString(d, d.parent ? d.parent.amount : totalSize)
-        var sequenceArray = sequence.getAncestors(d);
-        sequence.updateBreadcrumbs(sequenceArray, percentageString);
-      }
+            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
+            .on("mouseleave", mouseleave)
 
       // Restore everything to full opacity when moving off the visualization.
-      function mouseout(d) {
-        sequence.hideBreadcrumb()
+      function mouseleave(d) {
+        remove_tooltip(d);
       }
     }
     function click(d) {
@@ -39,12 +55,33 @@
       if(d.children) {
         sidebar.show(d);
       } else {
-        sidebar.show(d.parent);
+        sidebar.hide();
+        sidebar.showUndersequence(d);
       }
 
-      path.transition()
-        .duration(750)
-        .attrTween("d", arcTween(d));
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = d;
+
+      if(d3.event) {
+        path.transition()
+          .duration(d3.event.altKey ? 7500 : 750)
+          .attrTween("d", arcTween(d));
+        d3.event.stopPropagation();
+      } else {
+        path.transition()
+          .duration(750)
+          .attrTween("d", arcTween(d));
+      }
     }
 
     // Interpolate the scales!
@@ -103,11 +140,24 @@
         svg.selectAll("*").remove()
       },
       show: function(year, month) {
-        clear()
+        current_year = year;
+        current_month = month;
 
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          createVisualization( data );
-          sidebar.show( data );
+          clear();
+          if(center_node === null) {
+            sidebar.show(data);
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+          }
+          createVisualization(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            click(node);
+          } else {
+            sequence.show(data);
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {

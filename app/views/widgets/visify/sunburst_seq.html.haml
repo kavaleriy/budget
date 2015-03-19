@@ -4,11 +4,13 @@
     %span#percentage
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var totalSize
-    var width, height, radius
-    var color
-    var vis, partition, arc
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var totalSize;
+    var width, height, radius;
+    var color;
+    var vis, partition, arc;
+    var current_year, current_month;
+    var center_node = null;
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
@@ -33,24 +35,16 @@
           .attr("fill-rule", "evenodd")
           .style("fill", function(d) { return d.color || color(d.value); })
           .style("opacity", 1)
-          .on("mouseover", mouseover)
-          .on("click", mouseclick);
+          .on("mouseover", mouseover);
 
       // Add the mouseleave handler to the bounding circle.
       d3.select("#container").on("mouseleave", mouseleave);
 
       // Get total size of the tree = value of root node from partition.
       totalSize = json.amount;
+      center_node = json;
+      slider_year.set_month(current_month);
     };
-
-    function mouseclick(d) {
-      if(d.children) {
-        sidebar.show(d);
-      } else {
-        sidebar.show(d.parent);
-      }
-      sequence.show(d)
-    }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
@@ -75,6 +69,21 @@
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
+
+      if(d.children) {
+        sidebar.show(d);
+      } else {
+        sidebar.hide();
+        sidebar.showUndersequence(d);
+      }
+
+      slider.show(d, current_month, current_year);
+      slider_year.show(d, current_month, current_year);
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
     }
 
     // Restore everything to full opacity when moving off the visualization.
@@ -95,6 +104,9 @@
           .each("end", function() {
                   d3.select(this).on("mouseover", mouseover);
                 });
+      sidebar.show(center_node);
+      slider.show(center_node, current_month, current_year);
+      slider_year.show(center_node, current_month, current_year);
     }
 
     function clear() {
@@ -149,13 +161,19 @@
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          clear()
+          clear();
+          current_year = year;
+          current_month = month;
+          if(center_node == null) {
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+          }
           createVisualization(data);
           sidebar.show(data);
         });
       },
       selectNode: function (node) {
-        mouseclick(node);
+        mouseover(node);
       }
     }
   }

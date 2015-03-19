@@ -6,21 +6,42 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var width, height
-    var color
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var width, height;
+    var color;
 
-    var vis, force
+    var vis, force;
 
     var root, nodes, links;
 
-    var totalSize
+    var totalSize;
 
     var size_scale;
+    var current_year, current_month;
+    var center_node = null;
 
+    function getCenterNode(data) {
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      //console.log("node not found");
+    }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
+      if(center_node === null) {
+        center_node = json;
+      }
+      slider_year.set_month(current_month);
+
       root = json;
       root.fixed = true;
       root.x = width / 2;
@@ -43,8 +64,8 @@
     }
 
     function clear() {
-      sidebar.hide()
-      vis.selectAll("*").remove()
+      sidebar.hide();
+      vis.selectAll("*").remove();
     }
 
     function dblclick(d) {
@@ -54,10 +75,25 @@
         d.children = null;
       } else {
         d.children = d._children;
+        sidebar.show(d);
         d._children = null;
       }
       update();
       sequence.show(d);
+
+
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = d;
     }
 
     function update() {
@@ -101,9 +137,9 @@
           .attr("r", function(d) { return size_scale(d.amount) })
           .style("fill", color)
           .on("click", mouseclick)
-          .on("dblclick", dblclick)
-          .on("mouseover", add_tooltip)
-          .on("mouseout", remove_tooltip)
+          //.on("dblclick", dblclick)
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
+          .on("mouseleave", mouseleave)
           .call(force.drag);
 
       // Exit any old nodes.
@@ -115,8 +151,19 @@
         //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
       }
 
-      function mouseclick(d) {
+      function mouseover(event, d) {
+        add_tooltip(event, d);
         sequence.show(d);
+      }
+
+      function mouseleave(d) {
+        remove_tooltip(d);
+        sequence.show(center_node);
+      }
+
+      function mouseclick(d) {
+        //sequence.show(d);
+        dblclick(d);
       }
 
       // Returns a list of all nodes under the root.
@@ -170,8 +217,21 @@
       show: function(year, month) {
         clear()
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear();
+          current_year = year;
+          current_month = month;
+          if(center_node === null) {
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+            sidebar.show(data);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            dblclick(node);
+          } else {
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {

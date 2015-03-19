@@ -2,7 +2,7 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
     var width, height
     var color
 
@@ -12,11 +12,31 @@
 
     var totalSize
     var node, root;
+    var current_year, current_month;
+    var center_node = null;
 
+    function getCenterNode(data) {
+      var nodes = treemap(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      //console.log("node not found");
+    }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-
+      if(center_node === null) {
+        center_node = json;
+      }
+      slider_year.set_month(current_month);
       node = root = json;
 
       var nodes = treemap.nodes(root)
@@ -28,22 +48,9 @@
           .attr("class", "cell")
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .on("click", mouseclick)
-          .on("dblclick", dblclick)
-          .on("mouseover", add_tooltip)
-          .on("mouseout", remove_tooltip);
-          //.on("mouseover", function(d) {
-          //  tooltip.html(getTooltipHtml(d))
-          //   .style("left", (d3.event.pageX) + "px")
-          //   .style("top", (d3.event.pageY) + "px");
-          //  tooltip.transition()
-          //   .duration(200)
-          //   .style("opacity", .9)
-          //})
-          //.on("mouseout", function(d) {
-          //   tooltip.transition()
-          //     .duration(200)
-          //     .style("opacity", 0);
-          //})
+          //.on("dblclick", dblclick)
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
+          .on("mouseleave", mouseleave);
 
       cell.append("svg:rect")
           .attr("width", function(d) { return d.dx - 1; })
@@ -65,15 +72,45 @@
         zoom(node);
       });
 
-      totalSize = root.value
+      totalSize = root.value;
     };
 
     function mouseclick(d) {
-      sequence.show(d)
+    if(d.children) {
+      sidebar.show(d);
+    } else {
+      sidebar.hide();
+      sidebar.showUndersequence(d);
+    }
+
+      zoom(d);
+
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = d;
+    }
+
+    function mouseover(event, d) {
+      add_tooltip(event, d);
+      sequence.show(d);
+    }
+
+    function mouseleave(d) {
+      remove_tooltip(d);
+      sequence.show(center_node);
     }
 
     function dblclick(d) {
-      zoom(d);
+      //zoom(d);
     }
 
     function clear() {
@@ -94,9 +131,16 @@
       x.domain([d.x, d.x + d.dx]);dblclick
       y.domain([d.y, d.y + d.dy]);
 
-      var t = svg.selectAll("g.cell").transition()
-          .duration(d3.event.altKey ? 7500 : 750)
-          .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      var t;
+
+      if(d3.event) {
+        t = svg.selectAll("g.cell").transition()
+            .duration(d3.event.altKey ? 7500 : 750)
+            .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      } else {
+        t = svg.selectAll("g.cell").transition()
+             .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      }
 
       t.select("rect")
           .attr("width", function(d) { return kx * d.dx - 1; })
@@ -108,9 +152,11 @@
           .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
 
       node = d;
-      sequence.show(d);
-      sidebar.show(d);
-      d3.event.stopPropagation();
+      //sequence.show(d);
+      //sidebar.show(d);
+      if(d3.event) {
+        d3.event.stopPropagation();
+      }
     }
 
 
@@ -131,7 +177,7 @@
         treemap = d3.layout.treemap()
             .round(false)
             .size([width, height])
-            .sticky(true)
+            .sticky(false)
             .value(function(d) { return d.amount; });
 
         svg = d3.select(".treemap #chart")
@@ -148,16 +194,28 @@
       },
       clear: clear,
       show: function(year, month) {
-        clear()
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear();
+          current_year = year;
+          current_month = month;
+          if(center_node === null) {
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+            sidebar.show(data);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            mouseclick(node);
+          } else {
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {
-        dblclick(node);
+        mouseclick(node);
       }
     }
   }

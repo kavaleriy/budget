@@ -115,8 +115,12 @@
       // Hide the breadcrumb trail
       hideBreadcrumb: function() {
         g = $(aContainer + " #trail g");
-        g.attr("style", "visibility: ;");
-        g.last().attr("style", "visibility: hidden;");
+        if($(aContainer).parent().attr("class") != "sunburst-seq" && $(aContainer).parent().attr("class") != "treemap") {
+          g.attr("style", "visibility: ;");
+          g.last().attr("style", "visibility: hidden;");
+        } else {
+          g.not(':first').attr("style", "visibility: hidden;");
+        }
         $('#endlabel').text("");
       },
 

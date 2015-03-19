@@ -68,6 +68,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 	me.currentYear = config.initYear;
 
 	me.currentCenter = undefined;
+    me.centerNode = config.centerNode;
 
 	me.currentTransition = undefined;
 
@@ -422,6 +423,25 @@ var BubbleTree = function(config, onHover, onUnHover) {
 	 * is called every time the user changes the view
 	 * each view is defined by the selected node (which is displayed
 	 */
+
+    me.getCenterNode = function(className, node) {
+        var me = this, i, o;
+        for (i in me.displayObjects) {
+            o = me.displayObjects[i];
+            if (o.className != className) continue;
+            if (o.node.level == node.level && o.node.label == node.label) {
+                if(node.parent) {
+                    if (o.node.parent.level == node.parent.level && o.node.parent.label == node.parent.label) {
+                        return o.node;
+                    }
+                } else {
+                    return o.node;
+                }
+            }
+        }
+        console.log(className+' not found center Node ', node);
+    };
+
 	me.changeView = function(token) {
 		var me = this,
 			paper = me.paper,
@@ -433,12 +453,25 @@ var BubbleTree = function(config, onHover, onUnHover) {
 			l2attr = { stroke: '#ccc', 'stroke-dasharray': ". " },
 			a2rad = utils.amount2rad,
 			root = me.treeRoot,
+            centerNode = me.centerNode,
 			nodesByUrlToken = me.nodesByUrlToken,
 			node = nodesByUrlToken.hasOwnProperty(token) ? nodesByUrlToken[token] : null,
 			t = new ns.Layout(),
 			bubble, tr, i, twopi = Math.PI * 2,
 			getBubble = me.getBubble.bind(me), getRing = me.getRing.bind(me),
 			unify = me.unifyAngle;
+
+        // move user to the same level where he was before click on month button
+        // and reset sidebar and sequence to the same level but with other amounts
+        if(!me.currentCenter) {
+            if(!centerNode) {
+                node = root;
+            } else {
+                node = me.getCenterNode("bubble", centerNode);
+            }
+            me.config.nodeClickCallback(node.children ? node : node.parent);
+        }
+        // -----------------------------------------------------------------------
 
 		if (node !== null) {
 
@@ -695,7 +728,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 				return o;
 			}
 		}
-		vis4.log(className+' not found for node', node);
+		console.log(className+' not found for node', node);
 	};
 
 	/*
@@ -732,7 +765,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 
 		if (tr && tr.running) {
 			vis4.log('transition is running at the moment, adding listener');
-			tr.onComplete(me.changeUrl.bind(me));
+			//tr.onComplete(me.changeUrl.bind(me));
 		} else {
 			me.changeUrl();
 		}
@@ -1500,7 +1533,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.dashedBorder = me.paper.circle(cx, cy, r-3)
 			.attr({ stroke: '#ffffff', 'stroke-dasharray': "- " });
 	
-	
+
 		me.label = $('<div class="label '+ me.node.id +'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
 		//console.log(me.node.id);
         me.container.append(me.label);

@@ -15,30 +15,51 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
-    var width, height
-    var color
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var width, height;
+    var color;
 
     var vis, partition;
 
     var x, y, g, t, kx, ky;
 
-    var totalSize
+    var totalSize;
 
     var lastClicked;
+    var current_year, current_month;
+    var center_node = null;
 
+    function getCenterNode(data) {
+      var nodes = partition(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      console.log("node not found");
+    }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(root) {
+      if(center_node === null) {
+        center_node = root;
+      }
+      slider_year.set_month(current_month);
+
       g = vis.selectAll("g")
           .data(partition.nodes(root))
         .enter().append("svg:g")
           .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
           .on("click", mouseclick)
-          .on("dblclick", function(d) {
-          })
-          .on("mouseover", add_tooltip)
-          .on("mouseout", remove_tooltip);
+          //.on("dblclick", function(d) {})
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
+          .on("mouseleave", mouseleave);
 
       totalSize = root.amount;
 
@@ -58,30 +79,67 @@
 
     };
 
+    function mouseover(event, d) {
+      add_tooltip(event, d);
+      sequence.show(d);
+    }
+
+    function mouseleave(d) {
+      remove_tooltip(d);
+      sequence.show(center_node);
+    }
+
     function mouseclick(d) {
-      if (lastClicked == d) {
-        var _d = d
-        dblclick(_d)
+      if(d.children) {
+        sidebar.show(d);
       } else {
-        lastClicked = d
-        if(d.children) {
-          sidebar.show(d);
-        }
-        sequence.show(d);
+        sidebar.hide();
+        sidebar.showUndersequence(d);
       }
+
+      sequence.show(d);
+      dblclick(d);
+
+      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
+        slider.show(d, current_month, current_year);
+        slider_year.show(d, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(d.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = d;
+      //if (lastClicked == d) {
+      //  var _d = d
+      //  dblclick(_d)
+      //} else {
+      //  lastClicked = d
+      //  if(d.children) {
+      //    sidebar.show(d);
+      //  }
+      //  sequence.show(d);
+      //}
     }
 
     function dblclick(d) {
       if (!d.children) return;
-
       kx = (d.y ? width - 40 : width) / (1 - d.y);
       ky = height / d.dx;
       x.domain([d.y, 1]).range([d.y ? 40 : 0, width]);
       y.domain([d.x, d.x + d.dx]);
 
-      t = g.transition()
-          .duration(d3.event.altKey ? 7500 : 750)
-          .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+      var t;
+      if(d3.event) {
+        t = g.transition()
+            .duration(d3.event.altKey ? 7500 : 750)
+            .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+      } else {
+        t = g.transition()
+            .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+      }
 
       t.select("rect")
           .attr("width", d.dy * kx)
@@ -90,12 +148,13 @@
       t.select("text")
           .attr("transform", transform)
           .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
-
-      d3.event.stopPropagation();
-      if(d.children.length > 0) {
-        sidebar.show(d);
+      if(d3.event) {
+        d3.event.stopPropagation();
       }
-      sequence.show(d);
+      //if(d.children.length > 0) {
+      //  sidebar.show(d);
+      //}
+      //sequence.show(d);
     }
 
     function transform(d) {
@@ -104,7 +163,7 @@
 
     function clear() {
       sidebar.hide()
-      //vis.selectAll("*").remove()
+      vis.selectAll("*").remove()
     }
 
     return {
@@ -130,21 +189,31 @@
 
         partition = d3.layout.partition()
             .value(function(d) { return d.amount; });
-
-
       },
       clear: clear,
       show: function(year, month) {
-        clear()
         // Use d3.text and d3.csv.parseRows so that we do not need to have a header
         // row, and can receive the csv as an array of arrays.
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          clear();
+          current_year = year;
+          current_month = month;
+          if(center_node === null) {
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+            sidebar.show(data);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            mouseclick(node);
+          } else {
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {
-        dblclick(node);
+        mouseclick(node);
       }
     }
   }

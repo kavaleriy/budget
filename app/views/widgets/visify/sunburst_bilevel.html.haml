@@ -4,13 +4,35 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar) {
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
     var totalSize
     var width, height, margin
     var hue, luminance
     var svg, partition, arc, path, center
+    var current_year, current_month;
+    var center_node = null;
+
+    function getCenterNode(data) {
+      var nodes = partition(data);
+      for(i in nodes) {
+        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+          if(center_node.parent) {
+            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+              return nodes[i];
+            }
+          } else {
+            return nodes[i];
+          }
+        }
+      }
+      console.log("node not found");
+    }
 
     function createVisualization(root) {
+      if(center_node === null) {
+        center_node = root;
+      }
+      slider_year.set_month(current_month);
       totalSize = root.amount;
 
       luminance = d3.scale.sqrt()
@@ -52,7 +74,7 @@
           .style("fill", function(d) { return d.fill; })
           .each(function(d) { this._current = updateArc(d); })
           .on("click", zoomIn)
-          .on("mouseover", add_tooltip)
+          .on("mouseover", function(d){ add_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip);
 
       //function mouseover(d) {
@@ -73,22 +95,42 @@
       }
       if (!p.children) {
         sequence.show(p);
+        sidebar.hide();
+        sidebar.showUndersequence(p);
         return;
       }
       zoom(p, p);
       if(p.children) {
         sidebar.show(p);
-      } else  {
-        sidebar.show(p.parent);
       }
-      sequence.show(p)
+
+      sequence.show(p);
+      if(center_node && (center_node.label != p.label || center_node.level != p.level)) {
+        slider.show(p, current_month, current_year);
+        slider_year.show(p, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      if(p.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      center_node = p;
     }
 
     function zoomOut(p) {
       if (!p || !p.parent) return;
       zoom(p.parent, p);
-      sidebar.show(p.parent)
-      sequence.show(p.parent)
+      sidebar.show(p.parent);
+      sequence.show(p.parent);
+      if(center_node && (center_node.label != p.parent.label || center_node.level != p.parent.level)) {
+        slider.show(p.parent, current_month, current_year);
+        slider_year.show(p.parent, current_month, current_year);
+      } else {
+        slider_year.set_month(current_month);
+      }
+      center_node = p.parent;
     }
 
     // Zoom to the specified new root.
@@ -123,7 +165,15 @@
       // Exiting outside arcs transition to the new layout.
       if (root !== p) enterArc = insideArc, exitArc = outsideArc, outsideAngle.range([p.x, p.x + p.dx]);
 
-      d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+      if(d3.event) {
+        d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+          move_to_node();
+        });
+      } else {
+        move_to_node();
+      }
+
+      function move_to_node() {
         path.exit().transition()
             .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
             .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
@@ -134,14 +184,13 @@
             .style("fill", function(d) { return d.fill; })
             .on("click", zoomIn)
             .each(function(d) { this._current = enterArc(d); })
-            .on("mouseover", add_tooltip)
+            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
             .on("mouseout", remove_tooltip);
-
 
         path.transition()
             .style("fill-opacity", 1)
             .attrTween("d", function(d) { return arcTween.call(this, updateArc(d)); });
-      });
+      }
     }
 
     function fill(d) {
@@ -198,10 +247,23 @@
       },
       clear: clear,
       show: function(year, month) {
-        clear()
+        clear();
+        current_year = year;
+        current_month = month;
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          if(center_node === null) {
+            sidebar.show(data);
+            slider.show(data, current_month, current_year);
+            slider_year.show(data, current_month, current_year);
+          }
           createVisualization(data);
-          sidebar.show(data);
+          var node = getCenterNode(data);
+          if(node != data) {
+            zoomIn(node);
+          } else {
+            sequence.show(data);
+            sidebar.show(data);
+          }
         });
       },
       selectNode: function (node) {

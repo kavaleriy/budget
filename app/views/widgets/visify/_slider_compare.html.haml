@@ -12,7 +12,7 @@
 
   .bar {
     fill: steelblue;
-    fill-opacity: .9;
+    fill-opacity: 0.5;
     cursor: pointer;
   }
 
@@ -21,7 +21,7 @@
     font-size: 9px;
   }
 
-  .x.axis path {
+  #slider_compare .x.axis path {
     display: none;
   }
 
@@ -31,10 +31,10 @@
     right: 10px;
   }
 
-#sidebar_compare
+#slider_compare.col-xs-8
 
 :javascript
-  function aSidebarCompare(aContainer) {
+  function aSliderCompare(aContainer) {
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
 
@@ -44,12 +44,14 @@
 
     var color;
 
-    var data, year;
+    var data;
+
+    var current_month = 0, current_year = 0;
 
     function delay(d, i) { return i * 5; }
 
     function hide() {
-      $("#sidebar_compare").height(0)
+      $("#slider_compare").height(0)
       svg.selectAll("*").remove()
     }
 
@@ -74,31 +76,35 @@
     }
 
     function get_history_data(data) {
-      compare_years = []
-      $.each( data, function( year, months ) {
-        compare_months = []
-        $.each( months, function( month, amount ) {
-          if (month > 0) {
-            compare_months.push({ label: month, amount: amount });
-          }
-        })
-
-        compare_years.push( { label: year, amount: months['0'], months: compare_months } )
+      compare_months = []
+      $.each( data, function( month, amount ) {
+        if (month > 0) {
+          compare_months.push({ label: month, amount: amount });
+        }
       })
-      return compare_years
+      return compare_months
     }
 
-
     function mouseclick(d) {
-      svg.selectAll("*").remove();
+      if(d.label != current_month) {
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
+        current_month = d.label;
+      } else {
+        current_month = 0;
+        $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      }
+      chart.show(current_year, current_month);
+    }
 
-      chart.show(year, d.label);
+    function mouseover(d) {
+      $(this).css("fill-opacity", "1.0");
+    }
 
-      //if (d.months) {
-      //  show(d.months);
-      //} else {
-      //  show(data);
-      //}
+    function mouseout(d) {
+      if(d.label != current_month) {
+        $(this).css("fill-opacity", "0.5");
+      }
     }
 
     function get_month_by_num(month) {
@@ -109,7 +115,8 @@
 
       sort(data);
 
-      $("#sidebar_compare").height(height + margin.top + margin.bottom);
+      svg.selectAll("*").remove();
+      $("#slider_compare").height(height + margin.top + margin.bottom);
 
       x.domain(data.map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
       y.domain([0, d3.max(data, function(d) { return d.amount; })]);
@@ -119,25 +126,17 @@
           .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
 
-      //svg.append("g")
-      //    .attr("class", "y axis")
-      //    .call(yAxis)
-      //  .append("text")
-      //    .attr("transform", "rotate(-90)")
-      //    .attr("y", 6)
-      //    .attr("dy", ".71em")
-      //    .style("text-anchor", "end")
-      //
-
       svg.selectAll(".bar")
           .data(data)
         .enter().append("rect")
           .attr("class", "bar")
-          .style("fill", function(d) { return d.color || color(d.label); })
+          .style("fill", function(d) { return d.label == current_month ? "#3182bd" : "#9ecae1"; })
           .attr("x", function(d) { return x(d.label); })
           .attr("width", x.rangeBand())
           .attr("y", height)
           .attr("height", 0)
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout)
           .on("click", mouseclick);
 
       svg.selectAll(".bartext")
@@ -147,7 +146,6 @@
         .attr("text-anchor", "middle")
         .attr("x", function(d) { return x(d.label) + x.rangeBand() / 2; })
         .attr("y", function(d) { return height; })
-
 
       svg.transition().duration(250).selectAll(".bar")
         .attr("height", function(d) { return height - y(d.amount); })
@@ -176,14 +174,7 @@
             .scale(x)
             .orient("bottom");
 
-        //yAxis = d3.svg.axis()
-        //    .scale(y)
-        //    .orient("left")
-        //    .tickFormat(function(d, i){
-        //        return aVisify.helpers.formatNumber(d)
-        //    })
-        //
-        svg = d3.select("#sidebar_compare").append("svg")
+        svg = d3.select("#slider_compare").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -193,18 +184,26 @@
 
       },
       hide: hide,
-      show: function(_data) {
-
-        hide();
-
-        data = get_history_data(_data);
+      show: function(node, month, year) {
+        if(!node.history) {
+          hide();
+          return;
+        }
+        data = get_history_data(node.history[year]);
 
         if (data == null || data.length == 0){
           return;
         }
-
-        year = data[data.length-1].label;
-        show(data[data.length-1].months);             // show months compare for the last year
+        current_month = month;
+        current_year = year;
+        show(data);             // show months compare for the last year
       },
+      current_year: function() {
+        return current_year;
+      },
+      set_month: function(month) {
+        current_month = month;
+      }
     }
   }
+
