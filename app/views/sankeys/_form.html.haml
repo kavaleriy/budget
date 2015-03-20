@@ -68,6 +68,8 @@
 
     $('#sankey_create').click(function() {
 
+      var ready_state = 0;
+
       $('#chart1').html('').css("height", "500px");
 
       var energy = {"nodes" : [
@@ -92,6 +94,10 @@
                                });
           }
         }
+        ready_state++;
+        if(ready_state == 2) {
+          create_sankey(energy);
+        }
       });
 
       file_id = $('#select_rov option:selected').val();
@@ -109,7 +115,10 @@
                                });
           }
         }
-        create_sankey(energy);
+        ready_state++;
+        if(ready_state == 2) {
+          create_sankey(energy);
+        }
       });
 
     })
