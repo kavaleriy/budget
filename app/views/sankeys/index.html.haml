@@ -1,0 +1,17 @@
+%h1 Listing sankeys
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @sankeys.each do |sankey|
+    %tr
+      %td= link_to 'Show', sankey
+      %td= link_to 'Edit', edit_sankey_path(sankey)
+      %td= link_to 'Destroy', sankey, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Sankey', new_sankey_path
