@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
   end
 
-  get 'sankeys/get_rows/:file_id' => 'sankeys#get_rows'
+  get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
 
   get 'budget_files/upload' => 'budget_files#upload'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'

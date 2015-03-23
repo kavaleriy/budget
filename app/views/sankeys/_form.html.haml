@@ -68,44 +68,69 @@
 
     $('#sankey_create').click(function() {
 
-      var ready_state = 0;
-
       $('#chart1').html('').css("height", "500px");
 
       var energy = {"nodes" : [
                       {"name": "Загальний фонд"},
                       {"name": "Спеціальний фонд"},
+                      {"name": "Інші доходи"},              // for less than 5% amount
+                      {"name": "Інші видатки"},
                     ],
                     "links" : []
                    };
 
-      var file_id = $('#select_rot option:selected').val();
-      d3.json("/sankeys/get_rows/" + file_id, function(data) {
-        var keys = data["keys"];
-        var d = data["rows"]["2015"]["0"];
+      var rot_file_id = $('#select_rot option:selected').val();
+      var rov_file_id = $('#select_rov option:selected').val();
+
+      d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
+        var keys = data["keys_revenue"];
+        var d = data["rows_rot"]["2015"]["0"];
+        var totalAmount = 0;
+        var elseAmount_gen = 0;
+        var elseAmount_spec = 0;
+
         for(i in d) {
-          if(d[i].kkd_ddd % 1000000 == 0) { // take to graph only main nodes
+          totalAmount += d[i].amount;
+        }
+
+        for(i in d) {
+          if(d[i].amount*100/totalAmount >= 5) {        // second parametr - for those codes which has no description
             //console.log(d[i]);
-            var key = keys[d[i].kkd_ddd]["description"];
+            var key;
+            keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
                                 "target": d[i].fond,
                                 "value": d[i].amount,
                                });
+          } else if(d[i].fond == "Загальний фонд") {
+            elseAmount_gen += d[i].amount;
+          } else if(d[i].fond == "Спеціальний фонд") {
+            elseAmount_spec += d[i].amount;
           }
         }
-        ready_state++;
-        if(ready_state == 2) {
-          create_sankey(energy);
-        }
-      });
 
-      file_id = $('#select_rov option:selected').val();
-      d3.json("/sankeys/get_rows/" + file_id, function(data) {
-        var keys = data["keys"];
-        var d = data["rows"]["2015"]["0"];
+        energy.links.push({ "source": "Інші доходи",
+                            "target": "Загальний фонд",
+                            "value": elseAmount_gen,
+                           },
+                           { "source": "Інші доходи",
+                             "target": "Спеціальний фонд",
+                             "value": elseAmount_spec,
+                           });
+
+        keys = data["keys_expense"];
+        d = data["rows_rov"]["2015"]["0"];
+        totalAmount = 0;
+        elseAmount_gen = 0;
+        elseAmount_spec = 0;
+
         for(i in d) {
-          if(d[i].ktfk % 100 == 0) { // take to graph only main nodes - %10000 should be
+          totalAmount += d[i].amount;
+        }
+
+        for(i in d) {
+          if(d[i].amount*100/totalAmount >= 5) {
             var k = parseInt(d[i].ktfk)
             var key = keys[k]["description"];
             energy.nodes.push({ "name": key });
@@ -113,12 +138,23 @@
                                 "target": key,
                                 "value": d[i].amount,
                                });
+          } else if(d[i].fond == "Загальний фонд") {
+            elseAmount_gen += d[i].amount;
+          } else if(d[i].fond == "Спеціальний фонд") {
+            elseAmount_spec += d[i].amount;
           }
         }
-        ready_state++;
-        if(ready_state == 2) {
-          create_sankey(energy);
-        }
+
+        energy.links.push({ "source": "Загальний фонд",
+                            "target": "Інші видатки",
+                            "value": elseAmount_gen,
+                           },
+                           { "source": "Спеціальний фонд",
+                             "target": "Інші видатки",
+                             "value": elseAmount_spec,
+                           });
+
+        create_sankey(energy);
       });
 
     })

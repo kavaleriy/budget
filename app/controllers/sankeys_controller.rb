@@ -64,13 +64,11 @@ class SankeysController < ApplicationController
   end
 
   def get_rows
-    @budget_file = BudgetFile.where(:id => sankey_params[:file_id]).first
-    if @budget_file._type == "BudgetFileRotFond"
-      @keys = @budget_file.taxonomy.revenue_codes
-    elsif @budget_file._type == "BudgetFileRovFond"
-      @keys = @budget_file.taxonomy.expense_codes
-    end
-    render json: { 'rows' => @budget_file.rows, 'keys' => @keys }
+    @budget_file_rot = BudgetFileRotFond.where(:id => sankey_params[:rot_file_id]).first
+    @budget_file_rov = BudgetFileRovFond.where(:id => sankey_params[:rov_file_id]).first
+    @keys_revenue = @budget_file_rot.taxonomy.revenue_codes
+    @keys_expense = @budget_file_rov.taxonomy.expense_codes
+    render json: { 'rows_rot' => @budget_file_rot.rows, 'rows_rov' => @budget_file_rov.rows, 'keys_revenue' => @keys_revenue, 'keys_expense' => @keys_expense }
   end
 
   private
@@ -81,6 +79,6 @@ class SankeysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sankey_params
-      params.permit(:file_id)
+      params.permit(:rot_file_id, :rov_file_id)
     end
 end
