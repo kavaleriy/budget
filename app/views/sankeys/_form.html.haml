@@ -72,13 +72,14 @@
 
   %p
   .actions
-    = f.submit 'Save'
+    = f.submit 'Зберегти візуалізацію', :class => "btn btn-primary", :id => "sankey_save", :style => "display: none"
 
 :javascript
   $(document).on('ready', function() {
 
     $('#sankey_create').click(function() {
 
+      $('#sankey_save').css("display", "block");
       $('#status_bar').html('');
       $('#chart1').html('').css("height", "500px");
 
