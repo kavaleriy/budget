@@ -3,8 +3,8 @@ class Widgets::CalendarController < Widgets::WidgetsController
   before_action :set_calendar
 
   def pie_data
-    starts_at = '2014-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = '2015-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    starts_at = '2015-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    ends_at = '2016-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
 
     events = { e1: [], e2: [] }
 

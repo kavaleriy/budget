@@ -105,7 +105,7 @@ class EventsController < ApplicationController
       file = @event.event_attachments.new(
           :name=>attachment.original_filename,
       )
-      
+
       respond_to do |format|
         if file.save
           format.html {
@@ -123,7 +123,6 @@ class EventsController < ApplicationController
 
   def update_files_description
     respond_to do |format|
-      binding.pry
       @attachment.description = params[:description]
       if @event.save
         format.json { render json: @attachment }
