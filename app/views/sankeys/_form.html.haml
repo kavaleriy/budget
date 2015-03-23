@@ -52,13 +52,13 @@
         - @sankey.errors.full_messages.each do |msg|
           %li= msg
 
-  %select{:class => "selectpicker", :id => "select_rot"}
+  %select{:class => "selectpicker", :id => "select_rot", :name => :rot_file_id}
     - @budget_files_rot.each do |rot_file|
       %option{:value => rot_file.id}
         = rot_file.title
         = rot_file.taxonomy.owner
 
-  %select{:class => "selectpicker", :id => "select_rov"}
+  %select{:class => "selectpicker", :id => "select_rov", :name => :rov_file_id}
     - @budget_files_rov.each do |rov_file|
       %option{:value => rov_file.id}
         = rov_file.title
@@ -271,12 +271,12 @@
     // central rectangle for General and Special funds
     svg.append("rect")
             .attr("x", width/2 - 75)
-            .attr("y", -margin.top)
+            .attr("y", -margin.top + 1)
             .style("fill", "none")
             .style("stroke", "#082757")
             .style("stroke-width", 2)
             .attr("width", 166)
-            .attr("height", height + margin.top + margin.bottom);
+            .attr("height", height + margin.top + margin.bottom - 2);
 
     svg.append("text")
        .attr("x", width/2 + 10)
@@ -285,7 +285,7 @@
        .style("fill", "#082757")
        .style("font-size", "0.7em")
        .style("font-weight", "bold")
-       .text("Бюджет міста на 2015 р.");
+       .text("Бюджет міста за 2015 р.");
 
     // rectangles for revenues and expences total amount
     for(var i = 0; i < 3; i++) {
@@ -296,8 +296,8 @@
                          return width/2 + 118;
                     })
          .attr("y", function(){
-                          if(i == 1) return -margin.top/2;
-                          return -margin.top;
+                          if(i == 1) return -margin.top/2 + 1;
+                          return -margin.top + 1;
                      })
          .attr("rx", 10)
          .attr("ry", 10)
@@ -333,7 +333,7 @@
          .attr("text-anchor", "middle")
          .style("fill", function(){if(i == 1) return "white"; return "#082757";})
          .style("font-size", "1.0em")
-         .style("font-weight", "bold")
+         //.style("font-weight", "bold")
          .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + ". грн.";
                           if(i == 1) {
                               if(revenues > expences) return "Профіцит";
