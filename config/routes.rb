@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :sankeys
+
   devise_for :users
 
   get 'test/test_embed_code' # Not for production version!!!
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
   end
 
+  get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
 
   get 'budget_files/upload' => 'budget_files#upload'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'

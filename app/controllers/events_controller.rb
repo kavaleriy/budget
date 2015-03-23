@@ -75,7 +75,7 @@ class EventsController < ApplicationController
 
   def download_attachments
     file_name = @attachment.name
-    file_path = Rails.root.join('public', 'files', @event.id, file_name)
+    file_path = get_attachment_path file_name, @event.id
     if File.exist?(file_path)
       send_file(
           "#{file_path}",
@@ -113,7 +113,7 @@ class EventsController < ApplicationController
             render :json => file
           }
         else
-          format.json { render json: {files: [file.to_jq_upload]}, status: :created, location: file }
+          format.json { render json: @budget_file.errors, status: :unprocessable_entity }
         end
 
       end
@@ -136,18 +136,19 @@ class EventsController < ApplicationController
 
 
   def delete_attachments
-    #binding.pry
     file_name = @attachment.name
-    file_path = Rails.root.join('public', 'files', @event.id, file_name)
-    if File.exist?(file_path)
-      if File.delete(file_path)
-        @attachment.destroy
+    file_path = get_attachment_path file_name, @event.id
+    respond_to do |format|
+      if File.exist?(file_path)
+        if File.delete(file_path)
+          @attachment.destroy
+          format.json { head "OK" }
+        end
+      else
+        format.json { render json: @attachment.errors, status: :unprocessable_entity }
       end
     end
 
-    respond_to do |format|
-      format.json { head :no_content }
-    end
   end
   # DELETE /events/1
   # DELETE /events/1.json
@@ -163,14 +164,8 @@ class EventsController < ApplicationController
 
 
 
-  def to_jq_upload file
-    binding.pry
-    {
-        "id" => file._id,
-        "name" => file.name,
-
-
-    }
+  def get_attachment_path filename, event_id
+    Rails.root.join('public', 'files', 'attachments', event_id, filename)
   end
 
 
@@ -179,8 +174,8 @@ class EventsController < ApplicationController
   def upload_file (attachment, event_id)
     file_name = attachment.original_filename
 
-    Dir.mkdir('public/files/' + event_id) unless File.exists?('public/files/' + event_id)
-    file_path = Rails.root.join('public', 'files', event_id, file_name)
+    Dir.mkdir('public/files/attachments/' + event_id) unless File.exists?('public/files/attachments/' + event_id)
+    file_path = get_attachment_path file_name, @event.id
 
     File.open(file_path, 'wb') do |file|
       file.write(attachment.read)

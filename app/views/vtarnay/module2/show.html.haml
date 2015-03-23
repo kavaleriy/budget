@@ -53,39 +53,79 @@
 :javascript
   $(document).on('ready', function() {
 
-    energy = {"nodes":[
-    {"name":"Офіційні трансферти"},
-    {"name":"Податкові надходження"},
-    {"name":"Неподаткові надходження"},
-    {"name":"Доходи від операцій з капіталом"},
-    {"name":"Кошти від продажу землі і нематеріальних активів"},
-    {"name":"Інші неподаткові надходження"},
+    var data = '#{@budget_file.rows["2015"]["0"].to_json}';
+    var d = JSON.parse(data);
 
-    {"name":"загальний фонд"},
-    {"name":"спеціальний фонд"},
+    var energy = {"nodes" : [
+                    {"name": "Загальний фонд"},
+                    {"name": "Спеціальний фонд"},
+                  ],
+                  "links" : []
+                 };
 
-    {"name":"Освіта і наука"},
-    {"name":"Охорона здоров'я"},
-    {"name":"Соціальний захист"},
-    {"name":"Комунальне господарство"},
-    {"name":"Культура"},
-    ],
-    "links":[
-    {"source":0,"target":6,"value":124.729},
-    {"source":1,"target":6,"value":464.729},
-    {"source":2,"target":6,"value":389.366},
-    {"source":3,"target":6,"value":542},
+    for(i in d) {
+      if(d[i].kkd_ddd % 1000000 == 0) { // take to graph only main nodes
+        //console.log(d[i]);
+        energy.nodes.push({ "name": d[i].kkd_ddd });
+        energy.links.push({ "source": d[i].kkd_ddd,
+                            "target": d[i].fond,
+                            "value": d[i].amount,
+                           });
+      }
+    }
 
-    {"source":4,"target":7,"value":643},
-    {"source":5,"target":7,"value":364},
+     // return only the distinct / unique nodes
+     energy.nodes = d3.keys(d3.nest()
+       .key(function (d) { return d.name; })
+       .map(energy.nodes));
 
-    {"source":6,"target":8,"value":764},
-    {"source":6,"target":9,"value":764},
-    {"source":7,"target":10,"value":664},
-    {"source":7,"target":11,"value":164},
-    {"source":7,"target":12,"value":164},
+     // loop through each link replacing the text with its index from node
+     energy.links.forEach(function (d, i) {
+       energy.links[i].source = energy.nodes.indexOf(energy.links[i].source);
+       energy.links[i].target = energy.nodes.indexOf(energy.links[i].target);
+     });
 
-    ]}
+     //now loop through each nodes to make nodes an array of objects
+     // rather than an array of strings
+     energy.nodes.forEach(function (d, i) {
+       energy.nodes[i] = { "name": d };
+     });
+
+    //console.log(energy);
+
+    //energy = {"nodes":[
+    //{"name":"Офіційні трансферти"},
+    //{"name":"Податкові надходження"},
+    //{"name":"Неподаткові надходження"},
+    //{"name":"Доходи від операцій з капіталом"},
+    //{"name":"Кошти від продажу землі і нематеріальних активів"},
+    //{"name":"Інші неподаткові надходження"},
+    //
+    //{"name":"загальний фонд"},
+    //{"name":"спеціальний фонд"},
+    //
+    //{"name":"Освіта і наука"},
+    //{"name":"Охорона здоров'я"},
+    //{"name":"Соціальний захист"},
+    //{"name":"Комунальне господарство"},
+    //{"name":"Культура"},
+    //],
+    //"links":[
+    //{"source":0,"target":6,"value":124.729},
+    //{"source":1,"target":6,"value":464.729},
+    //{"source":2,"target":6,"value":389.366},
+    //{"source":3,"target":6,"value":542},
+    //
+    //{"source":4,"target":7,"value":643},
+    //{"source":5,"target":7,"value":364},
+    //
+    //{"source":6,"target":8,"value":764},
+    //{"source":6,"target":9,"value":764},
+    //{"source":7,"target":10,"value":664},
+    //{"source":7,"target":11,"value":164},
+    //{"source":7,"target":12,"value":164},
+    //
+    //]}
 
 
     var margin = {top: 1, right: 1, bottom: 6, left: 1},

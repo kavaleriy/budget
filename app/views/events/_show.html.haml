@@ -23,4 +23,4 @@
     %p.description
       = @event.description.html_safe
   .tab-pane.fade#show_event_attach_tab
-    = render :partial => 'layouts/file_upload1', :locals => { :attachments => @attachments, :event_id=>@event.id, :calendar_id=>@calendar.id }
+    = render :partial => 'layouts/file_upload', :locals => { :attachments => @attachments, :event_id=>@event.id, :calendar_id=>@calendar.id }
