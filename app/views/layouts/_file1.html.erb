@@ -1,0 +1,60 @@
+<link href="path/to/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+<script src="path/to/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+<%= form_for :event, :html => { :multipart => true} do |f| %>
+  <div id="files" class="files">
+    <span class="dragandrop"><%= t('drag_file') %></span>
+  </div>
+  <span class="btn btn-success fileinput-button col-xs-offset-5"></span>
+  <i class="glyphicon glyphicon-plus"></i>
+  <span class="dragandrop"><%= t('select_from_list') %></span>
+  <input id="fileupload" multiple = "" name ="files[]" type = "file">
+
+
+
+<!-- The loading indicator is shown during image processing -->
+<div class="fileupload-loading"></div>
+<br>
+<!-- The table listing the files available for upload/download -->
+<table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+</table>
+<% end %>
+
+<script>
+  var fileUploadErrors = {
+  maxFileSize: 'File is too big',
+  minFileSize: 'File is too small',
+  acceptFileTypes: 'Filetype not allowed',
+  maxNumberOfFiles: 'Max number of files exceeded',
+  uploadedBytes: 'Uploaded bytes exceed file size',
+  emptyResult: 'Empty file upload result'
+  };
+        console.log(3);
+</script>
+
+<!-- The template to display files available for upload -->
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+      // Initialize the jQuery File Upload widget:
+      $('#fileupload').fileupload(function(){
+          console.log(555);
+      });
+      // 
+      // Load existing files:
+      $.getJSON($('#fileupload').prop('action'), function (files) {
+          console.log(4);
+        var fu = $('#fileupload').data('blueimpFileupload'), 
+          template;
+        fu._adjustMaxNumberOfFiles(-files.length);
+        console.log(files);
+        template = fu._renderDownload(files)
+          .appendTo($('#fileupload .files'));
+        // Force reflow:
+        fu._reflow = fu._transition && template.length &&
+          template[0].offsetWidth;
+        template.addClass('in');
+        $('#loading').remove();
+      });
+
+  });
+</script>

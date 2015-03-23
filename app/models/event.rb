@@ -19,6 +19,9 @@ class Event
   field :all_day, type: Boolean
   field :text_color, type: String
   field :color, type: String
+  field :countdown_file, type: File
+
+  embeds_many :event_attachments
 
   validates :holder, presence: true
   validates :title, presence: true
@@ -38,4 +41,5 @@ class Event
         :color => self.color,
     }
   end
+
 end

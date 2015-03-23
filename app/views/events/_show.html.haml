@@ -17,8 +17,10 @@
     %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
       = t('.tab3_title')
 
+
 .tab-content
   .tab-pane.fade.in.active#show_event_main_tab
     %p.description
       = @event.description.html_safe
   .tab-pane.fade#show_event_attach_tab
+    = render :partial => 'layouts/file_upload', :locals => { :attachments => @attachments, :event_id=>@event.id, :calendar_id=>@calendar.id }

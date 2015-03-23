@@ -8,6 +8,17 @@
 
 = bootstrap_form_for [@calendar, @event], remote: true, format: :json, :html => { :class => 'form-horizontal', :multipart =>true, :target=>"upload_frame"} do |f|
   .modal-body.events-modal
+    .row
+      .btn-group{"data-toggle" => "buttons", :style => "margin-left: 286px;"}
+        %label.btn.btn-primary.event-btn-primary{:class=>@event.holder == 1 ? "active" : ""}
+          = radio_button("event", "holder", 1)
+          %span.glyphicon.glyphicon-home
+            =t('.town')
+        %label.btn.btn-primary.event-btn-primary{:class=>@event.holder == 2 ? "active" : ""}
+          = radio_button("event", "holder", 2)
+          %span.glyphicon.glyphicon-user
+            =t('.community')
+
     .form-group
       %label= t('.name')
       .input-group
@@ -15,68 +26,32 @@
           %span.glyphicon.glyphicon-pencil
         = text_field(:event, :title, class: "form-control", placeholder: t('.placeholder_name'))
 
-    %ul.nav.nav-tabs.nav-justified{:role => 'tablist', :style=>"margin-left: -3%;"}
-      %li.active
-        %a{ :href => '#show_event_main_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          = t('.tab1_title')
-      %li
-        %a{:href => '#show_event_descr_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          = t('.tab2_title')
-      %li
-        %a{:href => '#show_event_range_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          = t('.tab3_title')
-      %li
-        %a{:href => '#show_event_attach_tab', :role => 'tab', 'data-toggle' => 'tab'}
-          = t('.tab4_title')
-    .tab-content{:style=>"margin-left: -3%; border: 1px solid #ECF0F1"}
-      .tab-pane.fade.in.active#show_event_main_tab
 
 
-
-        .event-tab
-          .row
-
-            .col-xs-6
-              %label{:style=>"margin-top:16px"}= t('.holder')
-              .btn-group{"data-toggle" => "buttons", :style => "margin-top: 0px;"}
-                %label.btn.btn-primary{:class=>@event.holder == 1 ? "active" : ""}
-                  = radio_button("event", "holder", 1)
-                  %span.glyphicon.glyphicon-home
-                    =t('.town')
-                %label.btn.btn-primary{:class=>@event.holder == 2 ? "active" : ""}
-                  = radio_button("event", "holder", 2)
-                  %span.glyphicon.glyphicon-user
-                    =t('.community')
-
-            .col-xs-6
-              = f.static_control label: t('.icon') do
-                = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {}, { class: 'fa-select' }
-          .row
-            .col-xs-6
-              = f.select :color, options_for_select(get_bg_colors_list, @event.color), { label: "#{t('.color')}"}, { class: 'color-select' }
-            .col-xs-6
-              = f.select :text_color, options_for_select(text_colors_list, @event.text_color), { label: "#{t('.text_color')}"}, { class: 'color-select' }
-
-      .tab-pane.fade#show_event_descr_tab
-        = f.text_area :description, :rows => "10", label: t('.description'), class: "form-control", placeholder: "Вкажіть детальний опис"
-
-      .tab-pane.fade#show_event_range_tab
+    .row
+      .col-md-4
+        = f.static_control label: t('.icon') do
+          = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {label: t('.icon')}, { class: 'fa-select' }
+      .col-md-4
+        = f.static_control label: t('.color') do
+          = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list, @event.color), { }, { class: 'color-select' }
+      .col-md-4
+        = f.static_control label: t('.text_color') do
+          = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @event.text_color), { }, { class: 'color-select' }
+    = f.text_area :description, :rows => "3", label: t('.description'), class: "form-control", placeholder: "Вкажіть детальний опис"
+    .row
+      .col-md-4
         = f.text_field :starts_at, :value => date_dmY(@event.starts_at), label: t('.starts_at')
+      .col-md-4
         = f.text_field :ends_at, :value => date_dmY(@event.ends_at), label: t('.ends_at')
-
-
+      .col-md-4
         = f.check_box :all_day, label: t('.all_day')
 
-      .tab-pane.fade#show_event_attach_tab
 
-        .panel.panel-info
-          .panel-body
-            .form-group
-              = render :partial => 'layouts/file_upload'
 
 
   .modal-footer
-    = button_to t('form.save', :default => t("helpers.links.save")), [@calendar, @event], :method => :post, :class => 'btn btn-primary pull-right  col-sm-3 start', :params => {:calendar_id => @calendar.id}
+    = button_to t('form.save', :default => t("helpers.links.save")), [@calendar, @event], :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :style=>'height: 43px', :params => {:calendar_id => @calendar.id}
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('form.close')
 
     = link_to t('form.destroy', :default => t("helpers.links.destroy")), [@calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
@@ -110,6 +85,7 @@
     );
 
     function formatColorSelect(el) {
-        return "<div style='width: 100%; height: 30px; background-color: " + el.id + "'/>";
+        console.log(el);
+        return "<div style='width: 100%; height: 43px; background-color: " + el.id + "'/>";
     }
   });

@@ -93,3 +93,4 @@ gem 'cancan'
 gem 'role_model'
 
 gem 'yaml_db'
+gem 'bootstrap-x-editable-rails'

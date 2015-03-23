@@ -3,7 +3,9 @@ class EventsController < ApplicationController
   layout false
 
   before_action :set_calendar
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_files_description, :delete_attachments, :download_attachments]
+  before_action :set_attachments, only: [:show]
+  before_action :set_attachment, only: [:update_files_description, :delete_attachments, :download_attachments]
   before_action :set_locale
 
   def set_locale
@@ -26,6 +28,8 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    #binding.pry
+
     respond_to do |format|
       # format.html { render( partial: 'show') if request.xhr? }
       format.js
@@ -61,10 +65,22 @@ class EventsController < ApplicationController
     @event = @calendar.events.new(event_params)
     respond_to do |format|
       if @event.save
-        format.json { render json: @event1 }
+        format.json { render json: @event }
       else
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+
+  def download_attachments
+    file_name = @attachment.name
+    file_path = get_attachment_path file_name, @event.id
+    if File.exist?(file_path)
+      send_file(
+          "#{file_path}",
+          :x_sendfile=>true
+      )
     end
   end
 
@@ -81,6 +97,59 @@ class EventsController < ApplicationController
     end
   end
 
+  # POST/PUT /events/1
+  # POST/PUT /events/1.json
+  def upload_files
+
+    attachments = params[:files]
+    attachments.each do |attachment|
+      upload_file attachment, @event.id
+      file = @event.event_attachments.new(
+          :name=>attachment.original_filename,
+      )
+      respond_to do |format|
+        if file.save
+          format.html {
+            render :json => file
+          }
+        else
+          format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+        end
+
+      end
+    end
+
+  end
+
+
+  def update_files_description
+    respond_to do |format|
+      #binding.pry
+      #if @attachment.update(description: params[:description])
+      if @attachment.update(:description => params[:description])
+        format.json { render json: @attachment }
+      else
+         format.json { render json: @attachment.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+  def delete_attachments
+    file_name = @attachment.name
+    file_path = get_attachment_path file_name, @event.id
+    respond_to do |format|
+      if File.exist?(file_path)
+        if File.delete(file_path)
+          @attachment.destroy
+          format.json { head "OK" }
+        end
+      else
+        format.json { render json: @attachment.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
@@ -93,6 +162,28 @@ class EventsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
 
+
+
+  def get_attachment_path filename, event_id
+    Rails.root.join('public', 'files', 'attachments', event_id, filename)
+  end
+
+
+
+
+  def upload_file (attachment, event_id)
+    file_name = attachment.original_filename
+
+    Dir.mkdir('public/files/attachments/' + event_id) unless File.exists?('public/files/attachments/' + event_id)
+    file_path = get_attachment_path file_name, @event.id
+
+    File.open(file_path, 'wb') do |file|
+      file.write(attachment.read)
+    end
+
+    { name: file_name, path: file_path }
+  end
+
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
   end
@@ -101,8 +192,17 @@ class EventsController < ApplicationController
     @event = @calendar.events.find(params[:id])
   end
 
+  def set_attachment
+    @attachment = @event.event_attachments.find(params[:attachment_id])
+  end
+  def set_attachments
+    @attachments = @event.event_attachments
+  end
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
     params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
+  end
+  def attachment_params
+    params.require(:event_attachment).permit(:description)
   end
 end

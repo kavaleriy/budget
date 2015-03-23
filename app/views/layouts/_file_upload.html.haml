@@ -1,120 +1,126 @@
-#files.files
-  %span.dragandrop=t('drag_file')
+= form_for :file, :html => { :multipart => true, :id => "fileupload"} do |f|
+  #files.files
+    %table.table.table-hover{:style=>"font-size: 0.8em"}
+      -attachments.each do |attachment|
+        -if File.exists?('public/files/attachments/' + event_id + '/' + attachment.name)
+          %tr
+            %td.col-sm-6
+              %a{:href=>'/calendars/' + calendar_id + '/events/' + event_id + '/attachments/' + attachment.id}
+                = attachment.name
+            %td
+              %input.col-sm-8.att_description{:placeholder=>'Короткий опис', :type=>'text', :value=>attachment.description, :att_id=>attachment.id}
+              %a.btn.btn-info.btn-xs.disabled.save_description{:href=>"#"}
+                %span.glyphicon.glyphicon-ok
+              %a.btn.btn-danger.btn-xs{:href=>"#"}
+                %span.glyphicon.glyphicon-remove
 
-%span.btn.btn-success.fileinput-button.col-xs-offset-5
-  %i.glyphicon.glyphicon-plus
-  %span=t('select_from_list')
-  %input#fileupload{:multiple => "", :name => "files[]", :type => "file"}
+    %span.dragandrop=t('drag_file')
+    %span.btn.btn-success.fileinput-button.col-xs-offset-1
+      %i.glyphicon.glyphicon-plus
+      %span=t('select_from_list')
+      %input#upload_upload{:multiple => "", :name => "files[]", :type => "file"}
 
-#progress.progress
-  .progress-bar.progress-bar-success
 
-%button.btn.btn-primary.start
-  %i.glyphicon.glyphicon-upload
-    %span
-      Start
+
+
+
+:javascript
+  var fileUploadErrors = {
+  maxFileSize: 'File is too big',
+  minFileSize: 'File is too small',
+  acceptFileTypes: 'Filetype not allowed',
+  maxNumberOfFiles: 'Max number of files exceeded',
+  uploadedBytes: 'Uploaded bytes exceed file size',
+  emptyResult: 'Empty file upload result'
+  };
+
+
+
+
+
 :javascript
   $(function () {
-      'use strict';
-      // Change this to the location of your server-side upload handler:
-      var url = window.location.hostname === 'server/php/',
-          uploadButton = $('<button/>')
-              .addClass('btn btn-primary btn-sm upload pull-right')
-              .prop('disabled', true)
-              .text('Processing...')
-              .on('click', function () {
-                  var $this = $(this),
-                      data = $this.data();
-                  $this
-                      .off('click')
-                      .text('Abort')
-                      .on('click', function () {
-                          $this.remove();
-                          data.abort();
-                      });
-                  data.submit().always(function () {
-                      $this.remove();
-                  });
-                  return false
-              }),
-          cancelButton = $('<button/>')
-              .addClass('btn btn-warning cancel btn-sm pull-right')
-              .text('Cancel')
-              .on('click', function () {
-                  return false
-              });
 
+    /// Initialize the jQuery File Upload widget:
+      var att_add_id;
       $('#fileupload').fileupload({
-          url: url,
-          dataType: 'json',
-          autoUpload: false,
-          acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-          maxFileSize: 5000000, // 5 MB
-          // Enable image resizing, except for Android and Opera,
-          // which actually support image resizing, but fail to
-          // send Blob objects via XHR requests:
-          disableImageResize: /Android(?!.*Chrome)|Opera/
-              .test(window.navigator.userAgent),
-          previewMaxWidth: 100,
-          previewMaxHeight: 100,
-          previewCrop: true
+        done: function(e, data) {
+            var r = JSON.parse(data.result);
+            att_add_id = r['_id']['$oid'];
+            $('input[att_id="1"]').attr("att_id", att_add_id);
+        },
       }).on('fileuploadadd', function (e, data) {
-          console.log(1);
-          data.context = $('<div/>').appendTo('#files');
+
+          data.context = '#files table';
           $.each(data.files, function (index, file) {
-              var node = $("<div class='col-sm-12' style='vertical-align: middle; margin: 3px 0;'/>")
-                      .append($("<b class='col-sm-4'/>").text(file.name))
-                      .append($("<input class='col-sm-6' placeholder='Введіть короткий опис файла' type='text'></input>"))
-              if (!index) {
-                  node
-                      //.append(uploadButton.clone(true).data(data))
-                      .append(cancelButton.clone(true).data(data))
-              }
+              var node = $("<tr>").append($("<td class='col-sm-6'>").text(file.name))
+                .append($('<td>').append($('<input class="col-sm-8 att_description" type="text" placeholder="Короткий опис файла" att_id="1"></td>'))
+                .append('<a class="btn btn-info btn-xs disabled save_description" href="#"><span class="glyphicon glyphicon-ok"></span></a>')
+                .append('<a class="btn btn-danger btn-xs" href="#"><span class="glyphicon glyphicon-remove"></span></a>'));
               node.appendTo(data.context);
+              $('#files table tr').last().find('.btn-danger').on('click', function(event){
+                event.preventDefault();
+                click_delete($(this));
+              });
+              $('#files table tr').last().find('.save_description').on('click', function(event){
+                event.preventDefault();
+                click_save($(this));
+              });
           });
-      }).on('fileuploadprocessalways', function (e, data) {
-          var index = data.index,
-              file = data.files[index],
-              node = $(data.context.children()[index]);
-          if (file.error) {
-              node
-                  .append('<br>')
-                  .append($('<span class="text-danger"/>').text(file.error));
-          }
-          if (index + 1 === data.files.length) {
-              data.context.find('button.upload')
-                  .text('Upload')
-                  .prop('disabled', !!data.files.error);
-          }
-      }).on('fileuploadprogressall', function (e, data) {
-          var progress = parseInt(data.loaded / data.total * 100, 10);
-          $('#progress .progress-bar').css(
-              'width',
-              progress + '%'
-          );
-      }).on('fileuploaddone', function (e, data) {
-          $.each(data.result.files, function (index, file) {
-              if (file.url) {
-                  var link = $('<a>')
-                      .attr('target', '_blank')
-                      .prop('href', file.url);
-                  $(data.context.children()[index])
-                      .wrap(link);
-                      console.log(3);
-              } else if (file.error) {
-                  var error = $('<span class="text-danger"/>').text(file.error);
-                  $(data.context.children()[index])
-                      .append('<br>')
-                      .append(error);
-              }
+
+          $('.att_description').bind('textchange', function(event){
+            click_on_input($(this), event);
           });
-      }).on('fileuploadfail', function (e, data) {
-          $.each(data.files, function (index, file) {
-              var error = $('<span class="text-danger"/>').text('File upload failed.');
-              $(data.context.children()[index])
-                  .append('<br>')
-                  .append(error);
-          });
-      }).prop('disabled', !$.support.fileInput)
-          .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+      });
+
+    $('.att_description').bind('textchange', function(event){
+      click_on_input($(this), event);
+    });
+
+    $('.save_description').bind('click', function(event){
+      event.preventDefault();
+      click_save($(this));
+    });
+    $('.btn-danger').on('click', function(event){
+      event.preventDefault();
+
+      click_delete($(this));
+    });
+    function click_on_input(input_element,event){
+      console.log($(input_element).val().length);
+      if($(input_element).val().length>0){
+        $(input_element).parent('td').children('.btn-info').removeClass('disabled');
+      }
+      else{
+        $(input_element).parent('td').children('.btn-info').addClass('disabled');
+      }
+
+    }
+
+
+    function click_save(link){
+              att_id = link.parent().children('input').attr('att_id');
+              url = $('#fileupload').attr('action');
+              $.ajax({
+                 type: "POST",
+                 url: url.split('?')[0] + '/attachments/' + att_id,
+                 data: "description=" + link.parent().children('input').val(),
+                 success: function(msg){
+                   console.log(msg );
+                 }
+              });
+              return false;
+    }
+    function click_delete(link){
+              att_id = link.parent().children('input').attr('att_id');
+              url = $('#fileupload').attr('action');
+              $.ajax({
+                 type: "DELETE",
+                 url: url.split('?')[0] + '/attachments/' + att_id,
+              });
+              link.parent().parent().remove();
+              return false;
+    }
   });
+

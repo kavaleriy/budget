@@ -98,6 +98,7 @@ $(document).on 'ready page:change', ->
   createEvent = (event) ->
     dt_start = (if event.start? then moment(event.start).format("YYYY-MM-DDTHH:mm:ss") else "")
     dt_end = (if event.end? then moment(event.end).format("YYYY-MM-DDTHH:mm:ss") else "")
+    console.log(1)
     $.ajax
       url: $('#calendar').attr('calendar_id') + "/events"
       type: 'POST'
