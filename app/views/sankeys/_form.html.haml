@@ -29,6 +29,17 @@
     shape-rendering:crispEdges;
   }
 
+  #status_bar rect {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+  }
+
+  #status_bar text {
+    font-size: 1.0em;
+    font-weight: bold;
+  }
+
 
 = javascript_include_tag "biPartite.js"
 = javascript_include_tag "sankey.js"
@@ -57,6 +68,7 @@
   %button{:type => "button", :class => "btn btn-primary", :id => "sankey_create"} Створити візуалізацію
 
   .budget
+    #status_bar
     #chart1
 
   %p
@@ -68,6 +80,7 @@
 
     $('#sankey_create').click(function() {
 
+      $('#status_bar').html('');
       $('#chart1').html('').css("height", "500px");
 
       var energy = {"nodes" : [
@@ -85,16 +98,18 @@
       d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
         var keys = data["keys_revenue"];
         var d = data["rows_rot"]["2015"]["0"];
-        var totalAmount = 0;
+        var revenues = 0;
+        var genAmount = 0;
+        var specAmount = 0;
         var elseAmount_gen = 0;
         var elseAmount_spec = 0;
 
         for(i in d) {
-          totalAmount += d[i].amount;
+          revenues += d[i].amount;
         }
 
         for(i in d) {
-          if(d[i].amount*100/totalAmount >= 5) {        // second parametr - for those codes which has no description
+          if(d[i].amount*100/revenues >= 5) {        // second parametr - for those codes which has no description
             //console.log(d[i]);
             var key;
             keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
@@ -121,16 +136,16 @@
 
         keys = data["keys_expense"];
         d = data["rows_rov"]["2015"]["0"];
-        totalAmount = 0;
+        expences = 0;
         elseAmount_gen = 0;
         elseAmount_spec = 0;
 
         for(i in d) {
-          totalAmount += d[i].amount;
+          expences += d[i].amount;
         }
 
         for(i in d) {
-          if(d[i].amount*100/totalAmount >= 5) {
+          if(d[i].amount*100/expences >= 5) {
             var k = parseInt(d[i].ktfk)
             var key = keys[k]["description"];
             energy.nodes.push({ "name": key });
@@ -153,6 +168,35 @@
                              "target": "Інші видатки",
                              "value": elseAmount_spec,
                            });
+
+        var margin = {top: 10, right: 10, bottom: 10, left: 10};
+        var x = 1200/6;
+        var y = 10;
+        var width = 200;
+        var height = 60;
+
+        var svg = d3.select("#status_bar").append("svg")
+             .attr("width", 1200)
+             .attr("height", height + 2*margin.top)
+             .append("g")
+               .attr("transform", "translate(0,0)");
+
+        for(var i = 0; i < 2; i++) {
+          svg.append("rect")
+             .attr("x", function(){if(i == 0) return x; return x*4;})
+             .attr("y", y)
+             .attr("rx", 10)
+             .attr("ry", 10)
+             .attr("width", width)
+             .attr("height", height);
+
+          svg.append("text")
+             .attr("x", function(){if(i == 0) return x + width/2; return x*4 + width/2;})
+             .attr("y", y + height/2 + margin.top/2)
+             .attr("text-anchor", "middle")
+             .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + ". грн.";
+                               return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + ". грн.";});
+        }
 
         create_sankey(energy);
       });
@@ -228,7 +272,7 @@
 
     node.append("rect")
       .attr("height", function(d) { return d.dy; })
-      .attr("width", sankey.nodeWidth())
+      .attr("width", sankey.nodeWidth() )
       .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
       .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
       .append("title")
