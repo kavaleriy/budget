@@ -118,7 +118,11 @@ d3.sankey = function() {
             nextNodes = [];
             remainingNodes.forEach(function(node) {
                 node.x = x;
-                node.dx = nodeWidth;
+                if(node.name == "Загальний фонд" || node.name == "Спеціальний фонд") { // change distance to central nodes
+                    node.dx = 150;
+                } else {
+                    node.dx = nodeWidth;
+                }
                 node.sourceLinks.forEach(function(link) {
                     if (nextNodes.indexOf(link.target) < 0) {
                         nextNodes.push(link.target);
@@ -152,7 +156,11 @@ d3.sankey = function() {
 
     function scaleNodeBreadths(kx) {
         nodes.forEach(function(node) {
-            node.x *= kx;
+            if(node.name == "Загальний фонд" || node.name == "Спеціальний фонд") {   // change distance to central nodes
+                node.x *= (kx - kx*0.1);
+            } else {
+                node.x *= kx;
+            }
         });
     }
 
