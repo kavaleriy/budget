@@ -1,8 +1,8 @@
 = form_for :file, :html => { :multipart => true, :id => "fileupload"} do |f|
   #files.files
     %table.table.table-hover{:style=>"font-size: 0.8em"}
-      -attachments.each do |attachment|
-        -if File.exists?('public/files/attachments/' + event_id + '/' + attachment.name)
+      - @attachments.each do |attachment|
+        -if attachment.name and File.exists?('public/files/attachments/' + event_id + '/' + attachment.name)
           %tr
             %td.col-sm-6
               %a{:href=>'/calendars/' + calendar_id + '/events/' + event_id + '/attachments/' + attachment.id}

@@ -28,8 +28,6 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
-    #binding.pry
-
     respond_to do |format|
       # format.html { render( partial: 'show') if request.xhr? }
       format.js
@@ -107,6 +105,7 @@ class EventsController < ApplicationController
       file = @event.event_attachments.new(
           :name=>attachment.original_filename,
       )
+      
       respond_to do |format|
         if file.save
           format.html {
@@ -124,9 +123,9 @@ class EventsController < ApplicationController
 
   def update_files_description
     respond_to do |format|
-      #binding.pry
-      #if @attachment.update(description: params[:description])
-      if @attachment.update(:description => params[:description])
+      binding.pry
+      @attachment.description = params[:description]
+      if @event.save
         format.json { render json: @attachment }
       else
          format.json { render json: @attachment.errors, status: :unprocessable_entity }
