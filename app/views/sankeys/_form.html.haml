@@ -24,6 +24,9 @@
   %p
   %button{:type => "button", :class => "btn btn-primary", :id => "sankey_create"} Створити візуалізацію
 
+  %p
+  %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
+
   .budget
     #sankey_chart
 
@@ -35,20 +38,43 @@
 
   $(document).on('ready page:change', function() {
 
-    $('#status_bar').html('');
-    $('#sankey_chart').html('').css("height", "0");
-    $('#sankey_save').css("display", "none");
+    clear();
+    var history;
 
+    // first time create sankey
     $('#sankey_create').click(function() {
 
-      $('#status_bar').html('');
-      $('#sankey_chart').html('').css("height", "0");
-      $('#sankey_save').css("display", "none");
+      clear();
 
       var rot_file_id = $('#select_rot option:selected').val();
       var rov_file_id = $('#select_rov option:selected').val();
+      var years = [];
 
-      get_sankey(rot_file_id, rov_file_id);
+      d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
+        var year_options = "";
+        for(var year in data["rows_rot"]) {
+            years.unshift(year);
+        }
+        for(var i in years) {
+            year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
+        }
+        $('#select_year').html(year_options).css("display", "block");
+        history = data;
+        get_sankey(data, years[0]);
+      })
     })
 
+    // use already loaded data if user change only year
+    $('#select_year').change(function() {
+      get_sankey(history, $(this).val());
+    })
+
+    // clear sankey field
+    function clear() {
+      $('#status_bar').html('');
+      $('#sankey_chart').html('').css("height", "0");
+      $('#sankey_save').css("display", "none");
+    }
+
   })
+
