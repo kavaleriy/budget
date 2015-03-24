@@ -97,7 +97,7 @@ function get_sankey(data, year) {
         energy.nodes[i] = { "name": d };
     });
 
-    var margin = {top: 80, right: 1, bottom: 30, left: 1},
+    var margin = {top: 80, right: 50, bottom: 30, left: 50},
         width = 1200 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -156,6 +156,27 @@ function get_sankey(data, year) {
         .append("title")
         .text(function(d) { return d.name + "\n" + format(d.value); });
 
+    node.append("rect")
+        .attr("x", function(d) {
+            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
+            return 30;})
+        //.attr("y", function(d) { return d.dy; })
+        .style("fill", "#F0F0F0")
+        .style("stroke", "none")
+        .attr("width", 40)
+        .attr("height", function(d) { if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 0;
+                                      return d.dy; })
+    node.append("text")
+        .text(function(d){
+                if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
+                return "%";
+              })
+        .attr("text-anchor", "start")
+        .attr("dx", function(d) {
+            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -45;
+            return 33;})
+        .attr("dy", "1.0em");
+
     node.append("text")
         .attr("x", -6)
         .attr("y", function(d) { return d.dy / 2; })
@@ -175,7 +196,7 @@ function get_sankey(data, year) {
 
     // central rectangle for General and Special funds
     svg.append("rect")
-        .attr("x", width/2 - 75)
+        .attr("x", width/2 - 70)
         .attr("y", -margin.top + 1)
         .style("fill", "none")
         .style("stroke", "#082757")
@@ -197,8 +218,8 @@ function get_sankey(data, year) {
         svg.append("rect")
             .attr("x", function(){
                 if(i == 0) return width/4;
-                if(i == 1) return width/2 - 68;
-                return width/2 + 118;
+                if(i == 1) return width/2 - 58;
+                return width/2 + 108;
             })
             .attr("y", function(){
                 if(i == 1) return -margin.top/2 + 1;
@@ -229,7 +250,7 @@ function get_sankey(data, year) {
             .attr("x", function(){
                 if(i == 0) return width/3;
                 if(i == 1) return width/2 + 10;
-                return 2*width/3 + 20;
+                return 2*width/3 + 15;
             })
             .attr("y", function(){
                 if(i == 1) return -margin.top/4;
@@ -252,8 +273,8 @@ function get_sankey(data, year) {
     for(var j = 0; j < 2; j++) {
         svg.append("rect")
             .attr("x", function(){
-                if(j == 0) return 0;
-                return width - width/8;
+                if(j == 0) return -margin.left;
+                return width - width/8 + margin.right;
             })
             .attr("y", -margin.top + 1 )
             .style("fill", "#F0F0F0")
@@ -262,7 +283,7 @@ function get_sankey(data, year) {
             .attr("height", margin.top - 10);
 
         var text = svg.append("text")
-            .attr("x", function(){if(j == 0) return 10; return width - width/8 + 10})
+            .attr("x", function(){if(j == 0) return -margin.left + 10; return width - width/8 + margin.right + 10})
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "start")
             //.style("fill", function(){if(i == 1) return "white"; return "#082757";})
@@ -281,7 +302,7 @@ function get_sankey(data, year) {
             text.append('tspan')
                 .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + ".грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", 10);
+                .attr("x", -margin.left + 10);
             text.append('tspan')
                 .text(function() {
                     if(revenues > prev_revenues) {
@@ -293,13 +314,13 @@ function get_sankey(data, year) {
                     return "не змінилось"
                 })
                 .attr("dy", "1.1em")
-                .attr("x", 10);
+                .attr("x", -margin.left + 10);
         } else if(data["rows_rov"][year-1] && j == 1){
             var prev_expences = sum_amount(data["rows_rov"][year-1]["0"]);
             text.append('tspan')
                 .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + ".грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 10);
+                .attr("x", width - width/8 + 10 + margin.right);
             text.append('tspan')
                 .text(function() {
                     if(expences > prev_expences) {
@@ -311,7 +332,7 @@ function get_sankey(data, year) {
                     return "не змінилось"
                 })
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 10);
+                .attr("x", width - width/8 + 10 + margin.right);
         }
     }
 
