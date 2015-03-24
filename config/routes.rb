@@ -61,8 +61,11 @@ Rails.application.routes.draw do
   get 'public/calendar/:calendar_id' => 'public#calendar'
 
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
+  post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
+  post 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#update_files_description'
+  delete 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#delete_attachments'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
-
+  get 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#download_attachments'
   resources :calendars do
     resources :events
   end
