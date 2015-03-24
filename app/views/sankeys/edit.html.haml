@@ -3,9 +3,3 @@
 = link_to 'Show', @sankey
 \|
 = link_to 'Back', sankeys_path
-
-:javascript
-
-  $(document).on('ready page:change', function() {
-    get_sankey('#{@sankey.rot_file_id}', '#{@sankey.rov_file_id}');
-  })

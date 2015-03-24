@@ -36,10 +36,17 @@
 
 :javascript
 
+  var i = 0;
+
   $(document).on('ready page:change', function() {
 
     clear();
     var history;
+    var years = [];
+
+    if(i == 0 && '#{action_name}' == "edit") {
+      new_sankey('#{@sankey.rot_file_id}', '#{@sankey.rov_file_id}');
+    }
 
     // first time create sankey
     $('#sankey_create').click(function() {
@@ -48,8 +55,12 @@
 
       var rot_file_id = $('#select_rot option:selected').val();
       var rov_file_id = $('#select_rov option:selected').val();
-      var years = [];
 
+      new_sankey(rot_file_id, rov_file_id);
+
+    })
+
+    function new_sankey(rot_file_id, rov_file_id) {
       d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
         var year_options = "";
         for(var year in data["rows_rot"]) {
@@ -62,7 +73,7 @@
         history = data;
         get_sankey(data, years[0]);
       })
-    })
+    }
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
@@ -75,6 +86,8 @@
       $('#sankey_chart').html('').css("height", "0");
       $('#sankey_save').css("display", "none");
     }
+
+    i++;
 
   })
 
