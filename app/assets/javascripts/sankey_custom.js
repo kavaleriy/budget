@@ -9,11 +9,24 @@ function get_sankey(data, year) {
         {"name": "Інші доходи"},              // for less than 5% amount
         {"name": "Інші видатки"},
     ],
-        "links" : []
+        "links" : [],
+        "amounts": []
     };
 
     var keys = data["keys_revenue"];
-    var d = data["rows_rot"][year]["0"];
+    var amounts = [];
+
+    var d = data["rows_rot"][year-1];
+    if(d){
+        d = d["0"];
+        for(i in d) {
+            var key;
+            keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
+            amounts[key] = d[i].amount;
+        }
+    }
+
+    d = data["rows_rot"][year]["0"];
     var revenues = sum_amount(d);
     var genAmount = 0;
     var specAmount = 0;
@@ -30,6 +43,11 @@ function get_sankey(data, year) {
                 "target": d[i].fond,
                 "value": d[i].amount
             });
+            if(amounts[key]){
+                energy.amounts[key] = {
+                    "prev_value": amounts[key]
+                }
+            }
         } else if(d[i].fond == "Загальний фонд") {
             elseAmount_gen += d[i].amount;
         } else if(d[i].fond == "Спеціальний фонд") {
@@ -47,6 +65,15 @@ function get_sankey(data, year) {
         });
 
     keys = data["keys_expense"];
+    var d = data["rows_rov"][year-1];
+    if(d){
+        d = d["0"];
+        for(i in d) {
+            var k = parseInt(d[i].ktfk)
+            var key = keys[k]["description"];
+            amounts[key] = d[i].amount;
+        }
+    }
     d = data["rows_rov"][year]["0"];
     var expences = sum_amount(d);
     elseAmount_gen = 0;
@@ -65,6 +92,11 @@ function get_sankey(data, year) {
                 "target": key,
                 "value": d[i].amount
             });
+            if(amounts[key]){
+                energy.amounts[key] = {
+                    "prev_value": amounts[key]
+                }
+            }
         } else if(d[i].fond == "Загальний фонд") {
             elseAmount_gen += d[i].amount;
         } else if(d[i].fond == "Спеціальний фонд") {
@@ -169,13 +201,18 @@ function get_sankey(data, year) {
     node.append("text")
         .text(function(d){
                 if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
-                return "%";
+                if(energy.amounts[d.name]) {
+                    console.log(energy.amounts[d.name].prev_value, d.value);
+                    return (100 - energy.amounts[d.name].prev_value*100/d.value).toFixed(2) + "%";
+                }
+                return "";
               })
         .attr("text-anchor", "start")
         .attr("dx", function(d) {
-            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -45;
-            return 33;})
-        .attr("dy", "1.0em");
+            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -50;
+            return 30;})
+        .attr("dy", "1.0em")
+        .style("font-size", "0.7em");
 
     node.append("text")
         .attr("x", -6)
