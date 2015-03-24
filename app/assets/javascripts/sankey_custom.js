@@ -202,7 +202,6 @@ function get_sankey(data, year) {
         .text(function(d){
                 if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
                 if(energy.amounts[d.name]) {
-                    console.log(energy.amounts[d.name].prev_value, d.value);
                     return (100 - energy.amounts[d.name].prev_value*100/d.value).toFixed(2) + "%";
                 }
                 return "";

@@ -1,3 +1,5 @@
+%p
+  %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 #sankey_chart
 
 = link_to 'Edit', edit_sankey_path(@sankey)
@@ -10,5 +12,26 @@
 :javascript
 
   $(document).on('ready page:change', function() {
-    get_sankey('#{@sankey.rot_file_id}', '#{@sankey.rov_file_id}');
+
+    var history;
+    var years = [];
+
+    d3.json("/sankeys/get_rows/" + '#{@sankey.rot_file_id}' + "/" + '#{@sankey.rov_file_id}', function(data) {
+      var year_options = "";
+      for(var year in data["rows_rot"]) {
+          years.unshift(year);
+      }
+      for(var i in years) {
+          year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
+      }
+      $('#select_year').html(year_options).css("display", "block");
+      history = data;
+      get_sankey(data, years[0]);
+    })
+
+    // use already loaded data if user change only year
+    $('#select_year').change(function() {
+      get_sankey(history, $(this).val());
+    })
+
   })
