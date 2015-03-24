@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
     get 'module3' => 'module3#index'
     get 'module3/:id' => 'module3#show'
+
+    get 'module4' => 'module4#index'
+    get 'module4/:id' => 'module4#show'
   end
 
   namespace :widgets do
