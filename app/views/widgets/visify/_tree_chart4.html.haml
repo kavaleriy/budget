@@ -1,0 +1,182 @@
+.visify.row
+  .btn.circle-diagram-btn
+    кругова
+  .col-xs-12.col-sm-12.col-md-12.col-lg-12.sequence_hide
+    = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
+    #under_sequence
+  = render partial: 'sidebar4', :locals => { budget_file_id: budget_file_id }
+  .col-xs-12.col-sm-12.col-md-8.col-lg-8
+    #chart
+    %canvas{:style => "display: none;"}
+    #charts_tooltip.hidden
+      %p
+        %span#value
+
+    .col-xs-12
+      -#btn #save used to recieve trigger from out of iframe to get url for SVG image
+      %button.btn.btn-primary#save{:style => "display: none"}
+        %i.fa.fa-file-image-o
+      .btn-group.pull-right
+        %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+          %i.fa.fa-code
+
+    .col-xs-12
+      //#iframe_embed
+      #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
+        .input-group
+          .input-group-addon
+            = t('embed')
+          %input.form-control
+          %span.embed_label=t('iframe.select')
+          %select.iframe_size_select#visual
+          .iframe_other_size
+
+    .slider.row
+      = render partial: 'slider_chart'
+      = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+
+
+:javascript
+  aVisify = {
+    helpers: {
+      getPercentageString: function (d, totalSize) {
+        var percentage = (100 * d.amount/ totalSize).toPrecision(3);
+        var percentageString = percentage + "%";
+        if (percentage < 0.1) {
+          percentageString = "< 0.1%";
+        }
+        return percentageString;
+      },
+      formatNumber: function (n) {
+        var prefix = '';
+        if (n < 0) {
+            n = n*-1;
+            prefix = '-';
+        }
+        if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + I18n.t("short_units.trillion");
+        if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + I18n.t("short_units.billion");
+        if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + I18n.t("short_units.million");
+        if (n >= 1000) return prefix+Math.round(n / 100)/10 + I18n.t("short_units.thousand");
+        else return prefix + n + I18n.t("short_units.unit");
+      },
+
+      wrap: function (text, width) {
+        text.each(function() {
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, // ems
+                y = text.attr('y'),
+                dy = parseFloat(text.attr('dy')),
+                tspan = text.text(null).append("tspan").attr("x", 15).attr("y", y);
+            var lines = [tspan];
+            while ((word = words.pop()) && (lines.length < 4)) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", 15).attr("y", y).text(word);
+                    lines.push(tspan);
+                }
+            }
+            if (lines.length == 1) {
+                lines[0].attr("y", 22);
+            }
+            if (lines.length == 2) {
+                lines[0].attr("y", 15);
+                lines[1].attr("y", 35);
+            }
+            if (lines.length > 2) {
+                lines[0].attr("y", 9);
+                lines[1].attr("y", 27);
+                lines[2].attr("y", 40);
+            }
+            if (lines.length == 4){
+                lines[3].remove();
+            }
+        })
+      }
+    }
+  }
+
+  $(document).ready(function() {
+
+    // create chart according to the window size
+    iframe_resize();
+
+    // make tooltip movable with mouse
+    var visifier = $(".visify").parent().attr('class');
+
+    if(visifier != "bubbletree") {
+        window.onmousemove = function (e) {
+          var tooltipSpan = document.getElementById('charts_tooltip');
+          var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
+          var x = e.clientX || e.pageX,
+              y = (e.clientY || e.pageY) - sequence_height;
+          tooltipSpan.style.top = y + 'px';
+          tooltipSpan.style.left = x + 'px';
+        };
+    }
+    function set_visiframe(visualizator) {
+            path = "#{request.base_url}"
+            query = "#{URI.parse(request.url).query}"
+            frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query + 'module=4'
+            console.log(frame_url);
+            $('#embed_tax input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
+            console.log($('window.parent iframe').attr('src'));
+            $('iframe').attr('src', frame_url)
+            $('#embed_tax').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                                  <option value=\"500\">500x500</option>\
+                                                                  <option value=\"default\" selected>900x600</option>\
+                                                                  <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+            $('#embed_tax').find('.iframe_other_size').html("");
+          }
+
+
+          $('.circle-diagram-btn').on('click', function(){
+              console.log(1);
+              set_visiframe('circles');
+            });
+
+  });
+
+  $(window).resize(function() {
+    // create chart according to the window size
+    iframe_resize();
+  });
+
+  // Responsive SVG charts
+  function iframe_resize() {
+    var width;
+    document_width = $(document).width();
+    sidebar_width = $('.visify #sidebar').width();
+    if(document_width > 2*sidebar_width) {
+      width = document_width - sidebar_width - document_width*0.02;
+    } else {
+      width = document_width;
+    }
+    height = width/2;
+
+    var sequence = aSequence('.visify')
+    sequence.initializeBreadcrumbTrail();
+
+    var sidebar = aSidebar('.visify')
+    sidebar.initialize(height);
+
+    var slider = aSliderCompare('#slider_compare');
+    slider.initialize(100);
+
+    var slider_chart = aSliderChart('#slider_chart', slider);
+    slider_chart.initialize(250);
+
+    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_chart);
+    chart.initialize(width, height);
+    chart.show("#{@sel_year}", "#{@sel_month}");
+  }
+
+
+
