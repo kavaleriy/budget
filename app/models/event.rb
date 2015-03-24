@@ -2,7 +2,7 @@ class Event
   include Mongoid::Document
 
   embedded_in :calendar
-  belongs_to  :calendar
+  # belongs_to  :calendar
 
   scope :event_timeline, lambda { |holder, starts_at, ends_at| where(:holder => holder, :starts_at.gte => starts_at, :ends_at.lte => ends_at).where(:ends_at => { '$ne' => nil}).asc(:starts_at) }
 
@@ -19,6 +19,9 @@ class Event
   field :all_day, type: Boolean
   field :text_color, type: String
   field :color, type: String
+  field :countdown_file, type: File
+
+  embeds_many :event_attachments
 
   validates :holder, presence: true
   validates :title, presence: true
@@ -38,4 +41,5 @@ class Event
         :color => self.color,
     }
   end
+
 end
