@@ -21,6 +21,8 @@ class SankeysController < ApplicationController
 
   # GET /sankeys/1/edit
   def edit
+    @budget_files_rot = BudgetFileRotFond.all
+    @budget_files_rov = BudgetFileRovFond.all
   end
 
   # POST /sankeys
