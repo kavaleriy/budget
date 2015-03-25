@@ -63,6 +63,7 @@
     function new_sankey(rot_file_id, rov_file_id) {
       d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
         var year_options = "";
+        years = [];
         for(var year in data["rows_rot"]) {
             years.unshift(year);
         }
@@ -77,6 +78,7 @@
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
+      console.log(history, $(this).val());
       get_sankey(history, $(this).val());
     })
 
