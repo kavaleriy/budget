@@ -68,8 +68,8 @@ class SankeysController < ApplicationController
   def get_rows
     @budget_file_rot = Taxonomy.where(:id => sankey_params[:rot_file_id]).first
     @budget_file_rov = Taxonomy.where(:id => sankey_params[:rov_file_id]).first
-    @keys_revenue = @budget_file_rot.explanation
-    @keys_expense = @budget_file_rov.explanation
+    @keys_revenue = @budget_file_rot.revenue_codes
+    @keys_expense = @budget_file_rov.expense_codes
     render json: { 'rows_rot' => @budget_file_rot.get_rows, 'rows_rov' => @budget_file_rov.get_rows, 'keys_revenue' => @keys_revenue, 'keys_expense' => @keys_expense }
   end
 

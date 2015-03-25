@@ -18,12 +18,13 @@ function get_sankey(data, year) {
 
     // gather amounts for previous year revenues
     var d = data["rows_rot"][year-1];
+
     if(d){
         d = d["0"];
         for(i in d) {
             var key;
-            if(keys["kkd_ddd"][d[i].kkd_ddd] && keys["kkd_ddd"][d[i].kkd_ddd]["title"]) {
-                key = keys["kkd_ddd"][d[i].kkd_ddd]["title"];
+            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
+                key = keys[d[i].kkd_ddd]["title"];
             } else {
                 key = d[i].kkd_ddd;
             }
@@ -53,8 +54,8 @@ function get_sankey(data, year) {
         }
         if(d[i].amount*100/revenues >= 5) {
             var key;
-            if(keys["kkd_ddd"][d[i].kkd_ddd] && keys["kkd_ddd"][d[i].kkd_ddd]["title"]) {
-                key = keys["kkd_ddd"][d[i].kkd_ddd]["title"];
+            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
+                key = keys[d[i].kkd_ddd]["title"];
             } else {
                 key = d[i].kkd_ddd;
             }
@@ -90,8 +91,9 @@ function get_sankey(data, year) {
         d = d["0"];
         for(i in d) {
             var key;
-            if(keys["ktfk"][d[i].ktfk] && keys["ktfk"][d[i].ktfk]["title"]) {
-                key = keys["ktfk"][d[i].ktfk]["title"];
+            var k = parseInt(d[i].ktfk);
+            if(keys[k] && keys[k]["title"]) {
+                key = keys[k]["title"];
             } else {
                 key = d[i].ktfk;
             }
@@ -118,8 +120,9 @@ function get_sankey(data, year) {
         }
         if(d[i].amount*100/expences >= 5) {
             var key;
-            if(keys["ktfk"][d[i].ktfk] && keys["ktfk"][d[i].ktfk]["title"]) {
-                key = keys["ktfk"][d[i].ktfk]["title"];
+            var k = parseInt(d[i].ktfk);
+            if(keys[k] && keys[k]["title"]) {
+                key = keys[k]["title"];
             } else {
                 key = d[i].ktfk;
             }
