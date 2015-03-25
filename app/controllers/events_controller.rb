@@ -98,14 +98,11 @@ class EventsController < ApplicationController
   # POST/PUT /events/1
   # POST/PUT /events/1.json
   def upload_files
-
-    attachments = params[:files]
-    attachments.each do |attachment|
+    params[:files].each do |attachment|
       upload_file attachment, @event.id
       file = @event.event_attachments.new(
           :name=>attachment.original_filename,
       )
-
       respond_to do |format|
         if file.save
           format.html {
@@ -114,10 +111,8 @@ class EventsController < ApplicationController
         else
           format.json { render json: @budget_file.errors, status: :unprocessable_entity }
         end
-
       end
     end
-
   end
 
 
@@ -134,8 +129,7 @@ class EventsController < ApplicationController
 
 
   def delete_attachments
-    file_name = @attachment.name
-    file_path = get_attachment_path file_name, @event.id
+    file_path = get_attachment_path @attachment.name, @event.id
     respond_to do |format|
       if File.exist?(file_path)
         if File.delete(file_path)
@@ -146,7 +140,6 @@ class EventsController < ApplicationController
         format.json { render json: @attachment.errors, status: :unprocessable_entity }
       end
     end
-
   end
   # DELETE /events/1
   # DELETE /events/1.json
@@ -168,18 +161,13 @@ class EventsController < ApplicationController
 
 
 
-
   def upload_file (attachment, event_id)
     file_name = attachment.original_filename
-
     Dir.mkdir('public/files/attachments/' + event_id) unless File.exists?('public/files/attachments/' + event_id)
     file_path = get_attachment_path file_name, @event.id
-
     File.open(file_path, 'wb') do |file|
       file.write(attachment.read)
     end
-
-    { name: file_name, path: file_path }
   end
 
   def set_calendar
@@ -200,7 +188,5 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
   end
-  def attachment_params
-    params.require(:event_attachment).permit(:description)
-  end
+
 end
