@@ -13,11 +13,13 @@
 
   $(document).on('ready page:change', function() {
 
+    clear();
     var history;
     var years = [];
 
     d3.json("/sankeys/get_rows/" + '#{@sankey.rot_file_id}' + "/" + '#{@sankey.rov_file_id}', function(data) {
       var year_options = "";
+      years = [];
       for(var year in data["rows_rot"]) {
           years.unshift(year);
       }
@@ -33,5 +35,9 @@
     $('#select_year').change(function() {
       get_sankey(history, $(this).val());
     })
+
+    function clear() {
+      $('#sankey_chart').html('').css("height", "0");
+    }
 
   })

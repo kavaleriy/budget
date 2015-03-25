@@ -39,7 +39,6 @@
   var i = 0;
 
   $(document).on('ready page:change', function() {
-
     clear();
     var history;
     var years = [];
@@ -78,7 +77,6 @@
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
-      console.log(history, $(this).val());
       get_sankey(history, $(this).val());
     })
 
