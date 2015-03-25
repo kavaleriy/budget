@@ -40,6 +40,17 @@ function get_sankey(data, year) {
 
     for(i in d) {
         //console.log(d[i]);
+        var fond;
+        switch (d[i].fond) {
+            case "1": fond = "Загальний фонд";
+                break;
+            case "2": fond = "Власні надходження";
+                break;
+            case "7": fond = "Спеціальний фонд";
+                break;
+            default:fond = d[i].fond;
+                break;
+        }
         if(d[i].amount*100/revenues >= 5) {
             var key;
             if(keys["kkd_ddd"][d[i].kkd_ddd] && keys["kkd_ddd"][d[i].kkd_ddd]["title"]) {
@@ -49,7 +60,7 @@ function get_sankey(data, year) {
             }
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
-                                "target": d[i].fond,
+                                "target": fond,
                                 "value": d[i].amount
                               });
             if(amounts[key]){
@@ -57,9 +68,9 @@ function get_sankey(data, year) {
                     "prev_value": amounts[key]
                 }
             }
-        } else if(d[i].fond == "Загальний фонд") {
+        } else if(fond == "Загальний фонд") {
             elseAmount_gen += d[i].amount;
-        } else if(d[i].fond == "Спеціальний фонд") {
+        } else if(fond == "Спеціальний фонд") {
             elseAmount_spec += d[i].amount;
         }
     }
@@ -98,6 +109,17 @@ function get_sankey(data, year) {
 
     for(i in d) {
         //console.log(d[i]);
+        var fond;
+        switch (d[i].fond) {
+            case "1": fond = "Загальний фонд";
+                break;
+            case "2": fond = "Власні надходження";
+                break;
+            case "7": fond = "Спеціальний фонд";
+                break;
+            default:fond = d[i].fond;
+                break;
+        }
         if(d[i].amount*100/expences >= 5) {
             var key;
             if(keys["ktfk"][d[i].ktfk] && keys["ktfk"][d[i].ktfk]["title"]) {
@@ -105,9 +127,8 @@ function get_sankey(data, year) {
             } else {
                 key = d[i].ktfk;
             }
-
             energy.nodes.push({ "name": key });
-            energy.links.push({ "source": d[i].fond,
+            energy.links.push({ "source": fond,
                                 "target": key,
                                 "value": d[i].amount
                               });
@@ -116,9 +137,9 @@ function get_sankey(data, year) {
                     "prev_value": amounts[key]
                 }
             }
-        } else if(d[i].fond == "Загальний фонд") {
+        } else if(fond == "Загальний фонд") {
             elseAmount_gen += d[i].amount;
-        } else if(d[i].fond == "Спеціальний фонд") {
+        } else if(fond == "Спеціальний фонд") {
             elseAmount_spec += d[i].amount;
         }
     }
