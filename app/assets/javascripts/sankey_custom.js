@@ -104,10 +104,6 @@ function get_sankey(data, year) {
     elseAmount_spec = 0;
 
     for(i in d) {
-        expences += d[i].amount;
-    }
-
-    for(i in d) {
         //console.log(d[i]);
         var fond;
         switch (d[i].fond) {
