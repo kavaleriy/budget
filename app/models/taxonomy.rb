@@ -132,6 +132,15 @@ class Taxonomy
     create_tree_item(tree)
   end
 
+  def revenue_codes
+    @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
+    @kkd_info
+  end
+
+  def expense_codes
+    @ktfk_info = load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
+    @ktfk_info
+  end
 
   protected
 
@@ -158,16 +167,6 @@ class Taxonomy
   def revenue_fond_codes
     @fond_info = load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
     @fond_info
-  end
-
-  def revenue_codes
-    @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
-    @kkd_info
-  end
-
-  def expense_codes
-    @ktfk_info = load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
-    @ktfk_info
   end
 
   def expense_ekv_codes
