@@ -13,15 +13,11 @@
                 %span.glyphicon.glyphicon-ok
               %a.btn.btn-danger.btn-xs{:href=>"#"}
                 %span.glyphicon.glyphicon-remove
-
     %span.dragandrop=t('drag_file')
     %span.btn.btn-success.fileinput-button.col-xs-offset-1
       %i.glyphicon.glyphicon-plus
       %span=t('select_from_list')
       %input#upload_upload{:multiple => "", :name => "files[]", :type => "file"}
-
-
-
 
 
 :javascript
@@ -35,44 +31,36 @@
   };
 
 
-
-
-
 :javascript
   $(function () {
-
     /// Initialize the jQuery File Upload widget:
-      var att_add_id;
-      $('#fileupload').fileupload({
-        done: function(e, data) {
-            var r = JSON.parse(data.result);
-            att_add_id = r['_id']['$oid'];
-            $('input[att_id="1"]').attr("att_id", att_add_id);
-        },
-      }).on('fileuploadadd', function (e, data) {
-
-          data.context = '#files table';
-          $.each(data.files, function (index, file) {
-              var node = $("<tr>").append($("<td class='col-sm-6'>").text(file.name))
-                .append($('<td>').append($('<input class="col-sm-8 att_description" type="text" placeholder="Короткий опис файла" att_id="1"></td>'))
-                .append('<a class="btn btn-info btn-xs disabled save_description" href="#"><span class="glyphicon glyphicon-ok"></span></a>')
-                .append('<a class="btn btn-danger btn-xs" href="#"><span class="glyphicon glyphicon-remove"></span></a>'));
-              node.appendTo(data.context);
-              $('#files table tr').last().find('.btn-danger').on('click', function(event){
-                event.preventDefault();
-                click_delete($(this));
-              });
-              $('#files table tr').last().find('.save_description').on('click', function(event){
-                event.preventDefault();
-                click_save($(this));
-              });
+    $('#fileupload').fileupload({
+      done: function(e, data) {
+          var r = JSON.parse(data.result);
+          var att_add_id = r['_id']['$oid'];
+          $('input[att_id="1"]').attr("att_id", att_add_id);
+      },
+    }).on('fileuploadadd', function (e, data) {
+      data.context = '#files table';
+      $.each(data.files, function (index, file) {
+          var node = $("<tr>").append($("<td class='col-sm-6'>").text(file.name))
+            .append($('<td>').append($('<input class="col-sm-8 att_description" type="text" placeholder="Короткий опис" att_id="1"></td>'))
+            .append('<a class="btn btn-info btn-xs disabled save_description" href="#"><span class="glyphicon glyphicon-ok"></span></a>')
+            .append('<a class="btn btn-danger btn-xs" href="#"><span class="glyphicon glyphicon-remove"></span></a>'));
+          node.appendTo(data.context);
+          $('#files table tr').last().find('.btn-danger').on('click', function(event){
+            event.preventDefault();
+            click_delete($(this));
           });
-
-          $('.att_description').bind('textchange', function(event){
-            click_on_input($(this), event);
+          $('#files table tr').last().find('.save_description').on('click', function(event){
+            event.preventDefault();
+            click_save($(this));
           });
-
       });
+      $('.att_description').bind('textchange', function(event){
+        click_on_input($(this), event);
+      });
+    });
 
     $('.att_description').bind('textchange', function(event){
       click_on_input($(this), event);
@@ -97,7 +85,6 @@
       }
 
     }
-
 
     function click_save(link){
               att_id = link.parent().children('input').attr('att_id');
