@@ -35,8 +35,8 @@ class SankeysController < ApplicationController
         format.html { redirect_to @sankey, notice: 'Sankey was successfully created.' }
         format.json { render :show, status: :created, location: @sankey }
       else
-        format.html { render :new }
-        format.json { render json: @sankey.errors, status: :unprocessable_entity }
+        format.html { redirect_to new_sankey_path, :flash => { :error => 'Така візуалізація вже існує. Спробуйте інший набір файлів.' } }
+        # format.json { render json: @sankey.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -21,7 +21,12 @@ function get_sankey(data, year) {
         d = d["0"];
         for(i in d) {
             var key;
-            keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
+            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
+                key = keys[d[i].kkd_ddd]["title"];
+            } else {
+                key = d[i].kkd_ddd;
+            }
+            //keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
             amounts[key] = d[i].amount;
         }
     }
@@ -37,7 +42,12 @@ function get_sankey(data, year) {
         if(d[i].amount*100/revenues >= 5) {        // second parametr - for those codes which has no description
             //console.log(d[i]);
             var key;
-            keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
+            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
+                key = keys[d[i].kkd_ddd]["title"];
+            } else {
+                key = d[i].kkd_ddd;
+            }
+            //keys[d[i].kkd_ddd] ? key = keys[d[i].kkd_ddd]["description"] : key = d[i].kkd_ddd;
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
                 "target": d[i].fond,
@@ -69,8 +79,9 @@ function get_sankey(data, year) {
     if(d){
         d = d["0"];
         for(i in d) {
-            var k = parseInt(d[i].ktfk)
-            var key = keys[k]["description"];
+            var k = parseInt(d[i].ktfk);
+            keys[k]["title"] ? key = keys[k]["title"] : key = k;
+            // var key = keys[k]["description"];
             amounts[key] = d[i].amount;
         }
     }
@@ -85,8 +96,9 @@ function get_sankey(data, year) {
 
     for(i in d) {
         if(d[i].amount*100/expences >= 5) {
-            var k = parseInt(d[i].ktfk)
-            var key = keys[k]["description"];
+            var k = parseInt(d[i].ktfk);
+            keys[k]["title"] ? key = keys[k]["title"] : key = k;
+            //var key = keys[k]["description"];
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": d[i].fond,
                 "target": key,
