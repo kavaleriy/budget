@@ -354,10 +354,10 @@ function get_sankey(data, year) {
             text.append('tspan')
                 .text(function() {
                     if(revenues > prev_revenues) {
-                        return (100 - prev_revenues*100/revenues) + "% росту"
+                        return (100 - prev_revenues*100/revenues).toFixed(2) + "% росту"
                     }
                     if(revenues > prev_revenues) {
-                        return (prev_revenues*100/revenues - 100) + "% падіння"
+                        return (prev_revenues*100/revenues - 100).toFixed(2) + "% падіння"
                     }
                     return "не змінилось"
                 })
