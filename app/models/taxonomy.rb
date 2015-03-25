@@ -73,13 +73,21 @@ class Taxonomy
   end
 
 
-  def get_tree
+  def get_rows
     rows = {}
     self.budget_files.each{ |file|
       file.rows.keys.each {|year|
-        rows[year] = file.rows[year]
+        rows[year] = {} if rows[year].nil?
+        file.rows[year].keys.each {|month|
+          rows[year][month] = file.rows[year][month]
+        }
       }
     }
+    rows
+  end
+
+  def get_tree
+    rows = get_rows
 
     create_tree rows
   end

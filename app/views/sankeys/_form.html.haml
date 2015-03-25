@@ -13,13 +13,13 @@
     - @budget_files_rot.each do |rot_file|
       %option{:value => rot_file.id}
         = rot_file.title
-        = rot_file.taxonomy.owner
+        = rot_file.owner
 
   %select{:class => "selectpicker", :id => "select_rov", :name => :rov_file_id}
     - @budget_files_rov.each do |rov_file|
       %option{:value => rov_file.id}
         = rov_file.title
-        = rov_file.taxonomy.owner
+        = rov_file.owner
 
   %p
   %button{:type => "button", :class => "btn btn-primary", :id => "sankey_create"} Створити візуалізацію
@@ -63,6 +63,7 @@
     function new_sankey(rot_file_id, rov_file_id) {
       d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
         var year_options = "";
+        years = [];
         for(var year in data["rows_rot"]) {
             years.unshift(year);
         }

@@ -15,14 +15,14 @@ class SankeysController < ApplicationController
   # GET /sankeys/new
   def new
     @sankey = Sankey.new
-    @budget_files_rot = BudgetFileRotFond.all
-    @budget_files_rov = BudgetFileRovFond.all
+    @budget_files_rot = TaxonomyRot.all + TaxonomyRotFond.all
+    @budget_files_rov = TaxonomyRov.all + TaxonomyRovFond.all
   end
 
   # GET /sankeys/1/edit
   def edit
-    @budget_files_rot = BudgetFileRotFond.all
-    @budget_files_rov = BudgetFileRovFond.all
+    @budget_files_rot = TaxonomyRot.all + TaxonomyRotFond.all
+    @budget_files_rov = TaxonomyRov.all + TaxonomyRovFond.all
   end
 
   # POST /sankeys
@@ -35,8 +35,8 @@ class SankeysController < ApplicationController
         format.html { redirect_to @sankey, notice: 'Sankey was successfully created.' }
         format.json { render :show, status: :created, location: @sankey }
       else
-        format.html { render :new }
-        format.json { render json: @sankey.errors, status: :unprocessable_entity }
+        format.html { redirect_to new_sankey_path, :flash => { :error => 'Така візуалізація вже існує. Спробуйте інший набір файлів.' } }
+        # format.json { render json: @sankey.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -66,11 +66,11 @@ class SankeysController < ApplicationController
   end
 
   def get_rows
-    @budget_file_rot = BudgetFileRotFond.where(:id => sankey_params[:rot_file_id]).first
-    @budget_file_rov = BudgetFileRovFond.where(:id => sankey_params[:rov_file_id]).first
-    @keys_revenue = @budget_file_rot.taxonomy.revenue_codes
-    @keys_expense = @budget_file_rov.taxonomy.expense_codes
-    render json: { 'rows_rot' => @budget_file_rot.rows, 'rows_rov' => @budget_file_rov.rows, 'keys_revenue' => @keys_revenue, 'keys_expense' => @keys_expense }
+    @budget_file_rot = Taxonomy.where(:id => sankey_params[:rot_file_id]).first
+    @budget_file_rov = Taxonomy.where(:id => sankey_params[:rov_file_id]).first
+    @keys_revenue = @budget_file_rot.explanation
+    @keys_expense = @budget_file_rov.explanation
+    render json: { 'rows_rot' => @budget_file_rot.get_rows, 'rows_rov' => @budget_file_rov.get_rows, 'keys_revenue' => @keys_revenue, 'keys_expense' => @keys_expense }
   end
 
   private
