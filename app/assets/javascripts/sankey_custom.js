@@ -6,8 +6,8 @@ function get_sankey(data, year) {
     var energy = {"nodes" : [
         {"name": "Загальний фонд"},
         {"name": "Спеціальний фонд"},
-        {"name": "Інші доходи"},              // for less than 5% amount
-        {"name": "Інші видатки"},
+        {"name": "Агреговані доходи"},              // for less than 5% amount
+        {"name": "Агреговані видатки"},
     ],
         "links" : [],
         "amounts": []
@@ -22,11 +22,12 @@ function get_sankey(data, year) {
     if(d){
         d = d["0"];
         for(i in d) {
-            var key;
-            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
-                key = keys[d[i].kkd_ddd]["title"];
+            var key, k;
+            d[i].kkd_ddd ? k = d[i].kkd_ddd : k = d[i].kkd;             // because of different codes for rot/rov and fond files
+            if(keys[k] && keys[k]["title"]) {
+                key = keys[k]["title"];
             } else {
-                key = d[i].kkd_ddd;
+                key = k;
             }
             //console.log(key);
             amounts[key] = d[i].amount;
@@ -52,12 +53,13 @@ function get_sankey(data, year) {
             default:fond = d[i].fond;
                 break;
         }
-        if(d[i].amount*100/revenues >= 5) {
-            var key;
-            if(keys[d[i].kkd_ddd] && keys[d[i].kkd_ddd]["title"]) {
-                key = keys[d[i].kkd_ddd]["title"];
+        if(d[i].amount*100/revenues >= 1) {
+            var key, k;
+            d[i].kkd_ddd ? k = d[i].kkd_ddd : k = d[i].kkd;             // because of different codes for rot/rov and fond files
+            if(keys[k] && keys[k]["title"]) {
+                key = keys[k]["title"];
             } else {
-                key = d[i].kkd_ddd;
+                key = k;
             }
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
@@ -76,11 +78,11 @@ function get_sankey(data, year) {
         }
     }
 
-    energy.links.push({ "source": "Інші доходи",
+    energy.links.push({ "source": "Агреговані доходи",
             "target": "Загальний фонд",
             "value": elseAmount_gen
         },
-        { "source": "Інші доходи",
+        { "source": "Агреговані доходи",
             "target": "Спеціальний фонд",
             "value": elseAmount_spec
         });
@@ -106,7 +108,6 @@ function get_sankey(data, year) {
     elseAmount_spec = 0;
 
     for(i in d) {
-        //console.log(d[i]);
         var fond;
         switch (d[i].fond) {
             case "1": fond = "Загальний фонд";
@@ -118,7 +119,7 @@ function get_sankey(data, year) {
             default:fond = d[i].fond;
                 break;
         }
-        if(d[i].amount*100/expences >= 5) {
+        if(d[i].amount*100/expences >= 1) {
             var key;
             var k = parseInt(d[i].ktfk);
             if(keys[k] && keys[k]["title"]) {
@@ -144,11 +145,11 @@ function get_sankey(data, year) {
     }
 
     energy.links.push({ "source": "Загальний фонд",
-            "target": "Інші видатки",
+            "target": "Агреговані видатки",
             "value": elseAmount_gen
         },
         { "source": "Спеціальний фонд",
-            "target": "Інші видатки",
+            "target": "Агреговані видатки",
             "value": elseAmount_spec
         });
 
@@ -237,7 +238,7 @@ function get_sankey(data, year) {
         .style("stroke", "none")
         .attr("width", 40)
         .attr("height", function(d) { if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 0;
-                                      return d.dy; })
+                                      return d.dy; });
     node.append("text")
         .text(function(d){
                 if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
