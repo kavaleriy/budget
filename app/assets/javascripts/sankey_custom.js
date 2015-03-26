@@ -25,6 +25,7 @@ function get_sankey(data, year) {
     var d = data["rows_rot"][year]["0"];
     var revenues = sum_amount(d);
     var elseAmounts = [];
+    var smallNodes = [];
 
     for(i in d) {
         //console.log(d[i]);
@@ -43,10 +44,11 @@ function get_sankey(data, year) {
             }
         } else {
             elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
+            smallNodes.push(d[i]);
         }
     }
 
-    if(elseAmounts != []) {
+    if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані доходи"});
         for(var key in elseAmounts) {
             energy.links.push({ "source": "Агреговані доходи",
@@ -91,7 +93,7 @@ function get_sankey(data, year) {
         }
     }
 
-    if(elseAmounts != []) {
+    if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані видатки"});
         for(var key in elseAmounts) {
             energy.links.push({ "source": key,
