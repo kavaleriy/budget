@@ -13,50 +13,24 @@ function get_sankey(data, year) {
     var fonds = [];
 
     // gather amounts for previous year revenues
-    var d = data["rows_rot"][year-1];
-
-    if(d){
-        d = d["0"];
+    if(data["rows_rot"][year-1]){
+        var d = data["rows_rot"][year-1]["0"];
         for(i in d) {
-            var key;
-            if(keys[d[i].kkd] && keys[d[i].kkd]["title"]) {
-                key = keys[d[i].kkd]["title"];
-            } else {
-                key = d[i].kkd;
-            }
-            //console.log(key);
+            var key = get_key(d[i].kkd);
             amounts[key] = d[i].amount;
         }
     }
 
     // gather data for revenues side
-    d = data["rows_rot"][year]["0"];
+    var d = data["rows_rot"][year]["0"];
     var revenues = sum_amount(d);
     var elseAmounts = [];
 
     for(i in d) {
         //console.log(d[i]);
-        var fond;
-        switch (d[i].fond) {
-            case "1": fond = "Загальний фонд";
-                break;
-            case "2": fond = "Власні надходження";
-                break;
-            case "7": fond = "Спеціальний фонд";
-                break;
-            default:fond = d[i].fond;
-                break;
-        }
-        if(!fonds[fond]) {
-            fonds[fond] = fond;
-        }
+        var fond = get_fond(d[i].fond);
         if(d[i].amount*100/revenues >= 1) {
-            var key;
-            if(keys[d[i].kkd] && keys[d[i].kkd]["title"]) {
-                key = keys[d[i].kkd]["title"];
-            } else {
-                key = d[i].kkd;
-            }
+            var key = get_key(d[i].kkd);
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
                                 "target": fond,
@@ -83,47 +57,25 @@ function get_sankey(data, year) {
     }
 
     keys = data["keys_expense"];
-    var d = data["rows_rov"][year-1];
-    if(d){
-        d = d["0"];
+
+    // gather amounts for previous year expences
+    if(data["rows_rov"][year-1]){
+        var d = data["rows_rov"][year-1]["0"];
         for(i in d) {
-            var key;
-            var k = parseInt(d[i].ktfk);
-            if(keys[k] && keys[k]["title"]) {
-                key = keys[k]["title"];
-            } else {
-                key = d[i].ktfk;
-            }
+            var key = get_key(d[i].ktfk);
             amounts[key] = d[i].amount;
         }
     }
+
+    // gather data for expences side
     d = data["rows_rov"][year]["0"];
     var expences = sum_amount(d);
     elseAmounts = [];
 
     for(i in d) {
-        var fond;
-        switch (d[i].fond) {
-            case "1": fond = "Загальний фонд";
-                break;
-            case "2": fond = "Власні надходження";
-                break;
-            case "7": fond = "Спеціальний фонд";
-                break;
-            default:fond = d[i].fond;
-                break;
-        }
-        if(!fonds[fond]) {
-            fonds[fond] = fond;
-        }
+        var fond = get_fond(d[i].fond);
         if(d[i].amount*100/expences >= 1) {
-            var key;
-            var k = parseInt(d[i].ktfk);
-            if(keys[k] && keys[k]["title"]) {
-                key = keys[k]["title"];
-            } else {
-                key = d[i].ktfk;
-            }
+            var key = get_key(d[i].ktfk);
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": fond,
                                 "target": key,
@@ -413,13 +365,44 @@ function get_sankey(data, year) {
         }
     }
 
-
+    // get sum special for elements data[i].amount
     function sum_amount(data) {
         var tmp = 0;
         for(i in data) {
             tmp += data[i].amount;
         }
         return tmp;
+    }
+
+    // get keys description
+    function get_key(d) {
+        var key;
+        var k = parseInt(d);
+        if(keys[k] && keys[k]["title"]) {
+            key = keys[k]["title"];
+        } else {
+            key = d;
+        }
+        return key;
+    }
+
+    // get fond name
+    function get_fond(f) {
+        var fond;
+        switch (f) {
+            case "1": fond = "Загальний фонд";
+                break;
+            case "2": fond = "Власні надходження";
+                break;
+            case "7": fond = "Спеціальний фонд";
+                break;
+            default:fond = f;
+                break;
+        }
+        if(!fonds[fond]) {
+            fonds[fond] = fond;
+        }
+        return fond;
     }
 }
 
