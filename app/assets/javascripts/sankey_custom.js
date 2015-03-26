@@ -3,18 +3,14 @@ function get_sankey(data, year) {
     $('#sankey_chart').html('').css("height", "500px");
     $('#sankey_save').css("display", "block");
 
-    var energy = {"nodes" : [
-        {"name": "Загальний фонд"},
-        {"name": "Спеціальний фонд"},
-        {"name": "Агреговані доходи"},              // for less than 5% amount
-        {"name": "Агреговані видатки"},
-    ],
-        "links" : [],
-        "amounts": []
-    };
+    var energy = {"nodes" : [],
+                  "links" : [],
+                  "amounts": []
+                 };
 
     var keys = data["keys_revenue"];
     var amounts = [];
+    var fonds = [];
 
     // gather amounts for previous year revenues
     var d = data["rows_rot"][year-1];
@@ -36,8 +32,7 @@ function get_sankey(data, year) {
     // gather data for revenues side
     d = data["rows_rot"][year]["0"];
     var revenues = sum_amount(d);
-    var elseAmount_gen = 0;
-    var elseAmount_spec = 0;
+    var elseAmounts = [];
 
     for(i in d) {
         //console.log(d[i]);
@@ -51,6 +46,9 @@ function get_sankey(data, year) {
                 break;
             default:fond = d[i].fond;
                 break;
+        }
+        if(!fonds[fond]) {
+            fonds[fond] = fond;
         }
         if(d[i].amount*100/revenues >= 1) {
             var key;
@@ -69,21 +67,20 @@ function get_sankey(data, year) {
                     "prev_value": amounts[key]
                 }
             }
-        } else if(fond == "Загальний фонд") {
-            elseAmount_gen += d[i].amount;
-        } else if(fond == "Спеціальний фонд") {
-            elseAmount_spec += d[i].amount;
+        } else {
+            elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
         }
     }
 
-    energy.links.push({ "source": "Агреговані доходи",
-            "target": "Загальний фонд",
-            "value": elseAmount_gen
-        },
-        { "source": "Агреговані доходи",
-            "target": "Спеціальний фонд",
-            "value": elseAmount_spec
-        });
+    if(elseAmounts != []) {
+        energy.nodes.push({"name": "Агреговані доходи"});
+        for(var key in elseAmounts) {
+            energy.links.push({ "source": "Агреговані доходи",
+                "target": key,
+                "value": elseAmounts[key]
+            });
+        }
+    }
 
     keys = data["keys_expense"];
     var d = data["rows_rov"][year-1];
@@ -102,8 +99,7 @@ function get_sankey(data, year) {
     }
     d = data["rows_rov"][year]["0"];
     var expences = sum_amount(d);
-    elseAmount_gen = 0;
-    elseAmount_spec = 0;
+    elseAmounts = [];
 
     for(i in d) {
         var fond;
@@ -116,6 +112,9 @@ function get_sankey(data, year) {
                 break;
             default:fond = d[i].fond;
                 break;
+        }
+        if(!fonds[fond]) {
+            fonds[fond] = fond;
         }
         if(d[i].amount*100/expences >= 1) {
             var key;
@@ -135,21 +134,24 @@ function get_sankey(data, year) {
                     "prev_value": amounts[key]
                 }
             }
-        } else if(fond == "Загальний фонд") {
-            elseAmount_gen += d[i].amount;
-        } else if(fond == "Спеціальний фонд") {
-            elseAmount_spec += d[i].amount;
+        } else {
+            elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
         }
     }
 
-    energy.links.push({ "source": "Загальний фонд",
-            "target": "Агреговані видатки",
-            "value": elseAmount_gen
-        },
-        { "source": "Спеціальний фонд",
-            "target": "Агреговані видатки",
-            "value": elseAmount_spec
-        });
+    if(elseAmounts != []) {
+        energy.nodes.push({"name": "Агреговані видатки"});
+        for(var key in elseAmounts) {
+            energy.links.push({ "source": key,
+                "target": "Агреговані видатки",
+                "value": elseAmounts[key]
+            });
+        }
+    }
+
+    for(var key in fonds) {
+        energy.nodes.push({"name": fonds[key]});
+    }
 
     // return only the distinct / unique nodes
     energy.nodes = d3.keys(d3.nest()
