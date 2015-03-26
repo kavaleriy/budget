@@ -22,12 +22,11 @@ function get_sankey(data, year) {
     if(d){
         d = d["0"];
         for(i in d) {
-            var key, k;
-            d[i].kkd_ddd ? k = d[i].kkd_ddd : k = d[i].kkd;             // because of different codes for rot/rov and fond files
-            if(keys[k] && keys[k]["title"]) {
-                key = keys[k]["title"];
+            var key;
+            if(keys[d[i].kkd] && keys[d[i].kkd]["title"]) {
+                key = keys[d[i].kkd]["title"];
             } else {
-                key = k;
+                key = d[i].kkd;
             }
             //console.log(key);
             amounts[key] = d[i].amount;
@@ -54,12 +53,11 @@ function get_sankey(data, year) {
                 break;
         }
         if(d[i].amount*100/revenues >= 1) {
-            var key, k;
-            d[i].kkd_ddd ? k = d[i].kkd_ddd : k = d[i].kkd;             // because of different codes for rot/rov and fond files
-            if(keys[k] && keys[k]["title"]) {
-                key = keys[k]["title"];
+            var key;
+            if(keys[d[i].kkd] && keys[d[i].kkd]["title"]) {
+                key = keys[d[i].kkd]["title"];
             } else {
-                key = k;
+                key = d[i].kkd;
             }
             energy.nodes.push({ "name": key });
             energy.links.push({ "source": key,
