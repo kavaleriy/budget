@@ -47,7 +47,7 @@
             %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
               %i.fa.fa-code
         .col-xs-12
-          #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle_for_embed' }
+          #embed_pie.embed_hide.embed{ 'data-width' => '700px', 'data-height' => '700px', 'data-name' => 'pie_cycle' }
             = render partial: 'embed'
             %span.embed_label=t('iframe.select')
             %select.iframe_size_select#pie
@@ -104,14 +104,14 @@
       query = "#{URI.parse(request.url).query}"
 
       frame_url = path + "/widgets/calendar/"+ name + "/#{@calendar.id}" + '/?' + query
-      pie_frame_url = path + "/widgets/calendar/pie_cycle_for_embed/#{@calendar.id}" + '/?' + query
+      pie_frame_url = path + "/widgets/calendar/pie_cycle/#{@calendar.id}" + '/?' + query
       calendar_frame_url = path + "/widgets/calendar/calendar/#{@calendar.id}" + '/?' + query
       $(el).find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
                                              <option value=\"500\">500x500</option>\
                                              <option value=\"default\" selected>" + parseInt(width) + "x" + parseInt(height) + "</option>\
                                              <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
       $(el).find('input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>")
-      if(name == 'pie_cycle_for_embed'){
+      if(name == 'pie_cycle'){
         pie_default_val = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>";
       } else if(name == 'calendar') {
         calendar_default_val = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>";
