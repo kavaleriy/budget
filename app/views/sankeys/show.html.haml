@@ -20,7 +20,9 @@
     d3.json("/sankeys/get_rows/" + '#{@sankey.rot_file_id}' + "/" + '#{@sankey.rov_file_id}', function(data) {
       var year_options = "";
       years = [];
-      for(var year in data["rows_rot"]) {
+      // get number of years from the bigger array
+      Object.keys(data["rows_rot"]).length > Object.keys(data["rows_rov"]).length ? d = data["rows_rot"] : d = data["rows_rov"];
+      for(var year in d) {
           years.unshift(year);
       }
       for(var i in years) {

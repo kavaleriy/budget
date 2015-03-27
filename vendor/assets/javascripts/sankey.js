@@ -6,7 +6,8 @@ d3.sankey = function() {
         nodePadding = 8,
         size = [1, 1],
         nodes = [],
-        links = [];
+        links = [],
+        fonds = [];
 
     sankey.nodeWidth = function(_) {
         if (!arguments.length) return nodeWidth;
@@ -23,6 +24,12 @@ d3.sankey = function() {
     sankey.nodes = function(_) {
         if (!arguments.length) return nodes;
         nodes = _;
+        return sankey;
+    };
+
+    sankey.fonds = function(_) {
+        if (!arguments.length) return fonds;
+        fonds = _;
         return sankey;
     };
 
@@ -116,19 +123,25 @@ d3.sankey = function() {
 
         while (remainingNodes.length) {
             nextNodes = [];
+            var k;
             remainingNodes.forEach(function(node) {
-                node.x = x;
-                if(node.name == "Загальний фонд" || node.name == "Спеціальний фонд") { // change distance to central nodes
-                    node.dx = 150;
+
+                if(fonds[node.name]) {
+                    node.dx = 150;     // change width of central nodes
+                    node.x = 1;        // make fond names always in the center of sankey
                 } else {
                     node.dx = nodeWidth;
+                    node.x = x;
                 }
+                k = 0;
                 node.sourceLinks.forEach(function(link) {
                     if (nextNodes.indexOf(link.target) < 0) {
                         nextNodes.push(link.target);
+                        k += link.target.sourceLinks.length;
                     }
                 });
             });
+            if(k == 0) {x = 2;}    // make fond names always in the center of sankey
             remainingNodes = nextNodes;
             ++x;
         }
@@ -156,7 +169,7 @@ d3.sankey = function() {
 
     function scaleNodeBreadths(kx) {
         nodes.forEach(function(node) {
-            if(node.name == "Загальний фонд" || node.name == "Спеціальний фонд") {   // change distance to central nodes
+            if(fonds[node.name]) {   // change distance to central nodes from the left
                 node.x *= (kx - kx*0.1);
             } else {
                 node.x *= kx;

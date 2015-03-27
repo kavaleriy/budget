@@ -5,12 +5,12 @@ function get_sankey(data, year) {
 
     var energy = {"nodes" : [],
                   "links" : [],
-                  "amounts": []
+                  "amounts": [],
+                  "fonds": []
                  };
 
     var keys = data["keys_revenue"];
     var amounts = [];
-    var fonds = [];
 
     // gather amounts for previous year revenues
     if(data["rows_rot"][year-1]){
@@ -46,7 +46,6 @@ function get_sankey(data, year) {
                 }
             } else {
                 elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
-                smallNodes.push(d[i]);
             }
         }
     }
@@ -109,8 +108,8 @@ function get_sankey(data, year) {
         }
     }
 
-    for(var key in fonds) {
-        energy.nodes.push({"name": fonds[key]});
+    for(var key in energy.fonds) {
+        energy.nodes.push({"name": energy.fonds[key]});
     }
 
     // return only the distinct / unique nodes
@@ -155,6 +154,7 @@ function get_sankey(data, year) {
     sankey
         .nodes(energy.nodes)
         .links(energy.links)
+        .fonds(energy.fonds)
         .layout(32);
 
     var link = svg.append("g").selectAll(".link")
@@ -181,7 +181,7 @@ function get_sankey(data, year) {
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", function(d) {
-            if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 150;
+            if(energy.fonds[d.name]) return 150;
             return sankey.nodeWidth();
         } )
         .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
@@ -197,11 +197,11 @@ function get_sankey(data, year) {
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
         .attr("width", 40)
-        .attr("height", function(d) { if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 0;
+        .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
                                       return d.dy; });
     node.append("text")
         .text(function(d){
-                if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
+                if(energy.fonds[d.name]) return "";
                 if(energy.amounts[d.name]) {
                     return (100 - energy.amounts[d.name].prev_value*100/d.value).toFixed(2) + "%";
                 }
@@ -222,8 +222,10 @@ function get_sankey(data, year) {
         .attr("transform", null)
         .text(function(d) { return d.name; })
         .filter(function(d) { return d.x < width / 2; })
-        .attr("x", 6 + sankey.nodeWidth())
-        .attr("text-anchor", "start");
+        .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
+                                 return 6 + sankey.nodeWidth(); })
+        .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
+                                           return "start"; });
 
     function dragmove(d) {
         d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
@@ -410,8 +412,8 @@ function get_sankey(data, year) {
             default:fond = f;
                 break;
         }
-        if(!fonds[fond]) {
-            fonds[fond] = fond;
+        if(!energy.fonds[fond]) {
+            energy.fonds[fond] = fond;
         }
         return fond;
     }
