@@ -6,15 +6,9 @@
 = javascript_include_tag "Tween.js"
 = javascript_include_tag "bubbletree.js"
 = javascript_include_tag "cofog.js"
-//- module_num = URI.parse(request.url).query
-
--uri_params = CGI.parse(URI.parse(request.url).query)
 
 .bubbletree
-  -if uri_params['module']==['4']
-    = render partial: 'tree_chart4', :locals => { budget_file_id: @budget_file.id }
-  -else
-    = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 :javascript
   function aTreeChart(aContainer, sequence, sidebar, slider, slider_chart) {
 
