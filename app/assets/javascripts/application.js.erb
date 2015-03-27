@@ -59,7 +59,7 @@ window.aHelper = {
         if (totalSize >= 1000000000) return I18n.t("short_units.billion");
         if (totalSize >= 1000000) return I18n.t("short_units.million");
         if (totalSize >= 1000) return I18n.t("short_units.thousand");
-        return I18n.t("short_units.unit");
+        return "";
     },
     k: function(totalSize) {
         if (totalSize >= 1000000000000) return 1000000000000;

@@ -33,7 +33,6 @@ Rails.application.routes.draw do
     get 'calendar/timelinejs_data/:calendar_id' => 'calendar#timelinejs_data'
     get 'calendar/timelinejs/:calendar_id' => 'calendar#timelinejs'
     get 'calendar/pie_cycle/:calendar_id' => 'calendar#pie_cycle'
-    get 'calendar/pie_cycle_for_embed/:calendar_id' => 'calendar#pie_cycle_for_embed'
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
   end
 

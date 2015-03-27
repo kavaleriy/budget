@@ -5,12 +5,12 @@ function get_sankey(data, year) {
 
     var energy = {"nodes" : [],
                   "links" : [],
-                  "amounts": []
+                  "amounts": [],
+                  "fonds": []
                  };
 
     var keys = data["keys_revenue"];
     var amounts = [];
-    var fonds = [];
 
     // gather amounts for previous year revenues
     if(data["rows_rot"][year-1]){
@@ -22,29 +22,31 @@ function get_sankey(data, year) {
     }
 
     // gather data for revenues side
-    var d = data["rows_rot"][year]["0"];
-    var revenues = sum_amount(d);
+    var revenues = 0;
     var elseAmounts = [];
     var smallNodes = [];
 
-    for(i in d) {
-        //console.log(d[i]);
-        var fond = get_fond(d[i].fond);
-        if(d[i].amount*100/revenues >= 1) {
-            var key = get_key(d[i].kkd);
-            energy.nodes.push({ "name": key });
-            energy.links.push({ "source": key,
-                                "target": fond,
-                                "value": d[i].amount
-                              });
-            if(amounts[key]){
-                energy.amounts[key] = {
-                    "prev_value": amounts[key]
+    if(data["rows_rot"][year]) {
+        var d = data["rows_rot"][year]["0"];
+        revenues = sum_amount(d);
+        for(i in d) {
+            //console.log(d[i]);
+            var fond = get_fond(d[i].fond);
+            if(d[i].amount*100/revenues >= 1) {
+                var key = get_key(d[i].kkd);
+                energy.nodes.push({ "name": key });
+                energy.links.push({ "source": key,
+                    "target": fond,
+                    "value": d[i].amount
+                });
+                if(amounts[key]){
+                    energy.amounts[key] = {
+                        "prev_value": amounts[key]
+                    }
                 }
+            } else {
+                elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
             }
-        } else {
-            elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
-            smallNodes.push(d[i]);
         }
     }
 
@@ -70,26 +72,29 @@ function get_sankey(data, year) {
     }
 
     // gather data for expences side
-    d = data["rows_rov"][year]["0"];
-    var expences = sum_amount(d);
+    var expences = 0;
     elseAmounts = [];
 
-    for(i in d) {
-        var fond = get_fond(d[i].fond);
-        if(d[i].amount*100/expences >= 1) {
-            var key = get_key(d[i].ktfk);
-            energy.nodes.push({ "name": key });
-            energy.links.push({ "source": fond,
-                                "target": key,
-                                "value": d[i].amount
-                              });
-            if(amounts[key]){
-                energy.amounts[key] = {
-                    "prev_value": amounts[key]
+    if(data["rows_rov"][year]) {
+        var d = data["rows_rov"][year]["0"];
+        expences = sum_amount(d);
+        for(i in d) {
+            var fond = get_fond(d[i].fond);
+            if(d[i].amount*100/expences >= 1) {
+                var key = get_key(d[i].ktfk);
+                energy.nodes.push({ "name": key });
+                energy.links.push({ "source": fond,
+                    "target": key,
+                    "value": d[i].amount
+                });
+                if(amounts[key]){
+                    energy.amounts[key] = {
+                        "prev_value": amounts[key]
+                    }
                 }
+            } else {
+                elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
             }
-        } else {
-            elseAmounts[fond] ? elseAmounts[fond] += d[i].amount : elseAmounts[fond] = d[i].amount;
         }
     }
 
@@ -103,8 +108,8 @@ function get_sankey(data, year) {
         }
     }
 
-    for(var key in fonds) {
-        energy.nodes.push({"name": fonds[key]});
+    for(var key in energy.fonds) {
+        energy.nodes.push({"name": energy.fonds[key]});
     }
 
     // return only the distinct / unique nodes
@@ -149,6 +154,7 @@ function get_sankey(data, year) {
     sankey
         .nodes(energy.nodes)
         .links(energy.links)
+        .fonds(energy.fonds)
         .layout(32);
 
     var link = svg.append("g").selectAll(".link")
@@ -175,7 +181,7 @@ function get_sankey(data, year) {
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", function(d) {
-            if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 150;
+            if(energy.fonds[d.name]) return 150;
             return sankey.nodeWidth();
         } )
         .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
@@ -191,11 +197,11 @@ function get_sankey(data, year) {
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
         .attr("width", 40)
-        .attr("height", function(d) { if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return 0;
+        .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
                                       return d.dy; });
     node.append("text")
         .text(function(d){
-                if(d.name == "Загальний фонд" || d.name == "Спеціальний фонд") return "";
+                if(energy.fonds[d.name]) return "";
                 if(energy.amounts[d.name]) {
                     return (100 - energy.amounts[d.name].prev_value*100/d.value).toFixed(2) + "%";
                 }
@@ -216,8 +222,10 @@ function get_sankey(data, year) {
         .attr("transform", null)
         .text(function(d) { return d.name; })
         .filter(function(d) { return d.x < width / 2; })
-        .attr("x", 6 + sankey.nodeWidth())
-        .attr("text-anchor", "start");
+        .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
+                                 return 6 + sankey.nodeWidth(); })
+        .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
+                                           return "start"; });
 
     function dragmove(d) {
         d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
@@ -249,7 +257,7 @@ function get_sankey(data, year) {
         svg.append("rect")
             .attr("x", function(){
                 if(i == 0) return width/4;
-                if(i == 1) return width/2 - 58;
+                if(i == 1) return width/2 - 66;
                 return width/2 + 108;
             })
             .attr("y", function(){
@@ -269,7 +277,7 @@ function get_sankey(data, year) {
             .style("stroke", "#082757")
             .style("stroke-width", 2)
             .attr("width", function(){
-                if(i == 1) return width/8;
+                if(i == 1) return width/8 + 20;
                 return width/6;
             })
             .attr("height", function(){
@@ -280,7 +288,7 @@ function get_sankey(data, year) {
         svg.append("text")
             .attr("x", function(){
                 if(i == 0) return width/3;
-                if(i == 1) return width/2 + 10;
+                if(i == 1) return width/2 + 12;
                 return 2*width/3 + 15;
             })
             .attr("y", function(){
@@ -289,15 +297,16 @@ function get_sankey(data, year) {
             })
             .attr("text-anchor", "middle")
             .style("fill", function(){if(i == 1) return "white"; return "#082757";})
-            .style("font-size", "1.0em")
-            //.style("font-weight", "bold")
-            .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + ". грн.";
+            .style("font-size", "0.7em")
+            .style("font-weight", "bold")
+            .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
                 if(i == 1) {
-                    if(revenues > expences) return "Профіцит";
-                    if(revenues < expences) return "Дефіцит";
+                    var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
+                    if(revenues > expences) return "Профіцит - " + diff;
+                    if(revenues < expences) return "Дефіцит - " + diff;
                     if(revenues == expences) return "Баланс";
                 }
-                return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + ". грн.";});
+                return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
     }
 
     // add general info about years compare (placed left to status bar)
@@ -314,7 +323,7 @@ function get_sankey(data, year) {
             .attr("height", margin.top - 10);
 
         var text = svg.append("text")
-            .attr("x", function(){if(j == 0) return -margin.left + 10; return width - width/8 + margin.right + 10})
+            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 + margin.right + 5})
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "start")
             //.style("fill", function(){if(i == 1) return "white"; return "#082757";})
@@ -323,47 +332,49 @@ function get_sankey(data, year) {
 
         text.append('tspan')
             .text(function() {
-                if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + ".грн. - " + year + " р. ";
-                return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + ".грн. - " + year + " р. ";
+                if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн. - " + year + " р. ";
+                return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн. - " + year + " р. ";
             });
 
         d = data["rows_rot"][year-1];
         if(d && j == 0) { // if previous year rot exists
             var prev_revenues = sum_amount(d["0"]);
             text.append('tspan')
-                .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + ".грн. - " + (year-1) + " р.")
+                .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 10);
+                .attr("x", -margin.left + 5);
             text.append('tspan')
                 .text(function() {
                     if(revenues > prev_revenues) {
                         return (100 - prev_revenues*100/revenues).toFixed(2) + "% росту"
                     }
-                    if(revenues > prev_revenues) {
+                    if(revenues < prev_revenues) {
+                        if(revenues == 0) return "100% падіння";
                         return (prev_revenues*100/revenues - 100).toFixed(2) + "% падіння"
                     }
                     return "не змінилось"
                 })
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 10);
+                .attr("x", -margin.left + 5);
         } else if(data["rows_rov"][year-1] && j == 1){
             var prev_expences = sum_amount(data["rows_rov"][year-1]["0"]);
             text.append('tspan')
-                .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + ".грн. - " + (year-1) + " р.")
+                .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 10 + margin.right);
+                .attr("x", width - width/8 + 5 + margin.right);
             text.append('tspan')
                 .text(function() {
                     if(expences > prev_expences) {
                         return (100 - prev_expences*100/expences).toFixed(2) + "% росту"
                     }
-                    if(expences > prev_expences) {
+                    if(expences < prev_expences) {
+                        if(expences == 0) return "100% падіння";
                         return (prev_expences*100/expences - 100).toFixed(2) + "% падіння"
                     }
                     return "не змінилось"
                 })
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 10 + margin.right);
+                .attr("x", width - width/8 + 5 + margin.right);
         }
     }
 
@@ -401,8 +412,8 @@ function get_sankey(data, year) {
             default:fond = f;
                 break;
         }
-        if(!fonds[fond]) {
-            fonds[fond] = fond;
+        if(!energy.fonds[fond]) {
+            energy.fonds[fond] = fond;
         }
         return fond;
     }
