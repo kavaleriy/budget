@@ -5,9 +5,9 @@
     %i.fa.fa-money
     #{t('.title')}:
     %span.descr
-      #{@budget_file.title}
+      #{@taxonomy.title}
 
-  = render partial: 'budget_files/visify_list'
+  = render partial: 'visify_list'
 .budget
 
   .tab-content
@@ -20,27 +20,11 @@
   -#  %select.iframe_size_select#tax
   -#  .iframe_other_size
 
-= link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
-= link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@budget_file), :class => 'btn btn-primary'
-
 :javascript
+
+
   $(document).on('ready page:change', function() {
-    function set_visiframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query + 'module=4'
-      $('#embed_tax input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
-      $('.tab-content iframe').attr('src', frame_url)
-      $('#embed_tax').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
-                                                            <option value=\"default\" selected>900x600</option>\
-                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $('#embed_tax').find('.iframe_other_size').html("");
-    }
 
-    set_visiframe('bubbletree')
 
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe(this.href.split('#')[1])
-    });
   })
+

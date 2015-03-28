@@ -7,7 +7,7 @@
     %span.descr
       #{@budget_file.title}
 
-  = render partial: 'visify_list'
+  = render partial: 'visify_list', :locals => { id: @budget_file.id }
 
 .budget
 
@@ -32,28 +32,3 @@
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
 
-:javascript
-  $(document).bind('page:change', function(e) {
-
-    I18n.locale = window.aHelper.lang();
-
-    function set_visiframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
-      $('#embed_visual input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
-      $('.tab-content iframe').attr('src', frame_url)
-      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
-                                                            <option value=\"default\" selected>900x600</option>\
-                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $('#embed_visual').find('.iframe_other_size').html("");
-    }
-
-    set_visiframe('bubbletree')
-
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe(this.href.split('#')[1]);
-    });
-
-  })

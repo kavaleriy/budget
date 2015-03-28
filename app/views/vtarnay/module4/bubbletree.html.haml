@@ -1,0 +1,106 @@
+-#https://github.com/okfn/bubbletree
+
+= javascript_include_tag "jquery.history.js"
+= javascript_include_tag "raphael.js"
+= javascript_include_tag "vis4.js"
+= javascript_include_tag "Tween.js"
+= javascript_include_tag "bubbletree.js"
+= javascript_include_tag "cofog.js"
+//- module_num = URI.parse(request.url).query
+
+-uri_params = CGI.parse(URI.parse(request.url).query)
+
+.bubbletree
+  -if uri_params['module']==['4']
+    = render partial: 'tree_chart4', :locals => { budget_file_id: @budget_file.id }
+  -else
+    = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_chart) {
+
+    var bubbleTree = null;
+    var totalSize = null;
+    var centerNode = null;
+    var current_year = null;
+    var current_month = null;
+
+    function clear() {
+      sequence.hideBreadcrumb();
+      sidebar.hide();
+      d3.select(aContainer + ' #chart').selectAll("*").remove();
+    }
+
+    function nodeClick(node) {
+      sequence.show(node);
+      if(node.children.length > 0) {
+        sidebar.show(node);
+      } else {
+        sidebar.hide();
+        sidebar.showUndersequence(node);
+      }
+
+      if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {
+        slider.show(node, current_month, current_year);
+        slider_chart.show(node, current_month, current_year);
+      } else {
+        slider_chart.set_month(current_month);
+      }
+
+      if(node.icon == "fa-folder-open-o") {
+        $(".slider").slideUp();
+      } else {
+        $(".slider").slideDown();
+      }
+      centerNode = node;
+    }
+
+    return {
+      initialize: function(width, height) {
+          $(aContainer + ' #chart').width(width).height(height);
+      },
+      clear: clear,
+      show: function(year, month) {
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+          console.log(data);
+          clear();
+
+          //console.log(d3.keys(data["amount"]));
+          if (data == null) return;
+
+          current_year = year;
+          current_month = month;
+
+          if(bubbleTree !== null) {
+            centerNode = bubbleTree.currentCenter;
+          }
+
+          bubbleTree = new BubbleTree({
+              data: data,
+              container: aContainer + ' #chart',
+              sortBy: 'label',
+              //maxNodesPerLevel: 12,
+              bubbleType: ['icon', 'plain'],
+              centerNode: centerNode,
+              //tooltip: function(d) {
+              //  if (d.type == 'HIDE' && root_node != d.node) {
+              //    sequence.hideBreadcrumb()
+              //  }
+              //  else {
+              //    var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
+              //    var sequenceArray = sequence.getAncestors(d.node);
+              //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
+              //  }
+              //},
+              nodeClickCallback: nodeClick
+          });
+          totalSize = data.size;
+        })
+      },
+      selectNode: function (node) {
+        nodeClick(node);
+        //url = bubbleTree.getUrlForNode(node);
+        bubbleTree.navigateTo(node);
+      },
+    }
+  }
+

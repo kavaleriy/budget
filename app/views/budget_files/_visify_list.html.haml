@@ -26,3 +26,31 @@
   %li
     %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_collapsible')
+
+
+
+:javascript
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe(visualizator) {
+      path = "#{request.base_url}"
+      query = "#{URI.parse(request.url).query}"
+      frame_url = path + "/widgets/visify/"+ visualizator + "/#{id}" + '/?' + query
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
+      $('.tab-content iframe').attr('src', frame_url)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe('bubbletree')
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_visiframe(this.href.split('#')[1]);
+    });
+
+  })
