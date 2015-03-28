@@ -7,7 +7,7 @@ module ApplicationHelper
         Taxonomy.where(:owner => current_user.town).not{budget_files == nil}
       end
     else
-      Taxonomy.where(:owner => nil).not{budget_files == nil}
+      Taxonomy.where('':owner => '').not{budget_files == nil}
     end.sort_by { |t| t.owner || '' }
   end
 
