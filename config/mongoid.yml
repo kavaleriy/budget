@@ -70,14 +70,25 @@ test:
 production:
   sessions:
     default:
-      database: busify
+      database: budget_production
       hosts:
-        - kahana.mongohq.com:10054
-      username: begemot
-      password: Initial1
+        - localhost:27017
       options:
         read: primary
         # In the test environment we lower the retries and retry interval to
         # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+#  sessions:
+#    default:
+#      database: busify
+#      hosts:
+#        - kahana.mongohq.com:10054
+#      username: begemot
+#      password: Initial1
+#      options:
+#        read: primary
+#        # In the test environment we lower the retries and retry interval to
+#        # low amounts for fast failures.
+#        max_retries: 1
+#        retry_interval: 0
