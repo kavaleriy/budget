@@ -32,8 +32,8 @@
     stroke-width: 2;
   }
 
-.col-xs-12.col-md-4
-  #slider_chart
+#slider_chart.col-xs-12
+
 
 :javascript
   function aSliderChart(aContainer, slider) {
@@ -53,7 +53,6 @@
     function delay(d, i) { return i * 10; }
 
     function hide() {
-      $("#slider_chart").height(0)
       svg.selectAll("*").remove()
     }
 

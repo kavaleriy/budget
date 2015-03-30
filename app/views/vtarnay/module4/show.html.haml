@@ -1,3 +1,8 @@
+:css
+  #description {
+    height: 100px;
+  }
+
 - model_class = BudgetFile
 
 = content_for :header do
@@ -7,24 +12,51 @@
     %span.descr
       #{@taxonomy.title}
 
-  = render partial: 'visify_list'
-.budget
 
-  .tab-content
-    %iframe{ 'width' => '100%', 'height' => '800'}
+.visify.row
+  .col-xs-12
+    = render partial: 'widgets/visify/sequence', :locals => { budget_file_id: @taxonomy.id }
 
-  -#%a.link_to_embed_code=t('iframe.show_embed_code')
-  -##embed_tax.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-  -#  = render partial: 'embed'
-  -#  %span.embed_label=t('iframe.select')
-  -#  %select.iframe_size_select#tax
-  -#  .iframe_other_size
+  .icons.col-xs-5
+    = render partial: 'left_icons', :locals => { budget_file_id: @taxonomy.id }
+
+    .slider
+      = render partial: 'widgets/visify/slider_chart'
+      = render partial: 'widgets/visify/slider_compare', :locals => { budget_file_id: @taxonomy.id}
+
+  .col-xs-7
+    #under_sequence
+    = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
+
+  #description.col-xs-12
+
+  = render partial: 'widgets/visify/helpers'
 
 :javascript
 
+  var sequence = aSequence('.visify')
+  var chart = aTreeChart('.bubbletree');
+  var slider = aSliderCompare('#slider_compare');
+  var slider_chart = aSliderChart('#slider_chart', slider);
+  var sidebar = aSidebar('.visify')
 
-  $(document).on('ready page:change', function() {
+  $(document).ready(function() {
 
+    sequence.initializeBreadcrumbTrail();
+
+    var icons = aIcons()
+    icons.initialize({ height: 500, clickCallback: function (node) { chart.selectNode(node);} })
+
+
+    slider.initialize(100);
+    slider_chart.initialize(250);
+
+    sidebar.initialize(600);
+
+    chart.initialize(1000, 600);
+    chart.show("#{@taxonomy.id}", "#{@sel_year}", "#{@sel_month}");
+
+    icons.show("#{@taxonomy.id}", "#{@sel_year}", "#{@sel_month}");
 
   })
 

@@ -1,27 +1,56 @@
+#sidebar.col-xs-12
 
-#sidebar.col-xs-12.col-sm-12.col-md-4.col-lg-4
-  = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
+  %ul.nav.nav-tabs{role: 'tablist'}
+    %li.active{'role' => 'presentation'}
+      %a{href: '#tab_bubbletree', 'aria-controls' => 'tab_bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_bubbletree')
+    %li{'role' => 'presentation'}
+      %a{href: '#tab_chart', 'aria-controls' => 'tab_chart', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_sidebar_chart')
+    %li{'role' => 'presentation'}
+      %a{href: '#tab_pie', 'aria-controls' => 'tab_pie', role: 'tab', 'data-toggle' => 'tab'}
+        = t('.tab_sidebar_pie')
 
-  %hr
-    #description
+  .tab-content
+    .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
+      = render partial: 'bubbletree', :locals => { budget_file_id: budget_file_id }
+    .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
+      = render partial: 'widgets/visify/sidebar_chart', :locals => { budget_file_id: @taxonomy.id }
+    .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
+      = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
 
 
 :javascript
 
+  $(document).ready(function() {
+
+    $('#sidebar a[role="tab"]').on('shown.bs.tab', function (e) {
+      console.log(this.href.split('#')[1]);
+    });
+
+  })
+
+:javascript
+
   function aSidebar(aContainer) {
-    var table;
+    var chart, pie;
 
     return {
       container: aContainer,
 
       initialize: function(height){
-        table = aSidebarTable('#sidebar')
-        table.initialize(450)
+        chart = aSidebarChart('#sidebar')
+        chart.initialize(height)
+
+        pie = aSidebarPie('#sidebar')
+        pie.initialize(height)
       },
 
       hide: function(){
         $(aContainer + ' #sidebar #description').html('');
-        table.hide();
+
+        chart.hide();
+        pie.hide();
       },
       show: function(node){
         this.showUndersequence(node);
@@ -30,7 +59,7 @@
 
       getLevelInfo: function(node) {
         $(aContainer + ' #description').html('');
-        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@taxonomy.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = ''
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
@@ -38,8 +67,8 @@
           $(aContainer + ' #description').html(div_descr)
         })
 
-        table.show(node.children);
-
+        chart.show(node.children);
+        pie.show(node.children);
       },
 
       showUndersequence: function(node) {

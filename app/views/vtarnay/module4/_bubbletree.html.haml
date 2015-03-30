@@ -6,18 +6,12 @@
 = javascript_include_tag "Tween.js"
 = javascript_include_tag "bubbletree.js"
 = javascript_include_tag "cofog.js"
-//- module_num = URI.parse(request.url).query
-
--uri_params = CGI.parse(URI.parse(request.url).query)
 
 .bubbletree
-  -if uri_params['module']==['4']
-    = render partial: 'tree_chart4', :locals => { budget_file_id: @budget_file.id }
-  -else
-    = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
-:javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_chart) {
+  #chart
 
+:javascript
+  function aTreeChart(aContainer) {
     var bubbleTree = null;
     var totalSize = null;
     var centerNode = null;
@@ -59,9 +53,8 @@
           $(aContainer + ' #chart').width(width).height(height);
       },
       clear: clear,
-      show: function(year, month) {
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          console.log(data);
+      show: function(budget_file_id, year, month) {
+        d3.json("/widgets/visify/get_bubbletree_data/" + budget_file_id + "/"+ year+ "/" + month, function(data) {
           clear();
 
           //console.log(d3.keys(data["amount"]));

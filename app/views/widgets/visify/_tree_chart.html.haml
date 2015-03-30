@@ -1,8 +1,8 @@
 .visify.row
-  .col-xs-12.col-sm-12.col-md-12.col-lg-12.sequence_hide
+  .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
     #under_sequence
-  .col-xs-12.col-sm-12.col-md-8.col-lg-8
+  .col-xs-12.col-md-8
     #chart
     %canvas{:style => "display: none;"}
     #charts_tooltip.hidden
@@ -31,74 +31,12 @@
     .slider.row
       = render partial: 'slider_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
-:javascript
-  aVisify = {
-    helpers: {
-      getPercentageString: function (d, totalSize) {
-        var percentage = (100 * d.amount/ totalSize).toPrecision(3);
-        var percentageString = percentage + "%";
-        if (percentage < 0.1) {
-          percentageString = "< 0.1%";
-        }
-        return percentageString;
-      },
-      formatNumber: function (n) {
-        var prefix = '';
-        if (n < 0) {
-            n = n*-1;
-            prefix = '-';
-        }
-        if (n >= 1000000000000) return prefix+Math.round(n / 100000000000)/10 + I18n.t("short_units.trillion");
-        if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + I18n.t("short_units.billion");
-        if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + I18n.t("short_units.million");
-        if (n >= 1000) return prefix+Math.round(n / 100)/10 + I18n.t("short_units.thousand");
-        else return prefix + n + I18n.t("short_units.unit");
-      },
+  = render partial: 'helpers'
 
-      wrap: function (text, width) {
-        text.each(function() {
-            var text = d3.select(this),
-                words = text.text().split(/\s+/).reverse(),
-                word,
-                line = [],
-                lineNumber = 0,
-                lineHeight = 1.1, // ems
-                y = text.attr('y'),
-                dy = parseFloat(text.attr('dy')),
-                tspan = text.text(null).append("tspan").attr("x", 15).attr("y", y);
-            var lines = [tspan];
-            while ((word = words.pop()) && (lines.length < 4)) {
-                line.push(word);
-                tspan.text(line.join(" "));
-                if (tspan.node().getComputedTextLength() > width) {
-                    line.pop();
-                    tspan.text(line.join(" "));
-                    line = [word];
-                    tspan = text.append("tspan").attr("x", 15).attr("y", y).text(word);
-                    lines.push(tspan);
-                }
-            }
-            if (lines.length == 1) {
-                lines[0].attr("y", 22);
-            }
-            if (lines.length == 2) {
-                lines[0].attr("y", 15);
-                lines[1].attr("y", 35);
-            }
-            if (lines.length > 2) {
-                lines[0].attr("y", 9);
-                lines[1].attr("y", 27);
-                lines[2].attr("y", 40);
-            }
-            if (lines.length == 4){
-                lines[3].remove();
-            }
-        })
-      }
-    }
-  }
+:javascript
 
   $(document).ready(function() {
 
@@ -136,7 +74,7 @@
     } else {
       width = document_width;
     }
-    height = width/2;
+    height = width*0.6;
 
     var sequence = aSequence('.visify')
     sequence.initializeBreadcrumbTrail();
@@ -156,3 +94,21 @@
   }
 
 
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe() {
+      src = window.location.href;
+      $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+      $('.tab-content iframe').attr('src', src)
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
+                                                            <option value=\"500\">500x500</option>\
+                                                            <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+      $('#embed_visual').find('.iframe_other_size').html("");
+    }
+
+    set_visiframe_inframe();
+
+  })
