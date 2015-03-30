@@ -26,6 +26,11 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: { 'description' => description }
   end
 
+  def get_visify_level
+    taxonomy = visify_params[:taxonomy]
+    render json: @taxonomy.get_level(taxonomy)
+  end
+
   private
 
   def set_locale

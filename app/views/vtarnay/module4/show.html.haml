@@ -45,7 +45,10 @@
 
     sequence.initializeBreadcrumbTrail();
 
-    icons.initialize({ height: 500, clickCallback: function (node) { chart.selectNode(node);} })
+    d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk", function(data) {
+      icons.initialize(data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} })
+      icons.show("#{@sel_year}", "#{@sel_month}")
+    })
 
 
     slider.initialize(100);
