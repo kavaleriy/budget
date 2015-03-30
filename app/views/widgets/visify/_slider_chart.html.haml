@@ -90,12 +90,12 @@
         $(this).attr("class", "active_point");
         current_year = d.label;
         slider.show(center_node, current_month, current_year);
-        chart.show(current_year, current_month);
+        chart.show("#{@taxonomy.id}", current_year, current_month);
       } else if(current_month != 0) {
         current_month = 0;
         $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
         slider.set_month(0);
-        chart.show(current_year, current_month);
+        chart.show("#{@taxonomy.id}", current_year, current_month);
       }
     }
 

@@ -94,7 +94,7 @@
         current_month = 0;
         $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
-      chart.show(current_year, current_month);
+      chart.show("#{@taxonomy.id}", current_year, current_month);
     }
 
     function mouseover(d) {
