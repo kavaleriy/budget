@@ -1454,8 +1454,9 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 
         var add_tooltip = function() {
             //Get this bar's x/y values, then augment for the tooltip
-            var xPosition = parseFloat($(me.circle.node).attr("cx"));
-            var yPosition = parseFloat($(me.circle.node).attr("cy"));
+            var xPosition = parseFloat($(me.circle.node).attr("cx")) + 20;
+            var yPosition = parseFloat($(me.circle.node).attr("cy")) + 20;
+            console.log(xPosition);
 
             //Update the tooltip position and value
             d3.select("#charts_tooltip")
@@ -1544,7 +1545,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
         me.container.append(me.label);
 
         // add text to svg image
-//        console.log(me.circle.node);
+//        console.log(me.circle.cx);
 //        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
 //            transform: 'translate(' + 0 + "," + 0 + ')'
 //        })
