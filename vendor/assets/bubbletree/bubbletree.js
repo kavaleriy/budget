@@ -804,9 +804,9 @@ var BubbleTree = function(config, onHover, onUnHover) {
             $.history.load(me.getUrlForNode(node));
         }
 		//
-		$('.label, .label2', me.$container).removeClass('current');
-		$('.label2.'+node.id, me.$container).addClass('current');
-		$('.label.'+node.id, me.$container).addClass('current');
+		$('.label, .label2').removeClass('current');
+		$('.label2.'+node.id).addClass('current');
+		$('.label.'+node.id).addClass('current');
 	};
 
 	/*
@@ -1319,7 +1319,7 @@ BubbleTree.Vector = function(x,y) {
 	var me = this;
 	me.x = x; 
 	me.y = y;
-	
+
 	/*
 	 * calculates the length of the vector
 	 */
@@ -1456,7 +1456,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
             //Get this bar's x/y values, then augment for the tooltip
             var xPosition = parseFloat($(me.circle.node).attr("cx")) + 20;
             var yPosition = parseFloat($(me.circle.node).attr("cy")) + 20;
-            console.log(xPosition);
 
             //Update the tooltip position and value
             d3.select("#charts_tooltip")
@@ -1579,7 +1578,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		mgroup.unhover(me.onunhover.bind(me));
 		
 		me.visible = true;
-		
 	};
 	
 	/*

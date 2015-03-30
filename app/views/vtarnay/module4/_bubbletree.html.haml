@@ -7,11 +7,12 @@
 = javascript_include_tag "bubbletree.js"
 = javascript_include_tag "cofog.js"
 
-.bubbletree
-  #chart
-  #charts_tooltip.hidden
-    %p
-      %span#value
+.budget
+  .bubbletree
+    #chart
+    #charts_tooltip.hidden
+      %p
+        %span#value
 
 :javascript
   function aTreeChart(aContainer) {
@@ -28,6 +29,7 @@
     }
 
     function nodeClick(node) {
+
       sequence.show(node);
       if(node.children.length > 0) {
         sidebar.show(node);
@@ -90,12 +92,14 @@
               nodeClickCallback: nodeClick
           });
           totalSize = data.size;
+
         })
       },
       selectNode: function (node) {
         nodeClick(node);
         //url = bubbleTree.getUrlForNode(node);
         bubbleTree.navigateTo(node);
+
       },
     }
   }
