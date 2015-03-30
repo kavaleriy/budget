@@ -88,6 +88,7 @@
     var slider_chart = aSliderChart('#slider_chart', slider);
     slider_chart.initialize(250);
 
+    $("#chart").html('');
     chart = aTreeChart('.visify', sequence, sidebar, slider, slider_chart);
     chart.initialize(width, height);
     chart.show("#{@sel_year}", "#{@sel_month}");
