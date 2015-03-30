@@ -16,6 +16,6 @@
   %tbody
     - @taxonomies.each do |taxonomy|
       %tr
-        %td=link_to "#{taxonomy.id} (#{taxonomy.class})", "module4/#{taxonomy.id}"
+        %td=link_to "#{taxonomy.id} (#{taxonomy.class})", "#{vtarnay_module4_path}".split('?')[0] + "/#{taxonomy.id}"
         %td= taxonomy.title
         %td= taxonomy.owner
