@@ -102,9 +102,9 @@
       src = window.location.href;
       $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
       $('.tab-content iframe').attr('src', src)
-      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
+      $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x300</option>\
                                                             <option value=\"default\" selected>900x600</option>\
+                                                            <option value=\"900\">1350x900</option>\
                                                             <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
       $('#embed_visual').find('.iframe_other_size').html("");
     }
