@@ -58,8 +58,8 @@
           $(aContainer + ' #chart').width(width).height(height);
       },
       clear: clear,
-      show: function(budget_file_id, year, month) {
-        d3.json("/widgets/visify/get_bubbletree_data/" + budget_file_id + "/"+ year+ "/" + month, function(data) {
+      show: function(year, month) {
+        d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}" + "/"+ year+ "/" + month, function(data) {
           clear();
 
           //console.log(d3.keys(data["amount"]));
