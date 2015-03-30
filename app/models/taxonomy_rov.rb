@@ -4,7 +4,7 @@ class TaxonomyRov < Taxonomy
       'fond'=>{:level => 1, :title=> I18n.t('activerecord.taxonomy_rot.fond')},
       'kvk' =>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rov.department')},
       'kekv' =>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rov.economy')},
-      'ktfk_aaa'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rov.func_code_aaa')},
+      # 'ktfk_aaa'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rov.func_code_aaa')},
       'ktfk'=>{:level => 5, :title=>I18n.t('activerecord.taxonomy_rov.func_code')},
       # 'krk'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rov.disposer')},
   }
@@ -28,7 +28,7 @@ class TaxonomyRov < Taxonomy
         'fond' => row['KKFN'].to_s,
         'kvk' => "#{row['KVK'].to_s}:#{row['KRK'].to_s}",
         'kekv' => row['KEKV'].to_s,
-        'ktfk_aaa' => row['KTFK'].to_s.slice(0, 3),
+        # 'ktfk_aaa' => row['KTFK'].to_s.slice(0, 3),
         'ktfk' => row['KTFK'].to_s,
         # 'krk' => row['KRK'].to_s,
     }
