@@ -4,7 +4,7 @@ class Vtarnay::Module4Controller < ApplicationController
   before_action :set_taxonomy_file, only: [:show]
 
   def index
-    @taxonomies = Taxonomy.all
+    @taxonomies = TaxonomyRov.all
   end
 
   def show
