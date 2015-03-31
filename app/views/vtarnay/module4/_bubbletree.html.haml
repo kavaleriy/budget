@@ -30,12 +30,18 @@
     }
 
     function nodeClick(node) {
+
+      if(centerNode === null) {
+        icons.initialize(datum, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
+        icons.show("#{@sel_year}", "#{@sel_month}");
+      }
+
       if(node.level < 2) {
         $("#icons tr").attr("style","cursor: pointer");
       }
       if(node.level == 2) {
-        //$("#icons tr").attr("style","cursor: pointer");
-        //$("#icons." + node.id).attr("style","background-color: #ecf0f1");
+        $("#icons tr").attr("style","cursor: pointer");
+        $("#icons ." + node.id).attr("style","background-color: #ecf0f1");
       }
 
       sequence.show(node);
@@ -73,8 +79,6 @@
 
           //console.log(d3.keys(data["amount"]));
           if (data == null) return;
-          icons.initialize(data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
-          icons.show("#{@sel_year}", "#{@sel_month}");
 
           current_year = year;
           current_month = month;
@@ -103,7 +107,6 @@
               nodeClickCallback: nodeClick
           });
           totalSize = data.size;
-
         })
       },
       selectNode: function (node) {

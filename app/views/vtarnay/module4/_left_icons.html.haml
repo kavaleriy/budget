@@ -34,7 +34,7 @@
 
           $.each(value.children, function( key, val ) {
               nodes.push(val);
-              div += '<tr>'
+              div += '<tr class="' + val.id + '">'
                 + '<td class="col-sm-8"><i class="fa ' + val.icon + '"></i> '
                 + val.label + '</td>'
                 + '<td class="col-sm-2" align="right">' + aVisify.helpers.formatNumber(val.amount) + '</td>'
@@ -51,7 +51,6 @@
         d3.selectAll("#icons tr")
             .datum(nodes)
             .style("cursor", "pointer")
-            .attr("class", function(d ,i) { return "" + d[i].id; })
             .on("click", function(d, i) {
                                $("#icons tr").attr("style","cursor: pointer");
                                $(this).attr("style","background-color: #ecf0f1");
