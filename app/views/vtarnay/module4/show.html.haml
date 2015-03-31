@@ -13,7 +13,7 @@
       #{@taxonomy.title}
 
 
-.visify.row
+.visify.row.budget
   .col-xs-12
     = render partial: 'widgets/visify/sequence', :locals => { budget_file_id: @taxonomy.id }
 
@@ -45,11 +45,10 @@
 
     sequence.initializeBreadcrumbTrail();
 
-    d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk", function(data) {
-      icons.initialize(data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} })
-      icons.show("#{@sel_year}", "#{@sel_month}")
-    })
-
+    //d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk", function(data) {
+      //icons.initialize(data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} })
+      //icons.show("#{@sel_year}", "#{@sel_month}")
+    //})
 
     slider.initialize(100);
     slider_chart.initialize(250);
@@ -58,5 +57,6 @@
 
     chart.initialize(1000, 600);
     chart.show("#{@sel_year}", "#{@sel_month}");
+
   })
 

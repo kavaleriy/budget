@@ -21,6 +21,7 @@
     var centerNode = null;
     var current_year = null;
     var current_month = null;
+    var datum = null;
 
     function clear() {
       sequence.hideBreadcrumb();
@@ -29,6 +30,13 @@
     }
 
     function nodeClick(node) {
+      if(node.level < 2) {
+        $("#icons tr").attr("style","cursor: pointer");
+      }
+      if(node.level == 2) {
+        //$("#icons tr").attr("style","cursor: pointer");
+        //$("#icons." + node.id).attr("style","background-color: #ecf0f1");
+      }
 
       sequence.show(node);
       if(node.children.length > 0) {
@@ -61,9 +69,12 @@
       show: function(year, month) {
         d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}" + "/"+ year+ "/" + month, function(data) {
           clear();
+          datum = data;
 
           //console.log(d3.keys(data["amount"]));
           if (data == null) return;
+          icons.initialize(data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
+          icons.show("#{@sel_year}", "#{@sel_month}");
 
           current_year = year;
           current_month = month;
@@ -99,8 +110,7 @@
         nodeClick(node);
         //url = bubbleTree.getUrlForNode(node);
         bubbleTree.navigateTo(node);
-
-      },
+      }
     }
   }
 
