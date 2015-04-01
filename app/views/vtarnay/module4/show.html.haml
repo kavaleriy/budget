@@ -17,14 +17,14 @@
   .col-xs-12
     = render partial: 'widgets/visify/sequence', :locals => { budget_file_id: @taxonomy.id }
 
-  .icons.col-xs-5
+  .icons.col-xs-12.col-md-5
     = render partial: 'left_icons', :locals => { budget_file_id: @taxonomy.id }
 
     .slider
       = render partial: 'widgets/visify/slider_chart'
       = render partial: 'widgets/visify/slider_compare', :locals => { budget_file_id: @taxonomy.id}
 
-  .col-xs-7
+  .col-xs-12.col-md-7
     #under_sequence
     = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
 

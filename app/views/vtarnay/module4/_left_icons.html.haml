@@ -49,7 +49,7 @@
           }
         }
 
-        div = '<table class="table table-hover">';
+        div = '<table class="table table-striped">';
         for(i in nodes) {
 
           div += '<tr class="' + nodes[i].id + '">'
@@ -59,7 +59,7 @@
               + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(nodes[i] , totalSize) + '</td>'
               + '</tr>';
         }
-        div += '</table>';
+        div += '</tbody></table>';
 
         $('#icons').html(div);
 
