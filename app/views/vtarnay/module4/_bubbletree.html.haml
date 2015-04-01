@@ -31,9 +31,9 @@
 
     function nodeClick(node) {
 
-      if(centerNode === null) {
+      if(centerNode === null || current_year != icons.get_year() || current_month != icons.get_month()) {
         icons.initialize(datum, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
-        icons.show("#{@sel_year}", "#{@sel_month}");
+        icons.show(current_year, current_month);
       }
 
       if(node.level < 2) {
