@@ -90,16 +90,21 @@ class Taxonomy
           levels[year][month] = { }
         end
         rows.each do |row|
-          key = row[level]
-          if levels[year][month][key].nil?
-            levels[year][month][key] = { amount: 0 }
-            %w(title icon color).map{|k|
-              levels[year][month][key][k] = explanation[key][k]
-            }
+          fond = row[:fond]
+          if levels[year][month][fond].nil?
+            levels[year][month][fond] = {  }
           end
 
-          levels[year][month][key][:amount] += row[:amount]
-          levels[year][:totals][month] += row[:amount]
+            key = row[level]
+            if levels[year][month][fond][key].nil?
+              levels[year][month][fond][key] = { amount: 0 }
+              %w(title icon color).map{|k|
+                levels[year][month][fond][key][k] = explanation[key][k]
+              }
+            end
+
+            levels[year][month][fond][key][:amount] += row[:amount]
+            levels[year][:totals][month] += row[:amount]
         end
       end
     end
