@@ -190,32 +190,65 @@ function get_sankey(data, year) {
         .append("title")
         .text(function(d) { return d.name + "\n" + format(d.value); });
 
+    // side rectangles
     node.append("rect")
         .attr("x", function(d) {
             if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
             return 30;})
-        //.attr("y", function(d) { return d.dy; })
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
         .attr("width", 40)
         .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
                                       return d.dy; });
-    node.append("text")
-        .text(function(d){
-                if(energy.fonds[d.name]) return "";
-                if(energy.amounts[d.name]) {
-                    var x = 0;
-                    energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
-                    return x.toFixed(2) + " %";
-                }
-                return "";
-              })
-        .attr("text-anchor", "start")
-        .attr("dx", function(d) {
-            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -50;
-            return 30;})
-        .attr("dy", "1.0em")
-        .style("font-size", "0.6em");
+    // info for side rectangles
+    var k_rev = window.aHelper.k(5*revenues/100);
+    var k_exp = window.aHelper.k(5*expences/100);
+    var side_text = node.append("text")
+                        .text(function(d){
+                                if(!energy.fonds[d.name]) {
+                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (d.value/k_rev).toFixed(2);
+                                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (d.value/k_exp).toFixed(2);
+                                }
+                                return "";
+                              })
+                        .attr("text-anchor", "middle")
+                        .attr("dx", function(d) {
+                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -30;
+                                    return 48;
+                              })
+                        .attr("dy", function(d) { return d.dy/2; })
+                        .style("font-size", "0.6em")
+                        .style("font-weight", "bold");
+
+    side_text.append('tspan')
+                .text(function(d) {
+                    if(energy.amounts[d.name]) {
+                        if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
+                        if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (energy.amounts[d.name]/k_exp).toFixed(2);
+                    }
+                    return "";
+                })
+                .attr("dy", "1.1em")
+                .attr("x", function(d) {
+                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -30;
+                    return 48;})
+                .style("font-weight", "normal");
+
+    side_text.append('tspan')
+                .text(function(d) {
+                            if(energy.amounts[d.name]) {
+                                var x = 0;
+                                energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
+                                return x.toFixed(2) + " %";
+                            }
+                            return "";
+                      })
+                .attr("dy", "1.1em")
+                .attr("x", function(d) {
+                            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -68;
+                            return 48;})
+                .style("font-weight", "normal")
+                .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
 
     node.append("text")
         .attr("x", -6)
@@ -313,25 +346,26 @@ function get_sankey(data, year) {
     }
 
     // add general info about years compare (placed left to status bar)
+    var short_unit_rev = window.aHelper.short_unit(5*revenues/100);
+    var short_unit_exp = window.aHelper.short_unit(5*expences/100);
     for(var j = 0; j < 2; j++) {
         svg.append("rect")
             .attr("x", function(){
                 if(j == 0) return -margin.left;
-                return width - width/8 + margin.right;
+                return width - width/8 - 5 + margin.right;
             })
             .attr("y", -margin.top + 1 )
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
-            .attr("width", width/8)
-            .attr("height", margin.top - 10);
+            .attr("width", width/8 + 5)
+            .attr("height", margin.top - 20);
 
         var text = svg.append("text")
-            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 + margin.right + 5})
+            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 + margin.right})
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "start")
-            //.style("fill", function(){if(i == 1) return "white"; return "#082757";})
-            .style("font-size", "0.8em")
-        //.style("font-weight", "bold");
+            .style("font-size", "0.7em")
+            .style("font-weight", "bold");
 
         text.append('tspan')
             .text(function() {
@@ -345,40 +379,53 @@ function get_sankey(data, year) {
             text.append('tspan')
                 .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 5);
+                .attr("x", -margin.left + 5)
+                .style("font-weight", "normal");
             text.append('tspan')
                 .text(function() {
-                    if(revenues > prev_revenues) {
-                        return (100 - prev_revenues*100/revenues).toFixed(2) + "% росту"
+                    if(revenues >= prev_revenues) {
+                        return (100 - prev_revenues*100/revenues).toFixed(2) + "%"
                     }
-                    if(revenues < prev_revenues) {
-                        if(revenues == 0) return "100% падіння";
-                        return (prev_revenues*100/revenues - 100).toFixed(2) + "% падіння"
-                    }
-                    return "не змінилось"
+                    if(revenues == 0) return "-100%";
+                    return (prev_revenues*100/revenues - 100).toFixed(2) + "%";
                 })
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 5);
+                .attr("x", -margin.left + 5)
+                .style("font-weight", "normal")
+                .attr("fill", function(d) {return revenues >= prev_revenues ? "green" : "red"; });
         } else if(data["rows_rov"][year-1] && j == 1){
             var prev_expences = data["rows_rov"][year-1]["totals"]["0"];
             text.append('tspan')
                 .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 5 + margin.right);
+                .attr("x", width - width/8 + margin.right)
+                .style("font-weight", "normal");
             text.append('tspan')
                 .text(function() {
-                    if(expences > prev_expences) {
-                        return (100 - prev_expences*100/expences).toFixed(2) + "% росту"
+                    if(expences >= prev_expences) {
+                        return (100 - prev_expences*100/expences).toFixed(2) + "%"
                     }
-                    if(expences < prev_expences) {
-                        if(expences == 0) return "100% падіння";
-                        return (prev_expences*100/expences - 100).toFixed(2) + "% падіння"
-                    }
-                    return "не змінилось"
+                    if(expences == 0) return "-100%";
+                    return (prev_expences*100/expences - 100).toFixed(2) + "%";
                 })
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + 5 + margin.right);
+                .attr("x", width - width/8 + margin.right)
+                .style("font-weight", "normal")
+                .attr("fill", function(d) {return expences >= prev_expences ? "green" : "red"; });
         }
+
+        text.append('tspan')
+            .text(function(d) {
+                        if(data["rows_rot"][year] && j == 0) return short_unit_rev + " грн";
+                        if(data["rows_rov"][year] && j == 1) return short_unit_exp + " грн";
+                        return "";
+                    })
+            .attr("y", -5)
+            .attr("x", function() {
+                if(j == 0) return -margin.left;
+                return width - 2;
+            })
+            .style("font-weight", "bold");
     }
 
     // get fond name
