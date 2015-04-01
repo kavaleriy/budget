@@ -56,9 +56,9 @@
         for(i in nodes) {
 
           div += '<tr class="' + nodes[i].id + '">'
-              + '<td class="col-sm-8"><i class="fa ' + nodes[i].icon + '"></i> '
+              + '<td class="col-sm-7"><i class="fa ' + nodes[i].icon + '"></i> '
               + nodes[i].label + '</td>'
-              + '<td class="col-sm-2" align="right">' + aVisify.helpers.formatNumber(nodes[i].amount) + '</td>'
+              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(nodes[i].amount) + '</td>'
               + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(nodes[i] , totalSize) + '</td>'
               + '</tr>';
         }
