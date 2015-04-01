@@ -52,7 +52,7 @@
           }
         }
 
-        div = '<table class="table table-striped">';
+        div = '<table class="table table-striped table-hover">';
         for(i in nodes) {
 
           div += '<tr class="' + nodes[i].id + '">'
@@ -71,7 +71,7 @@
             .style("cursor", "pointer")
             .on("click", function(d, i) {
                                $("#icons tr").attr("style","cursor: pointer");
-                               $(this).attr("style","background-color: #ecf0f1");
+                               $(this).attr("style","background-color: #C6E8FA");
                                if (self.clickCallback){
                                 self.clickCallback(d[i]);
                                }

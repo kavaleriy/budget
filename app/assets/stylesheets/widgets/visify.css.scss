@@ -270,11 +270,20 @@ body {
   table{
     height:450px;
   }
+
   tbody{
     overflow-y: scroll;
     height: 450px;
     width: 100%;
     position: absolute;
+  }
+
+  .table-striped > tbody > tr > td, .table-striped > tbody > tr > th {
+    background-color: transparent;
+  }
+
+  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #DCDCDC;
   }
 }
 
