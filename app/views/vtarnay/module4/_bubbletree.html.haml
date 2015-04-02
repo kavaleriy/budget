@@ -76,6 +76,7 @@
         d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}" + "/"+ year+ "/" + month, function(data) {
           clear();
           datum = data;
+          console.log(data);
 
           //console.log(d3.keys(data["amount"]));
           if (data == null) return;

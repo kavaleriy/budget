@@ -130,7 +130,8 @@ function get_sankey(data, year) {
         energy.nodes[i] = { "name": d };
     });
 
-    var margin = {top: 80, right: 50, bottom: 30, left: 50},
+    var side_rect_width = 60;
+    var margin = {top: 80, right: side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
         width = 1200 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -194,10 +195,10 @@ function get_sankey(data, year) {
     node.append("rect")
         .attr("x", function(d) {
             if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
-            return 30;})
+            return side_rect_width/2 - 5;})
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
-        .attr("width", 40)
+        .attr("width", side_rect_width)
         .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
                                       return d.dy; });
     // info for side rectangles
@@ -213,11 +214,11 @@ function get_sankey(data, year) {
                               })
                         .attr("text-anchor", "middle")
                         .attr("dx", function(d) {
-                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -30;
-                                    return 48;
+                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                                    return side_rect_width - 2;
                               })
                         .attr("dy", function(d) { return d.dy/2; })
-                        .style("font-size", "0.6em")
+                        .style("font-size", "0.7em")
                         .style("font-weight", "bold");
 
     side_text.append('tspan')
@@ -230,9 +231,10 @@ function get_sankey(data, year) {
                 })
                 .attr("dy", "1.1em")
                 .attr("x", function(d) {
-                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -30;
-                    return 48;})
-                .style("font-weight", "normal");
+                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                    return side_rect_width - 2;})
+                .style("font-weight", "normal")
+                .attr("fill", "darkslategray");
 
     side_text.append('tspan')
                 .text(function(d) {
@@ -245,10 +247,12 @@ function get_sankey(data, year) {
                       })
                 .attr("dy", "1.1em")
                 .attr("x", function(d) {
-                            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -68;
-                            return 48;})
+                            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                            return side_rect_width - 2;})
                 .style("font-weight", "normal")
                 .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
+
+    append_status_frame(node);
 
     node.append("text")
         .attr("x", -6)
@@ -290,7 +294,8 @@ function get_sankey(data, year) {
 
     // rectangles for status bar (total amounts)
     for(var i = 0; i < 3; i++) {
-        svg.append("rect")
+        var status_bar = svg.append("g").attr("transform", "translate(0,0)");
+        status_bar.append("rect")
             .attr("x", function(){
                 if(i == 0) return width/4;
                 if(i == 1) return width/2 - 66;
@@ -321,7 +326,7 @@ function get_sankey(data, year) {
                 return margin.top/2;
             });
 
-        svg.append("text")
+        status_bar.append("text")
             .attr("x", function(){
                 if(i == 0) return width/3;
                 if(i == 1) return width/2 + 12;
@@ -348,20 +353,23 @@ function get_sankey(data, year) {
     // add general info about years compare (placed left to status bar)
     var short_unit_rev = window.aHelper.short_unit(5*revenues/100);
     var short_unit_exp = window.aHelper.short_unit(5*expences/100);
+    var prev_revenues = 0;
+    var prev_expences = 0;
     for(var j = 0; j < 2; j++) {
-        svg.append("rect")
+        var side_bars = svg.append("g").attr("transform", "translate(0,0)");
+        side_bars.append("rect")
             .attr("x", function(){
                 if(j == 0) return -margin.left;
-                return width - width/8 - 5 + margin.right;
+                return width - width/8 - 12 + margin.right;
             })
             .attr("y", -margin.top + 1 )
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
-            .attr("width", width/8 + 5)
+            .attr("width", width/8 + 10)
             .attr("height", margin.top - 20);
 
-        var text = svg.append("text")
-            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 + margin.right})
+        var text = side_bars.append("text")
+            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 - 7 + margin.right})
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "start")
             .style("font-size", "0.7em")
@@ -375,11 +383,11 @@ function get_sankey(data, year) {
 
         d = data["rows_rot"][year-1];
         if(d && j == 0) { // if previous year rot exists
-            var prev_revenues = d["totals"]["0"];
+            prev_revenues = d["totals"]["0"];
             text.append('tspan')
                 .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 5)
+                .attr("x", -margin.left + 14)
                 .style("font-weight", "normal");
             text.append('tspan')
                 .text(function() {
@@ -387,18 +395,18 @@ function get_sankey(data, year) {
                         return (100 - prev_revenues*100/revenues).toFixed(2) + "%"
                     }
                     if(revenues == 0) return "-100%";
-                    return (prev_revenues*100/revenues - 100).toFixed(2) + "%";
+                    return (100 - prev_revenues*100/revenues).toFixed(2) + "%";
                 })
                 .attr("dy", "1.1em")
-                .attr("x", -margin.left + 5)
+                .attr("x", -margin.left + 14)
                 .style("font-weight", "normal")
                 .attr("fill", function(d) {return revenues >= prev_revenues ? "green" : "red"; });
         } else if(data["rows_rov"][year-1] && j == 1){
-            var prev_expences = data["rows_rov"][year-1]["totals"]["0"];
+            prev_expences = data["rows_rov"][year-1]["totals"]["0"];
             text.append('tspan')
                 .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + margin.right)
+                .attr("x", width - width/8 + margin.right + 4)
                 .style("font-weight", "normal");
             text.append('tspan')
                 .text(function() {
@@ -406,10 +414,10 @@ function get_sankey(data, year) {
                         return (100 - prev_expences*100/expences).toFixed(2) + "%"
                     }
                     if(expences == 0) return "-100%";
-                    return (prev_expences*100/expences - 100).toFixed(2) + "%";
+                    return (100 - prev_expences*100/expences).toFixed(2) + "%";
                 })
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + margin.right)
+                .attr("x", width - width/8 + margin.right + 4)
                 .style("font-weight", "normal")
                 .attr("fill", function(d) {return expences >= prev_expences ? "green" : "red"; });
         }
@@ -428,6 +436,8 @@ function get_sankey(data, year) {
             .style("font-weight", "bold");
     }
 
+    append_status_frame_main(svg);
+
     // get fond name
     function get_fond(f) {
         var fond;
@@ -445,6 +455,104 @@ function get_sankey(data, year) {
             energy.fonds[fond] = fond;
         }
         return fond;
+    }
+
+    // status frame with triangle to compare years amounts
+    function append_status_frame(svg) {
+        var rect = svg.append("g").attr("transform", "translate(0,0)");
+        rect.append("rect")
+            .attr("x", function(d) {
+                if(d && !energy.fonds[d.name]) {
+                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left + 5;
+                    return side_rect_width/2;
+                }
+            })
+            .attr("y", function(d){
+                if(d && !energy.fonds[d.name]) {
+                    return d.dy/2 + 2;
+                }
+            })
+            .style("fill", "none")
+            .style("stroke", "lightgray")
+            .style("stroke-width", 1)
+            .attr("width", function(d){ return energy.amounts[d.name] ? side_rect_width - 10 : 0; })
+            .attr("height", function(d){ return energy.amounts[d.name] ? "1.8em" : 0; });
+        rect.append("path")
+            .attr("d", d3.svg.symbol().type(function(d) {
+                if(energy.amounts[d.name]) {
+                    if(d.value > energy.amounts[d.name]) {return "triangle-up";}
+                    if(d.value < energy.amounts[d.name]) {return "triangle-down";}
+                    return "circle";
+                }
+                return "";
+            }).size(function(d) {
+                if(energy.amounts[d.name]) {
+                    if(d.value != energy.amounts[d.name]) {return 3.5*3.5*3.5;}
+                    return 3.5;
+                }
+                return 0;
+            }))
+            .style("fill", function(d) {
+                if(energy.amounts[d.name]) {
+                    if (d.value > energy.amounts[d.name]) {
+                        return "green";
+                    }
+                    if (d.value < energy.amounts[d.name]) {
+                        return "red";
+                    }
+                    return "none";
+                }
+            })
+            .style("stroke", "white")
+            .attr("transform", function(d) {
+                if(d && !energy.fonds[d.name]) {
+                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 20) + ")";
+                    return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 20) + ")";
+                }
+            });
+    }
+
+    // status frame with triangle to compare total amounts
+    function append_status_frame_main(svg) {
+        for(var i = 0; i< 2; i++) {
+            var rect = svg.append("g").attr("transform", "translate(0,0)");
+            rect.append("rect")
+                .attr("x", function() {
+                    return i == 0 ? -margin.left + 5 : width - side_rect_width - 8;
+                })
+                .attr("y", -margin.top + 27)
+                .style("fill", "none")
+                .style("stroke", "lightgray")
+                .style("stroke-width", 1)
+                .attr("width", function(){
+                    if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return side_rect_width + 25;
+                    return 0;
+                })
+                .attr("height", function(){
+                    if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return "1.8em";
+                    return 0;
+                });
+            rect.append("path")
+                .attr("d", d3.svg.symbol().type(function() {
+                    if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "triangle-up";}
+                    if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "triangle-down";}
+                    if((i == 0 && revenues == prev_revenues) || (i == 1 && expences == prev_expences)) {return "circle";}
+                    return "";
+                }).size(function(d) {
+                    if((i == 0 && prev_revenues == 0) || (i == 1 && prev_expences == 0)) {return 0;}
+                    if((i == 0 && revenues != prev_revenues) || (i == 1 && expences != prev_expences)) {return 3.5*3.5*3.5;}
+                    return 3.5;
+                }))
+                .style("fill", function(d) {
+                    if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "green";}
+                    if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "red";}
+                    return "none";
+                })
+                .style("stroke", "white")
+                .attr("transform", function(d) {
+                    return i == 0 ? "translate(" + (-margin.left + 5) + "," + (-margin.top + 45) + ")" : "translate(" + (width - side_rect_width - 8) + "," + (-margin.top + 45) + ")";
+                });
+        }
     }
 }
 
