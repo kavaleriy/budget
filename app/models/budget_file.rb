@@ -57,6 +57,21 @@ class BudgetFile
     self.taxonomy.create_tree self.rows
   end
 
+  def get_subtree level, key
+    subrows = {}
+    self.rows.keys.each {|year|
+      subrows[year] = {} if subrows[year].nil?
+      self.rows[year].keys.each { |month|
+        subrows[year][month] = [] if subrows[year][month].nil?
+        self.rows[year][month].each { |row|
+          subrows[year][month] << row.reject{|k, v| k == level } if row[level] == key
+        }
+      }
+    }
+
+    self.taxonomy.create_tree subrows
+  end
+
   def get_range
     range = {}
 

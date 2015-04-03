@@ -11,6 +11,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: get_bubble_tree
   end
 
+  def get_bubblesubtree
+    binding.pry
+    tree = @budget_file.get_subtree(visify_params[:taxonomy].to_s, visify_params[:key].to_s) || {}
+
+    render json: get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+  end
+
   def get_bubbletree_nodedata
     taxonomy = visify_params[:taxonomy]
     key = visify_params[:key]
@@ -28,6 +35,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   def get_visify_level
     taxonomy = visify_params[:taxonomy]
+
     render json: @taxonomy.get_level(taxonomy)
   end
 

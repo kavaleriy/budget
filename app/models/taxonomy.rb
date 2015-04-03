@@ -52,6 +52,7 @@ class Taxonomy
     end
   end
 
+
   def get_taxonomy_info taxonomy, key
     case taxonomy
       when 'fond'
@@ -112,6 +113,29 @@ class Taxonomy
     levels
   end
 
+  def get_tree
+    rows = get_rows
+
+    create_tree rows
+  end
+
+  def get_subtree level, key
+    rows = get_rows
+
+    subrows = {}
+    rows.keys.each {|year|
+      subrows[year] = {} if subrows[year].nil?
+      rows[year].keys.each { |month|
+        subrows[year][month] = [] if subrows[year][month].nil?
+        rows[year][month].each { |row|
+          subrows[year][month] << row.reject{|k, v| k == level } if row[level] == key
+        }
+      }
+    }
+
+    create_tree subrows
+  end
+
   def get_rows
     rows = {}
     self.budget_files.each{ |file|
@@ -123,12 +147,6 @@ class Taxonomy
       }
     }
     rows
-  end
-
-  def get_tree
-    rows = get_rows
-
-    create_tree rows
   end
 
   def get_range
