@@ -119,7 +119,7 @@ class Taxonomy
     create_tree rows
   end
 
-  def get_subtree level, key
+  def get_subtree level, key, filter
     rows = get_rows
 
     subrows = {}
@@ -128,12 +128,12 @@ class Taxonomy
       rows[year].keys.each { |month|
         subrows[year][month] = [] if subrows[year][month].nil?
         rows[year][month].each { |row|
-          subrows[year][month] << row.reject{|k, v| k == level } if row[level] == key
+          subrows[year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
         }
       }
     }
 
-    create_tree subrows
+    create_tree subrows, filter
   end
 
   def get_rows
@@ -153,9 +153,8 @@ class Taxonomy
     self.budget_files.map { |file| file.get_range }.flatten
   end
 
-  def create_tree rows
+  def create_tree rows, filter = []
     tree = { :amount => {} }
-
     # return nil if rows[year].nil? || rows[year][month].nil?
 
     rows.keys.each do |year|
@@ -167,7 +166,7 @@ class Taxonomy
           node[:amount][year][month] = 0  if node[:amount][year][month].nil?
           node[:amount][year][month] += row['amount']
 
-          self.columns.keys.each { |taxonomy_key|
+          self.columns.keys.reject{|k| filter.include?(k)}. each { |taxonomy_key|
             taxonomy_value = row[taxonomy_key]
 
             if node[taxonomy_value].nil?

@@ -12,6 +12,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubblesubtree
+    # http://localhost:3000/widgets/visify/get_bubblesubtree/551e4e197562751064010000/2015/0/kvk/10:48380
+
     taxonomy = visify_params[:taxonomy]
     key = visify_params[:key]
 
@@ -22,9 +24,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
           @taxonomy.explanation[taxonomy][key][:title]
         end
 
-    tree = @budget_file.get_subtree(taxonomy, key) || {}
+    filter = ['fond', taxonomy]
+    tree = @budget_file.get_subtree(taxonomy, key, filter) || {}
 
-    render json: get_bubble_tree_item(tree, { 'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
+    render json: get_bubble_tree_item(tree, {  'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
   end
 
   def get_bubbletree_nodedata
@@ -76,7 +79,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     }
 
     if info
-      node['label'] = info['title'] unless info['title'].nil? or info['title'].empty?
+      node['label'] = info['title'] unless info['title'].nil?
       node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
       node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
