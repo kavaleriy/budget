@@ -31,6 +31,7 @@
       } else {
         sidebar.hide();
         sidebar.showUndersequence(node);
+        sidebar.getLevelInfo(node);
       }
 
       if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {

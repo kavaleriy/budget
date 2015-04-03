@@ -74,9 +74,11 @@
           $(aContainer + ' #description').html(div_descr)
         })
 
-        chart.show(node.children);
-        pie.show(node.children);
-        table.show(node.children);
+        if(node.children) {
+            chart.show(node.children);
+            pie.show(node.children);
+            table.show(node.children);
+        }
 
       },
 
