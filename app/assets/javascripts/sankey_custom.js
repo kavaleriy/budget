@@ -196,7 +196,7 @@ function get_sankey(data, year) {
         .attr("x", function(d) {
             if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
             return side_rect_width/2 - 5;})
-        .attr("y", function(d) { return (d.dy < 45 && amounts[d.name]) ? -10 : 0; })
+        .attr("y", function(d) { return (d.dy < 45 && energy.amounts[d.name]) ? -10 : 0; })
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
         .attr("width", side_rect_width)
@@ -268,6 +268,8 @@ function get_sankey(data, year) {
         .filter(function(d) { return d.x < width / 2; })
         .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
                                  return 6 + sankey.nodeWidth(); })
+
+        .attr("y", function(d) { return (d.dy < 15 && energy.fonds[d.name]) ? -8 : d.dy / 2;})
         .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
                                            return "start"; });
 
