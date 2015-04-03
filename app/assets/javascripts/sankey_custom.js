@@ -148,7 +148,7 @@ function get_sankey(data, year) {
 
     var sankey = d3.sankey()
         .nodeWidth(15)
-        .nodePadding(10)
+        .nodePadding(20)
         .size([width, height]);
 
     var path = sankey.link();
@@ -196,11 +196,12 @@ function get_sankey(data, year) {
         .attr("x", function(d) {
             if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
             return side_rect_width/2 - 5;})
+        .attr("y", function(d) { return (d.dy < 45 && amounts[d.name]) ? -10 : 0; })
         .style("fill", "#F0F0F0")
         .style("stroke", "none")
         .attr("width", side_rect_width)
         .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
-                                      return d.dy; });
+                                      return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
     // info for side rectangles
     var k_rev = window.aHelper.k(5*revenues/100);
     var k_exp = window.aHelper.k(5*expences/100);
@@ -434,7 +435,7 @@ function get_sankey(data, year) {
             .attr("y", -5)
             .attr("x", function() {
                 if(j == 0) return -margin.left;
-                return width - 2;
+                return width + 8;
             })
             .style("font-weight", "bold");
     }
