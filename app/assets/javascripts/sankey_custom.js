@@ -275,7 +275,7 @@ function get_sankey(data, year) {
 
     // central rectangle for General and Special funds
     svg.append("rect")
-        .attr("x", width/2 - 70)
+        .attr("x", width/2 - 68)
         .attr("y", -margin.top + 1)
         .style("fill", "none")
         .style("stroke", "#082757")
@@ -284,7 +284,7 @@ function get_sankey(data, year) {
         .attr("height", height + margin.top + margin.bottom - 2);
 
     svg.append("text")
-        .attr("x", width/2 + 10)
+        .attr("x", width/2 + 14)
         .attr("y", -margin.top + 25)
         .attr("text-anchor", "middle")
         .style("fill", "#082757")
@@ -298,8 +298,8 @@ function get_sankey(data, year) {
         status_bar.append("rect")
             .attr("x", function(){
                 if(i == 0) return width/4;
-                if(i == 1) return width/2 - 66;
-                return width/2 + 108;
+                if(i == 1) return width/2 - 61;
+                return width/2 + 118;
             })
             .attr("y", function(){
                 if(i == 1) return -margin.top/2 + 1;
@@ -329,8 +329,8 @@ function get_sankey(data, year) {
         status_bar.append("text")
             .attr("x", function(){
                 if(i == 0) return width/3;
-                if(i == 1) return width/2 + 12;
-                return 2*width/3 + 15;
+                if(i == 1) return width/2 + 15;
+                return 2*width/3 + 30;
             })
             .attr("y", function(){
                 if(i == 1) return -margin.top/4;
