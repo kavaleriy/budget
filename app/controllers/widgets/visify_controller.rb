@@ -41,6 +41,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
     tree = @budget_file.get_tree
     return if tree.nil?
 
+    binding.pry
+
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
@@ -97,9 +99,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
               if node['children'][MAX_NODES_PER_LEVEL].nil?
                 node['children'][MAX_NODES_PER_LEVEL] =
                     { 'label' => I18n.t('aggregated'),
-                      # 'description' => '',
-                      'amount' => ti['amount'],
-                      # 'size' => ti['amount'],
+                      'amount' => 0,
                       'color' => 'green',
                       'icon' => 'fa-folder-open-o'
                     }
