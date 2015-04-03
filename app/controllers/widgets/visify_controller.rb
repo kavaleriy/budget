@@ -12,10 +12,19 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubblesubtree
-    binding.pry
-    tree = @budget_file.get_subtree(visify_params[:taxonomy].to_s, visify_params[:key].to_s) || {}
+    taxonomy = visify_params[:taxonomy]
+    key = visify_params[:key]
 
-    render json: get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+    title =
+        if @taxonomy.explanation[taxonomy].nil? or @taxonomy.explanation[taxonomy][key].nil?
+          ''
+        else
+          @taxonomy.explanation[taxonomy][key][:title]
+        end
+
+    tree = @budget_file.get_subtree(taxonomy, key) || {}
+
+    render json: get_bubble_tree_item(tree, { 'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
   end
 
   def get_bubbletree_nodedata
@@ -28,7 +37,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
       else
         @taxonomy.explanation[taxonomy][key][:description]
       end
-
 
     render json: { 'description' => description }
   end
