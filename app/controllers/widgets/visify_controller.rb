@@ -41,8 +41,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
     tree = @budget_file.get_tree
     return if tree.nil?
 
-    binding.pry
-
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
@@ -67,8 +65,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
-
-    # binding.pry if node['label'] == "5000"
 
     if item['children'].nil? || item['children'].length < 2
       node['color'] = '#a8bccc'
