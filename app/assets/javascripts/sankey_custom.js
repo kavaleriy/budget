@@ -215,9 +215,12 @@ function get_sankey(data, year) {
                         .attr("text-anchor", "middle")
                         .attr("dx", function(d) {
                                     if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                                    return side_rect_width - 2;
+                                    return side_rect_width - 5;
                               })
-                        .attr("dy", function(d) { return d.dy/2; })
+                        .attr("dy", function(d) {
+                                        if(amounts[d.name]) return d.dy/2 - 10;
+                                        return d.dy/2 + 4;
+                                    })
                         .style("font-size", "0.7em")
                         .style("font-weight", "bold");
 
@@ -232,7 +235,7 @@ function get_sankey(data, year) {
                 .attr("dy", "1.1em")
                 .attr("x", function(d) {
                     if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                    return side_rect_width - 2;})
+                    return side_rect_width - 5;})
                 .style("font-weight", "normal")
                 .attr("fill", "darkslategray");
 
@@ -248,7 +251,7 @@ function get_sankey(data, year) {
                 .attr("dy", "1.1em")
                 .attr("x", function(d) {
                             if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                            return side_rect_width - 2;})
+                            return side_rect_width - 5;})
                 .style("font-weight", "normal")
                 .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
 
@@ -469,7 +472,7 @@ function get_sankey(data, year) {
             })
             .attr("y", function(d){
                 if(d && !energy.fonds[d.name]) {
-                    return d.dy/2 + 2;
+                    return d.dy/2 - 8;
                 }
             })
             .style("fill", "none")
@@ -506,8 +509,8 @@ function get_sankey(data, year) {
             .style("stroke", "white")
             .attr("transform", function(d) {
                 if(d && !energy.fonds[d.name]) {
-                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 20) + ")";
-                    return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 20) + ")";
+                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 10) + ")";
+                    return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 10) + ")";
                 }
             });
     }
