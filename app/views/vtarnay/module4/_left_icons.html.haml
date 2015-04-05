@@ -5,7 +5,7 @@
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
-    var current_year, current_month, data;
+    var current_year, current_month, datum;
 
     function hide() {
       $("#icons").html('')
@@ -17,26 +17,26 @@
       initialize: function(options) {
 
         d3.json("/vtarnay/module4/get_rows/" + '#{@taxonomy.id}', function(data) {
-          self.data = data["rows_rov"];
+          self.datum = data["rows_rov"];
         });
 
         $("#icons").height(options.height || 500)
         self.clickCallback = options.clickCallback
       },
       hide: hide,
-      show: function(year, month) {
+      show: function(year, month, current_key) {
         current_year = year;
         current_month = month;
         hide();
 
-        var data = self.data[year][month];
+        var data = self.datum[year][month];
 
         if (data == null)
           return;
 
         var nodes = [];
         var percent = 0;
-        var totalSize = self.data[year]["totals"][month];
+        var totalSize = self.datum[year]["totals"][month];
 
         $.each(data, function( key, value ) {
           nodes.push({key: key, amount: value["amount"]});
@@ -66,7 +66,7 @@
         for(key in data_sorted) {
           div += '<tr id="' + key + '">'
               + '<td class="col-sm-7"><i class="fa ' + data_sorted[key].icon + '"></i> '
-              + data_sorted[key].title + '</td>'
+              + (data_sorted[key].title || key) + '</td>'
               + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(data_sorted[key].amount) + '</td>'
               + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(data_sorted[key], totalSize) + '</td>'
               + '</tr>';
@@ -78,7 +78,9 @@
 
         d3.selectAll("#icons tr")
             .datum(nodes)
-            .style("cursor", "pointer")
+            .attr("style", function(d, i) {
+                              return nodes[i]["key"] == current_key ? "background-color: #C6E8FA" : "cursor: pointer";
+                           })
             .on("click", function(d, i) {
                                $("#icons tr").attr("style","cursor: pointer");
                                $(this).attr("style","background-color: #C6E8FA");

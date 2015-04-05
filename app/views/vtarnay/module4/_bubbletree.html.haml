@@ -19,6 +19,7 @@
     var bubbleTree = null;
     var totalSize = null;
     var centerNode = null;
+    var current_key = null;
     var current_year = null;
     var current_month = null;
     var datum = null;
@@ -29,18 +30,35 @@
       d3.select(aContainer + ' #chart').selectAll("*").remove();
     }
 
+    function selectTree(key) {
+      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/" + current_year + "/" + current_month + "/kvk/" + key, function(data) {
+        clear();
+        if (data == null) return;
+
+        if(current_key != key) {
+          centerNode = data;
+          current_key = key;
+        }
+
+        bubbleTree = new BubbleTree({
+            data: data,
+            container: aContainer + ' #chart',
+            sortBy: 'label',
+            bubbleType: ['icon', 'plain'],
+            centerNode: centerNode,
+            nodeClickCallback: nodeClick
+        });
+
+        slider.show(centerNode, current_month, current_year);
+        slider_chart.show(centerNode, current_month, current_year);
+        $("#" + current_key).attr("style","background-color: #C6E8FA");
+      })
+    }
+
     function nodeClick(node) {
 
       if(centerNode === null || current_year != icons.get_year() || current_month != icons.get_month()) {
-        icons.show(current_year, current_month);
-      }
-
-      if(node.level < 2) {
-        $("#icons tr").attr("style","cursor: pointer");
-      }
-      if(node.level == 2) {
-        $("#icons tr").attr("style","cursor: pointer");
-        $("#icons ." + node.id).attr("style","background-color: #C6E8FA");
+        icons.show(current_year, current_month, current_key);
       }
 
       sequence.show(node);
@@ -73,41 +91,35 @@
       },
       clear: clear,
       show: function(year, month) {
-        d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}" + "/"+ year+ "/" + month, function(data) {
-          clear();
-          datum = data;
 
-          //console.log(d3.keys(data["amount"]));
-          if (data == null) return;
+        current_year = year;
+        current_month = month;
 
-          current_year = year;
-          current_month = month;
+        if(!current_key) {
+          d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}" + "/"+ year+ "/" + month, function(data) {
+            clear();
+            datum = data;
 
-          if(bubbleTree !== null) {
-            centerNode = bubbleTree.currentCenter;
-          }
+            //console.log(d3.keys(data["amount"]));
+            if (data == null) return;
 
-          bubbleTree = new BubbleTree({
-              data: data,
-              container: aContainer + ' #chart',
-              sortBy: 'label',
-              //maxNodesPerLevel: 12,
-              bubbleType: ['icon', 'plain'],
-              centerNode: centerNode,
-              //tooltip: function(d) {
-              //  if (d.type == 'HIDE' && root_node != d.node) {
-              //    sequence.hideBreadcrumb()
-              //  }
-              //  else {
-              //    var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
-              //    var sequenceArray = sequence.getAncestors(d.node);
-              //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
-              //  }
-              //},
-              nodeClickCallback: nodeClick
+            if(bubbleTree !== null) {
+              centerNode = bubbleTree.currentCenter;
+            }
+
+            bubbleTree = new BubbleTree({
+                data: data,
+                container: aContainer + ' #chart',
+                sortBy: 'label',
+                bubbleType: ['icon', 'plain'],
+                centerNode: centerNode,
+                nodeClickCallback: nodeClick
+            });
+            totalSize = data.size;
           });
-          totalSize = data.size;
-        })
+        } else {
+          selectTree(current_key);
+        }
       },
       selectNode: function (node) {
         nodeClick(node);
@@ -115,9 +127,7 @@
         bubbleTree.navigateTo(node);
       },
       selectTree: function (key) {
-        d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/" + current_year + "/" + current_month + "/kvk/" + key, function(data) {
-          console.log(data);
-        })
+        selectTree(key);
       }
     }
   }
