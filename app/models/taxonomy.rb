@@ -113,6 +113,40 @@ class Taxonomy
     levels
   end
 
+  def get_first_level level
+
+    levels = {}
+
+    explanation = self.explanation[level.to_s]
+
+    self.get_rows.each do |year, months|
+      levels[year] = { } if levels[year].nil?
+
+      levels[year][:totals] = {} if levels[year][:totals].nil?
+
+      months.each do |month, rows|
+        if levels[year][month].nil?
+          levels[year][:totals][month] = 0
+          levels[year][month] = { }
+        end
+        rows.each do |row|
+          key = row[level]
+          if levels[year][month][key].nil?
+            levels[year][month][key] = { amount: 0 }
+            %w(title icon color).map{|k|
+              levels[year][month][key][k] = explanation[key][k]
+            }
+          end
+
+          levels[year][month][key][:amount] += row[:amount]
+          levels[year][:totals][month] += row[:amount]
+        end
+      end
+    end
+
+    levels
+  end
+
   def get_tree
     rows = get_rows
 

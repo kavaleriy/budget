@@ -5,7 +5,7 @@
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
-    var current_year, current_month;
+    var current_year, current_month, data;
 
     function hide() {
       $("#icons").html('')
@@ -14,8 +14,11 @@
     var self = this;
 
     return {
-      initialize: function(data, options) {
-        self.data = data;
+      initialize: function(options) {
+
+        d3.json("/vtarnay/module4/get_rows/" + '#{@taxonomy.id}', function(data) {
+          self.data = data["rows_rov"];
+        });
 
         $("#icons").height(options.height || 500)
         self.clickCallback = options.clickCallback
@@ -26,23 +29,23 @@
         current_month = month;
         hide();
 
-        if (self.data == null)
+        var data = self.data[year][month];
+
+        if (data == null)
           return;
 
         var nodes = [];
         var percent = 0;
-        var totalSize = self.data["amount"];
+        var totalSize = self.data[year]["totals"][month];
 
-        $.each(self.data.children, function( index, value ) {
-          $.each(value.children, function( key, val ) {
-              nodes.push(val);
-          });
+        $.each(data, function( key, value ) {
+          nodes.push({key: key, amount: value["amount"]});
         });
 
         sort(nodes);
 
         function sort(nodes) {
-          for(var i in nodes) {
+          for(i in nodes) {
             var tmp = nodes[i];
             if(nodes[parseInt(i)+1] && (nodes[parseInt(i)+1].amount > nodes[i].amount)) {
               nodes[i] = nodes[parseInt(i)+1];
@@ -52,16 +55,23 @@
           }
         }
 
-        div = '<table class="table table-striped table-hover">';
-        for(i in nodes) {
+        var data_sorted = [];
 
-          div += '<tr class="' + nodes[i].id + '">'
-              + '<td class="col-sm-7"><i class="fa ' + nodes[i].icon + '"></i> '
-              + nodes[i].label + '</td>'
-              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(nodes[i].amount) + '</td>'
-              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(nodes[i] , totalSize) + '</td>'
+        for(i in nodes) {
+          data_sorted[nodes[i]["key"]] = data[nodes[i]["key"]];
+        }
+
+        div = '<table class="table table-striped table-hover">';
+
+        for(key in data_sorted) {
+          div += '<tr id="' + key + '">'
+              + '<td class="col-sm-7"><i class="fa ' + data_sorted[key].icon + '"></i> '
+              + data_sorted[key].title + '</td>'
+              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(data_sorted[key].amount) + '</td>'
+              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(data_sorted[key], totalSize) + '</td>'
               + '</tr>';
         }
+
         div += '</tbody></table>';
 
         $('#icons').html(div);
@@ -73,7 +83,7 @@
                                $("#icons tr").attr("style","cursor: pointer");
                                $(this).attr("style","background-color: #C6E8FA");
                                if (self.clickCallback){
-                                self.clickCallback(d[i]);
+                                 self.clickCallback(nodes[i]["key"]);
                                }
                              });
       },

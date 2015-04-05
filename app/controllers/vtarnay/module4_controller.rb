@@ -10,6 +10,11 @@ class Vtarnay::Module4Controller < ApplicationController
   def show
   end
 
+  def get_rows
+    @budget_file_rov = TaxonomyRov.where(:id => module4_params[:rov_file_id]).first
+    render json: { 'rows_rov' => @budget_file_rov.get_first_level("kvk") }
+  end
+
   private
 
   def set_taxonomy_file
@@ -24,6 +29,10 @@ class Vtarnay::Module4Controller < ApplicationController
 
     @sel_year = @range.last[0]
     @sel_month = @range.last[1].first
+  end
+
+  def module4_params
+    params.permit(:rov_file_id)
   end
 
 end

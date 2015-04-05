@@ -45,6 +45,8 @@
 
     sequence.initializeBreadcrumbTrail();
 
+    icons.initialize({ height: 500, clickCallback: function (key) { chart.selectTree(key);} });
+
     slider.initialize(100);
     slider_chart.initialize(250);
 

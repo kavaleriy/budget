@@ -32,7 +32,6 @@
     function nodeClick(node) {
 
       if(centerNode === null || current_year != icons.get_year() || current_month != icons.get_month()) {
-        icons.initialize(datum, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
         icons.show(current_year, current_month);
       }
 
@@ -114,6 +113,11 @@
         nodeClick(node);
         //url = bubbleTree.getUrlForNode(node);
         bubbleTree.navigateTo(node);
+      },
+      selectTree: function (key) {
+        d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/" + current_year + "/" + current_month + "/kvk/" + key, function(data) {
+          console.log(data);
+        })
       }
     }
   }
