@@ -120,6 +120,44 @@ class Taxonomy
     { totals: totals, levels: levels }
   end
 
+  def get_level_with_fonds level
+    levels = {}
+
+    explanation = self.explanation[level.to_s]
+
+    self.get_rows.each do |year, months|
+      levels[year] = { } if levels[year].nil?
+
+      levels[year][:totals] = {} if levels[year][:totals].nil?
+
+      months.each do |month, rows|
+        if levels[year][month].nil?
+          levels[year][:totals][month] = 0
+          levels[year][month] = { }
+        end
+        rows.each do |row|
+          fond = row[:fond]
+          if levels[year][month][fond].nil?
+            levels[year][month][fond] = {  }
+          end
+
+          key = row[level]
+          if levels[year][month][fond][key].nil?
+            levels[year][month][fond][key] = { amount: 0 }
+            %w(title icon color).map{|k|
+              levels[year][month][fond][key][k] = explanation[key][k]
+            }
+          end
+
+          levels[year][month][fond][key][:amount] += row[:amount]
+          levels[year][:totals][month] += row[:amount]
+        end
+      end
+    end
+
+    levels
+  end
+
   def get_tree
     rows = get_rows
 

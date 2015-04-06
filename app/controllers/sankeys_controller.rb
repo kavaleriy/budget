@@ -68,7 +68,7 @@ class SankeysController < ApplicationController
   def get_rows
     @budget_file_rot = TaxonomyRot.where(:id => sankey_params[:rot_file_id]).first
     @budget_file_rov = TaxonomyRov.where(:id => sankey_params[:rov_file_id]).first
-    render json: { 'rows_rot' => @budget_file_rot.get_level("kkd_a"), 'rows_rov' => @budget_file_rov.get_level("kvk") }
+    render json: { 'rows_rot' => @budget_file_rot.get_level_with_fonds("kkd_a"), 'rows_rov' => @budget_file_rov.get_level_with_fonds("kvk") }
   end
 
   private
