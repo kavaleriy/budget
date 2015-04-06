@@ -48,7 +48,7 @@
 
     var data, center_node;
 
-    var current_month = 0, current_year = 0;
+    var current_year = 0;
 
     function delay(d, i) { return i * 10; }
 
@@ -236,7 +236,7 @@
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       },
       hide: hide,
-      show: function(node, month, year) {
+      show: function(node, year) {
         if(!node.history) {
           hide();
           return;
@@ -247,7 +247,6 @@
         if (data == null || data.length == 0){
           return;
         }
-        current_month = month;
         current_year = year;
         show(data);
       },

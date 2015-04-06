@@ -457,14 +457,16 @@ var BubbleTree = function(config, onHover, onUnHover) {
 
         // move user to the same level where he was before click on month button
         // and reset sidebar and sequence to the same level but with other amounts
-        if(!me.currentCenter) {
-            if(!centerNode) {
-                node = root;
-            } else {
-                node = me.getCenterNode("bubble", centerNode);
-            }
-            me.config.nodeClickCallback(node.children ? node : node.parent);
-        }
+//        if(!me.currentCenter) {
+//            if(!centerNode) {
+//                node = root;
+//            } else {
+//                node = me.getCenterNode("bubble", centerNode);
+//                me.config.nodeClickCallback(node.children ? node : node.parent);
+//            }
+//            console.log("currentCenter");
+//
+//        }
         // -----------------------------------------------------------------------
 
 		if (node !== null) {

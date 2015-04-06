@@ -60,8 +60,44 @@
 
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
-        chart.initialize($(document).width()/2, 600, data);
-        chart.show(year, month);
+        current_data = buildData(data);
+        chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
+        chart.show(current_data);
+        slider_chart.show(current_data, year);
+        slider.show(current_data, month);
+        sidebar.show(current_data);
       });
+    }
+
+    function bubbleItemClick(node) {
+      console.log("bubbleclick", node);
+      sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, month);
+      sidebar.show(node);
+  }
+
+    // get current data for all visifies
+    function buildData(item) {
+      if (!item.amount || !item.amount[year] || !item.amount[year][month])
+        return;
+
+      var node = {}
+      node['amount'] = item.amount[year][month]
+      node['history'] = item.amount
+
+      $.each(['key', 'label', 'color', 'icon'], function(k, v) {
+        node[v] = item[v]
+      })
+
+      if (item.children) {
+        node.children = []
+        $.each(item.children, function(k, v) {
+          child = buildData(v)
+          if (child) node.children.push(child)
+        });
+      }
+
+      return node;
     }
   })

@@ -46,7 +46,7 @@
 
     var data;
 
-    var current_month = 0, current_year = 0;
+    var current_month = 0;
 
     function delay(d, i) { return i * 5; }
 
@@ -186,7 +186,7 @@
 
       },
       hide: hide,
-      show: function(node, month, year) {
+      show: function(node, month) {
 
         if(!node.history) {
           hide();
@@ -199,7 +199,6 @@
           return;
         }
         current_month = month;
-        current_year = year;
         show(data);             // show months compare for the last year
       },
       current_year: function() {
