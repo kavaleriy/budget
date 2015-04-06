@@ -24,8 +24,6 @@
 
   .col-xs-12.col-md-7
     #under_sequence
-    .text
-      here is explanation
     = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
 
   #description.col-xs-12
@@ -55,7 +53,6 @@
 
     slider.initialize(100);
     slider_chart.initialize(250);
-
     sidebar.initialize(600);
 
     chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
