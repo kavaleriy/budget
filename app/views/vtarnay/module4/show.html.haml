@@ -3,8 +3,6 @@
     height: 100px;
   }
 
-- model_class = Taxonomy
-
 = content_for :header do
   .head
     %i.fa.fa-money
@@ -26,6 +24,8 @@
 
   .col-xs-12.col-md-7
     #under_sequence
+    .text
+      here is explanation
     = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
 
   #description.col-xs-12
@@ -34,17 +34,17 @@
 
 :javascript
 
-  var sequence = aSequence('.visify')
-  var chart = aTreeChart('.bubbletree');
-  var slider = aSliderCompare('#slider_compare');
-  var slider_chart = aSliderChart('#slider_chart', slider);
-  var sidebar = aSidebar('.visify');
-  var icons = aIcons();
-
   $(document).ready(function() {
+    var sequence = aSequence('.visify')
+    var chart = aTreeChart('.bubbletree');
+    var slider = aSliderCompare('#slider_compare');
+    var slider_chart = aSliderChart('#slider_chart', slider);
+    var sidebar = aSidebar('.visify');
+    var icons = aIcons();
 
-    year = "#{@sel_year}"
-    month = "#{@sel_month}"
+
+    var year = "#{@sel_year}",
+        month = "#{@sel_month}"
 
     sequence.initializeBreadcrumbTrail();
 
@@ -58,10 +58,13 @@
 
     sidebar.initialize(600);
 
+    chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
+
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
-        current_data = buildData(data);
-        chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
+        var current_data = buildData(data);
+
+        sequence.show(current_data);
         chart.show(current_data);
         slider_chart.show(current_data, year);
         slider.show(current_data, month);
@@ -70,10 +73,9 @@
     }
 
     function bubbleItemClick(node) {
-      console.log("bubbleclick", node);
       sequence.show(node);
       slider_chart.show(node, year);
-      slider.show(node, month);
+      slider.show(node, year, month);
       sidebar.show(node);
   }
 

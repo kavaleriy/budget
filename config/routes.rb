@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     get 'module4' => 'module4#index'
     get 'module4/:id' => 'module4#show'
     get 'module4/get_rows/:rov_file_id' => 'module4#get_rows'
+
+    get 'module5' => 'module4#index'
+    get 'module5/:id' => 'module4#show'
+    get 'module5/get_rows/:rov_file_id' => 'module4#get_rows'
   end
 
   namespace :widgets do

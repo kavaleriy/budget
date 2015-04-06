@@ -26,7 +26,7 @@
 
 :javascript
 
-  var sequence = aSequence('.visify')
+  var sequence = aSequence('.budget')
   var chart = aPieChart('.chart');
   var slider = aSliderCompare('#slider_compare');
   var slider_chart = aSliderChart('#slider_chart', slider);
@@ -51,6 +51,7 @@
 
     function showPieChart(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
+        sequence.show(data);
         chart.initialize(pie_width, data.children, {} );
         chart.show(year, month);
       })

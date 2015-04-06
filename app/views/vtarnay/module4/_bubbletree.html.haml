@@ -15,75 +15,43 @@
         %span#value
 
 :javascript
-  function aTreeChart(aContainer) {
-    var self = this
-    var _data;
-
-    var bubbleTree = null;
-    var totalSize = null;
-    var centerNode = null;
+  var aTreeChart = function (aContainer) {
+    var self;
+    var bubbleTree, centerNode, totalSize;
 
     function clear() {
-      sequence.hideBreadcrumb();
-      sidebar.hide();
       d3.select(aContainer + ' #chart').selectAll("*").remove();
-    }
-
-    function nodeClick(node) {
-
-      sequence.show(node);
-
-      //if(node.children.length > 0) {
-      //  sidebar.show(node);
-      //} else {
-      //  sidebar.hide();
-      //  sidebar.showUndersequence(node);
-      //  sidebar.getLevelInfo(node);
-      //}
-
-      //if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {
-      //  slider.show(node, current_month, current_year);
-      //  slider_chart.show(node, current_month, current_year);
-      //} else {
-      //  slider_chart.set_month(current_month);
-      //}
-
-      if(node.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      centerNode = node;
     }
 
     return {
       initialize: function(options) {
-        centerNode = null;
+        self = this
+
         $(aContainer + ' #chart').width(options.width).height(options.height);
         self.clickCallback = options.clickCallback;
       },
-      clear: clear,
-      show: function(current_data) {
+      show: function(data) {
         clear();
 
-        if (current_data == null) return;
+        if (data == null) return;
+
+        centerNode = null;
 
         if(!centerNode) {
-          centerNode = current_data;
+          centerNode = data;
         }
 
         bubbleTree = new BubbleTree({
-            data: current_data,
+            data: data,
             container: aContainer + ' #chart',
             sortBy: 'label',
-            bubbleType: ['icon', 'plain'],
+            bubbleType: ['plain'],
             centerNode: centerNode,
             nodeClickCallback: self.clickCallback
         });
-        totalSize = current_data.amount;
+        totalSize = data.amount;
       },
       selectNode: function (node) {
-        self.clickCallback(node);
         bubbleTree.navigateTo(node);
       }
     }

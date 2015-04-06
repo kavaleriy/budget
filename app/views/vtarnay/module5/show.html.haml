@@ -1,0 +1,69 @@
+:css
+  #description {
+    height: 100px;
+  }
+
+- model_class = Taxonomy
+
+= content_for :header do
+  .head
+    %i.fa.fa-money
+    #{t('.title')}:
+    %span.descr
+      #{@taxonomy.title}
+
+
+.visify.row.budget
+  .col-xs-12
+    = render partial: 'widgets/visify/sequence', :locals => { budget_file_id: @taxonomy.id }
+
+  .icons.col-xs-12.col-md-5
+    = render partial: 'left_icons', :locals => { budget_file_id: @taxonomy.id }
+
+    .slider
+      = render partial: 'widgets/visify/slider_chart'
+      = render partial: 'widgets/visify/slider_compare', :locals => { budget_file_id: @taxonomy.id}
+
+  .col-xs-12.col-md-7
+    #under_sequence
+    = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
+
+  #description.col-xs-12
+
+  = ren derpartial: 'widgets/visify/helpers'
+
+:javascript
+
+  var sequence = aSequence('.visify')
+  var chart = aTreeChart('.bubbletree');
+  var slider = aSliderCompare('#slider_compare');
+  var slider_chart = aSliderChart('#slider_chart', slider);
+  var sidebar = aSidebar('.visify');
+  var icons = aIcons();
+
+  $(document).ready(function() {
+
+    year = "#{@sel_year}"
+    month = "#{@sel_month}"
+
+    sequence.initializeBreadcrumbTrail();
+
+    d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk/", function(data) {
+      icons.initialize(data, { height: 500, clickCallback: iconsItemClick });
+      icons.show(year, month);
+    })
+
+    slider.initialize(100);
+    slider_chart.initialize(250);
+
+    sidebar.initialize(600);
+
+    function iconsItemClick(key) {
+      chart.selectTree(key);
+
+      d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}", function(data) {
+        chart.initialize($(document).width()/2, 600, data);
+        chart.show(year, month);
+      })
+    }
+  })
