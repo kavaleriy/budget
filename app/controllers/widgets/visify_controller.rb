@@ -64,15 +64,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubble_tree_item(item, info)
-    #cut_amount = (tree[:max].abs - tree[:min].abs) * 0.0005
-    amount = (item['amount'][@sel_year][@sel_month] rescue 0)
-
-    return nil if amount == 0
-
     node = {
-        # 'size' => amount,
-        'amount' => amount,
-        'history' => item['amount'],
+        'amount' => item['amount'],
         'label' => item['key'],
         'key' => item['key'],
         'taxonomy' => item['taxonomy']
@@ -110,21 +103,24 @@ class Widgets::VisifyController < Widgets::WidgetsController
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
           if node['children'].length >= MAX_NODES_PER_LEVEL && child_count > MAX_NODES_PER_LEVEL + 2
-            unless ti['amount'].nil? || ti['amount'] == 0
-              if node['children'][MAX_NODES_PER_LEVEL].nil?
-                node['children'][MAX_NODES_PER_LEVEL] =
-                    { 'label' => I18n.t('aggregated'),
-                      'amount' => 0,
-                      'color' => 'green',
-                      'icon' => 'fa-folder-open-o'
-                    }
-                node['children'][MAX_NODES_PER_LEVEL]['children'] = []
-              end
-
-              node['children'][MAX_NODES_PER_LEVEL]['amount'] += ti['amount']
-              # node['children'][MAX_NODES_PER_LEVEL]['size'] += ti['amount']
-              node['children'][MAX_NODES_PER_LEVEL]['children'] << ti
+            if node['children'][MAX_NODES_PER_LEVEL].nil?
+              node['children'][MAX_NODES_PER_LEVEL] =
+                  { 'label' => I18n.t('aggregated'),
+                    'color' => 'green',
+                    'icon' => 'fa-folder-open-o'
+                  }
+              node['children'][MAX_NODES_PER_LEVEL]['children'] = []
             end
+
+            node['children'][MAX_NODES_PER_LEVEL]['amount'] = {} if node['children'][MAX_NODES_PER_LEVEL]['amount'].nil?
+            ti['amount'].each { |year, months|
+              node['children'][MAX_NODES_PER_LEVEL]['amount'][year] = {} if node['children'][MAX_NODES_PER_LEVEL]['amount'][year].nil?
+              months.each { |month, amount|
+                node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month] = 0 if node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month].nil?
+                node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month] += amount
+              }
+            }
+            node['children'][MAX_NODES_PER_LEVEL]['children'] << ti
           else
             node['children'] << ti unless ti.nil?
           end
@@ -138,6 +134,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def set_budget_file
     @sel_year = '0'
     @sel_month = '0'
+
     @range = {}
 
     @budget_file = BudgetFile.where(:id => visify_params[:file_id]).first

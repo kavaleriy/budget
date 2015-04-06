@@ -5,7 +5,7 @@
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
-    var current_year, current_month, datum;
+    var current_year, current_month;
 
     function hide() {
       $("#icons").html('')
@@ -14,38 +14,35 @@
     var self = this;
 
     return {
-      initialize: function(options) {
-
-        d3.json("/vtarnay/module4/get_rows/" + '#{@taxonomy.id}', function(data) {
-          self.datum = data["rows_rov"];
-        });
+      initialize: function(data, options) {
+        self.data = data;
 
         $("#icons").height(options.height || 500)
-        self.clickCallback = options.clickCallback
+        self.clickCallback = options.onclick
       },
       hide: hide,
-      show: function(year, month, current_key) {
+      show: function(year, month) {
         current_year = year;
         current_month = month;
         hide();
 
-        var data = self.datum[year][month];
-
-        if (data == null)
+        if (self.data == null)
           return;
 
         var nodes = [];
         var percent = 0;
-        var totalSize = self.datum[year]["totals"][month];
+        var totalSize = self.data["amount"];
 
-        $.each(data, function( key, value ) {
-          nodes.push({key: key, amount: value["amount"]});
+        $.each(self.data.children, function( index, value ) {
+          $.each(value.children, function( key, val ) {
+              nodes.push(val);
+          });
         });
 
         sort(nodes);
 
         function sort(nodes) {
-          for(i in nodes) {
+          for(var i in nodes) {
             var tmp = nodes[i];
             if(nodes[parseInt(i)+1] && (nodes[parseInt(i)+1].amount > nodes[i].amount)) {
               nodes[i] = nodes[parseInt(i)+1];
@@ -55,37 +52,28 @@
           }
         }
 
-        var data_sorted = [];
-
-        for(i in nodes) {
-          data_sorted[nodes[i]["key"]] = data[nodes[i]["key"]];
-        }
-
         div = '<table class="table table-striped table-hover">';
+        for(i in nodes) {
 
-        for(key in data_sorted) {
-          div += '<tr id="' + key + '">'
-              + '<td class="col-sm-7"><i class="fa ' + data_sorted[key].icon + '"></i> '
-              + (data_sorted[key].title || key) + '</td>'
-              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(data_sorted[key].amount) + '</td>'
-              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(data_sorted[key], totalSize) + '</td>'
+          div += '<tr class="' + nodes[i].id + '">'
+              + '<td class="col-sm-7"><i class="fa ' + nodes[i].icon + '"></i> '
+              + nodes[i].label + '</td>'
+              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(nodes[i].amount) + '</td>'
+              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(nodes[i] , totalSize) + '</td>'
               + '</tr>';
         }
-
         div += '</tbody></table>';
 
         $('#icons').html(div);
 
         d3.selectAll("#icons tr")
             .datum(nodes)
-            .attr("style", function(d, i) {
-                              return nodes[i]["key"] == current_key ? "background-color: #C6E8FA" : "cursor: pointer";
-                           })
+            .style("cursor", "pointer")
             .on("click", function(d, i) {
                                $("#icons tr").attr("style","cursor: pointer");
                                $(this).attr("style","background-color: #C6E8FA");
                                if (self.clickCallback){
-                                 self.clickCallback(nodes[i]["key"]);
+                                self.clickCallback(d[i]);
                                }
                              });
       },

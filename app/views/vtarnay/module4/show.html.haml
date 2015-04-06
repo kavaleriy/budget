@@ -3,7 +3,7 @@
     height: 100px;
   }
 
-- model_class = BudgetFile
+- model_class = Taxonomy
 
 = content_for :header do
   .head
@@ -52,8 +52,9 @@
 
     sidebar.initialize(600);
 
-    chart.initialize($(document).width()/2, 600);
-    chart.show("#{@sel_year}", "#{@sel_month}");
-
+    d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}", function(data) {
+      chart.initialize($(document).width()/2, 600, data);
+      chart.show("#{@sel_year}", "#{@sel_month}");
+    })
   })
 

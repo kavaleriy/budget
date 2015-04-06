@@ -1,0 +1,105 @@
+-#https://github.com/benkeen/d3pie
+
+= javascript_include_tag "d3pie.js"
+
+#pie_chart
+
+:javascript
+
+    function aPieChart(aContainer) {
+      var self = this;
+      var _data
+
+      var width, height, radius
+
+
+      return {
+        initialize: function(pHeight, pData, options) {
+          _data = pData
+          width = $(aContainer).width();
+          height = pHeight
+
+          self.clickCallback = options.onclick
+        },
+        hide: function(){
+          if (self.pie)
+            self.pie.destroy()
+        },
+        show: function(year, month) {
+          this.hide()
+
+          if (_data == null)
+            return
+
+          data = []
+
+          $.each(_data, function(k, v) {
+            key = v.key || k
+            item = { key: key, label: v.label }
+
+            if (v.amount && v.amount[year]) item.value = v.amount[year][month]
+            if (v.color) item.color = v.color
+            data.push( item )
+          });
+
+          draw_data(data);
+
+          function draw_data(data) {
+            self.pie = new d3pie("pie_chart", {
+              header: {
+                title: {
+                  text: ""
+                },
+                location: "pie-center"
+              },
+              size: {
+                pieInnerRadius: "60%",
+                pieOuterRadius: "90%",
+                canvasHeight: height,
+                canvasWidth: width
+              },
+              data: {
+                  sortOrder: "value-asc",
+                  smallSegmentGrouping: {
+                      enabled: true,
+                      value: 5,
+                      valueType: "percentage",
+                      label: "Інше"
+                  },
+                  content: data
+              },
+              callbacks: {
+                onClickSegment: function(segment) {
+                  key = segment.data.key
+
+                  if (key && self.clickCallback)
+                    self.clickCallback(key);
+                }
+              },
+              tooltips: {
+                  enabled: true,
+                  type: "placeholder",
+                  string: "{label}: {value}",
+
+                  // data is an object with the three properties listed below. Just modify the properties
+                  // directly - there's no need to return anything
+                  placeholderParser: function(index, data) {
+                    data.value = aVisify.helpers.formatNumber(data.value);
+                   },
+                   styles: {
+                     fadeInSpeed: 300,
+                     backgroundColor: "#00cc99",
+                     backgroundOpacity: 0.95,
+                     color: "#ffffcc",
+                     borderRadius: 4,
+                     //font: "verdana",
+                     fontSize: 14,
+                     padding: 10,
+                   }
+
+                }
+            });
+          };
+        }
+      }
+    }

@@ -76,41 +76,48 @@ class Taxonomy
 
   def get_level level
 
-    levels = {}
+    totals = {}
 
-    explanation = self.explanation[level.to_s]
+    rows = self.get_rows
 
-    self.get_rows.each do |year, months|
-      levels[year] = { } if levels[year].nil?
-
-      levels[year][:totals] = {} if levels[year][:totals].nil?
+    rows.each do |year, months|
+      totals[year] = { } if totals[year].nil?
 
       months.each do |month, rows|
-        if levels[year][month].nil?
-          levels[year][:totals][month] = 0
-          levels[year][month] = { }
-        end
+        totals[year][month] = 0 if totals[year][month].nil?
+
         rows.each do |row|
-          fond = row[:fond]
-          if levels[year][month][fond].nil?
-            levels[year][month][fond] = {  }
-          end
-
-            key = row[level]
-            if levels[year][month][fond][key].nil?
-              levels[year][month][fond][key] = { amount: 0 }
-              %w(title icon color).map{|k|
-                levels[year][month][fond][key][k] = explanation[key][k]
-              }
-            end
-
-            levels[year][month][fond][key][:amount] += row[:amount]
-            levels[year][:totals][month] += row[:amount]
+          totals[year][month] += row[:amount]
         end
       end
     end
 
-    levels
+    levels = {}
+    explanation = self.explanation[level.to_s]
+    rows.each do |year, months|
+      months.each do |month, rows|
+        rows.each do |row|
+          key = row[level]
+
+          if levels[key].nil?
+            levels[key] = {}
+
+            levels[key]['label'] = explanation[key]['title']
+            %w(icon color).map{|k|
+              levels[key][k] = explanation[key][k]
+            } unless explanation[key].nil?
+          end
+
+          levels[key][:amount] = {} if levels[key][:amount].nil?
+          levels[key][:amount][year] = {} if levels[key][:amount][year].nil?
+          levels[key][:amount][year][month] = 0 if levels[key][:amount][year][month].nil?
+          levels[key][:amount][year][month] += row[:amount]
+        end
+      end
+    end
+
+
+    { totals: totals, levels: levels }
   end
 
   def get_first_level level
@@ -146,7 +153,7 @@ class Taxonomy
 
     levels
   end
-
+    
   def get_tree
     rows = get_rows
 

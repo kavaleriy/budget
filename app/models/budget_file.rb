@@ -64,7 +64,7 @@ class BudgetFile
       self.rows[year].keys.each { |month|
         subrows[year][month] = [] if subrows[year][month].nil?
         self.rows[year][month].each { |row|
-          subrows[year][month] << row.reject{|k, v| k == level or filter.include?(k) } if row[level] == key
+          subrows[year][month] << row.reject{|k, v| filter.include?(k) } if row[level] == key
         }
       }
     }
