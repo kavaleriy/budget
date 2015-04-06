@@ -429,14 +429,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
         for (i in me.displayObjects) {
             o = me.displayObjects[i];
             if (o.className != className) continue;
-            if (o.node.level == node.level && o.node.label == node.label) {
-                if(node.parent) {
-                    if (o.node.parent.level == node.parent.level && o.node.parent.label == node.parent.label) {
-                        return o.node;
-                    }
-                } else {
-                    return o.node;
-                }
+            if (o.node.key == node.key && JSON.stringify(o.node.history) === JSON.stringify(node.history)) {
+                return o.node;
             }
         }
         console.log(className+' not found center Node ', node);
