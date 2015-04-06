@@ -35,8 +35,8 @@
 
     function nodeClick(node) {
       if(centerNode === null || current_year != icons.get_year() || current_month != icons.get_month()) {
-        icons.initialize(current_data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
-        icons.show(current_year, current_month);
+        //icons.initialize(current_data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
+        //icons.show(current_year, current_month);
       }
 
       if(node.level < 2) {
@@ -142,4 +142,3 @@
       }
     }
   }
-
