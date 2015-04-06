@@ -42,7 +42,8 @@
 
 
     var year = "#{@sel_year}",
-        month = "#{@sel_month}"
+        month = "#{@sel_month}";
+    var _data = null, current_data = null, center_node = null;
 
     sequence.initializeBreadcrumbTrail();
 
@@ -51,15 +52,16 @@
       icons.show(year, month);
     });
 
-    slider.initialize(100);
-    slider_chart.initialize(250);
+    slider.initialize(100, {clickCallback: monthItemClick});
+    slider_chart.initialize(250, {clickCallback: yearItemClick});
     sidebar.initialize(600);
-
     chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
 
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
-        var current_data = buildData(data);
+        current_data = buildData(data);
+        _data = data;
+        chart.set_centerNode(null);
 
         sequence.show(current_data);
         chart.show(current_data);
@@ -74,10 +76,30 @@
       slider_chart.show(node, year);
       slider.show(node, year, month);
       sidebar.show(node);
-  }
+      chart.set_centerNode(node);
+    }
+
+    function yearItemClick(new_year) {
+      year = new_year;
+      current_data = buildData(_data);
+      sequence.show(current_data);
+      chart.show(current_data);
+      icons.show(year, month);
+      slider.show(current_data, month);
+      sidebar.show(current_data);
+    }
+
+    function monthItemClick(new_month) {
+      month = new_month;
+      current_data = buildData(_data);
+      sequence.show(current_data);
+      chart.show(current_data);
+      sidebar.show(current_data);
+    }
 
     // get current data for all visifies
     function buildData(item) {
+
       if (!item.amount || !item.amount[year] || !item.amount[year][month])
         return;
 

@@ -17,7 +17,7 @@
 :javascript
   var aTreeChart = function (aContainer) {
     var self;
-    var bubbleTree, centerNode, totalSize;
+    var bubbleTree, centerNode = null, totalSize;
 
     function clear() {
       d3.select(aContainer + ' #chart').selectAll("*").remove();
@@ -35,12 +35,6 @@
 
         if (data == null) return;
 
-        centerNode = null;
-
-        if(!centerNode) {
-          centerNode = data;
-        }
-
         bubbleTree = new BubbleTree({
             data: data,
             container: aContainer + ' #chart',
@@ -53,6 +47,9 @@
       },
       selectNode: function (node) {
         bubbleTree.navigateTo(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
       }
     }
   }

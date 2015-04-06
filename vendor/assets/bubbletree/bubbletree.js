@@ -462,8 +462,8 @@ var BubbleTree = function(config, onHover, onUnHover) {
                 node = root;
             } else {
                 node = me.getCenterNode("bubble", centerNode);
-                me.config.nodeClickCallback(node.children ? node : node.parent);
             }
+			me.config.nodeClickCallback(node.children ? node : node.parent);
         }
         // -----------------------------------------------------------------------
 

@@ -36,7 +36,7 @@
 
 
 :javascript
-  function aSliderChart(aContainer, slider) {
+  var aSliderChart = function (aContainer, slider) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
@@ -46,7 +46,7 @@
 
     var color;
 
-    var data, center_node;
+    var data, center_node, self;
 
     var current_year = 0;
 
@@ -166,7 +166,7 @@
         .attr("fill", "#9ecae1")
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
-        .on("click", mouseclick)
+        .on("click", function(d) {self.clickCallback(d.label)})
         .append("title")
            .text(function(d) {
                  return aVisify.helpers.formatNumber(d.amount);
@@ -203,7 +203,9 @@
     }
 
     return {
-      initialize: function(pHeight) {
+      initialize: function(pHeight, options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
         $("#slider_chart").html('');
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,

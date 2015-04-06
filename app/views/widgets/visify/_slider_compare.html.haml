@@ -44,7 +44,7 @@
 
     var color;
 
-    var data;
+    var data, self;
 
     var current_month = 0;
 
@@ -138,7 +138,7 @@
           .attr("height", 0)
           .on("mouseover", mouseover)
           .on("mouseout", mouseout)
-          .on("click", mouseclick);
+          .on("click", self.clickCallback);
 
       svg.selectAll(".bartext")
         .data(data)
@@ -161,7 +161,9 @@
     }
 
     return {
-      initialize: function(pHeight) {
+      initialize: function(pHeight, options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
         $("#slider_compare").html('');
         width = $(aContainer).width() - margin.left - margin.right,
         height = pHeight - margin.top - margin.bottom;
