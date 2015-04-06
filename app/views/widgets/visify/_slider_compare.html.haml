@@ -86,16 +86,16 @@
     }
 
     function mouseclick(d) {
-      if(d.label != current_month) {
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-        $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
-        current_month = d.label;
-      } else {
-        current_month = 0;
-        $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      }
-
-      chart.show(current_year, current_month);
+      //if(d.label != current_month) {
+      //  $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      //  $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
+      //  current_month = d.label;
+      //} else {
+      //  current_month = 0;
+      //  $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      //}
+      //
+      //chart.show(current_year, current_month);
     }
 
     function mouseover(d) {
@@ -138,7 +138,7 @@
           .attr("height", 0)
           .on("mouseover", mouseover)
           .on("mouseout", mouseout)
-          .on("click", self.clickCallback);
+          .on("click", function(d) {self.clickCallback(d.label)});
 
       svg.selectAll(".bartext")
         .data(data)

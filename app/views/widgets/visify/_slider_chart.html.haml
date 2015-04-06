@@ -85,18 +85,18 @@
     }
 
     function mouseclick(d) {
-      if(d.label != current_year) {
-        $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
-        $(this).attr("class", "active_point");
-        current_year = d.label;
-        slider.show(center_node, current_month, current_year);
-        chart.show(current_year, current_month);
-      } else if(current_month != 0) {
-        current_month = 0;
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-        slider.set_month(0);
-        chart.show(current_year, current_month);
-      }
+      //if(d.label != current_year) {
+      //  $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
+      //  $(this).attr("class", "active_point");
+      //  current_year = d.label;
+      //  slider.show(center_node, current_month, current_year);
+      //  chart.show(current_year, current_month);
+      //} else if(current_month != 0) {
+      //  current_month = 0;
+      //  $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      //  slider.set_month(0);
+      //  chart.show(current_year, current_month);
+      //}
     }
 
     function mouseover(d) {
