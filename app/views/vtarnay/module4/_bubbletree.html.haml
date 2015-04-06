@@ -34,18 +34,6 @@
     }
 
     function nodeClick(node) {
-      if(centerNode === null || current_year != icons.get_year() || current_month != icons.get_month()) {
-        //icons.initialize(current_data, { height: 500, clickCallback: function (node) { chart.selectNode(node);} });
-        //icons.show(current_year, current_month);
-      }
-
-      if(node.level < 2) {
-        $("#icons tr").attr("style","cursor: pointer");
-      }
-      if(node.level == 2) {
-        $("#icons tr").attr("style","cursor: pointer");
-        $("#icons ." + node.id).attr("style","background-color: #C6E8FA");
-      }
 
       sequence.show(node);
       if(node.children.length > 0) {
@@ -73,7 +61,8 @@
 
     return {
       initialize: function(width, height, data) {
-        _data = data
+        _data = data;
+        centerNode = null;
         $(aContainer + ' #chart').width(width).height(height);
       },
       clear: clear,
@@ -85,11 +74,7 @@
         current_year = year;
         current_month = month;
 
-        if(bubbleTree !== null) {
-          centerNode = bubbleTree.currentCenter;
-        }
-
-        current_data = buildData(_data)
+        current_data = buildData(_data);
 
         function buildData(item) {
           if (!item.amount || !item.amount[year] || !item.amount[year][month])
@@ -114,30 +99,22 @@
           return node;
         }
 
+        if(!centerNode) {
+          centerNode = current_data;
+        }
+
         bubbleTree = new BubbleTree({
             data: current_data,
             container: aContainer + ' #chart',
             sortBy: 'label',
-            //maxNodesPerLevel: 10,
             bubbleType: ['icon', 'plain'],
             centerNode: centerNode,
-            //tooltip: function(d) {
-            //  if (d.type == 'HIDE' && root_node != d.node) {
-            //    sequence.hideBreadcrumb()
-            //  }
-            //  else {
-            //    var percentageString = aVisify.helpers.getPercentageString(d.node, d.node.parent ? d.node.parent.amount : totalSize)
-            //    var sequenceArray = sequence.getAncestors(d.node);
-            //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
-            //  }
-            //},
             nodeClickCallback: nodeClick
         });
         totalSize = current_data.amount;
       },
       selectNode: function (node) {
         nodeClick(node);
-        //url = bubbleTree.getUrlForNode(node);
         bubbleTree.navigateTo(node);
       }
     }

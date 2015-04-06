@@ -30,7 +30,7 @@
 
   #description.col-xs-12
 
-  = ren der partial: 'widgets/visify/helpers'
+  = render partial: 'widgets/visify/helpers'
 
 :javascript
 
@@ -51,7 +51,7 @@
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk/", function(data) {
       icons.initialize(data, { height: 500, clickCallback: iconsItemClick });
       icons.show(year, month);
-    })
+    });
 
     slider.initialize(100);
     slider_chart.initialize(250);
@@ -59,11 +59,9 @@
     sidebar.initialize(600);
 
     function iconsItemClick(key) {
-      chart.selectTree(key);
-
-      d3.json("/widgets/visify/get_bubbletree_data/" + "#{@taxonomy.id}", function(data) {
+      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
         chart.initialize($(document).width()/2, 600, data);
         chart.show(year, month);
-      })
+      });
     }
   })

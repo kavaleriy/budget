@@ -88,7 +88,7 @@
         icon = node.icon || ''
 
         if (node.parent && node.amount <= node.parent.amount) {
-          percentage = aVisify.helpers.getPercentageString(node, node.parent.amount)
+          percentage = aVisify.helpers.getPercentageString(node.amount, node.parent.amount)
           percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
         }
         else {

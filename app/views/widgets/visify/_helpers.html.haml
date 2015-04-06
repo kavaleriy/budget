@@ -1,8 +1,8 @@
 :javascript
   aVisify = {
     helpers: {
-      getPercentageString: function (d, totalSize) {
-        var percentage = (100 * d.amount/ totalSize).toPrecision(3);
+      getPercentageString: function (amount, totalSize) {
+        var percentage = (100 * amount/ totalSize).toPrecision(3);
         var percentageString = percentage + "%";
         if (percentage < 0.1) {
           percentageString = "< 0.1%";
