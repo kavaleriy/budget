@@ -22,9 +22,9 @@
     return {
       initialize: function(options) {
         self = this;
+        self.clickCallback = options.clickCallback;
 
         $(aContainer + ' #chart').width(options.width).height(options.height);
-        self.clickCallback = options.clickCallback;
       },
       show: function(data) {
         clear();
