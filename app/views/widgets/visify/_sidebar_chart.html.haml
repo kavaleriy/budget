@@ -114,12 +114,6 @@
           .style("cursor", "pointer")
           .on("click", function(d, i) {
                 if(i < data.length && data[i].children) _self.clickCallback(data[i]);
-              })
-          .on("mouseover", function(d, i) {
-                if(visifier == "circles") chart.mouseover(data[i]);
-              })
-          .on("mouseleave", function(d, i) {
-                if(visifier == "circles") chart.mouseleave(data[i]);
               });
 
         svg.transition().duration(250).selectAll(".bar")
