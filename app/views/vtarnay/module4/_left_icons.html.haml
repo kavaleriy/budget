@@ -3,7 +3,7 @@
 :javascript
   function aIcons() {
 
-    var width, height;
+    var width, height, current_key = null;
 
     function hide() {
       $("#icons").html('');
@@ -19,7 +19,6 @@
       },
       hide: hide,
       show: function(year, month) {
-
         hide();
 
         if (!_data || !_data["totals"][year] || !_data["totals"][year][month])
@@ -68,8 +67,9 @@
 
         d3.selectAll("#icons tr")
             .datum(nodes)
-            .style("cursor", "pointer")
+            .attr("style", function(d, i) { return d[i]["key"] == current_key ? "background-color: #C6E8FA" : "cursor: pointer"; })
             .on("click", function(d, i) {
+                               current_key = d[i]["key"];
                                $("#icons tr").attr("style","cursor: pointer");
                                $(this).attr("style","background-color: #C6E8FA");
                                if (self.clickCallback){

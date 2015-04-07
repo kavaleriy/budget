@@ -14,9 +14,9 @@
 
 
       return {
-        initialize: function(pHeight) {
-          _self = this
-
+        initialize: function(pHeight, options) {
+          _self = this;
+          _self.clickCallback = options.clickCallback;
           height = pHeight - margin.top - margin.bottom;
           width = $(aContainer).width();
         },
@@ -67,7 +67,7 @@
               callbacks: {
                 onClickSegment: function(segment) {
                   index = segment.data.index
-                  chart.selectNode(_data[index]);
+                  _self.clickCallback(_data[index]);
                 }
               },
               tooltips: {

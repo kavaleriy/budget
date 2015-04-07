@@ -4,20 +4,21 @@
     %span#percentage
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+  function aTreeChart(aContainer) {
     var totalSize;
     var width, height, radius;
     var color;
     var svg, partition, arc;
     var current_year, current_month;
-    var center_node = null;
+    var centerNode = null;
+    var self;
 
     function getCenterNode(data) {
       var nodes = partition(data);
       for(i in nodes) {
-        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
-          if(center_node.parent) {
-            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
+        if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+          if(centerNode.parent) {
+            if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
               return nodes[i];
             }
           } else {
@@ -25,15 +26,14 @@
           }
         }
       }
-      //console.log("node not found");
+    }
+
+    function clear() {
+      svg.selectAll("*").remove();
     }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-      if(center_node === null) {
-        center_node = json;
-      }
-      slider_year.set_month(current_month);
 
       root = json;
       totalSize = json.amount;
@@ -47,35 +47,12 @@
         .enter().append("svg:path")
         .attr("d", arc)
         .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
-        .on("click", mouseclick)
+        .on("click", self.clickCallback)
         .each(stash)
         .on("mouseover", function(d){ add_tooltip(d3.event, d) })
         .on("mouseout", remove_tooltip);
 
     };
-
-    function mouseclick(d) {
-      magnify(d)
-      if(d.children) {
-        sidebar.show(d);
-      } else {
-        sidebar.hide();
-        sidebar.showUndersequence(d);
-      }
-      sequence.show(d);
-      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
-        slider.show(d, current_month, current_year);
-        slider_year.show(d, current_month, current_year);
-      } else {
-        slider_year.set_month(current_month);
-      }
-      if(d.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      center_node = d;
-    }
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
@@ -155,19 +132,12 @@
       };
     }
 
-
-
-    function clear() {
-      sequence.hideBreadcrumb()
-      sidebar.hide()
-      svg.selectAll("*").remove()
-    }
-
-
     return {
-      initialize: function(pWidth, pHeight) {
-        width = pWidth
-        height = pHeight
+      initialize: function(options) {
+        width = options.width;
+        height = options.height;
+        self = this;
+        self.clickCallback = options.clickCallback;
 
         $(aContainer + ' #chart').width(width).height(height)
 
@@ -200,31 +170,16 @@
          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
       },
-      clear: clear,
-      show: function(year, month) {
+      show: function(data) {
         clear();
-        current_year = year;
-        current_month = month;
-        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
-        // row, and can receive the csv as an array of arrays.
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          if(center_node === null) {
-            sidebar.show(data);
-            slider.show(data, current_month, current_year);
-            slider_year.show(data, current_month, current_year);
-          }
-          createVisualization(data);
-          var node = getCenterNode(data);
-          if(node != data) {
-            mouseclick(node);
-          } else {
-            sequence.show(data);
-            sidebar.show(data);
-          }
-        });
+        createVisualization(data);
       },
       selectNode: function (node) {
-        mouseclick(node);
+        self.clickCallback(node);
+        magnify(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
       }
     }
   }
