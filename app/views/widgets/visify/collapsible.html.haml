@@ -6,7 +6,7 @@
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+  function aTreeChart(aContainer) {
     var width, height;
     var color;
 
@@ -14,33 +14,14 @@
 
     var root, nodes, links;
 
-    var totalSize;
+    var totalSize, self;
 
     var size_scale;
     var current_year, current_month;
-    var center_node = null;
-
-    function getCenterNode(data) {
-      for(i in nodes) {
-        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
-          if(center_node.parent) {
-            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
-              return nodes[i];
-            }
-          } else {
-            return nodes[i];
-          }
-        }
-      }
-      //console.log("node not found");
-    }
+    var centerNode = null;
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-      if(center_node === null) {
-        center_node = json;
-      }
-      slider_year.set_month(current_month);
 
       root = json;
       root.fixed = true;
@@ -64,36 +45,21 @@
     }
 
     function clear() {
-      sidebar.hide();
       vis.selectAll("*").remove();
     }
 
     function dblclick(d) {
       if (d.children) {
-        sidebar.show(d);
+        self.clickCallback(d);
         d._children = d.children;
         d.children = null;
       } else {
         d.children = d._children;
-        sidebar.show(d);
+        self.clickCallback(d);
         d._children = null;
       }
       update();
-      sequence.show(d);
 
-
-      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
-        slider.show(d, current_month, current_year);
-        slider_year.show(d, current_month, current_year);
-      } else {
-        slider_year.set_month(current_month);
-      }
-      if(d.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      center_node = d;
     }
 
     function update() {
@@ -137,7 +103,6 @@
           .attr("r", function(d) { return size_scale(d.amount) })
           .style("fill", color)
           .on("click", mouseclick)
-          //.on("dblclick", dblclick)
           .on("mouseover", function(d){ mouseover(d3.event, d) })
           .on("mouseleave", mouseleave)
           .call(force.drag);
@@ -148,22 +113,19 @@
       // Color leaf nodes orange, and packages white or blue.
       function color(d) {
         return d.color || color(d.amount)
-        //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
       }
 
       function mouseover(event, d) {
         add_tooltip(event, d);
-        sequence.show(d);
       }
 
       function mouseleave(d) {
         remove_tooltip(d);
-        sequence.show(center_node);
       }
 
       function mouseclick(d) {
-        //sequence.show(d);
         dblclick(d);
+        self.clickCallback(d);
       }
 
       // Returns a list of all nodes under the root.
@@ -189,9 +151,11 @@
     }
 
     return {
-      initialize: function(pWidth, pHeight) {
-        width = pWidth
-        height = pHeight
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        width = options.width;
+        height = options.height;
 
         color = d3.scale.category20c()
 
@@ -214,28 +178,28 @@
             .attr("xmlns", "http://www.w3.org/2000/svg");
    },
       clear: clear,
-      show: function(year, month) {
-        clear()
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          clear();
-          current_year = year;
-          current_month = month;
-          if(center_node === null) {
-            slider.show(data, current_month, current_year);
-            slider_year.show(data, current_month, current_year);
-            sidebar.show(data);
-          }
-          createVisualization(data);
-          var node = getCenterNode(data);
-          if(node != data) {
-            dblclick(node);
-          } else {
-            sidebar.show(data);
-          }
-        });
+      show: function(data) {
+        clear();
+        createVisualization(data);
       },
       selectNode: function (node) {
         dblclick(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      getCenterNode: function(data) {
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
       }
     }
   }
