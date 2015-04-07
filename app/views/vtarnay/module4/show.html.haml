@@ -46,16 +46,15 @@
     var _data = null, current_data = null, center_node = null, current_key;
 
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
+    slider.initialize(100, {clickCallback: monthItemClick});
+    slider_chart.initialize(250, {clickCallback: yearItemClick});
+    sidebar.initialize(600, {clickCallback: sequenceItemClick});
+    chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
 
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk/", function(data) {
       icons.initialize(data, { height: 500, clickCallback: iconsItemClick });
       icons.show(year, month);
     });
-
-    slider.initialize(100, {clickCallback: monthItemClick});
-    slider_chart.initialize(250, {clickCallback: yearItemClick});
-    sidebar.initialize(600);
-    chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
 
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
