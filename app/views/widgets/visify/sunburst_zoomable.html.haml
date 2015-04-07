@@ -1,38 +1,23 @@
 -#http://bl.ocks.org/mbostock/4348373
 
 .sunburst
-  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+  .sunburst-zoom
+    = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
-    var totalSize;
+  function aTreeChart(aContainer) {
+    var totalSize, self;
     var width, height, radius;
     var color, x, y;
     var svg, partition, arc, path;
     var current_year, current_month;
     var center_node = null;
 
-    function getCenterNode(data) {
-      var nodes = partition(data);
-      for(i in nodes) {
-        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
-          if(center_node.parent) {
-            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
-              return nodes[i];
-            }
-          } else {
-            return nodes[i];
-          }
-        }
-      }
-      //console.log("node not found");
+    function clear() {
+      svg.selectAll("*").remove();
     }
 
     function createVisualization(root) {
-      if(center_node === null) {
-        center_node = root;
-      }
-      slider_year.set_month(current_month);
       totalSize = root.amount;
 
       path = svg.selectAll("path")
@@ -42,35 +27,16 @@
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .on("click", click)
             .on("mouseover", function(d){ add_tooltip(d3.event, d) })
-            .on("mouseleave", mouseleave)
-
-      // Restore everything to full opacity when moving off the visualization.
-      function mouseleave(d) {
-        remove_tooltip(d);
-      }
+            .on("mouseleave", mouseleave);
     }
+
+    // Restore everything to full opacity when moving off the visualization.
+    function mouseleave(d) {
+      remove_tooltip(d);
+    }
+
     function click(d) {
-      sequence.show(d);
-
-      if(d.children) {
-        sidebar.show(d);
-      } else {
-        sidebar.hide();
-        sidebar.showUndersequence(d);
-      }
-
-      if(center_node && (center_node.label != d.label || center_node.level != d.level)) {
-        slider.show(d, current_month, current_year);
-        slider_year.show(d, current_month, current_year);
-      } else {
-        slider_year.set_month(current_month);
-      }
-      if(d.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      center_node = d;
+      self.clickCallback(d);
 
       if(d3.event) {
         path.transition()
@@ -96,19 +62,15 @@
       };
     }
 
-    function clear() {
-      sequence.hideBreadcrumb()
-      sidebar.hide()
-      svg.selectAll("*").remove()
-    }
-
     return {
-      initialize: function(pWidth, pHeight) {
-        width = pWidth
-        height = pHeight
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        width = options.width;
+        height = options.height;
         radius = Math.min(width, height) / 2;
 
-        color = d3.scale.category20c()
+        color = d3.scale.category20c();
 
         x = d3.scale.linear()
             .range([0, 2 * Math.PI]);
@@ -116,7 +78,7 @@
         y = d3.scale.sqrt()
             .range([0, radius]);
 
-        svg = d3.select(aContainer + " #chart").append("svg:svg")
+        svg = d3.select(".sunburst-zoom #chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
             .attr("version", 1.1)
@@ -134,34 +96,29 @@
             .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
       },
-      clear: function() {
-        sequence.hideBreadcrumb()
-        sidebar.hide()
-        svg.selectAll("*").remove()
-      },
-      show: function(year, month) {
-        current_year = year;
-        current_month = month;
-
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
+      show: function(data) {
           clear();
-          if(center_node === null) {
-            sidebar.show(data);
-            slider.show(data, current_month, current_year);
-            slider_year.show(data, current_month, current_year);
-          }
           createVisualization(data);
-          var node = getCenterNode(data);
-          if(node != data) {
-            click(node);
-          } else {
-            sequence.show(data);
-            sidebar.show(data);
-          }
-        });
       },
       selectNode: function (node) {
         click(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(var i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
       }
     }
   }

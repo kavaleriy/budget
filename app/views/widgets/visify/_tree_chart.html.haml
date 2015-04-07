@@ -75,6 +75,8 @@
     var slider_chart = aSliderChart('#slider_chart', slider);
     var sidebar = aSidebar('.visify');
 
+    var centerNode = null;
+
     var width;
     document_width = $(document).width();
     sidebar_width = $('.visify #sidebar').width();
@@ -94,7 +96,7 @@
 
     d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}", function(data) {
       current_data = buildData(data);
-      _data = data;
+      _data = centerNode = data;
       chart.set_centerNode(null);
       sequence.show(current_data);
       chart.show(current_data);
@@ -109,6 +111,7 @@
       slider.show(node, year, month);
       sidebar.show(node);
       chart.set_centerNode(node);
+      centerNode = node;
     }
 
     function yearItemClick(new_year) {
@@ -117,10 +120,16 @@
       }
       year = new_year;
       current_data = buildData(_data);
-      sequence.show(current_data);
+      if(centerNode != _data && chart.getCenterNode) {
+        centerNode = chart.getCenterNode(current_data);
+      } else {
+        centerNode = current_data;
+      }
+      sequence.show(centerNode);
       chart.show(current_data);
-      slider.show(current_data, year, month);
-      sidebar.show(current_data);
+      chart.clickCallback(centerNode);
+      slider.show(centerNode, year, month);
+      sidebar.show(centerNode);
     }
 
     function monthItemClick(new_month) {
@@ -130,9 +139,15 @@
         month = new_month;
       }
       current_data = buildData(_data);
-      sequence.show(current_data);
+      if(centerNode != _data && chart.getCenterNode) {
+        centerNode = chart.getCenterNode(current_data);
+      } else {
+        centerNode = current_data;
+      }
+      sequence.show(centerNode);
       chart.show(current_data);
-      sidebar.show(current_data);
+      chart.clickCallback(centerNode);
+      sidebar.show(centerNode);
       slider_chart.set_month(month);
     }
 

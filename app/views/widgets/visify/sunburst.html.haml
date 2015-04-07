@@ -13,21 +13,6 @@
     var centerNode = null;
     var self;
 
-    function getCenterNode(data) {
-      var nodes = partition(data);
-      for(i in nodes) {
-        if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
-          if(centerNode.parent) {
-            if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
-              return nodes[i];
-            }
-          } else {
-            return nodes[i];
-          }
-        }
-      }
-    }
-
     function clear() {
       svg.selectAll("*").remove();
     }
@@ -47,7 +32,7 @@
         .enter().append("svg:path")
         .attr("d", arc)
         .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
-        .on("click", self.clickCallback)
+        .on("click", click)
         .each(stash)
         .on("mouseover", function(d){ add_tooltip(d3.event, d) })
         .on("mouseout", remove_tooltip);
@@ -72,10 +57,10 @@
           .style("opacity", 1);
 
 
-      d3.select(".sunburst-seq #explanation #percentage")
+      d3.select(".sunburst #explanation #percentage")
           .text(aVisify.helpers.formatNumber(d.amount));
 
-      d3.select(".sunburst-seq #explanation")
+      d3.select(".sunburst #explanation")
           .style("visibility", "");
 
     }
@@ -83,6 +68,11 @@
     // Restore everything to full opacity when moving off the visualization.
     function mouseout(d) {
       sequence.hideBreadcrumb();
+    }
+
+    function click(d) {
+      self.clickCallback(d);
+      magnify(d);
     }
 
     // Distort the specified node to 80% of its parent.
@@ -141,15 +131,12 @@
 
         $(aContainer + ' #chart').width(width).height(height)
 
-        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 60 ).css("left", width/2 - 60 );
+        $('.sunburst #explanation').width(120).css("top", height / 2 + 60 ).css("left", width/2 - 60 );
 
         // Dimensions of sunburst.
         radius = Math.min(width, height) / 2;
 
         color = d3.scale.category20c()
-
-        //$(".sunburst-seq #explanation").width(120).css("top", height / 2 ).css("left", width/2 - 70);
-
 
         // Mapping of step names to colors.
         // Total size of all segments; we set this later, after loading the data.
@@ -175,11 +162,24 @@
         createVisualization(data);
       },
       selectNode: function (node) {
-        self.clickCallback(node);
-        magnify(node);
+        click(node);
       },
       set_centerNode: function(node) {
         centerNode = node;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
       }
     }
   }
