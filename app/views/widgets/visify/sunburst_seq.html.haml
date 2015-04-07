@@ -4,13 +4,24 @@
     %span#percentage
 
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
-    var totalSize;
+  function aTreeChart(aContainer) {
+    var totalSize, self;
     var width, height, radius;
     var color;
     var vis, partition, arc;
     var current_year, current_month;
-    var center_node = null;
+    var centerNode = null;
+
+    function getAncestors(node) {
+      var path = [];
+      var current = node;
+      while (current.parent) {
+        path.unshift(current);
+        current = current.parent;
+      }
+      path.unshift(current);
+      return path;
+    }
 
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
@@ -42,8 +53,6 @@
 
       // Get total size of the tree = value of root node from partition.
       totalSize = json.amount;
-      center_node = json;
-      slider_year.set_month(current_month);
     };
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
@@ -52,9 +61,7 @@
       vis.selectAll("path")
           .style("opacity", 0.6);
 
-      var percentageString = aVisify.helpers.getPercentageString(d.amount, d.parent ? d.parent.amount : totalSize)
-      var sequenceArray = sequence.getAncestors(d);
-      sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      var sequenceArray = getAncestors(d);
 
       // Then highlight only those that are an ancestor of the current segment.
       vis.selectAll("path")
@@ -69,27 +76,11 @@
 
       d3.select(".sunburst-seq #explanation")
           .style("visibility", "");
-
-      if(d.children) {
-        sidebar.show(d);
-      } else {
-        sidebar.hide();
-        sidebar.showUndersequence(d);
-      }
-
-      slider.show(d, current_month, current_year);
-      slider_year.show(d, current_month, current_year);
-      if(d.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
+      self.clickCallback(d);
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseleave(d) {
-      sequence.hideBreadcrumb()
-
       d3.select("#explanation")
         .style("visibility", "hidden");
 
@@ -104,24 +95,22 @@
           .each("end", function() {
                   d3.select(this).on("mouseover", mouseover);
                 });
-      sidebar.show(center_node);
-      slider.show(center_node, current_month, current_year);
-      slider_year.show(center_node, current_month, current_year);
+      self.clickCallback(d);
     }
 
     function clear() {
-      sequence.hideBreadcrumb()
-      sidebar.hide()
-      vis.selectAll("*").remove()
+      vis.selectAll("*").remove();
     }
 
 
     return {
-      initialize: function(pWidth, pHeight) {
-        width = pWidth
-        height = pHeight
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        width = options.width;
+        height = options.height;
 
-        $(aContainer + ' #chart').width(width).height(height)
+        $('.sunburst-seq #chart').width(width).height(height)
 
         $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 20 ).css("left", width/2 - 60 );
 
@@ -137,7 +126,7 @@
         // Total size of all segments; we set this later, after loading the data.
         totalSize = 0;
 
-        vis = d3.select(aContainer + " #chart").append("svg:svg")
+        vis = d3.select(".sunburst-seq #chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
             .attr("version", 1.1)
@@ -157,23 +146,15 @@
             .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
       },
       clear: clear,
-      show: function(year, month) {
-        // Use d3.text and d3.csv.parseRows so that we do not need to have a header
-        // row, and can receive the csv as an array of arrays.
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          clear();
-          current_year = year;
-          current_month = month;
-          if(center_node == null) {
-            slider.show(data, current_month, current_year);
-            slider_year.show(data, current_month, current_year);
-          }
-          createVisualization(data);
-          sidebar.show(data);
-        });
+      show: function(data) {
+        clear();
+        createVisualization(data);
       },
       selectNode: function (node) {
-        mouseover(node);
+        click(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
       }
     }
   }
