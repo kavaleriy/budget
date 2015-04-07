@@ -6,7 +6,7 @@
     var b = {
           w: 200, h: 45, s: 3, t: 10
         }
-
+    var self;
 
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
@@ -32,7 +32,9 @@
         return path;
       },
 
-      initializeBreadcrumbTrail: function() {
+      initializeBreadcrumbTrail: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
         // Add the svg area.
         if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
           var trail = d3.select(aContainer + " #sequence").append("svg:svg")
@@ -77,7 +79,7 @@
         var entering = g.enter().append("svg:g")
                                 .attr("cursor", "pointer")
                                 .on('click', function(d) {
-                                  chart.selectNode(d)
+                                  self.clickCallback(d)
                                 })
 
         entering.append("svg:polygon")

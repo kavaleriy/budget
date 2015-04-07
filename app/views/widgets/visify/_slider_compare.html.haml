@@ -196,7 +196,7 @@
         }
         data = get_history_data(node.history[year]);
 
-        if (data == null || data.length == 0){
+        if (!data || data.length == 0){
           hide();
           return;
         }

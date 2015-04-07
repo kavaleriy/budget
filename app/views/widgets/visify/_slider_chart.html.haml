@@ -246,7 +246,7 @@
         center_node = node;
         data = get_history_data(node.history);
 
-        if (data == null || data.length == 0){
+        if (!data || data.length == 0){
           return;
         }
         current_year = year;

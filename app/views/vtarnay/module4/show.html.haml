@@ -45,7 +45,7 @@
         month = "#{@sel_month}";
     var _data = null, current_data = null, center_node = null, current_key;
 
-    sequence.initializeBreadcrumbTrail();
+    sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
 
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk/", function(data) {
       icons.initialize(data, { height: 500, clickCallback: iconsItemClick });
@@ -66,7 +66,7 @@
         sequence.show(current_data);
         chart.show(current_data);
         slider_chart.show(current_data, year);
-        slider.show(current_data, month);
+        slider.show(current_data, year, month);
         sidebar.show(current_data);
       });
     }
@@ -80,15 +80,15 @@
     }
 
     function yearItemClick(new_year) {
-      year = new_year;
-      if(slider_chart.current_month != 0) {
+      if(slider_chart.current_month != 0 && year == new_year) {
         month = 0;
       }
+      year = new_year;
       current_data = buildData(_data);
       icons.show(year, month);
       sequence.show(current_data);
       chart.show(current_data);
-      slider.show(current_data, month);
+      slider.show(current_data, year, month);
       sidebar.show(current_data);
       $("#" + current_key).attr("style","background-color: #C6E8FA");
     }
@@ -106,6 +106,15 @@
       sidebar.show(current_data);
       slider_chart.set_month(month);
       $("#" + current_key).attr("style","background-color: #C6E8FA");
+    }
+
+    function sequenceItemClick(node) {
+      sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, year, month);
+      sidebar.show(node);
+      chart.set_centerNode(node);
+      chart.selectNode(node);
     }
 
     // get current data for all visifies
