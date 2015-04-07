@@ -5,34 +5,14 @@
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
-    var totalSize
+    var totalSize, self;
     var width, height, margin
     var hue, luminance
     var svg, partition, arc, path, center
     var current_year, current_month;
-    var center_node = null;
-
-    function getCenterNode(data) {
-      var nodes = partition(data);
-      for(i in nodes) {
-        if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
-          if(center_node.parent) {
-            if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
-              return nodes[i];
-            }
-          } else {
-            return nodes[i];
-          }
-        }
-      }
-      console.log("node not found");
-    }
+    var centerNode = null;
 
     function createVisualization(root) {
-      if(center_node === null) {
-        center_node = root;
-      }
-      slider_year.set_month(current_month);
       totalSize = root.amount;
 
       luminance = d3.scale.sqrt()
@@ -41,9 +21,8 @@
           .range([90, 20]);
 
       partition = d3.layout.partition()
-          .sort(function(a, b) { return d3.ascending(a.label, b.label); })
-          .size([2 * Math.PI, radius]);
-
+                  .sort(function(a, b) { return d3.ascending(a.label, b.label); })
+                  .size([2 * Math.PI, radius]);
 
       partition
           .value(function(d) { return d.amount; })
@@ -77,60 +56,22 @@
           .on("mouseover", function(d){ add_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip);
 
-      //function mouseover(d) {
-      //  var percentageString = aVisify.helpers.getPercentageString(d.amount, d.parent ? d.parent.amount : totalSize)
-      //  var sequenceArray = sequence.getAncestors(d);
-      //  sequence.updateBreadcrumbs(sequenceArray, percentageString);
-      //}
-      //
-      //// Restore everything to full opacity when moving off the visualization.
-      //function mouseout(d) {
-      //  sequence.hideBreadcrumb()
-      //}
+      console.log(getCenterNode(root));
     }
 
     function zoomIn(p) {
       if (p.depth > 1) {
         p = p.parent;
       }
-      if (!p.children) {
-        sequence.show(p);
-        sidebar.hide();
-        sidebar.showUndersequence(p);
-        return;
-      }
+      if (!p.children) { self.clickCallback(p); return; }
       zoom(p, p);
-      if(p.children) {
-        sidebar.show(p);
-      }
-
-      sequence.show(p);
-      if(center_node && (center_node.label != p.label || center_node.level != p.level)) {
-        slider.show(p, current_month, current_year);
-        slider_year.show(p, current_month, current_year);
-      } else {
-        slider_year.set_month(current_month);
-      }
-      if(p.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      center_node = p;
-    }
+      self.clickCallback(p);
+     }
 
     function zoomOut(p) {
       if (!p || !p.parent) return;
       zoom(p.parent, p);
-      sidebar.show(p.parent);
-      sequence.show(p.parent);
-      if(center_node && (center_node.label != p.parent.label || center_node.level != p.parent.level)) {
-        slider.show(p.parent, current_month, current_year);
-        slider_year.show(p.parent, current_month, current_year);
-      } else {
-        slider_year.set_month(current_month);
-      }
-      center_node = p.parent;
+      self.clickCallback(p.parent);
     }
 
     // Zoom to the specified new root.
@@ -214,15 +155,15 @@
     }
 
     function clear() {
-      sequence.hideBreadcrumb()
-      sidebar.hide()
-      svg.selectAll("*").remove()
+      svg.selectAll("*").remove();
     }
 
     return {
-      initialize: function(pWidth, pHeight) {
-        width = pWidth
-        height = pHeight
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        width = options.width;
+        height = options.height;
 
         color = d3.scale.category20c()
 
@@ -231,7 +172,7 @@
 
         hue = d3.scale.category10();
 
-        svg = d3.select(aContainer + " #chart").append("svg:svg")
+        svg = d3.select(".sunburst-bievel #chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
             .attr("version", 1.1)
@@ -245,29 +186,29 @@
             .innerRadius(function(d) { return radius / 3 * d.depth; })
             .outerRadius(function(d) { return radius / 3 * (d.depth + 1) - 1; });
       },
-      clear: clear,
-      show: function(year, month) {
+      show: function(data) {
         clear();
-        current_year = year;
-        current_month = month;
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/"+ year+ "/" + month, function(data) {
-          if(center_node === null) {
-            sidebar.show(data);
-            slider.show(data, current_month, current_year);
-            slider_year.show(data, current_month, current_year);
-          }
-          createVisualization(data);
-          var node = getCenterNode(data);
-          if(node != data) {
-            zoomIn(node);
-          } else {
-            sequence.show(data);
-            sidebar.show(data);
-          }
-        });
+        createVisualization(data);
       },
       selectNode: function (node) {
         zoomIn(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
       }
     }
   }
