@@ -125,6 +125,7 @@
       var node = {}
       node['amount'] = item.amount[year][month]
       node['history'] = item.amount
+      node['taxonomy'] = item.taxonomy
 
       $.each(['key', 'label', 'color', 'icon'], function(k, v) {
         node[v] = item[v]
