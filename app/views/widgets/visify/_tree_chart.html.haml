@@ -66,6 +66,15 @@
 
   // Responsive SVG charts
   function iframe_resize() {
+    var year = "#{@sel_year}",
+        month = "#{@sel_month}";
+
+    var sequence = aSequence('.visify')
+    var chart = aTreeChart('.bubbletree');
+    var slider = aSliderCompare('#slider_compare');
+    var slider_chart = aSliderChart('#slider_chart', slider);
+    var sidebar = aSidebar('.visify');
+
     var width;
     document_width = $(document).width();
     sidebar_width = $('.visify #sidebar').width();
@@ -76,25 +85,91 @@
     }
     height = width*0.6;
 
-    var sequence = aSequence('.visify')
-    sequence.initializeBreadcrumbTrail();
-
-    var sidebar = aSidebar('.visify')
-    sidebar.initialize(height);
-
-    var slider = aSliderCompare('#slider_compare');
-    slider.initialize(100);
-
-    var slider_chart = aSliderChart('#slider_chart', slider);
-    slider_chart.initialize(250);
-
+    sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
+    slider.initialize(100, {clickCallback: monthItemClick});
+    slider_chart.initialize(250, {clickCallback: yearItemClick});
+    sidebar.initialize(height, {clickCallback: sequenceItemClick});
     $("#chart").html('');
-    chart = aTreeChart('.visify', sequence, sidebar, slider, slider_chart);
+    chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick });
 
     d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}", function(data) {
-      chart.initialize(width, height, data);
-      chart.show("#{@sel_year}", "#{@sel_month}");
+      current_data = buildData(data);
+      _data = data;
+      chart.set_centerNode(null);
+      sequence.show(current_data);
+      chart.show(current_data);
+      slider_chart.show(current_data, year);
+      slider.show(current_data, year, month);
+      sidebar.show(current_data);
     })
+
+    function bubbleItemClick(node) {
+      sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, year, month);
+      sidebar.show(node);
+      chart.set_centerNode(node);
+    }
+
+    function yearItemClick(new_year) {
+      if(slider_chart.current_month != 0 && year == new_year) {
+        month = 0;
+      }
+      year = new_year;
+      current_data = buildData(_data);
+      sequence.show(current_data);
+      chart.show(current_data);
+      slider.show(current_data, year, month);
+      sidebar.show(current_data);
+    }
+
+    function monthItemClick(new_month) {
+      if(month == new_month) {
+        month = 0;
+      } else {
+        month = new_month;
+      }
+      current_data = buildData(_data);
+      sequence.show(current_data);
+      chart.show(current_data);
+      sidebar.show(current_data);
+      slider_chart.set_month(month);
+    }
+
+    function sequenceItemClick(node) {
+      sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, year, month);
+      sidebar.show(node);
+      chart.set_centerNode(node);
+      chart.selectNode(node);
+    }
+
+    // get current data for all visifies
+    function buildData(item) {
+
+      if (!item.amount || !item.amount[year] || !item.amount[year][month])
+        return;
+
+      var node = {}
+      node['amount'] = item.amount[year][month]
+      node['history'] = item.amount
+      node['taxonomy'] = item.taxonomy
+
+      $.each(['key', 'label', 'color', 'icon'], function(k, v) {
+        node[v] = item[v]
+      })
+
+      if (item.children) {
+        node.children = []
+        $.each(item.children, function(k, v) {
+          child = buildData(v)
+          if (child) node.children.push(child)
+        });
+      }
+
+      return node;
+    }
   }
 
 

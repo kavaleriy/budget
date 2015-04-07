@@ -3,7 +3,8 @@
 :javascript
   function aSidebarTable() {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width, height
+        width, height;
+    var self;
 
     function hide() {
       $("#sidebar_table").height(0).html('')
@@ -11,9 +12,10 @@
 
 
     return {
-      initialize: function() {
+      initialize: function(height, options) {
         width = $('#sidebar_chart').width() - margin.left - margin.right
-
+        self = this;
+        self.clickCallback = options.clickCallback;
       },
       hide: hide,
       show: function(data) {
@@ -48,7 +50,7 @@
         d3.selectAll("#sidebar_table tr")
             .style("cursor", "pointer")
             .on("click", function(d, i) {
-                 chart.selectNode(data[i]);
+                 self.clickCallback(data[i]);
                });
       },
     }

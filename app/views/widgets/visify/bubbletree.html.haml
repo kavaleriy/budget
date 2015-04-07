@@ -9,120 +9,44 @@
 
 .bubbletree
   = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
 :javascript
-  function aTreeChart(aContainer, sequence, sidebar, slider, slider_chart) {
-    var self = this
-    var _data;
-
-    var bubbleTree = null;
-    var totalSize = null;
-    var centerNode = null;
-
-    var current_year = null;
-    var current_month = null;
-    var current_data = null;
+  var aTreeChart = function (aContainer) {
+    var self;
+    var bubbleTree, centerNode = null, totalSize;
 
     function clear() {
-      sequence.hideBreadcrumb();
-      sidebar.hide();
       d3.select(aContainer + ' #chart').selectAll("*").remove();
     }
 
-    function nodeClick(node) {
-      sequence.show(node);
-      if(node.children.length > 0) {
-        sidebar.show(node);
-      } else {
-        sidebar.hide();
-        sidebar.showUndersequence(node);
-        sidebar.getLevelInfo(node);
-      }
-
-      if(centerNode === null || (centerNode.label != node.label || centerNode.level != node.level)) {
-        slider.show(node, current_month, current_year);
-        slider_chart.show(node, current_month, current_year);
-      } else {
-        slider_chart.set_month(current_month);
-      }
-
-      if(node.icon == "fa-folder-open-o") {
-        $(".slider").slideUp();
-      } else {
-        $(".slider").slideDown();
-      }
-      centerNode = node;
-    }
-
     return {
-      initialize: function(width, height, data) {
-        _data = data
-        $(aContainer + ' #chart').width(width).height(height);
-      },
-      clear: clear,
-      show: function(year, month) {
+      initialize: function(options) {
+        self = this;
 
+        $(aContainer + ' #chart').width(options.width).height(options.height);
+        self.clickCallback = options.clickCallback;
+      },
+      show: function(data) {
         clear();
 
-        if (_data == null) return;
-
-        current_year = year;
-        current_month = month;
-
-        if(bubbleTree !== null) {
-          centerNode = bubbleTree.currentCenter;
-        }
-
-        current_data = buildData(_data)
-
-        function buildData(item) {
-          if (!item.amount || !item.amount[year] || !item.amount[year][month])
-            return;
-
-          var node = {}
-          node['amount'] = item.amount[year][month]
-          node['history'] = item.amount
-
-          $.each(['key', 'label', 'color', 'icon'], function(k, v) {
-            node[v] = item[v]
-          })
-
-          if (item.children) {
-            node.children = []
-            $.each(item.children, function(k, v) {
-              child = buildData(v)
-              if (child) node.children.push(child)
-            });
-          }
-
-          return node;
-        }
+        if (data == null) return;
 
         bubbleTree = new BubbleTree({
-            data: current_data,
+            data: data,
             container: aContainer + ' #chart',
             sortBy: 'label',
-            //maxNodesPerLevel: 12,
-            bubbleType: ['icon', 'plain'],
+            bubbleType: ['plain'],
             centerNode: centerNode,
-            //tooltip: function(d) {
-            //  if (d.type == 'HIDE' && root_node != d.node) {
-            //    sequence.hideBreadcrumb()
-            //  }
-            //  else {
-            //    var percentageString = aVisify.helpers.getPercentageString(d.node.amount, d.node.parent ? d.node.parent.amount : totalSize)
-            //    var sequenceArray = sequence.getAncestors(d.node);
-            //    sequence.updateBreadcrumbs(sequenceArray, percentageString);
-            //  }
-            //},
-            nodeClickCallback: nodeClick
+            nodeClickCallback: self.clickCallback
         });
-        totalSize = current_data.amount;
+        totalSize = data.amount;
       },
       selectNode: function (node) {
-        nodeClick(node);
-        //url = bubbleTree.getUrlForNode(node);
         bubbleTree.navigateTo(node);
       },
+      set_centerNode: function(node) {
+        centerNode = node;
+      }
     }
   }
 

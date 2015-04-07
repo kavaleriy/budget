@@ -41,15 +41,15 @@
     return {
       container: aContainer,
 
-      initialize: function(height){
+      initialize: function(height, options){
         chart = aSidebarChart('#sidebar')
-        chart.initialize(350)
+        chart.initialize(350, options)
 
         pie = aSidebarPie('#sidebar')
-        pie.initialize(350)
+        pie.initialize(350, options)
 
         table = aSidebarTable('#sidebar')
-        table.initialize(450)
+        table.initialize(450, options)
       },
 
       hide: function(){
