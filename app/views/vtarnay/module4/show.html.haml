@@ -43,7 +43,7 @@
 
     var year = "#{@sel_year}",
         month = "#{@sel_month}";
-    var _data = null, current_data = null, center_node = null, current_key;
+    var _data = null, current_data = null, center_node = null;
 
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
     slider.initialize(100, {clickCallback: monthItemClick});
@@ -59,9 +59,8 @@
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
         current_data = buildData(data);
-        _data = data; current_key = key;
+        _data = data;
         chart.set_centerNode(null);
-
         sequence.show(current_data);
         chart.show(current_data);
         slider_chart.show(current_data, year);
@@ -89,7 +88,6 @@
       chart.show(current_data);
       slider.show(current_data, year, month);
       sidebar.show(current_data);
-      $("#" + current_key).attr("style","background-color: #C6E8FA");
     }
 
     function monthItemClick(new_month) {
@@ -104,7 +102,6 @@
       chart.show(current_data);
       sidebar.show(current_data);
       slider_chart.set_month(month);
-      $("#" + current_key).attr("style","background-color: #C6E8FA");
     }
 
     function sequenceItemClick(node) {
