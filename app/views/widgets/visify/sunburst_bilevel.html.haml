@@ -59,21 +59,22 @@
 
     function zoomIn(p) {
       if (p.depth > 1) {
-        p = p.parent;
+        //p = p.parent;
       }
       if (!p.children) { self.clickCallback(p); return; }
       zoom(p, p);
-      self.clickCallback(p);
      }
 
     function zoomOut(p) {
       if (!p || !p.parent) return;
       zoom(p.parent, p);
-      self.clickCallback(p.parent);
     }
 
     // Zoom to the specified new root.
     function zoom(root, p) {
+      console.log("root", root);
+      self.clickCallback(root);
+      centerNode = root;
       if (document.documentElement.__transition__) return;
 
       // Rescale outside angles to match the new layout.
@@ -187,6 +188,9 @@
       show: function(data) {
         clear();
         createVisualization(data);
+        if(!centerNode) {
+          centerNode = data;
+        }
       },
       selectNode: function (node) {
         zoomIn(node);
@@ -194,12 +198,16 @@
       set_centerNode: function(node) {
         centerNode = node;
       },
+      current_node: function() {
+        return centerNode;
+      },
       getCenterNode: function(data) {
+        createVisualization(data);
         var nodes = partition(data);
         for(i in nodes) {
-          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+          if(nodes[i].label == centerNode.label && nodes[i].taxonomy == centerNode.taxonomy) {
             if(centerNode.parent) {
-              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.taxonomy == nodes[i].parent.taxonomy) {
                 return nodes[i];
               }
             } else {

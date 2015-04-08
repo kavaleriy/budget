@@ -106,7 +106,7 @@
     })
 
     function bubbleItemClick(node) {
-
+      console.log("click", node);
       sequence.show(node);
       slider_chart.show(node, year);
       //console.log("slider.current_node()", slider.current_node());
@@ -142,11 +142,12 @@
       if(chart.getCenterNode) {
         curr_node = chart.getCenterNode(current_data);
         slider.set_centerNode(centerNode);
-      } else if(centerNode != _data) {
+      } else if(centerNode != _data && !chart.getCenterNode) {
         curr_node = chart.get_CenterNode(centerNode);
         slider.set_centerNode(curr_node);
       }
       chart.show(current_data);
+      console.log("curr_node", curr_node);
       chart.selectNode(curr_node);
     }
 
