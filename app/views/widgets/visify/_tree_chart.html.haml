@@ -106,6 +106,7 @@
     })
 
     function bubbleItemClick(node) {
+
       sequence.show(node);
       slider_chart.show(node, year);
       //console.log("slider.current_node()", slider.current_node());
@@ -138,15 +139,15 @@
       }
       current_data = buildData(_data);
       var curr_node;
-      if(centerNode != _data && chart.getCenterNode) {
+      if(chart.getCenterNode) {
         curr_node = chart.getCenterNode(current_data);
+        slider.set_centerNode(centerNode);
       } else if(centerNode != _data) {
         curr_node = chart.get_CenterNode(centerNode);
-        //console.log("bubble center", centerNode);
+        slider.set_centerNode(curr_node);
       }
-      slider.set_centerNode(curr_node);
       chart.show(current_data);
-      chart.clickCallback(curr_node);
+      chart.selectNode(curr_node);
     }
 
     function ItemClick(node) {

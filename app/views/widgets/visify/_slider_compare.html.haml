@@ -12,7 +12,6 @@
 
   .bar {
     fill: steelblue;
-    fill-opacity: 0.5;
     cursor: pointer;
   }
 
@@ -131,6 +130,7 @@
         .enter().append("rect")
           .attr("class", "bar")
           .style("fill", function(d) { return d.label == current_month ? "#3182bd" : "#9ecae1"; })
+          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
           .attr("x", function(d) { return x(d.label); })
           .attr("width", x.rangeBand())
           .attr("y", height)

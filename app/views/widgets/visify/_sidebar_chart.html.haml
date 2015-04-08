@@ -91,7 +91,7 @@
       show: function(data) {
         hide();
 
-        if (data == null || data.length < 1) return;
+        if (!data == null || data.length < 1) return;
 
         $("#sidebar_chart").height(height + margin.top + margin.bottom)
 
@@ -113,7 +113,7 @@
           .attr("height", y.rangeBand() )
           .style("cursor", "pointer")
           .on("click", function(d, i) {
-                if(i < data.length && data[i].children) _self.clickCallback(data[i]);
+                _self.clickCallback(data[i]);
               });
 
         svg.transition().duration(250).selectAll(".bar")
