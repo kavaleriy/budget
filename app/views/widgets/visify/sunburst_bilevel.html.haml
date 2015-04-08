@@ -58,22 +58,22 @@
     }
 
     function zoomIn(p) {
+      self.clickCallback(p);
       if (p.depth > 1) {
         //p = p.parent;
       }
-      if (!p.children) { self.clickCallback(p); return; }
+      if (!p.children) { return; }
       zoom(p, p);
      }
 
     function zoomOut(p) {
+      self.clickCallback(p);
       if (!p || !p.parent) return;
       zoom(p.parent, p);
     }
 
     // Zoom to the specified new root.
     function zoom(root, p) {
-      console.log("root", root);
-      self.clickCallback(root);
       centerNode = root;
       if (document.documentElement.__transition__) return;
 

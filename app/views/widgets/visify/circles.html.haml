@@ -131,12 +131,16 @@
       show: function(data) {
         clear();
         createVisualization(data);
+        centerNode = data;
       },
       selectNode: function (node) {
         mouseclick(node);
       },
       set_centerNode: function(node) {
         centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
       },
       getCenterNode: function(data) {
         var nodes = pack(data);

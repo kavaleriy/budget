@@ -59,7 +59,7 @@
         d._children = null;
       }
       update();
-
+      self.clickCallback(d);
     }
 
     function update() {
@@ -125,7 +125,6 @@
 
       function mouseclick(d) {
         dblclick(d);
-        self.clickCallback(d);
       }
 
       // Returns a list of all nodes under the root.
@@ -181,12 +180,16 @@
       show: function(data) {
         clear();
         createVisualization(data);
+        centerNode = data;
       },
       selectNode: function (node) {
         dblclick(node);
       },
       set_centerNode: function(node) {
         centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
       },
       getCenterNode: function(data) {
         for(i in nodes) {
