@@ -13,10 +13,15 @@
 :javascript
   var aTreeChart = function (aContainer) {
     var self;
-    var bubbleTree, centerNode = null, totalSize;
+    var bubbleTree, centerNode = null;
 
     function clear() {
       d3.select(aContainer + ' #chart').selectAll("*").remove();
+    }
+
+    function nodeClick(node) {
+      centerNode = node;
+      self.clickCallback(node);
     }
 
     return {
@@ -29,7 +34,7 @@
       show: function(data) {
         clear();
 
-        if (data == null) return;
+        if (!data) return;
 
         bubbleTree = new BubbleTree({
             data: data,
@@ -37,15 +42,20 @@
             sortBy: 'label',
             bubbleType: ['plain'],
             centerNode: centerNode,
-            nodeClickCallback: self.clickCallback
+            nodeClickCallback: nodeClick
         });
-        totalSize = data.amount;
       },
       selectNode: function (node) {
         bubbleTree.navigateTo(node);
       },
       set_centerNode: function(node) {
         centerNode = node;
+      },
+      get_CenterNode: function(node) {
+        return bubbleTree.getCenterNode("bubble", node);
+      },
+      current_node: function() {
+        return centerNode;
       }
     }
   }

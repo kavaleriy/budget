@@ -55,8 +55,6 @@
           .on("click", zoomIn)
           .on("mouseover", function(d){ add_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip);
-
-      console.log(getCenterNode(root));
     }
 
     function zoomIn(p) {

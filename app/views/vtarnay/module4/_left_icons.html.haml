@@ -5,7 +5,7 @@
 
     var width, height, current_key = null;
 
-    function hide() {
+    function clear() {
       $("#icons").html('');
     }
 
@@ -17,9 +17,8 @@
         $("#icons").height(options.height || 500);
         self.clickCallback = options.clickCallback;
       },
-      hide: hide,
       show: function(year, month) {
-        hide();
+        clear();
 
         if (!_data || !_data["totals"][year] || !_data["totals"][year][month])
           return;

@@ -87,10 +87,10 @@
     }
     height = width*0.6;
 
-    sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
+    sequence.initializeBreadcrumbTrail({clickCallback: ItemClick});
     slider.initialize(100, {clickCallback: monthItemClick});
     slider_chart.initialize(250, {clickCallback: yearItemClick});
-    sidebar.initialize(height, {clickCallback: sequenceItemClick});
+    sidebar.initialize(height, {clickCallback: ItemClick});
     $("#chart").html('');
     chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick });
 
@@ -101,14 +101,20 @@
       sequence.show(current_data);
       chart.show(current_data);
       slider_chart.show(current_data, year);
-      slider.show(current_data, year, month);
+      slider.show(current_data, year);
       sidebar.show(current_data);
     })
 
     function bubbleItemClick(node) {
       sequence.show(node);
       slider_chart.show(node, year);
-      slider.show(node, year, month);
+      //console.log("slider.current_node()", slider.current_node());
+      //console.log("chart.current_node()", chart.current_node());
+      //console.log("centerNode", centerNode);
+      //console.log("node", node);
+      if(slider.current_node() != centerNode) {
+        slider.show(node, year);
+      }
       sidebar.show(node);
       chart.set_centerNode(node);
       centerNode = node;
@@ -117,19 +123,11 @@
     function yearItemClick(new_year) {
       if(slider_chart.current_month != 0 && year == new_year) {
         month = 0;
+        slider.set_month(month);
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
       year = new_year;
-      current_data = buildData(_data);
-      if(centerNode != _data && chart.getCenterNode) {
-        centerNode = chart.getCenterNode(current_data);
-      } else {
-        centerNode = current_data;
-      }
-      sequence.show(centerNode);
-      chart.show(current_data);
-      chart.clickCallback(centerNode);
-      slider.show(centerNode, year, month);
-      sidebar.show(centerNode);
+      monthItemClick(month);
     }
 
     function monthItemClick(new_month) {
@@ -139,19 +137,22 @@
         month = new_month;
       }
       current_data = buildData(_data);
+      var curr_node;
       if(centerNode != _data && chart.getCenterNode) {
-        centerNode = chart.getCenterNode(current_data);
-      } else {
-        centerNode = current_data;
+        curr_node = chart.getCenterNode(current_data);
+      } else if(centerNode != _data) {
+        curr_node = chart.get_CenterNode(centerNode);
+        //console.log("bubble center", centerNode);
       }
+      slider.set_centerNode(curr_node);
       chart.show(current_data);
-      chart.clickCallback(centerNode);
+      chart.clickCallback(curr_node);
     }
 
-    function sequenceItemClick(node) {
+    function ItemClick(node) {
       sequence.show(node);
       slider_chart.show(node, year);
-      slider.show(node, year, month);
+      slider.show(node, year);
       sidebar.show(node);
       chart.set_centerNode(node);
       chart.selectNode(node);

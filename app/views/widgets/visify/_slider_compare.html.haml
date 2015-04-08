@@ -46,7 +46,7 @@
 
     var data, self;
 
-    var current_month = 0;
+    var current_month = 0, current_node = null;
 
     function delay(d, i) { return i * 5; }
 
@@ -86,16 +86,15 @@
     }
 
     function mouseclick(d) {
-      //if(d.label != current_month) {
-      //  $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      //  $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
-      //  current_month = d.label;
-      //} else {
-      //  current_month = 0;
-      //  $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      //}
-      //
-      //chart.show(current_year, current_month);
+      if(d.label != current_month) {
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
+        current_month = d.label;
+      } else {
+        current_month = 0;
+        $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      }
+      self.clickCallback(d.label);
     }
 
     function mouseover(d) {
@@ -138,7 +137,7 @@
           .attr("height", 0)
           .on("mouseover", mouseover)
           .on("mouseout", mouseout)
-          .on("click", function(d) {self.clickCallback(d.label)});
+          .on("click", mouseclick);
 
       svg.selectAll(".bartext")
         .data(data)
@@ -188,7 +187,7 @@
 
       },
       hide: hide,
-      show: function(node, year, month) {
+      show: function(node, year) {
 
         if(!node.history) {
           hide();
@@ -200,14 +199,23 @@
           hide();
           return;
         }
-        current_month = month;
+
         show(data);             // show months compare for the last year
       },
-      current_year: function() {
-        return current_year;
+      current_node: function() {
+        return current_node;
+      },
+      current_month: function() {
+        return current_month;
       },
       set_month: function(month) {
         current_month = month;
+      },
+      set_centerNode: function(node) {
+        current_node = node;
+      },
+      onclick: function(d) {
+        mouseclick(d);
       }
     }
   }

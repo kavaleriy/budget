@@ -59,12 +59,12 @@
     function iconsItemClick(key) {
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
         current_data = buildData(data);
-        _data = data;
+        _data = center_node = data;
         chart.set_centerNode(null);
         sequence.show(current_data);
         chart.show(current_data);
         slider_chart.show(current_data, year);
-        slider.show(current_data, year, month);
+        slider.show(current_data, year);
         sidebar.show(current_data);
       });
     }
@@ -72,22 +72,23 @@
     function bubbleItemClick(node) {
       sequence.show(node);
       slider_chart.show(node, year);
-      slider.show(node, year, month);
+      if(slider.current_node() != center_node) {
+        slider.show(node, year);
+      }
       sidebar.show(node);
       chart.set_centerNode(node);
+      center_node = node;
     }
 
     function yearItemClick(new_year) {
       if(slider_chart.current_month != 0 && year == new_year) {
         month = 0;
+        slider.set_month(month);
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
       year = new_year;
-      current_data = buildData(_data);
       icons.show(year, month);
-      sequence.show(current_data);
-      chart.show(current_data);
-      slider.show(current_data, year, month);
-      sidebar.show(current_data);
+      monthItemClick(month);
     }
 
     function monthItemClick(new_month) {
@@ -97,19 +98,22 @@
         month = new_month;
       }
       current_data = buildData(_data);
+      var curr_node;
+      if(center_node != _data) {
+        curr_node = chart.get_CenterNode(center_node);
+      }
       icons.show(year, month);
-      sequence.show(current_data);
+      slider.set_centerNode(curr_node);
       chart.show(current_data);
-      sidebar.show(current_data);
-      slider_chart.set_month(month);
+      chart.clickCallback(curr_node);
     }
 
     function sequenceItemClick(node) {
       sequence.show(node);
       slider_chart.show(node, year);
-      slider.show(node, year, month);
+      slider.show(node, year);
       sidebar.show(node);
-      chart.set_centerNode(node);
+      chart.set_center_node(node);
       chart.selectNode(node);
     }
 

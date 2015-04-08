@@ -36,7 +36,7 @@
 
 
 :javascript
-  var aSliderChart = function (aContainer, slider) {
+  var aSliderChart = function (aContainer) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width, height;
 
@@ -48,7 +48,7 @@
 
     var data, center_node, self;
 
-    var current_year = 0;
+    var current_year = 0, current_month = 0;
 
     function delay(d, i) { return i * 10; }
 
@@ -85,18 +85,15 @@
     }
 
     function mouseclick(d) {
-      //if(d.label != current_year) {
-      //  $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
-      //  $(this).attr("class", "active_point");
-      //  current_year = d.label;
-      //  slider.show(center_node, current_month, current_year);
-      //  chart.show(current_year, current_month);
-      //} else if(current_month != 0) {
-      //  current_month = 0;
-      //  $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      //  slider.set_month(0);
-      //  chart.show(current_year, current_month);
-      //}
+      if(d.label != current_year) {
+        $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
+        $(this).attr("class", "active_point");
+        current_year = d.label;
+      } else if(current_month != 0) {
+        current_month = 0;
+        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      }
+      self.clickCallback(d.label);
     }
 
     function mouseover(d) {
@@ -166,7 +163,7 @@
         .attr("fill", "#9ecae1")
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
-        .on("click", function(d) {self.clickCallback(d.label)})
+        .on("click", mouseclick)
         .append("title")
            .text(function(d) {
                  return aVisify.helpers.formatNumber(d.amount);
@@ -243,7 +240,6 @@
           hide();
           return;
         }
-        center_node = node;
         data = get_history_data(node.history);
 
         if (!data || data.length == 0){
