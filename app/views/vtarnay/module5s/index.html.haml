@@ -1,0 +1,10 @@
+
+- @vtarnay_module5s.each do |file|
+  %tr
+    %td= link_to file._id, file, :method => :get
+    %td
+      =link_to t('form.edit', :default => t("helpers.links.edit")), edit_vtarnay_module5_path(file), :method => :get, :class => 'btn btn-default btn-xs'
+      =link_to t('form.destroy', :default => t("helpers.links.destroy")), file, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+  %br
+
+= link_to t('vtarnay.module5s.index.load'), new_vtarnay_module5_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "module5_new"
