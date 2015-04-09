@@ -1,4 +1,0 @@
-class TaxonomyRotFond < Taxonomy
-
-
-end

@@ -1,2 +1,0 @@
-class TaxonomyRovFond < Taxonomy
-end
