@@ -14,13 +14,13 @@ class BudgetFileRotFond < BudgetFileRot
     amount2 = row[I18n.t('activerecord.taxonomy_rot_fond.spec_fund')].to_i
 
     [
-        { 'amount' => amount1,
-          'fond' => I18n.t('activerecord.taxonomy_rot_fond.gen_fund') },
-        { 'amount' => amount2,
-          'fond' => I18n.t('activerecord.taxonomy_rot_fond.spec_fund') },
+        { :amount => amount1, :fond => '1' },
+        { :amount => amount2, :fond => '7' },
     ].map { |line|
-      fond = line['fond']
-      amount = line['amount'] / 100
+      binding.pry
+
+      fond = line[:fond]
+      amount = line[:amount] / 100
 
       item = {
           'amount' => amount,

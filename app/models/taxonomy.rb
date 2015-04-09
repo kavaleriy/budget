@@ -198,22 +198,21 @@ class Taxonomy
           self.columns.keys.reject{|k| filter.include?(k)}. each { |taxonomy_key|
 
             if row[taxonomy_key].nil?
-              node['---'] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
-              node = node['---']
+              taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
             else
               taxonomy_value = row[taxonomy_key]
-
-              if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
-              else
-                node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
-                # logger.info(node[taxonomy_value][:amount][year])
-                node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
-                node[taxonomy_value][:amount][year][month] += row['amount']
-              end
-
-              node = node[taxonomy_value]
             end
+
+            if node[taxonomy_value].nil?
+              node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
+            else
+              node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
+              # logger.info(node[taxonomy_value][:amount][year])
+              node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
+              node[taxonomy_value][:amount][year][month] += row['amount']
+            end
+
+            node = node[taxonomy_value]
           }
 
         end

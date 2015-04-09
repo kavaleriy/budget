@@ -11,23 +11,22 @@ class BudgetFileRovFond < BudgetFileRov
     amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
 
     [
-        { :amount => amount1,
-          :fond => I18n.t('activerecord.taxonomy_rov_fond.gen_fund') },
-        { :amount => amount2,
-          :fond => I18n.t('activerecord.taxonomy_rov_fond.spec_fund')
-        },
+        { :amount => amount1, :fond => '1' },
+        { :amount => amount2, :fond => '7' },
     ].map { |line|
+      next if line[:amount].nil?
+
       ktfk = row['ktfk'].to_s
       item =
         {
             'amount' => line[:amount] / 100,
             'fond' => line[:fond],
 
-            'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
+            # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
             'kekv' => row['kekv'].to_s || '-',
             'ktfk' => ktfk,
             'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
-            'krk' => row['KRK'].to_s,
+            # 'krk' => row['KRK'].to_s,
         }
 
       %w(_year _month).each{ |key|

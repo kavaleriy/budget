@@ -94,11 +94,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['children'] = []
 
       item['children'].each { |child_node|
-        explanation = if child_node['key'].nil?
-          {}
-        else
-          @taxonomy.explanation[child_node['taxonomy']][child_node['key']]
-        end
+        explanation = ( @taxonomy.explanation[child_node['taxonomy']][child_node['key']] rescue {} )
+
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
