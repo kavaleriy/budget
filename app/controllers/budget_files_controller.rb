@@ -2,33 +2,27 @@ class BudgetFilesController < ApplicationController
 
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy]
 
-  before_action :authenticate_user!, only: [:index, :upload, :edit]
-  load_and_authorize_resource
+  before_action :generate_budget_file, only: [:create, :new]
 
   before_action :update_user_town, only: [:create]
+
+  before_action :authenticate_user!
+  # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = view_context.get_budget_files
-    @taxonomies = Taxonomy.all
+    @budget_files = BudgetFile.visible_to current_user
   end
 
   def show
   end
 
-  def upload
-    @budget_file = get_budget_file
-  end
-
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file = get_budget_file
-
     @budget_file.author = current_user.email unless current_user.nil?
-
-    @budget_file.data_type = budget_file_params[:data_type] == '1' ? :plan : :fact
 
     file = upload_file budget_file_params[:path]
     file_name = file[:name]
@@ -71,12 +65,6 @@ class BudgetFilesController < ApplicationController
       }
     end unless params[:taxonomy].nil?
 
-    # rows = []
-    # params[:rows].each { |key, value|
-    #   rows[key]['amount'] = value[key].to_i
-    # } unless params[:rows].nil?
-    # @budget_file.prepare
-
     @budget_file.taxonomy.explanation = explanation
     @budget_file.save
 
@@ -107,14 +95,6 @@ class BudgetFilesController < ApplicationController
   end
 
   protected
-
-  def get_budget_file
-    BudgetFile.new
-  end
-
-  def get_taxonomy owner, cols
-    Taxonomy.get_taxonomy(owner, cols)
-  end
 
   def upload_file uploaded_io
     file_name = uploaded_io.original_filename
@@ -177,12 +157,12 @@ class BudgetFilesController < ApplicationController
 
   private
 
-  def set_budget_file
-    @budget_file = BudgetFile.find(params[:id])
+  def budget_file_params
+    params.require(params[:controller].singularize).permit(:title, :path)
   end
 
-  def budget_file_params
-    params.require(:budget_file).permit(:title, :path, :data_type)
+  def set_budget_file
+    @budget_file = BudgetFile.find(params[:id])
   end
 
   def update_user_town

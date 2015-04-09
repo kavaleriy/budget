@@ -4,43 +4,30 @@ class Taxonomy
   field :title, type: String
   field :owner, type: String
 
-  field :columns_id, type: String
-  field :columns, type: Hash
-
   field :explanation, :type => Hash
 
   before_save :generate_title
 
   has_many :budget_files, autosave: true, :dependent => :destroy
 
-  def self.get_taxonomy(owner, columns)
-    cols = {}
-    columns.each { |col|
-      cols[col] = { :level => cols.length + 1, :title => col } unless col == columns[columns.length - 1]
-    }
+  def self.visible_to user
+    files = if user
+      if user.has_role? :admin
+        Taxonomy.all
+      else
+        Taxonomy.where(:owner => user.town).not{budget_files == nil}
+      end
+    else
+      Taxonomy.where(:owner => '').not{budget_files == nil}
+    end.sort_by { |t| t.owner || '' }
 
-    Taxonomy.where(:owner => owner, :columns_id => columns.join('_')).last || Taxonomy.create(
-        :owner => owner,
-        :columns_id => columns.join('_'),
-        :columns => cols,
-    )
+    files || []
   end
 
-  def readline row
-    amount_key = row.keys.last
-    amount = row[amount_key].to_f
-    return if amount.nil? || amount == 0
-
-    line = {
-        'amount' => amount,
-    }
-
-    row.keys.reject{|k| k == amount_key}.each {|r|
-      val = row[r].to_s.split('.')[0]
-      line[r] = val
-    }
-
-    line
+  def self.get_taxonomy(owner)
+    self.where(:owner => owner).last || self.create!(
+        :owner => owner,
+    )
   end
 
   def explain taxonomy, key
@@ -51,7 +38,6 @@ class Taxonomy
       self.explanation[taxonomy][key] = get_taxonomy_info(taxonomy, key) || {}
     end
   end
-
 
   def get_taxonomy_info taxonomy, key
     case taxonomy
@@ -66,13 +52,8 @@ class Taxonomy
         expense_kvk_codes[key.split(':')[0]]
       when 'kekv'
         expense_ekv_codes[key]
-
-      #
-      # else
-      #   super
     end
   end
-
 
   def get_level level
 
@@ -233,16 +214,6 @@ class Taxonomy
     create_tree_item(tree)
   end
 
-  def revenue_codes
-    @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
-    @kkd_info
-  end
-
-  def expense_codes
-    @ktfk_info = load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
-    @ktfk_info
-  end
-
   protected
 
   def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
@@ -264,6 +235,16 @@ class Taxonomy
     node
   end
 
+
+  def revenue_codes
+    @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
+    @kkd_info
+  end
+
+  def expense_codes
+    @ktfk_info = load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
+    @ktfk_info
+  end
 
   def revenue_fond_codes
     @fond_info = load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?

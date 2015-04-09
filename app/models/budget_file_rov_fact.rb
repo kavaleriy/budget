@@ -1,9 +1,9 @@
-class BudgetFileRov < BudgetFile
+class BudgetFileRovFact < BudgetFile
 
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRov.get_taxonomy(owner)
+    TaxonomyRovFact.get_taxonomy(owner)
   end
 
   def readline row

@@ -1,9 +1,9 @@
-class BudgetFileRot < BudgetFile
+class BudgetFileRotFact < BudgetFile
 
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRot.get_taxonomy(owner)
+    TaxonomyRotFact.get_taxonomy(owner)
   end
 
   def readline row
@@ -21,7 +21,6 @@ class BudgetFileRot < BudgetFile
     [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd', key: kkd.slice(0, 8)}].map { |v|
       line[v[:t]] = v[:key]
     }
-
     line
   end
 

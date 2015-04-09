@@ -1,10 +1,12 @@
 = bootstrap_form_for @budget_file, :html => { :class => 'form-horizontal' } do |f|
   = f.text_field :title, label: t('budget_file_name')
+
   .form-group
     %label.control-label
       = t('owner')
-  = select_tag :town, options_for_select([nil, t('.Vinnytsya'), t('.Kyiv'), t('.Lviv'), t('.Ivano-Frankivsk'), t('.Zhytomyr'), t('.Ternopil'), t('.Dolina')], current_user.town), class: 'select-town form-control'
-  = f.select :data_type, [nil, t('.fact'), t('.plan')], label: t('.datatype_label')
+
+    = select_tag :town, options_for_select([nil, t('.Vinnytsya'), t('.Kyiv'), t('.Lviv'), t('.Ivano-Frankivsk'), t('.Zhytomyr'), t('.Ternopil'), t('.Dolina')], current_user.town), class: 'select-town form-control'
+
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

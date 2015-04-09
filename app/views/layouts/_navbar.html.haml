@@ -17,7 +17,7 @@
             = t('.budget')
             %span.caret
           %ul.dropdown-menu{'role' => "menu"}
-            - get_taxonomies.each do |taxonomy|
+            - Taxonomy.visible_to(current_user).each do |taxonomy|
               %li= link_to "#{taxonomy.title}, #{taxonomy.owner}", taxonomy_path(taxonomy)
 
             %li.divider

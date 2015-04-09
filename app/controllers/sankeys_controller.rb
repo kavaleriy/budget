@@ -15,14 +15,14 @@ class SankeysController < ApplicationController
   # GET /sankeys/new
   def new
     @sankey = Sankey.new
-    @budget_files_rot = TaxonomyRot.all
-    @budget_files_rov = TaxonomyRov.all
+    @budget_files_rot = TaxonomyRevenue.all
+    @budget_files_rov = TaxonomyExpense.all
   end
 
   # GET /sankeys/1/edit
   def edit
-    @budget_files_rot = TaxonomyRot.all
-    @budget_files_rov = TaxonomyRov.all
+    @budget_files_rot = TaxonomyRevenue.all
+    @budget_files_rov = TaxonomyExpense.all
   end
 
   # POST /sankeys
@@ -66,8 +66,8 @@ class SankeysController < ApplicationController
   end
 
   def get_rows
-    @budget_file_rot = TaxonomyRot.where(:id => sankey_params[:rot_file_id]).first
-    @budget_file_rov = TaxonomyRov.where(:id => sankey_params[:rov_file_id]).first
+    @budget_file_rot = TaxonomyRevenue.where(:id => sankey_params[:rot_file_id]).first
+    @budget_file_rov = TaxonomyExpense.where(:id => sankey_params[:rov_file_id]).first
     render json: { 'rows_rot' => @budget_file_rot.get_level_with_fonds("kkd_a"), 'rows_rov' => @budget_file_rov.get_level_with_fonds("kvk") }
   end
 

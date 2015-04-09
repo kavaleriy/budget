@@ -1,0 +1,2 @@
+class TaxonomyRovFactsController < TaxonomiesController
+end

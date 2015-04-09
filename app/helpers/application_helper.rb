@@ -1,28 +1,4 @@
 module ApplicationHelper
-  def get_taxonomies
-    if current_user
-      if current_user.has_role? :admin
-        Taxonomy.all
-      else
-        Taxonomy.where(:owner => current_user.town).not{budget_files == nil}
-      end
-    else
-      Taxonomy.where(:owner => '').not{budget_files == nil}
-    end.sort_by { |t| t.owner || '' }
-  end
-
-  def get_budget_files
-    files = if current_user.nil?
-      BudgetFile.where(:author => nil)
-    elsif current_user.has_role? :admin
-      BudgetFile.all
-    else
-      BudgetFile.where(:author => nil) + BudgetFile.where(:author => current_user.email)
-    end.sort_by { |f| [f.taxonomy.title, f.author] }
-
-    files || []
-  end
-
   def get_calendars
     calendars = if current_user.nil?
       Calendar.where(:author => nil)

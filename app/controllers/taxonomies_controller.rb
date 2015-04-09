@@ -11,7 +11,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def index
-    @taxonomies = view_context.get_taxonomies
+    @taxonomies = Taxonomy.visible_to current_user
   end
 
   def show
@@ -45,7 +45,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    params.require(:taxonomy).permit(:title)
+    params.require(params[:controller].singularize).permit(:title)
   end
 
 end

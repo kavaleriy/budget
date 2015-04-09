@@ -1,6 +1,5 @@
 = bootstrap_form_for @budget_file, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
   = f.text_field :title, :label => t('budget_file_title')
-  = f.select :data_type, [t('js.visify.plan'), t('js.visify.fact')], :label => t('budget_file_data_type')
 
   %hr
     %ul.nav.nav-tabs{role: 'tablist'}

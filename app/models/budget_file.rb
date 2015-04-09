@@ -6,8 +6,6 @@ class BudgetFile
   field :title, type: String
   field :path, type: String
 
-  field :data_type, type: Symbol # e.g :plan or :fact
-
   # source data
   field :rows, :type => Hash
 
@@ -19,12 +17,23 @@ class BudgetFile
 
   field :meta_data, :type => Hash
 
+  def self.visible_to user
+    files = if user.nil?
+      self.where(:author => nil)
+    elsif user.has_role? :admin
+      self.all
+    else
+      self.where(:author => nil) + BudgetFile.where(:author => current_user.email)
+    end.sort_by { |f| [f.taxonomy.title, f.author] }
+
+    files || []
+  end
 
   def import town, table
     self.taxonomy = get_taxonomy town, table[:cols]
 
     rows = table[:rows].map { |row|
-      self.taxonomy.readline(row)
+      readline(row)
     }.reject { |c| c.nil? }.flatten.sort_by{|row| -row['amount']}
 
     years = {}
@@ -86,12 +95,5 @@ class BudgetFile
 
     range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
   end
-
-  protected
-
-  def get_taxonomy owner, columns
-    Taxonomy.get_taxonomy(owner, columns)
-  end
-
 
 end
