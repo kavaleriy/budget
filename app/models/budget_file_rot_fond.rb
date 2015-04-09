@@ -25,12 +25,14 @@ class BudgetFileRotFond < BudgetFileRot
       item = {
           'amount' => amount,
           'fond' => fond,
-          '_year' => row['_year'].to_i,
-          '_month' => row['_month'].to_i
-
       }
 
-      [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd_ddd', key: kkd.slice(0, 8)}].map { |v|
+      %w(_year _month).each{ |key|
+        item[key] = row[key].to_i unless row[key].nil?
+      }
+
+
+      [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_bb', key: kkd.slice(0, 3)}, {t: 'kkd_cc', key: kkd.slice(0, 5)}, {t: 'kkd', key: kkd.slice(0, 8)}].map { |v|
         item[v[:t]] = v[:key]
       }
       item

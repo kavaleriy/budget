@@ -27,23 +27,24 @@
               %th
                 = t('.description')
 
-            - @budget_file.taxonomy.explanation[key].keys.sort_by { |item| item }.each do |t_key|
-              %tr
-                %td{style:'text-align: right'}
-                  %h4=t_key
-                %td
-                  %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][title]", value: @budget_file.taxonomy.explanation[key][t_key]['title'] }
-                %td
-                  -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select(fa_icon_list, @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select'
-                  = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['icon']], @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select'
-                %td
-                  -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select(undp_colors_list, @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select'
-                  = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['color']], @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select'
-                %td
-                  %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][capita]", value: @budget_file.taxonomy.explanation[key][t_key]['capita'] }
-                %td
-                  %textarea{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][description]", cols: 80, rows: 3}
-                    = @budget_file.taxonomy.explanation[key][t_key]['description']
+            - unless @budget_file.taxonomy.explanation[key].nil?
+              - @budget_file.taxonomy.explanation[key].keys.sort_by { |item| item }.each do |t_key|
+                %tr
+                  %td{style:'text-align: right'}
+                    %h4=t_key
+                  %td
+                    %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][title]", value: @budget_file.taxonomy.explanation[key][t_key]['title'] }
+                  %td
+                    -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select(fa_icon_list, @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select'
+                    = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['icon']], @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select'
+                  %td
+                    -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select(undp_colors_list, @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select'
+                    = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['color']], @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select'
+                  %td
+                    %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][capita]", value: @budget_file.taxonomy.explanation[key][t_key]['capita'] }
+                  %td
+                    %textarea{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][description]", cols: 80, rows: 3}
+                      = @budget_file.taxonomy.explanation[key][t_key]['description']
 
   %hr
   = f.submit t('budget_file_save'), :class => 'btn btn-primary'

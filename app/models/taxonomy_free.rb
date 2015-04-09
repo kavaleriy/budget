@@ -4,6 +4,7 @@ class TaxonomyFree < Taxonomy
 
   def self.get_taxonomy(owner, columns)
     cols = {}
+
     columns.each { |col|
       cols[col] = { :level => cols.length + 1, :title => col } unless col == columns[columns.length - 1]
     }

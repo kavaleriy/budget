@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
 
   resources :taxonomies
+  resources :taxonomy_frees
   resources :taxonomy_rots
   resources :taxonomy_rovs
 

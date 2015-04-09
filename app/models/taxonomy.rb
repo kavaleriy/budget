@@ -43,11 +43,14 @@ class Taxonomy
     case taxonomy
       when 'fond'
         revenue_fond_codes[key]
+
       when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
         revenue_codes[key.ljust(8, '0')]
 
-      when 'ktfk', 'ktfk_aaa'
-        expense_codes[key.ljust(6, '0')] || expense_codes[key.ljust(5, '0')]
+      when 'ktfk'
+        expense_codes[key] || expense_codes[key.rjust(5, '0')] || expense_codes[key.rjust(6, '0')]
+      when 'ktfk_aaa'
+        expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
       when 'kvk'
         expense_kvk_codes[key.split(':')[0]]
       when 'kekv'
@@ -193,18 +196,24 @@ class Taxonomy
           node[:amount][year][month] += row['amount']
 
           self.columns.keys.reject{|k| filter.include?(k)}. each { |taxonomy_key|
-            taxonomy_value = row[taxonomy_key]
 
-            if node[taxonomy_value].nil?
-              node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
+            if row[taxonomy_key].nil?
+              node['---'] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
+              node = node['---']
             else
-              node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
-              # logger.info(node[taxonomy_value][:amount][year])
-              node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
-              node[taxonomy_value][:amount][year][month] += row['amount']
-            end
+              taxonomy_value = row[taxonomy_key]
 
-            node = node[taxonomy_value]
+              if node[taxonomy_value].nil?
+                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
+              else
+                node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
+                # logger.info(node[taxonomy_value][:amount][year])
+                node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
+                node[taxonomy_value][:amount][year][month] += row['amount']
+              end
+
+              node = node[taxonomy_value]
+            end
           }
 
         end
