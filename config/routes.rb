@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  namespace :vtarnay do
+    resources :module5s
+  end
+
   resources :sankeys
 
   devise_for :users
-
-  get 'test/test_embed_code' # Not for production version!!!
 
   namespace :vtarnay do
     get 'module2' => 'module2#index'
@@ -16,9 +18,9 @@ Rails.application.routes.draw do
     get 'module4/:id' => 'module4#show'
     get 'module4/get_rows/:rov_file_id' => 'module4#get_rows'
 
-    get 'module5' => 'module4#index'
-    get 'module5/:id' => 'module4#show'
-    get 'module5/get_rows/:rov_file_id' => 'module4#get_rows'
+    get 'module5s' => 'module5s#index'
+    get 'module5s/new' => 'module5s#new'
+    get 'module5s/:id' => 'module5s#show'
   end
 
   namespace :widgets do

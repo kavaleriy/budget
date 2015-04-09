@@ -1,0 +1,7 @@
+= bootstrap_form_for @vtarnay_module5, :html => { :class => 'form-horizontal' } do |f|
+  = f.text_field :title, label: t('vtarnay.module5s.form.title')
+  .form-group
+    %label.control-label
+  = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
+  = f.submit t('vtarnay.module5s.form.load'), :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), vtarnay_module5s_path, :class => 'btn btn-default'
