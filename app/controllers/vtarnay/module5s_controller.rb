@@ -1,6 +1,9 @@
 class Vtarnay::Module5sController < ApplicationController
   before_action :set_vtarnay_module5, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!
+  # load_and_authorize_resource
+
   # GET /vtarnay/module5s
   # GET /vtarnay/module5s.json
   def index
@@ -10,11 +13,26 @@ class Vtarnay::Module5sController < ApplicationController
   # GET /vtarnay/module5s/1
   # GET /vtarnay/module5s/1.json
   def show
-    @groups = []
-    @indicators_num = {}
-    @vtarnay_module5.rows.map {|key, val|
-      @groups.push(key)
-      @indicators_num[key] = val.length
+    town = current_user.town unless current_user.nil?
+    @vtarnay_module5s = Vtarnay::Module5.all.where(:town => town)
+    @rows = {}
+    @vtarnay_module5s.each{|file|
+      file['rows'].each {|row|
+        row.each{|data|
+          if data['value']
+            if @rows[data['group']].nil?
+              @rows[data['group']] = {}
+            end
+            if @rows[data['group']][data['indicator']].nil?
+              @rows[data['group']][data['indicator']] = {}
+            end
+            year = data['year'].to_i
+            @rows[data['group']][data['indicator']][year] = {}
+            @rows[data['group']][data['indicator']][year]['comments'] = data['comments']
+            @rows[data['group']][data['indicator']][year]['value'] = data['value']
+          end
+        }
+      }
     }
   end
 
@@ -31,6 +49,9 @@ class Vtarnay::Module5sController < ApplicationController
   # POST /vtarnay/module5s.json
   def create
     @vtarnay_module5 = Vtarnay::Module5.new(vtarnay_module5_params)
+
+    @vtarnay_module5.author = current_user.email unless current_user.nil?
+    @vtarnay_module5.town = current_user.town unless current_user.nil?
 
     file = upload_file vtarnay_module5_params[:path]
     file_name = file[:name]
