@@ -1,8 +1,10 @@
 class Vtarnay::Module5
   include Mongoid::Document
 
+  field :author, type: String
   field :title, type: String
   field :path, type: String
+  field :town, type: String
 
   # source data
   field :rows, :type => Hash
@@ -10,19 +12,19 @@ class Vtarnay::Module5
   def import table
     rows = {}
 
-    table[:rows].each{|row|
-      if rows[row['group']].nil?
-        rows[row['group']] = {}
-      end
-      if rows[row['group']][row['indicator']].nil?
-        rows[row['group']][row['indicator']] = {}
-      end
-      year = row['year'].to_i
-      rows[row['group']][row['indicator']][year] = {}
-      rows[row['group']][row['indicator']][year]['comment'] = row['comment']
-      rows[row['group']][row['indicator']][year]['value'] = row['value']
+    table[:rows].each_with_index{|row, i|
+      rows[i] = row
     }
 
     self.rows = rows
   end
+
+  def get_rows town
+    rows = {}
+    self.keys.each {|file|
+      rows[file['id']] = file['town']
+    }
+    rows
+  end
+
 end
