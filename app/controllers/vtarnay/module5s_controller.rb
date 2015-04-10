@@ -13,23 +13,25 @@ class Vtarnay::Module5sController < ApplicationController
   # GET /vtarnay/module5s/1
   # GET /vtarnay/module5s/1.json
   def show
-    town = current_user.town unless current_user.nil?
-    @vtarnay_module5s = Vtarnay::Module5.all.where(:town => town)
+    @town = current_user.town unless current_user.nil?
+    @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)
     @rows = {}
     @vtarnay_module5s.each{|file|
       file['rows'].each {|row|
         row.each{|data|
           if data['value']
-            if @rows[data['group']].nil?
-              @rows[data['group']] = {}
+            group = data['group']
+            if @rows[group].nil?
+              @rows[group] = {}
             end
-            if @rows[data['group']][data['indicator']].nil?
-              @rows[data['group']][data['indicator']] = {}
+            indicator = data['indicator']
+            if @rows[group][indicator].nil?
+              @rows[group][indicator] = {}
             end
             year = data['year'].to_i
-            @rows[data['group']][data['indicator']][year] = {}
-            @rows[data['group']][data['indicator']][year]['comments'] = data['comments']
-            @rows[data['group']][data['indicator']][year]['value'] = data['value']
+            @rows[group][indicator][year] = {}
+            @rows[group][indicator][year]['comment'] = data['comment']
+            @rows[group][indicator][year]['value'] = data['value']
           end
         }
       }

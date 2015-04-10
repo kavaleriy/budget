@@ -19,12 +19,4 @@ class Vtarnay::Module5
     self.rows = rows
   end
 
-  def get_rows town
-    rows = {}
-    self.keys.each {|file|
-      rows[file['id']] = file['town']
-    }
-    rows
-  end
-
 end
