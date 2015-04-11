@@ -43,7 +43,7 @@
     %p=key
     -value.each_with_index do |(k,v),i|
       .indicator.col-xs-6.col-md-4.col-lg-3{'data-value' => k}
-        %p=k
+        .title=k
         .graph
         .comments
 
@@ -71,7 +71,7 @@
         // define dimensions of graph
         var m = [30, 45, 30, 45]; // margins
         var w = $('div[data-value="' + k + '"]').width() - m[1] - m[3]; // width
-        var h = 300 - m[0] - m[2]; // height
+        var h = 250 - m[0] - m[2]; // height
         var current_year = d3.max(years);
 
         // X scale will fit all values from data[] within pixels 0-w
