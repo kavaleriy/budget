@@ -3,16 +3,18 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .group {
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: bold;
   text-align: center;
 
   .title {
     height: 50px;
+    font-weight: bold;
   }
 
   .comments {
     height: 100px;
+    color: #7E8283;
   }
 
   path {
@@ -29,6 +31,11 @@
     stroke: lightgrey;
   }
 
+  .x.axis text {
+    font-size: 0.9em;
+    fill: #7E8283;
+  }
+
   .x.axis .minor {
     stroke-opacity: .5;
   }
@@ -43,15 +50,31 @@
   }
 
   .active_point {
-    stroke: lightgrey;
+    stroke: white;
     stroke-width: 8;
     stroke-opacity: 0.6;
   }
+
 }
 
 .indicator {
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-weight: normal;
   text-align: center;
   height: 350px;
+}
+
+body {
+  div.tooltip {
+    background: transparent;
+  }
+
+  .tooltip-inner {
+    background-color: darkgray;
+    color: #ffffff;
+  }
+
+  .tooltip.top .tooltip-arrow {
+    border-top-color: darkgray;
+  }
 }

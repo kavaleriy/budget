@@ -39,10 +39,10 @@
         var m = [30, 45, 30, 45]; // margins
         var w = $('div[data-value="' + k + '"]').width() - m[1] - m[3]; // width
         var h = 200 - m[0] - m[2]; // height
-        var current_year = d3.max(years);
+        var current_year = new Date().getFullYear() - 1;
 
         // X scale will fit all values from data[] within pixels 0-w
-        var x = d3.scale.linear().domain([d3.min(years), d3.max(years)]).range([0, w]);
+        var x = d3.scale.linear().domain([current_year-2, current_year]).range([0, w]);
         // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
         var y = d3.scale.linear().domain([d3.min(values) - Math.abs(d3.min(values)/10), d3.max(values)]).range([h, 0]);
             // automatically determining max range can work something like this
@@ -58,8 +58,6 @@
             var graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
                   .attr("width", w + m[1] + m[3])
                   .attr("height", h + m[0] + m[2])
-                  .on("mouseover", graph_mouseover)
-                  .on("mouseout", graph_mouseout)
                 .append("svg:g")
                   .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
@@ -70,7 +68,6 @@
                   .attr("class", "x axis")
                   .attr("transform", "translate(0," + h + ")")
                   .call(xAxis);
-
 
             // create left yAxis
             var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
@@ -88,13 +85,11 @@
                     .attr("cx", function(d) { return x(d["year"]); })
                     .attr("cy", function(d) { return y(d['value']); })
                     .attr("fill", "#6EC4DA")
+                    .attr("title", function(d) { return d['value']; })
                     .on("mouseover", mouseover)
                     .on("mouseout", mouseout)
-                    .on("click", mouseclick)
-                    //.append("title")
-                    //   .text(function(d) {
-                    //         return aVisify.helpers.formatNumber(d.amount);
-                    //   });
+                    .on("click", mouseclick);
+
             $('div[data-value="' + k + '"] .comments').text(v[d3.max(years)]['comment']);
 
             function mouseclick(d) {
@@ -120,15 +115,12 @@
               }
             }
 
-            function graph_mouseover(d) {
-              d3.selectAll('div[data-value="' + k + '"] svg path')
-                .attr("stroke-width", 2);
-            }
-
-            function graph_mouseout(d) {
-              d3.selectAll('div[data-value="' + k + '"] svg path')
-                .attr("stroke-width", 1);
-            }
       })
     })
+
+    $("svg circle").tooltip({
+        'container': 'body',
+        'placement': 'top'
+    });
+
   })
