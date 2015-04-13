@@ -1,4 +1,12 @@
 - model_class = Vtarnay::Module5
-.page-header
-  %h3=t('vtarnay.module5s.index.load')
-= render :partial => 'form'
+= content_for :header do
+  .head
+    %i.fa.fa-money
+    #{t('vtarnay.module5s.show.title')}:
+    %span.descr
+      =@town
+
+.col-xs-12.col-md-6
+  = render :partial => 'form'
+.col-xs-12.col-md-6
+  = render :partial => 'edit_form'

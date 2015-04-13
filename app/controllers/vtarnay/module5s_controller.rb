@@ -1,5 +1,5 @@
 class Vtarnay::Module5sController < ApplicationController
-  before_action :set_vtarnay_module5, only: [:show, :edit, :update, :destroy]
+  before_action :set_vtarnay_module5, only: [:edit, :update, :destroy]
 
   before_action :authenticate_user!
   # load_and_authorize_resource
@@ -7,13 +7,19 @@ class Vtarnay::Module5sController < ApplicationController
   # GET /vtarnay/module5s
   # GET /vtarnay/module5s.json
   def index
-    @vtarnay_module5s = Vtarnay::Module5.all
+    towns = Vtarnay::Module5.pluck(:town)
+    @towns = {}
+    towns.each {|town|
+      if @towns[town].nil?
+        @towns[town] = town
+      end
+    }
   end
 
   # GET /vtarnay/module5s/1
   # GET /vtarnay/module5s/1.json
   def show
-    @town = current_user.town unless current_user.nil?
+    @town = params[:id]
     @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)
     @rows = {}
     @vtarnay_module5s.each{|file|
@@ -40,7 +46,9 @@ class Vtarnay::Module5sController < ApplicationController
 
   # GET /vtarnay/module5s/new
   def new
+    @town = current_user.town unless current_user.nil?
     @vtarnay_module5 = Vtarnay::Module5.new
+    @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)
   end
 
   # GET /vtarnay/module5s/1/edit
@@ -69,7 +77,8 @@ class Vtarnay::Module5sController < ApplicationController
 
     respond_to do |format|
       if @vtarnay_module5.save
-        format.html { redirect_to @vtarnay_module5, notice: 'Module5 was successfully created.' }
+        flash[:notice] = t('budget_files_controller.load_success')
+        format.html { redirect_to action: 'show', id: @vtarnay_module5.town}
         format.json { render :show, status: :created, location: @vtarnay_module5 }
       else
         format.html { render :new }
@@ -97,7 +106,7 @@ class Vtarnay::Module5sController < ApplicationController
   def destroy
     @vtarnay_module5.destroy
     respond_to do |format|
-      format.html { redirect_to vtarnay_module5s_url, notice: 'Module5 was successfully destroyed.' }
+      format.html { redirect_to new_vtarnay_module5_path, notice: t('budget_files_controller.delete') }
       format.json { head :no_content }
     end
   end
