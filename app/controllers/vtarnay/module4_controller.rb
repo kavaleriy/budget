@@ -4,14 +4,14 @@ class Vtarnay::Module4Controller < ApplicationController
   before_action :set_taxonomy_file, only: [:show]
 
   def index
-    @taxonomies = TaxonomyExpense.all
+    @taxonomies = TaxonomyRov.all
   end
 
   def show
   end
 
   def get_rows
-    @budget_file_rov = TaxonomyExpense.where(:id => module4_params[:rov_file_id]).first
+    @budget_file_rov = TaxonomyRov.where(:id => module4_params[:rov_file_id]).first
     render json: { 'rows_rov' => @budget_file_rov.get_first_level("kvk") }
   end
 

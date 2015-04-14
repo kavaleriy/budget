@@ -51,13 +51,13 @@
     sidebar.initialize(600, {clickCallback: sequenceItemClick});
     chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
 
-    d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/kvk/", function(data) {
-      icons.initialize(data, { height: 500, clickCallback: iconsItemClick });
+    d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/ktfk_aaa/", function(data) {
+      icons.initialize(data, { height: 700, clickCallback: iconsItemClick });
       icons.show(year, month);
     });
 
     function iconsItemClick(key) {
-      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/kvk/" + key, function(data) {
+      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
         current_data = buildData(data);
         _data = center_node = data;
         chart.set_centerNode(null);

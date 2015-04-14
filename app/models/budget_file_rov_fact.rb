@@ -7,20 +7,32 @@ class BudgetFileRovFact < BudgetFile
   end
 
   def readline row
-    amount = row['SUMM'].to_i
-    return if amount.nil? || amount == 0
+    ktfk = row['ktfk'].to_s
 
-    {
-        '_year' => row['DATA'].to_date.year.to_s,
-        '_month' => row['MONTH'].to_s.split('.')[0],
-        'amount' => amount / 100,
-        'fond' => row['KKFN'].to_s,
-        'kvk' => "#{row['KVK'].to_s}:#{row['KRK'].to_s}",
-        'kekv' => row['KEKV'].to_s,
-        # 'ktfk_aaa' => row['KTFK'].to_s.slice(0, 3),
-        'ktfk' => row['KTFK'].to_s,
-        # 'krk' => row['KRK'].to_s,
-    }
+    1..12.map { |month|
+
+      amount = row["N#{month}"]
+      next if line[:amount].nil?
+
+    }.reject {|c| c.nil? || c['amount'] == 0 }
+
+
+              'fond' => line[:fond],
+
+              # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
+              'kekv' => row['kekv'].to_s || '-',
+              'ktfk' => ktfk,
+              'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
+              # 'krk' => row['KRK'].to_s,
+          }
+
+      %w(_year _month).each{ |key|
+        item[key] = row[key].to_i unless row[key].nil?
+      }
+
+      item
+    }.reject {|c| c.nil? || c['amount'] == 0 }
   end
 
 end
+
