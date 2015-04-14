@@ -1,4 +1,6 @@
 class Vtarnay::Module5sController < ApplicationController
+  layout 'application_vtarnay'
+  
   before_action :set_vtarnay_module5, only: [:edit, :update, :destroy]
 
   before_action :authenticate_user!
