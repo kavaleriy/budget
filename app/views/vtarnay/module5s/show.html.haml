@@ -5,6 +5,14 @@
     %span.descr
       =@town
 
+#year_list
+  =t('vtarnay.module5s.show.year_list')
+  = link_to '3 ' + t('vtarnay.module5s.show.year'), '#', :remote => true, 'data-value' => '3', :class => 'active'
+  \|
+  = link_to '5 ' + t('vtarnay.module5s.show.years'), '#', :remote => true, 'data-value' => '5'
+  \|
+  = link_to '10 ' + t('vtarnay.module5s.show.years'), '#', :remote => true, 'data-value' => '10'
+
 -@rows.each_with_index do |(key,value),index|
   .group.col-xs-12{'data-value' => key}
     %p=key
@@ -20,17 +28,28 @@
 
 :javascript
 
+  var num_of_years = 3;
+
   $(document).ready(function(){
-    create_graphs();
+    create_graphs(num_of_years);
+
+    $('#year_list').click(function(e) {
+      $("svg circle").tooltip('destroy');
+      d3.selectAll('.graph svg').remove();
+      num_of_years = $(e.target).attr('data-value');
+      $('#year_list .active').removeClass('active');
+      $(e.target).addClass('active');
+      create_graphs(num_of_years);
+    })
   })
 
   $(window).resize(function() {
     $("svg circle").tooltip('destroy');
     d3.selectAll('.graph svg').remove();
-    create_graphs();
+    create_graphs(num_of_years);
   });
 
-  function create_graphs() {
+  function create_graphs(num_of_years) {
     var data = JSON.parse('#{@rows.to_json}')
     $.each(data, function(key, value) {
       $.each(value, function(k, v) {
@@ -39,7 +58,7 @@
         var values = [];
         var data = [];
         $.each(v, function(year, year_value){
-          if(parseInt(year) >= current_year-2) {
+          if(parseInt(year) >= current_year-(num_of_years-1)) {
             years.push(parseInt(year));
             values.push(parseFloat(year_value['value']));
             data.push({"year": year, "value": year_value['value']});
@@ -52,7 +71,7 @@
         var h = 200 - m[0] - m[2]; // height
 
         // X scale will fit all values from data[] within pixels 0-w
-        var x = d3.scale.linear().domain([current_year-2, current_year]).range([0, w]);
+        var x = d3.scale.linear().domain([current_year-(num_of_years-1), current_year]).range([0, w]);
         // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
         var y = d3.scale.linear().domain([d3.min(values) - Math.abs(d3.min(values)/10), d3.max(values)]).range([h, 0]);
             // automatically determining max range can work something like this
@@ -72,7 +91,7 @@
               .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
         // create yAxis
-        var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(2).tickFormat(d3.format("d"));
+        var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(num_of_years-1).tickFormat(d3.format("d"));
         // Add the x-axis.
         graph.append("svg:g")
               .attr("class", "x axis")
