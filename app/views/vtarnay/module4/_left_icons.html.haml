@@ -46,13 +46,10 @@
           }
         }
 
-        var data_sorted = [];
-        for(i in nodes) {
-          data_sorted[nodes[i]["key"]] = _data["levels"][nodes[i]["key"]];
-        }
-
         div = '<table class="table table-striped table-hover">';
-        for(key in data_sorted) {
+        for(i in nodes) {
+          key = nodes[i]["key"];
+          data_sorted = _data["levels"];
           div += '<tr id="' + key + '">'
               + '<td class="col-sm-7"><i class="fa ' + data_sorted[key].icon + '"></i> '
               + data_sorted[key].label + '</td>'

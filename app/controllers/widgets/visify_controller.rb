@@ -21,7 +21,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
         if @taxonomy.explanation[taxonomy].nil? or @taxonomy.explanation[taxonomy][key].nil?
           ''
         else
-          @taxonomy.explanation[taxonomy][key][:title]
+          @taxonomy.explanation[taxonomy][key][:title] || key
         end
 
     filter = ['fond', taxonomy]

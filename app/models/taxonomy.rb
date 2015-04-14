@@ -86,7 +86,7 @@ class Taxonomy
           if levels[key].nil?
             levels[key] = {}
 
-            levels[key]['label'] = explanation[key]['title']
+            levels[key]['label'] = explanation[key]['title'] || key
             %w(icon color).map{|k|
               levels[key][k] = explanation[key][k]
             } unless explanation[key].nil?
