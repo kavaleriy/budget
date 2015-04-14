@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   resources :budget_file_rovs
   resources :budget_file_rot_fonds
   resources :budget_file_rov_fonds
+  resources :budget_file_rov_facts
 
   get 'static/budget_file_help' => 'static#budget_file_help'
   get 'budget_files/:id/editinfo' => 'budget_files#editinfo'

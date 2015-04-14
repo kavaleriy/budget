@@ -1,30 +1,33 @@
-class BudgetFileRovFact < BudgetFile
+class BudgetFileRovFact < BudgetFileRov
 
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRovFact.get_taxonomy(owner)
+    TaxonomyRov.get_taxonomy(owner)
   end
 
   def readline row
-    ktfk = row['ktfk'].to_s
+    amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
+    amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
 
-    1..12.map { |month|
-
-      amount = row["N#{month}"]
+    [
+        { :amount => amount1, :fond => '1' },
+        { :amount => amount2, :fond => '7' },
+    ].map { |line|
       next if line[:amount].nil?
 
-    }.reject {|c| c.nil? || c['amount'] == 0 }
+      ktfk = row['ktfk'].to_s
+      item =
+        {
+            'amount' => line[:amount] / 100,
+            'fond' => line[:fond],
 
-
-              'fond' => line[:fond],
-
-              # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
-              'kekv' => row['kekv'].to_s || '-',
-              'ktfk' => ktfk,
-              'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
-              # 'krk' => row['KRK'].to_s,
-          }
+            # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
+            'kekv' => row['kekv'].to_s || '-',
+            'ktfk' => ktfk,
+            'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
+            # 'krk' => row['KRK'].to_s,
+        }
 
       %w(_year _month).each{ |key|
         item[key] = row[key].to_i unless row[key].nil?
@@ -35,4 +38,3 @@ class BudgetFileRovFact < BudgetFile
   end
 
 end
-
