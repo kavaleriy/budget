@@ -25,21 +25,22 @@
     var data = JSON.parse('#{@rows.to_json}')
     $.each(data, function(key, value) {
       $.each(value, function(k, v) {
-        //console.log(v);
+        var current_year = new Date().getFullYear() - 1;
         var years = [];
         var values = [];
         var data = [];
         $.each(v, function(year, year_value){
-          years.push(parseInt(year));
-          values.push(parseFloat(year_value['value']));
-          data.push({"year": year, "value": year_value['value']});
+          if(parseInt(year) >= current_year-2) {
+            years.push(parseInt(year));
+            values.push(parseFloat(year_value['value']));
+            data.push({"year": year, "value": year_value['value']});
+          }
         })
 
         // define dimensions of graph
         var m = [30, 45, 30, 45]; // margins
         var w = $('div[data-value="' + k + '"]').width() - m[1] - m[3]; // width
         var h = 200 - m[0] - m[2]; // height
-        var current_year = new Date().getFullYear() - 1;
 
         // X scale will fit all values from data[] within pixels 0-w
         var x = d3.scale.linear().domain([current_year-2, current_year]).range([0, w]);
@@ -77,6 +78,7 @@
             graph.append("svg:path")
                  .attr("d", line(data));
 
+            console.log("select dots");
             graph.selectAll("dot")
                     .data(data)
                   .enter().append("circle")
@@ -120,7 +122,11 @@
 
     $("svg circle").tooltip({
         'container': 'body',
-        'placement': 'top'
+        'placement': 'top',
+        'trigger': 'manual'     // remove this string to make on hover
     });
+
+    // make tooltips visible always, pointer events - none
+    $("svg circle").tooltip('show');
 
   })
