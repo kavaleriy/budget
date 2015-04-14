@@ -21,7 +21,16 @@
 :javascript
 
   $(document).ready(function(){
+    create_graphs();
+  })
 
+  $(window).resize(function() {
+    $("svg circle").tooltip('destroy');
+    d3.selectAll('.graph svg').remove();
+    create_graphs();
+  });
+
+  function create_graphs() {
     var data = JSON.parse('#{@rows.to_json}')
     $.each(data, function(key, value) {
       $.each(value, function(k, v) {
@@ -55,67 +64,66 @@
             .x(function(d,i) { return x(d["year"]); })
             .y(function(d) { return y(d['value']); })
 
-            // Add an SVG element with the desired dimensions and margin.
-            var graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
-                  .attr("width", w + m[1] + m[3])
-                  .attr("height", h + m[0] + m[2])
-                .append("svg:g")
-                  .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+        // Add an SVG element with the desired dimensions and margin.
+        graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
+              .attr("width", w + m[1] + m[3])
+              .attr("height", h + m[0] + m[2])
+            .append("svg:g")
+              .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-            // create yAxis
-            var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(2).tickFormat(d3.format("d"));
-            // Add the x-axis.
-            graph.append("svg:g")
-                  .attr("class", "x axis")
-                  .attr("transform", "translate(0," + h + ")")
-                  .call(xAxis);
+        // create yAxis
+        var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(2).tickFormat(d3.format("d"));
+        // Add the x-axis.
+        graph.append("svg:g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + h + ")")
+              .call(xAxis);
 
-            // create left yAxis
-            var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+        // create left yAxis
+        var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
 
-            // Add the line by appending an svg:path element with the data line we created above
-            // do this AFTER the axes above so that the line is above the tick-lines
-            graph.append("svg:path")
-                 .attr("d", line(data));
+        // Add the line by appending an svg:path element with the data line we created above
+        // do this AFTER the axes above so that the line is above the tick-lines
+        graph.append("svg:path")
+             .attr("d", line(data));
 
-            console.log("select dots");
-            graph.selectAll("dot")
-                    .data(data)
-                  .enter().append("circle")
-                    .attr("class", function(d) { return d["year"] == current_year ? "active_point" : ""; })
-                    .attr("r", function(d) { return d["year"] == current_year ? "10" : "8"; })
-                    .attr("cx", function(d) { return x(d["year"]); })
-                    .attr("cy", function(d) { return y(d['value']); })
-                    .attr("fill", "#6EC4DA")
-                    .attr("title", function(d) { return d['value']; })
-                    .on("mouseover", mouseover)
-                    .on("mouseout", mouseout)
-                    .on("click", mouseclick);
+        graph.selectAll("dot")
+                .data(data)
+              .enter().append("circle")
+                .attr("class", function(d) { return d["year"] == current_year ? "active_point" : ""; })
+                .attr("r", function(d) { return d["year"] == current_year ? "10" : "8"; })
+                .attr("cx", function(d) { return x(d["year"]); })
+                .attr("cy", function(d) { return y(d['value']); })
+                .attr("fill", "#6EC4DA")
+                .attr("title", function(d) { return d['value']; })
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout)
+                .on("click", mouseclick);
 
-            $('div[data-value="' + k + '"] .comments').text(v[d3.max(years)]['comment']);
+        $('div[data-value="' + k + '"] .comments').text(v[d3.max(years)]['comment']);
 
-            function mouseclick(d) {
-              if(d["year"] != current_year) {
-                $('div[data-value="' + k + '"]').find(".active_point").attr("class", " ").attr("stroke", "none").attr("r","8");
-                $(this).attr("class", "active_point").attr("r","10");
-                current_year = d["year"];
-                $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
-              }
-            }
+        function mouseclick(d) {
+          if(d["year"] != current_year) {
+            $('div[data-value="' + k + '"]').find(".active_point").attr("class", " ").attr("stroke", "none").attr("r","8");
+            $(this).attr("class", "active_point").attr("r","10");
+            current_year = d["year"];
+            $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+          }
+        }
 
-            function mouseover(d) {
-              d3.select(this)
-                .attr("stroke", "#6EC4DA")
-                .attr("cursor", "pointer")
-                .attr("stroke-width", 4);
-            }
+        function mouseover(d) {
+          d3.select(this)
+            .attr("stroke", "#6EC4DA")
+            .attr("cursor", "pointer")
+            .attr("stroke-width", 4);
+        }
 
-            function mouseout(d) {
-              if(d["year"] != current_year) {
-                d3.select(this)
-                  .attr("stroke", "none");
-              }
-            }
+        function mouseout(d) {
+          if(d["year"] != current_year) {
+            d3.select(this)
+              .attr("stroke", "none");
+          }
+        }
 
       })
     })
@@ -127,6 +135,11 @@
     });
 
     // make tooltips visible always, pointer events - none
-    $("svg circle").tooltip('show');
+    window.setTimeout(function() {
+      $('.bootstrap_flash').html('');
+      $("svg circle").tooltip('show');
+    }, 1000);
+  }
 
-  })
+
+
