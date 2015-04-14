@@ -94,7 +94,7 @@ class Vtarnay::Module5sController < ApplicationController
   def update
     respond_to do |format|
       if @vtarnay_module5.update(vtarnay_module5_params)
-        format.html { redirect_to @vtarnay_module5, notice: 'Module5 was successfully updated.' }
+        format.html { redirect_to @vtarnay_module5, notice: t('budget_files_controller.save') }
         format.json { render :show, status: :ok, location: @vtarnay_module5 }
       else
         format.html { render :edit }

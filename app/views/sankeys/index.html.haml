@@ -6,4 +6,4 @@
       =link_to t('form.destroy', :default => t("helpers.links.destroy")), sankey, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
   %br
 
-= link_to 'Нова візуалізація', new_sankey_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "sankey_new"
+= link_to t('sankeys.new'), new_sankey_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "sankey_new"

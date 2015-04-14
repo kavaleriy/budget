@@ -2,9 +2,9 @@
   %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 #sankey_chart
 
-= link_to 'Edit', edit_sankey_path(@sankey)
+= link_to t('form.edit'), edit_sankey_path(@sankey)
 \|
-= link_to 'Back', sankeys_path
+= link_to t('form.back'), sankeys_path
 
 = javascript_include_tag "biPartite.js"
 = javascript_include_tag "sankey.js"

@@ -1,4 +1,6 @@
 class SankeysController < ApplicationController
+  layout 'application_vtarnay'
+
   before_action :set_sankey, only: [:show, :edit, :update, :destroy]
 
   # GET /sankeys
@@ -32,10 +34,10 @@ class SankeysController < ApplicationController
 
     respond_to do |format|
       if @sankey.save
-        format.html { redirect_to @sankey, notice: 'Sankey was successfully created.' }
+        format.html { redirect_to @sankey, notice: t('budget_files_controller.save') }
         format.json { render :show, status: :created, location: @sankey }
       else
-        format.html { redirect_to new_sankey_path, :flash => { :error => 'Така візуалізація вже існує. Спробуйте інший набір файлів.' } }
+        format.html { redirect_to new_sankey_path, :flash => { :error => t('sankeys.save_fail') } }
         # format.json { render json: @sankey.errors, status: :unprocessable_entity }
       end
     end
@@ -46,7 +48,7 @@ class SankeysController < ApplicationController
   def update
     respond_to do |format|
       if @sankey.update(sankey_params)
-        format.html { redirect_to @sankey, notice: 'Sankey was successfully updated.' }
+        format.html { redirect_to @sankey, notice: t('budget_files_controller.save') }
         format.json { render :show, status: :ok, location: @sankey }
       else
         format.html { render :edit }
@@ -60,7 +62,7 @@ class SankeysController < ApplicationController
   def destroy
     @sankey.destroy
     respond_to do |format|
-      format.html { redirect_to sankeys_url, notice: 'Sankey was successfully destroyed.' }
+      format.html { redirect_to sankeys_url, notice: t('budget_files_controller.delete') }
       format.json { head :no_content }
     end
   end
