@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   namespace :vtarnay do
+    resources :module7s
+  end
+
+  namespace :vtarnay do
+    resources :module8s
+  end
+
+  namespace :vtarnay do
     resources :module5s
   end
 

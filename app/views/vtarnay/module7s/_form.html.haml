@@ -1,0 +1,10 @@
+= form_for @vtarnay_module7 do |f|
+  - if @vtarnay_module7.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@vtarnay_module7.errors.count, "error")} prohibited this vtarnay_module7 from being saved:"
+      %ul
+        - @vtarnay_module7.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

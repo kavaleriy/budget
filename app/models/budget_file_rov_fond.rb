@@ -7,6 +7,10 @@ class BudgetFileRovFond < BudgetFileRov
   end
 
   def readline row
+    ktfk = row['ktfk'].to_s
+    ktfk_aaa = ktfk.slice(0, ktfk.length - 3)
+    kekv = row['kekv'].to_s || '-'
+
     amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
     amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
 
@@ -16,16 +20,15 @@ class BudgetFileRovFond < BudgetFileRov
     ].map { |line|
       next if line[:amount].nil?
 
-      ktfk = row['ktfk'].to_s
       item =
         {
             'amount' => line[:amount] / 100,
             'fond' => line[:fond],
 
             # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
-            'kekv' => row['kekv'].to_s || '-',
+            'kekv' => kekv,
             'ktfk' => ktfk,
-            'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
+            'ktfk_aaa' => ktfk_aaa,
             # 'krk' => row['KRK'].to_s,
         }
 
@@ -34,7 +37,7 @@ class BudgetFileRovFond < BudgetFileRov
       }
 
       item
-    }.reject {|c| c.nil? || c['amount'] == 0 }
+    }.compact.reject {|c| c['amount'] == 0 }
   end
 
 end

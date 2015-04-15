@@ -1,0 +1,17 @@
+%h1 Listing vtarnay_module7s
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @vtarnay_module7s.each do |vtarnay_module7|
+    %tr
+      %td= link_to 'Show', vtarnay_module7
+      %td= link_to 'Edit', edit_vtarnay_module7_path(vtarnay_module7)
+      %td= link_to 'Destroy', vtarnay_module7, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Module7', new_vtarnay_module7_path
