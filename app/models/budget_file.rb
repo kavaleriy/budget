@@ -34,7 +34,7 @@ class BudgetFile
 
     rows = table[:rows].map { |row|
       readline(row)
-    }.reject { |c| c.nil? }.flatten.sort_by{|row| -row['amount']}
+    }.compact.sort_by{|row| -row['amount']}
 
     years = {}
     rows.each { |row|
