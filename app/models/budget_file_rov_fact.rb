@@ -1,40 +1,64 @@
 class BudgetFileRovFact < BudgetFileRov
 
+  def import town, table
+    self.taxonomy = get_taxonomy town, table[:cols]
+
+    rows = table[:rows].map { |row|
+      readline(row)
+    }.reject { |c| c.nil? }
+
+    self.rows = {'rows' => rows}
+
+    # years = {}
+    # rows.each { |row|
+    #
+    #   year = row['_year'] || Date.current.year.to_s
+    #
+    #   month = row['_month'] || '0'
+    #
+    #   years[year] = {} if years[year].nil?
+    #
+    #   years[year][month] = [] if years[year][month].nil?
+    #   years[year][month] << row.reject{|k| k.start_with?('_')}
+    # }
+    #
+    # self.rows = years
+    #
+    # years.keys.each do |year|
+    #   years[year].keys.each do |month|
+    #     years[year][month].each do |row|
+    #       row.keys.reject{|key| key == 'amount'}.each { |key|
+    #         self.taxonomy.explain(key, row[key])
+    #       }
+    #     end
+    #   end
+    # end
+  end
+
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRov.get_taxonomy(owner)
+    TaxonomyRovFact.get_taxonomy(owner)
   end
 
   def readline row
-    amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
-    amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
 
-    [
-        { :amount => amount1, :fond => '1' },
-        { :amount => amount2, :fond => '7' },
-    ].map { |line|
-      next if line[:amount].nil?
+    amount = {}
 
-      ktfk = row['ktfk'].to_s
-      item =
-        {
-            'amount' => line[:amount] / 100,
-            'fond' => line[:fond],
+    for i in 1..12
+      amount[i] = row["N#{i}"]
+    end
 
-            # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
-            'kekv' => row['kekv'].to_s || '-',
-            'ktfk' => ktfk,
-            'ktfk_aaa' => ktfk.slice(0, ktfk.length - 3),
-            # 'krk' => row['KRK'].to_s,
-        }
+    line = {
+        'amount' => amount,
+    }
 
-      %w(_year _month).each{ |key|
-        item[key] = row[key].to_i unless row[key].nil?
-      }
+    row.keys.reject{|k| k.start_with?('N') }.each {|r|
+      val = row[r].to_s.split('.')[0]
+      line[r] = val
+    }
 
-      item
-    }.reject {|c| c.nil? || c['amount'] == 0 }
+    line
   end
 
 end
