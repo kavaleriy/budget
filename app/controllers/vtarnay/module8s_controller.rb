@@ -1,4 +1,6 @@
 class Vtarnay::Module8sController < ApplicationController
+  layout 'application_vtarnay'
+
   before_action :set_vtarnay_module8, only: [:show, :edit, :update, :destroy]
 
   # GET /vtarnay/module8s
