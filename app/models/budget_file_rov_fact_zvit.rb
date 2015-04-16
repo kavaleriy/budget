@@ -3,7 +3,7 @@ class BudgetFileRovFactZvit < BudgetFileRovFact
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRovFactZvit.get_taxonomy(owner)
+    TaxonomyRovFact.get_taxonomy(owner)
   end
 
   def readline row
