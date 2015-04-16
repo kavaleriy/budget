@@ -45,7 +45,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title)
+    params.require(params[:controller].singularize).permit(:title, :is_kvk)
   end
 
 end

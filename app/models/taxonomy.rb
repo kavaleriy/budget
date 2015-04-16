@@ -4,6 +4,8 @@ class Taxonomy
   field :title, type: String
   field :owner, type: String
 
+  field :is_kvk, type: Boolean
+
   field :explanation, :type => Hash
 
   before_save :generate_title
