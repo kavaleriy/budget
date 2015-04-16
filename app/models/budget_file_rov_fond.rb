@@ -7,9 +7,9 @@ class BudgetFileRovFond < BudgetFileRov
   end
 
   def readline row
-    ktfk = row['ktfk'].to_s
+    ktfk = row['ktfk'].to_s.split('.')[0]
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3)
-    kekv = row['kekv'].to_s || '-'
+    kekv = row['kekv'].to_s.split('.')[0]
 
     amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
     amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
