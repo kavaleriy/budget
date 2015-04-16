@@ -45,11 +45,11 @@ class BudgetFilesController < ApplicationController
         format.json { render json: @budget_file.errors, status: :unprocessable_entity }
       end
     end
-  rescue => e
-    respond_to do |format|
-      format.html { redirect_to budget_files_url, alert: t('budget_files_controller.load_fail') + "#{e}" }
-      format.json { render json: @budget_file.errors, status: :unprocessable_entity }
-    end
+  # rescue => e
+  #   respond_to do |format|
+  #     format.html { redirect_to budget_files_url, alert: t('budget_files_controller.load_fail') + "#{e}" }
+  #     format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+  #   end
   end
 
   # PATCH/PUT /revenues/1
