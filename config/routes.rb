@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   resources :taxonomy_rots
   resources :taxonomy_rovs
   resources :taxonomy_rov_facts
+  resources :taxonomy_rov_fact_zvits
 
   resources :budget_files
   resources :budget_file_frees
