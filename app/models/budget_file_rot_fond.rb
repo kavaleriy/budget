@@ -7,7 +7,7 @@ class BudgetFileRotFond < BudgetFileRot
   end
 
   def readline row
-    kkd = row['kkd'].to_s
+    kkd = row['kkd'].to_s.split('.')[0]
     return if kkd == ''
 
     amount1 = row[I18n.t('activerecord.taxonomy_rot_fond.gen_fund')].to_i
@@ -17,7 +17,6 @@ class BudgetFileRotFond < BudgetFileRot
         { :amount => amount1, :fond => '1' },
         { :amount => amount2, :fond => '7' },
     ].map { |line|
-      binding.pry
 
       fond = line[:fond]
       amount = line[:amount] / 100
