@@ -57,7 +57,9 @@
     });
 
     function iconsItemClick(key) {
-      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
+
+      d3.json("/widgets/visify/get_bubblesubtree_with_fact/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
+      console.log(data);
         current_data = buildData(data);
         _data = center_node = data;
         chart.set_centerNode(null);
