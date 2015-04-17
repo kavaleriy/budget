@@ -6,7 +6,7 @@ class TaxonomyRot < Taxonomy
         'kkd_bb'=>{:level => 2, :title=>I18n.t('activerecord.taxonomy_rot.rank3')},
         'kkd_cc'=>{:level => 3, :title=>I18n.t('activerecord.taxonomy_rot.rank5')},
         'kkd'=>{:level => 4, :title=>I18n.t('activerecord.taxonomy_rot.rank8')},
-        'fond'=>{:level => 5, :title=> I18n.t('activerecord.taxonomy_rot.fond')},
+        # 'fond'=>{:level => 5, :title=> I18n.t('activerecord.taxonomy_rot.fond')},
       }
   end
 
