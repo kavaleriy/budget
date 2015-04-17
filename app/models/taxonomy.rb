@@ -151,6 +151,13 @@ class Taxonomy
   end
 
   def get_subtree level, key, filter
+
+    subrows = get_subrows level, key, filter
+
+    create_tree subrows, filter
+  end
+
+  def get_subrows level, key, filter
     rows = get_rows
 
     subrows = {}
@@ -164,7 +171,7 @@ class Taxonomy
       }
     }
 
-    create_tree subrows, filter
+    subrows
   end
 
   def get_rows
@@ -184,7 +191,7 @@ class Taxonomy
     self.budget_files.map { |file| file.get_range }.flatten
   end
 
-  def create_tree rows, filter = []
+  def create_tree_sceleton rows, filter = []
     tree = { :amount => {} }
     # return nil if rows[year].nil? || rows[year][month].nil?
 
@@ -209,7 +216,6 @@ class Taxonomy
               node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
             else
               node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
-              # logger.info(node[taxonomy_value][:amount][year])
               node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
               node[taxonomy_value][:amount][year][month] += row['amount']
             end
@@ -221,6 +227,11 @@ class Taxonomy
       end
     end
 
+    tree
+  end
+
+  def create_tree rows, filter = []
+    tree = create_tree_sceleton rows, filter
     create_tree_item(tree)
   end
 
