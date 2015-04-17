@@ -1,19 +1,26 @@
+= javascript_include_tag '/assets/timelinejs/storyjs-embed.js'
+
 #timeline-embed
 
 :javascript
 
-  var node = document.createElement("script");
-  $.extend(node, {
-      type: 'text/javascript',
-      charset: 'utf-8',
-      async: false,
-      defer: true,
-      src: '/assets/timelinejs/storyjs-embed.js'
-  });
+  //var node = document.createElement("script");
+  //$.extend(node, {
+  //    type: 'text/javascript',
+  //    charset: 'utf-8',
+  //    async: false,
+  //    defer: true,
+  //    src: '/assets/timelinejs/storyjs-embed.js'
+  //});
+  //
+  //$(node).bind('load', function() {
+  //})
+  //$('#timeline-embed')[0].appendChild(node);
 
-  $(node).bind('load', function() {
+  $(document).on('ready page:change', function() {
+
     var source = "/widgets/calendar/timelinejs_data/#{calendar.id}/"
-    var curr_slide = "#{calendar.events.where(:starts_at.lte => Date.current).count}"
+    var curr_slide = "#{calendar.events.where(:starts_at.lte => Date.current).count - 1}"
 
     createStoryJS({
       width:              '100%',
@@ -31,6 +38,5 @@
       lang:               window.aHelper.lang(),                           //OPTIONAL LANGUAGE
       maptype:            'watercolor',                   //OPTIONAL MAP STYLE
     })
-  })
-  $('#timeline-embed')[0].appendChild(node);
 
+  })

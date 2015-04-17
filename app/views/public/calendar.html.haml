@@ -39,7 +39,6 @@
     .tab-content
       #calendar_year.tab-pane.fade.in.active
         = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-        -#%a.link_to_embed_code=t('iframe.show_embed_code')
         .col-xs-12
           .btn-group.pull-right
             %button.btn.btn-primary.svg_export
@@ -54,7 +53,6 @@
             .iframe_other_size
       #calendar_month.tab-pane.fade
         = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
-        -#%a.link_to_embed_code=t('iframe.show_embed_code')
         .col-xs-12
           .btn-group.pull-right
             %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
@@ -76,20 +74,12 @@
     = render partial: '/widgets/calendar/event'
 
 .clear
--#= render partial: 'timeline'
-
--##profile.profile.blue.not_right.pause{:style => "left: 108px; transform: scale(1.5, 1.5); bottom: 114.16676347423345px; width: 250px;"}
--#  %a{:href => "/profile/ryan-geldard"}
--#    %img.headshot{:src => "/static/media/profiles/headshots/ryan-geldard.jpg.100x100_q85_crop.jpg"}/
--#  .details
--#    .name Ryan Geldard
--#    .job Site Manager
-
 
 
 :javascript
-  $(document).bind('page:change', function(e) {
-    e.stopImmediatePropagation();
+
+  $(document).ready(function() {
+
     I18n.locale = window.aHelper.lang();
 
     var pie_frame_url, calendar_frame_url, frame_url;
@@ -131,3 +121,17 @@
     })
 
   })
+
+  $(document).ready(function() {
+
+    var pie = aCalendarPie()
+    pie.init_pie()
+
+    $(window).resize(pie.init_pie);
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      pie.init_pie()
+    });
+
+  })
+

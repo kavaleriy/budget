@@ -5,16 +5,15 @@
 
 :javascript
 
-  $(document).ready(function() {
-
-    init_pie()
-
-    $(window).resize(init_pie);
+  var aCalendarPie = function() {
 
     function init_pie() {
-      $('#svg_calendar').empty()
+      d3.select('#svg_calendar').selectAll("*").remove()
 
       size = $('#calendar_pies').width()
+
+      if (size == 0) return
+
 
       $.getJSON( "/widgets/calendar/pie_data/#{calendar.id}", function( data ) {
         var pie = d3.layout.pie()
@@ -51,7 +50,6 @@
         })
       })
     }
-
 
     function create_arc(radius1, radius2) {
       return d3.svg.arc()
@@ -119,5 +117,8 @@
     function get_html_for_ev(d) {
       return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b>"
     }
-  })
 
+    return {
+      init_pie: init_pie
+    }
+  }
