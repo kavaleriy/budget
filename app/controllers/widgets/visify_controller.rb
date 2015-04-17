@@ -139,7 +139,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     child_count = if item['children'].nil?
                     0
                   else
-                    item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || (c['fact_amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
+                    item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
                   end
 
     unless item['children'].nil?
@@ -148,8 +148,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
       item['children'].each { |child_node|
         explanation = ( @taxonomy.explanation[child_node['taxonomy']][child_node['key']] rescue {} )
 
+        ti = get_bubble_tree_item_with_fact(child_node, explanation) # if child_node[:amount].abs > cut_amount
 
-        ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
           if node['children'].length >= MAX_NODES_PER_LEVEL && child_count > MAX_NODES_PER_LEVEL + 2
             if node['children'][MAX_NODES_PER_LEVEL].nil?
@@ -170,7 +170,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
                 node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month] += amount
               }
             }
-            unless ti['fact_amount'].nil?
+            unless ti['fact_amount'].nil? || ti['fact_amount'] == 0
               ti['fact_amount'].each { |year, months|
                 node['children'][MAX_NODES_PER_LEVEL]['fact_amount'][year] = {} if node['children'][MAX_NODES_PER_LEVEL]['fact_amount'][year].nil?
                 months.each { |month, amount|
