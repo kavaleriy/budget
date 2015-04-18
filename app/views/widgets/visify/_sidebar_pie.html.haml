@@ -41,6 +41,7 @@
           draw_data(data);
 
           function draw_data(data) {
+
             _self.pie = new d3pie("sidebar_pie", {
               header: {
                 title: {
@@ -57,17 +58,23 @@
               data: {
                   sortOrder: "value-asc",
                   smallSegmentGrouping: {
-                      //enabled: true,
-                      //value: 2,
-                      //valueType: "percentage",
-                      //label: "Other"
+                      enabled: (data.length > 6),
+                      value: 3,
+                      valueType: "percentage",
+                      label: "Інше"
                   },
                   content: data
               },
               callbacks: {
                 onClickSegment: function(segment) {
+                  grouped = segment.data.isGrouped
+                  if (grouped) {
+                    groupedData = segment.data.groupedData
+                    _self.pie.updateProp("data.content", groupedData);
+                  } else {
                   index = segment.data.index
-                  _self.clickCallback(_data[index]);
+                    _self.clickCallback(_data[index]);
+                  }
                 }
               },
               tooltips: {
