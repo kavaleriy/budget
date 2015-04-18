@@ -1,14 +1,14 @@
 class Taxonomy
   include Mongoid::Document
 
+  before_save :generate_title
+
   field :title, type: String
   field :owner, type: String
 
   field :is_kvk, type: Boolean
 
   field :explanation, :type => Hash
-
-  before_save :generate_title
 
   has_many :budget_files, autosave: true, :dependent => :destroy
 
@@ -33,6 +33,7 @@ class Taxonomy
   end
 
   def explain taxonomy, key
+    return if key.nil?
     self.explanation = { } if self.explanation.nil?
     self.explanation[taxonomy] = { } if self.explanation[taxonomy].nil?
 
@@ -151,7 +152,6 @@ class Taxonomy
   end
 
   def get_subtree level, key, filter
-
     subrows = get_subrows level, key, filter
 
     create_tree subrows, filter
@@ -175,12 +175,15 @@ class Taxonomy
   end
 
   def get_rows
-    rows = {}
+    rows = { }
     self.budget_files.each{ |file|
+      data_type = file.data_type
+      rows[data_type] = {} if rows[data_type].nil?
+
       file.rows.keys.each {|year|
-        rows[year] = {} if rows[year].nil?
+        rows[data_type][year] = {} if rows[data_type][year].nil?
         file.rows[year].keys.each {|month|
-          rows[year][month] = file.rows[year][month]
+          rows[data_type][year][month] = file.rows[year][month]
         }
       }
     }
@@ -191,51 +194,54 @@ class Taxonomy
     self.budget_files.map { |file| file.get_range }.flatten
   end
 
-  def create_tree_sceleton rows, filter = []
-    tree = { :amount => {} }
-    # return nil if rows[year].nil? || rows[year][month].nil?
-
-    rows.keys.each do |year|
-      rows[year].keys.each do |month|
-        rows[year][month].each do |row|
-          node = tree
-          node[:amount] = {} if node[:amount].nil?
-          node[:amount][year] = {}  if node[:amount][year].nil?
-          node[:amount][year][month] = 0  if node[:amount][year][month].nil?
-          node[:amount][year][month] += row['amount']
-
-          self.columns.keys.reject{|k| filter.include?(k)}. each { |taxonomy_key|
-
-            if row[taxonomy_key].nil?
-              taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
-            else
-              taxonomy_value = row[taxonomy_key]
-            end
-
-            if node[taxonomy_value].nil?
-              node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { year => { month => row['amount'] }} }
-            else
-              node[taxonomy_value][:amount][year] = {} if node[taxonomy_value][:amount][year].nil?
-              node[taxonomy_value][:amount][year][month] = 0 if node[taxonomy_value][:amount][year][month].nil?
-              node[taxonomy_value][:amount][year][month] += row['amount']
-            end
-
-            node = node[taxonomy_value]
-          }
-
-        end
-      end
-    end
-
-    tree
-  end
-
   def create_tree rows, filter = []
     tree = create_tree_sceleton rows, filter
     create_tree_item(tree)
   end
 
   protected
+
+  def create_tree_sceleton rows, filter = []
+    tree = { :amount => {} }
+    # return nil if rows[year].nil? || rows[year][month].nil?
+
+    rows.keys.each do |data_type|
+      rows[data_type].keys.each do |year|
+        rows[data_type][year].keys.each do |month|
+          rows[data_type][year][month].each do |row|
+            node = tree
+            node[:amount] = {} if node[:amount].nil?
+            node[:amount][data_type] = {}  if node[:amount][data_type].nil?
+            node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
+            node[:amount][data_type][year][month] = 0  if node[:amount][data_type][year][month].nil?
+            node[:amount][data_type][year][month] += row['amount']
+
+            self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
+
+              if row[taxonomy_key].nil?
+                taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
+              else
+                taxonomy_value = row[taxonomy_key]
+              end
+
+              if node[taxonomy_value].nil?
+                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => row['amount'] } } } }
+              else
+                node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
+                node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
+                node[taxonomy_value][:amount][data_type][year][month] = 0 if node[taxonomy_value][:amount][data_type][year][month].nil?
+                node[taxonomy_value][:amount][data_type][year][month] += row['amount']
+              end
+
+              node = node[taxonomy_value]
+            }
+          end
+        end
+      end
+    end
+
+    tree
+  end
 
   def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
     node = {

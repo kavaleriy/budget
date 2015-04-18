@@ -3,7 +3,7 @@ class BudgetFileRotFact < BudgetFile
   protected
 
   def get_taxonomy owner, columns
-    TaxonomyRotFact.get_taxonomy(owner)
+    TaxonomyRot.get_taxonomy(owner)
   end
 
   def readline row
@@ -22,6 +22,12 @@ class BudgetFileRotFact < BudgetFile
       line[v[:t]] = v[:key]
     }
     line
+  end
+
+  private
+
+  def set_data_type
+    self.data_type = :fact if self.data_type.nil?
   end
 
 end

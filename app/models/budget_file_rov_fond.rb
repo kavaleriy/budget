@@ -1,4 +1,4 @@
-class BudgetFileRovFond < BudgetFileRov
+class BudgetFileRovFond < BudgetFile
 
   protected
 
@@ -8,7 +8,13 @@ class BudgetFileRovFond < BudgetFileRov
 
   def readline row
     ktfk = row['ktfk'].to_s.split('.')[0]
-    ktfk_aaa = ktfk.slice(0, ktfk.length - 3)
+
+    ktfk_aaa = ktfk.slice(0, ktfk.length - 3).ljust(3, '0')
+    ktfk_aaa = '800' if ktfk_aaa == '810'
+    ktfk_aaa = '900' if ktfk_aaa == '910'
+
+    kvk = row['kvk'].to_s
+    krk = row['krk'].to_s
     kekv = row['kekv'].to_s.split('.')[0]
 
     amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
@@ -22,14 +28,14 @@ class BudgetFileRovFond < BudgetFileRov
 
       item =
         {
-            'amount' => line[:amount] / 100,
-            'fond' => line[:fond],
+            '_fond' => line[:fond],
 
-            # 'kvk' => "#{row['kvk'].to_s}:#{row['krk'].to_s}",
+            'amount' => line[:amount] / 100,
+            'kvk' => kvk,
+            'krk' => krk,
             'kekv' => kekv,
             'ktfk' => ktfk,
             'ktfk_aaa' => ktfk_aaa,
-            # 'krk' => row['KRK'].to_s,
         }
 
       %w(_year _month).each{ |key|
@@ -38,6 +44,12 @@ class BudgetFileRovFond < BudgetFileRov
 
       item
     }.compact.reject {|c| c['amount'] == 0 }
+  end
+
+  private
+
+  def set_data_type
+    self.data_type = :plan if self.data_type.nil?
   end
 
 end

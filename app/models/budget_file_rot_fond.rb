@@ -38,6 +38,8 @@ class BudgetFileRotFond < BudgetFileRot
     }.reject {|c| c.nil? || c['amount'] == 0 }
   end
 
-
+  def set_data_type
+    self.data_type = :plan if self.data_type.nil?
+  end
 
 end

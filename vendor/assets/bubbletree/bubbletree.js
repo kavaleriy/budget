@@ -144,7 +144,6 @@ var BubbleTree = function(config, onHover, onUnHover) {
 	me.traverse = function(node, index) {
 		var c, child, pc, me = this, urlTokenSource, styles = me.config.bubbleStyles;
 
-		if (node.amount == null) console.log(node);
 		if (node.amount == null) node.amount = 0;
 
 		if (!node.children) node.children = [];

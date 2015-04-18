@@ -1,10 +1,17 @@
 class BudgetFile
   include Mongoid::Document
 
+  before_save :set_data_type
+
   field :author, type: String
 
   field :title, type: String
   field :path, type: String
+
+  # plan, fact etc
+  field :data_type
+
+  # field :data_type, type: String
 
   # source data
   field :rows, :type => Hash
@@ -63,7 +70,7 @@ class BudgetFile
   end
 
   def get_tree
-    self.taxonomy.create_tree self.rows
+    self.taxonomy.create_tree(self.data_type => self.rows)
   end
 
   def get_subtree level, key, filter
@@ -94,6 +101,11 @@ class BudgetFile
     }
 
     range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
+  end
+
+  private
+
+  def set_data_type
   end
 
 end
