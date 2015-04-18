@@ -11,6 +11,54 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: get_bubble_tree
   end
 
+  def get_bubblesubtree_with_fact
+    taxonomy = visify_params[:taxonomy]
+    key = visify_params[:key]
+
+    title =
+        if @taxonomy.explanation[taxonomy].nil? or @taxonomy.explanation[taxonomy][key].nil?
+          ''
+        else
+          @taxonomy.explanation[taxonomy][key][:title] || key
+        end
+
+    filter = ['fond', taxonomy]
+
+    rows = @taxonomy.get_plan_fact_rows
+    tree_rows = @taxonomy.get_subrows(taxonomy, key, filter, rows[:plan]) || {}
+    tree_fact_rows = @taxonomy.get_subrows(taxonomy, key, filter, rows[:fact]) || {}
+
+    tree = @taxonomy.create_tree_sceleton tree_rows, filter
+    tree_fact = @taxonomy.create_tree_sceleton tree_fact_rows, filter
+
+    tree = create_tree_item_with_fact tree, tree_fact
+
+    render json: get_bubble_tree_item_with_fact(tree, {  'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
+  end
+
+  def create_tree_item_with_fact(items, items_fact, key = I18n.t('activerecord.models.taxonomy.node_key'))
+    node = {
+        'fact_amount' => items_fact[:amount],
+        'amount' => items[:amount],
+        'key' => key,
+        'taxonomy' => items[:taxonomy]
+    }
+
+    children = items.keys.reject{|k| k == :amount || k == :taxonomy }
+
+    unless children.empty?
+      node['children'] = []
+      children.each { |item_key|
+        if items_fact[item_key].nil?
+          items_fact[item_key] = {}
+          items_fact[item_key][:amount] = 0
+        end
+        node['children'] << create_tree_item_with_fact(items[item_key], items_fact[item_key], item_key)
+      }
+    end
+    node
+  end
+
   def get_bubblesubtree
     # http://localhost:3000/widgets/visify/get_bubblesubtree/551e4e197562751064010000/2015/0/kvk/10:48380
 

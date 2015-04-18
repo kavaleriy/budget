@@ -15,7 +15,7 @@
     .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
       = render partial: 'bubbletree', :locals => { budget_file_id: budget_file_id }
     .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
-      = render partial: 'widgets/visify/sidebar_chart', :locals => { budget_file_id: @taxonomy.id }
+      = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
     .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
       = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
 
@@ -39,7 +39,7 @@
       container: aContainer,
 
       initialize: function(height, options){
-        chart = aSidebarChart('#sidebar')
+        chart = aSidebarChartBattery('#sidebar')
         chart.initialize(height, options)
 
         pie = aSidebarPie('#sidebar')

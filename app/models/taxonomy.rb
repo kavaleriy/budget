@@ -157,8 +157,7 @@ class Taxonomy
     create_tree subrows, filter
   end
 
-  def get_subrows level, key, filter
-    rows = get_rows
+  def get_subrows level, key, filter, rows = get_rows
 
     subrows = {}
     rows.keys.each {|year|
@@ -172,6 +171,20 @@ class Taxonomy
     }
 
     subrows
+  end
+
+  def get_plan_fact_rows
+    rows = { :plan => {}, :fact => {} }
+    self.budget_files.each{ |file|
+      type = file.type.to_sym
+      file.rows.keys.each {|year|
+        rows[type][year] = {} if rows[type][year].nil?
+        file.rows[year].keys.each {|month|
+          rows[type][year][month] = file.rows[year][month]
+        }
+      }
+    }
+    rows
   end
 
   def get_rows

@@ -7,6 +7,7 @@ class BudgetFile
 
   field :title, type: String
   field :path, type: String
+  field :type, type: String
 
   # plan, fact etc
   field :data_type
