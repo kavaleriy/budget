@@ -1,5 +1,11 @@
 class BudgetFileRot < BudgetFile
 
+  before_save :default_values
+
+  def default_values
+    self.type = 'plan'
+  end
+
   protected
 
   def get_taxonomy owner, columns
@@ -7,6 +13,7 @@ class BudgetFileRot < BudgetFile
   end
 
   def readline row
+
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 

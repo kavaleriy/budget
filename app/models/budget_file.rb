@@ -5,6 +5,7 @@ class BudgetFile
 
   field :title, type: String
   field :path, type: String
+  field :type, type: String
 
   # source data
   field :rows, :type => Hash
