@@ -24,14 +24,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     filter = ['fond', taxonomy]
 
-    type = @taxonomy._type + 'Fact'
-    taxonomy_fact = type.constantize.where(:owner => @taxonomy.owner).first
-
-    tree_rows = @taxonomy.get_subrows(taxonomy, key, filter) || {}
-    tree_fact_rows = taxonomy_fact.get_subrows(taxonomy, key, filter) || {}
+    rows = @taxonomy.get_plan_fact_rows
+    tree_rows = @taxonomy.get_subrows(taxonomy, key, filter, rows[:plan]) || {}
+    tree_fact_rows = @taxonomy.get_subrows(taxonomy, key, filter, rows[:fact]) || {}
 
     tree = @taxonomy.create_tree_sceleton tree_rows, filter
-    tree_fact = taxonomy_fact.create_tree_sceleton tree_fact_rows, filter
+    tree_fact = @taxonomy.create_tree_sceleton tree_fact_rows, filter
 
     tree = create_tree_item_with_fact tree, tree_fact
 
