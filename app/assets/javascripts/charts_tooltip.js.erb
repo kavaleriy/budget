@@ -21,8 +21,9 @@ function add_plan_fact_tooltip(event, d) {
     //Get this bar's x/y values, then augment for the tooltip
     var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
     var evt = event || window.event;
-    var xPosition = (evt.clientX || evt.pageX);
-    var yPosition = (evt.clientY || evt.pageY) - sequence_height;
+
+    var xPosition = (evt.x);
+    var yPosition = (evt.y);
 
     //Update the tooltip position and value
     d3.select("#charts_tooltip")

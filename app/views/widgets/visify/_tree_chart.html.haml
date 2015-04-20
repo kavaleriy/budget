@@ -1,13 +1,14 @@
 .visify
+  #charts_tooltip.hidden
+    %p
+      %span#value
+
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
     #under_sequence
   .col-xs-12.col-md-8
     #chart
     %canvas{:style => "display: none;"}
-    #charts_tooltip.hidden
-      %p
-        %span#value
 
     .col-xs-12
       -#btn #save used to recieve trigger from out of iframe to get url for SVG image
@@ -185,8 +186,6 @@
         sidebar.show(node);
         chart.set_centerNode(node);
         centerNode = node;
-
-        console.log(node)
       }
 
       function yearItemClick(new_year) {

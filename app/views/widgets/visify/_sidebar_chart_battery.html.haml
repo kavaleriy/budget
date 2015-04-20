@@ -100,7 +100,7 @@
 
         $("#sidebar_chart").height(height + margin.top + margin.bottom)
 
-        x.domain([0, d3.max(data, function(d) { return d.amount > d.amount_fact ? d.amount : d.amount_fact; })]);
+        x.domain([0, d3.max(data, function(d) { return d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0) })]);
         y.domain(data.map(function(d) { return d.key; }));
 
         sort(data);
@@ -117,7 +117,7 @@
           .attr("width", 0 )
           .attr("y", function(d) { return y(d.key); })
           .attr("height", y.rangeBand() )
-          .on("mousemove", function(d){ add_plan_fact_tooltip(d3.event, d) })
+          .on("mouseover", function(d){ add_plan_fact_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip)
           .style("fill-opacity", 1.0)
           .on("click", function(d, i) {
@@ -130,7 +130,7 @@
           .attr("width", 0 )
           .attr("y", function(d) { return y(d.key); })
           .attr("height", y.rangeBand() )
-          .on("mousemove", function(d){ add_plan_fact_tooltip(d3.event, d) })
+          .on("mouseover", function(d){ add_plan_fact_tooltip(d3.event, d) })
           .on("mouseout", remove_tooltip)
           .style("fill-opacity", 1.0)
           .on("click", function(d, i) {
@@ -158,7 +158,7 @@
           .selectAll("text")
           .text(function(d, i) {return data[i].label; })
           .style("cursor", "pointer")
-          .on("mousemove", function(d, i){ add_plan_fact_tooltip(d3.event, data[i]) })
+          .on("mouseover", function(d, i){ add_plan_fact_tooltip(d3.event, data[i]) })
           .on("mouseout", remove_tooltip)
           .on("click", function(d, i) {
                   _self.clickCallback(data[i]);

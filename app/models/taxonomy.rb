@@ -112,7 +112,7 @@ class Taxonomy
 
     explanation = self.explanation[level.to_s]
 
-    self.get_rows.each do |year, months|
+    self.get_rows[:plan].each do |year, months|
       levels[year] = { } if levels[year].nil?
 
       levels[year][:totals] = {} if levels[year][:totals].nil?
@@ -160,12 +160,15 @@ class Taxonomy
   def get_subrows level, key, filter, rows = get_rows
 
     subrows = {}
-    rows.keys.each {|year|
-      subrows[year] = {} if subrows[year].nil?
-      rows[year].keys.each { |month|
-        subrows[year][month] = [] if subrows[year][month].nil?
-        rows[year][month].each { |row|
-          subrows[year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
+    rows.keys.each { |data_type|
+      subrows[data_type] = {} if subrows[data_type].nil?
+      rows[data_type].keys.each { |year|
+        subrows[data_type][year] = {} if subrows[data_type][year].nil?
+        rows[data_type][year].keys.each { |month|
+          subrows[data_type][year][month] = [] if subrows[data_type][year][month].nil?
+          rows[data_type][year][month].each { |row|
+            subrows[data_type][year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
+          }
         }
       }
     }

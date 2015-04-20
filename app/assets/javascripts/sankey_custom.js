@@ -136,7 +136,7 @@ function get_sankey(data, year) {
         height = 500 - margin.top - margin.bottom;
 
     var formatNumber = d3.format(",.0f"),
-        format = function(d) { return formatNumber(d) + " TWh"; },
+        format = function(d) { return formatNumber(d) + " "; },
         color = d3.scale.category20();
 
     d3.select("#sankey_chart").selectAll('*').remove();

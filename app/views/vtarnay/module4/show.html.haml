@@ -30,6 +30,10 @@
 
   = render partial: 'widgets/visify/helpers'
 
+  #charts_tooltip.hidden
+    %p
+      %span#value
+
 :javascript
 
   $(document).ready(function() {
@@ -42,7 +46,9 @@
 
 
     var year = "#{@sel_year}",
-        month = "#{@sel_month}";
+        month = "#{@sel_month}",
+        data_type = "plan";
+
     var _data = null, current_data = null, center_node = null;
 
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
@@ -58,10 +64,12 @@
 
     function iconsItemClick(key) {
 
-      d3.json("/widgets/visify/get_bubblesubtree_with_fact/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
-      console.log(data);
-        current_data = buildData(data);
-        _data = center_node = data;
+      d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
+        _data = data
+        current_data = buildData(_data)
+        preprocessData(current_data, 7);
+        centerNode = current_data;
+
         chart.set_centerNode(null);
         sequence.show(current_data);
         chart.show(current_data);
@@ -70,6 +78,74 @@
         sidebar.show(current_data);
       });
     }
+
+      function preprocessData(root, maxNodes) {
+        if (maxNodes + 2 < root.children.length) {
+          var tmp = sortChildren(root.children);
+          tmp.reverse();
+          var keep = [], move = [], moveAmount = 0, breakdown;
+          for (var i in root.children) {
+            if (i < maxNodes) {
+              keep.push(root.children[i]);
+            } else {
+              move.push(root.children[i]);
+              moveAmount += Math.max(0, root.children[i].amount);
+            }
+          }
+
+          root.children = keep;
+          root.children.push({
+            'label': I18n.t('other'),
+            'name': I18n.t('other'),
+            'amount': moveAmount,
+            'children': move,
+            'breakdown': true,
+            'color': 'green',
+          });
+
+          for (var i in root.children) {
+            if (root.children[i].children)
+              preprocessData(root.children[i], maxNodes)
+          }
+        }
+      }
+
+      function sortChildren(children, alternate, sortBy) {
+        var tmp = [], odd = true;
+        if (sortBy == 'label') {
+          sortBy = compareLabels;
+          alternate = false;
+        } else sortBy = compareAmounts;
+
+        children.sort(sortBy);
+        if (alternate) {
+          while (children.length > 0) {
+            tmp.push(odd ? children.pop() : children.shift());
+            odd = !odd;
+          }
+          return tmp;
+        } else {
+          return children;
+        }
+
+        /*
+         * compares two items by amount
+         */
+        function compareAmounts(a, b) {
+            if (a.amount > b.amount) return 1;
+            if (a.amount == b.amount) return 0;
+            return -1;
+        };
+
+        /*
+         * compares to item by label
+         */
+        function compareLabels(a, b) {
+            if (a.label > b.label) return 1;
+            if (a.label == b.label) return 0;
+            return -1;
+        };
+      }
 
     function bubbleItemClick(node) {
       sequence.show(node);
@@ -99,7 +175,9 @@
       } else {
         month = new_month;
       }
-      current_data = buildData(_data);
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
       var curr_node;
       if(center_node != _data) {
         curr_node = chart.get_CenterNode(center_node);
@@ -121,17 +199,26 @@
 
     // get current data for all visifies
     function buildData(item) {
-
-      console.log(item)
-      if (!item.amount || !item.amount[year] || !item.amount[year][month])
+      if (!item.amount)
         return;
 
       var node = {}
-      node['amount'] = item.amount[year][month]
-      node['history'] = item.amount
-      node['fact_amount'] = item.fact_amount[year] ? (item.fact_amount[year][month] || 0 ) : 0
-      node['fact_history'] = item.fact_amount
+
       node['taxonomy'] = item.taxonomy
+
+      $.each(item.amount, function(k, v) {
+        var amount = (v[year] && v[year][month]) ? v[year][month] : null
+
+        if (k == data_type)
+          node['amount'] = amount
+        else
+          node['amount_'+k] = amount
+      })
+
+      if (!node['amount'] || node['amount'] == 0)
+        return
+
+      node['history'] = item.amount[data_type]
 
       $.each(['key', 'label', 'color', 'icon'], function(k, v) {
         node[v] = item[v]
