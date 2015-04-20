@@ -1,11 +1,5 @@
 class BudgetFileRovFact < BudgetFile
 
-  before_save :default_values
-
-  def default_values
-    self.type = 'fact'
-  end
-
   protected
 
   def get_taxonomy owner, columns
@@ -39,6 +33,8 @@ class BudgetFileRovFact < BudgetFile
     lines.map { |line|
       {
           '_month' => line[:month],
+
+          'fond' => nil,
 
           'amount' => line[:amount],
           'kvk' => kvk,
