@@ -30,7 +30,10 @@ function add_plan_fact_tooltip(event, d) {
             .style("top", yPosition + "px")
             .style('text-align', 'left')
             .select("#value")
-            .html(I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(d.amount) + "<br />" + I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(d.amount_fact));
+            .html("<div style='display: inline-block; width: 10px; height: 10px; background-color: #58AEDD'></div> "
+                   + I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(d.amount) +
+                   "<br /><div style='display: inline-block; width: 10px; height: 10px; background-color: #267392'></div> " +
+                   I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(d.amount_fact));
 
     //Show the tooltip
     d3.select("#charts_tooltip").classed("hidden", false);
