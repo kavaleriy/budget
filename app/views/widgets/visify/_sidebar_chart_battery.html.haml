@@ -22,10 +22,14 @@
 
 :javascript
   function aSidebarChartBattery(aContainer) {
-    var margins = {top: 12, right: 24, bottom: 24, left: 48},
-        width, height,
-        x, y, xAxis, yAxis,
-        svg, _self;
+    var margin = {top: 20, right: 0, bottom: 30, left: 0},
+        width, height
+
+    var x, y, xAxis, yAxis
+
+    var svg, _self;
+
+    function delay(d, i) { return i * 10; }
 
     function hide() {
       $("#sidebar_chart").height(0)
@@ -33,41 +37,59 @@
     }
 
     function sort(data) {
-      for(i in data) {
+      var x0 = y.domain(data.sort(true
+              ? function(a, b) {
+                  if(!a.amount_fact) a.amount_fact = 0;
+                  if(!b.amount_fact) b.amount_fact = 0;
+                  return (b.amount > b.amount_fact ? b.amount : b.amount_fact) - (a.amount > a.amount_fact ? a.amount : a.amount_fact);
+                }
+              : function(a, b) { return d3.ascending(a.label, b.label); })
+              .map(function(d) { return d.key; }))
+              .copy();
 
-        var tmp = data[i];
-        var next_data = data[parseInt(i)+1];
+      var transition = svg.transition().duration(150),
+          delay = function(d, i) { return i * 10; };
 
-        if(!data[i].amount_fact) data[i].amount_fact = 0;
-        if(!data[i].amount) data[i].amount = 0;
-        if(next_data) {
-          if(!data[parseInt(i)+1].amount) data[parseInt(i)+1].amount = 0;
-          if(!data[parseInt(i)+1].amount_fact) data[parseInt(i)+1].amount_fact = 0;
-        }
+      transition.selectAll(".bar")
+          .delay(delay)
+          .attr("y", function(d) { return x0(d.label); });
 
-        if(next_data && ((next_data.amount + next_data.amount_fact) > (tmp.amount + tmp.amount_fact))) {
-          data[i] = next_data;
-          data[parseInt(i)+1] = tmp;
-          sort(data);
-        }
-      }
+      transition.select(".y.axis")
+          .call(yAxis)
+        .selectAll("g")
+          .delay(delay);
     }
 
     return {
       initialize: function(pHeight, options) {
-
         _self = this;
         _self.clickCallback = options.clickCallback;
         $("#sidebar_chart").html('');
+        width = $(aContainer).width() - margin.left - margin.right - 50,
+        height = pHeight - margin.top - margin.bottom;
 
-        width = $(aContainer).width() - margins.left - margins.right - 50;
-        height = pHeight - margins.top - margins.bottom;
-        svg = d3.select('#sidebar_chart')
-          .append('svg')
-          .attr('width', width + margins.left + margins.right)
-          .attr('height', height + margins.top + margins.bottom)
-          .append('g')
-          .attr('transform', 'translate(' + margins.left + ',' + margins.top + ')');
+        x = d3.scale.linear()
+          .range([0, width]);
+
+        y = d3.scale.ordinal()
+          .rangeRoundBands([0, height], .1);
+
+        xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .tickFormat(function(d){
+              return aVisify.helpers.formatNumber(d)
+            })
+
+        yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("right")
+
+        svg = d3.select("#sidebar_chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       },
       hide: hide,
       show: function(data) {
@@ -75,119 +97,70 @@
 
         if (!data == null || data.length < 1) return;
 
-        $("#sidebar_chart").height(height + margins.top + margins.bottom);
+        $("#sidebar_chart").height(height + margin.top + margin.bottom)
 
-        var _data = [],
-            data_diff = [];
+        x.domain([0, d3.max(data, function(d) { return d.amount > d.amount_fact ? d.amount : d.amount_fact; })]);
+        y.domain(data.map(function(d) { return d.key; }));
 
         sort(data);
 
-        //for(i in data) {
-        //  console.log(data[i].label, data[i].amount + data[i].amount_fact)
-        //}
+        var visifier = $(".visify").parent().attr('class');
 
-        $.each(data, function(i, d) {
-
-          _data.push({'label': d.label, 'amount': d.amount_fact, 'color': 'green', 'node': d});
-
-          if(d.amount_fact <= d.amount) {
-            data_diff.push({'label': d.label, 'amount': (d.amount - d.amount_fact), 'color': 'yellow', 'node': d});
-          } else {
-            data_diff.push({'label': d.label, 'amount': (d.amount_fact - d.amount), 'color': 'red', 'node': d});
-          }
-        })
-
-        dataset = [{ data: _data }, { data: data_diff }],
-        dataset = dataset.map(function (d) {
-          return d.data.map(function (o, i) {
-            // Structure it so that your numeric
-            // axis (the stacked amount) is y
-            return {
-              y: o.amount,
-              x: o.label,
-              color: o.color,
-              node: o.node
-            };
-          });
-        }),
-        stack = d3.layout.stack();
-
-        stack(dataset);
-
-        var dataset = dataset.map(function (group) {
-          return group.map(function (d) {
-            // Invert the x and y values, and y0 becomes x0
-            return {
-              x: d.y,
-              y: d.x,
-              x0: d.y0,
-              color: d.color,
-              node: d.node
-            };
-          });
-        }),
-        xMax = d3.max(dataset, function (group) {
-          return d3.max(group, function (d) {
-            return d.x + d.x0;
-          });
-        }),
-        xScale = d3.scale.linear()
-          .domain([0, xMax])
-          .range([0, width]),
-        labels = dataset[0].map(function (d) {
-          return d.y;
-        }),
-        yScale = d3.scale.ordinal()
-          .domain(labels)
-          .rangeRoundBands([0, height], .1),
-        xAxis = d3.svg.axis()
-          .scale(xScale)
-          .orient('bottom'),
-        yAxis = d3.svg.axis()
-          .scale(yScale)
-          .orient('left'),
-        colours = d3.scale.category10(),
-        groups = svg.selectAll('g')
-          .data(dataset)
-          .enter()
-          .append('g')
-          ,
-        rects = groups.selectAll('rect')
-          .data(function (d) {
-            return d;
-          })
-          .enter()
-          .append('rect')
-          .attr('x', function (d) {
-          return xScale(d.x0);
-        })
-          .attr('y', function (d, i) {
-          return yScale(d.y);
-        })
-          .attr('height', function (d) {
-          return yScale.rangeBand();
-        })
-          .attr('width', function (d) {
-          return xScale(d.x);
-        })
-          .style('fill', function (d, i) {
-                    return d.color;
-                  })
+        var bars = svg.selectAll(".bar")
+          .data(data)
           .style("cursor", "pointer")
-          .on('mouseover', function (d) { })
-          .on('mouseout', function () { })
-          .on("click", function(d) {
-                          _self.clickCallback(d.node);
+          .on("click", function(d, i) {
+                          _self.clickCallback(data[i]);
                         });
 
-        svg.append('g')
-          .attr('class', 'axis')
-          .attr('transform', 'translate(0,' + height + ')')
+        bars.enter().append("rect")
+          .attr("class", "bar low")
+          .attr("x", 0)
+          .attr("width", 0 )
+          .attr("y", function(d) { return y(d.key); })
+          .attr("height", y.rangeBand() )
+          .style("fill-opacity", 1.0)
+          .style("cursor", "pointer")
+          .on("click", function(d, i) {
+                _self.clickCallback(data[i]);
+              });
+
+        bars.enter().append("rect")
+          .attr("class", "bar up")
+          .attr("x", 0)
+          .attr("width", 0 )
+          .attr("y", function(d) { return y(d.key); })
+          .attr("height", y.rangeBand() )
+          .style("fill-opacity", 1.0)
+          .style("cursor", "pointer")
+          .on("click", function(d, i) {
+                _self.clickCallback(data[i]);
+              });
+
+        svg.transition().duration(250).selectAll(".bar.low")
+          .delay(delay)
+          .attr("width", function(d) { return x(d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0)); })
+          .style("fill", function(d) { return d.color == 'green' ? 'green' : (d.amount > (d.amount_fact || 0) ? '#58AEDD' : '#267392'); })
+
+        svg.transition().duration(250).selectAll(".bar.up")
+          .delay(delay)
+          .attr("width", function(d) { return x(d.amount < (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0)); })
+          .style("fill", function(d) { return d.color == 'green' ? 'green' : (d.amount < (d.amount_fact || 0) ? '#58AEDD' : '#267392'); })
+
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
 
-        svg.append('g')
-          .attr('class', 'axis')
-          .call(yAxis);
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+          .selectAll("text")
+          .text(function(d, i) {return data[i].label; })
+          .style("cursor", "pointer")
+          .on("click", function(d, i) {
+                  _self.clickCallback(data[i]);
+              });
 
       },
     }
