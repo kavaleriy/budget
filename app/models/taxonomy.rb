@@ -67,7 +67,7 @@ class Taxonomy
 
     rows = self.get_rows
 
-    rows.each do |year, months|
+    rows[:plan].each do |year, months|
       totals[year] = { } if totals[year].nil?
 
       months.each do |month, rows|
@@ -81,7 +81,7 @@ class Taxonomy
 
     levels = {}
     explanation = self.explanation[level.to_s]
-    rows.each do |year, months|
+    rows[:plan].each do |year, months|
       months.each do |month, rows|
         rows.each do |row|
           key = row[level]

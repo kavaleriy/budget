@@ -96,7 +96,7 @@
 
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}", function(data) {
         _data = data
-        current_data = buildData(data)
+        current_data = buildData(_data)
         preprocessData(current_data, 7);
         centerNode = current_data;
 
@@ -206,7 +206,8 @@
           month = new_month;
         }
 
-        buildData(_data)
+        current_data = buildData(_data)
+        preprocessData(current_data, 7);
 
         var curr_node;
         if (chart.getCenterNode) {
@@ -230,24 +231,6 @@
       }
 
       // get current data for all visifies
-      function rebuildData(item) {
-        $.each(item.children, function(k, v) {
-          rebuildData(v)
-        })
-
-        if (item['taxonomy']) {
-          if (item['history'] && [year] && item['history'][year][month])
-            item['amount'] = item['history'][year][month]
-          else
-            item['amount'] = null
-        } else {
-          item['amount'] = 0
-          $.each(item.children, function(k, v) {
-            item['amount'] += v['amount']
-          })
-        }
-      }
-
       function buildData(item) {
         if (!item.amount)
           return;
@@ -257,7 +240,7 @@
         node['taxonomy'] = item.taxonomy
 
         $.each(item.amount, function(k, v) {
-          var amount = (v[year] && v[year][month]) ? v[year][month] : 0
+          var amount = (v[year] && v[year][month]) ? v[year][month] : null
 
           if (k == data_type)
             node['amount'] = amount
@@ -265,8 +248,8 @@
             node['amount_'+k] = amount
         })
 
-        if (!node['amount'])
-          node['amount'] = null
+        if (!node['amount'] || node['amount'] == 0)
+          return
 
         node['history'] = item.amount[data_type]
 
