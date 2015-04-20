@@ -15,3 +15,8 @@ function add_tooltip(event, d) {
     //Show the tooltip
     d3.select("#charts_tooltip").classed("hidden", false);
 }
+
+function remove_tooltip(d) {
+    //Hide the tooltip
+    d3.select("#charts_tooltip").classed("hidden", true);
+}
