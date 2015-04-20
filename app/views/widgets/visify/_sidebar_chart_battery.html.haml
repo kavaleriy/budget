@@ -27,31 +27,30 @@
         x, y, xAxis, yAxis,
         svg, _self;
 
-    function delay(d, i) { return i * 10; }
-
     function hide() {
       $("#sidebar_chart").height(0)
       svg.selectAll("*").remove()
     }
 
     function sort(data) {
-      var x0 = y.domain(data.sort(true
-              ? function(a, b) { return b.amount - a.amount; }
-              : function(a, b) { return d3.ascending(a.label, b.label); })
-              .map(function(d) { return d.key; }))
-              .copy();
+      for(i in data) {
 
-      var transition = svg.transition().duration(150),
-          delay = function(d, i) { return i * 10; };
+        var tmp = data[i];
+        var next_data = data[parseInt(i)+1];
 
-      transition.selectAll(".bar")
-          .delay(delay)
-          .attr("y", function(d) { return x0(d.label); });
+        if(!data[i].amount_fact) data[i].amount_fact = 0;
+        if(!data[i].amount) data[i].amount = 0;
+        if(next_data) {
+          if(!data[parseInt(i)+1].amount) data[parseInt(i)+1].amount = 0;
+          if(!data[parseInt(i)+1].amount_fact) data[parseInt(i)+1].amount_fact = 0;
+        }
 
-      transition.select(".y.axis")
-          .call(yAxis)
-        .selectAll("g")
-          .delay(delay);
+        if(next_data && ((next_data.amount + next_data.amount_fact) > (tmp.amount + tmp.amount_fact))) {
+          data[i] = next_data;
+          data[parseInt(i)+1] = tmp;
+          sort(data);
+        }
+      }
     }
 
     return {
@@ -72,49 +71,61 @@
       },
       hide: hide,
       show: function(data) {
-        console.log("chart", data);
         hide();
 
         if (!data == null || data.length < 1) return;
 
         $("#sidebar_chart").height(height + margins.top + margins.bottom);
 
-        dataset = [{
-          data: data,
-          name: 'Plan'
-        }, {
-          data: data,
-          name: 'Fact'
-        }
+        var _data = [],
+            data_diff = [];
 
-        ],
-        series = dataset.map(function (d) {
-          return d.name;
-        }),
+        sort(data);
+
+        //for(i in data) {
+        //  console.log(data[i].label, data[i].amount + data[i].amount_fact)
+        //}
+
+        $.each(data, function(i, d) {
+
+          _data.push({'label': d.label, 'amount': d.amount_fact, 'color': 'green', 'node': d});
+
+          if(d.amount_fact <= d.amount) {
+            data_diff.push({'label': d.label, 'amount': (d.amount - d.amount_fact), 'color': 'yellow', 'node': d});
+          } else {
+            data_diff.push({'label': d.label, 'amount': (d.amount_fact - d.amount), 'color': 'red', 'node': d});
+          }
+        })
+
+        dataset = [{ data: _data }, { data: data_diff }],
         dataset = dataset.map(function (d) {
           return d.data.map(function (o, i) {
             // Structure it so that your numeric
             // axis (the stacked amount) is y
             return {
               y: o.amount,
-              x: o.label
+              x: o.label,
+              color: o.color,
+              node: o.node
             };
           });
         }),
         stack = d3.layout.stack();
 
-      stack(dataset);
+        stack(dataset);
 
-      var dataset = dataset.map(function (group) {
-        return group.map(function (d) {
-          // Invert the x and y values, and y0 becomes x0
-          return {
-            x: d.y,
-            y: d.x,
-            x0: d.y0
-          };
-        });
-      }),
+        var dataset = dataset.map(function (group) {
+          return group.map(function (d) {
+            // Invert the x and y values, and y0 becomes x0
+            return {
+              x: d.y,
+              y: d.x,
+              x0: d.y0,
+              color: d.color,
+              node: d.node
+            };
+          });
+        }),
         xMax = d3.max(dataset, function (group) {
           return d3.max(group, function (d) {
             return d.x + d.x0;
@@ -123,11 +134,11 @@
         xScale = d3.scale.linear()
           .domain([0, xMax])
           .range([0, width]),
-        months = dataset[0].map(function (d) {
+        labels = dataset[0].map(function (d) {
           return d.y;
         }),
         yScale = d3.scale.ordinal()
-          .domain(months)
+          .domain(labels)
           .rangeRoundBands([0, height], .1),
         xAxis = d3.svg.axis()
           .scale(xScale)
@@ -140,13 +151,11 @@
           .data(dataset)
           .enter()
           .append('g')
-          .style('fill', function (d, i) {
-          return colours(i);
-        }),
+          ,
         rects = groups.selectAll('rect')
           .data(function (d) {
-          return d;
-        })
+            return d;
+          })
           .enter()
           .append('rect')
           .attr('x', function (d) {
@@ -161,38 +170,24 @@
           .attr('width', function (d) {
           return xScale(d.x);
         })
+          .style('fill', function (d, i) {
+                    return d.color;
+                  })
+          .style("cursor", "pointer")
           .on('mouseover', function (d) { })
           .on('mouseout', function () { })
+          .on("click", function(d) {
+                          _self.clickCallback(d.node);
+                        });
 
         svg.append('g')
           .attr('class', 'axis')
           .attr('transform', 'translate(0,' + height + ')')
           .call(xAxis);
 
-      svg.append('g')
-        .attr('class', 'axis')
-        .call(yAxis);
-
-      svg.append('rect')
-        .attr('fill', 'yellow')
-        .attr('width', 160)
-        .attr('height', 30 * dataset.length)
-        .attr('x', width + margins.left)
-        .attr('y', 0);
-
-      series.forEach(function (s, i) {
-        svg.append('text')
-          .attr('fill', 'black')
-          .attr('x', width + margins.left + 8)
-          .attr('y', i * 24 + 24)
-          .text(s);
-        svg.append('rect')
-          .attr('fill', colours(i))
-          .attr('width', 60)
-          .attr('height', 20)
-          .attr('x', width + margins.left + 90)
-          .attr('y', i * 24 + 6);
-      });
+        svg.append('g')
+          .attr('class', 'axis')
+          .call(yAxis);
 
       },
     }

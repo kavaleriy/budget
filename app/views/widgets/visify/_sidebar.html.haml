@@ -8,7 +8,7 @@
             =t('.chart')
       #collapseChart.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
         .panel-body
-          = render partial: 'sidebar_chart', :locals => { budget_file_id: budget_file_id }
+          = render partial: 'sidebar_chart_battery', :locals => { budget_file_id: budget_file_id }
 
     .panel.panel-default
       #heading2.panel-heading{'role' => 'tab'}
@@ -42,7 +42,7 @@
       container: aContainer,
 
       initialize: function(height, options){
-        chart = aSidebarChart('#sidebar')
+        chart = aSidebarChartBattery('#sidebar')
         chart.initialize(350, options)
 
         pie = aSidebarPie('#sidebar')
