@@ -15,38 +15,3 @@ function add_tooltip(event, d) {
     //Show the tooltip
     d3.select("#charts_tooltip").classed("hidden", false);
 }
-
-
-function add_plan_fact_tooltip(event, d) {
-    //Get this bar's x/y values, then augment for the tooltip
-    var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
-    var evt = event || window.event;
-
-    var xPosition = (evt.x);
-    var yPosition = (evt.y);
-
-    //Update the tooltip position and value
-    var html;
-    if(d.color == 'green') {
-        html = aVisify.helpers.formatNumber(d.amount)
-    } else {
-        html = "<div style='display: inline-block; width: 10px; height: 10px; background-color: #58AEDD'></div> "
-                + I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(d.amount) +
-                "<br /><div style='display: inline-block; width: 10px; height: 10px; background-color: #267392'></div> " +
-                I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(d.amount_fact)
-    }
-    d3.select("#charts_tooltip")
-            .style("left", xPosition + "px")
-            .style("top", yPosition + "px")
-            .style('text-align', 'left')
-            .select("#value")
-            .html(html);
-
-    //Show the tooltip
-    d3.select("#charts_tooltip").classed("hidden", false);
-}
-
-function remove_tooltip(d) {
-    //Hide the tooltip
-    d3.select("#charts_tooltip").classed("hidden", true);
-}
