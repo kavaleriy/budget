@@ -7,12 +7,9 @@ class BudgetFile
 
   field :title, type: String
   field :path, type: String
-  field :type, type: String
 
   # plan, fact etc
   field :data_type
-
-  # field :data_type, type: String
 
   # source data
   field :rows, :type => Hash
@@ -54,7 +51,7 @@ class BudgetFile
       years[year] = {} if years[year].nil?
 
       years[year][month] = [] if years[year][month].nil?
-      years[year][month] << row.reject{|k| k.start_with?('_')}
+      years[year][month] << row.reject{|k| k.in?(%w(_year _month))}
     }
 
     self.rows = years

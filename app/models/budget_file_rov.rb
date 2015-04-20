@@ -1,11 +1,5 @@
 class BudgetFileRov < BudgetFile
 
-  before_save :default_values
-
-  def default_values
-    self.type = 'plan'
-  end
-
   protected
 
   def get_taxonomy owner, columns
@@ -25,7 +19,8 @@ class BudgetFileRov < BudgetFile
     {
         '_year' => row['DATA'].to_date.year.to_s,
         '_month' => row['MONTH'].to_s.split('.')[0],
-        '_fond' => row['KKFN'].to_s,
+
+        'fond' => row['KKFN'].to_s,
 
         'amount' => amount / 100,
         'ktfk' => ktfk,
