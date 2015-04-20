@@ -64,9 +64,9 @@
         //Get this bar's x/y values, then augment for the tooltip
         var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
         var evt = event || window.event;
+        var xPosition = evt.pageX;
+        var yPosition = evt.pageY - sequence_height;
 
-        var xPosition = (evt.x);
-        var yPosition = (evt.y);
 
         //Update the tooltip position and value
         var html;
