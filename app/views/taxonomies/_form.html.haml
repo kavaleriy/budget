@@ -6,3 +6,5 @@
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), taxonomies_path, :class => 'btn btn-default'
+
+= render :partial => 'file_upload', :locals => { :attachments => @attachments, :taxonomy_id=>@taxonomy.id }

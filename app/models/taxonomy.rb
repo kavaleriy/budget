@@ -11,6 +11,7 @@ class Taxonomy
   field :explanation, :type => Hash
 
   has_many :budget_files, autosave: true, :dependent => :destroy
+  embeds_many :taxonomy_attachments
 
   def self.visible_to user
     files = if user
