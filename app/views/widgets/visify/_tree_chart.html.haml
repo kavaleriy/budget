@@ -70,6 +70,8 @@
           month = "#{@sel_month}",
           data_type = "#{@data_type}";
 
+      var fonds = #{@fond_codes.to_json()}
+
       var sequence = aSequence('.visify')
       var chart = aTreeChart('.bubbletree');
       var slider = aSliderCompare('#slider_compare');
@@ -178,6 +180,16 @@
       }
 
       function bubbleItemClick(node) {
+        console.log(node)
+        if (node.amount_fond) {
+          am = 0
+          $.each(node.amount_fond, function(k, v) {
+            //console.log(k, v)
+            //console.log(fonds[k])
+            am += v
+          })
+          console.log(node.amount, am, node.amount == am)
+        }
         sequence.show(node);
         slider_chart.show(node, year);
         if(slider.current_node() != centerNode) {

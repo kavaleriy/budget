@@ -1,8 +1,8 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_locale
 
-  before_action :set_budget_file, :except => [:get_treenode_data]
-
+  before_action :set_budget_file
+  before_action :set_params, :except => [:get_bubbletree_nodedata]
 
   MAX_NODES_PER_LEVEL = 100
 
@@ -177,11 +177,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def set_budget_file
-    @sel_year = '0'
-    @sel_month = '0'
-
-    @range = {}
-
     @budget_file = BudgetFile.where(:id => visify_params[:file_id]).first
     @taxonomy = Taxonomy.where(:id => visify_params[:file_id]).first || @budget_file.taxonomy
 
@@ -191,13 +186,22 @@ class Widgets::VisifyController < Widgets::WidgetsController
     else
       @data_type = @budget_file.data_type
     end
+  end
 
+  def set_params
+    @sel_year = '0'
+    @sel_month = '0'
+
+    @range = {}
     range = {}
     @budget_file.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
     @range = range.sort_by{|k,v| k.to_i}
 
     @sel_year = visify_params[:year] || @range.last[0]
     @sel_month = visify_params[:month] || @range.last[1].first
+
+    @fond_codes = Taxonomy.fond_codes()
+
   rescue => e
     logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   end

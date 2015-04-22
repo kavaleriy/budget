@@ -234,6 +234,13 @@ class Taxonomy
             node[:amount][data_type][year][month] = 0  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month] += row['amount']
 
+            node[:amount][:fond] = {}  if node[:amount][:fond].nil?
+            node[:amount][:fond] = {}  if node[:amount][data_type].nil?
+            node[:amount][:fond][year] = {}  if node[:amount][:fond][year].nil?
+            node[:amount][:fond][year][month] = {} if node[:amount][:fond][year][month].nil?
+            node[:amount][:fond][year][month][row['fond']] = 0 if node[:amount][:fond][year][month][row['fond']].nil?
+            node[:amount][:fond][year][month][row['fond']] += row['amount']
+
             self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
 
               if row[taxonomy_key].nil?
@@ -249,6 +256,12 @@ class Taxonomy
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
                 node[taxonomy_value][:amount][data_type][year][month] = 0 if node[taxonomy_value][:amount][data_type][year][month].nil?
                 node[taxonomy_value][:amount][data_type][year][month] += row['amount']
+
+                node[taxonomy_value][:amount][:fond] = {}  if node[taxonomy_value][:amount][:fond].nil?
+                node[taxonomy_value][:amount][:fond][year] = {}  if node[taxonomy_value][:amount][:fond][year].nil?
+                node[taxonomy_value][:amount][:fond][year][month] = {} if node[taxonomy_value][:amount][:fond][year][month].nil?
+                node[taxonomy_value][:amount][:fond][year][month][row['fond']] = 0 if node[taxonomy_value][:amount][:fond][year][month][row['fond']].nil?
+                node[taxonomy_value][:amount][:fond][year][month][row['fond']] += row['amount']
               end
 
               node = node[taxonomy_value]
@@ -258,12 +271,14 @@ class Taxonomy
       end
     end
 
+
     tree
   end
 
   def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
     node = {
         'amount' => items[:amount],
+        'amount_fond' => items[:amount_fond],
         'key' => key,
         'taxonomy' => items[:taxonomy]
     }
@@ -287,22 +302,26 @@ class Taxonomy
   end
 
   def expense_codes
-    @ktfk_info = load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
+    @ktfk_info = self.load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
     @ktfk_info
   end
 
+  def self.fond_codes
+    self.load_from_csv 'db/revenue_fond_codes.csv'
+  end
+
   def revenue_fond_codes
-    @fond_info = load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
+    @fond_info = self.load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
     @fond_info
   end
 
   def expense_ekv_codes
-    @kekv_info = load_from_csv 'db/expense_ekv_codes.csv' if @kekv_info.nil?
+    @kekv_info = self.load_from_csv 'db/expense_ekv_codes.csv' if @kekv_info.nil?
     @kekv_info
   end
 
   def expense_kvk_codes
-    @kvk_info = load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
+    @kvk_info = self.load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
     @kvk_info
   end
 
@@ -312,7 +331,7 @@ class Taxonomy
     self.title = self.class if self.title.nil?
   end
 
-  def load_from_csv file_name
+  def self.load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
       items[row[0]] = { title: row[I18n.t('activerecord.models.taxonomy.short_title')], color: row[I18n.t('activerecord.models.taxonomy.color')], icon: row[I18n.t('activerecord.models.taxonomy.icon')], description: row[I18n.t('activerecord.models.taxonomy.description')] }
