@@ -199,15 +199,31 @@ d3.sankey = function() {
                 return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value);
             });
 
+//            var min_value = d3.min(nodes, function(d) { return d.value; });
+//            var max_value = d3.max(nodes, function(d) { return d.value; });
+//            var scale = d3.scale.linear()
+//                                .domain([min_value, max_value])
+//                                .range([50, 150]);
+
             nodesByBreadth.forEach(function(nodes) {
                 nodes.forEach(function(node, i) {
                     node.y = i;
                     node.dy = node.value * ky;
+//                    if(fonds[node.name]) {
+//                        node.dy = scale(node.value);
+//                    } else {
+//                        node.dy = scale(node.value)/nodes.length;
+//                    }
                 });
             });
 
             links.forEach(function(link) {
                 link.dy = link.value * ky;
+//                if(fonds[link.source.name]) {
+//                    link.dy = link.target.dy*link.value/link.target.value;
+//                } else {
+//                    link.dy = link.source.dy*link.value/link.source.value;
+//                }
             });
         }
 

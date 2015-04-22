@@ -26,6 +26,15 @@
     =t('sankeys.create')
 
   %p
+  #percent_list{:style => "display: none"}
+    =t('sankeys.aggregation')
+    = link_to '5%', '#', :remote => true, 'data-value' => '5', :class => 'active'
+    \|
+    = link_to '3%', '#', :remote => true, 'data-value' => '3'
+    \|
+    = link_to '0%', '#', :remote => true, 'data-value' => '0'
+
+  %p
   %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 
   .budget
@@ -44,6 +53,8 @@
     clear();
     var history;
     var years = [];
+    var percent = 5;
+    var year = new Date().getFullYear();
 
     if(i == 0 && '#{action_name}' == "edit") {
       new_sankey('#{@sankey.rot_file_id}', '#{@sankey.rov_file_id}');
@@ -75,14 +86,25 @@
             year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
         }
         $('#select_year').html(year_options).css("display", "block");
+        $('#percent_list').css("display", "block");
         history = data;
-        get_sankey(data, years[0]);
+        year = years[0];
+        get_sankey(data, years[0], percent);
       })
     }
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
-      get_sankey(history, $(this).val());
+      year = $(this).val();
+      get_sankey(history, year, percent);
+    })
+
+    $('#percent_list').click(function(e) {
+      d3.selectAll('#sankey_chart svg').remove();
+      percent = $(e.target).attr('data-value');
+      $('#percent_list .active').removeClass('active');
+      $(e.target).addClass('active');
+      get_sankey(history, year, percent);
     })
 
     // clear sankey field

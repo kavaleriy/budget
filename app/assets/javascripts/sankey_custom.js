@@ -1,6 +1,22 @@
-function get_sankey(data, year) {
+function get_sankey(data, year, percent) {
 
-    $('#sankey_chart').html('').css("height", "500px");
+    var svg_height;
+    switch(parseInt(percent)) {
+        case 5:
+            svg_height = 500;
+            break;
+        case 3:
+            svg_height = 1000;
+            break;
+        case 0:
+            svg_height = 1500;
+            break;
+        default:
+            svg_height = 500;
+            break;
+    }
+
+    $('#sankey_chart').html('').css("height", svg_height + 'px');
     $('#sankey_save').css("display", "block");
 
     var energy = {"nodes" : [],
@@ -38,7 +54,7 @@ function get_sankey(data, year) {
         for(i in d) {
             var fond = get_fond(i);
             for(j in d[i]) {
-                if(d[i][j].amount*100/revenues >= 5) {
+                if(d[i][j].amount*100/revenues >= percent) {
                     var key = d[i][j].title || j;
                     if(!keys[key]) {
                         energy.nodes.push({ "name": key });
@@ -79,7 +95,7 @@ function get_sankey(data, year) {
         for(i in d) {
             var fond = get_fond(i);
             for(j in d[i]) {
-                if(d[i][j].amount*100/expences >= 5) {
+                if(d[i][j].amount*100/expences >= percent) {
                     var key = d[i][j].title || j;
                     if(!keys[key]) {
                         energy.nodes.push({ "name": key });
@@ -133,7 +149,7 @@ function get_sankey(data, year) {
     var side_rect_width = 60;
     var margin = {top: 80, right: side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
         width = 1200 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = svg_height - margin.top - margin.bottom;
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d) + " "; },
