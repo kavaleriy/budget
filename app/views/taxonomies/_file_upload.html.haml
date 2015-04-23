@@ -1,3 +1,5 @@
+.title
+  = t('taxonomies.file_upload.title')
 = form_for :file, :html => { :multipart => true, :id => "tax_fileupload"} do |f|
   #tax_files.files
     %table.table.table-hover{:style=>"font-size: 0.8em"}
@@ -79,7 +81,7 @@
       click_delete($(this));
     });
     function click_on_input(input_element,event){
-      console.log($(input_element).val().length);
+      //console.log($(input_element).val().length);
       if($(input_element).val().length>0){
         $(input_element).parent('td').children('.btn-info').removeClass('disabled');
       }

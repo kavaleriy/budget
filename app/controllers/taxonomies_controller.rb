@@ -86,7 +86,7 @@ class TaxonomiesController < ApplicationController
 
 
   def delete_attachments
-    file_path = get_attachment_path @attachment.name, @taxonomy.id
+    file_path = get_attachment_path @attachment.name, params[:taxonomy_id]
     respond_to do |format|
       if File.exist?(file_path)
         if File.delete(file_path)
@@ -120,6 +120,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def set_attachment
+    @taxonomy = Taxonomy.find(params[:taxonomy_id])
     @attachment = @taxonomy.taxonomy_attachments.find(params[:attachment_id])
   end
 
