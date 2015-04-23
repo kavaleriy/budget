@@ -180,15 +180,11 @@
       }
 
       function bubbleItemClick(node) {
-        console.log(node)
         if (node.amount_fond) {
           am = 0
           $.each(node.amount_fond, function(k, v) {
-            //console.log(k, v)
-            //console.log(fonds[k])
             am += v
           })
-          console.log(node.amount, am, node.amount == am)
         }
         sequence.show(node);
         slider_chart.show(node, year);
@@ -286,14 +282,21 @@
       I18n.locale = window.aHelper.lang();
 
       function set_visiframe_inframe() {
-        src = window.location.href;
-        $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
-        $('.tab-content iframe').attr('src', src)
-        $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
-                                                              <option value=\"default\" selected>900x1200</option>\
-                                                              <option value=\"900\">1350x1900</option>\
-                                                              <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-        $('#embed_visual').find('.iframe_other_size').html("");
+        src_top = window.top.location.host;
+        src_frame = window.location.host;
+        if(src_top == src_frame) {
+          src = window.location.href;
+          $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+          $('.tab-content iframe').attr('src', src)
+          $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
+                                                                <option value=\"default\" selected>900x1200</option>\
+                                                                <option value=\"900\">1350x1900</option>\
+                                                                <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+          $('#embed_visual').find('.iframe_other_size').html("");
+        } else {
+          $('#embed_visual').attr("style", "display: none");
+        }
+
       }
 
       set_visiframe_inframe();
