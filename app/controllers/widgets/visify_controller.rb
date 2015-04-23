@@ -119,6 +119,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     node = {
         'amount' => item['amount'],
+        'amount_fond' => item['amount_fond'],
         'label' => item['key'],
         'key' => item['key'],
         'taxonomy' => item['taxonomy']
@@ -131,7 +132,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
-    if item['children'].nil? || item['children'].length < 2
+    if item['children'].nil?
       node['color'] = '#a8bccc'
     elsif node['color'].nil?
       node['color'] = '#265f91'
