@@ -58,8 +58,6 @@ Rails.application.routes.draw do
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
 
-
-
   resources :taxonomies
   resources :taxonomy_frees
   resources :taxonomy_rots

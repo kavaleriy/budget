@@ -108,6 +108,7 @@ class TaxonomiesController < ApplicationController
   def upload_file (attachment, taxonomy_id)
 
     file_name = attachment.original_filename
+    Dir.mkdir('public/files/taxonomy_attachments/') unless File.exists?('public/files/taxonomy_attachments/')
     Dir.mkdir('public/files/taxonomy_attachments/' + taxonomy_id) unless File.exists?('public/files/taxonomy_attachments/' + taxonomy_id)
     file_path = get_attachment_path file_name, @taxonomy.id
     File.open(file_path, 'wb') do |file|

@@ -67,9 +67,13 @@
         $(aContainer + ' #description').html('');
         if(node.key == "Всього" || node.key == "All") {
           $.getJSON("/widgets/visify/get_attachments/#{@budget_file.id}/", function(data) {
-            div_descr = "<div class='title'>" + I18n.t('widgets.visify.sidebar.attachments') + ": </div>"
+            div_descr = '';
+            if(data['attachments'].length != 0) {
+              div_descr += "<div class='title'>" + I18n.t('widgets.visify.sidebar.attachments') + ": </div>"
+            }
             $.each(data['attachments'], function(key, value) {
-              div_descr += "<a href='/taxonomies/#{@budget_file.id}/taxonomy_attachments/" + value._id.$oid + "'>" + value.name + "</a></br>";
+              div_descr += "<a href='/taxonomies/#{@budget_file.id}/taxonomy_attachments/" + value._id.$oid + "'>\
+                            <span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span> " + (value.description || value.name) + "</a></br>";
             })
             $(aContainer + ' #description').html(div_descr)
           })
