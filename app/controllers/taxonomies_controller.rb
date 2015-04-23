@@ -41,7 +41,7 @@ class TaxonomiesController < ApplicationController
 
   def download_attachments
     file_name = @attachment.name
-    file_path = get_attachment_path file_name, @taxonomy.id
+    file_path = get_attachment_path file_name, params[:taxonomy_id]
     if File.exist?(file_path)
       send_file(
           "#{file_path}",

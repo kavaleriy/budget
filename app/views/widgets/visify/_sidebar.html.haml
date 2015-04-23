@@ -66,13 +66,23 @@
 
       getLevelInfo: function(node) {
         $(aContainer + ' #description').html('');
-        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          div_descr = ''
-          if (data.description) {
-            div_descr = "<div class='description'>" + data.description + "</div>"
-          }
-          $(aContainer + ' #description').html(div_descr)
-        })
+        if(node.key == "Всього" || node.key == "All") {
+          $.getJSON("/widgets/visify/get_attachments/#{@budget_file.id}/", function(data) {
+            div_descr = "<div class='title'>" + I18n.t('widgets.visify.sidebar.attachments') + ": </div>"
+            $.each(data['attachments'], function(key, value) {
+              div_descr += "<a href='/taxonomies/#{@budget_file.id}/taxonomy_attachments/" + value._id.$oid + "'>" + value.name + "</a></br>";
+            })
+            $(aContainer + ' #description').html(div_descr)
+          })
+        } else {
+          $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+            div_descr = ''
+            if (data.description) {
+              div_descr = "<div class='description'>" + data.description + "</div>"
+            }
+            $(aContainer + ' #description').html(div_descr)
+          })
+        }
 
         if(node.children) {
             chart.show(node.children);

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
     get 'visify/get_bubblesubtree_with_fact/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree_with_fact'
     get 'visify/get_bubbletree_nodedata/:file_id/:taxonomy/:key' => 'visify#get_bubbletree_nodedata'
+    get 'visify/get_attachments/:file_id' => 'visify#get_attachments'
     get 'visify/get_visify_level/:file_id/:taxonomy' => 'visify#get_visify_level'
 
     get 'visify/sunburst/:file_id' => 'visify#sunburst'
