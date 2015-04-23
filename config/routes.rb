@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     get 'visify/bubbletree/:file_id' => 'visify#bubbletree'
     get 'visify/circles/:file_id' => 'visify#circles'
     get 'visify/treemap/:file_id' => 'visify#treemap'
+    get 'visify/treemap_with_headers/:file_id' => 'visify#treemap_with_headers'
     get 'visify/icicle/:file_id' => 'visify#icicle'
     get 'visify/collapsible/:file_id' => 'visify#collapsible'
 
