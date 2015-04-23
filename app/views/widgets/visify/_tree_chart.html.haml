@@ -5,7 +5,7 @@
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
-    #under_sequence
+    = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
   .col-xs-12.col-md-8
     #chart
     %canvas{:style => "display: none;"}
@@ -70,9 +70,8 @@
           month = "#{@sel_month}",
           data_type = "#{@data_type}";
 
-      var fonds = #{@fond_codes.to_json()}
-
       var sequence = aSequence('.visify')
+      var under_sequence = aUnderSequence('.visify')
       var chart = aTreeChart('.bubbletree');
       var slider = aSliderCompare('#slider_compare');
       var slider_chart = aSliderChart('#slider_chart', slider);
@@ -180,17 +179,8 @@
       }
 
       function bubbleItemClick(node) {
-        console.log(node)
-        if (node.amount_fond) {
-          am = 0
-          $.each(node.amount_fond, function(k, v) {
-            //console.log(k, v)
-            //console.log(fonds[k])
-            am += v
-          })
-          console.log(node.amount, am, node.amount == am)
-        }
         sequence.show(node);
+        under_sequence.show(node);
         slider_chart.show(node, year);
         if(slider.current_node() != centerNode) {
           slider.show(node, year);
@@ -234,6 +224,7 @@
 
       function ItemClick(node) {
         sequence.show(node);
+        under_sequence.show(node);
         slider_chart.show(node, year);
         slider.show(node, year);
         sidebar.show(node);
@@ -253,9 +244,10 @@
         $.each(item.amount, function(k, v) {
           var amount = (v[year] && v[year][month]) ? v[year][month] : null
 
-          if (k == data_type)
+          if (k == data_type) {
             node['amount'] = amount
-          else
+            node['amount_fond'] = (item.amount_fond == null) ? null : item.amount_fond[data_type][year][month]
+          } else
             node['amount_'+k] = amount
         })
 

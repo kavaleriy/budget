@@ -234,12 +234,12 @@ class Taxonomy
             node[:amount][data_type][year][month] = 0  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month] += row['amount']
 
-            node[:amount][:fond] = {}  if node[:amount][:fond].nil?
-            node[:amount][:fond] = {}  if node[:amount][data_type].nil?
-            node[:amount][:fond][year] = {}  if node[:amount][:fond][year].nil?
-            node[:amount][:fond][year][month] = {} if node[:amount][:fond][year][month].nil?
-            node[:amount][:fond][year][month][row['fond']] = 0 if node[:amount][:fond][year][month][row['fond']].nil?
-            node[:amount][:fond][year][month][row['fond']] += row['amount']
+            node[:amount_fond] = {} if node[:amount_fond].nil?
+            node[:amount_fond][data_type] = {} if node[:amount_fond][data_type].nil?
+            node[:amount_fond][data_type][year] = {}  if node[:amount_fond][data_type][year].nil?
+            node[:amount_fond][data_type][year][month] = {} if node[:amount_fond][data_type][year][month].nil?
+            node[:amount_fond][data_type][year][month][row['fond']] = 0 if node[:amount_fond][data_type][year][month][row['fond']].nil?
+            node[:amount_fond][data_type][year][month][row['fond']] += row['amount']
 
             self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
 
@@ -250,18 +250,19 @@ class Taxonomy
               end
 
               if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => row['amount'] } } } }
+                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => row['amount'] }}} }
+                node[taxonomy_value][:amount_fond] = { data_type => { year => { month => { row['fond'] => row['amount'] }}}}
               else
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
                 node[taxonomy_value][:amount][data_type][year][month] = 0 if node[taxonomy_value][:amount][data_type][year][month].nil?
                 node[taxonomy_value][:amount][data_type][year][month] += row['amount']
 
-                node[taxonomy_value][:amount][:fond] = {}  if node[taxonomy_value][:amount][:fond].nil?
-                node[taxonomy_value][:amount][:fond][year] = {}  if node[taxonomy_value][:amount][:fond][year].nil?
-                node[taxonomy_value][:amount][:fond][year][month] = {} if node[taxonomy_value][:amount][:fond][year][month].nil?
-                node[taxonomy_value][:amount][:fond][year][month][row['fond']] = 0 if node[taxonomy_value][:amount][:fond][year][month][row['fond']].nil?
-                node[taxonomy_value][:amount][:fond][year][month][row['fond']] += row['amount']
+                node[taxonomy_value][:amount_fond][data_type] = {}  if node[taxonomy_value][:amount_fond][data_type].nil?
+                node[taxonomy_value][:amount_fond][data_type][year] = {}  if node[taxonomy_value][:amount_fond][data_type][year].nil?
+                node[taxonomy_value][:amount_fond][data_type][year][month] = {} if node[taxonomy_value][:amount_fond][data_type][year][month].nil?
+                node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']] = 0 if node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']].nil?
+                node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']] += row['amount']
               end
 
               node = node[taxonomy_value]
@@ -270,7 +271,6 @@ class Taxonomy
         end
       end
     end
-
 
     tree
   end
@@ -283,7 +283,7 @@ class Taxonomy
         'taxonomy' => items[:taxonomy]
     }
 
-    children = items.keys.reject{|k| k == :amount || k == :taxonomy }
+    children = items.keys.reject{|k| k.in?([:amount, :amount_fond, :taxonomy]) }
 
     unless children.empty?
       node['children'] = []
@@ -297,31 +297,31 @@ class Taxonomy
 
 
   def revenue_codes
-    @kkd_info = load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
+    @kkd_info = Taxonomy.load_from_csv 'db/revenue_codes.csv' if @kkd_info.nil?
     @kkd_info
   end
 
   def expense_codes
-    @ktfk_info = self.load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
+    @ktfk_info = Taxonomy.self.load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
     @ktfk_info
   end
 
   def self.fond_codes
-    self.load_from_csv 'db/revenue_fond_codes.csv'
+    Taxonomy.load_from_csv 'db/revenue_fond_codes.csv'
   end
 
   def revenue_fond_codes
-    @fond_info = self.load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
+    @fond_info = Taxonomy.load_from_csv 'db/revenue_fond_codes.csv' if @fond_info.nil?
     @fond_info
   end
 
   def expense_ekv_codes
-    @kekv_info = self.load_from_csv 'db/expense_ekv_codes.csv' if @kekv_info.nil?
+    @kekv_info = Taxonomy.load_from_csv 'db/expense_ekv_codes.csv' if @kekv_info.nil?
     @kekv_info
   end
 
   def expense_kvk_codes
-    @kvk_info = self.load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
+    @kvk_info = Taxonomy.load_from_csv 'db/expense_kvk_codes.csv' if @kvk_info.nil?
     @kvk_info
   end
 

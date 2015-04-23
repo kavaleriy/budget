@@ -60,7 +60,6 @@
         table.hide();
       },
       show: function(node){
-        this.showUndersequence(node);
         this.getLevelInfo(node)
       },
 
@@ -91,31 +90,6 @@
         } else {
           this.hide();
         }
-
-      },
-
-      showUndersequence: function(node) {
-        I18n.locale = window.aHelper.lang()
-        label = node.label || ''
-        icon = node.icon || ''
-
-        if (node.parent && node.amount <= node.parent.amount) {
-          percentage = aVisify.helpers.getPercentageString(node.amount, node.parent.amount)
-          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
-        }
-        else {
-          percentage = '100%'
-          percParentTitle = ''
-        }
-
-        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + ": " + aVisify.helpers.formatNumber(node.amount)
-          + ", <small class='percentage'>" + percentage + percParentTitle + "</small>"
-          //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
-          + "</h4>"
-          //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
-
-        $(aContainer + ' #under_sequence').html(div)
       },
     }
   }

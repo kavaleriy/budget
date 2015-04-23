@@ -1,0 +1,52 @@
+#under_sequence
+
+:javascript
+
+  function aUnderSequence(aContainer) {
+    var self;
+
+    var fonds = #{fond_codes.to_json()}
+
+
+    return {
+      container: aContainer,
+
+      show: function(node) {
+        I18n.locale = window.aHelper.lang()
+        label = node.label || ''
+        icon = node.icon || ''
+
+        if (node.parent && node.amount <= node.parent.amount) {
+          percentage = aVisify.helpers.getPercentageString(node.amount, node.parent.amount)
+          percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
+        }
+        else {
+          percentage = '100%'
+          percParentTitle = ''
+        }
+
+
+        amountFonds = ''
+        if (node.amount_fond) {
+          amountFonds = '<small>['
+          am = 0
+          $.each(node.amount_fond, function(k, v) {
+            fond = fonds[k]
+            amountFonds += '<i style="color:' + fond.color + '"class="fa fa-folder-o"></i> ' + fonds[k].title + ' - <b>' + aVisify.helpers.formatNumber(v) + '</b> '
+            am += v
+          })
+          //console.log(node.amount, am, node.amount == am)
+          amountFonds += ']</small>'
+        }
+
+        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
+          + ": " + aVisify.helpers.formatNumber(node.amount) + ' ' + amountFonds
+          + ", <span class='percentage'>" + percentage + percParentTitle + "</span>"
+          //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
+          + "</h4>"
+          //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
+
+        $(aContainer + ' #under_sequence').html(div)
+      },
+    }
+  }
