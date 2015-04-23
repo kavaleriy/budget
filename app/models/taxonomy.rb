@@ -325,18 +325,20 @@ class Taxonomy
     @kvk_info
   end
 
-  private
+  protected
 
-  def generate_title
-    self.title = self.class if self.title.nil?
-  end
-
-  def self.load_from_csv file_name
+  def load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
       items[row[0]] = { title: row[I18n.t('activerecord.models.taxonomy.short_title')], color: row[I18n.t('activerecord.models.taxonomy.color')], icon: row[I18n.t('activerecord.models.taxonomy.icon')], description: row[I18n.t('activerecord.models.taxonomy.description')] }
     end
     items
+  end
+
+  private
+
+  def generate_title
+    self.title = self.class if self.title.nil?
   end
 
 end
