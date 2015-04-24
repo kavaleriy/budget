@@ -117,6 +117,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   def get_bubble_tree_item(item, info)
 
+    if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
+      item = item['children'][0]
+    end
+
     node = {
         'amount' => item['amount'],
         'amount_fond' => item['amount_fond'],
@@ -124,6 +128,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
         'key' => item['key'],
         'taxonomy' => item['taxonomy']
     }
+
+
 
     if info
       node['label'] = info['title'] unless info['title'].nil?
