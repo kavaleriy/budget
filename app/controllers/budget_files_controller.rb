@@ -36,6 +36,7 @@ class BudgetFilesController < ApplicationController
 
     @budget_file.import current_user.town, table
 
+
     respond_to do |format|
       if @budget_file.save
         format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }

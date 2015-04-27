@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   resources :budget_files
   resources :budget_file_frees
   resources :budget_file_rots
+  resources :budget_file_rot_planfacts
   resources :budget_file_rovs
   resources :budget_file_rot_fonds
   resources :budget_file_rov_fonds

@@ -196,11 +196,11 @@ class Taxonomy
     rows = { }
     self.budget_files.each{ |file|
       data_type = file.data_type
-      rows[data_type] = {} if rows[data_type].nil?
 
       file.rows.keys.each {|year|
-        rows[data_type][year] = {} if rows[data_type][year].nil?
         file.rows[year].keys.each {|month|
+          rows[data_type] = {} if rows[data_type].nil?
+          rows[data_type][year] = {} if rows[data_type][year].nil?
           rows[data_type][year][month] = file.rows[year][month]
         }
       }
@@ -223,26 +223,23 @@ class Taxonomy
     tree = { :amount => {} }
     # return nil if rows[year].nil? || rows[year][month].nil?
 
-    rows.keys.each do |data_type|
-      rows[data_type].keys.each do |year|
-        rows[data_type][year].keys.each do |month|
-          rows[data_type][year][month].each do |row|
+    rows.keys.each do |dt|
+      rows[dt].keys.each do |year|
+        rows[dt][year].keys.each do |month|
+          rows[dt][year][month].each do |row|
             node = tree
+
+            data_type = row['_amount_type'] || dt
+            fond = row['fond'] || 'total'
+
             node[:amount] = {} if node[:amount].nil?
             node[:amount][data_type] = {}  if node[:amount][data_type].nil?
             node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
-            node[:amount][data_type][year][month] = 0  if node[:amount][data_type][year][month].nil?
-            node[:amount][data_type][year][month] += row['amount']
-
-            node[:amount_fond] = {} if node[:amount_fond].nil?
-            node[:amount_fond][data_type] = {} if node[:amount_fond][data_type].nil?
-            node[:amount_fond][data_type][year] = {}  if node[:amount_fond][data_type][year].nil?
-            node[:amount_fond][data_type][year][month] = {} if node[:amount_fond][data_type][year][month].nil?
-            node[:amount_fond][data_type][year][month][row['fond']] = 0 if node[:amount_fond][data_type][year][month][row['fond']].nil?
-            node[:amount_fond][data_type][year][month][row['fond']] += row['amount']
+            node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
+            node[:amount][data_type][year][month][fond] = 0 if node[:amount][data_type][year][month][fond].nil?
+            node[:amount][data_type][year][month][fond] += row['amount']
 
             self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
-
               if row[taxonomy_key].nil?
                 taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
               else
@@ -250,19 +247,14 @@ class Taxonomy
               end
 
               if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => row['amount'] }}} }
-                node[taxonomy_value][:amount_fond] = { data_type => { year => { month => { row['fond'] => row['amount'] }}}}
+                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
+                node[taxonomy_value][:amount][data_type][year][month][fond] = row['amount'] unless fond.nil?
               else
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
-                node[taxonomy_value][:amount][data_type][year][month] = 0 if node[taxonomy_value][:amount][data_type][year][month].nil?
-                node[taxonomy_value][:amount][data_type][year][month] += row['amount']
-
-                node[taxonomy_value][:amount_fond][data_type] = {}  if node[taxonomy_value][:amount_fond][data_type].nil?
-                node[taxonomy_value][:amount_fond][data_type][year] = {}  if node[taxonomy_value][:amount_fond][data_type][year].nil?
-                node[taxonomy_value][:amount_fond][data_type][year][month] = {} if node[taxonomy_value][:amount_fond][data_type][year][month].nil?
-                node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']] = 0 if node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']].nil?
-                node[taxonomy_value][:amount_fond][data_type][year][month][row['fond']] += row['amount']
+                node[taxonomy_value][:amount][data_type][year][month] ={} if node[taxonomy_value][:amount][data_type][year][month].nil?
+                node[taxonomy_value][:amount][data_type][year][month][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month][fond].nil?
+                node[taxonomy_value][:amount][data_type][year][month][fond] += row['amount']
               end
 
               node = node[taxonomy_value]
@@ -278,12 +270,11 @@ class Taxonomy
   def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
     node = {
         'amount' => items[:amount],
-        'amount_fond' => items[:amount_fond],
         'key' => key,
         'taxonomy' => items[:taxonomy]
     }
 
-    children = items.keys.reject{|k| k.in?([:amount, :amount_fond, :taxonomy]) }
+    children = items.keys.reject{|k| k.in?([:amount, :taxonomy]) }
 
     unless children.empty?
       node['children'] = []

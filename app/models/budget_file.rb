@@ -41,6 +41,7 @@ class BudgetFile
       readline(row)
     }.compact.flatten.sort_by{|row| -row['amount']}
 
+
     years = {}
     rows.each { |row|
 

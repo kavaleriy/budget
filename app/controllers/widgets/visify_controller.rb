@@ -123,7 +123,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     node = {
         'amount' => item['amount'],
-        'amount_fond' => item['amount_fond'],
         'label' => item['key'],
         'key' => item['key'],
         'taxonomy' => item['taxonomy']
