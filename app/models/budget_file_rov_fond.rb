@@ -13,8 +13,8 @@ class BudgetFileRovFond < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    kvk = row['kvk'].to_s
-    krk = row['krk'].to_s
+    kvk = row['kvk'].to_s.split('.')[0]
+    krk = row['krk'].to_s.split('.')[0]
     kekv = row['kekv'].to_s.split('.')[0]
 
     amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
