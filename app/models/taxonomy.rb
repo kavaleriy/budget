@@ -302,7 +302,7 @@ class Taxonomy
   end
 
   def expense_codes
-    @ktfk_info = Taxonomy.self.load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
+    @ktfk_info = Taxonomy.load_from_csv 'db/expense_codes.csv' if @ktfk_info.nil?
     @ktfk_info
   end
 
