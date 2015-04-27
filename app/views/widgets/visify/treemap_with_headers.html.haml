@@ -73,6 +73,7 @@
 
       node = root = data;
 
+      treemap.sticky(true);
       var nodes = treemap.nodes(root);
 
       var children = nodes.filter(function(d) {
@@ -86,7 +87,7 @@
       // create parent cells
       var parentCells = chart.selectAll("g.cell.parent")
           .data(parents, function(d) {
-              return "p-" + d.amount;
+              return "p-" + (d.amount + d.label);
           });
       var parentEnterTransition = parentCells.enter()
           .append("g")
@@ -134,7 +135,7 @@
       // create children cells
       var childrenCells = chart.selectAll("g.cell.child")
           .data(children, function(d) {
-              return "c-" + d.amount;
+              return "c-" + (d.amount + d.label);
           });
       // enter transition
       var childEnterTransition = childrenCells.enter()
@@ -164,13 +165,14 @@
               return d.label;
           });
 
-      if (isIE) {
-          childEnterTransition.selectAll(".foreignObject .labelbody .label")
-              .style("display", "none");
-      } else {
-          childEnterTransition.selectAll(".foreignObject")
-              .style("display", "none");
-      }
+      // hide child labels
+      //if (isIE) {
+      //    childEnterTransition.selectAll(".foreignObject .labelbody .label")
+      //        .style("display", "none");
+      //} else {
+      //    childEnterTransition.selectAll(".foreignObject")
+      //        .style("display", "none");
+      //}
 
       // update transition
       var childUpdateTransition = childrenCells.transition().duration(transitionDuration);
@@ -248,15 +250,16 @@
       xscale.domain([d.x, d.x + d.dx]);
       yscale.domain([d.y, d.y + d.dy]);
 
-      if (node != level) {
-          if (isIE) {
-              chart.selectAll(".cell.child .foreignObject .labelbody .label")
-                  .style("display", "none");
-          } else {
-              chart.selectAll(".cell.child .foreignObject")
-                  .style("display", "none");
-          }
-      }
+      // hide child labels
+      //if (node != level) {
+      //    if (isIE) {
+      //        chart.selectAll(".cell.child .foreignObject .labelbody .label")
+      //            .style("display", "none");
+      //    } else {
+      //        chart.selectAll(".cell.child .foreignObject")
+      //            .style("display", "none");
+      //    }
+      //}
 
       var zoomTransition = chart.selectAll("g.cell").transition().duration(transitionDuration)
           .attr("transform", function(d) {
@@ -320,71 +323,12 @@
       if (d3.event) {
           d3.event.stopPropagation();
       }
+      self.clickCallback(d);
     };
-    //
-    //function mouseclick(d) {
-    //  zoom(d);
-    //  self.clickCallback(d);
-    //}
-    //
-    //function mouseover(event, d) {
-    //  add_tooltip(event, d);
-    //  //sequence.show(d);
-    //}
-    //
-    //function mouseleave(d) {
-    //  remove_tooltip(d);
-    //  //sequence.show(centerNode);
-    //}
-    //
-    //function dblclick(d) {
-    //  //zoom(d);
-    //}
-    //
-    //function clear() {
-    //  svg.selectAll("*").remove();
-    //}
-    //
-    //function size(d) {
-    //  return d.amount;
-    //}
-    //
-    //function count(d) {
-    //  return 1;
-    //}
-    //
-    //function zoom(d) {
-    //  var kx = width / d.dx, ky = height / d.dy;
-    //  x.domain([d.x, d.x + d.dx]);dblclick
-    //  y.domain([d.y, d.y + d.dy]);
-    //
-    //  var t;
-    //
-    //  if(d3.event) {
-    //    t = svg.selectAll("g.cell").transition()
-    //        .duration(d3.event.altKey ? 7500 : 750)
-    //        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-    //  } else {
-    //    t = svg.selectAll("g.cell").transition()
-    //         .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-    //  }
-    //
-    //  t.select("rect")
-    //      .attr("width", function(d) { return kx * d.dx - 1; })
-    //      .attr("height", function(d) { return ky * d.dy - 1; })
-    //
-    //  t.select("text")
-    //      .attr("x", function(d) { return kx * d.dx / 2; })
-    //      .attr("y", function(d) { return ky * d.dy / 2; })
-    //      .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
-    //
-    //  node = d;
-    //
-    //  if(d3.event) {
-    //    d3.event.stopPropagation();
-    //  }
-    //}
 
+    function clear() {
+      chart.selectAll("*").remove();
+    }
 
     return {
       initialize: function(options) {
@@ -405,7 +349,6 @@
         treemap = d3.layout.treemap()
             .round(false)
             .size([chartWidth, chartHeight])
-            .sticky(true)
             .value(function(d) { return d.amount; });
 
         chart = d3.select(".treemap #chart")
@@ -421,12 +364,12 @@
 
       },
       show: function(data) {
-        //clear();
+        clear();
         createVisualization(data);
         centerNode = data;
       },
       selectNode: function (node) {
-        mouseclick(node);
+        zoom(node);
       },
       set_centerNode: function(node) {
         centerNode = node;
