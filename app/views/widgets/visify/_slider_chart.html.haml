@@ -79,7 +79,7 @@
     function get_history_data(data) {
       compare_years = []
       $.each( data, function( year, months ) {
-        compare_years.push( { label: year, amount: months['0'] } )
+        compare_years.push( { label: year, amount: months['0']['total'] } )
       })
       return compare_years
     }

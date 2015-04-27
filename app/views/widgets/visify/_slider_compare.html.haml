@@ -78,7 +78,7 @@
       compare_months = []
       $.each( data, function( month, amount ) {
         if (month > 0) {
-          compare_months.push({ label: month, amount: amount });
+          compare_months.push({ label: month, amount: amount['total'] });
         }
       })
       return compare_months

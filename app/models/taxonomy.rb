@@ -230,14 +230,19 @@ class Taxonomy
             node = tree
 
             data_type = row['_amount_type'] || dt
-            fond = row['fond'] || 'total'
+            fond = row['fond']
 
             node[:amount] = {} if node[:amount].nil?
             node[:amount][data_type] = {}  if node[:amount][data_type].nil?
             node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
             node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
-            node[:amount][data_type][year][month][fond] = 0 if node[:amount][data_type][year][month][fond].nil?
-            node[:amount][data_type][year][month][fond] += row['amount']
+            node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
+            node[:amount][data_type][year][month]['total'] += row['amount']
+            unless fond.nil?
+              node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
+              node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
+              node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
+            end
 
             self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
               if row[taxonomy_key].nil?
@@ -253,8 +258,13 @@ class Taxonomy
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
                 node[taxonomy_value][:amount][data_type][year][month] ={} if node[taxonomy_value][:amount][data_type][year][month].nil?
-                node[taxonomy_value][:amount][data_type][year][month][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month][fond].nil?
-                node[taxonomy_value][:amount][data_type][year][month][fond] += row['amount']
+                node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
+                node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
+                unless fond.nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += row['amount']
+                end
               end
 
               node = node[taxonomy_value]
