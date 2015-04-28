@@ -246,6 +246,7 @@ class Taxonomy
 
             self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
               if row[taxonomy_key].nil?
+                next unless taxonomy_key == 'ktfk_aaa'
                 taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
               else
                 taxonomy_value = row[taxonomy_key]

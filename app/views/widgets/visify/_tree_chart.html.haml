@@ -111,7 +111,7 @@
       })
 
       function preprocessData(root, maxNodes) {
-        if (maxNodes + 2 < root.children.length) {
+        if ((maxNodes + 2) < root.children.length) {
           var tmp = sortChildren(root.children);
           tmp.reverse();
           var keep = [], move = [], moveAmount = 0, breakdown;
@@ -246,7 +246,9 @@
 
           if (k == data_type) {
             node['amount'] = amount['total']
-            node['amount_fond'] = amount['fonds']
+            if (amount['fonds']) {
+              node['amount_fond'] = amount['fonds']
+            }
           } else {
             node['amount_'+k] = amount['total']
           }
