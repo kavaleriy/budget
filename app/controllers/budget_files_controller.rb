@@ -4,7 +4,7 @@ class BudgetFilesController < ApplicationController
 
   before_action :generate_budget_file, only: [:create, :new]
 
-  before_action :update_user_town, only: [:create]
+  # before_action :update_user_town, only: [:create]
 
   before_action :authenticate_user!
   # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
@@ -166,9 +166,9 @@ class BudgetFilesController < ApplicationController
     @budget_file = BudgetFile.find(params[:id])
   end
 
-  def update_user_town
-    current_user.town = params[:town]
-    current_user.save
-  end
+  # def update_user_town
+  #   current_user.town = params[:town]
+  #   current_user.save
+  # end
 
 end
