@@ -27,7 +27,7 @@
 
         amountFonds = ''
         if (node.amount_fond) {
-          amountFonds = ' <small>('
+          amountFonds = ' <small>'
           am = 0
           $.each(node.amount_fond, function(k, v) {
             fond = fonds[k]
@@ -35,14 +35,15 @@
             am += v
           })
           //console.log(node.amount, am, node.amount == am)
-          amountFonds += ')</small>'
+          amountFonds += '</small>'
         }
 
-        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;"> ' + label
-          + ": " + aVisify.helpers.formatNumber(node.amount) + amountFonds
-          + " <span class='percentage'>" + percentage + percParentTitle + "</span>"
+        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;">' + label
+          + ": " + aVisify.helpers.formatNumber(node.amount)
+          + ", <span class='percentage'>" + percentage + percParentTitle + "</span>"
           //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
           + "</h4>"
+          + amountFonds
           //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
         $(aContainer + ' #under_sequence').html(div)
