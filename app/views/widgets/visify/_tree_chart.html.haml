@@ -5,8 +5,8 @@
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
-    = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
   .col-xs-12.col-md-8
+    = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
     #chart
     %canvas{:style => "display: none;"}
 
