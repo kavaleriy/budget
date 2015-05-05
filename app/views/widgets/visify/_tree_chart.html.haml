@@ -10,24 +10,7 @@
     #chart
     %canvas{:style => "display: none;"}
 
-    .embed_btn.col-xs-12
-      -#btn #save used to recieve trigger from out of iframe to get url for SVG image
-      %button.btn.btn-primary#save{:style => "display: none"}
-        %i.fa.fa-file-image-o
-      .btn-group.pull-right
-        %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
-          %i.fa.fa-code
-
-    .col-xs-12
-      //#iframe_embed
-      #embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-        .input-group
-          .input-group-addon
-            = t('embed')
-          %input.form-control
-          %span.embed_label=t('iframe.select')
-          %select.iframe_size_select#visual
-          .iframe_other_size
+    = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
 
     .slider.row
       = render partial: 'slider_chart'

@@ -1,0 +1,19 @@
+.embed_btn.col-xs-12
+  -#btn #save used to recieve trigger from out of iframe to get url for SVG image
+  %button.btn.btn-primary#save{:style => "display: none"}
+    %i.fa.fa-file-image-o
+  .btn-group.pull-right
+    %button.btn.btn-primary.btn_embed{"data-toggle" => "buttons-checkbox"}
+      %i.fa.fa-code
+
+.col-xs-12
+  //#iframe_embed
+  #embed_visual.embed_hide.embed{'data-width' => data_width, 'data-height' => data_height, 'data-name' => data_name}
+    .input-group
+      .input-group-addon
+        = t('embed')
+      %input.form-control
+      -if data_name != "timelinejs"
+        %span.embed_label=t('iframe.select')
+        %select.iframe_size_select{ :id => data_id}
+        .iframe_other_size

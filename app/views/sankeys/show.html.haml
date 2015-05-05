@@ -12,6 +12,8 @@
 
 #sankey_chart
 
+= render partial: 'widgets/visify/embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "", data_id: "visual" }
+
 = link_to t('form.edit'), edit_sankey_path(@sankey)
 \|
 = link_to t('form.back'), sankeys_path
@@ -64,5 +66,29 @@
       $(e.target).addClass('active');
       get_sankey(history, year, percent);
     })
+
+  })
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    function set_visiframe_inframe() {
+      if (window.top.location.host == window.self.location.host) {
+        src = window.location.href;
+        $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+        $('.tab-content iframe').attr('src', src)
+        $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
+                                                              <option value=\"default\" selected>900x1200</option>\
+                                                              <option value=\"900\">1350x1900</option>\
+                                                              <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+        $('#embed_visual').find('.iframe_other_size').html("");
+      } else {
+        $('.embed_btn').html("");
+      }
+
+    }
+
+    set_visiframe_inframe();
 
   })
