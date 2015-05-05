@@ -147,8 +147,8 @@ function get_sankey(data, year, percent) {
     });
 
     var side_rect_width = 60;
-    var margin = {top: 80, right: side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
-        width = 1200 - margin.left - margin.right,
+    var margin = {top: 80, right: 2*side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
+        width = $(document).width() - margin.left - margin.right,
         height = svg_height - margin.top - margin.bottom;
 
     var formatNumber = d3.format(",.0f"),
@@ -297,7 +297,7 @@ function get_sankey(data, year, percent) {
 
     // central rectangle for General and Special funds
     svg.append("rect")
-        .attr("x", width/2 - 68)
+        .attr("x", width/2 - 100)
         .attr("y", -margin.top + 1)
         .style("fill", "none")
         .style("stroke", "#082757")
@@ -306,7 +306,7 @@ function get_sankey(data, year, percent) {
         .attr("height", height + margin.top + margin.bottom - 2);
 
     svg.append("text")
-        .attr("x", width/2 + 14)
+        .attr("x", width/2 - 15)
         .attr("y", -margin.top + 25)
         .attr("text-anchor", "middle")
         .style("fill", "#082757")
@@ -320,7 +320,7 @@ function get_sankey(data, year, percent) {
         status_bar.append("rect")
             .attr("x", function(){
                 if(i == 0) return width/4;
-                if(i == 1) return width/2 - 61;
+                if(i == 1) return width/2 - 95;
                 return width/2 + 118;
             })
             .attr("y", function(){
@@ -340,7 +340,7 @@ function get_sankey(data, year, percent) {
             .style("stroke", "#082757")
             .style("stroke-width", 2)
             .attr("width", function(){
-                if(i == 1) return width/8 + 20;
+                if(i == 1) return 158;
                 return width/6;
             })
             .attr("height", function(){
@@ -351,8 +351,8 @@ function get_sankey(data, year, percent) {
         status_bar.append("text")
             .attr("x", function(){
                 if(i == 0) return width/3;
-                if(i == 1) return width/2 + 15;
-                return 2*width/3 + 30;
+                if(i == 1) return width/2 - 15;
+                return 2*width/3 - 15;
             })
             .attr("y", function(){
                 if(i == 1) return -margin.top/4;
@@ -382,16 +382,16 @@ function get_sankey(data, year, percent) {
         side_bars.append("rect")
             .attr("x", function(){
                 if(j == 0) return -margin.left;
-                return width - width/8 - 12 + margin.right;
+                return width - margin.left - 10;
             })
             .attr("y", -margin.top + 1 )
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
-            .attr("width", width/8 + 10)
+            .attr("width", margin.right + 20)
             .attr("height", margin.top - 20);
 
         var text = side_bars.append("text")
-            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - width/8 - 7 + margin.right})
+            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - margin.left - 5})
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "start")
             .style("font-size", "0.7em")
@@ -428,7 +428,7 @@ function get_sankey(data, year, percent) {
             text.append('tspan')
                 .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + margin.right + 4)
+                .attr("x", width - margin.left + 5)
                 .style("font-weight", "normal");
             text.append('tspan')
                 .text(function() {
@@ -439,7 +439,7 @@ function get_sankey(data, year, percent) {
                     return (100 - prev_expences*100/expences).toFixed(2) + "%";
                 })
                 .attr("dy", "1.1em")
-                .attr("x", width - width/8 + margin.right + 4)
+                .attr("x", width - margin.left + 5)
                 .style("font-weight", "normal")
                 .attr("fill", function(d) {return expences >= prev_expences ? "green" : "red"; });
         }
@@ -540,7 +540,7 @@ function get_sankey(data, year, percent) {
             var rect = svg.append("g").attr("transform", "translate(0,0)");
             rect.append("rect")
                 .attr("x", function() {
-                    return i == 0 ? -margin.left + 5 : width - side_rect_width - 8;
+                    return i == 0 ? -margin.left + 5 : width - margin.left - 5;
                 })
                 .attr("y", -margin.top + 27)
                 .style("fill", "none")
@@ -572,7 +572,7 @@ function get_sankey(data, year, percent) {
                 })
                 .style("stroke", "white")
                 .attr("transform", function(d) {
-                    return i == 0 ? "translate(" + (-margin.left + 5) + "," + (-margin.top + 45) + ")" : "translate(" + (width - side_rect_width - 8) + "," + (-margin.top + 45) + ")";
+                    return i == 0 ? "translate(" + (-margin.left + 5) + "," + (-margin.top + 45) + ")" : "translate(" + (width - margin.left - 5) + "," + (-margin.top + 45) + ")";
                 });
         }
     }
