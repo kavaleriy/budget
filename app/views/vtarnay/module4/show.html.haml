@@ -207,12 +207,16 @@
       node['taxonomy'] = item.taxonomy
 
       $.each(item.amount, function(k, v) {
-        var amount = (v[year] && v[year][month]) ? v[year][month] : null
+        var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
 
-        if (k == data_type)
-          node['amount'] = amount
-        else
-          node['amount_'+k] = amount
+        if (k == data_type) {
+          node['amount'] = amount['total']
+          if (amount['fonds']) {
+            node['amount_fond'] = amount['fonds']
+          }
+        } else {
+          node['amount_'+k] = amount['total']
+        }
       })
 
       if (!node['amount'] || node['amount'] == 0)
