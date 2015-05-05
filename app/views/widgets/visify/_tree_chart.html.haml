@@ -281,9 +281,8 @@
       I18n.locale = window.aHelper.lang();
 
       function set_visiframe_inframe() {
-        src_top = window.top.location.host;
-        src_frame = window.location.host;
-        if(src_top == src_frame) {
+
+        if (window.top != window.self) {
           src = window.location.href;
           $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
           $('.tab-content iframe').attr('src', src)
