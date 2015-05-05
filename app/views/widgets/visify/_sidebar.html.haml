@@ -1,6 +1,14 @@
 #sidebar.col-xs-12.col-md-4
 
-  #description
+  #accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
+    .panel.panel-default
+      #headingDesc.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+            =t('.description')
+      #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+        .panel-body
+          #description
 
   #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
     .panel.panel-default
