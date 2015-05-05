@@ -10,7 +10,7 @@
     #chart
     %canvas{:style => "display: none;"}
 
-    .col-xs-12
+    .embed_btn.col-xs-12
       -#btn #save used to recieve trigger from out of iframe to get url for SVG image
       %button.btn.btn-primary#save{:style => "display: none"}
         %i.fa.fa-file-image-o
@@ -292,7 +292,7 @@
                                                                 <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
           $('#embed_visual').find('.iframe_other_size').html("");
         } else {
-          $('#embed_visual').attr("style", "display: none");
+          $('.embed_btn').html("");
         }
 
       }
