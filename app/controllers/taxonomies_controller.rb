@@ -4,7 +4,7 @@ class TaxonomiesController < ApplicationController
   before_action :set_attachments, only: [:show, :edit]
   before_action :set_attachment, only: [:update_files_description, :delete_attachments, :download_attachments]
 
-  before_action :authenticate_user!, except: :show
+  before_action :authenticate_user!, except: [:show, :download_attachments]
   load_and_authorize_resource
 
   before_action :set_locale
