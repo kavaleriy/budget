@@ -58,8 +58,8 @@
             |
             %b En
 
-        - if current_user
-          %li.dropdown
+        %li.dropdown
+          - if current_user
             %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
               %i.fa.fa-user.fa-fw
               = t('.user')
@@ -68,9 +68,10 @@
               %li= link_to t('.edit_profile'), edit_user_registration_path
               %li.divider
               %li= link_to t('.logout'), destroy_user_session_path, method: :delete
-        - else
-          %li
-            = link_to 'Login', new_user_session_path
+          - else
+            = link_to new_user_session_path do
+              %i.fa.fa-key
+              = t('.login')
 
         -#%li.todo
         -#  %a.dropdown-toggle(data-toggle="dropdown" href="#")

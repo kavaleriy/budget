@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-  # deals with mass assignment
+  # dealing with mass assignment
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
   protected
