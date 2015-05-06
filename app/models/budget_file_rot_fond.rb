@@ -10,8 +10,8 @@ class BudgetFileRotFond < BudgetFileRot
     kkd = row['kkd'].to_s.split('.')[0]
     return if kkd == ''
 
-    amount1 = row[I18n.t('activerecord.taxonomy_rot_fond.gen_fund')].to_i
-    amount2 = row[I18n.t('activerecord.taxonomy_rot_fond.spec_fund')].to_i
+    amount1 = row[I18n.t('mongoid.taxonomy_rot_fond.gen_fund')].to_i
+    amount2 = row[I18n.t('mongoid.taxonomy_rot_fond.spec_fund')].to_i
 
     [
         { :amount => amount1, :fond => '1' },

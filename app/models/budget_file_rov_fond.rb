@@ -17,8 +17,8 @@ class BudgetFileRovFond < BudgetFile
     krk = row['krk'].to_s.split('.')[0]
     kekv = row['kekv'].to_s.split('.')[0]
 
-    amount1 = row[I18n.t('activerecord.taxonomy_rov_fond.gen_fund')].to_i
-    amount2 = row[I18n.t('activerecord.taxonomy_rov_fond.spec_fund')].to_i
+    amount1 = row[I18n.t('mongoid.taxonomy_rov_fond.gen_fund')].to_i
+    amount2 = row[I18n.t('mongoid.taxonomy_rov_fond.spec_fund')].to_i
 
     [
         { :amount => amount1, :fond => '1' },

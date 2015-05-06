@@ -36,7 +36,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: get_bubble_tree_item_with_fact(tree, {  'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
   end
 
-  def create_tree_item_with_fact(items, items_fact, key = I18n.t('activerecord.models.taxonomy.node_key'))
+  def create_tree_item_with_fact(items, items_fact, key = I18n.t('mongoid.models.taxonomy.node_key'))
     node = {
         'fact_amount' => items_fact[:amount],
         'amount' => items[:amount],
