@@ -10,6 +10,8 @@
       %th
         =t('owner')
       %th
+        =t('data_type')
+      %th
         =t('author')
       %th
         =t 'form.actions', :default => t("helpers.actions")
@@ -24,6 +26,7 @@
           = link_to budget_file_download_path(budget_file), :class => '' do
             %i.fa.fa-download.fa-2x.fa-border
         %td= budget_file.taxonomy.owner
+        %td= budget_file.data_type
         %td= budget_file.author
         %td
           =link_to t('form.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'

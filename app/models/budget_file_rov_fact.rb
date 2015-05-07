@@ -7,11 +7,11 @@ class BudgetFileRovFact < BudgetFile
   end
 
   def readline row
-    ktfk = row['KFK'].to_s
+    ktfk = row['KFK'].to_s.gsub(/^0*/, "")
 
-    ktfk_aaa = ktfk.slice(0, ktfk.length - 3).ljust(3, '0')
-    ktfk_aaa = '800' if ktfk_aaa == '810'
-    ktfk_aaa = '900' if ktfk_aaa == '910'
+    ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
+    ktfk_aaa = '80' if ktfk_aaa == '81'
+    ktfk_aaa = '90' if ktfk_aaa == '91'
 
     kvk = row['KVK'].to_s
     kekv = row['KOD'].to_s
@@ -45,9 +45,4 @@ class BudgetFileRovFact < BudgetFile
     }
   end
 
-  private
-
-  def set_data_type
-    self.data_type = :fact if self.data_type.nil?
-  end
 end

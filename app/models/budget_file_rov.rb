@@ -10,7 +10,7 @@ class BudgetFileRov < BudgetFile
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
-    ktfk = row['KTFK'].to_s
+    ktfk = row['KTFK'].to_s.gsub(/^0*/, "")
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
@@ -29,12 +29,6 @@ class BudgetFileRov < BudgetFile
         'kekv' => row['KEKV'].to_s,
         'krk' => row['KRK'].to_s,
     }
-  end
-
-  private
-
-  def set_data_type
-    self.data_type = :plan if self.data_type.nil?
   end
 
 end

@@ -7,9 +7,9 @@ class BudgetFileRovFond < BudgetFile
   end
 
   def readline row
-    ktfk = row['ktfk'].to_s.split('.')[0]
+    ktfk = row['ktfk'].to_s.split('.')[0].gsub(/^0*/, "")
 
-    ktfk_aaa = ktfk.slice(0, ktfk.length - 3).ljust(3, '0')
+    ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
@@ -38,18 +38,12 @@ class BudgetFileRovFond < BudgetFile
             'ktfk_aaa' => ktfk_aaa,
         }
 
-      %w(_year _month).each{ |key|
+      %w(_year _qt _month).each{ |key|
         item[key] = row[key].to_i unless row[key].nil?
       }
 
       item
     }.compact.reject {|c| c['amount'] == 0 }
-  end
-
-  private
-
-  def set_data_type
-    self.data_type = :plan if self.data_type.nil?
   end
 
 end

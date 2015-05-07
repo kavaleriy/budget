@@ -26,7 +26,7 @@ class BudgetFileRotFond < BudgetFileRot
           'fond' => fond,
       }
 
-      %w(_year _month).each{ |key|
+      %w(_year _qt _month).each{ |key|
         item[key] = row[key].to_i unless row[key].nil?
       }
 
@@ -36,10 +36,6 @@ class BudgetFileRotFond < BudgetFileRot
       }
       item
     }.reject {|c| c.nil? || c['amount'] == 0 }
-  end
-
-  def set_data_type
-    self.data_type = :plan if self.data_type.nil?
   end
 
 end

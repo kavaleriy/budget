@@ -3,6 +3,7 @@ class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:create, :new]
+  before_action :set_budget_file_data_type, only: [:new]
 
   before_action :update_user_town, only: [:create]
 
@@ -23,6 +24,8 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
   def create
     @budget_file.author = current_user.email unless current_user.nil?
+
+    @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].nil?
 
     file = upload_file budget_file_params[:path]
     file_name = file[:name]
@@ -169,8 +172,12 @@ class BudgetFilesController < ApplicationController
 
   private
 
+  def set_budget_file_data_type
+    @budget_file.data_type = :plan if @budget_file.data_type.nil?
+  end
+
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :path)
+    params.require(params[:controller].singularize).permit(:title, :data_type, :path)
   end
 
   def set_budget_file
