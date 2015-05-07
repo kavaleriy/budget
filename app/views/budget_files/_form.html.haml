@@ -3,8 +3,11 @@
 
   .form-group
     %label.control-label
-      = "#{t('owner')}: #{current_user.town}"
-    -#= select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+      = t('owner')
+    - if current_user && current_user.has_role?(:admin)
+      = select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+    - else
+      = ": #{current_user.town}"
 
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
   = f.submit nil, :class => 'btn btn-primary'

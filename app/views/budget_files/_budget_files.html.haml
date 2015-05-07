@@ -20,7 +20,9 @@
         %td
           =link_to budget_file.title, budget_file
           -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
-        %td= budget_file.path
+        %td
+          = link_to budget_file_download_path(budget_file), :class => '' do
+            %i.fa.fa-download.fa-2x.fa-border
         %td= budget_file.taxonomy.owner
         %td= budget_file.author
         %td

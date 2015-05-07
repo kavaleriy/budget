@@ -1,10 +1,10 @@
 class BudgetFilesController < ApplicationController
 
-  before_action :set_budget_file, only: [:show, :edit, :update, :destroy]
+  before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:create, :new]
 
-  # before_action :update_user_town, only: [:create]
+  before_action :update_user_town, only: [:create]
 
   before_action :authenticate_user!
   # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
@@ -95,6 +95,17 @@ class BudgetFilesController < ApplicationController
     end
   end
 
+  def download
+    file_path = @budget_file.path
+    if File.exist?(file_path)
+      send_file(
+          "#{file_path}",
+          :x_sendfile=>true
+      )
+    end
+  end
+
+
   protected
 
   def upload_file uploaded_io
@@ -163,12 +174,12 @@ class BudgetFilesController < ApplicationController
   end
 
   def set_budget_file
-    @budget_file = BudgetFile.find(params[:id])
+    @budget_file = BudgetFile.find(params[:id] || params[:budget_file_id])
   end
 
-  # def update_user_town
-  #   current_user.town = params[:town]
-  #   current_user.save
-  # end
+  def update_user_town
+    current_user.town = params[:town]
+    current_user.save
+  end
 
 end
