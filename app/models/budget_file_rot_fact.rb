@@ -24,10 +24,4 @@ class BudgetFileRotFact < BudgetFile
     line
   end
 
-  private
-
-  def set_data_type
-    self.data_type = :fact if self.data_type.nil?
-  end
-
 end

@@ -13,12 +13,17 @@
     %span.caret
   %ul.dropdown-menu{'role'=>'menu'}
     %li
-      =link_to t('.upload_rot'), new_budget_file_rot_path, :class => ''
+      =link_to "#{t('.upload_rot')} - план", new_budget_file_rot_path( { :data_type => :plan } ), :class => ''
     %li
-      =link_to t('.upload_rot_fond'), new_budget_file_rot_fond_path, :class => ''
+      =link_to "#{t('.upload_rot')} - факт", new_budget_file_rot_path( { :data_type => :fact } ), :class => ''
     %li.divider
     %li
-      =link_to t('.upload_rot_fact'), new_budget_file_rot_fact_path, :class => ''
+      =link_to "#{t('.upload_rot_fond')} - план", new_budget_file_rot_fond_path( { :data_type => :plan } ), :class => ''
+    %li
+      =link_to "#{t('.upload_rot_fond')} - факт", new_budget_file_rot_fond_path( { :data_type => :fact } ), :class => ''
+    %li.divider
+    %li
+      =link_to "#{t('.upload_rot_fact')} - факт", new_budget_file_rot_fact_path( { :data_type => :fact } ), :class => ''
     %li.divider
     %li
       =link_to t('.upload_rot_planfact'), new_budget_file_rot_planfact_path, :class => ''
@@ -30,13 +35,17 @@
     %span.caret
   %ul.dropdown-menu{'role'=>'menu'}
     %li
-      =link_to t('.upload_rov'), new_budget_file_rov_path, :class => ''
+      =link_to "#{t('.upload_rov')} - план", new_budget_file_rov_path( { :data_type => :plan } ), :class => ''
     %li
-      =link_to t('.upload_rov_fond'), new_budget_file_rov_fond_path, :class => ''
+      =link_to "#{t('.upload_rov')} - факт", new_budget_file_rov_path( { :data_type => :fact } ), :class => ''
     %li.divider
     %li
-      =link_to t('.upload_rov_fact'), new_budget_file_rov_fact_path, :class => ''
+      =link_to "#{t('.upload_rov_fond')} - план", new_budget_file_rov_fond_path( { :data_type => :plan } ), :class => ''
     %li
+      =link_to "#{t('.upload_rov_fond')} - факт", new_budget_file_rov_fond_path( { :data_type => :fact } ), :class => ''
+    %li.divider
+    %li
+      =link_to "#{t('.upload_rov_fact')} - факт", new_budget_file_rov_fact_path( { :data_type => :fact } ), :class => ''
     %li.divider
     %li
       =link_to t('.upload_rov_planfact'), new_budget_file_rov_planfact_path, :class => ''

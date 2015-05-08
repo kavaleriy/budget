@@ -1,8 +1,6 @@
 class BudgetFile
   include Mongoid::Document
 
-  before_save :set_data_type
-
   field :author, type: String
 
   field :title, type: String
@@ -100,11 +98,6 @@ class BudgetFile
     }
 
     range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
-  end
-
-  private
-
-  def set_data_type
   end
 
 end

@@ -25,11 +25,4 @@ class BudgetFileRot < BudgetFile
 
     line
   end
-
-  private
-
-  def set_data_type
-    self.data_type = :plan if self.data_type.nil?
-  end
-
 end

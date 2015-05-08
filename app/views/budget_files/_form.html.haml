@@ -1,11 +1,19 @@
-= bootstrap_form_for @budget_file, :html => { :class => 'form-horizontal' } do |f|
-  = f.text_field :title, label: t('budget_file_name')
+= bootstrap_form_for @budget_file, :html => { :class => 'form-vertical' } do |f|
+  .form-group
+    = f.text_field :title, label: t('budget_file_name')
 
   .form-group
     %label.control-label
-      = "#{t('owner')}: #{current_user.town}"
-    -#= select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+      = t('owner')
+    - if current_user && current_user.has_role?(:admin)
+      = select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+    - else
+      = ": #{current_user.town}"
+
+  .form-group
+    = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
 
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
+
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

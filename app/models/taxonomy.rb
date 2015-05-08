@@ -278,7 +278,7 @@ class Taxonomy
     tree
   end
 
-  def create_tree_item(items, key = I18n.t('activerecord.models.taxonomy.node_key'))
+  def create_tree_item(items, key = I18n.t('mongoid.taxonomy.node_key'))
     node = {
         'amount' => items[:amount],
         'key' => key,
@@ -332,7 +332,7 @@ class Taxonomy
   def self.load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
-      items[row[0]] = { title: row[I18n.t('activerecord.models.taxonomy.short_title')], color: row[I18n.t('activerecord.models.taxonomy.color')], icon: row[I18n.t('activerecord.models.taxonomy.icon')], description: row[I18n.t('activerecord.models.taxonomy.description')] }
+      items[row[0]] = { title: row[I18n.t('mongoid.taxonomy.short_title')], color: row[I18n.t('mongoid.taxonomy.color')], icon: row[I18n.t('mongoid.taxonomy.icon')], description: row[I18n.t('mongoid.taxonomy.description')] }
     end
     items
   end

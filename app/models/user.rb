@@ -11,6 +11,8 @@ class User
   include RoleModel
 
   # Setup accessible (or protected) attributes for your model
+  field :name
+
   field :email
   field :password
   field :password_confirmation
@@ -35,6 +37,6 @@ class User
 
   # declare the valid roles -- do not change the order if you add more
   # roles later, always append them at the end!
-  roles :admin, :guest
+  roles :admin, :guest, :editor
 
 end

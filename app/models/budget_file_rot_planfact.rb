@@ -38,10 +38,4 @@ class BudgetFileRotPlanfact < BudgetFile
     }.reject {|c| c.nil? || c['amount'] == 0 }
   end
 
-  private
-
-  def set_data_type
-    self.data_type = :plan if self.data_type.nil?
-  end
-
 end

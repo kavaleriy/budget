@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :sankeys
 
   devise_for :users
+  resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :vtarnay do
     get 'module2' => 'module2#index'
@@ -66,7 +67,10 @@ Rails.application.routes.draw do
   resources :taxonomy_rov_facts
   resources :taxonomy_rov_fact_zvits
 
-  resources :budget_files
+  resources :budget_files do
+    get 'download' => 'budget_files#download'
+  end
+
   resources :budget_file_frees
   resources :budget_file_rots
   resources :budget_file_rot_planfacts
@@ -78,7 +82,6 @@ Rails.application.routes.draw do
   resources :budget_file_rov_planfacts
 
   get 'static/budget_file_help' => 'static#budget_file_help'
-  get 'budget_files/:id/editinfo' => 'budget_files#editinfo'
 
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
