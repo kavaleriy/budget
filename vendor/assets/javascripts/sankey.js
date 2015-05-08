@@ -93,6 +93,7 @@ d3.sankey = function() {
             node.targetLinks = [];
         });
         links.forEach(function(link) {
+//            console.log(link)
             var source = link.source,
                 target = link.target;
             if (typeof source === "number") source = link.source = nodes[link.source];
@@ -125,14 +126,8 @@ d3.sankey = function() {
             nextNodes = [];
             var k;
             remainingNodes.forEach(function(node) {
-
-                if(fonds[node.name]) {
-                    node.dx = 150;     // change width of central nodes
-                    node.x = 1;        // make fond names always in the center of sankey
-                } else {
-                    node.dx = nodeWidth;
-                    node.x = x;
-                }
+                fonds[node.name] ? node.dx = 150 : node.dx = nodeWidth;
+                node.xPos ? node.x = node.xPos : node.x = x;
                 k = 0;
                 node.sourceLinks.forEach(function(link) {
                     if (nextNodes.indexOf(link.target) < 0) {
@@ -162,7 +157,7 @@ d3.sankey = function() {
     function moveSinksRight(x) {
         nodes.forEach(function(node) {
             if (!node.sourceLinks.length) {
-                node.x = x - 1;
+                node.x = node.xPos;
             }
         });
     }

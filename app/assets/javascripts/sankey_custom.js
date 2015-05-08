@@ -1,6 +1,8 @@
 function get_sankey(data, year, percent) {
 
     var svg_height;
+    var data_label = null, shift = 1, curr_key = null, first_level_energy;
+    var data_labels = {};
     switch(parseInt(percent)) {
         case 5:
             svg_height = 500;
@@ -57,12 +59,16 @@ function get_sankey(data, year, percent) {
                 if(d[i][j].amount*100/revenues >= percent) {
                     var key = d[i][j].title || j;
                     if(!keys[key]) {
-                        energy.nodes.push({ "name": key });
+                        energy.nodes.push({ "name": key,
+                                            "xPos": 0
+                                          });
                         keys[key] = key;
                     }
                     energy.links.push({ "source": key,
                                         "target": fond,
-                                        "value": d[i][j].amount
+                                        "value": d[i][j].amount,
+                                        "key": j,
+                                        "type": "rot"
                                       });
                     if(amounts[key] && !energy.amounts[key]){
                         energy.amounts[key] = amounts[key];
@@ -75,7 +81,9 @@ function get_sankey(data, year, percent) {
     }
 
     if(Object.keys(elseAmounts).length != 0) {
-        energy.nodes.push({"name": "Агреговані доходи"});
+        energy.nodes.push({"name": "Агреговані доходи",
+                           "xPos": 0
+                          });
         for(var key in elseAmounts) {
             energy.links.push({ "source": "Агреговані доходи",
                                 "target": key,
@@ -98,12 +106,16 @@ function get_sankey(data, year, percent) {
                 if(d[i][j].amount*100/expences >= percent) {
                     var key = d[i][j].title || j;
                     if(!keys[key]) {
-                        energy.nodes.push({ "name": key });
+                        energy.nodes.push({ "name": key,
+                                            "xPos": 2
+                                          });
                         keys[key] = key;
                     }
                     energy.links.push({ "source": fond,
                                         "target": key,
-                                        "value": d[i][j].amount
+                                        "value": d[i][j].amount,
+                                        "key": j,
+                                        "type": "rov"
                                      });
                     if(amounts[key] && !energy.amounts[key]){
                         energy.amounts[key] = amounts[key];
@@ -116,7 +128,9 @@ function get_sankey(data, year, percent) {
     }
 
     if(Object.keys(elseAmounts).length != 0) {
-        energy.nodes.push({"name": "Агреговані видатки"});
+        energy.nodes.push({"name": "Агреговані видатки",
+                           "xPos": 2
+                          });
         for(var key in elseAmounts) {
             energy.links.push({ "source": key,
                 "target": "Агреговані видатки",
@@ -126,25 +140,10 @@ function get_sankey(data, year, percent) {
     }
 
     for(var key in energy.fonds) {
-        energy.nodes.push({"name": energy.fonds[key]});
+        energy.nodes.push({"name": energy.fonds[key],
+                           "xPos": 1
+                          });
     }
-
-    // return only the distinct / unique nodes
-    energy.nodes = d3.keys(d3.nest()
-        .key(function (d) { return d.name; })
-        .map(energy.nodes));
-
-    // loop through each link replacing the text with its index from node
-    energy.links.forEach(function (d, i) {
-        energy.links[i].source = energy.nodes.indexOf(energy.links[i].source);
-        energy.links[i].target = energy.nodes.indexOf(energy.links[i].target);
-    });
-
-    //now loop through each nodes to make nodes an array of objects
-    // rather than an array of strings
-    energy.nodes.forEach(function (d, i) {
-        energy.nodes[i] = { "name": d };
-    });
 
     var side_rect_width = 60;
     var margin = {top: 80, right: 2*side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
@@ -155,310 +154,450 @@ function get_sankey(data, year, percent) {
         format = function(d) { return formatNumber(d) + " "; },
         color = d3.scale.category20();
 
-    d3.select("#sankey_chart").selectAll('*').remove();
-    var svg = d3.select("#sankey_chart").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    build_sankey(energy);
 
-    var sankey = d3.sankey()
-        .nodeWidth(15)
-        .nodePadding(20)
-        .size([width, height]);
+    function build_sankey(ext_energy) {
+        var energy = jQuery.extend(true, {}, ext_energy);
+        // return only the distinct / unique nodes
+        energy.nodes = d3.nest()
+            .key(function (d) { return d.name; })
+            .map(energy.nodes);
+        var nodes = d3.keys(energy.nodes);
 
-    var path = sankey.link();
+        // loop through each link replacing the text with its index from node
+        energy.links.forEach(function (d, i) {
+            energy.links[i].source = nodes.indexOf(energy.links[i].source);
+            energy.links[i].target = nodes.indexOf(energy.links[i].target);
+        });
 
-    sankey
-        .nodes(energy.nodes)
-        .links(energy.links)
-        .fonds(energy.fonds)
-        .layout(32);
+        //now loop through each nodes to make nodes an array of objects
+        //rather than an array of strings
+        nodes.forEach(function (d, i) {
+            var xPos = 0;
+            if(data_labels.hasOwnProperty(d)) {
+                xPos = 1 - shift;
+                energy.nodes[d][0]['xPos'] = xPos;
+                shift *= 2;
+            } else {
+                xPos = energy.nodes[d][0]['xPos'];
+            }
+            nodes[i] = { "name": d,
+                         "xPos": xPos
+                       };
+        });
 
-    var link = svg.append("g").selectAll(".link")
-        .data(energy.links)
-        .enter().append("path")
-        .attr("class", "link")
-        .attr("d", path)
-        .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-        .sort(function(a, b) { return b.dy - a.dy; });
+        energy.nodes = nodes;
 
-    link.append("title")
-        .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+        d3.select("#sankey_chart").selectAll('*').remove();
+        var svg = d3.select("#sankey_chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var node = svg.append("g").selectAll(".node")
-        .data(energy.nodes)
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-        .call(d3.behavior.drag()
-            .origin(function(d) { return d; })
-            .on("dragstart", function() { this.parentNode.appendChild(this); })
-            .on("drag", dragmove));
+        var sankey = d3.sankey()
+            .nodeWidth(15)
+            .nodePadding(20)
+            .size([width, height]);
 
-    node.append("rect")
-        .attr("height", function(d) { return d.dy; })
-        .attr("width", function(d) {
-            if(energy.fonds[d.name]) return 150;
-            return sankey.nodeWidth();
-        } )
-        .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
-        .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-        .append("title")
-        .text(function(d) { return d.name + "\n" + format(d.value); });
+        var path = sankey.link();
 
-    // side rectangles
-    node.append("rect")
-        .attr("x", function(d) {
-            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
-            return side_rect_width/2 - 5;})
-        .attr("y", function(d) { return (d.dy < 45 && energy.amounts[d.name]) ? -10 : 0; })
-        .style("fill", "#F0F0F0")
-        .style("stroke", "none")
-        .attr("width", side_rect_width)
-        .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
-                                      return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
-    // info for side rectangles
-    var k_rev = window.aHelper.k(5*revenues/100);
-    var k_exp = window.aHelper.k(5*expences/100);
-    var side_text = node.append("text")
-                        .text(function(d){
-                                if(!energy.fonds[d.name]) {
-                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (d.value/k_rev).toFixed(2);
-                                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (d.value/k_exp).toFixed(2);
-                                }
-                                return "";
-                              })
-                        .attr("text-anchor", "middle")
-                        .attr("dx", function(d) {
-                                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                                    return side_rect_width - 5;
-                              })
-                        .attr("dy", function(d) {
-                                        if(amounts[d.name]) return d.dy/2 - 10;
-                                        return d.dy/2 + 4;
-                                    })
-                        .style("font-size", "0.7em")
-                        .style("font-weight", "bold");
+        sankey
+            .nodes(energy.nodes)
+            .links(energy.links)
+            .fonds(energy.fonds)
+            .layout(32);
 
-    side_text.append('tspan')
-                .text(function(d) {
-                    if(energy.amounts[d.name]) {
-                        if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
-                        if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (energy.amounts[d.name]/k_exp).toFixed(2);
-                    }
-                    return "";
-                })
-                .attr("dy", "1.1em")
-                .attr("x", function(d) {
-                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                    return side_rect_width - 5;})
-                .style("font-weight", "normal")
-                .attr("fill", "darkslategray");
-
-    side_text.append('tspan')
-                .text(function(d) {
-                            if(energy.amounts[d.name]) {
-                                var x = 0;
-                                energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
-                                return x.toFixed(2) + " %";
-                            }
-                            return "";
-                      })
-                .attr("dy", "1.1em")
-                .attr("x", function(d) {
-                            if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
-                            return side_rect_width - 5;})
-                .style("font-weight", "normal")
-                .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
-
-    append_status_frame(node);
-
-    node.append("text")
-        .attr("x", -6)
-        .attr("y", function(d) { return d.dy / 2; })
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .attr("transform", null)
-        .text(function(d) { return d.name; })
-        .filter(function(d) { return d.x < width / 2; })
-        .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
-                                 return 6 + sankey.nodeWidth(); })
-
-        .attr("y", function(d) { return (d.dy < 15 && energy.fonds[d.name]) ? -8 : d.dy / 2;})
-        .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
-                                           return "start"; });
-
-    function dragmove(d) {
-        d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
-        sankey.relayout();
-        link.attr("d", path);
-    }
-
-    // central rectangle for General and Special funds
-    svg.append("rect")
-        .attr("x", width/2 - 100)
-        .attr("y", -margin.top + 1)
-        .style("fill", "none")
-        .style("stroke", "#082757")
-        .style("stroke-width", 2)
-        .attr("width", 166)
-        .attr("height", height + margin.top + margin.bottom - 2);
-
-    svg.append("text")
-        .attr("x", width/2 - 15)
-        .attr("y", -margin.top + 25)
-        .attr("text-anchor", "middle")
-        .style("fill", "#082757")
-        .style("font-size", "0.7em")
-        .style("font-weight", "bold")
-        .text("Бюджет міста за " + year + " р.");
-
-    // rectangles for status bar (total amounts)
-    for(var i = 0; i < 3; i++) {
-        var status_bar = svg.append("g").attr("transform", "translate(0,0)");
-        status_bar.append("rect")
-            .attr("x", function(){
-                if(i == 0) return width/4;
-                if(i == 1) return width/2 - 95;
-                return width/2 + 118;
-            })
-            .attr("y", function(){
-                if(i == 1) return -margin.top/2 + 1;
-                return -margin.top + 1;
-            })
-            .attr("rx", 10)
-            .attr("ry", 10)
-            .style("fill", function(){
-                if(i == 1) {
-                    if(revenues > expences) return "blue";
-                    if(revenues < expences) return "red";
-                    if(revenues == expences) return "gray";
+        var link = svg.append("g").selectAll(".link")
+            .data(energy.links)
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", path)
+            .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+            .sort(function(a, b) { return b.dy - a.dy; })
+            .on("click", function(d){
+                if(d.key) {
+                    get_subtree(d.key, d.type);
+                } else if(d.node.children) {
+                    get_children(d.node, d.type);
                 }
-                return "none";
-            })
-            .style("stroke", "#082757")
-            .style("stroke-width", 2)
-            .attr("width", function(){
-                if(i == 1) return 158;
-                return width/6;
-            })
-            .attr("height", function(){
-                if(i == 1) return margin.top/2 - 10;
-                return margin.top/2;
             });
 
-        status_bar.append("text")
-            .attr("x", function(){
-                if(i == 0) return width/3;
-                if(i == 1) return width/2 - 15;
-                return 2*width/3 - 15;
-            })
-            .attr("y", function(){
-                if(i == 1) return -margin.top/4;
-                return -margin.top + 25;
-            })
-            .attr("text-anchor", "middle")
-            .style("fill", function(){if(i == 1) return "white"; return "#082757";})
-            .style("font-size", "0.7em")
-            .style("font-weight", "bold")
-            .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
-                if(i == 1) {
-                    var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
-                    if(revenues > expences) return "Профіцит - " + diff;
-                    if(revenues < expences) return "Дефіцит - " + diff;
-                    if(revenues == expences) return "Баланс";
-                }
-                return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
-    }
+        link.append("title")
+            .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
 
-    // add general info about years compare (placed left to status bar)
-    var short_unit_rev = window.aHelper.short_unit(5*revenues/100);
-    var short_unit_exp = window.aHelper.short_unit(5*expences/100);
-    var prev_revenues = 0;
-    var prev_expences = 0;
-    for(var j = 0; j < 2; j++) {
-        var side_bars = svg.append("g").attr("transform", "translate(0,0)");
-        side_bars.append("rect")
-            .attr("x", function(){
-                if(j == 0) return -margin.left;
-                return width - margin.left - 10;
-            })
-            .attr("y", -margin.top + 1 )
+        var node = svg.append("g").selectAll(".node")
+            .data(energy.nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+            .call(d3.behavior.drag()
+                .origin(function(d) { return d; })
+                .on("dragstart", function() { this.parentNode.appendChild(this); })
+                .on("drag", dragmove));
+
+        node.append("rect")
+            .attr("height", function(d) { return d.dy; })
+            .attr("width", function(d) {
+                if(energy.fonds[d.name]) return 150;
+                return sankey.nodeWidth();
+            } )
+            .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+            .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+            .append("title")
+            .text(function(d) { return d.name + "\n" + format(d.value); });
+
+        // side rectangles
+        node.append("rect")
+            .attr("x", function(d) {
+                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
+                return side_rect_width/2 - 5;})
+            .attr("y", function(d) { return (d.dy < 45 && energy.amounts[d.name]) ? -10 : 0; })
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
-            .attr("width", margin.right + 20)
-            .attr("height", margin.top - 20);
-
-        var text = side_bars.append("text")
-            .attr("x", function(){if(j == 0) return -margin.left + 5; return width - margin.left - 5})
-            .attr("y", -margin.top + 25)
-            .attr("text-anchor", "start")
+            .attr("width", side_rect_width)
+            .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
+                return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
+        // info for side rectangles
+        var k_rev = window.aHelper.k(5*revenues/100);
+        var k_exp = window.aHelper.k(5*expences/100);
+        var side_text = node.append("text")
+            .text(function(d){
+                if(!energy.fonds[d.name]) {
+                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (d.value/k_rev).toFixed(2);
+                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (d.value/k_exp).toFixed(2);
+                }
+                return "";
+            })
+            .attr("text-anchor", "middle")
+            .attr("dx", function(d) {
+                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                return side_rect_width - 5;
+            })
+            .attr("dy", function(d) {
+                if(amounts[d.name]) return d.dy/2 - 10;
+                return d.dy/2 + 4;
+            })
             .style("font-size", "0.7em")
             .style("font-weight", "bold");
 
-        text.append('tspan')
-            .text(function() {
-                if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн. - " + year + " р. ";
-                return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн. - " + year + " р. ";
-            });
+        side_text.append('tspan')
+            .text(function(d) {
+                if(energy.amounts[d.name]) {
+                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
+                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (energy.amounts[d.name]/k_exp).toFixed(2);
+                }
+                return "";
+            })
+            .attr("dy", "1.1em")
+            .attr("x", function(d) {
+                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                return side_rect_width - 5;})
+            .style("font-weight", "normal")
+            .attr("fill", "darkslategray");
 
-        d = data["rows_rot"][year-1];
-        if(d && j == 0) { // if previous year rot exists
-            prev_revenues = d["totals"]["0"];
-            text.append('tspan')
-                .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
-                .attr("dy", "1.1em")
-                .attr("x", -margin.left + 14)
-                .style("font-weight", "normal");
-            text.append('tspan')
-                .text(function() {
-                    if(revenues >= prev_revenues) {
-                        return (100 - prev_revenues*100/revenues).toFixed(2) + "%"
-                    }
-                    if(revenues == 0) return "-100%";
-                    return (100 - prev_revenues*100/revenues).toFixed(2) + "%";
-                })
-                .attr("dy", "1.1em")
-                .attr("x", -margin.left + 14)
-                .style("font-weight", "normal")
-                .attr("fill", function(d) {return revenues >= prev_revenues ? "green" : "red"; });
-        } else if(data["rows_rov"][year-1] && j == 1){
-            prev_expences = data["rows_rov"][year-1]["totals"]["0"];
-            text.append('tspan')
-                .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
-                .attr("dy", "1.1em")
-                .attr("x", width - margin.left + 5)
-                .style("font-weight", "normal");
-            text.append('tspan')
-                .text(function() {
-                    if(expences >= prev_expences) {
-                        return (100 - prev_expences*100/expences).toFixed(2) + "%"
-                    }
-                    if(expences == 0) return "-100%";
-                    return (100 - prev_expences*100/expences).toFixed(2) + "%";
-                })
-                .attr("dy", "1.1em")
-                .attr("x", width - margin.left + 5)
-                .style("font-weight", "normal")
-                .attr("fill", function(d) {return expences >= prev_expences ? "green" : "red"; });
+        side_text.append('tspan')
+            .text(function(d) {
+                if(energy.amounts[d.name]) {
+                    var x = 0;
+                    energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
+                    return x.toFixed(2) + " %";
+                }
+                return "";
+            })
+            .attr("dy", "1.1em")
+            .attr("x", function(d) {
+                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                return side_rect_width - 5;})
+            .style("font-weight", "normal")
+            .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
+
+        append_status_frame(node);
+
+        node.append("text")
+            .attr("x", -6)
+            .attr("y", function(d) { return d.dy / 2; })
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .attr("transform", null)
+            .text(function(d) { return d.name; })
+            .filter(function(d) { return d.x < width / 2; })
+            .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
+                return 6 + sankey.nodeWidth(); })
+
+            .attr("y", function(d) { return (d.dy < 15 && energy.fonds[d.name]) ? -8 : d.dy / 2;})
+            .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
+                return "start"; });
+
+        function dragmove(d) {
+            d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+            sankey.relayout();
+            link.attr("d", path);
         }
 
-        text.append('tspan')
-            .text(function(d) {
-                        if(data["rows_rot"][year] && j == 0) return short_unit_rev + " грн";
-                        if(data["rows_rov"][year] && j == 1) return short_unit_exp + " грн";
-                        return "";
-                    })
-            .attr("y", -5)
-            .attr("x", function() {
-                if(j == 0) return -margin.left;
-                return width + 8;
-            })
-            .style("font-weight", "bold");
-    }
+        // central rectangle for General and Special funds
+        svg.append("rect")
+            .attr("x", width/2 - 100)
+            .attr("y", -margin.top + 1)
+            .style("fill", "none")
+            .style("stroke", "#082757")
+            .style("stroke-width", 2)
+            .attr("width", 166)
+            .attr("height", height + margin.top + margin.bottom - 2);
 
-    append_status_frame_main(svg);
+        svg.append("text")
+            .attr("x", width/2 - 15)
+            .attr("y", -margin.top + 25)
+            .attr("text-anchor", "middle")
+            .style("fill", "#082757")
+            .style("font-size", "0.7em")
+            .style("font-weight", "bold")
+            .text("Бюджет міста за " + year + " р.");
+
+        // rectangles for status bar (total amounts)
+        for(var i = 0; i < 3; i++) {
+            var status_bar = svg.append("g").attr("transform", "translate(0,0)");
+            status_bar.append("rect")
+                .attr("x", function(){
+                    if(i == 0) return width/4;
+                    if(i == 1) return width/2 - 95;
+                    return width/2 + 118;
+                })
+                .attr("y", function(){
+                    if(i == 1) return -margin.top/2 + 1;
+                    return -margin.top + 1;
+                })
+                .attr("rx", 10)
+                .attr("ry", 10)
+                .style("fill", function(){
+                    if(i == 1) {
+                        if(revenues > expences) return "blue";
+                        if(revenues < expences) return "red";
+                        if(revenues == expences) return "gray";
+                    }
+                    return "none";
+                })
+                .style("stroke", "#082757")
+                .style("stroke-width", 2)
+                .attr("width", function(){
+                    if(i == 1) return 158;
+                    return width/6;
+                })
+                .attr("height", function(){
+                    if(i == 1) return margin.top/2 - 10;
+                    return margin.top/2;
+                });
+
+            status_bar.append("text")
+                .attr("x", function(){
+                    if(i == 0) return width/3;
+                    if(i == 1) return width/2 - 15;
+                    return 2*width/3 - 15;
+                })
+                .attr("y", function(){
+                    if(i == 1) return -margin.top/4;
+                    return -margin.top + 25;
+                })
+                .attr("text-anchor", "middle")
+                .style("fill", function(){if(i == 1) return "white"; return "#082757";})
+                .style("font-size", "0.7em")
+                .style("font-weight", "bold")
+                .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
+                    if(i == 1) {
+                        var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
+                        if(revenues > expences) return "Профіцит - " + diff;
+                        if(revenues < expences) return "Дефіцит - " + diff;
+                        if(revenues == expences) return "Баланс";
+                    }
+                    return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
+        }
+
+        // add general info about years compare (placed left to status bar)
+        var short_unit_rev = window.aHelper.short_unit(5*revenues/100);
+        var short_unit_exp = window.aHelper.short_unit(5*expences/100);
+        var prev_revenues = 0;
+        var prev_expences = 0;
+        for(var j = 0; j < 2; j++) {
+            var side_bars = svg.append("g").attr("transform", "translate(0,0)");
+            side_bars.append("rect")
+                .attr("x", function(){
+                    if(j == 0) return -margin.left;
+                    return width - margin.left - 10;
+                })
+                .attr("y", -margin.top + 1 )
+                .style("fill", "#F0F0F0")
+                .style("stroke", "none")
+                .attr("width", margin.right + 20)
+                .attr("height", margin.top - 20);
+
+            var text = side_bars.append("text")
+                .attr("x", function(){if(j == 0) return -margin.left + 5; return width - margin.left - 5})
+                .attr("y", -margin.top + 25)
+                .attr("text-anchor", "start")
+                .style("font-size", "0.7em")
+                .style("font-weight", "bold");
+
+            text.append('tspan')
+                .text(function() {
+                    if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн. - " + year + " р. ";
+                    return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн. - " + year + " р. ";
+                });
+
+            d = data["rows_rot"][year-1];
+            if(d && j == 0) { // if previous year rot exists
+                prev_revenues = d["totals"]["0"];
+                text.append('tspan')
+                    .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
+                    .attr("dy", "1.1em")
+                    .attr("x", -margin.left + 14)
+                    .style("font-weight", "normal");
+                text.append('tspan')
+                    .text(function() {
+                        if(revenues >= prev_revenues) {
+                            return (100 - prev_revenues*100/revenues).toFixed(2) + "%"
+                        }
+                        if(revenues == 0) return "-100%";
+                        return (100 - prev_revenues*100/revenues).toFixed(2) + "%";
+                    })
+                    .attr("dy", "1.1em")
+                    .attr("x", -margin.left + 14)
+                    .style("font-weight", "normal")
+                    .attr("fill", function(d) {return revenues >= prev_revenues ? "green" : "red"; });
+            } else if(data["rows_rov"][year-1] && j == 1){
+                prev_expences = data["rows_rov"][year-1]["totals"]["0"];
+                text.append('tspan')
+                    .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
+                    .attr("dy", "1.1em")
+                    .attr("x", width - margin.left + 5)
+                    .style("font-weight", "normal");
+                text.append('tspan')
+                    .text(function() {
+                        if(expences >= prev_expences) {
+                            return (100 - prev_expences*100/expences).toFixed(2) + "%"
+                        }
+                        if(expences == 0) return "-100%";
+                        return (100 - prev_expences*100/expences).toFixed(2) + "%";
+                    })
+                    .attr("dy", "1.1em")
+                    .attr("x", width - margin.left + 5)
+                    .style("font-weight", "normal")
+                    .attr("fill", function(d) {return expences >= prev_expences ? "green" : "red"; });
+            }
+
+            text.append('tspan')
+                .text(function(d) {
+                    if(data["rows_rot"][year] && j == 0) return short_unit_rev + " грн";
+                    if(data["rows_rov"][year] && j == 1) return short_unit_exp + " грн";
+                    return "";
+                })
+                .attr("y", -5)
+                .attr("x", function() {
+                    if(j == 0) return -margin.left;
+                    return width + 8;
+                })
+                .style("font-weight", "bold");
+        }
+
+        append_status_frame_main(svg);
+
+        // status frame with triangle to compare years amounts
+        function append_status_frame(svg) {
+            var rect = svg.append("g").attr("transform", "translate(0,0)");
+            rect.append("rect")
+                .attr("x", function(d) {
+                    if(d && !energy.fonds[d.name]) {
+                        if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left + 5;
+                        return side_rect_width/2;
+                    }
+                })
+                .attr("y", function(d){
+                    if(d && !energy.fonds[d.name]) {
+                        return d.dy/2 - 8;
+                    }
+                })
+                .style("fill", "none")
+                .style("stroke", "lightgray")
+                .style("stroke-width", 1)
+                .attr("width", function(d){ return energy.amounts[d.name] ? side_rect_width - 10 : 0; })
+                .attr("height", function(d){ return energy.amounts[d.name] ? "1.8em" : 0; });
+            rect.append("path")
+                .attr("d", d3.svg.symbol().type(function(d) {
+                    if(energy.amounts[d.name]) {
+                        if(d.value > energy.amounts[d.name]) {return "triangle-up";}
+                        if(d.value < energy.amounts[d.name]) {return "triangle-down";}
+                        return "circle";
+                    }
+                    return "";
+                }).size(function(d) {
+                    if(energy.amounts[d.name]) {
+                        if(d.value != energy.amounts[d.name]) {return 3.5*3.5*3.5;}
+                        return 3.5;
+                    }
+                    return 0;
+                }))
+                .style("fill", function(d) {
+                    if(energy.amounts[d.name]) {
+                        if (d.value > energy.amounts[d.name]) {
+                            return "green";
+                        }
+                        if (d.value < energy.amounts[d.name]) {
+                            return "red";
+                        }
+                        return "none";
+                    }
+                })
+                .style("stroke", "white")
+                .attr("transform", function(d) {
+                    if(d && !energy.fonds[d.name]) {
+                        if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 10) + ")";
+                        return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 10) + ")";
+                    }
+                });
+        }
+
+        // status frame with triangle to compare total amounts
+        function append_status_frame_main(svg) {
+            for(var i = 0; i< 2; i++) {
+                var rect = svg.append("g").attr("transform", "translate(0,0)");
+                rect.append("rect")
+                    .attr("x", function() {
+                        return i == 0 ? -margin.left + 5 : width - margin.left - 5;
+                    })
+                    .attr("y", -margin.top + 27)
+                    .style("fill", "none")
+                    .style("stroke", "lightgray")
+                    .style("stroke-width", 1)
+                    .attr("width", function(){
+                        if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return side_rect_width + 25;
+                        return 0;
+                    })
+                    .attr("height", function(){
+                        if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return "1.8em";
+                        return 0;
+                    });
+                rect.append("path")
+                    .attr("d", d3.svg.symbol().type(function() {
+                        if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "triangle-up";}
+                        if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "triangle-down";}
+                        if((i == 0 && revenues == prev_revenues) || (i == 1 && expences == prev_expences)) {return "circle";}
+                        return "";
+                    }).size(function(d) {
+                        if((i == 0 && prev_revenues == 0) || (i == 1 && prev_expences == 0)) {return 0;}
+                        if((i == 0 && revenues != prev_revenues) || (i == 1 && expences != prev_expences)) {return 3.5*3.5*3.5;}
+                        return 3.5;
+                    }))
+                    .style("fill", function(d) {
+                        if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "green";}
+                        if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "red";}
+                        return "none";
+                    })
+                    .style("stroke", "white")
+                    .attr("transform", function(d) {
+                        return i == 0 ? "translate(" + (-margin.left + 5) + "," + (-margin.top + 45) + ")" : "translate(" + (width - margin.left - 5) + "," + (-margin.top + 45) + ")";
+                    });
+            }
+        }
+    }
 
     // get fond name
     function get_fond(f) {
@@ -479,102 +618,124 @@ function get_sankey(data, year, percent) {
         return fond;
     }
 
-    // status frame with triangle to compare years amounts
-    function append_status_frame(svg) {
-        var rect = svg.append("g").attr("transform", "translate(0,0)");
-        rect.append("rect")
-            .attr("x", function(d) {
-                if(d && !energy.fonds[d.name]) {
-                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left + 5;
-                    return side_rect_width/2;
-                }
-            })
-            .attr("y", function(d){
-                if(d && !energy.fonds[d.name]) {
-                    return d.dy/2 - 8;
-                }
-            })
-            .style("fill", "none")
-            .style("stroke", "lightgray")
-            .style("stroke-width", 1)
-            .attr("width", function(d){ return energy.amounts[d.name] ? side_rect_width - 10 : 0; })
-            .attr("height", function(d){ return energy.amounts[d.name] ? "1.8em" : 0; });
-        rect.append("path")
-            .attr("d", d3.svg.symbol().type(function(d) {
-                if(energy.amounts[d.name]) {
-                    if(d.value > energy.amounts[d.name]) {return "triangle-up";}
-                    if(d.value < energy.amounts[d.name]) {return "triangle-down";}
-                    return "circle";
-                }
-                return "";
-            }).size(function(d) {
-                if(energy.amounts[d.name]) {
-                    if(d.value != energy.amounts[d.name]) {return 3.5*3.5*3.5;}
-                    return 3.5;
-                }
-                return 0;
-            }))
-            .style("fill", function(d) {
-                if(energy.amounts[d.name]) {
-                    if (d.value > energy.amounts[d.name]) {
-                        return "green";
+    function get_subtree(key, type) {
+        var file_id = $('#select_' + type + ' option:selected').val();
+        var taxonomy, xPos;
+        if(type == "rot") {
+            taxonomy = "kkd_a";
+            xPos = 0;
+        } else if(type == "rov") {
+            taxonomy = "ktfk_aaa";
+            xPos = 2;
+        }
+        d3.json("/widgets/visify/get_bubblesubtree/" + file_id + "/" + taxonomy + "/" + key, function(data) {
+            curr_key = key;
+            data_labels = {};
+            data_labels[data.label] = xPos;
+            shift = 0.5;
+            first_level_energy = jQuery.extend(true, {}, energy);
+            var d = data.children;
+            var keys = {}
+            var total_sum = data["amount"]["plan"][year]["0"]["total"];
+            elseAmounts = 0;
+            for(var i in d) {
+                if(d[i]["amount"]["plan"]) {
+                    var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+                    if(d_amount*100/total_sum >= percent) {
+                        var key = d[i].label || d[i].key;
+                        if(!keys[key]) {
+                            first_level_energy.nodes.push({ "name": key,
+                                "xPos": xPos
+                            });
+                            keys[key] = key;
+                        }
+                        first_level_energy.links.push({ "source": key,
+                            "target": data.label,
+                            "value": d_amount,
+                            "node": d[i],
+                            "type": type
+                        });
+                        if(amounts[key] && !first_level_energy.amounts[key]){
+                            first_level_energy.amounts[key] = amounts[key];
+                        }
+                    } else {
+                        elseAmounts += d_amount;
                     }
-                    if (d.value < energy.amounts[d.name]) {
-                        return "red";
-                    }
-                    return "none";
                 }
-            })
-            .style("stroke", "white")
-            .attr("transform", function(d) {
-                if(d && !energy.fonds[d.name]) {
-                    if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 10) + ")";
-                    return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 10) + ")";
-                }
-            });
+            }
+            if(elseAmounts != 0) {
+                first_level_energy.nodes.push({ "name": "Інше",
+                    "xPos": xPos
+                });
+
+                first_level_energy.links.push({ "source": "Інше",
+                    "target": data.label,
+                    "value": elseAmounts
+                });
+            }
+
+            build_sankey(first_level_energy);
+        });
     }
 
-    // status frame with triangle to compare total amounts
-    function append_status_frame_main(svg) {
-        for(var i = 0; i< 2; i++) {
-            var rect = svg.append("g").attr("transform", "translate(0,0)");
-            rect.append("rect")
-                .attr("x", function() {
-                    return i == 0 ? -margin.left + 5 : width - margin.left - 5;
-                })
-                .attr("y", -margin.top + 27)
-                .style("fill", "none")
-                .style("stroke", "lightgray")
-                .style("stroke-width", 1)
-                .attr("width", function(){
-                    if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return side_rect_width + 25;
-                    return 0;
-                })
-                .attr("height", function(){
-                    if((i == 0 && prev_revenues != 0) || (i == 1 && prev_expences != 0)) return "1.8em";
-                    return 0;
-                });
-            rect.append("path")
-                .attr("d", d3.svg.symbol().type(function() {
-                    if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "triangle-up";}
-                    if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "triangle-down";}
-                    if((i == 0 && revenues == prev_revenues) || (i == 1 && expences == prev_expences)) {return "circle";}
-                    return "";
-                }).size(function(d) {
-                    if((i == 0 && prev_revenues == 0) || (i == 1 && prev_expences == 0)) {return 0;}
-                    if((i == 0 && revenues != prev_revenues) || (i == 1 && expences != prev_expences)) {return 3.5*3.5*3.5;}
-                    return 3.5;
-                }))
-                .style("fill", function(d) {
-                    if((i == 0 && revenues > prev_revenues) || (i == 1 && expences > prev_expences)) {return "green";}
-                    if((i == 0 && revenues < prev_revenues) || (i == 1 && expences < prev_expences)) {return "red";}
-                    return "none";
-                })
-                .style("stroke", "white")
-                .attr("transform", function(d) {
-                    return i == 0 ? "translate(" + (-margin.left + 5) + "," + (-margin.top + 45) + ")" : "translate(" + (width - margin.left - 5) + "," + (-margin.top + 45) + ")";
-                });
+    function get_children(node, type) {
+        var path = [];
+        var current = node;
+        while (current.parent) {
+            path.unshift(current);
+            current = current.parent;
         }
+        path.unshift(current);
+
+        var energy = jQuery.extend(true, {}, first_level_energy);
+        var xPos;
+        if(type == "rot") {
+            xPos = 0;
+        } else if(type == "rov") {
+            xPos = 2;
+        }
+        data_labels[node.label] = xPos;
+        var length = Object.keys(data_labels).length + 1;
+        shift = 1/length;
+        var d = node.children;
+        var total_sum = node["amount"]["plan"][year]["0"]["total"];
+        elseAmounts = 0;
+        for(var i in d) {
+            var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+            if(d_amount*100/total_sum >= 0) {
+                var key = d[i].label || d[i].key;
+                if(!keys[key]) {
+                    energy.nodes.push({ "name": key,
+                                        "xPos": xPos
+                                    });
+                    keys[key] = key;
+                }
+                energy.links.push({ "source": key,
+                                    "target": node.label,
+                                    "value": d_amount,
+                                    "node": d[i]
+                                });
+                if(amounts[key] && !energy.amounts[key]){
+                    energy.amounts[key] = amounts[key];
+                }
+            } else {
+                elseAmounts += d_amount;
+            }
+        }
+        if(elseAmounts != 0) {
+            if(!keys[key]) {
+                energy.nodes.push({ "name": "Інше",
+                                    "xPos": xPos
+                                });
+                keys[key] = key;
+            }
+            energy.links.push({ "source": "Інше",
+                "target": node.label,
+                "value": elseAmounts
+            });
+        }
+
+        build_sankey(energy);
     }
 }
 
