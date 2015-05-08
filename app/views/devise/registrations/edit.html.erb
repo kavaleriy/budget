@@ -4,8 +4,11 @@
     <div class="col-sm-6">
       <%= devise_error_messages! %>
 
+      <div class="form-group"><%= f.label :name %><br />
+      <%= f.text_field :name, autofocus: true %></div>
+
       <div class="form-group"><%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true %></div>
+      <%= f.email_field :email %></div>
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <div class="form-group"><%= t('devise.registrations.waiting_confirmation') %> <%= resource.unconfirmed_email %></div>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :sankeys
 
   devise_for :users
+  resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :vtarnay do
     get 'module2' => 'module2#index'

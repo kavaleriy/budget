@@ -1,0 +1,34 @@
+- model_class = BudgetFile
+=content_for :header do
+  .head.pull-left
+    %i.fa.fa-money
+    =t('.title')
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        =t('name')
+      %th
+        =t('email')
+      %th
+        =t('sig_in_at')
+      %th
+        =t('town')
+      %th
+        =t('admin')
+      %th
+        =t 'form.actions', :default => t("helpers.actions")
+  %tbody
+    - @users.each do |user|
+      %tr
+      %td= user.name
+      %td= user.email
+      %td= user.last_sign_in_at
+      %td= user.town
+      %td= render partial: 'roles', :locals => { roles: user.roles }
+
+      %td
+        =link_to t('form.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
+        =link_to t('form.destroy', :default => t("helpers.links.destroy")), user, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+

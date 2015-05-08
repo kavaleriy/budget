@@ -5,7 +5,7 @@ class BudgetFilesController < ApplicationController
   before_action :generate_budget_file, only: [:create, :new]
   before_action :set_budget_file_data_type, only: [:new]
 
-  before_action :update_user_town, only: [:create]
+  # before_action :update_user_town, only: [:create]
 
   before_action :authenticate_user!
   # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
@@ -25,7 +25,7 @@ class BudgetFilesController < ApplicationController
   def create
     @budget_file.author = current_user.email unless current_user.nil?
 
-    @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].nil?
+    @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
 
     file = upload_file budget_file_params[:path]
     file_name = file[:name]
@@ -37,7 +37,13 @@ class BudgetFilesController < ApplicationController
 
     table = read_table_from_file file_path
 
-    @budget_file.import current_user.town, table
+    town =
+        if UsersHelper.is_admin?(current_user)
+          params[:town]
+        else
+          current_user.town
+        end
+    @budget_file.import town, table
 
 
     respond_to do |format|
@@ -108,7 +114,6 @@ class BudgetFilesController < ApplicationController
     end
   end
 
-
   protected
 
   def upload_file uploaded_io
@@ -173,20 +178,15 @@ class BudgetFilesController < ApplicationController
   private
 
   def set_budget_file_data_type
-    @budget_file.data_type = :plan if @budget_file.data_type.nil?
+    @budget_file.data_type = params[:data_type].to_sym unless params[:data_type].nil?
   end
 
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :data_type, :path)
+    params.require(params[:controller].singularize).permit(:title, :data_type, :path, :town)
   end
 
   def set_budget_file
     @budget_file = BudgetFile.find(params[:id] || params[:budget_file_id])
-  end
-
-  def update_user_town
-    current_user.town = params[:town]
-    current_user.save
   end
 
 end

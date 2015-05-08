@@ -6,8 +6,4 @@ class BudgetFileRotFactsController < BudgetFilesController
     @budget_file = BudgetFileRotFact.new
   end
 
-  def set_budget_file_data_type
-    @budget_file.data_type = :fact
-  end
-
 end

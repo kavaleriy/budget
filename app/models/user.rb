@@ -11,6 +11,8 @@ class User
   include RoleModel
 
   # Setup accessible (or protected) attributes for your model
+  field :name
+
   field :email
   field :password
   field :password_confirmation

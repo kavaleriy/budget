@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @user.name
+%p
+  %b Email:
+  = @user.email
+%p
+  %b Last sign in at:
+  = @user.last_sign_in_at
+%p
+  %b Town:
+  = @user.town
+%p
+  Admin:
+  = render partial: 'roles', :locals => { roles: @user.roles }
+
+= link_to 'Edit', edit_user_path(@user)
+\|
+= link_to 'Back', users_path

@@ -69,6 +69,9 @@
               %li= link_to t('.edit_profile'), edit_user_registration_path
               %li.divider
               %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+              - if current_user.has_role?(:admin)
+                %li.divider
+                %li= link_to t('users'), users_path
           - else
             = link_to new_user_session_path do
               %i.fa.fa-key

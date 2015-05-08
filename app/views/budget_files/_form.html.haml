@@ -10,9 +10,8 @@
     - else
       = ": #{current_user.town}"
 
-  - unless @budget_file.data_type.nil?
-    .form-group
-      = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
+  .form-group
+    = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
 
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
 
