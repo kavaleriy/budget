@@ -673,7 +673,6 @@ function get_sankey(data, year, percent) {
                     "value": elseAmounts
                 });
             }
-
             build_sankey(first_level_energy);
         });
     }
@@ -686,8 +685,7 @@ function get_sankey(data, year, percent) {
             current = current.parent;
         }
         path.unshift(current);
-
-        var energy = jQuery.extend(true, {}, first_level_energy);
+        var energy = $.extend(true, {}, first_level_energy);
         var xPos;
         if(type == "rot") {
             xPos = 0;
@@ -698,6 +696,7 @@ function get_sankey(data, year, percent) {
         var length = Object.keys(data_labels).length + 1;
         shift = 1/length;
         var d = node.children;
+        var keys = {}
         var total_sum = node["amount"]["plan"][year]["0"]["total"];
         elseAmounts = 0;
         for(var i in d) {
@@ -723,18 +722,14 @@ function get_sankey(data, year, percent) {
             }
         }
         if(elseAmounts != 0) {
-            if(!keys[key]) {
-                energy.nodes.push({ "name": "Інше",
-                                    "xPos": xPos
-                                });
-                keys[key] = key;
-            }
+            energy.nodes.push({ "name": "Інше",
+                "xPos": xPos
+            });
             energy.links.push({ "source": "Інше",
                 "target": node.label,
                 "value": elseAmounts
             });
         }
-
         build_sankey(energy);
     }
 }
