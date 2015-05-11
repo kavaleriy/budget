@@ -1,0 +1,21 @@
+%h1 Listing documentation_categories
+
+%table
+  %tr
+    %th Title
+    %th Preview ico
+    %th
+    %th
+    %th
+
+  - @documentation_categories.each do |documentation_category|
+    %tr
+      %td= documentation_category.title
+      %td= documentation_category.preview_ico
+      %td= link_to 'Show', documentation_category
+      %td= link_to 'Edit', edit_documentation_category_path(documentation_category)
+      %td= link_to 'Destroy', documentation_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Category', new_documentation_category_path

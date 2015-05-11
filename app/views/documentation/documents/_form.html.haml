@@ -1,0 +1,28 @@
+= form_for @documentation_document do |f|
+  - if @documentation_document.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@documentation_document.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - @documentation_document.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :category
+    = f.number_field :category
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :description
+    = f.text_field :description
+  .field
+    = f.label :issued
+    = f.datetime_select :issued
+  .field
+    = f.label :path
+    = f.text_field :path
+  .field
+    = f.label :preview_ico
+    = f.text_field :preview_ico
+  .actions
+    = f.submit 'Save'

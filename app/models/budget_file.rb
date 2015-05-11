@@ -12,7 +12,6 @@ class BudgetFile
   # source data
   field :rows, :type => Hash
 
-  # list of taxonomies for tree levels
   belongs_to :taxonomy, autosave: true
 
   # calculated tree

@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Category:
+  = @documentation_document.category
+%p
+  %b Title:
+  = @documentation_document.title
+%p
+  %b Description:
+  = @documentation_document.description
+%p
+  %b Issued:
+  = @documentation_document.issued
+%p
+  %b Path:
+  = @documentation_document.path
+%p
+  %b Preview ico:
+  = @documentation_document.preview_ico
+
+= link_to 'Edit', edit_documentation_document_path(@documentation_document)
+\|
+= link_to 'Back', documentation_documents_path

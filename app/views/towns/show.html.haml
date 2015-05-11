@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @town.name
+
+= link_to 'Edit', edit_town_path(@town)
+\|
+= link_to 'Back', towns_path

@@ -1,0 +1,29 @@
+%h1 Listing documentation_documents
+
+%table
+  %tr
+    %th Category
+    %th Title
+    %th Description
+    %th Issued
+    %th Path
+    %th Preview ico
+    %th
+    %th
+    %th
+
+  - @documentation_documents.each do |documentation_document|
+    %tr
+      %td= documentation_document.category
+      %td= documentation_document.title
+      %td= documentation_document.description
+      %td= documentation_document.issued
+      %td= documentation_document.path
+      %td= documentation_document.preview_ico
+      %td= link_to 'Show', documentation_document
+      %td= link_to 'Edit', edit_documentation_document_path(documentation_document)
+      %td= link_to 'Destroy', documentation_document, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Document', new_documentation_document_path
