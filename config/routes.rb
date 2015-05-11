@@ -1,13 +1,6 @@
 Rails.application.routes.draw do
   namespace :documentation do
     resources :categories
-  end
-
-  namespace :document do
-    resources :categories
-  end
-
-  namespace :documentation do
     resources :documents
   end
 

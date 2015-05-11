@@ -1,2 +1,0 @@
-module Document::CategoriesHelper
-end

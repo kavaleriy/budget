@@ -8,7 +8,7 @@
 
   .field
     = f.label :category
-    = f.number_field :category
+    = f.select :category_id, options_for_select(Documentation::Category.all.collect { |c| [c.title, c.id] }, @documentation_document.category_id)
   .field
     = f.label :title
     = f.text_field :title
@@ -17,10 +17,10 @@
     = f.text_field :description
   .field
     = f.label :issued
-    = f.datetime_select :issued
+    = f.text_field :issued
   .field
     = f.label :path
-    = f.text_field :path
+    = f.file_field :path
   .field
     = f.label :preview_ico
     = f.text_field :preview_ico

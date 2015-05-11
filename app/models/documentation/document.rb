@@ -1,7 +1,7 @@
 class Documentation::Document
   include Mongoid::Document
   
-  belongs_to :documentation_category, autosave: true
+  belongs_to :category, autosave: true
 
   field :title, type: String
   field :description, type: String

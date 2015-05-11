@@ -1,9 +1,8 @@
 class Documentation::Category
   include Mongoid::Document
   
-  belongs_to :documentation_category, autosave: true
+  belongs_to :category, autosave: true
 
-  belongs_to :cate
   field :title, type: String
   field :preview_ico, type: String
 

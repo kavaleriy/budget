@@ -1,6 +1,4 @@
 class SankeysController < ApplicationController
-  layout 'application_vtarnay'
-
   before_action :set_sankey, only: [:show, :edit, :update, :destroy]
 
   # GET /sankeys
