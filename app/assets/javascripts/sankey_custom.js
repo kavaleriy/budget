@@ -1,8 +1,8 @@
 function get_sankey(data, year, percent) {
 
     var svg_height;
-    var data_label = null, shift = 1, curr_key = null, first_level_energy;
-    var data_labels = {};
+    var shift = 1, curr_key = null, curr_node = null, first_level_energy = null;
+    var data_labels = {}, children = {};
     switch(parseInt(percent)) {
         case 5:
             svg_height = 500;
@@ -31,9 +31,9 @@ function get_sankey(data, year, percent) {
 
     // gather amounts for previous year
     function gather_previous_amounts(d) {
-        for(i in d) {     // level of fonds
-            for(j in d[i]) {     // level of keys in fonds
-                var key = d[i][j].title;
+        for(var i in d) {     // level of fonds
+            for(var j in d[i]) {     // level of keys in fonds
+                var key = d[i][j].title || j;
                 amounts[key] ? amounts[key] += d[i][j].amount : amounts[key] = d[i][j].amount;  // total amount for one key through all fonds
             }
         }
@@ -52,18 +52,14 @@ function get_sankey(data, year, percent) {
     if(data["rows_rot"][year]) {
         var d = data["rows_rot"][year]["0"];
         revenues = data["rows_rot"][year]["totals"]["0"];
-        var keys = [];
-        for(i in d) {
+        for(var i in d) {
             var fond = get_fond(i);
-            for(j in d[i]) {
+            for(var j in d[i]) {
                 if(d[i][j].amount*100/revenues >= percent) {
                     var key = d[i][j].title || j;
-                    if(!keys[key]) {
-                        energy.nodes.push({ "name": key,
-                                            "xPos": 0
-                                          });
-                        keys[key] = key;
-                    }
+                    energy.nodes.push({ "name": key,
+                        "xPos": 0
+                    });
                     energy.links.push({ "source": key,
                                         "target": fond,
                                         "value": d[i][j].amount,
@@ -99,18 +95,14 @@ function get_sankey(data, year, percent) {
     if(data["rows_rov"][year]) {
         var d = data["rows_rov"][year]["0"];
         expences = data["rows_rov"][year]["totals"]["0"];
-        var keys = [];
-        for(i in d) {
+        for(var i in d) {
             var fond = get_fond(i);
-            for(j in d[i]) {
+            for(var j in d[i]) {
                 if(d[i][j].amount*100/expences >= percent) {
                     var key = d[i][j].title || j;
-                    if(!keys[key]) {
-                        energy.nodes.push({ "name": key,
-                                            "xPos": 2
-                                          });
-                        keys[key] = key;
-                    }
+                    energy.nodes.push({ "name": key,
+                        "xPos": 2
+                    });
                     energy.links.push({ "source": fond,
                                         "target": key,
                                         "value": d[i][j].amount,
@@ -630,12 +622,13 @@ function get_sankey(data, year, percent) {
         }
         d3.json("/widgets/visify/get_bubblesubtree/" + file_id + "/" + taxonomy + "/" + key, function(data) {
             curr_key = key;
+            curr_node = data;
             data_labels = {};
+            children = [];
             data_labels[data.label] = xPos;
             shift = 0.5;
             first_level_energy = jQuery.extend(true, {}, energy);
             var d = data.children;
-            var keys = {}
             var total_sum = data["amount"]["plan"][year]["0"]["total"];
             elseAmounts = 0;
             for(var i in d) {
@@ -643,12 +636,10 @@ function get_sankey(data, year, percent) {
                     var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
                     if(d_amount*100/total_sum >= percent) {
                         var key = d[i].label || d[i].key;
-                        if(!keys[key]) {
-                            first_level_energy.nodes.push({ "name": key,
-                                "xPos": xPos
-                            });
-                            keys[key] = key;
-                        }
+                        children.push(key);
+                        first_level_energy.nodes.push({ "name": key,
+                            "xPos": xPos
+                        });
                         first_level_energy.links.push({ "source": key,
                             "target": data.label,
                             "value": d_amount,
@@ -667,27 +658,30 @@ function get_sankey(data, year, percent) {
                 first_level_energy.nodes.push({ "name": "Інше",
                     "xPos": xPos
                 });
-
                 first_level_energy.links.push({ "source": "Інше",
                     "target": data.label,
                     "value": elseAmounts
                 });
             }
-
             build_sankey(first_level_energy);
         });
     }
 
     function get_children(node, type) {
-        var path = [];
-        var current = node;
-        while (current.parent) {
-            path.unshift(current);
-            current = current.parent;
-        }
-        path.unshift(current);
+        //var path = [];
+        //var current = node;
+        //while (current.parent) {
+        //    path.unshift(current);
+        //    current = current.parent;
+        //}
+        //path.unshift(current);
 
-        var energy = jQuery.extend(true, {}, first_level_energy);
+        var energy = $.extend(true, {}, first_level_energy);
+        for(var i in curr_node.children) {
+            if (data_labels[curr_node.children[i].label]) {
+                delete data_labels[curr_node.children[i].label];
+            }
+        }
         var xPos;
         if(type == "rot") {
             xPos = 0;
@@ -698,6 +692,7 @@ function get_sankey(data, year, percent) {
         var length = Object.keys(data_labels).length + 1;
         shift = 1/length;
         var d = node.children;
+        var keys = {}
         var total_sum = node["amount"]["plan"][year]["0"]["total"];
         elseAmounts = 0;
         for(var i in d) {
@@ -723,18 +718,14 @@ function get_sankey(data, year, percent) {
             }
         }
         if(elseAmounts != 0) {
-            if(!keys[key]) {
-                energy.nodes.push({ "name": "Інше",
-                                    "xPos": xPos
-                                });
-                keys[key] = key;
-            }
+            energy.nodes.push({ "name": "Інше",
+                "xPos": xPos
+            });
             energy.links.push({ "source": "Інше",
                 "target": node.label,
                 "value": elseAmounts
             });
         }
-
         build_sankey(energy);
     }
 }
