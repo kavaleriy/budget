@@ -93,7 +93,6 @@ d3.sankey = function() {
             node.targetLinks = [];
         });
         links.forEach(function(link) {
-            //console.log(link)
             var source = link.source,
                 target = link.target;
             if (typeof source === "number") source = link.source = nodes[link.source];
@@ -126,7 +125,7 @@ d3.sankey = function() {
             nextNodes = [];
             var k;
             remainingNodes.forEach(function(node) {
-                fonds[node.name] ? node.dx = 150 : node.dx = nodeWidth;
+                (fonds[node.name] || fonds[node.name] == 0) ? node.dx = 150 : node.dx = nodeWidth;
                 node.xPos ? node.x = node.xPos : node.x = x;
                 k = 0;
                 node.sourceLinks.forEach(function(link) {
@@ -164,7 +163,7 @@ d3.sankey = function() {
 
     function scaleNodeBreadths(kx) {
         nodes.forEach(function(node) {
-            if(fonds[node.name]) {   // change distance to central nodes from the left
+            if(fonds[node.name] || fonds[node.name] == 0) {   // change distance to central nodes from the left
                 node.x *= (kx - kx*0.1);
             } else {
                 node.x *= kx;

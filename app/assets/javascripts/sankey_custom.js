@@ -1,8 +1,8 @@
 function get_sankey(data, year, percent) {
 
     var svg_height;
-    var shift = 1, curr_key = null, curr_node = null, first_level_energy = null;
-    var data_labels = {}, children = {};
+    var shift = 1, curr_level = null, curr_type = null, first_level_energy = null, child_level_energy = null;
+    var data_labels = {}, children = {}, init_data_labels = {};
     switch(parseInt(percent)) {
         case 5:
             svg_height = 500;
@@ -60,11 +60,13 @@ function get_sankey(data, year, percent) {
                     energy.nodes.push({ "name": key,
                         "xPos": 0
                     });
-                    energy.links.push({ "source": key,
+                    var pos = energy.nodes.length-1;
+                    energy.links.push({ "source": pos,
                                         "target": fond,
                                         "value": d[i][j].amount,
                                         "key": j,
-                                        "type": "rot"
+                                        "type": "rot",
+                                        "pos": pos
                                       });
                     if(amounts[key] && !energy.amounts[key]){
                         energy.amounts[key] = amounts[key];
@@ -80,10 +82,12 @@ function get_sankey(data, year, percent) {
         energy.nodes.push({"name": "Агреговані доходи",
                            "xPos": 0
                           });
+        var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
-            energy.links.push({ "source": "Агреговані доходи",
-                                "target": key,
-                                "value": elseAmounts[key]
+             energy.links.push({ "source": pos,
+                                "target": parseInt(key),
+                                "value": elseAmounts[key],
+                                "pos": pos
                              });
         }
     }
@@ -103,11 +107,13 @@ function get_sankey(data, year, percent) {
                     energy.nodes.push({ "name": key,
                         "xPos": 2
                     });
+                    var pos = energy.nodes.length-1;
                     energy.links.push({ "source": fond,
-                                        "target": key,
+                                        "target": pos,
                                         "value": d[i][j].amount,
                                         "key": j,
-                                        "type": "rov"
+                                        "type": "rov",
+                                        "pos": pos
                                      });
                     if(amounts[key] && !energy.amounts[key]){
                         energy.amounts[key] = amounts[key];
@@ -123,18 +129,14 @@ function get_sankey(data, year, percent) {
         energy.nodes.push({"name": "Агреговані видатки",
                            "xPos": 2
                           });
+        var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
-            energy.links.push({ "source": key,
-                "target": "Агреговані видатки",
-                "value": elseAmounts[key]
+            energy.links.push({ "source": parseInt(key),
+                "target": pos,
+                "value": elseAmounts[key],
+                "pos": pos
             });
         }
-    }
-
-    for(var key in energy.fonds) {
-        energy.nodes.push({"name": energy.fonds[key],
-                           "xPos": 1
-                          });
     }
 
     var side_rect_width = 60;
@@ -151,39 +153,27 @@ function get_sankey(data, year, percent) {
     function build_sankey(ext_energy) {
         var energy = jQuery.extend(true, {}, ext_energy);
         // return only the distinct / unique nodes
-        energy.nodes = d3.nest()
-            .key(function (d) { return d.name; })
-            .map(energy.nodes);
-        var nodes = d3.keys(energy.nodes);
-
+//        energy.nodes = d3.nest()
+//            .key(function (d) { return d.name; })
+//            .map(energy.nodes);
+//        var nodes = d3.keys(energy.nodes);
+//        console.log("nodes", nodes)
         // loop through each link replacing the text with its index from node
-        energy.links.forEach(function (d, i) {
-            energy.links[i].source = nodes.indexOf(energy.links[i].source);
-            energy.links[i].target = nodes.indexOf(energy.links[i].target);
-        });
+//        energy.links.forEach(function (d, i) {
+//            energy.links[i].source = nodes.indexOf(energy.links[i].source);
+//            energy.links[i].target = nodes.indexOf(energy.links[i].target);
+//        });
 
-        //now loop through each nodes to make nodes an array of objects
-        //rather than an array of strings
-        for(var i in children) {
-            energy.nodes[children[i]][0]['xPos'] = 0;
-        }
-
-        nodes.forEach(function (d, i) {
-            var xPos = 0;
-            if(data_labels.hasOwnProperty(d)) {
-                console.log(d)
-                xPos = 1 - shift;
-                energy.nodes[d][0]['xPos'] = xPos;
-                shift *= 2;
-            } else {
-                xPos = energy.nodes[d][0]['xPos'];
+        var k = 1;
+        energy.nodes.forEach(function (d, i) {
+            if(children.hasOwnProperty(i)) {
+                d.xPos = children[i];
             }
-            nodes[i] = { "name": d,
-                         "xPos": xPos
-                       };
+            if(data_labels.hasOwnProperty(i)) {
+                curr_type == "rot" ? d.xPos = 1 - shift*k : d.xPos = 1 + shift*k;
+                k++;
+            }
         });
-
-        energy.nodes = nodes;
 
         d3.select("#sankey_chart").selectAll('*').remove();
         var svg = d3.select("#sankey_chart").append("svg")
@@ -214,9 +204,9 @@ function get_sankey(data, year, percent) {
             .sort(function(a, b) { return b.dy - a.dy; })
             .on("click", function(d){
                 if(d.key) {
-                    get_subtree(d.key, d.type);
-                } else if(d.node.children) {
-                    get_children(d.node, d.type);
+                    get_subtree(d.key, d.type, d.pos);
+                } else if(d.node && d.node.children) {
+                    get_children(d.node, d.pos);
                 }
             });
 
@@ -236,7 +226,7 @@ function get_sankey(data, year, percent) {
         node.append("rect")
             .attr("height", function(d) { return d.dy; })
             .attr("width", function(d) {
-                if(energy.fonds[d.name]) return 150;
+                if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return 150;
                 return sankey.nodeWidth();
             } )
             .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
@@ -253,7 +243,7 @@ function get_sankey(data, year, percent) {
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
             .attr("width", side_rect_width)
-            .attr("height", function(d) { if(energy.fonds[d.name]) return 0;
+            .attr("height", function(d) { if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return 0;
                 return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
         // info for side rectangles
         var k_rev = window.aHelper.k(5*revenues/100);
@@ -319,11 +309,11 @@ function get_sankey(data, year, percent) {
             .attr("transform", null)
             .text(function(d) { return d.name; })
             .filter(function(d) { return d.x < width / 2; })
-            .attr("x", function(d) { if(energy.fonds[d.name]) return 75;
+            .attr("x", function(d) { if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return 75;
                 return 6 + sankey.nodeWidth(); })
 
-            .attr("y", function(d) { return (d.dy < 15 && energy.fonds[d.name]) ? -8 : d.dy / 2;})
-            .attr("text-anchor", function(d) { if(energy.fonds[d.name]) return "middle";
+            .attr("y", function(d) { return (d.dy < 15 && (energy.fonds[d.name] || energy.fonds[d.name] == 0)) ? -8 : d.dy / 2;})
+            .attr("text-anchor", function(d) { if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return "middle";
                 return "start"; });
 
         function dragmove(d) {
@@ -502,7 +492,7 @@ function get_sankey(data, year, percent) {
             var rect = svg.append("g").attr("transform", "translate(0,0)");
             rect.append("rect")
                 .attr("x", function(d) {
-                    if(d && !energy.fonds[d.name]) {
+                    if(d && (!energy.fonds[d.name])) {
                         if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left + 5;
                         return side_rect_width/2;
                     }
@@ -609,15 +599,24 @@ function get_sankey(data, year, percent) {
             default:fond = f;
                 break;
         }
-        if(!energy.fonds[fond]) {
-            energy.fonds[fond] = fond;
+        if(!energy.fonds[fond] && energy.fonds[fond] != 0) {
+            energy.nodes.push({"name": fond,
+                "xPos": 1
+            });
+            energy.fonds[fond] = energy.nodes.length-1;
+            return energy.fonds[fond];
         }
-        return fond;
+        for(var key in energy.fonds) {
+            if(key == fond) {
+                return energy.fonds[fond];
+            }
+        }
     }
 
-    function get_subtree(key, type) {
+    function get_subtree(key, type, pos) {
         var file_id = $('#select_' + type + ' option:selected').val();
         var taxonomy, xPos;
+        curr_type = type;
         if(type == "rot") {
             taxonomy = "kkd_a";
             xPos = 0;
@@ -626,30 +625,36 @@ function get_sankey(data, year, percent) {
             xPos = 2;
         }
         d3.json("/widgets/visify/get_bubblesubtree/" + file_id + "/" + taxonomy + "/" + key, function(data) {
-            curr_key = key;
-            curr_node = data;
             data_labels = {};
-            children = [];
-            data_labels[data.label] = xPos;
+            data_labels[pos] = xPos;
+            children = {};
             shift = 0.5;
             first_level_energy = jQuery.extend(true, {}, energy);
+            child_level_energy = jQuery.extend(true, {}, energy);
+            init_data_labels = jQuery.extend(true, {}, data_labels);
             var d = data.children;
+            if(d) {
+                curr_level = d[0]['taxonomy'];
+            }
             var total_sum = data["amount"]["plan"][year]["0"]["total"];
             elseAmounts = 0;
+
             for(var i in d) {
                 if(d[i]["amount"]["plan"]) {
                     var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
                     if(d_amount*100/total_sum >= percent) {
                         var key = d[i].label || d[i].key;
-                        children.push(key);
                         first_level_energy.nodes.push({ "name": key,
                             "xPos": xPos
                         });
-                        first_level_energy.links.push({ "source": key,
-                            "target": data.label,
+                        var curr_pos = first_level_energy.nodes.length-1;
+                        children[curr_pos] = xPos;
+                        first_level_energy.links.push({ "source": curr_pos,
+                            "target": pos,
                             "value": d_amount,
                             "node": d[i],
-                            "type": type
+                            "type": type,
+                            "pos": curr_pos
                         });
                         if(amounts[key] && !first_level_energy.amounts[key]){
                             first_level_energy.amounts[key] = amounts[key];
@@ -663,57 +668,66 @@ function get_sankey(data, year, percent) {
                 first_level_energy.nodes.push({ "name": "Інше",
                     "xPos": xPos
                 });
-                first_level_energy.links.push({ "source": "Інше",
-                    "target": data.label,
-                    "value": elseAmounts
+                curr_pos = first_level_energy.nodes.length-1;
+                first_level_energy.links.push({ "source": curr_pos,
+                    "target": pos,
+                    "value": elseAmounts,
+                    "pos": curr_pos
                 });
             }
+
             build_sankey(first_level_energy);
         });
     }
 
-    function get_children(node, type) {
-        //var path = [];
-        //var current = node;
-        //while (current.parent) {
-        //    path.unshift(current);
-        //    current = current.parent;
-        //}
-        //path.unshift(current);
-
-        var energy = $.extend(true, {}, first_level_energy);
-        for(var i in curr_node.children) {
-            if (data_labels[curr_node.children[i].label] || data_labels[curr_node.children[i].label] == 0) {
-                delete data_labels[curr_node.children[i].label];
+    function get_children(node, pos) {
+        if(node.taxonomy == curr_level) {
+            child_level_energy = $.extend(true, {}, first_level_energy);
+            data_labels = jQuery.extend(true, {}, init_data_labels);
+        }
+        var energy = $.extend(true, {}, child_level_energy);
+        for(var i in children) {
+            if ((data_labels[i] || data_labels[i] == 0) && node.taxonomy == curr_level) {
+                delete data_labels[i];
             }
         }
         var xPos;
-        if(type == "rot") {
+        if(curr_type == "rot") {
             xPos = 0;
-        } else if(type == "rov") {
+        } else if(curr_type == "rov") {
             xPos = 2;
         }
-        data_labels[node.label] = xPos;
+        data_labels[pos] = xPos;
         var length = Object.keys(data_labels).length + 1;
         shift = 1/length;
         var d = node.children;
-        var keys = {}
         var total_sum = node["amount"]["plan"][year]["0"]["total"];
         elseAmounts = 0;
         for(var i in d) {
-            var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+            var d_amount = 0;
+            if(d[i]["amount"]["plan"] && d[i]["amount"]["plan"][year]) {
+                if (d[i]["amount"]["plan"][year]["0"]) {
+                    d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+                } else {
+                    var count = d[i]["amount"]["plan"][year];
+                    for(var j in count) {
+                        d_amount += count[j]["total"];
+                    }
+                }
+            } else {
+                continue;
+            }
             if(d_amount*100/total_sum >= 0) {
                 var key = d[i].label || d[i].key;
-                if(!keys[key]) {
-                    energy.nodes.push({ "name": key,
-                                        "xPos": xPos
-                                    });
-                    keys[key] = key;
-                }
-                energy.links.push({ "source": key,
-                                    "target": node.label,
+                energy.nodes.push({ "name": key,
+                    "xPos": xPos
+                });
+                var curr_pos = energy.nodes.length-1;
+                energy.links.push({ "source": curr_pos,
+                                    "target": pos,
                                     "value": d_amount,
-                                    "node": d[i]
+                                    "node": d[i],
+                                    "pos": curr_pos
                                 });
                 if(amounts[key] && !energy.amounts[key]){
                     energy.amounts[key] = amounts[key];
@@ -726,11 +740,14 @@ function get_sankey(data, year, percent) {
             energy.nodes.push({ "name": "Інше",
                 "xPos": xPos
             });
-            energy.links.push({ "source": "Інше",
-                "target": node.label,
-                "value": elseAmounts
+            var curr_pos = energy.nodes.length-1;
+            energy.links.push({ "source": curr_pos,
+                "target": pos,
+                "value": elseAmounts,
+                "pos": curr_pos
             });
         }
+        child_level_energy = $.extend(true, {}, energy);
         build_sankey(energy);
     }
 }
