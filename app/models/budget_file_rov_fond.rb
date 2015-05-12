@@ -34,6 +34,7 @@ class BudgetFileRovFond < BudgetFile
             'kvk' => kvk,
             'krk' => krk,
             'kekv' => kekv,
+
             'ktfk' => ktfk,
             'ktfk_aaa' => ktfk_aaa,
         }
