@@ -163,7 +163,6 @@ function get_sankey(data, year, percent) {
 //            energy.links[i].source = nodes.indexOf(energy.links[i].source);
 //            energy.links[i].target = nodes.indexOf(energy.links[i].target);
 //        });
-
         var k = 1;
         energy.nodes.forEach(function (d, i) {
             if(children.hasOwnProperty(i)) {
@@ -649,8 +648,8 @@ function get_sankey(data, year, percent) {
                         });
                         var curr_pos = first_level_energy.nodes.length-1;
                         children[curr_pos] = xPos;
-                        first_level_energy.links.push({ "source": curr_pos,
-                            "target": pos,
+                        first_level_energy.links.push({ "source": type == "rot" ? curr_pos : pos,
+                            "target": type == "rot" ? pos : curr_pos,
                             "value": d_amount,
                             "node": d[i],
                             "type": type,
@@ -748,6 +747,7 @@ function get_sankey(data, year, percent) {
             });
         }
         child_level_energy = $.extend(true, {}, energy);
+
         build_sankey(energy);
     }
 }
