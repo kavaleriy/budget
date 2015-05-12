@@ -10,14 +10,22 @@ class BudgetFileRovPlanfact < BudgetFile
     amount_plan = row['План на рік з урахуванням змін'].to_i
     amount_fact = row['Касові видатки за вказаний період'].to_i
 
-    ktfk = row['Код'].to_s.split('.')[0].gsub(/^0*/, "")
+    kod = row['Код'].to_s.split('.')[0].gsub(/^0*/, "")
+    if kod.length > 4 || @ktfk.nil?
+      @ktfk = kod
+      return
+    end
+
+    ktfk = @ktfk
+
     return if ktfk.to_i == 0
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    kekv = row['kekv'].to_s.split('.')[0]
+    kekv = kod
+
     kvk = row['kvk'].to_s.split('.')[0]
 
     [
