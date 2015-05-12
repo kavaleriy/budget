@@ -242,22 +242,20 @@ function get_sankey(data, year, percent) {
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
             .attr("width", side_rect_width)
-            .attr("height", function(d) { if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return 0;
+            .attr("height", function(d) { if( d.xPos != 0 && d.xPos != 2 ) return 0;
                 return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
         // info for side rectangles
         var k_rev = window.aHelper.k(5*revenues/100);
         var k_exp = window.aHelper.k(5*expences/100);
         var side_text = node.append("text")
             .text(function(d){
-                if(!energy.fonds[d.name]) {
-                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (d.value/k_rev).toFixed(2);
-                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (d.value/k_exp).toFixed(2);
-                }
+                if(d.xPos == 0) return (d.value/k_rev).toFixed(2);
+                if(d.xPos == 2) return (d.value/k_exp).toFixed(2);
                 return "";
             })
             .attr("text-anchor", "middle")
             .attr("dx", function(d) {
-                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                if(d.xPos == 0) return -margin.left/2 - 5;
                 return side_rect_width - 5;
             })
             .attr("dy", function(d) {
@@ -270,21 +268,21 @@ function get_sankey(data, year, percent) {
         side_text.append('tspan')
             .text(function(d) {
                 if(energy.amounts[d.name]) {
-                    if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
-                    if(d.sourceLinks.length == 0 && d.targetLinks.length != 0) return (energy.amounts[d.name]/k_exp).toFixed(2);
+                    if(d.xPos == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
+                    if(d.xPos == 2) return (energy.amounts[d.name]/k_exp).toFixed(2);
                 }
                 return "";
             })
             .attr("dy", "1.1em")
             .attr("x", function(d) {
-                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                if(d.xPos == 0) return -margin.left/2 - 5;
                 return side_rect_width - 5;})
             .style("font-weight", "normal")
             .attr("fill", "darkslategray");
 
         side_text.append('tspan')
             .text(function(d) {
-                if(energy.amounts[d.name]) {
+                if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
                     var x = 0;
                     energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
                     return x.toFixed(2) + " %";
@@ -293,7 +291,7 @@ function get_sankey(data, year, percent) {
             })
             .attr("dy", "1.1em")
             .attr("x", function(d) {
-                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left/2 - 5;
+                if(d.xPos == 0) return -margin.left/2 - 5;
                 return side_rect_width - 5;})
             .style("font-weight", "normal")
             .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
@@ -491,38 +489,36 @@ function get_sankey(data, year, percent) {
             var rect = svg.append("g").attr("transform", "translate(0,0)");
             rect.append("rect")
                 .attr("x", function(d) {
-                    if(d && (!energy.fonds[d.name])) {
-                        if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left + 5;
-                        return side_rect_width/2;
-                    }
+                    if(d && d.xPos == 0) return -margin.left + 5;
+                    if(d && d.xPos == 2) return side_rect_width/2;
                 })
                 .attr("y", function(d){
-                    if(d && !energy.fonds[d.name]) {
+                    if(d && (d.xPos == 0 || d.xPos == 2)) {
                         return d.dy/2 - 8;
                     }
                 })
                 .style("fill", "none")
                 .style("stroke", "lightgray")
                 .style("stroke-width", 1)
-                .attr("width", function(d){ return energy.amounts[d.name] ? side_rect_width - 10 : 0; })
-                .attr("height", function(d){ return energy.amounts[d.name] ? "1.8em" : 0; });
+                .attr("width", function(d){ return (energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) ? side_rect_width - 10 : 0; })
+                .attr("height", function(d){ return (energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) ? "1.8em" : 0; });
             rect.append("path")
                 .attr("d", d3.svg.symbol().type(function(d) {
-                    if(energy.amounts[d.name]) {
+                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
                         if(d.value > energy.amounts[d.name]) {return "triangle-up";}
                         if(d.value < energy.amounts[d.name]) {return "triangle-down";}
                         return "circle";
                     }
                     return "";
                 }).size(function(d) {
-                    if(energy.amounts[d.name]) {
+                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
                         if(d.value != energy.amounts[d.name]) {return 3.5*3.5*3.5;}
                         return 3.5;
                     }
                     return 0;
                 }))
                 .style("fill", function(d) {
-                    if(energy.amounts[d.name]) {
+                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
                         if (d.value > energy.amounts[d.name]) {
                             return "green";
                         }
@@ -534,10 +530,8 @@ function get_sankey(data, year, percent) {
                 })
                 .style("stroke", "white")
                 .attr("transform", function(d) {
-                    if(d && !energy.fonds[d.name]) {
-                        if (d.sourceLinks.length != 0 && d.targetLinks.length == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 10) + ")";
-                        return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 10) + ")";
-                    }
+                    if (d && d.xPos == 0) return "translate(" + (-margin.left + 5) + "," + (d.dy / 2 + 10) + ")";
+                    if (d && d.xPos == 2) return "translate(" + (side_rect_width/2) + "," + (d.dy / 2 + 10) + ")";
                 });
         }
 
@@ -722,8 +716,8 @@ function get_sankey(data, year, percent) {
                     "xPos": xPos
                 });
                 var curr_pos = energy.nodes.length-1;
-                energy.links.push({ "source": curr_pos,
-                                    "target": pos,
+                energy.links.push({ "source": curr_type == "rot" ? curr_pos : pos,
+                                    "target": curr_type == "rot" ? pos : curr_pos,
                                     "value": d_amount,
                                     "node": d[i],
                                     "pos": curr_pos
