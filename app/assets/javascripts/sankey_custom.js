@@ -164,9 +164,14 @@ function get_sankey(data, year, percent) {
 
         //now loop through each nodes to make nodes an array of objects
         //rather than an array of strings
+        for(var i in children) {
+            energy.nodes[children[i]][0]['xPos'] = 0;
+        }
+
         nodes.forEach(function (d, i) {
             var xPos = 0;
             if(data_labels.hasOwnProperty(d)) {
+                console.log(d)
                 xPos = 1 - shift;
                 energy.nodes[d][0]['xPos'] = xPos;
                 shift *= 2;
@@ -678,7 +683,7 @@ function get_sankey(data, year, percent) {
 
         var energy = $.extend(true, {}, first_level_energy);
         for(var i in curr_node.children) {
-            if (data_labels[curr_node.children[i].label]) {
+            if (data_labels[curr_node.children[i].label] || data_labels[curr_node.children[i].label] == 0) {
                 delete data_labels[curr_node.children[i].label];
             }
         }
