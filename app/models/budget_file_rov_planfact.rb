@@ -17,6 +17,9 @@ class BudgetFileRovPlanfact < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
+    kekv = row['kekv'].to_s.split('.')[0]
+    kvk = row['kvk'].to_s.split('.')[0]
+
     [
         { :amount => amount_plan, :amount_type => :plan },
         { :amount => amount_fact, :amount_type => :fact },
@@ -27,6 +30,9 @@ class BudgetFileRovPlanfact < BudgetFile
 
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
+
+          'kvk' => kvk,
+          'kekv' => kekv,
 
           '_amount_type' => line[:amount_type]
       }
