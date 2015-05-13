@@ -227,9 +227,6 @@
         $.each(item.amount, function(k, v) {
           var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
 
-          console.log(data_type, k, year, month)
-          console.log(v)
-
           if (k == data_type) {
             node['amount'] = amount['total']
             if (amount['fonds']) {
