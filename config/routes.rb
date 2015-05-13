@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
+  get 'sankeys/sankey/:id' => 'sankeys#sankey'
 
   resources :taxonomies
   resources :taxonomy_frees

@@ -1,5 +1,7 @@
 class SankeysController < ApplicationController
-  before_action :set_sankey, only: [:show, :edit, :update, :destroy]
+  before_action :set_sankey, only: [:show, :sankey, :edit, :update, :destroy]
+  after_action :allow_iframe, only: [:sankey]
+  layout 'visify', only: [:sankey]
 
   # GET /sankeys
   # GET /sankeys.json
@@ -10,6 +12,9 @@ class SankeysController < ApplicationController
   # GET /sankeys/1
   # GET /sankeys/1.json
   def show
+  end
+
+  def sankey
   end
 
   # GET /sankeys/new
@@ -80,5 +85,9 @@ class SankeysController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sankey_params
       params.permit(:rot_file_id, :rov_file_id)
+    end
+
+    def allow_iframe
+      response.headers['x-frame-options'] = 'ALLOWALL'
     end
 end
