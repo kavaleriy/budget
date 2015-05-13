@@ -39,6 +39,22 @@
       num_of_years = $(e.target).attr('data-value');
       $('#year_list .active').removeClass('active');
       $(e.target).addClass('active');
+      switch(num_of_years) {
+        case '3':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+        case '5':
+             $('.indicator').attr('class', 'indicator col-xs-12 col-md-6 col-lg-4');
+            break;
+        case '10':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-md-6');
+            break;
+        default:
+            console.log('default');
+            num_of_years = 3;
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+      }
       create_graphs(num_of_years);
     })
   })
