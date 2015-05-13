@@ -28,6 +28,9 @@ class BudgetFileRovPlanfact < BudgetFile
 
     kvk = row['kvk'].to_s.split('.')[0]
 
+    fond = row['Фонд'].to_s.split('.')[0]
+
+
     [
         { :amount => amount_plan, :amount_type => :plan },
         { :amount => amount_fact, :amount_type => :fact },
@@ -35,6 +38,8 @@ class BudgetFileRovPlanfact < BudgetFile
 
       item = {
           'amount' => line[:amount],
+
+          'fond' => fond,
 
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
