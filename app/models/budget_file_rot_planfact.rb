@@ -16,6 +16,8 @@ class BudgetFileRotPlanfact < BudgetFile
     kkd = row['Код'].to_s.split('.')[0]
     return if kkd.to_i == 0
 
+    fond = row['Фонд'].to_s.split('.')[0]
+
     [
         { :amount => amount_plan, :amount_type => :plan },
         { :amount => amount_fact, :amount_type => :fact },
@@ -24,7 +26,9 @@ class BudgetFileRotPlanfact < BudgetFile
       item = {
           'amount' => line[:amount],
 
-          '_amount_type' => line[:amount_type]
+          '_amount_type' => line[:amount_type],
+
+          'fond' => fond
       }
 
       %w(_year _month).each{ |key|
