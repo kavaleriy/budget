@@ -1,7 +1,7 @@
 function get_sankey(data, year, percent) {
 
     var svg_height;
-    var shift = 1, curr_level = null, curr_type = null, first_level_energy = null, child_level_energy = null;
+    var shift = 1, curr_parent = null, curr_type = null, first_level_energy = null, child_level_energy = null;
     var data_labels = {}, children = {}, init_data_labels = {};
     switch(parseInt(percent)) {
         case 5:
@@ -48,6 +48,7 @@ function get_sankey(data, year, percent) {
     // gather data for revenues side
     var revenues = 0;
     var elseAmounts = [];
+    var elseAmounts_prev = 0;
 
     if(data["rows_rot"][year]) {
         var d = data["rows_rot"][year]["0"];
@@ -56,15 +57,17 @@ function get_sankey(data, year, percent) {
         for(var i in d) {
             var fond = get_fond(i);
             for(var j in d[i]) {
+                var key = d[i][j].title || j;
                 if(d[i][j].amount*100/revenues >= percent || names[j]) {
-                    var key = d[i][j].title || j;
-                    var pos;
+                    var pos, prev_amount;
                     if(names[j] || names[j] == 0) {
                         pos = names[j];
                     } else {
+                        amounts[key] ? prev_amount = amounts[key] : prev_amount = 0;
                         energy.nodes.push({ "name": key,
-                            "xPos": 0
-                        });
+                                            "xPos": 0,
+                                            "prev_amount": prev_amount
+                                          });
                         pos = energy.nodes.length-1;
                         names[j] = pos;
                     }
@@ -75,11 +78,11 @@ function get_sankey(data, year, percent) {
                                         "type": "rot",
                                         "pos": pos
                                       });
-                    if(amounts[key] && !energy.amounts[key]){
-                        energy.amounts[key] = amounts[key];
-                    }
                 } else {
                     elseAmounts[fond] ? elseAmounts[fond] += d[i][j].amount : elseAmounts[fond] = d[i][j].amount;
+                    if(amounts[key] && !(names[j] || names[j] == 0)) {
+                        elseAmounts_prev += amounts[key];
+                    }
                 }
             }
         }
@@ -87,7 +90,8 @@ function get_sankey(data, year, percent) {
 
     if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані доходи",
-                           "xPos": 0
+                           "xPos": 0,
+                           "prev_amount": elseAmounts_prev
                           });
         var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
@@ -102,6 +106,7 @@ function get_sankey(data, year, percent) {
     // gather data for expences side
     var expences = 0;
     elseAmounts = [];
+    elseAmounts_prev = 0;
 
     if(data["rows_rov"][year]) {
         var d = data["rows_rov"][year]["0"];
@@ -110,14 +115,16 @@ function get_sankey(data, year, percent) {
         for(var i in d) {
             var fond = get_fond(i);
             for(var j in d[i]) {
+                var key = d[i][j].title || j;
                 if(d[i][j].amount*100/expences >= percent || names[j]) {
-                    var key = d[i][j].title || j;
-                    var pos;
+                    var pos, prev_amount;
                     if(names[j] || names[j] == 0) {
                         pos = names[j];
                     } else {
+                        amounts[key] ? prev_amount = amounts[key] : prev_amount = 0;
                         energy.nodes.push({ "name": key,
-                            "xPos": 2
+                            "xPos": 2,
+                            "prev_amount": prev_amount
                         });
                         pos = energy.nodes.length-1;
                         names[j] = pos;
@@ -129,11 +136,11 @@ function get_sankey(data, year, percent) {
                                         "type": "rov",
                                         "pos": pos
                                      });
-                    if(amounts[key] && !energy.amounts[key]){
-                        energy.amounts[key] = amounts[key];
-                    }
                 } else {
                     elseAmounts[fond] ? elseAmounts[fond] += d[i][j].amount : elseAmounts[fond] = d[i][j].amount;
+                    if(amounts[key] && !(names[j] || names[j] == 0)) {
+                        elseAmounts_prev += amounts[key];
+                    }
                 }
             }
         }
@@ -141,7 +148,8 @@ function get_sankey(data, year, percent) {
 
     if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані видатки",
-                           "xPos": 2
+                           "xPos": 2,
+                           "prev_amount": elseAmounts_prev
                           });
         var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
@@ -206,11 +214,12 @@ function get_sankey(data, year, percent) {
             .style("stroke-width", function(d) { return Math.max(1, d.dy); })
             .sort(function(a, b) { return b.dy - a.dy; })
             .on("click", function(d){
+//                console.log(d)
                 if (!data_labels[d.pos] || data_labels[d.pos] == 0 || data_labels[d.pos] == 2) {
                     if(d.key) {
                         get_subtree(d.key, d.type, d.pos);
                     } else if(d.node && d.node.children) {
-                        get_children(d.node, d.pos);
+                        get_children(d.node, d.pos, d.parent);
                     }
                 } else {
                     if(d.key) {
@@ -237,7 +246,7 @@ function get_sankey(data, year, percent) {
         node.append("rect")
             .attr("height", function(d) { return d.dy; })
             .attr("width", function(d) {
-                if(energy.fonds[d.name] || energy.fonds[d.name] == 0) return 150;
+                if(d.xPos == 1) return 150;
                 return sankey.nodeWidth();
             } )
             .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
@@ -248,14 +257,14 @@ function get_sankey(data, year, percent) {
         // side rectangles
         node.append("rect")
             .attr("x", function(d) {
-                if(d.sourceLinks.length != 0 && d.targetLinks.length == 0) return -margin.left;
+                if(d.xPos == 0) return -margin.left;
                 return side_rect_width/2 - 5;})
-            .attr("y", function(d) { return (d.dy < 45 && energy.amounts[d.name]) ? -10 : 0; })
+            .attr("y", function(d) { return (d.dy < 45 && d.prev_amount != 0) ? -10 : 0; })
             .style("fill", "#F0F0F0")
             .style("stroke", "none")
             .attr("width", side_rect_width)
             .attr("height", function(d) { if( d.xPos != 0 && d.xPos != 2 ) return 0;
-                return (d.dy < 45 && amounts[d.name]) ? 45 : d.dy; });
+                return (d.dy < 45 && d.prev_amount != 0) ? 45 : d.dy; });
         // info for side rectangles
         var k_rev = window.aHelper.k(5*revenues/100);
         var k_exp = window.aHelper.k(5*expences/100);
@@ -271,7 +280,7 @@ function get_sankey(data, year, percent) {
                 return side_rect_width - 5;
             })
             .attr("dy", function(d) {
-                if(amounts[d.name]) return d.dy/2 - 10;
+                if(d.prev_amount != 0) return d.dy/2 - 10;
                 return d.dy/2 + 4;
             })
             .style("font-size", "0.7em")
@@ -279,9 +288,9 @@ function get_sankey(data, year, percent) {
 
         side_text.append('tspan')
             .text(function(d) {
-                if(energy.amounts[d.name]) {
-                    if(d.xPos == 0) return (energy.amounts[d.name]/k_rev).toFixed(2);
-                    if(d.xPos == 2) return (energy.amounts[d.name]/k_exp).toFixed(2);
+                if(d.prev_amount != 0) {
+                    if(d.xPos == 0) return (d.prev_amount/k_rev).toFixed(2);
+                    if(d.xPos == 2) return (d.prev_amount/k_exp).toFixed(2);
                 }
                 return "";
             })
@@ -294,9 +303,9 @@ function get_sankey(data, year, percent) {
 
         side_text.append('tspan')
             .text(function(d) {
-                if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
+                if(d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) {
                     var x = 0;
-                    energy.amounts[d.name] < d.value ? x = 100 - energy.amounts[d.name]*100/d.value : x = d.value*100/energy.amounts[d.name] - 100;
+                    d.prev_amount < d.value ? x = 100 - d.prev_amount*100/d.value : x = d.value*100/d.prev_amount - 100;
                     return x.toFixed(2) + " %";
                 }
                 return "";
@@ -306,7 +315,7 @@ function get_sankey(data, year, percent) {
                 if(d.xPos == 0) return -margin.left/2 - 5;
                 return side_rect_width - 5;})
             .style("font-weight", "normal")
-            .attr("fill", function(d) { return  energy.amounts[d.name] <= d.value ? "green" : "red"});
+            .attr("fill", function(d) { return  d.prev_amount <= d.value ? "green" : "red"});
 
         append_status_frame(node);
 
@@ -512,29 +521,29 @@ function get_sankey(data, year, percent) {
                 .style("fill", "none")
                 .style("stroke", "lightgray")
                 .style("stroke-width", 1)
-                .attr("width", function(d){ return (energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) ? side_rect_width - 10 : 0; })
-                .attr("height", function(d){ return (energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) ? "1.8em" : 0; });
+                .attr("width", function(d){ return (d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) ? side_rect_width - 10 : 0; })
+                .attr("height", function(d){ return (d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) ? "1.8em" : 0; });
             rect.append("path")
                 .attr("d", d3.svg.symbol().type(function(d) {
-                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
-                        if(d.value > energy.amounts[d.name]) {return "triangle-up";}
-                        if(d.value < energy.amounts[d.name]) {return "triangle-down";}
+                    if(d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) {
+                        if(d.value > d.prev_amount) {return "triangle-up";}
+                        if(d.value < d.prev_amount) {return "triangle-down";}
                         return "circle";
                     }
                     return "";
                 }).size(function(d) {
-                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
-                        if(d.value != energy.amounts[d.name]) {return 3.5*3.5*3.5;}
+                    if(d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) {
+                        if(d.value != d.prev_amount) {return 3.5*3.5*3.5;}
                         return 3.5;
                     }
                     return 0;
                 }))
                 .style("fill", function(d) {
-                    if(energy.amounts[d.name] && (d.xPos == 0 || d.xPos == 2)) {
-                        if (d.value > energy.amounts[d.name]) {
+                    if(d.prev_amount != 0 && (d.xPos == 0 || d.xPos == 2)) {
+                        if (d.value > d.prev_amount) {
                             return "green";
                         }
-                        if (d.value < energy.amounts[d.name]) {
+                        if (d.value < d.prev_amount) {
                             return "red";
                         }
                         return "none";
@@ -622,6 +631,7 @@ function get_sankey(data, year, percent) {
         var file_id = $('#select_' + type + ' option:selected').val();
         var taxonomy, xPos;
         curr_type = type;
+        curr_parent = pos;
         if(type == "rot") {
             taxonomy = "kkd_a";
             xPos = 0;
@@ -638,19 +648,22 @@ function get_sankey(data, year, percent) {
             child_level_energy = jQuery.extend(true, {}, energy);
             init_data_labels = jQuery.extend(true, {}, data_labels);
             var d = data.children;
-            if(d) {
-                curr_level = d[0]['taxonomy'];
-            }
             var total_sum = data["amount"]["plan"][year]["0"]["total"];
             elseAmounts = 0;
+            elseAmounts_prev = 0;
 
             for(var i in d) {
                 if(d[i]["amount"]["plan"]) {
                     var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+                    var prev_amount = 0;
+                    if(d[i]["amount"]["plan"][year-1] && d[i]["amount"]["plan"][year-1]["0"] && d[i]["amount"]["plan"][year-1]["0"]["total"]) {
+                        prev_amount = d[i]["amount"]["plan"][year-1]["0"]["total"];
+                    }
                     if(d_amount*100/total_sum >= percent) {
                         var key = d[i].label || d[i].key;
                         first_level_energy.nodes.push({ "name": key,
                             "xPos": xPos,
+                            "prev_amount": prev_amount,
                             "parent": pos
                         });
                         var curr_pos = first_level_energy.nodes.length-1;
@@ -663,17 +676,16 @@ function get_sankey(data, year, percent) {
                             "pos": curr_pos,
                             "parent": pos
                         });
-                        if(amounts[key] && !first_level_energy.amounts[key]){
-                            first_level_energy.amounts[key] = amounts[key];
-                        }
                     } else {
                         elseAmounts += d_amount;
+                        elseAmounts_prev += prev_amount;
                     }
                 }
             }
             if(elseAmounts != 0) {
                 first_level_energy.nodes.push({ "name": type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
                     "xPos": xPos,
+                    "prev_amount": elseAmounts_prev,
                     "parent": pos
                 });
                 curr_pos = first_level_energy.nodes.length-1;
@@ -689,14 +701,14 @@ function get_sankey(data, year, percent) {
         });
     }
 
-    function get_children(node, pos) {
-        if(node.taxonomy == curr_level) {
+    function get_children(node, pos, parent) {
+        if(parent == curr_parent) {
             child_level_energy = $.extend(true, {}, first_level_energy);
             data_labels = jQuery.extend(true, {}, init_data_labels);
         }
         var energy = $.extend(true, {}, child_level_energy);
         for(var i in children) {
-            if ((data_labels[i] || data_labels[i] == 0) && node.taxonomy == curr_level) {
+            if ((data_labels[i] || data_labels[i] == 0) && parent == curr_parent) {
                 delete data_labels[i];
             }
         }
@@ -712,8 +724,13 @@ function get_sankey(data, year, percent) {
         var d = node.children;
         var total_sum = node["amount"]["plan"][year]["0"]["total"];
         elseAmounts = 0;
+        elseAmounts_prev = 0;
         for(var i in d) {
             var d_amount = 0;
+            var prev_amount = 0;
+            if(d[i]["amount"]["plan"] && d[i]["amount"]["plan"][year-1] && d[i]["amount"]["plan"][year-1]["0"] && d[i]["amount"]["plan"][year-1]["0"]["total"]) {
+                prev_amount = d[i]["amount"]["plan"][year-1]["0"]["total"];
+            }
             if(d[i]["amount"]["plan"] && d[i]["amount"]["plan"][year]) {
                 if (d[i]["amount"]["plan"][year]["0"]) {
                     d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
@@ -730,6 +747,7 @@ function get_sankey(data, year, percent) {
                 var key = d[i].label || d[i].key;
                 energy.nodes.push({ "name": key,
                     "xPos": xPos,
+                    "prev_amount": prev_amount,
                     "parent": pos
                 });
                 var curr_pos = energy.nodes.length-1;
@@ -740,16 +758,15 @@ function get_sankey(data, year, percent) {
                                     "pos": curr_pos,
                                     "parent": pos
                                 });
-                if(amounts[key] && !energy.amounts[key]){
-                    energy.amounts[key] = amounts[key];
-                }
             } else {
                 elseAmounts += d_amount;
+                elseAmounts_prev += prev_amount;
             }
         }
         if(elseAmounts != 0) {
             energy.nodes.push({ "name": curr_type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
                 "xPos": xPos,
+                "prev_amount": elseAmounts_prev,
                 "parent": pos
             });
             var curr_pos = energy.nodes.length-1;
