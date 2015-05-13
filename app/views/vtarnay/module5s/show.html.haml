@@ -39,6 +39,21 @@
       num_of_years = $(e.target).attr('data-value');
       $('#year_list .active').removeClass('active');
       $(e.target).addClass('active');
+      switch(num_of_years) {
+        case '3':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+        case '5':
+             $('.indicator').attr('class', 'indicator col-xs-12 col-md-6 col-lg-4');
+            break;
+        case '10':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-md-6');
+            break;
+        default:
+            num_of_years = 3;
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+      }
       create_graphs(num_of_years);
     })
   })
@@ -77,6 +92,11 @@
             // automatically determining max range can work something like this
             // var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
 
+        // create area under graph
+        var area = d3.svg.area()
+            .x(function(d) { return x(d["year"]); })
+            .y0(h)
+            .y1(function(d) { return y(d['value']); });
         // create a line function that can convert data[] into x and y points
         var line = d3.svg.line()
             // assign the X function to plot our line as we wish
@@ -101,6 +121,11 @@
         // create left yAxis
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
 
+        // add area under graph
+        graph.append("path")
+                .datum(data)
+                .attr("class", "area")
+                .attr("d", area);
         // Add the line by appending an svg:path element with the data line we created above
         // do this AFTER the axes above so that the line is above the tick-lines
         graph.append("svg:path")
