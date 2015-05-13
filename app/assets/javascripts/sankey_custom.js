@@ -166,17 +166,6 @@ function get_sankey(data, year, percent) {
 
     function build_sankey(ext_energy) {
         var energy = jQuery.extend(true, {}, ext_energy);
-        // return only the distinct / unique nodes
-//        energy.nodes = d3.nest()
-//            .key(function (d) { return d.name; })
-//            .map(energy.nodes);
-//        var nodes = d3.keys(energy.nodes);
-//        console.log("nodes", nodes)
-        // loop through each link replacing the text with its index from node
-//        energy.links.forEach(function (d, i) {
-//            energy.links[i].source = nodes.indexOf(energy.links[i].source);
-//            energy.links[i].target = nodes.indexOf(energy.links[i].target);
-//        });
         var k = 1;
         energy.nodes.forEach(function (d, i) {
             if(children.hasOwnProperty(i)) {
@@ -184,6 +173,7 @@ function get_sankey(data, year, percent) {
             }
             if(data_labels.hasOwnProperty(i)) {
                 curr_type == "rot" ? d.xPos = 1 - shift*k : d.xPos = 1 + shift*k;
+                data_labels[i] = d.xPos;
                 k++;
             }
         });
@@ -216,10 +206,18 @@ function get_sankey(data, year, percent) {
             .style("stroke-width", function(d) { return Math.max(1, d.dy); })
             .sort(function(a, b) { return b.dy - a.dy; })
             .on("click", function(d){
-                if(d.key) {
-                    get_subtree(d.key, d.type, d.pos);
-                } else if(d.node && d.node.children) {
-                    get_children(d.node, d.pos);
+                if (!data_labels[d.pos] || data_labels[d.pos] == 0 || data_labels[d.pos] == 2) {
+                    if(d.key) {
+                        get_subtree(d.key, d.type, d.pos);
+                    } else if(d.node && d.node.children) {
+                        get_children(d.node, d.pos);
+                    }
+                } else {
+                    if(d.key) {
+                        reload_sankey(d.pos);
+                    } else if(d.node && d.node.children) {
+                        move_to_previous_level(d.parent);
+                    }
                 }
             });
 
@@ -652,7 +650,8 @@ function get_sankey(data, year, percent) {
                     if(d_amount*100/total_sum >= percent) {
                         var key = d[i].label || d[i].key;
                         first_level_energy.nodes.push({ "name": key,
-                            "xPos": xPos
+                            "xPos": xPos,
+                            "parent": pos
                         });
                         var curr_pos = first_level_energy.nodes.length-1;
                         children[curr_pos] = xPos;
@@ -661,7 +660,8 @@ function get_sankey(data, year, percent) {
                             "value": d_amount,
                             "node": d[i],
                             "type": type,
-                            "pos": curr_pos
+                            "pos": curr_pos,
+                            "parent": pos
                         });
                         if(amounts[key] && !first_level_energy.amounts[key]){
                             first_level_energy.amounts[key] = amounts[key];
@@ -672,14 +672,16 @@ function get_sankey(data, year, percent) {
                 }
             }
             if(elseAmounts != 0) {
-                first_level_energy.nodes.push({ "name": "Інше",
-                    "xPos": xPos
+                first_level_energy.nodes.push({ "name": type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
+                    "xPos": xPos,
+                    "parent": pos
                 });
                 curr_pos = first_level_energy.nodes.length-1;
                 first_level_energy.links.push({ "source": type == "rot" ? curr_pos : pos,
                     "target": type == "rot" ? pos : curr_pos,
                     "value": elseAmounts,
-                    "pos": curr_pos
+                    "pos": curr_pos,
+                    "parent": pos
                 });
             }
 
@@ -727,14 +729,16 @@ function get_sankey(data, year, percent) {
             if(d_amount*100/total_sum >= percent) {
                 var key = d[i].label || d[i].key;
                 energy.nodes.push({ "name": key,
-                    "xPos": xPos
+                    "xPos": xPos,
+                    "parent": pos
                 });
                 var curr_pos = energy.nodes.length-1;
                 energy.links.push({ "source": curr_type == "rot" ? curr_pos : pos,
                                     "target": curr_type == "rot" ? pos : curr_pos,
                                     "value": d_amount,
                                     "node": d[i],
-                                    "pos": curr_pos
+                                    "pos": curr_pos,
+                                    "parent": pos
                                 });
                 if(amounts[key] && !energy.amounts[key]){
                     energy.amounts[key] = amounts[key];
@@ -744,19 +748,44 @@ function get_sankey(data, year, percent) {
             }
         }
         if(elseAmounts != 0) {
-            energy.nodes.push({ "name": "Інше",
-                "xPos": xPos
+            energy.nodes.push({ "name": curr_type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
+                "xPos": xPos,
+                "parent": pos
             });
             var curr_pos = energy.nodes.length-1;
             energy.links.push({ "source": curr_type == "rot" ? curr_pos : pos,
                 "target": curr_type == "rot" ? pos : curr_pos,
                 "value": elseAmounts,
-                "pos": curr_pos
+                "pos": curr_pos,
+                "parent": pos
             });
         }
         child_level_energy = $.extend(true, {}, energy);
 
         build_sankey(energy);
+    }
+
+    function reload_sankey(pos) {
+        data_labels = {};
+        energy.nodes[pos].xPos < 1 ? energy.nodes[pos].xPos = 0 : energy.nodes[pos].xPos = 2;
+        build_sankey(energy);
+    }
+
+    function move_to_previous_level(parent) {
+        for(var i in child_level_energy.nodes) {
+            if(child_level_energy.nodes[i].parent > parent) {
+                delete child_level_energy.nodes[i];
+                delete data_labels[i];
+            }
+        }
+        for(var i in child_level_energy.links) {
+            if(child_level_energy.links[i].parent > parent) {
+                delete child_level_energy.links[i];
+            }
+        }
+        var length = Object.keys(data_labels).length;
+        shift = 1/length;
+        build_sankey(child_level_energy);
     }
 }
 
