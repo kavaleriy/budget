@@ -30,8 +30,10 @@
     var years = [];
     var percent = 5;
     var year = new Date().getFullYear();
+    var rot_file_id = '#{@sankey.rot_file_id}';
+    var rov_file_id = '#{@sankey.rov_file_id}';
 
-    d3.json("/sankeys/get_rows/" + '#{@sankey.rot_file_id}' + "/" + '#{@sankey.rov_file_id}', function(data) {
+    d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
       var year_options = "";
       years = [];
       // get number of years from the bigger array
@@ -46,13 +48,13 @@
       $('#percent_list').css("display", "block");
       history = data;
       year = years[0];
-      get_sankey(data, year, percent);
+      get_sankey(data, year, percent, rot_file_id, rov_file_id);
     })
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
       year = $(this).val();
-      get_sankey(history, year, percent);
+      get_sankey(history, year, percent, rot_file_id, rov_file_id);
     })
 
     function clear() {
@@ -64,7 +66,7 @@
       percent = $(e.target).attr('data-value');
       $('#percent_list .active').removeClass('active');
       $(e.target).addClass('active');
-      get_sankey(history, year, percent);
+      get_sankey(history, year, percent, rot_file_id, rov_file_id);
     })
 
   })
