@@ -13,7 +13,7 @@ class BudgetFileRovPlanfact < BudgetFile
     kod = row['Код'].to_s.split('.')[0].gsub(/^0*/, "")
     if kod.length > 4 || @ktfk.nil?
       @ktfk = kod
-      return
+      return if row['kekv'].nil?
     end
 
     ktfk = @ktfk
@@ -24,12 +24,16 @@ class BudgetFileRovPlanfact < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    kekv = kod
+    kekv =
+        if row['kekv'].nil?
+          kod
+        else
+          row['kekv'].to_s.split('.')[0]
+        end
 
     kvk = row['kvk'].to_s.split('.')[0]
 
     fond = row['Фонд'].to_s.split('.')[0]
-
 
     [
         { :amount => amount_plan, :amount_type => :plan },

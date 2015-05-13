@@ -7,9 +7,6 @@ class BudgetFileRotPlanfact < BudgetFile
   end
 
   def readline row
-
-
-
     amount_plan = row['План'].to_i
     amount_fact = row['Факт'].to_i
 
