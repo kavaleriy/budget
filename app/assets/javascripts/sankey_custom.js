@@ -1,4 +1,4 @@
-function get_sankey(data, year, percent) {
+function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
     var svg_height;
     var shift = 1, curr_parent = null, curr_type = null, first_level_energy = null, child_level_energy = null;
@@ -91,7 +91,7 @@ function get_sankey(data, year, percent) {
     if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані доходи",
                            "xPos": 0,
-                           "prev_amount": elseAmounts_prev
+                           "prev_amount": 0
                           });
         var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
@@ -149,7 +149,7 @@ function get_sankey(data, year, percent) {
     if(Object.keys(elseAmounts).length != 0) {
         energy.nodes.push({"name": "Агреговані видатки",
                            "xPos": 2,
-                           "prev_amount": elseAmounts_prev
+                           "prev_amount": 0
                           });
         var pos = energy.nodes.length-1;
         for(var key in elseAmounts) {
@@ -628,7 +628,12 @@ function get_sankey(data, year, percent) {
     }
 
     function get_subtree(key, type, pos) {
-        var file_id = $('#select_' + type + ' option:selected').val();
+        var file_id;
+        if(rot_file_id == 0 && rov_file_id == 0) {
+            file_id = $('#select_' + type + ' option:selected').val();
+        } else {
+            type == "rot" ? file_id = rot_file_id : file_id = rov_file_id;
+        }
         var taxonomy, xPos;
         curr_type = type;
         curr_parent = pos;
@@ -685,7 +690,7 @@ function get_sankey(data, year, percent) {
             if(elseAmounts != 0) {
                 first_level_energy.nodes.push({ "name": type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
                     "xPos": xPos,
-                    "prev_amount": elseAmounts_prev,
+                    "prev_amount": 0,
                     "parent": pos
                 });
                 curr_pos = first_level_energy.nodes.length-1;
@@ -766,7 +771,7 @@ function get_sankey(data, year, percent) {
         if(elseAmounts != 0) {
             energy.nodes.push({ "name": curr_type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
                 "xPos": xPos,
-                "prev_amount": elseAmounts_prev,
+                "prev_amount": 0,
                 "parent": pos
             });
             var curr_pos = energy.nodes.length-1;

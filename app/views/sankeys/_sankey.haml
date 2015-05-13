@@ -1,0 +1,67 @@
+%p
+  #percent_list{:style => "display: none"}
+    =t('sankeys.aggregation')
+    = link_to '5%', '#', :remote => true, 'data-value' => '5', :class => 'active'
+    \|
+    = link_to '3%', '#', :remote => true, 'data-value' => '3'
+    \|
+    = link_to '0%', '#', :remote => true, 'data-value' => '0'
+
+%p
+  %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
+
+#sankey_chart
+
+= javascript_include_tag "biPartite.js"
+= javascript_include_tag "sankey.js"
+
+:javascript
+
+  $(document).on('ready page:change', function() {
+
+    clear();
+    var history;
+    var years = [];
+    var percent = 5;
+    var year = new Date().getFullYear();
+    var rot_file_id = '#{sankey.rot_file_id}';
+    var rov_file_id = '#{sankey.rov_file_id}';
+
+    d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
+      var year_options = "";
+      years = [];
+      // get number of years from the bigger array
+      Object.keys(data["rows_rot"]).length > Object.keys(data["rows_rov"]).length ? d = data["rows_rot"] : d = data["rows_rov"];
+      for(var year in d) {
+          years.unshift(year);
+      }
+      for(var i in years) {
+          year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
+      }
+      $('#select_year').html(year_options).css("display", "block");
+      $('#percent_list').css("display", "block");
+      history = data;
+      year = years[0];
+      get_sankey(data, year, percent, rot_file_id, rov_file_id);
+    })
+
+    // use already loaded data if user change only year
+    $('#select_year').change(function() {
+      year = $(this).val();
+      get_sankey(history, year, percent, rot_file_id, rov_file_id);
+    })
+
+    function clear() {
+      $('#sankey_chart').html('').css("height", "0");
+    }
+
+    $('#percent_list').click(function(e) {
+      d3.selectAll('#sankey_chart svg').remove();
+      percent = $(e.target).attr('data-value');
+      $('#percent_list .active').removeClass('active');
+      $(e.target).addClass('active');
+      get_sankey(history, year, percent, rot_file_id, rov_file_id);
+    })
+
+  })
+

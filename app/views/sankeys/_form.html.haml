@@ -89,14 +89,14 @@
         $('#percent_list').css("display", "block");
         history = data;
         year = years[0];
-        get_sankey(data, years[0], percent);
+        get_sankey(data, years[0], percent, 0, 0);
       })
     }
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
       year = $(this).val();
-      get_sankey(history, year, percent);
+      get_sankey(history, year, percent, 0, 0);
     })
 
     $('#percent_list').click(function(e) {
@@ -104,7 +104,7 @@
       percent = $(e.target).attr('data-value');
       $('#percent_list .active').removeClass('active');
       $(e.target).addClass('active');
-      get_sankey(history, year, percent);
+      get_sankey(history, year, percent, 0, 0);
     })
 
     // clear sankey field
