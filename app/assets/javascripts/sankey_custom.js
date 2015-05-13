@@ -52,15 +52,22 @@ function get_sankey(data, year, percent) {
     if(data["rows_rot"][year]) {
         var d = data["rows_rot"][year]["0"];
         revenues = data["rows_rot"][year]["totals"]["0"];
+        var names = {};
         for(var i in d) {
             var fond = get_fond(i);
             for(var j in d[i]) {
-                if(d[i][j].amount*100/revenues >= percent) {
+                if(d[i][j].amount*100/revenues >= percent || names[j]) {
                     var key = d[i][j].title || j;
-                    energy.nodes.push({ "name": key,
-                        "xPos": 0
-                    });
-                    var pos = energy.nodes.length-1;
+                    var pos;
+                    if(names[j] || names[j] == 0) {
+                        pos = names[j];
+                    } else {
+                        energy.nodes.push({ "name": key,
+                            "xPos": 0
+                        });
+                        pos = energy.nodes.length-1;
+                        names[j] = pos;
+                    }
                     energy.links.push({ "source": pos,
                                         "target": fond,
                                         "value": d[i][j].amount,
@@ -99,15 +106,22 @@ function get_sankey(data, year, percent) {
     if(data["rows_rov"][year]) {
         var d = data["rows_rov"][year]["0"];
         expences = data["rows_rov"][year]["totals"]["0"];
+        var names = {};
         for(var i in d) {
             var fond = get_fond(i);
             for(var j in d[i]) {
-                if(d[i][j].amount*100/expences >= percent) {
+                if(d[i][j].amount*100/expences >= percent || names[j]) {
                     var key = d[i][j].title || j;
-                    energy.nodes.push({ "name": key,
-                        "xPos": 2
-                    });
-                    var pos = energy.nodes.length-1;
+                    var pos;
+                    if(names[j] || names[j] == 0) {
+                        pos = names[j];
+                    } else {
+                        energy.nodes.push({ "name": key,
+                            "xPos": 2
+                        });
+                        pos = energy.nodes.length-1;
+                        names[j] = pos;
+                    }
                     energy.links.push({ "source": fond,
                                         "target": pos,
                                         "value": d[i][j].amount,
@@ -662,8 +676,8 @@ function get_sankey(data, year, percent) {
                     "xPos": xPos
                 });
                 curr_pos = first_level_energy.nodes.length-1;
-                first_level_energy.links.push({ "source": curr_pos,
-                    "target": pos,
+                first_level_energy.links.push({ "source": type == "rot" ? curr_pos : pos,
+                    "target": type == "rot" ? pos : curr_pos,
                     "value": elseAmounts,
                     "pos": curr_pos
                 });
@@ -734,8 +748,8 @@ function get_sankey(data, year, percent) {
                 "xPos": xPos
             });
             var curr_pos = energy.nodes.length-1;
-            energy.links.push({ "source": curr_pos,
-                "target": pos,
+            energy.links.push({ "source": curr_type == "rot" ? curr_pos : pos,
+                "target": curr_type == "rot" ? pos : curr_pos,
                 "value": elseAmounts,
                 "pos": curr_pos
             });
