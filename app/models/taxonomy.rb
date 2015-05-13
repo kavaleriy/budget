@@ -201,7 +201,11 @@ class Taxonomy
         file.rows[year].keys.each {|month|
           rows[data_type] = {} if rows[data_type].nil?
           rows[data_type][year] = {} if rows[data_type][year].nil?
-          rows[data_type][year][month] = file.rows[year][month]
+          if rows[data_type][year][month].nil?
+            rows[data_type][year][month] = file.rows[year][month]
+          else
+            rows[data_type][year][month] += file.rows[year][month].flatten
+          end
         }
       }
     }
@@ -254,13 +258,15 @@ class Taxonomy
 
               if node[taxonomy_value].nil?
                 node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
-                node[taxonomy_value][:amount][data_type][year][month][fond] = row['amount'] unless fond.nil?
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
               else
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
-                node[taxonomy_value][:amount][data_type][year][month] ={} if node[taxonomy_value][:amount][data_type][year][month].nil?
+                node[taxonomy_value][:amount][data_type][year][month] = {} if node[taxonomy_value][:amount][data_type][year][month].nil?
                 node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
                 node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
+
                 unless fond.nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
