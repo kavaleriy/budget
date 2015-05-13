@@ -724,7 +724,7 @@ function get_sankey(data, year, percent) {
             } else {
                 continue;
             }
-            if(d_amount*100/total_sum >= 0) {
+            if(d_amount*100/total_sum >= percent) {
                 var key = d[i].label || d[i].key;
                 energy.nodes.push({ "name": key,
                     "xPos": xPos
