@@ -82,7 +82,7 @@
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}", function(data) {
         _data = data
         current_data = buildData(_data)
-        preprocessData(current_data, 7);
+        preprocessData(current_data, 9);
         centerNode = current_data;
 
         chart.set_centerNode(null);
@@ -94,7 +94,7 @@
       })
 
       function preprocessData(root, maxNodes) {
-        if ((maxNodes + 2) < root.children.length) {
+        if (root.children.length > maxNodes + 1) {
           var tmp = sortChildren(root.children);
           tmp.reverse();
           var keep = [], move = [], moveAmount = 0, breakdown;
@@ -116,11 +116,11 @@
             'breakdown': true,
             'color': 'green',
           });
+        }
 
-          for (var i in root.children) {
-            if (root.children[i].children)
-              preprocessData(root.children[i], maxNodes)
-          }
+        for (var i in root.children) {
+          if (root.children[i].children)
+            preprocessData(root.children[i], maxNodes)
         }
       }
 
