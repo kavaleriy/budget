@@ -17,6 +17,7 @@ class BudgetFileRotFond < BudgetFileRot
         { :amount => amount1, :fond => '1' },
         { :amount => amount2, :fond => '7' },
     ].map { |line|
+      next if line[:amount].to_i == 0
 
       fond = line[:fond]
       amount = line[:amount] / 100

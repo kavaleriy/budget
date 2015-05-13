@@ -19,6 +19,7 @@ class BudgetFileRotPlanfact < BudgetFile
         { :amount => amount_plan, :amount_type => :plan },
         { :amount => amount_fact, :amount_type => :fact },
     ].map { |line|
+      next if line[:amount].to_i == 0
 
       item = {
           'amount' => line[:amount],
