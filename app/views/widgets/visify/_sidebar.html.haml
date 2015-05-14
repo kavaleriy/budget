@@ -93,12 +93,10 @@
           $(aContainer + ' #description').html(div_descr)
         })
 
-        if(node.children) {
+        if(node.children.length != 0) {
             chart.show(node.children);
             pie.show(node.children);
             table.show(node.children);
-        } else {
-          this.hide();
         }
       },
     }

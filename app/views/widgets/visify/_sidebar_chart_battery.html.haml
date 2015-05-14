@@ -169,6 +169,7 @@
           //.on("mouseover", function(d){ add_plan_fact_tooltip(d3.event, d) })
           //.on("mouseout", remove_tooltip)
           .style("fill-opacity", 1.0)
+          .style("cursor", function(d,i) { return data[i].children.length == 0 ? "default" : "pointer" })
           .on("click", function(d, i) {
                 _self.clickCallback(data[i]);
               });
@@ -182,6 +183,7 @@
           //.on("mouseover", function(d){ add_plan_fact_tooltip(d3.event, d) })
           //.on("mouseout", remove_tooltip)
           .style("fill-opacity", 1.0)
+          .style("cursor", function(d,i) { return data[i].children.length == 0 ? "default" : "pointer" })
           .on("click", function(d, i) {
                 _self.clickCallback(data[i]);
               });
@@ -208,6 +210,7 @@
           .style("cursor", "pointer")
           //.on("mouseover", function(d, i){ add_plan_fact_tooltip(d3.event, data[i]) })
           //.on("mouseout", remove_tooltip)
+          .style("cursor", function(d,i) { return data[i].children.length == 0 ? "default" : "pointer" })
           .on("click", function(d, i) {
                   _self.clickCallback(data[i]);
               });
