@@ -214,13 +214,13 @@
         bar_text.selectAll("g")
                 .append("text")
                 .html(function(d, i) {
-                  return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount);
+                  return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)
         bar_text.selectAll("g")
                 .append("text")
                 .html(function(d, i) {
-                  return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount_fact);
+                  return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount_fact || 0);
                 })
                 .attr("x",-margin.left)
                 .attr("dy","1.1em")
