@@ -43,7 +43,7 @@
     var slider_chart = aSliderChart('#slider_chart', slider);
     var sidebar = aSidebar('.visify');
     var icons = aIcons();
-
+    var display = 0;
 
     var year = "#{@sel_year}",
         month = "#{@sel_month}",
@@ -60,9 +60,20 @@
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/ktfk_aaa/", function(data) {
       icons.initialize(data, { height: 700, clickCallback: iconsItemClick });
       icons.show(year, month);
+      start_bubble_show(data['totals'][year][month]);
+      $("#slider_compare").hide();
+      $("#slider_chart").hide();
+      $("#description").hide();
     });
 
     function iconsItemClick(key) {
+
+      if(display == 0) {
+        $("#slider_compare").slideDown();
+        $("#slider_chart").slideDown();
+        $("#description").slideDown();
+        display = 1;
+      }
 
       d3.json("/widgets/visify/get_bubblesubtree/" + "#{@taxonomy.id}" + "/ktfk_aaa/" + key, function(data) {
         _data = data
@@ -237,5 +248,50 @@
       }
 
       return node;
+    }
+
+    function start_bubble_show(amount) {
+      var width = $("#chart").width(),
+          height = $("#chart").height()
+      var svg = d3.select("#chart").append("svg")
+                                   .attr("xmlns", "http://www.w3.org/2000/svg")
+                                   .attr("width", width)
+                                   .attr("height", height);
+      var g = svg.append("g");
+      var r = 100;
+      var sircle = g.append("circle")
+                      .attr("cx", width/2 - r/2)
+                      .attr("cy", height/2 - r/2)
+                      .attr("r", r)
+                      .attr("fill", "green")
+                   g.append("circle")
+                      .attr("cx", width/2 - r/2)
+                      .attr("cy", height/2 - r/2)
+                      .style("fill", "transparent")
+                      .style("stroke-dasharray", "4,4")
+                      .style("stroke", "white")
+                      .attr("r", r - 5)
+      var text = g.append("text")
+                      .attr("dx", width/2 - r/2)
+                      .attr("dy", height/2 - r/2)
+                      .attr("text-anchor", "middle")
+                      .style("fill", "white")
+                      .style("font-size", "1.2em")
+                      .style("font-weight", "bold")
+                      .text("Всього")
+      text.append("tspan")
+          .attr("x", width/2 - r/2)
+          .attr("dy", "1.3em")
+          .style("font-size", "1.0em")
+          .style("font-weight", "normal")
+          .text(aVisify.helpers.formatNumber(amount) )
+
+      //var img = g.append("image")
+      //           .attr("xlink:href", "/assets/icons/pig.svg")
+      //           .attr("width", 200)
+      //           .attr("height", 200)
+      //           .attr("x", 228)
+      //           .attr("y",53)
+      //           .attr("fill", "green");
     }
   })

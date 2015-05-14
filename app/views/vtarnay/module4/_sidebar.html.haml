@@ -3,13 +3,13 @@
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active{'role' => 'presentation'}
       %a{href: '#tab_bubbletree', 'aria-controls' => 'tab_bubbletree', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_bubbletree')
+        %i.fa.fa-spinner.fa-lg
     %li{'role' => 'presentation'}
       %a{href: '#tab_chart', 'aria-controls' => 'tab_chart', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_sidebar_chart')
+        %i.fa.fa-bar-chart-o.fa-lg
     %li{'role' => 'presentation'}
       %a{href: '#tab_pie', 'aria-controls' => 'tab_pie', role: 'tab', 'data-toggle' => 'tab'}
-        = t('.tab_sidebar_pie')
+        %i.fa.fa-life-bouy
 
   .tab-content
     .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}

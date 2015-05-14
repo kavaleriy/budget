@@ -120,9 +120,7 @@
 
         svg = d3.select("#sidebar_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", '100%')
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("height", '100%');
       },
       hide: hide,
       show: function(data) {
@@ -130,7 +128,22 @@
 
         if (!data == null || data.length < 1) return;
 
-        $("#sidebar_chart").height(height + margin.top + margin.bottom)
+        $("#sidebar_chart").height(height + margin.top + margin.bottom);
+
+        // add hatch to fill the bars
+        svg
+          .append('defs')
+          .append('pattern')
+            .attr('id', 'diagonalHatch')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 4)
+            .attr('height', 4)
+          .append('path')
+            .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1);
+        svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         height = data.length * 50;
         $("#sidebar_chart").height(height + margin.top + margin.bottom)
@@ -176,12 +189,12 @@
         svg.transition().duration(250).selectAll(".bar.low")
           .delay(delay)
           .attr("width", function(d) { return x(d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0)); })
-          .style("fill", function(d) { return d3.rgb(d.color).brighter(.2) })
+          .style("fill", function(d) { return d3.rgb(d.color) })
 
         svg.transition().duration(250).selectAll(".bar.up")
           .delay(delay)
           .attr("width", function(d) { return x(d.amount < (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0)); })
-          .style("fill", function(d) { return d3.rgb(d.color).darker(.2) })
+          .style("fill", 'url(#diagonalHatch)')
           .style('stroke', function(d) { return d3.rgb(d.color).darker(1) })
           .style('stroke-width', '.1')
 

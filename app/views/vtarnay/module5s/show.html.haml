@@ -96,12 +96,17 @@
         var area = d3.svg.area()
             .x(function(d) { return x(d["year"]); })
             .y0(h)
-            .y1(function(d) { return y(d['value']); });
+            .y1(function(d) { return y(d['value']); })
+            // make the line curved
+            .interpolate("monotone")
+
         // create a line function that can convert data[] into x and y points
         var line = d3.svg.line()
             // assign the X function to plot our line as we wish
             .x(function(d,i) { return x(d["year"]); })
             .y(function(d) { return y(d['value']); })
+            // make the line curved
+            .interpolate("monotone")
 
         // Add an SVG element with the desired dimensions and margin.
         graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
