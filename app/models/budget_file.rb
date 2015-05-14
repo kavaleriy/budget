@@ -25,8 +25,8 @@ class BudgetFile
     elsif user.has_role? :admin
       self.all
     else
-      self.where(:author => nil) + BudgetFile.where(:author => user.email)
-    end.sort_by { |f| [f.taxonomy.title, f.author] }
+      self.where(:author => nil) + BudgetFile.all.reject{|f| f.taxonomy.owner != BudgetFile.first.taxonomy.owner}
+    end.sort_by { |f| [f.taxonomy.owner, f.author] }
 
     files || []
   end
