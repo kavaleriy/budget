@@ -2,7 +2,7 @@ class Vtarnay::Module5sController < ApplicationController
   layout 'application_vtarnay'
   
   before_action :set_vtarnay_module5, only: [:destroy]
-  before_action :set_user_town, only: [:new, :edit, :create]
+  before_action :set_user_town, only: [:new, :edit, :update, :create]
   before_action :authenticate_user!
   # load_and_authorize_resource
 
@@ -73,8 +73,7 @@ class Vtarnay::Module5sController < ApplicationController
               @rows[year][group][indicator] = {}
             end
             @rows[year][group][indicator]['comment'] = data['comment']
-            @rows[year][group][indicator]['file_id'] = file['_id']
-            binding.pry
+            @rows[year][group][indicator]['file_id'] = file['_id'].to_s
             @rows[year][group][indicator]['row_index'] = index
           end
         }
@@ -119,24 +118,24 @@ class Vtarnay::Module5sController < ApplicationController
   # PATCH/PUT /vtarnay/module5s/1.json
   def update
     params['array'].each{|file_id, value|
-      file = Vtarnay::Module5.where(:_id => file_id)
+      file = Vtarnay::Module5.where(:id => file_id).first
       value.each{|row_index, row_value|
         row_value.each{|column, val|
-
           file.rows[row_index][column] = val
         }
       }
+      if !file.save
+        respond_to do |format|
+          format.html { render :edit }
+          format.json { render json: @vtarnay_module5.errors, status: :unprocessable_entity }
+        end
+      end
     }
-
-    # respond_to do |format|
-    #   if @vtarnay_module5.update(vtarnay_module5_params)
-    #     format.html { redirect_to @vtarnay_module5, notice: t('budget_files_controller.save') }
-    #     format.json { render :show, status: :ok, location: @vtarnay_module5 }
-    #   else
-    #     format.html { render :edit }
-    #     format.json { render json: @vtarnay_module5.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    respond_to do |format|
+      flash[:notice] = t('budget_files_controller.load_success')
+      format.html { redirect_to action: 'show', id: @town}
+      format.json { render :show, status: :created, location: @town }
+    end
   end
 
   # DELETE /vtarnay/module5s/1
