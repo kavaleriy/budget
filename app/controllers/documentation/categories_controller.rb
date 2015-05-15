@@ -7,6 +7,14 @@ class Documentation::CategoriesController < ApplicationController
     @documentation_categories = Documentation::Category.all
   end
 
+  def tree_root
+    @documentation_categories = Documentation::Category.where( :category_id => nil)
+  end
+
+  def tree
+    @documentation_categories = Documentation::Category.all
+  end
+
   # GET /documentation/categories/1
   # GET /documentation/categories/1.json
   def show
@@ -24,6 +32,7 @@ class Documentation::CategoriesController < ApplicationController
   # POST /documentation/categories
   # POST /documentation/categories.json
   def create
+    binding.pry
     @documentation_category = Documentation::Category.new(documentation_category_params)
 
     respond_to do |format|
@@ -69,6 +78,6 @@ class Documentation::CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_category_params
-      params.require(:documentation_category).permit(:title, :preview_ico)
+      params.require(:documentation_category).permit(:category_id, :title, :preview_ico)
     end
 end

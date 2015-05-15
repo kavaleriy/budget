@@ -1,7 +1,21 @@
-%h1 Listing documentation_categories
+%h1 Category
+
+= stylesheet_link_tag "themes/default/style.min.css", :media => "all"
+= javascript_include_tag "jstree.js"
+
+:css
+  #tree { float:left; min-width:319px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
+
+.documentation
+  .col-sm-4
+    #category_tree
+
+
 
 %table
   %tr
+    %th Id
+    %th CatId
     %th Title
     %th Preview ico
     %th
@@ -10,6 +24,8 @@
 
   - @documentation_categories.each do |documentation_category|
     %tr
+      %td= "#{documentation_category.id}"
+      %td= documentation_category.category_id
       %td= documentation_category.title
       %td= documentation_category.preview_ico
       %td= link_to 'Show', documentation_category
@@ -19,3 +35,71 @@
 %br
 
 = link_to 'New Category', new_documentation_category_path
+
+
+
+:javascript
+  $('#category_tree').jstree({
+    "core" : {
+      "animation" : 0,
+      "check_callback" : true,
+      "themes" : { "stripes" : true },
+      'data' : {
+        'url' : function (node) {
+          console.log(node)
+          return node.id === '#' ?
+            'categories_tree.json' : 'categories_tree.json';
+        },
+        'data' : function (node) {
+          return { 'id' : node.id };
+        }
+      }
+    },
+    "plugins" : [
+      "contextmenu", "dnd", "search",
+      "state", "types", "wholerow"
+    ]
+  }).on('delete_node.jstree', function (e, data) {
+        $.get('?operation=delete_node', { 'id' : data.node.id })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('create_node.jstree', function (e, data) {
+        $.post('?', { 'documentation_category' : { 'category_id' : data.node.parent, 'title' : data.node.text }  })
+            .done(function (d) {
+                data.instance.set_id(data.node, d.id);
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('rename_node.jstree', function (e, data) {
+        $.get('?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('move_node.jstree', function (e, data) {
+        $.get('?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent, 'position' : data.position })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('copy_node.jstree', function (e, data) {
+        $.get('?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent, 'position' : data.position })
+            .always(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('changed.jstree', function (e, data) {
+        if(data && data.selected && data.selected.length) {
+            $.get('?operation=get_content&id=' + data.selected.join(':'), function (d) {
+                $('#data .default').html(d.content).show();
+            });
+        }
+        else {
+            $('#data .content').hide();
+            $('#data .default').html('Select a file from the tree.').show();
+        }
+    });;
