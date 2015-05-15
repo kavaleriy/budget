@@ -1,0 +1,31 @@
+.col-xs-12.col-md-6
+  .page-header
+    %h3=t('vtarnay.module5s.index.load')
+
+  = bootstrap_form_for @vtarnay_module5, :html => { :class => 'form-horizontal' } do |f|
+    = f.text_field :title, label: t('vtarnay.module5s.form.title')
+    .form-group
+      %label.control-label
+    = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
+    = f.submit t('vtarnay.module5s.form.load'), :class => 'btn btn-primary'
+    = link_to t('form.cancel', :default => t("helpers.links.cancel")), vtarnay_module5s_path, :class => 'btn btn-default'
+
+.col-xs-12.col-md-6
+  .page-header
+    %h3=t('vtarnay.module5s.form.loaded')
+
+  - if @vtarnay_module5s.length != 0
+    %table.col-xs-12
+      %tbody
+        - @vtarnay_module5s.each do |file|
+          %tr
+            -if file.title
+              %td.col-xs-6
+                =file.title
+            -else
+              %td.col-xs-6
+                =file._id
+            %td.col-xs-6
+              =link_to t('form.destroy', :default => t("helpers.links.destroy")), file, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+  - else
+    =t('vtarnay.module5s.form.loaded_no')

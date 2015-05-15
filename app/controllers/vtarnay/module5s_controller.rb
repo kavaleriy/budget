@@ -1,8 +1,8 @@
 class Vtarnay::Module5sController < ApplicationController
   layout 'application_vtarnay'
   
-  before_action :set_vtarnay_module5, only: [:edit, :update, :destroy]
-
+  before_action :set_vtarnay_module5, only: [:destroy]
+  before_action :set_user_town, only: [:new, :edit, :create]
   before_action :authenticate_user!
   # load_and_authorize_resource
 
@@ -48,13 +48,39 @@ class Vtarnay::Module5sController < ApplicationController
 
   # GET /vtarnay/module5s/new
   def new
-    @town = current_user.town unless current_user.nil?
     @vtarnay_module5 = Vtarnay::Module5.new
     @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)
   end
 
   # GET /vtarnay/module5s/1/edit
   def edit
+    @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)
+    @rows = {}
+    @vtarnay_module5s.each{|file|
+      file['rows'].each_with_index {|row, index|
+        row.each{|data|
+          if data['value']
+            year = data['year'].to_i
+            if @rows[year].nil?
+              @rows[year] = {}
+            end
+            group = data['group']
+            if @rows[year][group].nil?
+              @rows[year][group] = {}
+            end
+            indicator = data['indicator']
+            if @rows[year][group][indicator].nil?
+              @rows[year][group][indicator] = {}
+            end
+            @rows[year][group][indicator]['comment'] = data['comment']
+            @rows[year][group][indicator]['file_id'] = file['_id']
+            binding.pry
+            @rows[year][group][indicator]['row_index'] = index
+          end
+        }
+      }
+    }
+    @years = @rows.keys.sort!.reverse!
   end
 
   # POST /vtarnay/module5s
@@ -63,7 +89,7 @@ class Vtarnay::Module5sController < ApplicationController
     @vtarnay_module5 = Vtarnay::Module5.new(vtarnay_module5_params)
 
     @vtarnay_module5.author = current_user.email unless current_user.nil?
-    @vtarnay_module5.town = current_user.town unless current_user.nil?
+    @vtarnay_module5.town = @town
 
     file = upload_file vtarnay_module5_params[:path]
     file_name = file[:name]
@@ -92,15 +118,25 @@ class Vtarnay::Module5sController < ApplicationController
   # PATCH/PUT /vtarnay/module5s/1
   # PATCH/PUT /vtarnay/module5s/1.json
   def update
-    respond_to do |format|
-      if @vtarnay_module5.update(vtarnay_module5_params)
-        format.html { redirect_to @vtarnay_module5, notice: t('budget_files_controller.save') }
-        format.json { render :show, status: :ok, location: @vtarnay_module5 }
-      else
-        format.html { render :edit }
-        format.json { render json: @vtarnay_module5.errors, status: :unprocessable_entity }
-      end
-    end
+    params['array'].each{|file_id, value|
+      file = Vtarnay::Module5.where(:_id => file_id)
+      value.each{|row_index, row_value|
+        row_value.each{|column, val|
+
+          file.rows[row_index][column] = val
+        }
+      }
+    }
+
+    # respond_to do |format|
+    #   if @vtarnay_module5.update(vtarnay_module5_params)
+    #     format.html { redirect_to @vtarnay_module5, notice: t('budget_files_controller.save') }
+    #     format.json { render :show, status: :ok, location: @vtarnay_module5 }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @vtarnay_module5.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /vtarnay/module5s/1
@@ -176,6 +212,10 @@ class Vtarnay::Module5sController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_vtarnay_module5
       @vtarnay_module5 = Vtarnay::Module5.find(params[:id])
+    end
+
+    def set_user_town
+      @town = current_user.town unless current_user.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

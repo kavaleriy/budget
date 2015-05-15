@@ -1,18 +1,31 @@
-.page-header
-  %h3=t('vtarnay.module5s.form.loaded')
+= content_for :header do
+  .head
+    %i.fa.fa-money
+    #{t('vtarnay.module5s.edit.title')}:
+    %span.descr
+      =@town
 
-- if @vtarnay_module5s.length != 0
-  %table.col-xs-12
-    %tbody
-      - @vtarnay_module5s.each do |file|
+= bootstrap_form_tag( :url => vtarnay_module5_path, :method => :put, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } ) do |f|
+  = f.select :year, options_for_select(@years), label: 'year'
+  %table.table.table-striped.table-hover
+    %tr
+      %th
+        indicator
+      %th
+        description
+
+    - @rows[@years[0]].each do |group, g_value|
+      - g_value.each do |indicator, value|
         %tr
-          -if file.title
-            %td.col-xs-6
-              =file.title
-          -else
-            %td.col-xs-6
-              =file._id
-          %td.col-xs-6
-            =link_to t('form.destroy', :default => t("helpers.links.destroy")), file, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
-- else
-  =t('vtarnay.module5s.form.loaded_no')
+          %td
+            %input{name: "array[#{value['file_id']}][#{value['row_index']}][indicator]", value: indicator, class: 'form-control' }
+          %td
+            %textarea{name: "array[#{value['file_id']}][#{value['row_index']}][comment]", cols: 80, rows: 3, class: 'form-control' }
+              =value['comment']
+  = f.submit t('form.save'), :class => 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function() {
+    console.log('#{@rows}')
+  })
