@@ -7,6 +7,14 @@ class Documentation::CategoriesController < ApplicationController
     @documentation_categories = Documentation::Category.all
   end
 
+  def tree_root
+    @documentation_categories = Documentation::Category.where( :category_id => nil)
+  end
+
+  def tree
+    @documentation_categories = Documentation::Category.where( :category_id.ne => nil)
+  end
+
   # GET /documentation/categories/1
   # GET /documentation/categories/1.json
   def show
