@@ -6,13 +6,13 @@
       =@town
 
 = bootstrap_form_tag( :url => vtarnay_module5_path, :method => :put, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } ) do |f|
-  = f.select :year, options_for_select(@years), label: 'year'
+  = f.select :year, options_for_select(@years), label: t('vtarnay.module5s.edit_form.year')
   %table.table.table-striped.table-hover
     %tr
       %th
-        indicator
+        = t('vtarnay.module5s.edit_form.indicators')
       %th
-        description
+        = t('vtarnay.module5s.edit_form.comments')
 
     - @rows[@years[0]].each do |group, g_value|
       - g_value.each do |indicator, value|
@@ -27,5 +27,23 @@
 :javascript
 
   $(document).ready(function() {
-    console.log('#{@rows}')
+
+    //$('select option:first').attr("selected","selected");
+
+    $('select').change(function(e){
+      var year = $(this).find("option:selected").val();
+      var content = "<tr><th>" + I18n.t('vtarnay.module5s.edit_form.indicators') + "</th><th>" + I18n.t('vtarnay.module5s.edit_form.comments') + "</th></tr>";
+      var data = JSON.parse('#{@rows.to_json}')
+      var rows = data[year]
+      for(var group in rows) {
+        for(var indicator in rows[group]) {
+          content += "<tr><td><input name='array[" + rows[group][indicator]['file_id'] + "][" + rows[group][indicator]['row_index'] + "][indicator]'\
+                                     value='" + indicator + "' class='form-control'></input></td>\
+                          <td><textarea name='array[" + rows[group][indicator]['file_id'] + "][" + rows[group][indicator]['row_index'] + "][comment]'\
+                                     cols='80', rows='3', class='form-control'>" + rows[group][indicator]['comment'] + "</textarea></td>\
+                      </tr>"
+        }
+      }
+      $('.table').html(content);
+    })
   })
