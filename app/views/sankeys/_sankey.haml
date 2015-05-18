@@ -63,5 +63,12 @@
       get_sankey(history, year, percent, rot_file_id, rov_file_id);
     })
 
+    $(window).resize(function() {
+      // create chart according to the window size
+      get_sankey(history, year, percent, rot_file_id, rov_file_id);
+    });
+
   })
+
+
 
