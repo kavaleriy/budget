@@ -138,7 +138,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
     end
 
     if item['children'].nil?
-      node['color'] = '#a8bccc'
+      color = "%06x" % (rand * 0xffffff)
+      node['color'] = color
     elsif node['color'].nil?
       node['color'] = '#265f91'
     end
