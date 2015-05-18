@@ -164,7 +164,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     var side_rect_width = 60;
     var margin = {top: 80, right: 2*side_rect_width + 10, bottom: 30, left: side_rect_width + 10},
         width = $(document).width() - margin.left - margin.right,
-        height = svg_height - margin.top - margin.bottom;
+        height = svg_height - margin.top - margin.bottom,
+        sankey_center = 0;
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d) + " "; },
@@ -214,7 +215,6 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .style("stroke-width", function(d) { return Math.max(1, d.dy); })
             .sort(function(a, b) { return b.dy - a.dy; })
             .on("click", function(d){
-//                console.log(d)
                 if (!data_labels[d.pos] || data_labels[d.pos] == 0 || data_labels[d.pos] == 2) {
                     if(d.key) {
                         get_subtree(d.key, d.type, d.pos);
@@ -237,7 +237,12 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .data(energy.nodes)
             .enter().append("g")
             .attr("class", "node")
-            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+            .attr("transform", function(d) {
+                if(d.xPos == 1 && sankey_center == 0) {
+                    sankey_center = d.x + 75;
+                }
+                return "translate(" + d.x + "," + d.y + ")";
+            })
             .call(d3.behavior.drag()
                 .origin(function(d) { return d; })
                 .on("dragstart", function() { this.parentNode.appendChild(this); })
@@ -342,7 +347,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
         // central rectangle for General and Special funds
         svg.append("rect")
-            .attr("x", width/2 - 100)
+            .attr("x", sankey_center - 83)
             .attr("y", -margin.top + 1)
             .style("fill", "none")
             .style("stroke", "#082757")
@@ -351,7 +356,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .attr("height", height + margin.top + margin.bottom - 2);
 
         svg.append("text")
-            .attr("x", width/2 - 15)
+            .attr("x", sankey_center)
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "middle")
             .style("fill", "#082757")
@@ -364,9 +369,9 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             var status_bar = svg.append("g").attr("transform", "translate(0,0)");
             status_bar.append("rect")
                 .attr("x", function(){
-                    if(i == 0) return width/4;
-                    if(i == 1) return width/2 - 95;
-                    return width/2 + 118;
+                    if(i == 0) return sankey_center/2 - width/12;
+                    if(i == 1) return sankey_center - 79;
+                    return 3*sankey_center/2 - width/12;
                 })
                 .attr("y", function(){
                     if(i == 1) return -margin.top/2 + 1;
@@ -395,9 +400,9 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
             status_bar.append("text")
                 .attr("x", function(){
-                    if(i == 0) return width/3;
-                    if(i == 1) return width/2 - 15;
-                    return 2*width/3 - 15;
+                    if(i == 0) return sankey_center/2;
+                    if(i == 1) return sankey_center;
+                    return 3*sankey_center/2;
                 })
                 .attr("y", function(){
                     if(i == 1) return -margin.top/4;
