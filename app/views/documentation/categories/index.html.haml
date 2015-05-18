@@ -1,105 +1,170 @@
-%h1 Category
-
 = stylesheet_link_tag "themes/default/style.min.css", :media => "all"
 = javascript_include_tag "jstree.js"
 
 :css
-  #tree { float:left; min-width:319px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
+  .documentation #category_tree{
+    min-height: 600px;
+    padding-top: 25px;
+  }
+
+= content_for :header do
+  .head.pull-left
+    Категорії документів
 
 .documentation
-  .col-sm-4
-    #category_tree
 
+  .panel.panel-default
+    .panel-heading
+      %button#create.btn.btn-success.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-asterisk
+          Додати
+      %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-pencil
+          Редагувати
+      %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-remove
+          Видалити
+    .panel-body
+      #category_tree.col-sm-6
+      #category_content.col-sm-6
 
-
-%table
-  %tr
-    %th Id
-    %th CatId
-    %th Title
-    %th Preview ico
-    %th
-    %th
-    %th
-
-  - @documentation_categories.each do |documentation_category|
-    %tr
-      %td= "#{documentation_category.id}"
-      %td= documentation_category.category_id
-      %td= documentation_category.title
-      %td= documentation_category.preview_ico
-      %td= link_to 'Show', documentation_category
-      %td= link_to 'Edit', edit_documentation_category_path(documentation_category)
-      %td= link_to 'Destroy', documentation_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Category', new_documentation_category_path
-
-
+      -#.file_upload.col-sm-6
+      -#  = render :partial => 'new_document', :locals => { :new_document => Documentation::Document.new }
 
 :javascript
-  $('#category_tree').jstree({
-    "core" : {
-      "animation" : 0,
-      "check_callback" : true,
-      "themes" : { "stripes" : true },
-      'data' : {
-        'url' : function (node) {
-          console.log(node)
-          return node.id === '#' ?
-            'categories_tree.json' : 'categories_tree.json';
-        },
-        'data' : function (node) {
-          return { 'id' : node.id };
-        }
+
+  $(document).ready(function() {
+    $('.documentation #create').on('click', function() {
+      var ref = $('#category_tree').jstree(true),
+          sel = ref.get_selected();
+      sel = sel.length > 0 ? sel[0] : null
+      sel = ref.create_node(sel, {"type":"file"});
+      if (sel) {
+          ref.edit(sel);
       }
-    },
-    "plugins" : [
-      "contextmenu", "dnd", "search",
-      "state", "types", "wholerow"
-    ]
-  }).on('delete_node.jstree', function (e, data) {
-        $.get('?operation=delete_node', { 'id' : data.node.id })
-            .fail(function () {
-                data.instance.refresh();
-            });
+    })
+    $('.documentation #rename').on('click', function() {
+        var ref = $('#category_tree').jstree(true),
+            sel = ref.get_selected();
+        if(!sel.length) { return false; }
+        sel = sel[0];
+        ref.edit(sel);
+    })
+    $('.documentation #delete').on('click', function() {
+      var ref = $('#category_tree').jstree(true),
+          sel = ref.get_selected();
+      if(!sel.length) { return false; }
+      ref.delete_node(sel);
+    })
+  })
+
+  $(document).ready(function() {
+
+    $('#category_tree').jstree({
+      "core" : {
+        "animation" : 0,
+        "check_callback" : true,
+        "themes" : { "stripes" : true },
+        'data' : {
+          'url' : function (node) {
+            return node.id === '#' ?
+              'categories_tree_root.json' : 'categories_tree.json';
+          },
+          'data' : function (node) {
+            return { 'id' : node.id };
+          }
+        },
+        "types" : {
+          "default" : {
+            "icon" : "glyphicon glyphicon-flash"
+          },
+          "demo" : {
+            "icon" : "glyphicon glyphicon-ok"
+          }
+        },
+      },
+      "plugins" : [
+        "contextmenu", "dnd", "search",
+        "state", "types", "wholerow"
+      ]
+
+    })
+    .on('delete_node.jstree', function (e, data) {
+      $.ajax({
+        method: 'DELETE',
+        url: 'categories/' + data.node.id + '.json'
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
     })
     .on('create_node.jstree', function (e, data) {
-        $.post('?', { 'documentation_category' : { 'category_id' : data.node.parent, 'title' : data.node.text }  })
-            .done(function (d) {
-                data.instance.set_id(data.node, d.id);
-            })
-            .fail(function () {
-                data.instance.refresh();
-            });
+      $.ajax({
+        method: 'post',
+        url: '',
+        dataType: 'json',
+        data: {
+          documentation_category: {
+            category_id: data.node.parent,
+            title: data.node.text
+          }
+        }
+      })
+      .done(function (d) {
+        data.instance.set_id(data.node, d.id);
+      })
+      .fail(function () {
+        data.instance.refresh();
+      });
     })
     .on('rename_node.jstree', function (e, data) {
-        $.get('?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
-            .fail(function () {
-                data.instance.refresh();
-            });
+        $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id + '.json',
+          data: {
+            documentation_category: {
+              title: data.text
+            }
+          }
+        })
+        .fail(function () {
+            data.instance.refresh();
+        });
     })
     .on('move_node.jstree', function (e, data) {
-        $.get('?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent, 'position' : data.position })
-            .fail(function () {
-                data.instance.refresh();
-            });
+        $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id + '.json',
+          data: {
+            documentation_category: {
+              category_id: data.parent,
+              position: data.position
+            }
+          }
+        })
+        .fail(function () {
+            data.instance.refresh();
+        });
     })
     .on('copy_node.jstree', function (e, data) {
-        $.get('?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent, 'position' : data.position })
-            .always(function () {
-                data.instance.refresh();
-            });
+      $.post('.json', {
+        documentation_category: {
+          category_id: data.node.parent,
+          title: data.node.text,
+          position: data.position
+        }
+      })
+      .always(function () {
+        data.instance.refresh();
+      });
     })
     .on('changed.jstree', function (e, data) {
         if(data && data.selected && data.selected.length) {
-            $.get('?operation=get_content&id=' + data.selected.join(':'), function (d) {
-                $('#data .default').html(d.content).show();
+            $.get('categories/' + data.selected, function (d) {
             });
         }
         else {
-            $('#data .content').hide();
-            $('#data .default').html('Select a file from the tree.').show();
+            $('.documentation #category_content').html('')
         }
-    });;
+    });
+  });

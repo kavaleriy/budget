@@ -94,3 +94,6 @@ gem 'role_model'
 
 gem 'yaml_db'
 gem 'bootstrap-x-editable-rails'
+
+gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'

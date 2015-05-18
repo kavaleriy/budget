@@ -4,20 +4,23 @@ class Documentation::CategoriesController < ApplicationController
   # GET /documentation/categories
   # GET /documentation/categories.json
   def index
-    @documentation_categories = Documentation::Category.all
+    # @documentation_categories = Documentation::Category.all
   end
 
   def tree_root
-    @documentation_categories = Documentation::Category.where( :category_id => nil)
+    @documentation_categories = Documentation::Category.where( :category_id.in =>[ nil, '#'])
   end
 
   def tree
-    @documentation_categories = Documentation::Category.all
+    @documentation_categories = Documentation::Category.where( :category_id => params[:id])
   end
 
   # GET /documentation/categories/1
   # GET /documentation/categories/1.json
   def show
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /documentation/categories/new
@@ -32,15 +35,13 @@ class Documentation::CategoriesController < ApplicationController
   # POST /documentation/categories
   # POST /documentation/categories.json
   def create
-    binding.pry
     @documentation_category = Documentation::Category.new(documentation_category_params)
+    @documentation_category.parent = Documentation::Category.find(documentation_category_params.category_id) if documentation_category_params.respond_to? :category_id
 
     respond_to do |format|
       if @documentation_category.save
-        format.html { redirect_to @documentation_category, notice: 'Category was successfully created.' }
         format.json { render :show, status: :created, location: @documentation_category }
       else
-        format.html { render :new }
         format.json { render json: @documentation_category.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +52,10 @@ class Documentation::CategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @documentation_category.update(documentation_category_params)
-        format.html { redirect_to @documentation_category, notice: 'Category was successfully updated.' }
+        format.js
         format.json { render :show, status: :ok, location: @documentation_category }
       else
-        format.html { render :edit }
+        format.js { render js: 'alert("Помилка збереження")' }
         format.json { render json: @documentation_category.errors, status: :unprocessable_entity }
       end
     end
@@ -78,6 +79,6 @@ class Documentation::CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_category_params
-      params.require(:documentation_category).permit(:category_id, :title, :preview_ico)
+      params.require(:documentation_category).permit(:category_id, :title, :preview_ico, :description, :position)
     end
 end

@@ -1,0 +1,24 @@
+:css
+  #status {
+    color: green;
+  }
+
+= form_for @documentation_category, :remote => true, :authenticity_token => true, method: 'PUT', :html => { :class => 'form-horizontal' } do |f|
+  - if @documentation_category.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@documentation_category.errors.count, "error")} prohibited this documentation_category from being saved:"
+      %ul
+        - @documentation_category.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    %label.control-label
+      Короткий опис
+
+    .controls
+      = f.text_area :description, :rows => '5', :class => 'form-control'
+
+  .actions
+    %span
+      = f.submit 'Зберегти'
+    %span#status
