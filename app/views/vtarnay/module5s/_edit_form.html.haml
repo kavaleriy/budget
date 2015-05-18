@@ -23,6 +23,7 @@
             %textarea{name: "array[#{value['file_id']}][#{value['row_index']}][comment]", cols: 80, rows: 3, class: 'form-control' }
               =value['comment']
   = f.submit t('form.save'), :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), vtarnay_module5s_path.split('?')[0] + "/" + @town, :class => 'btn btn-default'
 
 :javascript
 
