@@ -2,9 +2,14 @@
 = javascript_include_tag "jstree.js"
 
 :css
+  .documentation {
+    min-height: 400px;
+    padding-top: 15px;
+  }
+
   .documentation #category_tree{
-    /*min-height: 600px;*/
-    padding-top: 25px;
+    min-height: 400px;
+    padding-top: 15px;
   }
 
   .documentation .documents {
@@ -17,21 +22,21 @@
     Категорії документів
 
 .documentation
+  .panel.panel-default.col-sm-4
+    .panel-body
+      %button#create.btn.btn-success.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-asterisk
+          Додати
+      %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-pencil
+          Редагувати
+      %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
+        %i.glyphicon.glyphicon-remove
+          Видалити
 
-  .col-sm-4
-    %button#create.btn.btn-success.btn-sm{ type: 'button' }
-      %i.glyphicon.glyphicon-asterisk
-        Додати
-    %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
-      %i.glyphicon.glyphicon-pencil
-        Редагувати
-    %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
-      %i.glyphicon.glyphicon-remove
-        Видалити
+      #category_tree
 
-    #category_tree
-
-    #category_content
+      #category_content
 
   .col-sm-8
     .panel.panel-default
@@ -43,7 +48,7 @@
     .panel.panel-default
       .panel-heading
         Завантажені документи
-      .documents.panel-body.col-sm-12
+      .documents.panel-body
 
 
 :javascript
@@ -60,8 +65,6 @@
       console.log(f)
     });
   });
-
-
 
 :javascript
 

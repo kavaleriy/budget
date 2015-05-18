@@ -1,4 +1,5 @@
 class Documentation::DocumentsController < ApplicationController
+
   before_action :set_documentation_document, only: [:show, :edit, :update, :destroy]
 
   # GET /documentation/documents
@@ -25,6 +26,8 @@ class Documentation::DocumentsController < ApplicationController
   # POST /documentation/documents.json
   def create
     @documentation_document = Documentation::Document.new(documentation_document_params)
+    @documentation_document.town = current_user.town
+    @documentation_document.owner = current_user.email
 
     respond_to do |format|
       if @documentation_document.save

@@ -10,16 +10,5 @@
     overflow: hidden;
   }
 
-  .document.hide_controls > .controls {
-    display: none;
-  }
-
 - documents.each do |document|
   = render :partial => 'documentation/documents/document', :locals => { :document => document }
-
-:javascript
-  $('.document').hover(function(){
-    $(this).removeClass('hide_controls')
-  }, function(){
-    $(this).addClass('hide_controls')
-  })

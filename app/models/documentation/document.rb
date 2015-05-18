@@ -8,6 +8,9 @@ class Documentation::Document
   field :title, type: String
   field :description, type: String
 
+  field :town, type: String
+  field :owner, type: String
+
   mount_uploader :doc_file, DocumentationUploader
 
   validates_presence_of :doc_file, message: 'Файл не може бути пустим'
