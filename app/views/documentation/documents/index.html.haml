@@ -1,5 +1,15 @@
-%h1 Документи
+= content_for :header do
+  .head.pull-left
+    Документи
 
+= form_tag 'search_form', :html => { :class => 'form-horizontal col-sm-12' } do |f|
+
+  = select_tag :town_select, options_for_select(Town.all.collect { |t| [t.name, t.id] } ), { multiple: true, class: 'town_select col-xs-2' }
+
+  = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
+    { multiple: true, class: 'category_select' }
+
+  = submit_tag 'Search'
 
 %table
   %tr
@@ -7,7 +17,7 @@
     %th Title
     %th Description
     %th Issued
-    %th Path
+    %th File
     %th Preview ico
     %th
     %th
@@ -19,7 +29,7 @@
       %td= documentation_document.title
       %td= documentation_document.description
       %td= documentation_document.issued
-      %td= documentation_document.path
+      %td= documentation_document.doc_file
       %td= documentation_document.preview_ico
       %td= link_to 'Show', documentation_document
       %td= link_to 'Edit', edit_documentation_document_path(documentation_document)
@@ -29,3 +39,41 @@
 
 = link_to 'New Document', new_documentation_document_path
 
+:javascript
+  $(document).ready(function() {
+
+    $(".town_select").select2(
+      {
+        allowClear: true,
+        placeholder: "Вкажіть місто",
+        multiSelect: true,
+        formatResult: formatSelect,
+        formatSelection: formatSelect,
+        escapeMarkup: function(m) { return m; },
+      }
+    )
+
+    function formatSelect(el) {
+      return el.text;
+    }
+
+  });
+
+  $(document).ready(function() {
+
+    $(".category_select").select2(
+      {
+        allowClear: true,
+        placeholder: "Вкажіть категорію документів",
+        multiSelect: true,
+        formatResult: formatFaSelect,
+        formatSelection: formatFaSelect,
+        escapeMarkup: function(m) { return m; },
+      }
+    )
+
+    function formatFaSelect(el) {
+      return el.text;
+    }
+
+  });

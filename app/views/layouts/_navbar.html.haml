@@ -85,6 +85,8 @@
               - if current_user.has_role?(:admin)
                 %li.divider
                 %li= link_to t('users'), users_path
+                %li.divider
+                %li= link_to t('town'), towns_path
           - else
             = link_to new_user_session_path do
               %i.fa.fa-key

@@ -61,7 +61,6 @@
   /* Loading colors and icons once while loading the page.*/
   if(icons == "" || colors == "") {
     $.getJSON( "#{asset_path('enums.json') }", function( data ) {
-      console.log("get data");
       $.each( data['fa_icon_list'], function(key,val) {
         icons = icons + "<option value='" + val + "'>" + val + "</option>";
       })

@@ -1,0 +1,29 @@
+= form_for new_document, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+
+  - if new_document.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(new_document.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - new_document.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.hidden_field :category_id
+
+  .field.col-sm-3
+    = f.label :title
+    = f.text_field :title
+  .field.col-sm-3
+    = f.label :description
+    = f.text_field :description
+  .field.col-sm-3
+    = f.label :issued
+    = f.text_field :issued
+  .field.col-sm-3
+    = f.label :doc_file
+    = f.file_field :doc_file
+  .field.col-sm-3
+    = f.label :preview_ico
+    = f.text_field :preview_ico
+  .actions
+    = f.submit "Create", :remote => true
+    -#= f.link_to 'Save 1', new_document, :method => :post, :class => 'btn btn-primary pull-right  col-sm-3'
