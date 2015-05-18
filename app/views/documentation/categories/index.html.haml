@@ -3,8 +3,13 @@
 
 :css
   .documentation #category_tree{
-    min-height: 600px;
+    /*min-height: 600px;*/
     padding-top: 25px;
+  }
+
+  .documentation .documents {
+    max-height: 1200px;
+    overflow: auto;
   }
 
 = content_for :header do
@@ -13,23 +18,50 @@
 
 .documentation
 
-  .panel.panel-default
-    .panel-heading
-      %button#create.btn.btn-success.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-asterisk
-          Додати
-      %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-pencil
-          Редагувати
-      %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-remove
-          Видалити
-    .panel-body
-      #category_tree.col-sm-6
-      #category_content.col-sm-6
+  .col-sm-4
+    %button#create.btn.btn-success.btn-sm{ type: 'button' }
+      %i.glyphicon.glyphicon-asterisk
+        Додати
+    %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
+      %i.glyphicon.glyphicon-pencil
+        Редагувати
+    %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
+      %i.glyphicon.glyphicon-remove
+        Видалити
 
-      -#.file_upload.col-sm-6
-      -#  = render :partial => 'new_document', :locals => { :new_document => Documentation::Document.new }
+    #category_tree
+
+    #category_content
+
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        Новий документ
+      .new_document.panel-body
+        = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new }
+
+    .panel.panel-default
+      .panel-heading
+        Завантажені документи
+      .documents.panel-body.col-sm-12
+
+
+:javascript
+  $(document).ready(function() {
+    $('.documentation .file_upload form').bind("ajax:success", function(f){
+      console.log(f)
+    });
+  });
+
+
+:javascript
+  $(document).ready(function() {
+    $('.documentation .document a[data-method="delete"]').bind("ajax:success", function(f){
+      console.log(f)
+    });
+  });
+
+
 
 :javascript
 

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   namespace :documentation do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'

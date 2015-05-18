@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
+//= require jquery.remotipart
 
 //= require twitter/bootstrap
 //= require turbolinks
@@ -70,3 +71,12 @@ $(document).on('ready page:change', function() {
 
 
 
+$(document).ready(function() {
+    $.fn.redraw = function(){
+        return $(this).each(function(){
+            var n = document.createTextNode(' ');
+            $(this).append(n);
+            setTimeout(function(){n.parentNode.removeChild(n)}, 0);
+        });
+    }
+})

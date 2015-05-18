@@ -4,7 +4,6 @@ class Documentation::CategoriesController < ApplicationController
   # GET /documentation/categories
   # GET /documentation/categories.json
   def index
-    # @documentation_categories = Documentation::Category.all
   end
 
   def tree_root
@@ -18,6 +17,7 @@ class Documentation::CategoriesController < ApplicationController
   # GET /documentation/categories/1
   # GET /documentation/categories/1.json
   def show
+    @documents = Documentation::Document.where( :category_id => @documentation_category.id)
     respond_to do |format|
       format.js
     end

@@ -1,4 +1,28 @@
 module ApplicationHelper
+  def get_file_type_icon(file_name)
+   # binding.pry
+   case File.extname(file_name).upcase
+    when '.XLS', '.XLSX'
+     'fa-file-excel-o'
+    when '.DOC', '.DOCX', '.RTF'
+     'fa-file-word-o'
+    when '.XLS', '.XLSX'
+     'fa-file-excel-o'
+    when '.PPT', '.PPTX'
+     'fa-file-powerpoint-o'
+    when '.TXT'
+     'fa-file-text-o'
+    when '.PDF'
+     'fa-file-pdf-o'
+    when '.ZIP', '.RAR'
+     'fa-file-pdf-o'
+    else
+     'fa-download'
+   end
+
+  end
+
+
   def get_calendars
     calendars = if current_user.nil?
       Calendar.where(:author => nil)

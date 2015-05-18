@@ -1,0 +1,25 @@
+:css
+  .document {
+    height: 40px;
+    overflow: hidden;
+    margin-top: 10px;
+    padding: 10px 5px;
+    background-color: #e7f4f9;
+  }
+  .document > div {
+    overflow: hidden;
+  }
+
+  .document.hide_controls > .controls {
+    display: none;
+  }
+
+- documents.each do |document|
+  = render :partial => 'documentation/documents/document', :locals => { :document => document }
+
+:javascript
+  $('.document').hover(function(){
+    $(this).removeClass('hide_controls')
+  }, function(){
+    $(this).addClass('hide_controls')
+  })

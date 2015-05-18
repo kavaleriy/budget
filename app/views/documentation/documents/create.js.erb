@@ -1,1 +1,5 @@
-alert('<%= @documentation_document.id %>')
+<% if @documentation_document.errors.empty? %>
+    $('.documentation .documents').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => @documentation_document } ) %>')
+<% else %>
+    alert('Помилка завантаження файлу. Перевірте дані')
+<% end %>

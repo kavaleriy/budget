@@ -28,11 +28,10 @@ class Documentation::DocumentsController < ApplicationController
 
     respond_to do |format|
       if @documentation_document.save
-        format.html { redirect_to @documentation_document, notice: 'Document was successfully created.' }
+        format.js
         format.json { head :no_content, status: :created }
-        format.js { }
       else
-        format.html { render :new }
+        format.js
         format.json { render json: @documentation_document.errors, status: :unprocessable_entity }
       end
     end
@@ -57,7 +56,7 @@ class Documentation::DocumentsController < ApplicationController
   def destroy
     @documentation_document.destroy
     respond_to do |format|
-      format.html { redirect_to documentation_documents_url, notice: 'Document was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end

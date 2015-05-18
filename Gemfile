@@ -97,3 +97,6 @@ gem 'bootstrap-x-editable-rails'
 
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+
+# https://github.com/JangoSteve/remotipart
+gem 'remotipart', '~> 1.2'

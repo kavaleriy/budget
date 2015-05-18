@@ -1,3 +1,4 @@
 $('.documentation #category_content').html('<%= escape_javascript(render @documentation_category) %>')
-
 $('.documentation #documentation_document_category_id').val('<%= @documentation_category.id %>')
+
+$('.documentation .documents').html('<%= escape_javascript( render :partial => 'documentation/documents/documents', :locals => { :documents => @documents } ) %>')
