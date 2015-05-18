@@ -24,6 +24,7 @@
   %p
   %button{:type => "button", :class => "btn btn-primary", :id => "sankey_create"}
     =t('sankeys.create')
+  = link_to t('form.back'), sankeys_path, :class => "btn btn-default", :id => "back_sankey_create"
 
   %p
   #percent_list{:style => "display: none"}
@@ -43,6 +44,7 @@
   %p
   .actions
     = f.submit t('sankeys.save'), :class => "btn btn-primary", :id => "sankey_save", :style => "display: none"
+    = link_to t('form.back'), sankeys_path, :class => "btn btn-default", :style => "display: none", :id => "back_sankey_save"
 
 :javascript
 
@@ -112,6 +114,7 @@
       $('#status_bar').html('');
       $('#sankey_chart').html('').css("height", "0");
       $('#sankey_save').css("display", "none");
+      $('#back_sankey_save').css("display", "none");
     }
 
     i++;

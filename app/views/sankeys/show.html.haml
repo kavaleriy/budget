@@ -1,9 +1,8 @@
 = render partial: 'sankey', :locals => { sankey: @sankey }
 = render partial: 'widgets/visify/embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "", data_id: "visual" }
 
-= link_to t('form.edit'), edit_sankey_path(@sankey)
-\|
-= link_to t('form.back'), sankeys_path
+= link_to t('form.edit'), edit_sankey_path(@sankey), :class => "btn btn-primary"
+= link_to t('form.back'), sankeys_path, :class => "btn btn-default"
 
 :javascript
 

@@ -19,7 +19,9 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     }
 
     $('#sankey_chart').html('').css("height", svg_height + 'px');
-    $('#sankey_save').css("display", "block");
+    $('#sankey_save').css("display", "inline");
+    $('#back_sankey_save').css("display", "inline");
+    $('#back_sankey_create').css("display", "none");
 
     var energy = {"nodes" : [],
                   "links" : [],
