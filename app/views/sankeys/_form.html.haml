@@ -57,6 +57,7 @@
     var years = [];
     var percent = 5;
     var year = new Date().getFullYear();
+    var rot_file_id, rov_file_id;
 
     if(i == 0 && '#{action_name}' == "edit") {
       new_sankey('#{@sankey.rot_file_id}', '#{@sankey.rov_file_id}');
@@ -67,8 +68,8 @@
 
       clear();
 
-      var rot_file_id = $('#select_rot option:selected').val();
-      var rov_file_id = $('#select_rov option:selected').val();
+      rot_file_id = $('#select_rot option:selected').val();
+      rov_file_id = $('#select_rov option:selected').val();
 
       new_sankey(rot_file_id, rov_file_id);
 
@@ -118,6 +119,13 @@
     }
 
     i++;
+
+    $(window).resize(function() {
+      // create chart according to the window size
+      if(rot_file_id, rov_file_id) {
+        get_sankey(history, year, percent, rot_file_id, rov_file_id);
+      }
+    });
 
   })
 

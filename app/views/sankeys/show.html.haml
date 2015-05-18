@@ -14,11 +14,11 @@
       if (window.top.location.host == window.self.location.host) {
         query = "#{URI.parse(request.url).query}"
         src = window.location.host + "/sankeys/sankey/#{@sankey.id}/?" + query;
-        $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
+        $('#embed_visual input').val("<iframe width='900' height='500' src='" + src + "'></iframe>")
         $('.tab-content iframe').attr('src', src)
-        $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
-                                                              <option value=\"default\" selected>900x1200</option>\
-                                                              <option value=\"900\">1350x1900</option>\
+        $('#embed_visual').find('.iframe_size_select').html(" <option value=\"default\" selected>900x500</option>\
+                                                              <option value=\"300\">1200x500</option>\
+                                                              <option value=\"900\">1500x500</option>\
                                                               <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
         $('#embed_visual').find('.iframe_other_size').html("");
       } else {

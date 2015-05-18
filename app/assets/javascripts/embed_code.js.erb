@@ -37,14 +37,14 @@ $(document).on('ready page:change', function() {
             curr_value = 100;
         } else if(curr_value < 100) {
             curr_value = 100;
-        } else if(curr_value > 1000) {
-            curr_value = 1000;
+        } else if(curr_value > 1500) {
+            curr_value = 1500;
         }
         if(sibling_value != "") {
             if(sibling_value < 100) {
                 sibling_value = 100;
-            } else if(sibling_value > 1000) {
-                sibling_value = 1000;
+            } else if(sibling_value > 1500) {
+                sibling_value = 1500;
             }
             var width, height;
             if($(this).attr('name') == "width") {
@@ -53,6 +53,10 @@ $(document).on('ready page:change', function() {
             } else {
                 width = sibling_value;
                 height = curr_value;
+            }
+            if($('#sankey_chart')) {
+                if(width < 900) width = 900;
+                if(height < 500) height = 500;
             }
             var el_id = "#embed_" + $(this).parent().siblings("select").attr('id');
             var frame_url = $(el_id + ' input').val().split("src='")[1];
