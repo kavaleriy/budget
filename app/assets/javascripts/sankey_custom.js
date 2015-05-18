@@ -353,8 +353,11 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .attr("x", sankey_center - 83)
             .attr("y", -margin.top + 1)
             .style("fill", "none")
-            .style("stroke", "#082757")
+            .style("stroke", "darkgray")
             .style("stroke-width", 2)
+            .style("stroke-dasharray", "10,10")
+            .attr("rx", 10)
+            .attr("ry", 10)
             .attr("width", 166)
             .attr("height", height + margin.top + margin.bottom - 2);
 
@@ -362,67 +365,101 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .attr("x", sankey_center)
             .attr("y", -margin.top + 25)
             .attr("text-anchor", "middle")
-            .style("fill", "#082757")
+            .style("fill", "darkgray")
             .style("font-size", "0.7em")
             .style("font-weight", "bold")
             .text("Бюджет міста за " + year + " р.");
 
         // rectangles for status bar (total amounts)
+        var arrow_length = 70;
         for(var i = 0; i < 3; i++) {
             var status_bar = svg.append("g").attr("transform", "translate(0,0)");
-            status_bar.append("rect")
-                .attr("x", function(){
-                    if(i == 0) return sankey_center/2 - width/12;
-                    if(i == 1) return sankey_center - 79;
-                    return 3*sankey_center/2 - width/12;
-                })
-                .attr("y", function(){
-                    if(i == 1) return -margin.top/2 + 1;
-                    return -margin.top + 1;
-                })
-                .attr("rx", 10)
-                .attr("ry", 10)
-                .style("fill", function(){
-                    if(i == 1) {
-                        if(revenues > expences) return "blue";
-                        if(revenues < expences) return "red";
-                        if(revenues == expences) return "gray";
-                    }
-                    return "none";
-                })
-                .style("stroke", "#082757")
-                .style("stroke-width", 2)
-                .attr("width", function(){
-                    if(i == 1) return 158;
-                    return width/6;
-                })
-                .attr("height", function(){
-                    if(i == 1) return margin.top/2 - 10;
-                    return margin.top/2;
-                });
+//            status_bar.append("rect")
+//                .attr("x", function(){
+//                    if(i == 0) return sankey_center/2 - width/12;
+//                    if(i == 1) return sankey_center - 79;
+//                    return 3*sankey_center/2 - width/12;
+//                })
+//                .attr("y", function(){
+//                    if(i == 1) return -margin.top/2 + 1;
+//                    return -margin.top + 1;
+//                })
+//                .attr("rx", 10)
+//                .attr("ry", 10)
+//                .style("fill", function(){
+//                    if(i == 1) {
+//                        if(revenues > expences) return "blue";
+//                        if(revenues < expences) return "red";
+//                        if(revenues == expences) return "gray";
+//                    }
+//                    return "none";
+//                })
+//                .style("stroke", "#082757")
+//                .style("stroke-width", 2)
+//                .attr("width", function(){
+//                    if(i == 1) return 158;
+//                    return width/6;
+//                })
+//                .attr("height", function(){
+//                    if(i == 1) return margin.top/2 - 10;
+//                    return margin.top/2;
+//                });
 
-            status_bar.append("text")
-                .attr("x", function(){
-                    if(i == 0) return sankey_center/2;
-                    if(i == 1) return sankey_center;
-                    return 3*sankey_center/2;
-                })
-                .attr("y", function(){
-                    if(i == 1) return -margin.top/4;
-                    return -margin.top + 25;
-                })
-                .attr("text-anchor", "middle")
-                .style("fill", function(){if(i == 1) return "white"; return "#082757";})
-                .style("font-size", "0.7em")
-                .style("font-weight", "bold")
-                .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
-                    if(i == 1) {
-                        var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
-                        if(revenues > expences) return "Профіцит - " + diff;
-                        if(revenues < expences) return "Дефіцит - " + diff;
-                        if(revenues == expences) return "Баланс";
-                    }
-                    return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
+            if(i != 1) {
+                status_bar.append("g")
+                            .attr("transform", function() {if(i == 0) return "translate(" + (sankey_center - 83 - arrow_length) + "," + (-margin.top/2) + ")";
+                                                           return "translate(" + (sankey_center + 83) + "," + (-margin.top/2) + ")"})
+                          .append("polyline")
+                            .attr("points", "0,10 0,20 50,20 50,25 70,15 50,5 50,10")
+                            .attr("stroke-width", "1px")
+                            .attr("stroke", function() {if(i == 0) return d3.rgb("green").darker(2);
+                                                        return d3.rgb("red").darker(2)})
+                            .style("fill", function() {if(i == 0) return "green";
+                                                           return "red"});
+                status_bar.append("text")
+                    .attr("x", function(){
+                        if(i == 0) return sankey_center - 83 - arrow_length - 10;
+                        return sankey_center + 83 + arrow_length + 10;
+                    })
+                    .attr("y", -margin.top/2 + 20)
+                    .attr("text-anchor", function(){
+                        if(i == 0) return "end";
+                        return "start";
+                    })
+                    .style("fill", "#082757")
+                    .style("font-size", "0.8em")
+                    .style("font-weight", "bold")
+                    .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
+                                     return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
+            } else {
+                status_bar.append("g")
+                            .attr("transform", function() { return "translate(" + (sankey_center - 65) + "," + (-margin.top/2) + ")"; })
+                          .append("circle")
+                            .attr("r", 10)
+                            .attr("cx", 10)
+                            .attr("cy", 15)
+                            .attr("stroke-width", "1px")
+                            .attr("stroke", 'black')
+                            .style("fill", function() {if(revenues > expences) return "green";
+                                                       if(revenues < expences) return "red";
+                                                       if(revenues == expences) return "yellow";});
+                status_bar.append("text")
+                            .attr("x", sankey_center + 10)
+                            .attr("y", -margin.top/2 + 15)
+                            .attr("text-anchor", "middle")
+                            .style("fill", "#082757")
+                            .style("font-size", "0.8em")
+                            .style("font-weight", "bold")
+                            .text(function(){
+                                            if(revenues > expences) return "Профіцит";
+                                            if(revenues < expences) return "Дефіцит";
+                                            if(revenues == expences) return "Баланс";})
+                          .append("tspan")
+                            .attr("dy", "1.2em")
+                            .attr("x", sankey_center + 10)
+                            .text(function() {var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
+                                              if(revenues != expences) return diff;})
+            }
         }
 
         // add general info about years compare (placed left to status bar)
