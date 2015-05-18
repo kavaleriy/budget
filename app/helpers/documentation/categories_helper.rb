@@ -18,7 +18,3 @@ module Documentation::CategoriesHelper
     end.join.html_safe
   end
 end
-
-
-https://github.com/carrierwaveuploader/carrierwave
-http://jsfiddle.net/slothbear/9xqpF/
