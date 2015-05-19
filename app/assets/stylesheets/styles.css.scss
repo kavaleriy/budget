@@ -59,14 +59,55 @@
   }
 
   .disclaimer {
+    width: 50%;
   }
-  .logos {
 
-    .logo {
-      margin: 0 5px;
-      max-height: 140px;
-      max-width: 200px;
+  .logos {
+    [class*='logo'] {
+      float: left;
+      overflow: hidden;
+      opacity: .75;
+      &:hover {
+        opacity: 1;
+      }
     }
+    .logo1 {
+      width: 8%;
+      padding: 4%;
+      background: url('footer/LOGO UKR.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+    .logo2 {
+      width: 12%;
+      padding: 4%;
+      background: url('footer/Euro_Flag.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+    .logo3 {
+      width: 15%;
+      padding: 7%;
+      background: url('footer/logo.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+    .logo4 {
+      width: 15%;
+      padding-bottom: 8%;
+      background: url('footer/vidrodzhennya.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+    .logo5 {
+      width: 10%;
+      padding-bottom: 20%;
+      background: url('footer/DMFA.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+    .logo6 {
+      width: 3%;
+      padding-bottom: 30%;
+      background: url('footer/UNDP_logo_UA.png') 0 0 no-repeat;
+      background-size: cover;
+    }
+
   }
 }
 .bottomlinks{
