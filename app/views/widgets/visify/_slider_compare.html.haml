@@ -83,12 +83,16 @@
           compare_months["months"].push({ label: month, amount: amount['total'] });
         }
       })
+
+      if (compare_months["months"].length == 0) return;
+      
       for(var i = 0; i < 4; i++) {
         compare_months["quarters"][i] = {}
         compare_months["quarters"][i]["label"] = i+1
         compare_months["quarters"][i]["amount"] = 0
         compare_months["quarters"][i]["count"] = 0
         for(var j = i*3; j < i*3 + 3; j++) {
+          console.log(compare_months)
           compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
           if(compare_months["months"][j]["amount"] != 0) {
             compare_months["quarters"][i]["count"]++
