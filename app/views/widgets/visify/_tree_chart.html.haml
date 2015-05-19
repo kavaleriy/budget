@@ -51,6 +51,7 @@
     function iframe_resize() {
       var year = "#{@sel_year}",
           month = "#{@sel_month}",
+          quarter = 0,
           data_type = "#{@data_type}";
 
       var sequence = aSequence('.visify')
@@ -73,7 +74,7 @@
       height = width*0.6;
 
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick});
-      slider.initialize(150, {clickCallback: monthItemClick});
+      slider.initialize(150, {clickCallback: sliderItemClick});
       slider_chart.initialize(250, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
       $("#chart").html('');
@@ -177,10 +178,19 @@
         if(slider_chart.current_month != 0 && year == new_year) {
           month = 0;
           slider.set_month(month);
-          $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+          $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
         }
         year = new_year;
         monthItemClick(month);
+      }
+
+      function sliderItemClick(element, curr_slider) {
+        if(curr_slider == "month") {
+          monthItemClick(element);
+        } else if(curr_slider == "quarter") {
+          quarterItemClick(element);
+        }
       }
 
       function monthItemClick(new_month) {
@@ -188,8 +198,31 @@
           month = 0;
         } else {
           month = new_month;
+          quarter = 0;
         }
 
+        current_data = buildData(_data)
+        preprocessData(current_data, 7);
+
+        var curr_node;
+        if (chart.getCenterNode) {
+          curr_node = chart.getCenterNode(current_data);
+          slider.set_centerNode(centerNode);
+        } else if(centerNode != current_data && !chart.getCenterNode) {
+          curr_node = chart.get_CenterNode(centerNode);
+          slider.set_centerNode(curr_node);
+        }
+        chart.show(current_data);
+        chart.selectNode(curr_node);
+      }
+
+      function quarterItemClick(new_quarter) {
+        if(quarter == new_quarter && slider.current_year() == year) {
+          quarter = 0;
+        } else {
+          quarter = new_quarter;
+          month = 0;
+        }
         current_data = buildData(_data)
         preprocessData(current_data, 7);
 
@@ -228,9 +261,18 @@
           var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
 
           if (k == data_type) {
-            node['amount'] = amount['total']
-            if (amount['fonds']) {
-              node['amount_fond'] = amount['fonds']
+            if(quarter != 0 && v[year]) {
+              amount = 0;
+              var x = quarter*3 - 2;
+              for(var i = x; i < x + 3; i++) {
+                if(v[year][i]) amount += v[year][i]['total']
+              }
+              node['amount'] = amount
+            } else {
+              node['amount'] = amount['total']
+              if (amount['fonds']) {
+                node['amount_fond'] = amount['fonds']
+              }
             }
           } else {
             node['amount_'+k] = amount['total']

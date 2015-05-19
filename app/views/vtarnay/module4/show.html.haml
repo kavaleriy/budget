@@ -195,6 +195,7 @@
         month = 0;
       } else {
         month = new_month;
+        quarter = 0;
       }
       current_data = buildData(_data)
       preprocessData(current_data, 7);
@@ -210,22 +211,23 @@
     }
 
     function quarterItemClick(new_quarter) {
-      //if(quarter == new_quarter && slider.current_year() == year) {
-      //  quarter = 0;
-      //} else {
-      //  quarter = new_quarter;
-      //}
-      //current_data = buildData(_data)
-      //preprocessData(current_data, 7);
-      //
-      //var curr_node;
-      //if(center_node != _data) {
-      //  curr_node = chart.get_CenterNode(center_node);
-      //}
-      //icons.show(year, month);
-      //slider.set_centerNode(curr_node);
-      //chart.show(current_data);
-      //chart.clickCallback(curr_node);
+      if(quarter == new_quarter && slider.current_year() == year) {
+        quarter = 0;
+      } else {
+        quarter = new_quarter;
+        month = 0;
+      }
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
+      var curr_node;
+      if(center_node != _data) {
+        curr_node = chart.get_CenterNode(center_node);
+      }
+      icons.show(year, month);
+      slider.set_centerNode(curr_node);
+      chart.show(current_data);
+      chart.clickCallback(curr_node);
     }
 
     function sequenceItemClick(node) {
@@ -250,9 +252,18 @@
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
 
         if (k == data_type) {
-          node['amount'] = amount['total']
-          if (amount['fonds']) {
-            node['amount_fond'] = amount['fonds']
+          if(quarter != 0 && v[year]) {
+            amount = 0;
+            var x = quarter*3 - 2;
+            for(var i = x; i < x + 3; i++) {
+              if(v[year][i]) amount += v[year][i]['total']
+            }
+            node['amount'] = amount
+          } else {
+            node['amount'] = amount['total']
+            if (amount['fonds']) {
+              node['amount_fond'] = amount['fonds']
+            }
           }
         } else {
           node['amount_'+k] = amount['total']
