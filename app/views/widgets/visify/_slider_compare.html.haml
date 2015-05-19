@@ -45,7 +45,7 @@
 
     var data, self;
 
-    var current_month = 0, current_node = null;
+    var current_month = 0, current_node = null, current_year = 0;
 
     function delay(d, i) { return i * 5; }
 
@@ -111,7 +111,6 @@
     }
 
     function show(data) {
-
       sort(data);
 
       svg.selectAll("*").remove();
@@ -199,7 +198,7 @@
           hide();
           return;
         }
-
+        current_year = year;
         show(data);             // show months compare for the last year
       },
       current_node: function() {
@@ -207,6 +206,9 @@
       },
       current_month: function() {
         return current_month;
+      },
+      current_year: function() {
+        return current_year;
       },
       set_month: function(month) {
         current_month = month;

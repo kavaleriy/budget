@@ -165,7 +165,7 @@
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
-        if(slider.current_node() != centerNode) {
+        if(slider.current_node() != centerNode || slider.current_year() != year) {
           slider.show(node, year);
         }
         sidebar.show(node);
