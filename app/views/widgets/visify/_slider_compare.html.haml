@@ -37,7 +37,7 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
 
-    var x, y, xAxis, yAxis;
+    var x0, x1, y, xAxis, yAxis;
 
     var svg;
 
@@ -45,7 +45,7 @@
 
     var data, self;
 
-    var current_month = 0, current_node = null, current_year = 0;
+    var current_month = 0, current_quarter = 0, current_node = null, current_year = 0;
 
     function delay(d, i) { return i * 5; }
 
@@ -55,7 +55,7 @@
     }
 
     function sort(data) {
-      var x0 = x.domain(data.sort(false
+      var xx = x0.domain(data.sort(false
               ? function(a, b) { return a.amount - b.amount; }
               : function(a, b) { return d3.ascending(parseInt(a.label), parseInt(b.label)); })
               .map(function(d) { return d.label; }))
@@ -66,7 +66,7 @@
 
       transition.selectAll(".bar")
           .delay(delay)
-          .attr("x", function(d) { return x0(d.label); });
+          .attr("x", function(d) { return xx(d.label); });
 
       transition.select(".x.axis")
           .call(xAxis)
@@ -75,25 +75,55 @@
     }
 
     function get_history_data(data) {
-      compare_months = []
+      compare_months = {}
+      compare_months["months"] = []
+      compare_months["quarters"] = []
       $.each( data, function( month, amount ) {
         if (month > 0) {
-          compare_months.push({ label: month, amount: amount['total'] });
+          compare_months["months"].push({ label: month, amount: amount['total'] });
         }
       })
+      for(var i = 0; i < 4; i++) {
+        compare_months["quarters"][i] = {}
+        compare_months["quarters"][i]["label"] = i+1
+        compare_months["quarters"][i]["amount"] = 0
+        compare_months["quarters"][i]["count"] = 0
+        for(var j = i*3; j < i*3 + 3; j++) {
+          compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
+          if(compare_months["months"][j]["amount"] != 0) {
+            compare_months["quarters"][i]["count"]++
+          }
+        }
+      }
       return compare_months
     }
 
     function mouseclick(d) {
-      if(d.label != current_month) {
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-        $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
-        current_month = d.label;
+      if((d.count || d.count == 0)) {  // means that it is quarter
+        if(d.label != current_quarter) {
+          $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+          $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
+          current_quarter = d.label;
+          current_month = 0;
+        } else {
+          current_quarter = 0;
+          $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        }
+        self.clickCallback(d.label, "quarter");
       } else {
-        current_month = 0;
-        $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        if(d.label != current_month) {
+          $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+          $(this).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
+          current_month = d.label;
+          current_quarter = 0;
+        } else {
+          current_month = 0;
+          $(this).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+        }
+        self.clickCallback(d.label, "month");
       }
-      self.clickCallback(d.label);
     }
 
     function mouseover(d) {
@@ -101,7 +131,9 @@
     }
 
     function mouseout(d) {
-      if(d.label != current_month) {
+      if(d.label != current_quarter && (d.count || d.count == 0)) {
+        $(this).css("fill-opacity", "0.5"); // means that it is quarter
+      } else if(d.label != current_month && !(d.count || d.count == 0)) {
         $(this).css("fill-opacity", "0.5");
       }
     }
@@ -111,44 +143,59 @@
     }
 
     function show(data) {
-      sort(data);
+      //sort(data["months"]);
 
       svg.selectAll("*").remove();
       $("#slider_compare").height(height + margin.top + margin.bottom);
 
-      x.domain(data.map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
-      y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+      x0.domain(data["quarters"].map(function(d) { return d.label; }));
+      x1.domain(data["months"].map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
+      y.domain([0, d3.max(data["quarters"], function(d) { return d.amount; })]);
 
       svg.append("g")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
 
-      svg.selectAll(".bar")
-          .data(data)
-        .enter().append("rect")
-          .attr("class", "bar")
-          .style("fill", function(d) { return d.label == current_month ? "#3182bd" : "#9ecae1"; })
-          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
-          .attr("x", function(d) { return x(d.label); })
-          .attr("width", x.rangeBand())
-          .attr("y", height)
-          .attr("height", 0)
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("click", mouseclick);
+      var quarters = svg.selectAll(".quarters")
+                         .data(data["quarters"])
+                       .enter().append("rect")
+                         .attr("class", "bar quarter")
+                         .style("fill", function(d) { return d.label == current_quarter ? "#3182bd" : "#9ecae1"; })
+                         .style("fill-opacity", function(d) { return d.label == current_quarter ? "1.0" : "0.5"; })
+                         .attr("x", function(d) { return x0(d.label) - 10; })
+                         .attr("width", x0.rangeBand() + 15)
+                         .attr("y", function(d) { return y(d.amount); })
+                         .attr("height", function(d) { return height - y(d.amount); })
+                         .on("mouseover", mouseover)
+                         .on("mouseout", mouseout)
+                         .on("click", mouseclick);
+
+      var months = svg.selectAll(".months")
+                         .data(data["months"])
+                       .enter().append("rect")
+                         .attr("class", "bar month")
+                         .style("fill", function(d) { return d.label == current_month ? "#6E6E6E" : "#A4A4A4"; })
+                         .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
+                         .attr("x", function(d) { return x1(d.label); })
+                         .attr("width", x1.rangeBand() - 5)
+                         .attr("y", function(d) { return y(d.amount); })
+                         .attr("height", function(d) { return height - y(d.amount); })
+                         .on("mouseover", mouseover)
+                         .on("mouseout", mouseout)
+                         .on("click", mouseclick);
 
       svg.selectAll(".bartext")
-        .data(data)
+        .data(data["months"])
       .enter().append("text")
         .attr("class", "bartext")
         .attr("text-anchor", "middle")
-        .attr("x", function(d) { return x(d.label) + x.rangeBand() / 2; })
+        .attr("x", function(d) { return x1(d.label) + x1.rangeBand() / 2; })
         .attr("y", function(d) { return height; })
 
-      svg.transition().duration(250).selectAll(".bar")
-        .attr("height", function(d) { return height - y(d.amount); })
-        .attr("y", function(d) { return y(d.amount); })
+      //svg.transition().duration(250).selectAll(".bar")
+        //.attr("height", function(d) { return height - y(d.amount); })
+        //.attr("y", function(d) { return y(d.amount); })
 
       svg.transition().duration(250).selectAll(".bartext")
         .attr("y", function(d) { return y(d.amount) - 5; })
@@ -166,14 +213,17 @@
         width = $(aContainer).width() - margin.left - margin.right,
         height = pHeight - margin.top - margin.bottom;
 
-        x = d3.scale.ordinal()
+        x0 = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
+
+        x1 = d3.scale.ordinal()
             .rangeRoundBands([0, width], .1);
 
         y = d3.scale.linear()
             .range([height, 0]);
 
         xAxis = d3.svg.axis()
-            .scale(x)
+            .scale(x1)
             .orient("bottom");
 
         svg = d3.select("#slider_compare").append("svg")
