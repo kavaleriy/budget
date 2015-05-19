@@ -93,7 +93,8 @@ gem 'cancan'
 gem 'role_model'
 
 gem 'yaml_db'
-gem 'bootstrap-x-editable-rails'
+# https://github.com/bootstrap-ruby/bootstrap-editable-rails
+gem 'bootstrap-editable-rails'
 
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'

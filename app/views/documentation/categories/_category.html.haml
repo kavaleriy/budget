@@ -1,22 +1,21 @@
-:css
-  #status {
-    color: green;
-  }
+%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
+  = @documentation_category.description.html_safe() if @documentation_category.description
 
-= form_for @documentation_category, :remote => true, :authenticity_token => true, method: 'PUT', :html => { :class => 'form-horizontal' } do |f|
-  - if @documentation_category.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@documentation_category.errors.count, "error")} prohibited this documentation_category from being saved:"
-      %ul
-        - @documentation_category.errors.full_messages.each do |msg|
-          %li= msg
+:javascript
+  $(document).ready(function() {
+      $('#description').editable({
+        escape: false,
 
-  .form-group
-    .controls
-      = f.text_area :description, :rows => '3', :placeholder => "Докладніше про категорію...", :class => 'form-control'
-
-  .actions
-    %span
-      = f.submit :class => 'btn btn-default' do |f|
-        = f.text = 'Зберегти'
-    %span#status
+        "font-styles":  true, //Font styling, e.g. h1, h2, etc
+        "color":        true, //Button to change color of font
+        "emphasis":     true, //Italics, bold, etc
+        "textAlign":    true, //Text align (left, right, center, justify)
+        "lists":        true, //(Un)ordered lists, e.g. Bullets, Numbers
+        "blockquote":   true, //Button to insert quote
+        "link":         true, //Button to insert a link
+        "table":        true, //Button to insert a table
+        "image":        true, //Button to insert an image
+        "video":        true, //Button to insert YouTube video
+        "html":         false //Button which allows you to edit the generated HTML
+      });
+  });
