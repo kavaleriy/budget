@@ -161,7 +161,7 @@
     function bubbleItemClick(node) {
       sequence.show(node);
       slider_chart.show(node, year);
-      if(slider.current_node() != center_node) {
+      if(slider.current_node() != center_node || slider.current_year() != year) {
         slider.show(node, year);
       }
       sidebar.show(node);
@@ -181,7 +181,7 @@
     }
 
     function monthItemClick(new_month) {
-      if(month == new_month) {
+      if(month == new_month && slider.current_year() == year) {
         month = 0;
       } else {
         month = new_month;

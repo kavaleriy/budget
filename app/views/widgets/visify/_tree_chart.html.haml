@@ -184,7 +184,7 @@
       }
 
       function monthItemClick(new_month) {
-        if (month == new_month) {
+        if (month == new_month && slider.current_year() == year ) {
           month = 0;
         } else {
           month = new_month;
