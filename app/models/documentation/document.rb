@@ -23,4 +23,6 @@ class Documentation::Document
     self.title = self.doc_file_identifier if self.title.empty?
   end
 
+  private
+
 end
