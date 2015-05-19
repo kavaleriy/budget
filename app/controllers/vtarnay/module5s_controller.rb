@@ -1,6 +1,4 @@
 class Vtarnay::Module5sController < ApplicationController
-  layout 'application_vtarnay'
-  
   before_action :set_vtarnay_module5, only: [:destroy]
   before_action :set_user_town, only: [:new, :edit, :update, :create]
   before_action :authenticate_user!

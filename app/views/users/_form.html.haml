@@ -1,15 +1,24 @@
-= bootstrap_form_for @user, :html => { :class => 'form-vertical' } do |f|
-  .form-group
-    = f.text_field :name
-  .form-group
-    = f.text_field :email
-  .form-group
-    = f.text_field :last_sign_in_at
-  .form-group
-    = f.select :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @user.town), class: 'select-town form-control'
-  .form-group
-    Admin:
-    = render partial: 'roles', :locals => { roles: @user.roles }
+= bootstrap_form_for @user, :html => { :class => '' } do |f|
+  .col-sm-6
+    .form-group
+      = f.text_field :name
+    .form-group
+      = f.text_field :phone
+    .form-group
+      = f.text_field :organisation
+    .form-group
+      = f.text_field :email
+    .form-group
+      = f.select :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @user.town), class: 'select-town form-control'
 
-  .actions
-    = f.submit 'Save'
+  .col-sm-6
+    .form-group
+      = f.check_box :locked, label: t('.locked')
+    .form-group
+      = f.text_field :last_sign_in_at
+    .form-group
+      Admin:
+      = render partial: 'roles', :locals => { roles: @user.roles }
+
+  .clear
+  = f.submit 'Save', class: 'btn btn-primary'

@@ -10,6 +10,12 @@
       <div class="form-group"><%= f.label :email %><br />
       <%= f.email_field :email %></div>
 
+      <div class="form-group"><%= f.label :phone %><br />
+      <%= f.text_field :phone %></div>
+
+      <div class="form-group"><%= f.label :organisation %><br />
+        <%= f.text_field :organisation %></div>
+
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <div class="form-group"><%= t('devise.registrations.waiting_confirmation') %> <%= resource.unconfirmed_email %></div>
       <% end %>

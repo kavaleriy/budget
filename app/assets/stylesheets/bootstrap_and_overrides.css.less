@@ -1187,7 +1187,9 @@
 
 .afooter {
   @color: white;
-  #gradient > .vertical-three-colors(darken(@color, 4%), @color, 60%, lighten(@color, 8%));
+  background-color: darken(@color, 3%);
+  #gradient > .vertical-three-colors(lighten(@color, 5%), @color, 60%, darken(@color, 20%));
+  border-top: 5px solid darken(@color, 20%);
 }
 
 // Navbar =====================================================================

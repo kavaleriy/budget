@@ -10,9 +10,13 @@ class User
 
   include RoleModel
 
+  before_create :lock_user
   # Setup accessible (or protected) attributes for your model
+  field :locked
   field :name
-
+  field :phone
+  field :organisation
+  field :town
   field :email
   field :password
   field :password_confirmation
@@ -28,8 +32,6 @@ class User
   field :last_sign_in_ip
   field :remember_created_at
 
-  field :town
-
 
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
@@ -39,4 +41,9 @@ class User
   # roles later, always append them at the end!
   roles :admin, :guest, :editor
 
+  private
+
+  def lock_user
+    self.locked = true;
+  end
 end

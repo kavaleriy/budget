@@ -13,6 +13,15 @@
     <%= f.email_field :email %>
   </div>
 
+  <div class="form-group"><%= f.label :phone %><br />
+    <%= f.text_field :phone %></div>
+
+  <div class="form-group"><%= f.label :organisation %><br />
+    <%= f.text_field :organisation %></div>
+
+  <div class="form-group"><%= f.label :town %><br />
+    <%= f.select :town, options_for_select( [nil] + t('budget_files.form.cities').split('|')), class: 'select-town form-control' %>
+
   <div class="form-group">
     <%= f.label t('devise.passwords.password') %><br />
     <%= f.password_field :password, autocomplete: "off" %>
@@ -22,8 +31,15 @@
     <%= f.label t('devise.passwords.password_confirmation') %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
+  <hr/>
+  <p>
+    УВАГА: Створений обліковий запис дозволяє тільки перегляд інформації.
+    <br/>
+    Для отримання повного доступу, обліковий запис має бути активований, для цього зверніться до адміністратора системи
+  </p>
 
-  <%= f.submit t('devise.sessions.sign_up'), :class => 'btn btn-primary' %>
+
+    <%= f.submit t('devise.sessions.sign_up'), :class => 'btn btn-primary' %>
   <%= render "devise/shared/links" %>
 <% end %>
 

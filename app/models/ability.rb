@@ -11,6 +11,8 @@ class Ability
       can :manage, :all
     elsif user.has_role? :editor
       can :manage, :all
+    elsif user.locked?
+      can :read, :all
     else
       can :manage, :all
       cannot :manage, [User]
