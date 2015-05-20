@@ -164,7 +164,7 @@
 
       svg.append("g")
           .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
+          .attr("transform", "translate(0," + (height+1) + ")")
           .call(xAxis);
 
       var quarters = svg.selectAll(".quarters")
