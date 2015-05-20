@@ -78,15 +78,17 @@
       compare_months = {}
       compare_months["months"] = []
       compare_months["quarters"] = []
+      var count = 0;
       for(var i = 0; i < 12; i++) {
         if (data[i+1]) {
           compare_months["months"][i] = { label: i+1, amount: data[i+1]['total'] };
         } else {
           compare_months["months"][i] = { label: i+1, amount: 0 };
+          count++;
         }
       }
 
-      if (compare_months["months"].length == 0) return;
+      if (count == 12) return;
 
       for(var i = 0; i < 4; i++) {
         compare_months["quarters"][i] = {}
@@ -205,7 +207,7 @@
       svg.transition().duration(250).selectAll(".bartext")
         .attr("y", function(d) { return y(d.amount) - 5; })
         .text(function(d){
-          return aVisify.helpers.formatNumber(d.amount);
+          return d.amount == 0 ? "" : aVisify.helpers.formatNumber(d.amount);
         })
 
     }
