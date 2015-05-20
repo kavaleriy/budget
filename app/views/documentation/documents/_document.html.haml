@@ -1,14 +1,24 @@
-.col-sm-4{ "data-document-id" => "#{document.id}"}
-  .document
-    .col-sm-9
-      - if document.doc_file?
-        = link_to document.doc_file.url do
-          %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-            #{document.title}
-      - else
-        = document.title
-    .controls
-      = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
-        %i.fa.fa-times.pull-right
-      = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' } do
-        %i.fa.fa-pencil-square-o.pull-right
+:css
+  .document {
+  .document {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #e7f4f9;
+  }
+
+
+.document{'data-id' => "#{document.id}"}
+  .col-sm-1
+    - if document.doc_file?
+      = link_to document.doc_file.url do
+        %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
+  .col-sm-10
+    %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-resource' => 'documentation_document', 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
+      = document.title
+  .col-sm-1
+    = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+      %i.fa.fa-times.pull-right
+
+:javascript
+  $('.document[data-id="#{document.id}"] a[data-pk]').editable();

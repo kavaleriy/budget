@@ -33,11 +33,13 @@
 
 //= require fileupload/jquery.fileupload
 
+
 //= require 'xeditable/bootstrap3-editable/js/bootstrap-editable'
 //= require bootstrap-editable-rails
 //= require 'xeditable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0'
 //= require 'xeditable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2'
 //= require 'xeditable/inputs-ext/wysihtml5/wysihtml5'
+
 
 // This is optional (in case you have `I18n is not defined` error)
 // If you want to put this line, you must put it BEFORE `i18n/translations`
@@ -48,7 +50,7 @@
 //= require_tree .
 
 $(document).ready(function() {
-//    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 })
 
