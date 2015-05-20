@@ -48,7 +48,7 @@
 
     var data, center_node, self;
 
-    var current_year = 0, current_month = 0;
+    var current_year = 0, current_month = 0, current_quarter = 0;
 
     function delay(d, i) { return i * 10; }
 
@@ -91,8 +91,11 @@
         current_year = d.label;
       } else if(current_month != 0) {
         current_month = 0;
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      }
+        $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+      } else if(current_quarter != 0) {
+        current_quarter = 0;
+        $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+     }
       self.clickCallback(d.label);
     }
 
@@ -253,6 +256,12 @@
       },
       set_month: function(month) {
         current_month = month;
+      },
+      current_quarter: function() {
+        return current_quarter;
+      },
+      set_quarter: function(quarter) {
+        current_quarter = quarter;
       }
     }
   }

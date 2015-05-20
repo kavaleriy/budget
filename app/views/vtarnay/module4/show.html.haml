@@ -175,6 +175,10 @@
         month = 0;
         slider.set_month(month);
         $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+      }
+      if(slider_chart.current_quarter != 0 && year == new_year) {
+        quarter = 0;
+        slider.set_quarter(quarter);
         $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
       year = new_year;
@@ -195,8 +199,11 @@
         month = 0;
       } else {
         month = new_month;
-        quarter = 0;
+        if(slider.current_year() == year) {
+          quarter = 0;
+        }
       }
+
       current_data = buildData(_data)
       preprocessData(current_data, 7);
 
