@@ -341,4 +341,13 @@
       //           .attr("y",53)
       //           .attr("fill", "green");
     }
+
+    window.onmousemove = function (e) {
+                                var tooltipSpan = document.getElementById('charts_tooltip');
+                                var evt = e || window.event;
+                                var x = evt.pageX,
+                                    y = evt.pageY;
+                                tooltipSpan.style.top = y + 'px';
+                                tooltipSpan.style.left = x + 'px';
+                              };
   })

@@ -30,15 +30,22 @@
     // make tooltip movable with mouse
     var visifier = $(".visify").parent().attr('class');
 
-    if(visifier != "bubbletree") {
-        window.onmousemove = function (e) {
-          var tooltipSpan = document.getElementById('charts_tooltip');
-          var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
-          var x = e.clientX || e.pageX,
-              y = (e.clientY || e.pageY) - sequence_height;
-          tooltipSpan.style.top = y + 'px';
-          tooltipSpan.style.left = x + 'px';
-        };
+    window.onmousemove = function (e) {
+      if(visifier != "bubbletree") {
+        var tooltipSpan = document.getElementById('charts_tooltip');
+        var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
+        var x = e.clientX || e.pageX,
+            y = (e.clientY || e.pageY) - sequence_height;
+        tooltipSpan.style.top = y + 'px';
+        tooltipSpan.style.left = x + 'px';
+      } else {
+        var tooltipSpan = document.getElementById('charts_tooltip');
+        var evt = e || window.event;
+        var x = evt.pageX,
+            y = evt.pageY;
+        tooltipSpan.style.top = y + 'px';
+        tooltipSpan.style.left = x + 'px';
+      }
     }
 
 
