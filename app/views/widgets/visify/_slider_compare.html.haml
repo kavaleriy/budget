@@ -78,11 +78,13 @@
       compare_months = {}
       compare_months["months"] = []
       compare_months["quarters"] = []
-      $.each( data, function( month, amount ) {
-        if (month > 0) {
-          compare_months["months"].push({ label: month, amount: amount['total'] });
+      for(var i = 0; i < 12; i++) {
+        if (data[i+1]) {
+          compare_months["months"][i] = { label: i+1, amount: data[i+1]['total'] };
+        } else {
+          compare_months["months"][i] = { label: i+1, amount: 0 };
         }
-      })
+      }
 
       if (compare_months["months"].length == 0) return;
 
@@ -92,8 +94,8 @@
         compare_months["quarters"][i]["amount"] = 0
         compare_months["quarters"][i]["count"] = 0
         for(var j = i*3; j < i*3 + 3; j++) {
-          compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
-          if(compare_months["months"][j]["amount"] != 0) {
+          if(compare_months["months"][j]) {
+            compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
             compare_months["quarters"][i]["count"]++
           }
         }
@@ -151,8 +153,8 @@
       svg.selectAll("*").remove();
       $("#slider_compare").height(height + margin.top + margin.bottom);
 
-      x0.domain(data["quarters"].map(function(d) { return d.label; }));
-      x1.domain(data["months"].map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
+      x0.domain([1,2,3,4]);
+      x1.domain([1,2,3,4,5,6,7,8,9,10,11,12].map(function(d) { return get_month_by_num(d);}));
       y.domain([0, d3.max(data["quarters"], function(d) { return d.amount; })]);
 
       svg.append("g")
