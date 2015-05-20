@@ -1,12 +1,14 @@
 :css
-  .axis text {
+  #slider_compare .axis text {
     font: 10px sans-serif;
+    fill: #888888;
   }
 
-  .axis path,
-  .axis line {
+  #slider_compare .axis path,
+  #slider_compare .axis line {
     fill: none;
-    stroke: #000;
+    stroke: #C8C8C8;
+    stroke-width: 1;
     shape-rendering: crispEdges;
   }
 
@@ -15,13 +17,8 @@
     cursor: pointer;
   }
 
-  .bartext {
-    color: black;
-    font-size: 9px;
-  }
-
-  #slider_compare .x.axis path {
-    display: none;
+  #slider_compare .bartext {
+    font-size: 0.6em;
   }
 
   label {
@@ -78,13 +75,17 @@
       compare_months = {}
       compare_months["months"] = []
       compare_months["quarters"] = []
-      $.each( data, function( month, amount ) {
-        if (month > 0) {
-          compare_months["months"].push({ label: month, amount: amount['total'] });
+      var count = 0;
+      for(var i = 0; i < 12; i++) {
+        if (data[i+1]) {
+          compare_months["months"][i] = { label: i+1, amount: data[i+1]['total'] };
+        } else {
+          compare_months["months"][i] = { label: i+1, amount: 0 };
+          count++;
         }
-      })
+      }
 
-      if (compare_months["months"].length == 0) return;
+      if (count == 12) return;
 
       for(var i = 0; i < 4; i++) {
         compare_months["quarters"][i] = {}
@@ -92,8 +93,8 @@
         compare_months["quarters"][i]["amount"] = 0
         compare_months["quarters"][i]["count"] = 0
         for(var j = i*3; j < i*3 + 3; j++) {
-          compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
-          if(compare_months["months"][j]["amount"] != 0) {
+          if(compare_months["months"][j]) {
+            compare_months["quarters"][i]["amount"] += compare_months["months"][j]["amount"]
             compare_months["quarters"][i]["count"]++
           }
         }
@@ -118,12 +119,12 @@
         if(d.label != current_month) {
           $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
           $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-          $(this).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
+          $("#" + d.label).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
           current_month = d.label;
           current_quarter = 0;
         } else {
           current_month = 0;
-          $(this).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $("#" + d.label).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
         }
         self.clickCallback(d.label, "month");
       }
@@ -131,6 +132,9 @@
 
     function mouseover(d) {
       $(this).css("fill-opacity", "1.0");
+      if(d.count || d.count == 0) {
+        add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount})
+      }
     }
 
     function mouseout(d) {
@@ -138,6 +142,9 @@
         $(this).css("fill-opacity", "0.5"); // means that it is quarter
       } else if(d.label != current_month && !(d.count || d.count == 0)) {
         $(this).css("fill-opacity", "0.5");
+      }
+      if(d.count || d.count == 0) {
+        remove_tooltip(d)
       }
     }
 
@@ -151,13 +158,13 @@
       svg.selectAll("*").remove();
       $("#slider_compare").height(height + margin.top + margin.bottom);
 
-      x0.domain(data["quarters"].map(function(d) { return d.label; }));
-      x1.domain(data["months"].map(function(d) { return !d.months ? get_month_by_num(d.label) : d.label; }));
+      x0.domain([1,2,3,4]);
+      x1.domain([1,2,3,4,5,6,7,8,9,10,11,12].map(function(d) { return get_month_by_num(d);}));
       y.domain([0, d3.max(data["quarters"], function(d) { return d.amount; })]);
 
       svg.append("g")
           .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
+          .attr("transform", "translate(0," + (height+1) + ")")
           .call(xAxis);
 
       var quarters = svg.selectAll(".quarters")
@@ -166,8 +173,10 @@
                          .attr("class", "bar quarter")
                          .style("fill", function(d) { return d.label == current_quarter ? "#3182bd" : "#9ecae1"; })
                          .style("fill-opacity", function(d) { return d.label == current_quarter ? "1.0" : "0.5"; })
-                         .attr("x", function(d) { return x0(d.label) - 10; })
-                         .attr("width", x0.rangeBand() + 15)
+                         .attr("stroke", "white")
+                         .attr("stroke-width", 2)
+                         .attr("x", function(d) { return x0(d.label); })
+                         .attr("width", x0.rangeBand())
                          .attr("y", function(d) { return y(d.amount); })
                          .attr("height", function(d) { return height - y(d.amount); })
                          .on("mouseover", mouseover)
@@ -178,15 +187,24 @@
                          .data(data["months"])
                        .enter().append("rect")
                          .attr("class", "bar month")
+                         .attr("id", function(d) { return d.label; })
                          .style("fill", function(d) { return d.label == current_month ? "#6E6E6E" : "#A4A4A4"; })
                          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
+                         .attr("stroke", "white")
+                         .attr("stroke-width", 1)
                          .attr("x", function(d) { return x1(d.label); })
-                         .attr("width", x1.rangeBand() - 5)
+                         .attr("width", x1.rangeBand())
                          .attr("y", function(d) { return y(d.amount); })
                          .attr("height", function(d) { return height - y(d.amount); })
                          .on("mouseover", mouseover)
                          .on("mouseout", mouseout)
                          .on("click", mouseclick);
+
+      svg.select('.x.axis')
+        .selectAll('.tick.major')
+        .data(data["months"])
+        .attr('cursor', 'pointer')
+        .on('click', mouseclick)
 
       svg.selectAll(".bartext")
         .data(data["months"])
@@ -203,7 +221,7 @@
       svg.transition().duration(250).selectAll(".bartext")
         .attr("y", function(d) { return y(d.amount) - 5; })
         .text(function(d){
-          return aVisify.helpers.formatNumber(d.amount);
+          return d.amount == 0 ? "" : aVisify.helpers.formatNumber(d.amount);
         })
 
     }
@@ -217,10 +235,10 @@
         height = pHeight - margin.top - margin.bottom;
 
         x0 = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+            .rangeRoundBands([0, width]);
 
         x1 = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+            .rangeRoundBands([0, width]);
 
         y = d3.scale.linear()
             .range([height, 0]);
@@ -265,6 +283,9 @@
       },
       set_month: function(month) {
         current_month = month;
+      },
+      set_quarter: function(quarter) {
+        current_quarter = quarter;
       },
       set_centerNode: function(node) {
         current_node = node;

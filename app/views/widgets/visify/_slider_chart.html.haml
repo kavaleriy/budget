@@ -48,7 +48,7 @@
 
     var data, center_node, self;
 
-    var current_year = 0, current_month = 0;
+    var current_year = 0, current_month = 0, current_quarter = 0;
 
     function delay(d, i) { return i * 10; }
 
@@ -79,7 +79,9 @@
     function get_history_data(data) {
       compare_years = []
       $.each( data, function( year, months ) {
-        compare_years.push( { label: year, amount: months['0']['total'] } )
+        if(months['0']) {
+          compare_years.push( { label: year, amount: months['0']['total'] } )
+        }
       })
       return compare_years
     }
@@ -91,8 +93,11 @@
         current_year = d.label;
       } else if(current_month != 0) {
         current_month = 0;
-        $("#slider_compare").find("rect").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-      }
+        $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+      } else if(current_quarter != 0) {
+        current_quarter = 0;
+        $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+     }
       self.clickCallback(d.label);
     }
 
@@ -164,39 +169,36 @@
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
         .on("click", mouseclick)
-        .append("title")
-           .text(function(d) {
-                 return aVisify.helpers.formatNumber(d.amount);
-           });;
+        //.append("title")
+        //   .text(function(d) {
+        //         return aVisify.helpers.formatNumber(d.amount);
+        //   });
+
+      svg.selectAll("dot")
+          .data(data)
+        .enter().append("text")
+          .attr("x", function(d) { return x(d.label) + 10; })
+          .attr("y", function(d) { return y(d.amount/k) - 10; })
+          .style("font-size", "0.7em")
+          .text(function(d) { return aVisify.helpers.formatNumber(d.amount); });
 
       svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-      svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(0,0)")
-        .call(yAxis);
+      //svg.append("g")
+      //  .attr("class", "y axis")
+      //  .attr("transform", "translate(0,0)")
+      //  .call(yAxis);
 
-      svg.append("text")
-          .attr("x", -10)
-          .attr("y", -10)
-          .attr("text-anchor", "end")
-          .attr("fill", "#888888")
-          .text(y_label);
+      //svg.append("text")
+      //    .attr("x", -10)
+      //    .attr("y", -10)
+      //    .attr("text-anchor", "end")
+      //    .attr("fill", "#888888")
+      //    .text(y_label);
 
-      //// Draw Y-axis grid lines
-      //svg.selectAll("line.y")
-      //  .data(y.ticks(2))
-      //.enter().append("line")
-      //  .attr("class", "y")
-      //  .attr("x1", 0)
-      //  .attr("x2", 450)
-      //  .attr("y1", y)
-      //  .attr("y2", y)
-      //  .style("stroke", "#ccc")
-      //  .style("stroke-width", 1);
     }
 
     return {
@@ -223,10 +225,10 @@
           .tickFormat(d3.format("d"))
           .orient("bottom");
 
-        yAxis = d3.svg.axis()
-          .scale(y)
-          .ticks(number_of_years)
-          .orient("left");
+        //yAxis = d3.svg.axis()
+        //  .scale(y)
+        //  .ticks(number_of_years)
+        //  .orient("left");
 
         svg = d3.select("#slider_chart").append("svg")
             .attr("width", width + 2*margin.left + margin.right)
@@ -243,6 +245,7 @@
         data = get_history_data(node.history);
 
         if (!data || data.length == 0){
+          hide();
           return;
         }
         current_year = year;
@@ -253,6 +256,12 @@
       },
       set_month: function(month) {
         current_month = month;
+      },
+      current_quarter: function() {
+        return current_quarter;
+      },
+      set_quarter: function(quarter) {
+        current_quarter = quarter;
       }
     }
   }

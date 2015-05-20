@@ -30,15 +30,22 @@
     // make tooltip movable with mouse
     var visifier = $(".visify").parent().attr('class');
 
-    if(visifier != "bubbletree") {
-        window.onmousemove = function (e) {
-          var tooltipSpan = document.getElementById('charts_tooltip');
-          var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
-          var x = e.clientX || e.pageX,
-              y = (e.clientY || e.pageY) - sequence_height;
-          tooltipSpan.style.top = y + 'px';
-          tooltipSpan.style.left = x + 'px';
-        };
+    window.onmousemove = function (e) {
+      if(visifier != "bubbletree") {
+        var tooltipSpan = document.getElementById('charts_tooltip');
+        var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
+        var x = e.clientX || e.pageX,
+            y = (e.clientY || e.pageY) - sequence_height;
+        tooltipSpan.style.top = y + 'px';
+        tooltipSpan.style.left = x + 'px';
+      } else {
+        var tooltipSpan = document.getElementById('charts_tooltip');
+        var evt = e || window.event;
+        var x = evt.pageX,
+            y = evt.pageY;
+        tooltipSpan.style.top = y + 'px';
+        tooltipSpan.style.left = x + 'px';
+      }
     }
 
 
@@ -179,6 +186,10 @@
           month = 0;
           slider.set_month(month);
           $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+        }
+        if(slider_chart.current_quarter != 0 && year == new_year) {
+          quarter = 0;
+          slider.set_quarter(quarter);
           $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
         }
         year = new_year;
@@ -198,7 +209,9 @@
           month = 0;
         } else {
           month = new_month;
-          quarter = 0;
+          if(slider.current_year() == year) {
+            quarter = 0;
+          }
         }
 
         current_data = buildData(_data)
