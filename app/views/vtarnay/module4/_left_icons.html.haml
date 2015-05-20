@@ -17,7 +17,7 @@
         $("#icons").height(options.height || 500);
         self.clickCallback = options.clickCallback;
       },
-      show: function(year, month) {
+      show: function(year, month, quarter) {
         clear();
 
         if (!_data || !_data["totals"][year] || !_data["totals"][year][month])
@@ -25,11 +25,21 @@
 
         var nodes = [];
         var percent = 0;
-        var totalSize = _data["totals"][year][month];
+        var totalSize = 0;
+        var amount_key, index;
+        if(quarter == 0) {
+          totalSize = _data["totals"][year][month]
+          amount_key = "amount"
+          index = month
+        } else {
+          totalSize = _data["totals"][year]["quarters"][quarter]
+          amount_key = "quarters"
+          index = quarter
+        }
 
         $.each(_data["levels"], function( key, value ) {
-          if(value["amount"][year] && value["amount"][year][month]) {
-            nodes.push({key: key, amount: value["amount"][year][month]});
+          if(value[amount_key][year] && value[amount_key][year][index]) {
+            nodes.push({key: key, amount: value[amount_key][year][index]});
           }
         });
 
@@ -53,8 +63,8 @@
           div += '<tr id="' + key + '">'
               + '<td class="col-sm-7"><i class="fa ' + data_sorted[key].icon + '"></i> '
               + data_sorted[key].label + '</td>'
-              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(data_sorted[key].amount[year][month]) + '</td>'
-              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(data_sorted[key].amount[year][month], totalSize) + '</td>'
+              + '<td class="col-sm-3" align="right">' + aVisify.helpers.formatNumber(data_sorted[key][amount_key][year][index]) + '</td>'
+              + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(data_sorted[key][amount_key][year][index], totalSize) + '</td>'
               + '</tr>';
         }
         div += '</tbody></table>';

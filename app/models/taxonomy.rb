@@ -81,6 +81,18 @@ class Taxonomy
       end
     end
 
+    for i in 0..3
+      totals.each do |year, months|
+        totals[year]['quarters'] = [] if totals[year]['quarters'].nil?
+        totals[year]['quarters'][i+1] = 0 if totals[year]['quarters'][i+1].nil?
+        j = i*3 + 1
+        while j < i*3 + 4
+          totals[year]['quarters'][i+1] += months[j.to_s]
+          j = j + 1
+        end
+      end
+    end
+
     levels = {}
     explanation = self.explanation[level.to_s]
     rows[:plan].each do |year, months|
@@ -105,6 +117,20 @@ class Taxonomy
       end
     end
 
+    for i in 0..3
+      levels.each do |key, value|
+        value['quarters'] = {} if value['quarters'].nil?
+        value[:amount].each do |year, months|
+          value['quarters'][year] = [] if value['quarters'][year].nil?
+          value['quarters'][year][i+1] = 0 if value['quarters'][year][i+1].nil?
+          j = i*3 + 1
+          while j < i*3 + 4
+            value['quarters'][year][i+1] += months[j.to_s]
+            j = j + 1
+          end
+        end
+      end
+    end
 
     { totals: totals, levels: levels }
   end

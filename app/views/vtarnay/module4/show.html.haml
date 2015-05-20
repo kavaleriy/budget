@@ -60,7 +60,7 @@
 
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/ktfk_aaa/", function(data) {
       icons.initialize(data, { height: 700, clickCallback: iconsItemClick });
-      icons.show(year, month);
+      icons.show(year, month, quarter);
       start_bubble_show(data['totals'][year][month]);
       $("#slider_compare").hide();
       $("#slider_chart").hide();
@@ -178,7 +178,7 @@
         $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
       year = new_year;
-      icons.show(year, month);
+      icons.show(year, month, quarter);
       monthItemClick(month);
     }
 
@@ -204,7 +204,7 @@
       if(center_node != _data) {
         curr_node = chart.get_CenterNode(center_node);
       }
-      icons.show(year, month);
+      icons.show(year, month, quarter);
       slider.set_centerNode(curr_node);
       chart.show(current_data);
       chart.clickCallback(curr_node);
@@ -224,7 +224,7 @@
       if(center_node != _data) {
         curr_node = chart.get_CenterNode(center_node);
       }
-      icons.show(year, month);
+      icons.show(year, month, quarter);
       slider.set_centerNode(curr_node);
       chart.show(current_data);
       chart.clickCallback(curr_node);
