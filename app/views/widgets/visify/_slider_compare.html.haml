@@ -174,8 +174,8 @@
                          .attr("width", x0.rangeBand() + 15)
                          .attr("y", function(d) { return y(d.amount); })
                          .attr("height", function(d) { return height - y(d.amount); })
-                         .on("mouseover", mouseover)
-                         .on("mouseout", mouseout)
+                         .on("mouseover", function(d){ mouseover(d); add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount}) })
+                         .on("mouseout", function(d){mouseout(d); remove_tooltip(d)})
                          .on("click", mouseclick);
 
       var months = svg.selectAll(".months")
