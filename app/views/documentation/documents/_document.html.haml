@@ -1,24 +1,40 @@
 :css
   .document {
-  .document {
-    margin-top: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin: 1%;
+    padding: 10px 5px 10px 5px;
     background-color: #e7f4f9;
+    width: 48%;
   }
 
-
-.document{'data-id' => "#{document.id}"}
+.document.pull-left{'data-id' => "#{document.id}"}
   .col-sm-1
     - if document.doc_file?
       = link_to document.doc_file.url do
         %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-resource' => 'documentation_document', 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
-      = document.title
+    %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
+
   .col-sm-1
     = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
-  $('.document[data-id="#{document.id}"] a[data-pk]').editable();
+
+  $('.document[data-id="#{document.id}"] a[data-pk]').editable({
+    value: {
+        title: "#{document.title}",
+        description: "#{document.description}",
+        issued: "#{document.issued}"
+    },
+    validate: function(value) {
+        if (value.title == '') return 'Потрібно вказати ім\'я файла!';
+    },
+    display: function(value) {
+        if(!value) {
+            $(this).empty();
+            return;
+        }
+        var html = '<b>' + $('<div>').text(value.title).html() + '</b>, ' + $('<div>').text(value.issued).html();
+        $(this).html(html);
+    }
+  });
