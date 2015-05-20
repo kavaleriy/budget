@@ -1,12 +1,14 @@
 :css
-  .axis text {
+  #slider_compare .axis text {
     font: 10px sans-serif;
+    fill: #888888;
   }
 
-  .axis path,
-  .axis line {
+  #slider_compare .axis path,
+  #slider_compare .axis line {
     fill: none;
-    stroke: #000;
+    stroke: #C8C8C8;
+    stroke-width: 1;
     shape-rendering: crispEdges;
   }
 
@@ -15,13 +17,8 @@
     cursor: pointer;
   }
 
-  .bartext {
-    color: black;
-    font-size: 9px;
-  }
-
-  #slider_compare .x.axis path {
-    display: none;
+  #slider_compare .bartext {
+    font-size: 0.6em;
   }
 
   label {
@@ -122,12 +119,12 @@
         if(d.label != current_month) {
           $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
           $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-          $(this).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
+          $("#" + d.label).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
           current_month = d.label;
           current_quarter = 0;
         } else {
           current_month = 0;
-          $(this).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $("#" + d.label).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
         }
         self.clickCallback(d.label, "month");
       }
@@ -182,6 +179,7 @@
                          .data(data["months"])
                        .enter().append("rect")
                          .attr("class", "bar month")
+                         .attr("id", function(d) { return d.label; })
                          .style("fill", function(d) { return d.label == current_month ? "#6E6E6E" : "#A4A4A4"; })
                          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
                          .attr("x", function(d) { return x1(d.label); })
@@ -191,6 +189,12 @@
                          .on("mouseover", mouseover)
                          .on("mouseout", mouseout)
                          .on("click", mouseclick);
+
+      svg.select('.x.axis')
+        .selectAll('.tick.major')
+        .data(data["months"])
+        .attr('cursor', 'pointer')
+        .on('click', mouseclick)
 
       svg.selectAll(".bartext")
         .data(data["months"])

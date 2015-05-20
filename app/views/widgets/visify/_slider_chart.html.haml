@@ -169,39 +169,36 @@
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
         .on("click", mouseclick)
-        .append("title")
-           .text(function(d) {
-                 return aVisify.helpers.formatNumber(d.amount);
-           });;
+        //.append("title")
+        //   .text(function(d) {
+        //         return aVisify.helpers.formatNumber(d.amount);
+        //   });
+
+      svg.selectAll("dot")
+          .data(data)
+        .enter().append("text")
+          .attr("x", function(d) { return x(d.label) + 10; })
+          .attr("y", function(d) { return y(d.amount/k) - 10; })
+          .style("font-size", "0.7em")
+          .text(function(d) { return aVisify.helpers.formatNumber(d.amount); });
 
       svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
-      svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(0,0)")
-        .call(yAxis);
+      //svg.append("g")
+      //  .attr("class", "y axis")
+      //  .attr("transform", "translate(0,0)")
+      //  .call(yAxis);
 
-      svg.append("text")
-          .attr("x", -10)
-          .attr("y", -10)
-          .attr("text-anchor", "end")
-          .attr("fill", "#888888")
-          .text(y_label);
+      //svg.append("text")
+      //    .attr("x", -10)
+      //    .attr("y", -10)
+      //    .attr("text-anchor", "end")
+      //    .attr("fill", "#888888")
+      //    .text(y_label);
 
-      //// Draw Y-axis grid lines
-      //svg.selectAll("line.y")
-      //  .data(y.ticks(2))
-      //.enter().append("line")
-      //  .attr("class", "y")
-      //  .attr("x1", 0)
-      //  .attr("x2", 450)
-      //  .attr("y1", y)
-      //  .attr("y2", y)
-      //  .style("stroke", "#ccc")
-      //  .style("stroke-width", 1);
     }
 
     return {
@@ -228,10 +225,10 @@
           .tickFormat(d3.format("d"))
           .orient("bottom");
 
-        yAxis = d3.svg.axis()
-          .scale(y)
-          .ticks(number_of_years)
-          .orient("left");
+        //yAxis = d3.svg.axis()
+        //  .scale(y)
+        //  .ticks(number_of_years)
+        //  .orient("left");
 
         svg = d3.select("#slider_chart").append("svg")
             .attr("width", width + 2*margin.left + margin.right)
