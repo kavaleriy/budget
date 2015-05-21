@@ -42,7 +42,7 @@
 
     var data, self;
 
-    var current_month = 0, current_quarter = 0, current_node = null, current_year = 0;
+    var current_month = 0, current_quarter = 0, current_node = null, current_year = 0, year_info = 1;
 
     function delay(d, i) { return i * 5; }
 
@@ -110,11 +110,12 @@
           $(this).css("fill-opacity", "1.0").css("fill", "#3182bd");
           current_quarter = d.label;
           current_month = 0;
-        } else {
+          self.clickCallback(d.label, "quarter");
+        } else if(year_info == 1) {
           current_quarter = 0;
           $(this).css("fill-opacity", "0.5").css("fill", "#9ecae1");
+          self.clickCallback(d.label, "quarter");
         }
-        self.clickCallback(d.label, "quarter");
       } else {
         if(d.label != current_month) {
           $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
@@ -122,11 +123,12 @@
           $("#" + d.label).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
           current_month = d.label;
           current_quarter = 0;
-        } else {
+          self.clickCallback(d.label, "month");
+        } else if(year_info == 1) {
           current_month = 0;
           $("#" + d.label).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          self.clickCallback(d.label, "month");
         }
-        self.clickCallback(d.label, "month");
       }
     }
 
@@ -265,9 +267,17 @@
         }
         data = get_history_data(node.history[year]);
 
-        if (!data || data.length == 0){
+        if (!data["months"] || data["months"].length == 0){
           hide();
           return;
+        }
+
+        if(!node.history[year][0]) {
+          for(var key in node.history[year]) {
+            current_month = key;
+            year_info = 0;
+            break;
+          }
         }
         current_year = year;
         show(data);             // show months compare for the last year
