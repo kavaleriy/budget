@@ -31,7 +31,8 @@ class Documentation::DocumentsController < ApplicationController
 
     respond_to do |format|
       if @documentation_document.save
-        format.js
+        format.js {
+        }
         format.json { head :no_content, status: :created }
       else
         format.js
@@ -45,10 +46,10 @@ class Documentation::DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @documentation_document.update(documentation_document_params)
-        format.html { redirect_to @documentation_document, notice: 'Document was successfully updated.' }
+        format.js
         format.json { render :show, status: :ok, location: @documentation_document }
       else
-        format.html { render :edit }
+        format.js { render status: :unprocessable_entity }
         format.json { render json: @documentation_document.errors, status: :unprocessable_entity }
       end
     end

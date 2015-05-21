@@ -26,7 +26,7 @@ class BudgetFile
       self.all
     else
       self.where(:author => nil) + BudgetFile.all.reject{|f| f.taxonomy.owner != user.town}
-    end.sort_by { |f| [f.taxonomy.owner, f.author] }
+    end.sort_by { |f| f.author }
 
     files || []
   end

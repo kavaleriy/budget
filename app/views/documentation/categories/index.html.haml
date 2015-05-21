@@ -15,7 +15,7 @@
 
   .documentation .documents {
     max-height: 1200px;
-    overflow: auto;
+    /*overflow: auto;*/
   }
 
 = content_for :header do
@@ -52,6 +52,7 @@
       .documents.panel-body
 
 
+
 :javascript
   $(document).ready(function() {
     $('.documentation .file_upload form').bind("ajax:success", function(f){
@@ -63,7 +64,7 @@
 :javascript
   $(document).ready(function() {
     $('.documentation .document a[data-method="delete"]').bind("ajax:success", function(f){
-      console.log(f)
+      console.log(111)
     });
   });
 

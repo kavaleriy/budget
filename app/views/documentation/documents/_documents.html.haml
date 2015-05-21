@@ -1,14 +1,2 @@
-:css
-  .document {
-    height: 40px;
-    overflow: hidden;
-    margin-top: 10px;
-    padding: 10px 5px;
-    background-color: #e7f4f9;
-  }
-  .document > div {
-    overflow: hidden;
-  }
-
 - documents.each do |document|
   = render :partial => 'documentation/documents/document', :locals => { :document => document }

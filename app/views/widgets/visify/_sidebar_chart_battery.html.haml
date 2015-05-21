@@ -95,12 +95,12 @@
     }
 
     return {
-      initialize: function(pHeight, options) {
+      initialize: function(options) {
         I18n.locale = window.aHelper.lang();
         _self = this;
         _self.clickCallback = options.clickCallback;
         $("#sidebar_chart").html('');
-        height = pHeight;
+
         width = $("#sidebar").width() - margin.left - margin.right,
 
         x = d3.scale.linear()
@@ -130,7 +130,7 @@
         if (!data == null || data.length < 1) return;
 
         svg_height = data.length * 50;
-        $("#sidebar_chart").height(height - margin.top - margin.bottom)
+        $("#sidebar_chart").height('100%')
         svg.attr("height", svg_height + margin.top + margin.bottom);
 
         // add hatch to fill the bars
