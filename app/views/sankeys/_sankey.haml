@@ -55,7 +55,7 @@
       $('#sankey_chart').html('').css("height", "0");
     }
 
-    $('#percent_list').click(function(e) {
+    $('#percent_list a').click(function(e) {
       d3.selectAll('#sankey_chart svg').remove();
       percent = $(e.target).attr('data-value');
       $('#percent_list .active').removeClass('active');

@@ -32,7 +32,7 @@
   $(document).ready(function(){
     create_graphs(num_of_years);
 
-    $('#year_list').click(function(e) {
+    $('#year_list a').click(function(e) {
       $("svg circle").tooltip('destroy');
       d3.selectAll('.graph svg').remove();
       num_of_years = $(e.target).attr('data-value');
