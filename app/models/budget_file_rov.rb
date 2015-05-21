@@ -17,17 +17,17 @@ class BudgetFileRov < BudgetFile
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
     {
-        '_year' => row['DATA'].to_date.year.to_s,
+        '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
         '_month' => row['MONTH'].to_s.split('.')[0],
 
-        'fond' => row['KKFN'].to_s,
+        'fond' => row['KKFN'].to_s.split('.')[0],
 
         'amount' => amount / 100,
         'ktfk' => ktfk,
         'ktfk_aaa' => ktfk_aaa,
-        'kvk' => row['KVK'].to_s,
-        'kekv' => row['KEKV'].to_s,
-        'krk' => row['KRK'].to_s,
+        'kvk' => row['KVK'].to_s.split('.')[0],
+        'kekv' => row['KEKV'].to_s.split('.')[0],
+        'krk' => row['KRK'].to_s.split('.')[0],
     }
   end
 
