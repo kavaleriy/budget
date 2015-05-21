@@ -294,7 +294,7 @@
           }
         })
 
-        if (!node['amount'] || node['amount'] == 0)
+        if (node['amount'] == undefined || node['amount'] == 0)
           return
 
         node['history'] = item.amount[data_type]

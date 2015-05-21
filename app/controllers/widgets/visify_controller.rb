@@ -196,7 +196,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       @budget_file = @taxonomy
       @data_type = 'plan'
     else
-      @data_type = (@budget_file.data_type || :plan)
+      @data_type = (@budget_file.data_type? || :plan)
     end
   end
 
