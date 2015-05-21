@@ -194,10 +194,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     if @budget_file.nil?
       @budget_file = @taxonomy
-      @data_type = 'plan'
     else
-      @data_type = (@budget_file.data_type? || :plan)
+      @data_type = @budget_file.data_type
     end
+    @data_type = 'plan' unless @data_type
   end
 
   def set_params
