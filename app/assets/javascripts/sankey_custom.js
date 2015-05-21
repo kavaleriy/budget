@@ -283,11 +283,11 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                 return "";
             })
             .attr("text-anchor", "middle")
-            .attr("dx", function(d) {
+            .attr("x", function(d) {
                 if(d.xPos == 0) return -margin.left/2 - 5;
                 return side_rect_width - 5;
             })
-            .attr("dy", function(d) {
+            .attr("y", function(d) {
                 if(d.prev_amount != 0) return d.dy/2 - 10;
                 return d.dy/2 + 4;
             })
