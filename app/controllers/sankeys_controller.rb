@@ -3,6 +3,10 @@ class SankeysController < ApplicationController
   after_action :allow_iframe, only: [:sankey]
   layout 'visify', only: [:sankey]
 
+  before_action :authenticate_user!, only: [:new, :edit]
+  # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
+  load_and_authorize_resource
+
   # GET /sankeys
   # GET /sankeys.json
   def index
@@ -34,6 +38,7 @@ class SankeysController < ApplicationController
   # POST /sankeys.json
   def create
     @sankey = Sankey.new(sankey_params)
+    @sankey.owner = current_user.town
 
     respond_to do |format|
       if @sankey.save
@@ -84,7 +89,7 @@ class SankeysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sankey_params
-      params.permit(:rot_file_id, :rov_file_id)
+      params.permit(:rot_file_id, :rov_file_id, :title)
     end
 
     def allow_iframe

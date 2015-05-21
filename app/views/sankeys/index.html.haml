@@ -1,9 +1,32 @@
-- @sankeys.each do |sankey|
-  %tr
-    %td= link_to sankey._id, sankey, :method => :get
-    %td
-      =link_to t('form.edit', :default => t("helpers.links.edit")), edit_sankey_path(sankey), :method => :get, :class => 'btn btn-default btn-xs'
-      =link_to t('form.destroy', :default => t("helpers.links.destroy")), sankey, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
-  %br
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-money
+      Sankey
+
+- if @sankeys.length > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th.col-sm-3
+          = t('key')
+        %th.col-sm-6
+          = t('name')
+        %th.col-sm-1
+          = t('owner')
+        %th.col-sm-2
+          =t 'form.actions', :default => t("helpers.actions")
+    %tbody
+      - @sankeys.each do |sankey|
+        %tr
+          %td= link_to sankey._id, sankey, :method => :get
+          - if sankey.title
+            %td= link_to sankey.title, sankey
+          - else
+            %td= link_to sankey._id, sankey
+          %td= sankey.owner
+          %td
+            =link_to t('form.edit', :default => t("helpers.links.edit")), edit_sankey_path(sankey), :method => :get, :class => 'btn btn-default btn-xs'
+            =link_to t('form.destroy', :default => t("helpers.links.destroy")), sankey, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+    %br
 
 = link_to t('sankeys.new'), new_sankey_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "sankey_new"
