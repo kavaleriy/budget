@@ -24,14 +24,19 @@ class SankeysController < ApplicationController
   # GET /sankeys/new
   def new
     @sankey = Sankey.new
-    @budget_files_rot = TaxonomyRot.all
-    @budget_files_rov = TaxonomyRov.all
+    if current_user.has_role? :admin
+      @budget_files_rot = TaxonomyRot.all
+      @budget_files_rov = TaxonomyRov.all
+    else
+      @budget_files_rot = TaxonomyRot.all.where(:owner => current_user.town)
+      @budget_files_rov = TaxonomyRov.all.where(:owner => current_user.town)
+    end
   end
 
   # GET /sankeys/1/edit
   def edit
-    @budget_files_rot = TaxonomyRot.all
-    @budget_files_rov = TaxonomyRov.all
+    @budget_files_rot = TaxonomyRot.all.where(:owner => @sankey.owner)
+    @budget_files_rov = TaxonomyRov.all.where(:owner => @sankey.owner)
   end
 
   # POST /sankeys

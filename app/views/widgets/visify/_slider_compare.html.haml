@@ -120,22 +120,24 @@
         if(d.label != current_month) {
           $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
           $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-          $("#" + d.label).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
+          $("#month" + d.label).css("fill-opacity", "1.0").css("fill", "#6E6E6E");
           current_month = d.label;
           current_quarter = 0;
           self.clickCallback(d.label, "month");
         } else if(year_info == 1) {
           current_month = 0;
-          $("#" + d.label).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+          $("#month" + d.label).css("fill-opacity", "0.5").css("fill", "#A4A4A4");
           self.clickCallback(d.label, "month");
         }
       }
     }
 
     function mouseover(d) {
-      $(this).css("fill-opacity", "1.0");
       if(d.count || d.count == 0) {
+        $(this).css("fill-opacity", "1.0");
         add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount})
+      } else {
+        $("#month" + d.label).css("fill-opacity", "1.0");
       }
     }
 
@@ -143,7 +145,7 @@
       if(d.label != current_quarter && (d.count || d.count == 0)) {
         $(this).css("fill-opacity", "0.5"); // means that it is quarter
       } else if(d.label != current_month && !(d.count || d.count == 0)) {
-        $(this).css("fill-opacity", "0.5");
+        $("#month" + d.label).css("fill-opacity", "0.5");
       }
       if(d.count || d.count == 0) {
         remove_tooltip(d)
@@ -189,7 +191,7 @@
                          .data(data["months"])
                        .enter().append("rect")
                          .attr("class", "bar month")
-                         .attr("id", function(d) { return d.label; })
+                         .attr("id", function(d) { return "month"+d.label; })
                          .style("fill", function(d) { return d.label == current_month ? "#6E6E6E" : "#A4A4A4"; })
                          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
                          .attr("stroke", "white")
@@ -267,7 +269,7 @@
         }
         data = get_history_data(node.history[year]);
 
-        if (!data["months"] || data["months"].length == 0){
+        if (!data || data["months"].length == 0){
           hide();
           return;
         }
@@ -278,6 +280,8 @@
             year_info = 0;
             break;
           }
+        } else {
+          year_info = 1;
         }
         current_year = year;
         show(data);             // show months compare for the last year

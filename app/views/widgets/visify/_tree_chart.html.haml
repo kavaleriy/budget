@@ -234,7 +234,9 @@
           quarter = 0;
         } else {
           quarter = new_quarter;
-          month = 0;
+          if(slider.current_year() == year) {
+            month = 0;
+          }
         }
         current_data = buildData(_data)
         preprocessData(current_data, 7);
