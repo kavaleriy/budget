@@ -8,7 +8,6 @@ class BudgetFileRot < BudgetFile
 
   def readline row
 
-    binding.pry
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
