@@ -7,7 +7,7 @@
     var b = {
           w: 200, h: 45, s: 3, t: 10
         }
-    var self;
+    var self, path;
 
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
@@ -23,7 +23,7 @@
       },
 
       getAncestors: function(node) {
-        var path = [];
+        path = [];
         var current = node;
         while (current.parent) {
           path.unshift(current);
@@ -72,16 +72,55 @@
 
         // Data join; key function combines name and depth (= position in sequence).
         $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
+
+        var start_pos = null;
+        var level;
+        var drag = d3.behavior.drag()
+            .on("dragstart", function(){
+                console.log("start", b.w)
+            })
+            .on("drag", function(d){
+                if(start_pos === null) {
+                  start_pos = d3.event.x - d.level*b.w;
+                  level = d.level;
+                }
+                if(d3.event.x >= (start_pos + b.w + 3) && d3.event.x <= (start_pos + (path.length-1)*(b.w + 3))) {
+                  if(d3.event.x < (start_pos + level*b.w + 3)) {
+                    entering.attr('transform', "translate(" + (d3.event.x - start_pos) + ",0)");
+                    if(d3.event.x < (start_pos + (level - 1)*b.w + 10)) {
+                      d3.select("#drag" + (level - 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
+                      entering.attr("id", "drag" + (level - 1));
+                      level--;
+                    }
+                  } else {
+                    entering.attr('transform', "translate(" + (d3.event.x - start_pos) + ",0)");
+                    if(d3.event.x > (start_pos + (level + 1)*b.w + 3)) {
+                      d3.select("#drag" + (level + 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
+                      entering.attr("id", "drag" + (level + 1));
+                      level++;
+                    }
+                  }
+                }
+            })
+            .on("dragend", function(){
+                start_pos = null;
+                entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
+            });
+
         var g = d3.select(aContainer + " #trail")
             .selectAll("g")
             .data(nodeArray, function(d) { return d.label + (d.depth || d.level); });
 
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("svg:g")
+                                .attr('transform', "translate(0,0)")
                                 .attr("cursor", "pointer")
+                                .attr("class", "draggable")
+                                .attr("id", function(d){ return "drag" + d.level })
                                 .on('click', function(d) {
                                   self.clickCallback(d)
                                 })
+                                .call(drag);
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
