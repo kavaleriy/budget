@@ -36,6 +36,7 @@
       initializeBreadcrumbTrail: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.dropCallback = options.dropCallback;
         // Add the svg area.
         if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
           var trail = d3.select(aContainer + " #sequence").append("svg:svg")
@@ -74,10 +75,9 @@
         $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
 
         var start_pos = null;
-        var level;
+        var level, last_node;
         var drag = d3.behavior.drag()
             .on("dragstart", function(){
-                console.log("start", b.w)
             })
             .on("drag", function(d){
                 if(start_pos === null) {
@@ -90,6 +90,9 @@
                     if(d3.event.x < (start_pos + (level - 1)*b.w + 10)) {
                       d3.select("#drag" + (level - 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
                       entering.attr("id", "drag" + (level - 1));
+                      var tmp = path[level-1];
+                      path[level-1] = path[level];
+                      path[level] = tmp;
                       level--;
                     }
                   } else {
@@ -97,14 +100,22 @@
                     if(d3.event.x > (start_pos + (level + 1)*b.w + 3)) {
                       d3.select("#drag" + (level + 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
                       entering.attr("id", "drag" + (level + 1));
+                      var tmp = path[level+1];
+                      path[level+1] = path[level];
+                      path[level] = tmp;
                       level++;
                     }
                   }
                 }
             })
-            .on("dragend", function(){
+            .on("dragend", function(d){
                 start_pos = null;
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
+                var levels = []
+                for(var i in path) {
+                  if(path[i].taxonomy) levels.push(path[i].taxonomy);
+                }
+                self.dropCallback(levels, path[path.length-1]);
             });
 
         var g = d3.select(aContainer + " #trail")

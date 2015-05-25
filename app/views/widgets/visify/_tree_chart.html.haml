@@ -80,7 +80,7 @@
       }
       height = width*0.6;
 
-      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick});
+      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop});
       slider.initialize(150, {clickCallback: sliderItemClick});
       slider_chart.initialize(250, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
@@ -261,6 +261,11 @@
         sidebar.show(node);
         chart.set_centerNode(node);
         chart.selectNode(node);
+      }
+
+      function ItemDrop(levels, last_node) {
+        console.log("levels", levels);
+        console.log("last node", last_node);
       }
 
       // get current data for all visifies
