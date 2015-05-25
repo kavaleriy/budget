@@ -54,7 +54,8 @@ class Taxonomy
       when 'ktfk'
         expense_codes[key] || expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
       when 'ktfk_aaa'
-        expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
+        # expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
+        expense_codes["#{key}000"]
       when 'kvk'
         expense_kvk_codes[key.split(':')[0]]
       when 'kekv'
