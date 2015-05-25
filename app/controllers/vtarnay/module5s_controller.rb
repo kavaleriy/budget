@@ -1,6 +1,6 @@
 class Vtarnay::Module5sController < ApplicationController
   before_action :set_vtarnay_module5, only: [:destroy]
-  before_action :set_user_town, only: [:new, :edit, :update, :create]
+  before_action :set_user_town, only: [:new, :edit, :update, :create, :download]
   before_action :authenticate_user!
   # load_and_authorize_resource
 
@@ -146,13 +146,39 @@ class Vtarnay::Module5sController < ApplicationController
     end
   end
 
-  protected
-  def upload_file uploaded_io
-    file_name = uploaded_io.original_filename
-    file_path = Rails.root.join('public', 'files', file_name)
+  def download
+    require 'rubygems'
+    require 'zip'
 
+    folder = 'public/files/indicators/' + @town
+    files = Vtarnay::Module5.all.where(:town => @town)
+
+    zipfile_name = 'public/files/indicators/' + @town + '/archive.zip'
+    temp_file = Tempfile.new('archive.zip')
+
+    Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
+      files.each do |file|
+        file_path = file.path.split('/')
+        file_name = file_path[file_path.length-1]
+        # Two arguments:
+        # - The name of the file as it will appear in the archive
+        # - The original file, including the path to find it
+        zipfile.add(file_name, folder + '/' + file_name)
+      end
+    end
+    zip_data = File.read(temp_file.path)
+    send_data(zip_data, :type => 'application/zip', :filename => 'archive.zip')
+
+  end
+
+  protected
+  def upload_file attachment
+    file_name = attachment.original_filename
+    Dir.mkdir('public/files/indicators/') unless File.exists?('public/files/indicators/')
+    Dir.mkdir('public/files/indicators/' + @town) unless File.exists?('public/files/indicators/' + @town)
+    file_path = Rails.root.join('public', 'files', 'indicators', @town, file_name)
     File.open(file_path, 'wb') do |file|
-      file.write(uploaded_io.read)
+      file.write(attachment.read)
     end
 
     { name: file_name, path: file_path }

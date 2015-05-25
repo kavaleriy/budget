@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     get 'module5s' => 'module5s#index'
     get 'module5s/new' => 'module5s#new'
     get 'module5s/:id' => 'module5s#show'
+    get 'module5s/download/:id' => 'module5s#download'
   end
 
   namespace :widgets do

@@ -5,7 +5,11 @@
 
 - @towns.each do |key, value|
   %tr
-    %td= link_to key, 'module5s/' + key, :method => :get
+    %td
+      = link_to key, 'module5s/' + key, :method => :get
+    %td
+      = link_to 'module5s/download/' + key, :class => 'load_button', :method => :get do
+        %i.fa.fa-download.fa-sm.fa-border
   %br
 
 = link_to t('vtarnay.module5s.index.load'), new_vtarnay_module5_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "module5_new"
