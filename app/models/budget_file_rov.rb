@@ -12,9 +12,9 @@ class BudgetFileRov < BudgetFile
 
     ktfk = row['KTFK'].to_s.gsub(/^0*/, "")
 
-    ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
-    ktfk_aaa = '80' if ktfk_aaa == '81'
-    ktfk_aaa = '90' if ktfk_aaa == '91'
+    ktfk_aaa = ktfk.slice(0, ktfk.length - 3).ljust(3, '0')
+    ktfk_aaa = '800' if ktfk_aaa == '810'
+    ktfk_aaa = '900' if ktfk_aaa == '910'
 
     {
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
