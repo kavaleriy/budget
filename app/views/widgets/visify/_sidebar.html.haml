@@ -1,45 +1,45 @@
-#sidebar.col-xs-12.col-md-4
+-##sidebar.col-xs-12.col-md-4
 
-  #accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
-    .panel.panel-default
-      #headingDesc.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
-            =t('.description')
-      #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
-        .panel-body
-          #description
+.sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
+  .panel.panel-default
+    #headingDesc.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+          =t('.description')
+    #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+      .panel-body
+        #description
 
-  #accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
-    .panel.panel-default
-      #headingChart.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
-            =t('.chart')
-      #collapseChart.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
-        .panel-body
-          = render partial: 'sidebar_chart_battery', :locals => { budget_file_id: budget_file_id }
+.sidebar.col-xs-12.col-md-4#accordion.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
+  .panel.panel-default
+    #headingChart.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapseChart', 'aria-expanded' => 'false', 'aria-controls' => 'collapseChart'}
+          =t('.chart')
+    #collapseChart.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingChart' }
+      .panel-body
+        = render partial: 'sidebar_chart_battery', :locals => { budget_file_id: budget_file_id }
 
-    .panel.panel-default
-      #heading2.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse2', 'aria-expanded' => 'false', 'aria-controls' => 'collapse2'}
-            =t('.pie')
-      #collapse2.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading2' }
-        .panel-body
-          = render partial: 'sidebar_pie', :locals => { budget_file_id: budget_file_id }
+  .panel.panel-default
+    #heading2.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse2', 'aria-expanded' => 'false', 'aria-controls' => 'collapse2'}
+          =t('.pie')
+    #collapse2.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading2' }
+      .panel-body
+        = render partial: 'sidebar_pie', :locals => { budget_file_id: budget_file_id }
 
 
-    .panel.panel-default
-      #heading3.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse3', 'aria-expanded' => 'false', 'aria-controls' => 'collapse3'}
-            =t('.table')
-      #collapse3.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading3' }
-        .panel-body
-          = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
+  .panel.panel-default
+    #heading3.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordion', 'href'=> '#collapse3', 'aria-expanded' => 'false', 'aria-controls' => 'collapse3'}
+          =t('.table')
+    #collapse3.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'heading3' }
+      .panel-body
+        = render partial: 'sidebar_table', :locals => { budget_file_id: budget_file_id }
 
-  #attachments_list
+.sidebar.col-xs-12.col-md-4#attachments_list
 
 :javascript
 
@@ -50,13 +50,13 @@
       container: aContainer,
 
       initialize: function(height, options){
-        chart = aSidebarChartBattery('#sidebar')
+        chart = aSidebarChartBattery('.sidebar')
         chart.initialize(options)
 
-        pie = aSidebarPie('#sidebar')
+        pie = aSidebarPie('.sidebar')
         pie.initialize(350, options)
 
-        table = aSidebarTable('#sidebar')
+        table = aSidebarTable('.sidebar')
         table.initialize(450, options)
 
         $.getJSON("/widgets/visify/get_attachments/#{@budget_file.id}/", function(data) {
@@ -73,7 +73,7 @@
       },
 
       hide: function(){
-        $(aContainer + ' #sidebar #description').html('');
+        //$(aContainer + ' #sidebar #description').html('');
 
         chart.hide();
         pie.hide();
@@ -91,6 +91,14 @@
             div_descr = "<div class='description'>" + data.description + "</div>"
           }
           $(aContainer + ' #description').html(div_descr)
+
+          if($(aContainer + ' #description').height() > $('.chart').height()) {
+            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-8 panel-group')
+            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-8')
+          } else {
+            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
+            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
+          }
         })
 
         if(node.children.length != 0) {

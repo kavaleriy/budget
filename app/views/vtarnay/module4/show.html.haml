@@ -52,7 +52,7 @@
 
     var _data = null, current_data = null, center_node = null;
 
-    sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick});
+    sequence.initializeBreadcrumbTrail({clickCallback: sequenceItemClick, dropCallback: ItemDrop});
     slider.initialize(150, {clickCallback: sliderItemClick});
     slider_chart.initialize(250, {clickCallback: yearItemClick});
     sidebar.initialize(600, {clickCallback: sequenceItemClick});
@@ -246,6 +246,11 @@
       sidebar.show(node);
       chart.set_centerNode(node);
       chart.selectNode(node);
+    }
+
+    function ItemDrop(levels, last_node) {
+      console.log("levels", levels);
+      console.log("last node", last_node);
     }
 
     // get current data for all visifies

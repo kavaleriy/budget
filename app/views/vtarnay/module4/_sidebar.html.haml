@@ -1,4 +1,4 @@
-#sidebar.col-xs-12
+.sidebar.col-xs-12
 
   %ul.nav.nav-tabs{role: 'tablist'}
     %li.active{'role' => 'presentation'}
@@ -19,17 +19,6 @@
     .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
       = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
 
-
-:javascript
-
-  //$(document).ready(function() {
-  //
-  //  $('#sidebar a[role="tab"]').on('shown.bs.tab', function (e) {
-  //    console.log(this.href.split('#')[1]);
-  //  });
-  //
-  //})
-
 :javascript
 
   function aSidebar(aContainer) {
@@ -39,10 +28,10 @@
       container: aContainer,
 
       initialize: function(height, options){
-        chart = aSidebarChartBattery('#sidebar')
+        chart = aSidebarChartBattery('.sidebar')
         chart.initialize(options)
 
-        pie = aSidebarPie('#sidebar')
+        pie = aSidebarPie('.sidebar')
         pie.initialize(height, options)
       },
 

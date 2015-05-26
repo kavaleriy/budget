@@ -5,7 +5,8 @@
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
-  .col-xs-12.col-md-8
+
+  .chart.col-xs-12.col-md-8
     = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
     #chart
     %canvas{:style => "display: none;"}
@@ -72,7 +73,7 @@
 
       var width;
       document_width = $(document).width();
-      sidebar_width = $('.visify #sidebar').width();
+      sidebar_width = $('.visify .sidebar').width();
       if(document_width > 2*sidebar_width) {
         width = document_width - sidebar_width - document_width*0.02;
       } else {
