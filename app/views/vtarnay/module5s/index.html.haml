@@ -3,13 +3,23 @@
     %i.fa.fa-money
     #{t('vtarnay.module5s.show.title')}
 
-- @towns.each do |key, value|
-  %tr
-    %td
-      = link_to key, 'module5s/' + key, :method => :get
-    %td
-      = link_to 'module5s/download/' + key, :class => 'load_button', :method => :get do
-        %i.fa.fa-download.fa-sm.fa-border
+- if @towns.length > 0
+  %table.table.table-striped.col-sm-5
+    %thead
+      %tr
+        %th.col-sm-2
+          = t('owner')
+        %th.col-sm-3
+          =t ('vtarnay.module5s.index.load_zip'), :default => t("helpers.actions")
+    %tbody
+      - @towns.each do |key, value|
+        %tr
+          %td
+            = link_to key, 'module5s/' + key, :method => :get
+          %td
+            = link_to 'module5s/download/' + key, :class => 'load_button', :method => :get do
+              %i.fa.fa-download.fa-sm.fa-border
+              zip
   %br
 
 = link_to t('vtarnay.module5s.index.load'), new_vtarnay_module5_path, :type => "button", :method => :get, :class => "btn btn-primary", :id => "module5_new"
