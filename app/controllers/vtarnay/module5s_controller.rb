@@ -150,10 +150,11 @@ class Vtarnay::Module5sController < ApplicationController
     require 'rubygems'
     require 'zip'
 
-    folder = 'public/files/indicators/' + @town
-    files = Vtarnay::Module5.all.where(:town => @town)
+    town = params[:id]
+    folder = 'public/files/indicators/' + town
+    files = Vtarnay::Module5.all.where(:town => town)
 
-    zipfile_name = 'public/files/indicators/' + @town + '/archive.zip'
+    zipfile_name = 'public/files/indicators/' + town + '/archive.zip'
     temp_file = Tempfile.new('archive.zip')
 
     Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
