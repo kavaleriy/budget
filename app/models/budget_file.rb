@@ -25,7 +25,7 @@ class BudgetFile
     elsif user.has_role? :admin
       self.all
     else
-      self.where(:author => nil) + BudgetFile.all.reject{|f| f.taxonomy.owner != user.town}
+      self.where(:author => nil) + BudgetFile.all.reject{|f| user.locked == true || user.locked == '1' || f.taxonomy.owner != user.town}
     end.sort_by { |f| f.author }
 
     files || []
