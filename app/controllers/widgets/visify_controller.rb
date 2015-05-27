@@ -8,7 +8,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
   def get_bubbletree_data
-    render json: get_bubble_tree
+    params[:levels] ? levels = params[:levels].split(",") : levels = []
+    render json: get_bubble_tree(levels)
   end
 
   def get_bubblesubtree_with_fact
@@ -108,8 +109,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
     I18n.locale = params[:locale]
   end
 
-  def get_bubble_tree
-    tree = @budget_file.get_tree
+  def get_bubble_tree levels
+    tree = @budget_file.get_tree levels
     return if tree.nil?
 
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
@@ -219,7 +220,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def visify_params
-    params.permit(:file_id, :year, :month, :key, :taxonomy)
+    params.permit(:file_id, :year, :month, :key, :taxonomy, :levels)
   end
 
 end

@@ -242,14 +242,14 @@ class Taxonomy
     self.budget_files.map { |file| file.get_range }.flatten
   end
 
-  def create_tree rows, filter = []
-    tree = create_tree_sceleton rows, filter
+  def create_tree rows, filter = [], levels = []
+    tree = create_tree_sceleton rows, filter, levels
     create_tree_item(tree)
   end
 
   protected
 
-  def create_tree_sceleton rows, filter = []
+  def create_tree_sceleton rows, filter = [], levels = []
     tree = { :amount => {} }
     # return nil if rows[year].nil? || rows[year][month].nil?
 
@@ -273,8 +273,8 @@ class Taxonomy
               node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
               node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
             end
-
-            self.columns.keys.reject{|k| filter.include?(k)}.each { |taxonomy_key|
+            # binding.pry
+            levels.each { |taxonomy_key|
               if row[taxonomy_key].nil?
                 next unless taxonomy_key == 'ktfk_aaa'
                 taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)

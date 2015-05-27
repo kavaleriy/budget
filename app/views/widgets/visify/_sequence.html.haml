@@ -113,9 +113,16 @@
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
                 var levels = []
                 for(var i in path) {
-                  if(path[i].taxonomy) levels.push(path[i].taxonomy);
+                  var tax = path[i].taxonomy;
+                  if(tax) {
+                    if(tax.charAt(0) == "_") {
+                      tax = tax.substr(1);
+                    }
+                    levels.push(tax);
+                  }
                 }
-                self.dropCallback(levels, path[path.length-1]);
+                levels[0] = "_" + levels[0]
+                self.dropCallback(levels);
             });
 
         var g = d3.select(aContainer + " #trail")

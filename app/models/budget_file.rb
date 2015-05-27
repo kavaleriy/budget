@@ -65,8 +65,9 @@ class BudgetFile
     end
   end
 
-  def get_tree
-    self.taxonomy.create_tree(self.data_type => self.rows)
+  def get_tree levels
+    rows = {self.data_type => self.rows}
+    self.taxonomy.create_tree(rows, [], levels)
   end
 
   def get_subtree level, key, filter
