@@ -27,12 +27,6 @@ class Taxonomy
     files || []
   end
 
-  def self.get_taxonomy(owner)
-    self.where(:owner => owner).last || self.create!(
-        :owner => owner,
-    )
-  end
-
   def explain taxonomy, key
     return if key.nil?
     self.explanation = { } if self.explanation.nil?

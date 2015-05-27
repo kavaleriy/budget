@@ -31,9 +31,7 @@ class BudgetFile
     files || []
   end
 
-  def import town, table
-    self.taxonomy = get_taxonomy town, table[:cols]
-
+  def import town, table, create_new_taxonomy
     rows = table[:rows].map { |row|
       readline(row)
     }.compact.flatten.sort_by{|row| -row['amount']}

@@ -2,10 +2,6 @@ class BudgetFileRotPlanfact < BudgetFile
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyRot.get_taxonomy(owner)
-  end
-
   def readline row
     amount_plan = row['План'].to_i
     amount_fact = row['Факт'].to_i

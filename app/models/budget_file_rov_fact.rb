@@ -2,10 +2,6 @@ class BudgetFileRovFact < BudgetFile
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyRov.get_taxonomy(owner)
-  end
-
   def readline row
     ktfk = row['KFK'].to_s.gsub(/^0*/, "")
 

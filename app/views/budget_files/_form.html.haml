@@ -2,6 +2,14 @@
   .form-group
     = f.text_field :title, label: t('budget_file_name')
 
+
+  - if @budget_file.new_record?
+    .form-group
+      %label.control-label
+        = t('taxonomy')
+      = select_tag :budget_file_taxonomy, options_for_select( [nil] + @taxonomies.all.collect { |p| [ p.title, p.id ] }, @current_taxonomy_id ) , class: 'form-control'
+
+
   .form-group
     %label.control-label
       = t('owner')
@@ -17,3 +25,12 @@
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'
+
+:javascript
+
+  $(document).ready(function() {
+    $("#budget_file_taxonomy").select2( {
+        allowClear: true,
+        placeholder: "Нова візуалізація",
+    });
+  })

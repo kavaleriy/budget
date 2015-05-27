@@ -2,10 +2,6 @@ class BudgetFileRotFond < BudgetFileRot
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyRot.get_taxonomy(owner)
-  end
-
   def readline row
     kkd = row['kkd'].to_s.split('.')[0]
     return if kkd == ''
