@@ -35,7 +35,7 @@
         %td= user.last_sign_in_at
         %td= user.town
         %td= render partial: 'roles', :locals => { roles: user.roles }
-        %td= render partial: 'locked', :locals => { locked: user.locked }
+        %td= render partial: 'locked', :locals => { locked: user.is_locked? }
 
         %td
           =link_to t('form.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
