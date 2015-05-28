@@ -48,7 +48,7 @@ class Taxonomy
       when 'fond'
         revenue_fond_codes[key]
 
-      when 'kkd', 'kkd_a', 'kkd_bb', 'kkd_cc'
+      when 'kkd', 'kkd_a', '_kkd_a', 'kkd_bb', 'kkd_cc'
         revenue_codes[key.ljust(8, '0')]
 
       when 'ktfk'
