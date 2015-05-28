@@ -11,7 +11,7 @@ class Ability
       can :manage, :all
     elsif user.has_role? :editor
       can :manage, :all
-    elsif user.locked?
+    elsif user.locked == true || user.locked == '1'
       can :read, :all
     else
       can :manage, :all
