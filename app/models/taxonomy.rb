@@ -14,7 +14,7 @@ class Taxonomy
   embeds_many :taxonomy_attachments
 
   def self.visible_to user
-    files = if user && use.is_locked? == false
+    files = if user && user.is_locked? == false
       if user.has_role? :admin
         Taxonomy.all
       else
