@@ -75,14 +75,16 @@
         $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
 
         var start_pos = null;
-        var level, last_node;
+        var level, last_node, dragged = 0;
         var drag = d3.behavior.drag()
             .on("dragstart", function(){
+              d3.event.sourceEvent.stopPropagation();
             })
             .on("drag", function(d){
                 if(start_pos === null) {
                   start_pos = d3.event.x - d.level*b.w;
                   level = d.level;
+                  dragged = 1;
                 }
                 if(d3.event.x >= (start_pos + b.w + 3) && d3.event.x <= (start_pos + (path.length-1)*(b.w + 3))) {
                   if(d3.event.x < (start_pos + level*b.w + 3)) {
@@ -109,6 +111,7 @@
                 }
             })
             .on("dragend", function(d){
+                if(dragged != 1) return;
                 start_pos = null;
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
                 var levels = []
@@ -136,7 +139,9 @@
                                 .attr("class", "draggable")
                                 .attr("id", function(d){ return "drag" + d.level })
                                 .on('click', function(d) {
-                                  self.clickCallback(d)
+                                  if (dragged == 1) return;
+                                  self.clickCallback(d);
+                                  d3.event.stopPropagation();
                                 })
                                 .call(drag);
 
