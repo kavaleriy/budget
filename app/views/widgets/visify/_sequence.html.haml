@@ -83,8 +83,8 @@
             })
             .on("drag", function(d){
                 if(start_pos === null) {
-                  start_pos = d3.event.x - d.level*b.w;
-                  level = d.level;
+                  level = d.level || d.depth;
+                  start_pos = d3.event.x - level*b.w;
                   dragged = 1;
                 }
                 if(d3.event.x >= (start_pos + b.w + 3) && d3.event.x <= (start_pos + (path.length-1)*(b.w + 3))) {
@@ -115,7 +115,7 @@
                 if(dragged != 1) return;
                 start_pos = null;
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
-                var levels = []
+                var levels = [], last_node
                 for(var i in path) {
                   var tax = path[i].taxonomy;
                   if(tax) {
@@ -123,6 +123,9 @@
                       tax = tax.substr(1);
                     }
                     levels.push(tax);
+                  }
+                  if(path[i] == d && path[i-1]) {
+                    last_node = path[i-1]
                   }
                 }
                 add_levels = init_levels.filter(function(val) {
@@ -133,7 +136,7 @@
                     levels.push(add_levels[i]);
                   }
                 }
-                self.dropCallback(levels);
+                self.dropCallback(levels, last_node);
             });
 
         var g = d3.select(aContainer + " #trail")
@@ -145,7 +148,7 @@
                                 .attr('transform', "translate(0,0)")
                                 .attr("cursor", "pointer")
                                 .attr("class", "draggable")
-                                .attr("id", function(d){ return "drag" + d.level })
+                                .attr("id", function(d){ return "drag" + (d.depth || d.level) })
                                 .on('click', function(d) {
                                   if (dragged == 1) return;
                                   self.clickCallback(d);
