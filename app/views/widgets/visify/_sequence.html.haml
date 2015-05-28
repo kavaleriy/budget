@@ -7,7 +7,7 @@
     var b = {
           w: 200, h: 45, s: 3, t: 10
         }
-    var self, path;
+    var self, path, init_levels;
 
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
@@ -37,6 +37,7 @@
         self = this;
         self.clickCallback = options.clickCallback;
         self.dropCallback = options.dropCallback;
+        init_levels = options.levels;
         // Add the svg area.
         if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
           var trail = d3.select(aContainer + " #sequence").append("svg:svg")
@@ -122,6 +123,14 @@
                       tax = tax.substr(1);
                     }
                     levels.push(tax);
+                  }
+                }
+                add_levels = init_levels.filter(function(val) {
+                  return levels.indexOf(val) == -1;
+                });
+                if(add_levels) {
+                  for(var i in add_levels) {
+                    levels.push(add_levels[i]);
                   }
                 }
                 levels[0] = "_" + levels[0]

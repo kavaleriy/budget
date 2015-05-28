@@ -114,13 +114,15 @@ class Widgets::VisifyController < Widgets::WidgetsController
     return if tree.nil?
 
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+
   end
 
   def get_bubble_tree_item(item, info)
 
-    if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
-      item = item['children'][0]
-    end
+    # commented because in case of levels this instruction switch to children node instead of current_node
+    # if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
+    #   item = item['children'][0]
+    # end
 
     node = {
         'amount' => item['amount'],
@@ -151,7 +153,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
                   else
                     item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
                   end
-
+    # binding.pry
     unless item['children'].nil?
       node['children'] = []
 

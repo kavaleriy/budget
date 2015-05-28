@@ -273,7 +273,7 @@ class Taxonomy
               node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
               node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
             end
-            # binding.pry
+
             levels.each { |taxonomy_key|
               if row[taxonomy_key].nil?
                 next unless taxonomy_key == 'ktfk_aaa'
