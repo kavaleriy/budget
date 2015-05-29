@@ -7974,6 +7974,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		/* MARKER EVENTS
 		================================================== */
 		function onMarkerClick(e) {
+			console.log("click timeline")
 			$dragslide.cancelSlide();
 			goToMarker(e.data.number);
 			upDate();
