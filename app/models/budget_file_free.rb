@@ -2,10 +2,6 @@ class BudgetFileFree < BudgetFile
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyFree.get_taxonomy(owner, columns)
-  end
-
   def readline row
     amount_key = row.keys.last
     amount = row[amount_key].to_f

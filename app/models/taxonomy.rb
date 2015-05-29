@@ -14,7 +14,7 @@ class Taxonomy
   embeds_many :taxonomy_attachments
 
   def self.visible_to user
-    files = if user
+    files = if user && user.is_locked? == false
       if user.has_role? :admin
         Taxonomy.all
       else
@@ -25,12 +25,6 @@ class Taxonomy
     end.sort_by { |t| t.owner || '' }
 
     files || []
-  end
-
-  def self.get_taxonomy(owner)
-    self.where(:owner => owner).last || self.create!(
-        :owner => owner,
-    )
   end
 
   def explain taxonomy, key

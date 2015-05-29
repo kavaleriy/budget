@@ -2,10 +2,6 @@ class BudgetFileRov < BudgetFile
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyRov.get_taxonomy(owner)
-  end
-
   def readline row
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0

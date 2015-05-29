@@ -25,15 +25,13 @@ class BudgetFile
     elsif user.has_role? :admin
       self.all
     else
-      self.where(:author => nil) + BudgetFile.all.reject{|f| f.taxonomy.owner != user.town}
+      self.where(:author => nil) + BudgetFile.all.reject{|f| user.is_locked? || f.taxonomy.owner != user.town}
     end.sort_by { |f| f.author }
 
     files || []
   end
 
-  def import town, table
-    self.taxonomy = get_taxonomy town, table[:cols]
-
+  def import town, table, create_new_taxonomy
     rows = table[:rows].map { |row|
       readline(row)
     }.compact.flatten.sort_by{|row| -row['amount']}

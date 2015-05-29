@@ -1,4 +1,4 @@
-class BudgetFileRovFactsController < BudgetFilesController
+class BudgetFileRovFactsController < BudgetFileRovsController
   protected
 
   def generate_budget_file

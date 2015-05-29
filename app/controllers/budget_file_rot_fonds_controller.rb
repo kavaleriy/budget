@@ -1,4 +1,4 @@
-class BudgetFileRotFondsController < BudgetFilesController
+class BudgetFileRotFondsController < BudgetFileRotsController
 
   protected
 

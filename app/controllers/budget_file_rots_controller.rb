@@ -6,4 +6,12 @@ class BudgetFileRotsController < BudgetFilesController
     @budget_file = BudgetFileRot.new
   end
 
+  def get_taxonomies owner
+    TaxonomyRot.where(:owner => owner)
+  end
+
+  def create_taxonomy owner
+    TaxonomyRot.create!(:owner => owner)
+  end
+
 end

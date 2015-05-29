@@ -13,6 +13,10 @@ class User
   before_create :lock_user
   # Setup accessible (or protected) attributes for your model
   field :locked
+  def is_locked?
+    self.locked == true || self.locked == '1'
+  end
+
   field :name
   field :phone
   field :organisation

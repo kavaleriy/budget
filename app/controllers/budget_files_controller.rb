@@ -20,10 +20,21 @@ class BudgetFilesController < ApplicationController
   def show
   end
 
+  def new
+    @taxonomies = get_taxonomies(current_user.town)
+    @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.empty?
+  end
+
   # POST /revenues
   # POST /revenues.json
   def create
     @budget_file.author = current_user.email unless current_user.nil?
+
+    @budget_file.taxonomy = if params[:budget_file_taxonomy].empty?
+                              create_taxonomy current_user.town
+                            else
+                              Taxonomy.find(params[:budget_file_taxonomy])
+                            end
 
     @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
 
@@ -43,8 +54,8 @@ class BudgetFilesController < ApplicationController
         else
           current_user.town
         end
-    @budget_file.import town, table
 
+    @budget_file.import town, table, params[:create_new_taxonomy] == 'true'
 
     respond_to do |format|
       if @budget_file.save
@@ -181,7 +192,7 @@ class BudgetFilesController < ApplicationController
   end
 
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :data_type, :path, :town)
+    params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :path, :town)
   end
 
   def set_budget_file

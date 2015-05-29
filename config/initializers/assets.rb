@@ -2,3 +2,4 @@ Rails.application.config.assets.precompile += %w( d3.geom.js jquery.history.js r
 Rails.application.config.assets.precompile += %w( biPartite.js sankey.js )
 Rails.application.config.assets.precompile += %w( d3pie.js )
 Rails.application.config.assets.precompile += %w( jstree.js themes/default/style.min.css)
+Rails.application.config.assets.precompile += %w( timelinejs/storyjs-embed.js timelinejs/timeline.js timelinecss/timeline.css )

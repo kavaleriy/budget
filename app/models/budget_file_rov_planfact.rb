@@ -2,10 +2,6 @@ class BudgetFileRovPlanfact < BudgetFile
 
   protected
 
-  def get_taxonomy owner, columns
-    TaxonomyRov.get_taxonomy(owner)
-  end
-
   def readline row
     amount_plan = row['План на рік з урахуванням змін'].to_i
     amount_fact = row['Касові видатки за вказаний період'].to_i
