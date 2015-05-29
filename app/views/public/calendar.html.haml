@@ -28,13 +28,13 @@
 
         .tab-content
           #calendar_year.tab-pane.fade.in.active
+            = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
             #embed_pie_cycle
               = render partial: 'widgets/visify/embed_code', :locals => { data_width: "700px", data_height: "700px", data_name: "pie_cycle", data_id: "pie_cycle" }
-            = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
           #calendar_month.tab-pane.fade
+            = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
             #embed_calendar
               = render partial: 'widgets/visify/embed_code', :locals => { data_width: "1024px", data_height: "700px", data_name: "calendar", data_id: "calendar" }
-            = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
 
         .legend
           .pull-left
@@ -127,7 +127,6 @@
     pie.init_pie()
 
     $('#event-details').height($('#calendars').height());
-
     $(window).resize(function() {
       pie.init_pie();
       $('#event-details').height($('#calendar_pies').height());
