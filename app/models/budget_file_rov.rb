@@ -16,33 +16,19 @@ class BudgetFileRov < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    if(row['KVK'].to_s.split('.')[0])
-      self.taxonomy.is_kvk = true
-      {
-          '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
-          '_month' => row['MONTH'].to_s.split('.')[0],
+    {
+        '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
+        '_month' => row['MONTH'].to_s.split('.')[0],
 
-          'fond' => row['KKFN'].to_s.split('.')[0],
+        'fond' => row['KKFN'].to_s.split('.')[0],
 
-          'amount' => amount / 100,
-
-          'kvk' => row['KVK'].to_s.split('.')[0],
-          'ktfk' => ktfk,
-          'kekv' => row['KEKV'].to_s.split('.')[0],
-      }
-    else
-      {
-          '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
-          '_month' => row['MONTH'].to_s.split('.')[0],
-
-          'fond' => row['KKFN'].to_s.split('.')[0],
-
-          'amount' => amount / 100,
-          'ktfk_aaa' => ktfk_aaa,
-          'ktfk' => ktfk,
-          'kekv' => row['KEKV'].to_s.split('.')[0],
-      }
-    end
+        'amount' => amount / 100,
+        'ktfk' => ktfk,
+        'ktfk_aaa' => ktfk_aaa,
+        'kvk' => row['KVK'].to_s.split('.')[0],
+        'kekv' => row['KEKV'].to_s.split('.')[0],
+        'krk' => row['KRK'].to_s.split('.')[0],
+    }
   end
 
 end
