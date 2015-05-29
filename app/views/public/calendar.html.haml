@@ -13,15 +13,14 @@
   .timeline
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
     = render partial: 'widgets/visify/embed_code', :locals => { data_width: "100%", data_height: "400px", data_name: "timelinejs", data_id: "visual" }
+    = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
 
 %hr
 .row-eq-height
-  .left-panel.col-lg-3.col-xs-6.pull-left
-    = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
-    = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
-    = render :partial => "/widgets/calendar/current_event", :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+  .left-panel.col-xs-1
+    = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
 
-  .center.col-lg-6.col-xs-12
+  .center.col-md-6.col-xs-10
     %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
       %li.active
         %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
@@ -46,7 +45,10 @@
       .pull-right
         = image_tag("calendar/inf-people.png", width: '200px')
 
-  .right-panel.col-lg-3.col-xs-6.pull-right
+  .right-panel.col-xs-1
+    = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+
+  .right-panel.col-md-4.col-xs-12
     = render partial: '/widgets/calendar/event'
 
 .clear
@@ -103,7 +105,10 @@
     var pie = aCalendarPie()
     pie.init_pie()
 
-    $(window).resize(pie.init_pie);
+    $(window).resize(function() {
+      pie.init_pie();
+      $('.progress').height($('#calendar_pies').height());
+    })
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
       pie.init_pie()
