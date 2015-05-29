@@ -40,7 +40,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
     point['startDate'] = e.starts_at.strftime('%Y,%m,%d')
     point['endDate'] = e.ends_at.strftime('%Y,%m,%d') unless e.ends_at.nil?
     point['headline'] = "#{holder_to_string(e.holder)} - #{e.title}"
-    point['text'] = e.description
+    # point['text'] = e.description
     point['asset'] =
         {
             'media' => "/assets/calendar/#{media[:img]}",
