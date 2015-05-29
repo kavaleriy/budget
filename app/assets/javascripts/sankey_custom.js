@@ -168,7 +168,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
         width = $(document).width() - margin.left - margin.right,
         height = svg_height - margin.top - margin.bottom,
         sankey_center = 0;
-    if(width < 900) width = 900;
+    if(width < 400) width = 400;
 
     var formatNumber = d3.format(",.0f"),
         format = function(d) { return formatNumber(d) + " "; },
