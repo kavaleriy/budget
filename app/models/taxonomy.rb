@@ -252,6 +252,11 @@ class Taxonomy
   def create_tree_sceleton rows, filter = [], levels = []
     tree = { :amount => {} }
     # return nil if rows[year].nil? || rows[year][month].nil?
+    if levels == []
+      columns = self.columns.keys.reject{|k| filter.include?(k)}
+    else
+      columns = levels
+    end
 
     rows.keys.each do |dt|
       rows[dt].keys.each do |year|
@@ -274,7 +279,7 @@ class Taxonomy
               node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
             end
 
-            levels.each { |taxonomy_key|
+            columns.each { |taxonomy_key|
               if row[taxonomy_key].nil?
                 next unless taxonomy_key == 'ktfk_aaa'
                 taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
