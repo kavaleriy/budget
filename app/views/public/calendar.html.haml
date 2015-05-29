@@ -51,6 +51,12 @@
   .right-panel.col-md-4.col-xs-12
     = render partial: '/widgets/calendar/event'
 
+.calendar_current_events_description.col-md-8.col-xs-12
+  .description_left.col-xs-6
+    = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+  .col-xs-6
+    = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+
 .clear
 
 

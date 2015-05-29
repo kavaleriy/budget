@@ -1,0 +1,13 @@
+- if current[:event].holder == 1
+  %h2.city
+    #{holder_to_string(current[:event].holder)}
+- else
+  %h2.people
+    #{holder_to_string(current[:event].holder)}
+
+%p.content
+  = current[:event].title
+  = current[:event].description.html_safe
+
+-#= link_to(calendar_event_path(calendar, current[:event]), :class => 'pull-right', :remote => true) do
+-#  докладніше >>
