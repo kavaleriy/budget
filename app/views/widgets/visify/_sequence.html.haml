@@ -153,8 +153,9 @@
                                   if (dragged == 1) return;
                                   self.clickCallback(d);
                                   d3.event.stopPropagation();
-                                })
-                                .call(drag);
+                                });
+
+        entering.call(drag);
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)

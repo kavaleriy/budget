@@ -174,7 +174,6 @@ class BudgetFilesController < ApplicationController
     { :rows => rows, :cols => cols }
   end
 
-
   private
 
   def set_budget_file_data_type

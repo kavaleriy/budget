@@ -173,10 +173,10 @@ class Taxonomy
     levels
   end
 
-  def get_tree
+  def get_tree levels
     rows = get_rows
 
-    create_tree rows
+    create_tree rows, [], levels
   end
 
   def get_subtree level, key, filter

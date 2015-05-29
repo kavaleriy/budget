@@ -201,6 +201,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
       @data_type = @budget_file.data_type
     end
     @data_type = 'plan' unless @data_type
+    @levels = @taxonomy.columns.keys
+    @file_type = @taxonomy._type
   end
 
   def set_params

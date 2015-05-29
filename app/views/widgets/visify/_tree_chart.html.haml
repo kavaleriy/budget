@@ -68,8 +68,8 @@
       var slider = aSliderCompare('#slider_compare');
       var slider_chart = aSliderChart('#slider_chart', slider);
       var sidebar = aSidebar('.visify');
-      var init_levels = JSON.parse('#{@budget_file.taxonomy.columns.keys.to_json}');
-      var file_type = '#{@budget_file.taxonomy._type}';
+      var init_levels = JSON.parse('#{@levels.to_json}');
+      var file_type = '#{@file_type}';
 
       var centerNode = null;
       var last_node = null;
