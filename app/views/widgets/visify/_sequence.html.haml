@@ -7,7 +7,7 @@
     var b = {
           w: 200, h: 45, s: 3, t: 10
         }
-    var self, path, init_levels;
+    var self, path, init_levels, draggable;
 
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
@@ -38,6 +38,7 @@
         self.clickCallback = options.clickCallback;
         self.dropCallback = options.dropCallback;
         init_levels = options.levels;
+        draggable = options.draggable;
         // Add the svg area.
         if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
           var trail = d3.select(aContainer + " #sequence").append("svg:svg")
@@ -155,7 +156,9 @@
                                   d3.event.stopPropagation();
                                 });
 
-        entering.call(drag);
+        if(draggable == 1) {
+          entering.call(drag);
+        }
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)

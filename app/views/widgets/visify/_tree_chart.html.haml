@@ -69,7 +69,11 @@
       var slider_chart = aSliderChart('#slider_chart', slider);
       var sidebar = aSidebar('.visify');
       var init_levels = JSON.parse('#{@levels.to_json}');
+      var draggable = 1;
       var file_type = '#{@file_type}';
+      if(file_type == "TaxonomyRot") {
+        draggable = 0;
+      }
 
       var centerNode = null;
       var last_node = null;
@@ -84,7 +88,7 @@
       }
       height = width*0.6;
 
-      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels});
+      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
       slider.initialize(150, {clickCallback: sliderItemClick});
       slider_chart.initialize(250, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
@@ -269,9 +273,9 @@
 
       function ItemDrop(levels, node) {
 
-        if(file_type == "TaxonomyRot") {
-          levels[0] = "_" + levels[0]
-        }
+        //if(file_type == "TaxonomyRot") {
+        //  levels[0] = "_" + levels[0]
+        //}
         last_node = node;
         d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
           _data = data
