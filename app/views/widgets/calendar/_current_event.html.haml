@@ -2,9 +2,9 @@
   .current-action
     .bar
       - if current[:event].holder == 1
-        = image_tag("calendar/city.png", width: '100%')
+        = image_tag("calendar/city.png", width: '40px')
       - else
-        = image_tag("calendar/people.png", width: '100%')
+        = image_tag("calendar/people.png", width: '40px')
       .progress
         - if current[:event].holder == 1
           .stripe.stripe-city
@@ -31,6 +31,6 @@
 
 :javascript
   $(document).ready(function() {
-      $('.progress').height($('#calendar_pies').height());
-      $('.progress .progress-bar').progressbar({transition_delay: 1000});
+      //$('.progress').height($('#calendar_pies').height());
+      $('.progress .progress-bar').progressbar({transition_delay: 3000});
   });

@@ -2,7 +2,7 @@
   .countdown
     = link_to(calendar_event_path(calendar, countdown_event), :class => '', :remote => true) do
       %h4.title.col-xs-12
-        .date.col-s2m-4.pull-right{ 'data-date' => countdown_event.ends_at}
+        .date.col-sm-4.pull-right{ 'data-date' => countdown_event.ends_at}
         #{truncate(calendar.countdown_title, :length => 100, :omission => '...')}
 
 

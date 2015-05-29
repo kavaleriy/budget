@@ -1,16 +1,5 @@
-.circle.pull-left
-
-%ul.tabs.pull-left{role: 'tablist'}
-  %li.active
-    %a{href: '#calendar_news', role: 'tab', 'data-toggle' => 'tab'}
-      .news
-  %li
-    %a{href: '#calendar_event', role: 'tab', 'data-toggle' => 'tab'}
-      .event
-
-.tab-content.col-xs-12
-  #calendar_news.tab-pane.fade.in.active
-  #calendar_event.tab-pane.fade
+.col-xs-12
+  #calendar_event
     %br
     %strong
-      =t('.empty_event')
+      =t('.select_event')

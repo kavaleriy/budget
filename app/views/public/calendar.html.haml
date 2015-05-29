@@ -13,51 +13,66 @@
   .timeline
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
     = render partial: 'widgets/visify/embed_code', :locals => { data_width: "100%", data_height: "400px", data_name: "timelinejs", data_id: "visual" }
-    = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
 
-%hr
-.row-eq-height
-  .left-panel.col-xs-1
-    = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+.col-sm-6.col-xs-12
+  .panel.panel-default
+    .panel-body
+      #calendars
+        %ul.col-sm-12.views.nav.nav-pills.pull-left{role: 'tablist'}
+          %li.active
+            %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
+              = t('.tab_calendar_year')
+          %li
+            %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
+              = t('.tab_calendar_month')
 
-  .center.col-md-6.col-xs-10
-    %ul.views.nav.nav-pills.pull-left{role: 'tablist'}
-      %li.active
-        %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
-          = t('.tab_calendar_year')
-      %li
-        %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
-          = t('.tab_calendar_month')
+        .tab-content
+          #calendar_year.tab-pane.fade.in.active
+            #embed_pie_cycle
+              = render partial: 'widgets/visify/embed_code', :locals => { data_width: "700px", data_height: "700px", data_name: "pie_cycle", data_id: "pie_cycle" }
+            = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
+          #calendar_month.tab-pane.fade
+            #embed_calendar
+              = render partial: 'widgets/visify/embed_code', :locals => { data_width: "1024px", data_height: "700px", data_name: "calendar", data_id: "calendar" }
+            = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
 
-    .tab-content
-      #calendar_year.tab-pane.fade.in.active
-        = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-        #embed_pie_cycle
-          = render partial: 'widgets/visify/embed_code', :locals => { data_width: "700px", data_height: "700px", data_name: "pie_cycle", data_id: "pie_cycle" }
-      #calendar_month.tab-pane.fade
-        = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
-        #embed_calendar
-          = render partial: 'widgets/visify/embed_code', :locals => { data_width: "1024px", data_height: "700px", data_name: "calendar", data_id: "calendar" }
+        .legend
+          .pull-left
+            = image_tag("calendar/inf-city.png", width: '200px')
+          .pull-right
+            = image_tag("calendar/inf-people.png", width: '200px')
 
-    .legend
-      .pull-left
-        = image_tag("calendar/inf-city.png", width: '200px')
-      .pull-right
-        = image_tag("calendar/inf-people.png", width: '200px')
+.col-sm-6.col-xs-12
+  .panel.panel-default
+    .panel-heading
+      Детально про подію
+    .panel-body
+      #event-details
+        = render partial: '/widgets/calendar/event'
 
-  .right-panel.col-xs-1
-    = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
 
-  .right-panel.col-md-4.col-xs-12
-    = render partial: '/widgets/calendar/event'
+.col-xs-12
+  %h2
+    Важливі події
+  .col-sm-4
+    .panel.panel-default
+      .panel-body
+        .pull-left
+          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+        .col-sm-10
+          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+  .pull-right.col-sm-4
+    .panel.panel-default
+      .panel-body
+        .pull-right
+          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+        .col-sm-10
+          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+  .col-sm-4
+    .panel.panel-default
+      .panel-body
+        = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
 
-.calendar_current_events_description.col-md-8.col-xs-12
-  .description_left.col-xs-6
-    = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
-  .col-xs-6
-    = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
-
-.clear
 
 
 :javascript
@@ -111,9 +126,11 @@
     var pie = aCalendarPie()
     pie.init_pie()
 
+    $('#event-details').height($('#calendars').height());
+
     $(window).resize(function() {
       pie.init_pie();
-      $('.progress').height($('#calendar_pies').height());
+      $('#event-details').height($('#calendar_pies').height());
     })
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {

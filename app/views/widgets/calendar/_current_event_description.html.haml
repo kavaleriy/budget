@@ -7,7 +7,7 @@
 
 %p.content
   = current[:event].title
-  = current[:event].description.html_safe
+  -#= current[:event].description.html_safe
 
 -#= link_to(calendar_event_path(calendar, current[:event]), :class => 'pull-right', :remote => true) do
 -#  докладніше >>
