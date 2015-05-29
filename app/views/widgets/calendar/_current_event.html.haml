@@ -1,37 +1,36 @@
-- if current
-  - unless current[:event].nil?
-    .current-action
-      .bar
+- if current && current[:event]
+  .current-action
+    .bar
+      - if current[:event].holder == 1
+        = image_tag("calendar/city.png", width: '40px')
+      - else
+        = image_tag("calendar/people.png", width: '40px')
+      .progress
         - if current[:event].holder == 1
-          = image_tag("calendar/city.png", width: '40px')
+          .stripe.stripe-city
         - else
-          = image_tag("calendar/people.png", width: '40px')
-        .progress
-          - if current[:event].holder == 1
-            .stripe.stripe-city
-          - else
-            .stripe.stripe-people
-          .stripe.stripe-grayed{'style' => "min-height: #{100 - current[:percent]}%; height: #{100 - current[:percent]}%;"}
+          .stripe.stripe-people
+        .stripe.stripe-grayed{'style' => "min-height: #{100 - current[:percent]}%; height: #{100 - current[:percent]}%;"}
 
-        %h3
-          #{current[:percent]}%
-      -#.col-xs-9
-      -#  - if current[:event].holder == 1
-      -#    %h2.city
-      -#      #{holder_to_string(current[:event].holder)}
-      -#  - else
-      -#    %h2.people
-      -#      #{holder_to_string(current[:event].holder)}
-      -#
-      -#  %p.content
-      -#    = truncate(current[:event].title.html_safe, :length => 300, :omission => '...')
-      -#
-      -#  = link_to(calendar_event_path(calendar, current[:event]), :class => 'pull-right', :remote => true) do
-      -#    докладніше >>
+      %h3
+        #{current[:percent]}%
+    -#.col-xs-9
+    -#  - if current[:event].holder == 1
+    -#    %h2.city
+    -#      #{holder_to_string(current[:event].holder)}
+    -#  - else
+    -#    %h2.people
+    -#      #{holder_to_string(current[:event].holder)}
+    -#
+    -#  %p.content
+    -#    = truncate(current[:event].title.html_safe, :length => 300, :omission => '...')
+    -#
+    -#  = link_to(calendar_event_path(calendar, current[:event]), :class => 'pull-right', :remote => true) do
+    -#    докладніше >>
 
 
-  :javascript
-    $(document).ready(function() {
-        //$('.progress').height($('#calendar_pies').height());
-        $('.progress .progress-bar').progressbar({transition_delay: 3000});
-    });
+:javascript
+  $(document).ready(function() {
+      //$('.progress').height($('#calendar_pies').height());
+      $('.progress .progress-bar').progressbar({transition_delay: 3000});
+  });
