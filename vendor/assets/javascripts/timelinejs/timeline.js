@@ -7984,7 +7984,12 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		};
 		
 		function goToMarker(n, ease, duration, fast, firstrun) {
-			trace("GO TO MARKER");
+
+            trace("GO TO MARKER");
+
+            if (markers[n] == undefined)
+                return
+
 			var _ease		= config.ease,
 				_duration	= config.duration,
 				is_last		= false,
@@ -7992,10 +7997,10 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			
 			current_marker = 	n;
 
-			timenav_pos.left			= (config.width/2) - markers[current_marker].pos_left
-			timenav_pos.visible.left	= Math.abs(timenav_pos.left) - 100;
-			timenav_pos.visible.right	= Math.abs(timenav_pos.left) + config.width + 100;
-			
+            timenav_pos.left = (config.width / 2) - markers[current_marker].pos_left
+            timenav_pos.visible.left = Math.abs(timenav_pos.left) - 100;
+            timenav_pos.visible.right = Math.abs(timenav_pos.left) + config.width + 100;
+
 			if (current_marker == 0) {
 				is_first = true;
 			}
