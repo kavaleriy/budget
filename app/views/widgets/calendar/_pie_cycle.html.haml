@@ -73,6 +73,7 @@
            if(d.data.id == '') return
            $('.events_path').css("fill-opacity", "1.0")
            $('#' + d.data.id).css("fill-opacity", "0.5")
+           $('#marker_' + d.data.id).find(".flag").trigger("click");
            $.get("/calendars/#{calendar.id}/events/" + d.data.id)
          })
          .on("mouseover", function(d) {
