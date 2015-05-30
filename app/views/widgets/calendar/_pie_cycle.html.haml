@@ -7,7 +7,7 @@
 
   var aCalendarPie = function() {
 
-    function init_pie() {
+    function init_pie(options) {
       d3.select('#svg_calendar').selectAll("*").remove()
 
       size = $('#calendar_pies').width()
@@ -48,6 +48,11 @@
           })
           radius = radius - 10;
         })
+
+        if (options && options.loadedCallback) {
+          options.loadedCallback()
+        }
+
       })
     }
 
@@ -65,25 +70,18 @@
       g.append("path")
          .attr("d", arc)
          .style("fill", function(d) { return d.data.color; })
-         .style("fill-opacity", "1.0")
          .attr("id", function(d) { return (d.data.id == '') ? '' : d.data.id} )
          .attr("class", "events_path" )
          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+         .attr('stroke-width', 0)
+         .style("stroke", function(d) { return d3.rgb(d.data.color).darker(1); })
          .on("click", function(d) {
            if(d.data.id == '') return
-           $('.events_path').css("fill-opacity", "1.0")
-           $('#' + d.data.id).css("fill-opacity", "0.5")
-           $('#marker_' + d.data.id).find(".flag").trigger("click");
            $.get("/calendars/#{calendar.id}/events/" + d.data.id)
          })
          .on("mouseover", function(d) {
-           if(d.data.id == '')
-           return
-
-           var elem = $('#' + d.data.id)
-           if(elem.css("fill-opacity") == 1) {
-            elem.css("fill-opacity", "0.7")
-           }
+           //if(d.data.id == '')
+           //return
            //div.transition()
            //  .duration(200)
            //  .style("opacity", .95)
@@ -94,11 +92,6 @@
            //  .style("top", (d3.event.pageY) + "px");
          })
          .on("mouseout", function(d) {
-            var elem = $('#' + d.data.id)
-            if(elem.css("fill-opacity") <= 0.7 && elem.css("fill-opacity") > 0.5) {
-              elem.css("fill-opacity", "1.0")
-            }
-
            //div.transition()
            //  .duration(200)
            //  .style("opacity", 0);
