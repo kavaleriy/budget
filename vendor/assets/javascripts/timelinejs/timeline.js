@@ -7555,9 +7555,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 						_date.tag				= data.date[i].tag;
 						_date.slug				= data.date[i].slug;
 						_date.uniqueid			= VMM.Util.unique_ID(7);
+						_date.event_id			= data.date[i].event_id;
 						_date.classname			= data.date[i].classname;
-						
-						
+
 						_dates.push(_date);
 					} 
 					
@@ -7974,7 +7974,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		/* MARKER EVENTS
 		================================================== */
 		function onMarkerClick(e) {
-			console.log("click timeline")
 			$dragslide.cancelSlide();
 			goToMarker(e.data.number);
 			upDate();
@@ -8017,7 +8016,15 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			}
 			
 			VMM.Lib.addClass(markers[current_marker].marker, "active");
-			
+
+			// FIRE PIE CYCLE ONCLICK EVENT
+			var marker_id = markers[current_marker].marker.attr("id").split("marker_")[1];
+			$('.events_path').css("fill-opacity", "1.0");
+			$('#' + marker_id).css("fill-opacity", "0.5");
+			var calendar_id = config.source.split('/');
+			calendar_id = calendar_id[calendar_id.length-2];
+			$.get("/calendars/" + calendar_id + "/events/" + marker_id);
+
 			// ANIMATE MARKER
 			VMM.Lib.stop($timenav);
 			VMM.Lib.animate($timenav, _duration, _ease, {"left": timenav_pos.left});
@@ -9165,7 +9172,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				}
 				
 				// ADD ID
-				VMM.Lib.attr(_marker, "id", ( "marker_" + data[i].uniqueid).toString() );
+				VMM.Lib.attr(_marker, "id", ( "marker_" + data[i].event_id).toString() );
 				
 				// MARKER CLICK
 				VMM.bindEvent(_marker_flag, onMarkerClick, "", {number: i});
