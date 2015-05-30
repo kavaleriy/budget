@@ -30,3 +30,10 @@
           }
         });
     })
+
+    $(document).ready(function() {
+      $(".countdown a").on("click", function() {
+        var marker_id = '#{countdown_event._id.to_s}';
+        $('#marker_' + marker_id).find(".flag").trigger("click");
+      })
+    })
