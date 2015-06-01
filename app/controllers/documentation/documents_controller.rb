@@ -25,20 +25,23 @@ class Documentation::DocumentsController < ApplicationController
   # POST /documentation/documents
   # POST /documentation/documents.json
   def create
-    @documentation_document = Documentation::Document.new(documentation_document_params)
-    @documentation_document.town = current_user.town
-    @documentation_document.owner = current_user.email
+    @documents = []
+
+    params['doc_file'].each do |f|
+      doc = Documentation::Document.new(documentation_document_params)
+      doc.doc_file = f
+      doc.town = current_user.town
+      doc.owner = current_user.email
+      doc.save
+      @documents << doc
+    end unless params['doc_file'].nil?
 
     respond_to do |format|
-      if @documentation_document.save
-        format.js {
-        }
-        format.json { head :no_content, status: :created }
-      else
-        format.js
-        format.json { render json: @documentation_document.errors, status: :unprocessable_entity }
-      end
+      format.js {
+      }
+      format.json { head :no_content, status: :created }
     end
+
   end
 
   # PATCH/PUT /documentation/documents/1
@@ -73,6 +76,6 @@ class Documentation::DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_document_params
-      params.require(:documentation_document).permit(:category_id, :title, :description, :issued, :doc_file, :preview_ico)
+      params.require(:documentation_document).permit(:category_id, :title, :description, :issued)
     end
 end

@@ -1,3 +1,5 @@
+-#= stylesheet_link_tag "kartik-fileinput/css/fileinput.css", :media => "all"
+
 = form_for new_document, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
 
   - if new_document.errors.any?
@@ -9,23 +11,52 @@
 
   = f.hidden_field :category_id
 
-  .col-sm-6
+  .col-sm-12
     .form-group
       %label
         Назва
       = f.text_field :title, :class => 'form-control'
 
-  .col-sm-6
-    .form-group
-      %label
-        Файл
-      = f.file_field :doc_file, :class => 'form-control'
-
   .col-sm-12
     .form-group
       = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control'
+
+  .col-sm-12
+    .form-group
+      %label
+        %i.glyphicon.glyphicon-folder-open
+          Файл
+      = file_field_tag "doc_file[]", multiple: true, :class => 'form-control'
 
   .actions
     = f.button :class => 'btn btn-default' do
       %i.fa.fa-upload
         Завантажити
+
+:javascript
+
+  $(document).ready(function() {
+    $.when(
+      //$.getScript( "/assets/kartik-fileinput/js/fileinput.js" ),
+      //$.getScript( "/assets/kartik-fileinput/js/fileinput_locale_uk.js" ),
+      //$.Deferred(function( deferred ){
+      //    $( deferred.resolve );
+      //})
+    ).done(function(){
+      //$("#new_documentation_document #doc_file_").fileinput({
+      //  language: 'uk',
+      //  minFileCount: 1,
+      //  maxFileCount: 5,
+      //  maxFileSize: 1000000,
+      //  allowedPreviewTypes: ['image'],
+      //  showRemove: false,
+      //  showUpload: false,
+      //  uploadAsync:false,
+      //});
+      //
+      //$('#new_documentation_document').bind("ajax:success", function(f){
+      //  $("#new_documentation_document #doc_file_").fileinput("clear");
+      //});
+    })
+
+  });
