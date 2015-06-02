@@ -14,6 +14,8 @@
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
     = render partial: 'widgets/visify/embed_code', :locals => { data_width: "100%", data_height: "400px", data_name: "timelinejs", data_id: "visual" }
 
+    = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
+
 .col-sm-6.col-xs-12
   .panel.panel-default
     .panel-body
