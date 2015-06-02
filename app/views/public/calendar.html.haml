@@ -14,8 +14,6 @@
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
     = render partial: 'widgets/visify/embed_code', :locals => { data_width: "100%", data_height: "400px", data_name: "timelinejs", data_id: "visual" }
 
-    = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
-
 .col-sm-6.col-xs-12
   .panel.panel-default
     .panel-body
@@ -31,6 +29,8 @@
         .tab-content
           #calendar_year.tab-pane.fade.in.active
             = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
+            .pull-right
+              = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
             #embed_pie_cycle
               = render partial: 'widgets/visify/embed_code', :locals => { data_width: "700px", data_height: "700px", data_name: "pie_cycle", data_id: "pie_cycle" }
           #calendar_month.tab-pane.fade

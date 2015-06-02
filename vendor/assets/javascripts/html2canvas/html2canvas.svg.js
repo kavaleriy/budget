@@ -2754,7 +2754,7 @@ fabric.Collection = {
 
   var slice = Array.prototype.slice;
 
-  
+
 
   /**
    * Invokes method on all items in a given array
@@ -2874,7 +2874,7 @@ fabric.Collection = {
 
 (function() {
 
-  
+
 
   /**
    * Camelizes a string

@@ -1,35 +1,30 @@
-= javascript_include_tag 'timelinejs/storyjs-embed.js'
-
 #timeline-embed
+
+= javascript_include_tag 'timelinejs/storyjs-embed.js'
 
 :javascript
 
-  $(document).ready(function() {
+  $(document).on("ready", function() {
 
-    $.getScript("/assets/timelinejs/storyjs-embed.js")
-      .done(function() {
-        var source = "/widgets/calendar/timelinejs_data/#{calendar.id}/"
-        var curr_slide = "#{calendar.events.where(:starts_at.lte => Date.current).count - 1}"
+    var source = "/widgets/calendar/timelinejs_data/#{calendar.id}/"
+    var curr_slide = "#{calendar.events.where(:starts_at.lte => Date.current).count - 1}"
 
-        createStoryJS({
-          width:              '100%',
-          height:             '400',
+    createStoryJS({
+      width:              '100%',
+      height:             '400',
 
-          source:             source,
+      source:             source,
 
-          embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
-          start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
-          start_at_slide:     curr_slide, //OPTIONAL START AT SPECIFIC SLIDE
-          start_zoom_adjust:  '3',                              //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-          hash_bookmark:      false,                           //OPTIONAL LOCATION BAR HASHES
-          //font:               'Ubuntu',             //OPTIONAL FONT
-          debug:              false,                           //OPTIONAL DEBUG TO CONSOLE
-          lang:               window.aHelper.lang(),                           //OPTIONAL LANGUAGE
-          maptype:            'watercolor',                   //OPTIONAL MAP STYLE
-        })
-      })
-      .fail(function() {
-          console.log("fail")
-      });
+      embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
+      start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
+      start_at_slide:     curr_slide, //OPTIONAL START AT SPECIFIC SLIDE
+      start_zoom_adjust:  '3',                              //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+      hash_bookmark:      false,                           //OPTIONAL LOCATION BAR HASHES
+      //font:               'Ubuntu',             //OPTIONAL FONT
+      debug:              false,                           //OPTIONAL DEBUG TO CONSOLE
+      lang:               window.aHelper.lang(),                           //OPTIONAL LANGUAGE
+      maptype:            'watercolor',                   //OPTIONAL MAP STYLE
+    })
 
   })
+
