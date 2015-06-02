@@ -12,13 +12,14 @@
     %canvas{:style => "display: none;"}
 
     .pull-right
-      = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
-    .pull-right
       = render partial: 'layouts/export_img', :locals => { container: '#chart' }
 
     .slider.row
       = render partial: 'slider_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+
+    .pull-right
+      = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
 
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
