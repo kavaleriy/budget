@@ -69,6 +69,19 @@
         return points.join(" ");
       },
 
+      breadcrumbLevelPoints: function(d, i) {
+        // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+
+        points = []
+        points.push(b.w - 20 + ",0");
+        points.push(b.w + ",0");
+        points.push(b.w + b.t + "," + (b.h / 2));
+        points.push(b.w + "," + b.h);
+        points.push(b.w - 20 + "," + b.h);
+        //this.points = points
+        return points.join(" ");
+      },
+
       // Update the breadcrumb trail to show the current sequence and percentage.
       updateBreadcrumbs: function(nodeArray, percentageString) {
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -163,6 +176,12 @@
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
             .style("fill", function(d) { return d.color || color(d.label); })
+            .style("stroke", "white")
+
+        entering.append("svg:polygon")
+            .attr("points", this.breadcrumbLevelPoints)
+            .style("fill", function(d) { return d.color || color(d.label); })
+            .style("stroke", "white")
 
         entering.append("svg:text")
             .attr("x", 0)
@@ -170,7 +189,21 @@
             .attr("dy", "0.35em")
             .attr("text-anchor", "cent")
             .text(function(d) { return d.label; })
-            .call(aVisify.helpers.wrap, b.w - 20)
+            .call(aVisify.helpers.wrap, b.w - 40)
+
+        entering.append("svg:text")
+            .attr("x", b.w - 8)
+            .attr("y", 23)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "1.2em")
+            .style("font-weight", "bold")
+            .text(function(d) {
+              if(init_levels.indexOf(d.taxonomy) == -1) {
+                return d.parent ? init_levels.indexOf(d.parent.taxonomy) + 1 : 0;
+              }
+              return init_levels.indexOf(d.taxonomy) + 1;
+            })
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {

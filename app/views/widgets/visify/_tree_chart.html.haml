@@ -265,11 +265,11 @@
       }
 
       function ItemClick(node) {
+        sidebar.show(node);
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
         slider.show(node, year);
-        sidebar.show(node);
         chart.set_centerNode(node);
         chart.selectNode(node);
       }
