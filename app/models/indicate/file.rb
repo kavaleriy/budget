@@ -1,4 +1,4 @@
-class Indicate::File
+class Indicate::IndicatorFile
   include Mongoid::Document
 
   require 'carrierwave/mongoid'
@@ -6,8 +6,6 @@ class Indicate::File
   field :author, type: String
   field :title, type: String
   field :path, type: String
-
-  embeds_many :indicate, class_name: 'Indicate::Indicator', autosave: true, :dependent => :destroy
 
 
   mount_uploader :indicate_file, IndicateUploader
