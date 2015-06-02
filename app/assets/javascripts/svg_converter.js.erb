@@ -1,54 +1,54 @@
-$(document).bind('page:change', function(e) {
-
-    d3.select("#save").on("click", function() {
-        svg_converter("frame");
-    })
-
-    $(".svg_export").click(function() {
-        if($("#calendar_pies").length > 0) {
-            svg_converter("doc");
-        } else {
-            $("iframe").contents().find("#save").trigger("click");
-        }
-    })
-
-    function svg_converter(doc) {
-        var html, width, height;
-        if(doc == "frame") {
-            html = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
-            width = d3.select("#chart svg").attr("width");
-            height = d3.select("#chart svg").attr("height");
-        } else if(doc == "doc") {
-            html = d3.select("#calendar_pies").node().innerHTML.split('</svg>')[0] + "</svg>";
-            width = d3.select("svg").attr("width");
-            height = d3.select("svg").attr("height");
-        }
-
-        //console.log(html);
-
-        // get CANVAS image and convert it to PNG
-        d3.select("canvas").attr("width", width).attr("height", height);
-        var canvas = document.querySelector("canvas");
-        var context = canvas.getContext("2d");
-
-        var img_png = new Image();
-        img_png.src = 'data:image/svg+xml;base64,' + b64EncodeUnicode(html);
-        img_png.addEventListener("load", function() {
-            context.drawImage(img_png, 0, 0);
-            var canvasdata = canvas.toDataURL("image/png");
-
-            var theEvent = document.createEvent("MouseEvent");
-            theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            var a = document.createElement("a");
-            a.download = "sample.png";
-            a.href = canvasdata;
-            a.dispatchEvent(theEvent);
-        }, false);
-
-        function b64EncodeUnicode(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
-        }
-    }
-})
+//$(document).bind('page:change', function(e) {
+//
+//    d3.select("#save").on("click", function() {
+//        svg_converter("frame");
+//    })
+//
+//    $(".svg_export").click(function() {
+//        if($("#calendar_pies").length > 0) {
+//            svg_converter("doc");
+//        } else {
+//            $("iframe").contents().find("#save").trigger("click");
+//        }
+//    })
+//
+//    function svg_converter(doc) {
+//        var html, width, height;
+//        if(doc == "frame") {
+//            html = d3.select("#chart").node().innerHTML.split('</svg>')[0] + "</svg>";
+//            width = d3.select("#chart svg").attr("width");
+//            height = d3.select("#chart svg").attr("height");
+//        } else if(doc == "doc") {
+//            html = d3.select("#calendar_pies").node().innerHTML.split('</svg>')[0] + "</svg>";
+//            width = d3.select("svg").attr("width");
+//            height = d3.select("svg").attr("height");
+//        }
+//
+//        //console.log(html);
+//
+//        // get CANVAS image and convert it to PNG
+//        d3.select("canvas").attr("width", width).attr("height", height);
+//        var canvas = document.querySelector("canvas");
+//        var context = canvas.getContext("2d");
+//
+//        var img_png = new Image();
+//        img_png.src = 'data:image/svg+xml;base64,' + b64EncodeUnicode(html);
+//        img_png.addEventListener("load", function() {
+//            context.drawImage(img_png, 0, 0);
+//            var canvasdata = canvas.toDataURL("image/png");
+//
+//            var theEvent = document.createEvent("MouseEvent");
+//            theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+//            var a = document.createElement("a");
+//            a.download = "sample.png";
+//            a.href = canvasdata;
+//            a.dispatchEvent(theEvent);
+//        }, false);
+//
+//        function b64EncodeUnicode(str) {
+//            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+//                return String.fromCharCode('0x' + p1);
+//            }));
+//        }
+//    }
+//})

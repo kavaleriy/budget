@@ -1,5 +1,5 @@
-%button#export.btn.btn-primary
-  Export
+%button#export.btn.btn-primary{'style' => 'display: none;'}
+  = t('export')
 
 :javascript
 
@@ -14,7 +14,14 @@
       $('#export').on('click', function() {
         html2canvas($("#{container}"), {
           onrendered: function(canvas) {
-            document.body.appendChild(canvas);
+            var canvasdata = canvas.toDataURL("image/png");
+
+            var theEvent = document.createEvent("MouseEvent");
+            theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            var a = document.createElement("a");
+            a.download = "sample.png";
+            a.href = canvasdata;
+            a.dispatchEvent(theEvent);
           }
         });
       })

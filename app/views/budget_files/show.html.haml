@@ -29,6 +29,14 @@
 %button.btn.btn-primary.svg_export
   %i.fa.fa-file-image-o
   = t('export')
+
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
 
+:javascript
+
+  $(document).ready(function() {
+    $('.svg_export').on("click", function() {
+      $("iframe").contents().find("#export").trigger("click");
+    })
+  })
