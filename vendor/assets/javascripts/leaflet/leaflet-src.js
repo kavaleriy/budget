@@ -221,7 +221,7 @@ L.Class = function () {};
 
 L.Class.extend = function (props) {
 
-	// extended class with the new prototype
+	// extended class with the indicator_file prototype
 	var NewClass = function () {
 
 		// call the constructor
@@ -302,7 +302,7 @@ L.Class.include = function (props) {
 	L.extend(this.prototype, props);
 };
 
-// merge new default options to the Class
+// merge indicator_file default options to the Class
 L.Class.mergeOptions = function (options) {
 	L.extend(this.prototype.options, options);
 };
@@ -614,7 +614,7 @@ L.Point.prototype = {
 		return new L.Point(this.x, this.y);
 	},
 
-	// non-destructive, returns a new point
+	// non-destructive, returns a indicator_file point
 	add: function (point) {
 		return this.clone()._add(L.point(point));
 	},
@@ -2841,7 +2841,7 @@ L.TileLayer = L.Class.extend({
 	_addTile: function (tilePoint, container) {
 		var tilePos = this._getTilePos(tilePoint);
 
-		// get unused tile - or create a new tile
+		// get unused tile - or create a indicator_file tile
 		var tile = this._getTile();
 
 		/*
@@ -2974,7 +2974,7 @@ L.TileLayer = L.Class.extend({
 			this.fire('load');
 
 			if (this._animated) {
-				// clear scaled tiles after all new tiles are loaded (for performance)
+				// clear scaled tiles after all indicator_file tiles are loaded (for performance)
 				clearTimeout(this._clearBgBufferTimer);
 				this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
 			}
@@ -3583,7 +3583,7 @@ L.Marker = L.Class.extend({
 		var icon = options.icon.createIcon(this._icon),
 			addIcon = false;
 
-		// if we're not reusing the icon, remove the old one and init new one
+		// if we're not reusing the icon, remove the old one and init indicator_file one
 		if (icon !== this._icon) {
 			if (this._icon) {
 				this._removeIcon();
@@ -8634,7 +8634,7 @@ L.PosAnimation = L.Class.extend({
 
 		L.DomUtil.setPosition(this._el, this._getPos());
 		this._onTransitionEnd();
-		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
+		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a indicator_file animation
 	},
 
 	_onStep: function () {
@@ -8780,7 +8780,7 @@ L.Map.include({
 	},
 
 	_tryAnimatedPan: function (center, options) {
-		// difference between the new and current centers in pixels
+		// difference between the indicator_file and current centers in pixels
 		var offset = this._getCenterOffset(center)._floor();
 
 		// don't animate too far unless animate: true specified in options
@@ -9035,7 +9035,7 @@ L.TileLayer.include({
 		bg.style.visibility = 'hidden';
 		bg.style[L.DomUtil.TRANSFORM] = '';
 
-		// switch out the current layer to be the new bg layer (and vice-versa)
+		// switch out the current layer to be the indicator_file bg layer (and vice-versa)
 		this._tileContainer = bg;
 		bg = this._bgBuffer = front;
 

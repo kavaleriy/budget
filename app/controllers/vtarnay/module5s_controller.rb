@@ -44,7 +44,7 @@ class Vtarnay::Module5sController < ApplicationController
     }
   end
 
-  # GET /vtarnay/module5s/new
+  # GET /vtarnay/module5s/indicator_file
   def new
     @vtarnay_module5 = Vtarnay::Module5.new
     @vtarnay_module5s = Vtarnay::Module5.all.where(:town => @town)

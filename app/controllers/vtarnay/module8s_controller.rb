@@ -14,7 +14,7 @@ class Vtarnay::Module8sController < ApplicationController
   def show
   end
 
-  # GET /vtarnay/module8s/new
+  # GET /vtarnay/module8s/indicator_file
   def new
     @vtarnay_module8 = Vtarnay::Module8.new
   end

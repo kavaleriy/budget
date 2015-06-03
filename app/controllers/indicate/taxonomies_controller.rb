@@ -17,7 +17,7 @@ class Indicate::TaxonomiesController < ApplicationController
     @years = @indicators.keys.sort!.reverse!
   end
 
-  # GET /indicate/taxonomies/new
+  # GET /indicate/taxonomies/indicator_file
   def new
     @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first
 

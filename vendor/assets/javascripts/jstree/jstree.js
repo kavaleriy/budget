@@ -73,7 +73,7 @@
 		 */
 		version : '3.1.1',
 		/**
-		 * holds all the default options used when creating new instances
+		 * holds all the default options used when creating indicator_file instances
 		 * @name $.jstree.defaults
 		 */
 		defaults : {
@@ -96,7 +96,7 @@
 	 * @name $.jstree.create(el [, options])
 	 * @param {DOMElement|jQuery|String} el the element to create the instance on, can be jQuery extended or a selector
 	 * @param {Object} options options for this instance (extends `$.jstree.defaults`)
-	 * @return {jsTree} the new instance
+	 * @return {jsTree} the indicator_file instance
 	 */
 	$.jstree.create = function (el, options) {
 		var tmp = new $.jstree.core(++instance_counter),
@@ -195,7 +195,7 @@
 	/**
 	 * Create an instance, get an instance or invoke a command on a instance.
 	 *
-	 * If there is no instance associated with the current node a new one is created and `arg` is used to extend `$.jstree.defaults` for this new instance. There would be no return value (chaining is not broken).
+	 * If there is no instance associated with the current node a indicator_file one is created and `arg` is used to extend `$.jstree.defaults` for this indicator_file instance. There would be no return value (chaining is not broken).
 	 *
 	 * If there is an existing instance and `arg` is a string the command specified by `arg` is executed on the instance, with any additional arguments passed to the function. If the function returns a value it will be returned (chaining could break depending on function).
 	 *
@@ -209,7 +209,7 @@
 	 *	$('#tree2').jstree({ plugins : [] }); // create an instance with some options
 	 *	$('#tree1').jstree('open_node', '#branch_1'); // call a method on an existing instance, passing additional arguments
 	 *	$('#tree2').jstree(); // get an existing instance (or create an instance)
-	 *	$('#tree2').jstree(true); // get an existing instance (will not create new instance)
+	 *	$('#tree2').jstree(true); // get an existing instance (will not create indicator_file instance)
 	 *	$('#branch_1').jstree().select_node('#branch_1'); // get an instance (using a nested element and call a method)
 	 *
 	 * @name $().jstree([arg])
@@ -352,7 +352,7 @@
 		 *		'core' : {
 		 *			'check_callback' : function (operation, node, node_parent, node_position, more) {
 		 *				// operation can be 'create_node', 'rename_node', 'delete_node', 'move_node' or 'copy_node'
-		 *				// in case of 'rename_node' node_position is filled with the new node name
+		 *				// in case of 'rename_node' node_position is filled with the indicator_file node name
 		 *				return operation === 'rename_node' ? true : false;
 		 *			}
 		 *		}
@@ -1441,7 +1441,7 @@
 				m[p.parents[i]].children_d = m[p.parents[i]].children_d.concat(dpc);
 			}
 			/**
-			 * triggered when new data is inserted to the tree model
+			 * triggered when indicator_file data is inserted to the tree model
 			 * @event
 			 * @name model.jstree
 			 * @param {Array} nodes an array of node IDs
@@ -3300,7 +3300,7 @@
 		 * set (change) the ID of a node
 		 * @name set_id(obj, id)
 		 * @param  {mixed} obj the node
-		 * @param  {String} id the new ID
+		 * @param  {String} id the indicator_file ID
 		 * @return {Boolean}
 		 */
 		set_id : function (obj, id) {
@@ -3308,12 +3308,12 @@
 			if(!obj || obj.id === '#') { return false; }
 			var i, j, m = this._model.data;
 			id = id.toString();
-			// update parents (replace current ID with new one in children and children_d)
+			// update parents (replace current ID with indicator_file one in children and children_d)
 			m[obj.parent].children[$.inArray(obj.id, m[obj.parent].children)] = id;
 			for(i = 0, j = obj.parents.length; i < j; i++) {
 				m[obj.parents[i]].children_d[$.inArray(obj.id, m[obj.parents[i]].children_d)] = id;
 			}
-			// update children (replace current ID with new one in parent and parents)
+			// update children (replace current ID with indicator_file one in parent and parents)
 			for(i = 0, j = obj.children.length; i < j; i++) {
 				m[obj.children[i]].parent = id;
 			}
@@ -3351,7 +3351,7 @@
 		 * @private
 		 * @name set_text(obj, val)
 		 * @param  {mixed} obj the node, you can pass an array to set the text on multiple nodes
-		 * @param  {String} val the new text value
+		 * @param  {String} val the indicator_file text value
 		 * @return {Boolean}
 		 * @trigger set_text.jstree
 		 */
@@ -3375,7 +3375,7 @@
 			 * @event
 			 * @name set_text.jstree
 			 * @param {Object} obj
-			 * @param {String} text the new value
+			 * @param {String} text the indicator_file value
 			 */
 			this.trigger('set_text',{ "obj" : obj, "text" : val });
 			return true;
@@ -3444,10 +3444,10 @@
 			return options && options.flat ? flat : (obj.id === '#' ? tmp.children : tmp);
 		},
 		/**
-		 * create a new node (do not confuse with load_node)
+		 * create a indicator_file node (do not confuse with load_node)
 		 * @name create_node([obj, node, pos, callback, is_loaded])
 		 * @param  {mixed}   par       the parent node (to create a root node use either "#" (string) or `null`)
-		 * @param  {mixed}   node      the data for the new node (a valid JSON object, or a simple string with the name)
+		 * @param  {mixed}   node      the data for the indicator_file node (a valid JSON object, or a simple string with the name)
 		 * @param  {mixed}   pos       the index at which to insert the node, "first" and "last" are also supported, default is "last"
 		 * @param  {Function} callback a function to be called once the node is created
 		 * @param  {Boolean} is_loaded internal argument indicating if the parent node was succesfully loaded
@@ -3528,7 +3528,7 @@
 			 * @name create_node.jstree
 			 * @param {Object} node
 			 * @param {String} parent the parent's ID
-			 * @param {Number} position the position of the new node among the parent's children
+			 * @param {Number} position the position of the indicator_file node among the parent's children
 			 */
 			this.trigger('create_node', { "node" : this.get_node(node), "parent" : par.id, "position" : pos });
 			return node.id;
@@ -3537,7 +3537,7 @@
 		 * set the text value of a node
 		 * @name rename_node(obj, val)
 		 * @param  {mixed} obj the node, you can pass an array to rename multiple nodes to the same name
-		 * @param  {String} val the new text value
+		 * @param  {String} val the indicator_file text value
 		 * @return {Boolean}
 		 * @trigger rename_node.jstree
 		 */
@@ -3563,7 +3563,7 @@
 			 * @event
 			 * @name rename_node.jstree
 			 * @param {Object} node
-			 * @param {String} text the new value
+			 * @param {String} text the indicator_file value
 			 * @param {String} old the old value
 			 */
 			this.trigger('rename_node', { "node" : obj, "text" : val, "old" : old });
@@ -3638,7 +3638,7 @@
 		 * @param  {String} chk the operation to check, can be "create_node", "rename_node", "delete_node", "copy_node" or "move_node"
 		 * @param  {mixed} obj the node
 		 * @param  {mixed} par the parent
-		 * @param  {mixed} pos the position to insert at, or if "rename_node" - the new name
+		 * @param  {mixed} pos the position to insert at, or if "rename_node" - the indicator_file name
 		 * @param  {mixed} more some various additional information, for example if a "move_node" operations is triggered by DND this will be the hovered node
 		 * @return {Boolean}
 		 */
@@ -3675,12 +3675,12 @@
 			return this._data.core.last_error;
 		},
 		/**
-		 * move a node to a new parent
+		 * move a node to a indicator_file parent
 		 * @name move_node(obj, par [, pos, callback, is_loaded])
 		 * @param  {mixed} obj the node to move, pass an array to move multiple nodes
-		 * @param  {mixed} par the new parent
+		 * @param  {mixed} par the indicator_file parent
 		 * @param  {mixed} pos the position to insert at (besides integer values, "first" and "last" are supported, as well as "before" and "after"), defaults to integer `0`
-		 * @param  {function} callback a function to call once the move is completed, receives 3 arguments - the node, the new parent and the position
+		 * @param  {function} callback a function to call once the move is completed, receives 3 arguments - the node, the indicator_file parent and the position
 		 * @param  {Boolean} is_loaded internal parameter indicating if the parent node has been loaded
 		 * @param  {Boolean} skip_redraw internal parameter indicating if the tree should be redrawn
 		 * @param  {Boolean} instance internal parameter indicating if the node comes from another instance
@@ -3792,7 +3792,7 @@
 				}
 				old_ins._model.data[old_par].children = $.vakata.array_remove_item(old_ins._model.data[old_par].children, obj.id);
 
-				// insert into new parent and up
+				// insert into indicator_file parent and up
 				for(i = 0, j = new_par.parents.length; i < j; i++) {
 					this._model.data[new_par.parents[i]].children_d = this._model.data[new_par.parents[i]].children_d.concat(tmp);
 				}
@@ -3840,20 +3840,20 @@
 			 * @param {Number} position the position of the node among the parent's children
 			 * @param {String} old_parent the old parent of the node
 			 * @param {Number} old_position the old position of the node
-			 * @param {Boolean} is_multi do the node and new parent belong to different instances
+			 * @param {Boolean} is_multi do the node and indicator_file parent belong to different instances
 			 * @param {jsTree} old_instance the instance the node came from
-			 * @param {jsTree} new_instance the instance of the new parent
+			 * @param {jsTree} new_instance the instance of the indicator_file parent
 			 */
 			this.trigger('move_node', { "node" : obj, "parent" : new_par.id, "position" : pos, "old_parent" : old_par, "old_position" : old_pos, 'is_multi' : (old_ins && old_ins._id && old_ins._id !== this._id), 'is_foreign' : (!old_ins || !old_ins._id), 'old_instance' : old_ins, 'new_instance' : this });
 			return obj.id;
 		},
 		/**
-		 * copy a node to a new parent
+		 * copy a node to a indicator_file parent
 		 * @name copy_node(obj, par [, pos, callback, is_loaded])
 		 * @param  {mixed} obj the node to copy, pass an array to copy multiple nodes
-		 * @param  {mixed} par the new parent
+		 * @param  {mixed} par the indicator_file parent
 		 * @param  {mixed} pos the position to insert at (besides integer values, "first" and "last" are supported, as well as "before" and "after"), defaults to integer `0`
-		 * @param  {function} callback a function to call once the move is completed, receives 3 arguments - the node, the new parent and the position
+		 * @param  {function} callback a function to call once the move is completed, receives 3 arguments - the node, the indicator_file parent and the position
 		 * @param  {Boolean} is_loaded internal parameter indicating if the parent node has been loaded
 		 * @param  {Boolean} skip_redraw internal parameter indicating if the tree should be redrawn
 		 * @param  {Boolean} instance internal parameter indicating if the node comes from another instance
@@ -3936,7 +3936,7 @@
 			dpc = dpc.concat(tmp.children_d);
 			this.trigger('model', { "nodes" : dpc, "parent" : new_par.id });
 
-			// insert into new parent and up
+			// insert into indicator_file parent and up
 			for(i = 0, j = new_par.parents.length; i < j; i++) {
 				this._model.data[new_par.parents[i]].children_d = this._model.data[new_par.parents[i]].children_d.concat(dpc);
 			}
@@ -3969,9 +3969,9 @@
 			 * @param {Number} position the position of the node among the parent's children
 			 * @param {String} old_parent the old parent of the node
 			 * @param {Number} old_position the position of the original node
-			 * @param {Boolean} is_multi do the node and new parent belong to different instances
+			 * @param {Boolean} is_multi do the node and indicator_file parent belong to different instances
 			 * @param {jsTree} old_instance the instance the node came from
-			 * @param {jsTree} new_instance the instance of the new parent
+			 * @param {jsTree} new_instance the instance of the indicator_file parent
 			 */
 			this.trigger('copy_node', { "node" : tmp, "original" : obj, "parent" : new_par.id, "position" : pos, "old_parent" : old_par, "old_position" : old_ins && old_ins._id && old_par && old_ins._model.data[old_par] && old_ins._model.data[old_par].children ? $.inArray(obj.id, old_ins._model.data[old_par].children) : -1,'is_multi' : (old_ins && old_ins._id && old_ins._id !== this._id), 'is_foreign' : (!old_ins || !old_ins._id), 'old_instance' : old_ins, 'new_instance' : this });
 			return tmp.id;
@@ -4047,9 +4047,9 @@
 			return ccp_mode !== false && ccp_node !== false; // && ccp_inst._model.data[ccp_node];
 		},
 		/**
-		 * copy or move the previously cut or copied nodes to a new parent
+		 * copy or move the previously cut or copied nodes to a indicator_file parent
 		 * @name paste(obj [, pos])
-		 * @param  {mixed} obj the new parent
+		 * @param  {mixed} obj the indicator_file parent
 		 * @param  {mixed} pos the position to insert at (besides integer, "first" and "last" are supported), defaults to integer `0`
 		 * @trigger paste.jstree
 		 */
@@ -4195,7 +4195,7 @@
 		/**
 		 * changes the theme
 		 * @name set_theme(theme_name [, theme_url])
-		 * @param {String} theme_name the name of the new theme to apply
+		 * @param {String} theme_name the name of the indicator_file theme to apply
 		 * @param {mixed} theme_url  the location of the CSS file for this theme. Omit or set to `false` if you manually included the file. Set to `true` to autoload from the `core.themes.dir` directory.
 		 * @trigger set_theme.jstree
 		 */
@@ -4220,7 +4220,7 @@
 			 * triggered when a theme is set
 			 * @event
 			 * @name set_theme.jstree
-			 * @param {String} theme the new theme
+			 * @param {String} theme the indicator_file theme
 			 */
 			this.trigger('set_theme', { 'theme' : theme_name });
 		},
@@ -4299,7 +4299,7 @@
 		 * set the node icon for a node
 		 * @name set_icon(obj, icon)
 		 * @param {mixed} obj
-		 * @param {String} icon the new icon - can be a path to an icon or a className, if using an image that is in the current directory use a `./` prefix, otherwise it will be detected as a class
+		 * @param {String} icon the indicator_file icon - can be a path to an icon or a className, if using an image that is in the current directory use a `./` prefix, otherwise it will be detected as a class
 		 */
 		set_icon : function (obj, icon) {
 			var t1, t2, dom, old;
@@ -5376,11 +5376,11 @@
 				this.element
 					.on("touchstart", ".jstree-anchor", function (e) {
 						el = e.currentTarget;
-						tm = +new Date();
+						tm = +indicator_file Date();
 						$(document).one("touchend", function (e) {
 							e.target = document.elementFromPoint(e.originalEvent.targetTouches[0].pageX - window.pageXOffset, e.originalEvent.targetTouches[0].pageY - window.pageYOffset);
 							e.currentTarget = e.target;
-							tm = ((+(new Date())) - tm);
+							tm = ((+(indicator_file Date())) - tm);
 							if(e.target === el && tm > 600 && tm < 1000) {
 								e.preventDefault();
 								$(el).trigger('contextmenu', e);
@@ -5929,7 +5929,7 @@
 						.find('.jstree-copy').first()[ data.data.origin && (data.data.origin.settings.dnd.always_copy || (data.data.origin.settings.dnd.copy && (data.event.metaKey || data.event.ctrlKey))) ? 'show' : 'hide' ]();
 
 
-					// if are hovering the container itself add a new root node
+					// if are hovering the container itself add a indicator_file root node
 					if( (data.event.target === ins.element[0] || data.event.target === ins.get_container_ul()[0]) && ins.get_container_ul().children().length === 0) {
 						ok = true;
 						for(t1 = 0, t2 = data.data.nodes.length; t1 < t2; t1++) {
@@ -6454,7 +6454,7 @@
 		 */
 		show_only_matches_children : false,
 		/**
-		 * Indicates if all nodes opened to reveal the search result, should be closed when the search is cleared or a new search is performed. Default is `true`.
+		 * Indicates if all nodes opened to reveal the search result, should be closed when the search is cleared or a indicator_file search is performed. Default is `true`.
 		 * @name $.jstree.defaults.search.close_opened_onclear
 		 * @plugin search
 		 */
@@ -7169,7 +7169,7 @@
 		 * used to change a node's type
 		 * @name set_type(obj, type)
 		 * @param {mixed} obj the node to change
-		 * @param {String} type the new type
+		 * @param {String} type the indicator_file type
 		 * @plugin types
 		 */
 		this.set_type = function (obj, type) {
@@ -7215,7 +7215,7 @@
 		 */
 		case_sensitive : false,
 		/**
-		 * A callback executed in the instance's scope when a new node is created and the name is already taken, the two arguments are the conflicting name and the counter. The default will produce results like `New node (2)`.
+		 * A callback executed in the instance's scope when a indicator_file node is created and the name is already taken, the two arguments are the conflicting name and the counter. The default will produce results like `New node (2)`.
 		 * @name $.jstree.defaults.unique.duplicate
 		 * @plugin unique
 		 */

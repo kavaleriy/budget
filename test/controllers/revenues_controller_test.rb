@@ -11,8 +11,8 @@ class RevenuesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:budget_file_rots)
   end
 
-  test "should get new" do
-    get :new
+  test "should get indicator_file" do
+    get :indicator_file
     assert_response :success
   end
 

@@ -16,7 +16,7 @@ class CalendarActionsController < ApplicationController
   def show
   end
 
-  # GET /calendar_actions/new
+  # GET /calendar_actions/indicator_file
   def new
     @calendar_action = CalendarAction.new({ holder: params[:holder], icon: params[:icon], text_color: '#999933', color: '#c7e0f8' })
   end

@@ -1,4 +1,4 @@
--#calendar_events_event_attachments_path(@event.event_attachments.new)
+-#calendar_events_event_attachments_path(@event.event_attachments.indicator_file)
 = form_for [@calendar, @event, EventAttachment.new], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
 
   - if new_attachment.errors.any?

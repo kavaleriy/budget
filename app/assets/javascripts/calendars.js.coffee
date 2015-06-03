@@ -62,7 +62,7 @@ $(document).on 'ready page:change', ->
     select: (start, end, allDay) ->
       dt_start = moment(start).format("DD/MM/YYYY")
 
-      $.get $('#calendar').attr('calendar_id') + "/events/new",
+      $.get $('#calendar').attr('calendar_id') + "/events/indicator_file",
         starts_at: dt_start
         ends_at: dt_start
         all_day: true

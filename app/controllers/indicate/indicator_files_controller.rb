@@ -1,5 +1,6 @@
 class Indicate::IndicatorFilesController < ApplicationController
   before_action :set_indicate_indicator_file, only: [:show, :edit, :update, :destroy]
+  before_action :set_indicate_taxonomy, only: [:create, :destroy]
 
   # GET /indicate/indicator_files
   # GET /indicate/indicator_files.json
@@ -12,8 +13,8 @@ class Indicate::IndicatorFilesController < ApplicationController
   def show
   end
 
-  # GET /indicate/indicator_files/new
-  def new
+  # GET /indicate/indicator_files/indicator_file
+  def indicator_file
     @indicate_indicator_file = Indicate::IndicatorFile.new
   end
 
@@ -26,16 +27,10 @@ class Indicate::IndicatorFilesController < ApplicationController
   def create
     @indicator_files = []
 
-    taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first
-
-    if taxonomy.nil?
-      taxonomy = Indicate::Taxonomy.new(:town => current_user.town)
-    end
-
     params['indicate_file'].each do |f|
       doc = Indicate::IndicatorFile.new(indicate_indicator_file_params)
       doc.indicate_file = f
-      doc.indicate_taxonomy = taxonomy
+      doc.indicate_taxonomy = @indicate_taxonomy
       doc.author = current_user.email
       doc.save
       @indicator_files << doc
@@ -45,8 +40,7 @@ class Indicate::IndicatorFilesController < ApplicationController
     end unless params['indicate_file'].nil?
 
     respond_to do |format|
-      format.js {
-      }
+      format.js {}
       format.json { head :no_content, status: :created }
     end
   end
@@ -56,10 +50,10 @@ class Indicate::IndicatorFilesController < ApplicationController
   def update
     respond_to do |format|
       if @indicate_indicator_file.update(indicate_indicator_file_params)
-        format.html { redirect_to @indicate_indicator_file, notice: 'Indicator file was successfully updated.' }
-        format.json { render :show, status: :ok, location: @indicate_indicator_file }
+        format.js {}
+        format.json { head :no_content, status: :updated }
       else
-        format.html { render :edit }
+        format.js { render status: :unprocessable_entity }
         format.json { render json: @indicate_indicator_file.errors, status: :unprocessable_entity }
       end
     end
@@ -70,8 +64,8 @@ class Indicate::IndicatorFilesController < ApplicationController
   def destroy
     @indicate_indicator_file.destroy
     respond_to do |format|
-      format.js
-      format.json { head :no_content }
+      format.js {}
+      format.json { head :no_content, status: :deleted }
     end
   end
 
@@ -129,6 +123,14 @@ class Indicate::IndicatorFilesController < ApplicationController
     def set_indicate_indicator_file
       @indicate_indicator_file = Indicate::IndicatorFile.find(params[:id])
     end
+
+  def set_indicate_taxonomy
+    @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first
+
+    if @indicate_taxonomy.nil?
+      @indicate_taxonomy = Indicate::Taxonomy.new(:town => current_user.town)
+    end
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def indicate_indicator_file_params

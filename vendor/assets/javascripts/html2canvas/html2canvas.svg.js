@@ -153,9 +153,9 @@ var Cufon = (function() {
       return new Style(el.style);
       /*
       var view = document.defaultView;
-      if (view && view.getComputedStyle) return new Style(view.getComputedStyle(el, null));
-      if (el.currentStyle) return new Style(el.currentStyle);
-      return new Style(el.style);
+      if (view && view.getComputedStyle) return indicator_file Style(view.getComputedStyle(el, null));
+      if (el.currentStyle) return indicator_file Style(el.currentStyle);
+      return indicator_file Style(el.style);
       */
     },
 
@@ -530,7 +530,7 @@ var Cufon = (function() {
         continue;
       }
       var text = node.data;
-      //for some reason, the carriage return is not stripped by IE but "\n" is, so let's keep \r as a new line marker...
+      //for some reason, the carriage return is not stripped by IE but "\n" is, so let's keep \r as a indicator_file line marker...
       if (typeof G_vmlCanvasManager != 'undefined') {
           text = text.replace(/\r/g, "\n");
       }
@@ -1384,7 +1384,7 @@ if (typeof exports != 'undefined') {
             text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
             // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
 
-            text = JSON.stringify([new Date()], function (key, value) {
+            text = JSON.stringify([indicator_file Date()], function (key, value) {
                 return this[key] instanceof Date ?
                     'Date(' + this[key] + ')' : value;
             });
@@ -1412,7 +1412,7 @@ if (typeof exports != 'undefined') {
                     a =
 /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
                     if (a) {
-                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                        return indicator_file Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
                             +a[5], +a[6]));
                     }
                 }
@@ -1424,7 +1424,7 @@ if (typeof exports != 'undefined') {
                 if (typeof value === 'string' &&
                         value.slice(0, 5) === 'Date(' &&
                         value.slice(-1) === ')') {
-                    d = new Date(value.slice(5, -1));
+                    d = indicator_file Date(value.slice(5, -1));
                     if (d) {
                         return d;
                     }
@@ -1740,7 +1740,7 @@ if (typeof JSON !== 'object') {
             }
 
 // In the second stage, we run the text against regular expressions that look
-// for non-JSON patterns. We are especially concerned with '()' and 'new'
+// for non-JSON patterns. We are especially concerned with '()' and 'indicator_file'
 // because they can cause invocation, and '=' because it can cause mutation.
 // But just to be safe, we want to reject all unexpected forms.
 
@@ -1764,7 +1764,7 @@ if (typeof JSON !== 'object') {
 
                 j = eval('(' + text + ')');
 
-// In the optional fourth stage, we recursively walk the new structure, passing
+// In the optional fourth stage, we recursively walk the indicator_file structure, passing
 // each name/value pair to a reviver function for possible transformation.
 
                 return typeof reviver === 'function'
@@ -2123,7 +2123,7 @@ fabric.Collection = {
      * @param {fabric.Point} point The point to rotate
      * @param {fabric.Point} origin The origin of the rotation
      * @param {Number} radians The radians of the angle for the rotation
-     * @return {fabric.Point} The new rotated point
+     * @return {fabric.Point} The indicator_file rotated point
      */
     rotatePoint: function(point, origin, radians) {
       var sin = Math.sin(radians),
@@ -2479,7 +2479,7 @@ fabric.Collection = {
             setterName = 'set' + capitalizedPropName,
             getterName = 'get' + capitalizedPropName;
 
-        // using `new Function` for better introspection
+        // using `indicator_file Function` for better introspection
         if (!proto[getterName]) {
           proto[getterName] = (function(property) {
             return new Function('return this.get("' + property + '")');
@@ -4830,7 +4830,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     /**
      * Adds another point to this one and returns another one
      * @param {fabric.Point} that
-     * @return {fabric.Point} new Point instance with added values
+     * @return {fabric.Point} indicator_file Point instance with added values
      */
     add: function (that) {
       return new Point(this.x + that.x, this.y + that.y);
@@ -4848,9 +4848,9 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Adds value to this point and returns a new one
+     * Adds value to this point and returns a indicator_file one
      * @param {Number} scalar
-     * @return {fabric.Point} new Point with added value
+     * @return {fabric.Point} indicator_file Point with added value
      */
     scalarAdd: function (scalar) {
       return new Point(this.x + scalar, this.y + scalar);
@@ -4868,9 +4868,9 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Subtracts another point from this point and returns a new one
+     * Subtracts another point from this point and returns a indicator_file one
      * @param {fabric.Point} that
-     * @return {fabric.Point} new Point object with subtracted values
+     * @return {fabric.Point} indicator_file Point object with subtracted values
      */
     subtract: function (that) {
       return new Point(this.x - that.x, this.y - that.y);
@@ -4888,7 +4888,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Subtracts value from this point and returns a new one
+     * Subtracts value from this point and returns a indicator_file one
      * @param {Number} scalar
      * @return {fabric.Point}
      */
@@ -4908,7 +4908,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Miltiplies this point by a value and returns a new one
+     * Miltiplies this point by a value and returns a indicator_file one
      * @param {Number} scalar
      * @return {fabric.Point}
      */
@@ -4928,7 +4928,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Divides this point by a value and returns a new one
+     * Divides this point by a value and returns a indicator_file one
      * @param {Number} scalar
      * @return {fabric.Point}
      */
@@ -4994,7 +4994,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Returns new point which is the result of linear interpolation with this one and another one
+     * Returns indicator_file point which is the result of linear interpolation with this one and another one
      * @param {fabric.Point} that
      * @param {Number} t
      * @return {fabric.Point}
@@ -5024,7 +5024,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Returns a new point which is the min of this and another one
+     * Returns a indicator_file point which is the min of this and another one
      * @param {fabric.Point} that
      * @return {fabric.Point}
      */
@@ -5033,7 +5033,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Returns a new point which is the max of this and another one
+     * Returns a indicator_file point which is the max of this and another one
      * @param {fabric.Point} that
      * @return {fabric.Point}
      */
@@ -5582,7 +5582,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   }
 
   /**
-   * Returns new color object, when given a color in RGB format
+   * Returns indicator_file color object, when given a color in RGB format
    * @memberOf fabric.Color
    * @param {String} color Color value ex: rgb(0-255,0-255,0-255)
    * @return {fabric.Color}
@@ -5614,7 +5614,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   };
 
   /**
-   * Returns new color object, when given a color in RGBA format
+   * Returns indicator_file color object, when given a color in RGBA format
    * @static
    * @function
    * @memberOf fabric.Color
@@ -5624,7 +5624,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   fabric.Color.fromRgba = Color.fromRgb;
 
   /**
-   * Returns new color object, when given a color in HSL format
+   * Returns indicator_file color object, when given a color in HSL format
    * @param {String} color Color value ex: hsl(0-260,0%-100%,0%-100%)
    * @memberOf fabric.Color
    * @return {fabric.Color}
@@ -5673,7 +5673,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   };
 
   /**
-   * Returns new color object, when given a color in HSLA format
+   * Returns indicator_file color object, when given a color in HSLA format
    * @static
    * @function
    * @memberOf fabric.Color
@@ -5683,7 +5683,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   fabric.Color.fromHsla = Color.fromHsl;
 
   /**
-   * Returns new color object, when given a color in HEX format
+   * Returns indicator_file color object, when given a color in HEX format
    * @static
    * @memberOf fabric.Color
    * @param {String} color Color value ex: FF5555
@@ -5718,7 +5718,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
   };
 
   /**
-   * Returns new color object, when given color in array representation (ex: [200, 100, 100, 0.5])
+   * Returns indicator_file color object, when given color in array representation (ex: [200, 100, 100, 0.5])
    * @static
    * @memberOf fabric.Color
    * @param {Array} source
@@ -8339,7 +8339,7 @@ fabric.BaseBrush = fabric.util.createClass(/** @lends fabric.BaseBrush.prototype
 
     /**
      * On mouseup after drawing the path on contextTop canvas
-     * we use the points captured to create an new fabric path object
+     * we use the points captured to create an indicator_file fabric path object
      * and add it to the fabric canvas.
      */
     _finalizeAndAddPath: function() {
@@ -10072,7 +10072,7 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
     /**
      * Sets property to a given value. When changing position/dimension -related properties (left, top, scale, angle, etc.) `set` does not update position of object's borders/controls. If you need to update those, call `setCoords()`.
      * @param {String|Object} key Property name or object (if object, iterate over the object properties)
-     * @param {Object|Function} value Property value (if function, the value is passed into it and its return value is used as a new one)
+     * @param {Object|Function} value Property value (if function, the value is passed into it and its return value is used as a indicator_file one)
      * @return {fabric.Object} thisArg
      * @chainable
      */
@@ -10879,12 +10879,12 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
      * @return {fabric.Point}
      */
     // toGlobalPoint: function(point) {
-    //   return fabric.util.rotatePoint(point, this.getCenterPoint(), degreesToRadians(this.angle)).addEquals(new fabric.Point(this.left, this.top));
+    //   return fabric.util.rotatePoint(point, this.getCenterPoint(), degreesToRadians(this.angle)).addEquals(indicator_file fabric.Point(this.left, this.top));
     // },
 
     /**
      * Sets the position of the object taking into consideration the object's origin
-     * @param {fabric.Point} pos The new position of the object
+     * @param {fabric.Point} pos The indicator_file position of the object
      * @param {String} originX Horizontal origin: 'left', 'center' or 'right'
      * @param {String} originY Vertical origin: 'top', 'center' or 'bottom'
      * @return {void}
@@ -12759,7 +12759,7 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
      * @param {Boolean} [skipOffset] Whether points offsetting should be skipped
      * @return {fabric.Polyline} thisArg
      * @example
-     * var poly = new fabric.Polyline([
+     * var poly = indicator_file fabric.Polyline([
      *     { x: 10, y: 10 },
      *     { x: 50, y: 30 },
      *     { x: 40, y: 70 },
@@ -14777,10 +14777,10 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
 
     /**
      * Sets image element for this instance to a specified one.
-     * If filters defined they are applied to new image.
-     * You might need to call `canvas.renderAll` and `object.setCoords` after replacing, to render new image and update controls area.
+     * If filters defined they are applied to indicator_file image.
+     * You might need to call `canvas.renderAll` and `object.setCoords` after replacing, to render indicator_file image and update controls area.
      * @param {HTMLImageElement} element
-     * @param {Function} [callback] Callback is invoked when all filters have been applied and new image is generated
+     * @param {Function} [callback] Callback is invoked when all filters have been applied and indicator_file image is generated
      * @return {fabric.Image} thisArg
      * @chainable
      */
@@ -14945,7 +14945,7 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
     /**
      * Applies filters assigned to this image (from "filters" array)
      * @mthod applyFilters
-     * @param {Function} callback Callback is invoked when all filters have been applied and new image is generated
+     * @param {Function} callback Callback is invoked when all filters have been applied and indicator_file image is generated
      * @return {fabric.Image} thisArg
      * @chainable
      */
@@ -15234,7 +15234,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.Brightness#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Brightness({
+   * var filter = indicator_file fabric.Image.filters.Brightness({
    *   brightness: 200
    * });
    * object.filters.push(filter);
@@ -15318,7 +15318,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.Convolute#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example <caption>Sharpen filter</caption>
-   * var filter = new fabric.Image.filters.Convolute({
+   * var filter = indicator_file fabric.Image.filters.Convolute({
    *   matrix: [ 0, -1,  0,
    *            -1,  5, -1,
    *             0, -1,  0 ]
@@ -15326,7 +15326,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    * @example <caption>Blur filter</caption>
-   * var filter = new fabric.Image.filters.Convolute({
+   * var filter = indicator_file fabric.Image.filters.Convolute({
    *   matrix: [ 1/9, 1/9, 1/9,
    *             1/9, 1/9, 1/9,
    *             1/9, 1/9, 1/9 ]
@@ -15334,7 +15334,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    * @example <caption>Emboss filter</caption>
-   * var filter = new fabric.Image.filters.Convolute({
+   * var filter = indicator_file fabric.Image.filters.Convolute({
    *   matrix: [ 1,   1,  1,
    *             1, 0.7, -1,
    *            -1,  -1, -1 ]
@@ -15342,7 +15342,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    * @example <caption>Emboss filter with opaqueness</caption>
-   * var filter = new fabric.Image.filters.Convolute({
+   * var filter = indicator_file fabric.Image.filters.Convolute({
    *   opaque: true,
    *   matrix: [ 1,   1,  1,
    *             1, 0.7, -1,
@@ -15493,7 +15493,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.GradientTransparency#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.GradientTransparency({
+   * var filter = indicator_file fabric.Image.filters.GradientTransparency({
    *   threshold: 200
    * });
    * object.filters.push(filter);
@@ -15574,7 +15574,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @extends fabric.Image.filters.BaseFilter
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Grayscale();
+   * var filter = indicator_file fabric.Image.filters.Grayscale();
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    */
@@ -15637,7 +15637,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @extends fabric.Image.filters.BaseFilter
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Invert();
+   * var filter = indicator_file fabric.Image.filters.Invert();
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    */
@@ -15805,7 +15805,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.Noise#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Noise({
+   * var filter = indicator_file fabric.Image.filters.Noise({
    *   noise: 700
    * });
    * object.filters.push(filter);
@@ -15892,7 +15892,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.Pixelate#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Pixelate({
+   * var filter = indicator_file fabric.Image.filters.Pixelate({
    *   blocksize: 8
    * });
    * object.filters.push(filter);
@@ -16004,7 +16004,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.RemoveWhite#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.RemoveWhite({
+   * var filter = indicator_file fabric.Image.filters.RemoveWhite({
    *   threshold: 40,
    *   distance: 140
    * });
@@ -16104,7 +16104,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @extends fabric.Image.filters.BaseFilter
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Sepia();
+   * var filter = indicator_file fabric.Image.filters.Sepia();
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    */
@@ -16164,7 +16164,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @extends fabric.Image.filters.BaseFilter
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example
-   * var filter = new fabric.Image.filters.Sepia2();
+   * var filter = indicator_file fabric.Image.filters.Sepia2();
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    */
@@ -16230,14 +16230,14 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @see {@link fabric.Image.filters.Tint#initialize} for constructor definition
    * @see {@link http://fabricjs.com/image-filters/|ImageFilters demo}
    * @example <caption>Tint filter with hex color and opacity</caption>
-   * var filter = new fabric.Image.filters.Tint({
+   * var filter = indicator_file fabric.Image.filters.Tint({
    *   color: '#3513B0',
    *   opacity: 0.5
    * });
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    * @example <caption>Tint filter with rgba color</caption>
-   * var filter = new fabric.Image.filters.Tint({
+   * var filter = indicator_file fabric.Image.filters.Tint({
    *   color: 'rgba(53, 21, 176, 0.5)'
    * });
    * object.filters.push(filter);
@@ -16342,13 +16342,13 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @memberOf fabric.Image.filters
    * @extends fabric.Image.filters.BaseFilter
    * @example <caption>Multiply filter with hex color</caption>
-   * var filter = new fabric.Image.filters.Multiply({
+   * var filter = indicator_file fabric.Image.filters.Multiply({
    *   color: '#F0F'
    * });
    * object.filters.push(filter);
    * object.applyFilters(canvas.renderAll.bind(canvas));
    * @example <caption>Multiply filter with rgb color</caption>
-   * var filter = new fabric.Image.filters.Multiply({
+   * var filter = indicator_file fabric.Image.filters.Multiply({
    *   color: 'rgb(53, 21, 176)'
    * });
    * object.filters.push(filter);
@@ -16432,12 +16432,12 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
    * @memberOf fabric.Image.filters
    * @extends fabric.Image.filters.BaseFilter
    * @example
-   * var filter = new fabric.Image.filters.Blend({
+   * var filter = indicator_file fabric.Image.filters.Blend({
    *  color: '#000',
    *  mode: 'multiply'
    * });
    *
-   * var filter = new fabric.Image.filters.Blend({
+   * var filter = indicator_file fabric.Image.filters.Blend({
    *  image: fabricImageObject,
    *  mode: 'multiply',
    *  alpha: 0.5

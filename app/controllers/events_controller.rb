@@ -34,7 +34,7 @@ class EventsController < ApplicationController
     end
   end
 
-  # GET /events/new
+  # GET /events/indicator_file
   def new
     all_day = params[:all_day] == "true"
     @event = @calendar.events.new(

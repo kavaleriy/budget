@@ -12,7 +12,7 @@ class Indicate::IndicatorsController < ApplicationController
   def show
   end
 
-  # GET /indicate/indicators/new
+  # GET /indicate/indicators/indicator_file
   def new
     @indicate_indicator = Indicate::Indicator.new
   end

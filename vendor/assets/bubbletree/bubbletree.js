@@ -396,7 +396,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 
 
 	/*
-	 * creates a new bubble for a given node. the bubble type will be chosen
+	 * creates a indicator_file bubble for a given node. the bubble type will be chosen
 	 * by the level of the node
 	 */
 	me.createBubble = function(node, origin, rad, angle, color) {
@@ -727,7 +727,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 	/*
 	me.createRing = function(t, origin, rad, attr) {
 		var me = this, ns = me.ns,
-			ring = new ns.Ring(me, origin, attr, rad);
+			ring = indicator_file ns.Ring(me, origin, attr, rad);
 		ring.toBack();
 		me.rings.push(ring);
 		t.$(ring).rad = rad;
@@ -873,7 +873,7 @@ BubbleTree.Layout = function() {
 	 *
 	 * if you have an object bubble, you can easily change its properties with
 	 * 
-	 * var l = new OpenSpendings.BubbleTree.Layout();
+	 * var l = indicator_file OpenSpendings.BubbleTree.Layout();
 	 * l.$(bubble).radius = 30;
 	 * l.$(bubble).angle = 3.14;
 	 */
@@ -1188,7 +1188,7 @@ BubbleTree.Ring = function(node, bc, o, rad, attr) {
 /*global Raphael, TWEEN, vis4, BubbleTree */
 
 /*
- * transforms the current display to a new layout
+ * transforms the current display to a indicator_file layout
  * while transitioning, there are several possible cases:
  * - a node exists both before and after the transition
  * - a node appears at the beginning of the transition
@@ -1982,7 +1982,7 @@ BubbleTree.Bubbles.Icon = function(node, bubblechart, origin, radius, angle, col
 		
 		/*var 
 		list=[me.circle.node, me.label, me.dashedBorder.node],
-		mgroup = new me.ns.MouseEventGroup(me, list);
+		mgroup = indicator_file me.ns.MouseEventGroup(me, list);
 		mgroup.click(me.onclick.bind(me));
 		mgroup.hover(me.onhover.bind(me));
 		mgroup.unhover(me.onunhover.bind(me));

@@ -1018,7 +1018,7 @@
         _replaceFileInput: function (data) {
             var input = data.fileInput,
                 inputClone = input.clone(true);
-            // Add a reference for the new cloned file input to the data argument:
+            // Add a reference for the indicator_file cloned file input to the data argument:
             data.fileInputClone = inputClone;
             $('<form></form>').append(inputClone)[0].reset();
             // Detaching allows to insert the fileInput on another form

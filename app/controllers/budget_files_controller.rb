@@ -8,7 +8,7 @@ class BudgetFilesController < ApplicationController
   # before_action :update_user_town, only: [:create]
 
   before_action :authenticate_user!
-  # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
+  # before_action :authenticate_user!, only: [:index, :indicator_file, :edit, :update, :destroy]
   load_and_authorize_resource
 
   # GET /revenues

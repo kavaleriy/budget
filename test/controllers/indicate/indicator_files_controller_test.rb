@@ -11,8 +11,8 @@ class Indicate::IndicatorFilesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:indicate_indicator_files)
   end
 
-  test "should get new" do
-    get :new
+  test "should get indicator_file" do
+    get :indicator_file
     assert_response :success
   end
 

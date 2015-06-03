@@ -11,8 +11,8 @@ class Documentation::DocumentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:documentation_documents)
   end
 
-  test "should get new" do
-    get :new
+  test "should get indicator_file" do
+    get :indicator_file
     assert_response :success
   end
 

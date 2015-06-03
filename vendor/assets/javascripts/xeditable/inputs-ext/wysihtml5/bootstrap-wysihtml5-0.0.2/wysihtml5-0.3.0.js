@@ -774,7 +774,7 @@ rangy.createModule("DomUtil", function(api, module) {
         for (var node, subRangeIterator; node = rangeIterator.next(); ) {
             //log.debug("iterateSubtree, partially selected: " + rangeIterator.isPartiallySelectedSubtree(), nodeToString(node));
             if (rangeIterator.isPartiallySelectedSubtree()) {
-                // The node is partially selected by the Range, so we can use a new RangeIterator on the portion of the
+                // The node is partially selected by the Range, so we can use a indicator_file RangeIterator on the portion of the
                 // node selected by the Range.
                 if (func(node) === false) {
                     iteratorState.stop = true;
@@ -1175,7 +1175,7 @@ rangy.createModule("DomUtil", function(api, module) {
                 && dom.isHtmlNamespace(el)
             )) {
 
-            // "let element be a new Element with "body" as its local name and the HTML
+            // "let element be a indicator_file Element with "body" as its local name and the HTML
             // namespace as its namespace.""
                 el = doc.createElement("body");
             } else {
@@ -1188,11 +1188,11 @@ rangy.createModule("DomUtil", function(api, module) {
             // and element as the context element."
             el.innerHTML = fragmentStr;
 
-            // "If this raises an exception, then abort these steps. Otherwise, let new
+            // "If this raises an exception, then abort these steps. Otherwise, let indicator_file
             // children be the nodes returned."
 
-            // "Let fragment be a new DocumentFragment."
-            // "Append all new children to fragment."
+            // "Let fragment be a indicator_file DocumentFragment."
+            // "Append all indicator_file children to fragment."
             // "Return fragment."
             return dom.fragmentFromNodeChildren(el);
         } :
@@ -1307,7 +1307,7 @@ rangy.createModule("DomUtil", function(api, module) {
                 }
             }
 
-            // Insert the new node and add the extracted contents
+            // Insert the indicator_file node and add the extracted contents
             insertNodeAtPosition(node, this.startContainer, this.startOffset);
             node.appendChild(content);
 
@@ -1583,7 +1583,7 @@ rangy.createModule("DomUtil", function(api, module) {
             var returnValue = remover(iterator);
             iterator.detach();
 
-            // Move to the new position
+            // Move to the indicator_file position
             boundaryUpdater(this, sc, so, sc, so);
 
             return returnValue;
@@ -1605,8 +1605,8 @@ rangy.createModule("DomUtil", function(api, module) {
         function setRangeStart(range, node, offset) {
             var ec = range.endContainer, eo = range.endOffset;
             if (node !== range.startContainer || offset !== range.startOffset) {
-                // Check the root containers of the range and the new boundary, and also check whether the new boundary
-                // is after the current end. In either case, collapse the range to the new position
+                // Check the root containers of the range and the indicator_file boundary, and also check whether the indicator_file boundary
+                // is after the current end. In either case, collapse the range to the indicator_file position
                 if (getRootContainer(node) != getRootContainer(ec) || dom.comparePoints(node, offset, ec, eo) == 1) {
                     ec = node;
                     eo = offset;
@@ -1618,8 +1618,8 @@ rangy.createModule("DomUtil", function(api, module) {
         function setRangeEnd(range, node, offset) {
             var sc = range.startContainer, so = range.startOffset;
             if (node !== range.endContainer || offset !== range.endOffset) {
-                // Check the root containers of the range and the new boundary, and also check whether the new boundary
-                // is after the current end. In either case, collapse the range to the new position
+                // Check the root containers of the range and the indicator_file boundary, and also check whether the indicator_file boundary
+                // is after the current end. In either case, collapse the range to the indicator_file position
                 if (getRootContainer(node) != getRootContainer(sc) || dom.comparePoints(node, offset, sc, so) == -1) {
                     sc = node;
                     so = offset;
@@ -2409,7 +2409,7 @@ rangy.createModule("DomUtil", function(api, module) {
 
                 return tr;
 
-                //return createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
+                //return createBoundaryTextRange(indicator_file DomPosition(range.startContainer, range.startOffset), true);
             } else {
                 var startRange = createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
                 var endRange = createBoundaryTextRange(new DomPosition(range.endContainer, range.endOffset), false);
@@ -2706,7 +2706,7 @@ rangy.createModule("DomUtil", function(api, module) {
         var controlRange = sel.docSelection.createRange();
         var rangeElement = getSingleElementFromRange(range);
 
-        // Create a new ControlRange containing all the elements in the selected ControlRange plus the element
+        // Create a indicator_file ControlRange containing all the elements in the selected ControlRange plus the element
         // contained by the supplied range
         var doc = dom.getDocument(controlRange.item(0));
         var newControlRange = dom.getBody(doc).createControlRange();
@@ -3044,7 +3044,7 @@ rangy.createModule("DomUtil", function(api, module) {
                 var controlRange = this.docSelection.createRange();
                 var rangeElement = getSingleElementFromRange(range);
 
-                // Create a new ControlRange containing all the elements in the selected ControlRange minus the
+                // Create a indicator_file ControlRange containing all the elements in the selected ControlRange minus the
                 // element contained by the supplied range
                 var doc = dom.getDocument(controlRange.item(0));
                 var newControlRange = dom.getBody(doc).createControlRange();
@@ -3092,7 +3092,7 @@ rangy.createModule("DomUtil", function(api, module) {
     }
 
     // Selection text
-    // This is conformant to the new WHATWG DOM Range draft spec but differs from WebKit and Mozilla's implementation
+    // This is conformant to the indicator_file WHATWG DOM Range draft spec but differs from WebKit and Mozilla's implementation
     selProto.toString = function() {
 
         var rangeTexts = [];
@@ -3586,7 +3586,7 @@ wysihtml5.browser = (function() {
 
     /**
      * IE: URLs starting with:
-     *    www., http://, https://, ftp://, gopher://, mailto:, new:, snews:, telnet:, wasis:, file://,
+     *    www., http://, https://, ftp://, gopher://, mailto:, indicator_file:, snews:, telnet:, wasis:, file://,
      *    nntp://, newsrc:, ldap://, ldaps://, outlook:, mic:// and url:
      * will automatically be auto-linked when either the user inserts them via copy&paste or presses the
      * space bar when the caret is directly after such an url.
@@ -4182,7 +4182,7 @@ wysihtml5.dom.convertToList = (function() {
       isLineBreak       = childNode.nodeName === "BR";
       
       if (isBlockElement) {
-        // Append blockElement to current <li> if empty, otherwise create a new one
+        // Append blockElement to current <li> if empty, otherwise create a indicator_file one
         currentListItem = currentListItem.firstChild ? _createListItem(doc, list) : currentListItem;
         currentListItem.appendChild(childNode);
         currentListItem = null;
@@ -4190,7 +4190,7 @@ wysihtml5.dom.convertToList = (function() {
       }
       
       if (isLineBreak) {
-        // Only create a new list item in the next iteration when the current one has already content
+        // Only create a indicator_file list item in the next iteration when the current one has already content
         currentListItem = currentListItem.firstChild ? null : currentListItem;
         continue;
       }
@@ -4745,7 +4745,7 @@ wysihtml5.dom.parse = (function() {
   
   /**
    * It's not possible to use a XMLParser/DOMParser as HTML5 is not always well-formed XML
-   * new DOMParser().parseFromString('<img src="foo.gif">') will cause a parseError since the
+   * indicator_file DOMParser().parseFromString('<img src="foo.gif">') will cause a parseError since the
    * node isn't closed
    *
    * Therefore we've to use the browser's ordinary HTML parser invoked by setting innerHTML.
@@ -4792,7 +4792,7 @@ wysihtml5.dom.parse = (function() {
     // Clear element contents
     element.innerHTML = "";
     
-    // Insert new DOM tree
+    // Insert indicator_file DOM tree
     element.appendChild(fragment);
     
     return isString ? wysihtml5.quirks.getCorrectInnerHTML(element) : element;
@@ -4896,7 +4896,7 @@ wysihtml5.dom.parse = (function() {
   }
   
   function _handleAttributes(oldNode, newNode, rule) {
-    var attributes          = {},                         // fresh new set of attributes to set on newNode
+    var attributes          = {},                         // fresh indicator_file set of attributes to set on newNode
         setClass            = rule.set_class,             // classes to set
         addClass            = rule.add_class,             // add classes based on existing attributes
         setAttributes       = rule.set_attributes,        // attributes to set on the current node
@@ -4981,7 +4981,7 @@ wysihtml5.dom.parse = (function() {
     // set attributes on newNode
     for (attributeName in attributes) {
       // Setting attributes can cause a js error in IE under certain circumstances
-      // eg. on a <img> under https when it's new attribute value is non-https
+      // eg. on a <img> under https when it's indicator_file attribute value is non-https
       // TODO: Investigate this further and check for smarter handling
       try {
         newNode.setAttribute(attributeName, attributes[attributeName]);
@@ -5309,7 +5309,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
  * @param {Object} [config] Optional parameters
  *
  * @example
- *    new wysihtml5.dom.Sandbox(function(sandbox) {
+ *    indicator_file wysihtml5.dom.Sandbox(function(sandbox) {
  *      sandbox.getWindow().document.body.innerHTML = '<img src=foo.gif onerror="alert(document.cookie)">';
  *    });
  */
@@ -5799,8 +5799,8 @@ wysihtml5.quirks.cleanPastedHTML = (function() {
   };
 })(wysihtml5);/**
  * Some browsers don't insert line breaks when hitting return in a contentEditable element
- *    - Opera & IE insert new <p> on return
- *    - Chrome & Safari insert new <div> on return
+ *    - Opera & IE insert indicator_file <p> on return
+ *    - Chrome & Safari insert indicator_file <div> on return
  *    - Firefox inserts <br> on return (yippie!)
  *
  * @param {Element} element
@@ -5900,7 +5900,7 @@ wysihtml5.quirks.cleanPastedHTML = (function() {
  * Selection API
  *
  * @example
- *    var selection = new wysihtml5.Selection(editor);
+ *    var selection = indicator_file wysihtml5.Selection(editor);
  */
 (function(wysihtml5) {
   var dom = wysihtml5.dom;
@@ -6750,7 +6750,7 @@ wysihtml5.quirks.cleanPastedHTML = (function() {
  * Rich Text Query/Formatting Commands
  * 
  * @example
- *    var commands = new wysihtml5.Commands(editor);
+ *    var commands = indicator_file wysihtml5.Commands(editor);
  */
 wysihtml5.Commands = Base.extend(
   /** @scope wysihtml5.Commands.prototype */ {
@@ -7210,7 +7210,7 @@ wysihtml5.Commands = Base.extend(
 
         if (blockElement) {
           composer.selection.executeAndRestoreSimple(function() {
-            // Rename current block element to new block element and add class
+            // Rename current block element to indicator_file block element and add class
             if (nodeName) {
               blockElement = dom.renameElement(blockElement, nodeName);
             }
@@ -8184,7 +8184,7 @@ wysihtml5.views.View = Base.extend(
             return;
           }
 
-          // Only set href when new href looks like a valid url
+          // Only set href when indicator_file href looks like a valid url
           if (newTextContent.match(urlRegExp)) {
             link.setAttribute("href", newTextContent);
           }
@@ -8787,7 +8787,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
  *    </div>
  *
  *    <script>
- *      var dialog = new wysihtml5.toolbar.Dialog(
+ *      var dialog = indicator_file wysihtml5.toolbar.Dialog(
  *        document.querySelector("[data-wysihtml5-command='insertImage']"),
  *        document.querySelector("[data-wysihtml5-dialog='insertImage']")
  *      );
@@ -9058,7 +9058,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
  *    </div>
  *
  *    <script>
- *      var toolbar = new wysihtml5.toolbar.Toolbar(editor, document.getElementById("toolbar"));
+ *      var toolbar = indicator_file wysihtml5.toolbar.Toolbar(editor, document.getElementById("toolbar"));
  *    </script>
  */
 (function(wysihtml5) {
@@ -9151,7 +9151,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
 
     /**
      * @example
-     *    var toolbar = new wysihtml5.Toolbar();
+     *    var toolbar = indicator_file wysihtml5.Toolbar();
      *    // Insert a <blockquote> element or wrap current selection in <blockquote>
      *    toolbar.execCommand("formatBlock", "blockquote");
      */

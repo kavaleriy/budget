@@ -12,7 +12,7 @@ class TownsController < ApplicationController
   def show
   end
 
-  # GET /towns/new
+  # GET /towns/indicator_file
   def new
     @town = Town.new
   end

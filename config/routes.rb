@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     get 'module4/get_rows/:rov_file_id' => 'module4#get_rows'
 
     get 'module5s' => 'module5s#index'
-    get 'module5s/new' => 'module5s#new'
+    get 'module5s/indicator_file' => 'module5s#indicator_file'
     get 'module5s/:id' => 'module5s#show'
     get 'module5s/download/:id' => 'module5s#download'
   end

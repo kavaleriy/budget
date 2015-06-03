@@ -12,17 +12,13 @@
       = link_to file.indicate_file.url do
         %i.fa{ class: "#{get_file_type_icon(file.indicate_file_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{indicate_indicator_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'indicate_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{indicate_indicator_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
 
   .col-sm-1
     = link_to file, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
-
-  $(document).ready(function() {
-    console.log("#{indicate_indicator_file_path(file)}")
-  })
 
   $('.document[data-id="#{file.id}"] a[data-pk]').editable({
     value: {

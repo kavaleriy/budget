@@ -18,7 +18,7 @@ class CalendarsController < ApplicationController
     @people_actions = CalendarAction.where(:holder => '2')
   end
 
-  # GET /calendars/new
+  # GET /calendars/indicator_file
   def new
     @calendar = Calendar.new
   end

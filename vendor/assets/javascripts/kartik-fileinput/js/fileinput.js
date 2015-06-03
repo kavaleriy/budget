@@ -833,8 +833,8 @@
             if ($zone.find('.file-preview-frame').length === 0) {
                 $zone.prepend('<div class="' + self.dropZoneTitleClass + '">' + self.dropZoneTitle + '</div>');
             }
-            self.$container.removeClass('file-input-new');
-            addCss(self.$container, 'file-input-ajax-new');
+            self.$container.removeClass('file-input-indicator_file');
+            addCss(self.$container, 'file-input-ajax-indicator_file');
         },
         initFileActions: function () {
             var self = this;
@@ -953,7 +953,7 @@
             self.$preview.html(out.content);
             self.setCaption(cap);
             if (!isEmpty(out.content)) {
-                self.$container.removeClass('file-input-new');
+                self.$container.removeClass('file-input-indicator_file');
             }
         },
         initPreviewDeletes: function () {
@@ -1120,7 +1120,7 @@
                 self.resetPreview();
                 self.setEllipsis();
                 self.initPreviewDeletes();
-                self.$container.removeClass('file-input-new');
+                self.$container.removeClass('file-input-indicator_file');
             } else {
                 self.getThumbs().each(function () {
                     self.clearObjects($(this));
@@ -1130,7 +1130,7 @@
                 self.setCaption(cap);
                 self.setEllipsis();
                 self.$caption.attr('title', '');
-                addCss(self.$container, 'file-input-new');
+                addCss(self.$container, 'file-input-indicator_file');
             }
             if (self.$container.find('.file-preview-frame').length === 0) {
                 if (!self.initCaption()) {
@@ -1162,7 +1162,7 @@
             self.$container.find('.fileinput-filename').text('');
             self.raise('filereset');
             if (self.initialPreview.length > 0) {
-                self.$container.removeClass('file-input-new');
+                self.$container.removeClass('file-input-indicator_file');
             }
             self.setFileDropZoneTitle();
             self.filestack = [];
@@ -1853,7 +1853,7 @@
                 self.showFileIcon();
             }
             self.setCaption(log, self.isError);
-            self.$container.removeClass('file-input-new file-input-ajax-new');
+            self.$container.removeClass('file-input-indicator_file file-input-ajax-indicator_file');
             if (arguments.length === 1) {
                 self.raise('fileselect', [numFiles, label]);
             }
@@ -1919,7 +1919,7 @@
                 self.$captionContainer.find('.kv-caption-icon').hide();
                 self.$caption.html(self.msgValidationError);
                 self.setEllipsis();
-                self.$container.removeClass('file-input-new file-input-ajax-new');
+                self.$container.removeClass('file-input-indicator_file file-input-ajax-indicator_file');
                 return;
             }
             if (!isAjaxUpload || (isSingleUpload && ctr > 0)) {
@@ -2006,7 +2006,7 @@
         createContainer: function () {
             var self = this,
                 $container = $(document.createElement("span"))
-                    .attr({"class": 'file-input file-input-new'})
+                    .attr({"class": 'file-input file-input-indicator_file'})
                     .html(self.renderMain());
             self.$element.before($container);
             self.initBrowse($container);
