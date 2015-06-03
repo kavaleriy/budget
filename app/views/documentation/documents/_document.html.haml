@@ -13,7 +13,6 @@
         %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
   .col-sm-10
     %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
-
   .col-sm-1
     = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right

@@ -13,7 +13,6 @@ Rails.application.routes.draw do
 
     resources :documents
   end
-
   resources :towns
 
   namespace :vtarnay do
@@ -107,7 +106,7 @@ Rails.application.routes.draw do
   get 'public/calendar/:calendar_id' => 'public#calendar'
 
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
-  post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
+  #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
   post 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#update_files_description'
   delete 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#delete_attachments'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
@@ -119,7 +118,9 @@ Rails.application.routes.draw do
   get 'taxonomies/:taxonomy_id/taxonomy_attachments/:attachment_id' => 'taxonomies#download_attachments'
 
   resources :calendars do
-    resources :events
+    resources :events do
+      resources :event_attachments
+    end
   end
 
   resources :calendar_actions
