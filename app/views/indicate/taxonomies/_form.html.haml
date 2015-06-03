@@ -1,0 +1,29 @@
+:css
+  .documentation {
+    min-height: 400px;
+    padding-top: 15px;
+  }
+
+  .documentation .documents {
+    /*max-height: 400px;*/
+    overflow: auto;
+  }
+
+= content_for :header do
+  .head.pull-left
+    Показники діяльності міста
+
+.documentation
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        Новий документ
+      .new_document.panel-body
+        = render :partial => 'indicate/indicator_files/new_indicator_file', :locals => { :new_file => Indicate::IndicatorFile.new }
+
+    .panel.panel-default
+      .panel-heading
+        Завантажені документи
+      .documents.panel-body
+        = render :partial => 'indicate/indicator_files/indicator_files', :locals => { :files => @indicate_taxonomy.indicate_indicator_files }
+

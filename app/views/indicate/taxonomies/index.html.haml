@@ -1,0 +1,26 @@
+= content_for :header do
+  .head.pull-left
+    Показники діяльності міст
+
+- if @indicate_taxonomies.length > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th.col-sm-4
+          Назва збірки показників
+        %th.col-sm-3
+          Місто
+        %th.col-sm-1
+          Дії
+    %tbody
+    - @indicate_taxonomies.each do |indicate_taxonomy|
+      %tr
+        %td= link_to indicate_taxonomy._id.to_s, indicate_taxonomy
+        %td
+          = indicate_taxonomy.town
+        %td
+          =link_to t('form.edit', :default => t("helpers.links.edit")), edit_indicate_taxonomy_path(indicate_taxonomy), :method => :get, :class => 'btn btn-default btn-xs'
+          =link_to t('form.destroy', :default => t("helpers.links.destroy")), indicate_taxonomy, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+      %br
+
+= link_to t('vtarnay.module5s.index.load'), new_indicate_taxonomy_path, :type => "button", :method => :get, :class => "btn btn-primary"

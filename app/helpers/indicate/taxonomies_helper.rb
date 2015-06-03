@@ -1,0 +1,2 @@
+module Indicate::TaxonomiesHelper
+end
