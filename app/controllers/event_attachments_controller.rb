@@ -3,13 +3,9 @@ class EventAttachmentsController < ApplicationController
   before_action :set_event, only: [:update, :create]
   before_action :set_event_attachment, only: [:update]
 
-
-
-
   # POST /documentation/documents
   # POST /documentation/documents.json
   def create
-    #binding.pry
     @event_attachment = @event.event_attachments.new(event_attachment_params)
     @event_attachment.name = '1'
     #binding.pry
@@ -30,10 +26,8 @@ class EventAttachmentsController < ApplicationController
   def update
     respond_to do |format|
       if @event_attachment.update(event_attachment_params)
-        format.js
-        format.json { render :show, status: :ok, location: @event_attachment }
+        format.json { head :no_content }
       else
-        format.js { render status: :unprocessable_entity }
         format.json { render json: @event_attachment.errors, status: :unprocessable_entity }
       end
     end

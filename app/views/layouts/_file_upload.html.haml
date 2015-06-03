@@ -1,7 +1,5 @@
-
-#binding.pry
 -#calendar_events_event_attachments_path(@event.event_attachments.new)
-= form_for @event.event_attachments.new, url: '/calendars/' + calendar_id + '/events/' + event_id + '/event_attachments', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+= form_for [@calendar, @event, EventAttachment.new], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
 
   - if new_attachment.errors.any?
     #error_explanation
@@ -9,8 +7,6 @@
       %ul
         - new_attachment.errors.full_messages.each do |msg|
           %li= msg
-
-  = f.hidden_field :event_id
 
   .col-sm-6
     .form-group

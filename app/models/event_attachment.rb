@@ -10,7 +10,7 @@ class EventAttachment
   require 'carrierwave/mongoid'
 
 
-  belongs_to :event, class_name: 'Event', autosave: true
+  # belongs_to :event, class_name: 'Event', autosave: true
 
 
 

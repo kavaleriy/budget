@@ -12,33 +12,18 @@
       = link_to event_attachment.doc_file.url do
         %i.fa{ class: "#{get_file_type_icon(event_attachment.doc_file_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document',   'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'name', 'data-type' => 'text', 'data-pk' => "#{event_attachment.id}", 'data-resource' => 'event_attachment', 'data-url' => calendar_event_event_attachment_path(event_attachment.event.calendar.id, event_attachment.event.id, event_attachment.id), 'data-emptytext' => 'Вкажіть назву документа...' }
+      = event_attachment.name
   .col-sm-1
     -#= link_to event_attachment, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
     -#  %i.fa.fa-times.pull-right
 
 :javascript
 
-  $('.document[data-id="#{event_attachment.id}"] a[data-pk]').editable({
-    value: {
-        title: "#{event_attachment.name}",
-        description: "#{event_attachment.description}",
-
-    },
-    validate: function(value) {
-        if (value.title == '') return 'Потрібно вказати ім\'я файла!';
-    },
-    display: function(value) {
-        if(!value) {
-            $(this).empty();
-            return;
-        }
-        console.log(1);
-        var html = '<b>' + $('<div>').text(value.title).html() + '</b>, ';
-        $(this).html(html);
-    }
-  });
+  $('.document a[data-pk="#{event_attachment.id}"]').editable();
   //'data-pk' => calendar_event_event_attachments_path(event_attachment),
 -#/calendars/:calendar_id/events/:event_id/event_attachments
 -#/calendars/546e284f6c6f63de67010000/events/555f09f66c6f630e7c070000/event_attachments/556d472d6c6f6341fa250000
 -#'data-pk' => "#{event_attachment.id}", 'data-url' => "#{'/calendars/' + calendar_id + '/events/' + event_id + '/event_attachments/' + event_attachment.id}",
+
+

@@ -7,8 +7,6 @@ Rails.application.routes.draw do
 
     resources :documents
   end
-  #resources :event_attachments
-  #resources :event_attachments, :path => 'event_attachments'
   resources :towns
 
   namespace :vtarnay do
@@ -115,7 +113,7 @@ Rails.application.routes.draw do
 
   resources :calendars do
     resources :events do
-      resource :event_attachments
+      resources :event_attachments
     end
   end
 
