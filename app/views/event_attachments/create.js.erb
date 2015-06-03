@@ -1,0 +1,6 @@
+<% #binding.pry %>
+<% if @event_attachment.errors.empty? %>
+    $('.attachment_files').prepend('<%= escape_javascript( render :partial => 'attachment', :locals => { :event_attachment => @event_attachment } ) %>')
+<% else %>
+    alert('Помилка завантаження файлу. Перевірте дані'+@event_attachment.errors)
+<% end %>
