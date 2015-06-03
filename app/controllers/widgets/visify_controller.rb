@@ -8,7 +8,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
   def get_bubbletree_data
-    render json: get_bubble_tree
+    params[:levels] ? levels = params[:levels].split(",") : levels = []
+    render json: get_bubble_tree(levels)
   end
 
   def get_bubblesubtree_with_fact
@@ -108,18 +109,20 @@ class Widgets::VisifyController < Widgets::WidgetsController
     I18n.locale = params[:locale]
   end
 
-  def get_bubble_tree
-    tree = @budget_file.get_tree
+  def get_bubble_tree levels
+    tree = @budget_file.get_tree levels
     return if tree.nil?
 
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
+
   end
 
   def get_bubble_tree_item(item, info)
 
-    if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
-      item = item['children'][0]
-    end
+    # commented because in case of levels this instruction switch to children node instead of current_node
+    # if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
+    #   item = item['children'][0]
+    # end
 
     node = {
         'amount' => item['amount'],
@@ -150,7 +153,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
                   else
                     item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
                   end
-
+    # binding.pry
     unless item['children'].nil?
       node['children'] = []
 
@@ -198,6 +201,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
       @data_type = @budget_file.data_type
     end
     @data_type = 'plan' unless @data_type
+    @levels = @taxonomy.columns.keys
+    @file_type = @taxonomy._type
   end
 
   def set_params
@@ -219,7 +224,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def visify_params
-    params.permit(:file_id, :year, :month, :key, :taxonomy)
+    params.permit(:file_id, :year, :month, :key, :taxonomy, :levels)
   end
 
 end

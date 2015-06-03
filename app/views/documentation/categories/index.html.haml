@@ -1,5 +1,4 @@
-= stylesheet_link_tag "themes/default/style.min.css", :media => "all"
-= javascript_include_tag "jstree.js"
+= stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
 
 :css
@@ -14,8 +13,8 @@
   }
 
   .documentation .documents {
-    max-height: 1200px;
-    /*overflow: auto;*/
+    /*max-height: 400px;*/
+    overflow: auto;
   }
 
 = content_for :header do
@@ -97,111 +96,115 @@
 
   $(document).ready(function() {
 
-    $('#category_tree').jstree({
-      "core" : {
-        "animation" : 0,
-        "check_callback" : true,
-        "themes" : { "stripes" : true },
-        'data' : {
-          'url' : function (node) {
-            return node.id === '#' ?
-              'categories_tree_root.json' : 'categories_tree.json';
+    $.getScript("/assets/jstree/jstree.js")
+      .done(function() {
+        $('#category_tree').jstree({
+          "core" : {
+            "animation" : 0,
+            "check_callback" : true,
+            "themes" : { "stripes" : true },
+            'data' : {
+              'url' : function (node) {
+                return node.id === '#' ?
+                  'categories_tree_root.json' : 'categories_tree.json';
+              },
+              'data' : function (node) {
+                return { 'id' : node.id };
+              }
+            },
+            "types" : {
+              "default" : {
+                "icon" : "glyphicon glyphicon-flash"
+              },
+              "demo" : {
+                "icon" : "glyphicon glyphicon-ok"
+              }
+            },
           },
-          'data' : function (node) {
-            return { 'id' : node.id };
-          }
-        },
-        "types" : {
-          "default" : {
-            "icon" : "glyphicon glyphicon-flash"
-          },
-          "demo" : {
-            "icon" : "glyphicon glyphicon-ok"
-          }
-        },
-      },
-      "plugins" : [
-        "contextmenu", "dnd", "search",
-        "state", "types", "wholerow"
-      ]
-
-    })
-    .on('delete_node.jstree', function (e, data) {
-      $.ajax({
-        method: 'DELETE',
-        url: 'categories/' + data.node.id + '.json'
-      })
-      .fail(function () {
-          data.instance.refresh();
-      });
-    })
-    .on('create_node.jstree', function (e, data) {
-      $.ajax({
-        method: 'post',
-        url: '',
-        dataType: 'json',
-        data: {
-          documentation_category: {
-            category_id: data.node.parent,
-            title: data.node.text
-          }
-        }
-      })
-      .done(function (d) {
-        data.instance.set_id(data.node, d.id);
-      })
-      .fail(function () {
-        data.instance.refresh();
-      });
-    })
-    .on('rename_node.jstree', function (e, data) {
-        $.ajax({
-          method: 'PUT',
-          url: 'categories/' + data.node.id + '.json',
-          data: {
-            documentation_category: {
-              title: data.text
-            }
-          }
+          "plugins" : [
+            "contextmenu", "dnd", "search",
+            "state", "types", "wholerow"
+          ]
         })
-        .fail(function () {
+        .on('delete_node.jstree', function (e, data) {
+          $.ajax({
+            method: 'DELETE',
+            url: 'categories/' + data.node.id + '.json'
+          })
+          .fail(function () {
+              data.instance.refresh();
+          });
+        })
+        .on('create_node.jstree', function (e, data) {
+          $.ajax({
+            method: 'post',
+            url: '',
+            dataType: 'json',
+            data: {
+              documentation_category: {
+                category_id: data.node.parent,
+                title: data.node.text
+              }
+            }
+          })
+          .done(function (d) {
+            data.instance.set_id(data.node, d.id);
+          })
+          .fail(function () {
             data.instance.refresh();
-        });
-    })
-    .on('move_node.jstree', function (e, data) {
-        $.ajax({
-          method: 'PUT',
-          url: 'categories/' + data.node.id + '.json',
-          data: {
+          });
+        })
+        .on('rename_node.jstree', function (e, data) {
+            $.ajax({
+              method: 'PUT',
+              url: 'categories/' + data.node.id + '.json',
+              data: {
+                documentation_category: {
+                  title: data.text
+                }
+              }
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+        })
+        .on('move_node.jstree', function (e, data) {
+            $.ajax({
+              method: 'PUT',
+              url: 'categories/' + data.node.id + '.json',
+              data: {
+                documentation_category: {
+                  category_id: data.parent,
+                  position: data.position
+                }
+              }
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+        })
+        .on('copy_node.jstree', function (e, data) {
+          $.post('.json', {
             documentation_category: {
-              category_id: data.parent,
+              category_id: data.node.parent,
+              title: data.node.text,
               position: data.position
             }
-          }
-        })
-        .fail(function () {
+          })
+          .always(function () {
             data.instance.refresh();
-        });
-    })
-    .on('copy_node.jstree', function (e, data) {
-      $.post('.json', {
-        documentation_category: {
-          category_id: data.node.parent,
-          title: data.node.text,
-          position: data.position
-        }
-      })
-      .always(function () {
-        data.instance.refresh();
+          });
+        })
+        .on('changed.jstree', function (e, data) {
+            if(data && data.selected && data.selected.length) {
+                $.get('categories/' + data.selected, function (d) {
+                });
+            }
+            else {
+                $('.documentation #category_content').html('')
+            }
+        })
+      }).fail(function() {
+        console.log("fail")
       });
-    })
-    .on('changed.jstree', function (e, data) {
-        if(data && data.selected && data.selected.length) {
-            $.get('categories/' + data.selected, function (d) {
-            });
-        }
-        else {
-            $('.documentation #category_content').html('')
-        }
-    });
   });

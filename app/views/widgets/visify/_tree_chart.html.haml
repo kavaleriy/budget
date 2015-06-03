@@ -11,11 +11,15 @@
     #chart
     %canvas{:style => "display: none;"}
 
-    = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
+    .pull-right
+      = render partial: 'layouts/export_img', :locals => { container: '#chart' }
 
     .slider.row
       = render partial: 'slider_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+
+    .pull-right
+      = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
 
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
@@ -68,8 +72,15 @@
       var slider = aSliderCompare('#slider_compare');
       var slider_chart = aSliderChart('#slider_chart', slider);
       var sidebar = aSidebar('.visify');
+      var init_levels = JSON.parse('#{@levels.to_json}');
+      var draggable = 1;
+      var file_type = '#{@file_type}';
+      if(file_type == "TaxonomyRot") {
+        draggable = 0;
+      }
 
       var centerNode = null;
+      var last_node = null;
 
       var width;
       document_width = $(document).width();
@@ -81,14 +92,14 @@
       }
       height = width*0.6;
 
-      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop});
+      sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
       slider.initialize(150, {clickCallback: sliderItemClick});
       slider_chart.initialize(250, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
       $("#chart").html('');
       chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick });
 
-      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}", function(data) {
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
         _data = data
         current_data = buildData(_data)
         preprocessData(current_data, 9);
@@ -255,18 +266,32 @@
       }
 
       function ItemClick(node) {
+        sidebar.show(node);
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
         slider.show(node, year);
-        sidebar.show(node);
         chart.set_centerNode(node);
         chart.selectNode(node);
       }
 
-      function ItemDrop(levels, last_node) {
-        console.log("levels", levels);
-        console.log("last node", last_node);
+      function ItemDrop(levels, node) {
+
+        //if(file_type == "TaxonomyRot") {
+        //  levels[0] = "_" + levels[0]
+        //}
+        last_node = node;
+        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+          _data = data
+          centerNode = null;
+          current_data = buildData(_data)
+          preprocessData(current_data, 9);
+          centerNode = last_node;
+
+          chart.set_centerNode(last_node);
+          chart.show(current_data);
+
+        })
       }
 
       // get current data for all visifies
@@ -318,6 +343,9 @@
           });
         }
 
+        if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
+          last_node = node;
+        }
         return node;
       }
     }

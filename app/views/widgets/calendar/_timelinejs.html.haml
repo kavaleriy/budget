@@ -1,30 +1,17 @@
-= javascript_include_tag 'timelinejs/storyjs-embed.js'
-
 #timeline-embed
+
+= javascript_include_tag 'timelinejs/storyjs-embed.js'
 
 :javascript
 
-  //var node = document.createElement("script");
-  //$.extend(node, {
-  //    type: 'text/javascript',
-  //    charset: 'utf-8',
-  //    async: false,
-  //    defer: true,
-  //    src: '/assets/timelinejs/storyjs-embed.js'
-  //});
-  //
-  //$(node).bind('load', function() {
-  //})
-  //$('#timeline-embed')[0].appendChild(node);
-
-  $(document).on('ready page:change', function() {
+  $(document).on("ready", function() {
 
     var source = "/widgets/calendar/timelinejs_data/#{calendar.id}/"
     var curr_slide = "#{calendar.events.where(:starts_at.lte => Date.current).count - 1}"
 
     createStoryJS({
       width:              '100%',
-      height:             '600',
+      height:             '400',
 
       source:             source,
 
@@ -40,3 +27,4 @@
     })
 
   })
+

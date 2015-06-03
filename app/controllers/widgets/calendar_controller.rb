@@ -19,8 +19,9 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
     timeline = {
         'timeline' => {
-            'headline'=>@calendar.title,
-            'type'=>'default',
+            'uniqueid' => "#{@calendar.id}",
+            'headline' => @calendar.title,
+            'type' => 'default',
             'text' => @calendar.description,
             'startDate' => starts_at,
             'asset'=>
@@ -39,8 +40,9 @@ class Widgets::CalendarController < Widgets::WidgetsController
     point = {}
     point['startDate'] = e.starts_at.strftime('%Y,%m,%d')
     point['endDate'] = e.ends_at.strftime('%Y,%m,%d') unless e.ends_at.nil?
-    point['headline'] = "#{holder_to_string(e.holder)} - #{e.title}"
-    point['text'] = e.description
+    point['headline'] = "#{e.title}"
+    point['uniqueid'] = "#{e.id}"
+    # point['text'] = e.description
     point['asset'] =
         {
             'media' => "/assets/calendar/#{media[:img]}",

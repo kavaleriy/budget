@@ -1,6 +1,7 @@
-<% binding.pry %>
-<% if @documentation_document.errors.empty? %>
-    $('.documentation .documents').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => @documentation_document } ) %>')
-<% else %>
-    alert('Помилка завантаження файлу. Перевірте дані')
+<% @documents.each do |doc| %>
+    <% if doc.errors.empty? %>
+        $('.documentation .documents').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => doc } ) %>')
+    <% else %>
+        alert('Помилка завантаження файлу. Перевірте дані')
+    <% end %>
 <% end %>

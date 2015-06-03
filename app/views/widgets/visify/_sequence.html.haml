@@ -7,7 +7,7 @@
     var b = {
           w: 200, h: 45, s: 3, t: 10
         }
-    var self, path;
+    var self, path, init_levels, draggable;
 
     return {
       // Given a node in a partition layout, return an array of all of its ancestor
@@ -37,6 +37,8 @@
         self = this;
         self.clickCallback = options.clickCallback;
         self.dropCallback = options.dropCallback;
+        init_levels = options.levels;
+        draggable = options.draggable;
         // Add the svg area.
         if($("#trail").length <= 0 ) {         // prevent adding new trails when window resize
           var trail = d3.select(aContainer + " #sequence").append("svg:svg")
@@ -67,6 +69,19 @@
         return points.join(" ");
       },
 
+      breadcrumbLevelPoints: function(d, i) {
+        // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+
+        points = []
+        points.push(b.w - 20 + ",0");
+        points.push(b.w + ",0");
+        points.push(b.w + b.t + "," + (b.h / 2));
+        points.push(b.w + "," + b.h);
+        points.push(b.w - 20 + "," + b.h);
+        //this.points = points
+        return points.join(" ");
+      },
+
       // Update the breadcrumb trail to show the current sequence and percentage.
       updateBreadcrumbs: function(nodeArray, percentageString) {
         // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -75,14 +90,16 @@
         $(".sequence_hide").slideDown();       // if sequence block not empty it will be shown
 
         var start_pos = null;
-        var level, last_node;
+        var level, last_node, dragged = 0;
         var drag = d3.behavior.drag()
             .on("dragstart", function(){
+              d3.event.sourceEvent.stopPropagation();
             })
             .on("drag", function(d){
                 if(start_pos === null) {
-                  start_pos = d3.event.x - d.level*b.w;
-                  level = d.level;
+                  level = d.level || d.depth;
+                  start_pos = d3.event.x - level*b.w;
+                  dragged = 1;
                 }
                 if(d3.event.x >= (start_pos + b.w + 3) && d3.event.x <= (start_pos + (path.length-1)*(b.w + 3))) {
                   if(d3.event.x < (start_pos + level*b.w + 3)) {
@@ -109,13 +126,31 @@
                 }
             })
             .on("dragend", function(d){
+                if(dragged != 1) return;
                 start_pos = null;
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
-                var levels = []
+                var levels = [], last_node
                 for(var i in path) {
-                  if(path[i].taxonomy) levels.push(path[i].taxonomy);
+                  var tax = path[i].taxonomy;
+                  if(tax) {
+                    if(tax.charAt(0) == "_") {
+                      tax = tax.substr(1);
+                    }
+                    levels.push(tax);
+                  }
+                  if(path[i] == d && path[i-1]) {
+                    last_node = path[i-1]
+                  }
                 }
-                self.dropCallback(levels, path[path.length-1]);
+                add_levels = init_levels.filter(function(val) {
+                  return levels.indexOf(val) == -1;
+                });
+                if(add_levels) {
+                  for(var i in add_levels) {
+                    levels.push(add_levels[i]);
+                  }
+                }
+                self.dropCallback(levels, last_node);
             });
 
         var g = d3.select(aContainer + " #trail")
@@ -127,15 +162,26 @@
                                 .attr('transform', "translate(0,0)")
                                 .attr("cursor", "pointer")
                                 .attr("class", "draggable")
-                                .attr("id", function(d){ return "drag" + d.level })
+                                .attr("id", function(d){ return "drag" + (d.depth || d.level) })
                                 .on('click', function(d) {
-                                  self.clickCallback(d)
-                                })
-                                .call(drag);
+                                  if (dragged == 1) return;
+                                  self.clickCallback(d);
+                                  d3.event.stopPropagation();
+                                });
+
+        if(draggable == 1) {
+          entering.call(drag);
+        }
 
         entering.append("svg:polygon")
             .attr("points", this.breadcrumbPoints)
             .style("fill", function(d) { return d.color || color(d.label); })
+            .style("stroke", "white")
+
+        entering.append("svg:polygon")
+            .attr("points", this.breadcrumbLevelPoints)
+            .style("fill", function(d) { return d.color || color(d.label); })
+            .style("stroke", "white")
 
         entering.append("svg:text")
             .attr("x", 0)
@@ -143,7 +189,21 @@
             .attr("dy", "0.35em")
             .attr("text-anchor", "cent")
             .text(function(d) { return d.label; })
-            .call(aVisify.helpers.wrap, b.w - 20)
+            .call(aVisify.helpers.wrap, b.w - 40)
+
+        entering.append("svg:text")
+            .attr("x", b.w - 8)
+            .attr("y", 23)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "1.2em")
+            .style("font-weight", "bold")
+            .text(function(d) {
+              if(init_levels.indexOf(d.taxonomy) == -1) {
+                return d.parent ? init_levels.indexOf(d.parent.taxonomy) + 1 : 0;
+              }
+              return init_levels.indexOf(d.taxonomy) + 1;
+            })
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {

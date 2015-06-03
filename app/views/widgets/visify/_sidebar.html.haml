@@ -84,7 +84,7 @@
       },
 
       getLevelInfo: function(node) {
-        $(aContainer + ' #description').html('');
+
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = ''
           if (data.description) {
@@ -99,13 +99,13 @@
             $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
             $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
           }
-        })
 
-        if(node.children.length != 0) {
-            chart.show(node.children);
-            pie.show(node.children);
-            table.show(node.children);
-        }
+          if(node.children && node.children.length != 0) {
+              chart.show(node.children);
+              pie.show(node.children);
+              table.show(node.children);
+          }
+        })
       },
     }
   }

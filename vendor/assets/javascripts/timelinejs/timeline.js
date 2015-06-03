@@ -7554,9 +7554,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 						_date.content			= "";
 						_date.tag				= data.date[i].tag;
 						_date.slug				= data.date[i].slug;
-						_date.uniqueid			= VMM.Util.unique_ID(7);
+						_date.uniqueid			= data.date[i].uniqueid; // VMM.Util.unique_ID(7);
 						_date.classname			= data.date[i].classname;
-						
+
 						
 						_dates.push(_date);
 					} 
@@ -7616,7 +7616,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 					}
 				}
 				
-				_date.uniqueid		= VMM.Util.unique_ID(7);
+				_date.uniqueid		= data.uniqueid; // VMM.Util.unique_ID(7);
 				_date.enddate		= _date.startdate;
 				_date.precisiondate	= do_start.precision;
 				_date.title			= data.headline;
@@ -7984,7 +7984,12 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		};
 		
 		function goToMarker(n, ease, duration, fast, firstrun) {
-			trace("GO TO MARKER");
+
+            trace("GO TO MARKER");
+
+            if (markers[n] == undefined)
+                return
+
 			var _ease		= config.ease,
 				_duration	= config.duration,
 				is_last		= false,
@@ -7992,10 +7997,10 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			
 			current_marker = 	n;
 
-			timenav_pos.left			= (config.width/2) - markers[current_marker].pos_left
-			timenav_pos.visible.left	= Math.abs(timenav_pos.left) - 100;
-			timenav_pos.visible.right	= Math.abs(timenav_pos.left) + config.width + 100;
-			
+            timenav_pos.left = (config.width / 2) - markers[current_marker].pos_left
+            timenav_pos.visible.left = Math.abs(timenav_pos.left) - 100;
+            timenav_pos.visible.right = Math.abs(timenav_pos.left) + config.width + 100;
+
 			if (current_marker == 0) {
 				is_first = true;
 			}

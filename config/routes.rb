@@ -47,6 +47,7 @@ Rails.application.routes.draw do
 
   namespace :widgets do
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
+    get 'visify/get_bubbletree_data/:file_id/:levels' => 'visify#get_bubbletree_data'
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
     get 'visify/get_bubblesubtree_with_fact/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree_with_fact'
     get 'visify/get_bubbletree_nodedata/:file_id/:taxonomy/:key' => 'visify#get_bubbletree_nodedata'

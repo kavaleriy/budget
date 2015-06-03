@@ -7,7 +7,7 @@
 
   var aCalendarPie = function() {
 
-    function init_pie() {
+    function init_pie(options) {
       d3.select('#svg_calendar').selectAll("*").remove()
 
       size = $('#calendar_pies').width()
@@ -48,6 +48,11 @@
           })
           radius = radius - 10;
         })
+
+        if (options && options.loadedCallback) {
+          options.loadedCallback()
+        }
+
       })
     }
 
@@ -65,29 +70,31 @@
       g.append("path")
          .attr("d", arc)
          .style("fill", function(d) { return d.data.color; })
+         .attr("id", function(d) { return (d.data.id == '') ? '' : d.data.id} )
+         .attr("class", "events_path" )
          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+         .attr('stroke-width', 0)
+         .style("stroke", function(d) { return d3.rgb(d.data.color).darker(1); })
          .on("click", function(d) {
-           if(d.data.id == '')
-             return
+           if(d.data.id == '') return
            $.get("/calendars/#{calendar.id}/events/" + d.data.id)
          })
          .on("mouseover", function(d) {
-           //if(d.data.title == '')
-           return
-
-           div.transition()
-             .duration(200)
-             .style("opacity", .95)
-             .style("color", d.data.text_color)
-             .style("background-color", d.data.color);
-           div.html(get_html_for_ev(d))
-             .style("left", (d3.event.pageX - 120) + "px")
-             .style("top", (d3.event.pageY - 28) + "px");
+           //if(d.data.id == '')
+           //return
+           //div.transition()
+           //  .duration(200)
+           //  .style("opacity", .95)
+           //  .style("color", d.data.text_color)
+           //  .style("background-color", d.data.color);
+           //div.html(get_html_for_ev(d))
+           //  .style("left", (d3.event.pageX) + "px")
+           //  .style("top", (d3.event.pageY) + "px");
          })
          .on("mouseout", function(d) {
-           div.transition()
-             .duration(200)
-             .style("opacity", 0);
+           //div.transition()
+           //  .duration(200)
+           //  .style("opacity", 0);
          })
 
          g.append("text")
