@@ -3,6 +3,18 @@ class Vtarnay::Module8sController < ApplicationController
 
   before_action :set_vtarnay_module8, only: [:show, :edit, :update, :destroy]
 
+
+  def search_addr
+    @location = Geocoder.coordinates(params[:q])
+    # @location = Location.near(params[:q], 15, :order => :distance).first if params[:q].present?
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+
   # GET /vtarnay/module8s
   # GET /vtarnay/module8s.json
   def index

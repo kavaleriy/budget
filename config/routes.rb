@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   end
 
   namespace :vtarnay do
-    resources :module8s
+    resources :module8s do
+      get 'search_addr' => 'module8s#search_addr'
+    end
+
   end
 
   namespace :vtarnay do
