@@ -42,10 +42,10 @@ class Indicate::IndicatorsController < ApplicationController
   def update
     respond_to do |format|
       if @indicate_indicator.update(indicate_indicator_params)
-        format.html { redirect_to @indicate_indicator, notice: 'Indicator was successfully updated.' }
-        format.json { render :show, status: :ok, location: @indicate_indicator }
+        format.js {}
+        format.json { head :no_content, status: :updated }
       else
-        format.html { render :edit }
+        format.js { render status: :unprocessable_entity }
         format.json { render json: @indicate_indicator.errors, status: :unprocessable_entity }
       end
     end
@@ -69,6 +69,6 @@ class Indicate::IndicatorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def indicate_indicator_params
-      params[:indicate_indicator]
+      params.require(:indicate_indicator).permit(:comment)
     end
 end

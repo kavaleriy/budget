@@ -21,6 +21,8 @@
         .title=k
         .graph
         .comments
+          %a
+        -#%a{ href: '#', id: 'indicate_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{indicate_indicator_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
 
 = link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
 = link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
@@ -148,7 +150,30 @@
                 .on("mouseout", mouseout)
                 .on("click", mouseclick);
 
-        $('div[data-value="' + k + '"] .comments').text(v[d3.max(years)]['comment']);
+        var indicator_id = v[current_year]['id'];
+        $('div[data-value="' + k + '"] .comments a').text(v[d3.max(years)]['comment'])
+                                                    .attr("href", "#")
+                                                    .attr("id", "indicate_indicator")
+                                                    .attr("data-type", "documentation_document")
+                                                    .attr("data-pk", indicator_id)
+                                                    .attr("data-url", "/indicate/indicators/" + indicator_id);
+
+        $('div[data-value="' + k + '"] .comments a').editable({
+          value: {
+              comment: v[d3.max(years)]['comment'],
+          },
+          validate: function(value) {
+              if (value.comment == '') return 'Потрібно вказати ім\'я файла!';
+          },
+          display: function(value) {
+              if(!value) {
+                  $(this).empty();
+                  return;
+              }
+              var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
+              $(this).html(html);
+          }
+        });
 
         function mouseclick(d) {
           if(d["year"] != current_year) {
