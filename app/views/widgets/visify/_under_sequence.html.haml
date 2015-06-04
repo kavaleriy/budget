@@ -31,7 +31,9 @@
           am = 0
           $.each(node.amount_fond, function(k, v) {
             fond = fonds[k]
-            amountFonds += '<i style="color:' + fond.color + '"class="fa fa-folder-o"></i> ' + fonds[k].title + ' - <b>' + aVisify.helpers.formatNumber(v) + '</b> '
+            if (fond == undefined)
+              fond = { color: 'blue', title: 'Фонд не вказаний' }
+            amountFonds += '<i style="color:' + fond.color + '"class="fa fa-folder-o"></i> ' + fond.title + ' - <b>' + aVisify.helpers.formatNumber(v) + '</b> '
             am += v
           })
           //console.log(node.amount, am, node.amount == am)

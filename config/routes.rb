@@ -19,11 +19,11 @@ Rails.application.routes.draw do
     resources :module7s
   end
 
-  namespace :vtarnay do
-    resources :module8s do
-      get 'search_addr' => 'module8s#search_addr'
+  namespace :repairing do
+    resources :maps do
+      resources :locations
     end
-
+    get 'search_addr' => 'maps#search_addr'
   end
 
   namespace :vtarnay do

@@ -1,0 +1,7 @@
+= bootstrap_form_for @repairing_map, :html => { :class => 'form-vertical' } do |f|
+
+  .form-group
+    = f.text_field :title, label: t('title')
+
+  .actions
+    = f.submit 'Save'

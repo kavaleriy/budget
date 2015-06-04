@@ -1,5 +1,7 @@
-class RepairMap::Location
+class Repairing::Map::Location
   include Mongoid::Document
+
+  belongs_to :map, class_name: 'Repairing::Map', autosave: true
 
   field :street
   def address
