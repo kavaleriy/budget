@@ -3,9 +3,8 @@ class Calendars::EventsController < ApplicationController
   layout false
 
   before_action :set_calendar
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_files_description, :delete_attachments, :download_attachments]
+  before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_attachments, only: [:show]
-  before_action :set_attachment, only: [:update_files_description, :delete_attachments, :download_attachments]
   before_action :set_locale
 
   def set_locale
@@ -71,17 +70,6 @@ class Calendars::EventsController < ApplicationController
   end
 
 
-  def download_attachments
-    file_name = @attachment.name
-    file_path = get_attachment_path file_name, @event.id
-    if File.exist?(file_path)
-      send_file(
-          "#{file_path}",
-          :x_sendfile=>true
-      )
-    end
-  end
-
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
@@ -95,52 +83,7 @@ class Calendars::EventsController < ApplicationController
     end
   end
 
-  # POST/PUT /events/1
-  # POST/PUT /events/1.json
-  def upload_files
-    params[:files].each do |attachment|
-      upload_file attachment, @event.id
-      file = @event.event_attachments.new(
-          :name=>attachment.original_filename,
-      )
-      respond_to do |format|
-        if file.save
-          format.html {
-            render :json => file
-          }
-        else
-          format.json { render json: @budget_file.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
 
-
-  def update_files_description
-    respond_to do |format|
-      @attachment.description = params[:description]
-      if @event.save
-        format.json { render json: @attachment }
-      else
-         format.json { render json: @attachment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-
-  def delete_attachments
-    file_path = get_attachment_path @attachment.name, @event.id
-    respond_to do |format|
-      if File.exist?(file_path)
-        if File.delete(file_path)
-          @attachment.destroy
-          format.json { head "OK" }
-        end
-      else
-        format.json { render json: @attachment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
@@ -154,21 +97,10 @@ class Calendars::EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
 
 
-
   def get_attachment_path filename, event_id
     Rails.root.join('public', 'files', 'attachments', event_id, filename)
   end
 
-
-
-  def upload_file (attachment, event_id)
-    file_name = attachment.original_filename
-    Dir.mkdir('public/files/attachments/' + event_id) unless File.exists?('public/files/attachments/' + event_id)
-    file_path = get_attachment_path file_name, @event.id
-    File.open(file_path, 'wb') do |file|
-      file.write(attachment.read)
-    end
-  end
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
@@ -178,9 +110,7 @@ class Calendars::EventsController < ApplicationController
     @event = @calendar.events.find(params[:id])
   end
 
-  def set_attachment
-    @attachment = @event.event_attachments.find(params[:attachment_id])
-  end
+
   def set_attachments
     @attachments = @event.event_attachments
   end
