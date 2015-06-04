@@ -21,8 +21,9 @@ Rails.application.routes.draw do
 
   namespace :repairing do
     resources :maps do
+      resources :repairs
+      get 'geo_json' => 'maps#geo_json'
     end
-    resources :repairs
     get 'search_addr' => 'maps#search_addr'
   end
 

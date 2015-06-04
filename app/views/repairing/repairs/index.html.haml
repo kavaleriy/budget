@@ -1,4 +1,4 @@
-%h1 Listing repairing_map_repairs
+%h1 Listing repairing_repairs
 
 %table
   %tr
@@ -13,19 +13,19 @@
     %th
     %th
 
-  - @repairing_map_repairs.each do |repairing_map_repair|
+  - @repairing_repairs.each do |repairing_repair|
     %tr
-      %td= repairing_map_repair.title
-      %td= repairing_map_repair.koatuu
-      %td= repairing_map_repair.district
-      %td= repairing_map_repair.street
-      %td= repairing_map_repair.description
-      %td= repairing_map_repair.amount
-      %td= repairing_map_repair.coordinates
-      %td= link_to 'Show', repairing_map_repair
-      %td= link_to 'Edit', edit_repairing_map_repair_path(repairing_map_repair)
-      %td= link_to 'Destroy', repairing_map_repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= repairing_repair.title
+      %td= repairing_repair.koatuu
+      %td= repairing_repair.district
+      %td= repairing_repair.street
+      %td= repairing_repair.description
+      %td= repairing_repair.amount
+      %td= repairing_repair.coordinates
+      %td= link_to 'Show', repairing_repair
+      %td= link_to 'Edit', edit_repairing_repair_path(repairing_repair)
+      %td= link_to 'Destroy', repairing_repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Repair', new_repairing_map_repair_path
+= link_to 'New Repair', new_repairing_repair_path

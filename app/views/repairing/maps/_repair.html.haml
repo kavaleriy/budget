@@ -1,6 +1,17 @@
-.col-xs-12
-  = form_for repair, :html => { :class => 'form-horizontal' } do |f|
+= bootstrap_form_for [map, repair], url: repairing_map_repairs_path(map.id), remote: true do |f|
 
+  .col-sm-3
+    = f.text_field :title
+    = f.text_field :amount
+    = f.text_field :coordinates
+
+  .col-sm-3
+    = f.text_field :koatuu
+    = f.text_field :district
     = f.text_field :street
 
-    = f.submit nil, :class => 'btn btn-primary'
+  .col-sm-6
+    = f.text_area :description, :rows => "8"
+
+  .clear
+  = f.submit 'Save', :class => 'btn btn-primary'

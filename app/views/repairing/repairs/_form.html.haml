@@ -1,9 +1,9 @@
-= form_for @repairing_map_repair do |f|
-  - if @repairing_map_repair.errors.any?
+= form_for @repairing_repair do |f|
+  - if @repairing_repair.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@repairing_map_repair.errors.count, "error")} prohibited this repairing_map_repair from being saved:"
+      %h2= "#{pluralize(@repairing_repair.errors.count, "error")} prohibited this repairing_repair from being saved:"
       %ul
-        - @repairing_map_repair.errors.full_messages.each do |msg|
+        - @repairing_repair.errors.full_messages.each do |msg|
           %li= msg
 
   .field

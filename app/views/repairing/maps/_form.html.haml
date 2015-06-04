@@ -1,7 +1,16 @@
-= bootstrap_form_for @repairing_map, :html => { :class => 'form-vertical' } do |f|
+= form_for @repairing_map do |f|
+  - if @repairing_map.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@repairing_map.errors.count, "error")} prohibited this repairing_map from being saved:"
+      %ul
+        - @repairing_map.errors.full_messages.each do |msg|
+          %li= msg
 
-  .form-group
-    = f.text_field :title, label: t('title')
-
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :town
+    = f.text_field :town
   .actions
     = f.submit 'Save'

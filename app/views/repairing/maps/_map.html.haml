@@ -9,13 +9,12 @@
 :css
   #map {
     width: 100%;
-    height: 500px;
-    margin: 0;
-    padding: 0;
+    height: 600px;
+    /*margin: 0;*/
+    /*padding: 0;*/
   }
 
-=content_for :top do
-  #map
+#map
 
 :javascript
 
@@ -60,6 +59,28 @@
       }
 
       map.on('click', onMapClick);
+
+
+      $.ajax({
+        method: 'get',
+        url: '#{repairing_map_geo_json_path(@repairing_map)}',
+        dataType: 'json',
+      })
+      .done(function (data) {
+        //geojson = $.parseJSON(data)
+        console.log(data)
+        //map.featureLayer.setGeoJSON(geojson)
+      })
+      .fail(function () {
+        alert(1)
+      });
+
+
+      var polygon = L.polyline([
+        [51.509, -0.08],
+        [51.503, -0.06],
+        [51.51, -0.047]
+      ]).addTo(map);
     })
 
   });

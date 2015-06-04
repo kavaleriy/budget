@@ -1,17 +1,21 @@
-%h1 Listing repairing_map
+%h1 Listing repairing_maps
 
 %table
   %tr
+    %th Title
+    %th Town
     %th
     %th
     %th
 
   - @repairing_maps.each do |repairing_map|
     %tr
+      %td= repairing_map.title
+      %td= repairing_map.town
       %td= link_to 'Show', repairing_map
       %td= link_to 'Edit', edit_repairing_map_path(repairing_map)
       %td= link_to 'Destroy', repairing_map, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Module8', new_repairing_map_path
+= link_to 'New Map', new_repairing_map_path

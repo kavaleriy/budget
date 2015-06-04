@@ -1,1 +1,1 @@
-json.extract! @vtarnay_module8, :id, :created_at, :updated_at
+json.extract! @repairing_map, :id, :title, :town, :created_at, :updated_at

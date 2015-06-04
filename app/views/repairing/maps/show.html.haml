@@ -1,14 +1,23 @@
+%p#notice= notice
+
 = content_for :header do
   .head
     %i.fa.fa-map
-    #{@repairing_map.title}
+    = "#{@repairing_map.town}, #{@repairing_map.title}"
 
   .col-xs-4.pull-right
     = render partial: 'search'
 
-= render partial: 'map'
+= content_for :top do
+  = render partial: 'map'
 
-= render partial: 'repair', :locals => { repair: @repairing_map.repairs.new }
+%hr
+
+.panel.panel-default
+  .panel-heading
+    Вибрано на карті
+  .panel-body
+    = render partial: 'repair', :locals => { map: @repairing_map, repair: @repairing_map.repairs.new }
 
 
 = link_to 'Edit', edit_repairing_map_path(@repairing_map)

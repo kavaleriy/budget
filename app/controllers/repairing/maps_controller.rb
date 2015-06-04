@@ -1,14 +1,39 @@
 class Repairing::MapsController < ApplicationController
-  layout 'application_vtarnay'
-
   before_action :set_repairing_map, only: [:show, :edit, :update, :destroy]
-
 
   def search_addr
     @location = Geocoder.coordinates(params[:q])
 
     respond_to do |format|
       format.js
+    end
+  end
+
+  def geo_json
+    geo = Array.new
+
+    repairing_map = Repairing::Map.find(params[:map_id])
+
+    repairing_map.repairs.each do |repair|
+      geo << {
+          type: 'Feature',
+          geometry: {
+              type: 'Point',
+              coordinates: [repair.longitude, repair.latitude]
+          },
+          properties: {
+              name: repair.title,
+              amount: repair.amount,
+              address: repair.address,
+              'marker-color' => '#00607d',
+              'marker-symbol' => 'circle',
+              'marker-size' => 'medium'
+          }
+      }
+    end
+
+    respond_to do |format|
+      format.json { render json: geo}
     end
   end
 
@@ -23,7 +48,7 @@ class Repairing::MapsController < ApplicationController
   def show
   end
 
-  # GET /repairing/maps/indicator_file
+  # GET /repairing/maps/new
   def new
     @repairing_map = Repairing::Map.new
   end
@@ -80,6 +105,6 @@ class Repairing::MapsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_map_params
-      params.require(:repairing_map).permit(:title)
+      params.require(:repairing_map).permit(:title, :town)
     end
 end
