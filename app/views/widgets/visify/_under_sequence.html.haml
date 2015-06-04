@@ -25,19 +25,23 @@
           percParentTitle = ''
         }
 
+        var fond_count = 0
         amountFonds = ''
         if (node.amount_fond) {
           amountFonds = ' <small>'
-          am = 0
           $.each(node.amount_fond, function(k, v) {
             fond = fonds[k]
             if (fond == undefined)
-              fond = { color: 'blue', title: 'Фонд не вказаний' }
+              fond = { color: 'black', title: 'Фонд не вказаний' };
+            else
+              fond_count++
+
             amountFonds += '<i style="color:' + fond.color + '"class="fa fa-folder-o"></i> ' + fond.title + ' - <b>' + aVisify.helpers.formatNumber(v) + '</b> '
-            am += v
           })
-          //console.log(node.amount, am, node.amount == am)
           amountFonds += '</small>'
+
+          if (fond_count == 0)
+            amountFonds = ''
         }
 
         div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;">' + label
