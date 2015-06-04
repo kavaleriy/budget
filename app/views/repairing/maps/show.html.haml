@@ -1,0 +1,10 @@
+= render partial: 'map'
+
+= render partial: 'search'
+
+-#= render partial: 'location', :locals => { location: @repairing_map.locations.new }
+
+
+= link_to 'Edit', edit_repairing_map_path(@repairing_map)
+\|
+= link_to 'Back', repairing_maps_path

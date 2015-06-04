@@ -259,7 +259,7 @@ class Taxonomy
             node = tree
 
             data_type = row['_amount_type'] || dt
-            fond = row['fond']
+            fond = row['fond'] || ''
 
             node[:amount] = {} if node[:amount].nil?
             node[:amount][data_type] = {}  if node[:amount][data_type].nil?
@@ -267,11 +267,10 @@ class Taxonomy
             node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
             node[:amount][data_type][year][month]['total'] += row['amount']
-            unless fond.nil?
-              node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
-              node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
-              node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
-            end
+
+            node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
+            node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
+            node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
 
             columns.each { |taxonomy_key|
               if row[taxonomy_key].nil?

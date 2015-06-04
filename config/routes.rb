@@ -19,11 +19,11 @@ Rails.application.routes.draw do
     resources :module7s
   end
 
-  namespace :vtarnay do
-    resources :module8s do
-      get 'search_addr' => 'module8s#search_addr'
+  namespace :repairing do
+    resources :maps do
+      resources :locations
     end
-
+    get 'search_addr' => 'maps#search_addr'
   end
 
   namespace :vtarnay do
@@ -119,13 +119,13 @@ Rails.application.routes.draw do
   post 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#update_files_description'
   delete 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#delete_attachments'
   get 'taxonomies/:taxonomy_id/taxonomy_attachments/:attachment_id' => 'taxonomies#download_attachments'
-
-  resources :calendars do
-    resources :events do
-      resources :event_attachments
+  namespace :calendars do
+    resources :calendars do
+      resources :events do
+        resources :event_attachments
+      end
     end
   end
-
   resources :calendar_actions
 
 

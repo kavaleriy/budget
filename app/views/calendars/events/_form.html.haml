@@ -6,7 +6,7 @@
 
   %h4#myModalLabel.modal-title= t('.title')
 
-= bootstrap_form_for [@calendar, @event], remote: true, format: :json, :html => { :class => 'form-horizontal', :multipart =>true, :target=>"upload_frame"} do |f|
+= bootstrap_form_for [:calendars,@calendar, @event], remote: true, format: :json, :html => { :class => 'form-horizontal', :multipart =>true, :target=>"upload_frame"} do |f|
   .modal-body.events-modal
     .row
       .btn-group{"data-toggle" => "buttons", :style => "margin-left: 286px;"}
@@ -51,10 +51,10 @@
 
 
   .modal-footer
-    = button_to t('form.save', :default => t("helpers.links.save")), [@calendar, @event], :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :style=>'height: 43px', :params => {:calendar_id => @calendar.id}
+    = button_to t('form.save', :default => t("helpers.links.save")), [:calendars, @calendar, @event], :method => :post, :class => 'btn btn-primary pull-right  col-sm-3', :style=>'height: 43px', :params => {:calendar_id => @calendar.id}
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('form.close')
 
-    = link_to t('form.destroy', :default => t("helpers.links.destroy")), [@calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
+    = link_to t('form.destroy', :default => t("helpers.links.destroy")), [:calendars, @calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
 <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
 :javascript
   $(function () {

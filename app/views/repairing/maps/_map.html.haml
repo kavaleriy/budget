@@ -17,12 +17,6 @@
 =content_for :top do
   #map
 
-= form_tag vtarnay_module8_search_addr_path(@vtarnay_module8), :method => :get, :remote => true, :html => { :class => 'form-vertical' } do |f|
-  = text_field_tag :q, '', class: 'form-control'
-  = submit_tag 'Search', :class => 'btn btn-primary'
-
-
-
 :javascript
 
   $(document).ready(function() {
