@@ -192,13 +192,13 @@
           .delay(delay)
           .attr("width", function(d) { return x(d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0)); })
           .style("fill", function(d) {
-                            var percent = (d.amount_fact || 0)*100/d.amount;
-                            if(d.label != "Інше") {
-                              if(percent < 70) return "#DF0101";
-                              if(percent < 90) return "#F3F781";
-                              if(percent > 90) return "#04B404";
-                            }
-                            return d3.rgb(d.color);
+                            //if (d.amount_fact > 0 && d.label != "Інше") {
+                            //  var percent = d.amount_fact*100 / d.amount;
+                            //  if(percent < 70) return "#DF0101";
+                            //  if(percent < 90) return "#F3F781";
+                            //  if(percent > 90) return "#04B404";
+                            //}
+                            return d3.rgb(d.color)
                          })
 
         svg.transition().duration(250).selectAll(".bar.up")
