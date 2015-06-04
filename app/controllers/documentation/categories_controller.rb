@@ -23,7 +23,7 @@ class Documentation::CategoriesController < ApplicationController
     end
   end
 
-  # GET /documentation/categories/new
+  # GET /documentation/categories/indicator_file
   def new
     @documentation_category = Documentation::Category.new
   end

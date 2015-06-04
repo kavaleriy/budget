@@ -173,9 +173,9 @@ avb.table = function () {
      *
      *   @param {object} node - current node
      *   @param {int} level - current depth
-     *   @param {jquery object} - container to which new row is appended
+     *   @param {jquery object} - container to which indicator_file row is appended
      *
-     *   @return {jquery object} - new row
+     *   @return {jquery object} - indicator_file row
      */
         renderNode = function (node, level, container) {
             // append row to container
@@ -194,7 +194,7 @@ avb.table = function () {
 
 
             $.each(tableStats, function () {
-                // append new cell to row
+                // append indicator_file cell to row
                 var newcell = $('<div class="' + this.cellClass + '"> </div>').appendTo(rendered);
                 if (this.cellFunction) {
                     // function (eg. formatting numerical value)

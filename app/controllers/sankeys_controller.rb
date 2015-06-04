@@ -4,7 +4,7 @@ class SankeysController < ApplicationController
   layout 'visify', only: [:sankey]
 
   before_action :authenticate_user!, only: [:new, :edit]
-  # before_action :authenticate_user!, only: [:index, :new, :edit, :update, :destroy]
+  # before_action :authenticate_user!, only: [:index, :indicator_file, :edit, :update, :destroy]
   load_and_authorize_resource
 
   # GET /sankeys
@@ -21,7 +21,7 @@ class SankeysController < ApplicationController
   def sankey
   end
 
-  # GET /sankeys/new
+  # GET /sankeys/indicator_file
   def new
     @sankey = Sankey.new
     if current_user.has_role? :admin

@@ -696,7 +696,7 @@
 					id = History.store.stateToId[str];
 				}
 				else {
-					// Generate a new ID
+					// Generate a indicator_file ID
 					while ( true ) {
 						id = (new Date()).getTime() + String(Math.random()).replace(/\D/g,'');
 						if ( typeof History.idToState[id] === 'undefined' && typeof History.store.idToState[id] === 'undefined' ) {
@@ -704,7 +704,7 @@
 						}
 					}
 
-					// Apply the new State to the ID
+					// Apply the indicator_file State to the ID
 					History.stateToId[str] = id;
 					History.idToState[id] = newState;
 				}
@@ -1522,7 +1522,7 @@
 		History.safariStatePoll = function(){
 			// Poll the URL
 
-			// Get the Last State which has the new URL
+			// Get the Last State which has the indicator_file URL
 			var
 				urlState = History.extractState(History.getLocationHref()),
 				newState;
@@ -1538,7 +1538,7 @@
 			// Check if we have a state with that url
 			// If not create it
 			if ( !newState ) {
-				//History.debug('History.safariStatePoll: new');
+				//History.debug('History.safariStatePoll: indicator_file');
 				newState = History.createStateObject();
 			}
 
@@ -1723,7 +1723,7 @@
 					newState = History.getStateById(stateId);
 				}
 				else if ( History.expectedStateId ) {
-					// Vanilla: A new state was pushed, and popstate was called manually
+					// Vanilla: A indicator_file state was pushed, and popstate was called manually
 					newState = History.getStateById(History.expectedStateId);
 				}
 				else {
@@ -1766,7 +1766,7 @@
 
 			/**
 			 * History.pushState(data,title,url)
-			 * Add a new State to the history object, become it, and trigger onpopstate
+			 * Add a indicator_file State to the history object, become it, and trigger onpopstate
 			 * We have to trigger for HTML4 compatibility
 			 * @param {object} data
 			 * @param {string} title

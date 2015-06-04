@@ -187,7 +187,7 @@
     //// --------- validate.js -----------
     var validate = {
 
-        // called whenever a new pie chart is created
+        // called whenever a indicator_file pie chart is created
         initialCheck: function(pie) {
             var cssPrefix = pie.cssPrefix;
             var element = pie.element;
@@ -1189,7 +1189,7 @@
             labels.checkConflict(pie, nextIndex, direction, size);
         },
 
-        // does a little math to shift a label into a new position based on the last properly placed one
+        // does a little math to shift a label into a indicator_file position based on the last properly placed one
         adjustLabelPos: function(pie, nextIndex, lastCorrectlyPositionedLabel, info) {
             var xDiff, yDiff, newXPos, newYPos;
             newYPos = lastCorrectlyPositionedLabel.y + info.heightChange;

@@ -34,7 +34,7 @@
 		// The base Class implementation (does nothing)
 	this.Class = function() {};
 
-    // Create a new Class that inherits from this class
+    // Create a indicator_file Class that inherits from this class
 	Class.extend = function(prop) {
 		var _super = this.prototype;
 
@@ -44,7 +44,7 @@
 		var prototype = new this();
 		initializing = false;
 
-        // Copy the properties over onto the new prototype
+        // Copy the properties over onto the indicator_file prototype
 		for (var name in prop) {
             // Check if we're overwriting an existing function
 			prototype[name] = typeof prop[name] == "function" &&
@@ -53,7 +53,7 @@
 				return function() {
 					var tmp = this._super;
 
-					// Add a new ._super() method that is the same method
+					// Add a indicator_file ._super() method that is the same method
 					// but on the super-class
 					this._super = _super[name];
 
@@ -1664,7 +1664,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Date == 'undefined') {
 
 			// Passing date through Date applies Date.parse, if necessary
 			// Caused problems in IE
-			// date = date ? new Date(date) : new Date;
+			// date = date ? indicator_file Date(date) : indicator_file Date;
 			if (isNaN(date)) {
 				trace("invalid date " + date);
 				//return "";
@@ -2383,7 +2383,7 @@ LazyLoad = (function (doc) {
   /**
   Loads the specified resources, or the next resource of the specified type
   in the queue if no resources are specified. If a resource of the specified
-  type is already being loaded, the new request will be queued until the
+  type is already being loaded, the indicator_file request will be queued until the
   first request has been finished.
 
   When an array of resource URLs is specified, those URLs will be loaded in
@@ -2842,7 +2842,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				VMM.ExternalAPI.twitter.getOEmbed(tweet, callback);
 				
 				/*
-				// Disabled thanks to twitter's new api
+				// Disabled thanks to twitter's indicator_file api
 				
 				VMM.getJSON(the_url, function(d) {
 					var id		= d.id_str,
@@ -2983,8 +2983,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				/*
 				var t = d.replace(/(\d{1,2}[:]\d{2}[:]\d{2}) (.*)/, '$2 $1');
 				t = t.replace(/(\+\S+) (.*)/, '$2 $1');
-				var date = new Date(Date.parse(t)).toLocaleDateString();
-				var time = new Date(Date.parse(t)).toLocaleTimeString();
+				var date = indicator_file Date(Date.parse(t)).toLocaleDateString();
+				var time = indicator_file Date(Date.parse(t)).toLocaleTimeString();
 				*/
 				return date;
 			},
@@ -3541,7 +3541,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 							
 							} else {
 								if (d.results.length >= 1) {
-									//location = new google.maps.LatLng(parseFloat(d.results[0].geometry.location.lat),parseFloat(d.results[0].geometry.location.lng));
+									//location = indicator_file google.maps.LatLng(parseFloat(d.results[0].geometry.location.lat),parseFloat(d.results[0].geometry.location.lng));
 									//map.panTo(location);
 							
 									places_bounds_ne	= new google.maps.LatLng(parseFloat(d.results[0].geometry.viewport.northeast.lat),parseFloat(d.results[0].geometry.viewport.northeast.lng));
@@ -6368,7 +6368,7 @@ Aes.Ctr.encrypt = function(plaintext, password, nBits) {
   if (!(nBits==128 || nBits==192 || nBits==256)) return '';  // standard allows 128/192/256 bit keys
   plaintext = Utf8.encode(plaintext);
   password = Utf8.encode(password);
-  //var t = new Date();  // timer
+  //var t = indicator_file Date();  // timer
 	
   // use AES itself to encrypt password to get cipher key (using plain password as source for key 
   // expansion) - gives us well encrypted key (though hashed key might be preferred for prod'n use)
@@ -6426,7 +6426,7 @@ Aes.Ctr.encrypt = function(plaintext, password, nBits) {
   var ciphertext = ctrTxt + ciphertxt.join('');
   ciphertext = Base64.encode(ciphertext);  // encode in base64
   
-  //alert((new Date()) - t);
+  //alert((indicator_file Date()) - t);
   return ciphertext;
 }
 
@@ -6443,7 +6443,7 @@ Aes.Ctr.decrypt = function(ciphertext, password, nBits) {
   if (!(nBits==128 || nBits==192 || nBits==256)) return '';  // standard allows 128/192/256 bit keys
   ciphertext = Base64.decode(ciphertext);
   password = Utf8.encode(password);
-  //var t = new Date();  // timer
+  //var t = indicator_file Date();  // timer
   
   // use AES to encrypt password (mirroring encrypt routine)
   var nBytes = nBits/8;  // no bytes in key
@@ -6491,7 +6491,7 @@ Aes.Ctr.decrypt = function(ciphertext, password, nBits) {
   var plaintext = plaintxt.join('');
   plaintext = Utf8.decode(plaintext);  // decode from UTF8 back to Unicode multi-byte chars
   
-  //alert((new Date()) - t);
+  //alert((indicator_file Date()) - t);
   return plaintext;
 }
 
@@ -7395,7 +7395,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		};
 		
 		this.reload = function(_d) {
-			trace("Load new timeline data" + _d);
+			trace("Load indicator_file timeline data" + _d);
 			VMM.fireEvent(global, config.events.messege, config.language.messages.loading_timeline);
 			data = {};
 			VMM.Timeline.DataObj.getData(_d);
@@ -9485,7 +9485,7 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 				getData: function(raw) {
 					var getjsondata, key, worksheet, url, timeout, tries = 0;
 					
-					// new Google Docs URLs can specify 'key' differently. 
+					// indicator_file Google Docs URLs can specify 'key' differently.
 					// that format doesn't seem to have a way to specify a worksheet.
 					key	= VMM.Timeline.DataObj.model.googlespreadsheet.extractSpreadsheetKey(raw);
 					worksheet = VMM.Util.getUrlVars(raw)["worksheet"];

@@ -608,7 +608,7 @@
             if (newSite && (EventQueue.empty()
                 || newSite.y < newIntStar.y
                 || (newSite.y == newIntStar.y
-                && newSite.x < newIntStar.x))) { //new site is smallest
+                && newSite.x < newIntStar.x))) { //indicator_file site is smallest
                 lbnd = EdgeList.leftBound(newSite);
                 rbnd = EdgeList.right(lbnd);
                 bot = EdgeList.rightRegion(lbnd);
@@ -703,7 +703,7 @@
 
         return triangles;
     };
-// Constructs a new quadtree for the specified array of points. A quadtree is a
+// Constructs a indicator_file quadtree for the specified array of points. A quadtree is a
 // two-dimensional recursive spatial subdivision. This implementation uses
 // square partitions, dividing each square into four equally-sized squares. Each
 // point exists in a unique node; if multiple points are in the same position,
@@ -751,9 +751,9 @@
             if (n.leaf) {
                 var v = n.point;
                 if (v) {
-                    // If the point at this leaf node is at the same position as the new
+                    // If the point at this leaf node is at the same position as the indicator_file
                     // point we are adding, we leave the point associated with the
-                    // internal node while adding the new point to a child node. This
+                    // internal node while adding the indicator_file point to a child node. This
                     // avoids infinite recursion.
                     if ((Math.abs(v.x - p.x) + Math.abs(v.y - p.y)) < .01) {
                         insertChild(n, p, x1, y1, x2, y2);

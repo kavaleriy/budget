@@ -12,7 +12,7 @@ class SubscribersController < ApplicationController
   def show
   end
 
-  # GET /subscribers/new
+  # GET /subscribers/indicator_file
   def new
     @subscriber = Subscriber.new
   end

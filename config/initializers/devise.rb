@@ -82,7 +82,7 @@ Devise.setup do |config|
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
-  # requests for sign in and sign up, you need to get a new CSRF token
+  # requests for sign in and sign up, you need to get a indicator_file CSRF token
   # from the server. You can disable this option at your own risk.
   # config.clean_up_csrf_token_on_authentication = true
 
@@ -118,7 +118,7 @@ Devise.setup do |config|
 
   # If true, requires any email changes to be confirmed (exactly the same way as
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
-  # db field (see migrations). Until confirmed, new email is stored in
+  # db field (see migrations). Until confirmed, indicator_file email is stored in
   # unconfirmed_email column, and copied to email column on successful confirmation.
   config.reconfirmable = true
 
@@ -200,8 +200,8 @@ Devise.setup do |config|
   # config.encryptor = :sha512
 
   # ==> Scopes configuration
-  # Turn scoped views on. Before rendering "sessions/new", it will first check for
-  # "users/sessions/new". It's turned off by default because it's slower if you
+  # Turn scoped views on. Before rendering "sessions/indicator_file", it will first check for
+  # "users/sessions/indicator_file". It's turned off by default because it's slower if you
   # are using only default views.
   # config.scoped_views = false
 
@@ -228,7 +228,7 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # Add a indicator_file OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 

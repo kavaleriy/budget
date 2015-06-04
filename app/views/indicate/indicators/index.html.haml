@@ -1,0 +1,17 @@
+%h1 Listing indicate_indicators
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @indicate_indicators.each do |indicate_indicator|
+    %tr
+      %td= link_to 'Show', indicate_indicator
+      %td= link_to 'Edit', edit_indicate_indicator_path(indicate_indicator)
+      %td= link_to 'Destroy', indicate_indicator, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Indicator', new_indicate_indicator_path

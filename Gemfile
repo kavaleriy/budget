@@ -102,3 +102,6 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 
 # https://github.com/JangoSteve/remotipart
 gem 'remotipart', '~> 1.2'
+
+# http://railscasts.com/episodes/273-geocoder
+gem 'geocoder'

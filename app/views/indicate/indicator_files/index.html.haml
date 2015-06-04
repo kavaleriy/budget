@@ -1,0 +1,17 @@
+%h1 Listing indicate_indicator_files
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @indicate_indicator_files.each do |indicate_indicator_file|
+    %tr
+      %td= link_to 'Show', indicate_indicator_file
+      %td= link_to 'Edit', edit_indicate_indicator_file_path(indicate_indicator_file)
+      %td= link_to 'Destroy', indicate_indicator_file, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Indicator file', new_indicate_indicator_file_path

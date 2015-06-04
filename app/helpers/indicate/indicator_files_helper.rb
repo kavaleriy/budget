@@ -1,0 +1,2 @@
+module Indicate::IndicatorFilesHelper
+end

@@ -13,7 +13,7 @@ class Documentation::DocumentsController < ApplicationController
   def show
   end
 
-  # GET /documentation/documents/new
+  # GET /documentation/documents/indicator_file
   def new
     @documentation_document = Documentation::Document.new
   end

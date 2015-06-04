@@ -117,7 +117,7 @@ var vis4loadingItem = function(url, id, type, ldr) {
 /*
  * usage:
  *
- * var ldr = new vis4loader();
+ * var ldr = indicator_file vis4loader();
  * ldr.add('data.txt', 'id1');
  * ldr.add('data/employes.tsv', 'employes', 'tsv');
  * ldr.add('data/list.json', 'list', 'json');

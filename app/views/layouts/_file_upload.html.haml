@@ -1,5 +1,5 @@
-= form_for [:calendars, @calendar, @event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
 
+= form_for [:calendars, @calendar, @event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
   - if new_attachment.errors.any?
     #error_explanation
       %h2= "#{pluralize(new_attachment.errors.count, "error")} prohibited this documentation_document from being saved:"

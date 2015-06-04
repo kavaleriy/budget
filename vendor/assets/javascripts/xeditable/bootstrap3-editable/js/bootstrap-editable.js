@@ -200,7 +200,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             e.stopPropagation();
             e.preventDefault();
             
-            //get new value from input
+            //get indicator_file value from input
             var newValue = this.input.input2value(); 
 
             //validation: if validate returns string or truthy value - means error
@@ -274,7 +274,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 @event save 
                 @param {Object} event event object
                 @param {Object} params additional params
-                @param {mixed} params.newValue raw new value
+                @param {mixed} params.newValue raw indicator_file value
                 @param {mixed} params.submitValue submitted value as string
                 @param {Object} params.response ajax response
 
@@ -436,7 +436,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @default null
         @example
         url: function(params) {
-            var d = new $.Deferred;
+            var d = indicator_file $.Deferred;
             if(params.value === 'abc') {
                 return d.reject('error message'); //returning error via deferred object
             } else {
@@ -504,7 +504,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         defaultValue: null,
         /**
         Strategy for sending data on server. Can be `auto|always|never`.
-        When 'auto' data will be sent on server **only if pk and url defined**, otherwise new value will be stored locally.
+        When 'auto' data will be sent on server **only if pk and url defined**, otherwise indicator_file value will be stored locally.
 
         @property send 
         @type string
@@ -1192,7 +1192,7 @@ Applied as jQuery method.
 
         save: function(e, params) {
             /**        
-            Fired when new value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
+            Fired when indicator_file value was submitted. You can use <code>$(this).data('editableContainer')</code> inside handler to access to editableContainer instance
             
             @event save 
             @param {Object} event event object
@@ -1217,7 +1217,7 @@ Applied as jQuery method.
         },
 
         /**
-        Sets new option
+        Sets indicator_file option
         
         @method option(key, value)
         @param {string} key 
@@ -1684,11 +1684,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         },  
         
         /**
-        Sets new option
+        Sets indicator_file option
         
         @method option(key, value)
         @param {string|object} key option name or object with several options
-        @param {mixed} value option new value
+        @param {mixed} value option indicator_file value
         @example
         $('.editable').editable('option', 'pk', 2);
         **/          
@@ -1714,7 +1714,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 this.setValue(value);
             }
             
-            //transfer new option to container! 
+            //transfer indicator_file option to container!
             if(this.container) {
                 this.container.option(key, value);  
             }
@@ -1869,11 +1869,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }, 10);
             }
             
-            //set new value
+            //set indicator_file value
             this.setValue(params.newValue, false, params.response);
             
             /**        
-            Fired when new value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
+            Fired when indicator_file value was submitted. You can use <code>$(this).data('editable')</code> to access to editable instance
             
             @event save 
             @param {Object} event event object
@@ -1895,9 +1895,9 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         },
         
         /**
-        Sets new value of editable
+        Sets indicator_file value of editable
         @method setValue(value, convertStr)
-        @param {mixed} value new value 
+        @param {mixed} value indicator_file value
         @param {boolean} convertStr whether to convert value from string to internal format
         **/         
         setValue: function(value, convertStr, response) {
@@ -2027,7 +2027,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             /**
             This method collects values from several editable elements and submit them all to server.   
             Internally it runs client-side validation for all fields and submits only in case of success.  
-            See <a href="#newrecord">creating new records</a> for details.  
+            See <a href="#newrecord">creating indicator_file records</a> for details.
             Since 1.5.1 `submit` can be applied to single element to send data programmatically. In that case
             `url`, `success` and `error` is taken from initial options and you can just call `$('#username').editable('submit')`. 
             
@@ -2040,7 +2040,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             @param {function} options.success(obj,config) success handler
             @returns {Object} jQuery object
             **/
-            case 'submit':  //collects value, validate and submit to server for creating new record
+            case 'submit':  //collects value, validate and submit to server for creating indicator_file record
                 var config = arguments[1] || {},
                 $elems = this,
                 errors = this.editable('validate');
@@ -3069,7 +3069,7 @@ $(function(){
                 return '';
             }
 
-            var regex = new RegExp(String.fromCharCode(10), 'g');
+            var regex = indicator_file RegExp(String.fromCharCode(10), 'g');
             var lines = html.split(/<br\s*\/?>/i);
             for (var i = 0; i < lines.length; i++) {
                 var text = $('<div>').html(lines[i]).text();
@@ -4415,7 +4415,7 @@ $(function(){
         format: 'DD-MM-YYYY HH:mm',      
         //in this format items in dropdowns are displayed
         template: 'D / MMM / YYYY   H : mm',
-        //initial value, can be `new Date()`    
+        //initial value, can be `indicator_file Date()`
         value: null,                       
         minYear: 1970,
         maxYear: 2015,
@@ -4749,7 +4749,7 @@ Editableform based on Twitter Bootstrap 3
         },               
 
         /**
-        * move popover to new position. This function mainly copied from bootstrap-popover.
+        * move popover to indicator_file position. This function mainly copied from bootstrap-popover.
         */
         /*jshint laxcomma: true, eqeqeq: false*/
         setPosition: function () { 
@@ -5668,7 +5668,7 @@ Editableform based on Twitter Bootstrap 3
 				for (var i=0; i<mag; i++)
 					// ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
 					new_date = this.moveMonth(new_date, dir);
-				// ...then reset the day, keeping it in the new month
+				// ...then reset the day, keeping it in the indicator_file month
 				new_month = new_date.getUTCMonth();
 				new_date.setUTCDate(day);
 				test = function(){ return new_month != new_date.getUTCMonth(); };
@@ -6560,7 +6560,7 @@ $(function(){
             //see https://github.com/smalot/bootstrap-datetimepicker/pull/80
             this.$input.on('changeMode', function(e) {
                 var f = $(this).closest('form').parent();
-                //timeout here, otherwise container changes position before form has new size
+                //timeout here, otherwise container changes position before form has indicator_file size
                 setTimeout(function(){
                     f.triggerHandler('resize');
                 }, 0);

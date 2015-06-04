@@ -149,7 +149,7 @@
                     self._appState = iframe_hash;
                     locationWrapper.put(iframe_hash);
                     self.callback(iframe_hash); 
-                } else {                              // user loaded new bookmark
+                } else {                              // user loaded indicator_file bookmark
                     self._appState = location_hash;  
                     iframeWrapper.put(location_hash);
                     self.callback(location_hash);

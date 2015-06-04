@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  namespace :indicate do
+    resources :taxonomies
+    resources :indicators
+    resources :indicator_files
+  end
+
   namespace :documentation do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
@@ -14,7 +20,10 @@ Rails.application.routes.draw do
   end
 
   namespace :vtarnay do
-    resources :module8s
+    resources :module8s do
+      get 'search_addr' => 'module8s#search_addr'
+    end
+
   end
 
   namespace :vtarnay do
@@ -38,7 +47,7 @@ Rails.application.routes.draw do
     get 'module4/get_rows/:rov_file_id' => 'module4#get_rows'
 
     get 'module5s' => 'module5s#index'
-    get 'module5s/new' => 'module5s#new'
+    get 'module5s/indicator_file' => 'module5s#indicator_file'
     get 'module5s/:id' => 'module5s#show'
     get 'module5s/download/:id' => 'module5s#download'
   end
