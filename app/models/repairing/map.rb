@@ -3,5 +3,5 @@ class Repairing::Map
 
   field :title
 
-  has_many :locations, :class_name => 'Repairing::Map::Location', autosave: true, :dependent => :destroy
+  has_many :repairs, :class_name => 'Repairing::Repair', autosave: true, :dependent => :destroy
 end

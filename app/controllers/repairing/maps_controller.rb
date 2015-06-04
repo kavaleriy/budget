@@ -80,6 +80,6 @@ class Repairing::MapsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_map_params
-      params[:repairinging]
+      params.require(:repairing_map).permit(:title)
     end
 end

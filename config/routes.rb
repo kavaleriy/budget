@@ -21,8 +21,8 @@ Rails.application.routes.draw do
 
   namespace :repairing do
     resources :maps do
-      resources :locations
     end
+    resources :repairs
     get 'search_addr' => 'maps#search_addr'
   end
 

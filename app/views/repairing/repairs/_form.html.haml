@@ -1,0 +1,31 @@
+= form_for @repairing_map_repair do |f|
+  - if @repairing_map_repair.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@repairing_map_repair.errors.count, "error")} prohibited this repairing_map_repair from being saved:"
+      %ul
+        - @repairing_map_repair.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :koatuu
+    = f.text_field :koatuu
+  .field
+    = f.label :district
+    = f.text_field :district
+  .field
+    = f.label :street
+    = f.text_field :street
+  .field
+    = f.label :description
+    = f.text_field :description
+  .field
+    = f.label :amount
+    = f.text_field :amount
+  .field
+    = f.label :coordinates
+    = f.text_field :coordinates
+  .actions
+    = f.submit 'Save'

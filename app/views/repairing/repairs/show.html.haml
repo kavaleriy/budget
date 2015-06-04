@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @repairing_map_repair.title
+%p
+  %b Koatuu:
+  = @repairing_map_repair.koatuu
+%p
+  %b District:
+  = @repairing_map_repair.district
+%p
+  %b Street:
+  = @repairing_map_repair.street
+%p
+  %b Description:
+  = @repairing_map_repair.description
+%p
+  %b Amount:
+  = @repairing_map_repair.amount
+%p
+  %b Coordinates:
+  = @repairing_map_repair.coordinates
+
+= link_to 'Edit', edit_repairing_map_repair_path(@repairing_map_repair)
+\|
+= link_to 'Back', repairing_map_repairs_path

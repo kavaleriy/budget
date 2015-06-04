@@ -1,8 +1,14 @@
+= content_for :header do
+  .head
+    %i.fa.fa-map
+    #{@repairing_map.title}
+
+  .col-xs-4.pull-right
+    = render partial: 'search'
+
 = render partial: 'map'
 
-= render partial: 'search'
-
--#= render partial: 'location', :locals => { location: @repairing_map.locations.new }
+= render partial: 'repair', :locals => { repair: @repairing_map.repairs.new }
 
 
 = link_to 'Edit', edit_repairing_map_path(@repairing_map)
