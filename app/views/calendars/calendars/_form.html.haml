@@ -1,4 +1,4 @@
-= form_for @calendar, :html => { :class => 'form-vertical' } do |f|
+= form_for [:calendars, @calendar], :html => { :class => 'form-vertical' } do |f|
   .form-group
     = f.label :title, t('.name'), :class => 'control-label'
     .controls
@@ -18,4 +18,4 @@
     .controls
       = f.select :countdown_event, @calendar.events.all.countdown_events.collect {|p| [ "#{holder_to_string(p.holder)}: #{p.title}, #{p.starts_at.to_date}", p.id ] }, {prompt: t('.select_event')}, :class => 'form-control'
   = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
-  = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendars_path, :class => 'btn btn-default'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendars_calendars_path, :class => 'btn btn-default'

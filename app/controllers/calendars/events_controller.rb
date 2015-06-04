@@ -1,4 +1,4 @@
-class EventsController < ApplicationController
+class Calendars::EventsController < ApplicationController
   include ApplicationHelper
   layout false
 

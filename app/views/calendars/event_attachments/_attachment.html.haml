@@ -1,0 +1,22 @@
+-#=binding.pry
+
+%tr.document{'data-id' => "#{event_attachment.id}"}
+  %td
+    - if event_attachment.doc_file?
+      = link_to event_attachment.doc_file.url do
+        %i.fa{ class: "#{get_file_type_icon(event_attachment.doc_file_identifier)}" }
+  %td
+    %a{ href: '#', id: 'name', 'data-type' => 'text', 'data-pk' => "#{event_attachment.id}", 'data-resource' => 'event_attachment', 'data-url' => calendars_calendar_event_event_attachment_path(event_attachment.event.calendar.id, event_attachment.event.id, event_attachment.id), 'data-emptytext' => 'Вкажіть назву файлу...' }
+      = event_attachment.name
+  %td
+    %a{ href: '#', id: 'description', 'data-type' => 'text', 'data-pk' => "#{event_attachment.id}", 'data-resource' => 'event_attachment', 'data-url' => calendars_calendar_event_event_attachment_path(event_attachment.event.calendar.id, event_attachment.event.id, event_attachment.id), 'data-emptytext' => 'Вкажіть опис файлу...' }
+      = event_attachment.description
+  %td
+    = link_to calendars_calendar_event_event_attachment_path(event_attachment.event.calendar.id, event_attachment.event.id, event_attachment), :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+      %i.fa.fa-times.pull-right
+
+
+
+
+
+

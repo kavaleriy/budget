@@ -17,7 +17,7 @@
     .form-group
       %label
         Файл
-      = f.file_field :doc_file, multiple: true, :class => 'form-control'
+      = f.file_field :doc_file,:class => 'form-control'
 
 
   .actions
@@ -25,11 +25,6 @@
       %i.fa.fa-upload
         Завантажити
 
-.panel.panel-default
-  .panel-heading
-    Завантажені файли
-  .attachment_files.panel-body
-    =render :partial => 'calendars/event_attachments/attachments', :locals => { :attachments => @attachments, :calendar_id=>@calendar.id, :event_id=>@event.id}
 
 :javascript
   $(document).ready(function() {
