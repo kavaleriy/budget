@@ -151,19 +151,22 @@
                 .on("click", mouseclick);
 
         var indicator_id = v[current_year]['id'];
-        $('div[data-value="' + k + '"] .comments a').text(v[d3.max(years)]['comment'])
+        $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
                                                     .attr("href", "#")
                                                     .attr("id", "indicate_indicator")
                                                     .attr("data-type", "documentation_document")
                                                     .attr("data-pk", indicator_id)
                                                     .attr("data-url", "/indicate/indicators/" + indicator_id);
 
+        $.fn.editable.defaults.mode = 'inline';
         $('div[data-value="' + k + '"] .comments a').editable({
+          url: "/indicate/indicators/" + indicator_id,
+          pk: indicator_id,
           value: {
-              comment: v[d3.max(years)]['comment'],
+              comment: v[current_year]['comment'],
           },
           validate: function(value) {
-              if (value.comment == '') return 'Потрібно вказати ім\'я файла!';
+              if (value.comment == '') return 'Потрібно вказати коментар!';
           },
           display: function(value) {
               if(!value) {
@@ -171,6 +174,7 @@
                   return;
               }
               var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
+              v[current_year]['comment'] = value.comment;
               $(this).html(html);
           }
         });
@@ -180,7 +184,37 @@
             $('div[data-value="' + k + '"]').find(".active_point").attr("class", " ").attr("stroke", "none").attr("r","8");
             $(this).attr("class", "active_point").attr("r","10");
             current_year = d["year"];
-            $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+            var indicator_id = v[current_year]['id'];
+
+            $('div[data-value="' + k + '"] .comments a').editable('destroy');
+            $('div[data-value="' + k + '"] .comments a').html('');
+
+            $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+                                                        .attr("data-pk", indicator_id)
+                                                        .attr("data-url", "/indicate/indicators/" + indicator_id);
+
+            $('div[data-value="' + k + '"] .comments a').editable({
+              params: function(params) {  //params already contain `name`, `value` and `pk`
+                  params.pk = indicator_id;
+                  return params;
+              },
+              value: {
+                  comment: v[current_year]['comment'],
+              },
+              validate: function(value) {
+                  if (value.comment == '') return 'Потрібно вказати коментар!';
+              },
+              display: function(value) {
+                  if(!value) {
+                      $(this).empty();
+                      return;
+                  }
+                  var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
+                  v[current_year]['comment'] = value.comment;
+                  $(this).html(html);
+              }
+            });
+
           }
         }
 

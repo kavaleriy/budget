@@ -40,6 +40,7 @@ class Indicate::IndicatorsController < ApplicationController
   # PATCH/PUT /indicate/indicators/1
   # PATCH/PUT /indicate/indicators/1.json
   def update
+    # binding.pry
     respond_to do |format|
       if @indicate_indicator.update(indicate_indicator_params)
         format.js {}
