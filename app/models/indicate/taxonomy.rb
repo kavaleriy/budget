@@ -22,6 +22,7 @@ class Indicate::Taxonomy
         indicators[group][name][year] = {} if indicators[group][name][year].nil?
         indicators[group][name][year]['comment'] = indicator['comment']
         indicators[group][name][year]['value'] = indicator['value']
+        indicators[group][name][year]['id'] = indicator._id.to_s
       }
     }
     indicators

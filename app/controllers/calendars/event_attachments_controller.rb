@@ -1,14 +1,15 @@
-class EventAttachmentsController < ApplicationController
-  before_action :set_calendar, only: [:update, :create]
-  before_action :set_event, only: [:update, :create]
-  before_action :set_event_attachment, only: [:update]
+class Calendars::EventAttachmentsController < ApplicationController
+  before_action :set_calendar, only: [:update, :create, :destroy]
+  before_action :set_event, only: [:update, :create, :destroy]
+  before_action :set_event_attachment, only: [:update, :destroy]
 
   # POST /documentation/documents
   # POST /documentation/documents.json
   def create
+    # binding.pry
     @event_attachment = @event.event_attachments.new(event_attachment_params)
-    @event_attachment.name = '1'
-    #binding.pry
+    @event_attachment.name = params[:event_attachment][:doc_file].original_filename;
+
     respond_to do |format|
       if @event_attachment.save
         format.js {
@@ -25,7 +26,10 @@ class EventAttachmentsController < ApplicationController
   # PATCH/PUT /documentation/documents/1.json
   def update
     respond_to do |format|
-      if @event_attachment.update(event_attachment_params)
+      @event_attachment.attributes = params[:event_attachment]
+
+      if @event.save
+          # binding.pry
         format.json { head :no_content }
       else
         format.json { render json: @event_attachment.errors, status: :unprocessable_entity }
@@ -36,7 +40,7 @@ class EventAttachmentsController < ApplicationController
   # DELETE /documentation/documents/1
   # DELETE /documentation/documents/1.json
   def destroy
-    @documentation_document.destroy
+    @event_attachment.destroy
     respond_to do |format|
       format.js
       format.json { head :no_content }

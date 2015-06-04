@@ -1,4 +1,4 @@
-class CalendarsController < ApplicationController
+class Calendars::CalendarsController < ApplicationController
   before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
   before_action :authenticate_user!, only: [:show, :edit]
@@ -35,7 +35,7 @@ class CalendarsController < ApplicationController
 
     respond_to do |format|
       if @calendar.save
-        format.html { redirect_to @calendar, notice: t('calendar.create') }
+        format.html { redirect_to [:calendars, @calendar], notice: t('calendar.create') }
         format.json { render :show, status: :created, location: @calendar }
       else
         format.html { render :new }
@@ -63,7 +63,7 @@ class CalendarsController < ApplicationController
   def destroy
     @calendar.destroy
     respond_to do |format|
-      format.html { redirect_to calendars_url, notice: t('calendar.delete') }
+      format.html { redirect_to calendars_calendars_url, notice: t('calendar.delete') }
       format.json { head :no_content }
     end
   end

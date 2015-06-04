@@ -119,13 +119,13 @@ Rails.application.routes.draw do
   post 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#update_files_description'
   delete 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#delete_attachments'
   get 'taxonomies/:taxonomy_id/taxonomy_attachments/:attachment_id' => 'taxonomies#download_attachments'
-
-  resources :calendars do
-    resources :events do
-      resources :event_attachments
+  namespace :calendars do
+    resources :calendars do
+      resources :events do
+        resources :event_attachments
+      end
     end
   end
-
   resources :calendar_actions
 
 
