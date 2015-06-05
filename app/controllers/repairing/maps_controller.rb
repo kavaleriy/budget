@@ -19,25 +19,25 @@ class Repairing::MapsController < ApplicationController
   def geo_json
     geo = Array.new
 
-    repairing_map = Repairing::Map.find(params[:map_id])
-
-    repairing_map.repairs.each do |repair|
-      geo << {
-          type: 'Feature',
-          geometry: {
-              type: 'Point',
-              coordinates: [repair.longitude, repair.latitude]
-          },
-          properties: {
-              name: repair.title,
-              amount: repair.amount,
-              address: repair.address,
-              'marker-color' => '#00607d',
-              'marker-symbol' => 'circle',
-              'marker-size' => 'medium'
-          }
-      }
-    end
+    # repairing_map = Repairing::Map.find(params[:map_id])
+    #
+    # repairing_map.repairs.each do |repair|
+    #   geo << {
+    #       type: 'Feature',
+    #       geometry: {
+    #           type: 'Point',
+    #           coordinates: [repair.longitude, repair.latitude]
+    #       },
+    #       properties: {
+    #           name: repair.title,
+    #           amount: repair.amount,
+    #           address: repair.address,
+    #           'marker-color' => '#00607d',
+    #           'marker-symbol' => 'circle',
+    #           'marker-size' => 'medium'
+    #       }
+    #   }
+    # end
 
     respond_to do |format|
       format.json { render json: geo}
