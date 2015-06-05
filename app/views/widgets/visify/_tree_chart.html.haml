@@ -18,9 +18,6 @@
       = render partial: 'slider_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
 
-    .pull-right
-      = render partial: 'embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
-
   = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
 
   = render partial: 'helpers'
@@ -350,29 +347,4 @@
       }
     }
 
-
-    $(document).ready(function() {
-
-      I18n.locale = window.aHelper.lang();
-
-      function set_visiframe_inframe() {
-
-        if (window.top != window.self) {
-          src = window.location.href;
-          $('#embed_visual input').val("<iframe width='900' height='600' src='" + src + "'></iframe>")
-          $('.tab-content iframe').attr('src', src)
-          $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
-                                                                <option value=\"default\" selected>900x1200</option>\
-                                                                <option value=\"900\">1350x1900</option>\
-                                                                <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-          $('#embed_visual').find('.iframe_other_size').html("");
-        } else {
-          $('.embed_btn').html("");
-        }
-
-      }
-
-      set_visiframe_inframe();
-
-    })
   });
