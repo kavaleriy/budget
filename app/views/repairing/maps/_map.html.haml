@@ -40,17 +40,6 @@
       L.Icon.Default.imagePath = '/assets/leaflet/images'
 
 
-      var marker = L.marker([49.2336, 28.45514], {
-        draggable: true,
-      }).addTo(map);
-      popupContent =  '<div class="popup">' +
-        '<h3> + properties.name + </h3>' +
-        '<p> + properties.address + </p>' +
-        '</div>'
-
-      marker.bindPopup(popupContent).openPopup();
-
-
       var popup = L.popup();
       function onMapClick(e) {
           popup
