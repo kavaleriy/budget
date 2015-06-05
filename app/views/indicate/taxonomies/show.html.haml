@@ -188,7 +188,7 @@
                                                         .attr("data-url", "/indicate/indicators/" + indicator_id);
 
             $('div[data-value="' + k + '"] .comments a').editable('option', 'url', "/indicate/indicators/" + indicator_id);
-
+            $('div[data-value="' + k + '"] .comments a').editable('option', 'value', {comment: v[current_year]['comment']});
           }
         }
 
