@@ -22,14 +22,14 @@
 :javascript
 
   $(document).ready(function() {
-    $.when(
-      $.getScript( "/assets/leaflet/leaflet.js" ),
-      $.getScript( "/assets/leaflet/leaflet-routing-machine.js" ),
-      $.Deferred(function( deferred ){
-          $( deferred.resolve );
-      })
-    ).done(function(){
-
+    //$.when(
+    //  //$.getScript( "/assets/leaflet/leaflet.js" ),
+    //  //$.getScript( "/assets/leaflet/leaflet-routing-machine.js" ),
+    //  $.Deferred(function( deferred ){
+    //      $( deferred.resolve );
+    //  })
+    //).done(function(){
+    //
       var map = L.map('map', { scrollWheelZoom : false} ).setView([49.2336, 28.45514], 8)
 
       window.lmap = map
@@ -96,6 +96,6 @@
 
       //var rlayer = L.layerGroup([routing]);
       //map.removeLayer(rlayer)
-    })
+    //})
 
   });
