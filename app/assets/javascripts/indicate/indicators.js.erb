@@ -1,14 +1,14 @@
 (function ($) {
     "use strict";
 
-    var Documentation_document = function (options) {
-        this.init('documentation_document', options, Documentation_document.defaults);
+    var Indicate_indicator = function (options) {
+        this.init('indicate_indicator', options, Indicate_indicator.defaults);
     };
 
     //inherit from Abstract input
-    $.fn.editableutils.inherit(Documentation_document, $.fn.editabletypes.abstractinput);
+    $.fn.editableutils.inherit(Indicate_indicator, $.fn.editabletypes.abstractinput);
 
-    $.extend(Documentation_document.prototype, {
+    $.extend(Indicate_indicator.prototype, {
         /**
          Renders input from tpl
 
@@ -130,11 +130,11 @@
         }
     });
 
-    Documentation_document.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+    Indicate_indicator.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<div class="editable"><label><span>Кометар: </span><input type="text" name="comment" class="input-small"></label></div>',
         inputclass: ''
     });
 
-    $.fn.editabletypes.documentation_document = Documentation_document;
+    $.fn.editabletypes.indicate_indicator = Indicate_indicator;
 
 }(window.jQuery));

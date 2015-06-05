@@ -22,7 +22,6 @@
         .graph
         .comments
           %a
-        -#%a{ href: '#', id: 'indicate_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{indicate_indicator_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
 
 = link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
 = link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
@@ -154,7 +153,7 @@
         $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
                                                     .attr("href", "#")
                                                     .attr("id", "indicate_indicator")
-                                                    .attr("data-type", "documentation_document")
+                                                    .attr("data-type", "indicate_indicator")
                                                     .attr("data-pk", indicator_id)
                                                     .attr("data-url", "/indicate/indicators/" + indicator_id);
 
