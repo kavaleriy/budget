@@ -69,6 +69,6 @@ class Repairing::RepairsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_repair_params
-      params.require(:repairing_repair).permit(:title, :koatuu, :district, :street, :description, :amount, :coordinate1s)
+      params.require(:repairing_repair).permit(:title, :koatuu, :district, :street, :description, :amount, :repair_date, :coordinates => [])
     end
 end

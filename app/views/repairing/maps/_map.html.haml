@@ -21,6 +21,7 @@
   $(document).ready(function() {
     $.when(
       $.getScript( "/assets/leaflet/leaflet.js" ),
+      $.getScript( "/assets/leaflet/leaflet-routing-machine.js" ),
       $.Deferred(function( deferred ){
           $( deferred.resolve );
       })
@@ -63,7 +64,7 @@
 
       $.ajax({
         method: 'get',
-        url: '#{repairing_map_geo_json_path(@repairing_map)}',
+        url: '#{geo_json_repairing_map_path(@repairing_map)}',
         dataType: 'json',
       })
       .done(function (data) {
@@ -72,15 +73,37 @@
         //map.featureLayer.setGeoJSON(geojson)
       })
       .fail(function () {
-        alert(1)
       });
 
 
-      var polygon = L.polyline([
-        [51.509, -0.08],
-        [51.503, -0.06],
-        [51.51, -0.047]
-      ]).addTo(map);
+      // routing machine
+      var router = L.Routing.osrm()
+      window.lrouter = router
+
+
+      //var polygon = L.polyline(
+      //  L.Routing.waypoint(
+      //    [
+      //      L.latLng(49.18125, 28.32413),
+      //      L.latLng(49.22926, 28.45871),
+      //    ]
+      //  ).waypoints
+      //).addTo(map);
+
+
+
+      //routeControl = L.Routing.waypoint(
+      //  [
+      //    L.latLng(49.18125, 28.32413),
+      //    L.latLng(49.22926, 28.45871),
+      //  ]
+      //).addTo(map);
+      //
+      //console.log(L.Routing.Itinerary)
+      //console.log(routeControl.getWaypoints())
+
+      //var rlayer = L.layerGroup([routing]);
+      //map.removeLayer(rlayer)
     })
 
   });

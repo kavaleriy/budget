@@ -1,0 +1,13 @@
+var map = window.lmap
+
+var marker = L.marker( <%= @location.to_s %>, {
+    draggable: true
+}).addTo(map);
+
+popupContent = '<div class="popup">' +
+'<h3> + properties.name + </h3>' +
+'<p> + properties.address + </p>' +
+'</div>'
+
+
+marker.bindPopup(popupContent).openPopup();

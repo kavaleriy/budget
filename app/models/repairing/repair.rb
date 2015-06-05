@@ -9,6 +9,7 @@ class Repairing::Repair
   field :street, type: String
   field :description, type: String
   field :amount, type: Float
+  field :repair_date, type: Date
   field :coordinates, type: Array
 
   def address

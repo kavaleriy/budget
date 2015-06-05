@@ -1,7 +1,9 @@
-.col-sm-4
 = form_tag repairing_search_addr_path, :method => :get, :remote => true, :html => { :class => 'form-vertical' } do |f|
   .input-group.input-group-sm
-    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
+    .col-sm-6
+      = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
+    .col-sm-6
+      = text_field_tag :q1, '', :class => 'form-control', :placeholder => "#{t('.search1')}"
     %span.input-group-btn
       = submit_tag 'Search', :class => 'btn btn-primary' do
         %i.fa.fa-search.fa-lg

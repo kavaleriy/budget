@@ -20,11 +20,13 @@ Rails.application.routes.draw do
   end
 
   namespace :repairing do
-    resources :maps do
-      resources :repairs
-      get 'geo_json' => 'maps#geo_json'
-    end
     get 'search_addr' => 'maps#search_addr'
+    resources :maps do
+      member do
+        get 'geo_json'
+      end
+      resources :repairs
+    end
   end
 
   namespace :vtarnay do

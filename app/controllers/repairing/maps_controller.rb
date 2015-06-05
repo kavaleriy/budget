@@ -3,9 +3,16 @@ class Repairing::MapsController < ApplicationController
 
   def search_addr
     @location = Geocoder.coordinates(params[:q])
+    @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
     respond_to do |format|
-      format.js
+      if @location1
+        format.js { render :search_street }
+      elsif @location
+        format.js { render :search_house }
+      else
+        format.js
+      end
     end
   end
 

@@ -1,0 +1,10 @@
+var waypoints = [], line;
+
+waypoints.push({ latLng: L.latLng(<%= @location %>) });
+waypoints.push({ latLng: L.latLng(<%= @location1 %>) });
+
+route = window.lrouter.route(waypoints, function(err, routes) {
+    line = L.Routing.line(routes[0]).addTo(window.lmap);
+    console.log(routes)
+});
+
