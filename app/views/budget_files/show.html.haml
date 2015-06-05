@@ -14,29 +14,10 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
-  -#%a.link_to_embed_code=t('iframe.show_embed_code')
-  -##embed_visual.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-  -#  = render partial: 'embed'
-  -#  %span.embed_label=t('iframe.select')
-  -#  %select.iframe_size_select#visual
-  -#  .iframe_other_size
-
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
--#= link_to t('.edit', :default => t("helpers.links.edit")), edit_budget_file_path(@budget_file), :class => 'btn btn-default'
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
   = t('.editinfo')
--#%button.btn.btn-primary.svg_export
--#  %i.fa.fa-file-image-o
--#  = t('export')
+= render partial: 'widgets/visify/embed_code', :locals => { data_width: "900px", data_height: "600px", data_name: "bubbletree", data_id: "visual" }
 
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
-
-
-:javascript
-
-  $(document).ready(function() {
-    $('.svg_export').on("click", function() {
-      $("iframe").contents().find("#export").trigger("click");
-    })
-  })
