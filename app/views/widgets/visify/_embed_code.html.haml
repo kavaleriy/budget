@@ -1,10 +1,15 @@
 :css
+
   .popover {
     width: 300px;
   }
 
   .popover-title {
     font-weight: bold;
+  }
+
+  .embed_code {
+    display: inline;
   }
 
   .form-horizontal {
@@ -50,113 +55,129 @@
   %button.btn.btn-primary.btn_embed{"data-toggle" => "popover"}
     %i.fa.fa-code
 
-#embed_visual.embed_hide.embed{'data-width' => data_width, 'data-height' => data_height, 'data-name' => data_name}
+.embed-hide{'style' => 'display: none;'}
   .form-horizontal
     .form-group
       %input.form-control{'readonly' => 'readonly'}
-    -if data_name != "timelinejs"
-      %table
-        %tr
-          %td
-            =t('iframe.select')
-          %td
-            %select.form-control.iframe_size_select{ :id => data_id}
-        %tr
-          %td
-          %td.iframe_other_size
+    %table
+      %tr
+        %td
+          =t('iframe.select')
+        %td
+          %select.form-control.iframe_size_select
+      %tr
+        %td
+        %td.iframe_other_size
 
 :javascript
 
-  $(document).ready(function() {
+  function aEmbedCode() {
 
-    I18n.locale = window.aHelper.lang();
+    var el_id, width, height, src;
 
-    $('.embed_btn').find('[data-toggle="popover"]').popover({
-      html: true,
-      placement : 'left',
-      title: I18n.t('embed'),
-      content: function() {
-        var content = "";
-        src = $('iframe').attr('src');
-        $('#embed_visual input').val("<iframe width='900' height='1200' src='" + src + "'></iframe>")
-        $('#embed_visual').find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
-                                                              <option value=\"default\" selected>900x1200</option>\
-                                                              <option value=\"900\">1350x1900</option>\
-                                                              <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-        $('#embed_visual').find('.iframe_other_size').html("");
-        content = $('#embed_visual .form-horizontal');
-        return content;
-      }
-    })
+    function reset() {
+      $('.iframe_other_size').html('');
+      $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>")
+      $(el_id).find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
+                                                 <option value=\"default\" selected>" + width + "x" + height + "</option>" +
+                                                "<option value=\"900\">1350x1900</option>\
+                                                 <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+    }
 
-    // hide popover if click outside
-    $('body').on('click', function (e) {
-        $('[data-toggle="popover"]').each(function () {
-            //the 'is' for buttons that trigger popups
-            //the 'has' for icons within a button that triggers a popup
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                $(this).popover('hide');
-            }
+    return {
+      initialize: function(options) {
+        I18n.locale = window.aHelper.lang();
+        width = options.width;
+        height = options.height;
+        el_id = options.el_id;
+        src = options.src;
+
+        $('.embed_btn').find('[data-toggle="popover"]').popover({
+          html: true,
+          placement : 'left',
+          title: I18n.t('embed'),
+          content: function() {
+            var content = "";
+            $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>")
+            $(el_id).find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
+                                                                  <option value=\"default\" selected>" + width + "x" + height + "</option>" +
+                                                                  "<option value=\"900\">1350x1900</option>\
+                                                                  <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+            $(el_id).find('.iframe_other_size').html("");
+            content = $(el_id + ' .form-horizontal');
+            return content;
+          }
+        })
+
+        // hide popover if click outside
+        $('body').on('click', function (e) {
+            $('[data-toggle="popover"]').each(function () {
+                //the 'is' for buttons that trigger popups
+                //the 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
         });
-    });
 
-    $(document.body).on('hide.bs.popover', function (){
-      console.log('change')
-    })
-
-    $(document.body).on('shown.bs.popover', function () {
-      $('.iframe_size_select').change(function(e) {
-          var option = $(this).find(":selected").val();
-          if(option == "other" && $('.iframe_other_size').text() == "") {
-              $('.iframe_other_size').html("<input autofocus type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"width\" placeholder=\"width\"'></input> X \
-                                            <input type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"height\" placeholder=\"height\"'></input> px");
-          } else if (option != "other") {
-              $('.iframe_other_size').html('');
-              var size = $(this).find(":selected").text().split("x");
-              var width = size[0];
-              var height = size[1];
-              var frame_url = $('.popover-content input').val().split("src='")[1];
-              document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
-          }
-      })
-
-      // function to dynamically fill the embed code with indicator_file width and height
-      $('.iframe_other_size').on('focusout', 'input', function(event){
-          var curr_value = $(this).val();
-          var sibling_value = $(this).siblings().val();
-          if(!$.isNumeric(curr_value)) {
-              curr_value = 100;
-          } else if(curr_value < 100) {
-              curr_value = 100;
-          } else if(curr_value > 1500) {
-              curr_value = 1500;
-          }
-          if(sibling_value != "") {
-              if(sibling_value < 100) {
-                  sibling_value = 100;
-              } else if(sibling_value > 1500) {
-                  sibling_value = 1500;
+        $(document.body).on('shown.bs.popover', function () {
+          $('.iframe_size_select').change(function(e) {
+              var option = $(this).find(":selected").val();
+              if(option == "other" && $('.iframe_other_size').text() == "") {
+                  $('.iframe_other_size').html("<input autofocus type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"width\" placeholder=\"width\"'></input> X \
+                                                <input type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"height\" placeholder=\"height\"'></input> px");
+              } else if (option != "other") {
+                  $('.iframe_other_size').html('');
+                  var size = $(this).find(":selected").text().split("x");
+                  var width = size[0];
+                  var height = size[1];
+                  var frame_url = $('.popover-content input').val().split("src='")[1];
+                  document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
               }
-              var width, height;
-              if($(this).attr('name') == "width") {
-                  width = curr_value;
-                  height = sibling_value;
-              } else {
-                  width = sibling_value;
-                  height = curr_value;
+          })
+
+          // function to dynamically fill the embed code with indicator_file width and height
+          $('.iframe_other_size').on('focusout', 'input', function(event){
+              var curr_value = $(this).val();
+              var sibling_value = $(this).siblings().val();
+              if(!$.isNumeric(curr_value)) {
+                  curr_value = 100;
+              } else if(curr_value < 100) {
+                  curr_value = 100;
+              } else if(curr_value > 1500) {
+                  curr_value = 1500;
               }
-              //if($('#sankey_chart')) {
-              //    if(width < 900) width = 900;
-              //    if(height < 500) height = 500;
-              //}
-              var frame_url = $('.popover-content input').val().split("src='")[1];
-              document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
-          }
-      });
-    })
+              if(sibling_value != "") {
+                  if(sibling_value < 100) {
+                      sibling_value = 100;
+                  } else if(sibling_value > 1500) {
+                      sibling_value = 1500;
+                  }
+                  var width, height;
+                  if($(this).attr('name') == "width") {
+                      width = curr_value;
+                      height = sibling_value;
+                  } else {
+                      width = sibling_value;
+                      height = curr_value;
+                  }
+                  //if($('#sankey_chart')) {
+                  //    if(width < 900) width = 900;
+                  //    if(height < 500) height = 500;
+                  //}
+                  var frame_url = $('.popover-content input').val().split("src='")[1];
+                  document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
+              }
+          });
+        })
 
-    $("#embed_visual input").on("click", function () {
-        $(this).select();
-    });
-
-  })
+        $(el_id + " input").on("click", function () {
+            $(this).select();
+        });
+      },
+      set_iframe: function(src) {
+        reset();
+        $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+      }
+    }
+  }

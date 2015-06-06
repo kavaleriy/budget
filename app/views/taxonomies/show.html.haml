@@ -14,34 +14,7 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
-  -#%a.link_to_embed_code=t('iframe.show_embed_code')
-  -##embed_tax.embed_hide.embed{'data-width' => '900px', 'data-height' => '600px', 'data-name' => 'bubbletree'}
-  -#  = render partial: 'embed'
-  -#  %span.embed_label=t('iframe.select')
-  -#  %select.iframe_size_select#tax
-  -#  .iframe_other_size
-
 = link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
 = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@taxonomy), :class => 'btn btn-primary'
-
-:javascript
-  $(document).on('ready page:change', function() {
-    function set_visiframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@taxonomy.id}" + '/?' + query
-      $('#embed_tax input').val("<iframe width='900' height='600' src='" + frame_url + "'></iframe>")
-      $('.tab-content iframe').attr('src', frame_url)
-      $('#embed_tax').find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                                            <option value=\"500\">500x500</option>\
-                                                            <option value=\"default\" selected>900x600</option>\
-                                                            <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $('#embed_tax').find('.iframe_other_size').html("");
-    }
-
-    set_visiframe('bubbletree')
-
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe(this.href.split('#')[1])
-    });
-  })
+#embed_code_visify.embed_code
+  = render partial: 'widgets/visify/embed_code'

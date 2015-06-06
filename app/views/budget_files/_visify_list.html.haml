@@ -27,13 +27,16 @@
     %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_collapsible')
 
-
-
 :javascript
   $(document).ready(function() {
 
+    var embed_code = aEmbedCode();
+    var budget_file = "#{id}"
+    var src = window.location.host + "/widgets/visify/bubbletree/" + budget_file;
+    embed_code.initialize({width: 900, height: 1200, el_id: "#embed_code_visify", src: src});
+
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_visiframe(this.href.split('#')[1]);
+      embed_code.set_iframe(window.location.host + "/widgets/visify/" + $(this).attr('href').split('#')[1] + "/" + budget_file);
     });
 
   })
