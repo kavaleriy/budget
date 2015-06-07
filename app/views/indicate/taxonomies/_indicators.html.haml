@@ -19,8 +19,11 @@
 :javascript
 
   var num_of_years = 3;
+  var current_user;
 
   $(document).ready(function(){
+    current_user = "#{@current_user}";
+
     create_graphs(num_of_years);
 
     $('#year_list a').click(function(e) {
@@ -140,31 +143,36 @@
                 .on("click", mouseclick);
 
         var indicator_id = v[current_year]['id'];
-        $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
-                                                    .attr("href", "#")
-                                                    .attr("id", "indicate_indicator")
-                                                    .attr("data-type", "indicate_indicator")
-                                                    .attr("data-pk", indicator_id)
-                                                    .attr("data-url", "/indicate/indicators/" + indicator_id);
 
-        $.fn.editable.defaults.mode = 'inline';
-        $('div[data-value="' + k + '"] .comments a').editable({
-          value: {
-              comment: v[current_year]['comment'],
-          },
-          validate: function(value) {
-              if (value.comment == '') return 'Потрібно вказати коментар!';
-          },
-          display: function(value) {
-              if(!value) {
-                  $(this).empty();
-                  return;
-              }
-              var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
-              v[current_year]['comment'] = value.comment;
-              $(this).html(html);
-          }
-        });
+        if(current_user) {
+          $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+                                                      .attr("href", "#")
+                                                      .attr("id", "indicate_indicator")
+                                                      .attr("data-type", "indicate_indicator")
+                                                      .attr("data-pk", indicator_id)
+                                                      .attr("data-url", "/indicate/indicators/" + indicator_id);
+          $.fn.editable.defaults.mode = 'inline';
+          $('div[data-value="' + k + '"] .comments a').editable({
+            value: {
+                comment: v[current_year]['comment'],
+            },
+            validate: function(value) {
+                if (value.comment == '') return 'Потрібно вказати коментар!';
+            },
+            display: function(value) {
+                if(!value) {
+                    $(this).empty();
+                    return;
+                }
+                var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
+                v[current_year]['comment'] = value.comment;
+                $(this).html(html);
+            }
+          });
+        } else {
+          $('div[data-value="' + k + '"] .comments').html('');
+          $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+        }
 
         function mouseclick(d) {
           if(d["year"] != current_year) {
@@ -173,12 +181,16 @@
             current_year = d["year"];
             var indicator_id = v[current_year]['id'];
 
-            $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
-                                                        .attr("data-pk", indicator_id)
-                                                        .attr("data-url", "/indicate/indicators/" + indicator_id);
+            if(current_user) {
+              $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+                                                          .attr("data-pk", indicator_id)
+                                                          .attr("data-url", "/indicate/indicators/" + indicator_id);
 
-            $('div[data-value="' + k + '"] .comments a').editable('option', 'url', "/indicate/indicators/" + indicator_id);
-            $('div[data-value="' + k + '"] .comments a').editable('option', 'value', {comment: v[current_year]['comment']});
+              $('div[data-value="' + k + '"] .comments a').editable('option', 'url', "/indicate/indicators/" + indicator_id);
+              $('div[data-value="' + k + '"] .comments a').editable('option', 'value', {comment: v[current_year]['comment']});
+            } else {
+              $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+            }
           }
         }
 

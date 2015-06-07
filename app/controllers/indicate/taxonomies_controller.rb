@@ -21,6 +21,7 @@ class Indicate::TaxonomiesController < ApplicationController
 
   def indicators
     @indicators = @indicate_taxonomy.get_indicators
+    @current_user = current_user
   end
 
   # GET /indicate/taxonomies/indicator_file
