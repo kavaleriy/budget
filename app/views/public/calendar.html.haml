@@ -13,8 +13,8 @@
   .timeline
 
     = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
-
-    = render partial: 'widgets/visify/embed_code', :locals => { data_width: "100%", data_height: "400px", data_name: "timelinejs", data_id: "visual" }
+    #embed_code_timeline.embed_code
+      = render partial: 'widgets/visify/embed_code'
 
 .col-sm-6.col-xs-12
   .panel.panel-default
@@ -22,10 +22,10 @@
       #calendars
         %ul.col-sm-12.views.nav.nav-pills.pull-left{role: 'tablist'}
           %li.active
-            %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab'}
+            %a{href: '#calendar_year', role: 'tab', 'data-toggle' => 'tab', 'data-content' => 'pie_cycle'}
               = t('.tab_calendar_year')
           %li
-            %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab'}
+            %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab', 'data-content' => 'calendar'}
               = t('.tab_calendar_month')
         .clear
         .tab-content
@@ -33,18 +33,17 @@
             = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
             .pull-right
               = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
-            #embed_pie_cycle
-              = render partial: 'widgets/visify/embed_code', :locals => { data_width: "700px", data_height: "700px", data_name: "pie_cycle", data_id: "pie_cycle" }
           #calendar_month.tab-pane.fade
             = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
-            #embed_calendar
-              = render partial: 'widgets/visify/embed_code', :locals => { data_width: "1024px", data_height: "700px", data_name: "calendar", data_id: "calendar" }
 
         .legend
           .pull-left
             = image_tag("calendar/inf-city.png", width: '200px')
           .pull-right
             = image_tag("calendar/inf-people.png", width: '200px')
+
+  #embed_code_calendar.embed_code
+    = render partial: 'widgets/visify/embed_code'
 
 .col-sm-6.col-xs-12
   .panel.panel-default
@@ -53,7 +52,6 @@
     .panel-body
       #event-details
         = render partial: '/widgets/calendar/event'
-
 
 .col-xs-12
   %h2
@@ -77,59 +75,26 @@
       .panel-body
         = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
 
--#= binding.pry
-
 :javascript
 
   $(document).ready(function() {
 
-    I18n.locale = window.aHelper.lang();
+    // ------------------ EMBED CODE EVENTS ------------------------
+    var calendar = "#{@calendar.id}"
 
-    var pie_frame_url, calendar_frame_url, frame_url;
-    var pie_default_val, calendar_default_val;
+    var embed_code_timeline = aEmbedCode();
+    var src = window.location.host + "/widgets/calendar/timelinejs/" + calendar;
+    embed_code_timeline.initialize({width: '100%', height: 150, el_id: "#embed_code_timeline", src: src});
 
-    $('.embed').each(function(i, el) {
-      name = $(el).attr('data-name')
-      width = $(el).attr('data-width')
-      height = $(el).attr('data-height')
+    var embed_code_calendar = aEmbedCode();
+    var src = window.location.host + "/widgets/calendar/pie_cycle/" + calendar;
+    embed_code_calendar.initialize({width: 700, height: 700, el_id: "#embed_code_calendar", src: src});
 
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      embed_code_calendar.set_iframe(window.location.host + "/widgets/calendar/" + $(this).attr('data-content') + "/" + calendar);
+    });
 
-      frame_url = path + "/widgets/calendar/"+ name + "/#{@calendar.id}" + '/?' + query
-      pie_frame_url = path + "/widgets/calendar/pie_cycle/#{@calendar.id}" + '/?' + query
-      calendar_frame_url = path + "/widgets/calendar/calendar/#{@calendar.id}" + '/?' + query
-      $(el).find('.iframe_size_select').html("<option value=\"300\">300x300</option>\
-                                             <option value=\"500\">500x500</option>\
-                                             <option value=\"default\" selected>" + parseInt(width) + "x" + parseInt(height) + "</option>\
-                                             <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-      $(el).find('input').val("<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>")
-      if(name == 'pie_cycle'){
-        pie_default_val = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>";
-      } else if(name == 'calendar') {
-        calendar_default_val = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url + "'></iframe>";
-      }
-    })
-
-    frame_url = pie_frame_url;
-
-    $('a[href="#calendar_year"]').click(function() {
-      frame_url = pie_frame_url;
-      $('#embed_pie').find('input').val(pie_default_val);
-    })
-
-    $('a[href="#calendar_month"]').click(function() {
-      console.log('month');
-      frame_url = calendar_frame_url;
-      $('#embed_calendar').find('input').val(calendar_default_val);
-    })
-
-  })
-
-
-
-  $(document).ready(function() {
-
+    // ----------------- CALENDAR PIE EVENTS -----------------------
     var pie = aCalendarPie()
     pie.init_pie( {loadedCallback: calendar_pie_events} )
 
@@ -157,7 +122,6 @@
           return
 
         var marker_id = $('.marker.active').attr("id").split("marker_")[1];
-        console.log(marker_id);
         selectEvent(marker_id)
     }
 

@@ -76,8 +76,8 @@
     var el_id, width, height, src;
 
     function reset() {
-      $('.iframe_other_size').html('');
-      $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>")
+      $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+      $(el_id + ' .iframe_other_size').html('');
       $(el_id).find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
                                                  <option value=\"default\" selected>" + width + "x" + height + "</option>" +
                                                 "<option value=\"900\">1350x1900</option>\
@@ -92,19 +92,23 @@
         el_id = options.el_id;
         src = options.src;
 
-        $('.embed_btn').find('[data-toggle="popover"]').popover({
+        $(el_id + ' .embed_btn').find('[data-toggle="popover"]').popover({
           html: true,
           placement : 'left',
           title: I18n.t('embed'),
           content: function() {
             var content = "";
             $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>")
-            $(el_id).find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
-                                                                  <option value=\"default\" selected>" + width + "x" + height + "</option>" +
-                                                                  "<option value=\"900\">1350x1900</option>\
-                                                                  <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
-            $(el_id).find('.iframe_other_size').html("");
-            content = $(el_id + ' .form-horizontal');
+            if(el_id != "#embed_code_timeline") {
+              $(el_id).find('.iframe_size_select').html("<option value=\"300\">450x600</option>\
+                                                         <option value=\"default\" selected>" + width + "x" + height + "</option>" +
+                                                        "<option value=\"900\">1350x1900</option>\
+                                                         <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
+              $(el_id).find('.iframe_other_size').html("");
+              content = $(el_id + ' .form-horizontal');
+            } else {
+              content = $(el_id + ' input');
+            }
             return content;
           }
         })
@@ -121,18 +125,17 @@
         });
 
         $(document.body).on('shown.bs.popover', function () {
-          $('.iframe_size_select').change(function(e) {
+          $(el_id + ' .iframe_size_select').change(function(e) {
               var option = $(this).find(":selected").val();
               if(option == "other" && $('.iframe_other_size').text() == "") {
-                  $('.iframe_other_size').html("<input autofocus type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"width\" placeholder=\"width\"'></input> X \
-                                                <input type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"height\" placeholder=\"height\"'></input> px");
+                  $(el_id + ' .iframe_other_size').html("<input autofocus type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"width\" placeholder=\"width\"'></input> X \
+                                                         <input type=\"number\" min=\"100\" max=\"1000\" step=\"1\" name=\"height\" placeholder=\"height\"'></input> px");
               } else if (option != "other") {
-                  $('.iframe_other_size').html('');
+                  $(el_id + ' .iframe_other_size').html('');
                   var size = $(this).find(":selected").text().split("x");
                   var width = size[0];
                   var height = size[1];
-                  var frame_url = $('.popover-content input').val().split("src='")[1];
-                  document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
+                  $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + src + "'></iframe>");
               }
           })
 
@@ -165,8 +168,7 @@
                   //    if(width < 900) width = 900;
                   //    if(height < 500) height = 500;
                   //}
-                  var frame_url = $('.popover-content input').val().split("src='")[1];
-                  document.querySelector('.popover-content input').value = "<iframe width='" + width + "' height='" + height + "' src='" + frame_url;
+                  $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + src + "'></iframe>");
               }
           });
         })
@@ -175,9 +177,11 @@
             $(this).select();
         });
       },
-      set_iframe: function(src) {
-        reset();
-        $(el_id + ' input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+      set_iframe: function(new_src) {
+        src = new_src;
+        if(el_id != "#embed_code_timeline") {
+          reset();
+        }
       }
     }
   }
