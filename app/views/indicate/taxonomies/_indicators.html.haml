@@ -1,0 +1,216 @@
+#year_list
+  =t('vtarnay.module5s.show.year_list')
+  = link_to '3 ' + t('vtarnay.module5s.show.year'), '#', :remote => true, 'data-value' => '3', :class => 'active'
+  \|
+  = link_to '5 ' + t('vtarnay.module5s.show.years'), '#', :remote => true, 'data-value' => '5'
+  \|
+  = link_to '10 ' + t('vtarnay.module5s.show.years'), '#', :remote => true, 'data-value' => '10'
+
+-indicators.each_with_index do |(key,value),index|
+  .group.col-xs-12{'data-value' => key}
+    %p=key
+    -value.each_with_index do |(k,v),i|
+      .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
+        .title=k
+        .graph
+        .comments
+          %a
+
+:javascript
+
+  var num_of_years = 3;
+
+  $(document).ready(function(){
+    create_graphs(num_of_years);
+
+    $('#year_list a').click(function(e) {
+      $("svg circle").tooltip('destroy');
+      d3.selectAll('.graph svg').remove();
+      num_of_years = $(e.target).attr('data-value');
+      $('#year_list .active').removeClass('active');
+      $(e.target).addClass('active');
+      switch(num_of_years) {
+        case '3':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+        case '5':
+             $('.indicator').attr('class', 'indicator col-xs-12 col-md-6 col-lg-4');
+            break;
+        case '10':
+            $('.indicator').attr('class', 'indicator col-xs-12 col-md-6');
+            break;
+        default:
+            num_of_years = 3;
+            $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
+            break;
+      }
+      create_graphs(num_of_years);
+    })
+  })
+
+  $(window).resize(function() {
+    $("svg circle").tooltip('destroy');
+    d3.selectAll('.graph svg').remove();
+    create_graphs(num_of_years);
+  });
+
+  function create_graphs(num_of_years) {
+    var data = JSON.parse('#{indicators.to_json}')
+    $.each(data, function(key, value) {
+      $.each(value, function(k, v) {
+        var current_year = new Date().getFullYear() - 1;
+        var years = [];
+        var values = [];
+        var data = [];
+        $.each(v, function(year, year_value){
+          if(parseInt(year) >= current_year-(num_of_years-1)) {
+            years.push(parseInt(year));
+            values.push(parseFloat(year_value['value']));
+            data.push({"year": year, "value": year_value['value']});
+          }
+        })
+
+        // define dimensions of graph
+        var m = [30, 45, 30, 45]; // margins
+        var w = $('div[data-value="' + k + '"]').width() - m[1] - m[3]; // width
+        var h = 200 - m[0] - m[2]; // height
+
+        // X scale will fit all values from data[] within pixels 0-w
+        var x = d3.scale.linear().domain([current_year-(num_of_years-1), current_year]).range([0, w]);
+        // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+        var y = d3.scale.linear().domain([d3.min(values) - Math.abs(d3.min(values)/10), d3.max(values)]).range([h, 0]);
+            // automatically determining max range can work something like this
+            // var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+
+        // create area under graph
+        var area = d3.svg.area()
+            .x(function(d) { return x(d["year"]); })
+            .y0(h)
+            .y1(function(d) { return y(d['value']); })
+            // make the line curved
+            .interpolate("monotone")
+
+        // create a line function that can convert data[] into x and y points
+        var line = d3.svg.line()
+            // assign the X function to plot our line as we wish
+            .x(function(d,i) { return x(d["year"]); })
+            .y(function(d) { return y(d['value']); })
+            // make the line curved
+            .interpolate("monotone")
+
+        // Add an SVG element with the desired dimensions and margin.
+        graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
+              .attr("width", w + m[1] + m[3])
+              .attr("height", h + m[0] + m[2])
+            .append("svg:g")
+              .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+        // create yAxis
+        var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(num_of_years-1).tickFormat(d3.format("d"));
+        // Add the x-axis.
+        graph.append("svg:g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + h + ")")
+              .call(xAxis);
+
+        // create left yAxis
+        var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+
+        // add area under graph
+        graph.append("path")
+                .datum(data)
+                .attr("class", "area")
+                .attr("d", area);
+        // Add the line by appending an svg:path element with the data line we created above
+        // do this AFTER the axes above so that the line is above the tick-lines
+        graph.append("svg:path")
+             .attr("d", line(data));
+
+        graph.selectAll("dot")
+                .data(data)
+              .enter().append("circle")
+                .attr("class", function(d) { return d["year"] == current_year ? "active_point" : ""; })
+                .attr("r", function(d) { return d["year"] == current_year ? "10" : "8"; })
+                .attr("cx", function(d) { return x(d["year"]); })
+                .attr("cy", function(d) { return y(d['value']); })
+                .attr("fill", "#6EC4DA")
+                .attr("title", function(d) { return d['value']; })
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout)
+                .on("click", mouseclick);
+
+        var indicator_id = v[current_year]['id'];
+        $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+                                                    .attr("href", "#")
+                                                    .attr("id", "indicate_indicator")
+                                                    .attr("data-type", "indicate_indicator")
+                                                    .attr("data-pk", indicator_id)
+                                                    .attr("data-url", "/indicate/indicators/" + indicator_id);
+
+        $.fn.editable.defaults.mode = 'inline';
+        $('div[data-value="' + k + '"] .comments a').editable({
+          value: {
+              comment: v[current_year]['comment'],
+          },
+          validate: function(value) {
+              if (value.comment == '') return 'Потрібно вказати коментар!';
+          },
+          display: function(value) {
+              if(!value) {
+                  $(this).empty();
+                  return;
+              }
+              var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
+              v[current_year]['comment'] = value.comment;
+              $(this).html(html);
+          }
+        });
+
+        function mouseclick(d) {
+          if(d["year"] != current_year) {
+            $('div[data-value="' + k + '"]').find(".active_point").attr("class", " ").attr("stroke", "none").attr("r","8");
+            $(this).attr("class", "active_point").attr("r","10");
+            current_year = d["year"];
+            var indicator_id = v[current_year]['id'];
+
+            $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+                                                        .attr("data-pk", indicator_id)
+                                                        .attr("data-url", "/indicate/indicators/" + indicator_id);
+
+            $('div[data-value="' + k + '"] .comments a').editable('option', 'url', "/indicate/indicators/" + indicator_id);
+            $('div[data-value="' + k + '"] .comments a').editable('option', 'value', {comment: v[current_year]['comment']});
+          }
+        }
+
+        function mouseover(d) {
+          d3.select(this)
+            .attr("stroke", "#6EC4DA")
+            .attr("cursor", "pointer")
+            .attr("stroke-width", 4);
+        }
+
+        function mouseout(d) {
+          if(d["year"] != current_year) {
+            d3.select(this)
+              .attr("stroke", "none");
+          }
+        }
+
+      })
+    })
+
+    $("svg circle").tooltip({
+        'container': 'body',
+        'placement': 'top',
+        'trigger': 'manual'     // remove this string to make on hover
+    });
+
+    // make tooltips visible always, pointer events - none
+    window.setTimeout(function() {
+      $('.bootstrap_flash').html('');
+      $("svg circle").tooltip('show');
+    }, 1000);
+  }
+
+
+

@@ -1,8 +1,10 @@
 class Indicate::TaxonomiesController < ApplicationController
-  before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy]
+  before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators]
 
   before_action :authenticate_user!, only: [:new, :edit]
   load_and_authorize_resource
+
+  layout 'visify', only: [:indicators]
 
   # GET /indicate/taxonomies
   # GET /indicate/taxonomies.json
@@ -15,6 +17,10 @@ class Indicate::TaxonomiesController < ApplicationController
   def show
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
+  end
+
+  def indicators
+    @indicators = @indicate_taxonomy.get_indicators
   end
 
   # GET /indicate/taxonomies/indicator_file

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :taxonomies
     resources :indicators
     resources :indicator_files
+
+    get 'taxonomies/indicators/:id' => 'taxonomies#indicators'
   end
 
   namespace :documentation do
