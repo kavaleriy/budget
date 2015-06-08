@@ -6,15 +6,19 @@
   \|
   = link_to '10 ' + t('vtarnay.module5s.show.years'), '#', :remote => true, 'data-value' => '10'
 
--indicators.each_with_index do |(key,value),index|
-  .group.col-xs-12{'data-value' => key}
-    %p=key
-    -value.each_with_index do |(k,v),i|
-      .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
-        .title=k
-        .graph
-        .comments
-          %a
+  -#.pull-right
+  -#  = render partial: 'layouts/export_img', :locals => { container: '#1group' }
+
+#indicators
+  -indicators.each_with_index do |(key,value),index|
+    .group.col-xs-12{'data-value' => key, :id => index.to_s + 'group' }
+      %p=key
+      -value.each_with_index do |(k,v),i|
+        .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
+          .title=k
+          .graph
+          .comments
+            %a
 
 :javascript
 
@@ -105,6 +109,8 @@
         graph = d3.select('div[data-value="' + k + '"] .graph').append("svg:svg")
               .attr("width", w + m[1] + m[3])
               .attr("height", h + m[0] + m[2])
+              .attr("version", 1.1)
+              .attr("xmlns", "http://www.w3.org/2000/svg")
             .append("svg:g")
               .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 

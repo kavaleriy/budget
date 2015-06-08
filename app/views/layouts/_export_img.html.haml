@@ -14,7 +14,10 @@
     ).done(function(){
       $('#export').on('click', function() {
         html2canvas($("#{container}"), {
+          //logging: true,
+          background :'#FFFFFF',
           onrendered: function(canvas) {
+            //document.body.appendChild(canvas);
             var canvasdata = canvas.toDataURL("image/png");
 
             var theEvent = document.createEvent("MouseEvent");

@@ -7,6 +7,9 @@
     \|
     = link_to '0%', '#', :remote => true, 'data-value' => '0'
 
+  -# add export button to sankey; commited because gives incorrect image
+  -#.pull-right
+  -#  = render partial: 'layouts/export_img', :locals => { container: '#sankey_chart' }
 %p
   %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 
