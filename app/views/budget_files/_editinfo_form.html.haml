@@ -1,3 +1,8 @@
+:css
+  .colorpicker.dropdown-menu.colorpicker-with-alpha.colorpicker-right.colorpicker-visible {
+    background-color: #ffffff;
+  }
+
 = bootstrap_form_for @budget_file, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
   .form-group
     = f.text_field :title, :label => t('budget_file_title')
@@ -42,8 +47,11 @@
                     -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select(fa_icon_list, @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select'
                     = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][icon]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['icon']], @budget_file.taxonomy.explanation[key][t_key]['icon']), class: 'fa-select', :include_blank => true
                   %td
-                    -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select(undp_colors_list, @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select'
-                    = select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['color']], @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select', :include_blank => true
+                    -#= select_tag "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", options_for_select([@budget_file.taxonomy.explanation[key][t_key]['color']], @budget_file.taxonomy.explanation[key][t_key]['color']), class: 'color-select', :include_blank => true
+                    .input-group.color-select
+                      %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", value: @budget_file.taxonomy.explanation[key][t_key]['color'] }
+                      %span.input-group-addon
+                        %i
                   %td
                     %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][capita]", value: @budget_file.taxonomy.explanation[key][t_key]['capita'] }
                   %td
@@ -91,18 +99,19 @@
     }
 
     /* Using colors on a page */
-    $(".color-select").select2(
-      {
-        allowClear: true,
-        formatResult: formatColorSelect,
-        formatSelection: formatColorSelect,
-        escapeMarkup: function(m) { return m; }
-      }
-    ).on("select2-focus", function() {
-      if(!$(this).hasClass('color-loaded')){
-        $(this).append(colors).addClass('color-loaded');
-      }
-    });
+    $(".color-select").colorpicker()
+    //$(".color-select").select2(
+    //  {
+    //    allowClear: true,
+    //    formatResult: formatColorSelect,
+    //    formatSelection: formatColorSelect,
+    //    escapeMarkup: function(m) { return m; }
+    //  }
+    //).on("select2-focus", function() {
+    //  if(!$(this).hasClass('color-loaded')){
+    //    $(this).append(colors).addClass('color-loaded');
+    //  }
+    //});
 
     function formatColorSelect(el) {
       //console.log(el.id);
