@@ -22,3 +22,24 @@
   = render partial: 'widgets/visify/embed_code'
 
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+
+:javascript
+
+  $(document).ready(function() {
+
+    var embed_code = aEmbedCode();
+    set_iframe('bubbletree');
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_iframe($(this).attr('href').split('#')[1]);
+    });
+
+    function set_iframe(visualizator) {
+      path = "#{request.base_url}"
+      query = "#{URI.parse(request.url).query}"
+      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
+      $('.tab-content iframe').attr('src', frame_url)
+      embed_code.initialize({width: 900, height: 1200, el_id: "#embed_code_visify", src: frame_url})
+    }
+
+  })

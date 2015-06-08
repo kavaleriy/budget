@@ -27,22 +27,4 @@
     %a{href: '#collapsible', role: 'tab', 'data-toggle' => 'tab'}
       = t('.tab_collapsible')
 
-:javascript
-  $(document).ready(function() {
 
-    var embed_code = aEmbedCode();
-    set_iframe('bubbletree');
-
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_iframe($(this).attr('href').split('#')[1]);
-    });
-
-    function set_iframe(visualizator) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ visualizator + "/#{id}" + '/?' + query
-      $('.tab-content iframe').attr('src', frame_url)
-      embed_code.initialize({width: 900, height: 1200, el_id: "#embed_code_visify", src: frame_url})
-    }
-
-  })
