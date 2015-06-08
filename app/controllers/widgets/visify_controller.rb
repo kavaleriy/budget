@@ -140,10 +140,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
-    colors = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf']
+    # colors = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf']
     if item['children'].nil?
-      color = colors.sample
-      node['color'] = color
+      # color = colors.sample
+      node['color'] = '#a8bccc'
     elsif node['color'].nil?
       node['color'] = '#265f91'
     end
