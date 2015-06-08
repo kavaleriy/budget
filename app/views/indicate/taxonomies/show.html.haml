@@ -19,7 +19,7 @@
     var embed_code = aEmbedCode();
     var indicator_file = "#{@indicate_taxonomy.id}"
     var src = window.location.host + "/indicate/taxonomies/indicators/" + indicator_file;
-    embed_code.initialize({width: 900, height: 1200, el_id: "#embed_code_visify", src: src});
+    embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: src});
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
       embed_code.set_iframe(window.location.host + "/widgets/visify/" + $(this).attr('href').split('#')[1] + "/" + budget_file);

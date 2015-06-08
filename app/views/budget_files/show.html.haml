@@ -39,7 +39,7 @@
       query = "#{URI.parse(request.url).query}"
       frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
       $('.tab-content iframe').attr('src', frame_url)
-      embed_code.initialize({width: 900, height: 1200, el_id: "#embed_code_visify", src: frame_url})
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: frame_url})
     }
 
   })
