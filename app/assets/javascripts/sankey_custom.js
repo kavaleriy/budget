@@ -192,10 +192,12 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
         d3.select("#sankey_chart").selectAll('*').remove();
         var svg = d3.select("#sankey_chart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                                .attr("width", width + margin.left + margin.right)
+                                                .attr("height", height + margin.top + margin.bottom)
+                                                .attr("version", 1.1)
+                                                .attr("xmlns", "http://www.w3.org/2000/svg")
+                                            .append("g")
+                                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         var sankey = d3.sankey()
             .nodeWidth(15)
