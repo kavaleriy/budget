@@ -119,10 +119,9 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   def get_bubble_tree_item(item, info)
 
-    # commented because in case of levels this instruction switch to children node instead of current_node
-    # if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
-    #   item = item['children'][0]
-    # end
+    if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
+      item = item['children'][0]
+    end
 
     node = {
         'amount' => item['amount'],
