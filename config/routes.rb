@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :indicator_files
 
     get 'taxonomies/indicators/:id' => 'taxonomies#indicators'
+    get 'taxonomies/get_taxonomy/:town' => 'taxonomies#get_taxonomy'
   end
 
   namespace :documentation do

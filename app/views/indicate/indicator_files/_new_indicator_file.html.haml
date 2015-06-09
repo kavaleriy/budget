@@ -13,20 +13,28 @@
     .form-group
       %label
         Назва
-      = f.text_field :title, :class => 'form-control'
+      = f.text_field :title, :class => 'form-control can_be_disable'
+
+    .form-group
+      %label.control-label
+        = t('owner')
+      - if current_user && current_user.has_role?(:admin)
+        = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), current_user.town), class: 'select-town form-control', id: 'select_indicate_town'
+      - else
+        = ": #{current_user.town}"
 
   .col-sm-12
     .form-group
-      = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control'
+      = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control can_be_disable'
 
   .col-sm-12
     .form-group
       %label
         %i.glyphicon.glyphicon-folder-open
           Файл
-      = file_field_tag "indicate_file[]", multiple: true, :class => 'form-control'
+      = file_field_tag "indicate_file[]", multiple: true, :class => 'form-control can_be_disable'
 
   .actions
-    = f.button :class => 'btn btn-default' do
+    = f.button :class => 'btn btn-default can_be_disable' do
       %i.fa.fa-upload
         Завантажити

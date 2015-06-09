@@ -26,11 +26,7 @@ class Indicate::TaxonomiesController < ApplicationController
 
   # GET /indicate/taxonomies/indicator_file
   def new
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first
-
-    if @indicate_taxonomy.nil?
-      @indicate_taxonomy = Indicate::Taxonomy.new(:town => current_user.town)
-    end
+    @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first || Indicate::Taxonomy.new
   end
 
   # GET /indicate/taxonomies/1/edit
@@ -75,6 +71,11 @@ class Indicate::TaxonomiesController < ApplicationController
       format.html { redirect_to indicate_taxonomies_url, notice: 'Taxonomy was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def get_taxonomy
+    @indicate_taxonomy = Indicate::Taxonomy.where(:town => params[:town]).first || Indicate::Taxonomy.new
+    render :partial => '/indicate/indicator_files/indicator_files', :locals => {:files => @indicate_taxonomy.indicate_indicator_files}
   end
 
   private

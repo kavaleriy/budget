@@ -26,6 +26,9 @@ class Indicate::IndicatorFilesController < ApplicationController
   # POST /indicate/indicator_files.json
   def create
     @indicator_files = []
+    if current_user.has_role? :admin
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => params[:town]).first || Indicate::Taxonomy.new(:town => params[:town])
+    end
 
     params['indicate_file'].each do |f|
       doc = Indicate::IndicatorFile.new(indicate_indicator_file_params)
