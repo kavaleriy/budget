@@ -2,14 +2,20 @@ class Repairing::MapsController < ApplicationController
   before_action :set_repairing_map, only: [:show, :edit, :update, :destroy]
 
   def search_addr
+    @repairing_map = Repairing::Map.find(params[:map_id])
     @location = Geocoder.coordinates(params[:q])
     @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
+    @location = 1
     respond_to do |format|
       if @location1
-        format.js { render :search_street }
+        # format.js { render :search_street }
       elsif @location
-        format.js { render :search_house }
+        @repair = Repairing::Repair.new(title: params[:q], geom_type: 'Point', coordinates: [28.46189, 49.23088], street: params[:q])
+        geoJson = []
+        geoJson << Repairing::GeojsonBuilder.build_repair_point(@repair)
+        format.json { render json: Repairing::GeojsonBuilder.build_repair_point(@repair) }
+        # format.js { render :search_house }
       else
         format.js
       end

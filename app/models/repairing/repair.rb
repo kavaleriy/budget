@@ -4,13 +4,14 @@ class Repairing::Repair
   belongs_to :map, class_name: 'Repairing::Map'
 
   field :title, type: String
-  field :koatuu, type: String
+  field :description, type: String
   field :district, type: String
   field :street, type: String
-  field :description, type: String
   field :amount, type: Float
   field :repair_date, type: Date
+
   field :coordinates, type: Array
+  field :geom_type, type: String
 
   def address
     [district, street].compact.join(', ')

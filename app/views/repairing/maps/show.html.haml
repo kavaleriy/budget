@@ -6,7 +6,7 @@
     = "#{@repairing_map.town}, #{@repairing_map.title}"
 
   .col-xs-6.pull-right
-    = render partial: 'search'
+    = render partial: 'search', :locals => { map: @repairing_map }
 
 = content_for :top do
   = render partial: 'map'
@@ -16,10 +16,47 @@
 .panel.panel-default
   .panel-heading
     Вибрано на карті
-  .panel-body
-    = render partial: 'repair', :locals => { map: @repairing_map, repair: @repairing_map.repairs.new }
+  #repair.panel-body
 
 
 = link_to 'Edit', edit_repairing_map_path(@repairing_map)
 \|
 = link_to 'Back', repairing_maps_path
+
+:javascript
+  $(document).ready(function() {
+    $('.search_map form').bind("ajax:success", function(f, data){
+
+      function getPointToLayer(feature, latlng) {
+        customMarker = L.Marker.extend({
+          options: {}
+        });
+
+        return new customMarker(latlng, {
+          opacity: .7,
+          draggable: true,
+        });
+      }
+
+      function getFeatureStyle(feature) {
+        return { color: "#0000ff" };
+      }
+
+      function onEachFeature(feature, layer) {
+        popupContent =
+        '<div class="popup">' +
+          '<h3>' + feature.properties.title + '</h3>' +
+          '<p>' + feature.properties.address + '</p>' +
+          '<p>' + feature.properties.amount + '</p>' +
+        '</div>'
+        layer.bindPopup(popupContent);
+      }
+
+      L.geoJson(data, {
+        pointToLayer: getPointToLayer,
+        style: getFeatureStyle,
+        onEachFeature: onEachFeature
+      }).addTo(aRepairMap.map);
+
+    });
+  });

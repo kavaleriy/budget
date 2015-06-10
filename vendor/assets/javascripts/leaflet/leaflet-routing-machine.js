@@ -204,8 +204,8 @@ if (typeof module !== undefined) module.exports = polyline;
 			this._resultFn = options.resultFn ? L.Util.bind(options.resultFn, options.resultContext) : null;
 			this._autocomplete = options.autocompleteFn ? L.Util.bind(options.autocompleteFn, options.autocompleteContext) : null;
 			this._selectFn = L.Util.bind(callback, context);
-			this._container = L.DomUtil.create('div', 'leaflet-routing-geocoder-result');
-			this._resultTable = L.DomUtil.create('table', '', this._container);
+			//this._container = L.DomUtil.create('div', 'leaflet-routing-geocoder-result');
+			//this._resultTable = L.DomUtil.create('table', '', this._container);
 
 			// TODO: looks a bit like a kludge to register same for input and keypress -
 			// browsers supporting both will get duplicate events; just registering
@@ -221,20 +221,20 @@ if (typeof module !== undefined) module.exports = polyline;
 		},
 
 		close: function() {
-			L.DomUtil.removeClass(this._container, 'leaflet-routing-geocoder-result-open');
+			//L.DomUtil.removeClass(this._container, 'leaflet-routing-geocoder-result-open');
 			this._isOpen = false;
 		},
 
 		_open: function() {
-			var rect = this._elem.getBoundingClientRect();
-			if (!this._container.parentElement) {
-				this._container.style.left = (rect.left + window.scrollX) + 'px';
-				this._container.style.top = (rect.bottom + window.scrollY) + 'px';
-				this._container.style.width = (rect.right - rect.left) + 'px';
-				document.body.appendChild(this._container);
-			}
+			//var rect = this._elem.getBoundingClientRect();
+			//if (!this._container.parentElement) {
+			//	this._container.style.left = (rect.left + window.scrollX) + 'px';
+			//	this._container.style.top = (rect.bottom + window.scrollY) + 'px';
+			//	this._container.style.width = (rect.right - rect.left) + 'px';
+			//	document.body.appendChild(this._container);
+			//}
 
-			L.DomUtil.addClass(this._container, 'leaflet-routing-geocoder-result-open');
+			//L.DomUtil.addClass(this._container, 'leaflet-routing-geocoder-result-open');
 			this._isOpen = true;
 		},
 
@@ -856,22 +856,22 @@ if (typeof module !== undefined) module.exports = polyline;
 
 			collapsible = collapsible || (collapsible === undefined && map.getSize().x <= 640);
 
-			this._container = L.DomUtil.create('div', 'leaflet-routing-container leaflet-bar ' +
-				(!this.options.show ? 'leaflet-routing-container-hide ' : '') +
-				(collapsible ? 'leaflet-routing-collapsible ' : '') +
-				this.options.containerClassName);
-			this._altContainer = this.createAlternativesContainer();
-			this._container.appendChild(this._altContainer);
-			L.DomEvent.disableClickPropagation(this._container);
-			L.DomEvent.addListener(this._container, 'mousewheel', function(e) {
-				L.DomEvent.stopPropagation(e);
-			});
-
-			if (collapsible) {
-				collapseBtn = L.DomUtil.create('span', 'leaflet-routing-collapse-btn');
-				L.DomEvent.on(collapseBtn, 'click', this._toggle, this);
-				this._container.insertBefore(collapseBtn, this._container.firstChild);
-			}
+			//this._container = L.DomUtil.create('div', 'leaflet-routing-container leaflet-bar ' +
+			//	(!this.options.show ? 'leaflet-routing-container-hide ' : '') +
+			//	(collapsible ? 'leaflet-routing-collapsible ' : '') +
+			//	this.options.containerClassName);
+			//this._altContainer = this.createAlternativesContainer();
+			//this._container.appendChild(this._altContainer);
+			//L.DomEvent.disableClickPropagation(this._container);
+			//L.DomEvent.addListener(this._container, 'mousewheel', function(e) {
+			//	L.DomEvent.stopPropagation(e);
+			//});
+            //
+            //if (collapsible) {
+				//collapseBtn = L.DomUtil.create('span', 'leaflet-routing-collapse-btn');
+				//L.DomEvent.on(collapseBtn, 'click', this._toggle, this);
+				//this._container.insertBefore(collapseBtn, this._container.firstChild);
+            //}
 
 			return this._container;
 		},
@@ -894,8 +894,8 @@ if (typeof module !== undefined) module.exports = polyline;
 
 			for (i = 0; i < this._routes.length; i++) {
 				alt = this._routes[i];
-				altDiv = this._createAlternative(alt, i);
-				this._altContainer.appendChild(altDiv);
+				//altDiv = this._createAlternative(alt, i);
+				//this._altContainer.appendChild(altDiv);
 				this._altElements.push(altDiv);
 			}
 
@@ -905,16 +905,16 @@ if (typeof module !== undefined) module.exports = polyline;
 		},
 
 		show: function() {
-			L.DomUtil.removeClass(this._container, 'leaflet-routing-container-hide');
+			//L.DomUtil.removeClass(this._container, 'leaflet-routing-container-hide');
 		},
 
 		hide: function() {
-			L.DomUtil.addClass(this._container, 'leaflet-routing-container-hide');
+			//L.DomUtil.addClass(this._container, 'leaflet-routing-container-hide');
 		},
 
 		_toggle: function() {
-			var collapsed = L.DomUtil.hasClass(this._container, 'leaflet-routing-container-hide');
-			this[collapsed ? 'show' : 'hide']();
+			//var collapsed = L.DomUtil.hasClass(this._container, 'leaflet-routing-container-hide');
+			//this[collapsed ? 'show' : 'hide']();
 		},
 
 		_createAlternative: function(alt, i) {

@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   end
 
   namespace :repairing do
-    get 'search_addr' => 'maps#search_addr'
+    get ':map_id/search_addr' => 'maps#search_addr'
     resources :maps do
       member do
         get 'geo_json'

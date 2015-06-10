@@ -21,37 +21,51 @@
 
 :javascript
 
+  var aRepairMap;
+
   $(document).ready(function() {
-    //$.when(
-    //  //$.getScript( "/assets/leaflet/leaflet.js" ),
-    //  //$.getScript( "/assets/leaflet/leaflet-routing-machine.js" ),
-    //  $.Deferred(function( deferred ){
-    //      $( deferred.resolve );
-    //  })
-    //).done(function(){
-    //
-      var map = L.map('map', { scrollWheelZoom : false} ).setView([49.2336, 28.45514], 8)
 
-      window.lmap = map
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 17,
-        id: 'begemot.mbl2go4k',
-        accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-      }).addTo(map);
+    aRepairMap = function() {
+      var map;
+      var popup;
+      var router;
 
-      L.Icon.Default.imagePath = '/assets/leaflet/images'
+      function initMap() {
+        map = L.map('map', { scrollWheelZoom : false} ).setView([49.2336, 28.45514], 14)
 
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 17,
+          id: 'begemot.mbl2go4k',
+          accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
+        }).addTo(map);
 
-      var popup = L.popup();
-      function onMapClick(e) {
-          popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
+        L.Icon.Default.imagePath = '/assets/leaflet/images'
       }
 
-      map.on('click', onMapClick);
+
+      function initPopup() {
+        popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+              .setLatLng(e.latlng)
+              .setContent("<b>at <b>" + e.latlng.toString())
+              .openOn(map);
+        }
+
+        map.on('click', onMapClick);
+      }
+
+      function initRouting() {
+        // routing machine
+        router = L.Routing.osrm()
+      }
+
+
+      initMap()
+      initPopup()
+      initRouting()
 
 
       $.ajax({
@@ -61,41 +75,19 @@
       })
       .done(function (data) {
         //geojson = $.parseJSON(data)
-        console.log(data)
+        //console.log(data)
         //map.featureLayer.setGeoJSON(geojson)
       })
       .fail(function () {
       });
 
 
-      // routing machine
-      var router = L.Routing.osrm()
-      window.lrouter = router
+      return {
+        map: map,
+        popup: popup,
+        router: router,
+      }
+    }()
 
-
-      //var polygon = L.polyline(
-      //  L.Routing.waypoint(
-      //    [
-      //      L.latLng(49.18125, 28.32413),
-      //      L.latLng(49.22926, 28.45871),
-      //    ]
-      //  ).waypoints
-      //).addTo(map);
-
-
-
-      //routeControl = L.Routing.waypoint(
-      //  [
-      //    L.latLng(49.18125, 28.32413),
-      //    L.latLng(49.22926, 28.45871),
-      //  ]
-      //).addTo(map);
-      //
-      //console.log(L.Routing.Itinerary)
-      //console.log(routeControl.getWaypoints())
-
-      //var rlayer = L.layerGroup([routing]);
-      //map.removeLayer(rlayer)
-    //})
 
   });

@@ -1,17 +1,18 @@
-= bootstrap_form_for [map, repair], url: repairing_map_repairs_path(map.id), remote: true do |f|
+= bootstrap_form_tag url: repairing_map_repairs_path(map.id), remote: true do |f|
 
   .col-sm-3
-    = f.text_field :title
-    = f.text_field :amount
-    = f.text_field :coordinates, multiple: true
+    = text_field_tag :title
+    = text_field_tag :amount
+    = text_field_tag :coordinates, multiple: true
+    = text_field_tag :geom_type, "#{repair[:geom_type]}"
 
   .col-sm-3
-    = f.text_field :koatuu
-    = f.text_field :district
-    = f.text_field :street
+    = text_field_tag :koatuu
+    = text_field_tag :district
+    = text_field_tag :street
 
   .col-sm-6
-    = f.text_area :description, :rows => "8"
+    = text_area_tag :description, :rows => "8"
 
   .clear
-  = f.submit 'Save', :class => 'btn btn-primary'
+  = submit_tag 'Save', :class => 'btn btn-primary'
