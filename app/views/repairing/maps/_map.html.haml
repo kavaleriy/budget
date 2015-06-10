@@ -74,9 +74,14 @@
         dataType: 'json',
       })
       .done(function (data) {
-        //geojson = $.parseJSON(data)
-        //console.log(data)
-        //map.featureLayer.setGeoJSON(geojson)
+        function coordsToLatLng(coords) {
+          aRepairMap.map.panTo(L.latLng(coords))
+          return L.latLng(coords)
+        }
+
+        L.geoJson(data, {
+          coordsToLatLng: coordsToLatLng,
+        }).addTo(aRepairMap.map)
       })
       .fail(function () {
       });

@@ -2,16 +2,20 @@ class Repairing::MapsController < ApplicationController
   before_action :set_repairing_map, only: [:show, :edit, :update, :destroy]
 
   def search_addr
-    @repairing_map = Repairing::Map.find(params[:map_id])
+    @repairing_map = Repairing::Map.find(params[:id])
+
     @location = Geocoder.coordinates(params[:q])
     @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
-    @location = 1
+    # @location = [49.2324, 28.45742]
+    # @location1 = [49.23368, 28.44541]
+
     respond_to do |format|
       if @location1
-        # format.js { render :search_street }
+        format.js { render :search_street }
       elsif @location
-        @repair = Repairing::Repair.new(title: params[:q], geom_type: 'Point', coordinates: [28.46189, 49.23088], street: params[:q])
+        @repair = @repairing_map.repairs.new(title: params[:q], geom_type: 'Point', coordinates: @location, street: params[:q])
+        @repair.save!
         geoJson = []
         geoJson << Repairing::GeojsonBuilder.build_repair_point(@repair)
         format.json { render json: Repairing::GeojsonBuilder.build_repair_point(@repair) }
@@ -23,30 +27,16 @@ class Repairing::MapsController < ApplicationController
   end
 
   def geo_json
-    geo = Array.new
+    geoJson = []
 
-    # repairing_map = Repairing::Map.find(params[:map_id])
-    #
-    # repairing_map.repairs.each do |repair|
-    #   geo << {
-    #       type: 'Feature',
-    #       geometry: {
-    #           type: 'Point',
-    #           coordinates: [repair.longitude, repair.latitude]
-    #       },
-    #       properties: {
-    #           name: repair.title,
-    #           amount: repair.amount,
-    #           address: repair.address,
-    #           'marker-color' => '#00607d',
-    #           'marker-symbol' => 'circle',
-    #           'marker-size' => 'medium'
-    #       }
-    #   }
-    # end
+    repairing_map = Repairing::Map.find(params[:id])
+
+    repairing_map.repairs.each do |repair|
+      geoJson << Repairing::GeojsonBuilder.build_repair_point(repair)
+    end
 
     respond_to do |format|
-      format.json { render json: geo}
+      format.json { render json: geoJson}
     end
   end
 

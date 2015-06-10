@@ -1,44 +1,44 @@
 
-var waypoints = [], line;
-
-waypoints.push({ latLng: L.latLng(<%= @location %>) });
-waypoints.push({ latLng: L.latLng(<%= @location1 %>) });
-
-route = window.lrouter.route(waypoints, function(err, routes) {
-
-//    var marker1 = L.marker(<%= @location %>, { draggable: true });
-//    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
-//    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
-//            .bindPopup('Hello world!')
-//            .on('click', function() { alert('Clicked on a group!'); })
-//            .addTo(window.lmap);
-
-
-    line = L.Routing.line(routes[0], { addWaypoints: true } )
-            .on('click', function() { alert('Clicked on a group!'); })
-            .addTo(window.lmap);
-
-    console.log(line.toGeoJSON())
-
-});
-
-
-
-
-//var plan = new L.Routing.Plan([
-//    L.latLng(<%= @location %>),
-//    L.latLng(<%= @location1 %>)
-//], {
-//    routeWhileDragging: true,
-//})
+//var waypoints = [], line;
 //
-//control = L.Routing.control({
-//    routeWhileDragging: true,
-//    plan: plan
-//})
+//waypoints.push({ latLng: L.latLng(<%= @location %>) });
+//waypoints.push({ latLng: L.latLng(<%= @location1 %>) });
+//
+//route = aRepairMap.router.route(waypoints, function(err, routes) {
+//
+////    var marker1 = L.marker(<%= @location %>, { draggable: true });
+////    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
+////    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
+////            .bindPopup('Hello world!')
+////            .on('click', function() { alert('Clicked on a group!'); })
+////            .addTo(window.lmap);
+//
+//
+//    line = L.Routing.line(routes[0], { addWaypoints: true } )
+//            .on('click', function() { alert('Clicked on a group!'); })
+//            .addTo(aRepairMap.map);
+//
+//    console.log(line.toGeoJSON())
+//
+//});
+//
+
+
+
+var plan = new L.Routing.Plan([
+    L.latLng(<%= @location %>),
+    L.latLng(<%= @location1 %>)
+], {
+    routeWhileDragging: true,
+})
+
+control = L.Routing.control({
+    routeWhileDragging: true,
+    plan: plan
+})
 //
 //control.on('routeselected', function () {
 //    alert(1)
 //})
 //
-//control.addTo(window.lmap);
+control.addTo(aRepairMap.map);

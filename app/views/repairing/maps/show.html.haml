@@ -39,7 +39,12 @@
       }
 
       function getFeatureStyle(feature) {
-        return { color: "#0000ff" };
+        return { fillColor: "green" };
+      }
+
+      function coordsToLatLng(coords) {
+        aRepairMap.map.panTo(L.latLng(coords))
+        return L.latLng(coords)
       }
 
       function onEachFeature(feature, layer) {
@@ -55,7 +60,8 @@
       L.geoJson(data, {
         pointToLayer: getPointToLayer,
         style: getFeatureStyle,
-        onEachFeature: onEachFeature
+        onEachFeature: onEachFeature,
+        coordsToLatLng: coordsToLatLng,
       }).addTo(aRepairMap.map);
 
     });
