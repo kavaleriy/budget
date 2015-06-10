@@ -40,12 +40,13 @@ class Repairing::RepairsController < ApplicationController
   # PATCH/PUT /repairing/repairs/1
   # PATCH/PUT /repairing/repairs/1.json
   def update
+    addr = Geocoder.search(repairing_repair_params[:coordinates]).first
+    binding.pry
+
     respond_to do |format|
       if @repairing_repair.update(repairing_repair_params)
-        format.html { redirect_to @repairing_repair, notice: 'Repair was successfully updated.' }
-        format.json { render :show, status: :ok, location: @repairing_repair }
+        format.json { render :show, status: :ok }
       else
-        format.html { render :edit }
         format.json { render json: @repairing_repair.errors, status: :unprocessable_entity }
       end
     end

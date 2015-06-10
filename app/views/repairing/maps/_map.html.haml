@@ -1,23 +1,38 @@
 -# http://geojson.org/geojson-spec.html#examples
 -# http://www.rubydoc.info/gems/rgeo-geojson/frames
-
 -# https://github.com/alexreisner/geocoder
 -# http://railscasts.com/episodes/273-geocoder
-
 = stylesheet_link_tag 'leaflet/leaflet.css', :media => 'all'
+= stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
+= stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 
 = javascript_include_tag "leaflet/leaflet.js"
+= javascript_include_tag "leaflet/markercluster.js"
+= javascript_include_tag "leaflet/zoomfs.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
 :css
   #map {
     width: 100%;
-    height: 600px;
-    /*margin: 0;*/
-    /*padding: 0;*/
+    height: 800px;
   }
 
-#map
+  .info {
+    width: 20vw;
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    opacity: .8;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+  .info .title {
+    margin: 0 0 5px;
+    color: #777;
+  }
+#map.col-xs-12
+
 
 :javascript
 
@@ -26,23 +41,50 @@
   $(document).ready(function() {
 
     aRepairMap = function() {
-      var map;
+      var map, markers;
       var popup;
       var router;
+      var info;
 
       function initMap() {
-        map = L.map('map', { scrollWheelZoom : false} ).setView([49.2336, 28.45514], 14)
+        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-          maxZoom: 17,
+          maxZoom: 22,
           id: 'begemot.mbl2go4k',
           accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
         }).addTo(map);
 
         L.Icon.Default.imagePath = '/assets/leaflet/images'
-      }
 
+
+        initZoomFS()
+
+
+        markers = new L.MarkerClusterGroup();
+
+        map.addLayer(markers);
+
+        function initZoomFS() {
+          var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
+          map.addControl(zoomFS);
+          map.on('enterFullscreen', function() {
+            $('#my-box').css({
+             'position' : "fixed",
+             "top" : "40px",
+             "left" : "0px"
+            })
+          });
+          map.on('exitFullscreen', function() {
+            $('#my-box').css({
+             'position' : "absolute",
+             "top" : "0px"
+            })
+          });
+        }
+
+      }
 
       function initPopup() {
         popup = L.popup();
@@ -63,36 +105,148 @@
       }
 
 
-      initMap()
-      initPopup()
-      initRouting()
+      function addMarkers(data) {
+        L.geoJson(data, {
+          pointToLayer: getPointToLayer,
+          style: getFeatureStyle,
+          onEachFeature: onEachFeature,
+          coordsToLatLng: coordsToLatLng,
+        }).addTo(markers);
 
+        function getPointToLayer(feature, latlng) {
+          customMarker = L.Marker.extend({
+            options: {}
+          });
 
-      $.ajax({
-        method: 'get',
-        url: '#{geo_json_repairing_map_path(@repairing_map)}',
-        dataType: 'json',
-      })
-      .done(function (data) {
+          return new customMarker(latlng, {
+            opacity: .7,
+            draggable: true,
+          });
+        }
+
+        function getFeatureStyle(feature) {
+          return {
+            color: "#666",
+            fillColor: 'green'
+          };
+        }
+
         function coordsToLatLng(coords) {
-          aRepairMap.map.panTo(L.latLng(coords))
+          map.panTo(L.latLng(coords))
           return L.latLng(coords)
         }
 
-        L.geoJson(data, {
-          coordsToLatLng: coordsToLatLng,
-        }).addTo(aRepairMap.map)
-      })
-      .fail(function () {
-      });
+        function onEachFeature(feature, layer) {
+          popupContent =
+            '<div class="popup">' +
+              '<h3>' + feature.properties.title + '</h3>' +
+              '<p>' + feature.properties.address + '</p>' +
+              '<p>' + feature.properties.amount + '</p>' +
+            '</div>'
+          layer.bindPopup(popupContent);
 
+          layer.on({
+            mouseover: onFeatureOver,
+            mouseout: onFeatureOut,
+            click: onFeatureClick,
+            dragend: onFeatureDrag,
+          });
+
+          function onFeatureClick(e) {
+            console.log(e.target.feature.properties)
+          }
+
+          function onFeatureDrag(e) {
+            var layer = e.target;
+            var ll = layer.getLatLng();
+
+            var layer = e.target;
+            $.ajax({
+              method: 'PUT',
+              url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
+              dataType: 'json',
+              data: {
+                repairing_repair: {
+                  coordinates: [ll.lat, ll.lng]
+                }
+              }
+            })
+            .fail(function () {
+              console.log('drag fail')
+            });
+          }
+
+          function onFeatureOver(e) {
+            var layer = e.target;
+            layer.setOpacity(1)
+
+            info.update(layer.feature.properties);
+          }
+
+          function onFeatureOut(e) {
+            var layer = e.target;
+            layer.setOpacity(.7)
+
+            info.update();
+          }
+        }
+      }
+
+      function addControl() {
+        info = L.control();
+
+        info.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+        };
+
+        // method that we will use to update the control based on feature properties passed
+        info.update = function (props) {
+          if (props)
+            this._div.innerHTML = '<h3 class="info">' + props.title + '</h3>'
+              + '<b>' + props.address + '</b><br/>'
+              + '<b>Amount: ' + props.amount + '</b><br/>'
+              + 'Date: ' + props.repair_date + '<br/>'
+              + props.description + '<br/>'
+          else
+            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
+        };
+
+        info.addTo(map);
+      }
+
+
+      initMap()
+      initPopup()
+      initRouting()
+      addControl()
 
       return {
         map: map,
         popup: popup,
         router: router,
+        info: info,
+        addMarkers: addMarkers
       }
     }()
 
 
+    $.ajax({
+      method: 'get',
+      url: '#{geo_json_repairing_map_path(@repairing_map)}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addMarkers(data)
+    })
+    .fail(function () {
+    });
+
   });
+
+
+
+
+
+
