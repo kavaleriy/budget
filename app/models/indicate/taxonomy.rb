@@ -8,6 +8,8 @@ class Indicate::Taxonomy
 
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
 
+  validates :town, presence: true
+
   def get_indicators
     indicators = {}
 

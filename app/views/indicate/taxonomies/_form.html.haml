@@ -27,3 +27,31 @@
       .documents.panel-body
         = render :partial => 'indicate/indicator_files/indicator_files', :locals => { :files => @indicate_taxonomy.indicate_indicator_files }
 
+:javascript
+
+  $(document).ready(function() {
+
+    if(!"#{current_user.town}") {
+      $('.can_be_disable').attr('disabled', 'disabled');
+    }
+
+    $("#select_indicate_town").on("change", function() {
+      town = $(this).val();
+
+      if(town) {
+        $('.can_be_disable').removeAttr('disabled');
+        $.ajax({
+          url: "get_taxonomy/" + town,
+          type: "GET",
+          dataType: "html",
+          success: function(data) {
+            $('.documents').html(data);
+          }
+        })
+      } else {
+        $('.can_be_disable').attr('disabled', 'disabled');
+        $('.documents').html('');
+      }
+
+    })
+  })
