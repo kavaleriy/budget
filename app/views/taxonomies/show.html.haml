@@ -18,3 +18,24 @@
 = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@taxonomy), :class => 'btn btn-primary'
 #embed_code_visify.embed_code
   = render partial: 'widgets/visify/embed_code'
+
+:javascript
+
+  $(document).ready(function() {
+
+    var embed_code = aEmbedCode();
+    set_iframe('bubbletree');
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      set_iframe($(this).attr('href').split('#')[1]);
+    });
+
+    function set_iframe(visualizator) {
+      path = "#{request.base_url}"
+      query = "#{URI.parse(request.url).query}"
+      frame_url = path + "/widgets/visify/"+ visualizator + "/#{@taxonomy.id}" + '/?' + query
+      $('.tab-content iframe').attr('src', frame_url)
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: frame_url})
+    }
+
+  })
