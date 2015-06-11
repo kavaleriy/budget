@@ -26,37 +26,6 @@
 :javascript
   $(document).ready(function() {
     $('.search_map form').bind("ajax:success", function(f, data){
-
-      function getPointToLayer(feature, latlng) {
-        customMarker = L.Marker.extend({
-          options: {}
-        });
-
-        return new customMarker(latlng, {
-          opacity: .7,
-          draggable: true,
-        });
-      }
-
-      function getFeatureStyle(feature) {
-        return { color: "#0000ff" };
-      }
-
-      function onEachFeature(feature, layer) {
-        popupContent =
-        '<div class="popup">' +
-          '<h3>' + feature.properties.title + '</h3>' +
-          '<p>' + feature.properties.address + '</p>' +
-          '<p>' + feature.properties.amount + '</p>' +
-        '</div>'
-        layer.bindPopup(popupContent);
-      }
-
-      L.geoJson(data, {
-        pointToLayer: getPointToLayer,
-        style: getFeatureStyle,
-        onEachFeature: onEachFeature
-      }).addTo(aRepairMap.map);
-
+      aRepairMap.addMarkers(data)
     });
   });

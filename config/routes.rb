@@ -31,9 +31,9 @@ Rails.application.routes.draw do
   end
 
   namespace :repairing do
-    get ':map_id/search_addr' => 'maps#search_addr'
     resources :maps do
       member do
+        get 'search_addr'
         get 'geo_json'
       end
       resources :repairs

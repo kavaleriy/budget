@@ -1,5 +1,5 @@
 .search_map
-  = form_tag repairing_path(map.id), :method => :get, :remote => true, :html => { :class => 'form-vertical' } do |f|
+  = form_tag search_addr_repairing_map_path(map.id), :method => :get, :remote => true, :html => { :class => 'form-vertical' } do |f|
     .input-group.input-group-sm
       .col-sm-6
         = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
