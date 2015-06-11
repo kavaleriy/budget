@@ -53,29 +53,8 @@
   $(document).ready(function() {
 
     I18n.locale = window.aHelper.lang();
+    add_datepicker();
 
-    // -------------------- DATEPICKER -----------------------
-    $.fn.datepicker.dates[window.aHelper.lang()];
-
-    $(".year_datepicker").datepicker( {
-      format: 'dd.mm.yyyy',
-      startView: 2,
-      multidate: true,
-      language: window.aHelper.lang(),
-      todayHighlight: true,
-      autoclose: true,
-      minViewMode: 'years',
-      viewMode: 'years',
-      pickTime: false
-    });
-
-    var currYear = new Date().getFullYear();
-    var startDate = new Date(currYear,0,1);
-    $('.date-start').datepicker('setDate',startDate);
-    startDate = new Date(currYear+1,0,1);
-    $('.date-end').datepicker('setDate',startDate);
-
-    // ---------------- ADD PHASE INPUTS -----------------------
     var next = 1;
     $(".add-more").click(function(e){
         e.preventDefault();
@@ -90,33 +69,47 @@
                         </span>\
                         <input name=phase[" + next + "]['end'], type='text', class='year_datepicker form-control date-end'>\
                         <span class='input-group-btn'>\
-                          <button class='btn btn-danger remove-me' type='button'>\
+                          <button class='btn btn-danger remove-me' type='button' id='" + next + "btn'>\
                             <span aria-hidden='true' class='glyphicon glyphicon-minus'></span>\
                           </button>\
                         </span>\
                       </div>\
                     </div>"
-
+        $('#' + (next - 1) + 'btn').attr('disabled', 'disabled');
         next++;
 
         $('.program-phases').append(html);
-        /*
-        var addto = "#field" + next;
-        var addRemove = "#field" + (next);
-        next = next + 1;
-        var newIn = '<input autocomplete="off" class="input form-control" id="field' + next + '" name="field' + next + '" type="text">';
-        var newInput = $(newIn);
-        var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" >-</button></div><div id="field">';
-        var removeButton = $(removeBtn);
-        $(addto).after(newInput);
-        $(addRemove).after(removeButton);
-        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
-        $("#count").val(next);*/
+
+        add_datepicker();
 
         $('.remove-me').click(function(e){
-            e.preventDefault();
+            e.stopImmediatePropagation();
+            var prev_btn = $(this).attr('id').split('btn')[0]-1 + 'btn';
+            $('#' + prev_btn).removeAttr('disabled');
             $(this).closest('.phase').remove();
+            next--;
         });
     });
+
+    function add_datepicker() {
+      $.fn.datepicker.dates[window.aHelper.lang()];
+
+      $(".year_datepicker").datepicker( {
+        format: 'dd.mm.yyyy',
+        startView: 2,
+        multidate: true,
+        language: window.aHelper.lang(),
+        autoclose: true,
+        minViewMode: 'years',
+        viewMode: 'years',
+        pickTime: false
+      });
+
+      var currYear = new Date().getFullYear();
+      var startDate = new Date(currYear,0,1);
+      $('.date-start').datepicker('setDate', startDate);
+      startDate = new Date(currYear+1,0,1);
+      $('.date-end').datepicker('setDate', startDate);
+    }
 
   })
