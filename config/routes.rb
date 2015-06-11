@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :programs do
+    resources :target_programs
+  end
+
   namespace :indicate do
     resources :taxonomies
     resources :indicators
