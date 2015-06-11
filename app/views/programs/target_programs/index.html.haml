@@ -2,18 +2,19 @@
   .head.pull-left
     = t('programs.target_programs.index.header')
 
-%table
-  %tr
-    %th
-    %th
-    %th
-
-  - @programs_target_programs.each do |programs_target_program|
+- if @programs_target_programs.length > 0
+  %table
     %tr
-      %td= link_to 'Show', programs_target_program
-      %td= link_to 'Edit', edit_programs_target_program_path(programs_target_program)
-      %td= link_to 'Destroy', programs_target_program, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %th
+      %th
+      %th
 
-%br
+    - @programs_target_programs.each do |programs_target_program|
+      %tr
+        %td= link_to 'Show', programs_target_program
+        %td= link_to 'Edit', edit_programs_target_program_path(programs_target_program)
+        %td= link_to 'Destroy', programs_target_program, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-= link_to 'New Target program', new_programs_target_program_path
+  %br
+
+= link_to t('vtarnay.module5s.index.load'), new_programs_target_program_path, :type => "button", :method => :get, :class => "btn btn-primary"

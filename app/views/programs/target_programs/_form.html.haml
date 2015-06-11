@@ -1,3 +1,9 @@
+:css
+
+  .datepicker-dropdown.dropdown-menu {
+    background-color: #ffffff;
+  }
+
 = form_for @programs_target_program do |f|
   - if @programs_target_program.errors.any?
     #error_explanation
@@ -6,5 +12,111 @@
         - @programs_target_program.errors.full_messages.each do |msg|
           %li= msg
 
+= bootstrap_form_for @programs_target_program, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical col-sm-12 col-md-6' } do |f|
+  .form-group
+    = f.text_field :title, :label => t('programs.target_programs.new.name')
+
+  .form-group
+    %label.control-label
+      = t('owner')
+    - if current_user && current_user.has_role?(:admin)
+      = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), current_user.town), class: 'select-town form-control', id: 'select_indicate_town'
+    - else
+      = ": #{current_user.town}"
+
+  .form-group
+    = f.text_area :targets, :rows => '5', :placeholder => t('programs.target_programs.form.targets'), :class => 'form-control', :label => t('programs.target_programs.form.target_label')
+
+  .form-group
+    %label.control-label
+      = t('programs.target_programs.form.term')
+    .input-daterange.input-group
+      %input{name: :term['start'], :type => "text", :class => "year_datepicker form-control date-start"}
+      %span.input-group-addon
+        = t('programs.target_programs.form.to')
+      %input{name: :term['end'], :type => "text", :class => "year_datepicker form-control date-end"}
+      %span.input-group-btn
+        %button{:type => 'button', :class => 'btn btn-default add-more'}
+          %span{:class => 'glyphicon glyphicon-plus', 'aria-hidden' => 'true'}
+
+  %small
+    = t('programs.target_programs.form.add_phase')
+
+  .program-phases
+
   .actions
-    = f.submit 'Save'
+    = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
+    = f.submit t('form.save'), :class => 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    // -------------------- DATEPICKER -----------------------
+    $.fn.datepicker.dates[window.aHelper.lang()];
+
+    $(".year_datepicker").datepicker( {
+      format: 'dd.mm.yyyy',
+      startView: 2,
+      multidate: true,
+      language: window.aHelper.lang(),
+      todayHighlight: true,
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    });
+
+    var currYear = new Date().getFullYear();
+    var startDate = new Date(currYear,0,1);
+    $('.date-start').datepicker('setDate',startDate);
+    startDate = new Date(currYear+1,0,1);
+    $('.date-end').datepicker('setDate',startDate);
+
+    // ---------------- ADD PHASE INPUTS -----------------------
+    var next = 1;
+    $(".add-more").click(function(e){
+        e.preventDefault();
+        var html = "<div class='form-group phase'>\
+                      <label class='control-label'>\
+                        " + next + " " + I18n.t('programs.target_programs.form.phase') + "\
+                      </label>\
+                      <div class='input-daterange input-group'>\
+                        <input name=phase[" + next + "]['start'], type='text', class='year_datepicker form-control date-start'>\
+                        <span class='input-group-addon'>\
+                          " + I18n.t('programs.target_programs.form.to') + "\
+                        </span>\
+                        <input name=phase[" + next + "]['end'], type='text', class='year_datepicker form-control date-end'>\
+                        <span class='input-group-btn'>\
+                          <button class='btn btn-danger remove-me' type='button'>\
+                            <span aria-hidden='true' class='glyphicon glyphicon-minus'></span>\
+                          </button>\
+                        </span>\
+                      </div>\
+                    </div>"
+
+        next++;
+
+        $('.program-phases').append(html);
+        /*
+        var addto = "#field" + next;
+        var addRemove = "#field" + (next);
+        next = next + 1;
+        var newIn = '<input autocomplete="off" class="input form-control" id="field' + next + '" name="field' + next + '" type="text">';
+        var newInput = $(newIn);
+        var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" >-</button></div><div id="field">';
+        var removeButton = $(removeBtn);
+        $(addto).after(newInput);
+        $(addRemove).after(removeButton);
+        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+        $("#count").val(next);*/
+
+        $('.remove-me').click(function(e){
+            e.preventDefault();
+            $(this).closest('.phase').remove();
+        });
+    });
+
+  })

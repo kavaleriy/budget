@@ -1,6 +1,9 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!, only: [:new, :edit]
+  load_and_authorize_resource
+
   # GET /programs/target_programs
   # GET /programs/target_programs.json
   def index
