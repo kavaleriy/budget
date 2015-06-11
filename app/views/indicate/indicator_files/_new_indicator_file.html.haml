@@ -12,7 +12,7 @@
   .col-sm-12
     .form-group
       %label
-        Назва
+        = t('name')
       = f.text_field :title, :class => 'form-control can_be_disable'
 
     .form-group
@@ -31,10 +31,10 @@
     .form-group
       %label
         %i.glyphicon.glyphicon-folder-open
-          Файл
+          = t('form.file')
       = file_field_tag "indicate_file[]", multiple: true, :class => 'form-control can_be_disable'
 
   .actions
     = f.button :class => 'btn btn-default can_be_disable' do
       %i.fa.fa-upload
-        Завантажити
+        = t('form.load')

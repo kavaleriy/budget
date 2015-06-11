@@ -1,0 +1,18 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.towns.index.header')
+
+- if @programs_towns.length > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th.col-sm-4
+
+    %tbody
+    - @programs_towns.each do |town|
+      %tr
+        %td= link_to town.name, town
+
+  %br
+
+= link_to t('programs.target_programs.index.new'), new_programs_target_program_path, :type => "button", :method => :get, :class => "btn btn-primary"
