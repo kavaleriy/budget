@@ -40,9 +40,6 @@ class Repairing::RepairsController < ApplicationController
   # PATCH/PUT /repairing/repairs/1
   # PATCH/PUT /repairing/repairs/1.json
   def update
-    addr = Geocoder.search(repairing_repair_params[:coordinates]).first
-    binding.pry
-
     respond_to do |format|
       if @repairing_repair.update(repairing_repair_params)
         format.json { render :show, status: :ok }

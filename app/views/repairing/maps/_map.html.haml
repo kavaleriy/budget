@@ -104,6 +104,14 @@
         router = L.Routing.osrm()
       }
 
+      var CustomIcon = L.Icon.extend({
+        options: {
+          iconSize:     [40, 40],
+          iconAnchor:  [20, 20],
+          popupAnchor:  [-3, -56]
+        }
+      });
+      var greenIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
 
       function addMarkers(data) {
         L.geoJson(data, {
@@ -114,11 +122,9 @@
         }).addTo(markers);
 
         function getPointToLayer(feature, latlng) {
-          customMarker = L.Marker.extend({
-            options: {}
-          });
 
-          return new customMarker(latlng, {
+          return L.marker(latlng, {
+            icon: greenIcon,
             opacity: .7,
             draggable: true,
           });
@@ -126,7 +132,7 @@
 
         function getFeatureStyle(feature) {
           return {
-            color: "#666",
+            //color: "#666",
             fillColor: 'green'
           };
         }
@@ -244,9 +250,3 @@
     });
 
   });
-
-
-
-
-
-
