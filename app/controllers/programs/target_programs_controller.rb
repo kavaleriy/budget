@@ -18,6 +18,8 @@ class Programs::TargetProgramsController < ApplicationController
   # GET /programs/target_programs/new
   def new
     @programs_target_program = Programs::TargetProgram.new
+    @programs_town = Programs::Town.new
+    @programs_town.generate_explanation
   end
 
   # GET /programs/target_programs/1/edit
