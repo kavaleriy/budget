@@ -31,10 +31,10 @@
     %label.control-label
       = t('programs.target_programs.form.term')
     .input-daterange.input-group
-      %input{name: :term['start'], :type => "text", :class => "year_datepicker form-control date-start"}
+      %input{name: :term['start'], :type => "text", :class => "year_datepicker form-control date-start", :id => "term_start"}
       %span.input-group-addon
         = t('programs.target_programs.form.to')
-      %input{name: :term['end'], :type => "text", :class => "year_datepicker form-control date-end"}
+      %input{name: :term['end'], :type => "text", :class => "year_datepicker form-control date-end", :id => "term_end"}
       %span.input-group-btn
         %button{:type => 'button', :class => 'btn btn-default add-more'}
           %span{:class => 'glyphicon glyphicon-plus', 'aria-hidden' => 'true'}
@@ -53,7 +53,7 @@
   $(document).ready(function() {
 
     I18n.locale = window.aHelper.lang();
-    add_datepicker();
+    add_datepicker('term_start', 'term_end');
 
     var next = 1;
     $(".add-more").click(function(e){
@@ -63,11 +63,11 @@
                         " + next + " " + I18n.t('programs.target_programs.form.phase') + "\
                       </label>\
                       <div class='input-daterange input-group'>\
-                        <input name=phase[" + next + "]['start'], type='text', class='year_datepicker form-control date-start'>\
+                        <input name=phase[" + next + "]['start'], type='text', class='year_datepicker form-control date-start', id='" + next + "start'>\
                         <span class='input-group-addon'>\
                           " + I18n.t('programs.target_programs.form.to') + "\
                         </span>\
-                        <input name=phase[" + next + "]['end'], type='text', class='year_datepicker form-control date-end'>\
+                        <input name=phase[" + next + "]['end'], type='text', class='year_datepicker form-control date-end', id='" + next + "end'>\
                         <span class='input-group-btn'>\
                           <button class='btn btn-danger remove-me' type='button' id='" + next + "btn'>\
                             <span aria-hidden='true' class='glyphicon glyphicon-minus'></span>\
@@ -76,11 +76,10 @@
                       </div>\
                     </div>"
         $('#' + (next - 1) + 'btn').attr('disabled', 'disabled');
-        next++;
 
         $('.program-phases').append(html);
 
-        add_datepicker();
+        add_datepicker(next + 'start', next + 'end');
 
         $('.remove-me').click(function(e){
             e.stopImmediatePropagation();
@@ -89,9 +88,11 @@
             $(this).closest('.phase').remove();
             next--;
         });
+
+        next++;
     });
 
-    function add_datepicker() {
+    function add_datepicker(id_start, id_end) {
       $.fn.datepicker.dates[window.aHelper.lang()];
 
       $(".year_datepicker").datepicker( {
@@ -107,9 +108,9 @@
 
       var currYear = new Date().getFullYear();
       var startDate = new Date(currYear,0,1);
-      $('.date-start').datepicker('setDate', startDate);
+      $('#' + id_start).datepicker('setDate', startDate);
       startDate = new Date(currYear+1,0,1);
-      $('.date-end').datepicker('setDate', startDate);
+      $('#' + id_end).datepicker('setDate', startDate);
     }
 
   })
