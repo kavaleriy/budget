@@ -8,6 +8,10 @@
       .panel-body
         #description
 
+.slider.col-xs-12.col-md-4
+  = render partial: 'slider_chart'
+  = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
+
 .sidebar.col-xs-12.col-md-4#attachments_list
 
 :javascript
