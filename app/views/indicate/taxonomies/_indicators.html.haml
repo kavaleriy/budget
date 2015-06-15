@@ -76,6 +76,8 @@
             data.push({"year": year, "value": year_value['value']});
           }
         })
+        data.sort(function(a, b) { return a["year"] - b["year"]; } );
+        console.log(data)
 
         // define dimensions of graph
         var m = [30, 45, 30, 45]; // margins
