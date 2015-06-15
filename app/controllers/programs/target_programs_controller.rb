@@ -33,6 +33,26 @@ class Programs::TargetProgramsController < ApplicationController
   # POST /programs/target_programs
   # POST /programs/target_programs.json
   def create
+    town = Programs::Town.where( :name => (params[:town] || current_user.town) ).first
+    if town.nil?
+      town = Programs::Town.new
+      town.name = params[:town] || current_user.town
+      town.save
+    end
+
+    file_path = upload_file params[:path], town.id
+
+    table = read_table_from_file file_path.to_s
+
+    town =
+        if UsersHelper.is_admin?(current_user)
+          params[:town]
+        else
+          current_user.town
+        end
+
+    import table
+
     @programs_target_program = Programs::TargetProgram.new(programs_target_program_params)
 
     respond_to do |format|
@@ -70,15 +90,83 @@ class Programs::TargetProgramsController < ApplicationController
     end
   end
 
+  protected
+
+  def upload_file uploaded_io, town_id
+
+    file_name = uploaded_io.original_filename
+    Dir.mkdir('public/') unless File.exists?('public/')
+    Dir.mkdir('public/files/') unless File.exists?('public/files/')
+    Dir.mkdir('public/files/target_programs/') unless File.exists?('public/files/target_programs/')
+    Dir.mkdir('public/files/target_programs/' + town_id) unless File.exists?('public/files/target_programs/' + town_id)
+    file_path = Rails.root.join('public', 'files', 'target_programs', town_id, file_name)
+
+    File.open(file_path, 'wb') do |file|
+      file.write(uploaded_io.read)
+    end
+
+    file_path
+  end
+
+  def read_table_from_file path
+    require 'roo'
+
+    case File.extname(path).upcase
+      when '.CSV'
+        read_csv_xls Roo::CSV.new(path, csv_options: {col_sep: ";"})
+      when '.XLS', '.XLSX'
+        xls = Roo::Excelx.new(path)
+        xls.default_sheet = xls.sheets.first
+        read_csv_xls xls
+      when '.DBF'
+        read_dbf DBF::Table.new(path)
+    end
+  end
+
+  def read_dbf(dbf)
+    cols = dbf.columns.map {|c| c.name}
+
+    rows = dbf.map do |rec|
+      row = {}
+      cols.each { |col|
+        row[col] = rec[col]
+      }
+      row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def read_csv_xls(xls)
+    cols = []
+    xls.first_column.upto(xls.last_column) { |col|
+      cols << xls.cell(1, col).to_s
+    }
+
+    rows = []
+    2.upto(xls.last_row) do |line|
+      row = {}
+      xls.first_column.upto(xls.last_column ) do |col|
+        row[xls.cell(1, col)] = xls.cell(line,col).to_s
+      end
+      rows << row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def import table
+    binding.pry
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_programs_target_program
-      # binding.pry
       @programs_target_program = Programs::TargetProgram.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programs_target_program_params
-      params[:programs_target_program]
+      params.require(:programs_target_program).permit(:town, :path)
     end
 end

@@ -2,7 +2,7 @@
   .head.pull-left
     = t('programs.target_programs.load.header')
 
-%form{ :role => 'form' }
+= bootstrap_form_tag url: '/programs/target_programs/create' do |f|
 
   .form-group
     %label.control-label
@@ -12,8 +12,8 @@
     - else
       = ": #{current_user.town}"
 
-  = file_field_tag :path, label: t('form.file_path'), class: 'btn btn-default'
+  = f.file_field :path, label: t('form.file_path'), class: 'btn btn-default'
   %br
-  = submit_tag t('form.save'), :class => 'btn btn-primary'
+  = f.submit t('form.save'), :class => 'btn btn-primary'
   = link_to t('form.cancel'), programs_towns_path, :class => 'btn btn-default'
 

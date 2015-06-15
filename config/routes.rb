@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   namespace :programs do
     resources :target_programs
     get 'load' => 'target_programs#load'
+    post 'target_programs/create' => 'target_programs#create'
   end
 
   namespace :indicate do
