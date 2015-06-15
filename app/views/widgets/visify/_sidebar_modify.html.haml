@@ -1,0 +1,80 @@
+.sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
+  .panel.panel-default
+    #headingDesc.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+          =t('widgets.visify.sidebar.description')
+    #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+      .panel-body
+        #description
+
+.sidebar.col-xs-12.col-md-4#attachments_list
+
+:javascript
+
+  function aSidebar(aContainer) {
+    var chart, pie, table;
+
+    return {
+      container: aContainer,
+
+      initialize: function(height, options){
+        chart = aSidebarChartBattery('.sidebar')
+        chart.initialize(options)
+
+        pie = aSidebarPie('.sidebar')
+        pie.initialize(350, options)
+
+        table = aSidebarTable('.sidebar')
+        table.initialize(450, options)
+
+        $.getJSON("/widgets/visify/get_attachments/#{@budget_file.id}/", function(data) {
+          div_descr = '';
+          if(data['attachments'].length != 0) {
+            div_descr += "<div class='title'> #{I18n.t('widgets.visify.sidebar.attachments')}: </div>"
+          }
+          $.each(data['attachments'], function(key, value) {
+            div_descr += "<a href='/taxonomies/#{@budget_file.id}/taxonomy_attachments/" + value._id.$oid + "'>\
+                          <span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span> " + (value.description || value.name) + "</a></br>";
+          })
+          $(aContainer + ' #attachments_list').html(div_descr)
+        })
+      },
+
+      hide: function(){
+        //$(aContainer + ' #sidebar #description').html('');
+
+        chart.hide();
+        pie.hide();
+        table.hide();
+      },
+      show: function(node){
+        this.getLevelInfo(node)
+      },
+
+      getLevelInfo: function(node) {
+
+        $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
+          div_descr = ''
+          if (data.description) {
+            div_descr = "<div class='description'>" + data.description + "</div>"
+          }
+          $(aContainer + ' #description').html(div_descr)
+
+          if($(aContainer + ' #description').height() > $('.chart').height()) {
+            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-8 panel-group')
+            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-8')
+          } else {
+            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
+            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
+          }
+
+          if(node.children && node.children.length != 0) {
+              chart.show(node.children);
+              pie.show(node.children);
+              table.show(node.children);
+          }
+        })
+      },
+    }
+  }

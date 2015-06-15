@@ -8,7 +8,7 @@
 = javascript_include_tag "cofog.js"
 
 .bubbletree
-  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+  = render partial: 'tree_chart_modify', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   var aTreeChart = function (aContainer) {
