@@ -1,0 +1,19 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.load.header')
+
+%form{ :role => 'form' }
+
+  .form-group
+    %label.control-label
+      = t('owner')
+    - if current_user && current_user.has_role?(:admin)
+      = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), current_user.town), class: 'select-town form-control'
+    - else
+      = ": #{current_user.town}"
+
+  = file_field_tag :path, label: t('form.file_path'), class: 'btn btn-default'
+  %br
+  = submit_tag t('form.save'), :class => 'btn btn-primary'
+  = link_to t('form.cancel'), programs_towns_path, :class => 'btn btn-default'
+

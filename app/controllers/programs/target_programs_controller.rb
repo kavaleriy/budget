@@ -1,7 +1,7 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
 
-  before_action :authenticate_user!, only: [:new, :edit]
+  before_action :authenticate_user!, only: [:new, :edit, :load]
   load_and_authorize_resource
 
   # GET /programs/target_programs
@@ -20,6 +20,10 @@ class Programs::TargetProgramsController < ApplicationController
     @programs_target_program = Programs::TargetProgram.new
     @programs_town = Programs::Town.new
     @programs_town.generate_explanation
+  end
+
+  # GET /programs/load
+  def load
   end
 
   # GET /programs/target_programs/1/edit
@@ -69,6 +73,7 @@ class Programs::TargetProgramsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_programs_target_program
+      # binding.pry
       @programs_target_program = Programs::TargetProgram.find(params[:id])
     end
 
