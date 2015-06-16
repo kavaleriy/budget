@@ -1,5 +1,6 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
+  before_action :set_town, only: [:list]
 
   before_action :authenticate_user!, only: [:new, :edit, :load]
   load_and_authorize_resource
@@ -26,6 +27,11 @@ class Programs::TargetProgramsController < ApplicationController
   def load
   end
 
+  # GET /programs/target_programs
+  def list
+    @programs_target_programs = @town.programs_target_programs
+  end
+
   # GET /programs/target_programs/1/edit
   def edit
   end
@@ -44,26 +50,9 @@ class Programs::TargetProgramsController < ApplicationController
 
     table = read_table_from_file file_path.to_s
 
-    town =
-        if UsersHelper.is_admin?(current_user)
-          params[:town]
-        else
-          current_user.town
-        end
+    import table, town
 
-    import table
-
-    @programs_target_program = Programs::TargetProgram.new(programs_target_program_params)
-
-    respond_to do |format|
-      if @programs_target_program.save
-        format.html { redirect_to @programs_target_program, notice: 'Target program was successfully created.' }
-        format.json { render :show, status: :created, location: @programs_target_program }
-      else
-        format.html { render :new }
-        format.json { render json: @programs_target_program.errors, status: :unprocessable_entity }
-      end
-    end
+    redirect_to action: 'list', town: town.id
   end
 
   # PATCH/PUT /programs/target_programs/1
@@ -85,7 +74,7 @@ class Programs::TargetProgramsController < ApplicationController
   def destroy
     @programs_target_program.destroy
     respond_to do |format|
-      format.html { redirect_to programs_target_programs_url, notice: 'Target program was successfully destroyed.' }
+      format.html { redirect_to action: 'list', town: @programs_target_program.programs_town_id }
       format.json { head :no_content }
     end
   end
@@ -155,14 +144,25 @@ class Programs::TargetProgramsController < ApplicationController
     { :rows => rows, :cols => cols }
   end
 
-  def import table
-    binding.pry
+  def import table, town
+    table[:rows].each { |row|
+      program = Programs::TargetProgram.new
+      program.author = current_user.email
+      program.programs_town = town
+      program.import row
+      program.save
+    }
+
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_programs_target_program
       @programs_target_program = Programs::TargetProgram.find(params[:id])
+    end
+
+    def set_town
+      @town = Programs::Town.where(:id.to_s => params[:town]).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

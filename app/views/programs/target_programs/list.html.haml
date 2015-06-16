@@ -1,0 +1,20 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.index.header') + @town.name
+
+- if @programs_target_programs.length > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+        %th
+    %tbody
+      - @programs_target_programs.each do |programs_target_program|
+        %tr
+          %td= link_to programs_target_program.title, programs_target_program
+          %td
+            = link_to t('form.edit'), edit_programs_target_program_path(programs_target_program), :class => 'btn btn-default btn-xs'
+            = link_to t('form.destroy', :default => t("helpers.links.destroy")), programs_target_program, :method => "delete", :town => @town.id, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger btn-xs'
+  %br
+
+= link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'

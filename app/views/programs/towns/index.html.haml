@@ -11,7 +11,7 @@
     %tbody
     - @programs_towns.each do |town|
       %tr
-        %td= link_to town.name, town
+        %td= link_to town.name, '/programs/target_programs/list/' + town.id
 
   %br
 
