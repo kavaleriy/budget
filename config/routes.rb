@@ -2,12 +2,11 @@ Rails.application.routes.draw do
 
   namespace :programs do
     resources :towns
-  end
-
-  namespace :programs do
     resources :target_programs
+    resources :expences_files
     get 'load' => 'target_programs#load'
     post 'target_programs/create' => 'target_programs#create'
+    get 'target_programs/list/:town' => 'target_programs#list'
   end
 
   namespace :indicate do
