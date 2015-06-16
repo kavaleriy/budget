@@ -6,5 +6,96 @@
         - @programs_town.errors.full_messages.each do |msg|
           %li= msg
 
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => '#kfkv', role: 'tab', 'data-toggle' => 'tab'} kfkv
+    %li
+      %a{:href => '#kvkv', role: 'tab', 'data-toggle' => 'tab'} kvkv
+
+  .tab-content
+    - @programs_town.explanation.keys.each do |code|
+      - if code == 'kfkv'
+        - class_type = 'tab-pane fade in active'
+      - else
+        - class_type = 'tab-pane fade'
+      %div{:id => code, :class => "#{class_type}"}
+        %table.table.table-striped.table-hover
+          %tr
+            %th
+              = t('programs.towns.form.key')
+            %th
+              = t('budget_files.editinfo_form.name')
+            %th
+              = t('budget_files.editinfo_form.icon')
+            %th
+              = t('budget_files.editinfo_form.color')
+            %th
+              = t('budget_files.editinfo_form.description')
+
+          - unless @programs_town.explanation[code].nil?
+            - @programs_town.explanation[code].keys.sort_by { |item| item }.each do |key|
+              %tr
+                %td
+                  %h4
+                    = key
+                %td
+                  %input{name: "explanation[#{CGI.escape code}][#{CGI.escape key}][title]", value: @programs_town.explanation[code][key]['title'] }
+                %td
+                  = select_tag "explanation[#{CGI.escape code}][#{CGI.escape key}][icon]", options_for_select([@programs_town.explanation[code][key]['icon']], @programs_town.explanation[code][key]['icon']), class: 'fa-select', :include_blank => true
+                %td
+                  .input-group.color-select
+                    %input{name: "explanation[#{CGI.escape code}][#{CGI.escape key}][color]", value: @programs_town.explanation[code][key]['color'] }
+                    %span.input-group-addon
+                      %i
+                %td
+                  %textarea{name: "explanation[#{CGI.escape code}][#{CGI.escape key}][description]", cols: 80, rows: 3}
+                    = @programs_town.explanation[code][key]['description']
+
+  %br
   .actions
-    = f.submit 'Save'
+    = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
+    = f.submit t('form.save'), :class => 'btn btn-primary'
+
+:javascript
+
+  var icons, colors = "";
+
+  /* Loading colors and icons once while loading the page.*/
+  if(icons == "" || colors == "") {
+    $.getJSON( "#{asset_path('enums.json') }", function( data ) {
+      $.each( data['fa_icon_list'], function(key,val) {
+        icons = icons + "<option value='" + val + "'>" + val + "</option>";
+      })
+      $.each( data['undp_colors_list'], function(key,val) {
+        colors = colors + "<option value='" + val + "'>" + val + "</option>";
+      })
+    });
+  }
+
+  $(document).on('ready page:change', function() {
+
+    /* Using icons on a page */
+    $(".fa-select").select2(
+      {
+        allowClear: true,
+        formatResult: formatFaSelect,
+        formatSelection: formatFaSelect,
+        escapeMarkup: function(m) { return m; }
+      }
+    ).on("select2-focus", function() {
+      if(!$(this).hasClass('icon-loaded')){
+        $(this).append(icons).addClass('icon-loaded');
+      }
+      });
+
+    function formatFaSelect(el) {
+      return "<i class='fa " + el.id + "'/> " + el.id;
+    }
+
+    /* Using colors on a page */
+    $(".color-select").colorpicker();
+
+    function formatColorSelect(el) {
+      return "<div style='width: 100%; height: 43px; background-color: " + el.id + "'/>";
+    }
+  });

@@ -12,7 +12,11 @@
       - @programs_target_programs.each do |programs_target_program|
         %tr
           %td
-            %i{ :class => "fa fa-lg #{programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['icon']}" }
+            - color = programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['color']
+            - if color == ''
+              - color = '#0b387c'
+            %i{ :class => "fa fa-lg #{programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['icon']}",
+                :style => "color: #{color};" }
           %td= link_to programs_target_program.title, programs_target_program
           %td
             = link_to t('form.edit'), edit_programs_target_program_path(programs_target_program), :class => 'btn btn-default btn-xs'
@@ -20,3 +24,4 @@
   %br
 
 = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
+= link_to t('form.explanation'), edit_programs_town_path(@town.id), :class => 'btn btn-primary'

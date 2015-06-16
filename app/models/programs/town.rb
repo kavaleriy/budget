@@ -1,8 +1,6 @@
 class Programs::Town
   include Mongoid::Document
 
-  before_save :generate_explanation
-
   field :name, type: String
   field :explanation, :type => Hash
 

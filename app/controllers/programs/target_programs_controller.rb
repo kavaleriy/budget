@@ -43,6 +43,7 @@ class Programs::TargetProgramsController < ApplicationController
     if town.nil?
       town = Programs::Town.new
       town.name = params[:town] || current_user.town
+      town.generate_explanation
       town.save
     end
 
