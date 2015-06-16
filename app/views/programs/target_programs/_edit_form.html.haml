@@ -1,0 +1,48 @@
+.col-sm-12.col-md-6
+  = form_for @programs_target_program do |f|
+    - if @programs_target_program.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@programs_target_program.errors.count, "error")} prohibited this programs_target_program from being saved:"
+        %ul
+          - @programs_target_program.errors.full_messages.each do |msg|
+            %li= msg
+
+  = bootstrap_form_for @programs_target_program, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
+    .form-group
+      = f.text_field :title, :label => t('programs.target_programs.new.name')
+
+    .actions
+      = f.submit t('form.save'), :class => 'btn btn-primary'
+
+.col-sm-12.col-md-6
+  %br
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
+        = t('programs.target_programs.edit.tab_expences')
+    %li
+      %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
+        = t('programs.target_programs.edit.tab_indicators')
+
+  .tab-content
+    #tab_expences.tab-pane.fade.in.active
+      %br
+      .documentation
+        .col-sm-8
+          .panel.panel-default
+            .panel-heading
+              = t('form.new_document')
+            .new_document.panel-body
+              = render :partial => 'programs/expences_files/form', :locals => { :new_file => Programs::ExpencesFile.new }
+
+          .panel.panel-default
+            .panel-heading
+              = t('form.uploaded_documents')
+            .documents.panel-body
+              = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @programs_target_program.programs_expences_files }
+    #tab_indicators.tab-pane.fade
+      Hi
+
+.col-sm-12
+  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
+

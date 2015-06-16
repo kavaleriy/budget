@@ -1,0 +1,17 @@
+%h1 Listing programs_expences_files
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @programs_expences_files.each do |programs_expences_file|
+    %tr
+      %td= link_to 'Show', programs_expences_file
+      %td= link_to 'Edit', edit_programs_expences_file_path(programs_expences_file)
+      %td= link_to 'Destroy', programs_expences_file, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Expences file', new_programs_expences_file_path

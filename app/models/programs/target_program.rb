@@ -14,6 +14,7 @@ class Programs::TargetProgram
   field :description, type: String
 
   belongs_to :programs_town, :class_name => 'Programs::Town', autosave: true
+  has_many :programs_expences_files, :class_name => 'Programs::ExpencesFile', autosave: true, :dependent => :destroy
 
   validates :title, presence: true
   validates :kpkv, :uniqueness => {:scope => :programs_town}
