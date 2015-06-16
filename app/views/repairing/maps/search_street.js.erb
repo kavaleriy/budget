@@ -1,44 +1,53 @@
+var waypoints = [], line;
 
-//var waypoints = [], line;
-//
-//waypoints.push({ latLng: L.latLng(<%= @location %>) });
-//waypoints.push({ latLng: L.latLng(<%= @location1 %>) });
-//
+waypoints.push({ latLng: L.latLng(<%= @location %>) });
+waypoints.push({ latLng: L.latLng(<%= @location1 %>) });
+
 //route = aRepairMap.router.route(waypoints, function(err, routes) {
+
+//    var marker1 = L.marker(<%= @location %>, { draggable: true });
+//    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
+//    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
+//            .bindPopup('Hello world!')
+//            .on('click', function() { alert('Clicked on a group!'); })
+//            .addTo(aRepairMap.map);
 //
-////    var marker1 = L.marker(<%= @location %>, { draggable: true });
-////    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
-////    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
-////            .bindPopup('Hello world!')
-////            .on('click', function() { alert('Clicked on a group!'); })
-////            .addTo(window.lmap);
-//
-//
-//    line = L.Routing.line(routes[0], { addWaypoints: true } )
+//    line = L.Routing.line(routes[0] )
 //            .on('click', function() { alert('Clicked on a group!'); })
 //            .addTo(aRepairMap.map);
 //
 //    console.log(line.toGeoJSON())
 //
 //});
-//
 
-
-
-var plan = new L.Routing.Plan([
-    L.latLng(<%= @location %>),
-    L.latLng(<%= @location1 %>)
-], {
+var control = L.Routing.control({
     routeWhileDragging: true,
+    waypoints: waypoints
 })
 
-control = L.Routing.control({
-    routeWhileDragging: true,
-    plan: plan
+
+control.on('routesfound', function(router) {
+    var coordinates = ''
+    $.each( router.routes[0].coordinates, function(key,val) {
+        coordinates += val + ' '
+    })
+
+    console.log(coordinates)
+
+    $.ajax({
+        method: 'PUT',
+        url: '<%= "#{repairing_map_repair_path(@repairing_map.id, @repair.id)}" %>',
+        dataType: 'json',
+        data: {
+            repairing_repair: {
+                coordinates: coordinates
+            }
+        }
+    })
+    .fail(function () {
+        alert('Не вдалось зберегти дані')
+    })
+
 })
-//
-//control.on('routeselected', function () {
-//    alert(1)
-//})
-//
+
 control.addTo(aRepairMap.map);

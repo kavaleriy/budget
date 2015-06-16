@@ -1,31 +1,46 @@
-%p#notice= notice
+:css
+  .map_container {
+    height: 800px;
+  }
 
-= content_for :header do
-  .head
-    %i.fa.fa-map
-    = "#{@repairing_map.town}, #{@repairing_map.title}"
-
-  .col-xs-6.pull-right
-    = render partial: 'search', :locals => { map: @repairing_map }
+  .info {
+    width: 20vw;
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    opacity: .8;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+  .info .title {
+    margin: 0 0 5px;
+    color: #777;
+  }
 
 = content_for :top do
-  = render partial: 'map'
-
-%hr
-
-.panel.panel-default
-  .panel-heading
-    Вибрано на карті
-  #repair.panel-body
-
+  .map_container
+    = render partial: 'map'
 
 = link_to 'Edit', edit_repairing_map_path(@repairing_map)
 \|
 = link_to 'Back', repairing_maps_path
 
+
+
 :javascript
+
   $(document).ready(function() {
-    $('.search_map form').bind("ajax:success", function(f, data){
+
+    $.ajax({
+      method: 'get',
+      url: '#{geo_json_repairing_map_path(@repairing_map)}',
+      dataType: 'json',
+    })
+    .done(function (data) {
       aRepairMap.addMarkers(data)
+    })
+    .fail(function () {
     });
+
   });
