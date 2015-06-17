@@ -67,9 +67,10 @@ class Programs::ExpencesFilesController < ApplicationController
   def destroy
     @programs_expences_file.destroy
     respond_to do |format|
-      format.js
+      format.js { render 'destroy' }
       format.json { head :no_content, status: :deleted }
     end
+
   end
 
   private

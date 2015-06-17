@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
   namespace :programs do
+    resources :indicator_files
+  end
+
+  namespace :programs do
     resources :towns
     resources :target_programs
     resources :expences_files
