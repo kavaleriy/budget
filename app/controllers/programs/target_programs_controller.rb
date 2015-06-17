@@ -1,6 +1,6 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
-  before_action :set_town, only: [:list]
+  before_action :set_town, only: [:list, :show]
 
   before_action :authenticate_user!, only: [:new, :edit, :load]
   load_and_authorize_resource
@@ -168,7 +168,11 @@ class Programs::TargetProgramsController < ApplicationController
     end
 
     def set_town
-      @town = Programs::Town.where(:id.to_s => params[:town]).first
+      if params[:town]
+        @town = Programs::Town.where(:id.to_s => params[:town]).first
+      else
+        @town = @programs_target_program.programs_town
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
