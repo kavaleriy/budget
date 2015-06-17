@@ -15,6 +15,7 @@ class Programs::TargetProgram
 
   belongs_to :programs_town, :class_name => 'Programs::Town', autosave: true
   has_many :programs_expences_files, :class_name => 'Programs::ExpencesFile', autosave: true, :dependent => :destroy
+  has_many :programs_indicator_files, :class_name => 'Programs::IndicatorFile', autosave: true, :dependent => :destroy
 
   validates :title, presence: true
   validates :kpkv, :uniqueness => {:scope => :programs_town}
@@ -27,9 +28,18 @@ class Programs::TargetProgram
     self.tasks = row['tasks'].split('//')
     self.expected_results = row['expected_results'].split('//')
     self.participants = row['participants'].split('//')
-    self.term_start = row['term_start']
-    self.term_end = row['term_end']
+    self.term_start = row['term_start'].to_i
+    self.term_end = row['term_end'].to_i
     self.description = row['description']
+  end
+
+  def get_total_amount
+    amounts = {}
+    self.programs_expences_files.each{|file|
+      amounts['amount_plan'] = file.expences['total']['amount_plan'] if file.expences['total']['amount_plan']
+      amounts['amount_fact'] = file.expences['total']['amount_fact'] if file.expences['total']['amount_fact']
+    }
+    amounts
   end
 
 end

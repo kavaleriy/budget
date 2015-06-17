@@ -105,3 +105,6 @@ gem 'remotipart', '~> 1.2'
 
 # http://railscasts.com/episodes/273-geocoder
 gem 'geocoder'
+
+#https://github.com/liangwenke/to_xls-rails
+gem 'to_xls-rails'

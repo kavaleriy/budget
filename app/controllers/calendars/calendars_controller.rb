@@ -9,14 +9,22 @@ class Calendars::CalendarsController < ApplicationController
   # GET /calendars.json
   def index
     @calendars = view_context.get_calendars
+
   end
 
   # GET /calendars/1
   # GET /calendars/1.json
   def show
+    # require 'to_xls-rails'
     @city_actions = CalendarAction.where(:holder => '1')
     @people_actions = CalendarAction.where(:holder => '2')
+    respond_to do |format|
+      # binding.pry
+      format.html{}
+      format.xls { send_data @calendar.to_xls() }
+    end
   end
+
 
   # GET /calendars/indicator_file
   def new

@@ -28,7 +28,7 @@
     #tab_expences.tab-pane.fade.in.active
       %br
       .documentation
-        .col-sm-8
+        .col-sm-12
           .panel.panel-default
             .panel-heading
               = t('form.new_document')
@@ -41,7 +41,20 @@
             .documents.panel-body
               = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @programs_target_program.programs_expences_files }
     #tab_indicators.tab-pane.fade
-      Hi
+      %br
+      .documentation
+        .col-sm-12
+          .panel.panel-default
+            .panel-heading
+              = t('form.new_document')
+            .new_document.panel-body
+              = render :partial => 'programs/indicator_files/new_indicator_file', :locals => { :new_file => Programs::IndicatorFile.new }
+
+          .panel.panel-default
+            .panel-heading
+              = t('form.uploaded_documents')
+            .documents.panel-body
+              = render :partial => 'programs/indicator_files/indicator_files', :locals => { :files => @programs_target_program.programs_indicator_files }
 
 .col-sm-12
   = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'

@@ -37,8 +37,9 @@ class Programs::ExpencesFilesController < ApplicationController
       doc.save
       @expences_files << doc
 
-      # table = read_table_from_file 'public/uploads/programs/expences_file/expences_file/' + doc._id.to_s + '/' + doc.programs_expences_file.filename
-      # doc.import table
+      table = read_table_from_file 'public/uploads/programs/expences_file/expences_file/' + doc._id.to_s + '/' + doc.expences_file.filename
+      doc.import table
+      doc.save
     end unless params['expences_file'].nil?
 
     respond_to do |format|
@@ -67,9 +68,59 @@ class Programs::ExpencesFilesController < ApplicationController
   def destroy
     @programs_expences_file.destroy
     respond_to do |format|
-      format.js
+      format.js { render 'destroy' }
       format.json { head :no_content, status: :deleted }
     end
+
+  end
+
+  protected
+
+  def read_table_from_file path
+    require 'roo'
+
+    case File.extname(path).upcase
+      when '.CSV'
+        read_csv_xls Roo::CSV.new(path, csv_options: {col_sep: ";"})
+      when '.XLS', '.XLSX'
+        xls = Roo::Excelx.new(path)
+        xls.default_sheet = xls.sheets.first
+        read_csv_xls xls
+      when '.DBF'
+        read_dbf DBF::Table.new(path)
+    end
+  end
+
+  def read_dbf(dbf)
+    cols = dbf.columns.map {|c| c.name}
+
+    rows = dbf.map do |rec|
+      row = {}
+      cols.each { |col|
+        row[col] = rec[col]
+      }
+      row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def read_csv_xls(xls)
+    cols = []
+    xls.first_column.upto(xls.last_column) { |col|
+      cols << xls.cell(1, col).to_s
+    }
+
+    rows = []
+    2.upto(xls.last_row) do |line|
+      row = {}
+      xls.first_column.upto(xls.last_column ) do |col|
+        row[xls.cell(1, col)] = xls.cell(line,col).to_s
+      end
+      rows << row
+    end
+
+    { :rows => rows, :cols => cols }
   end
 
   private

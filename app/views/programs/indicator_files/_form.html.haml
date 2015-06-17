@@ -1,0 +1,10 @@
+= form_for @programs_indicator_file do |f|
+  - if @programs_indicator_file.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@programs_indicator_file.errors.count, "error")} prohibited this programs_indicator_file from being saved:"
+      %ul
+        - @programs_indicator_file.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'
