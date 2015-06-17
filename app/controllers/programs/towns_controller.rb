@@ -40,9 +40,11 @@ class Programs::TownsController < ApplicationController
   # PATCH/PUT /programs/towns/1
   # PATCH/PUT /programs/towns/1.json
   def update
+    @programs_town.explanation = params[:explanation]
+    @programs_town.save
     respond_to do |format|
       if @programs_town.update(programs_town_params)
-        format.html { redirect_to @programs_town, notice: 'Town was successfully updated.' }
+        format.html { redirect_to '/programs/target_programs/list/' + @programs_town.id, notice: t('programs.towns.edit.notice') }
         format.json { render :show, status: :ok, location: @programs_town }
       else
         format.html { render :edit }

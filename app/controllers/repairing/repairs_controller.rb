@@ -19,6 +19,9 @@ class Repairing::RepairsController < ApplicationController
 
   # GET /repairing/repairs/1/edit
   def edit
+    respond_to do |format|
+      format.js { render :edit }
+    end
   end
 
   # POST /repairing/repairs
@@ -54,8 +57,7 @@ class Repairing::RepairsController < ApplicationController
   def destroy
     @repairing_repair.destroy
     respond_to do |format|
-      format.html { redirect_to repairing_repairs_url, notice: 'Repair was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 
@@ -67,6 +69,13 @@ class Repairing::RepairsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_repair_params
-      params.require(:repairing_repair).permit(:title, :koatuu, :district, :street, :description, :amount, :repair_date, :coordinates => [])
+      par = params.require(:repairing_repair).permit(:title, :description, :amount, :repair_date, :address, :address_to, :coordinates, :coordinates => [])
+
+      unless (par[:coordinates].nil? || par[:coordinates].kind_of?(Array))
+        coordinates = par[:coordinates].split(' ').map {|p| p.split(',') }
+        par[:coordinates] = coordinates
+      end
+
+      par
     end
 end

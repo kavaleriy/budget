@@ -14,7 +14,7 @@
 :css
   #map {
     width: 100%;
-    height: 800px;
+    height: 100%;
   }
 
   .info {
@@ -22,16 +22,18 @@
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
     background: white;
-    opacity: .8;
+    opacity: .9;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
   }
   .info .title {
-    margin: 0 0 5px;
+    /*margin: 0 0 5px;*/
     color: #777;
   }
-#map.col-xs-12
+
+
+#map
 
 
 :javascript
@@ -45,6 +47,7 @@
       var popup;
       var router;
       var info;
+
 
       function initMap() {
         map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
@@ -65,6 +68,8 @@
         markers = new L.MarkerClusterGroup();
 
         map.addLayer(markers);
+
+
 
         function initZoomFS() {
           var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
@@ -92,7 +97,7 @@
         function onMapClick(e) {
             popup
               .setLatLng(e.latlng)
-              .setContent("<b>at <b>" + e.latlng.toString())
+              .setContent("" + e.latlng.toString())
               .openOn(map);
         }
 
@@ -104,6 +109,8 @@
         router = L.Routing.osrm()
       }
 
+
+      // add markers
       var CustomIcon = L.Icon.extend({
         options: {
           iconSize:     [40, 40],
@@ -113,7 +120,7 @@
       });
       var greenIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
 
-      function addMarkers(data) {
+      function addMarkers(data, options) {
         L.geoJson(data, {
           pointToLayer: getPointToLayer,
           style: getFeatureStyle,
@@ -122,11 +129,10 @@
         }).addTo(markers);
 
         function getPointToLayer(feature, latlng) {
-
           return L.marker(latlng, {
             icon: greenIcon,
             opacity: .7,
-            draggable: true,
+            draggable: (options && options.dragCallback),
           });
         }
 
@@ -159,39 +165,32 @@
           });
 
           function onFeatureClick(e) {
-            console.log(e.target.feature.properties)
+            if (options && options.clickCallback) {
+              options.clickCallback(e.target.feature)
+            }
           }
 
           function onFeatureDrag(e) {
-            var layer = e.target;
-            var ll = layer.getLatLng();
+            if (options && options.dragCallback) {
+              var layer = e.target;
+              var ll = layer.getLatLng();
 
-            var layer = e.target;
-            $.ajax({
-              method: 'PUT',
-              url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
-              dataType: 'json',
-              data: {
-                repairing_repair: {
-                  coordinates: [ll.lat, ll.lng]
-                }
-              }
-            })
-            .fail(function () {
-              console.log('drag fail')
-            });
+              dragCallback(layer, ll)
+            }
           }
 
           function onFeatureOver(e) {
             var layer = e.target;
-            layer.setOpacity(1)
+            if (layer.setOpacity)
+              layer.setOpacity(1)
 
             info.update(layer.feature.properties);
           }
 
           function onFeatureOut(e) {
             var layer = e.target;
-            layer.setOpacity(.7)
+            if  (layer.setOpacity)
+              layer.setOpacity(.7)
 
             info.update();
           }
@@ -236,17 +235,5 @@
         addMarkers: addMarkers
       }
     }()
-
-
-    $.ajax({
-      method: 'get',
-      url: '#{geo_json_repairing_map_path(@repairing_map)}',
-      dataType: 'json',
-    })
-    .done(function (data) {
-      aRepairMap.addMarkers(data)
-    })
-    .fail(function () {
-    });
 
   });

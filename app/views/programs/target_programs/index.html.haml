@@ -1,6 +1,6 @@
 = content_for :header do
   .head.pull-left
-    = t('programs.target_programs.index.header')
+    = t('programs.target_programs.index.header') + @town
 
 - if @programs_target_programs.length > 0
   %table
@@ -11,6 +11,7 @@
 
     - @programs_target_programs.each do |programs_target_program|
       %tr
+        %td= link_to programs_target_program.title, programs_target_program
         %td= link_to 'Show', programs_target_program
         %td= link_to 'Edit', edit_programs_target_program_path(programs_target_program)
         %td= link_to 'Destroy', programs_target_program, :method => :delete, :data => { :confirm => 'Are you sure?' }

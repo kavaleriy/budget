@@ -1,7 +1,91 @@
-%h1 Editing repairing_map
+:css
+  .map_container {
+    height: 750px;
+  }
 
 = render 'form'
+
+
+%p#notice= notice
+
+= content_for :header do
+  .head
+    %i.fa.fa-map
+    = "#{@repairing_map.town}, #{@repairing_map.title}"
+
+  .col-xs-6.pull-right
+    = render partial: 'search', :locals => { map: @repairing_map }
+
+
+.map_container.col-xs-9
+  = render partial: 'map'
+.col-xs-3
+  .panel.panel-default
+    .panel-heading
+      Вибрано на карті
+    .panel-body
+      #repair
+
+.clear
+
+%hr
+
 
 = link_to 'Show', @repairing_map
 \|
 = link_to 'Back', repairing_maps_path
+
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    $.ajax({
+      method: 'get',
+      url: '#{geo_json_repairing_map_path(@repairing_map)}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addMarkers(data, {clickCallback: clickCallback, dragCallback: dragCallback})
+    })
+    .fail(function () {
+      console.log('fail geojson')
+    });
+
+
+    $('.search_map form').bind("ajax:success", function(f, data){
+      //console.log(f)
+      //console.log(data)
+      aRepairMap.addMarkers(data, {clickCallback: clickCallback, dragCallback: dragCallback})
+    });
+
+
+    clickCallback = function(feature) {
+      $('#repair').html('');
+      $.ajax({
+        method: 'GET',
+        url: '#{edit_repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", feature.properties.id),
+      })
+      .fail(function () {
+        console.log('click fail')
+      })
+    }
+
+    dragCallback = function(layer, ll) {
+      $.ajax({
+        method: 'PUT',
+        url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
+        dataType: 'json',
+        data: {
+          repairing_repair: {
+            coordinates: [ll.lat, ll.lng]
+          }
+        }
+      })
+      .fail(function () {
+        alert('Не вдалось зберегти дані')
+      })
+    }
+
+  });

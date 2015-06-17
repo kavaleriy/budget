@@ -1,7 +1,6 @@
-%h1 Editing programs_target_program
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.edit.header')
 
-= render 'form'
+= render 'edit_form'
 
-= link_to 'Show', @programs_target_program
-\|
-= link_to 'Back', programs_target_programs_path

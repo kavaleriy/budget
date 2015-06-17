@@ -1,34 +1,15 @@
-= form_for @repairing_repair do |f|
-  - if @repairing_repair.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@repairing_repair.errors.count, "error")} prohibited this repairing_repair from being saved:"
-      %ul
-        - @repairing_repair.errors.full_messages.each do |msg|
-          %li= msg
+= bootstrap_form_for @repairing_repair, url: repairing_map_repair_path(@repairing_repair.map.id, @repairing_repair.id), remote: true do |f|
 
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :koatuu
-    = f.text_field :koatuu
-  .field
-    = f.label :district
-    = f.text_field :district
-  .field
-    = f.label :street
-    = f.text_field :street
-  .field
-    = f.label :description
-    = f.text_field :description
-  .field
-    = f.label :amount
-    = f.text_field :amount
-  .field
-    = f.label :coordinates
-    = f.text_field :coordinates
-  .field
-    = f.label :geom_type
-    = f.text_field :geom_type
-  .actions
-    = f.submit 'Save'
+  = f.text_field :title
+  = f.text_field :amount
+  = f.text_field :repair_date
+  -#= f.text_field :coordinates, multiple: true
+
+  = f.text_field :address
+  = f.text_field :address_to
+
+  = f.text_area :description, :rows => "8"
+
+  .clear
+  = f.submit 'Зберегти', :class => 'btn btn-primary'
+  = link_to 'Destroy', repairing_map_repair_path(@repairing_repair.map.id, @repairing_repair.id), :method => :delete, remote: true, :data => { :confirm => 'Are you sure?' }, class: "btn btn-warning"

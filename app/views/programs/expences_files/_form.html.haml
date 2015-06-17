@@ -1,0 +1,32 @@
+= form_for new_file, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+
+  - if new_file.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(new_file.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - new_file.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.hidden_field :programs_target_program_id, :value => @programs_target_program.id.to_s
+
+  .col-sm-12
+    .form-group
+      %label
+        = t('name')
+      = f.text_field :title, :class => 'form-control'
+
+  .col-sm-12
+    .form-group
+      = f.text_area :description, :rows => '2', :placeholder => t('form.detailed'), :class => 'form-control'
+
+  .col-sm-12
+    .form-group
+      %label
+        %i.glyphicon.glyphicon-folder-open
+          = t('form.file')
+      = file_field_tag "expences_file[]", multiple: true, :class => 'form-control'
+
+  .actions
+    = f.button :class => 'btn btn-default' do
+      %i.fa.fa-upload
+        = t('form.load')
