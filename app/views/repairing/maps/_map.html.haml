@@ -132,14 +132,16 @@
 
       function getPointToLayer(feature, latlng) {
         var icon = new L.Icon.Default()
+        var draggable = false
         if (feature.properties.repair == 'house') {
           icon = houseIcon
+          draggable = (options.dragCallback != undefined)
         }
 
         return L.marker(latlng, {
           icon: icon,
           opacity: .7,
-          draggable: (options && options.dragCallback),
+          draggable: draggable,
         });
       }
 
@@ -182,7 +184,7 @@
             var layer = e.target;
             var ll = layer.getLatLng();
 
-            dragCallback(layer, ll)
+            options.dragCallback(layer, ll)
           }
         }
 
