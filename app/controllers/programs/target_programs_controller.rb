@@ -30,6 +30,11 @@ class Programs::TargetProgramsController < ApplicationController
   # GET /programs/target_programs
   def list
     @programs_target_programs = @town.programs_target_programs
+    @amounts = {}
+    @programs_target_programs.each{|program|
+      amount = program.get_total_amount
+      @amounts[program.id.to_s] = amount unless amount.blank?
+    }
   end
 
   # GET /programs/target_programs/1/edit

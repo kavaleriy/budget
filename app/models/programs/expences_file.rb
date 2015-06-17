@@ -20,19 +20,23 @@ class Programs::ExpencesFile
     self.expences = {}
 
     table[:rows].each{|row|
+      amount_plan = row['amount_plan'].to_i
+      amount_fact = row['amount_fact'].to_i
+      description = row['description']
+      # binding.pry
       if row['phase'].blank? && row['year'].blank?
         self.expences['total'] = {} if self.expences['total'].nil?
         if row['sources'].blank?
-          self.expences['total']['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['total']['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['total']['description'] = row['description'] unless row['description'].blank?
+          self.expences['total']['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['total']['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['total']['description'] = description unless description.blank?
         else
           self.expences['total']['sources'] = {} if self.expences['total']['sources'].blank?
           source = row['sources'].to_i.to_s
           self.expences['total']['sources'][source] = {} if self.expences['total']['sources'][source].blank?
-          self.expences['total']['sources'][source]['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['total']['sources'][source]['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['total']['sources'][source]['description'] = row['description'] unless row['description'].blank?
+          self.expences['total']['sources'][source]['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['total']['sources'][source]['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['total']['sources'][source]['description'] = description unless description.blank?
         end
       elsif row['year'].blank?
         phase = row['phase'].to_i.to_s
@@ -41,32 +45,32 @@ class Programs::ExpencesFile
         self.expences['phases'][phase]['phase_start'] = {} unless row['phase_start'].blank?
         self.expences['phases'][phase]['phase_end'] = {} unless row['phase_end'].blank?
         if row['sources'].blank?
-          self.expences['phases'][phase]['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['phases'][phase]['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['phases'][phase]['description'] = row['description'] unless row['description'].blank?
+          self.expences['phases'][phase]['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['phases'][phase]['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['phases'][phase]['description'] = description unless description.blank?
         else
           source = row['sources'].to_i.to_s
           self.expences['phases'][phase]['sources'] = {} if self.expences['phases'][phase]['sources'].blank?
           self.expences['phases'][phase]['sources'][source] = {} if self.expences['phases'][phase]['sources'][source].blank?
-          self.expences['phases'][phase]['sources'][source]['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['phases'][phase]['sources'][source]['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['phases'][phase]['sources'][source]['description'] = row['description'] unless row['description'].blank?
+          self.expences['phases'][phase]['sources'][source]['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['phases'][phase]['sources'][source]['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['phases'][phase]['sources'][source]['description'] = description unless description.blank?
         end
       else
         year = row['year'].to_i.to_s
         self.expences['years'] = {} if self.expences['years'].blank?
         self.expences['years'][year] = {} if self.expences['years'][year].blank?
         if row['sources'].blank?
-          self.expences['years'][year]['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['years'][year]['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['years'][year]['description'] = row['description'] unless row['description'].blank?
+          self.expences['years'][year]['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['years'][year]['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['years'][year]['description'] = description unless description.blank?
         else
           source = row['sources'].to_i.to_s
           self.expences['years'][year]['sources'] = {} if self.expences['years'][year]['sources'].blank?
           self.expences['years'][year]['sources'][source] = {} if self.expences['years'][year]['sources'][source].blank?
-          self.expences['years'][year]['sources'][source]['amount_plan'] = row['amount_plan'] unless row['amount_plan'].blank?
-          self.expences['years'][year]['sources'][source]['amount_fact'] = row['amount_fact'] unless row['amount_fact'].blank?
-          self.expences['years'][year]['sources'][source]['description'] = row['description'] unless row['description'].blank?
+          self.expences['years'][year]['sources'][source]['amount_plan'] = amount_plan unless amount_plan == 0
+          self.expences['years'][year]['sources'][source]['amount_fact'] = amount_fact unless amount_fact == 0
+          self.expences['years'][year]['sources'][source]['description'] = description unless description.blank?
         end
       end
 
