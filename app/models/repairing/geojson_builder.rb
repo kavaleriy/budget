@@ -69,7 +69,7 @@ class Repairing::GeojsonBuilder
               type: "Feature",
               geometry: {
                 type: 'LineString',
-                coordinates: repair[:coordinates]
+                coordinates: filterCoordinates(repair[:coordinates])
               },
               properties: {
                 id: "#{repair[:id]}",
@@ -82,6 +82,17 @@ class Repairing::GeojsonBuilder
           }
         ]
     }
+  end
+
+  private
+
+  def self.filterCoordinates coordinates
+    return [] if coordinates.blank?
+
+    n = coordinates.count
+    filtered = []
+    (0.. n - 2).step(n / 15 + 1) { |i| filtered << coordinates[i] }
+    filtered << coordinates[n - 1]
   end
 
 end

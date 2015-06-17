@@ -72,7 +72,7 @@
     }
 
 
-    var aRepairMap = RepairMap(options)
+    var aRepairMap
 
     $.ajax({
       method: 'get',
@@ -80,6 +80,7 @@
       dataType: 'json',
     })
     .done(function (data) {
+      aRepairMap = RepairMap(options)
       aRepairMap.addGeoJson(data)
     })
     .fail(function () {
@@ -131,6 +132,8 @@
           }
 
           editRoute()
+        } else {
+          aRepairMap.editRoute([])
         }
       }
 

@@ -18,13 +18,16 @@
 
   $(document).ready(function() {
 
+    var aRepairMap
+
     $.ajax({
       method: 'get',
       url: '#{geo_json_repairing_map_path(@repairing_map)}',
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addMarkers(data)
+      aRepairMap = aRepairMap = RepairMap({})
+      aRepairMap.addGeoJson(data)
     })
     .fail(function () {
     });
