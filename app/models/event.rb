@@ -42,4 +42,12 @@ class Event
     }
   end
 
+  def holder_name
+    if holder == 1
+      holder = "Місто"
+    else holder = "Громада"
+    end
+
+  end
+
 end
