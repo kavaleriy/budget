@@ -10,6 +10,9 @@ class Repairing::RepairsController < ApplicationController
   # GET /repairing/repairs/1
   # GET /repairing/repairs/1.json
   def show
+    respond_to do |format|
+      format.json { render json: Repairing::GeojsonBuilder.build_repair(@repairing_repair) }
+    end
   end
 
   # GET /repairing/repairs/new

@@ -38,202 +38,249 @@
 
 :javascript
 
-  var aRepairMap;
+  RepairMap = function(options) {
 
-  $(document).ready(function() {
+    var map, markers;
+    var popup;
+    var router;
+    var info;
 
-    aRepairMap = function() {
-      var map, markers;
-      var popup;
-      var router;
-      var info;
-
-
-      function initMap() {
-        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-          maxZoom: 22,
-          id: 'begemot.mbl2go4k',
-          accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-        }).addTo(map);
-
-        L.Icon.Default.imagePath = '/assets/leaflet/images'
+    var self = this;
 
 
-        initZoomFS()
+    function initMap() {
+      map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 22,
+        id: 'begemot.mbl2go4k',
+        accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
+      }).addTo(map);
+
+      L.Icon.Default.imagePath = '/assets/leaflet/images'
 
 
-        markers = new L.MarkerClusterGroup();
-
-        map.addLayer(markers);
+      initZoomFS()
 
 
+      markers = new L.MarkerClusterGroup();
 
-        function initZoomFS() {
-          var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
-          map.addControl(zoomFS);
-          map.on('enterFullscreen', function() {
-            $('#my-box').css({
-             'position' : "fixed",
-             "top" : "40px",
-             "left" : "0px"
-            })
-          });
-          map.on('exitFullscreen', function() {
-            $('#my-box').css({
-             'position' : "absolute",
-             "top" : "0px"
-            })
-          });
-        }
+      map.addLayer(markers);
 
+
+      function initZoomFS() {
+        var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
+        map.addControl(zoomFS);
+        map.on('enterFullscreen', function() {
+          $('#my-box').css({
+           'position' : "fixed",
+           "top" : "40px",
+           "left" : "0px"
+          })
+        });
+        map.on('exitFullscreen', function() {
+          $('#my-box').css({
+           'position' : "absolute",
+           "top" : "0px"
+          })
+        });
       }
 
-      function initPopup() {
-        popup = L.popup();
+    }
 
-        function onMapClick(e) {
-            popup
-              .setLatLng(e.latlng)
-              .setContent("" + e.latlng.toString())
-              .openOn(map);
-        }
+    function initPopup() {
+      popup = L.popup();
 
-        map.on('click', onMapClick);
-      }
+      function onMapClick(e) {
+        popup
+          .setLatLng(e.latlng)
+          .setContent("" + e.latlng.toString())
+          .openOn(map);
 
-      function initRouting() {
-        // routing machine
-        router = L.Routing.osrm()
-      }
-
-
-      // add markers
-      var CustomIcon = L.Icon.extend({
-        options: {
-          iconSize:     [40, 40],
-          iconAnchor:  [20, 20],
-          popupAnchor:  [-3, -56]
-        }
-      });
-      var greenIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
-
-      function addMarkers(data, options) {
-        L.geoJson(data, {
-          pointToLayer: getPointToLayer,
-          style: getFeatureStyle,
-          onEachFeature: onEachFeature,
-          coordsToLatLng: coordsToLatLng,
-        }).addTo(markers);
-
-        function getPointToLayer(feature, latlng) {
-          return L.marker(latlng, {
-            icon: greenIcon,
-            opacity: .7,
-            draggable: (options && options.dragCallback),
-          });
-        }
-
-        function getFeatureStyle(feature) {
-          return {
-            //color: "#666",
-            fillColor: 'green'
-          };
-        }
-
-        function coordsToLatLng(coords) {
-          map.panTo(L.latLng(coords))
-          return L.latLng(coords)
-        }
-
-        function onEachFeature(feature, layer) {
-          popupContent =
-            '<div class="popup">' +
-              '<h3>' + feature.properties.title + '</h3>' +
-              '<p>' + feature.properties.address + '</p>' +
-              '<p>' + feature.properties.amount + '</p>' +
-            '</div>'
-          layer.bindPopup(popupContent);
-
-          layer.on({
-            mouseover: onFeatureOver,
-            mouseout: onFeatureOut,
-            click: onFeatureClick,
-            dragend: onFeatureDrag,
-          });
-
-          function onFeatureClick(e) {
-            if (options && options.clickCallback) {
-              options.clickCallback(e.target.feature)
-            }
-          }
-
-          function onFeatureDrag(e) {
-            if (options && options.dragCallback) {
-              var layer = e.target;
-              var ll = layer.getLatLng();
-
-              dragCallback(layer, ll)
-            }
-          }
-
-          function onFeatureOver(e) {
-            var layer = e.target;
-            if (layer.setOpacity)
-              layer.setOpacity(1)
-
-            info.update(layer.feature.properties);
-          }
-
-          function onFeatureOut(e) {
-            var layer = e.target;
-            if  (layer.setOpacity)
-              layer.setOpacity(.7)
-
-            info.update();
-          }
+        if (options.mapClickCallback) {
+          options.mapClickCallback(e)
         }
       }
 
-      function addControl() {
-        info = L.control();
+      map.on('click', onMapClick);
+    }
 
-        info.onAdd = function (map) {
-          this._div = L.DomUtil.create('div', 'info');
-          this.update();
-          return this._div;
+    function initRouting() {
+      // routing machine
+      router = L.Routing.osrm()
+    }
+
+
+    // add markers
+    var CustomIcon = L.Icon.extend({
+      options: {
+        iconSize: [30, 30],
+      }
+    });
+
+    var houseIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
+
+    function addGeoJson(data) {
+      L.geoJson(data, {
+        pointToLayer: getPointToLayer,
+        style: getFeatureStyle,
+        onEachFeature: onEachFeature,
+        coordsToLatLng: coordsToLatLng,
+        lineCap: 'round',
+      }).addTo(markers);
+
+      function getPointToLayer(feature, latlng) {
+        var icon = new L.Icon.Default()
+        if (feature.properties.repair == 'house') {
+          icon = houseIcon
+        }
+
+        return L.marker(latlng, {
+          icon: icon,
+          opacity: .7,
+          draggable: (options && options.dragCallback),
+        });
+      }
+
+      function getFeatureStyle(feature) {
+        return {
+          color: "red",
         };
+      }
 
-        // method that we will use to update the control based on feature properties passed
-        info.update = function (props) {
-          if (props)
-            this._div.innerHTML = '<h3 class="info">' + props.title + '</h3>'
-              + '<b>' + props.address + '</b><br/>'
-              + '<b>Amount: ' + props.amount + '</b><br/>'
-              + 'Date: ' + props.repair_date + '<br/>'
-              + props.description + '<br/>'
-          else
-            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
-        };
+      function coordsToLatLng(coords) {
+        map.panTo(L.latLng(coords))
 
-        info.addTo(map);
+        return L.latLng(coords)
+      }
+
+      function onEachFeature(feature, layer) {
+        popupContent =
+          '<div class="popup">' +
+            '<h3>' + feature.properties.title + '</h3>' +
+            '<p>' + feature.properties.address + '</p>' +
+            '<p>' + feature.properties.amount + '</p>' +
+          '</div>'
+        layer.bindPopup(popupContent);
+
+        layer.on({
+          mouseover: onFeatureOver,
+          mouseout: onFeatureOut,
+          click: onFeatureClick,
+          dragend: onFeatureDrag,
+        });
+
+        function onFeatureClick(e) {
+          if (options && options.clickCallback) {
+            options.clickCallback(e.target.feature, e.target)
+          }
+        }
+
+        function onFeatureDrag(e) {
+          if (options.dragCallback) {
+            var layer = e.target;
+            var ll = layer.getLatLng();
+
+            dragCallback(layer, ll)
+          }
+        }
+
+        function onFeatureOver(e) {
+          var layer = e.target;
+          if (layer.setOpacity)
+            layer.setOpacity(1)
+
+          info.update(layer.feature.properties);
+        }
+
+        function onFeatureOut(e) {
+          var layer = e.target;
+          if  (layer.setOpacity)
+            layer.setOpacity(.7)
+
+          info.update();
+        }
+      }
+    }
+
+    function addControl() {
+      info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+      };
+
+      // method that we will use to update the control based on feature properties passed
+      info.update = function (props) {
+        if (props)
+          this._div.innerHTML = '<h3 class="info">' + props.title + '</h3>'
+            + '<b>' + props.address + '</b><br/>'
+            + '<b>Amount: ' + props.amount + '</b><br/>'
+            + 'Date: ' + props.repair_date + '<br/>'
+            + props.description + '<br/>'
+        else
+          this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
+      };
+
+      info.addTo(map);
+    }
+
+    function editRoute(waypoints, routeFoundCallback) {
+      var line;
+
+      //route = aRepairMap.router.route(waypoints, function(err, routes) {
+
+      //    var marker1 = L.marker(<%= @location %>, { draggable: true });
+      //    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
+      //    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
+      //            .bindPopup('Hello world!')
+      //            .on('click', function() { alert('Clicked on a group!'); })
+      //            .addTo(aRepairMap.map);
+      //
+      //    line = L.Routing.line(routes[0] )
+      //            .on('click', function() { alert('Clicked on a group!'); })
+      //            .addTo(aRepairMap.map);
+      //
+      //    console.log(line.toGeoJSON())
+      //
+      //});
+
+      if (self.selectedRoute) {
+        self.selectedRoute.setWaypoints(waypoints)
+        self.selectedRoute.route()
+      } else {
+        self.selectedRoute = L.Routing.control({
+          routeWhileDragging: true,
+          waypoints: waypoints
+        })
+
+        self.selectedRoute.on('routesfound', function(router) {
+          if (routeFoundCallback) {
+            routeFoundCallback(router.routes[0].coordinates)
+          }
+        })
+        self.selectedRoute.addTo(map);
       }
 
 
-      initMap()
-      initPopup()
-      initRouting()
-      addControl()
+    }
 
-      return {
-        map: map,
-        popup: popup,
-        router: router,
-        info: info,
-        addMarkers: addMarkers
-      }
-    }()
 
-  });
+    initMap()
+    initPopup()
+    initRouting()
+    addControl()
+
+    return {
+      map: map,
+      popup: popup,
+      router: router,
+      info: info,
+      addGeoJson: addGeoJson,
+      editRoute: editRoute,
+    }
+  }
+
