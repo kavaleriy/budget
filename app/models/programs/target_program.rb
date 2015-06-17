@@ -28,8 +28,8 @@ class Programs::TargetProgram
     self.tasks = row['tasks'].split('//')
     self.expected_results = row['expected_results'].split('//')
     self.participants = row['participants'].split('//')
-    self.term_start = row['term_start']
-    self.term_end = row['term_end']
+    self.term_start = row['term_start'].to_i
+    self.term_end = row['term_end'].to_i
     self.description = row['description']
   end
 

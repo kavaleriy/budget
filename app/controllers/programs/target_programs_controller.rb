@@ -29,7 +29,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   # GET /programs/target_programs
   def list
-    @programs_target_programs = @town.programs_target_programs
+    @programs_target_programs = @town.programs_target_programs('term_end >= 2015')
     @amounts = {}
     @programs_target_programs.each{|program|
       amount = program.get_total_amount
