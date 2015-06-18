@@ -14,6 +14,11 @@ class Programs::TargetProgramsController < ApplicationController
   # GET /programs/target_programs/1
   # GET /programs/target_programs/1.json
   def show
+    @subprograms = {}
+    if @programs_target_program.kpkv[6] == "0"   # means that it its main program
+      key = @programs_target_program.kpkv[0,6]
+      @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/)  # get only subprograms
+    end
   end
 
   # GET /programs/target_programs/new
@@ -29,7 +34,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   # GET /programs/target_programs
   def list
-    @programs_target_programs = @town.programs_target_programs('term_end >= 2015')
+    @programs_target_programs = @town.programs_target_programs('term_end >= 2015').where(:kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
       amount = program.get_total_amount

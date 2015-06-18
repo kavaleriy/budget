@@ -39,6 +39,17 @@
     .panel.panel-default
       .panel-heading
         %h4.panel-title
+          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#subprograms"}
+            = t('programs.target_programs.show.subprograms')
+      #subprograms.panel-collapse.collapse
+        .panel-body
+          %ol{:type => "1"}
+            - @subprograms.each do |subprogram|
+              %li
+                = link_to subprogram.title, subprogram
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
           %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#responsible"}
             = t('programs.target_programs.show.responsible')
       #responsible.panel-collapse.collapse

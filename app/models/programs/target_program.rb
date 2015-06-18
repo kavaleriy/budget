@@ -36,8 +36,10 @@ class Programs::TargetProgram
   def get_total_amount
     amounts = {}
     self.programs_expences_files.each{|file|
-      amounts['amount_plan'] = file.expences['total']['amount_plan'] if file.expences['total']['amount_plan']
-      amounts['amount_fact'] = file.expences['total']['amount_fact'] if file.expences['total']['amount_fact']
+      if file.expences['total']
+        amounts['amount_plan'] = file.expences['total']['amount_plan'] if file.expences['total']['amount_plan']
+        amounts['amount_fact'] = file.expences['total']['amount_fact'] if file.expences['total']['amount_fact']
+      end
     }
     amounts
   end
