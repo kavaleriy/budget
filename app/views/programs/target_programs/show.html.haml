@@ -3,108 +3,25 @@
     = t('programs.target_programs.show.header')
 
 .container.col-sm-12.col-md-6
-  %h2
-    = @programs_target_program.title
-  #accordion.panel-group
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#targets"}
-            = t('programs.target_programs.show.targets')
-      #targets.panel-collapse.collapse.in
-        .panel-body
-          = @programs_target_program.targets
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#tasks"}
-            = t('programs.target_programs.show.tasks')
-      #tasks.panel-collapse.collapse
-        .panel-body
-          %ol{:type => "1"}
-            - @programs_target_program.tasks.each do |task|
-              %li
-                = task
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#results"}
-            = t('programs.target_programs.show.results')
-      #results.panel-collapse.collapse
-        .panel-body
-          %ol{:type => "1"}
-            - @programs_target_program.expected_results.each do |result|
-              %li
-                = result
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#subprograms"}
-            = t('programs.target_programs.show.subprograms')
-      #subprograms.panel-collapse.collapse
-        .panel-body
-          %ol{:type => "1"}
-            - @subprograms.each do |subprogram|
-              %li
-                = link_to subprogram.title, subprogram
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#responsible"}
-            = t('programs.target_programs.show.responsible')
-      #responsible.panel-collapse.collapse
-        .panel-body
-          - chief_steward = @programs_target_program.kpkv[0, 3]
-          - if @programs_target_program.programs_town.explanation['kvkv'][chief_steward]
-            - chief_steward_description = @programs_target_program.programs_town.explanation['kvkv'][chief_steward]['description']
-            - if !chief_steward_description
-              - chief_steward_description = chief_steward
-          - else
-            - chief_steward_description = chief_steward
-          = t('programs.target_programs.show.chief_steward') + ': '
-          %a{ href: '#', 'data-descr' => chief_steward_description ,'data-name' => "[explanation][kvkv][#{@programs_target_program.kpkv[0, 3].to_i}]", 'data-type' => 'indicate_indicator', 'data-pk' => "#{@programs_target_program.programs_town_id}", 'data-url' => '/programs/towns/update_custom/' + "#{@programs_target_program.programs_town_id}", 'data-emptytext' => 'Вкажіть назву...' }
-          %br
-          - main_executor = @programs_target_program.kpkv[3, 1]
-          - if @programs_target_program.programs_town.explanation['sub_kvkv'][main_executor]
-            - main_executor_description = @programs_target_program.programs_town.explanation['sub_kvkv'][main_executor]['description']
-            - if !main_executor_description
-              - main_executor_description = main_executor
-          - else
-            - main_executor_description = main_executor
-          = t('programs.target_programs.show.main_executor') + ': '
-          %a{ href: '#', 'data-descr' => main_executor_description, 'data-name' => "[explanation][sub_kvkv][#{@programs_target_program.kpkv[3, 1].to_i}]", 'data-type' => 'indicate_indicator', 'data-pk' => "#{@programs_target_program.programs_town_id}", 'data-url' => '/programs/towns/update_custom/' + "#{@programs_target_program.programs_town_id}", 'data-emptytext' => 'Вкажіть назву...' }
-          - if @programs_target_program.participants.length > 0
-            %br
-            = t('programs.target_programs.show.participants') + ': '
-            - @programs_target_program.participants.each do |participant|
-              = participant + ', '
+  = render 'show_info'
+
+.container.col-sm-12.col-md-6
+  %br
+    %ul.nav.nav-tabs
+      %li.active
+        %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
+          = t('programs.target_programs.show.tab_expences')
+      %li
+        %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
+          = t('programs.target_programs.show.tab_indicators')
+
+  .tab-content
+    #tab_expences.tab-pane.fade.in.active
+      = render 'show_expences'
+    #tab_indicators.tab-pane.fade
+      %br
+      Hello
 
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'
   = link_to t('form.back'), '/programs/target_programs/list/' + @town.id, :class => 'btn btn-default'
-
-:javascript
-
-  $(document).ready(function() {
-    $.fn.editable.defaults.mode = 'inline';
-    var comment = 'com';
-
-    $('a[data-type="indicate_indicator"]').each(function(){
-      $(this).editable({
-         value: {
-             comment: $(this).attr('data-descr'),
-         },
-         validate: function(value) {
-             if (value.comment == '') return 'Потрібно вказати коментар!';
-         },
-         display: function(value) {
-             if(!value) {
-                 $(this).empty();
-                 return;
-             }
-             var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
-             $(this).html(html);
-         }
-       })
-    })
-  })

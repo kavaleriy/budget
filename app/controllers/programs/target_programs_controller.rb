@@ -19,6 +19,14 @@ class Programs::TargetProgramsController < ApplicationController
       key = @programs_target_program.kpkv[0,6]
       @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/)  # get only subprograms
     end
+    @phases = {}
+    @programs_target_program.programs_expences_files.each{|file|
+      if file.expences['phases']
+        file.expences['phases'].each{|phase, value|
+          @phases[phase] = value
+        }
+      end
+    }
   end
 
   # GET /programs/target_programs/new
