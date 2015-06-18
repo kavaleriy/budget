@@ -19,8 +19,7 @@
     #tab_expences.tab-pane.fade.in.active
       = render 'show_expences'
     #tab_indicators.tab-pane.fade
-      %br
-      Hello
+      = render 'show_indicators'
 
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'

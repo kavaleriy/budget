@@ -27,6 +27,22 @@ class Programs::TargetProgramsController < ApplicationController
         }
       end
     }
+    @indicators = {}
+    @programs_target_program.programs_indicator_files.each{|file|
+      file['indicators'].each{|group, indicators|
+        @indicators[group] = {} if @indicators[group].nil?
+        indicators.each{|indicator, years|
+          @indicators[group][indicator] = {} if @indicators[group][indicator].nil?
+          years.each{|year, value|
+            @indicators[group][indicator][year] = {}  if @indicators[group][indicator][year].nil?
+            @indicators[group][indicator][year]['amount_plan'] = value['amount_plan']
+            @indicators[group][indicator][year]['amount_fact'] = value['amount_fact']
+            @indicators[group][indicator][year]['unit'] = value['unit']
+            @indicators[group][indicator][year]['description'] = value['description']
+          }
+        }
+      }
+    }
   end
 
   # GET /programs/target_programs/new

@@ -18,12 +18,12 @@ class Programs::IndicatorFile
 
   def import table
 
-    self.groups = self.load_from_csv 'db/program_indicator_group_codes.csv'    # group of indicators
+    groups = self.load_from_csv 'db/program_indicator_group_codes.csv'    # group of indicators
 
     self.indicators = {}
 
     table[:rows].each{|row|
-      group = row['group'].to_i.to_s
+      group = groups[row['group'].to_i.to_s][:title]
       indicator = row['indicator']
       year = row['year']
       indicators[group] = {} if indicators[group].blank?
