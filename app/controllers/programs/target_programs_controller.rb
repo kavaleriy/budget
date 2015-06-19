@@ -17,7 +17,7 @@ class Programs::TargetProgramsController < ApplicationController
     @subprograms = {}
     if @programs_target_program.kpkv[6] == "0"   # means that it its main program
       key = @programs_target_program.kpkv[0,6]
-      @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/)  # get only subprograms
+      @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
     end
     @phases = @programs_target_program.get_phases
     @indicators = @programs_target_program.get_indicators

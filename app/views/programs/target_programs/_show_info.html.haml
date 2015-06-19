@@ -30,8 +30,10 @@
         - if @programs_target_program.participants.length > 0
           %br
           = t('programs.target_programs.show.participants') + ': '
-          - @programs_target_program.participants.each do |participant|
-            = participant + ', '
+          %ol{:type => "1"}
+            - @programs_target_program.participants.each do |participant|
+              %li
+                = participant
   .panel.panel-default
     .panel-heading
       %h4.panel-title

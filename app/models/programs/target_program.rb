@@ -53,11 +53,12 @@ class Programs::TargetProgram
         year = row['year']
         indicators[group] = {} if indicators[group].nil?
         indicators[group][indicator] = {} if indicators[group][indicator].nil?
-        indicators[group][indicator][year] = {}
-        indicators[group][indicator][year]['amount_plan'] = row['amount_plan']
-        indicators[group][indicator][year]['amount_fact'] = row['amount_fact']
-        indicators[group][indicator][year]['unit'] = row['unit']
-        indicators[group][indicator][year]['description'] = row['description']
+        indicators[group][indicator]['unit'] = row['unit']
+        indicators[group][indicator]['years'] = {} if indicators[group][indicator]['years'].nil?
+        indicators[group][indicator]['years'][year] = {}
+        indicators[group][indicator]['years'][year]['amount_plan'] = row['amount_plan']
+        indicators[group][indicator]['years'][year]['amount_fact'] = row['amount_fact']
+        indicators[group][indicator]['years'][year]['description'] = row['description']
       }
     }
     indicators
