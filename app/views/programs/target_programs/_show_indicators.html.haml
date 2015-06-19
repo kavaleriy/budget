@@ -1,3 +1,8 @@
+:css
+  .ui-widget-header {
+    background: #cdd9ea;
+  }
+
 - if @indicators.length > 0
   .btn-group{"data-toggle" => "btns"}
     - @indicators.keys.each_with_index do |group, index|
@@ -15,14 +20,59 @@
       - else
         - tab_class = 'tab-pane'
       %div{:id => "group" + index.to_s, :class => tab_class}
-        = group
+        %p
+          %span#year_range{ :style => 'color:#f6931f; font-weight:bold;' }
+        #year_slider
+        %br
+        -@indicators[group].keys.each_with_index do |indicator, i|
+          = indicator
+          -# id for chart
+          %div{:id => "indicator" + i.to_s}
 
 :javascript
 
   $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    // --------------------- navigation buttons for indicators ---------------------------
     $('[data-toggle="btns"] .btn').on('click', function(){
     	var $this = $(this);
       	$this.parent().find('.active').removeClass('active');
         $this.addClass('active');
     });
+
+    var indicators = JSON.parse('#{@indicators.to_json}');
+    var program = JSON.parse('#{@programs_target_program.to_json}');
+    var year_start = parseInt(program['term_start']);
+    var year_end = parseInt(program['term_end']);
+
+    // ------------------------ range slider to choose year --------------------------------
+    $("#year_slider").slider({
+      range: true,
+      min: year_start,
+      max: year_end,
+      values: [year_start, year_end],
+      slide: function( event, ui ) {
+        console.log(ui.values[ 1 ], ui.values[ 0 ], ui.values[ 1 ] - ui.values[ 0 ])
+        if(ui.values[ 1 ] - ui.values[ 0 ] < 1) {
+          return false
+        }
+        $( "#year_range" ).text( ui.values[ 0 ] + " - " + ui.values[ 1 ] + I18n.t('programs.target_programs.show.years') );
+      }
+      //slide: function( event, ui ) {
+      //  var maxv = d3.min([ui.values[1], data.length]);
+      //  var minv = d3.max([ui.values[0], 0]);
+      //  x.domain([minv, maxv-1]);
+      //  graph.transition().duration(750)
+      //    .select(".x.axis").call(xAxis);
+      //  graph.transition().duration(750)
+      //    .select(".path").attr("d", line(data));
+      //}
+    });
+
+    $( "#year_range" ).text( $( "#year_slider" ).slider( "values", 0 ) + " - " + $( "#year_slider" ).slider( "values", 1 ) + I18n.t('programs.target_programs.show.years') );
+
+    // ------------------------------ create charts -----------------------------------------
+    
   })
