@@ -7,7 +7,7 @@ class Programs::IndicatorFile
   field :title, type: String
   field :description, type: String
   field :indicators, type: Hash
-  field :groups, type: Hash
+  field :rows, type: Array
 
   belongs_to :programs_target_program, :class_name => 'Programs::TargetProgram', autosave: true
 
@@ -20,19 +20,11 @@ class Programs::IndicatorFile
 
     groups = self.load_from_csv 'db/program_indicator_group_codes.csv'    # group of indicators
 
-    self.indicators = {}
+    self.rows = []
 
     table[:rows].each{|row|
-      group = groups[row['group'].to_i.to_s][:title]
-      indicator = row['indicator']
-      year = row['year']
-      indicators[group] = {} if indicators[group].blank?
-      indicators[group][indicator] = {} if indicators[group][indicator].blank?
-      indicators[group][indicator][year] = {} if indicators[group][indicator][year].blank?
-      indicators[group][indicator][year]['amount_plan'] = row['amount_plan']
-      indicators[group][indicator][year]['amount_fact'] = row['amount_fact']
-      indicators[group][indicator][year]['unit'] = row['unit']
-      indicators[group][indicator][year]['description'] = row['description']
+      row['group'] = groups[row['group'].to_i.to_s][:description]
+      self.rows.push(row)
     }
 
   end
