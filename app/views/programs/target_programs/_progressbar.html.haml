@@ -1,17 +1,17 @@
 :css
   .progress .progress-bar.six-sec-ease-in-out {
-      -webkit-transition: width 6s ease-in-out;
-      -moz-transition: width 6s ease-in-out;
-      -ms-transition: width 6s ease-in-out;
-      -o-transition: width 6s ease-in-out;
-      transition: width 6s ease-in-out;
+      -webkit-transition: width 2s ease-in-out;
+      -moz-transition: width 2s ease-in-out;
+      -ms-transition: width 2s ease-in-out;
+      -o-transition: width 2s ease-in-out;
+      transition: width 2s ease-in-out;
   }
 
   .progress {
     margin-bottom: 0;
   }
 
-- if amounts
+- if amounts != {} && amounts['amount_plan'] != 0
   - percent = (amounts['amount_fact'] || 0)*100/amounts['amount_plan']
 -else
   - percent = 0

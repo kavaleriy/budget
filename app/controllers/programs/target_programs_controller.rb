@@ -36,11 +36,11 @@ class Programs::TargetProgramsController < ApplicationController
 
   # GET /programs/target_programs
   def list
-    @programs_target_programs = @town.programs_target_programs('term_end >= 2015').where(:kpkv => /0$/) # get only main programs
+    @programs_target_programs = @town.programs_target_programs('term_end >= ' + Time.now.year.to_s).where(:kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
       amount = program.get_total_amount
-      @amounts[program.id.to_s] = amount unless amount.blank?
+      @amounts[program.id.to_s] = amount
     }
   end
 

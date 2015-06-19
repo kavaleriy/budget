@@ -37,8 +37,11 @@ class Programs::TargetProgram
     amounts = {}
     self.programs_expences_files.each{|file|
       if file.expences['total']
-        amounts['amount_plan'] = file.expences['total']['amount_plan'] if file.expences['total']['amount_plan']
-        amounts['amount_fact'] = file.expences['total']['amount_fact'] if file.expences['total']['amount_fact']
+        file.expences['total']['amount_plan'].nil? ? amounts['amount_plan'] = 0 : amounts['amount_plan'] = file.expences['total']['amount_plan'];
+        file.expences['years'].each{|year, value|
+          amounts['amount_fact'] = 0 if amounts['amount_fact'].nil?
+          amounts['amount_fact'] += value['amount_fact'] unless value['amount_fact'].nil?
+        }
       end
     }
     amounts

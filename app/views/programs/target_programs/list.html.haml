@@ -59,20 +59,24 @@
 :javascript
 
   $(document).ready(function() {
-    $.fn.datepicker.dates[window.aHelper.lang()];
-      $(".year_datepicker").datepicker( {
-        format: 'dd.mm.yyyy',
-        startView: 2,
-        endDate: '+0y',
-        multidate: true,
-        language: window.aHelper.lang(),
-        autoclose: true,
-        minViewMode: 'years',
-        viewMode: 'years',
-        pickTime: false
-      });
 
-      var currYear = new Date().getFullYear();
-      var startDate = new Date(currYear,0,1);
-      $('.year_datepicker').datepicker('setDate', startDate);
+    // ------------------------ DATEPICKER -----------------------------
+    $.fn.datepicker.dates[window.aHelper.lang()];
+    $(".year_datepicker").datepicker( {
+      format: 'dd.mm.yyyy',
+      startView: 2,
+      endDate: '+0y',
+      multidate: true,
+      language: window.aHelper.lang(),
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    }).on('changeDate', function(){
+        var year = $(this).val().split('.')[2];
+    });
+
+    var currYear = new Date().getFullYear();
+    var startDate = new Date(currYear,0,1);
+    $('.year_datepicker').datepicker('setDate', startDate);
   })
