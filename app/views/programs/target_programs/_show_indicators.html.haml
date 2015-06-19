@@ -44,6 +44,7 @@
     // ------------------------ range slider to choose year --------------------------------
     var year_start = parseInt('#{@programs_target_program['term_start']}');
     var year_end = parseInt('#{@programs_target_program['term_end']}');
+    var graphs = [], x, xAxis; // variables for charts svg - to make transition
 
     $("#year_slider").slider({
       range: true,
@@ -55,16 +56,18 @@
           return false
         }
         $( "#year_range" ).text( ui.values[ 0 ] + " - " + ui.values[ 1 ] + I18n.t('programs.target_programs.show.years') );
+        x.domain([ui.values[ 0 ], ui.values[ 1 ]]);
+        graphs.forEach(function(graph) {
+          graph['graph'].transition().duration(750)
+               .select(".x.axis").call(xAxis);
+          graph['graph'].transition().duration(750)
+               .select(".path").attr("d", graph['line'](graph['data']));
+          graph['graph'].selectAll('circle').transition().duration(750)
+                        .attr("cx", function(d){ return x(d["year"]); });
+          graph['graph'].selectAll('.dot_text').transition().duration(750)
+                        .attr("x", function(d){ return x(d["year"]) - 10; });
+        })
       }
-      //slide: function( event, ui ) {
-      //  var maxv = d3.min([ui.values[1], data.length]);
-      //  var minv = d3.max([ui.values[0], 0]);
-      //  x.domain([minv, maxv-1]);
-      //  graph.transition().duration(750)
-      //    .select(".x.axis").call(xAxis);
-      //  graph.transition().duration(750)
-      //    .select(".path").attr("d", line(data));
-      //}
     });
 
     $( "#year_range" ).text( $( "#year_slider" ).slider( "values", 0 ) + " - " + $( "#year_slider" ).slider( "values", 1 ) + I18n.t('programs.target_programs.show.years') );
@@ -100,7 +103,7 @@
       var h = 200 - m[0] - m[2]; // height
 
       // X scale and Y scales range
-      var x = d3.scale.linear().domain([year_start, year_end]).range([0, w]);
+      x = d3.scale.linear().domain([year_start, year_end]).range([0, w]);
       var y = d3.scale.linear().domain([d3.min(values), d3.max(values)]).range([h, 0]);
 
       // create area under graph
@@ -129,7 +132,7 @@
             .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
       // create yAxis
-      var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(years.length-1).tickFormat(d3.format("d"));
+      xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(false).ticks(years.length-1).tickFormat(d3.format("d"));
       // Add the x-axis.
       graph.append("svg:g")
             .attr("class", "x axis")
@@ -141,9 +144,22 @@
       //        .datum(data)
       //        .attr("class", "area")
       //        .attr("d", area);
+
+      graph.append("defs")
+          .append("svg:clipPath")
+          .attr("id", "path_clip")
+          .append("svg:rect")
+          .attr("id", "clip-rect")
+          .attr("x", "0")
+          .attr("y", "0")
+          .attr("width", w)
+          .attr("height", h);
+
       // Add the line by appending an svg:path element with the data line we created above
       // do this AFTER the axes above so that the line is above the tick-lines
       graph.append("svg:path")
+           .attr("class","path")
+           .attr("clip-path", "url(#path_clip)")
            .attr("d", function() {return line(data)});
 
       graph.selectAll("dot")
@@ -164,9 +180,12 @@
          .enter().append("text")
            .attr("font-size", "0.8em")
            .attr("fill", "#817E7E")
+           .attr("class", "dot_text")
            .attr("x", function(d) { return x(d["year"]) - 10; })
            .attr("y", function(d) { return y(d['value']) - 10; })
            .text(function(d) { return d['value']; })
+
+      graphs.push({"graph": graph, "data": data, "line": line});
 
       if(y_data[current_year]['description']) {
         $('#' + chart_id + ' .comments').text('На ' + current_year + ' р.: ' + y_data[current_year]['description']);
