@@ -53,8 +53,8 @@
             = link_to t('form.destroy', :default => t("helpers.links.destroy")), programs_target_program, :method => "delete", :town => @town.id, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger btn-xs'
   %br
 
-= link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
 = link_to t('form.explanation'), edit_programs_town_path(@town.id), :class => 'btn btn-primary'
+= link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
 
 :javascript
 

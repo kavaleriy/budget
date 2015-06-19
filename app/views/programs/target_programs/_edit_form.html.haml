@@ -57,6 +57,7 @@
               = render :partial => 'programs/indicator_files/indicator_files', :locals => { :files => @programs_target_program.programs_indicator_files }
 
 .col-sm-12
-  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
   = link_to t('form.show'), @programs_target_program, :class => 'btn btn-primary'
+  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
+
 
