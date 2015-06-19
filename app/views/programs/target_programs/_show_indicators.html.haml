@@ -75,10 +75,14 @@
     for(var i = year_start; i <= year_end; i++) {
       years.push(i);
     }
-    var i = 0;
-    for(var key in indicators["Показники затрат"]) {
-      create_chart('group0 .indicator' + i, indicators["Показники затрат"][key]['years']);
-      i++;
+    var j = 0;
+    for(var group in indicators) {
+      var i = 0;
+      for(var key in indicators[group]) {
+        create_chart('group' + j + ' .indicator' + i, indicators[group][key]['years']);
+        i++;
+      }
+      j++;
     }
     function create_chart(chart_id, y_data) {
       var data = [];
