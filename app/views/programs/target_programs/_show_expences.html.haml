@@ -1,0 +1,10 @@
+= t('programs.target_programs.show.program_term')
+= @programs_target_program.term_start + ' - ' + @programs_target_program.term_end + t('programs.target_programs.show.years')
+%br
+- if @phases.length > 0
+  = t('programs.target_programs.show.program_phases')
+  %ul{ :style => 'list-style-type:circle' }
+  - @phases.each do |phase, value|
+    %li
+      = phase + ' ' + t('programs.target_programs.show.phase') + ' (' + value['phase_start'] + ' - ' + value['phase_end'] + t('programs.target_programs.show.years') + ');'
+

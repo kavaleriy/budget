@@ -42,8 +42,8 @@ class Programs::ExpencesFile
         phase = row['phase'].to_i.to_s
         self.expences['phases'] = {} if self.expences['phases'].blank?
         self.expences['phases'][phase] = {} if self.expences['phases'][phase].blank?
-        self.expences['phases'][phase]['phase_start'] = {} unless row['phase_start'].blank?
-        self.expences['phases'][phase]['phase_end'] = {} unless row['phase_end'].blank?
+        self.expences['phases'][phase]['phase_start'] = row['phase_start'].to_i.to_s unless row['phase_start'].blank?
+        self.expences['phases'][phase]['phase_end'] = row['phase_end'].to_i.to_s unless row['phase_end'].blank?
         if row['sources'].blank?
           self.expences['phases'][phase]['amount_plan'] = amount_plan unless amount_plan == 0
           self.expences['phases'][phase]['amount_fact'] = amount_fact unless amount_fact == 0

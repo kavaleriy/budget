@@ -1,5 +1,5 @@
 class Programs::TownsController < ApplicationController
-  before_action :set_programs_town, only: [:show, :edit, :update, :destroy]
+  before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy]
 
   # GET /programs/towns
   # GET /programs/towns.json
@@ -49,6 +49,21 @@ class Programs::TownsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @programs_town.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_custom
+    key = params[:explanation].keys.first
+    code = params[:explanation][key].keys.first
+    description = params[:explanation][key][code]['comment']
+    @programs_town.explanation[key][code] = {} if key == 'sub_kvkv'
+    @programs_town.explanation[key][code]['description'] = description
+
+    if @programs_town.save
+      respond_to do |format|
+        format.js {}
+        format.json { head :no_content, status: :updated }
       end
     end
   end

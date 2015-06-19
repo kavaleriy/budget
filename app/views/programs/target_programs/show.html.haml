@@ -3,39 +3,23 @@
     = t('programs.target_programs.show.header')
 
 .container.col-sm-12.col-md-6
-  %h2
-    = @programs_target_program.title
-  #accordion.panel-group
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#targets"}
-            = t('programs.target_programs.show.targets')
-      #targets.panel-collapse.collapse.in
-        .panel-body
-          = @programs_target_program.targets
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#tasks"}
-            = t('programs.target_programs.show.tasks')
-      #tasks.panel-collapse.collapse
-        .panel-body
-          %ol{:type => "1"}
-            - @programs_target_program.tasks.each do |task|
-              %li
-                = task
-    .panel.panel-default
-      .panel-heading
-        %h4.panel-title
-          %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#results"}
-            = t('programs.target_programs.show.results')
-      #results.panel-collapse.collapse
-        .panel-body
-          %ol{:type => "1"}
-            - @programs_target_program.expected_results.each do |result|
-              %li
-                = result
+  = render 'show_info'
+
+.container.col-sm-12.col-md-6
+  %br
+    %ul.nav.nav-tabs
+      %li.active
+        %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
+          = t('programs.target_programs.show.tab_expences')
+      %li
+        %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
+          = t('programs.target_programs.show.tab_indicators')
+
+  .tab-content
+    #tab_expences.tab-pane.fade.in.active
+      = render 'show_expences'
+    #tab_indicators.tab-pane.fade
+      = render 'show_indicators'
 
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'

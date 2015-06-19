@@ -1,0 +1,28 @@
+- if @indicators.length > 0
+  .btn-group{"data-toggle" => "btns"}
+    - @indicators.keys.each_with_index do |group, index|
+      - if index == 0
+        - btn_class = 'btn btn-default active'
+      - else
+        - btn_class = 'btn btn-default'
+      %a{"data-toggle" => "tab", :href => "#group" + index.to_s, :class => btn_class }
+        = group
+
+  .tab-content
+    - @indicators.keys.each_with_index do |group, index|
+      - if index == 0
+        - tab_class = 'tab-pane active'
+      - else
+        - tab_class = 'tab-pane'
+      %div{:id => "group" + index.to_s, :class => tab_class}
+        = group
+
+:javascript
+
+  $(document).ready(function() {
+    $('[data-toggle="btns"] .btn').on('click', function(){
+    	var $this = $(this);
+      	$this.parent().find('.active').removeClass('active');
+        $this.addClass('active');
+    });
+  })
