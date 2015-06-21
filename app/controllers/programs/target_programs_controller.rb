@@ -1,8 +1,8 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
-  before_action :set_town, only: [:list, :change_list, :show]
+  before_action :set_town, only: [:list, :change_list, :show, :load_expences, :load_indicators]
 
-  before_action :authenticate_user!, only: [:new, :edit, :load]
+  before_action :authenticate_user!, only: [:new, :edit, :load, :load_expences, :load_indicators]
   load_and_authorize_resource
 
   # GET /programs/target_programs
@@ -33,14 +33,21 @@ class Programs::TargetProgramsController < ApplicationController
   def load
   end
 
+  def load_expences
+
+  end
+
+  def load_indicators
+
+  end
+
   # GET /programs/target_programs
   def list
     @year = Time.now.year
     @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
-      amount = program.get_total_amount
-      @amounts[program.id.to_s] = amount
+      @amounts[program.id.to_s] = program.get_total_amount @year
     }
   end
 
@@ -49,8 +56,7 @@ class Programs::TargetProgramsController < ApplicationController
     @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
-      amount = program.get_total_amount
-      @amounts[program.id.to_s] = amount
+      @amounts[program.id.to_s] = program.get_total_amount @year
     }
     respond_to do |format|
       format.js

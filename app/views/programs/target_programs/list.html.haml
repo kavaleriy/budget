@@ -13,15 +13,17 @@
     = t('programs.target_programs.list.data_header')
     %input{name: :term_end, :type => "text", :class => "year_datepicker form-control" }
   %span{'style' => 'position: absolute; bottom: 0px;'}
-    %i{ :class => "fa fa-lg fa-square-o", :style => "color: #2C9911;" }
+    %i{ :class => "fa fa-lg fa-square-o", :style => "color: #66c2ff;" }
     = t('programs.target_programs.list.active_programs')
-    %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #2C9911;" }
+    %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #66c2ff;" }
     = t('programs.target_programs.list.accomplished_programs')
 
 #programs_list
   = render 'list', :programs => @programs_target_programs, :amounts => @amounts, :year => @year
 
 = link_to t('form.explanation'), edit_programs_town_path(@town.id), :class => 'btn btn-primary'
+= link_to t('programs.target_programs.edit.tab_expences'), '/programs/load_expences/' + @town.id, :type => "button", :method => :get, :class => "btn btn-primary"
+= link_to t('programs.target_programs.edit.tab_indicators'), '/programs/load_indicators/' + @town.id, :type => "button", :method => :get, :class => "btn btn-primary"
 = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
 
 :javascript

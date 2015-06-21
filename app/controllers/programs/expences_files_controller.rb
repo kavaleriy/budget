@@ -1,6 +1,6 @@
 class Programs::ExpencesFilesController < ApplicationController
   before_action :set_programs_expences_file, only: [:show, :edit, :update, :destroy]
-  before_action :set_programs_target_program, only: [:destroy]
+  before_action :set_programs_town, only: [:destroy]
 
   # GET /programs/expences_files
   # GET /programs/expences_files.json
@@ -27,12 +27,13 @@ class Programs::ExpencesFilesController < ApplicationController
   def create
 
     @expences_files = []
-    @programs_target_program = Programs::TargetProgram.where(:id => params[:programs_expences_file][:programs_target_program_id]).first
+    @programs_town = Programs::Town.where(:id => params[:programs_expences_file][:town_id]).first
 
     params['expences_file'].each do |f|
-      doc = Programs::ExpencesFile.new(programs_expences_file_params)
+      doc = Programs::ExpencesFile.new
       doc.expences_file = f
-      doc.programs_target_program = @programs_target_program
+      doc.programs_town = @programs_town
+      doc.title = params[:programs_expences_file][:title]
       doc.author = current_user.email
       doc.save
       @expences_files << doc
@@ -40,12 +41,13 @@ class Programs::ExpencesFilesController < ApplicationController
       table = read_table_from_file 'public/uploads/programs/expences_file/expences_file/' + doc._id.to_s + '/' + doc.expences_file.filename
       doc.import table
       doc.save
+
     end unless params['expences_file'].nil?
 
     respond_to do |format|
       format.js {}
-      format.json { head :no_content, status: :created }
     end
+
 
   end
 
@@ -68,7 +70,7 @@ class Programs::ExpencesFilesController < ApplicationController
   def destroy
     @programs_expences_file.destroy
     respond_to do |format|
-      format.js { render 'destroy' }
+      format.js
       format.json { head :no_content, status: :deleted }
     end
 
@@ -129,12 +131,12 @@ class Programs::ExpencesFilesController < ApplicationController
       @programs_expences_file = Programs::ExpencesFile.find(params[:id])
     end
 
-    def set_programs_target_program
-      @programs_target_program = @programs_expences_file.programs_target_program
+    def set_programs_town
+      @programs_town = @programs_expences_file.programs_town
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programs_expences_file_params
-      params.require(:programs_expences_file).permit(:programs_target_program_id, :title, :description)
+      params.require(:programs_expences_file).permit(:town_id, :title)
     end
 end

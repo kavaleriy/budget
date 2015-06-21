@@ -1,0 +1,20 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.load_expences.header')
+
+.documentation
+  .col-sm-12
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'programs/expences_files/form', :locals => { :new_file => Programs::ExpencesFile.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @town.programs_expences_files }
+
+.col-sm-12
+  = link_to t('form.back'), '/programs/target_programs/list/' + @town.id, :class => 'btn btn-default'

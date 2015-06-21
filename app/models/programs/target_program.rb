@@ -18,8 +18,8 @@ class Programs::TargetProgram
   field :description, type: String
 
   belongs_to :programs_town, :class_name => 'Programs::Town', autosave: true
-  has_many :programs_expences_files, :class_name => 'Programs::ExpencesFile', autosave: true, :dependent => :destroy
   has_many :programs_indicator_files, :class_name => 'Programs::IndicatorFile', autosave: true, :dependent => :destroy
+  has_many :programs_expences, :class_name => 'Programs::Expences', autosave: true, :dependent => :destroy
 
   validates :title, presence: true
   validates :kpkv, :uniqueness => {:scope => :programs_town}
@@ -39,16 +39,13 @@ class Programs::TargetProgram
     self.description = row['description']
   end
 
-  def get_total_amount
+  def get_total_amount year
     amounts = {}
-    self.programs_expences_files.each{|file|
-      if file.expences['total']
-        file.expences['total']['amount_plan'].nil? ? amounts['amount_plan'] = 0 : amounts['amount_plan'] = file.expences['total']['amount_plan'];
-        file.expences['years'].each{|year, value|
-          amounts['amount_fact'] = 0 if amounts['amount_fact'].nil?
-          amounts['amount_fact'] += value['amount_fact'] unless value['amount_fact'].nil?
-        }
-      end
+    amounts['amount_plan'] = self.amount_plan || 0
+    amounts['amount_fact'] = 0
+    expences = self.programs_expences.where( :year.lt => year)
+    expences.each{|expence|
+      amounts['amount_fact'] += expence['amount_fact'] || 0
     }
     amounts
   end
