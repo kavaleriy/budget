@@ -1,5 +1,5 @@
 = t('programs.target_programs.show.program_term')
-= @programs_target_program.term_start + ' - ' + @programs_target_program.term_end + t('programs.target_programs.show.years')
+= @programs_target_program.term_start.to_s + ' - ' + @programs_target_program.term_end.to_s + t('programs.target_programs.show.years')
 %br
 - if @phases.length > 0
   = t('programs.target_programs.show.program_phases')
