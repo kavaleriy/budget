@@ -1,6 +1,6 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
-  before_action :set_town, only: [:list, :show]
+  before_action :set_town, only: [:list, :change_list, :show]
 
   before_action :authenticate_user!, only: [:new, :edit, :load]
   load_and_authorize_resource
@@ -36,12 +36,26 @@ class Programs::TargetProgramsController < ApplicationController
 
   # GET /programs/target_programs
   def list
-    @programs_target_programs = @town.programs_target_programs('term_end >= ' + Time.now.year.to_s).where(:kpkv => /0$/) # get only main programs
+    @year = Time.now.year
+    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
       amount = program.get_total_amount
       @amounts[program.id.to_s] = amount
     }
+  end
+
+  def change_list
+    @year = params[:year].to_i
+    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
+    @amounts = {}
+    @programs_target_programs.each{|program|
+      amount = program.get_total_amount
+      @amounts[program.id.to_s] = amount
+    }
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /programs/target_programs/1/edit

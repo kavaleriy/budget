@@ -1,0 +1,37 @@
+:css
+  .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle;
+  }
+
+  td a {
+    font-size: 1.1em;
+  }
+
+- if programs.length > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{:style => 'width: 5%;'}
+        %th{:style => 'width: 80%;'}
+        %th{:style => 'width: 20%;'}
+    %tbody
+      - programs.each do |programs_target_program|
+        %tr
+          %td
+            - color = programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['color']
+            - if color == ''
+              - color = '#0b387c'
+            %i{ :class => "fa fa-2x #{programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['icon']}",
+                :style => "color: #{color};" }
+          %td
+            = link_to programs_target_program.title, programs_target_program
+            %br
+              = render 'programs/target_programs/progressbar', :amounts => amounts[programs_target_program.id.to_s]
+              - if programs_target_program.term_end > year
+                %i{ :class => "fa fa-lg fa-square-o", :style => "color: #2C9911;" }
+              - else
+                %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #2C9911;" }
+          %td
+            = link_to t('form.edit'), edit_programs_target_program_path(programs_target_program), :class => 'btn btn-default btn-xs'
+            = link_to t('form.destroy', :default => t("helpers.links.destroy")), programs_target_program, :method => "delete", :town => @town.id, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger btn-xs'
+  %br

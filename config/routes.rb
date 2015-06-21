@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'load' => 'target_programs#load'
     post 'target_programs/create' => 'target_programs#create'
     get 'target_programs/list/:town' => 'target_programs#list'
+    get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
     put 'towns/update_custom/:id' => 'towns#update_custom'
   end
 
