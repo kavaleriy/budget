@@ -1,6 +1,6 @@
 class Programs::IndicatorFilesController < ApplicationController
   before_action :set_programs_indicator_file, only: [:show, :edit, :update, :destroy]
-  before_action :set_programs_target_program, only: [:destroy]
+  before_action :set_programs_town, only: [:destroy]
 
   # GET /programs/indicator_files
   # GET /programs/indicator_files.json
@@ -27,12 +27,13 @@ class Programs::IndicatorFilesController < ApplicationController
   def create
 
     @indicator_files = []
-    @programs_target_program = Programs::TargetProgram.where(:id => params[:programs_indicator_file][:programs_target_program_id]).first
+    @programs_town = Programs::Town.where(:id => params[:programs_indicator_file][:town_id]).first
 
     params['indicator_file'].each do |f|
-      doc = Programs::IndicatorFile.new(programs_indicator_file_params)
+      doc = Programs::IndicatorFile.new
       doc.indicator_file = f
-      doc.programs_target_program = @programs_target_program
+      doc.programs_town = @programs_town
+      doc.title = params[:programs_indicator_file][:title]
       doc.author = current_user.email
       doc.save
       @indicator_files << doc
@@ -44,7 +45,6 @@ class Programs::IndicatorFilesController < ApplicationController
 
     respond_to do |format|
       format.js {}
-      format.json { head :no_content, status: :created }
     end
 
   end
@@ -132,12 +132,12 @@ class Programs::IndicatorFilesController < ApplicationController
       @programs_indicator_file = Programs::IndicatorFile.find(params[:id])
     end
 
-    def set_programs_target_program
-      @programs_target_program = @programs_indicator_file.programs_target_program
+    def set_programs_town
+      @programs_town = @programs_indicator_file.programs_town
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programs_indicator_file_params
-      params.require(:programs_indicator_file).permit(:programs_target_program_id, :title, :description)
+      params.require(:programs_indicator_file).permit(:town_id, :title)
     end
 end

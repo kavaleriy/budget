@@ -18,7 +18,7 @@ class Programs::TargetProgram
   field :description, type: String
 
   belongs_to :programs_town, :class_name => 'Programs::Town', autosave: true
-  has_many :programs_indicator_files, :class_name => 'Programs::IndicatorFile', autosave: true, :dependent => :destroy
+  has_many :programs_indicators, :class_name => 'Programs::Indicators', autosave: true, :dependent => :destroy
   has_many :programs_expences, :class_name => 'Programs::Expences', autosave: true, :dependent => :destroy
 
   validates :title, presence: true
@@ -52,20 +52,18 @@ class Programs::TargetProgram
 
   def get_indicators
     indicators = {}
-    self.programs_indicator_files.each{|file|
-      file.rows.each{|row|
-        group = row['group']
-        indicator = row['indicator']
-        year = row['year']
-        indicators[group] = {} if indicators[group].nil?
-        indicators[group][indicator] = {} if indicators[group][indicator].nil?
-        indicators[group][indicator]['unit'] = row['unit']
-        indicators[group][indicator]['years'] = {} if indicators[group][indicator]['years'].nil?
-        indicators[group][indicator]['years'][year] = {}
-        indicators[group][indicator]['years'][year]['amount_plan'] = row['amount_plan']
-        indicators[group][indicator]['years'][year]['amount_fact'] = row['amount_fact']
-        indicators[group][indicator]['years'][year]['description'] = row['description']
-      }
+    self.programs_indicators.each{|indicator|
+      group = indicator['group']
+      name = indicator['indicator']
+      year = indicator['year']
+      indicators[group] = {} if indicators[group].nil?
+      indicators[group][name] = {} if indicators[group][name].nil?
+      indicators[group][name]['unit'] = indicator['unit']
+      indicators[group][name]['years'] = {} if indicators[group][name]['years'].nil?
+      indicators[group][name]['years'][year] = {}
+      indicators[group][name]['years'][year]['amount_plan'] = indicator['amount_plan']
+      indicators[group][name]['years'][year]['amount_fact'] = indicator['amount_fact']
+      indicators[group][name]['years'][year]['description'] = indicator['description']
     }
     indicators
   end

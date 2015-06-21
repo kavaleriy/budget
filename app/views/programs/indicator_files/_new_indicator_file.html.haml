@@ -7,15 +7,13 @@
         - new_file.errors.full_messages.each do |msg|
           %li= msg
 
+  = f.hidden_field :town_id, :value => @town.id.to_s
+
   .col-sm-12
     .form-group
       %label
         = t('name')
       = f.text_field :title, :class => 'form-control'
-
-  .col-sm-12
-    .form-group
-      = f.text_area :description, :rows => '2', :placeholder => t('form.detailed'), :class => 'form-control'
 
   .col-sm-12
     .form-group
