@@ -73,16 +73,4 @@ class Programs::TargetProgram
     indicators
   end
 
-  def get_phases
-    phases = {}
-    self.programs_expences_files.each{|file|
-      if file.expences['phases']
-        file.expences['phases'].each{|phase, value|
-          phases[phase] = value
-        }
-      end
-    }
-    phases
-  end
-
 end
