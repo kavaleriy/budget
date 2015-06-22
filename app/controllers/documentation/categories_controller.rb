@@ -9,7 +9,6 @@ class Documentation::CategoriesController < ApplicationController
   end
 
   def tree_root
-    binding.pry
     @documentation_categories = Documentation::Category.where( :category_id.in =>[ nil, '#'])
   end
 
