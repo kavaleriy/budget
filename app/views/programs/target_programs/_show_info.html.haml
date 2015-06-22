@@ -75,6 +75,18 @@
           - @subprograms.each do |subprogram|
             %li
               = link_to subprogram.title, subprogram
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title
+        %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#attachments"}
+          = t('programs.target_programs.show.attachments')
+    #attachments.panel-collapse.collapse
+      .panel-body
+        - @programs_target_program.programs_attachments.each do |attachment|
+          = link_to attachment.attachment.url do
+            %i.fa.fa-download.fa-border
+            = attachment.title
+          %br
 
 :javascript
 

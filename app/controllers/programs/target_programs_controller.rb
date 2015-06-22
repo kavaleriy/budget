@@ -1,8 +1,8 @@
 class Programs::TargetProgramsController < ApplicationController
   before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
-  before_action :set_town, only: [:list, :show]
+  before_action :set_town, only: [:list, :change_list, :show, :load_expences, :load_indicators]
 
-  before_action :authenticate_user!, only: [:new, :edit, :load]
+  before_action :authenticate_user!, only: [:new, :edit, :load, :load_expences, :load_indicators]
   load_and_authorize_resource
 
   # GET /programs/target_programs
@@ -19,7 +19,6 @@ class Programs::TargetProgramsController < ApplicationController
       key = @programs_target_program.kpkv[0,6]
       @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
     end
-    @phases = @programs_target_program.get_phases
     @indicators = @programs_target_program.get_indicators
   end
 
@@ -34,14 +33,34 @@ class Programs::TargetProgramsController < ApplicationController
   def load
   end
 
+  def load_expences
+
+  end
+
+  def load_indicators
+
+  end
+
   # GET /programs/target_programs
   def list
-    @programs_target_programs = @town.programs_target_programs('term_end >= ' + Time.now.year.to_s).where(:kpkv => /0$/) # get only main programs
+    @year = Time.now.year
+    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
-      amount = program.get_total_amount
-      @amounts[program.id.to_s] = amount
+      @amounts[program.id.to_s] = program.get_total_amount @year
     }
+  end
+
+  def change_list
+    @year = params[:year].to_i
+    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
+    @amounts = {}
+    @programs_target_programs.each{|program|
+      @amounts[program.id.to_s] = program.get_total_amount @year
+    }
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /programs/target_programs/1/edit

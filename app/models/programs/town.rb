@@ -5,6 +5,8 @@ class Programs::Town
   field :explanation, :type => Hash
 
   has_many :programs_target_programs, :class_name => 'Programs::TargetProgram', autosave: true, :dependent => :destroy
+  has_many :programs_expences_files, :class_name => 'Programs::ExpencesFile', autosave: true, :dependent => :destroy
+  has_many :programs_indicator_files, :class_name => 'Programs::IndicatorFile', autosave: true, :dependent => :destroy
 
   def generate_explanation
     self.explanation = {}

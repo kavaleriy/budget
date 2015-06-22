@@ -23,8 +23,7 @@
   $.fn.editable.defaults.mode = 'block';
   $('.document[data-id="#{file.id}"] a[data-pk]').editable({
     value: {
-        title: "#{file.title}",
-        description: "#{file.description}",
+        title: "#{file.title}"
     },
     validate: function(value) {
         if (value.title == '') return 'Потрібно вказати ім\'я файла!';

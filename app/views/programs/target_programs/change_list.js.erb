@@ -1,0 +1,10 @@
+$('#programs_list').html('<%= escape_javascript( render :partial => 'list', :locals => { :programs => @programs_target_programs, :amounts => @amounts, :year => @year } ) %>')
+
+$.each($('div.progress-bar'), function(){
+    var value = $(this).attr('aria-valuetransitiongoal');
+//    $(this).css('width', value+'%');
+    $(this).animate({
+        width: value+'%'
+    });
+});
+

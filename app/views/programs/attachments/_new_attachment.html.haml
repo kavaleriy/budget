@@ -7,7 +7,7 @@
         - new_file.errors.full_messages.each do |msg|
           %li= msg
 
-  = f.hidden_field :town_id, :value => @town.id.to_s
+  = f.hidden_field :program_id, :value => @programs_target_program.id.to_s
 
   .col-sm-12
     .form-group
@@ -20,7 +20,7 @@
       %label
         %i.glyphicon.glyphicon-folder-open
           = t('form.file')
-      = file_field_tag "expences_file[]", multiple: true, :class => 'form-control'
+      = file_field_tag "attachment[]", multiple: true, :class => 'form-control'
 
   .actions
     = f.button :class => 'btn btn-default' do

@@ -8,11 +8,11 @@
 
 .document.pull-left{'data-id' => "#{file.id}"}
   .col-sm-1
-    - if file.expences_file?
-      = link_to file.expences_file.url do
-        %i.fa{ class: "#{get_file_type_icon(file.expences_file_identifier)}" }
+    - if file.attachment?
+      = link_to file.attachment.url do
+        %i.fa{ class: "#{get_file_type_icon(file.attachment_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'programs_expences_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{programs_expences_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'programs_attachment', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{programs_attachment_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
 
   .col-sm-1
     = link_to file, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
@@ -23,8 +23,7 @@
   $.fn.editable.defaults.mode = 'block';
   $('.document[data-id="#{file.id}"] a[data-pk]').editable({
     value: {
-        title: "#{file.title}",
-        description: "",
+        title: "#{file.title}"
     },
     validate: function(value) {
         if (value.title == '') return 'Потрібно вказати ім\'я файла!';

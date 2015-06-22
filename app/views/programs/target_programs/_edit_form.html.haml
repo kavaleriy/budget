@@ -15,46 +15,19 @@
       = f.submit t('form.save'), :class => 'btn btn-primary'
 
 .col-sm-12.col-md-6
-  %br
-  %ul.nav.nav-tabs
-    %li.active
-      %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
-        = t('programs.target_programs.edit.tab_expences')
-    %li
-      %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
-        = t('programs.target_programs.edit.tab_indicators')
+  .documentation
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          = t('form.new_document')
+        .new_document.panel-body
+          = render :partial => 'programs/attachments/new_attachment', :locals => { :new_file => Programs::Attachment.new }
 
-  .tab-content
-    #tab_expences.tab-pane.fade.in.active
-      %br
-      .documentation
-        .col-sm-12
-          .panel.panel-default
-            .panel-heading
-              = t('form.new_document')
-            .new_document.panel-body
-              = render :partial => 'programs/expences_files/form', :locals => { :new_file => Programs::ExpencesFile.new }
-
-          .panel.panel-default
-            .panel-heading
-              = t('form.uploaded_documents')
-            .documents.panel-body
-              = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @programs_target_program.programs_expences_files }
-    #tab_indicators.tab-pane.fade
-      %br
-      .documentation
-        .col-sm-12
-          .panel.panel-default
-            .panel-heading
-              = t('form.new_document')
-            .new_document.panel-body
-              = render :partial => 'programs/indicator_files/new_indicator_file', :locals => { :new_file => Programs::IndicatorFile.new }
-
-          .panel.panel-default
-            .panel-heading
-              = t('form.uploaded_documents')
-            .documents.panel-body
-              = render :partial => 'programs/indicator_files/indicator_files', :locals => { :files => @programs_target_program.programs_indicator_files }
+      .panel.panel-default
+        .panel-heading
+          = t('form.uploaded_documents')
+        .documents.panel-body
+          = render :partial => 'programs/attachments/attachments', :locals => { :files => @programs_target_program.programs_attachments }
 
 .col-sm-12
   = link_to t('form.show'), @programs_target_program, :class => 'btn btn-primary'
