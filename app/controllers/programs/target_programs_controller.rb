@@ -91,7 +91,7 @@ class Programs::TargetProgramsController < ApplicationController
   # PATCH/PUT /programs/target_programs/1.json
   def update
     respond_to do |format|
-      if @programs_target_program.update(programs_target_program_params)
+      if @programs_target_program.update params
         format.html { redirect_to @programs_target_program, notice: 'Target program was successfully updated.' }
         format.json { render :show, status: :ok, location: @programs_target_program }
       else
@@ -203,6 +203,6 @@ class Programs::TargetProgramsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programs_target_program_params
-      params.require(:programs_target_program).permit(:town, :path)
+      params.require(:programs_target_program).permit(:town, :path, :title, :kpkv, :kfkv, :phases, :amount_plan, :targets, :tasks, :expected_results, :participants)
     end
 end
