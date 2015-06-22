@@ -14,18 +14,21 @@ class Programs::IndicatorFile
 
   validates_presence_of :indicator_file, message: I18n.t('form.choose_file')
 
-  def import table
+  def import table, town
 
     groups = self.load_from_csv 'db/program_indicator_group_codes.csv'    # group of indicators
 
     table[:rows].each{|row|
       indicator = Programs::Indicators.new
-      indicator.programs_indicator_file = self
+
       year = row['year'].to_i
       kpkv = row['kpkv'].to_s.rjust(7, '0')
       group = groups[row['group'].to_i.to_s][:description]
-      indicator.programs_target_program = Programs::TargetProgram.where(:kpkv => kpkv, :term_end.gte => year, :term_start.lte => year).first
       indicator.year = year
+      indicator.programs_target_program = town.programs_target_programs.where(:kpkv => kpkv, :term_end.gte => year, :term_start.lte => year).first
+      check_indicator = indicator.programs_target_program.programs_indicators.where(:year => year).first
+      indicator = check_indicator if check_indicator
+      indicator.programs_indicator_file = self
       indicator.group = group
       indicator.indicator = row['indicator']
       indicator.amount_plan = row['amount_plan'].to_i if row['amount_plan']

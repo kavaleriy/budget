@@ -39,7 +39,7 @@ class Programs::ExpencesFilesController < ApplicationController
       @expences_files << doc
 
       table = read_table_from_file 'public/uploads/programs/expences_file/expences_file/' + doc._id.to_s + '/' + doc.expences_file.filename
-      doc.import table
+      doc.import table, @programs_town
       doc.save
 
     end unless params['expences_file'].nil?

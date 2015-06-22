@@ -39,7 +39,7 @@ class Programs::IndicatorFilesController < ApplicationController
       @indicator_files << doc
 
       table = read_table_from_file 'public/uploads/programs/indicator_file/indicator_file/' + doc._id.to_s + '/' + doc.indicator_file.filename
-      doc.import table
+      doc.import table, @programs_town
       doc.save
     end unless params['indicator_file'].nil?
 

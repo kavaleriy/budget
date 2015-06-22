@@ -14,15 +14,17 @@ class Programs::ExpencesFile
 
   validates_presence_of :expences_file, message: I18n.t('form.choose_file')
 
-  def import table
+  def import table, town
 
     table[:rows].each{|row|
       expence = Programs::Expences.new
-      expence.programs_expences_file = self
       year = row['year'].to_i
       kpkv = row['kpkv'].to_s.rjust(7, '0')
-      expence.programs_target_program = Programs::TargetProgram.where(:kpkv => kpkv, :term_end.gte => year, :term_start.lte => year).first
       expence.year = year
+      expence.programs_target_program = town.programs_target_programs.where(:kpkv => kpkv, :term_end.gte => year, :term_start.lte => year).first
+      check_expence = expence.programs_target_program.programs_expences.where(:year => year).first
+      expence = check_expence if check_expence
+      expence.programs_expences_file = self
       expence.amount_plan = row['amount_plan'].to_i if row['amount_plan']
       expence.amount_fact = row['amount_fact'].to_i if row['amount_fact']
       expence.description = row['description']
