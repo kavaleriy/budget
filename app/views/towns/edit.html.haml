@@ -1,7 +1,7 @@
-%h1 Editing town
+- model_class = Town
 
-= render 'form'
+= content_for :header do
+  .head.pull-left
+    Редагувати місто
 
-= link_to 'Show', @town
-\|
-= link_to 'Back', towns_path
+= render :partial => "form"

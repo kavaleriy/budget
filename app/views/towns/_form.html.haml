@@ -1,13 +1,8 @@
-= form_for @town do |f|
-  - if @town.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@town.errors.count, "error")} prohibited this town from being saved:"
-      %ul
-        - @town.errors.full_messages.each do |msg|
-          %li= msg
+= form_for @town, :html => { :class => 'form-horizontal' } do |f|
+  .form-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title, :class => 'form-control'
 
-  .field
-    = f.label :name
-    = f.text_field :name
-  .actions
-    = f.submit 'Save'
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
