@@ -8,10 +8,13 @@ class Documentation::Document
 
   field :title, type: String
   field :description, type: String
-  field :issued, type: Date
 
-  field :town, type: String
-  field :owner, type: String
+  field :yearFrom, type: Date
+  field :yearTo, type: Date
+
+  belongs_to :branch, class_name: 'Documentation::Branch', :dependent => :nullify
+  belongs_to :town, :dependent => :nullify
+  belongs_to :owner, class_name: 'User', :dependent => :nullify
 
   mount_uploader :doc_file, DocumentationUploader
   skip_callback :update, :before, :store_previous_model_for_doc_file

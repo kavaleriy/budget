@@ -1,5 +1,7 @@
-%h1 New town
+- model_class = Town
 
-= render 'form'
+= content_for :header do
+  .head.pull-left
+    Додати місто
 
-= link_to 'Back', towns_path
+= render :partial => "form"

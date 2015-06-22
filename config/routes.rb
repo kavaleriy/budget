@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :documentation do
+    resources :branches
+  end
+
   namespace :programs do
     resources :indicator_files
   end

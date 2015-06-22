@@ -1,2 +1,12 @@
-- documents.each do |document|
-  = render :partial => 'documentation/documents/document', :locals => { :document => document }
+%table.table.table-striped
+  %thead
+    %tr
+      %th File
+      %th Title
+      %th Years
+      %th Town
+      %th Type
+      %th
+  %tbody
+    - documents.each do |document|
+      = render :partial => 'documentation/documents/document', :locals => { :document => document }

@@ -2,7 +2,7 @@
 
 %p
   %b Category:
-  = @documentation_document.category_id
+  = @documentation_document.category.title
 %p
   %b Title:
   = @documentation_document.title
@@ -11,11 +11,11 @@
   = @documentation_document.description
 %p
   %b Issued:
-  = @documentation_document.issued
+  = "#{@documentation_document.yearFrom} - #{@documentation_document.yearTo}"
 %p
   %b File:
-  = @documentation_document.doc_file
+  - if @documentation_document.doc_file?
+    = link_to @documentation_document.doc_file.url do
+      %i.fa.fa-2x{ class: "#{get_file_type_icon(@documentation_document.doc_file_identifier)}" }
 
-= link_to 'Edit', edit_documentation_document_path(@documentation_document)
-\|
 = link_to 'Back', documentation_documents_path
