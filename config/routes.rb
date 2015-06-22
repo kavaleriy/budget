@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :towns
     resources :target_programs
     resources :expences_files
+    resources :attachments
     get 'load' => 'target_programs#load'
     get 'load_expences/:town' => 'target_programs#load_expences'
     get 'load_indicators/:town' => 'target_programs#load_indicators'
