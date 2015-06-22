@@ -1,0 +1,13 @@
+- documents.each do |document|
+  %tr
+    %td
+      - if document.doc_file?
+        = link_to document.doc_file.url do
+          %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
+    %td= document.category.title
+    %td= document.title
+    %td= "#{document.yearFrom} - #{document.yearTo}"
+    %td= "#{document.town.title if document.town}"
+    %td= "#{document.branch.title if document.branch}"
+
+    %td= link_to 'Детальніше', document

@@ -2,74 +2,19 @@
   .head.pull-left
     Документи
 
-= form_tag 'search_form', :html => { :class => 'form-horizontal col-sm-12' } do |f|
+  .col-xs-9.pull-right
+    = render partial: 'search'
 
-  = select_tag :town_select, options_for_select(Town.all.collect { |t| [t.name, t.id] } ), { multiple: true, class: 'town_select col-xs-2' }
-
-  = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
-    { multiple: true, class: 'category_select' }
-
-  = submit_tag 'Search'
-
-%table
-  %tr
-    %th Category
-    %th Title
-    %th Description
-    %th File
-    %th
-    %th
-    %th
-
-  - @documentation_documents.each do |documentation_document|
-    %tr
-      %td= documentation_document.category_id
-      %td= documentation_document.title
-      %td= documentation_document.description
-      %td= documentation_document.doc_file
-      %td= link_to 'Show', documentation_document
-      %td= link_to 'Edit', edit_documentation_document_path(documentation_document)
-      %td= link_to 'Destroy', documentation_document, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Document', new_documentation_document_path
-
-:javascript
-  $(document).ready(function() {
-
-    $(".town_select").select2(
-      {
-        allowClear: true,
-        placeholder: "Вкажіть місто",
-        multiSelect: true,
-        formatResult: formatSelect,
-        formatSelection: formatSelect,
-        escapeMarkup: function(m) { return m; },
-      }
-    )
-
-    function formatSelect(el) {
-      return el.text;
-    }
-
-  });
-
-  $(document).ready(function() {
-
-    $(".category_select").select2(
-      {
-        allowClear: true,
-        placeholder: "Вкажіть категорію документів",
-        multiSelect: true,
-        formatResult: formatFaSelect,
-        formatSelection: formatFaSelect,
-        escapeMarkup: function(m) { return m; },
-      }
-    )
-
-    function formatFaSelect(el) {
-      return el.text;
-    }
-
-  });
+.documentation
+  %table.table.table-striped
+    %thead
+      %tr
+        %th File
+        %th Category
+        %th Title
+        %th Years
+        %th Town
+        %th Type
+        %th
+    %tbody#results
+      = render partial: 'search_results', :locals => { documents: @documentation_documents }

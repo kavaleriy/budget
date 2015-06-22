@@ -14,6 +14,7 @@ class Documentation::Category
   def self.tree_root
     Documentation::Category.where( :category_id.in =>[ nil, '#'])
   end
+
   def childrens
     Documentation::Category.where(category_id: id).all
   end

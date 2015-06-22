@@ -1,11 +1,22 @@
 class Documentation::DocumentsController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
+  load_and_authorize_resource
 
   before_action :set_documentation_document, only: [:show, :edit, :update, :destroy]
 
   # GET /documentation/documents
   # GET /documentation/documents.json
   def index
-    @documentation_documents = Documentation::Document.all
+    @documentation_documents = Documentation::Document
+    @documentation_documents = @documentation_documents.where(:town.in => params["town_select"]) if params["town_select"]
+    @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) if params["branch_select"]
+    @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) if params["q"]
+
+    respond_to do |format|
+      format.js
+      format.html
+      format.json { head :no_content, status: :created }
+    end
   end
 
   # GET /documentation/documents/1

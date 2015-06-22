@@ -1,4 +1,7 @@
 class Documentation::CategoriesController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
+  load_and_authorize_resource
+
   before_action :set_documentation_category, only: [:show, :edit, :update, :destroy]
 
   # GET /documentation/categories
