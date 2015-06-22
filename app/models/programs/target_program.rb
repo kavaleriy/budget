@@ -26,8 +26,8 @@ class Programs::TargetProgram
   validates :kpkv, :uniqueness => {:scope => :programs_town}
 
   def import row
-    self.kpkv = row['kpkv'].to_s.rjust(7, '0')
-    self.kfkv = row['kfkv'].to_s.rjust(4, '0')
+    self.kpkv = row['kpkv'].to_i.to_s.rjust(7, '0')
+    self.kfkv = row['kfkv'].to_i.to_s.rjust(4, '0')
     self.term_start = row['term_start'].to_i
     self.term_end = row['term_end'].to_i
     self.phases = row['phases'].split('/') || []
@@ -38,6 +38,22 @@ class Programs::TargetProgram
     self.expected_results = row['expected_results'].split('//')
     self.participants = row['participants'].split('//')
     self.description = row['description']
+  end
+
+  def update params
+    row = params[:programs_target_program]
+    self.kpkv = row['kpkv'].to_i.to_s.gsub(' ', '').rjust(7, '0')
+    self.kfkv = row['kfkv'].to_i.to_s.gsub(' ', '').rjust(4, '0')
+    self.term_start = params['term_start'].split('.')[2].to_i
+    self.term_end = params['term_end'].split('.')[2].to_i
+    self.phases = row['phases'].to_s.gsub(' ', '').split('/') || []
+    self.amount_plan = row['amount_plan'].to_s.gsub(' ', '').to_i
+    self.title = row['title']
+    self.targets = row['targets']
+    self.tasks = row['tasks'].split('//')
+    self.expected_results = row['expected_results'].split('//')
+    self.participants = row['participants'].split('//')
+    self.save
   end
 
   def get_total_amount year

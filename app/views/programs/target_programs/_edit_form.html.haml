@@ -1,3 +1,8 @@
+:css
+  .datepicker-dropdown.dropdown-menu {
+    background-color: #ffffff;
+  }
+
 .col-sm-12.col-md-6
   = form_for @programs_target_program do |f|
     - if @programs_target_program.errors.any?
@@ -7,30 +12,65 @@
           - @programs_target_program.errors.full_messages.each do |msg|
             %li= msg
 
-  = bootstrap_form_for @programs_target_program, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
+  = bootstrap_form_for @programs_target_program, :html => { 'accept-charset' => "UTF-8", :class => 'form-horizontal' } do |f|
     .form-group
       = f.text_field :title, :label => t('programs.target_programs.new.name')
+      = f.text_field :kpkv, :label => t('programs.target_programs.edit.code') + ' (kpkv)', :maxlength => 7
+      = f.text_field :kfkv, :label => t('programs.target_programs.edit.func_code') + ' (kfkv)', :maxlength => 4
+      .form-group
+        %label.control-label
+          = t('programs.target_programs.form.term')
+        .input-daterange.input-group
+          %input{name: :term_start, :type => "text", :class => "year_datepicker form-control", :id => "term_start"}
+          %span.input-group-addon
+            = t('programs.target_programs.form.to')
+          %input{name: :term_end, :type => "text", :class => "year_datepicker form-control", :id => "term_end"}
+      = f.text_field :phases, :label => t('programs.target_programs.show.program_phases'), :value => @programs_target_program.phases.join("/")
+      = f.text_field :amount_plan, :label => t('programs.target_programs.edit.amount_plan'), :type => 'number', :max => '10000000000'
+      = f.text_field :targets, :label => t('programs.target_programs.show.targets')
+      = f.text_field :tasks, :label => t('programs.target_programs.show.tasks'), :value => @programs_target_program.tasks.join("//")
+      = f.text_field :expected_results, :label => t('programs.target_programs.show.results'), :value => @programs_target_program.expected_results.join("//")
+      = f.text_field :participants, :label => t('programs.target_programs.show.participants'), :value => @programs_target_program.participants.join("//")
 
     .actions
       = f.submit t('form.save'), :class => 'btn btn-primary'
+      = link_to t('form.show'), @programs_target_program, :class => 'btn btn-primary'
+      = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
 
 .col-sm-12.col-md-6
   .documentation
-    .col-sm-12
-      .panel.panel-default
-        .panel-heading
-          = t('form.new_document')
-        .new_document.panel-body
-          = render :partial => 'programs/attachments/new_attachment', :locals => { :new_file => Programs::Attachment.new }
+    .title
+      = t('programs.target_programs.edit.attachments_header')
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'programs/attachments/new_attachment', :locals => { :new_file => Programs::Attachment.new }
 
-      .panel.panel-default
-        .panel-heading
-          = t('form.uploaded_documents')
-        .documents.panel-body
-          = render :partial => 'programs/attachments/attachments', :locals => { :files => @programs_target_program.programs_attachments }
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        = render :partial => 'programs/attachments/attachments', :locals => { :files => @programs_target_program.programs_attachments }
 
-.col-sm-12
-  = link_to t('form.show'), @programs_target_program, :class => 'btn btn-primary'
-  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
+:javascript
 
+  $(document).ready(function() {
+    $.fn.datepicker.dates[window.aHelper.lang()];
 
+    $(".year_datepicker").datepicker( {
+      format: 'dd.mm.yyyy',
+      startView: 2,
+      multidate: true,
+      language: window.aHelper.lang(),
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    });
+
+    var date = new Date('#{@programs_target_program.term_start}',0,1);
+    $('#term_start').datepicker('setDate', date);
+    date = new Date('#{@programs_target_program.term_end}',0,1);
+    $('#term_end').datepicker('setDate', date);
+  })
