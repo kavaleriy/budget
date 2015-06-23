@@ -1,6 +1,5 @@
 class Documentation::CategoriesController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
-  load_and_authorize_resource
+  before_action :authenticate_user!, except: [:index, :tree_root, :tree]
 
   before_action :set_documentation_category, only: [:show, :edit, :update, :destroy]
 
@@ -75,7 +74,6 @@ class Documentation::CategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_documentation_category
       @documentation_category = Documentation::Category.find(params[:id])
     end
