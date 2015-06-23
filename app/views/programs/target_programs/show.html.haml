@@ -21,6 +21,10 @@
     #tab_indicators.tab-pane.fade
       = render 'show_indicators'
 
+#charts_tooltip.hidden
+  %p
+    %span#value
+
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'
   = link_to t('form.back'), '/programs/target_programs/list/' + @town.id, :class => 'btn btn-default'
