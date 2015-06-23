@@ -24,6 +24,7 @@
 = link_to t('form.explanation'), edit_programs_town_path(@programs_town.id), :class => 'btn btn-primary'
 = link_to t('programs.target_programs.edit.tab_expences'), '/programs/load_expences/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
 = link_to t('programs.target_programs.edit.tab_indicators'), '/programs/load_indicators/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
+= link_to t('programs.target_programs.list.branch_report'), '/programs/towns/branch_report/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
 = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
 
 :javascript

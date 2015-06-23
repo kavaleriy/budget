@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     get 'load' => 'target_programs#load'
     get 'load_expences/:town' => 'target_programs#load_expences'
     get 'load_indicators/:town' => 'target_programs#load_indicators'
+    get 'towns/branch_report/:id' => 'towns#branch_report'
     post 'target_programs/create' => 'target_programs#create'
     get 'target_programs/list/:town' => 'target_programs#list'
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
