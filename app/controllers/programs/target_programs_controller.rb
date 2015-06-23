@@ -1,5 +1,8 @@
 class Programs::TargetProgramsController < ApplicationController
-  before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy, :attachment_destroy]
+
+  layout 'visify', only: [:show_indicators]
+
+  before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy, :attachment_destroy, :show_indicators]
   before_action :set_town, only: [:list, :change_list, :show, :load_expences, :load_indicators]
 
   before_action :authenticate_user!, only: [:new, :edit, :load, :load_expences, :load_indicators]
@@ -23,6 +26,10 @@ class Programs::TargetProgramsController < ApplicationController
     @subprograms.each{|program|
       @amounts[program.id.to_s] = program.get_total_amount Time.now.year
     }
+    @indicators = @programs_target_program.get_indicators
+  end
+
+  def show_indicators
     @indicators = @programs_target_program.get_indicators
   end
 

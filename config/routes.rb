@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     post 'target_programs/create' => 'target_programs#create'
     get 'target_programs/list/:town' => 'target_programs#list'
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
+    get 'target_programs/show_indicators/:id' => 'target_programs#show_indicators'
     put 'towns/update_custom/:id' => 'towns#update_custom'
     delete 'expences_files/:id' => 'expences_files#destroy'
     delete 'towns/expences_file_destroy/:expences_file_id' => 'towns#expences_file_destroy'
