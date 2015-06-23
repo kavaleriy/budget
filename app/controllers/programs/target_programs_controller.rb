@@ -19,6 +19,10 @@ class Programs::TargetProgramsController < ApplicationController
       key = @programs_target_program.kpkv[0,6]
       @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
     end
+    @amounts = {}
+    @subprograms.each{|program|
+      @amounts[program.id.to_s] = program.get_total_amount Time.now.year
+    }
     @indicators = @programs_target_program.get_indicators
   end
 

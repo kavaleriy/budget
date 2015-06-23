@@ -71,10 +71,16 @@
           = t('programs.target_programs.show.subprograms')
     #subprograms.panel-collapse.collapse
       .panel-body
-        %ol{:type => "1"}
+        %table
+          %tr
+            %th.col-sm-6
+            %th.col-sm-4
           - @subprograms.each do |subprogram|
-            %li
-              = link_to subprogram.title, subprogram
+            %tr
+              %td
+                = link_to subprogram.title, subprogram
+              %td
+                = render 'programs/target_programs/progressbar', :amounts => @amounts[subprogram.id.to_s]
   .panel.panel-default
     .panel-heading
       %h4.panel-title
@@ -91,6 +97,7 @@
 :javascript
 
   $(document).ready(function() {
+    console.log('#{@amounts}')
     $.fn.editable.defaults.mode = 'inline';
     var comment = 'com';
 
