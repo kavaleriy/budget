@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
     put 'towns/update_custom/:id' => 'towns#update_custom'
     delete 'expences_files/:id' => 'expences_files#destroy'
+    delete 'towns/expences_file_destroy/:expences_file_id' => 'towns#expences_file_destroy'
+    delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
+    delete 'target_programs/attachment_destroy/:attachment_id' => 'target_programs#attachment_destroy'
   end
 
   namespace :indicate do

@@ -1,5 +1,5 @@
 class Programs::TownsController < ApplicationController
-  before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy]
+  before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy, :expences_file_destroy, :indicator_file_destroy]
 
   # GET /programs/towns
   # GET /programs/towns.json
@@ -75,6 +75,24 @@ class Programs::TownsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to programs_towns_url, notice: 'Town was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def expences_file_destroy
+    file = Programs::ExpencesFile.find(params[:expences_file_id])
+    file.destroy
+    respond_to do |format|
+      format.js
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
+  def indicator_file_destroy
+    file = Programs::IndicatorFile.find(params[:indicator_file_id])
+    file.destroy
+    respond_to do |format|
+      format.js
+      format.json { head :no_content, status: :deleted }
     end
   end
 

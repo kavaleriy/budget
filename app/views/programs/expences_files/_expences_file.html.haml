@@ -15,8 +15,7 @@
     %a{ href: '#', id: 'programs_expences_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "#{programs_expences_file_path(file)}", 'data-emptytext' => 'Вкажіть назву документа...' }
 
   .col-sm-1
-    = link_to file, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
-      %i.fa.fa-times.pull-right
+    = link_to 'x', {:controller => 'programs/towns', :action => 'expences_file_destroy', :expences_file_id => file.id, :id => @programs_town.id}, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
 
 :javascript
 

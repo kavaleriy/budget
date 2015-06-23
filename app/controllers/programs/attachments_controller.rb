@@ -7,12 +7,12 @@ class Programs::AttachmentsController < ApplicationController
   def create
 
     @attachments = []
-    @target_program = Programs::TargetProgram.where(:id => params[:programs_attachment][:program_id]).first
+    @programs_target_program = Programs::TargetProgram.where(:id => params[:programs_attachment][:program_id]).first
 
     params['attachment'].each do |f|
       doc = Programs::Attachment.new
       doc.attachment = f
-      doc.programs_target_program = @target_program
+      doc.programs_target_program = @programs_target_program
       params[:programs_attachment][:title].present? ? doc.title = params[:programs_attachment][:title] : doc.title = f.original_filename
       doc.author = current_user.email
       doc.save
@@ -58,7 +58,7 @@ class Programs::AttachmentsController < ApplicationController
     end
 
     def set_target_program
-      @target_program = @attachment.programs_target_program
+      @programs_target_program = @attachment.programs_target_program
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
