@@ -90,6 +90,7 @@
                        .attr("y", function(d) { return y(d['amount_plan']); })
                        .attr("height", function(d) { return height - y(d['amount_plan']); })
                        .on("mouseover", mouseover)
+                       .on("mousemove", mousemove)
                        .on("mouseout", mouseout)
                        //.on("click", mouseclick);
 
@@ -104,6 +105,7 @@
                        .attr("y", function(d) { return y(d['amount_fact']); })
                        .attr("height", function(d) { return height - y(d['amount_fact']); })
                        .on("mouseover", mouseover)
+                       .on("mousemove", mousemove)
                        .on("mouseout", mouseout)
                        //.on("click", mouseclick);
 
@@ -117,9 +119,9 @@
       remove_tooltip(d);
     }
 
-    window.onmousemove = function (e) {
+    function mousemove(d) {
       var tooltipSpan = document.getElementById('charts_tooltip');
-      var evt = e || window.event;
+      var evt = d3.event || window.event;
       var x = evt.pageX,
           y = evt.pageY;
       tooltipSpan.style.top = y + 'px';
