@@ -19,7 +19,7 @@
   %tbody
     - @events.each do |event|
       %tr
-        %td= link_to event.id, event_path(event)
+        %td= link_to event.id, event_path(:calendars, event.calendar, event)
         %td= event.holder
         %td= event.title
         %td= event.icon
