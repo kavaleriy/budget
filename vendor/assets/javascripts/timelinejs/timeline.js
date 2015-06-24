@@ -5265,8 +5265,12 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			// Handle smaller sizes
 			if (VMM.Browser.device == "mobile" || current_width <= 640) {
 				config.slider.content.padding	= 10;
-			} else {
+			} else if(current_width <= 1000) {
+                config.slider.content.padding	= 140;
+                $('.nav-previous, .nav-previous .nav-container').css('width', '120px');
+            }else {
 				config.slider.content.padding	= config.slider.content.padding_default;
+                $('.nav-previous, .nav-previous .nav-container').css('width', '250px');
 			}
 			
 			config.slider.content.width = current_width - (config.slider.content.padding *2) - 50;
@@ -5284,8 +5288,12 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			positionSlides();
 			
 			// POSITION NAV
-			VMM.Lib.css(navigation.nextBtn, "left", (current_width - config.slider.nav.width));
-			VMM.Lib.height(navigation.prevBtn, config.slider.height);
+
+            if(current_width <= 1000) {
+                VMM.Lib.css(navigation.nextBtn, "left", (current_width - config.slider.nav.width + 130));
+            }
+            else VMM.Lib.css(navigation.nextBtn, "left", (current_width - config.slider.nav.width));
+            MM.Lib.height(navigation.prevBtn, config.slider.height);
 			VMM.Lib.height(navigation.nextBtn, config.slider.height);
 			VMM.Lib.css(navigation.nextBtnContainer, "top", ( (config.slider.height/2) - (config.slider.nav.height/2) ) + 10 );
 			VMM.Lib.css(navigation.prevBtnContainer, "top", ( (config.slider.height/2) - (config.slider.nav.height/2) ) + 10 );
@@ -5659,7 +5667,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				
 			for(i = 0; i < slides.length; i++) {
 				pos = i * (config.slider.width+config.spacing);
-				slides[i].leftpos(pos);
+                slides[i].leftpos(pos);
 			}
 		}
 		

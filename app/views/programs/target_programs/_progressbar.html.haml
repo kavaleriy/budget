@@ -15,7 +15,7 @@
   - percent = (amounts['amount_fact'] || 0)*100/amounts['amount_plan']
 -else
   - percent = 0
-.col-sm-12.col-md-6{ :style => 'padding-left: 0; '}
+%div{ :style => 'padding-left: 0; '}
   .progress.progress-striped
     .progress-bar.progress-bar-success.six-sec-ease-in-out{"aria-valuetransitiongoal" => "#{percent}"}
       = percent.to_s + "%"

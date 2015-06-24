@@ -14,7 +14,7 @@
       .panel-heading
         = t('form.uploaded_documents')
       .documents.panel-body
-        = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @town.programs_expences_files }
+        = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @programs_town.programs_expences_files }
 
 .col-sm-12
-  = link_to t('form.back'), '/programs/target_programs/list/' + @town.id, :class => 'btn btn-default'
+  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'

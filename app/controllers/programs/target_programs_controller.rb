@@ -1,5 +1,8 @@
 class Programs::TargetProgramsController < ApplicationController
-  before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy]
+
+  layout 'visify', only: [:show_indicators]
+
+  before_action :set_programs_target_program, only: [:show, :edit, :update, :destroy, :attachment_destroy, :show_indicators]
   before_action :set_town, only: [:list, :change_list, :show, :load_expences, :load_indicators]
 
   before_action :authenticate_user!, only: [:new, :edit, :load, :load_expences, :load_indicators]
@@ -19,6 +22,14 @@ class Programs::TargetProgramsController < ApplicationController
       key = @programs_target_program.kpkv[0,6]
       @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
     end
+    @amounts = {}
+    @subprograms.each{|program|
+      @amounts[program.id.to_s] = program.get_total_amount Time.now.year
+    }
+    @indicators = @programs_target_program.get_indicators
+  end
+
+  def show_indicators
     @indicators = @programs_target_program.get_indicators
   end
 
@@ -44,7 +55,7 @@ class Programs::TargetProgramsController < ApplicationController
   # GET /programs/target_programs
   def list
     @year = Time.now.year
-    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
+    @programs_target_programs = @programs_town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
       @amounts[program.id.to_s] = program.get_total_amount @year
@@ -53,7 +64,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   def change_list
     @year = params[:year].to_i
-    @programs_target_programs = @town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
+    @programs_target_programs = @programs_town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|
       @amounts[program.id.to_s] = program.get_total_amount @year
@@ -108,6 +119,15 @@ class Programs::TargetProgramsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to action: 'list', town: @programs_target_program.programs_town_id }
       format.json { head :no_content }
+    end
+  end
+
+  def attachment_destroy
+    file = Programs::Attachment.find(params[:attachment_id])
+    file.destroy
+    respond_to do |format|
+      format.js
+      format.json { head :no_content, status: :deleted }
     end
   end
 
@@ -195,14 +215,14 @@ class Programs::TargetProgramsController < ApplicationController
 
     def set_town
       if params[:town]
-        @town = Programs::Town.where(:id.to_s => params[:town]).first
+        @programs_town = Programs::Town.where(:id.to_s => params[:town]).first
       else
-        @town = @programs_target_program.programs_town
+        @programs_town = @programs_target_program.programs_town
       end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programs_target_program_params
-      params.require(:programs_target_program).permit(:town, :path, :title, :kpkv, :kfkv, :phases, :amount_plan, :targets, :tasks, :expected_results, :participants)
+      params.require(:programs_target_program).permit(:town, :path, :title, :kpkv, :kfkv, :phases, :amount_plan, :targets, :tasks, :expected_results, :participants, :attachment_id)
     end
 end

@@ -1,5 +1,5 @@
 class Programs::TownsController < ApplicationController
-  before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy]
+  before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy, :expences_file_destroy, :indicator_file_destroy, :branch_report]
 
   # GET /programs/towns
   # GET /programs/towns.json
@@ -15,6 +15,34 @@ class Programs::TownsController < ApplicationController
   # GET /programs/towns/new
   def new
     @programs_town = Programs::Town.new
+  end
+
+  def branch_report
+    @report = {}
+    year = Time.now.year
+    @programs_town.programs_target_programs.each{|program|
+      kfkv = program['kfkv']
+      amounts = program.get_total_amount year
+      @report[kfkv] = {} if @report[kfkv].nil?
+      @report[kfkv]['name'] = @programs_town.explanation['kfkv'][kfkv]['description'] if @report[kfkv]['name'].nil?
+      @report[kfkv]['count'] = 0 if @report[kfkv]['count'].nil?
+      @report[kfkv]['count'] += 1
+      @report[kfkv]['plan'] = 0 if @report[kfkv]['plan'].nil?
+      @report[kfkv]['plan'] += amounts['amount_plan']
+      @report[kfkv]['fact'] = 0 if @report[kfkv]['fact'].nil?
+      @report[kfkv]['fact'] += amounts['amount_fact']
+      @report[kfkv]['history'] = {} if @report[kfkv]['history'].nil?
+      program.programs_expences.each{|expence|
+        curr_year = expence['year']
+        @report[kfkv]['history'][curr_year] = {} if @report[kfkv]['history'][curr_year].nil?
+        @report[kfkv]['history'][curr_year]['count'] = 0 if @report[kfkv]['history'][curr_year]['count'].nil?
+        @report[kfkv]['history'][curr_year]['count'] += 1
+        @report[kfkv]['history'][curr_year]['plan'] = 0 if @report[kfkv]['history'][curr_year]['plan'].nil?
+        @report[kfkv]['history'][curr_year]['plan'] += expence['amount_plan']
+        @report[kfkv]['history'][curr_year]['fact'] = 0 if @report[kfkv]['history'][curr_year]['fact'].nil?
+        @report[kfkv]['history'][curr_year]['fact'] += expence['amount_fact']
+      }
+    }
   end
 
   # GET /programs/towns/1/edit
@@ -75,6 +103,24 @@ class Programs::TownsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to programs_towns_url, notice: 'Town was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def expences_file_destroy
+    file = Programs::ExpencesFile.find(params[:expences_file_id])
+    file.destroy
+    respond_to do |format|
+      format.js
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
+  def indicator_file_destroy
+    file = Programs::IndicatorFile.find(params[:indicator_file_id])
+    file.destroy
+    respond_to do |format|
+      format.js
+      format.json { head :no_content, status: :deleted }
     end
   end
 

@@ -33,7 +33,7 @@ class Programs::ExpencesFilesController < ApplicationController
       doc = Programs::ExpencesFile.new
       doc.expences_file = f
       doc.programs_town = @programs_town
-      doc.title = params[:programs_expences_file][:title]
+      params[:programs_expences_file][:title].present? ? doc.title = params[:programs_expences_file][:title] : doc.title = f.original_filename
       doc.author = current_user.email
       doc.save
       @expences_files << doc

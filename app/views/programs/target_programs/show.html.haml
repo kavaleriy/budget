@@ -20,7 +20,24 @@
       = render 'show_expences'
     #tab_indicators.tab-pane.fade
       = render 'show_indicators'
+      #embed_code_programs_indicators.embed_code
+        = render partial: 'widgets/visify/embed_code'
+
+#charts_tooltip.hidden
+  %p
+    %span#value
 
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'
-  = link_to t('form.back'), '/programs/target_programs/list/' + @town.id, :class => 'btn btn-default'
+  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
+
+:javascript
+
+  $(document).ready(function() {
+    var embed_code = aEmbedCode();
+    path = "#{request.base_url}"
+    query = "#{URI.parse(request.url).query}"
+    frame_url = path + "/programs/target_programs/show_indicators/#{@programs_target_program.id}" + '/?' + query
+    $('.tab-content iframe').attr('src', frame_url)
+    embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_programs_indicators", src: frame_url})
+  })

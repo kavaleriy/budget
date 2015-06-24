@@ -33,7 +33,7 @@ class Programs::IndicatorFilesController < ApplicationController
       doc = Programs::IndicatorFile.new
       doc.indicator_file = f
       doc.programs_town = @programs_town
-      doc.title = params[:programs_indicator_file][:title]
+      params[:programs_indicator_file][:title].present? ? doc.title = params[:programs_indicator_file][:title] : doc.title = f.original_filename
       doc.author = current_user.email
       doc.save
       @indicator_files << doc

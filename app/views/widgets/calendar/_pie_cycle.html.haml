@@ -73,7 +73,7 @@
          .attr("id", function(d) { return (d.data.id == '') ? '' : d.data.id} )
          .attr("class", "events_path" )
          .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
-         .attr('stroke-width', 0)
+         .attr('stroke-width', function(d) { return (d.data.id == '') ? 0 : 1})
          .style("stroke", function(d) { return d3.rgb(d.data.color).darker(1); })
          .on("click", function(d) {
            if(d.data.id == '') return

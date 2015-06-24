@@ -83,15 +83,15 @@
     var calendar = "#{@calendar.id}"
 
     var embed_code_timeline = aEmbedCode();
-    var src = window.location.host + "/widgets/calendar/timelinejs/" + calendar;
+    var src = window.location.origin + "/widgets/calendar/timelinejs/" + calendar;
     embed_code_timeline.initialize({width: '100%', height: 150, el_id: "#embed_code_timeline", src: src});
 
     var embed_code_calendar = aEmbedCode();
-    src = window.location.host + "/widgets/calendar/pie_cycle/" + calendar;
+    src = window.location.origin + "/widgets/calendar/pie_cycle/" + calendar;
     embed_code_calendar.initialize({width: 700, height: 700, el_id: "#embed_code_calendar", src: src});
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      src = window.location.host + "/widgets/calendar/" + $(this).attr('data-content') + "/" + calendar;
+      src = window.location.origin + "/widgets/calendar/" + $(this).attr('data-content') + "/" + calendar;
       embed_code_calendar.set_iframe(src);
     });
 
@@ -127,8 +127,11 @@
     }
 
     function selectEvent(event_id) {
-       d3.selectAll("#svg_calendar g path")
-        .attr('stroke-width', 0)
+      //console.log(d3.selectAll);
+      d3.selectAll("#svg_calendar g path")
+                .attr('stroke-width', function(d){ return (d.data.id != '')  ? 1 : 0;});
+
+
 
        if (event_id == undefined)
         return
@@ -138,17 +141,18 @@
 
        $('#' + event_id)
         .css("fill-opacity", "1")
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 3)
     }
 
     function calendar_pie_events() {
+      console.log('calendar_pie_events');
       d3.selectAll("#svg_calendar g path")
          .on("click", function(d) {
            selectEvent(d.data.id)
 
            $('#' + d.data.id)
             .css("fill-opacity", "1")
-            .attr('stroke-width', 2)
+            .attr('stroke-width', 3)
 
            $('#marker_' + d.data.id).find(".flag").trigger("click");
          })
