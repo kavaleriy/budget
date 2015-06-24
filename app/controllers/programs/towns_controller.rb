@@ -35,6 +35,8 @@ class Programs::TownsController < ApplicationController
       program.programs_expences.each{|expence|
         curr_year = expence['year']
         @report[kfkv]['history'][curr_year] = {} if @report[kfkv]['history'][curr_year].nil?
+        @report[kfkv]['history'][curr_year]['count'] = 0 if @report[kfkv]['history'][curr_year]['count'].nil?
+        @report[kfkv]['history'][curr_year]['count'] += 1
         @report[kfkv]['history'][curr_year]['plan'] = 0 if @report[kfkv]['history'][curr_year]['plan'].nil?
         @report[kfkv]['history'][curr_year]['plan'] += expence['amount_plan']
         @report[kfkv]['history'][curr_year]['fact'] = 0 if @report[kfkv]['history'][curr_year]['fact'].nil?
