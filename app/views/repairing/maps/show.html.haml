@@ -8,10 +8,6 @@
   .map_container
     = render partial: 'map'
 
-= link_to 'Edit', edit_repairing_map_path(@repairing_map)
-\|
-= link_to 'Back', repairing_maps_path
-
 
 
 :javascript
@@ -22,7 +18,7 @@
 
     $.ajax({
       method: 'get',
-      url: '#{geo_json_repairing_map_path(@repairing_map)}',
+      url: '#{repairing_geo_json_path}',
       dataType: 'json',
     })
     .done(function (data) {

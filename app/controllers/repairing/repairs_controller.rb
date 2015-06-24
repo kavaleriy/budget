@@ -33,8 +33,9 @@ class Repairing::RepairsController < ApplicationController
   # POST /repairing/repairs
   # POST /repairing/repairs.json
   def create
-    map = Repairing::Map.find(params[:map_id])
-    @repairing_repair = map.repairs.new(repairing_repair_params)
+    layer = Repairing::Layer.find(params[:layer_id])
+
+    @repairing_repair = layer.repairs.new(repairing_repair_params)
 
     respond_to do |format|
       if @repairing_repair.save

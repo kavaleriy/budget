@@ -1,5 +1,6 @@
 module ApplicationHelper
-  def get_file_type_icon(file_name)
+
+ def get_file_type_icon(file_name)
    case File.extname(file_name).upcase
     when '.XLS', '.XLSX'
      'fa-file-excel-o'

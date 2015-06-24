@@ -45,6 +45,10 @@ class User
   # roles later, always append them at the end!
   roles :admin, :guest, :editor
 
+  def to_s
+    self.email
+  end
+
   private
 
   def lock_user

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   namespace :documentation do
     resources :branches
   end
@@ -51,11 +52,15 @@ Rails.application.routes.draw do
   end
 
   namespace :repairing do
-    resources :maps do
+    get 'map' => 'maps#show'
+    get 'geo_json' => 'maps#geo_json'
+
+    resources :layers do
       member do
-        get 'search_addr'
         get 'geo_json'
+        post 'create_repair_by_addr'
       end
+
       resources :repairs
     end
   end
