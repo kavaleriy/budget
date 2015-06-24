@@ -3,3 +3,56 @@
 
 .col-xs-offset-1.col-xs-6
   = render partial: 'pie_cycle', :locals => { calendar: @calendar }
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    // ------------------ EMBED CODE EVENTS ------------------------
+
+    // ----------------- CALENDAR PIE EVENTS -----------------------
+    var pie = aCalendarPie()
+    pie.init_pie( {loadedCallback: calendar_pie_events} )
+
+
+    function calendar_pie_events() {
+      d3.selectAll("#svg_calendar g path")
+         .on("click", function(d) {
+           selectEvent(d.data.id)
+
+           $('#' + d.data.id)
+            .css("fill-opacity", "1")
+            .attr('stroke-width', 2)
+
+           $('#marker_' + d.data.id).find(".flag").trigger("click");
+         })
+
+         .on("mouseover", function(d) {
+           var elem = $('#' + d.data.id)
+           if(elem.css("fill-opacity") < 1) {
+              elem.css("fill-opacity", "0.9")
+           }
+         })
+         .on("mouseout", function(d) {
+            var elem = $('#' + d.data.id)
+            if(elem.css("fill-opacity") < 1) {
+              elem.css("fill-opacity", "0.6")
+            }
+         })
+    }
+    function selectEvent(event_id) {
+       d3.selectAll("#svg_calendar g path")
+        .attr('stroke-width', 0)
+
+       if (event_id == undefined)
+        return
+       $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
+
+       $('.events_path').css("fill-opacity", ".6");
+
+       $('#' + event_id)
+        .css("fill-opacity", "1")
+        .attr('stroke-width', 2)
+    }
+  });

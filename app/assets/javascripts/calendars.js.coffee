@@ -61,10 +61,10 @@ $(document).on 'ready page:change', ->
     selectHelper: true
     select: (start, end, allDay) ->
       dt_start = moment(start).format("DD/MM/YYYY")
-
-      $.get $('#calendar').attr('calendar_id') + "/events/indicator_file",
+      dt_end = moment(end).subtract(1, 'days').format("DD/MM/YYYY")
+      $.get $('#calendar').attr('calendar_id') + "/events/new",
         starts_at: dt_start
-        ends_at: dt_start
+        ends_at: dt_end
         all_day: true
 #          .done (data) ->
 #            $("#eventModal .modal-content").html data
@@ -98,7 +98,6 @@ $(document).on 'ready page:change', ->
   createEvent = (event) ->
     dt_start = (if event.start? then moment(event.start).format("YYYY-MM-DDTHH:mm:ss") else "")
     dt_end = (if event.end? then moment(event.end).format("YYYY-MM-DDTHH:mm:ss") else "")
-    console.log(1)
     $.ajax
       url: $('#calendar').attr('calendar_id') + "/events"
       type: 'POST'

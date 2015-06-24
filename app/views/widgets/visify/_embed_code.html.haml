@@ -1,7 +1,7 @@
 :css
 
   .popover {
-    width: 300px;
+    width: 700px;
   }
 
   .popover-title {
@@ -58,7 +58,7 @@
 .embed-hide{'style' => 'display: none;'}
   .form-horizontal
     .form-group
-      %input.form-control{'readonly' => 'readonly'}
+      %input.form-control{}
     %table
       %tr
         %td
@@ -125,6 +125,7 @@
         // hide popover if click outside
         $('body').on('click', function (e) {
             $('[data-toggle="popover"]').each(function () {
+            //console.log(1);
                 //the 'is' for buttons that trigger popups
                 //the 'has' for icons within a button that triggers a popup
                 if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
@@ -169,9 +170,10 @@
           });
         })
 
-        $(el_id + " input").on("click", function () {
-            $(this).select();
-        });
+        //$(el_id + " input").on("click", function () {
+        //    console.log(2);
+        //    $(this).select();
+        //});
       },
       set_iframe: function(new_src) {
         src = new_src;
