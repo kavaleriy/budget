@@ -16,6 +16,7 @@ class Repairing::GeojsonBuilder
             coordinates: repair[:coordinates]
         },
         properties: {
+            repair: "house",
             id: "#{repair[:id]}",
             title: "#{repair[:title]}",
             # description: repair[:description],
@@ -29,22 +30,26 @@ class Repairing::GeojsonBuilder
   def self.build_repair_path(repair)
     {
         type: "FeatureCollection",
-        features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: 'Point',
-            coordinates: repair[:coordinates][0]
-          },
-          properties: {
-            id: "#{repair[:id]}",
-            title: "#{repair[:title]}",
-            # description: repair[:description],
-            address: "#{repair[:address]} - #{repair[:address_to]}",
-            amount: "#{repair[:amount]}",
-            repair_date: "#{repair[:repair_date]}"
-          }
+        properties: {
+          id: "#{repair[:id]}"
         },
+        features: [
+        # {
+        #   type: "Feature",
+        #   geometry: {
+        #     type: 'Point',
+        #     coordinates: repair[:coordinates][0]
+        #   },
+        #   properties: {
+        #     repair: "street",
+        #     id: "#{repair[:id]}",
+        #     title: "#{repair[:title]}",
+        #     # description: repair[:description],
+        #     address: "#{repair[:address]} - #{repair[:address_to]}",
+        #     amount: "#{repair[:amount]}",
+        #     repair_date: "#{repair[:repair_date]}"
+        #   }
+        # },
         # {
         #     type: "Feature",
         #     geometry: {
@@ -64,7 +69,7 @@ class Repairing::GeojsonBuilder
               type: "Feature",
               geometry: {
                 type: 'LineString',
-                coordinates: repair[:coordinates]
+                coordinates: filterCoordinates(repair[:coordinates])
               },
               properties: {
                 id: "#{repair[:id]}",
@@ -77,6 +82,17 @@ class Repairing::GeojsonBuilder
           }
         ]
     }
+  end
+
+  private
+
+  def self.filterCoordinates coordinates
+    return [] if coordinates.blank?
+
+    n = coordinates.count
+    filtered = []
+    (0.. n - 2).step(n / 15 + 1) { |i| filtered << coordinates[i] }
+    filtered << coordinates[n - 1]
   end
 
 end

@@ -1,0 +1,17 @@
+%h1 Listing programs_indicator_files
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @programs_indicator_files.each do |programs_indicator_file|
+    %tr
+      %td= link_to 'Show', programs_indicator_file
+      %td= link_to 'Edit', edit_programs_indicator_file_path(programs_indicator_file)
+      %td= link_to 'Destroy', programs_indicator_file, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Indicator file', new_programs_indicator_file_path

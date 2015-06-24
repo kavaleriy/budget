@@ -28,7 +28,7 @@
     $(element).empty();
       return;
   }
-  var html = $('<div>').text(value.title).html() + ', ' + $('<div>').text(value.description).html() + ' st., bld. ' + $('<div>').text(value.issued).html();
+  var html = $('<div>').text(value.title).html();
   $(element).html(html);
   },
 
@@ -92,10 +92,9 @@
   value2input: function(value) {
     if(!value) {
       return;
-  }
-  this.$input.filter('[name="title"]').val(value.title);
-  this.$input.filter('[name="description"]').val(value.description);
-  this.$input.filter('[name="issued"]').val(value.issued);
+    }
+    this.$input.filter('[name="title"]').val(value.title);
+    this.$input.filter('[name="description"]').val(value.description);
   },
 
   /**
@@ -104,11 +103,10 @@
         @method input2value()
        **/
   input2value: function() {
-  return {
-  title: this.$input.filter('[name="title"]').val(),
-  description: this.$input.filter('[name="description"]').val(),
-  issued: this.$input.filter('[name="issued"]').val()
-  };
+      return {
+          title: this.$input.filter('[name="title"]').val(),
+          description: this.$input.filter('[name="description"]').val()
+      };
   },
 
   /**
@@ -135,9 +133,9 @@
   });
 
   Documentation_document.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-    tpl: '<div class="editable"><label><span>Назва: </span><input type="text" name="title" class="input-small"></label></div>'+
-      '<div class="editable"><label><span>Докладніше:</span></label><br/><textarea rows="5" name="description" class="input-small"></textarea></div>'+
-      '<div class="editable"><label><span>Дата: </span><input type="text" name="issued" senclass="input-mini"></label></div>',
+    tpl: '<div class="editable"><label><span>Назва: </span><input type="text" name="title" class="col-xs-12"></label></div>'+
+      '<div class="editable"><label><span>Докладніше:</span></label><br/><textarea class="col-xs-12" rows="5" name="description" class="input-small"></textarea></div>'+
+      '</div><dic class="clear"></div>',
 
     inputclass: ''
   });

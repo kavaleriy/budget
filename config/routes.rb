@@ -1,12 +1,31 @@
 Rails.application.routes.draw do
 
+  namespace :documentation do
+    resources :branches
+  end
+
+  namespace :programs do
+    resources :indicator_files
+  end
+
   namespace :programs do
     resources :towns
     resources :target_programs
     resources :expences_files
+    resources :attachments
     get 'load' => 'target_programs#load'
+    get 'load_expences/:town' => 'target_programs#load_expences'
+    get 'load_indicators/:town' => 'target_programs#load_indicators'
+    get 'towns/branch_report/:id' => 'towns#branch_report'
     post 'target_programs/create' => 'target_programs#create'
     get 'target_programs/list/:town' => 'target_programs#list'
+    get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
+    get 'target_programs/show_indicators/:id' => 'target_programs#show_indicators'
+    put 'towns/update_custom/:id' => 'towns#update_custom'
+    delete 'expences_files/:id' => 'expences_files#destroy'
+    delete 'towns/expences_file_destroy/:expences_file_id' => 'towns#expences_file_destroy'
+    delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
+    delete 'target_programs/attachment_destroy/:attachment_id' => 'target_programs#attachment_destroy'
   end
 
   namespace :indicate do

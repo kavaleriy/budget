@@ -1,0 +1,2 @@
+module Documentation::BranchesHelper
+end

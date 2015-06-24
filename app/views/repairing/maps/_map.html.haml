@@ -2,6 +2,7 @@
 -# http://www.rubydoc.info/gems/rgeo-geojson/frames
 -# https://github.com/alexreisner/geocoder
 -# http://railscasts.com/episodes/273-geocoder
+
 = stylesheet_link_tag 'leaflet/leaflet.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
@@ -18,7 +19,8 @@
   }
 
   .info {
-    width: 20vw;
+    width: 100%;
+    height: auto;
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
     background: white;
@@ -38,15 +40,17 @@
 
 :javascript
 
-  var aRepairMap;
+  var RepairMap
 
-  $(document).ready(function() {
+    $(document).ready(function() {
+      RepairMap = function(options) {
 
-    aRepairMap = function() {
       var map, markers;
       var popup;
       var router;
       var info;
+
+      var self = this;
 
 
       function initMap() {
@@ -68,7 +72,6 @@
         markers = new L.MarkerClusterGroup();
 
         map.addLayer(markers);
-
 
 
         function initZoomFS() {
@@ -95,10 +98,14 @@
         popup = L.popup();
 
         function onMapClick(e) {
-            popup
-              .setLatLng(e.latlng)
-              .setContent("" + e.latlng.toString())
-              .openOn(map);
+          popup
+            .setLatLng(e.latlng)
+            .setContent("" + e.latlng.toString())
+            .openOn(map);
+
+          if (options.mapClickCallback) {
+            options.mapClickCallback(e)
+          }
         }
 
         map.on('click', onMapClick);
@@ -113,38 +120,45 @@
       // add markers
       var CustomIcon = L.Icon.extend({
         options: {
-          iconSize:     [40, 40],
-          iconAnchor:  [20, 20],
-          popupAnchor:  [-3, -56]
+          iconSize: [30, 30],
         }
       });
-      var greenIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
 
-      function addMarkers(data, options) {
+      var houseIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
+
+      function addGeoJson(data) {
         L.geoJson(data, {
           pointToLayer: getPointToLayer,
           style: getFeatureStyle,
           onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng,
+          lineCap: 'round',
         }).addTo(markers);
 
         function getPointToLayer(feature, latlng) {
+          var icon = new L.Icon.Default()
+          var draggable = false
+          if (feature.properties.repair == 'house') {
+            icon = houseIcon
+            draggable = (options.dragCallback != undefined)
+          }
+
           return L.marker(latlng, {
-            icon: greenIcon,
+            icon: icon,
             opacity: .7,
-            draggable: (options && options.dragCallback),
+            draggable: draggable,
           });
         }
 
         function getFeatureStyle(feature) {
           return {
-            //color: "#666",
-            fillColor: 'green'
+            color: "red",
           };
         }
 
         function coordsToLatLng(coords) {
           map.panTo(L.latLng(coords))
+
           return L.latLng(coords)
         }
 
@@ -165,17 +179,17 @@
           });
 
           function onFeatureClick(e) {
-            if (options && options.clickCallback) {
-              options.clickCallback(e.target.feature)
+            if (options.clickCallback) {
+              options.clickCallback(e.target.feature, e.target)
             }
           }
 
           function onFeatureDrag(e) {
-            if (options && options.dragCallback) {
+            if (options.dragCallback) {
               var layer = e.target;
               var ll = layer.getLatLng();
 
-              dragCallback(layer, ll)
+              options.dragCallback(layer, ll)
             }
           }
 
@@ -209,7 +223,7 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
           if (props)
-            this._div.innerHTML = '<h3 class="info">' + props.title + '</h3>'
+            this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
               + '<b>' + props.address + '</b><br/>'
               + '<b>Amount: ' + props.amount + '</b><br/>'
               + 'Date: ' + props.repair_date + '<br/>'
@@ -219,6 +233,46 @@
         };
 
         info.addTo(map);
+      }
+
+      function editRoute(waypoints, routeFoundCallback) {
+        var line;
+
+        //route = aRepairMap.router.route(waypoints, function(err, routes) {
+
+        //    var marker1 = L.marker(<%= @location %>, { draggable: true });
+        //    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
+        //    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
+        //            .bindPopup('Hello world!')
+        //            .on('click', function() { alert('Clicked on a group!'); })
+        //            .addTo(aRepairMap.map);
+        //
+        //    line = L.Routing.line(routes[0] )
+        //            .on('click', function() { alert('Clicked on a group!'); })
+        //            .addTo(aRepairMap.map);
+        //
+        //    console.log(line.toGeoJSON())
+        //
+        //});
+
+        if (self.selectedRoute) {
+          self.selectedRoute.setWaypoints(waypoints)
+          self.selectedRoute.route()
+        } else {
+          self.selectedRoute = L.Routing.control({
+            routeWhileDragging: true,
+            waypoints: waypoints
+          })
+
+          self.selectedRoute.on('routesfound', function(router) {
+            if (routeFoundCallback) {
+              routeFoundCallback(router.routes[0].coordinates)
+            }
+          })
+          self.selectedRoute.addTo(map);
+        }
+
+
       }
 
 
@@ -232,8 +286,9 @@
         popup: popup,
         router: router,
         info: info,
-        addMarkers: addMarkers
+        addGeoJson: addGeoJson,
+        editRoute: editRoute,
       }
-    }()
+    }
 
   });

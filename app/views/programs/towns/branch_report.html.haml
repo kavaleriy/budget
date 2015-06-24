@@ -1,0 +1,10 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.branch_report.header') + @programs_town.name
+
+- if @report.length > 0
+  - @report.each do |key, report|
+    = report['name']
+    = report['count']
+    = report['fact']*100/report['plan']
+    %br

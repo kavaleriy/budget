@@ -1,3 +1,43 @@
 // Place all the styles related to the Programs/TargetPrograms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#programs_indicators {
+  .ui-widget-header {
+    background: #cdd9ea;
+  }
+
+  path {
+    stroke: steelblue;
+    stroke-width: 1;
+    fill: none;
+  }
+
+  .axis {
+    shape-rendering: crispEdges;
+    font-size: 0.9em;
+  }
+
+  .x.axis line {
+    stroke: lightgrey;
+  }
+
+  .x.axis .minor {
+    stroke-opacity: .5;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  .y.axis line, .y.axis path {
+    fill: none;
+    stroke: #000;
+  }
+
+  .active_point {
+    stroke: lightgray;
+    stroke-width: 5;
+    stroke-opacity: 0.6;
+  }
+}

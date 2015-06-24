@@ -41,13 +41,47 @@
 
   $(document).ready(function() {
 
+    var _removedFeature
+    var _selectedFeature
+
+    options = {
+      clickCallback: function(feature, target) {
+        selectFeature(feature, target)
+      },
+
+      dragCallback: function(layer, ll) {
+        $.ajax({
+          method: 'PUT',
+          url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
+          dataType: 'json',
+          cache: false,
+          data: {
+            repairing_repair: {
+              coordinates: [ll.lat, ll.lng]
+            }
+          }
+        })
+        .fail(function () {
+          alert('Не вдалось зберегти дані')
+        })
+      },
+
+      mapClickCallback: function(layer, ll) {
+        $('#repair').html('')
+      }
+    }
+
+
+    var aRepairMap
+
     $.ajax({
       method: 'get',
       url: '#{geo_json_repairing_map_path(@repairing_map)}',
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addMarkers(data, {clickCallback: clickCallback, dragCallback: dragCallback})
+      aRepairMap = RepairMap(options)
+      aRepairMap.addGeoJson(data)
     })
     .fail(function () {
       console.log('fail geojson')
@@ -55,37 +89,85 @@
 
 
     $('.search_map form').bind("ajax:success", function(f, data){
-      //console.log(f)
-      //console.log(data)
-      aRepairMap.addMarkers(data, {clickCallback: clickCallback, dragCallback: dragCallback})
+      if (data.features) {
+        selectFeature(data.features[0])
+      } else {
+        aRepairMap.addGeoJson(data)
+      }
     });
 
 
-    clickCallback = function(feature) {
+    function selectFeature(feature, target) {
       $('#repair').html('');
-      $.ajax({
-        method: 'GET',
-        url: '#{edit_repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", feature.properties.id),
-      })
-      .fail(function () {
-        console.log('click fail')
-      })
+
+      if (_removedFeature) {
+        url = '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
+        _removedFeature = undefined
+
+        $.ajax({
+          method: 'GET',
+          cache: false,
+          url: url,
+        }).done(function (data) {
+          aRepairMap.addGeoJson(data)
+        })
+      }
+
+      _selectedFeature = feature
+
+      if (_selectedFeature) {
+        $.ajax({
+          method: 'GET',
+          cache: false,
+          url: '#{edit_repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
+        })
+        .fail(function () {
+          console.log('click fail')
+        })
+
+        if (_selectedFeature.geometry.type == "LineString") {
+          if (target) {
+            _removedFeature = target.feature
+            aRepairMap.map.removeLayer(target)
+          }
+
+          editRoute()
+        } else {
+          aRepairMap.editRoute([])
+        }
+      }
+
+      function editRoute() {
+        var coordinates = _selectedFeature.geometry.coordinates
+
+        var waypoints = []
+        waypoints.push({ latLng: L.latLng(coordinates[0]) });
+        waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
+
+        aRepairMap.editRoute(waypoints, routeFoundCallback)
+
+        function routeFoundCallback(route){
+          var coordinates = ''
+          $.each(route, function(key,val) {
+            coordinates += val + ' '
+          })
+
+          $.ajax({
+            method: 'PUT',
+            url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
+            dataType: 'json',
+            data: {
+              repairing_repair: {
+                coordinates: coordinates
+              }
+            }
+          })
+          .fail(function () {
+            alert('Не вдалось зберегти дані')
+          })
+        }
+      }
     }
 
-    dragCallback = function(layer, ll) {
-      $.ajax({
-        method: 'PUT',
-        url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
-        dataType: 'json',
-        data: {
-          repairing_repair: {
-            coordinates: [ll.lat, ll.lng]
-          }
-        }
-      })
-      .fail(function () {
-        alert('Не вдалось зберегти дані')
-      })
-    }
 
   });

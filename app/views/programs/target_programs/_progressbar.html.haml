@@ -1,0 +1,28 @@
+:css
+  .progress .progress-bar.six-sec-ease-in-out {
+      -webkit-transition: width 3s ease-in-out;
+      -moz-transition: width 3s ease-in-out;
+      -ms-transition: width 3s ease-in-out;
+      -o-transition: width 3s ease-in-out;
+      transition: width 3s ease-in-out;
+  }
+
+  .progress {
+    margin-bottom: 0;
+  }
+
+- if amounts != {} && amounts['amount_plan'] != 0
+  - percent = (amounts['amount_fact'] || 0)*100/amounts['amount_plan']
+-else
+  - percent = 0
+%div{ :style => 'padding-left: 0; '}
+  .progress.progress-striped
+    .progress-bar.progress-bar-success.six-sec-ease-in-out{"aria-valuetransitiongoal" => "#{percent}"}
+      = percent.to_s + "%"
+
+:javascript
+  $(document).on("ready page:change", function(e){
+    $.each($('div.progress-bar'),function(){
+      $(this).css('width', $(this).attr('aria-valuetransitiongoal')+'%');
+    });
+  });

@@ -11,22 +11,40 @@
 
   = f.hidden_field :category_id
 
-  .col-sm-12
-    .form-group
-      %label
-        Назва
-      = f.text_field :title, :class => 'form-control'
+  -#.col-sm-6
+  -#  .form-group
+  -#    %label
+  -#      Назва
+  -#    = f.text_field :title, :class => 'form-control'
+  -#  .form-group
+  -#    = f.select :branch, Documentation::Branch.all.collect {|p| [ p.title, p.id ] }, {prompt: t('.select_branch')}, :class => 'form-control'
+  -#  .form-group
+  -#    = f.select :town, Town.all.collect {|p| [ p.title, p.id ] }, { prompt: t('.select_town') }, :class => 'form-control'
+  -#
+  -#  .form-group
+  -#    .col-sm-6
+  -#      %label
+  -#        Діє з (року)
+  -#      = f.text_field :yearFrom, :class => 'form-control'
+  -#    .col-sm-6
+  -#      %label
+  -#        Діє по (рік)
+  -#      = f.text_field :yearTo, :class => 'form-control'
+  -#
+  -#.form-group
+  -#  %label
+  -#    Додатково
+  -#  = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control'
+  -#
+  -#.clear
+  -#
 
-  .col-sm-12
-    .form-group
-      = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control'
+  .form-group
+    %label
+      %i.glyphicon.glyphicon-folder-open
+        Файл
+    = file_field_tag "doc_file[]", multiple: true, :class => 'form-control'
 
-  .col-sm-12
-    .form-group
-      %label
-        %i.glyphicon.glyphicon-folder-open
-          Файл
-      = file_field_tag "doc_file[]", multiple: true, :class => 'form-control'
 
   .actions
     = f.button :class => 'btn btn-default' do

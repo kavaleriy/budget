@@ -1,21 +1,25 @@
 class Repairing::MapsController < ApplicationController
   before_action :set_repairing_map, only: [:show, :edit, :update, :destroy]
 
+  # before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index, :show, :geo_json]
+  load_and_authorize_resource
+
   def search_addr
     @repairing_map = Repairing::Map.find(params[:id])
 
     @location = Geocoder.coordinates(params[:q])
     @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
+    # @location = [49.23531, 28.45757]
+    # @location1 = [49.23644, 28.4703]
 
     respond_to do |format|
       if @location1
-        @repair = @repairing_map.repairs.new(title: params[:q], coordinates: [@location, @location1], address: params[:q], address_to: params[:q1])
+        @repair = @repairing_map.repairs.new(title: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1])
         @repair.save!
 
-        geoJson = []
-        # geoJson << Repairing::GeojsonBuilder.build_repair_point(@repair)
-        # format.json { render json: Repairing::GeojsonBuilder.build_repair_point(@repair) }
-        format.js { render :search_street }
+        format.json { render json: Repairing::GeojsonBuilder.build_repair(@repair) }
+        # format.js { render :search_street }
       elsif @location
         @repair = @repairing_map.repairs.new(title: params[:q], coordinates: @location, address: params[:q])
         @repair.save!

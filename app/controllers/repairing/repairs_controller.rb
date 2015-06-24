@@ -1,4 +1,7 @@
 class Repairing::RepairsController < ApplicationController
+
+  before_filter :update_repairing_coordinates, only: [:update]
+
   before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy]
 
   # GET /repairing/repairs
@@ -10,6 +13,9 @@ class Repairing::RepairsController < ApplicationController
   # GET /repairing/repairs/1
   # GET /repairing/repairs/1.json
   def show
+    respond_to do |format|
+      format.json { render json: Repairing::GeojsonBuilder.build_repair(@repairing_repair) }
+    end
   end
 
   # GET /repairing/repairs/new
@@ -67,15 +73,16 @@ class Repairing::RepairsController < ApplicationController
       @repairing_repair = Repairing::Repair.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def repairing_repair_params
-      par = params.require(:repairing_repair).permit(:title, :description, :amount, :repair_date, :address, :address_to, :coordinates, :coordinates => [])
-
-      unless (par[:coordinates].nil? || par[:coordinates].kind_of?(Array))
-        coordinates = par[:coordinates].split(' ').map {|p| p.split(',') }
-        par[:coordinates] = coordinates
+    def update_repairing_coordinates
+      par = params[:repairing_repair][:coordinates]
+      unless (par.nil? || par.kind_of?(Array))
+        coordinates = par.split(' ').map {|p| p.split(',') }
+        params[:repairing_repair][:coordinates] = coordinates
       end
+    end
 
-      par
+  # Never trust parameters from the scary internet, only allow the white list through.
+    def repairing_repair_params
+      params.require(:repairing_repair).permit! #(:title, :description, :amount, :repair_date, :address, :address_to, :coordinates).tap { |whitelisted|  whitelisted[:coordinates] = params[:repairing_repair][:coordinates] }
     end
 end

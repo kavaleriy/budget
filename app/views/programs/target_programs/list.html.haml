@@ -1,27 +1,57 @@
+:css
+
+  .datepicker-dropdown.dropdown-menu {
+    background-color: #ffffff;
+  }
+
 = content_for :header do
   .head.pull-left
-    = t('programs.target_programs.index.header') + @town.name
+    = t('programs.target_programs.index.header') + @programs_town.name
 
-- if @programs_target_programs.length > 0
-  %table.table.table-striped
-    %thead
-      %tr
-        %th
-        %th
-    %tbody
-      - @programs_target_programs.each do |programs_target_program|
-        %tr
-          %td
-            - color = programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['color']
-            - if color == ''
-              - color = '#0b387c'
-            %i{ :class => "fa fa-lg #{programs_target_program.programs_town.explanation['kfkv'][programs_target_program.kfkv]['icon']}",
-                :style => "color: #{color};" }
-          %td= link_to programs_target_program.title, programs_target_program
-          %td
-            = link_to t('form.edit'), edit_programs_target_program_path(programs_target_program), :class => 'btn btn-default btn-xs'
-            = link_to t('form.destroy', :default => t("helpers.links.destroy")), programs_target_program, :method => "delete", :town => @town.id, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger btn-xs'
-  %br
+.col-sm-12{'style' => 'position: relative;'}
+  .input-daterange.pull-left{'style' => 'margin-right: 10px;'}
+    = t('programs.target_programs.list.data_header')
+    %input{name: :term_end, :type => "text", :class => "year_datepicker form-control" }
+  %span{'style' => 'position: absolute; bottom: 0px;'}
+    %i{ :class => "fa fa-lg fa-square-o", :style => "color: #66c2ff;" }
+    = t('programs.target_programs.list.active_programs')
+    %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #66c2ff;" }
+    = t('programs.target_programs.list.accomplished_programs')
 
+#programs_list
+  = render 'list', :programs => @programs_target_programs, :amounts => @amounts, :year => @year
+
+= link_to t('form.explanation'), edit_programs_town_path(@programs_town.id), :class => 'btn btn-primary'
+= link_to t('programs.target_programs.edit.tab_expences'), '/programs/load_expences/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
+= link_to t('programs.target_programs.edit.tab_indicators'), '/programs/load_indicators/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
+= link_to t('programs.target_programs.list.branch_report'), '/programs/towns/branch_report/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
 = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
-= link_to t('form.explanation'), edit_programs_town_path(@town.id), :class => 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function() {
+
+    // ------------------------ DATEPICKER -----------------------------
+    $.fn.datepicker.dates[window.aHelper.lang()];
+    $(".year_datepicker").datepicker( {
+      format: 'dd.mm.yyyy',
+      startView: 2,
+      endDate: '+0y',
+      multidate: true,
+      language: window.aHelper.lang(),
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    }).on('changeDate', function(){
+        var year = $(this).val().split('.')[2];
+        $.ajax({
+          type: "GET",
+          url: "/programs/target_programs/change_list/#{@programs_town.id}/" + year
+        });
+    });
+
+    var currYear = new Date().getFullYear();
+    var startDate = new Date(currYear,0,1);
+    $('.year_datepicker').datepicker('setDate', startDate);
+  })
