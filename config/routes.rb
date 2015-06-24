@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
 
 
-  namespace :documentation do
-    resources :branches
-  end
-
   namespace :programs do
     resources :indicator_files
   end
@@ -39,12 +35,14 @@ Rails.application.routes.draw do
   end
 
   namespace :documentation do
+    resources :branches
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
     get 'categories_tree' => 'categories#tree'
 
     resources :documents
   end
+
   resources :towns
 
   namespace :vtarnay do
@@ -158,6 +156,7 @@ Rails.application.routes.draw do
   post 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#update_files_description'
   delete 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#delete_attachments'
   get 'taxonomies/:taxonomy_id/taxonomy_attachments/:attachment_id' => 'taxonomies#download_attachments'
+
   namespace :calendars do
     resources :calendars do
       resources :events do
