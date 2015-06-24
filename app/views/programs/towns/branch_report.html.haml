@@ -24,7 +24,11 @@
   .head.pull-left
     = t('programs.target_programs.branch_report.header') + @programs_town.name
 
-#punchcard
+#punchcard.col-sm-12
+
+#charts_tooltip.hidden
+  %p
+    %span#value
 
 = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
 
@@ -44,7 +48,7 @@
 
     var yValues = d3.keys(branches);
 
-    var w = 940,
+    var w = $('#punchcard').width(),
         h = 300,
         pad = 20,
         left_pad = 200,
@@ -89,7 +93,10 @@
          .attr('fill', 'gray')
          .style("fill-opacity", "0.2")
          .attr('width', left_pad-pad)
-         .attr('height', '0.8em');
+         .attr('height', '0.8em')
+         .on("mouseover", mouseover)
+         .on("mousemove", mousemove)
+         .on("mouseout", remove_tooltip);
 
     yText.selectAll('g')
         .append('rect')
@@ -107,7 +114,10 @@
                          var branch = branches[yValues[d]];
                          return rect_width*branch['fact']/branch['plan'];
                        })
-         .attr('height', '0.8em');
+         .attr('height', '0.8em')
+         .on("mouseover", mouseover)
+         .on("mousemove", mousemove)
+         .on("mouseout", remove_tooltip);
 
     svg.append("text")
         .attr("class", "loading")
@@ -134,7 +144,10 @@
                           if(d['percent'] >= 50) return 'yellow';
                           return 'red';
                         })
-        .transition()
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseout", remove_tooltip)
+       .transition()
         .duration(800)
         .attr("r", function (d) { return r(d['count']); });
 
@@ -143,5 +156,31 @@
         return str.substr(0,str_length-2) + "...";
       }
       return str;
+    }
+
+    function mouseover(d) {
+      var percent, count;
+      if($.isNumeric(d)) {
+        var branch = branches[yValues[d]];
+        count = branch['count'];
+        percent = branch['fact']*100/branch['plan'];
+      } else {
+        count = d['count'];
+        percent = d['percent'];
+      }
+      var html = "Всього: <br />\
+                  програм - " + count + "<br />\
+                  профінансовано на - " + parseInt(percent) + "%";
+
+      add_tooltip(d3.event, d, html);
+    }
+
+    function mousemove(d) {
+      var tooltipSpan = document.getElementById('charts_tooltip');
+      var evt = d3.event || window.event;
+      var x = evt.pageX,
+          y = evt.pageY;
+      tooltipSpan.style.top = y + 'px';
+      tooltipSpan.style.left = x + 'px';
     }
   })
