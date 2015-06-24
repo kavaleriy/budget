@@ -1,19 +1,44 @@
+:css
+  table {
+      table-layout:fixed;
+  }
+
+  .div-table-content {
+    overflow-y:auto;
+  }
+
 .sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
   .panel.panel-default
-    #headingDesc.panel-heading{'role' => 'tab'}
-      %h4.panel-title
-        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
-          =t('widgets.visify.sidebar.description')
-    #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+    %table.table.table-condensed
+      %thead
+        %tr
+          %th
+            #headingDesc.panel-heading{'role' => 'tab'}
+              %h4.panel-title
+                %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+                  =t('widgets.visify.sidebar.description')
+    .div-table-content#collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
       .panel-body
-        #description
+        %table.table.table-condensed
+          %tbody
+            %tr
+              %td
+                #description
+  -#.panel.panel-default
+  -#  #headingDesc.panel-heading{'role' => 'tab'}
+  -#    %h4.panel-title
+  -#      %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+  -#        =t('widgets.visify.sidebar.description')
+  -#  #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+  -#    .panel-body
+  -#      #description
 
 .sidebar.col-xs-12.col-md-4#attachments_list
 
 :javascript
 
   function aSidebar(aContainer) {
-    var chart, pie, table;
+    var chart, pie, table, height;
 
     return {
       container: aContainer,
@@ -55,19 +80,25 @@
       getLevelInfo: function(node) {
 
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          div_descr = ''
+          div_descr = '';
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
+            if(!height) { // asign height equal to chart
+              height = $('.chart').height();
+            }
           }
           $(aContainer + ' #description').html(div_descr)
-
-          if($(aContainer + ' #description').height() > $('.chart').height()) {
-            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-8 panel-group')
-            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-8')
-          } else {
-            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
-            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
+          if($(aContainer + ' .div-table-content').height() > height) {
+            $(aContainer + ' .div-table-content').height(height);
           }
+
+          //if($(aContainer + ' #description').height() > $('.chart').height()) {
+          //  $('#accordion').attr('class', 'sidebar col-xs-12 col-md-8 panel-group')
+          //  $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-8')
+          //} else {
+          //  $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
+          //  $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
+          //}
 
           if(node.children && node.children.length != 0) {
               chart.show(node.children);
