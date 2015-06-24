@@ -44,7 +44,7 @@ class Documentation::DocumentsController < ApplicationController
 
       doc.town = Town.where(title: current_user.town).first_or_create
 
-      doc.owner = User.where(title: current_user.email).first
+      doc.owner = current_user
 
       doc.save!
 

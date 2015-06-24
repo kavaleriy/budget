@@ -223,14 +223,16 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
           if (props)
-            this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
-              + '<b>' + props.address + '</b><br/>'
-              + '<b>Amount: ' + props.amount + '</b><br/>'
-              + 'Date: ' + props.repair_date + '<br/>'
-              + props.description + '<br/>'
+            this._div.innerHTML = '<h3 class="title">' + (props.obj_owner || props.title) + '</h3>'
+              + '<b>Адреса: ' + props.address + '</b><br/>'
+              + 'Об\'єкт: ' + props.subject + '<br/>'
+              + 'Роботи: ' + props.work + '<br/>'
+              + '<b>Вартість: ' + props.amount + '</b><br/>'
+              + 'Дата ремонту: ' + props.repair_date + '<br/>'
+              + 'Гарантія: ' + props.repair_date
           else
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
-        };
+          };
 
         info.addTo(map);
       }

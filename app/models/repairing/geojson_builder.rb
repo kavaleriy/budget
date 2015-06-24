@@ -1,7 +1,7 @@
 class Repairing::GeojsonBuilder
 
   def self.build_repair(repair)
-    if repair.address_to.blank?
+    if repair[:address_to].blank?
       build_repair_point(repair)
     else
       build_repair_path(repair)
@@ -17,13 +17,7 @@ class Repairing::GeojsonBuilder
         },
         properties: {
             repair: "house",
-            id: "#{repair[:id]}",
-            title: "#{repair[:title]}",
-            # description: repair[:description],
-            address: "#{repair[:address]}",
-            amount: "#{repair[:amount]}",
-            repair_date: "#{repair[:repair_date]}"
-        }
+        }.merge(extract_props(repair))
     }
   end
 
@@ -34,22 +28,16 @@ class Repairing::GeojsonBuilder
           id: "#{repair[:id]}"
         },
         features: [
-        # {
-        #   type: "Feature",
-        #   geometry: {
-        #     type: 'Point',
-        #     coordinates: repair[:coordinates][0]
-        #   },
-        #   properties: {
-        #     repair: "street",
-        #     id: "#{repair[:id]}",
-        #     title: "#{repair[:title]}",
-        #     # description: repair[:description],
-        #     address: "#{repair[:address]} - #{repair[:address_to]}",
-        #     amount: "#{repair[:amount]}",
-        #     repair_date: "#{repair[:repair_date]}"
-        #   }
-        # },
+        {
+          type: "Feature",
+          geometry: {
+            type: 'Point',
+            coordinates: repair[:coordinates][0]
+          },
+          properties: {
+            repair: "street",
+          }.merge(extract_props(repair))
+        },
         # {
         #     type: "Feature",
         #     geometry: {
@@ -69,16 +57,11 @@ class Repairing::GeojsonBuilder
               type: "Feature",
               geometry: {
                 type: 'LineString',
-                coordinates: filterCoordinates(repair[:coordinates])
+                coordinates: reduceCoordinatesCount(repair[:coordinates])
               },
               properties: {
                 id: "#{repair[:id]}",
-                title: "#{repair[:title]}",
-                # description: repair[:description],
-                address: "#{repair[:address]} - #{repair[:address_to]}",
-                amount: "#{repair[:amount]}",
-                repair_date: "#{repair[:repair_date]}"
-              }
+              }.merge(extract_props(repair))
           }
         ]
     }
@@ -86,7 +69,22 @@ class Repairing::GeojsonBuilder
 
   private
 
-  def self.filterCoordinates coordinates
+  def self.extract_props repair
+    {
+        id: "#{repair[:id]}",
+        obj_owner: "#{repair[:obj_owner]}",
+        title: "#{repair[:title]}",
+        subject: "#{repair[:subject]}",
+        work: "#{repair[:work]}",
+        # description: repair[:description],
+        address: "#{repair[:address]}",
+        amount: "#{repair[:amount]}",
+        repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
+        warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
+    }
+  end
+
+  def self.reduceCoordinatesCount coordinates
     return [] if coordinates.blank?
 
     n = coordinates.count

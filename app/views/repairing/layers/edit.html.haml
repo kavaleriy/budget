@@ -1,24 +1,21 @@
+- model_class = Repairing::Layer
+
 :css
   .map_container {
     height: 750px;
   }
 
-= render 'form'
-
-
-%p#notice= notice
-
 = content_for :header do
   .head
     %i.fa.fa-map
-    = "#{@repairing_map.town}, #{@repairing_map.title}"
+    = "#{@repairing_layer.town}, #{@repairing_layer.title}"
 
   .col-xs-6.pull-right
-    = render partial: 'search', :locals => { map: @repairing_map }
-
+    = render partial: 'search', :locals => {layer: @repairing_layer }
 
 .map_container.col-xs-9
-  = render partial: 'map'
+  = render partial: 'repairing/maps/map'
+
 .col-xs-3
   .panel.panel-default
     .panel-heading
@@ -31,9 +28,11 @@
 %hr
 
 
-= link_to 'Show', @repairing_map
+= render 'form'
+
+= link_to 'Show', @repairing_layer
 \|
-= link_to 'Back', repairing_maps_path
+= link_to 'Back', repairing_layers_path
 
 
 
@@ -52,7 +51,7 @@
       dragCallback: function(layer, ll) {
         $.ajax({
           method: 'PUT',
-          url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
+          url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
           dataType: 'json',
           cache: false,
           data: {
@@ -76,7 +75,7 @@
 
     $.ajax({
       method: 'get',
-      url: '#{geo_json_repairing_map_path(@repairing_map)}',
+      url: '#{geo_json_repairing_layer_path(@repairing_layer)}',
       dataType: 'json',
     })
     .done(function (data) {
@@ -101,7 +100,7 @@
       $('#repair').html('');
 
       if (_removedFeature) {
-        url = '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
+        url = '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
         _removedFeature = undefined
 
         $.ajax({
@@ -119,7 +118,7 @@
         $.ajax({
           method: 'GET',
           cache: false,
-          url: '#{edit_repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
+          url: '#{edit_repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
         })
         .fail(function () {
           console.log('click fail')
@@ -154,7 +153,7 @@
 
           $.ajax({
             method: 'PUT',
-            url: '#{repairing_map_repair_path(@repairing_map.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
+            url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
             dataType: 'json',
             data: {
               repairing_repair: {
