@@ -103,7 +103,7 @@ $(document).on 'ready page:change', ->
       type: 'POST'
       dataType: 'json'
       data:
-        calendars_event:
+        event:
           icon: event.icon
           title: event.title
           description: event.description
@@ -127,7 +127,7 @@ $(document).on 'ready page:change', ->
       type: 'PUT'
       dataType: 'json'
       data:
-        calendars_event:
+        event:
           starts_at: dt_start,
           ends_at: dt_end,
           all_day: event.allDay,

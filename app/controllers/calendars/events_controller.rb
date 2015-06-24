@@ -116,11 +116,7 @@ class Calendars::EventsController < ApplicationController
   end
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    if params[:event]
-      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
-    else
-      params.require(:calendars_event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
-    end
+    params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
   end
 
 end
