@@ -1,4 +1,5 @@
 = render partial: 'slider'
+
 .row
   .col-sm-3.col-xs-6
     = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
@@ -9,7 +10,13 @@
   .col-sm-3.col-xs-6
     = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
 
+= render partial: 'tabs'
 
-:javascript
-  $(document).ready(function() {
-  });
+
+%h1
+  Calendar
+%iframe{ src:'http://tympanus.net/Development/Calendario/index1.html', width: '100%', height: '600px' }
+
+%h1
+  News
+%iframe{ src:'http://tympanus.net/Blueprints/VerticalTimeline/', width: '100%', height: '100%' }
