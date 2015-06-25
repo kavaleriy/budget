@@ -1,119 +1,14 @@
-.title
-  = t('taxonomies.file_upload.title')
-= form_for :file, :html => { :multipart => true, :id => "tax_fileupload"} do |f|
-  #tax_files.files
-    %table.table.table-hover{:style=>"font-size: 0.8em"}
-      - attachments.each do |attachment|
-        -if attachment.name and File.exists?('public/files/taxonomy_attachments/' + taxonomy_id + '/' + attachment.name)
-          %tr
-            %td.col-sm-6
-              %a{:href=>'/taxonomies/' + taxonomy_id + '/taxonomy_attachments/' + attachment.id}
-                = attachment.name
-            %td
-              %input.col-sm-8.att_description{:placeholder=>'Короткий опис', :type=>'text', :value=>attachment.description, :att_id=>attachment.id}
-              %a.btn.btn-info.btn-xs.disabled.save_description{:href=>"#"}
-                %span.glyphicon.glyphicon-ok
-              %a.btn.btn-danger.btn-xs{:href=>"#"}
-                %span.glyphicon.glyphicon-remove
-    %span.dragandrop=t('drag_file')
-    %span.btn.btn-success.fileinput-button.col-xs-offset-1
-      %i.glyphicon.glyphicon-plus
-      %span=t('select_from_list')
-      %input#upload_upload{:multiple => "", :name => "files[]", :type => "file"}
+.documentation
+  .title
+    = t('taxonomies.file_upload.title')
+  .panel.panel-default
+    .panel-heading
+      = t('form.new_document')
+    .new_document.panel-body
+      = render :partial => 'new_attachment', :locals => { :new_file => TaxonomyAttachment.new }
 
-
-:javascript
-  var fileUploadErrors = {
-    maxFileSize: 'File is too big',
-    minFileSize: 'File is too small',
-    acceptFileTypes: 'Filetype not allowed',
-    maxNumberOfFiles: 'Max number of files exceeded',
-    uploadedBytes: 'Uploaded bytes exceed file size',
-    emptyResult: 'Empty file upload result'
-  };
-
-
-:javascript
-  $(function () {
-    /// Initialize the jQuery File Upload widget:
-    $('#tax_fileupload').fileupload({
-      done: function(e, data) {
-          var r = JSON.parse(data.result);
-          var att_add_id = r['_id']['$oid'];
-          $('input[att_id="1"]').attr("att_id", att_add_id);
-      },
-      fail: function(e, data) {
-        console.log(e);
-      }
-    }).on('fileuploadadd', function (e, data) {
-      data.context = '#tax_files table';
-      $.each(data.files, function (index, file) {
-          var node = $("<tr>").append($("<td class='col-sm-6'>").text(file.name))
-            .append($('<td>').append($('<input class="col-sm-8 att_description" type="text" placeholder="Короткий опис" att_id="1"></td>'))
-            .append('<a class="btn btn-info btn-xs disabled save_description" href="#"><span class="glyphicon glyphicon-ok"></span></a>')
-            .append('<a class="btn btn-danger btn-xs" href="#"><span class="glyphicon glyphicon-remove"></span></a>'));
-          node.appendTo(data.context);
-          $('#tax_files table tr').last().find('.btn-danger').on('click', function(event){
-            event.preventDefault();
-            click_delete($(this));
-          });
-          $('#tax_files table tr').last().find('.save_description').on('click', function(event){
-            event.preventDefault();
-            click_save($(this));
-          });
-      });
-      $('.att_description').bind('textchange', function(event){
-        click_on_input($(this), event);
-      });
-    });
-
-    $('.att_description').bind('textchange', function(event){
-      click_on_input($(this), event);
-    });
-
-    $('.save_description').bind('click', function(event){
-      event.preventDefault();
-      click_save($(this));
-    });
-    $('.btn-danger').on('click', function(event){
-      event.preventDefault();
-
-      click_delete($(this));
-    });
-    function click_on_input(input_element,event){
-      //console.log($(input_element).val().length);
-      if($(input_element).val().length>0){
-        $(input_element).parent('td').children('.btn-info').removeClass('disabled');
-      }
-      else{
-        $(input_element).parent('td').children('.btn-info').addClass('disabled');
-      }
-
-    }
-
-    function click_save(link){
-              att_id = link.parent().children('input').attr('att_id');
-              url = $('#tax_fileupload').attr('action');
-              $.ajax({
-                 type: "POST",
-                 url: url.split('?')[0] + '/taxonomy_attachments/' + att_id,
-                 data: "description=" + link.parent().children('input').val(),
-                 success: function(msg){
-                   console.log(msg );
-                 }
-              });
-              link.addClass('disabled')
-              return false;
-    }
-    function click_delete(link){
-              att_id = link.parent().children('input').attr('att_id');
-              url = $('#tax_fileupload').attr('action');
-              $.ajax({
-                 type: "DELETE",
-                 url: url.split('?')[0] + '/taxonomy_attachments/' + att_id,
-              });
-              link.parent().parent().remove();
-              return false;
-    }
-  });
-
+  .panel.panel-default
+    .panel-heading
+      = t('form.uploaded_documents')
+    .documents.panel-body
+      = render :partial => 'attachments', :locals => { :files => @taxonomy.taxonomy_attachments }

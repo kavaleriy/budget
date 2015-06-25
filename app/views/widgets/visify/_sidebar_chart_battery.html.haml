@@ -101,7 +101,7 @@
         _self.clickCallback = options.clickCallback;
         $("#sidebar_chart").html('');
 
-        width = $(".sidebar").width() - margin.left - margin.right,
+        width = $("#chart").width() - margin.left - margin.right,
 
         x = d3.scale.linear()
           .range([0, width]);

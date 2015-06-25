@@ -39,82 +39,51 @@ class TaxonomiesController < ApplicationController
     end
   end
 
-  def download_attachments
-    file_name = @attachment.name
-    file_path = get_attachment_path file_name, params[:taxonomy_id]
-    if File.exist?(file_path)
-      send_file(
-          "#{file_path}",
-          :x_sendfile=>true
-      )
-    end
-  end
-
-  def upload_files
-    taxonomy_id = params[:taxonomy_id]
-    @taxonomy = Taxonomy.find(params[:taxonomy_id])
-    params[:files].each do |attachment|
-
-      upload_file attachment, taxonomy_id
-      file = @taxonomy.taxonomy_attachments.new(
-          :name=>attachment.original_filename,
-      )
-
-      respond_to do |format|
-        if file.save
-          format.html {
-            render :json => file
-          }
-        else
-          format.json { render json: @attachment.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
-
-
-  def update_files_description
+  def attachment_destroy
+    attachment = TaxonomyAttachment.where(:id => params[:attachment_id])
+    attachment.destroy
     respond_to do |format|
-      @attachment.description = params[:description]
-      if @taxonomy.save
-        format.json { render json: @attachment }
+      format.js {}
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
+  def attachment_update
+    attachment = TaxonomyAttachment.where(:id => params[:attachment_id])
+    respond_to do |format|
+      if attachment.update(params[:taxonomy_attachment])
+        format.js {}
+        format.json { head :no_content, status: :updated }
       else
-        format.json { render json: @attachment.errors, status: :unprocessable_entity }
+        format.js { render status: :unprocessable_entity }
+        format.json { render json: @indicate_indicator_file.errors, status: :unprocessable_entity }
       end
     end
   end
 
+  def attachment_create
+    @attachments = []
+    taxonomy_type = @taxonomy.class.to_s.split(/(?=[A-Z])/).join('_').downcase!
 
-  def delete_attachments
-    file_path = get_attachment_path @attachment.name, params[:taxonomy_id]
+    params['attachment'].each do |f|
+      doc = TaxonomyAttachment.new
+      doc.attachment = f
+      params[taxonomy_type][:taxonomy_attachments][:title].blank? ? doc.title = f.original_filename : doc.title = params[taxonomy_type][:taxonomy_attachments][:title]
+      doc.description = params[taxonomy_type][:taxonomy_attachments][:description]
+      doc.taxonomy = @taxonomy
+      doc.author = current_user.email
+      doc.save
+      @attachments << doc
+
+    end unless params['attachment'].nil?
+
     respond_to do |format|
-      if File.exist?(file_path)
-        if File.delete(file_path)
-          @attachment.destroy
-          format.json { head "OK" }
-        end
-      else
-        format.json { render json: @attachment.errors, status: :unprocessable_entity }
-      end
+      format.js {}
+      format.json { head :no_content, status: :created }
     end
   end
 
   private
-
-  def get_attachment_path filename, taxonomy_id
-    Rails.root.join('public', 'files', 'taxonomy_attachments', taxonomy_id, filename)
-  end
-
-  def upload_file (attachment, taxonomy_id)
-
-    file_name = attachment.original_filename
-    Dir.mkdir('public/files/taxonomy_attachments/') unless File.exists?('public/files/taxonomy_attachments/')
-    Dir.mkdir('public/files/taxonomy_attachments/' + taxonomy_id) unless File.exists?('public/files/taxonomy_attachments/' + taxonomy_id)
-    file_path = get_attachment_path file_name, @taxonomy.id
-    File.open(file_path, 'wb') do |file|
-      file.write(attachment.read)
-    end
-  end
 
   def set_taxonomy
     @taxonomy = Taxonomy.find(params[:id])
@@ -130,7 +99,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title, :is_kvk)
+    params.require(params[:controller].singularize).permit(:title, :is_kvk, :attachment_id, :description)
   end
 
 end
