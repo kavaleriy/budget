@@ -199,3 +199,413 @@
   margin-top: 20px;
   font-weight: bold;
 }
+
+
+
+
+
+
+// ===============================================
+
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.row-eq-height {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.left-panel {
+  //  background: url(calendar/left-line.png) 100% 100px no-repeat;
+  //  height: 900px;
+
+  //  background: url(calendar/line.png) 100% repeat-y;
+
+
+}
+
+.calendar_current_events_description {
+  border-top:2px solid #990000;
+  margin-top: 10px;
+
+  .description_left {
+    border-right:2px solid #990000;
+  }
+}
+
+.left-panel, .right-panel {
+  .current-action {
+    margin: 15px 0px;
+
+    a:hover, a:focus {
+      text-decoration: none;
+    }
+
+    h2 {
+      margin: 11px 0 0 0;
+      &.city {
+        color: #990000;
+      }
+      &.people {
+        color: #006633;
+      }
+    }
+    h3 {
+      color: #990000;
+      padding-bottom: 10px;
+    }
+
+    .content {
+      max-height: 210px;
+      overflow: hidden;
+
+      h4 {
+        color: #990000;
+      }
+      p {
+        color: #666666;
+      }
+    }
+  }
+
+  .bar {
+    max-width: 60px;
+    padding: 0px;
+  }
+}
+
+.countdown {
+  .title {
+    margin: 25px 0 0 0;
+    color: #FF9933;
+    text-align: right;
+  }
+
+  .date {
+    color: #FF1F1F;
+    width: 120px;
+    height: 120px;
+    margin: -25px -20px 0 0 ;
+  }
+}
+
+
+.circle {
+  //  background-color: rgba(255, 153, 51, 0);
+
+  //  background: url(calendar/city.png) 13px 13px no-repeat;
+  //  background-size: 60px 51px;
+
+  //  border: 4px solid #FF9933;
+  //  height: 90px;
+  //  width: 90px;
+  //  -moz-border-radius:    45px;
+  //  -webkit-border-radius: 45px;
+  //  border-radius: 45px;
+
+}
+.circle.city {
+  //  background: url(calendar/timeline-city.png) 13px 13px no-repeat;
+  //  background-size: 60px 51px;
+}
+
+.circle.people {
+  //  background: url(calendar/timeline-people.png) 13px 13px no-repeat;
+  //  background-size: 60px 51px;
+}
+
+
+.right-panel {
+  //  background: url(calendar/right-line.png) 0% 100px no-repeat;
+  //  height: 900px;
+  //  background: url(calendar/line.png) 0% repeat-y;
+
+  padding-top: 10px;
+
+  .tabs {
+    min-width: 200px;
+    max-width: 200px;
+    margin-left: -20px !important;
+    padding-left: 0px;
+    a > div {
+      width: 200px;
+      height: 44px;
+    }
+
+    list-style-type: none;
+    li {
+      .news {
+        //        background: url(calendar/news.png) no-repeat;
+        //        background-size: 200px 44px;
+      }
+      .event {
+        //        background: url(calendar/event.png) no-repeat;
+        //        background-size: 200px 44px;
+      }
+    }
+    li.active {
+      .news {
+        //        background: url(calendar/news-active.png) no-repeat;
+        //        background-size: 200px 44px;
+      }
+      .event {
+        //        background: url(calendar/event-active.png) no-repeat;
+        //        background-size: 200px 44px;
+      }
+    }
+  }
+
+  #calendar_event {
+    //height: 800px;
+    overflow: hidden;
+
+    padding: 15px 0;
+    .date {
+      color: #808080;
+    }
+    .title {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .nav {
+      margin-top: 20px;
+    }
+
+    .tab-content {
+      margin-top: 20px;
+      .description {
+        color: #808080;
+      }
+    }
+  }
+}
+
+
+.pies-container {
+  width: 100%;
+  margin-top: 10px;
+  background: url(calendar/circles.png) 0% 0% no-repeat;
+  background-size: 100%;
+  #calendar_pies {
+    margin-left: 0.5%;
+    padding: 4.5% 12%;
+    //    width: 100%;
+    //    height: 100%
+  }
+  h1 {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    margin-left: -40px;
+    color: #3B67AF;
+  }
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  max-width: 320px;
+  height: auto;
+  max-height: 200px;
+  overflow: hidden;
+  padding: 15px;
+  font-size: 12px;
+  background: lightsteelblue;
+  border: 4px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+
+.infobox {
+  .infobox-progress {
+    padding-top: 0;
+    display: inline-block;
+    vertical-align: top;
+    width: 44px;
+
+    .chart {
+      position: relative;
+      text-align: center;
+
+      .sparkline {
+        font-size: 24px;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0
+      }
+
+    }
+  }
+}
+
+
+
+//.cycle {
+//  #logo-rays-container{
+//    top: 0px;
+//    display: block;
+//    overflow: hidden;
+//    position: absolute;
+//    width: 200px;
+//    height: 200px;
+//    z-index: -1;
+//
+//
+//    #logo-rays {
+//      -webkit-animation-delay: 0s;
+//      -webkit-animation-direction: normal;
+//      -webkit-animation-duration: 60s;
+//      -webkit-animation-fill-mode: none;
+//      -webkit-animation-iteration-count: infinite;
+//      -webkit-animation-name: spin;
+//      -webkit-animation-play-state: running;
+//      -webkit-animation-timing-function: linear;
+//      -webkit-background-clip: border-box;
+//      -webkit-background-origin: padding-box;
+//      -webkit-background-size: auto;
+//      background-attachment: scroll;
+//      background-clip: border-box;
+//      background-color: rgba(0, 0, 0, 0);
+//      background-image: url(rays2.jpg) ;
+//      background-origin: padding-box;
+//      background-size: 200px;
+//      display: block;
+//      margin-left: 0px;
+//      opacity: 1;
+//      height: 200px;
+//      width: 200px;
+//      z-index: 0;
+//
+//    }
+//
+//  }
+//}
+//
+
+
+//#profile {
+//  -webkit-background-clip: border-box;
+//  -webkit-background-origin: padding-box;
+//  -webkit-background-size: auto;
+//  -webkit-box-shadow: rgb(51, 51, 51) 0px 0px 5px 0px;
+//  -webkit-transform: matrix(1.5, 0, 0, 1.5, 0, 0);
+//  -webkit-transition-delay: 0s;
+//  -webkit-transition-duration: 0.3s;
+//  -webkit-transition-property: width;
+//  -webkit-transition-timing-function: ease;
+//  background-attachment: scroll;
+//  background-clip: border-box;
+//  background-color: rgb(37, 64, 143);
+//  background-image: none;
+//  background-origin: padding-box;
+//  background-size: auto;
+//  border-bottom-color: rgb(37, 64, 143);
+//  border-bottom-left-radius: 50px;
+//  border-bottom-right-radius: 50px;
+//  border-bottom-style: solid;
+//  border-bottom-width: 3px;
+//  border-image-outset: 0px;
+//  border-image-repeat: stretch;
+//  border-image-slice: 100%;
+//  border-image-source: none;
+//  border-image-width: 1;
+//  border-left-color: rgb(37, 64, 143);
+//  border-left-style: solid;
+//  border-left-width: 3px;
+//  border-right-color: rgb(37, 64, 143);
+//  border-right-style: solid;
+//  border-right-width: 3px;
+//  border-top-color: rgb(37, 64, 143);
+//  border-top-left-radius: 50px;
+//  border-top-right-radius: 50px;
+//  border-top-style: solid;
+//  border-top-width: 3px;
+//  bottom: 114.16676330566406px;
+//  box-shadow: rgb(51, 51, 51) 0px 0px 5px 0px;
+//  box-sizing: border-box;
+//  color: rgb(226, 226, 226);
+//  display: block;
+//  font-family: 'DIN Next W01 Light', helvetica, arial, sans-serif;
+//  font-size: 18px;
+//  height: 100px;
+//  left: 108px;
+//  line-height: 36px;
+//  overflow-x: hidden;
+//  overflow-y: hidden;
+//  position: absolute;
+//  transform: matrix(1.5, 0, 0, 1.5, 0, 0);
+//  transition-delay: 0s;
+//  transition-duration: 0.3s;
+//  transition-property: width;
+//  transition-timing-function: ease;
+//  width: 250px;
+//  z-index: 11;
+//
+//  a {
+//    -webkit-background-clip: border-box;
+//    -webkit-background-origin: padding-box;
+//    -webkit-background-size: auto;
+//    background-attachment: scroll;
+//    background-clip: border-box;
+//    background-color: rgba(0, 0, 0, 0);
+//    background-image: none;
+//    background-origin: padding-box;
+//    background-size: auto;
+//    box-sizing: border-box;
+//    color: rgb(66, 139, 202);
+//    cursor: auto;
+//    display: inline;
+//    font-family: 'DIN Next W01 Light', helvetica, arial, sans-serif;
+//    font-size: 18px;
+//    height: auto;
+//    line-height: 36px;
+//    text-decoration: none solid rgb(66, 139, 202);
+//    width: auto;
+//  }
+//
+//  .details {
+//    -webkit-background-clip: border-box;
+//    -webkit-background-origin: padding-box;
+//    -webkit-background-size: auto;
+//    background-attachment: scroll;
+//    background-clip: border-box;
+//    background-color: rgb(37, 64, 143);
+//    background-image: none;
+//    background-origin: padding-box;
+//    background-size: auto;
+//    box-sizing: border-box;
+//    color: rgb(226, 226, 226);
+//    display: block;
+//    font-family: 'DIN Next W01 Light', helvetica, arial, sans-serif;
+//    font-size: 18px;
+//    height: 150px;
+//    left: 110px;
+//    line-height: 36px;
+//    padding-top: 25px;
+//    position: absolute;
+//    width: 125px;
+//
+//    .name {
+//      box-sizing: border-box;
+//      color: rgb(226, 226, 226);
+//      display: block;
+//      font-family: 'Rockwell W01 Bold', helvetica, arial, sans-serif;
+//      font-size: 16px;
+//      font-weight: normal;
+//      height: 16px;
+//      line-height: 16px;
+//      width: 125px;
+//    }
+//  }
+//}

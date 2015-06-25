@@ -12,3 +12,4 @@ Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/lea
 Rails.application.config.assets.precompile += %w( html2canvas/html2canvas.js html2canvas/html2canvas.svg.js )
 
 Rails.application.config.assets.precompile += %w( ramjet.js )
+Rails.application.config.assets.precompile += %w( parallax_slider/jquery.cslider.css parallax_slider/jquery.cslider.js parallax_slider/modernizr.custom.28468.js )

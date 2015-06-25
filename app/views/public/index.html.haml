@@ -1,18 +1,15 @@
-= javascript_include_tag "ramjet.js"
+= render partial: 'slider'
+.row
+  .col-sm-3.col-xs-6
+    = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
+  .col-sm-3.col-xs-6
+    = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
+  .col-sm-3.col-xs-6
+    = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
+  .col-sm-3.col-xs-6
+    = render partial: 'topic', :locals => { href: '#', img: { src: 'assets/topics/bubble.png', alt: 'Parallax Content Slider with CSS3 and jQuery' } }
 
-:css
-  #a {
-    opacity: 0;
-  }
-
-#a{style: 'background-color: red; font-size: 4em; padding: 1em;'}
-  a
-%img#b{ src: 'assets/smile.png', width: '100px', height: '100px' }
 
 :javascript
   $(document).ready(function() {
-    ramjet.show($('#a')[0])
-    ramjet.transform( a, b )
-    ramjet.show($('#b')[0])
-    //ramjet.hide($('#a')[0])
   });
