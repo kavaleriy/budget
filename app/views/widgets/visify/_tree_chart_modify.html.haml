@@ -41,7 +41,7 @@
       = render partial: 'slider_chart'
       = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
 
-  = render partial: 'sidebar_modify', :locals => { budget_file_id: @taxonomy.id }
+  = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
 
   = render partial: 'helpers'
 
