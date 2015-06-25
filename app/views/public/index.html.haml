@@ -1,0 +1,18 @@
+= javascript_include_tag "ramjet.js"
+
+:css
+  #a {
+    opacity: 0;
+  }
+
+#a{style: 'background-color: red; font-size: 4em; padding: 1em;'}
+  a
+%img#b{ src: 'assets/smile.png', width: '100px', height: '100px' }
+
+:javascript
+  $(document).ready(function() {
+    ramjet.show($('#a')[0])
+    ramjet.transform( a, b )
+    ramjet.show($('#b')[0])
+    //ramjet.hide($('#a')[0])
+  });

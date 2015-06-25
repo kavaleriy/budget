@@ -10,3 +10,5 @@ Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leafl
 Rails.application.config.assets.precompile += %w( leaflet/zoomfs.js )
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css leaflet/leaflet-routing-machine.js leaflet/leaflet-routing-machine.css )
 Rails.application.config.assets.precompile += %w( html2canvas/html2canvas.js html2canvas/html2canvas.svg.js )
+
+Rails.application.config.assets.precompile += %w( ramjet.js )
