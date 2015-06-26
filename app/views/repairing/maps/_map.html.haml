@@ -12,6 +12,9 @@
 = javascript_include_tag "leaflet/zoomfs.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
+
+= stylesheet_link_tag "tooltip_styles/tooltip-box.css", :media => "all"
+
 :css
   #map {
     width: 100%;
@@ -33,6 +36,8 @@
     /*margin: 0 0 5px;*/
     color: #777;
   }
+
+
 
 
 #map
@@ -186,6 +191,7 @@
 
         function onEachFeature(feature, layer) {
           popupContent =
+
             '<div class="popup">' +
               '<h3>' + feature.properties.title + '</h3>' +
               '<p>' + feature.properties.address + '</p>' +
