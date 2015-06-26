@@ -32,7 +32,7 @@
 
           data = []
           _data.forEach(function(d, index) {
-            item = { label: d.label, value: d.amount, index: index }
+            item = { label: d.label, value: d.amount, value_fact:( d.amount_fact || 0), index: index }
             //console.log(d.color)
             if (d.color) item.color = d.color
             data.push( item )
@@ -41,7 +41,6 @@
           draw_data(data);
 
           function draw_data(data) {
-
             _self.pie = new d3pie("sidebar_pie", {
               header: {
                 title: {
@@ -79,26 +78,26 @@
               },
               tooltips: {
                   enabled: true,
-                  type: "placeholder",
-                  string: "{label}: {value}",
-
-                  // data is an object with the three properties listed below. Just modify the properties
-                  // directly - there's no need to return anything
-                  placeholderParser: function(index, data) {
-                    data.label = data.label + "!";
-                    //data.percentage = data.percentage.toFixed(2);
-                    data.value = aVisify.helpers.formatNumber(data.value);
-                   },
-                   styles: {
-                     fadeInSpeed: 300,
-                     backgroundColor: "#00cc99",
-                     backgroundOpacity: 0.8,
-                     color: "#ffffcc",
-                     borderRadius: 4,
-                     //font: "verdana",
-                     fontSize: 14,
-                     //padding: 10,
-                   }
+                  //type: "placeholder",
+                  //string: "{label}: {value}",
+                  //
+                  //// data is an object with the three properties listed below. Just modify the properties
+                  //// directly - there's no need to return anything
+                  //placeholderParser: function(index, data) {
+                  //  data.label = data.label + "!";
+                  //  //data.percentage = data.percentage.toFixed(2);
+                  //  data.value = aVisify.helpers.formatNumber(data.value);
+                  // },
+                  // styles: {
+                  //   fadeInSpeed: 300,
+                  //   backgroundColor: "#00cc99",
+                  //   backgroundOpacity: 0.8,
+                  //   color: "#ffffcc",
+                  //   borderRadius: 4,
+                  //   //font: "verdana",
+                  //   fontSize: 14,
+                  //   //padding: 10,
+                  // }
 
                 }
             });
