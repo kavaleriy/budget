@@ -1,7 +1,4 @@
 .visify
-  #charts_tooltip.hidden
-    %p
-      %span#value
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
@@ -26,6 +23,10 @@
 
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
+        .pull-right
+          #charts_tooltip.hidden
+            %p
+              %span#value
         #chart
         %canvas{:style => "display: none;"}
         .pull-right
@@ -53,25 +54,25 @@
     iframe_resize();
 
     // make tooltip movable with mouse
-    var visifier = $(".visify").parent().attr('class');
+    //var visifier = $(".visify").parent().attr('class');
 
-    window.onmousemove = function (e) {
-      if(visifier != "bubbletree") {
-        var tooltipSpan = document.getElementById('charts_tooltip');
-        var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
-        var x = e.clientX || e.pageX,
-            y = (e.clientY || e.pageY) - sequence_height;
-        tooltipSpan.style.top = y + 'px';
-        tooltipSpan.style.left = x + 'px';
-      } else {
-        var tooltipSpan = document.getElementById('charts_tooltip');
-        var evt = e || window.event;
-        var x = evt.pageX,
-            y = evt.pageY;
-        tooltipSpan.style.top = y + 'px';
-        tooltipSpan.style.left = x + 'px';
-      }
-    }
+    //window.onmousemove = function (e) {
+    //  if(visifier != "bubbletree") {
+    //    var tooltipSpan = document.getElementById('charts_tooltip');
+    //    var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
+    //    var x = e.clientX || e.pageX,
+    //        y = (e.clientY || e.pageY) - sequence_height;
+    //    tooltipSpan.style.top = y + 'px';
+    //    tooltipSpan.style.left = x + 'px';
+    //  } else {
+    //    var tooltipSpan = document.getElementById('charts_tooltip');
+    //    var evt = e || window.event;
+    //    var x = evt.pageX,
+    //        y = evt.pageY;
+    //    tooltipSpan.style.top = y + 'px';
+    //    tooltipSpan.style.left = x + 'px';
+    //  }
+    //}
 
 
     $(window).resize(function() {
