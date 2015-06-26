@@ -9,34 +9,22 @@
 
 .sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
   .panel.panel-default
-    %table.table.table-condensed
-      %thead
-        %tr
-          %th
-            #headingDesc.panel-heading{'role' => 'tab'}
-              %h4.panel-title
-                %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
-                  =t('widgets.visify.sidebar.description')
+    #headingDesc.panel-heading{'role' => 'tab'}
+      %h4.panel-title
+        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+          =t('widgets.visify.sidebar.description')
     .div-table-content#collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
       .panel-body
-        %table.table.table-condensed
-          %tbody
-            %tr
-              %td
-                #description
+        #description
 
   - if file.taxonomy_attachments && file.taxonomy_attachments.length > 0
     .panel.panel-default
-      %table.table.table-condensed
-        %thead
-          %tr
-            %th
-              #headingDesc.panel-heading{'role' => 'tab'}
-                %h4.panel-title
-                  %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#attachments_list', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
-                    =t('widgets.visify.sidebar.attachments')
-      .div-table-content#attachments_list.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
-        .panel-body
+      #headingDesc.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#attachments_list', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+            =t('widgets.visify.sidebar.attachments')
+      .panel-body
+        .div-table-content#attachments_list.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
           %table.table.table-condensed
             %tbody
               - file.taxonomy_attachments.each do |attachment|

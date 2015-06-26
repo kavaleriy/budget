@@ -1,0 +1,80 @@
+-# http://tympanus.net/codrops/2012/03/15/parallax-content-slider-with-css3-and-jquery/
+
+= stylesheet_link_tag "parallax_slider/jquery.cslider.css", :media => "all"
+= javascript_include_tag "parallax_slider/jquery.cslider.js"
+= javascript_include_tag "parallax_slider/modernizr.custom.28468.js"
+
+:css
+  .da-slider {
+    margin-top: 0px;
+  }
+
+= content_for :top do
+  #da-slider.da-slider
+    .da-slide
+      %h2
+        Warm welcome
+      %p
+        When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.
+      %a.da-link{ href: "#"}
+        Read more
+      .da-img
+        %img{ src: "assets/slider/1.png", alt: "image01"}
+
+    .da-slide
+      %h2
+        Easy management
+      %p
+        Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean
+      %a.da-link{ href: "#"}
+        Read more
+      .da-img
+        %img{ src: "assets/slider/2.png", alt: "image02"}
+
+    .da-slide
+      %h2
+        Revolution
+      %p
+        A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth
+      %a.da-link{ href: "#"}
+        Read more
+      .da-img
+        %img{ src: "assets/slider/3.png", alt: "image03"}
+
+    .da-slide
+      %h2
+        Quality Control
+      %p
+        Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar
+      %a.da-link{ href: "#"}
+        Read more
+      .da-img
+        %img{ src: "assets/slider/4.png", alt: "image03"}
+
+    %nav.da-arrows
+      %span.da-arrows-prev
+      %span.da-arrows-next
+
+:javascript
+
+  $(function() {
+
+    $('#da-slider').cslider({
+
+      current		: 0,
+      // index of current slide
+
+      bgincrement	: 50,
+      // increment the background position
+      // (parallax effect) when sliding
+
+      autoplay	: true,
+      // slideshow on / off
+
+      interval	: 4000
+      // time between transitions
+
+    });
+  });
+
+

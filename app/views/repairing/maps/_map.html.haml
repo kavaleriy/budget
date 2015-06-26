@@ -42,8 +42,8 @@
 
   var RepairMap
 
-    $(document).ready(function() {
-      RepairMap = function(options) {
+  $(document).ready(function() {
+    RepairMap = function(options) {
 
       var map, markers;
       var popup;
@@ -53,8 +53,9 @@
       var self = this;
 
 
+
       function initMap() {
-        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
+        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} )
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -68,11 +69,32 @@
 
         initZoomFS()
 
+        getBrowserLocation()
+
 
         markers = new L.MarkerClusterGroup();
 
         map.addLayer(markers);
 
+        function getBrowserLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
+          } else {
+            $(".map").text("Your browser is out of fashion, there\'s no geolocation!");
+          }
+
+          function positionSuccess(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var acr = position.coords.accuracy;
+
+            map.setView([lat, lng], 14)
+          }
+          function positionError(err) {
+            map.setView([50.38751, 30.68481], 7)
+          }
+
+        }
 
         function initZoomFS() {
           var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
