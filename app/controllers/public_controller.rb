@@ -1,4 +1,6 @@
 class PublicController < ApplicationController
+  # layout false
+
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
   def calendar
