@@ -24,15 +24,24 @@
             .data(partition.nodes(root))
           .enter().append("path")
             .attr("d", arc)
+            .attr("id", function(d, i) { return 'path' + i; })
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
+            .style("stroke", "#ffffff")
+            .style("stroke-width", 1)
             .on("click", click)
-            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
+            .on("mouseover", mouseover)
             .on("mouseleave", mouseleave);
+    }
+
+    function mouseover(d) {
+      add_tooltip(d3.event, d);
+      path_animation('start', this);
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseleave(d) {
       remove_tooltip(d);
+      path_animation('stop', this);
     }
 
     function click(d) {

@@ -10,7 +10,7 @@
     var color;
     var svg, partition, arc;
     var current_year, current_month;
-    var centerNode = null;
+    var centerNode = null, center_text;
     var self;
 
     function clear() {
@@ -32,42 +32,65 @@
         .enter().append("svg:path")
         .attr("d", arc)
         .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
+        .attr("id", function(d, i) { return 'path' + i; })
+        .style("stroke", "white")
+        .style("stroke-width", 1)
         .on("click", click)
         .each(stash)
-        .on("mouseover", function(d){ add_tooltip(d3.event, d) })
-        .on("mouseout", remove_tooltip);
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
 
+      center_text = [(json.amount/window.aHelper.k(json.amount)).toFixed(2) + window.aHelper.short_unit(json.amount), json.key];
+      var text = svg.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', 'white')
+         .style('font-size', '0.8em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
     };
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
-      // Fade all the segments.
-      svg.selectAll("path")
-          .style("opacity", 0.6);
+      //// Fade all the segments.
+      //svg.selectAll("path")
+      //    .style("opacity", 0.6);
+      //
+      //var percentageString = aVisify.helpers.getPercentageString(d.amount, d.parent ? d.parent.amount : totalSize)
+      //var sequenceArray = sequence.getAncestors(d);
+      //sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      //
+      //// Then highlight only those that are an ancestor of the current segment.
+      //svg.selectAll("path")
+      //    .filter(function(node) {
+      //              return (sequenceArray.indexOf(node) >= 0);
+      //            })
+      //    .style("opacity", 1);
+      //
+      //
+      //d3.select(".sunburst #explanation #percentage")
+      //    .text(aVisify.helpers.formatNumber(d.amount));
+      //
+      //d3.select(".sunburst #explanation")
+      //    .style("visibility", "");
 
-      var percentageString = aVisify.helpers.getPercentageString(d.amount, d.parent ? d.parent.amount : totalSize)
-      var sequenceArray = sequence.getAncestors(d);
-      sequence.updateBreadcrumbs(sequenceArray, percentageString);
+      //add_tooltip(d3.event, d)
 
-      // Then highlight only those that are an ancestor of the current segment.
-      svg.selectAll("path")
-          .filter(function(node) {
-                    return (sequenceArray.indexOf(node) >= 0);
-                  })
-          .style("opacity", 1);
-
-
-      d3.select(".sunburst #explanation #percentage")
-          .text(aVisify.helpers.formatNumber(d.amount));
-
-      d3.select(".sunburst #explanation")
-          .style("visibility", "");
-
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': 'white'});
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseout(d) {
-      sequence.hideBreadcrumb();
+      //remove_tooltip(d)
+      //sequence.hideBreadcrumb();
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': 'white'});
     }
 
     function click(d) {

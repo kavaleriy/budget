@@ -10,7 +10,7 @@
     var color;
     var vis, partition, arc;
     var current_year, current_month;
-    var centerNode = null;
+    var centerNode = null, center_text;
 
     function getAncestors(node) {
       var path = [];
@@ -44,22 +44,40 @@
           .attr("display", function(d) { return d.depth ? null : "none"; })
           .attr("d", arc)
           .attr("fill-rule", "evenodd")
+          .attr("id", function(d, i) { return 'path' + i; })
           .style("fill", function(d) { return d.color || color(d.value); })
-          .style("opacity", 1)
-          .on("mouseover", mouseover);
+          .style("fill-opacity", 1)
+          .on("mouseover", mouseover)
+          .on("mouseleave", node_mouseleave);
 
       // Add the mouseleave handler to the bounding circle.
       d3.select("#container").on("mouseleave", mouseleave);
 
       // Get total size of the tree = value of root node from partition.
       totalSize = json.amount;
+
+      center_text = [(json.amount/window.aHelper.k(json.amount)).toFixed(2) + window.aHelper.short_unit(json.amount), json.label];
+      var text = vis.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', '#0b387c')
+         .style('font-weight', 'bold')
+         .style('font-size', '1.2em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
     };
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
       // Fade all the segments.
+
       vis.selectAll("path")
-          .style("opacity", 0.6);
+          .style("fill-opacity", 0.6);
 
       var sequenceArray = getAncestors(d);
 
@@ -68,21 +86,20 @@
           .filter(function(node) {
                     return (sequenceArray.indexOf(node) >= 0);
                   })
-          .style("opacity", 1);
+          .style("fill-opacity", 1);
 
-
-      d3.select(".sunburst-seq #explanation #percentage")
-          .html(d.label + "<br />" + aVisify.helpers.formatNumber(d.amount));
-
-      d3.select(".sunburst-seq #explanation")
-          .style("visibility", "");
       self.clickCallback(d);
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+    }
+
+    function node_mouseleave(d) {
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseleave(d) {
-      d3.select("#explanation")
-        .style("visibility", "hidden");
 
       // Deactivate all segments during transition.
       vis.selectAll("path").on("mouseover", null);
@@ -91,7 +108,7 @@
       vis.selectAll("path")
           .transition()
           .duration(100)
-          .style("opacity", 1)
+          .style("fill-opacity", 1)
           .each("end", function() {
                   d3.select(this).on("mouseover", mouseover);
                 });
@@ -111,8 +128,6 @@
         height = options.height;
 
         $('.sunburst-seq #chart').width(width).height(height)
-
-        $('.sunburst-seq #explanation').width(120).css("top", height / 2 + 20 ).css("left", width/2 - 60 );
 
         // Dimensions of sunburst.
         radius = Math.min(width, height) / 2;
