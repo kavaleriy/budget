@@ -1343,20 +1343,54 @@
 
         text_animation: function(s, text, options) {
             $('#tab_pie svg .pie_center_text').remove();
-            var a = 0;
-            for(var i = 0; i < text.length; i++) {
-                var txt = s.text(0,a + 'em',segments.truncate(text[i])); // to move text to the front
-                txt.attr({
-                    'class': 'pie_center_text',
-                    'text-anchor': 'middle',
-                    'fill': options.fill,
-                    'fill-opacity': 0,
-                    'font-weight': options['font-weight'] || 'normal',
-                    'font-size': options['font-size'] || '0.8em'
-                });
-                a += 1.5;
-            }
+            text = segments.divide(text);
+            s.text({text: text})
+             .attr({
+                'class': 'pie_center_text',
+                'text-anchor': 'middle',
+                'fill': options.fill,
+                'fill-opacity': 0,
+                'font-weight': options['font-weight'] || 'normal',
+                'font-size': options['font-size'] || '0.8em'
+             })
+             .selectAll("tspan").forEach(function(tspan, i){
+                var length = text.length;
+                if(i < length/2) {
+                    tspan.attr({x: 0, y: -25*(length/2 - i) + 25});
+                } else {
+                    tspan.attr({x: 0, y: 25*(i - length/2) + 25});
+                }
+             });
+//            var a = 0;
+//            for(var i = 0; i < text.length; i++) {
+//                var txt = s.text(0,a + 'em',segments.truncate(text[i])); // to move text to the front
+//                txt.attr({
+//                    'class': 'pie_center_text',
+//                    'text-anchor': 'middle',
+//                    'fill': options.fill,
+//                    'fill-opacity': 0,
+//                    'font-weight': options['font-weight'] || 'normal',
+//                    'font-size': options['font-size'] || '0.8em'
+//                });
+//                a += 1.5;
+//            }
             s.selectAll('text').animate({'fill-opacity': 1, 'stroke-width': 1}, 5000, mina.elastic);
+        },
+
+        divide: function(text) {
+            var txt = [];
+            txt.push(text[0]);
+            var words = text[1].split(" ");
+            var tspan = words[0];
+            for(var i = 0; i < words.length; i++) {
+                if(words[i+1] && (tspan.length + words[i+1].length)<20) {
+                    tspan += " " + words[i+1];
+                } else {
+                    txt.push(tspan);
+                    tspan = words[i+1];
+                }
+            }
+            return txt;
         },
 
         truncate: function(text) {
