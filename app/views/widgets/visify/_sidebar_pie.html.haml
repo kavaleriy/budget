@@ -30,7 +30,8 @@
           if (_data == null || _data.length < 1)
             return
 
-          data = []
+          data = [];
+          var center_node = {"label": _data[0].parent.label, "value": _data[0].parent.amount};
           _data.forEach(function(d, index) {
             item = { label: d.label, value: d.amount, value_fact:( d.amount_fact || 0), index: index }
             //console.log(d.color)
@@ -38,9 +39,9 @@
             data.push( item )
           });
 
-          draw_data(data);
+          draw_data(data, center_node);
 
-          function draw_data(data) {
+          function draw_data(data, center_node) {
             _self.pie = new d3pie("sidebar_pie", {
               header: {
                 title: {
@@ -62,7 +63,8 @@
                       valueType: "percentage",
                       label: "Інше"
                   },
-                  content: data
+                  content: data,
+                  center_node: center_node
               },
               callbacks: {
                 onClickSegment: function(segment) {
@@ -71,9 +73,14 @@
                     groupedData = segment.data.groupedData
                     _self.pie.updateProp("data.content", groupedData);
                   } else {
-                  index = segment.data.index
+                    index = segment.data.index
                     _self.clickCallback(_data[index]);
                   }
+                }
+              },
+              labels: {
+                outer: {
+                  format: 'none'
                 }
               },
               tooltips: {

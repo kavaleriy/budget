@@ -1244,6 +1244,8 @@
     };
 
     //// --------- segments.js -----------
+    var main_node = "Всього";
+    var total_value = null;
     var segments = {
 
         /**
@@ -1251,6 +1253,8 @@
          * @private
          */
         create: function(pie) {
+            main_node = pie.options.data.center_node.label;
+            total_value = pie.options.data.center_node.value;
             var pieCenter = pie.pieCenter;
             var colors = pie.options.colors;
             var loadEffects = pie.options.effects.load;
@@ -1314,6 +1318,12 @@
                 }
             );
             pie.arc = arc;
+
+            var text = [(total_value/window.aHelper.k(total_value)).toFixed(2) + window.aHelper.short_unit(total_value), main_node];
+            var s = Snap.select('#tab_pie svg .' + pie.cssPrefix + 'pieChart');
+            if(s) {
+                segments.text_animation(s, text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.0em' });
+            }
         },
 
         addGradients: function(pie) {
@@ -1329,6 +1339,31 @@
 
             grads.append("stop").attr("offset", "0%").style("stop-color", function(d, i) { return pie.options.colors[i]; });
             grads.append("stop").attr("offset", pie.options.misc.gradient.percentage + "%").style("stop-color", pie.options.misc.gradient.color);
+        },
+
+        text_animation: function(s, text, options) {
+            $('#tab_pie svg .pie_center_text').remove();
+            var a = 0;
+            for(var i = 0; i < text.length; i++) {
+                var txt = s.text(0,a + 'em',segments.truncate(text[i])); // to move text to the front
+                txt.attr({
+                    'class': 'pie_center_text',
+                    'text-anchor': 'middle',
+                    'fill': options.fill,
+                    'fill-opacity': 0,
+                    'font-weight': options['font-weight'] || 'normal',
+                    'font-size': options['font-size'] || '0.8em'
+                });
+                a += 1.5;
+            }
+            s.selectAll('text').animate({'fill-opacity': 1, 'stroke-width': 1}, 5000, mina.elastic);
+        },
+
+        truncate: function(text) {
+            if(text.length > 20) {
+                text = text.substr(0, 17) + '...';
+            }
+            return text;
         },
 
         addSegmentEventHandlers: function(pie) {
@@ -1357,14 +1392,21 @@
             });
 
             arc.on("mouseover", function() {
-                var id = $(this).find('path').attr('id').split('_')[0];
-                var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
-                s.append(this); // to move current path to the front
-                var path = $(this).find('path');
-                var pathEl = Snap.select('#' + path.attr('id'));
-                path.css("stroke", path.css('fill'));
-                path.data('fill-opacity', path.css('fill-opacity'));
-                pathEl.stop().animate( { 'stroke-width': 15, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
+                if($(this).attr('class').split("_")[1] != "labelGroup-inner") {
+                    var id = $(this).find('path').attr('id').split('_')[0];
+                    var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
+                    s.append(this); // to move current path to the front
+                    var path = $(this).find('path');
+                    var pathEl = Snap.select('#' + path.attr('id'));
+                    path.css("stroke", path.css('fill'));
+                    path.data('fill-opacity', path.css('fill-opacity'));
+                    pathEl.stop().animate( { 'stroke-width': 15, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
+
+                    var index = path.attr('id').slice(-1);
+                    var d = pie.options.data.content[index];
+                    var text = [(d.value/window.aHelper.k(d.value)).toFixed(2) + window.aHelper.short_unit(d.value), d.label];
+                    segments.text_animation(s, text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.0em' });
+                }
 //                var currentEl = d3.select(this);
 //                var segment, index;
 //
@@ -1409,10 +1451,17 @@
             });
 
             arc.on("mouseout", function() {
-                var path = $(this).find('path');
-                var pathEl = Snap.select('#' + path.attr('id'));
-                pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': path.data('fill-opacity'), 'stroke-opacity': '1' }, 5000, mina.elastic);
-                path.css("stroke", "#ffffff");
+                if($(this).attr('class').split("_")[1] != "labelGroup-inner") {
+                    var path = $(this).find('path');
+                    var pathEl = Snap.select('#' + path.attr('id'));
+                    pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': path.data('fill-opacity'), 'stroke-opacity': '1' }, 5000, mina.elastic);
+                    path.css("stroke", "#ffffff");
+
+                    var text = [(total_value/window.aHelper.k(total_value)).toFixed(2) + window.aHelper.short_unit(total_value), main_node];
+                    var id = $(this).find('path').attr('id').split('_')[0];
+                    var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
+                    segments.text_animation(s, text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.0em' });
+                }
 //                var currentEl = d3.select(this);
 //                var segment, index;
 //
