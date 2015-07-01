@@ -13,8 +13,6 @@
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
 
-= stylesheet_link_tag "tooltip_styles/tooltip-box.css", :media => "all"
-
 :css
   #map {
     width: 100%;
@@ -146,11 +144,12 @@
       // add markers
       var CustomIcon = L.Icon.extend({
         options: {
-          iconSize: [30, 30],
+          iconSize: [30, 26],
         }
       });
 
-      var houseIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
+      var houseIcon = new CustomIcon({iconUrl: '/assets/repairing/repair_house_small.png'})
+      var roadIcon = new CustomIcon({iconUrl: '/assets/repairing/repair_road_small.png'})
 
       function addGeoJson(data) {
         L.geoJson(data, {
@@ -167,6 +166,8 @@
           if (feature.properties.repair == 'house') {
             icon = houseIcon
             draggable = (options.dragCallback != undefined)
+          } else if (feature.properties.repair == 'road') {
+            icon = roadIcon
           }
 
           return L.marker(latlng, {
@@ -284,6 +285,7 @@
         //
         //});
 
+        console.log(waypoints)
         if (self.selectedRoute) {
           self.selectedRoute.setWaypoints(waypoints)
           self.selectedRoute.route()
@@ -300,7 +302,6 @@
           })
           self.selectedRoute.addTo(map);
         }
-
 
       }
 
