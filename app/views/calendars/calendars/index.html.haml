@@ -19,10 +19,10 @@
 
 
 = link_to t('form.new', :default => t("helpers.links.new")), new_calendars_calendar_path, :class => 'btn btn-primary'
--#= form_for [:calendars, Calendar.new], :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
--#  = f.file_field :export_file,:class => 'form-control'
--#  = f.submit nil, :class => 'btn btn-primary'
--#
+= form_for [:calendars, Calendar.new], :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  = f.file_field :import_file,:class => 'form-control'
+  = f.submit nil, :class => 'btn btn-primary'
+
 -#= form_tag({action: :create}, multipart: true) do
--#  = file_field_tag 'picture'
+-#  = file_field_tag 'import_file'
 -#  = submit_tag("Search")

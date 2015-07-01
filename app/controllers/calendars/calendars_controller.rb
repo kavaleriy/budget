@@ -38,6 +38,7 @@ class Calendars::CalendarsController < ApplicationController
   # POST /calendars
   # POST /calendars.json
   def create
+    binding.pry
     @calendar = Calendar.new(calendar_params)
     @calendar.author = current_user.email unless current_user.nil?
 
@@ -84,6 +85,7 @@ class Calendars::CalendarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_params
+      binding.pry
       params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event)
     end
 end
