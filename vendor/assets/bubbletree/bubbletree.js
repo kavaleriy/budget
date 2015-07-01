@@ -1444,18 +1444,15 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		
 
 		//me.label.attr({ x: me.pos.x, y: me.pos.y, 'font-size': Math.max(4, me.bubbleRad * me.bc.bubbleScale * 0.25) });
-
         var add_tooltip = function() {
-            var evt = event || window.event;
-            var xPosition = evt.pageX + 10;
-            var yPosition = evt.pageY;
-
+            var xPosition = $('#chart').width() - $('#charts_tooltip').width();
+            var yPosition = $('#chart').position().top;
             //Update the tooltip position and value
             d3.select("#charts_tooltip")
                 .style("left", xPosition + "px")
                 .style("top", yPosition + "px")
                 .select("#value")
-                .html(me.node.label + "<br />" + utils.formatNumber(me.node.amount));
+                .html(me.node.label + "<br />план: " + utils.formatNumber(me.node.amount) + "<br />факт: " + utils.formatNumber(me.node.amount_fact || 0));
 
             //Show the tooltip
             d3.select("#charts_tooltip").classed("hidden", false);
@@ -1489,14 +1486,17 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.label2.css({ width: w+'px', opacity: me.alpha });
 		me.label2.css({ left: (x - w*0.5)+'px', top: (y + r)+'px' });
 
-        var label_display = $(me.label).css('display');
-        var label2_display = $(me.label2).css('display');
-        if(label_display == "none" && label2_display == "none") {
-            // add tooltips
-            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
-        } else {
-            $(me.circle.node).on("mouseover", remove_tooltip).on("mouseout", remove_tooltip);
-        }
+//        var label_display = $(me.label).css('display');
+//        var label2_display = $(me.label2).css('display');
+        $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
+        $(me.label).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
+        $(me.label2).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
+//        if(label_display == "none" && label2_display == "none") {
+//            // add tooltips
+//            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
+//        } else {
+//            $(me.circle.node).on("mouseover", remove_tooltip).on("mouseout", remove_tooltip);
+//        }
 
 		//if (me.icon) me.icon.translate(me.pos.x - ox, me.pos.y - oy);
 	

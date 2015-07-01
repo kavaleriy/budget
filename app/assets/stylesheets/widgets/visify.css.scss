@@ -14,6 +14,10 @@
       }
     }
   }
+
+  .tab-pane {
+    padding-top: 10px;
+  }
 }
 
 body {
@@ -56,6 +60,8 @@ body {
 
       path, rect {
         cursor: pointer;
+      }
+      rect {
         stroke: #fff;
       }
       text {
@@ -242,7 +248,7 @@ body {
   }
 }
 
-#charts_tooltip {
+#charts_tooltip, #pie_tooltip {
   position: absolute;
   min-width: 130px;
   height: auto;
@@ -259,14 +265,15 @@ body {
   z-index: 999;
 }
 
-#charts_tooltip.hidden {
+#charts_tooltip.hidden, #pie_tooltip.hidden {
   display: none;
 }
 
-#charts_tooltip p {
+#charts_tooltip p, #pie_tooltip p {
   margin: 0;
   font-size: 0.8em;
   font-weight: bold;
+  text-align: left;
 }
 
 #icons {

@@ -1,15 +1,24 @@
 class Repairing::Repair
   include Mongoid::Document
 
-  belongs_to :map, class_name: 'Repairing::Map'
+  belongs_to :layer, class_name: 'Repairing::Layer'
 
   field :title, type: String
-  field :description, type: String
+
+  field :obj_owner, type: String
+
+  field :subject, type: String
+  field :work, type: String
+
   field :amount, type: Float
   field :repair_date, type: Date
+  field :warranty_date, type: Date
+
+  field :description, type: String
 
   field :address, type: String
   field :address_to, type: String
+
   field :coordinates, type: Array
 
   # include Geocoder::Model::Mongoid

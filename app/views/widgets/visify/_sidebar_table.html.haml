@@ -26,9 +26,15 @@
 
         $("#sidebar_table").height('auto')
 
-
-
-        div = '<table class="table table-hover">'
+        div = '<table class="table table-striped table-hover">\
+                 <thead>\
+                 <tr>\
+                   <th class="col-sm-6">Напрямок видатків</th>\
+                   <th class="col-sm-2">план, грн.</th>\
+                   <th class="col-sm-2">факт, грн.</th>\
+                   <th class="col-sm-2">%</th>\
+                 </tr>\
+               </thead><tbody>'
         $.each(data, function( index, value ) {
           var totalSize;
           if (value.parent) {
@@ -36,20 +42,22 @@
           } else {
             totalSize = value.amount;
           }
-          div += '<tr>'
-            + '<td class="col-sm-8"><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
+          div += '<tr class="tr_nodes">'
+            + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
             + value.label + '</td>'
-            + '<td class="col-sm-2" align="right">' + aVisify.helpers.formatNumber(value.amount) + '</td>'
-            + '<td class="col-sm-2">' + aVisify.helpers.getPercentageString(value.amount, totalSize) + '</td>'
+            + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
+            + '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + '</td>'
+            + '<td>' + aVisify.helpers.getPercentageString(value.amount, totalSize) + '</td>'
             + '</tr>'
         });
-        div += '</table>'
+        div += '</tbody></table>'
 
         $('#sidebar_table').html(div);
 
-        d3.selectAll("#sidebar_table tr")
+        d3.selectAll(".tr_nodes")
             .style("cursor", "pointer")
             .on("click", function(d, i) {
+                console.log(data[i])
                  self.clickCallback(data[i]);
                });
       },

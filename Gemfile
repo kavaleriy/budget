@@ -97,6 +97,7 @@ gem 'yaml_db'
 # https://github.com/bootstrap-ruby/bootstrap-editable-rails
 gem 'bootstrap-editable-rails'
 
+# https://github.com/carrierwaveuploader/carrierwave
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 

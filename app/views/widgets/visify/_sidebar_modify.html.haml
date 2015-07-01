@@ -1,20 +1,54 @@
+:css
+  table {
+    table-layout:fixed;
+  }
+
+  .div-table-content {
+    overflow-y:auto;
+  }
+
 .sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
   .panel.panel-default
     #headingDesc.panel-heading{'role' => 'tab'}
       %h4.panel-title
         %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
           =t('widgets.visify.sidebar.description')
-    #collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+    .div-table-content#collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
       .panel-body
         #description
 
-.slider.col-xs-12.col-md-4
-  = render partial: 'slider_chart'
-  = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
-
-.sidebar.col-xs-12.col-md-4#attachments_list
+  - if file.taxonomy_attachments && file.taxonomy_attachments.length > 0
+    .panel.panel-default
+      #headingDesc.panel-heading{'role' => 'tab'}
+        %h4.panel-title
+          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#attachments_list', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+            =t('widgets.visify.sidebar.attachments')
+      .panel-body
+        .div-table-content#attachments_list.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
+          %table.table.table-condensed
+            %tbody
+              - file.taxonomy_attachments.each do |attachment|
+                %tr
+                  %td
+                    = link_to attachment.attachment.url do
+                      %i.fa.fa-download.fa-border
+                      = attachment.title
 
 :javascript
+
+  $(document).ready(function() {
+    $('#collapseDesc').on("shown.bs.collapse", function() {
+      check_height();
+    })
+  })
+
+  var height;
+
+  function check_height() {
+    if($('#collapseDesc').height() > height) {
+      $('#collapseDesc').height(height);
+    }
+  }
 
   function aSidebar(aContainer) {
     var chart, pie, table;
@@ -27,22 +61,10 @@
         chart.initialize(options)
 
         pie = aSidebarPie('.sidebar')
-        pie.initialize(350, options)
+        pie.initialize(500, options)
 
         table = aSidebarTable('.sidebar')
-        table.initialize(450, options)
-
-        $.getJSON("/widgets/visify/get_attachments/#{@budget_file.id}/", function(data) {
-          div_descr = '';
-          if(data['attachments'].length != 0) {
-            div_descr += "<div class='title'> #{I18n.t('widgets.visify.sidebar.attachments')}: </div>"
-          }
-          $.each(data['attachments'], function(key, value) {
-            div_descr += "<a href='/taxonomies/#{@budget_file.id}/taxonomy_attachments/" + value._id.$oid + "'>\
-                          <span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span> " + (value.description || value.name) + "</a></br>";
-          })
-          $(aContainer + ' #attachments_list').html(div_descr)
-        })
+        table.initialize(500, options)
       },
 
       hide: function(){
@@ -59,19 +81,16 @@
       getLevelInfo: function(node) {
 
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
-          div_descr = ''
+          div_descr = '';
+          $('#collapseDesc').height('auto');
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
+            if(!height) { // asign height equal to chart
+              height = $('.chart').height();
+            }
           }
           $(aContainer + ' #description').html(div_descr)
-
-          if($(aContainer + ' #description').height() > $('.chart').height()) {
-            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-8 panel-group')
-            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-8')
-          } else {
-            $('#accordion').attr('class', 'sidebar col-xs-12 col-md-4 panel-group')
-            $('#attachments_list').attr('class', 'sidebar col-xs-12 col-md-4')
-          }
+          check_height();
 
           if(node.children && node.children.length != 0) {
               chart.show(node.children);

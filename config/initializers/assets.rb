@@ -10,3 +10,9 @@ Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leafl
 Rails.application.config.assets.precompile += %w( leaflet/zoomfs.js )
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css leaflet/leaflet-routing-machine.js leaflet/leaflet-routing-machine.css )
 Rails.application.config.assets.precompile += %w( html2canvas/html2canvas.js html2canvas/html2canvas.svg.js )
+
+Rails.application.config.assets.precompile += %w( ramjet.js )
+Rails.application.config.assets.precompile += %w( parallax_slider/jquery.cslider.css parallax_slider/jquery.cslider.js parallax_slider/modernizr.custom.28468.js )
+Rails.application.config.assets.precompile += %w( tab_styled/cbpFWTabs.js tab_styled/modernizr.custom.js tab_styled/tabs.css tab_styled/tabstyles.css )
+Rails.application.config.assets.precompile += %w( tooltip_inspiration/tooltip-box.css )
+Rails.application.config.assets.precompile += %w( page_navigation/menu.js page_navigation/modernizr.custom.25376.js page_navigation/classie.js page_navigation/component.css page_navigation/normalize.css )

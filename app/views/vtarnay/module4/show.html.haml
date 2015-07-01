@@ -23,16 +23,15 @@
       = render partial: 'widgets/visify/slider_compare', :locals => { budget_file_id: @taxonomy.id}
 
   .col-xs-12.col-md-7
+    #charts_tooltip.hidden
+      %p
+        %span#value
     #under_sequence
     = render partial: 'sidebar', :locals => { budget_file_id: @taxonomy.id }
 
   #description.col-xs-12
 
   = render partial: 'widgets/visify/helpers'
-
-  #charts_tooltip.hidden
-    %p
-      %span#value
 
 :javascript
 
@@ -56,7 +55,7 @@
     slider.initialize(150, {clickCallback: sliderItemClick});
     slider_chart.initialize(250, {clickCallback: yearItemClick});
     sidebar.initialize(600, {clickCallback: sequenceItemClick});
-    chart.initialize({ width: $(document).width()/2, height: 600, clickCallback: bubbleItemClick });
+    chart.initialize({ width: $('.bubbletree').width(), height: 600, clickCallback: bubbleItemClick });
 
     d3.json("/widgets/visify/get_visify_level/" + "#{@taxonomy.id}" + "/ktfk_aaa/", function(data) {
       icons.initialize(data, { height: 700, clickCallback: iconsItemClick });
@@ -349,12 +348,12 @@
       //           .attr("fill", "green");
     }
 
-    window.onmousemove = function (e) {
-                                var tooltipSpan = document.getElementById('charts_tooltip');
-                                var evt = e || window.event;
-                                var x = evt.pageX,
-                                    y = evt.pageY;
-                                tooltipSpan.style.top = y + 'px';
-                                tooltipSpan.style.left = x + 'px';
-                              };
+    //window.onmousemove = function (e) {
+    //                            var tooltipSpan = document.getElementById('charts_tooltip');
+    //                            var evt = e || window.event;
+    //                            var x = evt.pageX,
+    //                                y = evt.pageY;
+    //                            tooltipSpan.style.top = y + 'px';
+    //                            tooltipSpan.style.left = x + 'px';
+    //                          };
   })

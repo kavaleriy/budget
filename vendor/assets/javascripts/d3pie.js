@@ -1375,7 +1375,21 @@
 
                 if (pie.options.tooltips.enabled) {
                     index = segment.attr("data-index");
-                    tt.showTooltip(pie, index);
+//                    tt.showTooltip(pie, index);
+                    var el = pie.options.data.content[index];
+                    var tooltip_width;
+                    $('#pie_tooltip').width() < 250 ? tooltip_width = 250 : tooltip_width = $('#pie_tooltip').width();
+                    var xPosition = $('#sidebar_pie').width() - tooltip_width;
+                    var yPosition = $('#sidebar_pie').position().top;
+                    //Update the tooltip position and value
+                    d3.select("#pie_tooltip")
+                        .style("left", xPosition + "px")
+                        .style("top", yPosition + "px")
+                        .select("#value")
+                        .html(el.label + "<br />план: " + aVisify.helpers.formatNumber(el.value) + "<br />факт: " + aVisify.helpers.formatNumber(el.value_fact));
+
+                    //Show the tooltip
+                    d3.select("#pie_tooltip").classed("hidden", false);
                 }
 
                 var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
@@ -1383,7 +1397,7 @@
             });
 
             arc.on("mousemove", function() {
-                tt.moveTooltip(pie);
+//                tt.moveTooltip(pie);
             });
 
             arc.on("mouseout", function() {
@@ -1408,7 +1422,8 @@
 
                 if (pie.options.tooltips.enabled) {
                     index = segment.attr("data-index");
-                    tt.hideTooltip(pie, index);
+//                    tt.hideTooltip(pie, index);
+                    d3.select("#pie_tooltip").classed("hidden", true);
                 }
 
                 var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";

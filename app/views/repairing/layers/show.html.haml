@@ -1,0 +1,46 @@
+- model_class = Repairing::Layer
+
+:css
+  .map_container {
+    height: 800px;
+  }
+
+
+= content_for :header do
+  .head.pull-left
+    = @layer.title
+    .descr
+      = "#{@layer.town}, by #{@layer.owner}"
+
+= content_for :top do
+  .map_container
+    = render partial: 'repairing/maps/map'
+
+%p
+  = @layer.description
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    var aRepairMap
+
+    $.ajax({
+      method: 'get',
+      url: '#{geo_json_repairing_layer_path(@repairing_layer)}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap = aRepairMap = RepairMap({})
+      aRepairMap.addGeoJson(data)
+    })
+    .fail(function () {
+    });
+
+  });
+
+
+= link_to t('.back', :default => t("helpers.links.back")), repairing_layers_path, :class => 'btn btn-default'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_repairing_layer_path(@layer), :class => 'btn btn-default'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), repairing_layer_path(@layer), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

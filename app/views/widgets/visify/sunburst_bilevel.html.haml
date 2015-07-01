@@ -1,7 +1,7 @@
 -#http://bl.ocks.org/mbostock/5944371
 
 .sunburst-bievel
-  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+  = render partial: 'tree_chart_modify', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
@@ -10,7 +10,8 @@
     var hue, luminance
     var svg, partition, arc, path, center
     var current_year, current_month;
-    var centerNode = null;
+    var centerNode = null, center_text;
+    var count = 0;
 
     function createVisualization(root) {
       totalSize = root.amount;
@@ -43,18 +44,43 @@
           .attr("r", radius / 3)
           .on("click", zoomOut);
 
-      center.append("title")
-          .text("повернутись");
-
       path = svg.selectAll("path")
           .data(partition.nodes(root).slice(1))
         .enter().append("path")
           .attr("d", arc)
+          .attr("id", function(d, i) { return 'path' + i + d.depth; })
           .style("fill", function(d) { return d.fill; })
           .each(function(d) { this._current = updateArc(d); })
           .on("click", zoomIn)
-          .on("mouseover", function(d){ add_tooltip(d3.event, d) })
-          .on("mouseout", remove_tooltip);
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout);
+
+      center_text = [(root.amount/window.aHelper.k(root.amount)).toFixed(2) + window.aHelper.short_unit(root.amount), root.label];
+      var text = svg.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', '#0b387c')
+         .style('font-weight', 'bold')
+         .style('font-size', '1.2em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
+    }
+
+    function mouseover(d) {
+      //add_tooltip(d3.event, d);
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+    }
+
+    function mouseout(d) {
+      remove_tooltip(d);
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
     }
 
     function zoomIn(p) {
@@ -114,6 +140,7 @@
       }
 
       function move_to_node() {
+        count++;
         path.exit().transition()
             .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
             .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
@@ -122,10 +149,11 @@
         path.enter().append("path")
             .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
             .style("fill", function(d) { return d.fill; })
+            .attr("id", function(d, i) { return 'path' + i + d.depth + count; })
             .on("click", zoomIn)
             .each(function(d) { this._current = enterArc(d); })
-            .on("mouseover", function(d){ add_tooltip(d3.event, d) })
-            .on("mouseout", remove_tooltip);
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout);
 
         path.transition()
             .style("fill-opacity", 1)

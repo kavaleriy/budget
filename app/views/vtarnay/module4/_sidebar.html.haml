@@ -17,6 +17,9 @@
     .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
       = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
     .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
+      #pie_tooltip.hidden
+        %p
+          %span#value
       = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
 
 :javascript

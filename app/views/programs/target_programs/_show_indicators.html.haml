@@ -111,7 +111,7 @@
 
       // X scale and Y scales range
       x = d3.scale.linear().domain([year_start, year_end]).range([0, w]);
-      var y = d3.scale.linear().domain([d3.min(values), d3.max(values)]).range([h, 0]);
+      var y = d3.scale.linear().domain([d3.min(values), d3.max(values)]).range([h, 10]);
 
       // create area under graph
       //var area = d3.svg.area()
@@ -143,7 +143,7 @@
       // Add the x-axis.
       graph.append("svg:g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + h + ")")
+            .attr("transform", "translate(0," + (h + 10) + ")")
             .call(xAxis);
 
       // add area under graph

@@ -32,14 +32,21 @@ class Programs::TownsController < ApplicationController
       @report[kfkv]['fact'] = 0 if @report[kfkv]['fact'].nil?
       @report[kfkv]['fact'] += amounts['amount_fact']
       @report[kfkv]['history'] = {} if @report[kfkv]['history'].nil?
-      program.programs_expences.each{|expence|
-        curr_year = expence['year']
+      for i in program.term_start...program.term_end
+        curr_year = i
         @report[kfkv]['history'][curr_year] = {} if @report[kfkv]['history'][curr_year].nil?
+        @report[kfkv]['history'][curr_year]['count'] = 0 if @report[kfkv]['history'][curr_year]['count'].nil?
+        @report[kfkv]['history'][curr_year]['count'] += 1
         @report[kfkv]['history'][curr_year]['plan'] = 0 if @report[kfkv]['history'][curr_year]['plan'].nil?
-        @report[kfkv]['history'][curr_year]['plan'] += expence['amount_plan']
         @report[kfkv]['history'][curr_year]['fact'] = 0 if @report[kfkv]['history'][curr_year]['fact'].nil?
-        @report[kfkv]['history'][curr_year]['fact'] += expence['amount_fact']
-      }
+        expence = program.programs_expences.where(:year => i).first
+        if expence
+          @report[kfkv]['history'][curr_year]['plan'] += expence['amount_plan']
+          @report[kfkv]['history'][curr_year]['fact'] += expence['amount_fact']
+        else
+          @report[kfkv]['history'][curr_year]['plan'] += 1
+        end
+      end
     }
   end
 

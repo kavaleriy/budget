@@ -12,6 +12,9 @@
 = javascript_include_tag "leaflet/zoomfs.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
+
+= stylesheet_link_tag "tooltip_styles/tooltip-box.css", :media => "all"
+
 :css
   #map {
     width: 100%;
@@ -21,8 +24,7 @@
   .info {
     width: 100%;
     height: auto;
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
+    padding: 10px;
     background: white;
     opacity: .9;
     background: rgba(255,255,255,0.8);
@@ -35,6 +37,8 @@
   }
 
 
+
+
 #map
 
 
@@ -42,8 +46,8 @@
 
   var RepairMap
 
-    $(document).ready(function() {
-      RepairMap = function(options) {
+  $(document).ready(function() {
+    RepairMap = function(options) {
 
       var map, markers;
       var popup;
@@ -53,8 +57,9 @@
       var self = this;
 
 
+
       function initMap() {
-        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} ).setView([49.2336, 28.45514], 16)
+        map = L.map('map', { zoomControl:false, scrollWheelZoom : false} )
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -68,11 +73,32 @@
 
         initZoomFS()
 
+        getBrowserLocation()
+
 
         markers = new L.MarkerClusterGroup();
 
         map.addLayer(markers);
 
+        function getBrowserLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
+          } else {
+            $(".map").text("Your browser is out of fashion, there\'s no geolocation!");
+          }
+
+          function positionSuccess(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var acr = position.coords.accuracy;
+
+            map.setView([lat, lng], 14)
+          }
+          function positionError(err) {
+            map.setView([50.38751, 30.68481], 7)
+          }
+
+        }
 
         function initZoomFS() {
           var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
@@ -164,6 +190,7 @@
 
         function onEachFeature(feature, layer) {
           popupContent =
+
             '<div class="popup">' +
               '<h3>' + feature.properties.title + '</h3>' +
               '<p>' + feature.properties.address + '</p>' +
@@ -223,14 +250,16 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
           if (props)
-            this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
-              + '<b>' + props.address + '</b><br/>'
-              + '<b>Amount: ' + props.amount + '</b><br/>'
-              + 'Date: ' + props.repair_date + '<br/>'
-              + props.description + '<br/>'
+            this._div.innerHTML = '<h3 class="title">' + (props.obj_owner || props.title) + '</h3>'
+              + '<b>Адреса: ' + props.address + '</b><br/>'
+              + 'Об\'єкт: ' + props.subject + '<br/>'
+              + 'Роботи: ' + props.work + '<br/>'
+              + '<b>Вартість: ' + props.amount + '</b><br/>'
+              + 'Дата ремонту: ' + props.repair_date + '<br/>'
+              + 'Гарантія: ' + props.repair_date
           else
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
-        };
+          };
 
         info.addTo(map);
       }

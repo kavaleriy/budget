@@ -1,0 +1,96 @@
+= stylesheet_link_tag "tab_styled/tabs.css", :media => "all"
+= stylesheet_link_tag "tab_styled/tabstyles.css", :media => "all"
+= javascript_include_tag "tab_styled/cbpFWTabs.js"
+= javascript_include_tag "tab_styled/modernizr.custom.js"
+
+
+%section
+  .tabs.tabs-style-bar
+    %nav
+      %ul
+        %li
+          %a.fa.fa-user.fa-2x{href: "#section-bar-1"}
+            %span
+              Home
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-2"}
+              %span
+                Archive
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-3"}
+              %span
+                KJLH dsasdas
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-4"}
+              %span
+                Jskjh sjkh
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-5"}
+              %span
+                KOIs ;lsk; k
+    .content-wrap
+      %section#section-bar-1
+        %p
+          1
+      %section#section-bar-2
+        %p
+          2
+      %section#section-bar-3
+        %p
+          3
+      %section#section-bar-4
+        %p
+          4
+      %section#section-bar-5
+        %p
+          5
+
+  .tabs.tabs-style-underline
+    %nav
+      %ul
+        %li
+          %a.fa.fa-user.fa-2x{href: "#section-bar-11"}
+            %span
+              Home
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-12"}
+              %span
+                Archive
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-13"}
+              %span
+                KJLH dsasdas
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-14"}
+              %span
+                Jskjh sjkh
+          %li
+            %a.fa.fa-secret.fa-2x{href: "#section-bar-15"}
+              %span
+                KOIs ;lsk; k
+    .content-wrap
+      %section#section-bar-11
+        %p
+          1
+      %section#section-bar-12
+        %p
+          2
+      %section#section-bar-13
+        %p
+          3
+      %section#section-bar-14
+        %p
+          4
+      %section#section-bar-15
+        %p
+          5
+
+
+:javascript
+  (function() {
+
+      [].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+          new CBPFWTabs( el );
+      });
+
+  })();
