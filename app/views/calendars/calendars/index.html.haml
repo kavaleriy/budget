@@ -17,12 +17,11 @@
           = link_to t('form.export', :default => t("helpers.links.export")), calendars_calendar_path(calendar, :format => :xlss), :class => 'btn btn-success btn-xs'
           = link_to t('form.destroy', :default => t("helpers.links.destroy")), calendars_calendar_path(calendar), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-
-= link_to t('form.new', :default => t("helpers.links.new")), new_calendars_calendar_path, :class => 'btn btn-primary'
-= form_for [:calendars, Calendar.new], :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
-  = f.file_field :import_file,:class => 'form-control'
-  = f.submit nil, :class => 'btn btn-primary'
-
--#= form_tag({action: :create}, multipart: true) do
--#  = file_field_tag 'import_file'
--#  = submit_tag("Search")
+.btn-group
+  = link_to t('form.new', :default => t("helpers.links.new")), new_calendars_calendar_path, :class => 'btn btn-primary'
+.btn-group
+  = form_for [:calendars, Calendar.new], :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+    .btn-group
+      = f.file_field :import_file,:class => 'btn btn-default'
+    .btn-group
+      = f.submit t("helpers.links.calendar_import"), :class => 'btn btn-primary'

@@ -11,6 +11,28 @@ class Calendar
   field :import_file, type: String
   embeds_many :events
   has_and_belongs_to_many :subscribers
+  def import(path)
+    workbook = RubyXL::Parser.parse(path)
+    worksheet = workbook[0]
+    table=worksheet.get_table
+    table[:table][0].each do |name, value|
+      if(name != '_id')
+        self[name] = value
+      end
+    end
+    worksheet = workbook['Events']
+    if(!worksheet.nil?)
+      table=worksheet.get_table
+      table[:table].each do |event_import|
+        event = self.events.new
+        event_import.each do |name, value|
+          event[name] = value
+        end
+      end
+    end
+  end
+
+
   def to_xls()
     require 'rubyXL'
     # binding.pry

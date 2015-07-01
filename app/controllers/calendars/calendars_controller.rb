@@ -38,10 +38,13 @@ class Calendars::CalendarsController < ApplicationController
   # POST /calendars
   # POST /calendars.json
   def create
-    binding.pry
-    @calendar = Calendar.new(calendar_params)
-    @calendar.author = current_user.email unless current_user.nil?
 
+    @calendar = Calendar.new(calendar_params)
+    if (!@calendar.import_file.nil?)
+      @calendar.import(params[:calendar][:import_file].tempfile)
+    else
+      @calendar.author = current_user.email unless current_user.nil?
+    end
     respond_to do |format|
       if @calendar.save
         format.html { redirect_to [:calendars, @calendar], notice: t('calendar.create') }
@@ -85,7 +88,6 @@ class Calendars::CalendarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_params
-      binding.pry
-      params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event)
+      params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event, :import_file)
     end
 end
