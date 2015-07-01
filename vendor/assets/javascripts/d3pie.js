@@ -1361,19 +1361,6 @@
                     tspan.attr({x: 0, y: 25*(i - length/2) + 25});
                 }
              });
-//            var a = 0;
-//            for(var i = 0; i < text.length; i++) {
-//                var txt = s.text(0,a + 'em',segments.truncate(text[i])); // to move text to the front
-//                txt.attr({
-//                    'class': 'pie_center_text',
-//                    'text-anchor': 'middle',
-//                    'fill': options.fill,
-//                    'fill-opacity': 0,
-//                    'font-weight': options['font-weight'] || 'normal',
-//                    'font-size': options['font-size'] || '0.8em'
-//                });
-//                a += 1.5;
-//            }
             s.selectAll('text').animate({'fill-opacity': 1, 'stroke-width': 1}, 5000, mina.elastic);
         },
 
@@ -1391,13 +1378,6 @@
                 }
             }
             return txt;
-        },
-
-        truncate: function(text) {
-            if(text.length > 20) {
-                text = text.substr(0, 17) + '...';
-            }
-            return text;
         },
 
         addSegmentEventHandlers: function(pie) {
