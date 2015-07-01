@@ -1357,43 +1357,51 @@
             });
 
             arc.on("mouseover", function() {
-                var currentEl = d3.select(this);
-                var segment, index;
-
-                if (currentEl.attr("class") === pie.cssPrefix + "arc") {
-                    segment = currentEl.select("path");
-                } else {
-                    index = currentEl.attr("data-index");
-                    segment = d3.select("#" + pie.cssPrefix + "segment" + index);
-                }
-
-                if (pie.options.effects.highlightSegmentOnMouseover) {
-                    index = segment.attr("data-index");
-                    var segColor = pie.options.colors[index];
-                    segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
-                }
-
-                if (pie.options.tooltips.enabled) {
-                    index = segment.attr("data-index");
-//                    tt.showTooltip(pie, index);
-                    var el = pie.options.data.content[index];
-                    var tooltip_width;
-                    $('#pie_tooltip').width() < 250 ? tooltip_width = 250 : tooltip_width = $('#pie_tooltip').width();
-                    var xPosition = $('#sidebar_pie').width() - tooltip_width;
-                    var yPosition = $('#sidebar_pie').position().top;
-                    //Update the tooltip position and value
-                    d3.select("#pie_tooltip")
-                        .style("left", xPosition + "px")
-                        .style("top", yPosition + "px")
-                        .select("#value")
-                        .html(el.label + "<br />план: " + aVisify.helpers.formatNumber(el.value) + "<br />факт: " + aVisify.helpers.formatNumber(el.value_fact));
-
-                    //Show the tooltip
-                    d3.select("#pie_tooltip").classed("hidden", false);
-                }
-
-                var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
-                segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
+                var id = $(this).find('path').attr('id').split('_')[0];
+                var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
+                s.append(this); // to move current path to the front
+                var path = $(this).find('path');
+                var pathEl = Snap.select('#' + path.attr('id'));
+                path.css("stroke", path.css('fill'));
+                path.data('fill-opacity', path.css('fill-opacity'));
+                pathEl.stop().animate( { 'stroke-width': 15, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
+//                var currentEl = d3.select(this);
+//                var segment, index;
+//
+//                if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+//                    segment = currentEl.select("path");
+//                } else {
+//                    index = currentEl.attr("data-index");
+//                    segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+//                }
+//
+//                if (pie.options.effects.highlightSegmentOnMouseover) {
+//                    index = segment.attr("data-index");
+//                    var segColor = pie.options.colors[index];
+//                    segment.style("fill", helpers.getColorShade(segColor, pie.options.effects.highlightLuminosity));
+//                }
+//
+//                if (pie.options.tooltips.enabled) {
+//                    index = segment.attr("data-index");
+////                    tt.showTooltip(pie, index);
+//                    var el = pie.options.data.content[index];
+//                    var tooltip_width;
+//                    $('#pie_tooltip').width() < 250 ? tooltip_width = 250 : tooltip_width = $('#pie_tooltip').width();
+//                    var xPosition = $('#sidebar_pie').width() - tooltip_width;
+//                    var yPosition = $('#sidebar_pie').position().top;
+//                    //Update the tooltip position and value
+//                    d3.select("#pie_tooltip")
+//                        .style("left", xPosition + "px")
+//                        .style("top", yPosition + "px")
+//                        .select("#value")
+//                        .html(el.label + "<br />план: " + aVisify.helpers.formatNumber(el.value) + "<br />факт: " + aVisify.helpers.formatNumber(el.value_fact));
+//
+//                    //Show the tooltip
+//                    d3.select("#pie_tooltip").classed("hidden", false);
+//                }
+//
+//                var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
+//                segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoverSegment, segment, isExpanded);
             });
 
             arc.on("mousemove", function() {
@@ -1401,33 +1409,37 @@
             });
 
             arc.on("mouseout", function() {
-                var currentEl = d3.select(this);
-                var segment, index;
-
-                if (currentEl.attr("class") === pie.cssPrefix + "arc") {
-                    segment = currentEl.select("path");
-                } else {
-                    index = currentEl.attr("data-index");
-                    segment = d3.select("#" + pie.cssPrefix + "segment" + index);
-                }
-
-                if (pie.options.effects.highlightSegmentOnMouseover) {
-                    index = segment.attr("data-index");
-                    var color = pie.options.colors[index];
-                    if (pie.options.misc.gradient.enabled) {
-                        color = "url(#" + pie.cssPrefix + "grad" + index + ")";
-                    }
-                    segment.style("fill", color);
-                }
-
-                if (pie.options.tooltips.enabled) {
-                    index = segment.attr("data-index");
-//                    tt.hideTooltip(pie, index);
-                    d3.select("#pie_tooltip").classed("hidden", true);
-                }
-
-                var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
-                segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
+                var path = $(this).find('path');
+                var pathEl = Snap.select('#' + path.attr('id'));
+                pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': path.data('fill-opacity'), 'stroke-opacity': '1' }, 5000, mina.elastic);
+                path.css("stroke", "#ffffff");
+//                var currentEl = d3.select(this);
+//                var segment, index;
+//
+//                if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+//                    segment = currentEl.select("path");
+//                } else {
+//                    index = currentEl.attr("data-index");
+//                    segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+//                }
+//
+//                if (pie.options.effects.highlightSegmentOnMouseover) {
+//                    index = segment.attr("data-index");
+//                    var color = pie.options.colors[index];
+//                    if (pie.options.misc.gradient.enabled) {
+//                        color = "url(#" + pie.cssPrefix + "grad" + index + ")";
+//                    }
+//                    segment.style("fill", color);
+//                }
+//
+//                if (pie.options.tooltips.enabled) {
+//                    index = segment.attr("data-index");
+////                    tt.hideTooltip(pie, index);
+//                    d3.select("#pie_tooltip").classed("hidden", true);
+//                }
+//
+//                var isExpanded = segment.attr("class") === pie.cssPrefix + "expanded";
+//                segments.onSegmentEvent(pie, pie.options.callbacks.onMouseoutSegment, segment, isExpanded);
             });
         },
 
