@@ -1,5 +1,5 @@
 class PublicController < ApplicationController
-  # layout false
+  layout 'application_public'
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
