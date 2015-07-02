@@ -32,7 +32,7 @@
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap = aRepairMap = RepairMap({})
+      aRepairMap = aRepairMap = RepairMap({ clusterMarkers: true })
       aRepairMap.addGeoJson(data)
     })
     .fail(function () {

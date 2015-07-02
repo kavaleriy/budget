@@ -74,7 +74,11 @@
         getBrowserLocation()
 
 
-        markers = new L.layerGroup();
+        if (options.clusterMarkers)
+          markers = new L.MarkerClusterGroup();
+        else {
+          markers = new L.layerGroup();
+        }
 
         map.addLayer(markers);
 
