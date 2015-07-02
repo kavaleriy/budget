@@ -74,7 +74,7 @@
         getBrowserLocation()
 
 
-        markers = new L.MarkerClusterGroup();
+        markers = new L.layerGroup();
 
         map.addLayer(markers);
 
@@ -185,7 +185,6 @@
 
         function coordsToLatLng(coords) {
           map.panTo(L.latLng(coords))
-
           return L.latLng(coords)
         }
 
@@ -285,7 +284,6 @@
         //
         //});
 
-        console.log(waypoints)
         if (self.selectedRoute) {
           self.selectedRoute.setWaypoints(waypoints)
           self.selectedRoute.route()
@@ -300,11 +298,10 @@
               routeFoundCallback(router.routes[0].coordinates)
             }
           })
+
           self.selectedRoute.addTo(map);
         }
-
       }
-
 
       initMap()
       initPopup()
