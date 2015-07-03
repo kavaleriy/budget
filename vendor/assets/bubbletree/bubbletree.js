@@ -1444,23 +1444,33 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		
 
 		//me.label.attr({ x: me.pos.x, y: me.pos.y, 'font-size': Math.max(4, me.bubbleRad * me.bc.bubbleScale * 0.25) });
+        var element;
         var add_tooltip = function() {
-            var xPosition = $('#chart').width() - $('#charts_tooltip').width();
-            var yPosition = $('#chart').position().top;
-            //Update the tooltip position and value
-            d3.select("#charts_tooltip")
-                .style("left", xPosition + "px")
-                .style("top", yPosition + "px")
-                .select("#value")
-                .html(me.node.label + "<br />план: " + utils.formatNumber(me.node.amount) + "<br />факт: " + utils.formatNumber(me.node.amount_fact || 0));
+            var foreignObject = $(".tooltip_" + me.node.id);
+            element = foreignObject.find(".tooltip-inspiration");
+            var cx = $(this).attr("cx");
+            var cy = $(this).attr("cy");
+            $(foreignObject).attr("x", cx);
+            $(foreignObject).attr("y", cy);
+            $(element).addClass('my-hover');
 
-            //Show the tooltip
-            d3.select("#charts_tooltip").classed("hidden", false);
+//            var xPosition = $('#chart').width() - $('#charts_tooltip').width();
+//            var yPosition = $('#chart').position().top;
+//            //Update the tooltip position and value
+//            d3.select("#charts_tooltip")
+//                .style("left", xPosition + "px")
+//                .style("top", yPosition + "px")
+//                .select("#value")
+//                .html(me.node.label + "<br />план: " + utils.formatNumber(me.node.amount) + "<br />факт: " + utils.formatNumber(me.node.amount_fact || 0));
+//
+//            //Show the tooltip
+//            d3.select("#charts_tooltip").classed("hidden", false);
         }
 
         var remove_tooltip = function() {
             //Hide the tooltip
-            d3.select("#charts_tooltip").classed("hidden", true);
+//            d3.select("#charts_tooltip").classed("hidden", true);
+            $(element).removeClass('my-hover');
         }
 
 		me.label.show();
@@ -1535,6 +1545,28 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.label = $('<div class="label '+ me.node.id +'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
 		//console.log(me.node.id);
         me.container.append(me.label);
+
+        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
+            transform: 'translate(' + 0 + "," + 0 + ')'
+        });
+        var foreignObject = $(document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject'))
+            .attr({
+               class: "tooltip_" + me.node.id,
+               width: 180,
+               height: 100,
+               x: cx,
+               y: cy
+            })
+            .append("xhtml:body")
+            .html("<span class='tooltip-inspiration tooltip-turnleft'>\
+                    <span class='tooltip-item'></span>\
+                    <span class='tooltip-content'><span class='tooltip-title'>" + me.node.label + "</span><br/>\
+                    <span class='tooltip-subcontent'>план: " + utils.formatNumber(me.node.amount) + "<br/>\
+                    факт: " + utils.formatNumber(me.node.amount_fact || 0) + "<br/>\
+                    </span></span></span>");
+        $(me.circle.node).wrap(g);
+        $(me.circle.node).after(me.dashedBorder.node);
+        $(me.dashedBorder.node).after(foreignObject);
 
         // add text to svg image
 //        console.log(me.circle.cx);
