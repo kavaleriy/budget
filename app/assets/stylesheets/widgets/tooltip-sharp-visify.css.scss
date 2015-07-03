@@ -1,0 +1,47 @@
+@import url(http://fonts.googleapis.com/css?family=Kalam:700,400);
+#svg_tooltip {
+  .tooltip-inspiration {
+    position: relative;
+    z-index: 999;
+  }
+
+  .tooltip-title {
+    font-weight: bold;
+    color: #F59003;
+    font-size: 1.1em;
+  }
+
+  .tooltip-subcontent {
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  .tooltip-content {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c9d9ff+1,d8e4ff+35,d8e4ff+66,c9d9ff+100 */
+    background: #c9d9ff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #c9d9ff 1%, #d8e4ff 35%, #d8e4ff 66%, #c9d9ff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#c9d9ff), color-stop(35%,#d8e4ff), color-stop(66%,#d8e4ff), color-stop(100%,#c9d9ff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9d9ff', endColorstr='#c9d9ff',GradientType=0 ); /* IE6-9 */
+  }
+
+  .tooltip-inspiration.my-hover .tooltip-content {
+    opacity: 1;
+    pointer-events: auto;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+
+  .tooltip-turnright.my-hover .tooltip-content::after {
+    -webkit-transform: scale3d(-1,1,1) rotate3d(1,1,1,0) translate3d(0,-5px,0);
+    transform: scale3d(-1,1,1) rotate3d(1,1,1,0) translate3d(0,-5px,0);
+  }
+
+  .tooltip-turnleft.my-hover .tooltip-content::after {
+    -webkit-transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);
+    transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);
+  }
+}
