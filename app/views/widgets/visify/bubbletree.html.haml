@@ -9,7 +9,9 @@
 
 
 .bubbletree
-  #tooltip
+  %span#svg_tooltip.tooltip-inspiration.tooltip-turnleft
+    %span.tooltip-item
+    %span.tooltip-content
   = render partial: 'tree_chart_modify', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
@@ -46,7 +48,18 @@
             centerNode: centerNode,
             nodeClickCallback: nodeClick,
             tooltipCallback: function(e) {
-              $('.bubbletree #tooltip').css('left', e.bubblePos.x).css('top', e.bubblePos.y * 1 ).html(e.node.label)
+              var tooltip = $('.bubbletree #svg_tooltip');
+              if(e.type == "SHOW") {
+                tooltip.find(".tooltip-content").html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
+                                                       <span class='tooltip-subcontent'>\
+                                                       план: " + aVisify.helpers.formatNumber(e.node.amount) + "<br/>\
+                                                       факт: " + aVisify.helpers.formatNumber(e.node.amount_fact || 0) + "<br/>\
+                                                       </span>")
+                tooltip.addClass("my-hover").css('left', e.origEvent.pageX).css('top', e.origEvent.pageY );
+              } else {
+                tooltip.removeClass("my-hover");
+              }
+
             }
         });
       },

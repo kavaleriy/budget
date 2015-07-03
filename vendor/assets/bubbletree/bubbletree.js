@@ -1441,37 +1441,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.circle.attr({ cx: me.pos.x, cy: me.pos.y, r: r, 'fill-opacity': me.alpha });
 		if (me.node.children.length > 1) me.dashedBorder.attr({ cx: me.pos.x, cy: me.pos.y, r: r-4, 'stroke-opacity': me.alpha * 0.9 });
 		else me.dashedBorder.attr({ 'stroke-opacity': 0 });
-		
-
-		//me.label.attr({ x: me.pos.x, y: me.pos.y, 'font-size': Math.max(4, me.bubbleRad * me.bc.bubbleScale * 0.25) });
-        var element;
-        var add_tooltip = function() {
-            var foreignObject = $(".tooltip_" + me.node.id);
-            element = foreignObject.find(".tooltip-inspiration");
-            var cx = $(this).attr("cx");
-            var cy = $(this).attr("cy");
-            $(foreignObject).attr("x", cx);
-            $(foreignObject).attr("y", cy);
-            $(element).addClass('my-hover');
-
-//            var xPosition = $('#chart').width() - $('#charts_tooltip').width();
-//            var yPosition = $('#chart').position().top;
-//            //Update the tooltip position and value
-//            d3.select("#charts_tooltip")
-//                .style("left", xPosition + "px")
-//                .style("top", yPosition + "px")
-//                .select("#value")
-//                .html(me.node.label + "<br />план: " + utils.formatNumber(me.node.amount) + "<br />факт: " + utils.formatNumber(me.node.amount_fact || 0));
-//
-//            //Show the tooltip
-//            d3.select("#charts_tooltip").classed("hidden", false);
-        }
-
-        var remove_tooltip = function() {
-            //Hide the tooltip
-//            d3.select("#charts_tooltip").classed("hidden", true);
-            $(element).removeClass('my-hover');
-        }
 
 		me.label.show();
 		me.label.find('*').show();
@@ -1496,20 +1465,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.label2.css({ width: w+'px', opacity: me.alpha });
 		me.label2.css({ left: (x - w*0.5)+'px', top: (y + r)+'px' });
 
-//        var label_display = $(me.label).css('display');
-//        var label2_display = $(me.label2).css('display');
-        $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
-        $(me.label).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
-        $(me.label2).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
-//        if(label_display == "none" && label2_display == "none") {
-//            // add tooltips
-//            $(me.circle.node).on("mouseover", add_tooltip).on("mouseout", remove_tooltip);
-//        } else {
-//            $(me.circle.node).on("mouseover", remove_tooltip).on("mouseout", remove_tooltip);
-//        }
-
-		//if (me.icon) me.icon.translate(me.pos.x - ox, me.pos.y - oy);
-	
 	};
 	
 	/*
