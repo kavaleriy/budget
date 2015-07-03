@@ -43,6 +43,8 @@
     var _removedFeature
     var _selectedFeature
 
+    var aRepairMap
+
     options = {
       clickCallback: function(feature, target) {
         selectFeature(feature, target)
@@ -69,9 +71,6 @@
         $('#repair').html('')
       }
     }
-
-
-    var aRepairMap
 
     $.ajax({
       method: 'get',
@@ -124,7 +123,7 @@
           console.log('click fail')
         })
 
-        if (_selectedFeature.geometry.type == "LineString") {
+        if (_selectedFeature.properties.repair == "road") {
           if (target) {
             _removedFeature = target.feature
             aRepairMap.map.removeLayer(target)
@@ -137,7 +136,7 @@
       }
 
       function editRoute() {
-        var coordinates = _selectedFeature.geometry.coordinates
+        var coordinates = _selectedFeature.properties.route
 
         var waypoints = []
         waypoints.push({ latLng: L.latLng(coordinates[0]) });
