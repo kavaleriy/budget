@@ -7,7 +7,9 @@
 = javascript_include_tag "bubbletree.js"
 = javascript_include_tag "cofog.js"
 
+
 .bubbletree
+  #tooltip
   = render partial: 'tree_chart_modify', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
@@ -43,6 +45,9 @@
             bubbleType: ['icon', 'plain'],
             centerNode: centerNode,
             nodeClickCallback: nodeClick,
+            tooltipCallback: function(e) {
+              $('.bubbletree #tooltip').css('left', e.bubblePos.x).css('top', e.bubblePos.y * 1 ).html(e.node.label)
+            }
         });
       },
       selectNode: function (node) {
@@ -59,3 +64,4 @@
       }
     }
   }
+
