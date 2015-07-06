@@ -127,46 +127,43 @@
     }
 
     function selectEvent(event_id) {
-      //console.log(d3.selectAll);
-      d3.selectAll("#svg_calendar g path")
-                .attr('stroke-width', function(d){ return (d.data.id != '')  ? 1 : 0;});
-
-
-
        if (event_id == undefined)
         return
        $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
-
-       $('.events_path').css("fill-opacity", ".6");
-
-       $('#' + event_id)
-        .css("fill-opacity", "1")
-        .attr('stroke-width', 3)
     }
 
     function calendar_pie_events() {
-      console.log('calendar_pie_events');
-      d3.selectAll("#svg_calendar g path")
+      d3.selectAll("#calendar_pies svg g .actual_path")
          .on("click", function(d) {
-           selectEvent(d.data.id)
+           selectEvent(d.data.id);
 
-           $('#' + d.data.id)
-            .css("fill-opacity", "1")
-            .attr('stroke-width', 3)
+           var pathEl = Snap.select('.selected_path');
+           if(pathEl) {
+            pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': $('.selected_path').data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
+            $('.selected_path').css("stroke", "#ffffff");
+            pathEl.removeClass('selected_path');
+           }
+
+           $(this).attr('class', 'events_path actual_path selected_path')
 
            $('#marker_' + d.data.id).find(".flag").trigger("click");
          })
 
          .on("mouseover", function(d) {
-           var elem = $('#' + d.data.id)
-           if(elem.css("fill-opacity") < 1) {
-              elem.css("fill-opacity", "0.9")
+           var s = Snap.select('#calendar_pies svg g');
+           s.append(this); // to move current path to the front
+           var pathEl = Snap.select('#path_' + d.data.id);
+           if(!pathEl.hasClass("selected_path")) {
+            $(this).css("stroke", $(this).css('fill'));
+            $(this).data('fill-opacity', $(this).css('fill-opacity'));
+            pathEl.stop().animate( { 'stroke-width': 15, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
            }
          })
          .on("mouseout", function(d) {
-            var elem = $('#' + d.data.id)
-            if(elem.css("fill-opacity") < 1) {
-              elem.css("fill-opacity", "0.6")
+            var pathEl = Snap.select('#path_' + d.data.id);
+            if(!pathEl.hasClass("selected_path")) {
+              pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': $(this).data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
+              $(this).css("stroke", "#ffffff");
             }
          })
     }
