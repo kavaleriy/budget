@@ -47,16 +47,26 @@
             tooltipCallback: function(e) {
               var tooltip = $('.bubbletree #svg_tooltip');
               if(e.type == "SHOW") {
-                tooltip.find(".tooltip-content").html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
-                                                       <span class='tooltip-subcontent'>\
-                                                       план: " + aVisify.helpers.formatNumber(e.node.amount) + "<br/>\
-                                                       факт: " + aVisify.helpers.formatNumber(e.node.amount_fact || 0) + "<br/>\
-                                                       </span>")
-                tooltip.addClass("my-hover correct_coords").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
+                tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
+                var slider_chart = aSliderChart('#svg_tooltip .tooltip-content');
+                slider_chart.initialize(250, {clickCallback: function(year){
+                  console.log(year, e.node)
+                  $('#svg_tooltip .tooltip-subcontent').html("план: " + aVisify.helpers.formatNumber(e.node['history'][year][0]['amount']) + " / \
+                                                              факт: " + aVisify.helpers.formatNumber(e.node['history'][year][0]['amount_fact'] || 0))
+                }});
+                slider_chart.show(e.node, "#{@sel_year}");
+                tooltip.find(".tooltip-content svg").before("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
+                                                             <span class='tooltip-subcontent'>\
+                                                             план: " + aVisify.helpers.formatNumber(e.node.amount) + " / \
+                                                             факт: " + aVisify.helpers.formatNumber(e.node.amount_fact || 0) + "<br/>\
+                                                             </span>")
               } else {
-                tooltip.removeClass("my-hover");
+                var timeoutID = setTimeout(function() {
+                  if(!$('#svg_tooltip').is(':hover')) {
+                    tooltip.removeClass("my-hover");
+                  }
+                }, 1000)
               }
-
             }
         });
       },

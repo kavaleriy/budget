@@ -112,7 +112,7 @@
       pathEl.stop().animate( { 'fill-opacity': $(this).data('fill-opacity') }, 2000, mina.elastic);
       $(this).css("stroke", "none");
       var id = '#' + $(this).attr('id').split('_')[0] + '_text_' + d.id;
-      $(id).css('fill', 'gray');
+      $(id).css('fill', 'black');
     }
 
     return {
@@ -260,7 +260,7 @@
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)
-                .style("fill", "gray")
+                .style("fill", "black")
                 .attr("id",function(d,i){return "up_text_" + data[i].id})
 
         if(fact) {
@@ -271,7 +271,7 @@
           })
           .attr("x",-margin.left)
           .attr("dy","1.1em")
-          .style("fill", "gray")
+          .style("fill", "black")
           .attr("id",function(d,i){return "low_text_" + data[i].id})
         }
 

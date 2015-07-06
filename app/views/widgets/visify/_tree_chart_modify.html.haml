@@ -83,6 +83,11 @@
       }
     }
 
+    $('#svg_tooltip .tooltip-content').on("mouseout", function() {
+      if(!$(".my-hover").is(':hover')) {
+        $(".my-hover").removeClass("my-hover");
+      }
+    })
 
     $(window).resize(function() {
       // create chart according to the window size

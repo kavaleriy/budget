@@ -37,8 +37,10 @@
 
 :javascript
   var aSliderChart = function (aContainer) {
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    var margin,
         width, height;
+
+    aContainer == "#svg_tooltip .tooltip-content" ? margin = {top: 20, right: 10, bottom: 30, left: 10} : margin = {top: 20, right: 20, bottom: 30, left: 50};
 
     var x, y, xAxis, yAxis, size_scale;
 
@@ -88,7 +90,7 @@
 
     function mouseclick(d) {
       if(d.label != current_year) {
-        $("#slider_chart").find(".active_point").attr("class", " ").attr("stroke", "none");
+        $(aContainer).find(".active_point").attr("class", " ").attr("stroke", "none");
         $(this).attr("class", "active_point");
         current_year = d.label;
       } else if(current_month != 0) {
@@ -205,7 +207,7 @@
       initialize: function(pHeight, options) {
         self = this;
         self.clickCallback = options.clickCallback;
-        $("#slider_chart").html('');
+        $(aContainer).html('');
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
         height = 50;
@@ -230,7 +232,7 @@
           .ticks(number_of_years)
           .orient("left");
 
-        svg = d3.select("#slider_chart").append("svg")
+        svg = d3.select(aContainer).append("svg")
             .attr("width", width + 2*margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
