@@ -103,12 +103,16 @@
              .attr("y", $(this).attr('data-y'))
              .data('fill-opacity', $(this).css('fill-opacity'));
       pathEl.stop().animate( { 'stroke-width': 5, 'fill-opacity': '0.8' }, 2000, mina.elastic);
+      var id = '#' + $(this).attr('id').split('_')[0] + '_text_' + d.id;
+      $(id).css('fill', 'blue');
     }
 
     function mouseout(d) {
       var pathEl = Snap.select('#' + $(this).attr('id'));
       pathEl.stop().animate( { 'fill-opacity': $(this).data('fill-opacity') }, 2000, mina.elastic);
       $(this).css("stroke", "none");
+      var id = '#' + $(this).attr('id').split('_')[0] + '_text_' + d.id;
+      $(id).css('fill', 'gray');
     }
 
     return {
@@ -256,6 +260,8 @@
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)
+                .style("fill", "gray")
+                .attr("id",function(d,i){return "up_text_" + data[i].id})
 
         if(fact) {
           bar_text.selectAll("g")
@@ -265,6 +271,8 @@
           })
           .attr("x",-margin.left)
           .attr("dy","1.1em")
+          .style("fill", "gray")
+          .attr("id",function(d,i){return "low_text_" + data[i].id})
         }
 
       },
