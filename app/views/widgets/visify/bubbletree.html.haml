@@ -50,9 +50,15 @@
                 tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
                 var slider_chart = aSliderChart('#svg_tooltip .tooltip-content');
                 slider_chart.initialize(250, {clickCallback: function(year){
-                  console.log(year, e.node)
-                  $('#svg_tooltip .tooltip-subcontent').html("план: " + aVisify.helpers.formatNumber(e.node['history'][year][0]['amount']) + " / \
-                                                              факт: " + aVisify.helpers.formatNumber(e.node['history'][year][0]['amount_fact'] || 0))
+                  var amount = 0, amount_fact = 0;
+                  if(e.node['total_history']['plan'] && e.node['total_history']['plan'][year] && e.node['total_history']['plan'][year][0]) {
+                    amount = e.node['total_history']['plan'][year][0]['total'];
+                  }
+                  if(e.node['total_history']['fact'] && e.node['total_history']['fact'][year] && e.node['total_history']['fact'][year][0]) {
+                    amount_fact = e.node['total_history']['fact'][year][0]['total'];
+                  }
+                  $('#svg_tooltip .tooltip-subcontent').html("план: " + aVisify.helpers.formatNumber(amount) + " / \
+                                                              факт: " + aVisify.helpers.formatNumber(amount_fact))
                 }});
                 slider_chart.show(e.node, "#{@sel_year}");
                 tooltip.find(".tooltip-content svg").before("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
