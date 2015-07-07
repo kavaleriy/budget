@@ -26,7 +26,9 @@ class Calendar
       table[:table].each do |event_import|
         event = self.events.new
         event_import.each do |name, value|
-          event[name] = value
+          if(name != '_id')
+            event[name] = value
+          end
         end
       end
     end
