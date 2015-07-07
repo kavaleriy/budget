@@ -1501,28 +1501,6 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		//console.log(me.node.id);
         me.container.append(me.label);
 
-        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
-            transform: 'translate(' + 0 + "," + 0 + ')'
-        });
-        var foreignObject = $(document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject'))
-            .attr({
-               class: "tooltip_" + me.node.id,
-               width: 180,
-               height: 100,
-               x: cx,
-               y: cy
-            })
-            .append("xhtml:body")
-            .html("<span class='tooltip-inspiration tooltip-turnleft'>\
-                    <span class='tooltip-item'></span>\
-                    <span class='tooltip-content'><span class='tooltip-title'>" + me.node.label + "</span><br/>\
-                    <span class='tooltip-subcontent'>план: " + utils.formatNumber(me.node.amount) + "<br/>\
-                    факт: " + utils.formatNumber(me.node.amount_fact || 0) + "<br/>\
-                    </span></span></span>");
-        $(me.circle.node).wrap(g);
-        $(me.circle.node).after(me.dashedBorder.node);
-        $(me.dashedBorder.node).after(foreignObject);
-
         // add text to svg image
 //        console.log(me.circle.cx);
 //        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({

@@ -34,6 +34,8 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
 
+    aContainer == "#svg_tooltip #tooltip-month-slider" ? margin = {top: 20, right: 0, bottom: 30, left: 0} : margin = {top: 20, right: 20, bottom: 30, left: 50};
+
     var x0, x1, y, xAxis, yAxis;
 
     var svg;
@@ -47,7 +49,7 @@
     function delay(d, i) { return i * 5; }
 
     function hide() {
-      $("#slider_compare").height(0);
+      $(aContainer).height(0);
       svg.selectAll("*").remove();
     }
 
@@ -135,7 +137,9 @@
     function mouseover(d) {
       if(d.count || d.count == 0) {
         $(this).css("fill-opacity", "1.0");
-        add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount})
+        if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+          add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount})
+        }
       } else {
         $("#month" + d.label).css("fill-opacity", "1.0");
       }
@@ -148,7 +152,9 @@
         $("#month" + d.label).css("fill-opacity", "0.5");
       }
       if(d.count || d.count == 0) {
-        remove_tooltip(d)
+        if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+          remove_tooltip(d);
+        }
       }
     }
 
@@ -160,7 +166,7 @@
       //sort(data["months"]);
 
       svg.selectAll("*").remove();
-      $("#slider_compare").height(height + margin.top + margin.bottom);
+      $(aContainer).height(height + margin.top + margin.bottom);
 
       x0.domain([1,2,3,4]);
       x1.domain([1,2,3,4,5,6,7,8,9,10,11,12].map(function(d) { return get_month_by_num(d);}));
@@ -208,25 +214,30 @@
         .selectAll('.tick.major')
         .data(data["months"])
         .attr('cursor', 'pointer')
+        .attr('pointer-events', function(d) { return d.amount == 0 ? 'none' : 'auto'; })
         .on('click', mouseclick)
+        .on('mouseover', mouseover)
+        .on('mouseout', mouseout)
 
-      svg.selectAll(".bartext")
-        .data(data["months"])
-      .enter().append("text")
-        .attr("class", "bartext")
-        .attr("text-anchor", "middle")
-        .attr("x", function(d) { return x1(d.label) + x1.rangeBand() / 2; })
-        .attr("y", function(d) { return height; })
+      if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+        svg.selectAll(".bartext")
+              .data(data["months"])
+            .enter().append("text")
+              .attr("class", "bartext")
+              .attr("text-anchor", "middle")
+              .attr("x", function(d) { return x1(d.label) + x1.rangeBand() / 2; })
+              .attr("y", function(d) { return height; })
 
-      //svg.transition().duration(250).selectAll(".bar")
-        //.attr("height", function(d) { return height - y(d.amount); })
-        //.attr("y", function(d) { return y(d.amount); })
+            //svg.transition().duration(250).selectAll(".bar")
+              //.attr("height", function(d) { return height - y(d.amount); })
+              //.attr("y", function(d) { return y(d.amount); })
 
-      svg.transition().duration(250).selectAll(".bartext")
-        .attr("y", function(d) { return y(d.amount) - 5; })
-        .text(function(d){
-          return d.amount == 0 ? "" : aVisify.helpers.formatNumber(d.amount);
-        })
+            svg.transition().duration(250).selectAll(".bartext")
+              .attr("y", function(d) { return y(d.amount) - 5; })
+              .text(function(d){
+                return d.amount == 0 ? "" : aVisify.helpers.formatNumber(d.amount);
+              })
+      }
 
     }
 
@@ -234,7 +245,7 @@
       initialize: function(pHeight, options) {
         self = this;
         self.clickCallback = options.clickCallback;
-        $("#slider_compare").html('');
+        $(aContainer).html('');
         width = $(aContainer).width() - margin.left - margin.right,
         height = pHeight - margin.top - margin.bottom;
 
@@ -251,7 +262,7 @@
             .scale(x1)
             .orient("bottom");
 
-        svg = d3.select("#slider_compare").append("svg")
+        svg = d3.select(aContainer).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")

@@ -30,8 +30,11 @@
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
         %span#svg_tooltip.tooltip-inspiration.tooltip-turnleft
-          %span.tooltip-item
-          %span.tooltip-content
+          .tooltip-item
+          .tooltip-content
+            #tooltip-header
+            #tooltip-year-slider
+            #tooltip-month-slider
         #chart
         %canvas{:style => "display: none;"}
         .pull-right
@@ -132,7 +135,7 @@
       slider_chart.initialize(250, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
       $("#chart").html('');
-      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick });
+      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
 
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
         _data = data
@@ -327,6 +330,100 @@
           chart.show(current_data);
 
         })
+      }
+
+      var tooltip_year = "#{@sel_year}", tooltip_month = 0, tooltip_quarter = 0;
+      function tooltipCallback(e) {
+        var tooltip = $('.bubbletree #svg_tooltip');
+        if(e.type == "SHOW") {
+          tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
+
+          $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
+                                     <span class='tooltip-subcontent'>\
+                                     план: " + aVisify.helpers.formatNumber(e.node.amount) + " / \
+                                     факт: " + aVisify.helpers.formatNumber(e.node.amount_fact || 0) + "<br/>\
+                                     </span>\
+                                     <span class='tooltip-date'>\
+                                     станом на: " + tooltip_year + " рік \
+                                     </span>")
+
+          var slider_chart = aSliderChart('#svg_tooltip #tooltip-year-slider');
+          slider_chart.initialize(250, {clickCallback: function(year){
+            tooltip_year = year;
+            change_tooltip_header(e.node);
+          }});
+          slider_chart.show(e.node, "#{@sel_year}");
+
+          var slider = aSliderCompare('#svg_tooltip #tooltip-month-slider');
+          slider.initialize(150, {clickCallback: function(label, type) {
+            if(type == "month") {
+              if(tooltip_month == label) {
+                tooltip_month = 0;
+              } else {
+                tooltip_month = label;
+              }
+              if(tooltip_quarter != 0) {
+                tooltip_quarter = 0;
+              }
+            } else {
+              if(tooltip_quarter == label) {
+                tooltip_quarter = 0;
+              } else {
+                tooltip_quarter = label;
+              }
+              if(tooltip_month != 0) {
+                tooltip_month = 0;
+              }
+            }
+
+            change_tooltip_header(e.node);
+          }});
+          slider.show(e.node, "#{@sel_year}");
+
+        } else {
+          var timeoutID = setTimeout(function() {
+            if(!$('#svg_tooltip').is(':hover')) {
+              tooltip.removeClass("my-hover");
+              $('#svg_tooltip #tooltip-month-slider svg').remove();
+              tooltip_year = "#{@sel_year}";
+              tooltip_month = 0;
+            }
+          }, 1000)
+        }
+      }
+
+      function change_tooltip_header(node) {
+        var amount = 0, amount_fact = 0;
+        if(tooltip_quarter == 0) {
+          if(node['total_history']['plan'] && node['total_history']['plan'][tooltip_year] && node['total_history']['plan'][tooltip_year][tooltip_month]) {
+            amount = node['total_history']['plan'][tooltip_year][tooltip_month]['total'];
+          }
+          if(node['total_history']['fact'] && node['total_history']['fact'][tooltip_year] && node['total_history']['fact'][tooltip_year][tooltip_month]) {
+            amount_fact = node['total_history']['fact'][tooltip_year][tooltip_month]['total'];
+          }
+        } else {
+          for(var i = tooltip_quarter*3 - 2; i <= tooltip_quarter*3; i++) {
+            if(node['total_history']['plan'] && node['total_history']['plan'][tooltip_year] && node['total_history']['plan'][tooltip_year][i]) {
+              amount += node['total_history']['plan'][tooltip_year][i]['total'];
+            }
+            if(node['total_history']['fact'] && node['total_history']['fact'][tooltip_year] && node['total_history']['fact'][tooltip_year][i]) {
+              amount_fact += node['total_history']['fact'][tooltip_year][i]['total'];
+            }
+          }
+        }
+        $('#svg_tooltip .tooltip-subcontent').html("план: " + aVisify.helpers.formatNumber(amount) + " / \
+                                                    факт: " + aVisify.helpers.formatNumber(amount_fact) + "<br/>")
+        if(tooltip_month == 0 && tooltip_quarter == 0) {
+          $('#svg_tooltip .tooltip-date').html("станом на: " + tooltip_year + " рік");
+        } else if(tooltip_month != 0) {
+          $('#svg_tooltip .tooltip-date').html("станом на: місяць " + get_month_by_num(tooltip_month) + " " + tooltip_year + " року");
+        } else {
+          $('#svg_tooltip .tooltip-date').html("станом на: " + tooltip_quarter + " квартал " + tooltip_year + " року");
+        }
+      }
+
+      function get_month_by_num(month) {
+        return #{I18n.t :month_names_initial, :scope => :date}[month]
       }
 
       // get current data for all visifies

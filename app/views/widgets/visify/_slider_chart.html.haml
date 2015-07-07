@@ -40,7 +40,7 @@
     var margin,
         width, height;
 
-    aContainer == "#svg_tooltip .tooltip-content" ? margin = {top: 20, right: 10, bottom: 30, left: 10} : margin = {top: 20, right: 20, bottom: 30, left: 50};
+    aContainer == "#svg_tooltip #tooltip-year-slider" ? margin = {top: 20, right: 10, bottom: 30, left: 10} : margin = {top: 20, right: 20, bottom: 30, left: 50};
 
     var x, y, xAxis, yAxis, size_scale;
 
@@ -176,13 +176,15 @@
         //         return aVisify.helpers.formatNumber(d.amount);
         //   });
 
-      svg.selectAll("dot")
-          .data(data)
-        .enter().append("text")
-          .attr("x", function(d) { return x(d.label) + 10; })
-          .attr("y", function(d) { return y(d.amount/k) - 10; })
-          .style("font-size", "0.7em")
-          .text(function(d) { return aVisify.helpers.formatNumber(d.amount); });
+      if(aContainer != "#svg_tooltip #tooltip-year-slider") {
+        svg.selectAll("dot")
+                  .data(data)
+                .enter().append("text")
+                  .attr("x", function(d) { return x(d.label) + 10; })
+                  .attr("y", function(d) { return y(d.amount/k) - 10; })
+                  .style("font-size", "0.7em")
+                  .text(function(d) { return aVisify.helpers.formatNumber(d.amount); });
+      }
 
       svg.append("g")
         .attr("class", "x axis")
