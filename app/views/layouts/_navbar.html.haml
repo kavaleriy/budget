@@ -72,17 +72,18 @@
             %li.divider
             - if current_user
               %li= link_to t('.repairing_layers'), repairing_layers_path
-
+        -image_tag('lang_ua.png')
         .lang.pull-right
           - if I18n.locale == I18n.default_locale
-            %b Укр
+            =image_tag('lang_ua.png') + " Укр "
             |
+            = image_tag('lang_en.png')
             = link_to "En", :locale=>'en'
           - else
+            =image_tag('lang_ua.png')
             = link_to "Укр", :locale=>'uk'
             |
-            %b En
-
+            =image_tag('lang_en.png') + " En "
         %li.dropdown
           - if current_user
             %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
