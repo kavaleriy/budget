@@ -61,15 +61,7 @@
 
 
         .lang.pull-right
-          - if I18n.locale == I18n.default_locale
-            %b Укр
-            |
-            = link_to "En", :locale=>'en'
-          - else
-            = link_to "Укр", :locale=>'uk'
-            |
-            %b En
-
+          = render partial: 'layouts/lang'
         %li.dropdown
           - if current_user
             %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}

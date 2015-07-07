@@ -1,0 +1,10 @@
+- if I18n.locale == I18n.default_locale
+  =image_tag('lang_ua.png') + " Укр "
+  |
+  = image_tag('lang_en.png')
+  = link_to "En", :locale=>'en'
+- else
+  =image_tag('lang_ua.png')
+  = link_to "Укр", :locale=>'uk'
+  |
+  =image_tag('lang_en.png') + " En "
