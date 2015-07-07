@@ -339,6 +339,9 @@
           status = "станом на: " + tooltip_year + " рік";
 
       function tooltipCallback(e) {
+        if(e.node.label == "Інше")
+          return;
+          
         var tooltip = $('.bubbletree #svg_tooltip');
         if(e.type == "SHOW") {
           tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
