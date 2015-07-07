@@ -339,11 +339,15 @@
           status = "станом на: " + tooltip_year + " рік";
 
       function tooltipCallback(e) {
-        if(e.node.label == "Інше")
-          return;
-          
+        var circle_id = $(e.circle.node).attr("id");
+        var pathEl = Snap.select('#' + circle_id);
+        $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
+
         var tooltip = $('.bubbletree #svg_tooltip');
         if(e.type == "SHOW") {
+          pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
+          if(e.node.label == "Інше")
+                    return;
           tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
 
           $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
@@ -392,6 +396,9 @@
           $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
 
         } else {
+          pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
+          if(e.node.label == "Інше")
+                    return;
           var timeoutID = setTimeout(function() {
             if(!$('#svg_tooltip').is(':hover')) {
               tooltip.removeClass("my-hover");
@@ -453,6 +460,8 @@
           $(this).css("opacity", "0.5")
         })
         .on("click", function() {
+          $('.bubbletree #svg_tooltip').removeClass("my-hover");
+          $(this).tooltip("hide")
           year = tooltip_year;
           month = tooltip_month;
           quarter = tooltip_quarter;
