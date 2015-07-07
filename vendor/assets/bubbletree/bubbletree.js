@@ -1411,6 +1411,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	
 	me.onhover = function(e) {
 		var me = this, c = me.bc.$container[0];
+        e.circle = me.circle;
 		e.node = me.node;
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
@@ -1421,6 +1422,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	
 	me.onunhover = function(e) {
 		var me = this, c = me.bc.$container[0];
+        e.circle = me.circle;
 		e.node = me.node;
         e.type = 'HIDE';
 		e.target = me;
@@ -1520,7 +1522,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
         // -------------------------------------------------------------------------
 
 		if (me.node.children.length > 0) {
-			$(me.circle.node).css({ cursor: 'pointer'});
+			$(me.circle.node).css({ cursor: 'pointer'}).attr({ id: 'circle_' + me.node.id});
 			$(me.label).css({ cursor: 'pointer'});
 		}
 
