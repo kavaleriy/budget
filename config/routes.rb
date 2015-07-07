@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'editor/index'
 
   namespace :programs do
     resources :indicator_files

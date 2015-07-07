@@ -1,10 +1,10 @@
 class Repairing::GeojsonBuilder
 
   def self.build_repair(repair)
-    if repair[:address_to].blank?
-      build_repair_point(repair)
-    else
+    if repair[:coordinates][0].is_a?(Array)
       build_repair_path(repair)
+    else
+      build_repair_point(repair)
     end
   end
 
@@ -35,7 +35,8 @@ class Repairing::GeojsonBuilder
             coordinates: repair[:coordinates][0]
           },
           properties: {
-            repair: "street",
+            repair: "road",
+            route: reduceCoordinatesCount(repair[:coordinates])
           }.merge(extract_props(repair))
         },
         # {
@@ -53,16 +54,16 @@ class Repairing::GeojsonBuilder
         #       repair_date: "#{repair[:repair_date]}"
         #     }
         #   },
-          {
-              type: "Feature",
-              geometry: {
-                type: 'LineString',
-                coordinates: reduceCoordinatesCount(repair[:coordinates])
-              },
-              properties: {
-                id: "#{repair[:id]}",
-              }.merge(extract_props(repair))
-          }
+        #   {
+        #       type: "Feature",
+        #       geometry: {
+        #         type: 'LineString',
+        #         coordinates: reduceCoordinatesCount(repair[:coordinates])
+        #       },
+        #       properties: {
+        #         id: "#{repair[:id]}",
+        #       }.merge(extract_props(repair))
+        #   }
         ]
     }
   end

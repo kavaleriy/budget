@@ -138,7 +138,7 @@
         .on('create_node.jstree', function (e, data) {
           $.ajax({
             method: 'post',
-            url: '',
+            url: '/documentation/categories',
             dataType: 'json',
             data: {
               documentation_category: {
@@ -157,7 +157,8 @@
         .on('rename_node.jstree', function (e, data) {
             $.ajax({
               method: 'PUT',
-              url: 'categories/' + data.node.id + '.json',
+              url: 'categories/' + data.node.id,
+              dataType: 'json',
               data: {
                 documentation_category: {
                   title: data.text
@@ -171,7 +172,8 @@
         .on('move_node.jstree', function (e, data) {
             $.ajax({
               method: 'PUT',
-              url: 'categories/' + data.node.id + '.json',
+              url: 'categories/' + data.node.id,
+              dataType: 'json',
               data: {
                 documentation_category: {
                   category_id: data.parent,
@@ -184,7 +186,7 @@
             });
         })
         .on('copy_node.jstree', function (e, data) {
-          $.post('.json', {
+          $.post('/documentation/categories', {
             documentation_category: {
               category_id: data.node.parent,
               title: data.node.text,
