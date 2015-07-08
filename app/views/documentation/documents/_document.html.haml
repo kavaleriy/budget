@@ -6,9 +6,10 @@
   %td
     %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'date', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'з...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'з...' }
       = document.yearFrom
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'date', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'по...' }
+    %span -
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'по...' }
       = document.yearTo
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть місто...' }
@@ -50,9 +51,9 @@
 
 
   $('.document[data-id="#{document.id}"] #yearFrom, .document[data-id="#{document.id}"] #yearTo').editable({
-      format: 'yyyy-mm-dd',
-      viewformat: 'dd/mm/yyyy',
-      datepicker: {
-        weekStart: 1
-      }
+      //format: 'yyyy-mm-dd',
+      //viewformat: 'dd/mm/yyyy',
+      //datepicker: {
+      //  weekStart: 1
+      //}
   })
