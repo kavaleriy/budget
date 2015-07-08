@@ -2,7 +2,7 @@ class Repairing::GeojsonBuilder
 
   def self.build_repair(repair)
     return if repair[:coordinates].blank?
-    
+
     if repair[:coordinates][0].is_a?(Array)
       build_repair_path(repair)
     else
