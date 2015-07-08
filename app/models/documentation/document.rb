@@ -1,3 +1,5 @@
+require 'file_size_validator'
+
 class Documentation::Document
   include Mongoid::Document
 
@@ -9,8 +11,8 @@ class Documentation::Document
   field :title, type: String
   field :description, type: String
 
-  field :yearFrom, type: Date
-  field :yearTo, type: Date
+  field :yearFrom, type: Integer
+  field :yearTo, type: Integer
 
   belongs_to :branch, class_name: 'Documentation::Branch', :dependent => :nullify
   belongs_to :town, :dependent => :nullify
@@ -20,6 +22,11 @@ class Documentation::Document
   skip_callback :update, :before, :store_previous_model_for_doc_file
 
   validates_presence_of :doc_file, message: 'Потрібно вибрати Файл'
+  validates :doc_file,
+            :presence => true,
+            :file_size => {
+                :maximum => 11.megabytes.to_i
+            }
 
   before_save :generate_title
 
