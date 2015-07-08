@@ -456,8 +456,9 @@
 
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
-          if(e.node.label == "Інше")
-                    return;
+          if(e.node.label == "Інше"){
+            return;
+          }
           var timeoutID = setTimeout(function() {
             if(!$('#svg_tooltip').is(':hover')) {
               tooltip.removeClass("my-hover");

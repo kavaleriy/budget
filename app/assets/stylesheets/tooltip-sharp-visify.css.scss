@@ -67,7 +67,7 @@
   content: '';
   position: absolute;
   width: 60px;
-  height: 120px;
+  height: 60px;    // height of tooltip tail
   top: 100%;
   background: url(tooltip3.svg) no-repeat center center;
   background-size: 100%;
@@ -92,8 +92,8 @@
 .tooltip-inspiration.my-hover .tooltip-content {
   opacity: 1;
   pointer-events: auto;
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,50px,0);      // 50px - to change height of tooltip to the node
+  transform: translate3d(0,50px,0);              // 50px - to change height of tooltip to the node
 }
 
 .tooltip-turnright.my-hover .tooltip-content::after {
