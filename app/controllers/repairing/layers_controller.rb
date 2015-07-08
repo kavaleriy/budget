@@ -22,7 +22,7 @@ class Repairing::LayersController < ApplicationController
         geoJson = []
         geoJson << Repairing::GeojsonBuilder.build_repair(repair)
         geoJson.compact!
-        
+
         format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
         # format.js { render :search_house }
       else
