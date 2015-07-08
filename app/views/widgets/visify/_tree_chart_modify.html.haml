@@ -86,12 +86,6 @@
       }
     }
 
-    $('#svg_tooltip .tooltip-content').on("mouseout", function() {
-      if(!$(".my-hover").is(':hover')) {
-        $(".my-hover").removeClass("my-hover");
-      }
-    })
-
     $(window).resize(function() {
       // create chart according to the window size
       iframe_resize();
@@ -220,6 +214,7 @@
       }
 
       function bubbleItemClick(node) {
+        $(".bubbletree #svg_tooltip").removeClass("my-hover");
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
@@ -332,6 +327,70 @@
         })
       }
 
+      // get current data for all visifies
+      function buildData(item) {
+        if (!item.amount)
+          return;
+
+        var node = {}
+
+        node['taxonomy'] = item.taxonomy
+
+        $.each(item.amount, function(k, v) {
+          var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
+
+          if (k == "" || k == data_type) {
+            if(quarter != 0 && v[year]) {
+              amount = 0;
+              var x = quarter*3 - 2;
+              for(var i = x; i < x + 3; i++) {
+                if(v[year][i]) amount += v[year][i]['total']
+              }
+              node['amount'] = amount
+            } else {
+              node['amount'] = amount['total']
+              if (amount['fonds']) {
+                node['amount_fond'] = amount['fonds']
+              }
+            }
+          } else {
+            node['amount_'+k] = amount['total']
+          }
+        })
+
+        if (node['amount'] == undefined || node['amount'] == 0)
+          return
+
+
+        node['history'] = item.amount[data_type]
+        node['total_history'] = item.amount
+
+        $.each(['key', 'label', 'color', 'icon'], function(k, v) {
+          node[v] = item[v]
+        })
+
+        if (item.children) {
+          node.children = []
+          $.each(item.children, function(k, v) {
+            child = buildData(v)
+            if (child) node.children.push(child)
+          });
+        }
+
+        if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
+          last_node = node;
+        }
+        return node;
+      }
+
+      // ------------------------------ WORKING WITH TOOLTIP-SHARP -------------------------------------------
+
+      $('#svg_tooltip .tooltip-content').on("mouseout", function() {
+        if(!$(".my-hover").is(':hover')) {
+          $(".my-hover").removeClass("my-hover");
+        }
+      })
+
       var tooltip_year = year,
           tooltip_month = month,
           tooltip_quarter = quarter,
@@ -345,9 +404,9 @@
         var tooltip = $('.bubbletree #svg_tooltip');
         if(e.type == "SHOW") {
           pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
-          if(e.node.label == "Інше")
-                    return;
-          tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
+          if(e.node.label == "Інше") {
+            return;
+          }
 
           $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
                                      <span class='tooltip-subcontent'></span>\
@@ -393,6 +452,7 @@
           slider.show(e.node, tooltip_year);
 
           $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
+          tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
 
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
@@ -488,61 +548,7 @@
             'placement': 'left'
         });
 
-      // get current data for all visifies
-      function buildData(item) {
-        if (!item.amount)
-          return;
-
-        var node = {}
-
-        node['taxonomy'] = item.taxonomy
-
-        $.each(item.amount, function(k, v) {
-          var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
-
-          if (k == "" || k == data_type) {
-            if(quarter != 0 && v[year]) {
-              amount = 0;
-              var x = quarter*3 - 2;
-              for(var i = x; i < x + 3; i++) {
-                if(v[year][i]) amount += v[year][i]['total']
-              }
-              node['amount'] = amount
-            } else {
-              node['amount'] = amount['total']
-              if (amount['fonds']) {
-                node['amount_fond'] = amount['fonds']
-              }
-            }
-          } else {
-            node['amount_'+k] = amount['total']
-          }
-        })
-
-        if (node['amount'] == undefined || node['amount'] == 0)
-          return
-
-
-        node['history'] = item.amount[data_type]
-        node['total_history'] = item.amount
-
-        $.each(['key', 'label', 'color', 'icon'], function(k, v) {
-          node[v] = item[v]
-        })
-
-        if (item.children) {
-          node.children = []
-          $.each(item.children, function(k, v) {
-            child = buildData(v)
-            if (child) node.children.push(child)
-          });
-        }
-
-        if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
-          last_node = node;
-        }
-        return node;
-      }
+      // ------------------------------ END WORKING WITH TOOLTIP-SHARP ----------------------------------------
     }
 
   });
