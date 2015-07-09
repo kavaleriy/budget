@@ -37,13 +37,14 @@
         div = '<table class="table table-striped table-hover">\
                  <thead>\
                  <tr>\
-                   <th class="col-sm-6">Напрямок видатків</th>\
+                   <th class="col-sm-5">Напрямок видатків</th>\
+                   <th class="col-sm-2">динаміка в роках</th>\
                    <th class="col-sm-2">план, грн.</th>'
 
         if(fact) {
           div += "<th class='col-sm-2'>факт, грн.</th>"
         }
-        div += '<th class="col-sm-2">%</th>\
+        div += '<th class="col-sm-1">%</th>\
                </tr>\
                </thead><tbody>'
 
@@ -57,6 +58,7 @@
           div += '<tr class="tr_nodes">'
             + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
             + value.label + '</td>'
+            + '<td class="table-graph"><div id="table-graph-' + value.id + '"></div></td>'
             + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
           if(fact) {
             div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + '</td>';
@@ -70,11 +72,131 @@
         $('#sidebar_table').html(div);
 
         d3.selectAll(".tr_nodes")
-            .style("cursor", "pointer")
-            .on("click", function(d, i) {
-                console.log(data[i])
-                 self.clickCallback(data[i]);
-               });
+                    .style("cursor", "pointer")
+                    .on("click", function(d, i) {
+                         self.clickCallback(data[i]);
+                       });
+
+        // ------------------------ BUILD GRAPHS IN TABLE -----------------------------
+
+        var year_min = 0, year_max = 0;
+        $.each(data, function( index, value ) {
+          if(value['total_history'] && value['total_history']['plan']){
+            year = d3.min(d3.keys(value['total_history']['plan']));
+            if(year < year_min || year_min == 0) {
+              year_min = year;
+            }
+            year = d3.max(d3.keys(value['total_history']['plan']));
+            if(year > year_max) {
+              year_max = year;
+            }
+          }
+        })
+
+        $.each(data, function( index, value ) {
+          if(value.label != "Інше"){
+            create_graph(value['total_history']['plan'], value['id']);
+          }
+        })
+
+        function create_graph(_data, id) {
+
+          var data = [];
+          var value;
+          for(var key in _data) {
+            _data[key][0] ? value = _data[key][0]['total'] : value = 0;
+            data.push({"year": parseInt(key), "value": value});
+          }
+
+          var margin = {top: 10, right: 10, bottom: 10, left: 10},
+              width = $('#chart').width()*0.16 - margin.left - margin.right,
+              height = 50 - margin.top - margin.bottom;
+
+          // to find nearest year to current mouse position
+          var bisectYear = d3.bisector(function(d){ return d.year;}).left;
+
+          var x = d3.scale.linear()
+                    .range([0,width]);
+
+          var y = d3.scale.linear()
+                    .range([height,0]);
+
+          var line = d3.svg.line()
+                       .x(function(d){return x(d.year);})
+                       .y(function(d){return y(d.value);})
+
+          var current_year = new Date().getFullYear();
+
+          x.domain([year_min, year_max]);
+          y.domain(d3.extent(data, function(d){ return d.value;}));
+
+          var graph = d3.select("#table-graph-" + id)
+                        .append("svg")
+                          .attr("width", width + margin.left + margin.right)
+                          .attr("height", height + margin.top + margin.bottom)
+                          .attr("version", 1.1)
+                          .attr("xmlns", "http://www.w3.org/2000/svg")
+                        .append("g")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          graph.append("path")
+               .datum(data)
+               .attr("class", "line")
+               .attr("d", line);
+
+          // create interactive focus
+          var focus = graph.append("g")
+                           .attr("class", "focus")
+                           .style("display", "none");
+
+          // add two circles to focus point
+          focus.append("circle")
+               .attr("r", 5.5);
+          focus.append("circle")
+               .attr("r", 2)
+               .style("fill", "steelBlue");
+          //focus.append("text")
+          //     .attr("class", "yearLabel")
+          //     .attr("x", 10)
+          //     .attr("dy", ".35em");
+          //focus.append("text")
+          //     .attr("class", "amountLabel")
+          //     .attr("x", 10)
+          //     .attr("dy", "1.35em");
+
+          // rectangle to detect mouse events and focus visibility
+          var rect = graph.append("rect")
+                          .attr("class", "overlay")
+                          .attr("width", width)
+                          .attr("height", height)
+                          .on("mouseover", function(){ focus.style("display", null); })
+                          .on("mouseout", function(){ focus.style("display", "none"); $(this).parent().find(".focus").tooltip('hide'); })
+                          .on("mousemove", mousemove);
+
+          function mousemove() {
+            var x0 = x.invert(d3.mouse(this)[0]),
+                i = bisectYear(data, x0, 1),
+                d0 = data[i - 1],
+                d1 = data[i],
+                d = x0 - d0.year > d1.year - x0 ? d1 : d0;
+            focus.attr("transform", "translate(" + x(d.year) + "," + y(d.value) + ")");
+            var el = $(this).parent().find(".focus");
+            el.tooltip({
+                'container': 'body',
+                'placement': 'top',
+                'trigger': 'manual'
+            });
+            el.attr('data-original-title', d.year)
+              .tooltip('fixTitle')
+              .tooltip('show');
+            //focus.select(".yearLabel").text("Year: " + d.year);
+            //focus.select(".amountLabel").text("amount: " + d.value);
+          }
+
+        }
+
+        // ---------------------- END BUILD GRAPHS IN TABLE ---------------------------
+
       },
     }
   }
