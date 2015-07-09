@@ -144,13 +144,9 @@ Rails.application.routes.draw do
   get 'static/budget_file_help' => 'static#budget_file_help'
 
 
-  get 'public/calendar/:calendar_id' => 'public#calendar'
-
-  post 'public/subscribe/:calendar_id' => 'public#subscribe'
   #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
   post 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#update_files_description'
   delete 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#delete_attachments'
-  delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
   get 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#download_attachments'
 
   post 'taxonomies/:taxonomy_id/edit' => 'taxonomies#upload_files'
@@ -172,6 +168,14 @@ Rails.application.routes.draw do
 
 
   resources :subscribers
+
+
+  get 'public/budget' => 'public#budget'
+
+  get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/calendar/:calendar_id' => 'public#calendar'
+  post 'public/subscribe/:calendar_id' => 'public#subscribe'
+  delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
