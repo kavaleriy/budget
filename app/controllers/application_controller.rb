@@ -33,10 +33,6 @@ class ApplicationController < ActionController::Base
     method = "budget_file_params"
     params[resource] &&= send(method) if respond_to?(method, true)
 
-    method = "vtarnay_module5_params"
-    params[resource] &&= send(method) if respond_to?(method, true)
-
-
     resource = controller_name.sub('/', '_').singularize.to_sym
 
     method = "#{resource}_params"

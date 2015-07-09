@@ -155,14 +155,6 @@
           focus.append("circle")
                .attr("r", 2)
                .style("fill", "steelBlue");
-          //focus.append("text")
-          //     .attr("class", "yearLabel")
-          //     .attr("x", 10)
-          //     .attr("dy", ".35em");
-          //focus.append("text")
-          //     .attr("class", "amountLabel")
-          //     .attr("x", 10)
-          //     .attr("dy", "1.35em");
 
           // rectangle to detect mouse events and focus visibility
           var rect = graph.append("rect")
@@ -189,8 +181,6 @@
             el.attr('data-original-title', d.year)
               .tooltip('fixTitle')
               .tooltip('show');
-            //focus.select(".yearLabel").text("Year: " + d.year);
-            //focus.select(".amountLabel").text("amount: " + d.value);
           }
 
         }

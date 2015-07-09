@@ -46,10 +46,6 @@ Rails.application.routes.draw do
 
   resources :towns
 
-  namespace :vtarnay do
-    resources :module7s
-  end
-
   namespace :repairing do
     get 'map' => 'maps#show'
     get 'geo_json' => 'maps#geo_json'
@@ -64,31 +60,10 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :vtarnay do
-    resources :module5s
-  end
-
   resources :sankeys
 
   devise_for :users
   resources :users , only: [:index, :show, :edit, :update, :destroy]
-
-  namespace :vtarnay do
-    get 'module2' => 'module2#index'
-    get 'module2/:id' => 'module2#show'
-
-    get 'module3' => 'module3#index'
-    get 'module3/:id' => 'module3#show'
-
-    get 'module4' => 'module4#index'
-    get 'module4/:id' => 'module4#show'
-    get 'module4/get_rows/:rov_file_id' => 'module4#get_rows'
-
-    get 'module5s' => 'module5s#index'
-    get 'module5s/indicator_file' => 'module5s#indicator_file'
-    get 'module5s/:id' => 'module5s#show'
-    get 'module5s/download/:id' => 'module5s#download'
-  end
 
   namespace :widgets do
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
