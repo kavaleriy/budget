@@ -1,0 +1,113 @@
+@import url(http://fonts.googleapis.com/css?family=Kalam:700,400);
+.tooltip-inspiration {
+  position: relative;
+  z-index: 999;
+}
+
+.tooltip-item {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tooltip-title {
+  font-weight: bold;
+  color: #F59003;
+  font-size: 1.1em;
+}
+
+.tooltip-subcontent {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.tooltip-date {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.tooltip-content {
+  position: absolute;
+  font-size: 16px;
+  z-index: 9999;
+  width: 300px;
+  bottom: 100%;
+  left: 0%;
+  margin: 0 0 105px -140px;
+  padding: 25px;
+  text-align: left;
+  border-radius: 10px/50%;
+  color: #0b387c;
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c9d9ff+1,d8e4ff+35,d8e4ff+66,c9d9ff+100 */
+  background: #c9d9ff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #c9d9ff 1%, #d8e4ff 35%, #d8e4ff 66%, #c9d9ff 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#c9d9ff), color-stop(35%,#d8e4ff), color-stop(66%,#d8e4ff), color-stop(100%,#c9d9ff)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #c9d9ff 1%,#d8e4ff 35%,#d8e4ff 66%,#c9d9ff 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9d9ff', endColorstr='#c9d9ff',GradientType=0 ); /* IE6-9 */
+}
+
+.tooltip-turnright .tooltip-content {
+  -webkit-transform: translate3d(0,50px,0) rotate3d(1,1,1,6deg);
+  transform: translate3d(0,50px,0) rotate3d(1,1,1,6deg);
+}
+
+.tooltip-turnleft .tooltip-content {
+  -webkit-transform: translate3d(0,50px,0) rotate3d(1,1,1,-6deg);
+  transform: translate3d(0,50px,0) rotate3d(1,1,1,-6deg);
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;    // height of tooltip tail
+  top: 40%;
+  background: url(tooltip3_h.svg) no-repeat center center;
+  background-size: 100%;
+  -webkit-transform-origin: 50% 0;
+  transform-origin: 50% 0;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+.tooltip-turnright .tooltip-content::after {
+  left: 25%;
+  -webkit-transform: scale3d(-1,1,1) rotate3d(1,1,1,25deg) translate3d(0,-15px,0);
+  transform: scale3d(-1,1,1) rotate3d(1,1,1,25deg) translate3d(0,-15px,0);
+}
+
+.tooltip-turnleft .tooltip-content::after {
+  right: 99%;
+  -webkit-transform: rotate3d(1,1,1,25deg) translate3d(0,-15px,0);
+  transform: rotate3d(1,1,1,25deg) translate3d(0,-15px,0);
+}
+
+.tooltip-inspiration.my-hover .tooltip-content {
+  opacity: 1;
+  pointer-events: auto;
+  -webkit-transform: translate3d(0,50px,0);      // 50px - to change height of tooltip to the node
+  transform: translate3d(0,50px,0);              // 50px - to change height of tooltip to the node
+}
+
+.tooltip-turnright.my-hover .tooltip-content::after {
+  -webkit-transform: scale3d(-1,1,1) rotate3d(1,1,1,0) translate3d(0,-5px,0);
+  transform: scale3d(-1,1,1) rotate3d(1,1,1,0) translate3d(0,-5px,0);
+}
+
+.tooltip-turnleft.my-hover .tooltip-content::after {
+  -webkit-transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);
+  transform: rotate3d(1,1,1,0) translate3d(0,-5px,0);
+}
+
+#reset_chart {
+  cursor: pointer;
+  color: #0b387c;
+  opacity: 0.5;
+}

@@ -8,8 +8,14 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
   def get_bubbletree_data
-    params[:levels] ? levels = params[:levels].split(",") : levels = []
-    render json: get_bubble_tree(levels)
+    cache_key = Digest::SHA1.hexdigest(params.sort.flatten.join("_object"))
+
+    result = Rails.cache.fetch( cache_key, :expires_in => Rails.env.development? ? 30.second : 12.hours) do
+      params[:levels] ? levels = params[:levels].split(",") : levels = []
+      get_bubble_tree(levels)
+    end
+
+    render json: result
   end
 
   def get_bubblesubtree_with_fact

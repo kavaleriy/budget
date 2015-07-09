@@ -19,8 +19,6 @@ class Repairing::LayersController < ApplicationController
         repair = repair = @repairing_layer.repairs.new( title: params[:q], coordinates: @location, address: params[:q] )
         repair.save!
 
-        geoJson = []
-        geoJson << Repairing::GeojsonBuilder.build_repair(repair)
         format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
         # format.js { render :search_house }
       else

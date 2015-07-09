@@ -1522,9 +1522,10 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
         // -------------------------------------------------------------------------
 
 		if (me.node.children.length > 0) {
-			$(me.circle.node).css({ cursor: 'pointer'}).attr({ id: 'circle_' + me.node.id});
+			$(me.circle.node).css({ cursor: 'pointer'});
 			$(me.label).css({ cursor: 'pointer'});
 		}
+        $(me.circle.node).attr({ id: 'circle_' + me.node.id});
 
 		// additional label
 		me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');

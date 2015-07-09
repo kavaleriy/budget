@@ -3,6 +3,11 @@ class PublicController < ApplicationController
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
+
+  def budget
+    @budgets = Taxonomy.all
+  end
+
   def calendar
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
   end
