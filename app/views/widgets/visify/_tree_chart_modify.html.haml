@@ -385,7 +385,7 @@
 
       // ------------------------------ WORKING WITH TOOLTIP-SHARP -------------------------------------------
 
-      $('#svg_tooltip .tooltip-content').on("mouseout", function() {
+      $('#svg_tooltip .tooltip-content').on("mouseleave", function() {
         if(!$(".my-hover").is(':hover')) {
           $(".my-hover").removeClass("my-hover");
         }
@@ -424,7 +424,7 @@
           slider_chart.show(e.node, tooltip_year);
 
           var slider = aSliderCompare('#svg_tooltip #tooltip-month-slider');
-          slider.initialize(150, {clickCallback: function(label, type) {
+          slider.initialize(100, {clickCallback: function(label, type) {
             if(type == "month") {
               if(tooltip_month == label) {
                 tooltip_month = 0;
@@ -451,8 +451,8 @@
           slider.set_quarter(tooltip_quarter);
           slider.show(e.node, tooltip_year);
 
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
-          tooltip.addClass("my-hover").css('left', e.bubblePos.x).css('top', e.bubblePos.y );
+          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status);
+          tooltip.addClass("my-hover").css('left', e.bubblePos.x + 180 + e.circle.attrs.r).css('top', e.bubblePos.y + 260 );
 
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
