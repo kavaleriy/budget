@@ -12,6 +12,11 @@
     .navbar-collapse.collapse.navbar-responsive-collapse.navbar-right
       %ul.nav.navbar-nav
 
+        %li
+          = link_to root_path do
+            %i.fa.fa-home
+            = t('.home')
+
         - if current_user && current_user.is_locked? == false
           %li= link_to t('.editor'), editor_index_path
 
