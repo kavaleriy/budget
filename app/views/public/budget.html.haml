@@ -1,3 +1,12 @@
+:css
+  td.budget {
+    cursor: pointer;
+  }
+  td.budget.active {
+    cursor: default;
+    font-weight: bold;
+  }
+
 .col-sm-3
   %table.table.table-striped
     %thead
@@ -21,9 +30,10 @@
 
   $(document).ready(function() {
 
-    //set_iframe('bubbletree');
-
     $('td.budget[data-id]').on('click', function (e) {
+      $('td.budget').removeClass('active')
+      $(this).addClass('active')
+
       var vis = $(this).attr('data-vis')
       var id = $(this).attr('data-id')
       set_iframe(vis, id);
