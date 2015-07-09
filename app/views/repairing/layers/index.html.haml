@@ -14,7 +14,7 @@
     - @layers.each do |layer|
       %tr
         %td= link_to layer.id, repairing_layer_path(layer)
-        %td= layer.town.title
+        %td= "#{layer.town.title unless layer.town.blank?} "
         %td= layer.owner.email
         %td= layer.title
         %td= layer.description

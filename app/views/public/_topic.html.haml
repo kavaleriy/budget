@@ -25,7 +25,7 @@
     position: absolute;
     width: 100%;
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     -webkit-transition: opacity 0.3s;
     -moz-transition: opacity 0.3s;
     transition: opacity 0.3s;
@@ -36,8 +36,8 @@
     top: 0;
     height: 30%;
     background: darkslateblue;
-    font-size: 40px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: 100;
   }
 
   .caption::after {
@@ -55,6 +55,6 @@
   }
 
 %a.caption.col-xs-12{ href: "#{href}",
-  'data-title' =>"Bubble tree",
-  'data-description' => "Parallax Content Slider with CSS3 and jQuery..."}
-  %img{ src: "#{img[:src]}", alt: "Parallax Content Slider with CSS3 and jQuery" }
+  'data-title' => "#{title}",
+  'data-description' => "#{description}"}
+  %img{ src: "#{img[:src]}", alt: "#{img[:alt]}" }
