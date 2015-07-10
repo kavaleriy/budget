@@ -129,6 +129,7 @@
           var line = d3.svg.line()
                        .x(function(d){return x(d.year);})
                        .y(function(d){return y(d.value);})
+                       .interpolate("monotone")
 
           var current_year = new Date().getFullYear();
 
