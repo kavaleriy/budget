@@ -38,7 +38,7 @@
                  <thead>\
                  <tr>\
                    <th class="col-sm-5">Напрямок видатків</th>\
-                   <th class="col-sm-2">динаміка в роках</th>\
+                   <th class="col-sm-2 table-graph">динаміка в роках</th>\
                    <th class="col-sm-2">план, грн.</th>'
 
         if(fact) {
@@ -92,6 +92,11 @@
             }
           }
         })
+
+        if(year_min == year_max) {
+          $('#sidebar_table .table-graph').remove();
+          return;
+        }
 
         $.each(data, function( index, value ) {
           if(value.label != "Інше"){
