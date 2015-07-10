@@ -213,7 +213,9 @@
         };
       }
 
+      var timeoutID = 0;
       function bubbleItemClick(node) {
+        clearTimeout(timeoutID);
         $(".bubbletree #svg_tooltip").removeClass("my-hover");
         sequence.show(node);
         under_sequence.show(node);
@@ -397,79 +399,82 @@
           status = "станом на: " + tooltip_year + " рік";
 
       function tooltipCallback(e) {
-        var circle_id = $(e.circle.node).attr("id");
-        var pathEl = Snap.select('#' + circle_id);
-        $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
+        timeoutID = setTimeout(function(){
+          var circle_id = $(e.circle.node).attr("id");
+          var pathEl = Snap.select('#' + circle_id);
+          $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
 
-        var tooltip = $('.bubbletree #svg_tooltip');
-        if(e.type == "SHOW") {
-          pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
-          if(e.node.label == "Інше") {
-            return;
-          }
-
-          $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
-                                     <span class='tooltip-subcontent'></span>\
-                                     <span class='tooltip-date'></span>")
-
-          change_tooltip_header(e.node);
-
-          var slider_chart = aSliderChart('#svg_tooltip #tooltip-year-slider');
-          slider_chart.initialize(250, {clickCallback: function(year){
-            tooltip_year = year;
-            change_tooltip_header(e.node);
-          }});
-          slider_chart.set_month(tooltip_month);
-          slider_chart.set_quarter(tooltip_quarter);
-          slider_chart.show(e.node, tooltip_year);
-
-          var slider = aSliderCompare('#svg_tooltip #tooltip-month-slider');
-          slider.initialize(100, {clickCallback: function(label, type) {
-            if(type == "month") {
-              if(tooltip_month == label) {
-                tooltip_month = 0;
-              } else {
-                tooltip_month = label;
-              }
-              if(tooltip_quarter != 0) {
-                tooltip_quarter = 0;
-              }
-            } else {
-              if(tooltip_quarter == label) {
-                tooltip_quarter = 0;
-              } else {
-                tooltip_quarter = label;
-              }
-              if(tooltip_month != 0) {
-                tooltip_month = 0;
-              }
+          var tooltip = $('.bubbletree #svg_tooltip');
+          if(e.type == "SHOW") {
+            pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
+            if(e.node.label == "Інше") {
+              return;
             }
 
+            $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
+                                       <span class='tooltip-subcontent'></span>\
+                                       <span class='tooltip-date'></span>")
+
             change_tooltip_header(e.node);
-          }});
-          slider.set_month(tooltip_month);
-          slider.set_quarter(tooltip_quarter);
-          slider.show(e.node, tooltip_year);
 
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status);
-          tooltip.addClass("my-hover").css('left', e.bubblePos.x + 180 + e.circle.attrs.r).css('top', e.bubblePos.y + 260 );
-
-        } else {
-          pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
-          if(e.node.label == "Інше"){
-            return;
-          }
-          var timeoutID = setTimeout(function() {
-            if(!$('#svg_tooltip').is(':hover')) {
-              tooltip.removeClass("my-hover");
-              $('#svg_tooltip #tooltip-month-slider svg').remove();
+            var slider_chart = aSliderChart('#svg_tooltip #tooltip-year-slider');
+            slider_chart.initialize(250, {clickCallback: function(year){
               tooltip_year = year;
-              tooltip_month = month;
-              tooltip_quarter = quarter;
-              status = "станом на: " + tooltip_year + " рік";
+              change_tooltip_header(e.node);
+            }});
+            slider_chart.set_month(tooltip_month);
+            slider_chart.set_quarter(tooltip_quarter);
+            slider_chart.show(e.node, tooltip_year);
+
+            var slider = aSliderCompare('#svg_tooltip #tooltip-month-slider');
+            slider.initialize(100, {clickCallback: function(label, type) {
+              if(type == "month") {
+                if(tooltip_month == label) {
+                  tooltip_month = 0;
+                } else {
+                  tooltip_month = label;
+                }
+                if(tooltip_quarter != 0) {
+                  tooltip_quarter = 0;
+                }
+              } else {
+                if(tooltip_quarter == label) {
+                  tooltip_quarter = 0;
+                } else {
+                  tooltip_quarter = label;
+                }
+                if(tooltip_month != 0) {
+                  tooltip_month = 0;
+                }
+              }
+
+              change_tooltip_header(e.node);
+            }});
+            slider.set_month(tooltip_month);
+            slider.set_quarter(tooltip_quarter);
+            slider.show(e.node, tooltip_year);
+
+            $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status);
+            tooltip.addClass("my-hover").css('left', e.bubblePos.x + 180 + e.circle.attrs.r).css('top', e.bubblePos.y + 260 );
+
+          } else {
+            pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
+            if(e.node.label == "Інше"){
+              return;
             }
-          }, 1000)
-        }
+            var timeoutID = setTimeout(function() {
+              if(!$('#svg_tooltip').is(':hover')) {
+                tooltip.removeClass("my-hover");
+                $('#svg_tooltip #tooltip-month-slider svg').remove();
+                tooltip_year = year;
+                tooltip_month = month;
+                tooltip_quarter = quarter;
+                status = "станом на: " + tooltip_year + " рік";
+              }
+            }, 1000)
+          }
+        }, 1000)
+
       }
 
       function change_tooltip_header(node) {
