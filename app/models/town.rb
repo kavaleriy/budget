@@ -1,6 +1,8 @@
 class Town
   include Mongoid::Document
+
   field :title, type: String
+
   require 'carrierwave/mongoid'
 
   mount_uploader :img, TownUploader
