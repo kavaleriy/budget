@@ -99,6 +99,7 @@ gem 'bootstrap-editable-rails'
 # https://github.com/carrierwaveuploader/carrierwave
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem "image_magick"
 gem "mini_magick"
 
 # https://github.com/JangoSteve/remotipart

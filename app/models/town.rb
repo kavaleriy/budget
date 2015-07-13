@@ -7,6 +7,7 @@ class Town
 
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
+
   has_many :document_category, class_name: 'Documentation::Category'
 
   def to_s
