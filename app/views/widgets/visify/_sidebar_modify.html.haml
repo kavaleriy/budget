@@ -25,20 +25,6 @@
 
 :javascript
 
-  $(document).ready(function() {
-    $('#collapseDesc').on("shown.bs.collapse", function() {
-      check_height();
-    })
-  })
-
-  var height;
-
-  function check_height() {
-    if($('#collapseDesc').height() > height) {
-      $('#collapseDesc').height(height);
-    }
-  }
-
   function aSidebar(aContainer) {
     var chart, pie, table;
 
@@ -74,12 +60,8 @@
           $('#collapseDesc').height('auto');
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
-            if(!height) { // asign height equal to chart
-              height = $('.chart').height();
-            }
           }
           $(aContainer + ' #description').html(div_descr)
-          check_height();
 
           if(node.children && node.children.length != 0) {
               chart.show(node.children);
