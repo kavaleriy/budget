@@ -72,7 +72,6 @@ body {
       min-width: 300px;
       padding: 0px;
       float: right;
-      overflow: auto;
 
       #title {
         h3, h4 {
@@ -80,13 +79,42 @@ body {
         }
       }
 
-      #description {
-        margin: 10px;
+      table {
+        margin-top: 10px;
+        width: 100%;
       }
 
-      #attachments_list {
-        margin-left: 10px;
+      table td, table div {
+        padding: 0;
+        margin: 0;
       }
+
+      thead, tbody, tr, td, th {
+        display: block;
+      }
+
+      thead {
+        border-bottom: white solid 2px;
+      }
+
+      tbody {
+        overflow-y:auto;
+        border-top: rgba(230,230,230,1) solid 1px;
+      }
+
+      #description_table tbody {
+        max-height:300px;
+      }
+
+      #attachments_table tbody {
+        max-height:150px;
+      }
+    }
+
+    .sidebar_modify {
+      background-color: rgba(102,179,255,.2);
+      border-radius: 10px;
+      padding-top: 10px;
     }
 
     #tooltip {

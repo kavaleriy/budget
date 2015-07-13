@@ -52,10 +52,10 @@
         div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;">' + label
           + ": " + aVisify.helpers.formatNumber(node.amount)
           + ", <span class='percentage'>" + percentage + percParentTitle + "</span>"
-          //+ ", " + I18n.t("js.visify.plan") + ": " + aVisify.helpers.formatNumber(node.amount)
-          + "</h4>"
+          + "</h4><h5>"
+          + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          + ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount * .95) + "</b></h5>"
           + amountFonds
-          //+ ", " + I18n.t("js.visify.fact") + ": " + aVisify.helpers.formatNumber(node.amount * .95) + "</h5>"
 
         $(aContainer + ' #under_sequence').html(div)
       },

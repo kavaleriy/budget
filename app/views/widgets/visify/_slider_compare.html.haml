@@ -34,7 +34,7 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
 
-    aContainer == "#svg_tooltip #tooltip-month-slider" ? margin = {top: 20, right: 0, bottom: 30, left: 0} : margin = {top: 20, right: 20, bottom: 30, left: 50};
+    (aContainer == "#svg_tooltip #tooltip-month-slider" || aContainer == ".sidebar_modify #slider_compare") ? margin = {top: 20, right: 20, bottom: 30, left: 20} : margin = {top: 20, right: 20, bottom: 30, left: 20};
 
     var x0, x1, y, xAxis, yAxis;
 
@@ -138,7 +138,7 @@
     function mouseover(d) {
       if(d.count || d.count == 0) {
         $(this).css("fill-opacity", "1.0");
-        if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+        if(aContainer != "#svg_tooltip #tooltip-month-slider" && aContainer != ".sidebar_modify #slider_compare") {
           add_tooltip(d3.event, {label: d.label + " квартал", amount: d.amount})
         }
       } else {
@@ -153,7 +153,7 @@
         $("#month" + d.label).css("fill-opacity", "0.5");
       }
       if(d.count || d.count == 0) {
-        if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+        if(aContainer != "#svg_tooltip #tooltip-month-slider" && aContainer != ".sidebar_modify #slider_compare") {
           remove_tooltip(d);
         }
       }
@@ -220,7 +220,7 @@
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
 
-      if(aContainer != "#svg_tooltip #tooltip-month-slider") {
+      if(aContainer != "#svg_tooltip #tooltip-month-slider" && aContainer != ".sidebar_modify #slider_compare") {
         svg.selectAll(".bartext")
               .data(data["months"])
             .enter().append("text")
