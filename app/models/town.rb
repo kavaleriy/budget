@@ -1,6 +1,8 @@
 class Town
   include Mongoid::Document
 
+  default_scope lambda { order_by(:title => :asc) }
+
   field :title, type: String
 
   require 'carrierwave/mongoid'
