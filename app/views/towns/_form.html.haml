@@ -1,4 +1,12 @@
-= form_for @town, :html => { :class => 'form-horizontal' } do |f|
+= form_for @town, :html => { :class => 'form-horizontal', :multipart => true} do |f|
+  .form-group
+    = f.label :img, :class => 'control-label'
+    .upload_img
+      -if @town.img?
+        =image_tag @town.img
+      -else
+        =image_tag "no_image.png"
+      = f.file_field :img, :class => 'btn btn-default'
   .form-group
     = f.label :title, :class => 'control-label'
     .controls
@@ -6,3 +14,25 @@
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
+
+
+
+:javascript
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $(".upload_img").find('img').attr('src', e.target.result);
+        $(".upload_img").find('img').css('max-width', '240px');
+        $(".upload_img").find('img').css('max-height', '320px');
+        $(".upload_img").find('img').show();
+        if($(".new_lot_img").length>0){
+           $(".new_lot_img").attr('src', e.target.result);
+        }
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $("input[type=file]").on("change",function(){
+    readURL(this);
+  });

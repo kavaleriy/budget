@@ -1,11 +1,7 @@
--#- binding.pry
-.panel.panel-default
-  .panel-heading
-    Завантажені файли
-  .attachment_files.panel-body
-    %table.table.table-striped
-      - attachments.each do |attachment|
-        = render :partial => 'calendars/event_attachments/attachment', :locals => { :event_attachment => attachment, :calendar_id=>calendar_id, :event_id=>event_id}
+.attachment_files.panel-body
+  %table.table.table-striped
+    - attachments.each do |attachment|
+      = render :partial => 'calendars/event_attachments/attachment', :locals => { :event_attachment => attachment, :calendar_id=>calendar_id, :event_id=>event_id}
 
 
 

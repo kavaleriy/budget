@@ -1,4 +1,4 @@
-= form_for [:calendars, @calendar, @event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+= form_for [:calendars, @calendar, @event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => '', :multipart => true } do |f|
 
   - if new_attachment.errors.any?
     #error_explanation
@@ -6,24 +6,24 @@
       %ul
         - new_attachment.errors.full_messages.each do |msg|
           %li= msg
+  .row
+    .col-sm-4
+      .form-group
+        %label
+          Опис
+        = f.text_field :description, :class => 'form-control'
+    .col-sm-5
+      .form-group
+        %label
+          Файл
+        = f.file_field :doc_file,:class => 'form-control'
+    .col-sm-3
+      .actions
+        = f.button :class => 'btn btn-default' do
+          %i.fa.fa-upload
+            Завантажити
 
-  .col-sm-6
-    .form-group
-      %label
-        Опис
-      = f.text_field :description, :class => 'form-control'
 
-  .col-sm-6
-    .form-group
-      %label
-        Файл
-      = f.file_field :doc_file,:class => 'form-control'
-
-
-  .actions
-    = f.button :class => 'btn btn-default' do
-      %i.fa.fa-upload
-        Завантажити
 
 
 :javascript
