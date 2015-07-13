@@ -214,7 +214,6 @@
       }
 
       function bubbleItemClick(node) {
-        $(".bubbletree #svg_tooltip").removeClass("my-hover");
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
@@ -393,11 +392,19 @@
           if(e.node.label == "Інше") {
             return;
           }
+          under_sequence.show(e.node);
+          slider_chart.show(e.node, year);
+          slider.show(e.node, year);
+          sidebar.show(e.node);
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
           if(e.node.label == "Інше"){
             return;
           }
+          under_sequence.show(centerNode);
+          slider_chart.show(centerNode, year);
+          slider.show(centerNode, year);
+          sidebar.show(centerNode);
         }
       }
     }
