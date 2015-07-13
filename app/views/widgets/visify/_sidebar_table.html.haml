@@ -38,7 +38,7 @@
                  <thead>\
                  <tr>\
                    <th class="col-sm-5">Напрямок видатків</th>\
-                   <th class="col-sm-2">динаміка в роках</th>\
+                   <th class="col-sm-2 table-graph">динаміка в роках</th>\
                    <th class="col-sm-2">план, грн.</th>'
 
         if(fact) {
@@ -61,7 +61,7 @@
             + '<td class="table-graph"><div id="table-graph-' + value.id + '"></div></td>'
             + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
           if(fact) {
-            div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + '</td>';
+            div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + ' (' + (value.amount_fact || 0)*100/value.amount + '%)</td>';
           }
           div += '<td>' + aVisify.helpers.getPercentageString(value.amount, totalSize) + '</td>'
                    + '</tr>'
@@ -92,6 +92,11 @@
             }
           }
         })
+
+        if(year_min == year_max) {
+          $('#sidebar_table .table-graph').remove();
+          return;
+        }
 
         $.each(data, function( index, value ) {
           if(value.label != "Інше"){
@@ -124,6 +129,7 @@
           var line = d3.svg.line()
                        .x(function(d){return x(d.year);})
                        .y(function(d){return y(d.value);})
+                       .interpolate("monotone")
 
           var current_year = new Date().getFullYear();
 
@@ -155,14 +161,6 @@
           focus.append("circle")
                .attr("r", 2)
                .style("fill", "steelBlue");
-          //focus.append("text")
-          //     .attr("class", "yearLabel")
-          //     .attr("x", 10)
-          //     .attr("dy", ".35em");
-          //focus.append("text")
-          //     .attr("class", "amountLabel")
-          //     .attr("x", 10)
-          //     .attr("dy", "1.35em");
 
           // rectangle to detect mouse events and focus visibility
           var rect = graph.append("rect")
@@ -189,8 +187,6 @@
             el.attr('data-original-title', d.year)
               .tooltip('fixTitle')
               .tooltip('show');
-            //focus.select(".yearLabel").text("Year: " + d.year);
-            //focus.select(".amountLabel").text("amount: " + d.value);
           }
 
         }

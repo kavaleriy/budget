@@ -1,38 +1,27 @@
-:css
-  table {
-    table-layout:fixed;
-  }
-
-  .div-table-content {
-    overflow-y:auto;
-  }
-
-.sidebar.col-xs-12.col-md-4#accordionDesc.panel-group{ 'role' => 'tablist', 'aria-multiselectable' => 'true'}
-  .panel.panel-default
-    #headingDesc.panel-heading{'role' => 'tab'}
-      %h4.panel-title
-        %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#collapseDesc', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+.sidebar.col-xs-12
+  %table#description_table
+    %thead
+      %tr
+        %th
           =t('widgets.visify.sidebar.description')
-    .div-table-content#collapseDesc.panel-collapse.collapse.in{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
-      .panel-body
-        #description
+    %tbody
+      %tr
+        %td
+          #description
 
   - if file.taxonomy_attachments && file.taxonomy_attachments.length > 0
-    .panel.panel-default
-      #headingDesc.panel-heading{'role' => 'tab'}
-        %h4.panel-title
-          %a.collapsed{ 'data-toggle' => 'collapse', 'data-parent' => '#accordionDesc', 'href'=> '#attachments_list', 'aria-expanded' => 'true', 'aria-controls' => 'collapseDesc'}
+    %table#attachments_table
+      %thead
+        %tr
+          %th
             =t('widgets.visify.sidebar.attachments')
-      .panel-body
-        .div-table-content#attachments_list.panel-collapse.collapse{'role' => 'tabpanel', 'aria-labelledby' => 'headingDesc' }
-          %table.table.table-condensed
-            %tbody
-              - file.taxonomy_attachments.each do |attachment|
-                %tr
-                  %td
-                    = link_to attachment.attachment.url do
-                      %i.fa.fa-download.fa-border
-                      = attachment.title
+      %tbody
+        - file.taxonomy_attachments.each do |attachment|
+          %tr
+            %td
+              = link_to attachment.attachment.url do
+                %i.fa.fa-download.fa-border
+                = attachment.title
 
 :javascript
 

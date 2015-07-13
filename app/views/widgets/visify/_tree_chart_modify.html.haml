@@ -1,13 +1,10 @@
-=stylesheet_link_tag "tooltip_inspiration/normalize"
-
-.visify
+.visify.row-eq-height
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
-
   .chart.col-xs-12.col-md-8
-    = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
+    //= render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
 
     %ul.nav.nav-tabs{role: 'tablist'}
       %li.active{'role' => 'presentation'}
@@ -50,11 +47,14 @@
       .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
         = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
 
-    .slider
-      = render partial: 'slider_chart'
-      = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
-
-  = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
+    -#.slider
+    -#  = render partial: 'slider_chart'
+    -#  = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
+  .col-xs-12.col-md-4.sidebar_modify
+    = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
+    = render partial: 'slider_chart'
+    = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
+    = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
 
   = render partial: 'helpers'
 
@@ -101,8 +101,8 @@
       var sequence = aSequence('.visify')
       var under_sequence = aUnderSequence('.visify')
       var chart = aTreeChart('.bubbletree');
-      var slider = aSliderCompare('#slider_compare');
-      var slider_chart = aSliderChart('#slider_chart', slider);
+      var slider = aSliderCompare('.sidebar_modify #slider_compare');
+      var slider_chart = aSliderChart('.sidebar_modify #slider_chart', slider);
       var sidebar = aSidebar('.visify');
       var init_levels = JSON.parse('#{@levels.to_json}');
       var draggable = 1;
@@ -125,8 +125,8 @@
       height = width*0.6;
 
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
-      slider.initialize(150, {clickCallback: sliderItemClick});
-      slider_chart.initialize(250, {clickCallback: yearItemClick});
+      slider.initialize(100, {clickCallback: sliderItemClick});
+      slider_chart.initialize(40, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick});
       $("#chart").html('');
       chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
@@ -214,7 +214,6 @@
       }
 
       function bubbleItemClick(node) {
-        $(".bubbletree #svg_tooltip").removeClass("my-hover");
         sequence.show(node);
         under_sequence.show(node);
         slider_chart.show(node, year);
@@ -383,173 +382,31 @@
         return node;
       }
 
-      // ------------------------------ WORKING WITH TOOLTIP-SHARP -------------------------------------------
-
-      $('#svg_tooltip .tooltip-content').on("mouseleave", function() {
-        if(!$(".my-hover").is(':hover')) {
-          $(".my-hover").removeClass("my-hover");
-        }
-      })
-
-      var tooltip_year = year,
-          tooltip_month = month,
-          tooltip_quarter = quarter,
-          status = "станом на: " + tooltip_year + " рік";
-
       function tooltipCallback(e) {
         var circle_id = $(e.circle.node).attr("id");
         var pathEl = Snap.select('#' + circle_id);
         $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
 
-        var tooltip = $('.bubbletree #svg_tooltip');
         if(e.type == "SHOW") {
           pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
           if(e.node.label == "Інше") {
             return;
           }
-
-          $('#tooltip-header').html("<span class='tooltip-title'>" + e.node.label + "</span><br/>\
-                                     <span class='tooltip-subcontent'></span>\
-                                     <span class='tooltip-date'></span>")
-
-          change_tooltip_header(e.node);
-
-          var slider_chart = aSliderChart('#svg_tooltip #tooltip-year-slider');
-          slider_chart.initialize(250, {clickCallback: function(year){
-            tooltip_year = year;
-            change_tooltip_header(e.node);
-          }});
-          slider_chart.set_month(tooltip_month);
-          slider_chart.set_quarter(tooltip_quarter);
-          slider_chart.show(e.node, tooltip_year);
-
-          var slider = aSliderCompare('#svg_tooltip #tooltip-month-slider');
-          slider.initialize(100, {clickCallback: function(label, type) {
-            if(type == "month") {
-              if(tooltip_month == label) {
-                tooltip_month = 0;
-              } else {
-                tooltip_month = label;
-              }
-              if(tooltip_quarter != 0) {
-                tooltip_quarter = 0;
-              }
-            } else {
-              if(tooltip_quarter == label) {
-                tooltip_quarter = 0;
-              } else {
-                tooltip_quarter = label;
-              }
-              if(tooltip_month != 0) {
-                tooltip_month = 0;
-              }
-            }
-
-            change_tooltip_header(e.node);
-          }});
-          slider.set_month(tooltip_month);
-          slider.set_quarter(tooltip_quarter);
-          slider.show(e.node, tooltip_year);
-
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status);
-          tooltip.addClass("my-hover").css('left', e.bubblePos.x + 180 + e.circle.attrs.r).css('top', e.bubblePos.y + 260 );
-
+          under_sequence.show(e.node);
+          slider_chart.show(e.node, year);
+          slider.show(e.node, year);
+          sidebar.show(e.node);
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
           if(e.node.label == "Інше"){
             return;
           }
-          var timeoutID = setTimeout(function() {
-            if(!$('#svg_tooltip').is(':hover')) {
-              tooltip.removeClass("my-hover");
-              $('#svg_tooltip #tooltip-month-slider svg').remove();
-              tooltip_year = year;
-              tooltip_month = month;
-              tooltip_quarter = quarter;
-              status = "станом на: " + tooltip_year + " рік";
-            }
-          }, 1000)
+          under_sequence.show(centerNode);
+          slider_chart.show(centerNode, year);
+          slider.show(centerNode, year);
+          sidebar.show(centerNode);
         }
       }
-
-      function change_tooltip_header(node) {
-        var amount = 0, amount_fact = 0;
-        if(tooltip_quarter == 0) {
-          if(node['total_history']['plan'] && node['total_history']['plan'][tooltip_year] && node['total_history']['plan'][tooltip_year][tooltip_month]) {
-            amount = node['total_history']['plan'][tooltip_year][tooltip_month]['total'];
-          }
-          if(node['total_history']['fact'] && node['total_history']['fact'][tooltip_year] && node['total_history']['fact'][tooltip_year][tooltip_month]) {
-            amount_fact = node['total_history']['fact'][tooltip_year][tooltip_month]['total'];
-          }
-        } else {
-          for(var i = tooltip_quarter*3 - 2; i <= tooltip_quarter*3; i++) {
-            if(node['total_history']['plan'] && node['total_history']['plan'][tooltip_year] && node['total_history']['plan'][tooltip_year][i]) {
-              amount += node['total_history']['plan'][tooltip_year][i]['total'];
-            }
-            if(node['total_history']['fact'] && node['total_history']['fact'][tooltip_year] && node['total_history']['fact'][tooltip_year][i]) {
-              amount_fact += node['total_history']['fact'][tooltip_year][i]['total'];
-            }
-          }
-        }
-        $('#svg_tooltip .tooltip-subcontent').html("план: " + aVisify.helpers.formatNumber(amount) + " / \
-                                                    факт: " + aVisify.helpers.formatNumber(amount_fact) + "<br/>")
-        if(tooltip_month == 0 && tooltip_quarter == 0) {
-          status = "станом на: " + tooltip_year + " рік";
-          $('#svg_tooltip .tooltip-date').html(status);
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
-        } else if(tooltip_month != 0) {
-          status = "станом на: місяць " + get_month_by_num(tooltip_month) + " " + tooltip_year + " року";
-          $('#svg_tooltip .tooltip-date').html(status);
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
-        } else {
-          status = "станом на: " + tooltip_quarter + " квартал " + tooltip_year + " року";
-          $('#svg_tooltip .tooltip-date').html(status);
-          $("#reset_chart").attr('data-title', "перебудувати всю візуалізацію " + status)
-        }
-      }
-
-      function get_month_by_num(month) {
-        return #{I18n.t :month_names_initial, :scope => :date}[month]
-      }
-
-      $("#reset_chart")
-        .on("mouseover", function() {
-          $(this).css("opacity", "1.0")
-        })
-        .on("mouseout", function() {
-          $(this).css("opacity", "0.5")
-        })
-        .on("click", function() {
-          $('.bubbletree #svg_tooltip').removeClass("my-hover");
-          $(this).tooltip("hide")
-          year = tooltip_year;
-          month = tooltip_month;
-          quarter = tooltip_quarter;
-          slider.set_month(month);
-          slider.set_quarter(quarter);
-          current_data = buildData(_data)
-          preprocessData(current_data, 7);
-
-          var curr_node;
-          if (chart.getCenterNode) {
-            curr_node = chart.getCenterNode(current_data);
-            slider.set_centerNode(centerNode);
-          } else if(centerNode != current_data && !chart.getCenterNode) {
-            curr_node = chart.get_CenterNode(centerNode);
-            slider.set_centerNode(curr_node);
-          }
-          chart.show(current_data);
-          chart.selectNode(curr_node);
-        })
-        .tooltip({
-            'title': function(){
-              return $(this).attr('data-title');
-            },
-            'container': 'body',
-            'placement': 'left'
-        });
-
-      // ------------------------------ END WORKING WITH TOOLTIP-SHARP ----------------------------------------
     }
 
   });

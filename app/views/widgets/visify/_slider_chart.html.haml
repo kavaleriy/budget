@@ -40,7 +40,7 @@
     var margin,
         width, height;
 
-    aContainer == "#svg_tooltip #tooltip-year-slider" ? margin = {top: 20, right: 10, bottom: 30, left: 10} : margin = {top: 20, right: 20, bottom: 30, left: 50};
+    (aContainer == "#svg_tooltip #tooltip-year-slider" || aContainer == ".sidebar_modify #slider_chart") ? margin = {top: 20, right: 20, bottom: 30, left: 20} : margin = {top: 20, right: 20, bottom: 30, left: 50};
 
     var x, y, xAxis, yAxis, size_scale;
 
@@ -176,7 +176,7 @@
         //         return aVisify.helpers.formatNumber(d.amount);
         //   });
 
-      if(aContainer != "#svg_tooltip #tooltip-year-slider") {
+      if(aContainer != "#svg_tooltip #tooltip-year-slider" && aContainer != ".sidebar_modify #slider_chart") {
         svg.selectAll("dot")
                   .data(data)
                 .enter().append("text")
@@ -212,7 +212,7 @@
         $(aContainer).html('');
         var number_of_years = #{@range}.length;
         width = $(aContainer).width() - margin.left - margin.right,
-        height = 50;
+        height = pHeight;
 
         size_scale = d3.scale.linear()
                        .range([6, 12]);
@@ -235,7 +235,7 @@
           .orient("left");
 
         svg = d3.select(aContainer).append("svg")
-            .attr("width", width + 2*margin.left + margin.right)
+            .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");

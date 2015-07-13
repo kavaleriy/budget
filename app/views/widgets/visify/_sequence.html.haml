@@ -103,6 +103,9 @@
                 }
                 if(d3.event.x >= (start_pos + b.w + 3) && d3.event.x <= (start_pos + (path.length-1)*(b.w + 3))) {
                   if(d3.event.x < (start_pos + level*b.w + 3)) {
+                    if(path[level]['taxonomy'] == "ktfk" && path[level-1]['taxonomy'] == "ktfk_aaa") {
+                      return;
+                    }
                     entering.attr('transform', "translate(" + (d3.event.x - start_pos) + ",0)");
                     if(d3.event.x < (start_pos + (level - 1)*b.w + 10)) {
                       d3.select("#drag" + (level - 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
@@ -113,6 +116,9 @@
                       level--;
                     }
                   } else {
+                    if(path[level]['taxonomy'] == "ktfk_aaa" && path[level+1]['taxonomy'] == "ktfk") {
+                      return;
+                    }
                     entering.attr('transform', "translate(" + (d3.event.x - start_pos) + ",0)");
                     if(d3.event.x > (start_pos + (level + 1)*b.w + 3)) {
                       d3.select("#drag" + (level + 1)).transition().duration(50).attr('transform', "translate(" + (level*(b.w + 3)) + ",0)").attr("id", "drag" + level);
@@ -129,28 +135,30 @@
                 if(dragged != 1) return;
                 start_pos = null;
                 entering.attr('transform', "translate(" + (level*(b.w + 3)) + ",0)");
-                var levels = [], last_node
-                for(var i in path) {
-                  var tax = path[i].taxonomy;
-                  if(tax) {
-                    if(tax.charAt(0) == "_") {
-                      tax = tax.substr(1);
+                if(level != path[level]['level']) {         // if node was replaced
+                  var levels = [], last_node
+                  for(var i in path) {
+                    var tax = path[i].taxonomy;
+                    if(tax) {
+                      if(tax.charAt(0) == "_") {
+                        tax = tax.substr(1);
+                      }
+                      levels.push(tax);
                     }
-                    levels.push(tax);
+                    if(path[i] == d && path[i-1]) {
+                      last_node = path[i-1]
+                    }
                   }
-                  if(path[i] == d && path[i-1]) {
-                    last_node = path[i-1]
+                  add_levels = init_levels.filter(function(val) {
+                    return levels.indexOf(val) == -1;
+                  });
+                  if(add_levels) {
+                    for(var i in add_levels) {
+                      levels.push(add_levels[i]);
+                    }
                   }
+                  self.dropCallback(levels, last_node);
                 }
-                add_levels = init_levels.filter(function(val) {
-                  return levels.indexOf(val) == -1;
-                });
-                if(add_levels) {
-                  for(var i in add_levels) {
-                    levels.push(add_levels[i]);
-                  }
-                }
-                self.dropCallback(levels, last_node);
             });
 
         var g = d3.select(aContainer + " #trail")
