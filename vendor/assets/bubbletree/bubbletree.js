@@ -1415,7 +1415,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		e.node = me.node;
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
-		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
+		e.mousePos = { x:e.pageX - c.offsetX, y: e.pageY - c.offsetY };
 		e.type = 'SHOW';
         me.bc.tooltip(e);
 	};
@@ -1427,7 +1427,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
         e.type = 'HIDE';
 		e.target = me;
 		e.bubblePos = { x:me.pos.x, y: me.pos.y };
-		e.mousePos = { x:e.origEvent.pageX - c.offsetLeft, y: e.origEvent.pageY - c.offsetTop };
+		e.mousePos = { x:e.pageX - c.offsetX, y: e.pageY - c.offsetY };
         me.bc.tooltip(e);
 	};
 	
@@ -1589,7 +1589,9 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
         }
         $(me.overlay.node).css({ cursor: 'pointer'});
         $(me.overlay.node).click(me.onclick.bind(me));
-		
+        $(me.overlay.node).mouseenter(me.onhover.bind(me));
+        $(me.overlay.node).mouseleave(me.onunhover.bind(me));
+
 		//$(me.label).click(me.onclick.bind(me));
 	};
 	
