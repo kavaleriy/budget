@@ -22,7 +22,7 @@ var BubbleTree = function(config, onHover, onUnHover) {
 		// show full labels inside bubbles with min radius of 40px
 		minRadiusLabels: 40,
 		// just show the amounts inside bubbles with min radius of 20px
-		minRadiusAmounts: 40,
+		minRadiusAmounts: 30,
 		// hide labels at all for bubbles with min radius of 0 (deactivated by def)
 		minRadiusHideLabels: 15,
 		// trim labels after 20 characters
@@ -797,9 +797,9 @@ var BubbleTree = function(config, onHover, onUnHover) {
             $.history.load(me.getUrlForNode(node));
         }
 		//
-		$('.label, .label2').removeClass('current');
-		$('.label2.'+node.id).addClass('current');
-		$('.label.'+node.id).addClass('current');
+//		$('.label, .label2').removeClass('current');
+//		$('.label2.'+node.id).addClass('current');
+//		$('.label.'+node.id).addClass('current');
 	};
 
 	/*
@@ -1441,32 +1441,47 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		if (!me.visible) return;
 		
 		me.circle.attr({ cx: me.pos.x, cy: me.pos.y, r: r, 'fill-opacity': me.alpha });
+        me.text.attr("transform", "translate(" + (me.pos.x-r) + "," + (me.pos.y-r) + ")").style("display", "block");
+        me.text_inner.attr({width: 2*r + "px", height: 2*r + "px"});
+        me.text_inner2.style({width: 2*r + "px", height: 2*r + "px"});
+        me.text_inner3.style({display: "table-cell"});
+        me.text_inner4.style({display: "table-cell"});
+        me.text2.attr("transform", "translate(" + (me.pos.x-2*r) + "," + (me.pos.y+r) + ")").style("display", "block");
+        me.text2_inner.attr({width: 4*r + "px", height: 4*r + "px"});
+        me.overlay.attr({ cx: me.pos.x, cy: me.pos.y, r: r });
 		if (me.node.children.length > 1) me.dashedBorder.attr({ cx: me.pos.x, cy: me.pos.y, r: r-4, 'stroke-opacity': me.alpha * 0.9 });
 		else me.dashedBorder.attr({ 'stroke-opacity': 0 });
 
-		me.label.show();
-		me.label.find('*').show();
-		me.label2.show();
+//		me.label.show();
+//		me.label.find('*').show();
+//		me.label2.show();
 		if (r >= me.bc.config.minRadiusLabels) {
 			// full label
-			me.label2.hide();
+			//me.label2.hide();
+            me.text2.style({display: "none"});
+            me.text_inner3.style({display: "table-cell"});
+            me.text_inner4.style({display: "none"});
 		} else if (r >= me.bc.config.minRadiusAmounts) {
 			// full label
-			me.label.find('.desc').hide();
+			//me.label.find('.desc').hide();
+            me.text_inner3.style({display: "none"});
+            me.text_inner4.style({display: "table-cell"});
 		} else if (r >= me.bc.config.minRadiusHideLabels) {
-			me.label.hide();
+			//me.label.hide();
+            me.text.style({display: "none"});
 		} else {
-			me.label.hide();
-			me.label2.hide();
+			//me.label.hide();
+			//me.label2.hide();
+            me.text.style({display: "none"});
+            me.text2.style({display: "none"});
 		}
 
-		me.label.css({ width: 2*r+'px', opacity: me.alpha });
-		me.label.css({ left: (me.pos.x-r)+'px', top: (me.pos.y-me.label.height()*0.5)+'px' });
+//		me.label.css({ width: 2*r+'px', opacity: me.alpha });
+//		me.label.css({ left: (me.pos.x-r)+'px', top: (me.pos.y-me.label.height()*0.5)+'px' });
 	
-		var w = Math.max(70, 3*r);
-		me.label2.css({ width: w+'px', opacity: me.alpha });
-		me.label2.css({ left: (x - w*0.5)+'px', top: (y + r)+'px' });
-
+//		var w = Math.max(70, 3*r);
+//		me.label2.css({ width: w+'px', opacity: me.alpha });
+//		me.label2.css({ left: (x - w*0.5)+'px', top: (y + r)+'px' });
 	};
 	
 	/*
@@ -1475,9 +1490,12 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	me.hide = function() {
 		var me = this, i;
 		me.circle.remove();
+        me.overlay.remove();
 		me.dashedBorder.remove();
-		me.label.remove();
-		me.label2.remove();
+        me.text.remove();
+        me.text2.remove();
+//		me.label.remove();
+//		me.label2.remove();
 		
 		//$('#bubble-chart')
 		me.visible = false;
@@ -1497,48 +1515,62 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 
 		me.dashedBorder = me.paper.circle(cx, cy, r-3)
 			.attr({ stroke: '#ffffff', 'stroke-dasharray': "- " });
-	
 
-		me.label = $('<div class="label '+ me.node.id +'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
-		//console.log(me.node.id);
-        me.container.append(me.label);
+//		me.label = $('<div class="label '+ me.node.id +'"><div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i></div>');
+//        me.container.append(me.label);
 
-        // add text to svg image
-//        console.log(me.circle.cx);
-//        var g = $(document.createElementNS('http://www.w3.org/2000/svg', 'g')).attr({
-//            transform: 'translate(' + 0 + "," + 0 + ')'
-//        })
-//        var text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'))
-//            .attr({
-//               fill: "red",
-//               x: cx,
-//               y: cy,
-//               "text-anchor": "middle"
-//            })
-//            .text("TEXT");
-//        $(me.circle.node).wrap(g);
-//        $(me.circle.node).after(me.dashedBorder.node);
-//        $(me.dashedBorder.node).after(text);
-        // -------------------------------------------------------------------------
-
-		if (me.node.children.length > 0) {
-			$(me.circle.node).css({ cursor: 'pointer'});
-			$(me.label).css({ cursor: 'pointer'});
-		}
+//		if (me.node.children.length > 0) {
+//			$(me.circle.node).css({ cursor: 'pointer'});
+//			$(me.label).css({ cursor: 'pointer'});
+//		}
         $(me.circle.node).attr({ id: 'circle_' + me.node.id});
 
-		// additional label
-		me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
-		me.container.append(me.label2);
-		
-		var list = [me.circle.node, me.label, me.dashedBorder.node];
+        // additional label
+//        me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
+//        me.container.append(me.label2);
 
-		var mgroup = new me.ns.MouseEventGroup(me, list);
-		mgroup.click(me.onclick.bind(me));
-		mgroup.hover(me.onhover.bind(me));
-		mgroup.unhover(me.onunhover.bind(me));
+        me.text = d3.select("#chart svg")
+                  .append("g")
+                    .attr("transform", "translate(" + cx + "," + cy + ")")
+        me.text_inner = me.text.append("foreignObject")
+            .attr("width", 2*r)
+            .attr("height", 2*r)
+        me.text_inner2 = me.text_inner.append("xhtml:div")
+            .style("width", 2*r + "px")
+            .style("height", 2*r + "px")
+            .style("color", "white")
+            .style("text-align", "center")
+            .style("display", "table")
+        me.text_inner3 = me.text_inner2.append("xhtml:div")
+            .style("display", "table-cell")
+            .style("vertical-align", "middle")
+            .html('<div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i>')
+        me.text_inner4 = me.text_inner2.append("xhtml:div")
+            .style("display", "table-cell")
+            .style("vertical-align", "middle")
+            .html('<div class="amount">'+utils.formatNumber(me.node.amount)+'</div><i class="fa ' + me.node.icon + '"></i>')
+
+        me.text2 = d3.select("#chart svg")
+            .append("g")
+            .attr("transform", "translate(" + cx + "," + cy + ")")
+        me.text2_inner = me.text2.append("foreignObject")
+            .attr("width", 4*r)
+            .attr("height", 4*r)
+        me.text2_inner2 = me.text2_inner.append("xhtml:div")
+            .style("color", "#0b387c")
+            .style("font", "11px Arial")
+            .style("text-align", "center")
+            .html(me.node.shortLabel)
+
+//		var list = [me.circle.node, me.label, me.dashedBorder.node];
+//
+//		var mgroup = new me.ns.MouseEventGroup(me, list);
+//		mgroup.click(me.onclick.bind(me));
+//		mgroup.hover(me.onhover.bind(me));
+//		mgroup.unhover(me.onunhover.bind(me));
 		
 		me.visible = true;
+        me.addOverlay();
 	};
 	
 	/*
@@ -1548,17 +1580,17 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 	me.addOverlay = function() {
 		// add invisible overlay circle
 		var me = this;
+
+        me.overlay = me.paper.circle(me.circle.attrs.cx, me.circle.attrs.cy, me.circle.attrs.r)
+            .attr({ stroke: false, fill: '#fff', 'opacity': 0});
+
+        if (Raphael.svg) {
+            me.overlay.node.setAttribute('class', "hover_" + me.node.id);
+        }
+        $(me.overlay.node).css({ cursor: 'pointer'});
+        $(me.overlay.node).click(me.onclick.bind(me));
 		
-		me.overlay = me.paper.circle(me.circle.attrs.cx, me.circle.attrs.cy, me.circle.attrs.r)
-			.attr({ stroke: false, fill: '#fff', 'opacity': 0});
-		
-		if (Raphael.svg) {
-			me.overlay.node.setAttribute('class', me.node.id);
-		}
-		$(me.overlay.node).css({ cursor: 'pointer'});
-		$(me.overlay.node).click(me.onclick.bind(me));
-		
-		$(me.label).click(me.onclick.bind(me));
+		//$(me.label).click(me.onclick.bind(me));
 	};
 	
 	me.init();
@@ -1750,6 +1782,7 @@ BubbleTree.Bubbles.Donut = function(node, bubblechart, origin, radius, angle, co
 	 * adds all visible elements to the page
 	 */
 	me.show = function() {
+
 		var me = this, i, r = Math.max(5, me.bubbleRad * me.bc.bubbleScale);
 		
 		me.circle = me.paper.circle(me.pos.x, me.pos.y, r)
