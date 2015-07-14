@@ -152,11 +152,11 @@ Rails.application.routes.draw do
 
   end
 
-  # get 'public/calendar/:calendar_id' => 'public#calendar'
-  # get 'public/calendar/:calendar_id' => 'public#calendar'
-  # post 'public/subscribe/:calendar_id' => 'public#subscribe'
-  # delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
-  #
+  get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/calendar/:calendar_id' => 'public#calendar'
+  post 'public/subscribe/:calendar_id' => 'public#subscribe'
+  delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.
