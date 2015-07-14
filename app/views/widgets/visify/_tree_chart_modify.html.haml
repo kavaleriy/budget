@@ -123,6 +123,9 @@
         width = document_width;
       }
       height = width*0.6;
+      $("#tab_chart").height(height);
+      $("#tab_pie").height(height);
+      $("#tab_table").height(height);
 
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
       slider.initialize(100, {clickCallback: sliderItemClick});
