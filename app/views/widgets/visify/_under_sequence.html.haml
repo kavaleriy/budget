@@ -48,8 +48,9 @@
         }
 
         amountFact_tag = ''
-        if ((node.amount_fact || 0) != 0)
-          amountFact_tag = ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber() + "</b>"
+        if (node.amount_fact){
+          amountFact_tag = ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount_fact) + "</b>"
+        }
 
         icon_tag = ''
         if (node.icon)
