@@ -3,6 +3,8 @@ class Calendar
 
   field :author, type: String
 
+  field :town, type: String
+
   field :title, type: String
   field :description, type: String
 
@@ -11,6 +13,7 @@ class Calendar
   field :import_file, type: String
   embeds_many :events
   has_and_belongs_to_many :subscribers
+
   def import(path)
     workbook = RubyXL::Parser.parse(path)
     worksheet = workbook[0]

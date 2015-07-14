@@ -1,8 +1,12 @@
-class PublicController < ApplicationController
+class Public::HomeController < ApplicationController
   layout 'application_public'
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
+
+  def index
+    @towns = Town.all
+  end
 
   def budget
     @budgets = Taxonomy.all
