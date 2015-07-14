@@ -105,6 +105,7 @@
       pathEl.stop().animate( { 'stroke-width': 5, 'fill-opacity': '0.8' }, 2000, mina.elastic);
       var id = '#' + $(this).attr('id').split('_')[0] + '_text_' + d.id;
       $(id).css('fill', 'blue');
+      _self.hoverCallback(d);
     }
 
     function mouseout(d) {
@@ -113,6 +114,7 @@
       $(this).css("stroke", "none");
       var id = '#' + $(this).attr('id').split('_')[0] + '_text_' + d.id;
       $(id).css('fill', 'black');
+      _self.hoverCallback(d);
     }
 
     return {
@@ -120,6 +122,7 @@
         I18n.locale = window.aHelper.lang();
         _self = this;
         _self.clickCallback = options.clickCallback;
+        _self.hoverCallback = options.hoverCallback;
         $("#sidebar_chart").html('');
 
         width = $("#chart").width() - margin.left - margin.right,

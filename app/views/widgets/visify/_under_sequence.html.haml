@@ -54,7 +54,7 @@
           + ", <span class='percentage'>" + percentage + percParentTitle + "</span>"
           + "</h4><h5>"
           + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
-          + ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount * .95) + "</b></h5>"
+          + ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount_fact || 0) + "</b></h5>"
           + amountFonds
 
         $(aContainer + ' #under_sequence').html(div)

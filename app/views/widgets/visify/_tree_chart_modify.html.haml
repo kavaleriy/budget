@@ -123,11 +123,14 @@
         width = document_width;
       }
       height = width*0.6;
+      $("#tab_chart").height(height);
+      $("#tab_pie").height(height);
+      $("#tab_table").height(height);
 
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
       slider.initialize(100, {clickCallback: sliderItemClick});
       slider_chart.initialize(40, {clickCallback: yearItemClick});
-      sidebar.initialize(height, {clickCallback: ItemClick});
+      sidebar.initialize(height, {clickCallback: ItemClick, hoverCallback: hoverCallback});
       $("#chart").html('');
       chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
 
@@ -392,20 +395,21 @@
           if(e.node.label == "Інше") {
             return;
           }
-          under_sequence.show(e.node);
-          slider_chart.show(e.node, year);
-          slider.show(e.node, year);
-          sidebar.show(e.node);
+          hoverCallback(e.node)
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
           if(e.node.label == "Інше"){
             return;
           }
-          under_sequence.show(centerNode);
-          slider_chart.show(centerNode, year);
-          slider.show(centerNode, year);
-          sidebar.show(centerNode);
+          hoverCallback(centerNode)
         }
+      }
+
+      function hoverCallback(d) {
+        under_sequence.show(d);
+        slider_chart.show(d, year);
+        slider.show(d, year);
+        sidebar.description(d);
       }
     }
 
