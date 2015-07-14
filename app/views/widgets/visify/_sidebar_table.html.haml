@@ -105,7 +105,6 @@
         })
 
         function create_graph(_data, id) {
-
           var data = [];
           var value;
           for(var key in _data) {
@@ -114,8 +113,14 @@
           }
 
           var margin = {top: 10, right: 10, bottom: 10, left: 10},
-              width = $('#chart').width()*0.16 - margin.left - margin.right,
+              width,
               height = 50 - margin.top - margin.bottom;
+          if($('#chart').width() > 0) {
+              width = $('#chart').width()*0.16 - margin.left - margin.right;
+          } else {
+              width = $('#tab_table').width()*0.16 - margin.left - margin.right;
+          }
+
 
           // to find nearest year to current mouse position
           var bisectYear = d3.bisector(function(d){ return d.year;}).left;
