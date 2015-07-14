@@ -14,9 +14,9 @@ class Documentation::Document
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
 
-  belongs_to :branch, class_name: 'Documentation::Branch', :dependent => :nullify
-  belongs_to :town, :dependent => :nullify
-  belongs_to :owner, class_name: 'User', :dependent => :nullify
+  belongs_to :branch, class_name: 'Documentation::Branch'
+  belongs_to :town
+  belongs_to :owner, class_name: 'User'
 
   mount_uploader :doc_file, DocumentationUploader
   skip_callback :update, :before, :store_previous_model_for_doc_file
