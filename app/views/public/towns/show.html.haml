@@ -34,6 +34,16 @@
         = calendar.title
     %hr
 
+  %h3
+    Документи
+
+  - @town.documentation_documents.each do |doc|
+    %p
+      %h4.document{ 'data-id' => doc.id }
+        %a{href: doc.doc_file.url}
+          = doc.title
+    %hr
+
 
 
 .col-xs-10
