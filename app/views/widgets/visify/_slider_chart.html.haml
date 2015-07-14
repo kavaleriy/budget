@@ -135,6 +135,8 @@
       else if (totalSize >= 1000000) {k = 1000000; y_label = I18n.t("short_units.million");}
       else if (totalSize >= 1000) {k = 1000; y_label = I18n.t("short_units.thousand");}
       else {k = 1; y_label = I18n.t("short_units.unit");}
+      
+      $(aContainer).height(height + margin.top + margin.bottom);
       svg.selectAll("*").remove();
 
       var maxSize = totalSize/k;
