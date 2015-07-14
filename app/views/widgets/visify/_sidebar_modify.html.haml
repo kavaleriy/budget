@@ -52,23 +52,23 @@
       show: function(node){
         this.getLevelInfo(node)
       },
-
-      getLevelInfo: function(node) {
-
+      description: function(node){
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = '';
           $('#collapseDesc').height('auto');
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
           }
-          $(aContainer + ' #description').html(div_descr)
-
-          if(node.children && node.children.length != 0) {
-              chart.show(node.children);
-              pie.show(node.children);
-              table.show(node.children);
-          }
+          $(aContainer + ' #description').html(div_descr);
         })
+      },
+      getLevelInfo: function(node) {
+        this.description(node);
+        if(node.children && node.children.length != 0) {
+            chart.show(node.children);
+            pie.show(node.children);
+            table.show(node.children);
+        }
       },
     }
   }
