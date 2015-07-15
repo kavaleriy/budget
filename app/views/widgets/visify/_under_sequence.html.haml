@@ -29,9 +29,9 @@
         }
 
         var fond_count = 0
-        amountFonds = ''
+        amountFonds = '<div style="height: 50px">'
         if (node.amount_fond) {
-          amountFonds = ' <small>'
+          amountFonds += '<small>'
           $.each(node.amount_fond, function(k, v) {
             fond = fonds[k]
             if (fond == undefined)
@@ -46,6 +46,7 @@
           if (fond_count == 0)
             amountFonds = ''
         }
+        amountFonds += '</div>'
 
         amountFact_tag = ''
         if (node.amount_fact){
@@ -57,13 +58,13 @@
           icon_tag =  '<i class="fa ' + node.icon + '"></i> '
 
 
-        div = '<h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
+        div = '<div style="height: 50px"><h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
           + '<b>' + aVisify.helpers.formatNumber(node.amount) + '</b>'
           + percentage_tag
-          + "</h4>"
-          + "<h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          + "</h4></div>"
+          + "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
           + amountFact_tag
-          + "</h5>"
+          + "</h5></div>"
           + amountFonds
 
         $(aContainer + ' #under_sequence').html(div)

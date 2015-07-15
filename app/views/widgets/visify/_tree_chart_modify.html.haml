@@ -392,15 +392,9 @@
 
         if(e.type == "SHOW") {
           pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
-          if(e.node.label == "Інше") {
-            return;
-          }
           hoverCallback(e.node)
         } else {
           pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
-          if(e.node.label == "Інше"){
-            return;
-          }
           hoverCallback(centerNode)
         }
       }
