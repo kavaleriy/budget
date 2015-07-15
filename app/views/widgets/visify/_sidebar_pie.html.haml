@@ -32,15 +32,17 @@
             return
 
           data = [];
-          var center_node = {"label": _data[0].parent.label, "value": _data[0].parent.amount};
-          _data.forEach(function(d, index) {
-            item = { label: d.label, value: d.amount, value_fact:( d.amount_fact || 0), index: index }
-            //console.log(d.color)
-            if (d.color) item.color = d.color
-            data.push( item )
-          });
+          if(_data[0].parent) {
+            var center_node = {"label": _data[0].parent.label, "value": _data[0].parent.amount};
+            _data.forEach(function(d, index) {
+              item = { label: d.label, value: d.amount, value_fact:( d.amount_fact || 0), index: index }
+              //console.log(d.color)
+              if (d.color) item.color = d.color
+              data.push( item )
+            });
 
-          draw_data(data, center_node);
+            draw_data(data, center_node);
+          }
 
           function draw_data(data, center_node) {
             _self.pie = new d3pie("sidebar_pie", {
@@ -79,12 +81,16 @@
                   }
                 },
                 onMouseoverSegment: function(segment){
-                  index = segment.context.__data__.index;
-                  _self.hoverCallback(_data[index]);
+                  if(!segment.context.__data__.isGrouped) {
+                    index = segment.context.__data__.index;
+                    _self.hoverCallback(_data[index]);
+                  }
                 },
                 onMouseoutSegment: function(segment){
-                  index = segment.context.__data__.index;
-                  _self.hoverCallback(_data[index].parent);
+                  if(!segment.context.__data__.isGrouped) {
+                    index = segment.context.__data__.index;
+                    _self.hoverCallback(_data[index].parent);
+                  }
                 }
               },
               labels: {
