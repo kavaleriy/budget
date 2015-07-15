@@ -16,6 +16,7 @@
         width = $('#sidebar_chart').width() - margin.left - margin.right
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
       },
       hide: hide,
       show: function(data) {
@@ -73,6 +74,12 @@
 
         d3.selectAll(".tr_nodes")
                     .style("cursor", "pointer")
+                    .on("mouseover", function(d, i) {
+                         self.hoverCallback(data[i])
+                       })
+                    .on("mouseout", function(d, i) {
+                         self.hoverCallback(data[i].parent);
+                       })
                     .on("click", function(d, i) {
                          self.clickCallback(data[i]);
                        });
