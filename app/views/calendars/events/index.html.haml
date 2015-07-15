@@ -19,7 +19,7 @@
   %tbody
     - @events.each do |event|
       %tr
-        %td= link_to event.id, event_path(:calendars, event.calendar, event)
+        %td= link_to event.id, calendars_calendar_event_path(:calendars, event.calendar, event)
         %td= event.holder
         %td= event.title
         %td= event.icon
@@ -29,7 +29,7 @@
         %td= event.all_day
         %td= event.color
         %td
-          = link_to t('form.edit', :default => t("helpers.links.edit")), edit_event_path(event), :class => 'btn btn-default btn-xs'
-          = link_to t('form.destroy', :default => t("helpers.links.destroy")), event_path(event), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+          = link_to t('form.edit', :default => t("helpers.links.edit")), edit_calendars_calendar_event_path(:calendars, event.calendar, event), :class => 'btn btn-default btn-xs'
+          = link_to t('form.destroy', :default => t("helpers.links.destroy")), edit_calendars_calendar_event_path(:calendars, event.calendar, event), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-= link_to t('form.new', :default => t("helpers.links.new")), new_event_path, :class => 'btn btn-primary'
+= link_to t('form.new', :default => t("helpers.links.new")), new_calendars_calendar_event_path, :class => 'btn btn-primary'

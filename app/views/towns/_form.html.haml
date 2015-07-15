@@ -1,19 +1,20 @@
-= form_for @town, :html => { :class => 'form-horizontal', :multipart => true} do |f|
-  .form-group
-    = f.label :img, :class => 'control-label'
-    .upload_img
-      -if @town.img?
-        =image_tag @town.img
-      -else
-        =image_tag "no_image.png"
-      = f.file_field :img, :class => 'btn btn-default'
-  .form-group
-    = f.label :title, :class => 'control-label'
-    .controls
-      = f.text_field :title, :class => 'form-control'
+.width-container.clearfix
+  .column_container.clearfix
+    = bootstrap_form_for @town, :html => { :class => 'edit_town', :multipart => true} do |f|
+      .row
+        .col-md-5
+          .upload_img
+            -if @town.img?
+              =image_tag @town.img
+            -else
+              =image_tag "no_image.png"
+            = f.file_field :img, :class => 'btn btn-default'
+        .col-md-7
+          = f.text_field :title, :class => 'control-label'
+          =f.text_area :links, :placeholder => t("town_links_placeholder")
 
-  = f.submit nil, :class => 'btn btn-primary'
-  = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
+      = f.submit nil, :class => 'btn btn-primary'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
 
 
 

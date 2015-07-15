@@ -10,14 +10,11 @@
 
       %h4.title
         %span.fa{:class => @event.icon}
-        %a{ href: '#', id: 'holder', 'data-type' => 'select', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-source'=>'{"1":"Місто","2":"Громада"}' }
-          = "#{holder_to_string(@event.holder)}:"
+        = "#{holder_to_string(@event.holder)}:"
         %br
-        %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-emptytext' => 'Вкажіть назву файлу...' }
-          = @event.title
+        = @event.title
       %p.description
-        %div{ href: '#', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-value'=>@event.description }
-          = @event.description.html_safe
+        @event.description.html_safe
 .panel.panel-default
   .panel-heading
     %i.fa.fa-download &nbsp; Додатки
