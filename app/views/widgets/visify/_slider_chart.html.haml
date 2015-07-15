@@ -55,6 +55,7 @@
     function delay(d, i) { return i * 10; }
 
     function hide() {
+      if (svg == undefined) return;
       //$(aContainer).height(0);
       //svg.selectAll("*").remove();
       d3.selectAll(".year_slider_chart").style("display","none");

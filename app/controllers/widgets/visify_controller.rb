@@ -10,7 +10,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def get_bubbletree_data
     cache_key = Digest::SHA1.hexdigest(params.sort.flatten.join("_object"))
 
-    result = Rails.cache.fetch( cache_key, :expires_in => Rails.env.development? ? 30.second : 12.hours) do
+    result = Rails.cache.fetch( cache_key, :expires_in => Rails.env.development? ? 30.second : 20.minutes) do
       params[:levels] ? levels = params[:levels].split(",") : levels = []
       get_bubble_tree(levels)
     end

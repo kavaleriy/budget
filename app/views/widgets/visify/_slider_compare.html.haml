@@ -49,6 +49,7 @@
     function delay(d, i) { return i * 5; }
 
     function hide() {
+      if (svg == undefined) return;
       //$(aContainer).height(0);
       //svg.selectAll("*").remove();
       d3.selectAll(".month_slider_chart").style("display","none");
