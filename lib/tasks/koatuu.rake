@@ -63,15 +63,17 @@ namespace :koatuu do
   # =====================================================================================================
   desc "Set geo-data from OSM"
   task :update_coordinates => :environment do
+    Town.cities(area_code).each do |city|
+      city.coordinates = get_coordinates("#{area.title}, #{city.title}") if city.coordinates.blank?
+      city.save!
+    end
+
     Town.areas.each do |area|
       area.coordinates = get_coordinates(area.title) if area.coordinates.blank?
       area.save!
 
       area_code = area.koatuu.slice(0, 2)
 
-      city = Town.cities(area_code).first
-      city.coordinates = get_coordinates("#{area.title}, #{city.title}") if city.coordinates.blank?
-      city.save!
 
       # Town.towns(area_code).each do |town|
       #   town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
