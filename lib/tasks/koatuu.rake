@@ -73,10 +73,10 @@ namespace :koatuu do
       city.coordinates = get_coordinates("#{area.title}, #{city.title}") if city.coordinates.blank?
       city.save!
 
-      Town.towns(area_code).each do |town|
-        town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
-        town.save!
-      end
+      # Town.towns(area_code).each do |town|
+      #   town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
+      #   town.save!
+      # end
     end
   end
 
