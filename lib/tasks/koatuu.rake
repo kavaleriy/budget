@@ -65,15 +65,18 @@ namespace :koatuu do
   task :update_coordinates => :environment do
     Town.areas.each do |area|
       area.coordinates = get_coordinates(area.title) if area.coordinates.blank?
+      area.save!
 
       area_code = area.koatuu.slice(0, 2)
 
       city = Town.cities(area_code).first
       city.coordinates = get_coordinates("#{area.title}, #{city.title}") if city.coordinates.blank?
+      city.save!
 
-      # Town.towns(area_code).each do |town|
-      #   town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
-      # end
+      Town.towns(area_code).each do |town|
+        town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
+        town.save!
+      end
     end
   end
 
