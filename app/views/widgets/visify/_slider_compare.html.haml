@@ -49,9 +49,10 @@
     function delay(d, i) { return i * 5; }
 
     function hide() {
-      console.log("hide")
-      $(aContainer).height(0);
-      svg.selectAll("*").remove();
+      if (svg == undefined) return;
+      //$(aContainer).height(0);
+      //svg.selectAll("*").remove();
+      d3.selectAll(".month_slider_chart").style("display","none");
     }
 
     function sort(data) {
@@ -263,12 +264,6 @@
             .scale(x1)
             .orient("bottom");
 
-        svg = d3.select(aContainer).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
         color = d3.scale.category20c();
 
       },
@@ -295,8 +290,32 @@
         } else {
           year_info = 1;
         }
+
+        // cache onhover result
+        if(node.id) {
+          d3.selectAll(".month_slider_chart").style("display","none");
+          if($("#month_slider_" + node.id).length) {
+            d3.select("#month_slider_" + node.id).style("display","block");
+            return;
+          } else {
+            d3.selectAll(".month_slider_chart").style("display","none");
+            svg = d3.select(aContainer)
+                .append("div")
+                  .attr("id","month_slider_" + node.id)
+                  .attr("class","month_slider_chart")
+                  .style("position","absolute")
+                  .style("display","block")
+                .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          }
+          show(data);             // show months compare for the last year
+        }
+
         current_year = year;
-        show(data);             // show months compare for the last year
+
       },
       current_node: function() {
         return current_node;

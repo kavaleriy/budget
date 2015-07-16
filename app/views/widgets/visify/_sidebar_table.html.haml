@@ -16,6 +16,7 @@
         width = $('#sidebar_chart').width() - margin.left - margin.right
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
       },
       hide: hide,
       show: function(data) {
@@ -73,6 +74,12 @@
 
         d3.selectAll(".tr_nodes")
                     .style("cursor", "pointer")
+                    .on("mouseover", function(d, i) {
+                         self.hoverCallback(data[i])
+                       })
+                    .on("mouseout", function(d, i) {
+                         self.hoverCallback(data[i].parent);
+                       })
                     .on("click", function(d, i) {
                          self.clickCallback(data[i]);
                        });
@@ -105,7 +112,6 @@
         })
 
         function create_graph(_data, id) {
-
           var data = [];
           var value;
           for(var key in _data) {
@@ -114,8 +120,14 @@
           }
 
           var margin = {top: 10, right: 10, bottom: 10, left: 10},
-              width = $('#chart').width()*0.16 - margin.left - margin.right,
+              width,
               height = 50 - margin.top - margin.bottom;
+          if($('#chart').width() > 0) {
+              width = $('#chart').width()*0.16 - margin.left - margin.right;
+          } else {
+              width = $('#tab_table').width()*0.16 - margin.left - margin.right;
+          }
+
 
           // to find nearest year to current mouse position
           var bisectYear = d3.bisector(function(d){ return d.year;}).left;

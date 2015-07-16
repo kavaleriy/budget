@@ -1,4 +1,4 @@
-.sidebar.col-xs-12
+.sidebar
   %table#description_table
     %thead
       %tr
@@ -24,20 +24,6 @@
                 = attachment.title
 
 :javascript
-
-  $(document).ready(function() {
-    $('#collapseDesc').on("shown.bs.collapse", function() {
-      check_height();
-    })
-  })
-
-  var height;
-
-  function check_height() {
-    if($('#collapseDesc').height() > height) {
-      $('#collapseDesc').height(height);
-    }
-  }
 
   function aSidebar(aContainer) {
     var chart, pie, table;
@@ -66,27 +52,23 @@
       show: function(node){
         this.getLevelInfo(node)
       },
-
-      getLevelInfo: function(node) {
-
+      description: function(node){
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{@budget_file.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = '';
           $('#collapseDesc').height('auto');
           if (data.description) {
             div_descr = "<div class='description'>" + data.description + "</div>"
-            if(!height) { // asign height equal to chart
-              height = $('.chart').height();
-            }
           }
-          $(aContainer + ' #description').html(div_descr)
-          check_height();
-
-          if(node.children && node.children.length != 0) {
-              chart.show(node.children);
-              pie.show(node.children);
-              table.show(node.children);
-          }
+          $(aContainer + ' #description').html(div_descr);
         })
+      },
+      getLevelInfo: function(node) {
+        this.description(node);
+        if(node.children && node.children.length != 0) {
+            chart.show(node.children);
+            pie.show(node.children);
+            table.show(node.children);
+        }
       },
     }
   }

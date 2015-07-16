@@ -1407,10 +1407,12 @@
 
             arc.on("mouseover", function() {
                 if($(this).attr('class').split("_")[1] != "labelGroup-inner") {
-                    var id = $(this).find('path').attr('id').split('_')[0];
+                    var currentEl = $(this);
+                    var segment;
+                    var id = currentEl.find('path').attr('id').split('_')[0];
                     var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
                     s.append(this); // to move current path to the front
-                    var path = $(this).find('path');
+                    var path = currentEl.find('path');
                     var pathEl = Snap.select('#' + path.attr('id'));
                     path.css("stroke", path.css('fill'));
                     path.data('fill-opacity', path.css('fill-opacity'));
@@ -1420,6 +1422,13 @@
                     var d = pie.options.data.content[index];
                     var text = [(d.value/window.aHelper.k(d.value)).toFixed(2) + window.aHelper.short_unit(d.value), d.label];
                     segments.text_animation(s, text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.0em' });
+                    if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+                        segment = currentEl.select("path");
+                    } else {
+                        index = currentEl.attr("data-index");
+                        segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+                    }
+                    pie.options.callbacks.onMouseoverSegment(segment);
                 }
 //                var currentEl = d3.select(this);
 //                var segment, index;
@@ -1466,15 +1475,25 @@
 
             arc.on("mouseout", function() {
                 if($(this).attr('class').split("_")[1] != "labelGroup-inner") {
-                    var path = $(this).find('path');
+                    var currentEl = $(this);
+                    var segment;
+                    var path = currentEl.find('path');
                     var pathEl = Snap.select('#' + path.attr('id'));
                     pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': path.data('fill-opacity'), 'stroke-opacity': '1' }, 5000, mina.elastic);
                     path.css("stroke", "#ffffff");
 
                     var text = [(total_value/window.aHelper.k(total_value)).toFixed(2) + window.aHelper.short_unit(total_value), main_node];
-                    var id = $(this).find('path').attr('id').split('_')[0];
+                    var index = path.attr('id').slice(-1);
+                    var id = currentEl.find('path').attr('id').split('_')[0];
                     var s = Snap.select('#tab_pie svg .' + id + '_pieChart');
                     segments.text_animation(s, text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.0em' });
+                    if (currentEl.attr("class") === pie.cssPrefix + "arc") {
+                        segment = currentEl.select("path");
+                    } else {
+                        index = currentEl.attr("data-index");
+                        segment = d3.select("#" + pie.cssPrefix + "segment" + index);
+                    }
+                    pie.options.callbacks.onMouseoutSegment(segment);
                 }
 //                var currentEl = d3.select(this);
 //                var segment, index;

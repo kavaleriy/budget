@@ -1,0 +1,17 @@
+= render partial: 'slider'
+
+
+.row
+  - @towns.each do |town|
+    .pull-left
+      = render partial: 'topic', :locals => { href: public_path(town.id), img: { src: town.img.thumb.url, alt: town }, title: town, description: 'Детальніше' }
+
+-#= render partial: 'tabs'
+
+%h1
+  Calendar
+-#%iframe{ src:'http://tympanus.net/Development/Calendario/index.html', width: '100%', height: '600px' }
+
+%h1
+  News
+-#%iframe{ src:'http://tympanus.net/Blueprints/VerticalTimeline/', width: '100%', height: '1000px' }

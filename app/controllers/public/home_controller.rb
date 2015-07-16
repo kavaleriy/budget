@@ -1,10 +1,11 @@
-class PublicController < ApplicationController
+class Public::HomeController < ApplicationController
   layout 'application_public'
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
 
   def index
+    @towns = Town.all
   end
 
   def budget
@@ -13,7 +14,6 @@ class PublicController < ApplicationController
 
   def calendar
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
-    render "widgets/calendar/calendar_box"
   end
 
   def subscribe

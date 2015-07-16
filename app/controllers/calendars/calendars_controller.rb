@@ -19,7 +19,6 @@ class Calendars::CalendarsController < ApplicationController
     @city_actions = CalendarAction.where(:holder => '1')
     @people_actions = CalendarAction.where(:holder => '2')
     respond_to do |format|
-      # binding.pry
       format.html{}
       format.xls { send_data @calendar.to_xls() }
     end
@@ -38,13 +37,18 @@ class Calendars::CalendarsController < ApplicationController
   # POST /calendars
   # POST /calendars.json
   def create
-
     @calendar = Calendar.new(calendar_params)
-    if (!@calendar.import_file.nil?)
+
+    unless @calendar.import_file.nil?
       @calendar.import(params[:calendar][:import_file].tempfile)
-    else
-      @calendar.author = current_user.email unless current_user.nil?
+      @calendar.title += " | Copy #{Date.current}"
     end
+
+    unless current_user.nil?
+      @calendar.author = current_user.email
+      @calendar.town = current_user.town unless current_user.nil?
+    end
+
     respond_to do |format|
       if @calendar.save
         format.html { redirect_to [:calendars, @calendar], notice: t('calendar.create') }

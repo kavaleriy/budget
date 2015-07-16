@@ -1,14 +1,14 @@
 :css
-  td.budget {
+  tr.budget {
     cursor: pointer;
   }
-  td.budget.active {
+  tr.budget.active {
     cursor: default;
     font-weight: bold;
   }
 
 .col-sm-3
-  %table.table.table-striped
+  %table.table.table-hover
     %thead
       %tr
         %th
@@ -17,8 +17,8 @@
           = t('owner')
     %tbody
       - @budgets.each do |budget|
-        %tr
-          %td.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
+        %tr.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
+          %td
             = budget.title
           %td= budget.owner
 
@@ -30,8 +30,8 @@
 
   $(document).ready(function() {
 
-    $('td.budget[data-id]').on('click', function (e) {
-      $('td.budget').removeClass('active')
+    $('tr.budget[data-id]').on('click', function (e) {
+      $('tr.budget').removeClass('active')
       $(this).addClass('active')
 
       var vis = $(this).attr('data-vis')

@@ -145,7 +145,12 @@ Rails.application.routes.draw do
   resources :subscribers
 
 
-  get 'public/budget' => 'public#budget'
+  namespace :public do
+    get 'budget' => 'home#budget'
+
+    get 'towns/:town_id' => 'towns#show'
+
+  end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/calendar/:calendar_id' => 'public#calendar'
@@ -153,11 +158,12 @@ Rails.application.routes.draw do
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
 
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'public#index'
+  root 'public/home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

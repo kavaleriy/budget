@@ -19,21 +19,19 @@
       show: function(node) {
         I18n.locale = window.aHelper.lang()
         label = node.label || ''
-        icon = node.icon || ''
 
+        percentage_tag = ''
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node.amount, node.parent.amount)
           percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
-        }
-        else {
-          percentage = '100%'
-          percParentTitle = ''
+
+          percentage_tag = "<br/><small class='percentage'>" + percentage + percParentTitle + "</small>"
         }
 
         var fond_count = 0
-        amountFonds = ''
+        amountFonds = '<div style="height: 50px">'
         if (node.amount_fond) {
-          amountFonds = ' <small>'
+          amountFonds += '<small>'
           $.each(node.amount_fond, function(k, v) {
             fond = fonds[k]
             if (fond == undefined)
@@ -48,13 +46,25 @@
           if (fond_count == 0)
             amountFonds = ''
         }
+        amountFonds += '</div>'
 
-        div = '<h4 style="color: #FF9933;"><i class="fa ' + icon + '"></i><span style="font-weight: bold;">' + label
-          + ": " + aVisify.helpers.formatNumber(node.amount)
-          + ", <span class='percentage'>" + percentage + percParentTitle + "</span>"
-          + "</h4><h5>"
-          + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
-          + ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount * .95) + "</b></h5>"
+        amountFact_tag = ''
+        if (node.amount_fact){
+          amountFact_tag = ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount_fact) + "</b>"
+        }
+
+        icon_tag = ''
+        if (node.icon)
+          icon_tag =  '<i class="fa ' + node.icon + '"></i> '
+
+
+        div = '<div style="height: 50px"><h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
+          + '<b>' + aVisify.helpers.formatNumber(node.amount) + '</b>'
+          + percentage_tag
+          + "</h4></div>"
+          + "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          + amountFact_tag
+          + "</h5></div>"
           + amountFonds
 
         $(aContainer + ' #under_sequence').html(div)
