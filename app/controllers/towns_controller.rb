@@ -4,7 +4,7 @@ class TownsController < ApplicationController
   # GET /towns
   # GET /towns.json
   def index
-    @towns = Town.all
+    @towns = Town.to_tree
   end
 
   # GET /towns/1

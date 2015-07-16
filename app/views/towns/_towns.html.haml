@@ -1,0 +1,7 @@
+%tr
+
+  %td= image_tag town[:img_url] unless town[:img_url].blank?
+  %td{style: css}= link_to town[:title], town_path(town[:id])
+  %td
+    = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town[:id]), :class => 'btn btn-default btn-xs'
+    -#= link_to t('.destroy', :default => t("helpers.links.destroy")), town_path(town), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'

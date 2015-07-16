@@ -3,21 +3,24 @@
   .head.pull-left
     %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th= model_class.human_attribute_name(:img)
-      %th= model_class.human_attribute_name(:id)
-      %th= model_class.human_attribute_name(:title)
-      %th=t '.actions', :default => t("helpers.actions")
-  %tbody
-    - @towns.each do |town|
-      %tr
-        %td= image_tag town.img, height: '32', width: '32'
-        %td= link_to town.id, town_path(town)
-        %td= town.title
-        %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town), :class => 'btn btn-default btn-xs'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), town_path(town), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
+= cache('towns') do
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{width: '70px'}
+        %th title
+        %th=t '.actions', :default => t("helpers.actions")
+    %tbody
+
+    - @towns.each do |area|
+      = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
+
+      = render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
+
+      - area[:regions].each do |region|
+        = render :partial => 'towns', :locals => {:town => region, type: 'region', css: 'font-size: 18px'}
+        - region[:towns].each do |town|
+          = render :partial => 'towns', :locals => {:town => town, css: ''}
+
+    -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'

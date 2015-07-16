@@ -147,6 +147,7 @@ Rails.application.routes.draw do
 
   namespace :public do
     get 'budget' => 'home#budget'
+    get 'documents' => 'home#documents'
 
     get 'towns/:town_id' => 'towns#show'
 

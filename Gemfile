@@ -109,3 +109,6 @@ gem 'geocoder'
 
 #https://github.com/weshatheleopard/rubyXL
 gem 'rubyXL'
+
+# https://github.com/mislav/will_paginate
+gem 'will_paginate'

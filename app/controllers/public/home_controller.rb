@@ -12,6 +12,10 @@ class Public::HomeController < ApplicationController
     @budgets = Taxonomy.all
   end
 
+  def documents
+    @documents = Documentation::Document.all
+  end
+
   def calendar
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
   end
