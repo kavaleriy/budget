@@ -31,8 +31,8 @@ namespace :koatuu do
         level = 31
       end
 
-      koatuu = Town.find_or_create_by(:title => title).
-          update({ koatuu: code, note: note, level: level })
+      koatuu = Town.find_or_create_by(:koatuu => code).
+          update({ title: title, note: note, level: level })
     end
 
 
@@ -61,31 +61,25 @@ namespace :koatuu do
 
 
   # =====================================================================================================
-  desc "Import geo-data from json"
-  task :load_geo => :environment do
-    geo = JSON.parse(File.open("db/spr/geo.json", "r").read)
+  desc "Set geo-data from OSM"
+  task :update_coordinates => :environment do
+    Town.areas.each do |area|
+      area.coordinates = get_coordinates(area.title) if area.coordinates.blank?
 
-    Geo.destroy_all
+      area_code = area.koatuu.slice(0, 2)
 
-    geo.each { |area|
-      extract_geo area
-      regions = area['rayon']
+      city = Town.cities(area_code).first
+      city.coordinates = get_coordinates("#{area.title}, #{city.title}") if city.coordinates.blank?
 
-      regions.each { |region|
-        extract_geo region
-      }
-    }
+      # Town.towns(area_code).each do |town|
+      #   town.coordinates = get_coordinates("#{area.title}, #{town.title}") if town.coordinates.blank?
+      # end
+    end
   end
 
-    private
-      def extract_geo data
-
-        koatuu_code = data['code']
-        lon = data['geo']['lon']
-        lat = data['geo']['lat']
-        zoom = data['geo']['zoom']
-
-        Geo.create({ koatuu_code: koatuu_code, lon: lon, lat: lat, zoom: zoom }).save
-      end
+  private
+    def get_coordinates location
+      Geocoder.coordinates(location)
+    end
 
 end

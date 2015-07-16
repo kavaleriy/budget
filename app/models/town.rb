@@ -10,6 +10,8 @@ class Town
 
   field :links, type: String
 
+  field :coordinates, type: Array
+
   require 'carrierwave/mongoid'
 
   mount_uploader :img, TownUploader
@@ -24,28 +26,23 @@ class Town
   end
 
   def self.to_tree
-    tree = []
-    self.areas.each do |area|
-      area_code = area.koatuu.slice(0, 2)
-      row_area = get_node(area)
+    Rails.cache.fetch( self.name, :expires_in => Rails.env.development? ? 15.minutes : 24.hours) do
+      tree = []
+      self.areas.each do |area|
+        area_code = area.koatuu.slice(0, 2)
+        row_area = get_node(area)
 
-      row_area[:city] = get_node(self.acities(area_code).first)
-      row_area[:regions] = []
-
-      self.regions(area_code).each do |region|
-        region_code = region.koatuu.slice(0, 5)
-        row_regions = get_node(region)
-        row_regions[:towns] = []
-        self.cities(region_code).each do |city|
+        row_area[:city] = get_node(self.cities(area_code).first)
+        row_area[:towns] = []
+        self.towns(area_code).each do |city|
           city_code = city.koatuu
-          row_regions[:towns] << get_node(city)
+          row_area[:towns] << get_node(city)
         end
-        row_area[:regions] << row_regions
-      end
 
-      tree << row_area
+        tree << row_area
+      end
+      tree
     end
-    tree
   end
 
   def self.get_node(node)
@@ -59,10 +56,10 @@ class Town
   def self.regions(koatuu = '')
     self.where(:level => 2).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
-  def self.acities(koatuu = '')
+  def self.cities(koatuu = '')
     self.where(:level => 13).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
-  def self.cities(koatuu = '')
+  def self.towns(koatuu = '')
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
 
