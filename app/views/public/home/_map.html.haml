@@ -24,7 +24,7 @@
     height: auto;
     padding: 10px;
     background: white;
-    opacity: .75;
+    opacity: .9;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
@@ -57,7 +57,7 @@
 
 
       function initMap() {
-        map = L.map('map', { zoomControl:false, scrollWheelZoom : true} )
+        map = L.map('map', { zoomControl:false, scrollWheelZoom : false })
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -84,7 +84,7 @@
 
         function getBrowserLocation() {
           if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: false });
+            navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
           } else {
             $(".map").text("Your browser is out of fashion, there\'s no geolocation!");
           }
@@ -168,7 +168,7 @@
 
           return L.marker(latlng, {
             icon: icon,
-            opacity: .7,
+            opacity: .5,
             draggable: false,
           });
         }
