@@ -14,7 +14,7 @@ class Public::TownsController < ApplicationController
 
   def geo_json
     @geo_json = []
-    Town.cities.each { |town| @geo_json << TownGeojsonBuilder.build_town(town) }
+    Town.areas.each { |town| @geo_json << TownGeojsonBuilder.build_town(town) }
 
 
     respond_to do |format|

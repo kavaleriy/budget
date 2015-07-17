@@ -148,12 +148,11 @@
       // add markers
       var CustomIcon = L.Icon.extend({
         options: {
-          iconSize: [30, 26],
+          iconSize: [64, 64],
         }
       });
 
-      var houseIcon = new CustomIcon({iconUrl: '/assets/repairing/repair_house_small.png'})
-      var roadIcon = new CustomIcon({iconUrl: '/assets/repairing/repair_road_small.png'})
+      var houseIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
 
       function addGeoJson(data) {
         L.geoJson(data, {
@@ -165,19 +164,12 @@
         }).addTo(markers);
 
         function getPointToLayer(feature, latlng) {
-          var icon = new L.Icon.Default()
-          var draggable = false
-          if (feature.properties.repair == 'house') {
-            icon = houseIcon
-            draggable = (options.dragCallback != undefined)
-          } else if (feature.properties.repair == 'road') {
-            icon = roadIcon
-          }
+          var icon = houseIcon // new L.Icon.Default()
 
           return L.marker(latlng, {
             icon: icon,
             opacity: .7,
-            draggable: draggable,
+            draggable: false,
           });
         }
 
