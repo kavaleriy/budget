@@ -4,7 +4,7 @@ class TownsController < ApplicationController
   def search
     respond_to do |format|
       q = params[:query]
-      @towns = Town.or({:title => Regexp.new("^#{q}.*")}, {:area_title => Regexp.new("^#{q}.*")}).order_by(:level => :asc)
+      @towns = Town.where(:title => Regexp.new("^#{q}.*")).order_by(:level => :asc)
       format.json
     end
   end

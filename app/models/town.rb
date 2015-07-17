@@ -48,11 +48,6 @@ class Town
     end
   end
 
-  def self.get_node(node)
-    { id: "#{node.id}", title: node.title, img_url: node.img.icon.url } unless node.nil?
-  end
-
-
   def self.areas(koatuu = '')
     self.where(:level => 1).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
@@ -65,5 +60,12 @@ class Town
   def self.towns(koatuu = '')
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
+
+  private
+
+  def self.get_node(node)
+    { id: "#{node.id}", title: node.title, img_url: node.img.icon.url } unless node.nil?
+  end
+
 
 end

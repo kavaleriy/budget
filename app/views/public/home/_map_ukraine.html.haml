@@ -1,6 +1,6 @@
 :css
   .map_container {
-    height: 800px;
+    height: 400px;
   }
 
 
@@ -18,7 +18,7 @@
 
     $.ajax({
       method: 'get',
-      url: '#{repairing_geo_json_path}',
+      url: '#{public_ukraine_geo_json_path}',
       dataType: 'json',
     })
     .done(function (data) {

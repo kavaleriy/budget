@@ -2,6 +2,8 @@
 
 
 .row
+  = render partial: 'map_ukraine'
+.row
   - @towns.each do |town|
     .pull-left
       = render partial: 'topic', :locals => { href: public_path(town.id), img: { src: town.img.thumb.url, alt: town }, title: town, description: 'Детальніше' }

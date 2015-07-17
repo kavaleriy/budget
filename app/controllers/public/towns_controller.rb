@@ -12,6 +12,16 @@ class Public::TownsController < ApplicationController
     @calendars = Calendar.where(:town => @town)
   end
 
+  def geo_json
+    @geo_json = []
+    Town.cities.each { |town| @geo_json << TownGeojsonBuilder.build_town(town) }
+
+    respond_to do |format|
+      format.json { render json: @geo_json.flatten}
+    end
+
+  end
+
   private
 
   def set_town

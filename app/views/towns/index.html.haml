@@ -4,21 +4,20 @@
     %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
 
 
-= cache('towns') do
-  %table.table.table-striped
-    %thead
-      %tr
-        %th{width: '70px'}
-        %th title
-        %th=t '.actions', :default => t("helpers.actions")
-    %tbody
+%table.table.table-striped
+  %thead
+    %tr
+      %th{width: '70px'}
+      %th title
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
 
-    - @towns.each do |area|
-      = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
+  - @towns.each do |area|
+    = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
 
-      = render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
+    = render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
 
-      - area[:towns].each do |town|
-        = render :partial => 'towns', :locals => {:town => town, css: ''}
+    - area[:towns].each do |town|
+      = render :partial => 'towns', :locals => {:town => town, css: ''}
 
-    -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
+  -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'

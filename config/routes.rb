@@ -153,6 +153,7 @@ Rails.application.routes.draw do
     get 'documents' => 'home#documents'
 
     get 'towns/:town_id' => 'towns#show'
+    get 'ukraine_geo_json' => 'towns#geo_json'
 
   end
 
