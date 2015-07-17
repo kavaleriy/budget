@@ -16,8 +16,9 @@ class Public::TownsController < ApplicationController
     @geo_json = []
     Town.cities.each { |town| @geo_json << TownGeojsonBuilder.build_town(town) }
 
+
     respond_to do |format|
-      format.json { render json: @geo_json.flatten}
+      format.json { render json: @geo_json.compact }
     end
 
   end
