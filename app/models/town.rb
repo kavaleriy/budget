@@ -5,6 +5,7 @@ class Town
 
   field :koatuu, type: String
   field :title, type: String
+  field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
 
@@ -17,12 +18,14 @@ class Town
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
-  has_one :town_geo
-
   has_many :documentation_documents, class_name: 'Documentation::Document'
 
   def to_s
-    self.title
+    if [1, 13].index(level)
+      title
+    else
+      "#{title}, #{area_title}"
+    end
   end
 
   def self.to_tree

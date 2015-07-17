@@ -12,9 +12,12 @@
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'по...' }
       = document.yearTo
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть місто...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть місто...' }
+      = document.town.to_s if document.town
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть тип документу...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть тип документу...' }
+      = document.branch.title if document.branch
+
   %td
     = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
@@ -40,20 +43,22 @@
   });
 
   $('.document[data-id="#{document.id}"] #town').editable({
-      value: "#{document.town.id if document.town }",
-      source: #{ raw Town.all.map {|p| { value: p.id.to_s, text: p.title } }.to_json }
-  })
+    source: '#{search_town_path}',
+    select2: {
+      width: '450px',
+      minimumInputLength: 2,
+      allowClear: true
+    }
+  });
 
   $('.document[data-id="#{document.id}"] #branch').editable({
-      value: "#{document.branch.id if document.branch }",
-      source: #{ raw Documentation::Branch.all.map {|p| { value: p.id.to_s, text: p.title } }.to_json }
-  })
+    source: '#{documentation_search_branch_path}',
+    select2: {
+      width: '450px',
+      allowClear: true
+    }
+  });
 
 
   $('.document[data-id="#{document.id}"] #yearFrom, .document[data-id="#{document.id}"] #yearTo').editable({
-      //format: 'yyyy-mm-dd',
-      //viewformat: 'dd/mm/yyyy',
-      //datepicker: {
-      //  weekStart: 1
-      //}
   })

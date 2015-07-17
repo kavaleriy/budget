@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
 
   namespace :documentation do
+    get 'search_branch' => 'branches#search'
     resources :branches
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
@@ -44,6 +45,8 @@ Rails.application.routes.draw do
     resources :documents
   end
 
+
+  get 'search_town' => 'towns#search'
   resources :towns
 
   namespace :repairing do

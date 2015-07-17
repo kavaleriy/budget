@@ -1,6 +1,14 @@
 class TownsController < ApplicationController
   before_action :set_town, only: [:show, :edit, :update, :destroy]
 
+  def search
+    respond_to do |format|
+      q = params[:query]
+      @towns = Town.or({:title => Regexp.new("^#{q}.*")}, {:area_title => Regexp.new("^#{q}.*")}).order_by(:level => :asc)
+      format.json
+    end
+  end
+
   # GET /towns
   # GET /towns.json
   def index

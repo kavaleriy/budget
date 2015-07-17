@@ -4,6 +4,14 @@ class Documentation::BranchesController < ApplicationController
 
   before_action :set_documentation_branch, only: [:show, :edit, :update, :destroy]
 
+  def search
+    respond_to do |format|
+      q = params[:query]
+      @branches = Documentation::Branch.where(:title => Regexp.new("^#{q}.*"))
+      format.json
+    end
+  end
+
   # GET /documentation/branches
   # GET /documentation/branches.json
   def index

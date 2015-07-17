@@ -5,7 +5,7 @@ class Public::HomeController < ApplicationController
 
 
   def index
-    @towns = Town.all
+    @towns = Town.cities
   end
 
   def budget
