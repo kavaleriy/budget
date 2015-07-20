@@ -111,4 +111,4 @@ gem 'geocoder'
 gem 'rubyXL'
 
 # https://github.com/mislav/will_paginate
-gem 'will_paginate'
+# gem 'will_paginate'
