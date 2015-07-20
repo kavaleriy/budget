@@ -1,0 +1,29 @@
+:css
+  .documentation {
+    min-height: 400px;
+    padding-top: 15px;
+  }
+
+  .documentation .documents {
+    /*max-height: 400px;*/
+    overflow: visible;
+  }
+
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.towns.new.header')
+
+.documentation
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'new_indicator_file', :locals => { :new_file => KeyIndicate::IndicatorFile.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        = render :partial => 'indicator_files', :locals => { :files => @key_indicate_town.key_indicate_indicator_files }
+

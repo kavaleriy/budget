@@ -1,0 +1,38 @@
+= form_for @key_indicate_town, :url => 'indicator_file_create', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  = f.fields_for :key_indicate_indicator_files do |e|
+    - if new_file.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(new_file.errors.count, "error")} prohibited this documentation_document from being saved:"
+        %ul
+          - new_file.errors.full_messages.each do |msg|
+            %li= msg
+
+    .col-sm-12
+      .form-group
+        %label
+          = t('name')
+        = e.text_field :title, :class => 'form-control can_be_disable'
+
+      .form-group
+        %label.control-label
+          = t('owner')
+        - if current_user && current_user.has_role?(:admin)
+          = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), current_user.town), class: 'select-town form-control', id: 'select_indicate_town'
+        - else
+          = ": #{current_user.town}"
+
+    .col-sm-12
+      .form-group
+        = e.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control'
+
+    .col-sm-12
+      .form-group
+        %label
+          %i.glyphicon.glyphicon-folder-open
+            = t('form.file')
+        = file_field_tag "indicate_file[]", multiple: true, :class => 'form-control'
+
+  .actions
+    = f.button :class => 'btn btn-default' do
+      %i.fa.fa-upload
+        = t('form.load')

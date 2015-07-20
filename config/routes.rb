@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+  namespace :key_indicate do
+    resources :towns
+    post 'towns/indicator_file_create' => 'towns#indicator_file_create'
+    put 'towns/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
+    delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
+  end
+
   get 'editor/index'
 
   namespace :programs do

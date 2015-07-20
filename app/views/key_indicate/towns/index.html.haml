@@ -1,0 +1,17 @@
+%h1 Listing key_indicate_towns
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @key_indicate_towns.each do |key_indicate_town|
+    %tr
+      %td= link_to 'Show', key_indicate_town
+      %td= link_to 'Edit', edit_key_indicate_town_path(key_indicate_town)
+      %td= link_to 'Destroy', key_indicate_town, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Town', new_key_indicate_town_path
