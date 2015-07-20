@@ -62,7 +62,7 @@
   });
 
   function create_graphs(num_of_years) {
-    var data = JSON.parse('#{indicators.to_json}')
+    var data = JSON.parse('#{indicators.to_json}'.replace(/&#x27;/g,"\'"))
     $.each(data, function(key, value) {
       $.each(value, function(k, v) {
         var current_year = new Date().getFullYear() - 1;
@@ -150,7 +150,7 @@
                 .on("click", mouseclick);
 
         var indicator_id = v[current_year]['id'];
-
+        // || "#{@current_user.has_role? :admin}" == "true"
         if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
           $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
                                                       .attr("href", "#")
