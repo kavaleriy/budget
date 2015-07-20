@@ -110,6 +110,8 @@ Rails.application.routes.draw do
   end
 
   resources :budget_file_frees
+  resources :budget_file_lvivobl_rots
+  resources :budget_file_lvivobl_rovs
   resources :budget_file_rots
   resources :budget_file_rot_planfacts
   resources :budget_file_rovs

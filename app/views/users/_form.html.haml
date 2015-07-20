@@ -12,7 +12,7 @@
       = f.select :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @user.town), class: 'select-town form-control'
 
   .col-sm-6
-    .form-group
+    .col-md-12
       = f.check_box :locked, label: t('.locked')
     .form-group
       = f.text_field :last_sign_in_at
