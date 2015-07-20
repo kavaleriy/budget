@@ -13,7 +13,8 @@
 
   .col-sm-6
     .form-group
-      = f.check_box :locked, label: t('.locked')
+      = check_box_tag :locked, @user.locked, @user.locked
+      = t('.locked')
     .form-group
       = f.text_field :last_sign_in_at
     .form-group

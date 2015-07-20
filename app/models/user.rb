@@ -11,6 +11,7 @@ class User
   include RoleModel
 
   before_create :lock_user
+
   # Setup accessible (or protected) attributes for your model
   field :locked
   def is_locked?
@@ -54,4 +55,5 @@ class User
   def lock_user
     self.locked = true;
   end
+
 end
