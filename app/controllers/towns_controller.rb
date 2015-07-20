@@ -69,6 +69,10 @@ class TownsController < ApplicationController
     end
   end
 
+  def indicator_file_destroy
+    # code here
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_town

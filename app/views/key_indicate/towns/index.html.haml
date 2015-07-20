@@ -1,17 +1,13 @@
-%h1 Listing key_indicate_towns
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.towns.index.header')
 
-%table
-  %tr
-    %th
-    %th
-    %th
+.col-xs-12{:style => "margin-top: 20px;"}
+  - @key_indicate_towns.each do |town|
+    - if town.key_indicate_indicator_files.length > 0
+      = link_to town.title, town
+      %br
 
-  - @key_indicate_towns.each do |key_indicate_town|
-    %tr
-      %td= link_to 'Show', key_indicate_town
-      %td= link_to 'Edit', edit_key_indicate_town_path(key_indicate_town)
-      %td= link_to 'Destroy', key_indicate_town, :method => :delete, :data => { :confirm => 'Are you sure?' }
+= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path,
+  :type => "button", :method => :get, :class => "btn btn-primary", :style => "margin-top: 20px;"
 
-%br
-
-= link_to 'New Town', new_key_indicate_town_path

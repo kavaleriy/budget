@@ -24,13 +24,16 @@ class KeyIndicate::IndicatorFile
   end
 
   def import table
-
     table[:rows].each{|row|
-      indicator = Indicate::Indicator.new
+      indicator = KeyIndicate::Indicator.new
       row.each{|key, value|
-        indicator[key] = value
+        if key == 'key_indicator'
+          indicator[key] = value.to_i.to_s.rjust(3,'0')
+        else
+          indicator[key] = value
+        end
       }
-      indicator.indicate_indicator_file = self._id.to_s
+      indicator.key_indicate_indicator_file = self._id.to_s
       indicator.save
     }
 
