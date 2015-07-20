@@ -1,8 +1,11 @@
 class KeyIndicate::TownsController < ApplicationController
-  before_action :set_key_indicate_town, only: [:show, :edit, :update, :destroy]
+  before_action :set_key_indicate_town, only: [:show, :edit, :update, :destroy, :indicator_file_destroy]
+  before_action :set_indicator_files, only: [:show, :edit]
+  before_action :set_indicator_file, only: [:update_files_description, :delete_attachments, :download_attachments]
 
   before_action :authenticate_user!, only: [:new, :edit]
   load_and_authorize_resource
+  before_action :create_indicate_town, only: [:new]
 
   # GET /key_indicate/towns
   # GET /key_indicate/towns.json
@@ -17,7 +20,6 @@ class KeyIndicate::TownsController < ApplicationController
 
   # GET /key_indicate/towns/new
   def new
-    @key_indicate_town = KeyIndicate::Town.new
   end
 
   # GET /key_indicate/towns/1/edit
@@ -66,19 +68,26 @@ class KeyIndicate::TownsController < ApplicationController
 
   def indicator_file_create
     @indicator_files = []
+
     if current_user.has_role? :admin
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => params[:town]).first || Indicate::Taxonomy.new(:town => params[:town])
+      @key_indicate_town = KeyIndicate::Town.where(:title => params[:town]).first
+      if @key_indicate_town.nil?
+        @key_indicate_town = KeyIndicate::Town.new(:title => params[:town])
+        @key_indicate_town.generate_explanation
+        @key_indicate_town.save
+      end
     end
 
     params['indicate_file'].each do |f|
-      doc = Indicate::IndicatorFile.new(indicate_indicator_file_params)
+      doc = KeyIndicate::IndicatorFile.new
       doc.indicate_file = f
-      doc.indicate_taxonomy = @indicate_taxonomy
+      params[:key_indicate_town][:title].present? ? doc.title = params[:key_indicate_town][:title] : doc.title = f.original_filename
+      doc.key_indicate_town = @key_indicate_town
       doc.author = current_user.email
       doc.save
       @indicator_files << doc
 
-      table = read_table_from_file 'public/uploads/indicate/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
+      table = read_table_from_file 'public/uploads/key_indicate/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
       doc.import table
     end unless params['indicate_file'].nil?
 
@@ -89,28 +98,86 @@ class KeyIndicate::TownsController < ApplicationController
   end
 
   def indicator_file_update
-    attachment = TaxonomyAttachment.where(:id => params[:attachment_id])
+    indicator_file = KeyIndicate::IndicatorFile.where(:id => params[:indicator_file_id])
     respond_to do |format|
-      if attachment.update(params[:taxonomy_attachment])
+      if indicator_file.update(params[:key_indicate_indicator_file])
         format.js {}
         format.json { head :no_content, status: :updated }
       else
         format.js { render status: :unprocessable_entity }
-        format.json { render json: @indicate_indicator_file.errors, status: :unprocessable_entity }
+        format.json { render json: @key_indicate_town.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def indicator_file_destroy
-    attachment = TaxonomyAttachment.where(:id => params[:attachment_id])
-    attachment.destroy
+    indicator_file = KeyIndicate::IndicatorFile.where(:id => params[:indicator_file_id]).first
+    indicator_file.destroy
     respond_to do |format|
       format.js {}
       format.json { head :no_content, status: :deleted }
     end
   end
 
+  protected
+
+  def read_table_from_file path
+    require 'roo'
+
+    case File.extname(path).upcase
+      when '.CSV'
+        read_csv_xls Roo::CSV.new(path, csv_options: {col_sep: ";"})
+      when '.XLS', '.XLSX'
+        xls = Roo::Excelx.new(path)
+        xls.default_sheet = xls.sheets.first
+        read_csv_xls xls
+      when '.DBF'
+        read_dbf DBF::Table.new(path)
+    end
+  end
+
+  def read_dbf(dbf)
+    cols = dbf.columns.map {|c| c.name}
+
+    rows = dbf.map do |rec|
+      row = {}
+      cols.each { |col|
+        row[col] = rec[col]
+      }
+      row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def read_csv_xls(xls)
+    cols = []
+    xls.first_column.upto(xls.last_column) { |col|
+      cols << xls.cell(1, col).to_s
+    }
+
+    rows = []
+    2.upto(xls.last_row) do |line|
+      row = {}
+      xls.first_column.upto(xls.last_column ) do |col|
+        row[xls.cell(1, col)] = xls.cell(line,col).to_s
+      end
+      rows << row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
   private
+    def create_indicate_town
+      @key_indicate_town = KeyIndicate::Town.where(:title => current_user.town).first
+      if @key_indicate_town.nil?
+        @key_indicate_town = KeyIndicate::Town.new(:title => current_user.town)
+        @key_indicate_town.generate_explanation
+        @key_indicate_town.save
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_key_indicate_town
       @key_indicate_town = KeyIndicate::Town.find(params[:id])
@@ -119,5 +186,13 @@ class KeyIndicate::TownsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_town_params
       params.require(:key_indicate_town).permit(:title, :indicator_file_id, :description)
+    end
+
+    def set_indicator_file
+      @indicator_file = @key_indicate_town.indicator_files.find(params[:indicator_file_id])
+    end
+
+    def set_indicator_files
+      @indicator_files = @key_indicate_town.indicator_files
     end
 end
