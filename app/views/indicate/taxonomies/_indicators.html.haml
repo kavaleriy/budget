@@ -151,7 +151,7 @@
 
         var indicator_id = v[current_year]['id'];
 
-        if(current_user) {
+        if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
           $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
                                                       .attr("href", "#")
                                                       .attr("id", "indicate_indicator")
@@ -177,8 +177,14 @@
             }
           });
         } else {
-          $('div[data-value="' + k + '"] .comments').html('');
-          $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+          $('div[data-value="' + k + '"] .comments').html(urlify(v[current_year]['comment']));
+        }
+
+        function urlify(text) {
+          var urlRegex = /(https?:\/\/[^\s]+)/g;
+          return text.replace(urlRegex, function(url) {
+              return '<a href="' + url + '" target="blank">' + url + '</a>';
+          })
         }
 
         function mouseclick(d) {
