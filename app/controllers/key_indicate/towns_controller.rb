@@ -189,10 +189,10 @@ class KeyIndicate::TownsController < ApplicationController
     end
 
     def set_indicator_file
-      @indicator_file = @key_indicate_town.indicator_files.find(params[:indicator_file_id])
+      @indicator_file = @key_indicate_town.key_indicate_indicator_files.find(params[:indicator_file_id])
     end
 
     def set_indicator_files
-      @indicator_files = @key_indicate_town.indicator_files
+      @indicator_files = @key_indicate_town.key_indicate_indicator_files
     end
 end
