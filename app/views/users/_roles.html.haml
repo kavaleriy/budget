@@ -1,2 +1,12 @@
 -if roles.member? :admin
-  %i.fa.fa-border.fa-check
+  %b
+    %i.fa.fa-border.fa-users
+      Адміністратор
+
+-if roles.member? :public_organisation
+  %i.fa.fa-border.fa-user
+    Громадська організація
+
+-if roles.member? :city_authority
+  %i.fa.fa-border.fa-university
+    Орган влади

@@ -9,17 +9,21 @@
     .form-group
       = f.text_field :email
     .form-group
-      = f.select :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @user.town), class: 'select-town form-control'
+      = f.select :town, options_for_select( [nil] + Town.cities + Town.areas, @user.town), class: 'select-town form-control'
 
   .col-sm-6
     .form-group
-      = check_box_tag :locked, @user.locked, @user.locked
-      = t('.locked')
+      %label
+        = check_box_tag :locked, @user.locked, @user.locked
+        = t('.locked')
     .form-group
       = f.text_field :last_sign_in_at
     .form-group
-      Admin:
-      = render partial: 'roles', :locals => { roles: @user.roles }
+      Ролі:
+      - for role in [:public_organisation, :city_authority]
+        %label
+          = check_box_tag "roles[]", role, @user.roles.include?(role)
+          = role
 
   .clear
   = f.submit 'Save', class: 'btn btn-primary'

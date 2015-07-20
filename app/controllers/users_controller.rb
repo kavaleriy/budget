@@ -24,6 +24,11 @@ class UsersController < ApplicationController
   def update
     params['locked'] ? @user.locked = true : @user.locked = false
 
+    @user.roles -= [:public_organisation, :city_authority]
+    unless params['roles'].nil?
+      params['roles'].each { |role| @user.roles << role.to_sym }
+    end
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -53,6 +58,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :phone, :organisation, :town, :email, :locked)
+    params.require(:user).permit(:name, :phone, :organisation, :town, :email, :locked, :roles)
   end
 end
