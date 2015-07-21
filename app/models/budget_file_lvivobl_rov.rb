@@ -10,12 +10,11 @@ class BudgetFileLvivoblRov < BudgetFile
     return if ktfk.length < 5
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
-    ktfk_aaa = '80' if ktfk_aaa == '800'
-    ktfk_aaa = '90' if ktfk_aaa == '900'
+    ktfk_aaa = '80' if ktfk_aaa.in?(['800', '81'])
+    ktfk_aaa = '90' if ktfk_aaa.in?(['900', '91'])
 
     kekv = row['Економічна класифікація'].to_s.split('.')[0].gsub(/^0*/, "")
-
-    kvk = ''
+    kekv = '-' if kekv.blank?
 
     [
         { :amount => row['Загальний фонд - план'].to_i, :amount_type => :plan, :fond => 1 },
@@ -33,7 +32,7 @@ class BudgetFileLvivoblRov < BudgetFile
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
 
-          'kvk' => kvk,
+          # 'kvk' => kvk,
           'kekv' => kekv,
 
           '_amount_type' => line[:amount_type]
