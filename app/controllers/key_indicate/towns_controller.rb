@@ -51,7 +51,7 @@ class KeyIndicate::TownsController < ApplicationController
   # PATCH/PUT /key_indicate/towns/1.json
   def update
     respond_to do |format|
-      if @key_indicate_town.update(key_indicate_town_params)
+      if @key_indicate_town.update_explanation(params[:town][:explanation])
         format.html { redirect_to @key_indicate_town, notice: 'Town was successfully updated.' }
         format.json { render :show, status: :ok, location: @key_indicate_town }
       else
@@ -126,7 +126,7 @@ class KeyIndicate::TownsController < ApplicationController
 
   def get_files
     @key_indicate_town = KeyIndicate::Town.where(:title => params[:town]).first || KeyIndicate::Town.new(:title => params[:town])
-    render :partial => '/key_indicate/towns/indicator_files', :locals => {:files => @key_indicate_town.key_indicate_indicator_files }
+    render :partial => '/key_indicate/towns/indicator_files', :locals => {:town => @key_indicate_town, :files => @key_indicate_town.key_indicate_indicator_files }
   end
 
   protected

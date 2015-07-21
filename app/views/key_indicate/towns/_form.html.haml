@@ -25,7 +25,7 @@
       .panel-heading
         = t('form.uploaded_documents')
       .documents.panel-body
-        = render :partial => 'indicator_files', :locals => { :files => @key_indicate_town.key_indicate_indicator_files }
+        = render :partial => 'indicator_files', :locals => { :town => @key_indicate_town, :files => @key_indicate_town.key_indicate_indicator_files }
 
 :javascript
 

@@ -1,6 +1,83 @@
-= render 'form'
+:css
+  input[type='submit'] {
+    border-radius: 4px !important;
+  }
 
-.col-sm-12
-  = link_to t('form.show'), @key_indicate_town, :class => 'btn btn-primary btn-show-table'
-  = link_to t('form.back'), key_indicate_towns_path, :class => 'btn btn-default'
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.towns.edit.header')
 
+.col-xs-12
+  = bootstrap_form_for @key_indicate_town, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
+    %table.table
+      %thead
+        %tr
+          %th.col-xs-2
+          %th.col-xs-1
+          %th.col-xs-1
+          %th.col-xs-1
+            = @key_indicate_town.title
+          %th.col-xs-1
+          %th.col-xs-1
+          %th.col-xs-1
+          %th.col-xs-1
+      %tbody
+        - @key_indicate_town.explanation.each do |key, indicator|
+          %tr
+            %td
+              = indicator['indicator']
+              - if indicator['unit']
+                = ', ' + indicator['unit']
+            %td
+              = select_tag "town[explanation]#{key}[icon]", options_for_select([indicator['icon']], indicator['icon']), class: 'fa-select', :include_blank => true
+            %td
+              .input-group.color-select
+                %input{name: "town[explanation]#{key}[color]", value: indicator['color'] }
+                %span.input-group-addon
+            %td
+            %td
+            %td
+            %td
+            %td
+    = f.submit t('form.save'), :class => 'btn btn-primary'
+    = link_to t('form.back'), @key_indicate_town, :class => 'btn btn-default'
+
+:javascript
+
+  var icons, colors = "";
+
+  /* Loading colors and icons once while loading the page.*/
+  if(icons == "" || colors == "") {
+    $.getJSON( "#{asset_path('enums.json') }", function( data ) {
+      $.each( data['fa_icon_list'], function(key,val) {
+        icons = icons + "<option value='" + val + "'>" + val + "</option>";
+      })
+      $.each( data['undp_colors_list'], function(key,val) {
+        colors = colors + "<option value='" + val + "'>" + val + "</option>";
+      })
+    });
+  }
+
+  $(document).on('ready page:change', function() {
+
+    /* Using icons on a page */
+    $(".fa-select").select2(
+      {
+        allowClear: true,
+        formatResult: formatFaSelect,
+        formatSelection: formatFaSelect,
+        escapeMarkup: function(m) { return m; }
+      }
+    ).on("select2-focus", function() {
+      if(!$(this).hasClass('icon-loaded')){
+        $(this).append(icons).addClass('icon-loaded');
+      }
+      });
+
+    function formatFaSelect(el) {
+      return "<i class='fa " + el.id + "'/> " + el.id;
+    }
+
+    /* Using colors on a page */
+    $(".color-select").colorpicker()
+  });
