@@ -205,7 +205,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     else
       @data_type = @budget_file.data_type
     end
-    @data_type = 'plan' unless @data_type
+    @data_type = 'plan' if @data_type.blank?
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
   end

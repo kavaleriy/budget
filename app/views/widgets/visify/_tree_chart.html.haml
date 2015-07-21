@@ -111,6 +111,7 @@
       })
 
       function preprocessData(root, maxNodes) {
+        console.log(root)
         if (root.children.length > maxNodes + 1) {
           var tmp = sortChildren(root.children);
           tmp.reverse();
