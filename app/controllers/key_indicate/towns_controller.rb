@@ -119,6 +119,11 @@ class KeyIndicate::TownsController < ApplicationController
     end
   end
 
+  def get_files
+    @key_indicate_town = KeyIndicate::Town.where(:title => params[:town]).first || KeyIndicate::Town.new(:title => params[:town])
+    render :partial => '/key_indicate/towns/indicator_files', :locals => {:files => @key_indicate_town.key_indicate_indicator_files }
+  end
+
   protected
 
   def read_table_from_file path
