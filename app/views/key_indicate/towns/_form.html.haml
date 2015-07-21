@@ -25,7 +25,7 @@
       .panel-heading
         = t('form.uploaded_documents')
       .documents.panel-body
-        = render :partial => 'indicator_files', :locals => { :files => @key_indicate_town.key_indicate_indicator_files }
+        = render :partial => 'indicator_files', :locals => { :town => @key_indicate_town, :files => @key_indicate_town.key_indicate_indicator_files }
 
 :javascript
 
@@ -44,12 +44,12 @@
       if(town) {
         $('.can_be_disable').removeAttr('disabled');
         $.ajax({
-          url: "get_files/" + town,
+          url: "/key_indicate/towns/get_files/" + town,
           type: "GET",
           dataType: "html",
           success: function(data) {
             $('.documents').html(data);
-            if(!data) {
+            if(!$('.documents .document').html()) {
               $(".btn-show-table").attr('disabled', 'disabled');
             } else {
               $(".btn-show-table").removeAttr('disabled');

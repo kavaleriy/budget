@@ -21,6 +21,7 @@ class KeyIndicate::Town
         indicators[year][key]['name'] = self.explanation[key]['indicator']
         indicators[year][key]['name'] += ", " + self.explanation[key]['unit'] unless self.explanation[key]['unit'].nil?
         indicators[year][key]['icon'] = self.explanation[key]['icon']
+        indicators[year][key]['color'] = self.explanation[key]['color']
         indicators[year][key]['amount'] = indicator['amount']
         indicators[year][key]['description'] = indicator['description']
       }
@@ -28,12 +29,21 @@ class KeyIndicate::Town
     indicators
   end
 
+  def update_explanation explanation
+    self.explanation.each{|key, value|
+      value.each{|k,v|
+        self.explanation[key][k] = explanation[key][k] unless explanation[key][k].nil?
+      }
+    }
+    self.save
+  end
+
   protected
 
   def load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";", :quote_char => '|'}) do |row|
-      items[row[0]] = { key: row['key'], indicator: row['indicator'], unit: row['unit'], icon: row['icon'] }
+      items[row[0]] = { indicator: row['indicator'], unit: row['unit'], icon: row['icon'], color: row['color'] }
     end
     items
   end
