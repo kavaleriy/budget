@@ -1,6 +1,47 @@
-%p#notice= notice
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.towns.show.header', town: @key_indicate_town.title)
 
+.col-xs-12
+  .input-daterange.pull-left{:style => 'margin-top: 20px;'}
+    %input{name: :year, :type => "text", :class => "year_datepicker form-control" }
 
-= link_to 'Edit', edit_key_indicate_town_path(@key_indicate_town)
-\|
-= link_to 'Back', key_indicate_towns_path
+.col-xs-12#indicators_table
+  = render :partial => 'indicators_table', :locals => { :indicators => $key_indicators[$key_indicators.keys.max], :town => @key_indicate_town.title }
+
+= link_to t('form.edit'), edit_key_indicate_town_path(@key_indicate_town), :class => 'btn btn-primary', :style => 'margin-top: 20px;'
+= link_to t('form.back'), key_indicate_towns_path, :class => 'btn btn-default', :style => 'margin-top: 20px;'
+
+:javascript
+
+  $(document).ready(function() {
+
+    // ------------------------ DATEPICKER -----------------------------
+    $.fn.datepicker.dates[window.aHelper.lang()];
+    var endDate = new Date(parseInt("#{$key_indicators.keys.max}"),0,1);
+    var startDate = new Date(parseInt("#{$key_indicators.keys.min}"),0,1);
+
+    $(".year_datepicker").datepicker( {
+      format: 'yyyy',
+      startView: 2,
+      endDate: endDate,
+      startDate: startDate,
+      multidate: true,
+      language: window.aHelper.lang(),
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    }).on('changeDate', function(){
+      $.ajax({
+        url: "/key_indicate/towns/reset_table/#{@key_indicate_town.id}/" + $(this).val(),
+        type: "GET",
+        dataType: "html",
+        success: function(data) {
+          $('#indicators_table').html(data);
+        }
+      })
+    });
+
+    $('.year_datepicker').datepicker('setDate', endDate);
+  })

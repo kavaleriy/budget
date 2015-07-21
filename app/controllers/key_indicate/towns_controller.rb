@@ -1,5 +1,5 @@
 class KeyIndicate::TownsController < ApplicationController
-  before_action :set_key_indicate_town, only: [:show, :edit, :update, :destroy, :indicator_file_destroy]
+  before_action :set_key_indicate_town, only: [:show, :reset_table, :edit, :update, :destroy, :indicator_file_destroy]
   before_action :set_indicator_files, only: [:show, :edit]
   before_action :set_indicator_file, only: [:update_files_description, :delete_attachments, :download_attachments]
 
@@ -16,6 +16,11 @@ class KeyIndicate::TownsController < ApplicationController
   # GET /key_indicate/towns/1
   # GET /key_indicate/towns/1.json
   def show
+    $key_indicators = @key_indicate_town.get_indicators
+  end
+
+  def reset_table
+    render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $key_indicators[params[:year].to_i], :town => @key_indicate_town.title }
   end
 
   # GET /key_indicate/towns/new

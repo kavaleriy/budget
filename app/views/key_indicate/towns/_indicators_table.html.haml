@@ -1,0 +1,21 @@
+%table.table
+  %thead
+    %tr
+      %th.col-xs-2
+      %th.col-xs-2
+        = town
+      %th.col-xs-2
+      %th.col-xs-2
+      %th.col-xs-2
+      %th.col-xs-2
+  %tbody
+    - indicators.each do |key, indicator|
+      %tr
+        %td
+          = indicator['name']
+        %td
+          = indicator['amount']
+        %td
+        %td
+        %td
+        %td

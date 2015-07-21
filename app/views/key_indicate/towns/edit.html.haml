@@ -1,7 +1,6 @@
-%h1 Editing key_indicate_town
-
 = render 'form'
 
-= link_to 'Show', @key_indicate_town
-\|
-= link_to 'Back', key_indicate_towns_path
+.col-sm-12
+  = link_to t('form.show'), @key_indicate_town, :class => 'btn btn-primary'
+  = link_to t('form.back'), key_indicate_towns_path, :class => 'btn btn-default'
+
