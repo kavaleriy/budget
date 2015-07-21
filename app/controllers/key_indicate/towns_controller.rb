@@ -27,6 +27,10 @@ class KeyIndicate::TownsController < ApplicationController
   def new
   end
 
+  def add_files
+    @key_indicate_town = KeyIndicate::Town.where(:id => params[:town]).first
+  end
+
   # GET /key_indicate/towns/1/edit
   def edit
   end

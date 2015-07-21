@@ -44,12 +44,12 @@
       if(town) {
         $('.can_be_disable').removeAttr('disabled');
         $.ajax({
-          url: "get_files/" + town,
+          url: "/key_indicate/towns/get_files/" + town,
           type: "GET",
           dataType: "html",
           success: function(data) {
             $('.documents').html(data);
-            if(!data) {
+            if(!$('.documents .document').html()) {
               $(".btn-show-table").attr('disabled', 'disabled');
             } else {
               $(".btn-show-table").removeAttr('disabled');
