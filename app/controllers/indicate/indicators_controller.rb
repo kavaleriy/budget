@@ -45,7 +45,7 @@ class Indicate::IndicatorsController < ApplicationController
       if @indicate_indicator.update(indicate_indicator_params)
         @indicate_indicator['comment'] = params['indicate_indicator']['comment'].gsub('\'','&#x27;')
         format.js {}
-        format.json { render status: :updated }
+        format.json { head :no_content }
       else
         format.js { render status: :unprocessable_entity }
         format.json { render json: @indicate_indicator.errors, status: :unprocessable_entity }
