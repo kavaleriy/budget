@@ -1,1 +1,4 @@
 $('.documentation .documents').html('<%= escape_javascript( render :partial => 'indicator_files', :locals => { :files => @key_indicate_town.key_indicate_indicator_files } ) %>')
+if(parseInt('<%= j @key_indicate_town.key_indicate_indicator_files.length.to_s %>') <= 0){
+    $(".btn-show-table").attr('disabled', 'disabled');
+}

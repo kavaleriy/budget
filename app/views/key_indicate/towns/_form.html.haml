@@ -34,6 +34,9 @@
     if(!"#{current_user.town}") {
       $('.can_be_disable').attr('disabled', 'disabled');
     }
+    if(parseInt("#{@key_indicate_town.key_indicate_indicator_files.length}") <= 0) {
+      $(".btn-show-table").attr('disabled', 'disabled');
+    }
 
     $("#select_indicate_town").on("change", function() {
       town = $(this).val();
@@ -46,6 +49,11 @@
           dataType: "html",
           success: function(data) {
             $('.documents').html(data);
+            if(!data) {
+              $(".btn-show-table").attr('disabled', 'disabled');
+            } else {
+              $(".btn-show-table").removeAttr('disabled');
+            }
           }
         })
       } else {
