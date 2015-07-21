@@ -3,22 +3,29 @@
     border-radius: 4px !important;
   }
 
+  h5 {
+    color: #666;
+  }
+
 = content_for :header do
   .head.pull-left
     = t('key_indicate.towns.edit.header')
 
-.col-xs-12
+.col-xs-12.col-md-6
   = bootstrap_form_for @key_indicate_town, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
+    %h2
+      = @key_indicate_town.title
+    %h5
+      = t('key_indicate.towns.edit.compare_towns')
+      %p
+      = select_tag :town_select, options_for_select(@towns), { multiple: true, size: 4, class: 'town_select col-xs-12' }
+    %br
+    %h5
+      = t('key_indicate.towns.edit.visual_params')
     %table.table
       %thead
         %tr
           %th.col-xs-2
-          %th.col-xs-1
-          %th.col-xs-1
-          %th.col-xs-1
-            = @key_indicate_town.title
-          %th.col-xs-1
-          %th.col-xs-1
           %th.col-xs-1
           %th.col-xs-1
       %tbody
@@ -34,11 +41,6 @@
               .input-group.color-select
                 %input{name: "town[explanation]#{key}[color]", value: indicator['color'] }
                 %span.input-group-addon
-            %td
-            %td
-            %td
-            %td
-            %td
     = f.submit t('form.save'), :class => 'btn btn-primary'
     = link_to t('key_indicate.towns.index.upload_files'), '/key_indicate/towns/add_files/' + @key_indicate_town.id,
       :type => "button", :method => :get, :class => "btn btn-primary"
@@ -82,4 +84,20 @@
 
     /* Using colors on a page */
     $(".color-select").colorpicker()
+
+    /* Dynamically select town to compare */
+    $(".town_select").select2(
+      {
+        allowClear: true,
+        placeholder: "Вкажіть місто",
+        multiSelect: true,
+        formatResult: formatSelect,
+        formatSelection: formatSelect,
+        escapeMarkup: function(m) { return m; },
+      }
+    )
+
+    function formatSelect(el) {
+      return el.text;
+    }
   });

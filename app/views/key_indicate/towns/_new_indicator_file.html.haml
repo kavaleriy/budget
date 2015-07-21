@@ -1,5 +1,5 @@
 = form_for @key_indicate_town, :url => 'indicator_file_create', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
-  = f.fields_for :key_indicate_indicator_files do |e|
+  = fields_for :key_indicate_indicator_files do |e|
     - if new_file.errors.any?
       #error_explanation
         %h2= "#{pluralize(new_file.errors.count, "error")} prohibited this documentation_document from being saved:"

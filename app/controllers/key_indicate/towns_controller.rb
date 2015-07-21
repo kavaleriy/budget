@@ -33,6 +33,7 @@ class KeyIndicate::TownsController < ApplicationController
 
   # GET /key_indicate/towns/1/edit
   def edit
+    @towns = KeyIndicate::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0 || t == @key_indicate_town }.collect { |t| [t.title, t.id] }
   end
 
   # POST /key_indicate/towns
@@ -90,7 +91,8 @@ class KeyIndicate::TownsController < ApplicationController
     params['indicate_file'].each do |f|
       doc = KeyIndicate::IndicatorFile.new
       doc.indicate_file = f
-      params[:key_indicate_town][:title].present? ? doc.title = params[:key_indicate_town][:title] : doc.title = f.original_filename
+      params[:key_indicate_indicator_files][:title].blank? ? doc.title = f.original_filename : doc.title = params[:key_indicate_indicator_files][:title]
+      doc.description = params[:key_indicate_indicator_files][:description]
       doc.key_indicate_town = @key_indicate_town
       doc.author = current_user.email
       doc.save
