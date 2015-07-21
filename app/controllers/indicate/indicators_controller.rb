@@ -1,5 +1,6 @@
 class Indicate::IndicatorsController < ApplicationController
   before_action :set_indicate_indicator, only: [:show, :edit, :update, :destroy]
+  before_action :fix_params, only: [:update]
 
   # GET /indicate/indicators
   # GET /indicate/indicators.json
@@ -43,9 +44,8 @@ class Indicate::IndicatorsController < ApplicationController
     respond_to do |format|
       if @indicate_indicator.update(indicate_indicator_params)
         @indicate_indicator['comment'] = params['indicate_indicator']['comment'].gsub('\'','&#x27;')
-        @indicate_indicator.save
         format.js {}
-        format.json { head :no_content, status: :updated }
+        format.json { render status: :updated }
       else
         format.js { render status: :unprocessable_entity }
         format.json { render json: @indicate_indicator.errors, status: :unprocessable_entity }
@@ -67,6 +67,10 @@ class Indicate::IndicatorsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_indicate_indicator
       @indicate_indicator = Indicate::Indicator.find(params[:id])
+    end
+
+    def fix_params
+      params['indicate_indicator']['comment'].gsub!('\'','&#x27;')
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
