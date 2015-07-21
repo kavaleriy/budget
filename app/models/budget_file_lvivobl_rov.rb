@@ -9,6 +9,9 @@ class BudgetFileLvivoblRov < BudgetFile
     return if ktfk.match Regexp.new(".*000$")
     return if ktfk.length < 5
 
+    ktfk.gsub!(/^800/, "80")
+    ktfk.gsub!(/^900/, "90")
+
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa.in?(['800', '81'])
     ktfk_aaa = '90' if ktfk_aaa.in?(['900', '91'])

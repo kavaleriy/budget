@@ -1,5 +1,4 @@
 <% if @event_attachment.errors.empty? %>
-    console.log('new_attachment');
     $('.attachment_files table').prepend('<%= escape_javascript( render :partial => 'attachment', :locals => { :event_attachment => @event_attachment } ) %>')
     $('.attachment_files a[data-pk]').editable();
 <% else %>

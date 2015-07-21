@@ -6,7 +6,6 @@ class Calendars::EventAttachmentsController < ApplicationController
   # POST /documentation/documents
   # POST /documentation/documents.json
   def create
-    # binding.pry
     @event_attachment = @event.event_attachments.new(event_attachment_params)
     @event_attachment.name = params[:event_attachment][:doc_file].original_filename;
 
@@ -29,7 +28,6 @@ class Calendars::EventAttachmentsController < ApplicationController
       @event_attachment.attributes = params[:event_attachment]
 
       if @event.save
-          # binding.pry
         format.json { head :no_content }
       else
         format.json { render json: @event_attachment.errors, status: :unprocessable_entity }

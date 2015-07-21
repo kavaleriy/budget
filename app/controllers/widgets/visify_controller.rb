@@ -158,7 +158,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
                   else
                     item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
                   end
-    # binding.pry
+
     unless item['children'].nil?
       node['children'] = []
 
@@ -206,6 +206,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       @data_type = @budget_file.data_type
     end
     @data_type = 'plan' if @data_type.blank?
+
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
   end
@@ -222,7 +223,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @sel_year = visify_params[:year] || @range.last[0]
     @sel_month = visify_params[:month] || @range.last[1].first
 
-    @fond_codes = Taxonomy.fond_codes()
+    @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 
   rescue => e
     logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
