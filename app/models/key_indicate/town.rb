@@ -5,6 +5,7 @@ class KeyIndicate::Town
   field :explanation, :type => Hash
 
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
+  has_and_belongs_to_many :key_indicate_town, :class_name => 'KeyIndicate::Town'
 
   def generate_explanation
     self.explanation = self.load_from_csv 'db/key_indicators.csv'

@@ -55,6 +55,11 @@ class KeyIndicate::TownsController < ApplicationController
   # PATCH/PUT /key_indicate/towns/1
   # PATCH/PUT /key_indicate/towns/1.json
   def update
+    compare_towns = params['compare_towns']
+    @key_indicate_town.key_indicate_town = []
+    compare_towns.each{|town|
+      @key_indicate_town.key_indicate_town.push(KeyIndicate::Town.find(town))
+    }
     respond_to do |format|
       if @key_indicate_town.update_explanation(params[:town][:explanation])
         format.html { redirect_to @key_indicate_town, notice: 'Town was successfully updated.' }

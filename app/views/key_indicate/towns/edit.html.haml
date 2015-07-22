@@ -18,7 +18,7 @@
     %h5
       = t('key_indicate.towns.edit.compare_towns')
       %p
-      = select_tag :town_select, options_for_select(@towns), { multiple: true, size: 4, class: 'town_select col-xs-12' }
+      = select_tag :compare_towns, options_for_select(@towns, @key_indicate_town.key_indicate_town_ids), { multiple: true, class: 'town_select col-xs-12' }
     %br
     %h5
       = t('key_indicate.towns.edit.visual_params')
@@ -36,7 +36,8 @@
               - if indicator['unit']
                 = ', ' + indicator['unit']
             %td
-              = select_tag "town[explanation]#{key}[icon]", options_for_select([indicator['icon']], indicator['icon']), class: 'fa-select', :include_blank => true
+              = select_tag "town[explanation]#{key}[icon]", options_for_select([indicator['icon']], indicator['icon']),
+                class: 'fa-select', :include_blank => true
             %td
               .input-group.color-select
                 %input{name: "town[explanation]#{key}[color]", value: indicator['color'] }
@@ -90,10 +91,10 @@
       {
         allowClear: true,
         placeholder: "Вкажіть місто",
-        multiSelect: true,
         formatResult: formatSelect,
         formatSelection: formatSelect,
         escapeMarkup: function(m) { return m; },
+        maximumSelectionSize: 4
       }
     )
 
