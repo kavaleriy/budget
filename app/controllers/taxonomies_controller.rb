@@ -7,11 +7,6 @@ class TaxonomiesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :download_attachments]
   load_and_authorize_resource
 
-  before_action :set_locale
-  def set_locale
-    I18n.locale = params[:locale]
-  end
-
   def index
     @taxonomies = Taxonomy.visible_to current_user
   end

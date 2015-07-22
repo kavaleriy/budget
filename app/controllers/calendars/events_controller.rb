@@ -5,11 +5,6 @@ class Calendars::EventsController < ApplicationController
   before_action :set_calendar
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_attachments, only: [:show]
-  before_action :set_locale
-
-  def set_locale
-    I18n.locale = params[:locale]
-  end
 
   load_and_authorize_resource :calendar
   load_and_authorize_resource :event, :through => :calendar
