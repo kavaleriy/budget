@@ -8,7 +8,7 @@ class KeyIndicate::Town
   has_and_belongs_to_many :key_indicate_town, :class_name => 'KeyIndicate::Town'
 
   def generate_explanation
-    self.explanation = self.load_from_csv 'db/key_indicators.csv'
+    self.explanation = self.load_from_csv 'db/key_indicators.uk.csv'
   end
 
   def get_indicators
