@@ -1546,15 +1546,19 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.style('fill','white')
 			.attr('text-anchor', 'middle')
 			.style('font-family', 'FontAwesome')
-			.style('font-size', '2.0em')
+			.style('font-size', '1.8em')
 			.text(function(){
-				d3.select('body')
-				  .append('div')
-				  .attr("id", "svg_icon_content")
-				  .html("<i class='fa " + me.node.icon + "'></i>");
-				var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
-				$("#svg_icon_content").remove();
-				return content[1];
+				if(me.node.icon) {
+					d3.select('body')
+						.append('div')
+						.attr("id", "svg_icon_content")
+						.html("<i class='fa " + me.node.icon + "'></i>");
+					var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
+					$("#svg_icon_content").remove();
+					return content[1];
+				} else {
+					return "";
+				}
 			});
 
 		me.text2 = d3.select("#chart svg")
