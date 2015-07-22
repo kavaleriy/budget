@@ -7,7 +7,7 @@
     %input{name: :year, :type => "text", :class => "year_datepicker form-control" }
 
 .col-xs-12#indicators_table
-  = render :partial => 'indicators_table', :locals => { :indicators => $key_indicators[$key_indicators.keys.max], :town => @key_indicate_town.title }
+  = render :partial => 'indicators_table', :locals => { :indicators => $key_indicators[$key_indicators.keys.max], :town => @key_indicate_town }
 
 = link_to t('form.edit'), edit_key_indicate_town_path(@key_indicate_town), :class => 'btn btn-primary', :style => 'margin-top: 20px;'
 = link_to t('form.back'), key_indicate_towns_path, :class => 'btn btn-default', :style => 'margin-top: 20px;'

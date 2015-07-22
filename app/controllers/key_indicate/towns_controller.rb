@@ -16,11 +16,35 @@ class KeyIndicate::TownsController < ApplicationController
   # GET /key_indicate/towns/1
   # GET /key_indicate/towns/1.json
   def show
-    $key_indicators = @key_indicate_town.get_indicators
+    $key_indicators = {}
+    add_town_indicators @key_indicate_town
+    @key_indicate_town.key_indicate_town.each{|key_town|
+      add_town_indicators key_town
+    }
+  end
+
+  def add_town_indicators new_town
+    indicators = new_town.get_indicators
+    town = new_town.title
+    indicators.each{|year, value|
+      $key_indicators[year] = {} if $key_indicators[year].nil?
+      value.each{|k, v|
+        $key_indicators[year][k] = {} if $key_indicators[year][k].nil?
+        $key_indicators[year][k]['name'] = v['name'] if $key_indicators[year][k]['name'].nil?
+        $key_indicators[year][k]['icon'] = v['icon'] if $key_indicators[year][k]['icon'].nil?
+        $key_indicators[year][k]['color'] = v['color'] if $key_indicators[year][k]['color'].nil?
+        $key_indicators[year][k]['max_amount'] = 0 if $key_indicators[year][k]['max_amount'].nil?
+        $key_indicators[year][k]['max_amount'] = v['amount'].to_f if v['amount'].to_f > $key_indicators[year][k]['max_amount']
+        $key_indicators[year][k]['towns'] = {} if $key_indicators[year][k]['towns'].nil?
+        $key_indicators[year][k]['towns'][town] = {}
+        $key_indicators[year][k]['towns'][town]['amount'] = v['amount'].to_f
+        $key_indicators[year][k]['towns'][town]['description'] = v['description']
+      }
+    }
   end
 
   def reset_table
-    render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $key_indicators[params[:year].to_i], :town => @key_indicate_town.title }
+    render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $key_indicators[params[:year].to_i], :town => @key_indicate_town }
   end
 
   # GET /key_indicate/towns/new

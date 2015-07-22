@@ -4,20 +4,17 @@
     %tr
       %th.col-xs-2
       %th.col-xs-2
-        = town
-      %th.col-xs-2
-      %th.col-xs-2
-      %th.col-xs-2
-      %th.col-xs-2
+        = town.title
+      - town.key_indicate_town.each do |town|
+        %th.col-xs-2
+          = town.title
   %tbody
-    - indicators.each do |key, indicator|
+    - indicators.sort_by{|k,v| v['name']}.each do |key, indicator|
       %tr
         %td
           = indicator['name']
-        %td
-          %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
-          = indicator['amount']
-        %td
-        %td
-        %td
-        %td
+        - indicator['towns'].each do |town, value|
+          %td
+            - (1..(value['amount']*10/indicator['max_amount']).to_i).each do |i|
+              %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+            = value['amount']
