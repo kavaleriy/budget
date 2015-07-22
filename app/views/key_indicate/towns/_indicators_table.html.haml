@@ -13,12 +13,21 @@
       %tr
         %td
           = indicator['name']
-        - indicator['towns'].each do |town, value|
+        %td
+          - count = (indicator['towns'][town.title]['amount']*10/indicator['max_amount']).ceil
+          - (1..count).each do |i|
+            %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+          - if count < 10
+            - (1..(10-count)).each do |i|
+              %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
+          = indicator['towns'][town.title]['amount']
+        - town.key_indicate_town.each do |town|
           %td
-            - count = (value['amount']*10/indicator['max_amount']).ceil
-            - (1..count).each do |i|
-              %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
-            - if count < 10
-              - (1..(10-count)).each do |i|
-                %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
-            = value['amount']
+            - if indicator['towns'][town.title]
+              - count = (indicator['towns'][town.title]['amount']*10/indicator['max_amount']).ceil
+              - (1..count).each do |i|
+                %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+              - if count < 10
+                - (1..(10-count)).each do |i|
+                  %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
+              = indicator['towns'][town.title]['amount']
