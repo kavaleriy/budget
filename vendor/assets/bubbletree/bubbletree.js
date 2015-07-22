@@ -1441,14 +1441,10 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		if (!me.visible) return;
 		
 		me.circle.attr({ cx: me.pos.x, cy: me.pos.y, r: r, 'fill-opacity': me.alpha });
-        me.text.attr("transform", "translate(" + (me.pos.x-r) + "," + (me.pos.y-r) + ")").style("display", "block");
-        me.text_inner.attr({width: 2*r + "px", height: 2*r + "px"});
-        me.text_inner2.style({width: 2*r + "px", height: 2*r + "px"});
-        me.text_inner3.style({display: "table-cell"});
-        me.text_inner4.style({display: "table-cell"});
-        me.text2.attr("transform", "translate(" + (me.pos.x-2*r) + "," + (me.pos.y+r) + ")").style("display", "block");
-        me.text2_inner.attr({width: 4*r + "px", height: 4*r + "px"});
-        me.overlay.attr({ cx: me.pos.x, cy: me.pos.y, r: r });
+        me.text.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y-10) + ")").style("fill-opacity", 1);
+        me.text2.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y+r+10) + ")").style("fill-opacity", 1);
+		me.text3.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y+5) + ")").style("fill-opacity", 1);
+		me.overlay.attr({ cx: me.pos.x, cy: me.pos.y, r: r });
 		if (me.node.children.length > 1) me.dashedBorder.attr({ cx: me.pos.x, cy: me.pos.y, r: r-4, 'stroke-opacity': me.alpha * 0.9 });
 		else me.dashedBorder.attr({ 'stroke-opacity': 0 });
 
@@ -1458,22 +1454,22 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		if (r >= me.bc.config.minRadiusLabels) {
 			// full label
 			//me.label2.hide();
-            me.text2.style({display: "none"});
-            me.text_inner3.style({display: "table-cell"});
-            me.text_inner4.style({display: "none"});
+            me.text2.style("fill-opacity", 0);
+			me.text3.style("fill-opacity", 0);
 		} else if (r >= me.bc.config.minRadiusAmounts) {
 			// full label
 			//me.label.find('.desc').hide();
-            me.text_inner3.style({display: "none"});
-            me.text_inner4.style({display: "table-cell"});
+			me.text.style("fill-opacity", 0);
 		} else if (r >= me.bc.config.minRadiusHideLabels) {
 			//me.label.hide();
-            me.text.style({display: "none"});
+            me.text.style("fill-opacity", 0);
+			me.text3.style("fill-opacity", 0);
 		} else {
 			//me.label.hide();
 			//me.label2.hide();
-            me.text.style({display: "none"});
-            me.text2.style({display: "none"});
+			me.text.style("fill-opacity", 0);
+			me.text2.style("fill-opacity", 0);
+			me.text3.style("fill-opacity", 0);
 		}
 
 //		me.label.css({ width: 2*r+'px', opacity: me.alpha });
@@ -1494,6 +1490,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.dashedBorder.remove();
         me.text.remove();
         me.text2.remove();
+		me.text3.remove();
 //		me.label.remove();
 //		me.label2.remove();
 		
@@ -1529,38 +1526,47 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 //        me.label2 = $('<div class="label2 ' + me.node.id +'"><span>'+me.node.shortLabel+'</span></div>');
 //        me.container.append(me.label2);
 
-        me.text = d3.select("#chart svg")
-                  .append("g")
-                    .attr("transform", "translate(" + cx + "," + cy + ")")
-        me.text_inner = me.text.append("foreignObject")
-            .attr("width", 2*r)
-            .attr("height", 2*r)
-        me.text_inner2 = me.text_inner.append("xhtml:div")
-            .style("width", 2*r + "px")
-            .style("height", 2*r + "px")
-            .style("color", "white")
-            .style("text-align", "center")
-            .style("display", "table")
-        me.text_inner3 = me.text_inner2.append("xhtml:div")
-            .style("display", "table-cell")
-            .style("vertical-align", "middle")
-            .html('<div class="amount">'+utils.formatNumber(me.node.amount)+'</div><div class="desc">'+me.node.shortLabel+'</div><i class="fa ' + me.node.icon + '"></i>')
-        me.text_inner4 = me.text_inner2.append("xhtml:div")
-            .style("display", "table-cell")
-            .style("vertical-align", "middle")
-            .html('<div class="amount">'+utils.formatNumber(me.node.amount)+'</div><i class="fa ' + me.node.icon + '"></i>')
+		me.text = d3.select("#chart svg")
+			.append('g')
+			.attr("transform", "translate(" + cx + "," + cy + ")")
+		me.text.append('text')
+			.style('fill','white')
+			.style('font-size','0.9em')
+			.style('font-weight','bold')
+			.attr('text-anchor', 'middle')
+			.text(utils.formatNumber(me.node.amount));
+		me.text.append('text')
+			.attr('y', '1.5em')
+			.style('fill','white')
+			.style('font-size','0.8em')
+			.attr('text-anchor', 'middle')
+			.text(me.node.shortLabel);
+		me.text.append('text')
+			.attr('y', '2.0em')
+			.style('fill','white')
+			.attr('text-anchor', 'middle')
+			.style('font-family', 'FontAwesome')
+			.style('font-size', '1.5em')
+			.text("\uf0fc");
 
-        me.text2 = d3.select("#chart svg")
-            .append("g")
-            .attr("transform", "translate(" + cx + "," + cy + ")")
-        me.text2_inner = me.text2.append("foreignObject")
-            .attr("width", 4*r)
-            .attr("height", 4*r)
-        me.text2_inner2 = me.text2_inner.append("xhtml:div")
-            .style("color", "#0b387c")
-            .style("font", "11px Arial")
-            .style("text-align", "center")
-            .html(me.node.shortLabel)
+		me.text2 = d3.select("#chart svg")
+			.append('g')
+			.attr("transform", "translate(" + cx + "," + cy + ")")
+		me.text2.append('text')
+			.style('fill','#0b387c')
+			.style('font-size','0.8em')
+			.attr('text-anchor', 'middle')
+			.text(me.node.shortLabel);
+
+		me.text3 = d3.select("#chart svg")
+			.append('g')
+			.attr("transform", "translate(" + cx + "," + cy + ")")
+		me.text3.append('text')
+			.style('fill','white')
+			.style('font-size','0.9em')
+			.style('font-weight','bold')
+			.attr('text-anchor', 'middle')
+			.text(utils.formatNumber(me.node.amount));
 
 //		var list = [me.circle.node, me.label, me.dashedBorder.node];
 //
