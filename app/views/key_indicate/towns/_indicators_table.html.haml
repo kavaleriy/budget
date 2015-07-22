@@ -15,6 +15,10 @@
           = indicator['name']
         - indicator['towns'].each do |town, value|
           %td
-            - (1..(value['amount']*10/indicator['max_amount']).to_i).each do |i|
+            - count = (value['amount']*10/indicator['max_amount']).ceil
+            - (1..count).each do |i|
               %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+            - if count < 10
+              - (1..(10-count)).each do |i|
+                %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
             = value['amount']

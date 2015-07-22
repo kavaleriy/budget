@@ -22,6 +22,7 @@ class KeyIndicate::Town
         indicators[year][key]['name'] = self.explanation[key]['indicator']
         indicators[year][key]['name'] += ", " + self.explanation[key]['unit'] unless self.explanation[key]['unit'].nil?
         indicators[year][key]['icon'] = self.explanation[key]['icon']
+        indicators[year][key]['type'] = self.explanation[key]['type']
         indicators[year][key]['color'] = self.explanation[key]['color']
         indicators[year][key]['amount'] = indicator['amount']
         indicators[year][key]['description'] = indicator['description']
@@ -44,7 +45,7 @@ class KeyIndicate::Town
   def load_from_csv file_name
     items = {}
     CSV.foreach(file_name, {:headers => true, :col_sep => ";", :quote_char => '|'}) do |row|
-      items[row[0]] = { indicator: row['indicator'], unit: row['unit'], icon: row['icon'], color: row['color'] }
+      items[row[0]] = { indicator: row['indicator'], unit: row['unit'], icon: row['icon'], color: row['color'], type: row['type'] }
     end
     items
   end

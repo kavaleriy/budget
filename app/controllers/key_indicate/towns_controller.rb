@@ -29,15 +29,21 @@ class KeyIndicate::TownsController < ApplicationController
     indicators.each{|year, value|
       $key_indicators[year] = {} if $key_indicators[year].nil?
       value.each{|k, v|
+        case v['type']
+          when 'to_f'
+            amount = v['amount'].to_f
+          when 'to_i'
+            amount = v['amount'].to_i
+        end
         $key_indicators[year][k] = {} if $key_indicators[year][k].nil?
         $key_indicators[year][k]['name'] = v['name'] if $key_indicators[year][k]['name'].nil?
         $key_indicators[year][k]['icon'] = v['icon'] if $key_indicators[year][k]['icon'].nil?
         $key_indicators[year][k]['color'] = v['color'] if $key_indicators[year][k]['color'].nil?
-        $key_indicators[year][k]['max_amount'] = 0 if $key_indicators[year][k]['max_amount'].nil?
-        $key_indicators[year][k]['max_amount'] = v['amount'].to_f if v['amount'].to_f > $key_indicators[year][k]['max_amount']
+        $key_indicators[year][k]['max_amount'] = 10 if $key_indicators[year][k]['max_amount'].nil?
+        $key_indicators[year][k]['max_amount'] = amount if amount > $key_indicators[year][k]['max_amount']
         $key_indicators[year][k]['towns'] = {} if $key_indicators[year][k]['towns'].nil?
         $key_indicators[year][k]['towns'][town] = {}
-        $key_indicators[year][k]['towns'][town]['amount'] = v['amount'].to_f
+        $key_indicators[year][k]['towns'][town]['amount'] = amount
         $key_indicators[year][k]['towns'][town]['description'] = v['description']
       }
     }
