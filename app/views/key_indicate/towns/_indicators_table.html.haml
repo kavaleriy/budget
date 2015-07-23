@@ -1,5 +1,4 @@
-
-%table.table
+%table.table.table-
   %thead
     %tr
       %th.col-xs-2
@@ -11,23 +10,12 @@
   %tbody
     - indicators.sort_by{|k,v| v['name']}.each do |key, indicator|
       %tr
-        %td
+        %td.indicator_name
           = indicator['name']
-        %td
-          - count = (indicator['towns'][town.title]['amount']*10/indicator['max_amount']).ceil
-          - (1..count).each do |i|
-            %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
-          - if count < 10
-            - (1..(10-count)).each do |i|
-              %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
-          = indicator['towns'][town.title]['amount']
+        %td{:class => 'indicator_value_' + key}
+          - if indicator['towns'][town.title]
+            = render partial: 'indicator_icons', locals: {indicator: indicator, town: town.title, key: key}
         - town.key_indicate_town.each do |town|
           %td
             - if indicator['towns'][town.title]
-              - count = (indicator['towns'][town.title]['amount']*10/indicator['max_amount']).ceil
-              - (1..count).each do |i|
-                %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
-              - if count < 10
-                - (1..(10-count)).each do |i|
-                  %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
-              = indicator['towns'][town.title]['amount']
+              = render partial: 'indicator_icons', locals: {indicator: indicator, town: town.title, key: key}
