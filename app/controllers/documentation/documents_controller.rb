@@ -16,7 +16,7 @@ class Documentation::DocumentsController < ApplicationController
 
     @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) unless params["q"].blank?
 
-    @documentation_documents.paginate(:page => params[:page])
+    @documentation_documents.page params[:page]
 
     respond_to do |format|
       format.js
