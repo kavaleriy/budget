@@ -1,0 +1,30 @@
+= content_for :header do
+  .header.pull-left
+    %h1
+      Документи
+      %small
+        Пошук документів
+
+  .col-xs-12.pull-right
+    = render partial: '/documentation/documents/search'
+
+.documentation
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+          =t('.file')
+        %th
+          =t('.category')
+        %th
+          =t('.title')
+        %th
+          =t('.years')
+        %th
+          =t('.town')
+        %th
+          =t('.type')
+    %tbody#results
+      = render partial: '/documentation/documents/search_results', :locals => { documents: @documentation_documents }
+
+= paginate @documentation_documents

@@ -2,11 +2,19 @@
   -#.input-group.input-group-sm.col-sm-6
     = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
       { multiple: true, class: 'category_select' }
-  .col-xs-4
-    = select_tag :town_select, options_for_select(Town.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'town_select col-xs-12' }
-  .col-xs-4
-    = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select col-xs-12' }
-  .col-sm-3
+  .col-xs-3
+    = text_field_tag :town_select, '', { multiple: true, class: 'town_select' }
+  .col-xs-3
+    = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
+
+  .col-xs-1
+    %i.fa.fa-calendar
+    = select_tag :year_from, options_for_select(1990..2099), { prompt: 'Діє з' }
+  .col-xs-1
+    %i.fa.fa-calendar
+    = select_tag :year_to, options_for_select(1990..2099), { prompt: 'Діє по'}
+
+  .col-xs-3
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
   %span.input-group-btn
     = submit_tag 'Search', :class => 'btn btn-primary' do
@@ -15,49 +23,37 @@
 :javascript
   $(document).ready(function() {
 
-    $(".town_select").select2(
-      {
-        allowClear: true,
-        placeholder: "Вкажіть місто",
-        multiSelect: true,
-        formatResult: formatSelect,
-        formatSelection: formatSelect,
-        escapeMarkup: function(m) { return m; },
-      }
-    )
+
+    $(".town_select").select2({
+      placeholder: "Вкажіть місто",
+      allowClear: true,
+      multiSelect: true,
+      multiple: true,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    });
 
     $(".branch_select").select2(
       {
         allowClear: true,
+        width: '100%',
         placeholder: "Вкажіть тип документу",
         multiSelect: true,
-        formatResult: formatSelect,
-        formatSelection: formatSelect,
-        escapeMarkup: function(m) { return m; },
       }
     )
-
-    function formatSelect(el) {
-      return el.text;
-    }
-
-  });
-
-  $(document).ready(function() {
-
-    $(".category_select").select2(
-      {
-        allowClear: true,
-        placeholder: "Вкажіть категорію документів",
-        multiSelect: true,
-        formatResult: formatFaSelect,
-        formatSelection: formatFaSelect,
-        escapeMarkup: function(m) { return m; },
-      }
-    )
-
-    function formatFaSelect(el) {
-      return el.text;
-    }
 
   });

@@ -13,7 +13,7 @@ class Public::HomeController < ApplicationController
   end
 
   def documents
-    @documents = Documentation::Document.all
+    @documentation_documents = Documentation::Document.page params[:page]
   end
 
   def calendar

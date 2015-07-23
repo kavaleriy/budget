@@ -8,9 +8,15 @@ class Documentation::DocumentsController < ApplicationController
   # GET /documentation/documents.json
   def index
     @documentation_documents = Documentation::Document
-    @documentation_documents = @documentation_documents.where(:town.in => params["town_select"]) if params["town_select"]
-    @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) if params["branch_select"]
-    @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) if params["q"]
+    @documentation_documents = @documentation_documents.where(:town.in => params["town_select"].split(',')) unless params["town_select"].blank?
+    @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) unless params["branch_select"].blank?
+
+    @documentation_documents = @documentation_documents.where(:yearFrom.gte => params["year_from"].to_i) unless params["year_from"].blank?
+    @documentation_documents = @documentation_documents.where(:yearTo.lte => params["year_to"].to_i) unless params["year_to"].blank?
+
+    @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) unless params["q"].blank?
+
+    @documentation_documents.paginate(:page => params[:page])
 
     respond_to do |format|
       format.js
