@@ -1,0 +1,48 @@
+- town_amount = indicator['towns'][town]['amount']
+- if key == "004" # чисельність агломерації
+  = town_amount
+  - count = (town_amount*25/indicator['max_amount']).ceil
+  .full-circle{:style => 'border-radius: ' + count.to_s + 'px; height: ' + (count*2).to_s + 'px; width: ' + (count*2).to_s + 'px;'}
+- elsif key == "007" # середній час в дорозі до роботи
+  .progress-pie-chart{'data-amount' => town_amount, 'data-percent' => (town_amount*100/indicator['max_amount'])}
+    .ppc-progress
+      .ppc-progress-fill
+    .ppc-percents
+      .pcc-percents-wrapper
+        %span
+- else # fa-icons
+  - indicator['max_amount'].ceil >= 10 ? k = 10 : k = indicator['max_amount'].ceil
+  - count = (town_amount*k/indicator['max_amount']).ceil
+  - (1..count).each do |i|
+    %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+  - if count < 10
+    - (1..k-count).each do |i|
+      %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
+  = town_amount
+
+:javascript
+
+  $(document).ready(function() {
+
+    var td_width = $(".indicator_value_004").width();
+
+    // чисельність агломерації
+    $('.full-circle').each(function(index, chart) {
+      var $ppc = $(chart);
+      $ppc.css("margin-left", (td_width/2 - $ppc.width()/2) + "px");
+    })
+
+    // середній час в дорозі до роботи
+    $('.progress-pie-chart').each(function(index, chart) {
+      var $ppc = $(chart),
+          amount = parseFloat($ppc.attr('data-amount')),
+          percent = parseInt($ppc.attr('data-percent')),
+          deg = 360*percent/100;
+      if (percent > 50) {
+        $ppc.addClass('gt-50');
+      }
+      $ppc.css("margin-left", (td_width/2 - $ppc.width()/2) + "px");
+      $ppc.find('.ppc-progress-fill').css('transform','rotate('+ deg +'deg)');
+      $ppc.find('.ppc-percents span').html(amount);
+    })
+  })

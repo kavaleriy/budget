@@ -39,7 +39,7 @@ class KeyIndicate::TownsController < ApplicationController
         $key_indicators[year][k]['name'] = v['name'] if $key_indicators[year][k]['name'].nil?
         $key_indicators[year][k]['icon'] = v['icon'] if $key_indicators[year][k]['icon'].nil?
         $key_indicators[year][k]['color'] = v['color'] if $key_indicators[year][k]['color'].nil?
-        $key_indicators[year][k]['max_amount'] = 10 if $key_indicators[year][k]['max_amount'].nil?
+        $key_indicators[year][k]['max_amount'] = 0 if $key_indicators[year][k]['max_amount'].nil?
         $key_indicators[year][k]['max_amount'] = amount if amount > $key_indicators[year][k]['max_amount']
         $key_indicators[year][k]['towns'] = {} if $key_indicators[year][k]['towns'].nil?
         $key_indicators[year][k]['towns'][town] = {}
