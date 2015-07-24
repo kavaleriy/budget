@@ -2,12 +2,4 @@
   .head.pull-left
     = t('key_indicate.towns.index.header')
 
-.col-xs-12{:style => "margin-top: 20px;"}
-  - @key_indicate_towns.each do |town|
-    - if town.key_indicate_indicator_files.length > 0
-      = link_to town.title, town
-      %br
-
-= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path,
-  :type => "button", :method => :get, :class => "btn btn-primary", :style => "margin-top: 20px;"
-
+= render partial: 'indicators_table'
