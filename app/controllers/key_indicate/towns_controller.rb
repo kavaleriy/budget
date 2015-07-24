@@ -227,7 +227,7 @@ class KeyIndicate::TownsController < ApplicationController
       @key_indicate_town = KeyIndicate::Town.where(:title => current_user.town).first
       if @key_indicate_town.nil?
         @key_indicate_town = KeyIndicate::Town.new(:title => current_user.town)
-        @key_indicate_town.generate_explanation
+        # @key_indicate_town.generate_explanation
         @key_indicate_town.save
       end
     end

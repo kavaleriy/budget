@@ -1,6 +1,2 @@
 - files.each do |file|
   = render :partial => 'indicator_file', :locals => { :file => file }
-
-.col-sm-12
-  = link_to t('form.show'), town, :class => 'btn btn-primary btn-show-table'
-  = link_to t('form.back'), '/key_indicate/towns/', :class => 'btn btn-default'

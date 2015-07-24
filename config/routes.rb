@@ -8,9 +8,10 @@ Rails.application.routes.draw do
     post 'towns/indicator_file_create' => 'towns#indicator_file_create'
     put 'towns/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
     delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
-    post 'towns/add_files/indicator_file_create' => 'towns#indicator_file_create'
-    put 'towns/add_files/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
-    delete 'towns/add_files/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
+    resources :dictionaries
+    post 'dictionaries/:id/dictionary_file_create' => 'dictionaries#dictionary_file_create'
+    put 'dictionaries/:id/dictionary_file_update/:dictionary_file_id' => 'dictionaries#dictionary_file_update'
+    delete 'dictionaries/:id/dictionary_file_destroy/:dictionary_file_id' => 'dictionaries#dictionary_file_destroy'
   end
 
   get 'editor/index'

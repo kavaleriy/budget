@@ -1,0 +1,39 @@
+:css
+  .document {
+    margin: 1%;
+    padding: 10px 5px 10px 5px;
+    background-color: #e7f4f9;
+    width: 96%;
+  }
+
+.document.pull-left{'data-id' => "#{file.id}"}
+  .col-sm-1
+    - if file.dictionary_file?
+      = link_to file.dictionary_file.url do
+        %i.fa{ class: "#{get_file_type_icon(file.dictionary_file_identifier)}" }
+  .col-sm-10
+    %a{ href: '#', id: 'key_indicate_dictionary_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => 'dictionary_file_update/' + "#{file.id}", 'data-emptytext' => 'Вкажіть назву документа...' }
+
+  .col-sm-1
+    = link_to 'x', {:controller => 'dictionaries', :action => 'dictionary_file_destroy', :dictionary_file_id => file.id, :id => @key_indicate_dictionary.id}, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
+
+:javascript
+
+  $.fn.editable.defaults.mode = 'block';
+  $('.document[data-id="#{file.id}"] a[data-pk]').editable({
+    value: {
+        title: "#{file.title}",
+        description: "#{file.description}",
+    },
+    validate: function(value) {
+        if (value.title == '') return 'Потрібно вказати ім\'я файла!';
+    },
+    display: function(value) {
+        if(!value) {
+            $(this).empty();
+            return;
+        }
+        var html = '<b>' + $('<div>').text(value.title).html() + '</b>';
+        $(this).html(html);
+    }
+  });
