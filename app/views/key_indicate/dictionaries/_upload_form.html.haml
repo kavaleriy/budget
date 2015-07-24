@@ -1,0 +1,31 @@
+:css
+  .documentation {
+    min-height: 400px;
+    padding-top: 15px;
+  }
+
+  .documentation .documents {
+    /*max-height: 400px;*/
+    overflow: visible;
+  }
+
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.dictionaries.upload_form.header')
+
+.documentation
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'new_dictionary_file', :locals => { :new_file => KeyIndicate::DictionaryFile.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        = render :partial => 'dictionary_files', :locals => { :dictionary => @key_indicate_dictionary, :files => @key_indicate_dictionary.key_indicate_dictionary_files }
+
+.col-sm-12
+  = link_to t('form.back'), key_indicate_dictionaries_path, :class => 'btn btn-default'

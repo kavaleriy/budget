@@ -1,0 +1,78 @@
+= bootstrap_form_for @key_indicate_dictionary, :remote => true, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical' } do |f|
+  %table.table
+    %thead
+      %tr
+        %th
+          = t('key_indicate.dictionaries.index.key')
+        %th
+          = t('key_indicate.dictionaries.index.name')
+        %th
+          = t('key_indicate.dictionaries.index.unit')
+        %th
+          = t('key_indicate.dictionaries.index.icon')
+        %th
+          = t('key_indicate.dictionaries.index.color')
+        %th
+          = t('key_indicate.dictionaries.index.type')
+    %tbody
+      - @key_indicate_dictionary.key_indicate_dictionary_files.each do |file|
+        - file.key_indicate_dictionary_keys.each do |value|
+          %tr
+            %td
+              = value['key']
+            %td
+              %input{name: "dictionary[#{value.id}][indicator]", value: value['indicator'], class: 'form-control' }
+            %td
+              %input{name: "dictionary[#{value.id}][unit]", value: value['unit'], class: 'form-control' }
+            %td
+              = select_tag "dictionary[#{value.id}][icon]", options_for_select([value['icon']], value['icon']), class: 'fa-select', :include_blank => true
+            %td
+              .input-group.color-select
+                %input{name: "dictionary[#{value.id}][color]", value: value['color'] }
+                %span.input-group-addon
+            %td
+              = select_tag "dictionary[#{value.id}][type]", options_for_select(['to_f', 'to_i'], value['type']), :include_blank => false
+  = f.submit t('form.save'), :class => 'btn btn-primary', :style => 'border-radius: 4px !important;'
+  = link_to t('key_indicate.dictionaries.index.upload'), edit_key_indicate_dictionary_path(@key_indicate_dictionary),
+    :type => "button", :method => :get, :class => "btn btn-primary"
+
+:javascript
+
+  var icons, colors = "";
+
+  /* Loading colors and icons once while loading the page.*/
+  if(icons == "" || colors == "") {
+    $.getJSON( "#{asset_path('enums.json') }", function( data ) {
+      $.each( data['fa_icon_list'], function(key,val) {
+        icons = icons + "<option value='" + val + "'>" + val + "</option>";
+      })
+      $.each( data['undp_colors_list'], function(key,val) {
+        colors = colors + "<option value='" + val + "'>" + val + "</option>";
+      })
+    });
+  }
+
+  $(document).on('ready page:change', function() {
+
+    /* Using icons on a page */
+    $(".fa-select").select2(
+      {
+        allowClear: true,
+        formatResult: formatFaSelect,
+        formatSelection: formatFaSelect,
+        escapeMarkup: function(m) { return m; }
+      }
+    ).on("select2-focus", function() {
+      if(!$(this).hasClass('icon-loaded')){
+        $(this).append(icons).addClass('icon-loaded');
+      }
+      });
+
+    function formatFaSelect(el) {
+      return "<i class='fa " + el.id + "'/> " + el.id;
+    }
+
+    /* Using colors on a page */
+    $(".color-select").colorpicker()
+
+  });

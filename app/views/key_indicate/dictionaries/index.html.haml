@@ -1,0 +1,11 @@
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate.dictionaries.index.header')
+
+#flash
+
+- if @keys.length > 0
+  = render partial: 'edit_form'
+- else
+  = link_to t('key_indicate.dictionaries.index.upload'), edit_key_indicate_dictionary_path(@key_indicate_dictionary),
+    :type => "button", :method => :get, :class => "btn btn-primary", :style => "margin-top: 20px;"
