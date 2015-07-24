@@ -56,13 +56,17 @@
           } else {
             totalSize = value.amount;
           }
+
           div += '<tr class="tr_nodes">'
             + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
-            + value.label + '</td>'
+            + value.label
+          if (value.key)
+            div += ' (' + value.key + ')'
+          div += '</td>'
             + '<td class="table-graph"><div id="table-graph-' + value.id + '"></div></td>'
             + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
           if(fact) {
-            div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + ' (' + (value.amount_fact || 0)*100/value.amount + '%)</td>';
+            div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + ' (' + aVisify.helpers.getPercentageString((value.amount_fact || 0), value.amount)+ ')</td>';
           }
           div += '<td>' + aVisify.helpers.getPercentageString(value.amount, totalSize) + '</td>'
                    + '</tr>'
