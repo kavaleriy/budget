@@ -135,8 +135,7 @@
       levels = {}
 
       explanation = self.explanation[level.to_s]
-
-      self.get_rows[:plan].each do |year, months|
+      self.get_plan_fact_rows[:fact].each do |year, months|
         levels[year] = { } if levels[year].nil?
 
         levels[year][:totals] = {} if levels[year][:totals].nil?
@@ -147,9 +146,10 @@
             levels[year][month] = { }
           end
           rows.each do |row|
+            next unless row['_amount_type'] == :fact
             fond = row[:fond]
             if levels[year][month][fond].nil?
-              levels[year][month][fond] = {  }
+              levels[year][month][fond] = {}
             end
 
             key = row[level]
@@ -201,13 +201,23 @@
     end
 
     def get_plan_fact_rows
-      rows = { :plan => {}, :fact => {} }
+      rows = {}
       self.budget_files.each{ |file|
-        type = file.type.to_sym
+        data_type = file.data_type.to_sym
+        data_type = :plan if data_type.blank?
+
         file.rows.keys.each {|year|
-          rows[type][year] = {} if rows[type][year].nil?
           file.rows[year].keys.each {|month|
-            rows[type][year][month] = file.rows[year][month]
+            file.rows[year][month].each { |row|
+              # binding.pry
+              _data_type = row['_amount_type'].to_sym
+              _data_type = data_type if _data_type.blank?
+
+              rows[_data_type] = {} if rows[_data_type].nil?
+              rows[_data_type][year] = {} if rows[_data_type][year].nil?
+              rows[_data_type][year][month] = [] if rows[_data_type][year][month].nil?
+              rows[_data_type][year][month] << row
+            }
           }
         }
       }
@@ -218,6 +228,7 @@
       rows = { }
       self.budget_files.each{ |file|
         data_type = file.data_type
+        data_type = :plan if data_type.blank?
 
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
