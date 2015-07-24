@@ -6,8 +6,10 @@ class BudgetFileLvivoblRov < BudgetFile
 
     ktfk = row['Код'].to_s.gsub(/\s+/, "").split('.')[0]
     return if ktfk.to_i == 0
-    return if ktfk.match Regexp.new(".*000$")
+    # return if ktfk.match Regexp.new(".*000$")
     return if ktfk.length < 5
+
+    return if %w(10000 60000 70000 80000 90000 100000 110000 120000 130000 150000 160000 170000 180000 200000 210000 230000 240000 250000 900201 900202).include?(ktfk)
 
     ktfk.gsub!(/^800/, "80")
     ktfk.gsub!(/^900/, "90")
