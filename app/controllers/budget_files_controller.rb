@@ -180,7 +180,7 @@ class BudgetFilesController < ApplicationController
     2.upto(xls.last_row) do |line|
       row = {}
 
-      # next if xls.font(line,1).bold?
+      next if xls.font(line,1).bold?
 
       xls.first_column.upto(xls.last_column ) do |col|
         row[xls.cell(1, col)] = xls.cell(line,col).to_s
