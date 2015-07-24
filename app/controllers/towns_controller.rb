@@ -3,7 +3,7 @@ class TownsController < ApplicationController
 
   def search
     respond_to do |format|
-      q = params[:query]
+      q = params[:query].mb_chars.capitalize.to_s
       @towns = Town.where(:title => Regexp.new("^#{q}.*")).order_by(:level => :asc)
       format.json
     end
