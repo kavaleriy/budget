@@ -13,7 +13,7 @@ class KeyIndicate::TownsController < ApplicationController
     key_towns = KeyIndicate::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0}
     @towns = []
     key_towns.each{|town|
-      @towns.push([town.title, town.id])
+      @towns.push([town.town.title, town.id])
     }
     $indicators = KeyIndicate::Dictionary.first.get_keys
   end
@@ -21,42 +21,11 @@ class KeyIndicate::TownsController < ApplicationController
   # GET /key_indicate/towns/1
   # GET /key_indicate/towns/1.json
   def show
-    $key_indicators = {}
-    add_town_indicators @key_indicate_town
-    @key_indicate_town.key_indicate_town.each{|key_town|
-      add_town_indicators key_town
-    }
-  end
-
-  def add_town_indicators new_town
-    indicators = new_town.get_indicators
-    town = new_town.title
-    indicators.each{|year, value|
-      $key_indicators[year] = {} if $key_indicators[year].nil?
-      value.each{|k, v|
-        case v['type']
-          when 'to_f'
-            amount = v['amount'].to_f
-          when 'to_i'
-            amount = v['amount'].to_i
-        end
-        $key_indicators[year][k] = {} if $key_indicators[year][k].nil?
-        $key_indicators[year][k]['name'] = v['name'] if $key_indicators[year][k]['name'].nil?
-        $key_indicators[year][k]['icon'] = v['icon'] if $key_indicators[year][k]['icon'].nil?
-        $key_indicators[year][k]['color'] = v['color'] if $key_indicators[year][k]['color'].nil?
-        $key_indicators[year][k]['max_amount'] = 0 if $key_indicators[year][k]['max_amount'].nil?
-        $key_indicators[year][k]['max_amount'] = amount if amount > $key_indicators[year][k]['max_amount']
-        $key_indicators[year][k]['towns'] = {} if $key_indicators[year][k]['towns'].nil?
-        $key_indicators[year][k]['towns'][town] = {}
-        $key_indicators[year][k]['towns'][town]['amount'] = amount
-        $key_indicators[year][k]['towns'][town]['description'] = v['description']
-      }
-    }
   end
 
   def reset_table
     params[:data].each{|title|
-      town = KeyIndicate::Town.where(:title => title).first
+      town = KeyIndicate::Town.where(:town => ::Town.where(:title => title).first).first
       town.get_indicators(params[:year].to_i).each{|key, value|
         if $indicators[key]
           if $indicators[key]['type'] == 'to_i'
@@ -141,9 +110,10 @@ class KeyIndicate::TownsController < ApplicationController
     @indicator_files = []
 
     if current_user.has_role? :admin
-      @key_indicate_town = KeyIndicate::Town.where(:title => params[:town]).first
+      town = ::Town.find(params[:town_select])
+      @key_indicate_town = KeyIndicate::Town.where(:town => town).first
       if @key_indicate_town.nil?
-        @key_indicate_town = KeyIndicate::Town.new(:title => params[:town])
+        @key_indicate_town = KeyIndicate::Town.new(:town => town)
         @key_indicate_town.save
       end
     end
@@ -191,7 +161,8 @@ class KeyIndicate::TownsController < ApplicationController
   end
 
   def get_files
-    @key_indicate_town = KeyIndicate::Town.where(:title => params[:town]).first || KeyIndicate::Town.new(:title => params[:town])
+    town = ::Town.find(params[:town])
+    @key_indicate_town = KeyIndicate::Town.where(:town => town).first || KeyIndicate::Town.new(:town => town)
     render :partial => '/key_indicate/towns/indicator_files', :locals => {:town => @key_indicate_town, :files => @key_indicate_town.key_indicate_indicator_files }
   end
 
@@ -246,10 +217,10 @@ class KeyIndicate::TownsController < ApplicationController
 
   private
     def create_indicate_town
-      @key_indicate_town = KeyIndicate::Town.where(:title => current_user.town).first
+      town = ::Town.where(:title => current_user.town).first
+      @key_indicate_town = KeyIndicate::Town.where(:town => town).first
       if @key_indicate_town.nil?
-        @key_indicate_town = KeyIndicate::Town.new(:title => current_user.town)
-        # @key_indicate_town.generate_explanation
+        @key_indicate_town = KeyIndicate::Town.new(:town => town)
         @key_indicate_town.save
       end
     end
