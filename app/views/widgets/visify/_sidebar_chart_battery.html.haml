@@ -233,8 +233,8 @@
                       return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
                     })
           .attr("dy",-15)
-          .style("fill", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : "green" })
-          .style("stroke", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : "" })
+          .style("fill", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : rgb(0, 200, 0) })
+          .style("stroke", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : rgb(0, 200, 0) })
           .attr("class",function(d,i){return "text_" + data[i].id})
         }
 
