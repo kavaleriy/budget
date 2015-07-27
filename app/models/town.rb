@@ -19,6 +19,7 @@ class Town
   skip_callback :update, :before, :store_previous_model_for_img
 
   has_many :documentation_documents, class_name: 'Documentation::Document'
+  has_one :key_indicate_towns, :class_name => 'KeyIndicate::Town'
 
   def to_s
     if [1, 13].index(level)

@@ -18,7 +18,7 @@
 
 :javascript
   function aSidebarChartBattery(aContainer) {
-    var margin = {top: 20, right: 0, bottom: 30, left: 80},
+    var margin = {top: 20, right: 80, bottom: 30, left: 80},
         width, height
 
     var x, y, xAxis, yAxis
@@ -37,7 +37,7 @@
               ? function(a, b) {
                   if(!a.amount_fact) a.amount_fact = 0;
                   if(!b.amount_fact) b.amount_fact = 0;
-                  return (b.amount > b.amount_fact ? b.amount : b.amount_fact) - (a.amount > a.amount_fact ? a.amount : a.amount_fact);
+                  return (b.amount + b.amount_fact) - (a.amount + a.amount_fact);
                 }
               : function(a, b) { return d3.ascending(a.label, b.label); })
               .map(function(d) { return d.key; }))
@@ -150,21 +150,6 @@
         $("#sidebar_chart").height('100%')
         svg.attr("height", svg_height + margin.top + margin.bottom);
 
-        // add hatch to fill the bars
-        //svg
-        //  .append('defs')
-        //  .append('pattern')
-        //    .attr('id', 'diagonalHatch')
-        //    .attr('patternUnits', 'userSpaceOnUse')
-        //    .attr('width', 4)
-        //    .attr('height', 4)
-        //  .append('path')
-        //    .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
-        //    .attr('stroke', 'black')
-        //    .attr('stroke-width', 1);
-        //svg.append("g")
-        //    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
         var fact = false;
         x.domain([0, d3.max(data, function(d) { if(d.amount_fact) fact = true; return d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0) })]);
         y.rangeRoundBands([0, svg_height], .1)
@@ -179,9 +164,9 @@
 
         if(fact) {
           bars.enter().append("rect")
-          .attr("x", margin.left)
-          .attr("y", function(d) { return y(d.key) + margin.top + y.rangeBand()/2; })
-          .attr("width", function(d) { return d.amount_fact ? x(d.amount_fact) : 0; } )
+          .attr("x", function(d) { return x(d.amount)/2 + margin.left } )
+          .attr("y", function(d) { return y(d.key) + margin.top - 6; })
+          .attr("width", function(d) { return d.amount_fact ? x(d.amount_fact)/2 : 0; } )
           .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
                             return d3.rgb(d.color)
@@ -190,12 +175,9 @@
 
         bars.enter().append("rect")
           .attr("x", margin.left)
-          .attr("y", function(d) { return y(d.key) + margin.top; })
-          .attr("width", function(d) { return x(d.amount); } )
-          .attr("height", function(d) {
-                            if(fact) return y.rangeBand()/2;
-                            return y.rangeBand();
-                          } )
+          .attr("y", function(d) { return y(d.key) + margin.top - 6; })
+          .attr("width", function(d) { return x(d.amount)/2; } )
+          .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
                             if(fact) return d3.rgb(d.color).darker(1);
                             return d3.rgb(d.color);
@@ -211,16 +193,16 @@
 
         bars.enter().append("rect")
             .attr("x", margin.left)
-            .attr("y", function(d) { return y(d.key) + margin.top; })
-            .attr("data-y", function(d) { return y(d.key); })
+            .attr("y", function(d) { return y(d.key) + margin.top - 6; })
+            .attr("data-y", function(d) { return y(d.key) - 6; })
             .attr("width", function(d) {
                 if(d.amount_fact) {
-                  return d.amount >= d.amount_fact ? x(d.amount) : x(d.amount_fact);
+                  return x(d.amount)/2 + x(d.amount_fact)/2;
                 }
-                return x(d.amount);
+                return x(d.amount)/2;
             })
             .attr("height", function(d) {
-                              return y.rangeBand();
+                              return y.rangeBand()/2;
                             } )
             .attr("id", function(d) { return "bar_" + d.id; })
             .style("fill-opacity", 0)
@@ -237,6 +219,7 @@
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)
+                .attr("y",-15)
                 .style("fill", "black")
                 .attr("class",function(d,i){return "text_" + data[i].id})
 
@@ -246,8 +229,10 @@
           .html(function(d, i) {
             return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount_fact || 0);
           })
-          .attr("x",-margin.left)
-          .attr("dy","1.1em")
+          .attr("x",function(d, i){
+                      return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
+                    })
+          .attr("dy",-15)
           .style("fill", "black")
           .attr("class",function(d,i){return "text_" + data[i].id})
         }

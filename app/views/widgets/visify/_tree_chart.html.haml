@@ -1,24 +1,60 @@
-.visify
-  #charts_tooltip.hidden
-    %p
-      %span#value
+.visify.row-eq-height
 
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
   .chart.col-xs-12.col-md-8
+    //= render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
+
+    %ul.nav.nav-tabs{role: 'tablist'}
+      %li.active{'role' => 'presentation'}
+        %a{href: '#tab_bubbletree', 'aria-controls' => 'tab_bubbletree', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-spinner.fa-2x
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_chart', 'aria-controls' => 'tab_chart', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-bar-chart-o.fa-2x
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_pie', 'aria-controls' => 'tab_pie', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-pie-chart.fa-2x
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_table', 'aria-controls' => 'tab_table', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-table.fa-2x
+
+    #charts_tooltip.hidden
+      %p
+        %span#value
+    .tab-content
+      .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
+        %span#svg_tooltip.tooltip-inspiration.tooltip-turnleft
+          .tooltip-item
+          .tooltip-content
+            #tooltip-header
+            #tooltip-year-slider
+            #tooltip-month-slider
+            %i#reset_chart.fa.fa-refresh.pull-right
+        #chart
+        %canvas{:style => "display: none;"}
+        .pull-right
+          = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+      .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
+        = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
+      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
+        .pull-right
+          #pie_tooltip.hidden
+            %p
+              %span#value
+        = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
+      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
+        = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
+
+    -#.slider
+    -#  = render partial: 'slider_chart'
+    -#  = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
+  .col-xs-12.col-md-4.sidebar_modify
     = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
-    #chart
-    %canvas{:style => "display: none;"}
-
-    .pull-right
-      = render partial: 'layouts/export_img', :locals => { container: '#chart' }
-
-    .slider.row
-      = render partial: 'slider_chart'
-      = render partial: 'slider_compare', :locals => { budget_file_id: budget_file_id }
-
-  = render partial: 'sidebar', :locals => { budget_file_id: budget_file_id }
+    = render partial: 'slider_chart'
+    = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
+    = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
 
   = render partial: 'helpers'
 
@@ -45,11 +81,10 @@
         var evt = e || window.event;
         var x = evt.pageX,
             y = evt.pageY;
-        tooltipSpan.style.top = y + 'px';
-        tooltipSpan.style.left = x + 'px';
+        tooltipSpan.style.top = (y-100) + 'px';
+        tooltipSpan.style.left = (x+20) + 'px';
       }
     }
-
 
     $(window).resize(function() {
       // create chart according to the window size
@@ -66,8 +101,8 @@
       var sequence = aSequence('.visify')
       var under_sequence = aUnderSequence('.visify')
       var chart = aTreeChart('.bubbletree');
-      var slider = aSliderCompare('#slider_compare');
-      var slider_chart = aSliderChart('#slider_chart', slider);
+      var slider = aSliderCompare('.sidebar_modify #slider_compare');
+      var slider_chart = aSliderChart('.sidebar_modify #slider_chart', slider);
       var sidebar = aSidebar('.visify');
       var init_levels = JSON.parse('#{@levels.to_json}');
       var draggable = 1;
@@ -88,13 +123,16 @@
         width = document_width;
       }
       height = width*0.6;
+      $("#tab_chart").height(height);
+      $("#tab_pie").height(height);
+      $("#tab_table").height(height);
 
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
-      slider.initialize(150, {clickCallback: sliderItemClick});
-      slider_chart.initialize(250, {clickCallback: yearItemClick});
-      sidebar.initialize(height, {clickCallback: ItemClick});
+      slider.initialize(100, {clickCallback: sliderItemClick});
+      slider_chart.initialize(40, {clickCallback: yearItemClick});
+      sidebar.initialize(height, {clickCallback: ItemClick, hoverCallback: hoverCallback});
       $("#chart").html('');
-      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick });
+      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
 
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
         _data = data
@@ -111,7 +149,6 @@
       })
 
       function preprocessData(root, maxNodes) {
-        console.log(root)
         if (root.children.length > maxNodes + 1) {
           var tmp = sortChildren(root.children);
           tmp.reverse();
@@ -328,6 +365,7 @@
 
 
         node['history'] = item.amount[data_type]
+        node['total_history'] = item.amount
 
         $.each(['key', 'label', 'color', 'icon'], function(k, v) {
           node[v] = item[v]
@@ -345,6 +383,27 @@
           last_node = node;
         }
         return node;
+      }
+
+      function tooltipCallback(e) {
+        var circle_id = $(e.circle.node).attr("id");
+        var pathEl = Snap.select('#' + circle_id);
+        $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
+
+        if(e.type == "SHOW") {
+          pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
+          hoverCallback(e.node)
+        } else {
+          pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
+          hoverCallback(centerNode)
+        }
+      }
+
+      function hoverCallback(d) {
+        under_sequence.show(d);
+        slider_chart.show(d, year);
+        slider.show(d, year);
+        sidebar.description(d);
       }
     }
 

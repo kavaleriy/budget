@@ -1,10 +1,8 @@
 class KeyIndicate::Town
   include Mongoid::Document
 
-  field :title, type: String
-
+  belongs_to :town, :class_name => 'Town'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
-  has_and_belongs_to_many :key_indicate_town, :class_name => 'KeyIndicate::Town'
 
   def get_indicators year
     indicators = {}

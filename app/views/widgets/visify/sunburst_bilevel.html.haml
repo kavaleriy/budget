@@ -1,7 +1,7 @@
 -#http://bl.ocks.org/mbostock/5944371
 
 .sunburst-bievel
-  = render partial: 'tree_chart_modify', :locals => { budget_file_id: @budget_file.id }
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
 
 :javascript
   function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
