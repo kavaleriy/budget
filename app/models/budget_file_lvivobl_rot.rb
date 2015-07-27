@@ -6,8 +6,11 @@ class BudgetFileLvivoblRot < BudgetFile
 
     kkd = row['Код'].to_s.gsub(/\s+/, "").split('.')[0]
     return if kkd.to_i == 0
-    return if kkd.match Regexp.new(".*000$")
-    return if kkd.match Regexp.new("^900.*")
+
+    return if %w(10000000 11010000 11020000 12000000 13000000 13010000 13020000 13030000 13070000 19010000 19050000 20000000 22080000 30000000 40000000 41020000 41030000 50000000 90010200).include?(kkd)
+
+    # return if kkd.match Regexp.new(".*000$")
+    # return if kkd.match Regexp.new("^900.*")
 
     [
         { :amount => row['Загальний фонд - план'].to_i, :amount_type => :plan, :fond => 1 },
