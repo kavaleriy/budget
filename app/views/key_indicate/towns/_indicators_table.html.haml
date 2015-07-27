@@ -13,6 +13,6 @@
           = value['unit'] ? ', ' + value['unit'] : ''
         - towns.each do |town|
           %td{:class => 'indicator_value_' + key }
-            - if value['towns'][town]
+            - if value['towns'] && value['towns'][town]
               = render partial: 'indicator_icons', locals: {indicator: value, town: town, key: key}
 

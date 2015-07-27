@@ -58,17 +58,19 @@ class KeyIndicate::TownsController < ApplicationController
     params[:data].each{|title|
       town = KeyIndicate::Town.where(:title => title).first
       town.get_indicators(params[:year].to_i).each{|key, value|
-        if $indicators[key]['type'] == 'to_i'
-          amount = value['amount'].to_i
-        else
-          amount = value['amount'].to_f
+        if $indicators[key]
+          if $indicators[key]['type'] == 'to_i'
+            amount = value['amount'].to_i
+          else
+            amount = value['amount'].to_f
+          end
+          $indicators[key]['max_amount'] = 0 if $indicators[key]['max_amount'].nil?
+          $indicators[key]['towns'] = {} if $indicators[key]['towns'].nil?
+          $indicators[key]['towns'][title] = {} if $indicators[key]['towns'][title].nil?
+          $indicators[key]['towns'][title]['amount'] = amount
+          $indicators[key]['max_amount'] = amount if amount > $indicators[key]['max_amount']
+          $indicators[key]['towns'][title]['description'] = value['description']
         end
-        $indicators[key]['max_amount'] = 0 if $indicators[key]['max_amount'].nil?
-        $indicators[key]['towns'] = {} if $indicators[key]['towns'].nil?
-        $indicators[key]['towns'][title] = {} if $indicators[key]['towns'][title].nil?
-        $indicators[key]['towns'][title]['amount'] = amount
-        $indicators[key]['max_amount'] = amount if amount > $indicators[key]['max_amount']
-        $indicators[key]['towns'][title]['description'] = value['description']
       }
     }
     render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => params[:data]}
