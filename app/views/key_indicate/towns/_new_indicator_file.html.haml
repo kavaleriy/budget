@@ -17,7 +17,8 @@
         %label.control-label
           = t('owner')
         - if current_user && current_user.has_role?(:admin)
-          = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @key_indicate_town.title), class: 'select-town form-control', id: 'select_indicate_town'
+          -#= select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @key_indicate_town.title), class: 'select-town form-control', id: 'select_indicate_town'
+          = text_field_tag :town_select, '', { class: 'town_select' }
         - else
           = ": #{current_user.town}"
 
@@ -36,3 +37,34 @@
     = f.button :class => 'btn btn-default can_be_disable' do
       %i.fa.fa-upload
         = t('form.load')
+
+:javascript
+
+  $(document).ready(function() {
+
+    var town_select = $(".town_select");
+
+    town_select.select2({
+      placeholder: "Вкажіть місто",
+      allowClear: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    })
+
+    town_select.select2('data', {id: '#{@key_indicate_town.id.to_s}', text: '#{@key_indicate_town.title}'})
+
+  })
