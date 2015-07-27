@@ -28,7 +28,16 @@ class KeyIndicate::IndicatorFile
       indicator = KeyIndicate::Indicator.new
       row.each{|key, value|
         if key == 'key_indicator'
-          indicator[key] = value.to_i.to_s.rjust(3,'0')
+          if value.length > 1 && value.to_i != 0
+            indicator[key] = value.to_i.to_s.rjust(3,'0')
+          else
+            k = KeyIndicate::DictionaryKey.where(:indicator => value).first
+            if k
+              indicator[key] = k['key']
+            else
+              indicator[key] = value
+            end
+          end
         else
           indicator[key] = value
         end

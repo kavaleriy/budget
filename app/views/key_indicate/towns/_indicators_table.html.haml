@@ -1,27 +1,18 @@
-%table.table.table-
+%table.table
   %thead
     %tr
       %th
-      %th
-      %th
-      %th
-      %th
-      %th
+      - towns.each do |town|
+        %th
+          = town
   %tbody
-    - KeyIndicate::DictionaryKey.all.each do |key|
+    - indicators.sort_by{|k,v| v['indicator']}.each do |key, value|
       %tr
         %td.indicator_name
-          = key['indicator']
-          = key['unit'] ? key['unit'] : ''
-        %td
-        %td
-        %td
-        %td
-        %td
-        -#%td{:class => 'indicator_value_' + key}
-        -#  - if indicator['towns'][town.title]
-        -#    = render partial: 'indicator_icons', locals: {indicator: indicator, town: town.title, key: key}
-        -#- town.key_indicate_town.each do |town|
-        -#  %td
-        -#    - if indicator['towns'][town.title]
-        -#      = render partial: 'indicator_icons', locals: {indicator: indicator, town: town.title, key: key}
+          = value['indicator']
+          = value['unit'] ? ', ' + value['unit'] : ''
+        - towns.each do |town|
+          %td{:class => 'indicator_value_' + key }
+            - if value['towns'] && value['towns'][town]
+              = render partial: 'indicator_icons', locals: {indicator: value, town: town, key: key}
+
