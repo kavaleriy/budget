@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :towns
     get 'towns/get_files/:town' => 'towns#get_files'
     get 'towns/add_files/:town' => 'towns#add_files'
-    get 'towns/reset_table/:id/:year' => 'towns#reset_table'
+    post 'towns/reset_table/:year' => 'towns#reset_table'
     post 'towns/indicator_file_create' => 'towns#indicator_file_create'
     put 'towns/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
     delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'

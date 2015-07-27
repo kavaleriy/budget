@@ -1,5 +1,98 @@
+:css
+  #select2-chosen-2 div, #select2-chosen-3 div, .select2-choice {
+    height: 35px !important;
+  }
+
+  .form-control {
+    border-radius: 4px !important;
+  }
+
 = content_for :header do
   .head.pull-left
     = t('key_indicate.towns.index.header')
 
-= render partial: 'indicators_table'
+.col-xs-12{:style => 'margin-top: 20px; height: 100%'}
+  .col-xs-1
+    .input-daterange.pull-left
+      %input{name: :year, :type => "text", :class => "year_datepicker form-control" }
+  .col-xs-10
+    = select_tag :town, options_for_select( @towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
+    %p{:style => 'font-size: 0.8em;'}
+      щоб змінити порядок міст, натисніть на місто і перетягніть в потрібну позицію
+  .col-xs-1
+    %btn#compare_btn.btn.btn-primary{disabled: 'disabled'}
+      Порівняти
+
+#indicators_table
+
+:javascript
+
+  $(document).on('ready page:change', function() {
+
+    var town_select = $(".town_select");
+    var compare_btn = $('#compare_btn');
+
+    // ------------ Dynamically select town to compare ----------------
+    town_select.select2(
+      {
+        allowClear: true,
+        placeholder: "Виберіть міста для порівняння (не більше 5)",
+        formatResult: formatSelect,
+        formatSelection: formatSelect,
+        escapeMarkup: function(m) { return m; },
+        maximumSelectionSize: 5
+      }
+    ).on('change', function(){
+      var num_of_selected = $(this).find('option:selected').length;
+      if(num_of_selected > 0) {
+        compare_btn.removeAttr("disabled");
+      } else {
+        compare_btn.attr("disabled", "disabled");
+      }
+    });
+
+    town_select.select2("container").find("ul.select2-choices").sortable({
+        containment: 'parent'
+    });
+
+    function formatSelect(el) {
+      return el.text;
+    }
+
+    // ---------------------- COMPARE BUTTON ---------------------------
+    compare_btn.on("click", function() {
+      var data = [];
+      $('.select2-search-choice').each(function(index, d) {
+        data.push(d.innerText.replace('\n', ''));
+      })
+      $.ajax({
+        url: "/key_indicate/towns/reset_table/" + $('input[name="year"]').val(),
+        type: "post",
+        dataType: "html",
+        data: {"data": data},
+        success: function(data) {
+          $('#indicators_table').html(data);
+        }
+      })
+    })
+
+    // ------------------------ DATEPICKER -----------------------------
+    $.fn.datepicker.dates[window.aHelper.lang()];
+    var endDate = new Date(new Date().getFullYear() - 1,0,1);
+    var year_datepicker = $(".year_datepicker");
+
+    year_datepicker.datepicker( {
+      format: 'yyyy',
+      startView: 2,
+      endDate: endDate,
+      multidate: true,
+      language: window.aHelper.lang(),
+      autoclose: true,
+      minViewMode: 'years',
+      viewMode: 'years',
+      pickTime: false
+    });
+
+    year_datepicker.datepicker('setDate', endDate);
+
+  });
