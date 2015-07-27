@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post 'dictionaries/:id/dictionary_file_create' => 'dictionaries#dictionary_file_create'
     put 'dictionaries/:id/dictionary_file_update/:dictionary_file_id' => 'dictionaries#dictionary_file_update'
     delete 'dictionaries/:id/dictionary_file_destroy/:dictionary_file_id' => 'dictionaries#dictionary_file_destroy'
+    delete 'dictionaries/destroy_key/:key_id' => 'dictionaries#destroy_key'
   end
 
   get 'editor/index'
