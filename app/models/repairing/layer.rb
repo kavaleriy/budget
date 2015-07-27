@@ -1,5 +1,7 @@
 class Repairing::Layer
   include Mongoid::Document
+  # bootstrap form
+  include ColumnsList
 
   belongs_to :town, :dependent => :nullify
   belongs_to :owner, class_name: 'User', :dependent => :nullify
@@ -12,9 +14,6 @@ class Repairing::Layer
 
   has_many :repairs, :class_name => 'Repairing::Repair', autosave: true, :dependent => :destroy
 
-  def self.columns
-    self.fields.collect{|c| c[1]}
-  end
 
   def to_geo_json
     geoJson = []
