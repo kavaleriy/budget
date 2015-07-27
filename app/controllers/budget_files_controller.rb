@@ -1,5 +1,4 @@
 class BudgetFilesController < ApplicationController
-
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:create, :new]

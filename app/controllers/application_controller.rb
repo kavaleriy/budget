@@ -13,6 +13,14 @@ class ApplicationController < ActionController::Base
   # dealing with mass assignment
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+
+  rescue_from Mongoid::Errors::DocumentNotFound, :with => :record_not_found
+
+  def record_not_found
+    redirect_to :action => :index, notice: t('record_not_found')
+  end
+
+
   protected
 
   def configure_permitted_parameters
