@@ -116,6 +116,16 @@ class KeyIndicate::DictionariesController < ApplicationController
     end
   end
 
+  def destroy_key
+    key = KeyIndicate::DictionaryKey.find(params[:key_id])
+    params[:key] = key['key']
+    key.destroy
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
   protected
 
   def read_table_from_file path

@@ -233,6 +233,8 @@
                       return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
                     })
           .attr("dy",-15)
+          .style("color", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : "green" })
+          .style("font-weight", function(d,i){ return data[i].amount_fact > data[i].amount ? "normal" : "bolder" })
           .style("fill", "black")
           .attr("class",function(d,i){return "text_" + data[i].id})
         }
