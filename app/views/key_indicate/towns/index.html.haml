@@ -23,7 +23,7 @@
     %btn#compare_btn.btn.btn-primary
       = t('key_indicate.towns.index.compare')
 
-#indicators_table
+#indicators_table.col-xs-12
   - if $initial_towns.length > 0
     = render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => $initial_towns}
 
@@ -91,7 +91,9 @@
     compare_btn.on("click", function() {
       var data = [];
       $('.select2-search-choice').each(function(index, d) {
-        data.push(d.innerText.replace('\n', ''));
+        var t;
+        d.innerText ? t = d.innerText.replace('\n', '') : t = d.textContent.trim();
+        data.push(t);
       })
       $.ajax({
         url: "/key_indicate/towns/reset_table/" + $('input[name="year"]').val(),

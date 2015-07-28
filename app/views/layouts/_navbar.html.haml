@@ -55,6 +55,11 @@
             %li.divider
             %li= link_to t('.townmarksdictionary'), key_indicate_dictionaries_path
             %li= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path
+            %li.divider
+            %li
+              = link_to static_budget_file_help_path do
+                %i.fa.fa-info-circle
+                  =t('static.budget_file_help.help')
 
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
