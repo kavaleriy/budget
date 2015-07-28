@@ -18,7 +18,7 @@
 
 :javascript
   function aSidebarChartBattery(aContainer) {
-    var margin = {top: 20, right: 80, bottom: 30, left: 80},
+    var margin = {top: 20, right: 100, bottom: 30, left: 100},
         width, height
 
     var x, y, xAxis, yAxis
@@ -221,7 +221,8 @@
                 .attr("x",-margin.left)
                 .attr("y",-15)
                 .style("fill", "black")
-                .attr("class",function(d,i){return "text_" + data[i].id})
+                .style("font-size", "0.9em")
+                //.attr("class",function(d,i){return "text_" + data[i].id})
 
         if(fact) {
           bar_text.selectAll("g")
@@ -234,8 +235,9 @@
                     })
           .attr("dy",-15)
           .style("fill", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
+          .style("font-size", "0.9em")
           .style("stroke", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
-          .attr("class",function(d,i){return "text_" + data[i].id})
+          //.attr("class",function(d,i){return "text_" + data[i].id})
         }
 
       },
