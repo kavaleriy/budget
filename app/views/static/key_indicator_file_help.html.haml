@@ -1,0 +1,44 @@
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-info-circle
+    = t('static.budget_file_help.help')
+
+%h4
+  Загальні відомості
+%p
+  Система дозволяє завантажити файли в форматі XLS, CSV та DBF.
+%p
+  Файли повинні містити табличні дані (стовпці та колонки).
+%p
+  Зміст файлів CSV повинен бути в UTF-8 кодировці.
+%p
+
+%hr
+
+%h4
+  Завантаження файлів
+%p
+  Файл повинен містити наступні стовпці:
+  %ul.square
+    %li
+      %b
+        key_indicator
+      \- код або точне найменування показника з Довідника ключових показників
+    %li
+      %b
+        amount
+      \- числове значення показника
+    %li
+      %b
+        year
+      \- рік, за який взято значення показника
+    %li
+      %b
+        description
+      \- пояснення до показника
+%p
+  Приклад файлу з ключовими показниками: free_form.xlsx.
+
+%hr
+
+= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path, :class => 'btn btn-default'

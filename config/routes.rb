@@ -138,6 +138,7 @@ Rails.application.routes.draw do
   resources :budget_file_rov_planfacts
 
   get 'static/budget_file_help' => 'static#budget_file_help'
+  get 'static/key_indicator_file_help' => 'static#key_indicator_file_help'
 
 
   #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
