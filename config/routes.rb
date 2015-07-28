@@ -139,6 +139,7 @@ Rails.application.routes.draw do
 
   get 'static/budget_file_help' => 'static#budget_file_help'
   get 'static/key_indicator_file_help' => 'static#key_indicator_file_help'
+  get 'static/get_dictionary' => 'static#get_dictionary'
 
 
   #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'

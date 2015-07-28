@@ -12,4 +12,14 @@ class KeyIndicate::DictionaryKey
 
   validates_uniqueness_of :key
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv.add_row ["id", "key", "indicator", "unit"]
+      all.each do |foo|
+        values = foo.attributes.values
+        csv.add_row values
+      end
+    end
+  end
+
 end
