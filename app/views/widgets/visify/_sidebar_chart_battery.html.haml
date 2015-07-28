@@ -98,7 +98,7 @@
              .attr("x", 0)
              .attr("y", $(this).attr('data-y'));
       pathEl.stop().animate( { 'stroke-width': 5, 'stroke-opacity': .5 }, 2000, mina.elastic);
-      $(".text_" + d.id).css('fill', 'blue');
+      //$(".text_" + d.id).css('fill', 'blue');
       _self.hoverCallback(d);
     }
 
@@ -106,7 +106,7 @@
       var pathEl = Snap.select('#' + $(this).attr('id'));
       pathEl.stop().animate( { 'stroke-width': 0 }, 2000, mina.elastic);
       $(this).css("stroke", "none");
-      $(".text_" + d.id).css('fill', 'black');
+      //$(".text_" + d.id).css('fill', 'black');
       _self.hoverCallback(d.parent);
     }
 
@@ -233,7 +233,8 @@
                       return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
                     })
           .attr("dy",-15)
-          .style("fill", "black")
+          .style("fill", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
+          .style("stroke", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
           .attr("class",function(d,i){return "text_" + data[i].id})
         }
 
