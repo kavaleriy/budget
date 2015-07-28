@@ -1,7 +1,7 @@
 class Indicate::TaxonomiesController < ApplicationController
   before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators]
 
-  before_action :authenticate_user!, only: [:new, :edit]
+  before_action :authenticate_user!, only: [:new, :edit, :show]
   load_and_authorize_resource
 
   layout 'visify', only: [:indicators]
