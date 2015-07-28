@@ -39,8 +39,16 @@
         description
       \- пояснення до показника
 %p
-  Приклад файлу з ключовими показниками: free_form.xlsx.
+  - file_example = KeyIndicate::IndicatorFile.first
+  - if file_example
+    Приклад файлу з ключовими показниками:
+    = link_to 'key_indicator_file.xls', file_example.indicate_file.url
+%p
 
 %hr
 
+Міста, для яких не завантажено жодного файла з показниками, у розділі
+= link_to '"Порівняння ключових показників"', key_indicate_towns_path
+не відображаються.
+%p
 = link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path, :class => 'btn btn-default'
