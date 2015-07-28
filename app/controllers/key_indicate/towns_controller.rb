@@ -10,18 +10,23 @@ class KeyIndicate::TownsController < ApplicationController
   # GET /key_indicate/towns.json
   def index
     key_towns = KeyIndicate::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0}
-    @towns = []
-    @initial_towns = []
+    $towns = []
+    $initial_towns = []
     key_towns.each{|town|
-      @towns.push([town.town.title, town.id.to_s])
+      $towns.push([town.town.title, town.id.to_s])
       if ['Київ', 'Львів', 'Одеса'].include? town.town.title
-        @initial_towns.push(town.town.title)
+        $initial_towns.push(town.town.title)
       end
     }
     $indicators = KeyIndicate::Dictionary.first.get_keys
-    if @initial_towns.length > 0
-      get_data @initial_towns, Time.now.year-1
+    if $initial_towns.length > 0
+      clear_towns
+      get_data $initial_towns, Time.now.year-1
     end
+  end
+
+  def get_vars
+    render :json => {'towns' => $towns, 'initial_towns' => $initial_towns}
   end
 
   # GET /key_indicate/towns/1
@@ -30,8 +35,16 @@ class KeyIndicate::TownsController < ApplicationController
   end
 
   def reset_table
+    clear_towns
     get_data params[:data], params[:year].to_i
     render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => params[:data]}
+  end
+
+  def clear_towns
+    $indicators.each{|key,value|
+      $indicators[key]['towns'] = {}
+      $indicators[key]['max_amount'] = 0
+    }
   end
 
   def get_data data, year
@@ -44,8 +57,6 @@ class KeyIndicate::TownsController < ApplicationController
           else
             amount = value['amount'].to_f
           end
-          $indicators[key]['max_amount'] = 0 if $indicators[key]['max_amount'].nil?
-          $indicators[key]['towns'] = {} if $indicators[key]['towns'].nil?
           $indicators[key]['towns'][title] = {} if $indicators[key]['towns'][title].nil?
           $indicators[key]['towns'][title]['amount'] = amount
           $indicators[key]['max_amount'] = amount if amount > $indicators[key]['max_amount']
