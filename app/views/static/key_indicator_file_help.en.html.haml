@@ -1,0 +1,54 @@
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-info-circle
+    = t('static.budget_file_help.help')
+
+%h4
+  General instructions
+%p
+  The system lets you load files in formats XLS, CSV та DBF.
+%p
+  Files should contain table data (columns and rows).
+%p
+  CSV files content should be in UTF-8 charset.
+%p
+
+%hr
+
+%h4
+  Loading files
+%p
+  File should contain next columns:
+  %ul.square
+    %li
+      %b
+        key_indicator
+      \- code or exact indicator name from the
+      = link_to 'Key Indicators Dictionary', static_get_dictionary_path(format: "xls")
+      \. In case if there is no such code or name this indicator will no be displayed in towns comparison. To add the code or name into the Key Indicators Dictionary contact the Administrator.
+    %li
+      %b
+        amount
+      \- numeric indicators value
+    %li
+      %b
+        year
+      \- year for the indicators value
+    %li
+      %b
+        description
+      \- indicators explanation if need
+%p
+  - file_example = KeyIndicate::IndicatorFile.first
+  - if file_example
+    The example of key indicators file:
+    = link_to 'key_indicator_file.xls', file_example.indicate_file.url
+%p
+
+%hr
+
+Towns which have no key indicators files will not be displayed in the module
+= link_to '"Key Indicators Comparison"', key_indicate_towns_path
+
+%p
+= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path, :class => 'btn btn-default'

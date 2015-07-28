@@ -34,6 +34,8 @@ class Indicate::IndicatorFilesController < ApplicationController
       doc = Indicate::IndicatorFile.new(indicate_indicator_file_params)
       doc.indicate_file = f
       doc.indicate_taxonomy = @indicate_taxonomy
+      params[:indicate_indicator_file][:title].blank? ? doc.title = f.original_filename : doc.title = params[:indicate_indicator_file][:title]
+      doc.description = params[:indicate_indicator_file][:description]
       doc.author = current_user.email
       doc.save
       @indicator_files << doc

@@ -37,6 +37,9 @@
     = f.button :class => 'btn btn-default can_be_disable' do
       %i.fa.fa-upload
         = t('form.load')
+    = link_to static_key_indicator_file_help_path, :class => 'btn btn-default' do
+      %i.fa.fa-info-circle
+        =t('static.budget_file_help.help')
 
 :javascript
 

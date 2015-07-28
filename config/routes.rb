@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :towns
     get 'towns/get_files/:town' => 'towns#get_files'
     get 'towns/add_files/:town' => 'towns#add_files'
+    post 'towns/get_vars' => 'towns#get_vars'
     post 'towns/reset_table/:year' => 'towns#reset_table'
     post 'towns/indicator_file_create' => 'towns#indicator_file_create'
     put 'towns/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
@@ -137,6 +138,8 @@ Rails.application.routes.draw do
   resources :budget_file_rov_planfacts
 
   get 'static/budget_file_help' => 'static#budget_file_help'
+  get 'static/key_indicator_file_help' => 'static#key_indicator_file_help'
+  get 'static/get_dictionary' => 'static#get_dictionary'
 
 
   #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'

@@ -16,27 +16,31 @@
     .input-daterange.pull-left
       %input{name: :year, :type => "text", :class => "year_datepicker form-control" }
   .col-xs-10
-    = select_tag :town, options_for_select( @towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
+    = select_tag :town, options_for_select( $towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
     %p{:style => 'font-size: 0.8em;'}
-      щоб змінити порядок міст, натисніть на місто і перетягніть в потрібну позицію
+      = t('key_indicate.towns.index.change_towns')
   .col-xs-1
-    %btn#compare_btn.btn.btn-primary{disabled: 'disabled'}
-      Порівняти
+    %btn#compare_btn.btn.btn-primary
+      = t('key_indicate.towns.index.compare')
 
-#indicators_table
+#indicators_table.col-xs-12
+  - if $initial_towns.length > 0
+    = render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => $initial_towns}
 
 :javascript
 
-  $(document).on('ready page:change', function() {
+  $(document).on('ready page:load', function() {
 
     var town_select = $(".town_select");
     var compare_btn = $('#compare_btn');
+
+    I18n.locale = window.aHelper.lang();
 
     // ------------ Dynamically select town to compare ----------------
     town_select.select2(
       {
         allowClear: true,
-        placeholder: "Виберіть міста для порівняння (не більше 5)",
+        placeholder: I18n.t('key_indicate.towns.index.to_compare'),
         formatResult: formatSelect,
         formatSelection: formatSelect,
         escapeMarkup: function(m) { return m; },
@@ -55,6 +59,30 @@
         containment: 'parent'
     });
 
+    // this ajax query needs each time when page loaded because if variable in controller changed
+    // it doesn't change in javascript (js saves old variables)
+    $.ajax({
+        url: "/key_indicate/towns/get_vars",
+        type: "post",
+        dataType: "json",
+        success: function(data) {
+          var initial_towns = data['initial_towns'];
+          if(initial_towns.length > 0) {
+            var towns = data['towns'];
+            var array_for_select = [];
+            $.each(towns, function(index, t) {
+              if(initial_towns.indexOf(t[0]) >= 0) {
+                array_for_select.push({id: t[1], text: t[0]})
+              }
+            })
+            town_select.select2("data", array_for_select);
+            compare_btn.removeAttr("disabled");
+          } else {
+            compare_btn.attr("disabled", "disabled");
+          }
+        }
+      })
+
     function formatSelect(el) {
       return el.text;
     }
@@ -63,7 +91,9 @@
     compare_btn.on("click", function() {
       var data = [];
       $('.select2-search-choice').each(function(index, d) {
-        data.push(d.innerText.replace('\n', ''));
+        var t;
+        d.innerText ? t = d.innerText.replace('\n', '') : t = d.textContent.trim();
+        data.push(t);
       })
       $.ajax({
         url: "/key_indicate/towns/reset_table/" + $('input[name="year"]').val(),

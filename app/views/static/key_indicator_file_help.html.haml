@@ -1,0 +1,54 @@
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-info-circle
+    = t('static.budget_file_help.help')
+
+%h4
+  Загальні відомості
+%p
+  Система дозволяє завантажити файли в форматі XLS, CSV та DBF.
+%p
+  Файли повинні містити табличні дані (стовпці та колонки).
+%p
+  Зміст файлів CSV повинен бути в UTF-8 кодировці.
+%p
+
+%hr
+
+%h4
+  Завантаження файлів
+%p
+  Файл повинен містити наступні стовпці:
+  %ul.square
+    %li
+      %b
+        key_indicator
+      \- код або точне найменування показника з
+      = link_to 'Довідника ключових показників', static_get_dictionary_path(format: "xls")
+      \. У випадку, якщо такого коду/найменування немає в довіднику, показник не буде відображатись в порівнянні. Щоб додати код/найменування показника в довідник, зверніться до адміністратора.
+    %li
+      %b
+        amount
+      \- числове значення показника
+    %li
+      %b
+        year
+      \- рік, за який взято значення показника
+    %li
+      %b
+        description
+      \- пояснення до показника
+%p
+  - file_example = KeyIndicate::IndicatorFile.first
+  - if file_example
+    Приклад файлу з ключовими показниками:
+    = link_to 'key_indicator_file.xls', file_example.indicate_file.url
+%p
+
+%hr
+
+Міста, для яких не завантажено жодного файла з показниками, у розділі
+= link_to '"Порівняння ключових показників"', key_indicate_towns_path
+не відображаються.
+%p
+= link_to t('key_indicate.towns.index.upload_files'), new_key_indicate_town_path, :class => 'btn btn-default'
