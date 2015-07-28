@@ -24,10 +24,12 @@
       Порівняти
 
 #indicators_table
+  - if @initial_towns.length > 0
+    = render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => @initial_towns}
 
 :javascript
 
-  $(document).on('ready page:change', function() {
+  $(document).on('ready', function() {
 
     var town_select = $(".town_select");
     var compare_btn = $('#compare_btn');
@@ -54,6 +56,18 @@
     town_select.select2("container").find("ul.select2-choices").sortable({
         containment: 'parent'
     });
+
+    var initial_towns = JSON.parse('#{@initial_towns.to_json}');
+    if(initial_towns.length > 0) {
+      var towns = JSON.parse('#{@towns.to_json}');
+      var array_for_select = [];
+      $.each(towns, function(index, t) {
+        if(initial_towns.indexOf(t[0]) >= 0) {
+          array_for_select.push({id: t[1], text: t[0]})
+        }
+      })
+      town_select.select2("data", array_for_select);
+    }
 
     function formatSelect(el) {
       return el.text;
