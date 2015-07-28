@@ -10,7 +10,7 @@
               =image_tag "no_image.png"
             = f.file_field :img, :class => 'btn btn-default'
         .col-md-7
-          = f.text_field :title, :readonly => true, :class => 'control-label'
+          = f.text_field :title, :readonly => (UsersHelper.is_admin?(current_user) == false), :class => 'control-label'
           =f.text_area :links, :placeholder => t("town_links_placeholder")
 
       = f.submit nil, :class => 'btn btn-primary'
