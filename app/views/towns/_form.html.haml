@@ -1,3 +1,8 @@
+:css
+  .dropdown > a:after {
+    content: ""
+  }
+
 .width-container.clearfix
   .column_container.clearfix
     = bootstrap_form_for @town, :html => { :class => 'edit_town', :multipart => true} do |f|
@@ -11,7 +16,7 @@
             = f.file_field :img, :class => 'btn btn-default'
         .col-md-7
           = f.text_field :title, :readonly => true, :class => 'control-label'
-          =f.text_area :links, :placeholder => t("town_links_placeholder")
+          = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
 
       = f.submit nil, :class => 'btn btn-primary'
       = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
@@ -20,7 +25,21 @@
 
 :javascript
 
-  (function() {
+  $(document).ready(function(){
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5({
+        "font-styles": true, // Font styling, e.g. h1, h2, etc.
+        "emphasis": true, // Italics, bold, etc.
+        "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+        "html": false, // Button which allows you to edit the generated HTML.
+        "link": true, // Button to insert a link.
+        "image": true, // Button to insert an image.
+        "color": false, // Button to change color of font
+        "blockquote": true, // Blockquote
+        "size": 'xs', // options are xs, sm, lg
+        "stylesheets": false
+      });
+    });
 
     function readURL(input) {
       if (input.files && input.files[0]) {
@@ -35,8 +54,10 @@
         reader.readAsDataURL(input.files[0]);
       }
     }
+
     $("input[type=file]").on("change",function(){
       readURL(this);
     });
 
-  })();
+  })
+

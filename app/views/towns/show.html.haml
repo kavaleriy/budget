@@ -17,7 +17,7 @@
   -if !@town.links.nil?
     %strong= model_class.human_attribute_name(:links) + ':'
     %br
-    = @town.links
+    = render :inline => @town.links
 
 = link_to t('.back', :default => t("helpers.links.back")), towns_path, :class => 'btn btn-default'
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(@town), :class => 'btn btn-default'
