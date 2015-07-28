@@ -14,7 +14,7 @@
   - indicator['max_amount'].ceil >= 10 ? k = 10 : k = indicator['max_amount'].ceil
   - count = (town_amount*k/indicator['max_amount']).ceil
   - (1..count).each do |i|
-    %i{:class => 'fa ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
+    %i{:class => 'fa fa-2x ' + indicator['icon'], :style => 'color: ' + indicator['color'] + ';'}
   - if count < 10
     - (1..k-count).each do |i|
       %i{:class => 'fa ' + indicator['icon'], :style => 'color: lightgray;'}
