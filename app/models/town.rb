@@ -21,6 +21,12 @@ class Town
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_one :key_indicate_towns, :class_name => 'KeyIndicate::Town'
 
+  after_update :clear_cache
+  def clear_cache
+    Rails.cache.delete(Town.name)
+  end
+
+
   def to_s
     if [1, 13].index(level)
       title
@@ -30,7 +36,7 @@ class Town
   end
 
   def self.to_tree
-    Rails.cache.fetch( self.name, :expires_in => Rails.env.development? ? 15.minutes : 24.hours) do
+    Rails.cache.fetch( Town.name, :expires_in => Rails.env.development? ? 15.minutes : 24.hours) do
       tree = []
       self.areas.each do |area|
         area_code = area.koatuu.slice(0, 2)
