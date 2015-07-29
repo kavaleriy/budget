@@ -74,11 +74,7 @@
         dataType: "html",
         success: function(data) {
           $('.documents').html(data);
-          if(!$('.documents .document').html()) {
-            $(".btn-show-table").attr('disabled', 'disabled');
-          } else {
-            $(".btn-show-table").removeAttr('disabled');
-          }
+          $(".can_be_disable").removeAttr('disabled');
         }
       })
     })
