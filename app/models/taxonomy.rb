@@ -203,8 +203,8 @@
     def get_plan_fact_rows
       rows = {}
       self.budget_files.each{ |file|
-        data_type = file.data_type.to_sym
-        data_type = :plan if data_type.blank?
+
+        data_type = file.data_type.blank? ? :plan : file.data_type.to_sym
 
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
