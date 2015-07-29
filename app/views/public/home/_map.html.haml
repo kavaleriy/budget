@@ -257,6 +257,7 @@
         info.update = function (props) {
           if (props)
             this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
+              + '<p>Документів: ' + props.documents_count + '</p>'
           else
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
           };
