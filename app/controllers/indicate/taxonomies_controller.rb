@@ -26,7 +26,12 @@ class Indicate::TaxonomiesController < ApplicationController
 
   # GET /indicate/taxonomies/indicator_file
   def new
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first || Indicate::Taxonomy.new
+    if current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
+    elsif current_user.has_role? :admin
+      @indicate_taxonomy = Indicate::Taxonomy.new
+      @indicate_taxonomy.town = ::Town.new(:title => "")
+    end
   end
 
   # GET /indicate/taxonomies/1/edit

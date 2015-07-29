@@ -27,7 +27,7 @@ class Indicate::IndicatorFilesController < ApplicationController
   def create
     @indicator_files = []
     if current_user.has_role? :admin
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => params[:town]).first || Indicate::Taxonomy.new(:town => params[:town])
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.find(params[:town_select])).first || Indicate::Taxonomy.new(:town => ::Town.find(params[:town_select]))
     end
 
     params['indicate_file'].each do |f|
@@ -72,6 +72,12 @@ class Indicate::IndicatorFilesController < ApplicationController
       format.js {}
       format.json { head :no_content, status: :deleted }
     end
+  end
+
+  def get_files
+    town = ::Town.find(params[:town])
+    @indicate_taxonomy = Indicate::Taxonomy.where(:town => town).first || Indicate::Taxonomy.create(:town => town)
+    render :partial => '/indicate/indicator_files/indicator_files', :locals => { :files => @indicate_taxonomy.indicate_indicator_files }
   end
 
   protected
@@ -130,11 +136,11 @@ class Indicate::IndicatorFilesController < ApplicationController
     end
 
   def set_indicate_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => current_user.town).first
-
+    @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first
     if @indicate_taxonomy.nil?
-      @indicate_taxonomy = Indicate::Taxonomy.new(:town => current_user.town)
+      @indicate_taxonomy = Indicate::Taxonomy.new(:town => ::Town.where(:title => current_user.town).first)
     end
+
   end
 
     # Never trust parameters from the scary internet, only allow the white list through.
