@@ -1,14 +1,8 @@
 class Indicate::Taxonomy
   include Mongoid::Document
 
-  before_save :generate_title
-
-  field :title, type: String
-  field :town, type: String
-
+  belongs_to :town, :class_name => 'Town'
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
-
-  validates :town, presence: true
 
   def get_indicators
     indicators = {}
@@ -28,12 +22,6 @@ class Indicate::Taxonomy
       }
     }
     indicators
-  end
-
-  private
-
-  def generate_title
-    self.title = self.class if self.title.nil?
   end
 
 end

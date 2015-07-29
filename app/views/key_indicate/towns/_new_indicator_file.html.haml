@@ -17,7 +17,6 @@
         %label.control-label
           = t('owner')
         - if current_user && current_user.has_role?(:admin)
-          -#= select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), @key_indicate_town.title), class: 'select-town form-control', id: 'select_indicate_town'
           = text_field_tag :town_select, '', { class: 'town_select' }
         - else
           = ": #{current_user.town}"
