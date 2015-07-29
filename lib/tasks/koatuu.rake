@@ -42,6 +42,7 @@ namespace :koatuu do
     Town.where(:koatuu => '8000000000').first.update( { :level => 1} ) # kyiv
 
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
+
     Town.delete_all(:koatuu => '8500000000')
     Town.delete_all(:level => nil)
 
@@ -62,7 +63,7 @@ namespace :koatuu do
       index = name.index('/')
       name = name.slice(0, index) if index
       if /^М\./ =~ name
-        name = 'м.' + $'.mb_chars.capitalize
+        name = $'.mb_chars.capitalize
       else
         name.mb_chars.capitalize
       end
