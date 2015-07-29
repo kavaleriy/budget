@@ -9,7 +9,7 @@
 
 = content_for :header do
   .head.pull-left
-    = t('key_indicate.towns.index.header')
+    = t('key_indicate.indicator_files.index.header')
 
 .col-xs-12{:style => 'margin-top: 20px; height: 100%'}
   .col-xs-1
@@ -18,10 +18,10 @@
   .col-xs-10
     = select_tag :town, options_for_select( $towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
     %p{:style => 'font-size: 0.8em;'}
-      = t('key_indicate.towns.index.change_towns')
+      = t('key_indicate.indicator_files.index.change_towns')
   .col-xs-1
     %btn#compare_btn.btn.btn-primary
-      = t('key_indicate.towns.index.compare')
+      = t('key_indicate.indicator_files.index.compare')
 
 #indicators_table.col-xs-12
   - if $initial_towns.length > 0
@@ -40,7 +40,7 @@
     town_select.select2(
       {
         allowClear: true,
-        placeholder: I18n.t('key_indicate.towns.index.to_compare'),
+        placeholder: I18n.t('key_indicate.indicator_files.index.to_compare'),
         formatResult: formatSelect,
         formatSelection: formatSelect,
         escapeMarkup: function(m) { return m; },
@@ -62,7 +62,7 @@
     // this ajax query needs each time when page loaded because if variable in controller changed
     // it doesn't change in javascript (js saves old variables)
     $.ajax({
-        url: "/key_indicate/towns/get_vars",
+        url: '/key_indicate/indicator_files/get_vars',
         type: "post",
         dataType: "json",
         success: function(data) {
@@ -96,7 +96,7 @@
         data.push(t);
       })
       $.ajax({
-        url: "/key_indicate/towns/reset_table/" + $('input[name="year"]').val(),
+        url: '/key_indicate/indicator_files/reset_table/' + $('input[name="year"]').val(),
         type: "post",
         dataType: "html",
         data: {"data": data},

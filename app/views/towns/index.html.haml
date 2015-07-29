@@ -17,7 +17,7 @@
 
     = render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
 
-    - area[:towns].each do |town|
+    - area[:indicator_files].each do |town|
       = render :partial => 'towns', :locals => {:town => town, css: ''}
 
   -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'

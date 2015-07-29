@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
 
   namespace :key_indicate do
-    resources :towns
-    get 'towns/get_files/:town' => 'towns#get_files'
-    get 'towns/add_files/:town' => 'towns#add_files'
-    post 'towns/get_vars' => 'towns#get_vars'
-    post 'towns/reset_table/:year' => 'towns#reset_table'
-    post 'towns/indicator_file_create' => 'towns#indicator_file_create'
-    put 'towns/indicator_file_update/:indicator_file_id' => 'towns#indicator_file_update'
-    delete 'towns/indicator_file_destroy/:indicator_file_id' => 'towns#indicator_file_destroy'
+    resources :indicator_files
+    get 'indicator_files/get_files/:town' => 'indicator_files#get_files'
+    get 'indicator_files/add_files/:town' => 'indicator_files#add_files'
+    post 'indicator_files/get_vars' => 'indicator_files#get_vars'
+    post 'indicator_files/reset_table/:year' => 'indicator_files#reset_table'
+    post 'indicator_files/indicator_file_create' => 'indicator_files#indicator_file_create'
+    put 'indicator_files/indicator_file_update/:indicator_file_id' => 'indicator_files#indicator_file_update'
+    delete 'indicator_files/indicator_file_destroy/:indicator_file_id' => 'indicator_files#indicator_file_destroy'
     resources :dictionaries
     post 'dictionaries/:id/dictionary_file_create' => 'dictionaries#dictionary_file_create'
     put 'dictionaries/:id/dictionary_file_update/:dictionary_file_id' => 'dictionaries#dictionary_file_update'

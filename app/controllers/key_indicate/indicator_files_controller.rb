@@ -1,0 +1,205 @@
+class KeyIndicate::IndicatorFilesController < ApplicationController
+
+  before_action :set_town, only: [:new, :indicator_file_create, :indicator_file_destroy]
+
+  before_action :authenticate_user!, only: [:new, :edit]
+  load_and_authorize_resource
+
+  # GET /key_indicate/indicator_files
+  # GET /key_indicate/indicator_files.json
+  def index
+    key_towns = ::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0}
+    $towns = []
+    $initial_towns = []
+    key_towns.each{|town|
+      $towns.push([town.title, town.id.to_s])
+      if ['Київ', 'Львів', 'Одеса'].include? town.title
+        $initial_towns.push(town.title)
+      end
+    }
+    $indicators = KeyIndicate::Dictionary.first.get_keys
+    if $initial_towns.length > 0
+      clear_towns
+      get_data $initial_towns, Time.now.year-1
+    end
+  end
+
+  def get_vars
+    render :json => {'indicator_files' => $towns, 'initial_towns' => $initial_towns}
+  end
+
+  def get_indicators town, year
+    indicators = {}
+    town.key_indicate_indicator_files.each{|file|
+      file.key_indicate_indicators.each{|indicator|
+        if indicator['year'] == year
+          key = indicator['key_indicator']
+          indicators[key] = {}
+          indicators[key]['amount'] = indicator['amount']
+          indicators[key]['description'] = indicator['description']
+        end
+      }
+    }
+    indicators
+  end
+
+  # GET /key_indicate/indicator_files/1
+  # GET /key_indicate/indicator_files/1.json
+  def show
+  end
+
+  def reset_table
+    clear_towns
+    get_data params[:data], params[:year].to_i
+    render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => params[:data]}
+  end
+
+  def clear_towns
+    $indicators.each{|key,value|
+      $indicators[key]['towns'] = {}
+      $indicators[key]['max_amount'] = 0
+    }
+  end
+
+  def get_data data, year
+    data.each{|title|
+      town = KeyIndicate::Town.where(:town => ::Town.where(:title => title).first).first
+      get_indicators(town, year).each{|key, value|
+        if $indicators[key]
+          if $indicators[key]['type'] == 'to_i'
+            amount = value['amount'].to_i
+          else
+            amount = value['amount'].to_f
+          end
+          $indicators[key]['towns'][title] = {} if $indicators[key]['towns'][title].nil?
+          $indicators[key]['towns'][title]['amount'] = amount
+          $indicators[key]['max_amount'] = amount if amount > $indicators[key]['max_amount']
+          $indicators[key]['towns'][title]['description'] = value['description']
+        end
+      }
+    }
+  end
+
+  # GET /key_indicate/indicator_files/new
+  def new
+  end
+
+  # GET /key_indicate/indicator_files/1/edit
+  def edit
+    @towns = KeyIndicate::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0 || t == @key_indicate_town }.collect { |t| [t.title, t.id] }
+  end
+
+  def indicator_file_create
+    @indicator_files = []
+
+    params['indicate_file'].each do |f|
+      doc = KeyIndicate::IndicatorFile.new
+      doc.indicate_file = f
+      params[:key_indicate_indicator_files][:title].blank? ? doc.title = f.original_filename : doc.title = params[:key_indicate_indicator_files][:title]
+      doc.description = params[:key_indicate_indicator_files][:description]
+      doc.town = @town
+      doc.author = current_user.email
+      doc.save
+      @indicator_files << doc
+
+      table = read_table_from_file 'public/uploads/key_indicate/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
+      doc.import table
+    end unless params['indicate_file'].nil?
+
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :created }
+    end
+  end
+
+  def indicator_file_update
+    indicator_file = KeyIndicate::IndicatorFile.find(params[:indicator_file_id])
+    respond_to do |format|
+      if indicator_file.update(key_indicate_indicator_file_params)
+        format.js {}
+        format.json { head :no_content, status: :updated }
+      else
+        format.js { render status: :unprocessable_entity }
+        format.json { render json: @town.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def indicator_file_destroy
+    indicator_file = KeyIndicate::IndicatorFile.find(params[:indicator_file_id])
+    indicator_file.destroy
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
+  def get_files
+    @town = ::Town.find(params[:town])
+    render :partial => '/key_indicate/indicator_files/indicator_files', :locals => {:town => @town, :files => @town.key_indicate_indicator_files }
+  end
+
+  protected
+
+  def read_table_from_file path
+    require 'roo'
+
+    case File.extname(path).upcase
+      when '.CSV'
+        read_csv_xls Roo::CSV.new(path, csv_options: {col_sep: ";"})
+      when '.XLS', '.XLSX'
+        xls = Roo::Excelx.new(path)
+        xls.default_sheet = xls.sheets.first
+        read_csv_xls xls
+      when '.DBF'
+        read_dbf DBF::Table.new(path)
+    end
+  end
+
+  def read_dbf(dbf)
+    cols = dbf.columns.map {|c| c.name}
+
+    rows = dbf.map do |rec|
+      row = {}
+      cols.each { |col|
+        row[col] = rec[col]
+      }
+      row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  def read_csv_xls(xls)
+    cols = []
+    xls.first_column.upto(xls.last_column) { |col|
+      cols << xls.cell(1, col).to_s
+    }
+
+    rows = []
+    2.upto(xls.last_row) do |line|
+      row = {}
+      xls.first_column.upto(xls.last_column ) do |col|
+        row[xls.cell(1, col)] = xls.cell(line,col).to_s
+      end
+      rows << row
+    end
+
+    { :rows => rows, :cols => cols }
+  end
+
+  private
+    def set_town
+      if current_user.town
+        params[:town_select].nil? ? @town = ::Town.where(:title => current_user.town).first : @town = ::Town.find(params[:town_select])
+      elsif current_user.has_role? :admin
+        params[:town_select].nil? ? @town = ::Town.new(:title => "") : @town = ::Town.find(params[:town_select])
+      end
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def key_indicate_indicator_file_params
+      params.require(:key_indicate_indicator_file).permit(:year, :title, :indicator_file_id, :description)
+    end
+
+end

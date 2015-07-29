@@ -8,7 +8,7 @@ class KeyIndicate::IndicatorFile
   field :description, type: String
 
   has_many :key_indicate_indicators, :class_name => 'KeyIndicate::Indicator', autosave: true, :dependent => :destroy
-  belongs_to :key_indicate_town, :class_name => 'KeyIndicate::Town', autosave: true
+  belongs_to :town, :class_name => '::Town', autosave: true
 
   mount_uploader :indicate_file, KeyIndicateUploader
   skip_callback :update, :before, :store_previous_model_for_indicate_file

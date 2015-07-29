@@ -19,7 +19,7 @@ class Town
   skip_callback :update, :before, :store_previous_model_for_img
 
   has_many :documentation_documents, class_name: 'Documentation::Document'
-  has_one :key_indicate_towns, :class_name => 'KeyIndicate::Town' # the same as key_indicate_taxonomy
+  has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
 
   after_update :clear_cache
@@ -44,10 +44,10 @@ class Town
         row_area = get_node(area)
 
         row_area[:city] = get_node(self.cities(area_code).first)
-        row_area[:towns] = []
+        row_area[:indicator_files] = []
         self.towns(area_code).each do |city|
           city_code = city.koatuu
-          row_area[:towns] << get_node(city)
+          row_area[:indicator_files] << get_node(city)
         end
 
         tree << row_area
