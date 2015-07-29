@@ -234,11 +234,16 @@ class KeyIndicate::TownsController < ApplicationController
 
   private
     def create_indicate_town
-      town = ::Town.where(:title => current_user.town).first
-      @key_indicate_town = KeyIndicate::Town.where(:town => town).first
-      if @key_indicate_town.nil?
-        @key_indicate_town = KeyIndicate::Town.new(:town => town)
-        @key_indicate_town.save
+      if current_user.town
+        town = ::Town.where(:title => current_user.town).first
+        @key_indicate_town = KeyIndicate::Town.where(:town => town).first
+        if @key_indicate_town.nil?
+          @key_indicate_town = KeyIndicate::Town.new(:town => town)
+          @key_indicate_town.save
+        end
+      elsif current_user.has_role? :admin
+        @key_indicate_town = KeyIndicate::Town.new
+        @key_indicate_town.town = ::Town.new(:title => "")
       end
     end
 

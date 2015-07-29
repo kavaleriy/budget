@@ -18,7 +18,7 @@
     %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #66c2ff;" }
     = t('programs.target_programs.list.accomplished_programs')
 
-#programs_list
+#programs_list.col-sm-12
   = render 'list', :programs => @programs_target_programs, :amounts => @amounts, :year => @year
 
 = link_to t('form.explanation'), edit_programs_town_path(@programs_town.id), :class => 'btn btn-primary'

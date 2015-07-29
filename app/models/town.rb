@@ -19,7 +19,8 @@ class Town
   skip_callback :update, :before, :store_previous_model_for_img
 
   has_many :documentation_documents, class_name: 'Documentation::Document'
-  has_one :key_indicate_towns, :class_name => 'KeyIndicate::Town'
+  has_one :key_indicate_towns, :class_name => 'KeyIndicate::Town' # the same as key_indicate_taxonomy
+  has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
 
   after_update :clear_cache
   def clear_cache
