@@ -8,6 +8,11 @@ class Town
   field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
+  def get_level
+    return :area if self.level == 1
+    return :city if self.level == 13
+    return :town if [3, 31].include? self.level
+  end
 
   field :links, type: String
 
