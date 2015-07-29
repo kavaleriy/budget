@@ -1,6 +1,6 @@
 :css
   .map_container {
-    height: 700px;
+    height: 500px;
   }
 
 
@@ -14,7 +14,21 @@
 
   $(document).ready(function() {
 
-    var aRepairMap
+    var aRepairMap = RepairMap()
+
+    $.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}',
+      dataType: 'json',
+      data: {
+        type: 'areas',
+      }
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJson(data, false )
+    })
+    .fail(function () {
+    });
 
     $.ajax({
       method: 'get',
@@ -22,8 +36,7 @@
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap = RepairMap({ clusterMarkers: true })
-      aRepairMap.addGeoJson(data)
+      aRepairMap.addGeoJson(data, true )
     })
     .fail(function () {
     });

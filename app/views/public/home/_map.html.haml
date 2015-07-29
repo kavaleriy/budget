@@ -47,14 +47,12 @@
   $(document).ready(function() {
     RepairMap = function(options) {
 
-      var map, markers;
+      var map, markers, markersGrouped;
       var popup;
       var router;
       var info;
 
       var self = this;
-
-
 
       function initMap() {
         map = L.map('map', { zoomControl:false, scrollWheelZoom : false })
@@ -74,13 +72,11 @@
         getBrowserLocation()
 
 
-        if (options.clusterMarkers)
-          markers = new L.MarkerClusterGroup();
-        else {
-          markers = new L.layerGroup();
-        }
+        markers = new L.layerGroup();
+        markersGrouped = new L.MarkerClusterGroup();
 
         map.addLayer(markers);
+        map.addLayer(markersGrouped);
 
         function getBrowserLocation() {
           if (navigator.geolocation) {
@@ -94,7 +90,7 @@
             var lng = position.coords.longitude;
             var acr = position.coords.accuracy;
 
-            map.setView([lat, lng], 8)
+            map.setView([lat, lng], 7)
           }
           function positionError(err) {
             map.setView([50.38751, 30.68481], 7)
@@ -122,23 +118,6 @@
 
       }
 
-      function initPopup() {
-        popup = L.popup();
-
-        function onMapClick(e) {
-          popup
-            .setLatLng(e.latlng)
-            .setContent("" + e.latlng.toString())
-            .openOn(map);
-
-          if (options.mapClickCallback) {
-            options.mapClickCallback(e)
-          }
-        }
-
-        map.on('click', onMapClick);
-      }
-
       function initRouting() {
         // routing machine
         router = L.Routing.osrm()
@@ -146,29 +125,61 @@
 
 
       // add markers
-      var CustomIcon = L.Icon.extend({
+      var AreaIcon = L.Icon.extend({
         options: {
-          iconSize: [48, 48],
+          iconSize: [64, 64],
         }
       });
 
-      var houseIcon = new CustomIcon({iconUrl: '/assets/smile.png'})
+      var CityIcon = L.Icon.extend({
+        options: {
+          iconSize: [32, 32],
+        }
+      });
 
-      function addGeoJson(data) {
+      var TownIcon = L.Icon.extend({
+        options: {
+          iconSize: [32, 32],
+        }
+      });
+
+      var iconArea = new AreaIcon({iconUrl: '/assets/map/iconArea.png'})
+      var iconCity = new CityIcon({iconUrl: '/assets/map/iconCity.png'})
+      var iconTown = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
+
+      function addGeoJson(data, isClustered) {
+
         L.geoJson(data, {
           pointToLayer: getPointToLayer,
           style: getFeatureStyle,
           onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng,
           lineCap: 'round',
-        }).addTo(markers);
+        }).addTo(isClustered ? markersGrouped : markers);
+
 
         function getPointToLayer(feature, latlng) {
-          var icon = houseIcon // new L.Icon.Default()
+          console.log(feature)
+          var icon, opacity = 1
+          switch (feature.properties.level) {
+            case 'area':
+              icon = iconArea
+              opacity = .6
+              break
+            case 'city':
+              icon = iconCity
+              break
+            case 'town':
+              icon = iconTown
+              break
+            default:
+              icon = new L.Icon.Default()
+              break
+          }
 
           return L.marker(latlng, {
             icon: icon,
-            opacity: .5,
+            opacity: opacity,
             draggable: false,
           });
         }
@@ -189,8 +200,7 @@
 
             '<div class="popup">' +
               '<h3>' + feature.properties.title + '</h3>' +
-              '<p>' + feature.properties.address + '</p>' +
-              '<p>' + feature.properties.amount + '</p>' +
+              '<p>Документів: ' + feature.properties.documents_count + '</p>' +
             '</div>'
           layer.bindPopup(popupContent);
 
@@ -218,16 +228,16 @@
 
           function onFeatureOver(e) {
             var layer = e.target;
-            if (layer.setOpacity)
-              layer.setOpacity(1)
+            //if (layer.setOpacity)
+            //  layer.setOpacity(1)
 
             info.update(layer.feature.properties);
           }
 
           function onFeatureOut(e) {
             var layer = e.target;
-            if  (layer.setOpacity)
-              layer.setOpacity(.7)
+            //if  (layer.setOpacity)
+            //  layer.setOpacity(.7)
 
             info.update();
           }
@@ -246,13 +256,7 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
           if (props)
-            this._div.innerHTML = '<h3 class="title">' + (props.obj_owner || props.title) + '</h3>'
-              + '<b>Адреса: ' + props.address + '</b><br/>'
-              + 'Об\'єкт: ' + props.subject + '<br/>'
-              + 'Роботи: ' + props.work + '<br/>'
-              + '<b>Вартість: ' + props.amount + '</b><br/>'
-              + 'Дата ремонту: ' + props.repair_date + '<br/>'
-              + 'Гарантія: ' + props.repair_date
+            this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
           else
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
           };
@@ -260,47 +264,7 @@
         info.addTo(map);
       }
 
-      function editRoute(waypoints, routeFoundCallback) {
-        var line;
-
-        //route = aRepairMap.router.route(waypoints, function(err, routes) {
-
-        //    var marker1 = L.marker(<%= @location %>, { draggable: true });
-        //    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
-        //    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
-        //            .bindPopup('Hello world!')
-        //            .on('click', function() { alert('Clicked on a group!'); })
-        //            .addTo(aRepairMap.map);
-        //
-        //    line = L.Routing.line(routes[0] )
-        //            .on('click', function() { alert('Clicked on a group!'); })
-        //            .addTo(aRepairMap.map);
-        //
-        //    console.log(line.toGeoJSON())
-        //
-        //});
-
-        if (self.selectedRoute) {
-          self.selectedRoute.setWaypoints(waypoints)
-          self.selectedRoute.route()
-        } else {
-          self.selectedRoute = L.Routing.control({
-            routeWhileDragging: true,
-            waypoints: waypoints
-          })
-
-          self.selectedRoute.on('routesfound', function(router) {
-            if (routeFoundCallback) {
-              routeFoundCallback(router.routes[0].coordinates)
-            }
-          })
-
-          self.selectedRoute.addTo(map);
-        }
-      }
-
       initMap()
-      initPopup()
       initRouting()
       addControl()
 
@@ -310,7 +274,6 @@
         router: router,
         info: info,
         addGeoJson: addGeoJson,
-        editRoute: editRoute,
       }
     }
 

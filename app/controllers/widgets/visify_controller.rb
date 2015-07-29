@@ -1,4 +1,6 @@
 class Widgets::VisifyController < Widgets::WidgetsController
+  include ControllerCaching
+
   before_action :set_locale
 
   before_action :set_budget_file
@@ -8,9 +10,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
   def get_bubbletree_data
-    cache_key = Digest::SHA1.hexdigest(params.sort.flatten.join("_object"))
-
-    result = Rails.cache.fetch( cache_key, :expires_in => Rails.env.development? ? 30.second : 20.minutes) do
+    result = use_cache do
       params[:levels] ? levels = params[:levels].split(",") : levels = []
       get_bubble_tree(levels)
     end

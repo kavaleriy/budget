@@ -13,7 +13,6 @@ class Documentation::Document
 
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
-
   belongs_to :branch, class_name: 'Documentation::Branch'
   belongs_to :town
   belongs_to :owner, class_name: 'User'
