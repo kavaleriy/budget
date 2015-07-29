@@ -209,10 +209,7 @@
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
             file.rows[year][month].each { |row|
-              # binding.pry
-              _data_type = row['_amount_type'].to_sym
-              _data_type = data_type if _data_type.blank?
-
+              _data_type = row['_amount_type'].blank? ? data_type : row['_amount_type'].to_sym
               rows[_data_type] = {} if rows[_data_type].nil?
               rows[_data_type][year] = {} if rows[_data_type][year].nil?
               rows[_data_type][year][month] = [] if rows[_data_type][year][month].nil?

@@ -52,6 +52,7 @@ gem 'less-rails'
 gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
 # https://github.com/bootstrap-ruby/rails-bootstrap-forms
 gem 'bootstrap_form'
+gem 'bootstrap-wysihtml5-rails'
 
 # https://gorails.com/blog/rails-4-0-with-mongodb-and-mongoid
 gem 'mongoid', '~> 4', github: 'mongoid/mongoid'

@@ -9,11 +9,11 @@ class Documentation::CategoriesController < ApplicationController
   end
 
   def tree_root
-    @documentation_categories = Documentation::Category.where( :category_id.in =>[ nil, '#'])
+    @documentation_categories = Documentation::Category.tree_root
   end
 
   def tree
-    @documentation_categories = Documentation::Category.where( :category_id => params[:id])
+    @documentation_categories = Documentation::Category.tree(params[:id])
   end
 
   # GET /documentation/categories/1
@@ -52,8 +52,17 @@ class Documentation::CategoriesController < ApplicationController
   # PATCH/PUT /documentation/categories/1
   # PATCH/PUT /documentation/categories/1.json
   def update
+    new_position = documentation_category_params[:position].to_i
+    new_category_id = documentation_category_params[:category_id]
+    old_category_id = @documentation_category.category_id.to_s
+    id = params[:id]
+
+    recalc_positions(new_category_id, id, new_position)
+
     respond_to do |format|
       if @documentation_category.update(documentation_category_params)
+        recalc_positions(old_category_id, nil) unless old_category_id == new_category_id
+
         format.js
         format.json { render :show, status: :ok, location: @documentation_category }
       else
@@ -61,6 +70,18 @@ class Documentation::CategoriesController < ApplicationController
         format.json { render json: @documentation_category.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def recalc_positions(category_id, id, new_position = -1)
+    position = 0
+    Documentation::Category.where(:category_id => category_id).each{ |category|
+      next if category.id.to_s == id
+      position = new_position + 1 if position == new_position
+      category.update(:position => position)
+      puts "#{category.position} - #{category.title}"
+      position += 1
+    }
+
   end
 
   # DELETE /documentation/categories/1
