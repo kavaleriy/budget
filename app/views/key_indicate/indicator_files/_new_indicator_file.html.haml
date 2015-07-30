@@ -1,4 +1,4 @@
-= form_for @key_indicate_town, :url => 'indicator_file_create', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+= form_for @town, :url => 'indicator_file_create', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
   = fields_for :key_indicate_indicator_files do |e|
     - if new_file.errors.any?
       #error_explanation
@@ -68,7 +68,7 @@
     }).on("change", function(){
       town = $(this).val();
       $.ajax({
-        url: "/key_indicate/towns/get_files/" + town,
+        url: "/key_indicate/indicator_files/get_files/" + town,
         type: "GET",
         dataType: "html",
         success: function(data) {
@@ -78,6 +78,6 @@
       })
     })
 
-    town_select.select2("data", {id: "#{@key_indicate_town.id}", text: "#{@key_indicate_town.town.title}" });
+    town_select.select2("data", {id: "#{@town.id}", text: "#{@town.title}" });
 
   })

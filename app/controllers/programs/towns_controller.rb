@@ -1,18 +1,18 @@
 class Programs::TownsController < ApplicationController
   before_action :set_programs_town, only: [:show, :edit, :update, :update_custom, :destroy, :expences_file_destroy, :indicator_file_destroy, :branch_report]
 
-  # GET /programs/towns
-  # GET /programs/towns.json
+  # GET /programs/indicator_files
+  # GET /programs/indicator_files.json
   def index
     @programs_towns = Programs::Town.all
   end
 
-  # GET /programs/towns/1
-  # GET /programs/towns/1.json
+  # GET /programs/indicator_files/1
+  # GET /programs/indicator_files/1.json
   def show
   end
 
-  # GET /programs/towns/new
+  # GET /programs/indicator_files/new
   def new
     @programs_town = Programs::Town.new
   end
@@ -50,12 +50,12 @@ class Programs::TownsController < ApplicationController
     }
   end
 
-  # GET /programs/towns/1/edit
+  # GET /programs/indicator_files/1/edit
   def edit
   end
 
-  # POST /programs/towns
-  # POST /programs/towns.json
+  # POST /programs/indicator_files
+  # POST /programs/indicator_files.json
   def create
     @programs_town = Programs::Town.new(programs_town_params)
 
@@ -70,8 +70,8 @@ class Programs::TownsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /programs/towns/1
-  # PATCH/PUT /programs/towns/1.json
+  # PATCH/PUT /programs/indicator_files/1
+  # PATCH/PUT /programs/indicator_files/1.json
   def update
     @programs_town.explanation = params[:explanation]
     @programs_town.save
@@ -101,8 +101,8 @@ class Programs::TownsController < ApplicationController
     end
   end
 
-  # DELETE /programs/towns/1
-  # DELETE /programs/towns/1.json
+  # DELETE /programs/indicator_files/1
+  # DELETE /programs/indicator_files/1.json
   def destroy
     @programs_town.destroy
     respond_to do |format|
