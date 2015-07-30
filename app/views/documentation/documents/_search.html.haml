@@ -9,11 +9,11 @@
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
 
   .col-sm-3
-    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
+    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
 
   .col-sm-2
     %i.fa.fa-calendar.fa-lg
-    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: 'рік' }
+    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0] }
 
   .col-sm-1
     = button_tag(type: 'submit', :class => 'btn btn-primary') do
@@ -23,9 +23,10 @@
 :javascript
   $(document).ready(function() {
 
+    I18n.locale = window.aHelper.lang();
 
     $(".town_select").select2({
-      placeholder: "Вкажіть місто",
+      placeholder: I18n.t('documentation.documents.search.town_region'),
       allowClear: true,
       multiSelect: true,
       multiple: true,
@@ -51,7 +52,7 @@
       {
         allowClear: true,
         width: '100%',
-        placeholder: "Вкажіть тип документу",
+        placeholder: I18n.t('documentation.documents.search.doc_type'),
         multiSelect: true,
       }
     )
