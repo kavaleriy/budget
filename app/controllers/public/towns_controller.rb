@@ -1,4 +1,6 @@
 class Public::TownsController < ApplicationController
+  include ControllerCaching
+
   layout 'application_public'
 
   before_action :set_town, only: [:show]
@@ -13,12 +15,24 @@ class Public::TownsController < ApplicationController
   end
 
   def geo_json
-    @geo_json = []
-    Town.areas.each { |town| @geo_json << TownGeojsonBuilder.build_town(town) }
+    @geo_json = use_cache do
+      result = []
 
+      towns =
+          case params[:type]
+            when 'areas'
+              Town.areas
+            else
+              Town.cities + Town.towns
+          end
+
+      towns.reject{|town| town.documentation_documents.empty?}.each{ |town| result << TownGeojsonBuilder.build_town(town) }
+
+      result.compact
+    end
 
     respond_to do |format|
-      format.json { render json: @geo_json.compact }
+      format.json { render json: @geo_json }
     end
 
   end

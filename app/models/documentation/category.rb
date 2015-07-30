@@ -1,6 +1,10 @@
 class Documentation::Category
   include Mongoid::Document
-  
+
+  default_scope lambda { order_by(:position => :asc) }
+  scope :tree_root, lambda { where( :category_id.in =>[ nil, '#']) }
+  scope :tree, lambda { |category_id| where( :category_id => category_id) }
+
   has_one :parent, class_name: 'Documentation::Category', :dependent => :nullify
   belongs_to :category, class_name: 'Documentation::Category'
 

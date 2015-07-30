@@ -203,16 +203,13 @@
     def get_plan_fact_rows
       rows = {}
       self.budget_files.each{ |file|
-        data_type = file.data_type.to_sym
-        data_type = :plan if data_type.blank?
+
+        data_type = file.data_type.blank? ? :plan : file.data_type.to_sym
 
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
             file.rows[year][month].each { |row|
-              # binding.pry
-              _data_type = row['_amount_type'].to_sym
-              _data_type = data_type if _data_type.blank?
-
+              _data_type = row['_amount_type'].blank? ? data_type : row['_amount_type'].to_sym
               rows[_data_type] = {} if rows[_data_type].nil?
               rows[_data_type][year] = {} if rows[_data_type][year].nil?
               rows[_data_type][year][month] = [] if rows[_data_type][year][month].nil?

@@ -11,6 +11,8 @@ class TownGeojsonBuilder
           properties: {
               id: "#{town[:id]}",
               title: town.title,
+              level:town.get_level,
+              documents_count:town.documentation_documents.count,
           }
       }
     end
