@@ -5,6 +5,7 @@ class Public::HomeController < ApplicationController
 
 
   def index
+    @areas = Town.areas
     @towns = Town.cities
   end
 

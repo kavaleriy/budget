@@ -1,0 +1,6 @@
+.col-xs-12
+  %h2
+    = title
+  - towns.each do |town|
+    .pull-left
+      = render partial: 'town', :locals => { href: public_path(town.id), img: { src: town.img.thumb.url, alt: town }, title: town, description: 'Детальніше' }
