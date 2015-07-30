@@ -2,22 +2,22 @@
   -#.input-group.input-group-sm.col-sm-6
     = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
       { multiple: true, class: 'category_select' }
-  .col-xs-3
+  .col-sm-3
     = text_field_tag :town_select, '', { multiple: true, class: 'town_select' }
-  .col-xs-3
+
+  .col-sm-3
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
 
-  .col-xs-1
-    %i.fa.fa-calendar
-    = select_tag :year_from, options_for_select(1990..2099), { prompt: 'Діє з' }
-  .col-xs-1
-    %i.fa.fa-calendar
-    = select_tag :year_to, options_for_select(1990..2099), { prompt: 'Діє по'}
-
-  .col-xs-3
+  .col-sm-3
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('.search')}"
-  %span.input-group-btn
-    = submit_tag 'Search', :class => 'btn btn-primary' do
+
+  .col-sm-2
+    %i.fa.fa-calendar.fa-lg
+    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: 'рік' }
+
+  .col-sm-1
+    = button_tag(type: 'submit', :class => 'btn btn-primary') do
+      = t('form.search')
       %i.fa.fa-search.fa-lg
 
 :javascript

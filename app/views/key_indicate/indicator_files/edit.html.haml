@@ -43,7 +43,7 @@
                 %input{name: "town[explanation]#{key}[color]", value: indicator['color'] }
                 %span.input-group-addon
     = f.submit t('form.save'), :class => 'btn btn-primary'
-    = link_to t('key_indicate.towns.index.upload_files'), '/key_indicate/towns/add_files/' + @key_indicate_town.id,
+    = link_to t('key_indicate.towns.index.upload_files'), '/key_indicate/indicator_files/add_files/' + @key_indicate_town.id,
       :type => "button", :method => :get, :class => "btn btn-primary"
     = link_to t('form.back'), @key_indicate_town, :class => 'btn btn-default'
 

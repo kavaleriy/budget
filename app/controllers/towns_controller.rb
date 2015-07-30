@@ -9,28 +9,28 @@ class TownsController < ApplicationController
     end
   end
 
-  # GET /towns
-  # GET /towns.json
+  # GET /indicator_files
+  # GET /indicator_files.json
   def index
     @towns = Town.to_tree
   end
 
-  # GET /towns/1
-  # GET /towns/1.json
+  # GET /indicator_files/1
+  # GET /indicator_files/1.json
   def show
   end
 
-  # GET /towns/indicator_file
+  # GET /indicator_files/indicator_file
   def new
     @town = Town.new
   end
 
-  # GET /towns/1/edit
+  # GET /indicator_files/1/edit
   def edit
   end
 
-  # POST /towns
-  # POST /towns.json
+  # POST /indicator_files
+  # POST /indicator_files.json
   def create
     @town = Town.new(town_params)
 
@@ -45,8 +45,8 @@ class TownsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /towns/1
-  # PATCH/PUT /towns/1.json
+  # PATCH/PUT /indicator_files/1
+  # PATCH/PUT /indicator_files/1.json
   def update
     respond_to do |format|
       if @town.update(town_params)
@@ -59,8 +59,8 @@ class TownsController < ApplicationController
     end
   end
 
-  # DELETE /towns/1
-  # DELETE /towns/1.json
+  # DELETE /indicator_files/1
+  # DELETE /indicator_files/1.json
   def destroy
     @town.destroy
     respond_to do |format|

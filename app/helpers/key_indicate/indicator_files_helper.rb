@@ -1,0 +1,2 @@
+module KeyIndicate::IndicatorFilesHelper
+end

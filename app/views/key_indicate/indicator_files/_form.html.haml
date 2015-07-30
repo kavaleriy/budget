@@ -11,7 +11,7 @@
 
 = content_for :header do
   .head.pull-left
-    = t('key_indicate.towns.new.header')
+    = t('key_indicate.indicator_files.new.header')
 
 .documentation
   .col-sm-8
@@ -25,7 +25,7 @@
       .panel-heading
         = t('form.uploaded_documents')
       .documents.panel-body
-        = render :partial => 'indicator_files', :locals => { :town => @key_indicate_town, :files => @key_indicate_town.key_indicate_indicator_files }
+        = render :partial => 'indicator_files', :locals => { :town => @town, :files => @town.key_indicate_indicator_files }
 
 :javascript
 
@@ -34,7 +34,7 @@
     if(!"#{current_user.town}") {
       $('.can_be_disable').attr('disabled', 'disabled');
     }
-    if(parseInt("#{@key_indicate_town.key_indicate_indicator_files.length}") <= 0) {
+    if(parseInt("#{@town.key_indicate_indicator_files.length}") <= 0) {
       $(".btn-show-table").attr('disabled', 'disabled');
     }
 
