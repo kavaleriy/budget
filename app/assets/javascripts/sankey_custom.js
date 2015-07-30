@@ -370,7 +370,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .style("fill", "darkgray")
             .style("font-size", "0.7em")
             .style("font-weight", "bold")
-            .text("Бюджет міста за " + year + " р.");
+            .text("Бюджет за " + year + " р.");
 
         // rectangles for status bar (total amounts)
         var arrow_length = 70;
