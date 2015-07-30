@@ -1,14 +1,17 @@
 = content_for :header do
   .header.pull-left
     %h1
-      Документи
+      =t('.documents')
       %small
-        Пошук документів
+        =t('.documents_search')
 
-  .col-xs-12.pull-right
-    = render partial: '/documentation/documents/search'
+.col-xs-12
+  = render partial: '/documentation/documents/preambule'
 
-.documentation
+.col-xs-12.documents_search
+  = render partial: '/documentation/documents/search'
+
+.col-xs-12.documentation
   %table.table.table-striped
     %thead
       %tr
