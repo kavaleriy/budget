@@ -16,7 +16,7 @@
     .input-daterange.pull-left
       %input{name: :year, :type => "text", :class => "year_datepicker form-control" }
   .col-xs-10
-    = select_tag :town, options_for_select( $towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
+    = select_tag :town, options_for_select( @towns, ''), class: 'town_select form-control', include_blank: true, multiple: true
     %p{:style => 'font-size: 0.8em;'}
       = t('key_indicate.indicator_files.index.change_towns')
   .col-xs-1
@@ -24,8 +24,8 @@
       = t('key_indicate.indicator_files.index.compare')
 
 #indicators_table.col-xs-12
-  - if $initial_towns.length > 0
-    = render :partial => '/key_indicate/towns/indicators_table', :locals => {:indicators => $indicators, :towns => $initial_towns}
+  - if @initial_towns.length > 0
+    = render :partial => 'indicators_table', :locals => {:indicators => @indicators, :towns => @initial_towns}
 
 :javascript
 
