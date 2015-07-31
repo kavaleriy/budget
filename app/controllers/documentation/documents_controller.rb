@@ -7,7 +7,6 @@ class Documentation::DocumentsController < ApplicationController
   # GET /documentation/documents
   # GET /documentation/documents.json
   def index
-
     @documentation_documents = Documentation::Document
     @documentation_documents = @documentation_documents.where(:town.in => params["town_select"].split(',')) unless params["town_select"].blank?
     @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) unless params["branch_select"].blank?
@@ -21,7 +20,6 @@ class Documentation::DocumentsController < ApplicationController
     respond_to do |format|
       format.js
       format.html
-      format.json { head :no_content, status: :created }
     end
   end
 

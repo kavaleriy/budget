@@ -1,0 +1,21 @@
+:css
+  .document {
+    text-align: center;
+  }
+
+#results.col-xs-12
+  - towns.reject{|town| documents.where(:town_id => town.id).empty? }.each do |town|
+
+    %h1
+      = town.to_s
+
+    - documents.where(:town_id => town.id).each do |document|
+      - if document.doc_file?
+        .col-sm-2.document
+          = link_to document.doc_file.url do
+            %i.fa.fa-3x{ style: 'align:', class: "#{get_file_type_icon(document.doc_file_identifier)}" }
+            %br
+            %p
+              = document.title
+    .clear
+    %hr

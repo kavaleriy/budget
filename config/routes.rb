@@ -173,11 +173,11 @@ Rails.application.routes.draw do
 
   namespace :public do
     get 'budget' => 'home#budget'
-    get 'documents' => 'home#documents'
+
+    get 'documents' => 'documents#index'
 
     get 'towns/:town_id' => 'towns#show'
     get 'ukraine_geo_json' => 'towns#geo_json'
-
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'

@@ -1,0 +1,17 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        =t('public.home.documents.file')
+      %th
+        =t('public.home.documents.title')
+      %th
+        =t('public.home.documents.years')
+      %th
+        =t('public.home.documents.town')
+      %th
+        =t('public.home.documents.type')
+      %th
+  %tbody
+    - documents.each do |document|
+      = render :partial => 'document', :locals => { :document => document }

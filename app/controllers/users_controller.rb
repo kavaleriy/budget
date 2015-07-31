@@ -17,6 +17,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @towns = [nil] + Town.cities + Town.areas + Town.towns
   end
 
   # PATCH/PUT /users/1
