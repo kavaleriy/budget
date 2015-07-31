@@ -30,4 +30,20 @@
     %tbody#results
       = render partial: '/documentation/documents/search_results', :locals => { documents: @documentation_documents }
 
+-##add_document
+
 = paginate @documentation_documents
+
+-#:javascript
+-#
+-#  $(document).ready(function(){
+-#    $(window).scroll(function(){
+-#      var windowTopPos = $(window).scrollTop();
+-#      var footerTopPos = $('.afooter').offset().top;
+-#      var navBottomPos = $('#add_document').offset().top + $('#add_document').outerHeight();
+-#
+-#      if(navBottomPos >= footerTopPos) {
+-#        $('#add_document').css('position', 'relative');
+-#      }
+-#    });
+-#  })
