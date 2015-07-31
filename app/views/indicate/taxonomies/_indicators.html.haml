@@ -187,6 +187,9 @@
                   "size": 'xs' // options are xs, sm, lg
                 }
              },
+             success: function(response, newValue) {
+                 v[current_year]['comment'] = newValue;
+             }
           });
         } else {
           $('div[data-value="' + k + '"] .comments').html(v[current_year]['comment']);
