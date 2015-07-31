@@ -13,10 +13,10 @@
 
   .col-sm-2
     %i.fa.fa-calendar.fa-lg
-    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0] }
+    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0], id: 'year_change' }
 
   .col-sm-1
-    = button_tag(type: 'submit', :class => 'btn btn-primary') do
+    = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
       %i.fa.fa-search.fa-lg
 
@@ -46,7 +46,9 @@
         },
         cache: true
       },
-    });
+    }).on("change", function(){
+      $("#search_btn").trigger("click");
+    })
 
     $(".branch_select").select2(
       {
@@ -55,6 +57,12 @@
         placeholder: I18n.t('documentation.documents.search.doc_type'),
         multiSelect: true,
       }
-    )
+    ).on("change", function(){
+      $("#search_btn").trigger("click");
+    })
+
+    $('#year_change').on("change", function(){
+      $("#search_btn").trigger("click");
+    })
 
   });
