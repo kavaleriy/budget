@@ -1,9 +1,9 @@
-= form_tag documentation_documents_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
+= form_tag public_documents_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
   -#.input-group.input-group-sm.col-sm-6
     = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
       { multiple: true, class: 'category_select' }
   .col-sm-3
-    = render partial: '/documentation/documents/town_select', :locals => { params: { multiple: true } }
+    = render partial: 'town_select', :locals => { params: { multiple: true } }
 
   .col-sm-3
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }

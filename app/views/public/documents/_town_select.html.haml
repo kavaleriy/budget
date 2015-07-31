@@ -1,0 +1,31 @@
+= text_field_tag 'town_select', ''
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    $('#town_select').select2({
+      placeholder: I18n.t('documentation.documents.search.town_region'),
+      allowClear: true,
+      multiSelect: #{params[:multiple] || false},
+      multiple: #{params[:multiple] || false},
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_for_documents_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    })
+  });
