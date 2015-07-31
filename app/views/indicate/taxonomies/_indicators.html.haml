@@ -24,11 +24,21 @@
 
   var num_of_years = 3;
   var current_user;
+  var data;
 
   $(document).ready(function(){
-    current_user = "#{@current_user}";
 
-    create_graphs(num_of_years);
+    $.ajax({
+      url: '/indicate/taxonomies/#{@indicate_taxonomy.id}/get_indicators',
+      type: "post",
+      dataType: "json",
+      success: function(json) {
+       data = json;
+       create_graphs(num_of_years);
+      }
+    })
+
+    current_user = "#{@current_user}";
 
     $('#year_list a').click(function(e) {
       $("svg circle").tooltip('destroy');
@@ -62,8 +72,7 @@
   });
 
   function create_graphs(num_of_years) {
-    var data = JSON.parse('#{indicators.to_json}'.replace(/&#x27;/g,"\'"))
-    $.each(data, function(key, value) {
+    $.each(data['indicators'], function(key, value) {
       $.each(value, function(k, v) {
         var current_year = new Date().getFullYear() - 1;
         var years = [];
@@ -152,39 +161,35 @@
         var indicator_id = v[current_year]['id'];
 
         if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
-          $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
+          $('div[data-value="' + k + '"] .comments a').html(v[current_year]['comment'])
                                                       .attr("href", "#")
                                                       .attr("id", "indicate_indicator")
-                                                      .attr("data-type", "indicate_indicator")
+                                                      .attr("data-type", "wysihtml5")
+                                                      .attr("data-escape", false)
                                                       .attr("data-pk", indicator_id)
+                                                      .attr("data-emptytext", "додати коментар...")
+                                                      .attr("data-resource", "documentation_category")
                                                       .attr("data-url", "/indicate/indicators/" + indicator_id);
-          $.fn.editable.defaults.mode = 'inline';
+
           $('div[data-value="' + k + '"] .comments a').editable({
-            value: {
-                comment: v[current_year]['comment'],
-            },
-            validate: function(value) {
-                if (value.comment == '') return 'Потрібно вказати коментар!';
-            },
-            display: function(value) {
-                if(!value) {
-                    $(this).empty();
-                    return;
+            escape: false,
+            wysihtml5: {
+                toolbar: {
+                  "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                  "emphasis": true, // Italics, bold, etc.
+                  "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                  "html": false, // Button which allows you to edit the generated HTML.
+                  "link": true, // Button to insert a link.
+                  "image": true, // Button to insert an image.
+                  "color": false, // Button to change color of font
+                  "blockquote": true, // Blockquote
+                  "inline": true,
+                  "size": 'xs' // options are xs, sm, lg
                 }
-                var html = '<b>' + $('<div>').text(value.comment).html() + '</b>';
-                v[current_year]['comment'] = value.comment;
-                $(this).html(html);
-            }
+             },
           });
         } else {
-          $('div[data-value="' + k + '"] .comments').html(urlify(v[current_year]['comment']));
-        }
-
-        function urlify(text) {
-          var urlRegex = /(https?:\/\/[^\s]+)/g;
-          return text.replace(urlRegex, function(url) {
-              return '<a href="' + url + '" target="blank">' + url + '</a>';
-          })
+          $('div[data-value="' + k + '"] .comments').html(v[current_year]['comment']);
         }
 
         function mouseclick(d) {
@@ -195,14 +200,14 @@
             var indicator_id = v[current_year]['id'];
 
             if(current_user) {
-              $('div[data-value="' + k + '"] .comments a').text(v[current_year]['comment'])
-                                                          .attr("data-pk", indicator_id)
+              $('div[data-value="' + k + '"] .comments a').attr("data-pk", indicator_id)
                                                           .attr("data-url", "/indicate/indicators/" + indicator_id);
 
+              $('div[data-value="' + k + '"] .comments a').html(v[current_year]['comment']);
+              $('div[data-value="' + k + '"] .comments a').editable('option', 'value', v[current_year]['comment']);
               $('div[data-value="' + k + '"] .comments a').editable('option', 'url', "/indicate/indicators/" + indicator_id);
-              $('div[data-value="' + k + '"] .comments a').editable('option', 'value', {comment: v[current_year]['comment']});
             } else {
-              $('div[data-value="' + k + '"] .comments').text(v[current_year]['comment']);
+              $('div[data-value="' + k + '"] .comments').html(v[current_year]['comment']);
             }
           }
         }

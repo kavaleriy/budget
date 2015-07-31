@@ -1,5 +1,5 @@
 class Indicate::TaxonomiesController < ApplicationController
-  before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators]
+  before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators, :get_indicators]
 
   before_action :authenticate_user!, only: [:new, :edit, :show]
   load_and_authorize_resource
@@ -22,6 +22,11 @@ class Indicate::TaxonomiesController < ApplicationController
   def indicators
     @indicators = @indicate_taxonomy.get_indicators
     @current_user = current_user
+  end
+
+  def get_indicators
+    @indicators = @indicate_taxonomy.get_indicators
+    render :json => { 'indicators' => @indicators }
   end
 
   # GET /indicate/taxonomies/indicator_file
