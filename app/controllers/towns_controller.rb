@@ -9,6 +9,14 @@ class TownsController < ApplicationController
     end
   end
 
+  def search_for_documents
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @towns = Town.where(:title => Regexp.new("^#{q}.*")).order_by(:level => :asc).select{ |t| !t.documentation_documents.empty? }
+      format.json
+    end
+  end
+
   # GET /indicator_files
   # GET /indicator_files.json
   def index

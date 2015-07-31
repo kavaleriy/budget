@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
 
   get 'search_town' => 'towns#search'
+  get 'search_for_documents_town' => 'towns#search_for_documents'
   resources :towns
 
   namespace :repairing do
