@@ -3,6 +3,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     var svg_height;
     var shift = 1, curr_parent = null, curr_type = null, first_level_energy = null, child_level_energy = null;
     var data_labels = {}, children = {}, init_data_labels = {};
+    var data_type = "fact"; // type for which build the tree
+
     switch(parseInt(percent)) {
         case 5:
             svg_height = 500;
@@ -700,16 +702,16 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             child_level_energy = jQuery.extend(true, {}, energy);
             init_data_labels = jQuery.extend(true, {}, data_labels);
             var d = data.children;
-            var total_sum = data["amount"]["plan"][year]["0"]["total"];
+            var total_sum = data["amount"][data_type][year]["0"]["total"];
             elseAmounts = 0;
             elseAmounts_prev = 0;
 
             for(var i in d) {
-                if(d[i]["amount"]["plan"]) {
-                    var d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+                if(d[i]["amount"][data_type]) {
+                    var d_amount = d[i]["amount"][data_type][year]["0"]["total"];
                     var prev_amount = 0;
-                    if(d[i]["amount"]["plan"][year-1] && d[i]["amount"]["plan"][year-1]["0"] && d[i]["amount"]["plan"][year-1]["0"]["total"]) {
-                        prev_amount = d[i]["amount"]["plan"][year-1]["0"]["total"];
+                    if(d[i]["amount"][data_type][year-1] && d[i]["amount"][data_type][year-1]["0"] && d[i]["amount"][data_type][year-1]["0"]["total"]) {
+                        prev_amount = d[i]["amount"][data_type][year-1]["0"]["total"];
                     }
                     if(d_amount*100/total_sum >= percent) {
                         var key = d[i].label || d[i].key;
@@ -774,20 +776,20 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
         var length = Object.keys(data_labels).length + 1;
         shift = 1/length;
         var d = node.children;
-        var total_sum = node["amount"]["plan"][year]["0"]["total"];
+        var total_sum = node["amount"][data_type][year]["0"]["total"];
         elseAmounts = 0;
         elseAmounts_prev = 0;
         for(var i in d) {
             var d_amount = 0;
             var prev_amount = 0;
-            if(d[i]["amount"]["plan"] && d[i]["amount"]["plan"][year-1] && d[i]["amount"]["plan"][year-1]["0"] && d[i]["amount"]["plan"][year-1]["0"]["total"]) {
-                prev_amount = d[i]["amount"]["plan"][year-1]["0"]["total"];
+            if(d[i]["amount"][data_type] && d[i]["amount"][data_type][year-1] && d[i]["amount"][data_type][year-1]["0"] && d[i]["amount"][data_type][year-1]["0"]["total"]) {
+                prev_amount = d[i]["amount"][data_type][year-1]["0"]["total"];
             }
-            if(d[i]["amount"]["plan"] && d[i]["amount"]["plan"][year]) {
-                if (d[i]["amount"]["plan"][year]["0"]) {
-                    d_amount = d[i]["amount"]["plan"][year]["0"]["total"];
+            if(d[i]["amount"][data_type] && d[i]["amount"][data_type][year]) {
+                if (d[i]["amount"][data_type][year]["0"]) {
+                    d_amount = d[i]["amount"][data_type][year]["0"]["total"];
                 } else {
-                    var count = d[i]["amount"]["plan"][year];
+                    var count = d[i]["amount"][data_type][year];
                     for(var j in count) {
                         d_amount += count[j]["total"];
                     }

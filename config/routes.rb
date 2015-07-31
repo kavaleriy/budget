@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
 
   get 'search_town' => 'towns#search'
+  get 'search_for_documents_town' => 'towns#search_for_documents'
   resources :towns
 
   namespace :repairing do
@@ -171,11 +172,11 @@ Rails.application.routes.draw do
 
   namespace :public do
     get 'budget' => 'home#budget'
-    get 'documents' => 'home#documents'
+
+    get 'documents' => 'documents#index'
 
     get 'towns/:town_id' => 'towns#show'
     get 'ukraine_geo_json' => 'towns#geo_json'
-
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'

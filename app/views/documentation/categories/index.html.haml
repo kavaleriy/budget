@@ -1,19 +1,17 @@
 = stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
-
 :css
   .documentation {
     min-height: 400px;
     padding-top: 15px;
   }
 
-  .documentation #category_tree{
+  .documentation .tree_view{
     min-height: 400px;
     padding-top: 15px;
   }
 
   .documentation .documents {
-    /*max-height: 400px;*/
     overflow: visible;
   }
 
@@ -24,17 +22,8 @@
 .documentation
   .panel.panel-default.col-sm-4
     .panel-body
-      %button#create.btn.btn-success.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-asterisk
-          Додати
-      %button#rename.btn.btn-warning.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-pencil
-          Редагувати
-      %button#delete.btn.btn-danger.btn-sm{ type: 'button' }
-        %i.glyphicon.glyphicon-remove
-          Видалити
-
-      #category_tree
+      = render :partial => 'tree_control', :locals => { prefix: 'documentation_category' }
+      = render :partial => 'tree_view', :locals => { prefix: 'documentation_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
       #category_content
 
@@ -53,161 +42,94 @@
 
 
 :javascript
-  $(document).ready(function() {
-    $('.documentation .file_upload form').bind("ajax:success", function(f){
-      console.log(f)
-    });
-  });
-
-
-:javascript
-  $(document).ready(function() {
-    $('.documentation .document a[data-method="delete"]').bind("ajax:success", function(f){
-      console.log(111)
-    });
-  });
-
-:javascript
 
   $(document).ready(function() {
-    $('.documentation #create').on('click', function() {
-      var ref = $('#category_tree').jstree(true),
-          sel = ref.get_selected();
-      sel = sel.length > 0 ? sel[0] : null
-      sel = ref.create_node(sel, {"type":"file"});
-      if (sel) {
-          ref.edit(sel);
+
+    $('#documentation_category_tree_view').on("changed.jstree", function(e, data){
+      if(data && data.selected && data.selected.length) {
+          $.get('categories/' + data.selected, function (d) {
+          });
       }
-    })
-    $('.documentation #rename').on('click', function() {
-        var ref = $('#category_tree').jstree(true),
-            sel = ref.get_selected();
-        if(!sel.length) { return false; }
-        sel = sel[0];
-        ref.edit(sel);
-    })
-    $('.documentation #delete').on('click', function() {
-      var ref = $('#category_tree').jstree(true),
-          sel = ref.get_selected();
-      if(!sel.length) { return false; }
-      ref.delete_node(sel);
-    })
-  })
+      else {
+          $('.documentation #category_content').html('')
+      }
+    });
 
-  $(document).ready(function() {
+    $('#documentation_category_tree_view').on("delete_node.jstree", function(e, data){
+      $.ajax({
+          method: 'DELETE',
+          url: 'categories/' + data.node.id + '.json'
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
 
-    $.getScript("/assets/jstree/jstree.js")
-      .done(function() {
-        $('#category_tree').jstree({
-          "core" : {
-            "animation" : 0,
-            "check_callback" : true,
-            "themes" : { "stripes" : true },
-            'data' : {
-              'url' : function (node) {
-                return node.id === '#' ?
-                  'categories_tree_root.json' : 'categories_tree.json';
-              },
-              'data' : function (node) {
-                return { 'id' : node.id };
-              }
-            },
-            "types" : {
-              "default" : {
-                "icon" : "glyphicon glyphicon-flash"
-              },
-              "demo" : {
-                "icon" : "glyphicon glyphicon-ok"
-              }
-            },
-          },
-          "plugins" : [
-            "contextmenu", "dnd", "search",
-            "state", "types", "wholerow"
-          ]
-        })
-        .on('delete_node.jstree', function (e, data) {
-          $.ajax({
-            method: 'DELETE',
-            url: 'categories/' + data.node.id + '.json'
-          })
-          .fail(function () {
-              data.instance.refresh();
-          });
-        })
-        .on('create_node.jstree', function (e, data) {
-          $.ajax({
-            method: 'post',
-            url: '/documentation/categories',
-            dataType: 'json',
-            data: {
+    $('#documentation_category_tree_view').on("create_node.jstree", function(e, data){
+      $.ajax({
+          method: 'post',
+          url: '/documentation/categories',
+          dataType: 'json',
+          data: {
               documentation_category: {
-                category_id: data.node.parent,
-                title: data.node.text,
-                position: data.position
+                  category_id: data.node.parent,
+                  title: data.node.text,
+                  position: data.position
               }
-            }
-          })
-          .done(function (d) {
-            data.instance.set_id(data.node, d.id);
-          })
-          .fail(function () {
-            data.instance.refresh();
-          });
-        })
-        .on('rename_node.jstree', function (e, data) {
-            $.ajax({
-              method: 'PUT',
-              url: 'categories/' + data.node.id,
-              dataType: 'json',
-              data: {
-                documentation_category: {
+          }
+      })
+      .done(function (d) {
+          data.instance.set_id(data.node, d.id);
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("rename_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              documentation_category: {
                   title: data.text
-                }
               }
-            })
-            .fail(function () {
-                data.instance.refresh();
-            });
-        })
-        .on('move_node.jstree', function (e, data) {
-            $.ajax({
-              method: 'PUT',
-              url: 'categories/' + data.node.id,
-              dataType: 'json',
-              data: {
-                documentation_category: {
+          }
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("move_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              documentation_category: {
                   category_id: data.parent,
                   position: data.position
-                }
               }
-            })
-            .fail(function () {
-                data.instance.refresh();
-            });
-        })
-        .on('copy_node.jstree', function (e, data) {
-          $.post('/documentation/categories', {
-            documentation_category: {
+          }
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("copy_node.jstree", function(e, data){
+      $.post('/documentation/categories', {
+          documentation_category: {
               category_id: data.node.parent,
               title: data.node.text,
               position: data.position
-            }
-          })
-          .always(function () {
-            data.instance.refresh();
-          });
-        })
-        .on('changed.jstree', function (e, data) {
-            if(data && data.selected && data.selected.length) {
-                $.get('categories/' + data.selected, function (d) {
-                });
-            }
-            else {
-                $('.documentation #category_content').html('')
-            }
-        })
-      }).fail(function() {
-        console.log("fail")
+          }
+      })
+      .always(function () {
+          data.instance.refresh();
       });
-  });
+    })
+
+  })

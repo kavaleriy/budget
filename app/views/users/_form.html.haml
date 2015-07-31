@@ -9,7 +9,7 @@
     .form-group
       = f.text_field :email
     .form-group
-      = f.select :town, options_for_select( [nil] + Town.cities + Town.areas, @user.town), class: 'select-town form-control'
+      = f.select :town, options_for_select( @towns, @user.town), class: 'select-town form-control'
 
   .col-sm-6
     .form-group

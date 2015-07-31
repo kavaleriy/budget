@@ -1,4 +1,5 @@
 class KeyIndicate::IndicatorFilesController < ApplicationController
+  include ControllerCaching
 
   before_action :authenticate_user!, only: [:new, :edit]
   load_and_authorize_resource
@@ -72,7 +73,6 @@ class KeyIndicate::IndicatorFilesController < ApplicationController
 
   # GET /key_indicate/indicator_files/1/edit
   def edit
-    @towns = KeyIndicate::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0 || t == @key_indicate_town }.collect { |t| [t.title, t.id] }
   end
 
   def indicator_file_create
@@ -177,7 +177,9 @@ class KeyIndicate::IndicatorFilesController < ApplicationController
   private
 
   def get_towns
-    @towns = ::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0}
+    @towns = use_cache do
+      ::Town.all.reject{|t| t.key_indicate_indicator_files.length <= 0}
+    end
     @initial_towns = @towns.reject{ |t| !%w(Київ Львів Одеса).include? t.title }.map{ |t| t.title }
     @towns.map!{ |t| [t.title, t.id.to_s] }
   end

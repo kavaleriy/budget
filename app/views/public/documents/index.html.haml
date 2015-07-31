@@ -1,0 +1,15 @@
+= content_for :header do
+  .header.pull-left
+    %h1
+      =t('.documents')
+      %small
+        =t('.documents_search')
+
+.col-xs-12
+  = render partial: 'preambule'
+
+.col-xs-12.documents_search
+  = render partial: 'search'
+
+.col-xs-12.documentation
+  = render partial: 'search_results', :locals => { towns: @towns, documents: @documentation_documents }

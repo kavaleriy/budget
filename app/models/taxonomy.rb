@@ -136,6 +136,7 @@
 
       explanation = self.explanation[level.to_s]
       self.get_plan_fact_rows[:fact].each do |year, months|
+
         levels[year] = { } if levels[year].nil?
 
         levels[year][:totals] = {} if levels[year][:totals].nil?
@@ -146,7 +147,6 @@
             levels[year][month] = { }
           end
           rows.each do |row|
-            next unless row['_amount_type'] == :fact
             fond = row[:fond]
             if levels[year][month][fond].nil?
               levels[year][month][fond] = {}
@@ -165,7 +165,6 @@
           end
         end
       end
-
       levels
     end
 
@@ -203,7 +202,6 @@
     def get_plan_fact_rows
       rows = {}
       self.budget_files.each{ |file|
-
         data_type = file.data_type.blank? ? :plan : file.data_type.to_sym
 
         file.rows.keys.each {|year|
