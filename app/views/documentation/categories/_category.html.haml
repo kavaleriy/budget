@@ -1,8 +1,4 @@
 :css
-  .modal-backdrop {
-    z-index: 1;
-  }
-
   .dropdown > a:after {
     content: ""
   }
@@ -16,15 +12,6 @@
     display: block;
   }
 
-  .form-inline .form-group {
-    display: block;
-    margin-bottom: 15px;
-  }
-
-  .form-group .form-control {
-    width: 100%;
-  }
-
 
 %a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
   = @documentation_category.description.html_safe() if @documentation_category.description
@@ -32,12 +19,9 @@
 :javascript
   $(document).ready(function() {
 
-      $('.wysihtml5-sandbox').css("width", "700px");
-
       $('#description').editable({
         escape: false,
         wysihtml5: {
-          toolbar: {
           "font-styles": true, // Font styling, e.g. h1, h2, etc.
           "emphasis": true, // Italics, bold, etc.
           "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
@@ -45,10 +29,8 @@
           "link": true, // Button to insert a link.
           "image": true, // Button to insert an image.
           "color": false, // Button to change color of font
-          "blockquote": true, // Blockquote
           "inline": true,
           "size": 'xm' // options are xs, sm, lg
-        }
-       },
+        },
       });
   });
