@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
     get 'taxonomies/indicators/:id' => 'taxonomies#indicators'
     get 'taxonomies/get_taxonomy/:town' => 'taxonomies#get_taxonomy'
+    post 'taxonomies/:id/get_indicators' => 'taxonomies#get_indicators'
     get 'indicator_files/get_files/:town' => 'indicator_files#get_files'
   end
 

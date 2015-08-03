@@ -10,10 +10,11 @@ class Public::DocumentsController < ApplicationController
     @documentation_documents = @documentation_documents.where(:yearFrom.lte => params["year"].to_i, :yearTo.gte => params["year"].to_i) unless params["year"].blank?
     @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) unless params["q"].blank?
 
-    @towns = use_cache do
+    @towns = use_cache controller_path do
       Town.all.reject{|town| town.documentation_documents.empty?}
     end
 
+    @towns = @towns.select{ |t| params["town_select"].split(',').include? t.id.to_s } unless params["town_select"].blank?
   end
 
 end

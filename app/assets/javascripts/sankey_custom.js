@@ -93,7 +93,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     }
 
     if(Object.keys(elseAmounts).length != 0) {
-        energy.nodes.push({"name": "Агреговані доходи",
+        energy.nodes.push({"name": I18n.t("sankeys.aggr_revenues"),
                            "xPos": 0,
                            "prev_amount": 0
                           });
@@ -151,7 +151,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     }
 
     if(Object.keys(elseAmounts).length != 0) {
-        energy.nodes.push({"name": "Агреговані видатки",
+        energy.nodes.push({"name": I18n.t("sankeys.aggr_expences"),
                            "xPos": 2,
                            "prev_amount": 0
                           });
@@ -372,7 +372,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             .style("fill", "darkgray")
             .style("font-size", "0.7em")
             .style("font-weight", "bold")
-            .text("Бюджет за " + year + " р.");
+            .text(I18n.t("sankeys.budget") + year + I18n.t("short_units.year"));
 
         // rectangles for status bar (total amounts)
         var arrow_length = 70;
@@ -433,8 +433,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                     .style("fill", "#082757")
                     .style("font-size", "0.8em")
                     .style("font-weight", "bold")
-                    .text(function(){if(i == 0) return "Доходи - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн.";
-                                     return "Видатки - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн.";});
+                    .text(function(){if(i == 0) return I18n.t("sankeys.revenues") + " - " + (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + I18n.t("short_units.unit");
+                                     return I18n.t("sankeys.expences") + " - " + (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + I18n.t("short_units.unit");});
             } else {
                 status_bar.append("g")
                             .attr("transform", function() { return "translate(" + (sankey_center - 65) + "," + (-margin.top/2) + ")"; })
@@ -455,13 +455,13 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                             .style("font-size", "0.8em")
                             .style("font-weight", "bold")
                             .text(function(){
-                                            if(revenues > expences) return "Профіцит";
-                                            if(revenues < expences) return "Дефіцит";
-                                            if(revenues == expences) return "Баланс";})
+                                            if(revenues > expences) return I18n.t("sankeys.surplus");
+                                            if(revenues < expences) return I18n.t("sankeys.deficit");
+                                            if(revenues == expences) return I18n.t("sankeys.balance");})
                           .append("tspan")
                             .attr("dy", "1.2em")
                             .attr("x", sankey_center + 10)
-                            .text(function() {var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + " грн."
+                            .text(function() {var diff = (Math.abs(revenues - expences)/window.aHelper.k(Math.abs(revenues - expences))).toFixed(2) + " " + window.aHelper.short_unit(Math.abs(revenues - expences)) + I18n.t("short_units.unit")
                                               if(revenues != expences) return diff;})
             }
         }
@@ -493,15 +493,15 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
             text.append('tspan')
                 .text(function() {
-                    if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + " грн. - " + year + " р. ";
-                    return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + " грн. - " + year + " р. ";
+                    if(j == 0) return (revenues/window.aHelper.k(revenues)).toFixed(2) + " " + window.aHelper.short_unit(revenues) + I18n.t("short_units.unit") + " - " + year + I18n.t("short_units.year");
+                    return (expences/window.aHelper.k(expences)).toFixed(2) + " " + window.aHelper.short_unit(expences) + I18n.t("short_units.unit") + " - " + year + I18n.t("short_units.year");
                 });
 
             d = data["rows_rot"][year-1];
             if(d && j == 0) { // if previous year rot exists
                 prev_revenues = d["totals"]["0"];
                 text.append('tspan')
-                    .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + " грн. - " + (year-1) + " р.")
+                    .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + I18n.t("short_units.unit") + " - " + (year-1) + I18n.t("short_units.year"))
                     .attr("dy", "1.1em")
                     .attr("x", -margin.left + 14)
                     .style("font-weight", "normal");
@@ -520,7 +520,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             } else if(data["rows_rov"][year-1] && j == 1){
                 prev_expences = data["rows_rov"][year-1]["totals"]["0"];
                 text.append('tspan')
-                    .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + " грн. - " + (year-1) + " р.")
+                    .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + I18n.t("short_units.unit") + " - " + (year-1) + I18n.t("short_units.year"))
                     .attr("dy", "1.1em")
                     .attr("x", width - margin.left + 5)
                     .style("font-weight", "normal");
@@ -540,8 +540,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
             text.append('tspan')
                 .text(function(d) {
-                    if(data["rows_rot"][year] && j == 0) return short_unit_rev + " грн";
-                    if(data["rows_rov"][year] && j == 1) return short_unit_exp + " грн";
+                    if(data["rows_rot"][year] && j == 0) return short_unit_rev + I18n.t("short_units.unit");
+                    if(data["rows_rov"][year] && j == 1) return short_unit_exp + I18n.t("short_units.unit");
                     return "";
                 })
                 .attr("y", -5)
@@ -737,7 +737,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                 }
             }
             if(elseAmounts != 0) {
-                first_level_energy.nodes.push({ "name": type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
+                first_level_energy.nodes.push({ "name": type == "rot" ? I18n.t("sankeys.aggr_revenues") : I18n.t("sankeys.aggr_expences"),
                     "xPos": xPos,
                     "prev_amount": 0,
                     "parent": pos
@@ -818,7 +818,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             }
         }
         if(elseAmounts != 0) {
-            energy.nodes.push({ "name": curr_type == "rot" ? 'Агреговані доходи' : 'Агреговані видатки',
+            energy.nodes.push({ "name": curr_type == "rot" ? I18n.t("sankeys.aggr_revenues") : I18n.t("sankeys.aggr_expences"),
                 "xPos": xPos,
                 "prev_amount": 0,
                 "parent": pos

@@ -1,6 +1,8 @@
 class TownsController < ApplicationController
   before_action :set_town, only: [:show, :edit, :update, :destroy]
 
+  include ControllerCaching
+
   def search
     respond_to do |format|
       q = params[:query].mb_chars.capitalize.to_s
@@ -10,9 +12,13 @@ class TownsController < ApplicationController
   end
 
   def search_for_documents
+    @towns = use_cache controller_path do
+      Town.all.reject{|town| town.documentation_documents.empty?}
+    end
+
     respond_to do |format|
       q = params[:query].mb_chars.capitalize.to_s
-      @towns = Town.where(:title => Regexp.new("^#{q}.*")).order_by(:level => :asc).select{ |t| !t.documentation_documents.empty? }
+      @towns = @towns.select{ |t| Regexp.new("^#{q}.*") =~ t.title }
       format.json
     end
   end

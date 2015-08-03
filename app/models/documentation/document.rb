@@ -13,6 +13,13 @@ class Documentation::Document
 
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
+  def get_years
+    years = []
+    years << [self.yearFrom] unless self.yearFrom.blank?
+    years << self.yearTo unless self.yearFrom == self.yearTo or self.yearTo.blank?
+    years.join(' - ')
+  end
+
   belongs_to :branch, class_name: 'Documentation::Branch'
   belongs_to :town
   belongs_to :owner, class_name: 'User'

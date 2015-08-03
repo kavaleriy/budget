@@ -13,8 +13,10 @@
   }
 
   .comments {
-    height: 50px;
+    height: 100px;
     color: #7E8283;
+    overflow: auto;
+    padding-bottom: 10px;
   }
 
   path {
@@ -94,4 +96,30 @@ body {
     pointer-events: none;
     color: #0b387c;
   }
+}
+
+#indicators {
+
+  .dropdown > a:after {
+    content: ""
+  }
+
+  .editable-wysihtml5 {
+    width: 100%;
+    height: 150px;
+  }
+
+  .editable-buttons {
+    margin-left: 0;
+    display: block;
+  }
+
+  .editable-container .popover {
+    width: 400px;
+    height: 300px;
+  }
+}
+
+.ui-slider-handle.ui-state-active, .tooltip {
+  z-index: 3;
 }
