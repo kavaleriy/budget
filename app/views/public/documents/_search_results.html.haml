@@ -1,6 +1,7 @@
 :css
-  .document {
+  .document .thumbnail{
     text-align: center;
+    background-color: rgba(166, 103, 232, 0.100);
   }
 
 #results.col-xs-12
@@ -8,14 +9,17 @@
 
     %h1
       = town.to_s
+      %span.label.label-info
+        = town.documentation_documents.count
 
     - documents.where(:town_id => town.id).each do |document|
       - if document.doc_file?
         .col-sm-2.document
-          = link_to document.doc_file.url do
-            %i.fa.fa-3x{ style: 'align:', class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-            %br
+          = link_to document.doc_file.url, class: 'thumbnail' do
+            %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
             %p
-              = document.title
+              = document.title.truncate(30)
+              %br
+              = document.category.title unless document.category.nil?
     .clear
     %hr

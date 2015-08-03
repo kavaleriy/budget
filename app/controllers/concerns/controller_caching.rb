@@ -1,8 +1,8 @@
 module ControllerCaching
   extend ActiveSupport::Concern
 
-  def use_cache
-    Rails.cache.fetch( cache_key, :expires_in => Rails.env.development? ? 10.minutes : 12.hours) do
+  def use_cache key
+    Rails.cache.fetch( key.nil? ? cache_key : key, :expires_in => Rails.env.development? ? 10.minutes : 12.hours) do
       yield
     end
   end

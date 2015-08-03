@@ -9,9 +9,8 @@
     $('#town_select').select2({
       placeholder: I18n.t('documentation.documents.search.town_region'),
       allowClear: true,
-      multiSelect: #{params[:multiple] || false},
-      multiple: #{params[:multiple] || false},
-      minimumInputLength: 2,
+      multiSelect: true,
+      multiple: true,
       width: '100%',
       ajax: {
         url: '#{search_for_documents_town_path}',
