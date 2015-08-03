@@ -26,11 +26,13 @@ class Public::TownsController < ApplicationController
               Town.cities + Town.towns
           end
 
-      towns.reject{|town| town.documentation_documents.empty?}.each{ |town| result << TownGeojsonBuilder.build_town(town) }
+      towns.reject{|town| town.documentation_documents.empty?}.each do |town|
+        geo = TownGeojsonBuilder.build(town)
+        result << geo unless geo.blank?
+      end
 
-      result.compact
+      result
     end
-
     respond_to do |format|
       format.json { render json: @geo_json }
     end

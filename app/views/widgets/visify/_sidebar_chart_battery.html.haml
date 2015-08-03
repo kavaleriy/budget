@@ -17,6 +17,7 @@
 
   .tick.major text {
     text-anchor: middle !important;
+    font-size: 0.9em;
   }
 
 #sidebar_chart
@@ -249,7 +250,7 @@
         }
 
         svg.append("text")
-           .attr("x", width/2 + margin.left - 1)
+           .attr("x", width/2 + margin.left )
            .attr("y", margin.top - 2)
            .attr("text-anchor", "middle")
            .text(I18n.t('js.visify.plan') + " | " + I18n.t('js.visify.fact'))

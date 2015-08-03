@@ -17,6 +17,7 @@ class Town
   field :links, type: String
 
   field :coordinates, type: Array
+  field :geometry_type, type: String
 
   require 'carrierwave/mongoid'
 
