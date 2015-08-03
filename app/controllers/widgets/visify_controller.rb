@@ -10,10 +10,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
   def get_bubbletree_data
-    result = use_cache do
-      params[:levels] ? levels = params[:levels].split(",") : levels = []
-      get_bubble_tree(levels)
-    end
+    # result = use_cache do
+    #   params[:levels] ? levels = params[:levels].split(",") : levels = []
+    #   get_bubble_tree(levels)
+    # end
+
+    params[:levels] ? levels = params[:levels].split(",") : levels = []
+    result = get_bubble_tree(levels)
 
     render json: result
   end
