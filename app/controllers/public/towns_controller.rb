@@ -15,7 +15,7 @@ class Public::TownsController < ApplicationController
   end
 
   def geo_json
-    # @geo_json = use_cache do
+    @geo_json = use_cache do
       result = []
 
       towns =
@@ -32,10 +32,7 @@ class Public::TownsController < ApplicationController
       end
 
       result
-    # end
-
-      @geo_json = result
-
+    end
     respond_to do |format|
       format.json { render json: @geo_json }
     end
