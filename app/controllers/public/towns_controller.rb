@@ -15,7 +15,7 @@ class Public::TownsController < ApplicationController
   end
 
   def geo_json
-    @geo_json = use_cache do
+    # @geo_json = use_cache do
       result = []
 
       towns =
@@ -26,10 +26,15 @@ class Public::TownsController < ApplicationController
               Town.cities + Town.towns
           end
 
-      towns.reject{|town| town.documentation_documents.empty?}.each{ |town| result << TownGeojsonBuilder.build_town(town) }
+      towns.reject{|town| town.documentation_documents.empty?}.each do |town|
+        geo = TownGeojsonBuilder.build(town)
+        result << geo unless geo.blank?
+      end
 
-      result.compact
-    end
+      result
+    # end
+
+      @geo_json = result
 
     respond_to do |format|
       format.json { render json: @geo_json }

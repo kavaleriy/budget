@@ -9,8 +9,6 @@
 
     %h1
       = town.to_s
-      %span.label.label-info
-        = town.documentation_documents.count
 
     - documents.where(:town_id => town.id).each do |document|
       - if document.doc_file?
