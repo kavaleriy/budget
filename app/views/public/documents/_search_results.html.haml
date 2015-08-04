@@ -1,7 +1,9 @@
 :css
+
   .document .thumbnail{
     text-align: center;
     background-color: rgba(166, 103, 232, 0.100);
+    height: 100%;
   }
 
 #results.col-xs-12
@@ -10,14 +12,15 @@
     %h1
       = town.to_s
 
-    - documents.where(:town_id => town.id).each do |document|
-      - if document.doc_file?
-        .col-sm-2.document
-          = link_to document.doc_file.url, class: 'thumbnail' do
-            %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-            %p
-              = document.title.truncate(30)
-              %br
-              = document.category.title unless document.category.nil?
+    .row-eq-height
+      - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
+        - if document.doc_file?
+          .col-sm-2.document
+            = link_to document.doc_file.url, class: 'thumbnail' do
+              %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
+              %p
+                = document.title.truncate(30)
+                %br
+                = document.category.title unless document.category.nil?
     .clear
     %hr
