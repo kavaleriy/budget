@@ -10,6 +10,8 @@
           %li= msg
 
   = f.hidden_field :category_id
+  - if defined?(town_id)
+    = f.hidden_field :town_id, :value => town_id
 
   -#.col-sm-6
   -#  .form-group

@@ -44,16 +44,17 @@ class Documentation::DocumentsController < ApplicationController
   def create
     @documents = []
 
+    params[:documentation_document][:town_id].blank? ? town = Town.where(title: current_user.town).first_or_create : town = Town.find(params[:documentation_document][:town_id])
+
     params['doc_file'].each do |f|
       doc = Documentation::Document.new(documentation_document_params)
       doc.doc_file = f
 
-      doc.town = Town.where(title: current_user.town).first_or_create
+      doc.town = town
 
       doc.owner = current_user
 
-      current_user.has_role? :admin ? self.locked = false : self.locked = true
-
+      current_user.has_role?(:admin) ? doc.locked = false : doc.locked = true
       doc.save!
 
       @documents << doc
@@ -117,6 +118,6 @@ class Documentation::DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_document_params
-      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :description, :year, :yearFrom, :yearTo, :locked)
+      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :town_id, :description, :year, :yearFrom, :yearTo, :locked)
     end
 end

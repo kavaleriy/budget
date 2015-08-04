@@ -5,11 +5,17 @@
     background-color: rgba(166, 103, 232, 0.100);
   }
 
+  .documentation {
+    margin-top: 20px;
+  }
+
 #results.col-xs-12
   - towns.reject{|town| documents.where(:town_id => town.id).empty? }.each do |town|
 
     %h1
       = town.to_s
+      %btn.btn.btn-primary.btn-xs{:title => "додати файл", 'data-toggle' => 'modal', 'data-target' => '#city_modal_' + town.id }
+        %i.fa.fa-plus
 
     .row-eq-height
       - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
@@ -23,3 +29,36 @@
                 = document.category.title unless document.category.nil?
     .clear
     %hr
+
+    / Modal window to add files
+    .modal.fade{:id => 'city_modal_' + town.id, 'aria-labelledby' => 'cityModalLabel', :role => 'dialog', :tabindex => '-1'}
+      .modal-dialog{:role => 'document'}
+        .modal-content
+          .modal-header
+            %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+              %span{'aria-hidden' => 'true'} &times;
+            %h4#cityModalLabel.modal-title
+              = "Додати файли для м." + town.title
+          .modal-body
+            .documentation
+              .panel.panel-default
+                .panel-heading
+                  = t('form.new_document')
+                .new_document.panel-body
+                  = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id }
+
+              -#.panel.panel-default
+              -#  .panel-heading
+              -#    = t('form.uploaded_documents')
+              -#  .documents.panel-body
+          .modal-footer
+            %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
+              = t('form.close')
+
+:javascript
+
+  $(document).ready(function() {
+    $('.city_btn').on("click", function() {
+      console.log($(this).attr("data-city"))
+    })
+  })
