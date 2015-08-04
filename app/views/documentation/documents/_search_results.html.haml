@@ -9,3 +9,13 @@
     %td= years(document.yearFrom, document.yearTo)
     %td= "#{document.town.title if document.town}"
     %td= "#{document.branch.title if document.branch}"
+    %td
+      %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
+
+:javascript
+  $(document).ready(function(){
+    $('.doc_lock').editable({
+      type: 'checklist',
+      source: {'1': 'locked'}
+    });
+  })

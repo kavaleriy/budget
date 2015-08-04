@@ -11,9 +11,11 @@
   .col-sm-3
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
 
-  .col-sm-2
-    %i.fa.fa-calendar.fa-lg
-    = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0], id: 'year_change' }
+  .col-sm-2.form-inline
+    .input-group
+      %span.input-group-addon
+        %i.fa.fa-calendar.fa-lg
+      = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0], id: 'year_change', class: 'form-control' }
 
   .col-sm-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do

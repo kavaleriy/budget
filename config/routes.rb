@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     get 'categories_tree' => 'categories#tree'
 
     resources :documents
+    put 'documents/lock/:id' => 'documents#lock'
   end
 
 

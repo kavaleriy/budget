@@ -1,12 +1,17 @@
+:css
+  .documents_search {
+    margin-top: 20px;
+  }
+
 = content_for :header do
   .header.pull-left
     %h1
-      Документи
+      =t('.documents')
       %small
-        Subtext for header
+        =t('.documents_search')
 
-  .col-xs-9.pull-right
-    = render partial: 'search'
+.col-xs-12.documents_search
+  = render partial: 'search'
 
 .documentation
   %table.table.table-striped
@@ -18,6 +23,6 @@
         %th Years
         %th Town
         %th Type
-        %th
+        %th Locked
     %tbody#results
       = render partial: 'search_results', :locals => { documents: @documentation_documents }

@@ -2,7 +2,7 @@ class Documentation::DocumentsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   load_and_authorize_resource
 
-  before_action :set_documentation_document, only: [:show, :edit, :update, :destroy]
+  before_action :set_documentation_document, only: [:show, :edit, :lock, :update, :destroy]
 
   # GET /documentation/documents
   # GET /documentation/documents.json
@@ -50,6 +50,8 @@ class Documentation::DocumentsController < ApplicationController
 
       doc.owner = current_user
 
+      current_user.has_role? :admin ? self.locked = false : self.locked = true
+
       doc.save!
 
       @documents << doc
@@ -76,6 +78,25 @@ class Documentation::DocumentsController < ApplicationController
     end
   end
 
+  def lock
+    if params[:locked]
+      @documentation_document.locked = true
+    else
+      @documentation_document.locked = false
+    end
+
+    respond_to do |format|
+      if @documentation_document.save
+        format.js
+        format.json { render :show, status: :ok, location: @documentation_document }
+      else
+        format.js { render status: :unprocessable_entity }
+        format.json { render json: @documentation_document.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   # DELETE /documentation/documents/1
   # DELETE /documentation/documents/1.json
   def destroy
@@ -94,6 +115,6 @@ class Documentation::DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_document_params
-      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :description, :year, :yearFrom, :yearTo)
+      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :description, :year, :yearFrom, :yearTo, :locked)
     end
 end
