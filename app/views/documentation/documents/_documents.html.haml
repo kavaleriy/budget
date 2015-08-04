@@ -12,6 +12,8 @@
       %th
         =t('public.home.documents.type')
       %th
+        =t('.locked')
+      %th
   %tbody
     - documents.each do |document|
       = render :partial => 'documentation/documents/document', :locals => { :document => document }

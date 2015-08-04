@@ -2,22 +2,27 @@
   -#.input-group.input-group-sm.col-sm-6
     = select_tag :category, tree_option_groups_from_collection_for_select(Documentation::Category.tree_root, :childrens, :title, :id, :title, nil),
       { multiple: true, class: 'category_select' }
-  .col-sm-3
+  .col-sm-12.col-md-2
     = render partial: '/documentation/documents/town_select', :locals => { params: { multiple: true } }
 
-  .col-sm-3
+  .col-sm-12.col-md-2
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
 
-  .col-sm-3
+  .col-sm-12.col-md-3
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
 
-  .col-sm-2.form-inline
+  .col-sm-12.col-md-2.form-inline
     .input-group
       %span.input-group-addon
         %i.fa.fa-calendar.fa-lg
       = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0], id: 'year_change', class: 'form-control' }
 
-  .col-sm-1
+  .col-sm-6.col-md-2.form-inline
+    = check_box_tag :locked, 1, false, :id => 'lock_check'
+    %label
+      =t('documentation.documents.index.only_locked')
+
+  .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
       %i.fa.fa-search.fa-lg
@@ -29,6 +34,11 @@
     $("#town_select").on("change", function(){
       $("#search_btn").trigger("click");
     })
+
+    $("#lock_check").on("click", function(){
+      $("#search_btn").trigger("click");
+    })
+
   });
 
 

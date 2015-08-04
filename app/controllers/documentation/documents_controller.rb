@@ -15,6 +15,8 @@ class Documentation::DocumentsController < ApplicationController
 
     @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) unless params["q"].blank?
 
+    @documentation_documents = @documentation_documents.where(:locked => params["locked"]) unless params["locked"].blank?
+
     @documentation_documents.page params[:page]
 
     respond_to do |format|
