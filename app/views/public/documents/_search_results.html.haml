@@ -1,7 +1,12 @@
 :css
+
   .document .thumbnail{
     text-align: center;
     background-color: rgba(166, 103, 232, 0.100);
+  }
+
+  .documentation {
+    margin-top: 20px;
   }
 
 #results.col-xs-12
@@ -9,15 +14,65 @@
 
     %h1
       = town.to_s
+      %btn.btn.btn-primary.btn-xs{:title => "додати файли", 'data-toggle' => 'modal', 'data-target' => '#city_add_' + town.id }
+        %i.fa.fa-plus
+      - if current_user
+        %btn.btn.btn-primary.btn-xs{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit_' + town.id }
+          %i.fa.fa-edit.fa-lg
 
-    - documents.where(:town_id => town.id).each do |document|
-      - if document.doc_file?
-        .col-sm-2.document
-          = link_to document.doc_file.url, class: 'thumbnail' do
-            %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-            %p
-              = document.title.truncate(30)
-              %br
-              = document.category.title unless document.category.nil?
+    .row-eq-height{:id => 'results_' + town.id}
+      - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
+        - if document.doc_file?
+          = render :partial => 'thumbnail', :locals => { :document => document }
+
     .clear
     %hr
+
+    / Modal window to add files
+    .modal.fade{:id => 'city_add_' + town.id, 'aria-labelledby' => 'cityModalLabel', :role => 'dialog', :tabindex => '-1'}
+      .modal-dialog{:role => 'document'}
+        .modal-content
+          .modal-header
+            %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+              %span{'aria-hidden' => 'true'} &times;
+            %h4#cityModalLabel.modal-title
+              = "Додати файли для м." + town.title
+          .modal-body
+            .documentation
+              .panel.panel-default
+                .panel-heading
+                  = t('form.new_document')
+                .new_document.panel-body
+                  = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id }
+          .modal-footer
+            %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
+              = t('form.close')
+
+    - if current_user
+      / Modal window to edit files
+      .modal.fade{ :id => 'city_edit_' + town.id, 'aria-labelledby' => 'cityModalLabel', :role => 'dialog', :tabindex => '-1'}
+        .modal-dialog{:role => 'document', :style => 'width: 900px;' }
+          .modal-content
+            .modal-header
+              %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+                %span{'aria-hidden' => 'true'} &times;
+              %h4#cityModalLabel.modal-title
+                = "Редагувати файли для м." + town.title
+            .modal-body
+              .documentation
+                .panel.panel-default
+                  .panel-heading
+                    = t('form.uploaded_documents')
+                  .documents.panel-body
+                    = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:town_id => town.id, :owner_id => current_user.id) }
+            .modal-footer
+              %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
+                = t('form.close')
+
+:javascript
+
+  $(document).ready(function() {
+    $('.modal form').submit(function(){
+      $('.modal').modal('hide');
+    })
+  })

@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     get 'categories_tree' => 'categories#tree'
 
     resources :documents
+    put 'documents/lock/:id' => 'documents#lock'
   end
 
 
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
+    get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
     get 'visify/get_bubbletree_data/:file_id/:levels' => 'visify#get_bubbletree_data'
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
@@ -150,6 +152,7 @@ Rails.application.routes.draw do
   delete 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#delete_attachments'
   get 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#download_attachments'
 
+  get 'taxonomies/show_modify/:id' => 'taxonomies#show_modify'
   post 'taxonomies/:taxonomy_id/edit' => 'taxonomies#upload_files'
   post 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#update_files_description'
   delete 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#delete_attachments'

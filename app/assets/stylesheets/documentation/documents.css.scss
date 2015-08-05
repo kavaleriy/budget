@@ -20,6 +20,14 @@
   background: #e7e7e7;
   border: 1px solid lightgrey;
   padding-bottom: 10px;
+
+  #year_change {
+    padding-left: 10px;
+  }
+
+  #lock_check {
+    margin-top: 10px;
+  }
 }
 
 input[type="submit"] {
@@ -28,4 +36,23 @@ input[type="submit"] {
 
 ul.select2-results {
   max-height: 300px;
+}
+
+th .current {
+  position:relative;
+}
+
+th .current:before {
+  position:absolute;
+  font-family: FontAwesome;
+  top:0;
+  right:-10px;
+}
+
+th .asc:before {
+  content: "\f0de";
+}
+
+th .desc:before {
+  content: "\f0dd";
 }

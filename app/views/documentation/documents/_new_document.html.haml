@@ -10,6 +10,8 @@
           %li= msg
 
   = f.hidden_field :category_id
+  - if defined?(town_id)
+    = f.hidden_field :town_id, :value => town_id
 
   -#.col-sm-6
   -#  .form-group
@@ -42,14 +44,13 @@
   .form-group
     %label
       %i.glyphicon.glyphicon-folder-open
-        Файл
+        = t('form.file')
     = file_field_tag "doc_file[]", multiple: true, :class => 'form-control'
-
 
   .actions
     = f.button :class => 'btn btn-default' do
       %i.fa.fa-upload
-        Завантажити
+        = t('form.upload')
 
 :javascript
 

@@ -1,7 +1,12 @@
 <% @documents.each do |doc| %>
     <% if doc.errors.empty? %>
-        $('.documentation .documents table tbody').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => doc } ) %>')
+        <% if params[:documentation_document][:town_id] %>
+            $('#results_' + '<%= params[:documentation_document][:town_id] %>').prepend('<%= escape_javascript( render :partial => 'public/documents/thumbnail', :locals => { :document => doc } ) %>');
+            $('#city_edit_' + '<%= params[:documentation_document][:town_id] %>' + ' .documents table tbody').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => doc } ) %>');
+        <% else %>
+            $('.documentation .documents table tbody').prepend('<%= escape_javascript( render :partial => 'documentation/documents/document', :locals => { :document => doc } ) %>')
+        <% end %>
     <% else %>
-        alert('Помилка завантаження файлу. Перевірте дані')
+        alert('Помилка завантаження файлу. Перевірте дані');
     <% end %>
 <% end %>

@@ -1,0 +1,67 @@
+-#https://github.com/okfn/bubbletree
+
+= javascript_include_tag "jquery.history.js"
+= javascript_include_tag "raphael.js"
+= javascript_include_tag "vis4.js"
+= javascript_include_tag "Tween.js"
+= javascript_include_tag "bubbletree.js"
+= javascript_include_tag "cofog.js"
+
+.bubbletree
+  #chart
+  %canvas{:style => "display: none;"}
+  .pull-right
+    = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  var aTreeChart = function (aContainer) {
+    var self;
+    var bubbleTree, centerNode = null;
+
+    function clear() {
+      d3.select(aContainer + ' #chart').selectAll("*").remove();
+    }
+
+    function nodeClick(node) {
+      centerNode = node;
+      self.clickCallback(node);
+    }
+
+    return {
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        self.tooltipCallback = options.tooltipCallback;
+
+        $(aContainer + ' #chart').height(options.height);
+      },
+      show: function(data) {
+        clear();
+
+        if (!data) return;
+
+        bubbleTree = new BubbleTree({
+            data: data,
+            container: aContainer + ' #chart',
+            sortBy: 'label',
+            bubbleType: ['icon', 'plain'],
+            centerNode: centerNode,
+            nodeClickCallback: nodeClick,
+            tooltipCallback: self.tooltipCallback
+        });
+      },
+      selectNode: function (node) {
+        bubbleTree.navigateTo(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      getCenterNode: function(node) {
+        return bubbleTree.getCenterNode("bubble", node);
+      },
+      current_node: function() {
+        return centerNode;
+      }
+    }
+  }
+

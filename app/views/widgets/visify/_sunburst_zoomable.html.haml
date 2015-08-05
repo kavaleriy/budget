@@ -1,0 +1,144 @@
+-#http://bl.ocks.org/mbostock/4348373
+
+.sunburst
+  .sunburst-zoom
+    #chart
+    %canvas{:style => "display: none;"}
+    .pull-right
+      = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  function aTreeChart(aContainer) {
+    var totalSize, self;
+    var width, height, radius;
+    var color, x, y;
+    var svg, partition, arc, path;
+    var current_year, current_month;
+    var center_node = null;
+
+    function clear() {
+      svg.selectAll("*").remove();
+    }
+
+    function createVisualization(root) {
+      totalSize = root.amount;
+
+      path = svg.selectAll("path")
+            .data(partition.nodes(root))
+          .enter().append("path")
+            .attr("d", arc)
+            .attr("id", function(d, i) { return 'path' + i; })
+            .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
+            .style("stroke", "#ffffff")
+            .style("stroke-width", 1)
+            .on("click", click)
+            .on("mouseover", mouseover)
+            .on("mouseleave", mouseleave);
+    }
+
+    function mouseover(d) {
+      add_tooltip(d3.event, d);
+      path_animation('start', this);
+    }
+
+    // Restore everything to full opacity when moving off the visualization.
+    function mouseleave(d) {
+      remove_tooltip(d);
+      path_animation('stop', this);
+    }
+
+    function click(d) {
+      self.clickCallback(d);
+
+      if(d3.event) {
+        path.transition()
+          .duration(d3.event.altKey ? 7500 : 750)
+          .attrTween("d", arcTween(d));
+        d3.event.stopPropagation();
+      } else {
+        path.transition()
+          .duration(750)
+          .attrTween("d", arcTween(d));
+      }
+    }
+
+    // Interpolate the scales!
+    function arcTween(d) {
+      var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+          yd = d3.interpolate(y.domain(), [d.y, 1]),
+          yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+      return function(d, i) {
+        return i
+            ? function(t) { return arc(d); }
+            : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+      };
+    }
+
+    return {
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        width = options.width;
+        height = options.height;
+        radius = Math.min(width, height) / 2;
+
+        color = d3.scale.category20c();
+
+        x = d3.scale.linear()
+            .range([0, 2 * Math.PI]);
+
+        y = d3.scale.sqrt()
+            .range([0, radius]);
+
+        svg = d3.select(".sunburst-zoom #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
+
+        partition = d3.layout.partition()
+            .value(function(d) { if (d.amount > totalSize * 0.00001) return d.amount; });
+
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+            .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+            .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+            .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+
+      },
+      show: function(data) {
+          clear();
+          createVisualization(data);
+          centerNode = data;
+      },
+      selectNode: function (node) {
+        click(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(var i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+

@@ -1,0 +1,363 @@
+.visify.row-eq-height
+
+  .col-xs-12
+    = render partial: 'widgets/visify/sequence', :locals => { budget_file_id: budget_file_id }
+
+  .chart.col-xs-12.col-md-8
+
+    %ul.nav.nav-tabs
+      = render partial: 'widgets/visify/visify_list'
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_chart', 'aria-controls' => 'tab_chart', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-bar-chart-o.fa-2x
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_pie', 'aria-controls' => 'tab_pie', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-pie-chart.fa-2x
+      %li{'role' => 'presentation'}
+        %a{href: '#tab_table', 'aria-controls' => 'tab_table', role: 'tab', 'data-toggle' => 'tab'}
+          %i.fa.fa-table.fa-2x
+    .tab-content
+      .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
+        = render partial: 'widgets/visify/bubbletree'
+      .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
+        = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
+      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
+        = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
+      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
+        = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
+
+  .col-xs-12.col-md-4.sidebar_modify
+    = render partial: 'widgets/visify/under_sequence', :locals => { fond_codes: @fond_codes }
+    = render partial: 'widgets/visify/slider_chart'
+    = render partial: 'widgets/visify/slider_compare', :locals => { budget_file_id: @taxonomy.id }
+    = render partial: 'widgets/visify/sidebar', :locals => { file: @taxonomy }
+
+  = render partial: 'widgets/visify/helpers'
+
+:javascript
+
+  $(document).ready(function() {
+
+    var current_data;
+
+    $('.chart .dropdown a[role="tab"]').click(function(){
+      $('#tab_bubbletree').html('#{j render partial: "widgets/visify/sunburst_zoomable"}');
+      chart = aTreeChart('.sunburst');
+      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
+      chart.set_centerNode(null);
+      chart.show(current_data);
+    })
+
+    var year = "#{@sel_year}",
+        month = "#{@sel_month}",
+        quarter = 0,
+        data_type = "#{@data_type}";
+
+    var sequence = aSequence('.visify')
+    var under_sequence = aUnderSequence('.visify')
+    var chart = aTreeChart('.bubbletree');
+    var slider = aSliderCompare('.sidebar_modify #slider_compare');
+    var slider_chart = aSliderChart('.sidebar_modify #slider_chart', slider);
+    var sidebar = aSidebar('.visify');
+    var init_levels = JSON.parse('#{@levels.to_json}');
+    var draggable = 1;
+    var file_type = '#{@file_type}';
+    if(file_type == "TaxonomyRot") {
+      draggable = 0;
+    }
+
+    var centerNode = null;
+    var last_node = null;
+
+    var width;
+    document_width = $(document).width();
+    sidebar_width = $('.visify .sidebar').width();
+    if(document_width > 2*sidebar_width) {
+      width = document_width - sidebar_width - document_width*0.02;
+    } else {
+      width = document_width;
+    }
+    height = width*0.6;
+    $("#tab_chart").height(height);
+    $("#tab_pie").height(height);
+    $("#tab_table").height(height);
+
+    sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
+    slider.initialize(100, {clickCallback: sliderItemClick});
+    slider_chart.initialize(40, {clickCallback: yearItemClick});
+    sidebar.initialize(height, {clickCallback: ItemClick, hoverCallback: hoverCallback});
+    $("#chart").html('');
+    chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
+
+    d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
+      _data = data
+      current_data = buildData(_data)
+      preprocessData(current_data, 9);
+      centerNode = current_data;
+
+      chart.set_centerNode(null);
+      sequence.show(current_data);
+      chart.show(current_data);
+      slider_chart.show(current_data, year);
+      slider.show(current_data, year);
+      sidebar.show(current_data);
+    })
+
+    function preprocessData(root, maxNodes) {
+      if (root.children.length > maxNodes + 1) {
+        var tmp = sortChildren(root.children);
+        tmp.reverse();
+        var keep = [], move = [], moveAmount = 0, breakdown;
+        for (var i in root.children) {
+          if (i < maxNodes) {
+            keep.push(root.children[i]);
+          } else {
+            move.push(root.children[i]);
+            moveAmount += Math.max(0, root.children[i].amount);
+          }
+        }
+
+        root.children = keep;
+        root.children.push({
+          'label': I18n.t('other'),
+          'name': I18n.t('other'),
+          'amount': moveAmount,
+          'children': move,
+          'breakdown': true,
+          'color': 'green',
+        });
+      }
+
+      for (var i in root.children) {
+        if (root.children[i].children)
+          preprocessData(root.children[i], maxNodes)
+      }
+    }
+
+    function sortChildren(children, alternate, sortBy) {
+      var tmp = [], odd = true;
+      if (sortBy == 'label') {
+        sortBy = compareLabels;
+        alternate = false;
+      } else sortBy = compareAmounts;
+
+      children.sort(sortBy);
+      if (alternate) {
+        while (children.length > 0) {
+          tmp.push(odd ? children.pop() : children.shift());
+          odd = !odd;
+        }
+        return tmp;
+      } else {
+        return children;
+      }
+
+      /*
+       * compares two items by amount
+       */
+      function compareAmounts(a, b) {
+          if (a.amount > b.amount) return 1;
+          if (a.amount == b.amount) return 0;
+          return -1;
+      };
+
+      /*
+       * compares to item by label
+       */
+      function compareLabels(a, b) {
+          if (a.label > b.label) return 1;
+          if (a.label == b.label) return 0;
+          return -1;
+      };
+    }
+
+    function bubbleItemClick(node) {
+      sequence.show(node);
+      under_sequence.show(node);
+      slider_chart.show(node, year);
+      if(slider.current_node() != centerNode || slider.current_year() != year) {
+        slider.show(node, year);
+      }
+      sidebar.show(node);
+      chart.set_centerNode(node);
+      centerNode = node;
+    }
+
+    function yearItemClick(new_year) {
+      if(slider_chart.current_month != 0 && year == new_year) {
+        month = 0;
+        slider.set_month(month);
+        $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+      }
+      if(slider_chart.current_quarter != 0 && year == new_year) {
+        quarter = 0;
+        slider.set_quarter(quarter);
+        $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      }
+      year = new_year;
+      monthItemClick(month);
+    }
+
+    function sliderItemClick(element, curr_slider) {
+      if(curr_slider == "month") {
+        monthItemClick(element);
+      } else if(curr_slider == "quarter") {
+        quarterItemClick(element);
+      }
+    }
+
+    function monthItemClick(new_month) {
+      if (month == new_month && slider.current_year() == year ) {
+        month = 0;
+      } else {
+        month = new_month;
+        if(slider.current_year() == year) {
+          quarter = 0;
+        }
+      }
+
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
+      var curr_node;
+      if (chart.getCenterNode) {
+        curr_node = chart.getCenterNode(current_data);
+        slider.set_centerNode(centerNode);
+      } else if(centerNode != current_data && !chart.getCenterNode) {
+        curr_node = chart.get_CenterNode(centerNode);
+        slider.set_centerNode(curr_node);
+      }
+      chart.show(current_data);
+      chart.selectNode(curr_node);
+    }
+
+    function quarterItemClick(new_quarter) {
+      if(quarter == new_quarter && slider.current_year() == year) {
+        quarter = 0;
+      } else {
+        quarter = new_quarter;
+        if(slider.current_year() == year) {
+          month = 0;
+        }
+      }
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
+      var curr_node;
+      if (chart.getCenterNode) {
+        curr_node = chart.getCenterNode(current_data);
+        slider.set_centerNode(centerNode);
+      } else if(centerNode != current_data && !chart.getCenterNode) {
+        curr_node = chart.get_CenterNode(centerNode);
+        slider.set_centerNode(curr_node);
+      }
+      chart.show(current_data);
+      chart.selectNode(curr_node);
+    }
+
+    function ItemClick(node) {
+      sidebar.show(node);
+      sequence.show(node);
+      under_sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, year);
+      chart.set_centerNode(node);
+      chart.selectNode(node);
+    }
+
+    function ItemDrop(levels, node) {
+
+      //if(file_type == "TaxonomyRot") {
+      //  levels[0] = "_" + levels[0]
+      //}
+      last_node = node;
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+        _data = data
+        centerNode = null;
+        current_data = buildData(_data)
+        preprocessData(current_data, 9);
+        centerNode = last_node;
+
+        chart.set_centerNode(last_node);
+        chart.show(current_data);
+
+      })
+    }
+
+    // get current data for all visifies
+    function buildData(item) {
+      if (!item.amount)
+        return;
+
+      var node = {}
+
+      node['taxonomy'] = item.taxonomy
+
+      $.each(item.amount, function(k, v) {
+        var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
+
+        if (k == "" || k == data_type) {
+          if(quarter != 0 && v[year]) {
+            amount = 0;
+            var x = quarter*3 - 2;
+            for(var i = x; i < x + 3; i++) {
+              if(v[year][i]) amount += v[year][i]['total']
+            }
+            node['amount'] = amount
+          } else {
+            node['amount'] = amount['total']
+            if (amount['fonds']) {
+              node['amount_fond'] = amount['fonds']
+            }
+          }
+        } else {
+          node['amount_'+k] = amount['total']
+        }
+      })
+
+      if (node['amount'] == undefined || node['amount'] == 0)
+        return
+
+
+      node['history'] = item.amount[data_type]
+      node['total_history'] = item.amount
+
+      $.each(['key', 'label', 'color', 'icon'], function(k, v) {
+        node[v] = item[v]
+      })
+
+      if (item.children) {
+        node.children = []
+        $.each(item.children, function(k, v) {
+          child = buildData(v)
+          if (child) node.children.push(child)
+        });
+      }
+
+      if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
+        last_node = node;
+      }
+      return node;
+    }
+
+    function tooltipCallback(e) {
+      var circle_id = $(e.circle.node).attr("id");
+      var pathEl = Snap.select('#' + circle_id);
+      $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
+
+      if(e.type == "SHOW") {
+        pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
+        hoverCallback(e.node)
+      } else {
+        pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
+        hoverCallback(centerNode)
+      }
+    }
+
+    function hoverCallback(d) {
+      under_sequence.show(d);
+      slider_chart.show(d, year);
+      slider.show(d, year);
+      sidebar.description(d);
+    }
+  })

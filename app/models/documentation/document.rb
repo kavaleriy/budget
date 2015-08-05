@@ -13,6 +13,8 @@ class Documentation::Document
 
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
+  field :locked, type: Boolean
+
   def get_years
     years = []
     years << [self.yearFrom] unless self.yearFrom.blank?

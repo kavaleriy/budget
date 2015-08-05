@@ -17,7 +17,7 @@
 
 = content_for :header do
   .head.pull-left
-    Категорії документів
+    = t('.header')
 
 .documentation
   .panel.panel-default.col-sm-4
@@ -30,13 +30,13 @@
   .col-sm-8
     .panel.panel-default
       .panel-heading
-        Новий документ
+        = t('form.new_document')
       .new_document.panel-body
         = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new }
 
     .panel.panel-default
       .panel-heading
-        Завантажені документи
+        = t('form.uploaded_documents')
       .documents.panel-body
 
 

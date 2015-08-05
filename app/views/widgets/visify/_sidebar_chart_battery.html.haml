@@ -1,78 +1,55 @@
 :css
   .axis text {
-    font-size: 10px;
+    font-size: 1.0em;
   }
-
   .axis path,
   .axis line {
     fill: none;
-    fill-opacity: 0.8;
-    stroke: lightgray;
+    stroke: #000;
     shape-rendering: crispEdges;
   }
-
   .bar {
     fill-opacity: .7;
   }
-
-  .tick.major text {
-    text-anchor: middle !important;
-    font-size: 0.9em;
-  }
-
 #sidebar_chart
 
 :javascript
   function aSidebarChartBattery(aContainer) {
-    var margin = {top: 20, right: 80, bottom: 30, left: 70},
+    var margin = {top: 20, right: 100, bottom: 30, left: 100},
         width, height
-
     var x, y, xAxis, yAxis
-
     var svg, _self;
-
-    var fact = false;
-
     function delay(d, i) { return i * 10; }
-
     function hide() {
       $("#sidebar_chart").height(0)
       svg.selectAll("*").remove()
     }
-
     function sort(data) {
       var x0 = y.domain(data.sort(true
               ? function(a, b) {
                   if(!a.amount_fact) a.amount_fact = 0;
                   if(!b.amount_fact) b.amount_fact = 0;
-                  if(a.amount_fact || b.amount_fact) fact = true;
                   return (b.amount + b.amount_fact) - (a.amount + a.amount_fact);
                 }
               : function(a, b) { return d3.ascending(a.label, b.label); })
               .map(function(d) { return d.key; }))
               .copy();
-
       var transition = svg.transition().duration(150),
           delay = function(d, i) { return i * 10; };
-
       transition.selectAll(".bar")
           .delay(delay)
           .attr("y", function(d) { return x0(d.label); });
-
       transition.select(".y.axis")
           .call(yAxis)
         .selectAll("g")
           .delay(delay);
     }
-
     function add_plan_fact_tooltip(event, d) {
         //Get this bar's x/y values, then augment for the tooltip
         var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
         var evt = event || window.event;
         var xPosition = evt.pageX;
         var yPosition = evt.pageY - sequence_height;
-
-
         //Update the tooltip position and value
         var html;
         if(d.color == 'green') {
@@ -89,28 +66,24 @@
                 .style('text-align', 'left')
                 .select("#value")
                 .html(html);
-
         //Show the tooltip
         d3.select("#charts_tooltip").classed("hidden", false);
     }
-
     function remove_tooltip(d) {
         //Hide the tooltip
         d3.select("#charts_tooltip").classed("hidden", true);
     }
-
     function mouseover(d) {
       var s = Snap.select('#sidebar_chart svg g');
       s.append(this); // to move current path to the front
       var pathEl = Snap.select('#' + $(this).attr('id'));
       $(this).css("stroke", d3.rgb(d.color))
-             .attr("x", $(this).attr('data-x'))
+             .attr("x", 0)
              .attr("y", $(this).attr('data-y'));
       pathEl.stop().animate( { 'stroke-width': 5, 'stroke-opacity': .5 }, 2000, mina.elastic);
       //$(".text_" + d.id).css('fill', 'blue');
       _self.hoverCallback(d);
     }
-
     function mouseout(d) {
       var pathEl = Snap.select('#' + $(this).attr('id'));
       pathEl.stop().animate( { 'stroke-width': 0 }, 2000, mina.elastic);
@@ -118,7 +91,6 @@
       //$(".text_" + d.id).css('fill', 'black');
       _self.hoverCallback(d.parent);
     }
-
     return {
       initialize: function(options) {
         I18n.locale = window.aHelper.lang();
@@ -126,26 +98,19 @@
         _self.clickCallback = options.clickCallback;
         _self.hoverCallback = options.hoverCallback;
         $("#sidebar_chart").html('');
-
         width = $("#chart").width() - margin.left - margin.right,
-
         x = d3.scale.linear()
           .range([0, width]);
-
-        y = d3.scale.ordinal();
-
+        y = d3.scale.ordinal()
         xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom")
             .tickFormat(function(d){
               return aVisify.helpers.formatNumber(d)
-            });
-
+            })
         yAxis = d3.svg.axis()
             .scale(y)
             .orient("right")
-            .tickSize(0,0);
-
         svg = d3.select("#sidebar_chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", '100%');
@@ -153,108 +118,106 @@
       hide: hide,
       show: function(data) {
         hide();
-
         if (!data == null || data.length < 1) return;
-
         svg_height = data.length * 50;
-        $("#sidebar_chart").height('100%');
+        $("#sidebar_chart").height('100%')
         svg.attr("height", svg_height + margin.top + margin.bottom);
-
-        if(fact) {
-          x.domain([-d3.max(data, function(d) { return d.amount; }), d3.max(data, function(d) { return d.amount_fact; })]);
-        } else {
-          x.domain([0, d3.max(data, function(d) { return d.amount; })]);
-        }
+        var fact = false;
+        x.domain([0, d3.max(data, function(d) { if(d.amount_fact) fact = true; return d.amount > (d.amount_fact || 0) ? d.amount : (d.amount_fact || 0) })]);
         y.rangeRoundBands([0, svg_height], .1)
          .domain(data.map(function(d) { return d.key; }));
-
         sort(data);
-
         var visifier = $(".visify").parent().attr('class');
-
         var bars = svg.selectAll(".bar")
           .data(data);
 
-        if(fact) {
-          bars.enter().append("rect")
-          .attr("x", function(d) { return width/2 + margin.left; } )
-          .attr("y", function(d) { return y(d.key) + margin.top - 6; })
-          .attr("data-y", function(d) { return y(d.key) - 6; })
-          .attr("data-x", function(d) { return 1; })
-          .attr("id", function(d) { return "fact_bar_" + d.id; })
-          .attr("width", function(d) { return d.amount_fact ? x(d.amount_fact)/2 : 0; } )
-          .attr("height", y.rangeBand()/2 )
-          .style("fill", function(d) {
-                            return d3.rgb(d.color)
-                         })
-          .style("cursor", function(d,i) { return (data[i].children && data[i].children.length == 0) ? "default" : "pointer" })
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("click", function(d) {
-                _self.clickCallback(d);
-              });
-        }
+        var middle_w = 10; // width of middle rectangle between plan and fact
 
         bars.enter().append("rect")
-          .attr("x", function(d) { return width/2 + margin.left - x(d.amount)/2; } )
-          .attr("y", function(d) { return y(d.key) + margin.top - 6; })
-          .attr("data-y", function(d) { return y(d.key) - 6; })
-          .attr("data-x", function(d) { return -x(d.amount)/2; })
-          .attr("id", function(d) { return "plan_bar_" + d.id; })
-          .attr("width", function(d) { return x(d.amount)/2; } )
+          .attr("x", margin.left)
+          .attr("y", function(d) { return y(d.key) + margin.top - 14; })
+          .attr("width", function(d) { return x(d.amount)/2 - middle_w/2; } )
           .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
                             if(fact) return d3.rgb(d.color).darker(1);
                             return d3.rgb(d.color);
-                          })
-          .style("cursor", function(d,i) { return (data[i].children && data[i].children.length == 0) ? "default" : "pointer" })
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("click", function(d) {
-                _self.clickCallback(d);
-              });
+                          });
+
+        if(fact) {
+          bars.enter().append("rect")
+          .attr("x", function(d) { return x(d.amount)/2 + middle_w/2 + margin.left } )
+          .attr("y", function(d) { return y(d.key) + margin.top - 14; })
+          .attr("width", function(d) { return d.amount_fact ? x(d.amount_fact)/2 - middle_w/2 : 0; } )
+          .attr("height", y.rangeBand()/2 )
+          .style("fill", function(d) {
+                            return d3.rgb(d.color)
+                         })
+
+          bars.enter().append("rect")
+          .attr("x", function(d) { return x(d.amount)/2 + margin.left - middle_w/2 } )
+          .attr("y", function(d) { return y(d.key) + margin.top - 16; })
+          .attr("width", middle_w )
+          .attr("height", y.rangeBand()/2 + 4 )
+          .style("stroke", "black" )
+          .style("stroke-width", 1 )
+          .style("fill-opacity", 0.5)
+          .style("fill", function(d) {
+                            if(d.amount_fact/d.amount > 0.9) return "green";
+                            if(d.amount_fact/d.amount > 0.7) return "yellow";
+                            return "red";
+                         })
+        }
 
         var bar_text = svg.append("g")
           .attr("class", "y axis")
-          .attr('transform', 'translate(' + (width/2 + margin.left) + ',' + margin.top + ')')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
           .call(yAxis);
-
         bar_text.selectAll("text")
           .text(function(d, i) {return data[i].label; });
-
+        bars.enter().append("rect")
+            .attr("x", margin.left)
+            .attr("y", function(d) { return y(d.key) + margin.top - 14; })
+            .attr("data-y", function(d) { return y(d.key) - 14; })
+            .attr("width", function(d) {
+                if(d.amount_fact) {
+                  return x(d.amount)/2 + x(d.amount_fact)/2;
+                }
+                return x(d.amount)/2;
+            })
+            .attr("height", function(d) {
+                              return y.rangeBand()/2;
+                            } )
+            .attr("id", function(d) { return "bar_" + d.id; })
+            .style("fill-opacity", 0)
+            .style("cursor", function(d,i) { return (data[i].children && data[i].children.length == 0) ? "default" : "pointer" })
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout)
+            .on("click", function(d, i) {
+                  _self.clickCallback(data[i]);
+                });
         bar_text.selectAll("g")
                 .append("text")
                 .html(function(d, i) {
-                  return aVisify.helpers.formatNumber(data[i].amount || 0);
+                  return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
-                .attr("x", function(d, i) {return -x(data[i].amount)/2 - margin.left/2; } )
-                .attr("y",-15)
+                .attr("x",-margin.left)
+                .attr("y",-20)
                 .style("fill", "black")
                 .style("font-size", "0.9em")
                 //.attr("class",function(d,i){return "text_" + data[i].id})
-
         if(fact) {
           bar_text.selectAll("g")
           .append("text")
           .html(function(d, i) {
-            return aVisify.helpers.formatNumber(data[i].amount_fact || 0);
+            return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount_fact || 0);
           })
           .attr("x",function(d, i){
-                      return  data[i].amount_fact ? x(data[i].amount_fact)/2 + margin.left/2 : 10;
+                      return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
                     })
-          .attr("dy",-15)
-          .style("fill", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
+          .attr("dy",-20)
           .style("font-size", "0.9em")
-          .style("stroke", function(d,i){ return data[i].amount_fact > data[i].amount ? "red" : 'rgba(0, 200, 0)' })
           //.attr("class",function(d,i){return "text_" + data[i].id})
         }
-
-        svg.append("text")
-           .attr("x", width/2 + margin.left )
-           .attr("y", margin.top - 2)
-           .attr("text-anchor", "middle")
-           .text(I18n.t('js.visify.plan') + " | " + I18n.t('js.visify.fact'))
-
       },
     }
   }

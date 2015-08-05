@@ -1,10 +1,11 @@
 class TaxonomiesController < ApplicationController
 
-  before_action :set_taxonomy, only: [:show, :edit, :update, :destroy]
-  before_action :set_attachments, only: [:show, :edit]
+  before_action :set_taxonomy, only: [:show, :show_modify, :edit, :update, :destroy]
+  before_action :set_params, only: [:show_modify]
+  before_action :set_attachments, only: [:show, :show_modify, :edit]
   before_action :set_attachment, only: [:update_files_description, :delete_attachments, :download_attachments]
 
-  before_action :authenticate_user!, except: [:show, :download_attachments]
+  before_action :authenticate_user!, except: [:show, :show_modify, :download_attachments]
   load_and_authorize_resource
 
   def index
@@ -12,6 +13,9 @@ class TaxonomiesController < ApplicationController
   end
 
   def show
+  end
+
+  def show_modify
   end
 
   def update
@@ -82,6 +86,30 @@ class TaxonomiesController < ApplicationController
 
   def set_taxonomy
     @taxonomy = Taxonomy.find(params[:id])
+  end
+
+  def set_params
+    @budget_file = @taxonomy
+    @data_type = 'plan'
+
+    @levels = @taxonomy.columns.keys
+    @file_type = @taxonomy._type
+
+    @sel_year = '0'
+    @sel_month = '0'
+
+    @range = {}
+    range = {}
+    @taxonomy.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
+    @range = range.sort_by{|k,v| k.to_i}
+
+    @sel_year = @range.last[0]
+    @sel_month = @range.last[1].first
+
+    @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
+
+  rescue => e
+    logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   end
 
   def set_attachment
