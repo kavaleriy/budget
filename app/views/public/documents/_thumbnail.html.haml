@@ -1,4 +1,4 @@
-.col-sm-2.document
+.col-sm-2.document{'data-id' => document.id}
   = link_to document.doc_file.url, class: 'thumbnail' do
     %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
     %p
