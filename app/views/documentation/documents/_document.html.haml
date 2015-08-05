@@ -18,7 +18,10 @@
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть тип документу...' }
       = document.branch.title if document.branch
   %td
-    %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
+    - if current_user.has_role? :admin
+      %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
+    - else
+      = document.locked.nil? || !document.locked ? "unlocked" : "locked"
   %td
     = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
