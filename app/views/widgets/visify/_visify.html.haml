@@ -37,6 +37,17 @@
 :javascript
 
   $(document).ready(function() {
+
+    var current_data;
+
+    $('.chart .dropdown a[role="tab"]').click(function(){
+      $('#tab_bubbletree').html('#{j render partial: "widgets/visify/sunburst_zoomable"}');
+      chart = aTreeChart('.sunburst');
+      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
+      chart.set_centerNode(null);
+      chart.show(current_data);
+    })
+
     var year = "#{@sel_year}",
         month = "#{@sel_month}",
         quarter = 0,
