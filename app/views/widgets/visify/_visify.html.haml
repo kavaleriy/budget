@@ -5,10 +5,8 @@
 
   .chart.col-xs-12.col-md-8
 
-    %ul.nav.nav-tabs{role: 'tablist'}
-      %li.active{'role' => 'presentation'}
-        %a{href: '#tab_bubbletree', 'aria-controls' => 'tab_bubbletree', role: 'tab', 'data-toggle' => 'tab'}
-          %i.fa.fa-spinner.fa-2x
+    %ul.nav.nav-tabs
+      = render partial: 'widgets/visify/visify_list'
       %li{'role' => 'presentation'}
         %a{href: '#tab_chart', 'aria-controls' => 'tab_chart', role: 'tab', 'data-toggle' => 'tab'}
           %i.fa.fa-bar-chart-o.fa-2x
