@@ -89,6 +89,12 @@ class TaxonomiesController < ApplicationController
   end
 
   def set_params
+    @budget_file = @taxonomy
+    @data_type = 'plan'
+
+    @levels = @taxonomy.columns.keys
+    @file_type = @taxonomy._type
+
     @sel_year = '0'
     @sel_month = '0'
 
@@ -97,8 +103,8 @@ class TaxonomiesController < ApplicationController
     @taxonomy.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
     @range = range.sort_by{|k,v| k.to_i}
 
-    @sel_year = visify_params[:year] || @range.last[0]
-    @sel_month = visify_params[:month] || @range.last[1].first
+    @sel_year = @range.last[0]
+    @sel_month = @range.last[1].first
 
     @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 

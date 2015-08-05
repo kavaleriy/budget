@@ -7,7 +7,7 @@
     %span.descr
       #{@taxonomy.title}, #{@taxonomy.owner}
 
-.budget
+.budget.modified
   = render partial: 'widgets/visify/visify', :locals => {budget_file_id: @taxonomy.id}
 
 = link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
