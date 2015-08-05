@@ -17,16 +17,11 @@
       %btn.btn.btn-primary.btn-xs{:title => "додати файл", 'data-toggle' => 'modal', 'data-target' => '#city_modal_' + town.id }
         %i.fa.fa-plus
 
-    .row-eq-height
+    .row-eq-height{:id => 'results_' + town.id}
       - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
         - if document.doc_file?
-          .col-sm-2.document
-            = link_to document.doc_file.url, class: 'thumbnail' do
-              %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-              %p
-                = document.title.truncate(30)
-                %br
-                = document.category.title unless document.category.nil?
+          = render :partial => 'thumbnail', :locals => { :document => document }
+
     .clear
     %hr
 
@@ -46,11 +41,6 @@
                   = t('form.new_document')
                 .new_document.panel-body
                   = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id }
-
-              -#.panel.panel-default
-              -#  .panel-heading
-              -#    = t('form.uploaded_documents')
-              -#  .documents.panel-body
           .modal-footer
             %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
               = t('form.close')
@@ -58,7 +48,7 @@
 :javascript
 
   $(document).ready(function() {
-    $('.city_btn').on("click", function() {
-      console.log($(this).attr("data-city"))
+    $('.modal form').submit(function(){
+      $('.modal').modal('hide');
     })
   })

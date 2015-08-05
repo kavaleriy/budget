@@ -9,7 +9,11 @@ class Public::DocumentsController < ApplicationController
     @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) unless params["branch_select"].blank?
     @documentation_documents = @documentation_documents.where(:yearFrom.lte => params["year"].to_i, :yearTo.gte => params["year"].to_i) unless params["year"].blank?
     @documentation_documents = @documentation_documents.where(:title => Regexp.new(".*"+params["q"]+".*")) unless params["q"].blank?
-    @documentation_documents = @documentation_documents.any_of({:locked => false},{:locked.exists => false},{:owner_id => current_user.id})
+    if current_user
+      @documentation_documents = @documentation_documents.any_of({:locked => false},{:locked.exists => false},{:owner_id => current_user.id})
+    else
+      @documentation_documents = @documentation_documents.any_of({:locked => false},{:locked.exists => false})
+    end
 
     @towns = use_cache controller_path do
       Town.all.reject{|town| town.documentation_documents.empty?}
