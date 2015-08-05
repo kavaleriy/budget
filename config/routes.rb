@@ -151,6 +151,7 @@ Rails.application.routes.draw do
   delete 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#delete_attachments'
   get 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#download_attachments'
 
+  get 'taxonomies/show_modify/:id' => 'taxonomies#show_modify'
   post 'taxonomies/:taxonomy_id/edit' => 'taxonomies#upload_files'
   post 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#update_files_description'
   delete 'taxonomies/:taxonomy_id/edit/taxonomy_attachments/:attachment_id' => 'taxonomies#delete_attachments'

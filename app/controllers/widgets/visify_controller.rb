@@ -8,7 +8,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   MAX_NODES_PER_LEVEL = 100
 
-
   def get_bubbletree_data
     result = use_cache do
       params[:levels] ? levels = params[:levels].split(",") : levels = []
