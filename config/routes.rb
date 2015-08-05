@@ -89,6 +89,7 @@ Rails.application.routes.draw do
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
+    get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
     get 'visify/get_bubbletree_data/:file_id/:levels' => 'visify#get_bubbletree_data'
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
