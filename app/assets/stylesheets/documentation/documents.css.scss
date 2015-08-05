@@ -37,3 +37,22 @@ input[type="submit"] {
 ul.select2-results {
   max-height: 300px;
 }
+
+th .current {
+  position:relative;
+}
+
+th .current:before {
+  position:absolute;
+  font-family: FontAwesome;
+  top:0;
+  right:-10px;
+}
+
+th .asc:before {
+  content: "\f0de";
+}
+
+th .desc:before {
+  content: "\f0dd";
+}

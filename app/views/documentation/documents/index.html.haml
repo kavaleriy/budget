@@ -17,12 +17,19 @@
   %table.table.table-striped
     %thead
       %tr
-        %th File
-        %th Category
-        %th Title
-        %th Years
-        %th Town
-        %th Type
-        %th Locked
+        %th
+          = t('.file')
+        %th
+          = sortable "category_id", t('.category')
+        %th
+          = sortable "title", t('.title')
+        %th
+          = sortable "yearFrom", t('.years')
+        %th
+          = sortable "town_id", t('.town')
+        %th
+          = sortable "branch_id", t('.type')
+        %th
+          = sortable "locked", t('.locked')
     %tbody#results
       = render partial: 'search_results', :locals => { documents: @documentation_documents }

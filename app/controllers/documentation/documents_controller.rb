@@ -1,4 +1,6 @@
 class Documentation::DocumentsController < ApplicationController
+  helper_method :sort_column, :sort_direction
+
   before_action :authenticate_user!, except: [:index]
   load_and_authorize_resource
 
@@ -7,7 +9,7 @@ class Documentation::DocumentsController < ApplicationController
   # GET /documentation/documents
   # GET /documentation/documents.json
   def index
-    @documentation_documents = Documentation::Document
+    @documentation_documents = Documentation::Document.order(sort_column + " " + sort_direction)
     @documentation_documents = @documentation_documents.where(:town.in => params["town_select"].split(',')) unless params["town_select"].blank?
     @documentation_documents = @documentation_documents.where(:branch.in => params["branch_select"]) unless params["branch_select"].blank?
 
@@ -111,6 +113,15 @@ class Documentation::DocumentsController < ApplicationController
   end
 
   private
+
+    def sort_column
+      Documentation::Document.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_documentation_document
       @documentation_document = Documentation::Document.find(params[:id])
@@ -118,6 +129,6 @@ class Documentation::DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_document_params
-      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :town_id, :description, :year, :yearFrom, :yearTo, :locked)
+      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :town_id, :description, :year, :yearFrom, :yearTo, :locked, :sort, :direction)
     end
 end
