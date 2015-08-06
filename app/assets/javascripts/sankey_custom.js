@@ -227,6 +227,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                         get_subtree(d.key, d.type, d.pos);
                     } else if(d.node && d.node.children) {
                         get_children(d.node, d.pos, d.parent);
+                    } else { // case if it is Aggregated node
+                        $('#percent_list a[data-value="0"]').click();
                     }
                 } else {
                     if(d.key) {
