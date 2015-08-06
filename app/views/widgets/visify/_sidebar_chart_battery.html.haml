@@ -140,7 +140,8 @@
           .attr("x", margin.left)
           .attr("y", function(d) { return y(d.key) + margin.top - 14; })
           .attr("width", function(d) {
-                             return (x(d.amount)/2 - middle_w/2 > 0) ? x(d.amount)/2 - middle_w/2 : 0;
+                             if(fact) return (x(d.amount)/2 - middle_w/2 > 0) ? x(d.amount)/2 - middle_w/2 : 0;
+                             return (x(d.amount)/2 > 0) ? x(d.amount)/2 : 0;
                          } )
           .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
@@ -205,6 +206,7 @@
         bar_text.selectAll("g")
                 .append("text")
                 .html(function(d, i) {
+                  if ("#{@data_type}" == "fact") return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)

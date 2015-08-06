@@ -48,6 +48,13 @@
         }
         amountFonds += '</div>'
 
+        amount_tag = ''
+        if("#{@data_type}" == "fact") {
+          amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+        } else {
+          amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+        }
+
         amountFact_tag = ''
         if (node.amount_fact){
           amountFact_tag = ", " + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount_fact) + "</b>"
@@ -62,7 +69,7 @@
           + '<b>' + aVisify.helpers.formatNumber(node.amount) + '</b>'
           + percentage_tag
           + "</h4></div>"
-          + "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          + amount_tag
           + amountFact_tag
           + "</h5></div>"
           + amountFonds
