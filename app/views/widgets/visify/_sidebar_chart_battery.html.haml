@@ -1,6 +1,7 @@
 :css
   .axis text {
     font-size: 1.0em;
+    font-weight: bold;
   }
   .axis path,
   .axis line {
@@ -86,10 +87,12 @@
     }
     function mouseout(d) {
       var pathEl = Snap.select('#' + $(this).attr('id'));
-      pathEl.stop().animate( { 'stroke-width': 0 }, 2000, mina.elastic);
-      $(this).css("stroke", "none");
-      //$(".text_" + d.id).css('fill', 'black');
-      _self.hoverCallback(d.parent);
+      if(pathEl) {
+        pathEl.stop().animate( { 'stroke-width': 0 }, 2000, mina.elastic);
+        $(this).css("stroke", "none");
+        //$(".text_" + d.id).css('fill', 'black');
+        _self.hoverCallback(d.parent);
+      }
     }
     return {
       initialize: function(options) {
@@ -136,7 +139,9 @@
         bars.enter().append("rect")
           .attr("x", margin.left)
           .attr("y", function(d) { return y(d.key) + margin.top - 14; })
-          .attr("width", function(d) { return x(d.amount)/2 - middle_w/2; } )
+          .attr("width", function(d) {
+                             return (x(d.amount)/2 - middle_w/2 > 0) ? x(d.amount)/2 - middle_w/2 : 0;
+                         } )
           .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
                             if(fact) return d3.rgb(d.color).darker(1);
@@ -147,7 +152,9 @@
           bars.enter().append("rect")
           .attr("x", function(d) { return x(d.amount)/2 + middle_w/2 + margin.left } )
           .attr("y", function(d) { return y(d.key) + margin.top - 14; })
-          .attr("width", function(d) { return d.amount_fact ? x(d.amount_fact)/2 - middle_w/2 : 0; } )
+          .attr("width", function(d) {
+                            return (d.amount_fact && x(d.amount_fact)/2 - middle_w/2 > 0) ? x(d.amount_fact)/2 - middle_w/2 : 0;
+                         } )
           .attr("height", y.rangeBand()/2 )
           .style("fill", function(d) {
                             return d3.rgb(d.color)
@@ -202,8 +209,9 @@
                 })
                 .attr("x",-margin.left)
                 .attr("y",-20)
-                .style("fill", "black")
+                .style("fill", "#666")
                 .style("font-size", "0.9em")
+                //.style("font-weight", "normal");
                 //.attr("class",function(d,i){return "text_" + data[i].id})
         if(fact) {
           bar_text.selectAll("g")
@@ -216,6 +224,8 @@
                     })
           .attr("dy",-20)
           .style("font-size", "0.9em")
+          //.style("font-weight", "normal")
+          .style("fill", "#666");
           //.attr("class",function(d,i){return "text_" + data[i].id})
         }
       },
