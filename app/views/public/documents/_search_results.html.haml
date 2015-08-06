@@ -14,13 +14,14 @@
 
     %h1
       = town.to_s
-      %btn.btn.btn-primary.btn-xs{:title => "додати файли", 'data-toggle' => 'modal', 'data-target' => '#city_add_' + town.id }
-        %i.fa.fa-plus
       - if current_user
         %btn.btn.btn-primary.btn-xs{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit_' + town.id }
           %i.fa.fa-edit.fa-lg
 
     .row-eq-height{:id => 'results_' + town.id}
+      .col-sm-2.text-center.doc_btn
+        %btn.btn.btn-primary.btn-lg{:title => "додати файли", 'data-toggle' => 'modal', 'data-target' => '#city_add_' + town.id }
+          %i.fa.fa-plus.fa-lg
       - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
@@ -43,7 +44,7 @@
                 .panel-heading
                   = t('form.new_document')
                 .new_document.panel-body
-                  = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id }
+                  = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id, :branch_field => true }
           .modal-footer
             %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
               = t('form.close')

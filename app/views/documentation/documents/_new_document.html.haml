@@ -10,8 +10,13 @@
           %li= msg
 
   = f.hidden_field :category_id
+
   - if defined?(town_id)
     = f.hidden_field :town_id, :value => town_id
+
+  - if defined?(branch_field)
+    .form-group
+      = f.select :branch, Documentation::Branch.all.collect {|p| [ p.title, p.id ] }, {prompt: t('.select_branch')}, :class => 'form-control'
 
   -#.col-sm-6
   -#  .form-group
@@ -45,16 +50,29 @@
     %label
       %i.glyphicon.glyphicon-folder-open
         = t('form.file')
-    = file_field_tag "doc_file[]", multiple: true, :class => 'form-control'
+    = file_field_tag "doc_file[]", multiple: true, :class => 'form-control can_be_disable'
 
   .actions
-    = f.button :class => 'btn btn-default' do
+    = f.button :class => 'btn btn-default can_be_disable' do
       %i.fa.fa-upload
         = t('form.upload')
 
 :javascript
 
   $(document).ready(function() {
+
+    if('#{defined? branch_field}') {
+      $('.can_be_disable').attr("disabled","disabled");
+
+      $('#documentation_document_branch').on("change", function(){
+        if($(this).find('option:selected').val()) {
+          $('.can_be_disable').removeAttr("disabled");
+        } else {
+          $('.can_be_disable').attr("disabled","disabled");
+        }
+      })
+    }
+
     $.when(
       //$.getScript( "/assets/kartik-fileinput/js/fileinput.js" ),
       //$.getScript( "/assets/kartik-fileinput/js/fileinput_locale_uk.js" ),
