@@ -143,7 +143,7 @@
                              if(fact) return (x(d.amount)/2 - middle_w/2 > 0) ? x(d.amount)/2 - middle_w/2 : 0;
                              return (x(d.amount)/2 > 0) ? x(d.amount)/2 : 0;
                          } )
-          .attr("height", y.rangeBand()/2 )
+          .attr("height", y.rangeBand()/2 + 4 )
           .style("fill", function(d) {
                             if(fact) return d3.rgb(d.color).darker(1);
                             return d3.rgb(d.color);
@@ -156,19 +156,23 @@
           .attr("width", function(d) {
                             return (d.amount_fact && x(d.amount_fact)/2 - middle_w/2 > 0) ? x(d.amount_fact)/2 - middle_w/2 : 0;
                          } )
-          .attr("height", y.rangeBand()/2 )
+          .attr("height", y.rangeBand()/2 + 4 )
           .style("fill", function(d) {
                             return d3.rgb(d.color)
                          })
 
           bars.enter().append("rect")
           .attr("x", function(d) { return x(d.amount)/2 + margin.left - middle_w/2 } )
-          .attr("y", function(d) { return y(d.key) + margin.top - 16; })
+          .attr("y", function(d) { return y(d.key) + margin.top - 14; })
           .attr("width", middle_w )
           .attr("height", y.rangeBand()/2 + 4 )
-          .style("stroke", "black" )
+          .style("stroke", function(d) {
+                            if(d.amount_fact/d.amount > 0.9) return d3.rgb("green").darker(1);
+                            if(d.amount_fact/d.amount > 0.7) return d3.rgb("yellow").darker(1);
+                            return d3.rgb("red").darker(1);
+                         })
           .style("stroke-width", 1 )
-          .style("fill-opacity", 0.5)
+          .style("fill-opacity", 0.8)
           .style("fill", function(d) {
                             if(d.amount_fact/d.amount > 0.9) return "green";
                             if(d.amount_fact/d.amount > 0.7) return "yellow";
@@ -192,9 +196,7 @@
                 }
                 return x(d.amount)/2;
             })
-            .attr("height", function(d) {
-                              return y.rangeBand()/2;
-                            } )
+            .attr("height", y.rangeBand()/2 + 4)
             .attr("id", function(d) { return "bar_" + d.id; })
             .style("fill-opacity", 0)
             .style("cursor", function(d,i) { return (data[i].children && data[i].children.length == 0) ? "default" : "pointer" })
