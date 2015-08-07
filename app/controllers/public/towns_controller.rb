@@ -31,7 +31,11 @@ class Public::TownsController < ApplicationController
         result << geo unless geo.blank?
       end
 
-      result
+      {
+          "type" => "FeatureCollection",
+          "features" => result
+      }
+
     end
     respond_to do |format|
       format.json { render json: @geo_json }

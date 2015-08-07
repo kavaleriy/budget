@@ -8,6 +8,7 @@
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 
 = javascript_include_tag "leaflet/leaflet.js"
+= javascript_include_tag "leaflet/geojson-tiles.js"
 = javascript_include_tag "leaflet/markercluster.js"
 = javascript_include_tag "leaflet/zoomfs.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
@@ -46,48 +47,50 @@
 
   $(document).ready(function() {
     RepairMap = function(options) {
+      options = options || {}
 
-      var map, markers, markersGrouped;
+      var map;
       var popup;
       var router;
       var info;
-      var geoJson;
 
       var self = this;
 
       function initMap() {
-        map = L.map('map', { scrollWheelZoom : false })
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        var mapSettings = { }
+        if (options.scrollWheelZoom)
+          mapSettings.scrollWheelZoom = options.scrollWheelZoom
+
+        map = L.map('map', mapSettings)
+
+        var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-          maxZoom: 8,
-          minZoom: 6,
           id: 'begemot.mbl2go4k',
           accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-        }).addTo(map);
+        }
+        if (options.minZoom)
+          layerSettings.minZoom = options.minZoom
+        if (options.maxZoom)
+          layerSettings.maxZoom = options.maxZoom
 
-        map.fitBounds([
-          [47.54677, 21.44531],
-          [52.32182, 41.52832]
-        ]);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
+
+        if (options.bounds) map.fitBounds(options.bounds);
+
+
+        if (options.center)
+          map.setView(options.center, options.zoom)
+        else
+          setBrowserLocation()
 
         L.Icon.Default.imagePath = '/assets/leaflet/images'
-
-
-        getBrowserLocation()
-
-
-        markers = new L.layerGroup();
-        markersGrouped = new L.MarkerClusterGroup();
-
-        map.addLayer(markers);
-        map.addLayer(markersGrouped);
 
         function getBrowserLocation() {
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
           } else {
-            $(".map").text("Your browser is out of fashion, there\'s no geolocation!");
+            // unsupported
           }
 
           function positionSuccess(position) {
@@ -95,33 +98,11 @@
             var lng = position.coords.longitude;
             var acr = position.coords.accuracy;
 
-            map.setView([47.97516, 31.48682], 6)
-            //map.setView([lat, lng], 6)
+            map.setView([lat, lon], options.zoom)
           }
           function positionError(err) {
-            map.setView([47.97516, 31.48682], 6)
           }
-
         }
-
-        function initZoomFS() {
-          var zoomFS = new L.Control.ZoomFS({position : 'bottomleft'});
-          map.addControl(zoomFS);
-          map.on('enterFullscreen', function() {
-            $('#my-box').css({
-             'position' : "fixed",
-             "top" : "40px",
-             "left" : "0px"
-            })
-          });
-          map.on('exitFullscreen', function() {
-            $('#my-box').css({
-             'position' : "absolute",
-             "top" : "0px"
-            })
-          });
-        }
-
       }
 
       function initRouting() {
@@ -130,108 +111,94 @@
       }
 
 
-      // add markers
-      var CityIcon = L.Icon.extend({
-        options: {
-          iconSize: [32, 32],
+      function addGeoJsonAreas(url, options) {
+        options = options || {}
+
+        var layerOptions = {
+          //hoverOffset: new L.Point(30,-16),
+          onEachFeature: onEachFeature
         }
-      });
-
-      var TownIcon = L.Icon.extend({
-        options: {
-          iconSize: [32, 32],
-        }
-      });
-
-      var iconCity = new CityIcon({iconUrl: '/assets/map/iconCity.png'})
-      var iconTown = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
-
-      function addGeoJson(data, isClustered) {
-
-        geoJson = L.geoJson(data, {
-          pointToLayer: getPointToLayer,
-          style: getFeatureStyle,
-          onEachFeature: onEachFeature,
-          coordsToLatLng: coordsToLatLng,
-          //lineCap: 'round',
-        }).addTo(isClustered ? markersGrouped : markers);
+        if (options.style)
+          layerOptions.style = options.style
+        if (options.hoverStyle)
+          layerOptions.hoverStyle = options.hoverStyle
 
 
-        function getPointToLayer(feature, latlng) {
-          var icon, opacity = 1
-          switch (feature.properties.level) {
-            case 'city':
-              icon = iconCity
-              break
-            case 'town':
-              icon = iconTown
-              break
-            default:
-              icon = new L.Icon.Default()
-              break
-          }
+        var areasLayer = new L.GeoJSON(null, layerOptions);
+        map.addLayer(areasLayer);
 
-          return L.marker(latlng, {
-            icon: icon,
-            opacity: opacity,
-            draggable: false,
+        // Add GeoJSON loader layer.
+        var geojson = new L.TileLayer.GeoJSON(url)
+          .on('load', function() {
+            areasLayer.clearLayers().addData(geojson.geojson());
+          });
+        map.addLayer(geojson);
+
+        function onEachFeature(feature, layer) {
+          if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
+
+          layer.on('mouseover', function() {
+            if (options.hoverStyle) layer.setStyle(options.hoverStyle);
+
+            if (options.getInfoContent)
+              info.update(options.getInfoContent(feature.properties));
+          });
+          layer.on('mouseout', function() {
+            if (options.style) layer.setStyle(options.style);
+            info.update();
           });
         }
+      }
 
-        function getFeatureStyle(feature) {
-          return {
-            fillColor: "orange",
-            weight: 15,
-            opacity: 0.2,
-            color: 'white',
-            fillOpacity: 0.4
-          };
+
+      function addGeoJsonPoints(data, getPoint, options) {
+        options = options || {}
+
+        var markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
+        map.addLayer(markers);
+
+        var layerOptions = {
+          pointToLayer: getPointToLayer,
+          onEachFeature: onEachFeature,
+          coordsToLatLng: coordsToLatLng,
         }
+        if (options.style)
+          layerOptions.style = options.style
+        if (options.hoverStyle)
+          layerOptions.hoverStyle = options.hoverStyle
+
+        geoJson = L.geoJson(data, layerOptions).addTo(markers);
+
 
         function coordsToLatLng(coords) {
           map.panTo(L.latLng(coords))
           return L.latLng(coords)
         }
 
+        function getPointToLayer(feature, latlng) {
+          var icon = getPoint(feature.properties)
+
+          return L.marker(latlng, {
+            icon: icon,
+            opacity: 1,
+            draggable: false,
+          });
+        }
+
         function onEachFeature(feature, layer) {
-          popupContent =
-            '<div class="popup">' +
-              '<h3>' + feature.properties.title + '</h3>' +
-              '<p>Документів: ' + feature.properties.documents_count + '</p>' +
-            '</div>'
-          layer.bindPopup(popupContent);
+          if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
           layer.on({
-            mouseover: onFeatureOver,
-            mouseout: onFeatureOut,
-            click: onFeatureClick,
-          });
-
-          function onFeatureClick(e) {
-            if (options.clickCallback) {
-              options.clickCallback(e.target.feature, e.target)
+            mouseover: function () {
+              //layer.setStyle(options.hoverStyle);
+              if (options.getInfoContent)
+                info.update(options.getInfoContent(feature.properties));
+            },
+            mouseout: function () {
+              //geoJson.resetStyle(layer)
+              info.update();
             }
-          }
-
-          function onFeatureOver(e) {
-            var layer = e.target;
-
-            info.update(layer.feature.properties);
-
-            layer.setStyle({
-                //weight: 2,
-                //color: '#666',
-                //dashArray: '',
-                fillOpacity: 0.5
-            });
-          }
-
-          function onFeatureOut(e) {
-            var layer = e.target;
-            geoJson.resetStyle(layer)
-
-            info.update();
-          }
+          });
         }
       }
 
@@ -245,10 +212,9 @@
         };
 
         // method that we will use to update the control based on feature properties passed
-        info.update = function (props) {
-          if (props)
-            this._div.innerHTML = '<h3 class="title">' + props.title + '</h3>'
-              + '<p>Документів: ' + props.documents_count + '</p>'
+        info.update = function (content) {
+          if (content)
+            this._div.innerHTML = content
           else
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
           };
@@ -262,10 +228,8 @@
 
       return {
         map: map,
-        popup: popup,
-        router: router,
-        info: info,
-        addGeoJson: addGeoJson,
+        addGeoJsonAreas: addGeoJsonAreas,
+        addGeoJsonPoints: addGeoJsonPoints,
       }
     }
 
