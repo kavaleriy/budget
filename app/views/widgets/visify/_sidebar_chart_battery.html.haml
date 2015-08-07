@@ -111,39 +111,99 @@
         var bars = svg.selectAll(".bar")
           .data(data);
 
+        var width_s = 9, space_s = 4;
+        var file_type = "#{@file_type}";
+
+        // fact rectangle
+        bars.enter().append("rect")
+          .attr("x", margin.left + 1)
+          .attr("y", function(d) { return y(d.key) + margin.top - 14; })
+          .attr("rx", "4px")
+          .attr("ry", "4px")
+          .attr("width", function(d) {
+                             if(d.amount > d.amount_fact) {
+                                return (Math.ceil(x(d.amount)/(width_s + space_s))*(width_s + space_s) + 6)*(d.amount_fact/d.amount)
+                             }
+                             return x(d.amount_fact || 0);
+                         } )
+          .attr("height", y.rangeBand()/2 )
+          .style("fill", file_type == "TaxonomyRov" ? "red" : "green")
+          .style("stroke", "#666");
+
         // plan rectangle
         bars.enter().append("rect")
           .attr("x", margin.left + 1)
           .attr("y", function(d) { return y(d.key) + margin.top - 14; })
-          .attr("rx", "5px")
-          .attr("ry", "5px")
+          .attr("rx", "4px")
+          .attr("ry", "4px")
           .attr("width", function(d) {
                              create_fact_rects(d);
-                             return (d.amount > (d.amount_fact || 0)) ? x(d.amount) : x(d.amount_fact || 0);
+                             if(d.amount < d.amount_fact) {
+                                var plan_width = x(d.amount_fact || 0)*(d.amount/d.amount_fact);
+                                return Math.ceil(plan_width/(width_s + space_s))*(width_s + space_s) + 6;
+                             }
+                             return Math.ceil(x(d.amount)/(width_s + space_s))*(width_s + space_s) + 6;
                          } )
           .attr("height", y.rangeBand()/2 )
-          .style("fill", "none")
+          .style("fill", "white")
           .style("stroke", "#666");
 
         // fact rectangles
         function create_fact_rects(node) {
-          var width_s = 9, space_s = 4,
-              rect_num = Math.floor((x(node.amount)-5)/(width_s + space_s)),
-              rect_data = d3.range(rect_num),
-              g = svg.append("g")
+
+          var plan_width, fact_width, plan_num;
+
+          if(node.amount >= node.amount_fact) {
+            plan_width = Math.ceil(x(node.amount)/(width_s + space_s))*(width_s + space_s) + 6;
+            fact_width = plan_width*(node.amount_fact/node.amount);
+            plan_num = (plan_width-6)/(width_s + space_s);
+          } else {
+            fact_width = x(node.amount_fact || 0);
+            plan_width = fact_width*(node.amount/node.amount_fact);
+            plan_num = plan_width/(width_s + space_s);
+          }
+
+          var plan_data = d3.range(plan_num),
+              fact_num, fact_data;
+
+          if(node.amount <= node.amount_fact) {
+            fact_num = plan_num;
+            fact_data = plan_data;
+          } else {
+            fact_num = fact_width/(width_s + space_s);
+            fact_data = d3.range(fact_num);
+          }
+
+          var g = svg.append("g")
                      .attr('transform', 'translate(' + (margin.left - 20) + ',' + (y(node.key) + margin.top - 14) + ')'),
-              rects = g.selectAll("rect").data(rect_data).enter().append("rect");
+              rects = g.selectAll("rect").data(plan_data).enter().append("rect");
 
           var colors=d3.scale.linear()
-            .domain([d3.min(rect_data),(d3.max(rect_data) - d3.min(rect_data))/2, d3.max(rect_data)])
-            .range(["green","yellow","red"]);
+            .domain([0,(d3.max(plan_data) - d3.min(plan_data))/2, d3.max(plan_data)]);
+
+          if(file_type == "TaxonomyRov") {
+            colors.range(["green","yellow","red"]);
+          } else {
+            colors.range(["red","yellow","green"]);
+          }
 
           rects.attr({
-            x: function(d,i){return i*(width_s + space_s) + 2*(width_s + space_s);},
+            x: function(d,i){
+                 return i*(width_s + space_s) + 2*(width_s + space_s);
+               },
             y: 3,
+            rx: "2px",
+            ry: "2px",
             height: 21,
-            width: width_s,
-            fill: function (d,i){return colors(d);}
+            width: function(d,i) {
+                      return width_s;
+                   },
+            fill: function (d,i){
+                      if(fact_num < plan_num && i > fact_num) {
+                        return "#E6E6E6";
+                      }
+                      return colors(d);
+                  }
           });
         }
 
@@ -151,11 +211,14 @@
         bars.enter().append("rect")
             .attr("x", margin.left)
             .attr("y", function(d) { return y(d.key) + margin.top - 14; })
-            .attr("rx", "5px")
-            .attr("ry", "5px")
+            .attr("rx", "4px")
+            .attr("ry", "4px")
             .attr("data-y", function(d) { return y(d.key) - 14; })
             .attr("width", function(d) {
-                              return (d.amount > (d.amount_fact || 0)) ? x(d.amount) : x(d.amount_fact || 0);
+                             if(d.amount >= (d.amount_fact || 0)) { // correct rectangle width to contain all battery
+                               return Math.ceil(x(d.amount)/(width_s + space_s))*(width_s + space_s) + 6;
+                             }
+                             return x(d.amount_fact || 0);
                            })
             .attr("height", y.rangeBand()/2 )
             .attr("id", function(d) { return "bar_" + d.id; })
