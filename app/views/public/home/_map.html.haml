@@ -126,21 +126,14 @@
           layerOptions.hoverStyle = options.hoverStyle
 
 
-        var areasLayer = new L.GeoJSON(null, layerOptions);
+        var areasLayer = new L.TileLayer.GeoJSON(url, {
+            clipTiles: false,
+            unique: function (feature) {
+                return feature.properties.id;
+            }
+        }, layerOptions);
         map.addLayer(areasLayer);
 
-        // Add GeoJSON loader layer.
-        var geojson = new L.TileLayer.GeoJSON(url)
-          .on('load', function() {
-            console.log(1)
-            if (loaded)
-              return
-            loaded = true
-            console.log(2)
-
-            areasLayer.clearLayers().addData(geojson.geojson());
-          });
-        map.addLayer(geojson);
 
         function onEachFeature(feature, layer) {
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
