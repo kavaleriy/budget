@@ -247,27 +247,46 @@
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)
-                .attr("y",-20)
+                .attr("y",-30)
                 .style("fill", "#666")
-                .style("font-size", "0.9em")
-                //.style("font-weight", "normal");
-                //.attr("class",function(d,i){return "text_" + data[i].id})
+                .style("font-size", "0.9em");
 
-        fact = false; // TEST
         if(fact) {
+          // left side fact amount text
           bar_text.selectAll("g")
           .append("text")
           .html(function(d, i) {
             return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount_fact || 0);
           })
-          .attr("x",function(d, i){
-                      return  data[i].amount_fact ? x(data[i].amount_fact)/2 + x(data[i].amount)/2 + 10 : x(data[i].amount)/2 + 10;
-                    })
-          .attr("dy",-20)
+          .attr("x",-margin.left)
+          .attr("dy",-15)
           .style("font-size", "0.9em")
-          //.style("font-weight", "normal")
           .style("fill", "#666");
-          //.attr("class",function(d,i){return "text_" + data[i].id})
+
+          // right side percent text
+          bar_text.selectAll("g")
+          .append("text")
+          .style('font-family', 'FontAwesome')
+          .text(function(d, i) {
+              if(data[i].amount_fact > data[i].amount) {
+                return "\uf071 " + Math.round(data[i].amount_fact*100/data[i].amount) + "%";
+              }
+              return Math.round(data[i].amount_fact*100/data[i].amount) + "%";
+          })
+          .attr("x",function(d, i){
+                      if(data[i].amount >= (data[i].amount_fact || 0)) { // correct rectangle width to contain all battery
+                         return Math.ceil(x(data[i].amount)/(width_s + space_s))*(width_s + space_s) + 16;
+                       }
+                       return x(data[i].amount_fact || 0) + 10;
+                    })
+          .attr("dy",-22)
+          .style("font-size", "1.1em")
+          .style("fill", function(d, i) {
+              if(data[i].amount_fact > data[i].amount) {
+                return "#FF8000";
+              }
+              return "#666";
+          });
         }
       },
     }
