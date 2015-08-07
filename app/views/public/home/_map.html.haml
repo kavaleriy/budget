@@ -112,6 +112,8 @@
 
 
       function addGeoJsonAreas(url, options) {
+        var loaded = false
+
         options = options || {}
 
         var layerOptions = {
@@ -130,6 +132,10 @@
         // Add GeoJSON loader layer.
         var geojson = new L.TileLayer.GeoJSON(url)
           .on('load', function() {
+            if (loaded)
+              return
+            loaded = true
+
             areasLayer.clearLayers().addData(geojson.geojson());
           });
         map.addLayer(geojson);
