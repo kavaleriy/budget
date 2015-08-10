@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+ def hexToRgb color
+  a = ( color.match /#(..?)(..?)(..?)/ )[1..3]
+  a.map!{ |x| x + x } if color.size == 4
+  "#{a[0].hex},#{a[1].hex},#{a[2].hex}"
+ end
+
  def sortable(column, title = nil)
   title ||= column.titleize
   css_class = column == sort_column ? "current #{sort_direction}" : nil
