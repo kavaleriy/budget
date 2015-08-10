@@ -57,8 +57,8 @@
     = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
 
   - if @taxonomy.description
-    %p.col-xs-12
-      = t('description') + " #{@taxonomy.description}"
+    %h3.col-xs-12
+      = t('description') + ": #{@taxonomy.description}"
 
 
 
