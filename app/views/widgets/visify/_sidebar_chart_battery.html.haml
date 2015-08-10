@@ -97,7 +97,7 @@
         hide();
         if (!data == null || data.length < 1) return;
 
-        var svg_height = data.length * 60;
+        var svg_height = data.length * 60 + 8;
         $("#sidebar_chart").height('100%');
         svg.attr("height", svg_height + margin.top + margin.bottom);
         var fact = false;
@@ -141,7 +141,7 @@
                              create_fact_rects(d);
                              if(d.amount < d.amount_fact) {
                                 var plan_width = x(d.amount_fact || 0)*(d.amount/d.amount_fact);
-                                return Math.ceil(plan_width/(width_s + space_s))*(width_s + space_s) + 6;
+                                return Math.floor(plan_width/(width_s + space_s))*(width_s + space_s) + 6;
                              }
                              return Math.ceil(x(d.amount)/(width_s + space_s))*(width_s + space_s) + 6;
                          } )
@@ -165,7 +165,8 @@
           } else {
             fact_width = x(node.amount_fact || 0);
             plan_width = fact_width*(node.amount/node.amount_fact);
-            plan_num = plan_width/(width_s + space_s);
+            plan_width = Math.floor(plan_width/(width_s + space_s))*(width_s + space_s) + 6;
+            plan_num = Math.floor(plan_width/(width_s + space_s));
           }
 
           var plan_data = d3.range(plan_num),
@@ -274,7 +275,7 @@
           .style('font-family', 'FontAwesome')
           .text(function(d, i) {
               if(data[i].amount_fact > data[i].amount) {
-                return "\uf071 " + Math.round(data[i].amount_fact*100/data[i].amount) + "%";
+                return "\uf071 " + Math.ceil(data[i].amount_fact*100/data[i].amount) + "%";
               }
               return Math.round(data[i].amount_fact*100/data[i].amount) + "%";
           })
