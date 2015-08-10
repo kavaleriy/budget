@@ -21,12 +21,16 @@
     - if current_user.has_role? :admin
       %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
     - else
-      = document.locked.nil? || !document.locked ? "unlocked" : "locked"
+      - if document.locked.nil? || !document.locked
+        %i.fa.fa-square-o
+      - else
+        %i.fa.fa-check-square-o
   %td
     = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
+  I18n.locale = window.aHelper.lang();
 
   $('.document[data-id="#{document.id}"] #documentation_document').editable({
     value: {
@@ -65,7 +69,14 @@
 
   $('.doc_lock').editable({
     type: 'checklist',
-    source: {'1': 'locked'}
+    source: {'1': I18n.t('documentation.documents.index.locked_s')},
+    display: function(value, sourceData) {
+      if(value) {
+        $(this).html('<i class="fa fa-check-square-o"></i>');
+      } else {
+        $(this).html('<i class="fa fa-square-o"></i>');
+      }
+    }
   });
 
   $('.document[data-id="#{document.id}"] #yearFrom, .document[data-id="#{document.id}"] #yearTo').editable({
