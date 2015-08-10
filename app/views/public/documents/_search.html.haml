@@ -6,7 +6,7 @@
     = render partial: 'town_select', :locals => { params: { multiple: true } }
 
   .col-sm-3
-    = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
+    = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id, { 'data-color' => t.color }] } ), { multiple: true, class: 'branch_select'  }
 
   .col-sm-2.form-inline
     .input-group
@@ -26,16 +26,12 @@
 :javascript
 
   $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
     $("#town_select").on("change", function(){
       $("#search_btn").trigger("click");
     })
-  });
-
-
-:javascript
-  $(document).ready(function() {
-
-    I18n.locale = window.aHelper.lang();
 
     $(".branch_select").select2(
       {
@@ -43,13 +39,21 @@
         width: '100%',
         placeholder: I18n.t('documentation.documents.search.doc_type'),
         multiSelect: true,
+        formatSelection: formatBranchSelection,
+        formatResult: formatBranchSelection
       }
     ).on("change", function(){
       $("#search_btn").trigger("click");
-    })
+    });
 
     $('#year_change').on("change", function(){
       $("#search_btn").trigger("click");
     })
+
+    function formatBranchSelection(branch, container){
+      var color = branch['element']['0']['dataset']['color'];
+      if(!color) color = "#ffffff";
+      return '<i class="fa fa-square" style="color: ' + color + '; opacity: 0.3;"></i> ' + branch.text;
+    }
 
   });

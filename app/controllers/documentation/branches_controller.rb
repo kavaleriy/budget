@@ -80,6 +80,6 @@ class Documentation::BranchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def documentation_branch_params
-      params.require(:documentation_branch).permit(:title)
+      params.require(:documentation_branch).permit(:title, :color)
     end
 end
