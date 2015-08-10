@@ -1,6 +1,7 @@
 .col-xs-12.col-md-6
   = bootstrap_form_for @taxonomy, :html => { :class => 'form-horizontal' } do |f|
     = f.text_field :title, label: t('taxonomies.index.file_title')
+    = f.text_field :description, label: t('taxonomies.index.description')
 
     = f.check_box :is_kvk, label: t('.is_kvk')
 

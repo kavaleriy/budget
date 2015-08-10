@@ -56,6 +56,12 @@
     = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
     = render partial: 'sidebar_modify', :locals => { file: @taxonomy }
 
+  - if @taxonomy.description
+    %p.col-xs-12
+      = t('description') + " #{@taxonomy.description}"
+
+
+
   = render partial: 'helpers'
 
 :javascript

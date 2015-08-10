@@ -46,6 +46,7 @@
   var RepairMap
 
   $(document).ready(function() {
+
     RepairMap = function(options) {
       options = options || {}
 
@@ -58,8 +59,7 @@
 
       function initMap() {
         var mapSettings = { }
-        if (options.scrollWheelZoom)
-          mapSettings.scrollWheelZoom = options.scrollWheelZoom
+        mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
 
         map = L.map('map', mapSettings)
 
@@ -128,9 +128,6 @@
 
         var areasLayer = new L.TileLayer.GeoJSON(url, {
             clipTiles: false,
-            unique: function (feature) {
-                return feature.properties.id;
-            }
         }, layerOptions);
         map.addLayer(areasLayer);
 
