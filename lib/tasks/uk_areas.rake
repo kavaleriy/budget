@@ -17,19 +17,19 @@ namespace :uk_areas do
       geometry_type = f['geometry']['type']
       coordinates = []
 
-      divider = 40
+      divider = 10
 
       case geometry_type
         when 'MultiPolygon'
           f['geometry']['coordinates'].each_with_index do |m, l|
             coordinates << []
             m[0].each_with_index do |c, i|
-              coordinates[l] << get_coordinates(c[1], c[0]) if i % divider == 0
+              coordinates[l] << get_coordinates(c[0], c[1]) if i % divider == 0
             end
           end
         when 'Polygon'
           f['geometry']['coordinates'][0].each_with_index do |c, i|
-            coordinates << get_coordinates(c[1], c[0]) if i % divider == 0
+            coordinates << get_coordinates(c[0], c[1]) if i % divider == 0
           end
       end
 
