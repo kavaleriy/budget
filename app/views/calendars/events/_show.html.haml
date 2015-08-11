@@ -18,7 +18,7 @@
           %h5
             Детально про подію
           %hr
-          %div{ href: '#', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(event.calendar.id, event.id), 'data-value'=>event.description }
+          %div{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-pk' => "#{event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(event.calendar.id, event.id), 'data-value'=>event.description, 'data-emptytext' => 'Докладніше про подію...' }
             = event.description.html_safe
           %h5
             Додатки
@@ -28,13 +28,31 @@
 
 :javascript
 
-  $('a[data-pk], div[data-pk]').editable();
+  $('a[data-pk]').editable();
 
   $(document).ready(function() {
     $('a[data-toggle="collapse"]').on("click", function(){
       var id = $(this).data('id');
       $('#marker_' + id).find(".flag").trigger("click");
-    })
+    });
+
+    $.fn.editable.defaults.mode = 'inline';
+
+    $('div[data-pk]').editable({
+        escape: false,
+        wysihtml5: {
+          "font-styles": true, // Font styling, e.g. h1, h2, etc.
+          "emphasis": true, // Italics, bold, etc.
+          "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+          "html": false, // Button which allows you to edit the generated HTML.
+          "link": true, // Button to insert a link.
+          "image": true, // Button to insert an image.
+          "color": false, // Button to change color of font
+          "inline": true,
+          "size": 'xm', // options are xs, sm, lg
+          //"locale": editor_locale
+        }
+      });
   })
 
 
