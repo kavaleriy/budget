@@ -30,6 +30,7 @@
         droppable: false,
         selectable: false,
         eventClick: function(calEvent, jsEvent, view) {
+          $('#marker_' + calEvent.id).find(".flag").trigger("click");
           return $.get("/calendars/calendars/#{calendar.id}/events/" + calEvent.id)
         },
         eventRender: function(e, t, n) {

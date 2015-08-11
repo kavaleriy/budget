@@ -1,33 +1,40 @@
 - model_class = Event
-.panel.panel-default
-  .panel-heading
-    %i.fa.fa-calendar &nbsp; Детально про подію
-  .panel-body
-    #event-details
-      .date
-        %strong= date_to_string(@event.starts_at)
-        %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
+%h3
+  %strong= "#{holder_to_string(@event.holder)} - події:"
+%h4
+  %strong= " " + date_to_string(@event.starts_at)
+  %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
 
-      %h4.title
-        %span.fa{:class => @event.icon}
-        %a{ href: '#', id: 'holder', 'data-type' => 'select', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-source'=>'{"1":"Місто","2":"Громада"}' }
-          = "#{holder_to_string(@event.holder)}:"
-        %br
-        %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-emptytext' => 'Вкажіть назву файлу...' }
-          = @event.title
-      %p.description
-        %div{ href: '#', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(@event.calendar.id, @event.id), 'data-value'=>@event.description }
-          = @event.description.html_safe
-.panel.panel-default
-  .panel-heading
-    %i.fa.fa-download &nbsp; Додатки
-  .panel-body
-    = render :partial => 'calendars/event_attachments/attachments', :locals => { :attachments => @attachments, :calendar_id=>@calendar.id, :event_id=>@event.id}
-    - if current_user
-      = render :partial => 'calendars/event_attachments/new_attachment', :locals => { :attachments => @attachments, :new_attachment => EventAttachment.new, :event_id=>@event.id, :calendar_id=>@calendar.id, :event =>@event, :calendar =>@calendar }
-
+#events_accordion.panel-group
+  - @events.each_with_index do |event, index|
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          %span.fa{:class => event.icon}
+          %a{"data-parent" => "#events_accordion", "data-toggle" => "collapse", :href => "#collapse_" + event.id, 'data-id' => event.id}
+            = event.title
+      .panel-collapse.collapse{:id => "collapse_" + event.id, :class => event.id == @event.id ? "in" : ""}
+        .panel-body
+          %h5
+            Детально про подію
+          %hr
+          %div{ href: '#', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{event.id}", 'data-resource' => 'event', 'data-url' => calendars_calendar_event_path(event.calendar.id, event.id), 'data-value'=>event.description }
+            = event.description.html_safe
+          %h5
+            Додатки
+          = render :partial => 'calendars/event_attachments/attachments', :locals => { :attachments => @attachments[event.id], :calendar_id=>@calendar.id, :event_id=>event.id}
+          - if current_user
+            = render :partial => 'calendars/event_attachments/new_attachment', :locals => { :attachments => @attachments[event.id], :new_attachment => EventAttachment.new, :event_id=>event.id, :calendar_id=>@calendar.id, :event =>event, :calendar =>@calendar }
 
 :javascript
 
   $('a[data-pk], div[data-pk]').editable();
+
+  $(document).ready(function() {
+    $('a[data-toggle="collapse"]').on("click", function(){
+      var id = $(this).data('id');
+      $('#marker_' + id).find(".flag").trigger("click");
+    })
+  })
+
 
