@@ -186,6 +186,7 @@ Rails.application.routes.draw do
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 

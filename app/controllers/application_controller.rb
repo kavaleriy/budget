@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include SessionsHelper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -20,6 +21,16 @@ class ApplicationController < ActionController::Base
     redirect_to :action => :index, notice: t('record_not_found')
   end
 
+  def after_sign_in_path_for(resource_or_scope)
+    case resource_or_scope
+      when :user, User
+        store_location = session[:return_to]
+        clear_stored_location
+        (store_location.nil?) ? "/" : store_location.to_s
+      else
+        super
+    end
+  end
 
   protected
 

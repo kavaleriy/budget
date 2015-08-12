@@ -21,5 +21,4 @@ class Public::DocumentsController < ApplicationController
 
     @towns = @towns.select{ |t| params["town_select"].split(',').include? t.id.to_s } unless params["town_select"].blank?
   end
-
 end
