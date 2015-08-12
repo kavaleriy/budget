@@ -11,9 +11,9 @@
 #results.col-xs-12
   - if current_user
     .text-center
-      %btn.btn.btn-primary{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit', :style =>  documents.where(:owner_id => current_user.id).first ? 'display: inline-block;' : 'display: none;' }
+      %btn.btn.btn-primary.btn-lg{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit', :style =>  documents.where(:owner_id => current_user.id).first ? 'display: inline-block;' : 'display: none;' }
         %i.fa.fa-edit.fa-lg
-        Редагувати документи
+        = t('form.uploaded_documents')
 
   - towns.reject{|town| documents.where(:town_id => town.id).empty? }.each do |town|
 
@@ -25,7 +25,7 @@
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
       .col-sm-2.doc_btn
-        %btn.btn.btn-primary.btn-lg{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add' }
+        %btn.btn.btn-primary{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add' }
           %i.fa.fa-plus.fa-lg
 
     .clear
