@@ -30,7 +30,7 @@
 
     / Modal window to add files
     .modal.fade{:id => 'city_add_' + town.id, 'aria-labelledby' => 'cityModalLabel', :class => 'city_add', :role => 'dialog', :tabindex => '-1'}
-      .modal-dialog{:role => 'document'}
+      .modal-dialog{:role => 'document', :style => 'width: 900px;' }
         .modal-content
           .modal-header
             %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
@@ -44,6 +44,13 @@
                   = t('form.new_document')
                 .new_document.panel-body
                   = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new, :town_id => town.id, :branch_field => true }
+                .panel.panel-default
+                  .panel-heading
+                    = t('form.uploaded_documents')
+                  .documents.panel-body
+                    - if !current_user.has_role? :admin
+                      %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки Адміністратором
+                    = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:town_id => town.id, :owner_id => current_user.id) }
           .modal-footer
             %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
               = t('form.close')
@@ -74,9 +81,9 @@
 :javascript
 
   $(document).ready(function() {
-    $('.modal form').submit(function(){
-      $('.modal').modal('hide');
-    });
+    //$('.modal form').submit(function(){
+    //  $('.modal').modal('hide');
+    //});
 
     $('.btn_city_add').on("click", function(){
       if(!"#{current_user}"){
