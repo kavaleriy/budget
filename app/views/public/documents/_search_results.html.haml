@@ -9,13 +9,16 @@
   }
 
 #results.col-xs-12
+  - if current_user
+    .text-center
+      %btn.btn.btn-primary{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit', :style =>  documents.where(:owner_id => current_user.id).first ? 'display: inline-block;' : 'display: none;' }
+        %i.fa.fa-edit.fa-lg
+        Редагувати документи
+
   - towns.reject{|town| documents.where(:town_id => town.id).empty? }.each do |town|
 
     %h1
       = town.to_s
-      - if current_user
-        %btn.btn.btn-primary.btn-xs{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit_' + town.id }
-          %i.fa.fa-edit.fa-lg
 
     .row-eq-height{:id => 'results_' + town.id}
       .col-sm-2.text-center.doc_btn
@@ -55,28 +58,28 @@
             %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
               = t('form.close')
 
-    - if current_user
-      / Modal window to edit files
-      .modal.fade{ :id => 'city_edit_' + town.id, 'aria-labelledby' => 'cityModalLabel', :role => 'dialog', :tabindex => '-1'}
-        .modal-dialog{:role => 'document', :style => 'width: 900px;' }
-          .modal-content
-            .modal-header
-              %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-                %span{'aria-hidden' => 'true'} &times;
-              %h4#cityModalLabel.modal-title
-                = "Редагувати файли для м." + town.title
-            .modal-body
-              .documentation
-                .panel.panel-default
-                  .panel-heading
-                    = t('form.uploaded_documents')
-                  .documents.panel-body
-                    - if !current_user.has_role? :admin
-                      %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки адміністратором
-                    = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:town_id => town.id, :owner_id => current_user.id) }
-            .modal-footer
-              %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
-                = t('form.close')
+  - if current_user
+    / Modal window to edit files
+    .modal.fade{ :id => 'city_edit', 'aria-labelledby' => 'cityModalLabel', :role => 'dialog', :tabindex => '-1'}
+      .modal-dialog{:role => 'document', :style => 'width: 900px;' }
+        .modal-content
+          .modal-header
+            %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+              %span{'aria-hidden' => 'true'} &times;
+            %h4#cityModalLabel.modal-title
+              = "Редагувати файли"
+          .modal-body
+            .documentation
+              .panel.panel-default
+                .panel-heading
+                  = t('form.uploaded_documents')
+                .documents.panel-body
+                  - if !current_user.has_role? :admin
+                    %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки Адміністратором
+                  = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:owner_id => current_user.id) }
+          .modal-footer
+            %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
+              = t('form.close')
 
 :javascript
 
