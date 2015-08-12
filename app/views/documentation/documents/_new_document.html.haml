@@ -16,7 +16,7 @@
 
   - if defined?(branch_field)
     .form-group
-      = f.select :branch, Documentation::Branch.all.collect {|p| [ p.title, p.id ] }, {prompt: t('.select_branch')}, :class => 'form-control'
+      = f.select :branch, Documentation::Branch.all.collect {|p| [ p.title, p.id ] }, {prompt: t('.select_branch')}, :class => 'form-control documentation_document_branch'
 
   -#.col-sm-6
   -#  .form-group
@@ -64,7 +64,7 @@
     if('#{defined? branch_field}') {
       $('.can_be_disable').attr("disabled","disabled");
 
-      $('#documentation_document_branch').on("change", function(){
+      $('.documentation_document_branch').on("change", function(){
         if($(this).find('option:selected').val()) {
           $('.can_be_disable').removeAttr("disabled");
         } else {
