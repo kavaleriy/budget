@@ -21,12 +21,12 @@
       = town.to_s
 
     .row-eq-height{:id => 'results_' + town.id}
-      .col-sm-2.text-center.doc_btn
-        %btn.btn.btn-primary.btn-lg{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add' }
-          %i.fa.fa-plus.fa-lg
       - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
+      .col-sm-2.doc_btn
+        %btn.btn.btn-primary.btn-lg{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add' }
+          %i.fa.fa-plus.fa-lg
 
     .clear
     %hr
