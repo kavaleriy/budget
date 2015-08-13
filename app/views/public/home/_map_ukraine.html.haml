@@ -21,20 +21,25 @@
 
 
     // add Areas
-    aRepairMap.addGeoJsonAreas('#{public_ukraine_geo_json_path}&type=areas', {
-      style: {
-        "color": "white",
-        "fillColor": "yellow",
-        "weight": 5,
-        "opacity": 0.02,
-        "fillOpacity": 0.01
-      },
-      hoverStyle: {
-        "fillOpacity": 0.02
-      },
-      getPopupContent: getPopupContent,
-      getInfoContent: getInfoContent,
+    $.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}&type=areas',
+      dataType: 'json',
     })
+    .done(function (data) {
+      aRepairMap.addGeoJsonSvg(data, {
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        clickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+      })
+    })
+    .fail(function () {
+    });
 
 
     // add markers
@@ -52,7 +57,7 @@
         hoverStyle: {
           opacity: 1,
         },
-        getPopupContent: getPopupContent,
+        clickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
       })
     })
@@ -84,6 +89,10 @@
       return icon
     }
 
+    function onFeatureClick(feature) {
+      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
+      window.location = town_url
+    }
 
     // content callbacks
     function getPopupContent(properties) {

@@ -8,9 +8,7 @@
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 
 = javascript_include_tag "leaflet/leaflet.js"
-= javascript_include_tag "leaflet/geojson-tiles.js"
 = javascript_include_tag "leaflet/markercluster.js"
-= javascript_include_tag "leaflet/zoomfs.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
 
@@ -35,7 +33,21 @@
     color: #777;
   }
 
+  svg {
+    position: relative;
+  }
 
+  path {
+    fill: #000;
+    fill-opacity: .3;
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  path:hover {
+    fill: orange;
+    fill-opacity: .5;
+  }
 
 
 #map
@@ -51,6 +63,7 @@
       options = options || {}
 
       var map;
+      var svg, g;
       var popup;
       var router;
       var info;
@@ -60,8 +73,9 @@
       function initMap() {
         var mapSettings = { }
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
-
         map = L.map('map', mapSettings)
+
+        addSvgLayer()
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -85,6 +99,12 @@
           setBrowserLocation()
 
         L.Icon.Default.imagePath = '/assets/leaflet/images'
+
+        function addSvgLayer() {
+          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", 999),
+            g = svg.append("g").attr("class", "leaflet-zoom-hide");
+        }
+
 
         function getBrowserLocation() {
           if (navigator.geolocation) {
@@ -110,44 +130,57 @@
         router = L.Routing.osrm()
       }
 
-
-      function addGeoJsonAreas(url, options) {
-        var loaded = false
-
+      function addGeoJsonSvg(data, options) {
         options = options || {}
 
-        var layerOptions = {
-          //hoverOffset: new L.Point(30,-16),
-          onEachFeature: onEachFeature
+        // Projecting GeoJSON
+        var transform = d3.geo.transform({point: projectPoint}),
+          path = d3.geo.path().projection(transform);
+
+        var feature = g.selectAll("path")
+            .data(data.features)
+          .enter().append("path")
+            .on("mouseover", function (d) {
+              if (options.getInfoContent)
+                info.update(options.getInfoContent(d.properties));
+              })
+            .on("mouseout", function () {
+              info.update();
+            })
+            .on("click", function (d) {
+              if (options.clickCallback) {
+                options.clickCallback(d);
+              }
+            })
+
+        feature.attr("d", path);
+
+
+        map.on("viewreset", reset);
+        reset();
+
+        function projectPoint(x, y) {
+          var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+          this.stream.point(point.x, point.y);
         }
-        if (options.style)
-          layerOptions.style = options.style
-        if (options.hoverStyle)
-          layerOptions.hoverStyle = options.hoverStyle
 
+        // Reposition the SVG to cover the features.
+        function reset() {
+          var bounds = path.bounds(data),
+            topLeft = bounds[0],
+            bottomRight = bounds[1];
 
-        var areasLayer = new L.TileLayer.GeoJSON(url, {
-            clipTiles: false,
-        }, layerOptions);
-        map.addLayer(areasLayer);
+          svg.attr("width", bottomRight[0] - topLeft[0])
+            .attr("height", bottomRight[1] - topLeft[1])
+            .style("left", topLeft[0] + "px")
+            .style("top", topLeft[1] + "px");
 
+          g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
 
-        function onEachFeature(feature, layer) {
-          if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-
-          layer.on('mouseover', function() {
-            if (options.hoverStyle) layer.setStyle(options.hoverStyle);
-
-            if (options.getInfoContent)
-              info.update(options.getInfoContent(feature.properties));
-          });
-          layer.on('mouseout', function() {
-            if (options.style) layer.setStyle(options.style);
-            info.update();
-          });
+          feature.attr("d", path);
         }
+
       }
-
 
       function addGeoJsonPoints(data, getPoint, options) {
         options = options || {}
@@ -187,6 +220,10 @@
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
           layer.on({
+            click: function () {
+              if (options.clickCallback)
+                options.clickCallback(feature);
+            },
             mouseover: function () {
               //layer.setStyle(options.hoverStyle);
               if (options.getInfoContent)
@@ -221,12 +258,13 @@
       }
 
       initMap()
+
       initRouting()
       addControl()
 
       return {
         map: map,
-        addGeoJsonAreas: addGeoJsonAreas,
+        addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
       }
     }
