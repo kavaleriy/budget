@@ -59,9 +59,11 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
   def get_parent_event
+    starts_at = '2015-01-01'.to_date
+    ends_at = '2016-01-01'.to_date
     event = @calendar.events.find(params[:event_id])
-    events = @calendar.events.all.where( :holder => event.holder, :starts_at => event.starts_at, :ends_at => event.ends_at )
-    render :json => {:parent_event => events.uniq{|ev| ev.starts_at && ev.ends_at-ev.starts_at}}
+    events = @calendar.events.event_timeline(event.holder, starts_at, ends_at)
+    render :json => {:parent_event => events.uniq{|e| [e.starts_at, e.ends_at-e.starts_at]}.select{|e| e.starts_at == event.starts_at && e.ends_at == event.ends_at}}
   end
 
 
@@ -70,7 +72,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
   def build_pie starts_at, ends_at, ev
     pie = [ { ends_at: starts_at, events: [] }]
 
-    ev.uniq{|e| e.starts_at && e.ends_at-e.starts_at}
+    ev.uniq{|e| [e.starts_at, e.ends_at-e.starts_at]}
       .map { |e|
         cycle = pie.detect {|dt| dt[:ends_at] <= e[:starts_at]}
 

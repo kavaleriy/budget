@@ -2,6 +2,6 @@ module Documentation::DocumentsHelper
   def years(yearFrom, yearTo)
     years = [yearFrom]
     years << yearTo unless yearFrom == yearTo
-    years.join(' - ')
+    yearFrom == yearTo || !yearTo ? years.join('') : years.join(' - ')
   end
 end

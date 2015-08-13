@@ -123,10 +123,10 @@
           return
 
         var marker_id = $('.marker.active').attr("id").split("marker_")[1];
-        selectEvent(marker_id)
+        selectEvent(marker_id);
     }
 
-    var current_path, current_pathEl;
+    var current_path = null, current_pathEl = null;
 
     function selectEvent(event_id) {
        if (event_id == undefined)
@@ -134,6 +134,7 @@
 
        $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
        $.getJSON( "/widgets/calendar/get_parent_event/#{@calendar.id}/" + event_id, function( data ) {
+          //console.log(data)
           var parent_id = data['parent_event'][0]['id'];
           // initial selection of current event
          if(current_path) {
