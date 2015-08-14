@@ -65,7 +65,6 @@ class Widgets::CalendarController < Widgets::WidgetsController
     pie = [ { ends_at: starts_at, events: [] }]
     ev.map { |e|
       cycle = pie.detect {|dt| dt[:ends_at] <= e[:starts_at]}
-
       if cycle.nil?
         new_ev = build_event_for_pie( { :title => '', :description => '', starts_at: starts_at, ends_at: e[:starts_at], color: 'rgba(230, 230, 230, .5)' } )
         cycle = { ends_at: e[:ends_at], events: [ new_ev ] }
