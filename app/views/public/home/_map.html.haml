@@ -47,6 +47,7 @@
       options = options || {}
 
       var map;
+      var svg, g;
       var popup;
       var router;
       var info;
@@ -70,6 +71,14 @@
           layerSettings.maxZoom = options.maxZoom
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
+
+
+        addSvgLayer()
+        function addSvgLayer() {
+          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
+            g = svg.append("g").attr("class", "leaflet-zoom-hide");
+        }
+
 
 
         if (options.bounds) map.fitBounds(options.bounds);
@@ -125,9 +134,6 @@
       }
 
       function addGeoJsonSvg(data, options) {
-        var svg, g;
-        addSvgLayer()
-
         options = options || {}
 
         // Projecting GeoJSON
@@ -154,11 +160,6 @@
 
         map.on("viewreset", reset);
         reset();
-
-        function addSvgLayer() {
-          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
-            g = svg.append("g").attr("class", "leaflet-zoom-hide");
-        }
 
         function projectPoint(x, y) {
           var point = map.latLngToLayerPoint(new L.LatLng(y, x));
