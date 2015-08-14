@@ -1,3 +1,4 @@
+-#http://bost.ocks.org/mike/leaflet/
 -# http://geojson.org/geojson-spec.html#examples
 -# http://www.rubydoc.info/gems/rgeo-geojson/frames
 -# https://github.com/alexreisner/geocoder
@@ -33,23 +34,6 @@
     color: #777;
   }
 
-  svg {
-    position: relative;
-  }
-
-  path {
-    fill: #000;
-    fill-opacity: .3;
-    stroke: #fff;
-    stroke-width: 1.5px;
-  }
-
-  path:hover {
-    fill: orange;
-    fill-opacity: .5;
-  }
-
-
 #map
 
 
@@ -63,7 +47,6 @@
       options = options || {}
 
       var map;
-      var svg, g;
       var popup;
       var router;
       var info;
@@ -75,7 +58,6 @@
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
         map = L.map('map', mapSettings)
 
-        addSvgLayer()
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -99,11 +81,6 @@
           setBrowserLocation()
 
         L.Icon.Default.imagePath = '/assets/leaflet/images'
-
-        function addSvgLayer() {
-          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", 999),
-            g = svg.append("g").attr("class", "leaflet-zoom-hide");
-        }
 
 
         function getBrowserLocation() {
@@ -131,6 +108,9 @@
       }
 
       function addGeoJsonSvg(data, options) {
+        var svg, g;
+        addSvgLayer()
+
         options = options || {}
 
         // Projecting GeoJSON
@@ -158,6 +138,11 @@
 
         map.on("viewreset", reset);
         reset();
+
+        function addSvgLayer() {
+          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
+            g = svg.append("g").attr("class", "leaflet-zoom-hide");
+        }
 
         function projectPoint(x, y) {
           var point = map.latLngToLayerPoint(new L.LatLng(y, x));

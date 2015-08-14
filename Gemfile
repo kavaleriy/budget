@@ -114,3 +114,6 @@ gem 'rubyXL'
 
 # https://github.com/amatsuda/kaminari
 gem 'kaminari'
+
+# https://github.com/cyu/rack-cors
+gem 'rack-cors', :require => 'rack/cors'
