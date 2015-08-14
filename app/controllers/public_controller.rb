@@ -3,7 +3,6 @@ class PublicController < ApplicationController
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
-
   def index
   end
 
@@ -35,6 +34,14 @@ class PublicController < ApplicationController
     @calendar.subscribers.delete(Subscriber.find(params[:subscriber_id]))
     @calendar.save
     response.delete_cookie('subscriber')
+  end
+
+  def check_auth
+    if !anyone_signed_in?
+      deny_access
+    else
+      redirect_to public_documents_path
+    end
   end
 
   private

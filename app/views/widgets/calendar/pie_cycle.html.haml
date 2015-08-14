@@ -1,60 +1,114 @@
-.right-panel.col-xs-4.pull-right
-  = render partial: 'event'
-
-.col-xs-offset-1.col-xs-6
-  = render partial: 'pie_cycle', :locals => { calendar: @calendar }
-
+.pies-container
+  #calendar_pies
+    %svg#svg_calendar
+  %canvas{:style => "display: none;"}
 
 :javascript
 
-  $(document).ready(function() {
+  var aCalendarPie = function() {
 
-    // ------------------ EMBED CODE EVENTS ------------------------
+    function init_pie(options) {
+      d3.select('#svg_calendar').selectAll("*").remove()
 
-    // ----------------- CALENDAR PIE EVENTS -----------------------
-    console.log(1);
-    var pie = aCalendarPie()
-    pie.init_pie( {loadedCallback: calendar_pie_events} )
+      size = $('#calendar_pies').width()
+
+      if (size == 0) return
 
 
-    function calendar_pie_events() {
-      d3.selectAll("#calendar_pies svg g .actual_path")
-         .on("click", function(d) {
-           selectEvent(d.data.id);
+      $.getJSON( "/widgets/calendar/pie_data/#{calendar.id}", function( data ) {
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function(d) { return d.value; });
 
-           var pathEl = Snap.select('.selected_path');
-           if(pathEl) {
-            pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': $('.selected_path').data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
-            $('.selected_path').css("stroke", "#ffffff");
-            pathEl.removeClass('selected_path');
-           }
+        var svg = d3.select('#svg_calendar')
+            .attr("width", size)
+            .attr("height", size)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .append("g")
+            .attr("transform", "translate(" + size / 2 + "," + size / 2 + ")");
 
-           $(this).attr('class', 'events_path actual_path selected_path')
+        var cut = size*0.04
+        var radius = size / 2 - data.events1.length * cut;
 
-           $('#marker_' + d.data.id).find(".flag").trigger("click");
-         })
+        $([{events: data.events1, radius: radius, cut: -cut },
+           {events: data.events2, radius: radius-10, cut: cut }]).each(function(i, cycle) {
+          $(cycle.events).each(function(j, c) {
+            if (cycle.radius > 0 && cycle.radius > cycle.cut) {
+              var arc = create_arc(cycle.radius, cycle.radius - cycle.cut)
+              var g = svg.selectAll(".arc"+i+j)
+                  .data(pie(c.events))
+                  .enter().append("g")
+                  .attr("class", "arc"+i+j);
 
-         .on("mouseover", function(d) {
-           var s = Snap.select('#calendar_pies svg g');
-           s.append(this); // to move current path to the front
-           var pathEl = Snap.select('#path_' + d.data.id);
-           if(!pathEl.hasClass("selected_path")) {
-            $(this).css("stroke", $(this).css('fill'));
-            $(this).data('fill-opacity', $(this).css('fill-opacity'));
-            pathEl.stop().animate( { 'stroke-width': 10, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
-           }
-         })
-         .on("mouseout", function(d) {
-            var pathEl = Snap.select('#path_' + d.data.id);
-            if(!pathEl.hasClass("selected_path")) {
-              pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': $(this).data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
-              $(this).css("stroke", "#ffffff");
+              append_pathAndText(g, arc)
+
+              cycle.radius = cycle.radius - cycle.cut;
             }
-         })
-    }
-    function selectEvent(event_id) {
-           if (event_id == undefined)
-            return
-           $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
+          })
+          radius = radius - 10;
+        })
+
+        if (options && options.loadedCallback) {
+          options.loadedCallback()
         }
-  });
+
+      })
+    }
+
+    function create_arc(radius1, radius2) {
+      return d3.svg.arc()
+          .outerRadius(radius1)
+          .innerRadius(radius2);
+    }
+
+    function append_pathAndText(g, arc) {
+      var div = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+      g.append("path")
+         .attr("d", arc)
+         .style("fill", function(d) { return d.data.color; })
+         .attr("id", function(d) { return (d.data.id == '') ? '' : "path_" + d.data.id} )
+         .attr("class", function(d) { return (d.data.id == '') ? 'events_path' : "events_path actual_path"} )
+         .style("cursor", function(d) { return (d.data.id == '') ? '' : 'pointer'} )
+         .attr('stroke-width', function(d) { return (d.data.id == '') ? 0 : 1})
+         .style("stroke", function(d) { return d3.rgb(d.data.color).darker(1); })
+         .on("click", function(d) {
+           if(d.data.id == '') return
+           $.get("/calendars/#{calendar.id}/events/" + d.data.id)
+         });
+
+       g.append("text")
+           .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+           .attr("dy", ".35em")
+           .style("text-anchor", "middle")
+           .html(function(d,i) {
+              // TODO: show icon
+              //return d.data.icon;
+
+           })
+
+       // Add text "2015 Year" into the middle of Calendar pie
+       var lang = window.aHelper.lang();
+       I18n.locale = lang;
+
+       g.append("text")                // append text
+         .style("font-size", "250%")
+         .style("font-family", "Helvetica, Times New Roman,Times,serif")
+         .style("fill", "#4f99c6")
+         .attr("dy", "0.2em")           // shift on dy
+         .attr("dx", "-0.2em")          // shift on dx
+         .attr("text-anchor", "middle") // set anchor y justification
+         .text("2015 " + I18n.t('widgets.calendar.pie_cycle.year'));
+    }
+
+    function get_html_for_ev(d) {
+      return "<h5><i class='fa " + d.data.icon + "'></i> " + d.data.title + "</h5>з <b>" + d.data.starts_at + "</b> по <b>" + d.data.ends_at + "</b>"
+    }
+
+    return {
+      init_pie: init_pie
+    }
+  }

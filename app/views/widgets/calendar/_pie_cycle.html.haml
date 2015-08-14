@@ -78,47 +78,30 @@
          .on("click", function(d) {
            if(d.data.id == '') return
            $.get("/calendars/#{calendar.id}/events/" + d.data.id)
-         })
-         .on("mouseover", function(d) {
-           //if(d.data.id == '')
-           //return
-           //div.transition()
-           //  .duration(200)
-           //  .style("opacity", .95)
-           //  .style("color", d.data.text_color)
-           //  .style("background-color", d.data.color);
-           //div.html(get_html_for_ev(d))
-           //  .style("left", (d3.event.pageX) + "px")
-           //  .style("top", (d3.event.pageY) + "px");
-         })
-         .on("mouseout", function(d) {
-           //div.transition()
-           //  .duration(200)
-           //  .style("opacity", 0);
-         })
+         });
 
-         g.append("text")
-             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-             .attr("dy", ".35em")
-             .style("text-anchor", "middle")
-             .html(function(d,i) {
-                // TODO: show icon
-                //return d.data.icon;
+       g.append("text")
+           .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+           .attr("dy", ".35em")
+           .style("text-anchor", "middle")
+           .html(function(d,i) {
+              // TODO: show icon
+              //return d.data.icon;
 
-             })
+           })
 
-         // Add text "2015 Year" into the middle of Calendar pie
-         var lang = window.aHelper.lang();
-         I18n.locale = lang;
+       // Add text "2015 Year" into the middle of Calendar pie
+       var lang = window.aHelper.lang();
+       I18n.locale = lang;
 
-         g.append("text")                // append text
-           .style("font-size", "250%")
-           .style("font-family", "Helvetica, Times New Roman,Times,serif")
-           .style("fill", "#4f99c6")
-           .attr("dy", "0.2em")           // shift on dy
-           .attr("dx", "-0.2em")          // shift on dx
-           .attr("text-anchor", "middle") // set anchor y justification
-           .text("2015 " + I18n.t('widgets.calendar.pie_cycle.year'));
+       g.append("text")                // append text
+         .style("font-size", "250%")
+         .style("font-family", "Helvetica, Times New Roman,Times,serif")
+         .style("fill", "#4f99c6")
+         .attr("dy", "0.2em")           // shift on dy
+         .attr("dx", "-0.2em")          // shift on dx
+         .attr("text-anchor", "middle") // set anchor y justification
+         .text("2015 " + I18n.t('widgets.calendar.pie_cycle.year'));
     }
 
     function get_html_for_ev(d) {

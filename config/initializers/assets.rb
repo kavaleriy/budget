@@ -6,7 +6,6 @@ Rails.application.config.assets.precompile += %w( timelinejs/storyjs-embed.js ti
 Rails.application.config.assets.precompile += %w( kartik-fileinput/js/fileinput.js kartik-fileinput/js/fileinput_locale_uk.js kartik-fileinput/css/fileinput.css )
 
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css )
-Rails.application.config.assets.precompile += %w( leaflet/geojson-tiles.js )
 Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leaflet/markercluster.default.css leaflet/markercluster.css )
 Rails.application.config.assets.precompile += %w( leaflet/zoomfs.js )
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css leaflet/leaflet-routing-machine.js leaflet/leaflet-routing-machine.css )

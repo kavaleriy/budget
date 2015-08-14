@@ -6,3 +6,50 @@
   width: 100px;
   height: 100px;
 }
+
+
+.doc_btn {
+  .btn-primary {
+    position:relative;
+    top:2em;
+    color: #fff;
+    border-radius: 50px;
+    background-color: #007ab8;
+    background-image: -moz-linear-gradient(top, #08c, #006699);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08c), to(#006699));
+    background-image: -webkit-linear-gradient(top, #08c, #006699);
+    background-image: -o-linear-gradient(top, #08c, #006699);
+    background-image: linear-gradient(to bottom, #08c, #006699);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff006599', GradientType=0);
+    border-color: #006699 #006699 #00334d;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus {
+    text-decoration: none;
+    background-position: 0 -15px;
+    -webkit-transition: background-position .1s linear;
+    -moz-transition: background-position .1s linear;
+    -o-transition: background-position .1s linear;
+    transition: background-position .1s linear;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #006699;
+  }
+
+  .btn-primary.disabled:hover,
+  .btn-primary.disabled:focus,
+  .btn-primary.disabled:active,
+  .btn-primary.disabled.active,
+  .btn-primary[disabled] .btn-primary:hover,
+  .btn-primary[disabled] .btn-primary:focus,
+  .btn-primary[disabled] .btn-primary:active,
+  .btn-primary[disabled] .btn-primary.active {
+    background-color: #08c;
+    border-color: #08c;
+  }
+}

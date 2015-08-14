@@ -1,1 +1,5 @@
-$('.document[data-id=<%= "#{@documentation_document.id}" %>]').remove()
+<% if !Documentation::Document.where(:owner_id => current_user.id).first %>
+    $('.btn[data-target="#city_edit"]').css('display', 'none');
+    $('#city_edit').modal('hide');
+<% end %>
+$('.document[data-id=<%= "#{@documentation_document.id}" %>]').remove();

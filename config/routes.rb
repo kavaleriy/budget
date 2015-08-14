@@ -114,6 +114,7 @@ Rails.application.routes.draw do
     get 'calendar/timelinejs/:calendar_id' => 'calendar#timelinejs'
     get 'calendar/pie_cycle/:calendar_id' => 'calendar#pie_cycle'
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
+    get 'calendar/get_parent_event/:calendar_id/:event_id' => 'calendar#get_parent_event'
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
@@ -185,6 +186,7 @@ Rails.application.routes.draw do
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
   get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 

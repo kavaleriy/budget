@@ -36,39 +36,40 @@
           #calendar_month.tab-pane.fade
             = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
 
-        .legend
-          .pull-left
-            = image_tag("calendar/inf-city.png", width: '200px')
-          .pull-right
-            = image_tag("calendar/inf-people.png", width: '200px')
-
-  #embed_code_calendar.embed_code
-    = render partial: 'widgets/visify/embed_code'
+        -#.legend
+        -#  .pull-left
+        -#    = image_tag("calendar/inf-city.png", width: '200px')
+        -#  .pull-right
+        -#    = image_tag("calendar/inf-people.png", width: '200px')
 
 .col-sm-6.col-xs-12
   = render partial: '/widgets/calendar/event'
 
-.col-xs-12
-  %h2
-    Важливі події
-  .col-sm-4
-    .panel.panel-default
-      .panel-body
-        .pull-left
-          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
-        .col-sm-10
-          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
-  .pull-right.col-sm-4
-    .panel.panel-default
-      .panel-body
-        .pull-right
-          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
-        .col-sm-10
-          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
-  .col-sm-4
-    .panel.panel-default
-      .panel-body
-        = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
+.col-sm-12
+  #embed_code_calendar.embed_code
+    = render partial: 'widgets/visify/embed_code'
+
+-#.col-xs-12
+-#  %h2
+-#    Важливі події
+-#  .col-sm-4
+-#    .panel.panel-default
+-#      .panel-body
+-#        .pull-left
+-#          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+-#        .col-sm-10
+-#          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(1).first) }
+-#  .pull-right.col-sm-4
+-#    .panel.panel-default
+-#      .panel-body
+-#        .pull-right
+-#          = render :partial => '/widgets/calendar/current_event', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+-#        .col-sm-10
+-#          = render :partial => '/widgets/calendar/current_event_description', :locals => { calendar: @calendar, current: get_current_event(@calendar.events.current_event(2).first) }
+-#  .col-sm-4
+-#    .panel.panel-default
+-#      .panel-body
+-#        = render :partial => '/widgets/calendar/countdown', :locals => { calendar: @calendar, countdown_event: get_countdown_event(@calendar) }
 
 :javascript
 
@@ -101,7 +102,11 @@
     })
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      pie.init_pie({loadedCallback: calendar_pie_events})
+      if($(this).attr('href') == "#calendar_year") {
+        pie.init_pie({loadedCallback: calendar_pie_events});
+        var marker_id = $('.marker.active').attr("id").split("marker_")[1];
+        selectEvent(marker_id);
+      }
     });
 
 
@@ -118,29 +123,43 @@
           return
 
         var marker_id = $('.marker.active').attr("id").split("marker_")[1];
-        selectEvent(marker_id)
+        selectEvent(marker_id);
     }
+
+    var current_path = null, current_pathEl = null;
 
     function selectEvent(event_id) {
        if (event_id == undefined)
-        return
+        return;
+
        $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
+       $.getJSON( "/widgets/calendar/get_parent_event/#{@calendar.id}/" + event_id, function( data ) {
+          //console.log(data)
+          var parent_id = data['parent_event'][0]['id'];
+          // initial selection of current event
+         if(current_path) {
+            current_pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': current_path.data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
+            current_path.css("stroke", "#ffffff");
+            current_pathEl.removeClass('selected_path');
+         }
+         var path = $("#path_" + parent_id);
+         current_path = path;
+         path.attr('class', 'events_path actual_path selected_path');
+         var pathEl = Snap.select('#path_' + parent_id);
+         if(pathEl){
+            current_pathEl = pathEl;
+            path.css("stroke", path.css('fill'));
+            path.data('fill-opacity', path.css('fill-opacity'));
+            pathEl.stop().animate( { 'stroke-width': 10, 'fill-opacity': '0.8', 'stroke-opacity': '0.8' }, 1000, mina.elastic);
+         }
+      })
+
     }
 
     function calendar_pie_events() {
       d3.selectAll("#calendar_pies svg g .actual_path")
          .on("click", function(d) {
            selectEvent(d.data.id);
-
-           var pathEl = Snap.select('.selected_path');
-           if(pathEl) {
-            pathEl.stop().animate( { 'stroke-width': 1, 'fill-opacity': $('.selected_path').data('fill-opacity'), 'stroke-opacity': '1' }, 1000, mina.elastic);
-            $('.selected_path').css("stroke", "#ffffff");
-            pathEl.removeClass('selected_path');
-           }
-
-           $(this).attr('class', 'events_path actual_path selected_path')
-
            $('#marker_' + d.data.id).find(".flag").trigger("click");
          })
 

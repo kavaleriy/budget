@@ -58,31 +58,36 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   end
 
+  def get_parent_event
+    starts_at = '2015-01-01'.to_date
+    ends_at = '2016-01-01'.to_date
+    event = @calendar.events.find(params[:event_id])
+    events = @calendar.events.event_timeline(event.holder, starts_at, ends_at)
+    render :json => {:parent_event => events.uniq{|e| [e.starts_at, e.ends_at-e.starts_at]}.select{|e| e.starts_at == event.starts_at && e.ends_at == event.ends_at}}
+  end
+
 
   private
 
   def build_pie starts_at, ends_at, ev
     pie = [ { ends_at: starts_at, events: [] }]
-    ev.map { |e|
+    ev.uniq{|e| [e.starts_at, e.ends_at-e.starts_at]}
+    .map { |e|
       cycle = pie.detect {|dt| dt[:ends_at] <= e[:starts_at]}
       if cycle.nil?
         new_ev = build_event_for_pie( { :title => '', :description => '', starts_at: starts_at, ends_at: e[:starts_at], color: 'rgba(230, 230, 230, .5)' } )
         cycle = { ends_at: e[:ends_at], events: [ new_ev ] }
         pie << cycle
       end
-
       cycle[:events] << build_event_for_pie( { :title => '', :description => '', starts_at: cycle[:ends_at], ends_at: e[:starts_at], color: 'rgba(230, 230, 230, .5)' } ) if cycle[:ends_at] < e[:starts_at]
       cycle[:events] << build_event_for_pie(e)
       cycle[:ends_at] = e[:ends_at]
-
     }
-
     pie.each { |p|
       if p[:ends_at] < ends_at
         p[:events] << build_event_for_pie( { :title => '', :description => '', starts_at: p[:ends_at], ends_at: ends_at, color: 'rgba(230, 230, 230, .5)' } )
       end
     }
-
     pie
   end
 

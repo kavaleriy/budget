@@ -1,6 +1,13 @@
 .col-xs-12
   %h2
     = title
-  - towns.each do |town|
-    .pull-left
+  .owl-example.owl-carousel
+    - towns.each do |town|
       = render partial: 'town', :locals => { href: public_path(town.id), img: { src: town.img.thumb.url, alt: town }, title: town, description: 'Детальніше' }
+
+:javascript
+  $(document).ready(function() {
+    $(".owl-example").owlCarousel({
+      items : 6
+      });
+  })

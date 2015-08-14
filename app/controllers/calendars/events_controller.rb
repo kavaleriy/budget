@@ -103,11 +103,16 @@ class Calendars::EventsController < ApplicationController
 
   def set_event
     @event = @calendar.events.find(params[:id])
+    @events = @calendar.events.all.where( :holder => @event.holder, :starts_at => @event.starts_at, :ends_at => @event.ends_at )
   end
 
 
   def set_attachments
-    @attachments = @event.event_attachments
+    # @attachments = @event.event_attachments
+    @attachments = {}
+    @events.each{|event|
+      @attachments[event.id] = event.event_attachments
+    }
   end
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
