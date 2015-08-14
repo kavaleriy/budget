@@ -110,7 +110,7 @@
         }
 
         $.each(data, function( index, value ) {
-          if(value.label != "Інше"){
+          if(!value.aggregated){
             create_graph(value['total_history']['plan'], value['id']);
           }
         })

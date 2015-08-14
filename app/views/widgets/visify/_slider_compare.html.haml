@@ -204,7 +204,7 @@
                          .style("fill-opacity", function(d) { return d.label == current_month ? "1.0" : "0.5"; })
                          .attr("stroke", "white")
                          .attr("stroke-width", 1)
-                         .attr("x", function(d) { return x1(d.label); })
+                         .attr("x", function(d) { return x1(get_month_by_num(d.label)); })
                          .attr("width", x1.rangeBand())
                          .attr("y", function(d) { return y(d.amount); })
                          .attr("height", function(d) { return height - y(d.amount); })
