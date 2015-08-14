@@ -126,13 +126,11 @@
         popup = L.popup();
 
         function onMapClick(e) {
-          popup
-            .setLatLng(e.latlng)
-            .setContent("" + e.latlng.toString())
-            .openOn(map);
-
-          if (options.mapClickCallback) {
-            options.mapClickCallback(e)
+          if (options.getMapPopupContent) {
+            popup
+              .setLatLng(e.latlng)
+              .setContent(getMapPopupContent(e))
+              .openOn(map);
           }
         }
 
@@ -266,45 +264,6 @@
           };
 
         info.addTo(map);
-      }
-
-      function editRoute(waypoints, routeFoundCallback) {
-        var line;
-
-        //route = aRepairMap.router.route(waypoints, function(err, routes) {
-
-        //    var marker1 = L.marker(<%= @location %>, { draggable: true });
-        //    var marker2 = L.marker(<%= @location1 %>, { draggable: true });
-        //    var fg = L.featureGroup([marker1, marker2, L.polyline(routes[0].coordinates)])
-        //            .bindPopup('Hello world!')
-        //            .on('click', function() { alert('Clicked on a group!'); })
-        //            .addTo(aRepairMap.map);
-        //
-        //    line = L.Routing.line(routes[0] )
-        //            .on('click', function() { alert('Clicked on a group!'); })
-        //            .addTo(aRepairMap.map);
-        //
-        //    console.log(line.toGeoJSON())
-        //
-        //});
-
-        if (self.selectedRoute) {
-          self.selectedRoute.setWaypoints(waypoints)
-          self.selectedRoute.route()
-        } else {
-          self.selectedRoute = L.Routing.control({
-            routeWhileDragging: true,
-            waypoints: waypoints
-          })
-
-          self.selectedRoute.on('routesfound', function(router) {
-            if (routeFoundCallback) {
-              routeFoundCallback(router.routes[0].coordinates)
-            }
-          })
-
-          self.selectedRoute.addTo(map);
-        }
       }
 
       initMap()

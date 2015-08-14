@@ -28,8 +28,13 @@ class Repairing::LayersController < ApplicationController
   end
 
   def geo_json
+    result = {
+        "type" => "FeatureCollection",
+        "features" => @repairing_layer.to_geo_json
+    }
+
     respond_to do |format|
-      format.json { render json: @repairing_layer.to_geo_json}
+      format.json { render json: result}
     end
   end
 

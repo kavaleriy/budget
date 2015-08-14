@@ -10,7 +10,6 @@ module Calendars
     # GET /calendars.json
     def index
       @calendars = view_context.get_calendars
-
     end
 
     # GET /calendars/1

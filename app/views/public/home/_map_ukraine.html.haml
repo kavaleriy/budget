@@ -1,4 +1,3 @@
-
 :css
   .map_container {
     height: 600px;
@@ -45,8 +44,8 @@
     })
     .done(function (data) {
       aRepairMap.addGeoJsonSvg(data, {
-        zIndex: 0,
-        clickCallback: onFeatureClick,
+        zIndex: 1,
+        featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
       })
     })
@@ -69,7 +68,7 @@
         hoverStyle: {
           opacity: 1,
         },
-        clickCallback: onFeatureClick,
+        featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
       })
     })
@@ -85,20 +84,20 @@
     icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
 
     function getPoint(properties) {
-      var icon
+      var point = {}
       switch (properties.level) {
         case 'city':
-          icon = icons.city
+          point.icon = icons.city
           break
         case 'town':
-          icon = icons.town
+          point.icon = icons.town
           break
         default:
-          icon = new L.Icon.Default()
+          point.icon = new L.Icon.Default()
           break
       }
 
-      return icon
+      return point
     }
 
     function onFeatureClick(feature) {

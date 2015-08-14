@@ -14,7 +14,7 @@
 
 = content_for :top do
   .map_container
-    = render partial: 'repairing/maps/map'
+    = render partial: 'public/home/map'
 
 %p
   = @layer.description
@@ -24,21 +24,81 @@
 
   $(document).ready(function() {
 
-    var aRepairMap
+    var aRepairMap = RepairMap({ zoom: 6, minZoom: 5, maxZoom: 14,
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+    })
 
+    // add markers
     $.ajax({
       method: 'get',
       url: '#{geo_json_repairing_layer_path(@repairing_layer)}',
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap = aRepairMap = RepairMap({ clusterMarkers: true })
-      aRepairMap.addGeoJson(data)
+      aRepairMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        getMapPopupContent: getMapPopupContent,
+        getInfoContent: getInfoContent,
+      })
     })
     .fail(function () {
     });
 
+
+    var HouseIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});
+    var RoadIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});
+
+    var icons = {}
+    icons.house = new HouseIcon({iconUrl: '/assets/repairing/repair_house_small.png'})
+    icons.road = new RoadIcon({iconUrl: '/assets/repairing/repair_road_small.png'})
+
+    function getPoint(properties) {
+      var point = {}
+      switch (properties.repair) {
+        case 'house':
+          point.icon = icons.house
+          point.draggable = true
+          break
+        case 'road':
+          point.icon = icons.road
+          break
+        default:
+          point.icon = new L.Icon.Default()
+          break
+      }
+
+      return point
+    }
+
+    function onFeatureClick(feature, popup) {
+    }
+
+    function getMapPopupContent(e) {
+      var content = e.latlng.toString()
+      return content
+    }
+
+    function getInfoContent(properties) {
+      var content =
+            '<div class="popup">' +
+              '<h3>' + properties.title + '</h3>' +
+              '<p>' + properties.address + '</p>' +
+              '<p>' + properties.amount + '</p>' +
+            '</div>'
+
+      return content
+    }
+
   });
+
+
 
 
 = link_to t('.back', :default => t("helpers.links.back")), repairing_layers_path, :class => 'btn btn-default'
