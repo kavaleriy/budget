@@ -1,0 +1,18 @@
+%tr{'data-id' => "#{key.id}"}
+  %td
+    %a{ href: '#', id: 'key_indicate_map_indicator_key', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'Вкажіть назву показника...' }
+      = key.name
+  %td
+    = key.unit
+  %td
+    = key.group
+  %td
+    = t('key_indicate_map.indicator_keys.index.' + key.average_or_sum)
+  %td
+    = t('key_indicate_map.indicator_keys.index.' + key.integer_or_float)
+  %td
+    =link_to t('form.destroy'), key, :method => :delete, :data => { :confirm => t('form.confirm') }, :class => 'btn btn-xs btn-danger'
+
+:javascript
+
+  $('tr[data-id="#{key.id}"] #key_indicate_map_indicator_key').editable();

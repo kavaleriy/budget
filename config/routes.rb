@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :key_indicate_map do
+    resources :indicator_keys
+  end
+
   namespace :key_indicate do
     resources :indicator_files
     get 'indicator_files/get_files/:town' => 'indicator_files#get_files'
