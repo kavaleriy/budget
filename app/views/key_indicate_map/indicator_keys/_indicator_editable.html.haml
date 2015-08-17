@@ -10,10 +10,12 @@
       = key.group
   %td
     %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'average_or_sum', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'середнє чи сума?...' }
-      = t('key_indicate_map.indicator_keys.index.' + key.average_or_sum)
+      - if key.average_or_sum
+        = t('key_indicate_map.indicator_keys.index.' + key.average_or_sum)
   %td
     %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'integer_or_float', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'ціле чи дійсне?...' }
-      = t('key_indicate_map.indicator_keys.index.' + key.integer_or_float)
+      - if key.integer_or_float
+        = t('key_indicate_map.indicator_keys.index.' + key.integer_or_float)
   %td
     = link_to key, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right

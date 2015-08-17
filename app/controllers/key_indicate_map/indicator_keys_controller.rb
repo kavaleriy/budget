@@ -29,16 +29,12 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
   # POST /key_indicate_map/indicator_keys
   # POST /key_indicate_map/indicator_keys.json
   def create
-    @key_indicate_map_indicator_key = KeyIndicateMap::IndicatorKey.new(key_indicate_map_indicator_key_params)
+    @key_indicate_map_indicator_key = KeyIndicateMap::IndicatorKey.new
+    @key_indicate_map_indicator_key.save
 
     respond_to do |format|
-      if @key_indicate_map_indicator_key.save
-        format.html { redirect_to @key_indicate_map_indicator_key, notice: 'Indicator key was successfully created.' }
-        format.json { render :show, status: :created, location: @key_indicate_map_indicator_key }
-      else
-        format.html { render :new }
-        format.json { render json: @key_indicate_map_indicator_key.errors, status: :unprocessable_entity }
-      end
+      format.js
+      format.json { head :no_content }
     end
   end
 
@@ -61,7 +57,7 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
   def destroy
     @key_indicate_map_indicator_key.destroy
     respond_to do |format|
-      format.html { redirect_to key_indicate_map_indicator_keys_url, notice: 'Indicator key was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end
