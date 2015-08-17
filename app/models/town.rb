@@ -26,6 +26,7 @@ class Town
 
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
+  has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
 
   after_update :clear_cache

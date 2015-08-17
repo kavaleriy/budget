@@ -1,0 +1,84 @@
+class KeyIndicateMap::IndicatorFilesController < ApplicationController
+  before_action :set_key_indicate_map_indicator_file, only: [:show, :edit, :update, :destroy]
+
+  # GET /key_indicate_map/indicator_files
+  # GET /key_indicate_map/indicator_files.json
+  def index
+    @key_indicate_map_indicator_files = KeyIndicateMap::IndicatorFile.all
+  end
+
+  # GET /key_indicate_map/indicator_files/1
+  # GET /key_indicate_map/indicator_files/1.json
+  def show
+  end
+
+  # GET /key_indicate_map/indicator_files/new
+  def new
+    @key_indicate_map_indicator_file = KeyIndicateMap::IndicatorFile.new
+  end
+
+  # GET /key_indicate_map/indicator_files/1/edit
+  def edit
+  end
+
+  # POST /key_indicate_map/indicator_files
+  # POST /key_indicate_map/indicator_files.json
+  def create
+    @indicator_files = []
+
+    params['indicate_file'].each do |f|
+      doc = KeyIndicateMap::IndicatorFile.new
+      doc.indicate_file = f
+      params[:key_indicate_map_indicator_file][:title].blank? ? doc.title = f.original_filename : doc.title = params[:key_indicate_map_indicator_file][:title]
+      doc.description = params[:key_indicate_map_indicator_file][:description]
+      doc.year = params[:year]
+      doc.author = current_user.email
+      doc.save
+      @indicator_files << doc
+
+      table = read_table_from_file 'public/uploads/key_indicate_map/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
+      doc.import table, doc.year
+    end unless params['indicate_file'].nil?
+
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :created }
+    end
+  end
+
+  # PATCH/PUT /key_indicate_map/indicator_files/1
+  # PATCH/PUT /key_indicate_map/indicator_files/1.json
+  def update
+
+    respond_to do |format|
+      if @key_indicate_map_indicator_file.update(key_indicate_map_indicator_file_params)
+        format.js {}
+        format.json { head :no_content, status: :updated }
+      else
+        format.html { render :edit }
+        format.json { render json: @key_indicate_map_indicator_file.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /key_indicate_map/indicator_files/1
+  # DELETE /key_indicate_map/indicator_files/1.json
+  def destroy
+    @key_indicate_map_indicator_file.destroy
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :destroy }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_key_indicate_map_indicator_file
+      @key_indicate_map_indicator_file = KeyIndicateMap::IndicatorFile.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def key_indicate_map_indicator_file_params
+      params.require(:key_indicate_map_indicator_file).permit(:title, :description, :year)
+    end
+end

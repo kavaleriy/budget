@@ -1,0 +1,10 @@
+= form_for @key_indicate_map_indicator_file do |f|
+  - if @key_indicate_map_indicator_file.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@key_indicate_map_indicator_file.errors.count, "error")} prohibited this key_indicate_map_indicator_file from being saved:"
+      %ul
+        - @key_indicate_map_indicator_file.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

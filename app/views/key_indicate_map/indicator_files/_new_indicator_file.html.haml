@@ -1,0 +1,56 @@
+= form_for new_file, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  - if new_file.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(new_file.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - new_file.errors.full_messages.each do |msg|
+          %li= msg
+
+  .col-sm-12
+    .form-group
+      %label
+        = t('name')
+      = f.text_field :title, :class => 'form-control can_be_disable'
+
+    .form-inline.form-group
+      .input-group
+        %span.input-group-addon
+          %i.fa.fa-calendar.fa-lg
+        = select_tag :year, options_for_select((2012..Time.now.year-1).to_a.reverse), { prompt: t('date.abbr_month_names')[0], id: 'year_change', class: 'form-control' }
+
+  .col-sm-12
+    .form-group
+      = f.text_area :description, :rows => '2', :placeholder => "Докладніше про документ", :class => 'form-control can_be_disable'
+
+  .col-sm-12
+    .form-group
+      %label
+        %i.glyphicon.glyphicon-folder-open
+          = t('form.file')
+      = file_field_tag "indicate_file[]", multiple: true, :class => 'form-control can_be_disable'
+
+  .actions
+    = f.button :class => 'btn btn-default can_be_disable' do
+      %i.fa.fa-upload
+        = t('form.upload')
+    -#= link_to static_key_indicator_file_help_path, :class => 'btn btn-default' do
+    -#  %i.fa.fa-info-circle
+    -#    =t('static.budget_file_help.help')
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    $('.can_be_disable').attr("disabled", true);
+
+    $('#year_change').on("change", function(){
+
+      if(parseInt($(this).val())){
+        $('.can_be_disable').removeAttr("disabled");
+      } else {
+        $('.can_be_disable').attr("disabled", true);
+      }
+    })
+  })

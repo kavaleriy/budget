@@ -1,0 +1,45 @@
+%tr{'data-id' => "#{file.id}"}
+  %td
+    - if file.indicate_file?
+      = link_to file.indicate_file.url do
+        %i.fa{ class: "#{get_file_type_icon(file.indicate_file_identifier)}" }
+  %td
+    %a{ href: '#', id: 'key_indicate_map_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => key_indicate_map_indicator_file_path(file.id), 'data-emptytext' => 'Вкажіть назву документа...' }
+  %td
+    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_file', id: 'year', 'data-type' => 'select', 'data-pk' => "#{file.id}", 'data-url' => key_indicate_map_indicator_file_path(file.id), 'data-emptytext' => 'Вкажіть рік...' }
+      = file['year'].to_s
+  %td
+    = link_to 'x', file, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
+
+:javascript
+
+  $(document).ready(function(){
+    $.fn.editable.defaults.mode = 'block';
+    $('tr[data-id="#{file.id}"] #key_indicate_map_indicator_file').editable({
+      value: {
+          title: "#{file.title}",
+          description: "#{file.description}",
+      },
+      validate: function(value) {
+          if (value.title == '') return 'Потрібно вказати ім\'я файла!';
+      },
+      display: function(value) {
+          if(!value) {
+              $(this).empty();
+              return;
+          }
+          var html = '<b>' + $('<div>').text(value.title).html() + '</b>';
+          $(this).html(html);
+      }
+    });
+    var current_year = new Date().getFullYear();
+    var years_for_select = [];
+    for(var i = current_year-1; i >= 2012; i--) {
+      years_for_select.push({value: i.toString(), text: i.toString()});
+    }
+    $('tr[data-id="#{file.id}"] #year').editable({
+      value: "#{file['year'].to_s}",
+      source: years_for_select
+    })
+  })
+

@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
 
   namespace :key_indicate_map do
+    resources :indicators
+  end
+
+  namespace :key_indicate_map do
+    resources :indicator_files
+  end
+
+  namespace :key_indicate_map do
     resources :indicator_keys
   end
 
