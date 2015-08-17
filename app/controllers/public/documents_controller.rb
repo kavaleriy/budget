@@ -6,7 +6,7 @@ class Public::DocumentsController < ApplicationController
   def index
     @documentation_documents = Documentation::Document.all
     @documentation_documents = @documentation_documents.select{ |doc| params["town_select"].split(',').include? doc.town_id.to_s } unless params["town_select"].blank?
-    @documentation_documents = @documentation_documents.select{ |doc| doc.branch_id && (params["branch_select"].include? doc.branch.id.to_s) } unless params["branch_select"].blank?
+    @documentation_documents = @documentation_documents.select{ |doc| doc.branch_id && (params["branch_select"].include? doc.branch_id.to_s) } unless params["branch_select"].blank?
     @documentation_documents = @documentation_documents.select{ |doc| doc.yearFrom && ((doc.yearFrom <= params["year"].to_i && doc.yearTo && doc.yearTo >= params["year"].to_i) || doc.yearFrom == params["year"].to_i) } unless params["year"].blank?
     @documentation_documents = @documentation_documents.select{ |doc| doc.title.match(Regexp.new(".*"+params["q"]+".*")) } unless params["q"].blank?
     if current_user
