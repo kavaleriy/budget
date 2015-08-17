@@ -47,8 +47,8 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
   def update
     respond_to do |format|
       if @key_indicate_map_indicator_key.update(key_indicate_map_indicator_key_params)
-        format.html { redirect_to @key_indicate_map_indicator_key, notice: 'Indicator key was successfully updated.' }
-        format.json { render :show, status: :ok, location: @key_indicate_map_indicator_key }
+        format.html { redirect_to key_indicate_map_indicator_keys_path, notice: 'Indicator key was successfully updated.' }
+        format.json { render :index, status: :ok, location: key_indicate_map_indicator_keys_path }
       else
         format.html { render :edit }
         format.json { render json: @key_indicate_map_indicator_key.errors, status: :unprocessable_entity }
@@ -83,6 +83,6 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_key_params
-      params[:key_indicate_map_indicator_key]
+      params.require(:key_indicate_map_indicator_key).permit(:name, :group, :unit, :average_or_sum, :integer_or_float)
     end
 end
