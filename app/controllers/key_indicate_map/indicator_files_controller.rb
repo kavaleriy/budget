@@ -1,5 +1,7 @@
 class KeyIndicateMap::IndicatorFilesController < ApplicationController
   before_action :set_key_indicate_map_indicator_file, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /key_indicate_map/indicator_files
   # GET /key_indicate_map/indicator_files.json

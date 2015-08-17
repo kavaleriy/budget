@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :key_indicate_map do
     resources :indicator_keys
+    get 'indicators/geo_json/:type' => 'indicators#geo_json'
   end
 
   namespace :key_indicate do

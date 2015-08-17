@@ -1,17 +1,6 @@
-%h1 Listing key_indicate_map_indicators
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate_map.indicators.index.header')
 
-%table
-  %tr
-    %th
-    %th
-    %th
-
-  - @key_indicate_map_indicators.each do |key_indicate_map_indicator|
-    %tr
-      %td= link_to 'Show', key_indicate_map_indicator
-      %td= link_to 'Edit', edit_key_indicate_map_indicator_path(key_indicate_map_indicator)
-      %td= link_to 'Destroy', key_indicate_map_indicator, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Indicator', new_key_indicate_map_indicator_path
+.row
+  = render partial: 'map_ukraine'

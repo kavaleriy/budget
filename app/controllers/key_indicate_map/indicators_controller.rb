@@ -1,4 +1,7 @@
 class KeyIndicateMap::IndicatorsController < ApplicationController
+
+  include ControllerCaching
+
   before_action :set_key_indicate_map_indicator, only: [:show, :edit, :update, :destroy]
 
   # GET /key_indicate_map/indicators
@@ -61,6 +64,35 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
     end
   end
 
+  def geo_json
+    @geo_json = use_cache do
+      result = []
+
+      towns =
+          case params[:type]
+            when 'areas'
+              Town.areas
+            else
+              Town.cities + Town.towns
+          end
+
+      towns.reject{|town| town.key_indicate_map_indicators.empty?}.each do |town|
+        geo = TownGeojsonBuilder.build(town)
+        result << geo unless geo.blank?
+      end
+
+      {
+          "type" => "FeatureCollection",
+          "features" => result
+      }
+
+    end
+    respond_to do |format|
+      format.json { render json: @geo_json }
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_key_indicate_map_indicator
@@ -69,6 +101,6 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_params
-      params[:key_indicate_map_indicator]
+      params[:key_indicate_map_indicator, :type]
     end
 end

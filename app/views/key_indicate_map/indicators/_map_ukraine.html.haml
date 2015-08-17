@@ -1,0 +1,114 @@
+:css
+  .map_container {
+    height: 600px;
+  }
+
+  .map_container svg {
+    position: relative;
+  }
+
+  .map_container path {
+    fill: orange;
+    fill-opacity: .2;
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  .map_container path:hover {
+    fill-opacity: .5;
+  }
+
+
+
+= content_for :top do
+  .map_container.col-sm-9
+    = render partial: 'map'
+
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 8,
+      center: [48.31973, 30.17944],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+    })
+
+
+    // add Areas
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/geo_json/areas',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonSvg(data, {
+        zIndex: 1,
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+      })
+    })
+    .fail(function () {
+    });
+
+
+    // add markers
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/geo_json',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+      })
+    })
+    .fail(function () {
+    });
+
+
+    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+
+    var icons = {}
+    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'})
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
+
+    function getPoint(properties) {
+      var point = {}
+      switch (properties.level) {
+        case 'city':
+          point.icon = icons.city
+          break
+        case 'town':
+          point.icon = icons.town
+          break
+        default:
+          point.icon = new L.Icon.Default()
+          break
+      }
+
+      return point
+    }
+
+    function onFeatureClick(feature) {
+      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
+      window.location = town_url
+    }
+
+    function getInfoContent(properties) {
+      var content =
+        '<h3>' + properties.title + '</h3>' +
+        '<p>Документів: ' + properties.documents_count + '</p>'
+      return content
+    }
+  });
