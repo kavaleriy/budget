@@ -143,6 +143,7 @@
         var feature = g.selectAll("path")
             .data(data.features)
           .enter().append("path")
+            .style("fill",function(d){console.log(d)})
             .on("mouseover", function (d) {
               if (options.getInfoContent)
                 info.update(options.getInfoContent(d.properties));

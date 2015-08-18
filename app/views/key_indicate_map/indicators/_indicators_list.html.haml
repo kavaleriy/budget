@@ -1,0 +1,58 @@
+:css
+  .collapse_btn.active {
+    color: inherit;
+  }
+
+  .collapse_btn.non-active {
+    color: transparent;
+  }
+
+  .collapse_descr {
+    margin-left: 30px;
+  }
+
+- if @indicator_keys.length > 0
+  - current_year = @years.max
+  .container
+  %h2
+    Ключові показники міст за
+    = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
+    рік
+  #keys_accordion.panel-group
+    - i = 0
+    - @indicator_keys.sort_by{ |key, value| key }.each do |group, indicators|
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title
+            %a{"data-parent" => "#keys_accordion", "data-toggle" => "collapse", :href => "#group_" + i.to_s, :class => 'key_groups'}
+              = group
+        .panel-collapse.collapse{:id => "group_" + i.to_s, :class => i == 0 ? "in" : ""}
+          .panel-body
+            - j = 0
+            - indicators.each do |indicator|
+              .container
+                .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s}
+                  %i.fa.fa-check
+                %span{:style => 'font-size: 1.0em; font-weight: bold;'}
+                  = indicator.name
+                .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : ""}
+                  - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['description']
+                    = indicator['history'][current_year.to_s]['description']
+              - j = j + 1
+      - i = i + 1
+
+:javascript
+
+  $(document).ready(function(){
+    $('.collapse_btn').click(function(){
+      var collapse_btn = $('.collapse.in .collapse_btn');
+      collapse_btn.removeClass('active').addClass('non-active');
+      $('.collapse.in .collapse_descr.in').removeClass('in');
+      var current_btn = $(this);
+      current_btn.removeClass('non-active').addClass('active');
+    })
+
+    $('.key_groups').click(function(){
+      console.log($($(this).attr('href')).find('.collapse_btn.active')[0])
+    })
+  })

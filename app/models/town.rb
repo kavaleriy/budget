@@ -76,6 +76,26 @@ class Town
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
 
+  # key indicators for key_indicate_map
+  def get_key_indicators
+    indicators = {}
+    self.key_indicate_map_indicators.group_by{|i| i.key_indicate_map_indicator_file.year }.each{|year,group|
+      indicators[year] = {} if indicators[year].nil?
+      group.each{|i|
+        id = i.key_indicate_map_indicator_key._id.to_s
+        transform = i.key_indicate_map_indicator_key['integer_or_float']
+        indicators[year][id] = {} if indicators[year][id].nil?
+        if transform == 'integer'
+          indicators[year][id]['value'] = i['value'].to_i
+        elsif transform == 'float'
+          indicators[year][id]['value'] = i['value'].to_f.round(2)
+        end
+        indicators[year][id]['unit'] = i.key_indicate_map_indicator_key['unit']
+      }
+    }
+    indicators
+  end
+
   private
 
   def self.get_node(node)

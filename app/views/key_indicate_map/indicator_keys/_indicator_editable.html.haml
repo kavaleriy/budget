@@ -9,10 +9,6 @@
     %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'group', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'Вкажіть групу показника...' }
       = key.group
   %td
-    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'average_or_sum', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'середнє чи сума?...' }
-      - if key.average_or_sum
-        = t('key_indicate_map.indicator_keys.index.' + key.average_or_sum)
-  %td
     %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'integer_or_float', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'ціле чи дійсне?...' }
       - if key.integer_or_float
         = t('key_indicate_map.indicator_keys.index.' + key.integer_or_float)
@@ -26,10 +22,6 @@
     I18n.locale = window.aHelper.lang();
 
     $('tr[data-id="#{key.id}"] #name,tr[data-id="#{key.id}"] #unit,tr[data-id="#{key.id}"] #group').editable();
-    $('tr[data-id="#{key.id}"] #average_or_sum').editable({
-      value: "#{key.average_or_sum}",
-      source: [{value: 'average', text: I18n.t('key_indicate_map.indicator_keys.index.average')},{value: 'sum', text: I18n.t('key_indicate_map.indicator_keys.index.sum')}]
-    })
     $('tr[data-id="#{key.id}"] #integer_or_float').editable({
       value: "#{key.integer_or_float}",
       source: [{value: 'integer', text: I18n.t('key_indicate_map.indicator_keys.index.integer')},{value: 'float', text: I18n.t('key_indicate_map.indicator_keys.index.float')}]

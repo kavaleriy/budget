@@ -7,7 +7,8 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
   # GET /key_indicate_map/indicators
   # GET /key_indicate_map/indicators.json
   def index
-    @key_indicate_map_indicators = KeyIndicateMap::Indicator.all
+    @indicator_keys = KeyIndicateMap::IndicatorKey.all.group_by{|i| i.group }
+    @years = KeyIndicateMap::Indicator.all.group_by{|i| i.key_indicate_map_indicator_file.year }.keys
   end
 
   # GET /key_indicate_map/indicators/1
@@ -77,7 +78,7 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
           end
 
       towns.reject{|town| town.key_indicate_map_indicators.empty?}.each do |town|
-        geo = TownGeojsonBuilder.build(town)
+        geo = TownIndicatorsGeojsonBuilder.build(town)
         result << geo unless geo.blank?
       end
 

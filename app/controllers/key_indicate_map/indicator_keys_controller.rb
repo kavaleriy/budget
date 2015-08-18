@@ -79,6 +79,6 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_key_params
-      params.require(:key_indicate_map_indicator_key).permit(:name, :group, :unit, :average_or_sum, :integer_or_float)
+      params.require(:key_indicate_map_indicator_key).permit(:name, :group, :unit, :integer_or_float)
     end
 end
