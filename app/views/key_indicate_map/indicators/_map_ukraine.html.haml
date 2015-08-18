@@ -9,13 +9,13 @@
 
   .map_container path {
     fill: orange;
-    fill-opacity: .2;
+    fill-opacity: .5;
     stroke: #fff;
     stroke-width: 1.5px;
   }
 
   .map_container path:hover {
-    fill-opacity: .5;
+    fill-opacity: 1.0;
   }
 
 = content_for :top do
@@ -37,12 +37,12 @@
       $('.collapse.in .collapse_descr.in').removeClass('in');
       var current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
-      aRepairMap.resetData();
+      aRepairMap.resetData(current_btn.data('id'));
     });
 
     $('.key_groups').click(function(){
-      console.log($($(this).attr('href')).find('.collapse_btn.active')[0]);
-      aRepairMap.resetData();
+      var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
+      aRepairMap.resetData($(current_btn).data('id'));
     });
 
     // add Areas

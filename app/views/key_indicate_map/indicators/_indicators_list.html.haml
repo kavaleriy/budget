@@ -31,7 +31,7 @@
             - j = 0
             - indicators.each do |indicator|
               .container
-                .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s}
+                .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s}
                   %i.fa.fa-check
                 %span{:style => 'font-size: 1.0em; font-weight: bold;'}
                   = indicator.name
