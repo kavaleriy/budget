@@ -31,6 +31,20 @@
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     })
 
+    $('.collapse_btn').click(function(){
+      var collapse_btn = $('.collapse.in .collapse_btn');
+      collapse_btn.removeClass('active').addClass('non-active');
+      $('.collapse.in .collapse_descr.in').removeClass('in');
+      var current_btn = $(this);
+      current_btn.removeClass('non-active').addClass('active');
+      aRepairMap.resetData();
+    });
+
+    $('.key_groups').click(function(){
+      console.log($($(this).attr('href')).find('.collapse_btn.active')[0]);
+      aRepairMap.resetData();
+    });
+
     // add Areas
     $.ajax({
       method: 'get',
