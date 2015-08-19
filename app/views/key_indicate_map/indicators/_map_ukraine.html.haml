@@ -31,6 +31,14 @@
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     });
 
+    // one collapse panel would be always open
+    $('.panel-heading a').on('click',function(e){
+        if($(this).parents('.panel').children('.panel-collapse').hasClass('in')){
+            e.stopPropagation();
+        }
+    });
+
+    // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
       var collapse_btn = $('.collapse.in .collapse_btn');
       collapse_btn.removeClass('active').addClass('non-active');
@@ -40,6 +48,7 @@
       aRepairMap.resetData(current_btn.data('id'));
     });
 
+    // find active button with key in shown collapse panel
     $('.key_groups').click(function(){
       var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
       aRepairMap.resetData($(current_btn).data('id'));
