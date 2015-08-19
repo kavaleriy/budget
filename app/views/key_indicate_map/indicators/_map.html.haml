@@ -61,15 +61,15 @@
         map = L.map('map', mapSettings)
 
 
-        //var layerSettings = {
-        //  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        //  id: 'begemot.mbl2go4k',
-        //  accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-        //}
-        //if (options.minZoom)
-        //  layerSettings.minZoom = options.minZoom
-        //if (options.maxZoom)
-        //  layerSettings.maxZoom = options.maxZoom
+        var layerSettings = {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          id: 'begemot.mbl2go4k',
+          accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
+        }
+        if (options.minZoom)
+          layerSettings.minZoom = options.minZoom
+        if (options.maxZoom)
+          layerSettings.maxZoom = options.maxZoom
 
         //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
@@ -242,6 +242,8 @@
 
       function addGeoJsonPoints(data, getPoint, options) {
         options = options || {}
+
+        if(!data || data.length < 1) return;
 
         var markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
         map.addLayer(markers);
