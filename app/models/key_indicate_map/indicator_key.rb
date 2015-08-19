@@ -6,6 +6,8 @@ class KeyIndicateMap::IndicatorKey
   field :name, type: String
   field :unit, type: String
   field :group, type: String
+  field :group_icon, type: String
+  field :group_color, type: String
   field :integer_or_float, type: String # to make value integer or float
   field :history, type: Hash # history per years
 

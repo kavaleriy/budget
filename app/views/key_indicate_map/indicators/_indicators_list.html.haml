@@ -21,6 +21,8 @@
     Ключові показники міст за
     = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
     рік
+  -#- @indicator_keys.sort_by{ |key, value| key }.each do |group, indicators|
+  -#  = group
   #keys_accordion.panel-group
     - i = 0
     - @indicator_keys.sort_by{ |key, value| key }.each do |group, indicators|
