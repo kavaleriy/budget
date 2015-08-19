@@ -7,7 +7,7 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
   # GET /key_indicate_map/indicators
   # GET /key_indicate_map/indicators.json
   def index
-    @indicator_keys = KeyIndicateMap::IndicatorKey.all.group_by{|i| i.group }
+    @indicator_keys = KeyIndicateMap::IndicatorKey.all.reject{|i| i.key_indicate_map_indicators.empty? }.group_by{|i| i.group }
     @years = KeyIndicateMap::Indicator.all.group_by{|i| i.key_indicate_map_indicator_file.year }.keys
   end
 

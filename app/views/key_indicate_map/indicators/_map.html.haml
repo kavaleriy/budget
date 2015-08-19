@@ -136,11 +136,11 @@
         router = L.Routing.osrm()
       }
 
-      function addGeoJsonSvg(data, options) {
+      function addGeoJsonSvg(data, key, options) {
         options = options || {};
 
         current_data = data;
-        setColorDomain('55d19d326f647521b30a0000');
+        setColorDomain(key);
 
         // Projecting GeoJSON
         var transform = d3.geo.transform({point: projectPoint}),
@@ -150,7 +150,12 @@
             .data(data.features)
           .enter().append("path")
             .attr("class", "fillable_path")
-            .style("fill", function(d){ return colorScale(d['properties']['indicators']['2013']['55d19d326f647521b30a0000']['value']); })
+            .style("fill", function(d){
+                              if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
+                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                              }
+                              return colorScale(0);
+            })
             .on("mouseover", function (d) {
               if (options.getInfoContent)
                 info.update(options.getInfoContent(d.properties));
@@ -162,7 +167,7 @@
               if (options.featureClickCallback) {
                 options.featureClickCallback(d);
               }
-            })
+            });
 
         feature.attr("d", path);
 
@@ -195,11 +200,17 @@
       function setColorDomain(key){
         var maxValue = d3.max(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
+            return d['properties']['indicators']['2013'][key]['value'];
+          }
+          return 0;
         });
         var minValue = d3.min(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
+            return d['properties']['indicators']['2013'][key]['value'];
+          }
+          return 0;
         });
         colorScale.domain([minValue, maxValue]);
       }
@@ -209,7 +220,12 @@
         g.selectAll('.fillable_path')
          .transition()
          .duration(750)
-         .style("fill", function(d){ return colorScale(d['properties']['indicators']['2013'][key]['value']); })
+         .style("fill", function(d){
+                               if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
+                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                                }
+                                return colorScale(0);
+                              })
       }
 
       function addGeoJsonPoints(data, getPoint, options) {

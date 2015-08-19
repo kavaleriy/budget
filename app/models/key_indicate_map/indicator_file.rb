@@ -42,7 +42,7 @@ class KeyIndicateMap::IndicatorFile
       next if index < 2
       town = ::Town.any_of(:title => /#{row['towns']}/i).first # case insensitive search of town or region
       row.each{|key, val|
-        next if key == "towns"
+        next if key == "towns" || val.blank?
         indicator = KeyIndicateMap::Indicator.new
         indicator['value'] = val
         indicator.town = town
