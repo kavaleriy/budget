@@ -169,7 +169,13 @@
               }
             });
 
-        feature.attr("d", path);
+        feature.attr("d", function(d){
+                              var path_d = path(d);
+                              if(path(d).startsWith('ZZ')) {    // fix for Kherson region
+                                 path_d = path(d).substring(2);
+                              }
+                              return path_d;
+                          });
 
         map.on("viewreset", reset);
         reset();
@@ -192,7 +198,13 @@
 
           g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
 
-          feature.attr("d", path);
+          feature.attr("d", function(d){
+                                var path_d = path(d);
+                                if(path(d).startsWith('ZZ')) {    // fix for Kherson region
+                                   path_d = path(d).substring(2);
+                                }
+                                return path_d;
+                            });
         }
 
       }
