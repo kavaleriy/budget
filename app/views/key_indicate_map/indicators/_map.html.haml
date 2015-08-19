@@ -58,6 +58,7 @@
       function initMap() {
         var mapSettings = { }
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
+        mapSettings.dragging = options.dragging
         map = L.map('map', mapSettings)
 
 
@@ -150,6 +151,7 @@
             .data(data.features)
           .enter().append("path")
             .attr("class", "fillable_path")
+            .style("cursor", "pointer")
             .style("fill", function(d){
                               if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
                                   return colorScale(d['properties']['indicators']['2013'][key]['value']);
@@ -292,14 +294,6 @@
             mouseout: function () {
               //geoJson.resetStyle(layer)
               info.update();
-            },
-            dragend: function(e) {
-              if (options.dragCallback) {
-                var layer = e.target;
-                var ll = layer.getLatLng();
-
-                options.dragCallback(layer, ll)
-              }
             }
           });
         }
@@ -316,10 +310,12 @@
 
         // method that we will use to update the control based on feature properties passed
         info.update = function (content) {
-          if (content)
+          if (content) {
             this._div.innerHTML = content
-          else
+          }
+          else {
             this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
+          }
           };
 
         info.addTo(map);

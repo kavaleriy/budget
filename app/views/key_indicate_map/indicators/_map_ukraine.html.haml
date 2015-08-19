@@ -20,6 +20,7 @@
 
   .leaflet-container {
     background: transparent;
+    cursor: default;
   }
 
   .leaflet-top.leaflet-left, .leaflet-control-attribution.leaflet-control {
@@ -34,7 +35,7 @@
 
   $(document).ready(function() {
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6,
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
       center: [48.5, 31],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     });
@@ -79,7 +80,6 @@
     .fail(function () {
     });
 
-
     // add markers
     $.ajax({
       method: 'get',
@@ -102,25 +102,36 @@
     .fail(function () {
     });
 
+    // get indicators for Ukraine
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/forUkraine/type',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      console.log(data)
+    })
+    .fail(function () {
+    });
 
     var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
     var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
 
-    var icons = {}
-    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'})
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
+    var icons = {};
+    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'});
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'});
 
     function getPoint(properties) {
-      var point = {}
+      var point = {};
       switch (properties.level) {
         case 'city':
-          point.icon = icons.city
-          break
+          point.icon = icons.city;
+          break;
         case 'town':
-          point.icon = icons.town
-          break
+          point.icon = icons.town;
+          break;
         default:
-          point.icon = new L.Icon.Default()
+          point.icon = new L.Icon.Default();
           break
       }
 
@@ -136,6 +147,6 @@
       var content =
         '<h3>' + properties.title + '</h3>' +
         '<p>Документів: ' + properties.indicators + '</p>'
-      return content
+      return content;
     }
   });
