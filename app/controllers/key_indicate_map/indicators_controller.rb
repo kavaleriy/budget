@@ -7,7 +7,14 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
   # GET /key_indicate_map/indicators
   # GET /key_indicate_map/indicators.json
   def index
-    @indicator_keys = KeyIndicateMap::IndicatorKey.all.reject{|i| i.key_indicate_map_indicators.empty? }.group_by{|i| i.group }
+    @indicator_keys = {}
+    KeyIndicateMap::IndicatorKey.all.reject{|i| i.key_indicate_map_indicators.empty? }.each{|indicator|
+      @indicator_keys[indicator['group']] = {} if @indicator_keys[indicator['group']].nil?
+      @indicator_keys[indicator['group']]['group_icon'] = indicator['group_icon']
+      @indicator_keys[indicator['group']]['group_color'] = indicator['group_color']
+      @indicator_keys[indicator['group']]['indicators'] = [] if @indicator_keys[indicator['group']]['indicators'].nil?
+      @indicator_keys[indicator['group']]['indicators'].push(indicator)
+    }
     @years = KeyIndicateMap::Indicator.all.group_by{|i| i.key_indicate_map_indicator_file.year }.keys
   end
 

@@ -10,8 +10,11 @@
   .collapse_descr {
     margin-left: 30px;
   }
-  #keys_accordion .panel-default .panel-heading, #keys_accordion .panel-default .panel-footer {
-    background-color: #EAFAFF;
+
+  .group_header {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 15px;
   }
 
 - if @indicator_keys.length > 0
@@ -21,27 +24,30 @@
     Ключові показники міст за
     = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
     рік
-  -#- @indicator_keys.sort_by{ |key, value| key }.each do |group, indicators|
-  -#  = group
-  #keys_accordion.panel-group
+  %ul.nav.nav-tabs
     - i = 0
-    - @indicator_keys.sort_by{ |key, value| key }.each do |group, indicators|
-      .panel.panel-default
-        .panel-heading
-          %h4.panel-title
-            %a{"data-parent" => "#keys_accordion", "data-toggle" => "collapse", :href => "#group_" + i.to_s, :class => 'key_groups'}
-              = group
-        .panel-collapse.collapse{:id => "group_" + i.to_s, :class => i == 0 ? "in" : ""}
-          .panel-body
-            - j = 0
-            - indicators.each do |indicator|
-              .container
-                .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s}
-                  %i.fa.fa-check
-                %span{:style => 'font-size: 1.0em; font-weight: bold;'}
-                  = indicator.name
-                .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : ""}
-                  - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['description']
-                    = indicator['history'][current_year.to_s]['description']
-              - j = j + 1
+    - @indicator_keys.sort_by{ |key, value| key }.each do |group, value|
+      %li{:class => i == 0 ? "active" : ""}
+        %a{:href => "#group_" + i.to_s, 'data-toggle' => "tab", :title => group}
+          %i.fa.fa-lg{:class => value['group_icon']}
+      - i = i + 1
+  .tab-content
+    - i = 0
+    - @indicator_keys.sort_by{ |key, value| key }.each do |group, value|
+      .tab-pane{:class => i == 0 ? "in active" : "", :id => "group_" + i.to_s}
+        .group_header
+          = group
+        - j = 0
+        - value['indicators'].each do |indicator|
+          .container
+            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s}
+              %i.fa.fa-check
+            %span{:style => 'font-size: 1.0em; font-weight: bold;'}
+              = indicator.name
+              - if indicator['unit']
+                = ", " + indicator['unit']
+            .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : ""}
+              - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['description']
+                = indicator['history'][current_year.to_s]['description']
+          - j = j + 1
       - i = i + 1
