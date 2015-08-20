@@ -1,6 +1,5 @@
 # encoding: utf-8
-class TownUploader < CarrierWave::Uploader::Base
-
+class Repairing::CategoryImgUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -32,7 +31,7 @@ class TownUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :thumb do
-    process :resize_to_fit => [150, 150]
+    process :resize_to_fit => [128, 128]
   end
 
   version :icon do

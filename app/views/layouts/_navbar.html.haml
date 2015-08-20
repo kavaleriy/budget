@@ -95,6 +95,9 @@
             %li.divider
             - if current_user
               %li= link_to t('.repairing_layers'), repairing_layers_path
+              - if current_user.has_role?(:admin)
+                %li.dropdown
+                %li= link_to t('.repairing_category'), repairing_categories_path
         .lang.pull-right
           = render partial: 'layouts/lang'
         %li.dropdown

@@ -20,7 +20,6 @@ class Town
   field :geometry_type, type: String
 
   require 'carrierwave/mongoid'
-
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
