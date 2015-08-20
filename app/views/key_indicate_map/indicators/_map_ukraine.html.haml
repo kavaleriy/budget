@@ -158,10 +158,10 @@
         content = general_content;
       } else {
         var value = 0;
-        if(properties['indicators']['2013'][key]) {
-          value = properties['indicators']['2013'][key]['value'];
-          if(properties['indicators']['2013'][key]['unit']) {
-            value += " " + properties['indicators']['2013'][key]['unit']
+        if(properties['indicators'][year] && properties['indicators'][year][key]) {
+          value = properties['indicators'][year][key]['value'];
+          if(properties['indicators'][year][key]['unit']) {
+            value += " " + properties['indicators'][year][key]['unit']
           }
         }
         content =

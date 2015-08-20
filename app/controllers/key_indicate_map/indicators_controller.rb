@@ -109,13 +109,6 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
 
   end
 
-  def forUkraine
-    data = KeyIndicateMap::IndicatorKey.all.reject{|i| i.key_indicate_map_indicators.empty? }
-    respond_to do |format|
-      format.json { render json: data }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_key_indicate_map_indicator
