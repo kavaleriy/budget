@@ -34,22 +34,22 @@
         = calendar.title
     %hr
 
-  %h3
-    Документи
-
-  - @town.documentation_documents.each do |doc|
-    %p
-      %h4.document{ 'data-id' => doc.id }
-        %a{href: doc.doc_file.url}
-          = doc.title
-    %hr
+  -#%h3
+  -#  Документи
+  -#
+  -#- @town.documentation_documents.each do |doc|
+  -#  %p
+  -#    %h4.document{ 'data-id' => doc.id }
+  -#      %a{href: doc.doc_file.url}
+  -#        = doc.title
+  -#  %hr
 
 
 
 .col-xs-10
-  %iframe#budget{ :style => 'width: 100%; height: 100vh; border: none;' }
+  -#%iframe#budget{ :style => 'width: 100%; height: 100vh; border: none;' }
 
-  -#= render partial: 'docs'
+  = render partial: 'docs'
 
 
 :javascript

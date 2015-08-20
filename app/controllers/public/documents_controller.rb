@@ -28,5 +28,12 @@ class Public::DocumentsController < ApplicationController
     end
 
     @towns = @towns.select{ |t| params["town_select"].split(',').include? t.id.to_s } unless params["town_select"].blank?
+
+    @town_select = unless params[:town_select].blank?
+                     town_select = Town.find(params[:town_select])
+                     { :id => town_select[:id], :title => town_select[:title] }
+                   end || { }
+
+    @branch_select = params[:branch_select] unless params[:branch_select].blank?
   end
 end

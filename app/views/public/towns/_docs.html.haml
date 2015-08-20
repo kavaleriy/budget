@@ -31,7 +31,7 @@
       .owl-carousel-item
         .town.thumbnailexit
           .icon-docs
-            %a.bcol{ :href => '/public/documents/' + @town.id + '/' + br.id }
+            %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
               %span.fa-stack.fa-3x
                 %i.fa.fa-folder-o.fa-stack-2x.col-fix
                 %strong.fa-stack-text.fa-t-fix
