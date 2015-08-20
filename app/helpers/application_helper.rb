@@ -1,6 +1,6 @@
 module ApplicationHelper
 
- def hexToRgb color
+ def hexToRgb(color = "#ffffff")
   a = ( color.match /#(..?)(..?)(..?)/ )[1..3]
   a.map!{ |x| x + x } if color.size == 4
   "#{a[0].hex},#{a[1].hex},#{a[2].hex}"
