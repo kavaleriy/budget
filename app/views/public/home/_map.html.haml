@@ -47,6 +47,7 @@
       options = options || {}
 
       var map;
+      var svg, g;
       var popup;
       var router;
       var info;
@@ -72,6 +73,14 @@
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
 
+        addSvgLayer()
+        function addSvgLayer() {
+          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
+            g = svg.append("g").attr("class", "leaflet-zoom-hide");
+        }
+
+
+
         if (options.bounds) map.fitBounds(options.bounds);
 
 
@@ -83,7 +92,7 @@
         L.Icon.Default.imagePath = '/assets/leaflet/images'
 
 
-        function getBrowserLocation() {
+        function setBrowserLocation() {
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
           } else {
@@ -92,7 +101,7 @@
 
           function positionSuccess(position) {
             var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
+            var lon = position.coords.longitude;
             var acr = position.coords.accuracy;
 
             map.setView([lat, lon], options.zoom)
@@ -102,15 +111,29 @@
         }
       }
 
+
+      function initPopup() {
+        popup = L.popup();
+
+        function onMapClick(e) {
+          if (options.getMapPopupContent) {
+            popup
+              .setLatLng(e.latlng)
+              .setContent(options.getMapPopupContent(e))
+              .openOn(map);
+          }
+        }
+
+        map.on('click', onMapClick);
+      }
+
+
       function initRouting() {
         // routing machine
         router = L.Routing.osrm()
       }
 
       function addGeoJsonSvg(data, options) {
-        var svg, g;
-        addSvgLayer()
-
         options = options || {}
 
         // Projecting GeoJSON
@@ -128,21 +151,15 @@
               info.update();
             })
             .on("click", function (d) {
-              if (options.clickCallback) {
-                options.clickCallback(d);
+              if (options.featureClickCallback) {
+                options.featureClickCallback(d);
               }
             })
 
         feature.attr("d", path);
 
-
         map.on("viewreset", reset);
         reset();
-
-        function addSvgLayer() {
-          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
-            g = svg.append("g").attr("class", "leaflet-zoom-hide");
-        }
 
         function projectPoint(x, y) {
           var point = map.latLngToLayerPoint(new L.LatLng(y, x));
@@ -192,12 +209,12 @@
         }
 
         function getPointToLayer(feature, latlng) {
-          var icon = getPoint(feature.properties)
+          var point = getPoint(feature.properties)
 
           return L.marker(latlng, {
-            icon: icon,
+            icon: point.icon,
             opacity: 1,
-            draggable: false,
+            draggable: point.draggable,
           });
         }
 
@@ -206,8 +223,8 @@
 
           layer.on({
             click: function () {
-              if (options.clickCallback)
-                options.clickCallback(feature);
+              if (options.featureClickCallback)
+                options.featureClickCallback(feature, popup);
             },
             mouseover: function () {
               //layer.setStyle(options.hoverStyle);
@@ -217,6 +234,14 @@
             mouseout: function () {
               //geoJson.resetStyle(layer)
               info.update();
+            },
+            dragend: function(e) {
+              if (options.dragCallback) {
+                var layer = e.target;
+                var ll = layer.getLatLng();
+
+                options.dragCallback(layer, ll)
+              }
             }
           });
         }
@@ -242,8 +267,32 @@
         info.addTo(map);
       }
 
-      initMap()
+      function editRoute(waypoints, routeFoundCallback) {
+        var line;
 
+        if (self.selectedRoute) {
+          self.selectedRoute.setWaypoints(waypoints)
+          self.selectedRoute.route()
+        } else {
+          self.selectedRoute = L.Routing.control({
+            routeWhileDragging: true,
+            waypoints: waypoints
+          })
+
+          self.selectedRoute.on('routesfound', function(router) {
+            if (routeFoundCallback) {
+              routeFoundCallback(router.routes[0].coordinates)
+            }
+          })
+
+          self.selectedRoute.addTo(map);
+        }
+      }
+
+
+
+      initMap()
+      initPopup()
       initRouting()
       addControl()
 
@@ -251,6 +300,7 @@
         map: map,
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
+        editRoute: editRoute,
       }
     }
 

@@ -1,0 +1,183 @@
+:css
+  .map_container {
+    height: 600px;
+  }
+
+  .map_container svg {
+    position: relative;
+  }
+
+  .map_container path {
+    fill: orange;
+    fill-opacity: .5;
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  .map_container path:hover {
+    fill-opacity: 1.0;
+  }
+
+  .leaflet-container {
+    background: transparent;
+    cursor: default;
+  }
+
+  .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
+    display: none;
+  }
+
+  .info .title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .info h4 {
+    margin: 0 0 10px 0;
+  }
+
+= content_for :top do
+  .map_container.col-sm-12.col-md-8
+    = render partial: 'map'
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
+      center: [48.5, 31.2],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getInfoContent: getInfoContent
+    });
+
+    var key, key_name, general_content, year;
+
+    // trigger map click on collapse button click
+    $('.collapse_btn').click(function(){
+      var collapse_btn = $('.tab-pane.active .collapse_btn');
+      collapse_btn.removeClass('active').addClass('non-active');
+      $('.tab-pane.active .collapse_descr.in').removeClass('in');
+      var current_btn = $(this);
+      current_btn.removeClass('non-active').addClass('active');
+      key = current_btn.data('id');
+      general_content = generate_content(current_btn);
+      aRepairMap.resetData(key, year);
+    });
+
+    // find active button with key in shown collapse panel
+    $('#indicators_list a[data-toggle="tab"]').click(function(){
+      var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
+      key = $(current_btn).data('id');
+      general_content = generate_content($(current_btn));
+      aRepairMap.resetData(key, year);
+    });
+
+    // if year changed
+    $('#year_change').on("change", function(){
+      year = $('#year_change select option:selected').val();
+      aRepairMap.resetData(key, year);
+    })
+
+    // add Areas
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/geo_json/areas',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      var btn = $('.tab-pane.in.active .collapse_btn.active');
+      year = $('#year_change select option:selected').val();
+      key = btn.data('id');
+      general_content = generate_content(btn);
+      aRepairMap.addGeoJsonSvg(data, key, year, {
+        zIndex: 1,
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent
+      })
+    })
+    .fail(function () {
+    });
+
+    // add markers
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/geo_json',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent
+      })
+    })
+    .fail(function () {
+    });
+
+    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+
+    var icons = {};
+    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'});
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'});
+
+    function getPoint(properties) {
+      var point = {};
+      switch (properties.level) {
+        case 'city':
+          point.icon = icons.city;
+          break;
+        case 'town':
+          point.icon = icons.town;
+          break;
+        default:
+          point.icon = new L.Icon.Default();
+          break
+      }
+
+      return point
+    }
+
+    function onFeatureClick(feature) {
+      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
+      window.location = town_url
+    }
+
+    function getInfoContent(properties) {
+      var content = "";
+      if(properties == "Ukraine") {
+        content = general_content;
+      } else {
+        var value = 0;
+        if(properties['indicators'][year] && properties['indicators'][year][key]) {
+          value = properties['indicators'][year][key]['value'];
+          if(properties['indicators'][year][key]['unit']) {
+            value += " " + properties['indicators'][year][key]['unit']
+          }
+        }
+        content =
+        '<div class="title">' + key_name + '</div>' +
+        '<h4>' + properties.title + '</h4>' +
+        '<span style="font-size: 1.1em;">' + value + '</span>'
+      }
+      return content;
+    }
+
+    function generate_content(btn) {
+        key_name = btn.data('name');
+        var content =
+            '<div class="title">' + key_name + '</div>' +
+            '<h4>' + I18n.t('ukraine') + '</h4>' +
+            '<span style="font-size: 1.1em;">' + btn.data('value') + " " + btn.data('unit') + '</span>';
+        return content;
+    }
+  });

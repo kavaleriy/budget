@@ -1,0 +1,28 @@
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate_map.indicator_keys.index.header')
+
+.col-sm-12#indicator_keys
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+          = sortable "name", t('key_indicate_map.indicator_keys.index.name')
+        %th
+          = sortable "unit", t('key_indicate_map.indicator_keys.index.unit')
+        %th
+          = sortable "group", t('key_indicate_map.indicator_keys.index.group')
+        %th
+          = sortable "integer_or_float", t('key_indicate_map.indicator_keys.index.integer_or_float')
+        %th
+
+    %tbody
+      - @key_indicate_map_indicator_keys.each do |key_indicate_map_indicator_key|
+        = render :partial => 'key_indicate_map/indicator_keys/indicator_editable', :locals => { :key => key_indicate_map_indicator_key }
+  %br
+
+= link_to t('key_indicate_map.indicator_keys.index.add'), key_indicate_map_indicator_keys_path,
+    :type => "button", :remote => true, :method => :post, :class => "btn btn-primary"
+
+
+

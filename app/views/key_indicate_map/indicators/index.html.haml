@@ -1,0 +1,8 @@
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate_map.indicators.index.header')
+
+.row
+  = render partial: 'map_ukraine'
+  #indicators_list.col-sm-12.col-md-4
+    = render partial: 'indicators_list'

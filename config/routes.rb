@@ -1,5 +1,22 @@
 Rails.application.routes.draw do
 
+  namespace :repairing do
+    resources :categories
+  end
+
+  namespace :key_indicate_map do
+    resources :indicators
+  end
+
+  namespace :key_indicate_map do
+    resources :indicator_files
+  end
+
+  namespace :key_indicate_map do
+    resources :indicator_keys
+    get 'indicators/geo_json/:type' => 'indicators#geo_json'
+  end
+
   namespace :key_indicate do
     resources :indicator_files
     get 'indicator_files/get_files/:town' => 'indicator_files#get_files'
@@ -183,12 +200,13 @@ Rails.application.routes.draw do
 
     get 'documents' => 'documents#index'
 
+
     get 'towns/:town_id' => 'towns#show'
     get 'ukraine_geo_json' => 'towns#geo_json'
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
-  get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/documents/:town_select/:branch_select' => 'public/documents#index'
   get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'

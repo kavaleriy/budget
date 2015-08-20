@@ -20,12 +20,12 @@ class Town
   field :geometry_type, type: String
 
   require 'carrierwave/mongoid'
-
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
+  has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
 
   after_update :clear_cache
@@ -73,6 +73,26 @@ class Town
   end
   def self.towns(koatuu = '')
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
+  end
+
+  # key indicators for key_indicate_map
+  def get_key_indicators
+    indicators = {}
+    self.key_indicate_map_indicators.reject{|i| i.town.nil? || i.key_indicate_map_indicator_key.nil? }.group_by{|i| i.key_indicate_map_indicator_file.year }.each{|year,group|
+      indicators[year] = {} if indicators[year].nil?
+      group.each{|i|
+        id = i.key_indicate_map_indicator_key._id.to_s
+        transform = i.key_indicate_map_indicator_key['integer_or_float']
+        indicators[year][id] = {} if indicators[year][id].nil?
+        if transform == 'integer'
+          indicators[year][id]['value'] = i['value'].to_i
+        elsif transform == 'float'
+          indicators[year][id]['value'] = i['value'].to_f.round(2)
+        end
+        indicators[year][id]['unit'] = i.key_indicate_map_indicator_key['unit']
+      }
+    }
+    indicators
   end
 
   private

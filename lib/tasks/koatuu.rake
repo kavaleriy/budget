@@ -31,6 +31,8 @@ namespace :koatuu do
         level = 31
       end
 
+      puts code
+
       koatuu = Town.find_or_create_by(:koatuu => code).
           update({ title: title, note: note, level: level })
     end
@@ -43,7 +45,7 @@ namespace :koatuu do
 
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
 
-    Town.delete_all(:koatuu => '8500000000')
+    # Town.delete_all(:koatuu => '8500000000') # Sevastopol
     Town.delete_all(:level => nil)
 
     # calculate area title

@@ -1,5 +1,5 @@
 .col-sm-2.document{'data-id' => document.id}
-  = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && document.branch.color) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
+  = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
     %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
     %p
       = document.title.truncate(30)

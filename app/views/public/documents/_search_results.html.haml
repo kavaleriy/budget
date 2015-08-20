@@ -11,17 +11,17 @@
 #results.col-xs-12
   - if current_user
     .text-center
-      %btn.btn.btn-primary.btn-lg{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit', :style =>  documents.where(:owner_id => current_user.id).first ? 'display: inline-block;' : 'display: none;' }
+      %btn.btn.btn-primary.btn-lg{:title => "редагувати файли", 'data-toggle' => 'modal', 'data-target' => '#city_edit', :style => !documents.select{ |doc| doc.owner_id == current_user.id}.empty? ? 'display: inline-block;' : 'display: none;' }
         %i.fa.fa-edit.fa-lg
         = t('form.uploaded_documents')
 
-  - towns.reject{|town| documents.where(:town_id => town.id).empty? }.each do |town|
+  - towns.reject{|town| documents.select{ |doc| doc.town_id == town.id }.empty? }.each do |town|
 
     %h1
       = town.to_s
 
     .row-eq-height{:id => 'results_' + town.id}
-      - documents.where(:town_id => town.id).sort_by{|doc| doc.title }.each do |document|
+      - documents.select{ |doc| doc.town_id == town.id }.each do |document|
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
       .col-sm-2.doc_btn
@@ -54,7 +54,7 @@
                     .documents.panel-body
                       - if !current_user.has_role? :admin
                         %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки Адміністратором
-                      = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:town_id => town.id, :owner_id => current_user.id) }
+                      = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.select{ |doc| doc.town_id == town.id && doc.owner_id == current_user.id } }
             .modal-footer
               %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
                 = t('form.close')
@@ -77,7 +77,7 @@
                 .documents.panel-body
                   - if !current_user.has_role? :admin
                     %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки Адміністратором
-                  = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.where(:owner_id => current_user.id) }
+                  = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.select{ |doc| doc.owner_id == current_user.id} }
           .modal-footer
             %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
               = t('form.close')

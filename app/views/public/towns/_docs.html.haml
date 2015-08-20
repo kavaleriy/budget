@@ -1,0 +1,41 @@
+:css
+  .bsize {
+    font-size: .73em;
+  }
+  .poz-down {
+    z-index: 9000;
+  }
+    .poz-up {
+    z-index: 9001;
+  }
+  .fa-t-fix {
+    font-size: .5em;
+  }
+  .col-fix {
+    color: #808080;
+  }
+  .bcol :hover {
+    color: #0099da;
+  }
+
+.col-md-3
+  %h3
+    Документи
+    %span.badge.bsize.count
+      = @town.documentation_documents.count()
+.col-md-9
+.owl-example.owl-carousel
+  - Documentation::Branch.all.each do |br|
+    - count = @town.documentation_documents.where(:branch => br).count()
+    - if count > 0
+      .owl-carousel-item
+        .town.thumbnailexit
+          .icon-docs
+            %a.bcol{ :href => '/public/documents/' + @town.id + '/' + br.id }
+              %span.fa-stack.fa-3x
+                %i.fa.fa-folder-o.fa-stack-2x.col-fix
+                %strong.fa-stack-text.fa-t-fix
+                  = count
+          .title-docs
+            %p
+              = br.title

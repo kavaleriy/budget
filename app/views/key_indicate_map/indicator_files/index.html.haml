@@ -1,0 +1,26 @@
+= content_for :header do
+  .head.pull-left
+    = t('key_indicate_map.indicator_files.index.header')
+
+.documentation#key_indicate_map_files
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'new_indicator_file', :locals => { :new_file => KeyIndicateMap::IndicatorFile.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        %table.table.table-striped
+          %thead
+            %tr
+              %th
+              %th Назва
+              %th Рік
+              %th
+          %tbody
+            = render :partial => 'indicator_files', :locals => { :files => KeyIndicateMap::IndicatorFile.all }
+        #file_errors
