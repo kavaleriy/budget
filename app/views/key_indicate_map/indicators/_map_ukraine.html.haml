@@ -23,7 +23,7 @@
     cursor: default;
   }
 
-  .leaflet-top.leaflet-left, .leaflet-control-attribution.leaflet-control {
+  .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
     display: none;
   }
 
@@ -36,7 +36,7 @@
   $(document).ready(function() {
 
     var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
-      center: [48.5, 31],
+      center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     });
 

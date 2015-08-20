@@ -44,9 +44,7 @@
               %i.fa.fa-check
             %span{:style => 'font-size: 1.0em; font-weight: bold;'}
               = indicator.name
-              - if indicator['unit']
-                = ", " + indicator['unit']
-            .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : ""}
+            .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : "", 'data-unit' => indicator.unit ? indicator.unit : "" }
               - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['description']
                 = indicator['history'][current_year.to_s]['description']
           - j = j + 1
