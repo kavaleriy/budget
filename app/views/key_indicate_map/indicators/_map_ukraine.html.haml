@@ -53,7 +53,7 @@
       getInfoContent: getInfoContent
     });
 
-    var key, key_name, general_content;
+    var key, key_name, general_content, year;
 
     // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
@@ -64,7 +64,7 @@
       current_btn.removeClass('non-active').addClass('active');
       key = current_btn.data('id');
       general_content = generate_content(current_btn);
-      aRepairMap.resetData(key);
+      aRepairMap.resetData(key, year);
     });
 
     // find active button with key in shown collapse panel
@@ -72,8 +72,14 @@
       var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
       key = $(current_btn).data('id');
       general_content = generate_content($(current_btn));
-      aRepairMap.resetData(key);
+      aRepairMap.resetData(key, year);
     });
+
+    // if year changed
+    $('#year_change').on("change", function(){
+      year = $('#year_change select option:selected').val();
+      aRepairMap.resetData(key, year);
+    })
 
     // add Areas
     $.ajax({
@@ -83,9 +89,10 @@
     })
     .done(function (data) {
       var btn = $('.tab-pane.in.active .collapse_btn.active');
+      year = $('#year_change select option:selected').val();
       key = btn.data('id');
       general_content = generate_content(btn);
-      aRepairMap.addGeoJsonSvg(data, key, {
+      aRepairMap.addGeoJsonSvg(data, key, year, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent

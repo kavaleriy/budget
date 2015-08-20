@@ -156,11 +156,11 @@
         router = L.Routing.osrm()
       }
 
-      function addGeoJsonSvg(data, key, options) {
+      function addGeoJsonSvg(data, key, year, options) {
         options = options || {};
 
         current_data = data;
-        setColorDomain(key);
+        setColorDomain(key, year);
         addLegend(key);
         addControl(options.getInfoContent("Ukraine"));
 
@@ -174,8 +174,8 @@
             .attr("class", "fillable_path")
             .style("cursor", "pointer")
             .style("fill", function(d){
-                              if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                              if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+                                  return colorScale(d['properties']['indicators'][year][key]['value']);
                               }
                               return colorScale(0);
             })
@@ -232,34 +232,34 @@
 
       }
 
-      function setColorDomain(key){
+      function setColorDomain(key, year){
         maxValue = d3.max(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-            return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            return d['properties']['indicators'][year][key]['value'];
           }
           return 0;
         });
         minValue = d3.min(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-            return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            return d['properties']['indicators'][year][key]['value'];
           }
           return 0;
         });
         colorScale.domain([minValue, maxValue]);
       }
 
-      function resetData(key) {
-        setColorDomain(key);
+      function resetData(key, year) {
+        setColorDomain(key, year);
         legend.update(key);
         info.update(options.getInfoContent("Ukraine"));
         g.selectAll('.fillable_path')
          .transition()
          .duration(750)
          .style("fill", function(d){
-                               if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                               if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+                                  return colorScale(d['properties']['indicators'][year][key]['value']);
                                 }
                                 return colorScale(0);
                               })

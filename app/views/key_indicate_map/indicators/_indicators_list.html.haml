@@ -20,10 +20,10 @@
 - if @indicator_keys.length > 0
   - current_year = @years.max
   .container
-  %h2
-    Ключові показники міст за
+  %h2#year_change
+    = t('key_indicate_map.indicators.indicators_list.keys')
     = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
-    рік
+    = t('key_indicate_map.indicators.indicators_list.year')
   %ul.nav.nav-tabs
     - i = 0
     - @indicator_keys.sort_by{ |key, value| key }.each do |group, value|
