@@ -40,7 +40,14 @@
         - j = 0
         - value['indicators'].each do |indicator|
           .container
-            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s}
+            - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['total']
+              - if indicator['integer_or_float'] == 'float'
+                - ind_value = indicator['history'][current_year.to_s]['total'].to_f.round(2)
+              - else
+                - ind_value = indicator['history'][current_year.to_s]['total']
+            - else
+              - ind_value = ""
+            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-unit' => indicator.unit ? indicator.unit : ""}
               %i.fa.fa-check
             %span{:style => 'font-size: 1.0em; font-weight: bold;'}
               = indicator.name

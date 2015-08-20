@@ -27,6 +27,16 @@
     display: none;
   }
 
+  .info .title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .info h4 {
+    margin: 0 0 10px 0;
+  }
+
 = content_for :top do
   .map_container.col-sm-12.col-md-8
     = render partial: 'map'
@@ -35,10 +45,15 @@
 
   $(document).ready(function() {
 
+    I18n.locale = window.aHelper.lang();
+
     var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
       center: [48.5, 31.2],
-      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getInfoContent: getInfoContent
     });
+
+    var key, key_name, general_content;
 
     // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
@@ -47,23 +62,29 @@
       $('.tab-pane.active .collapse_descr.in').removeClass('in');
       var current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
-      aRepairMap.resetData(current_btn.data('id'));
+      key = current_btn.data('id');
+      general_content = generate_content(current_btn);
+      aRepairMap.resetData(key);
     });
 
     // find active button with key in shown collapse panel
     $('#indicators_list a[data-toggle="tab"]').click(function(){
       var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
-      aRepairMap.resetData($(current_btn).data('id'));
+      key = $(current_btn).data('id');
+      general_content = generate_content($(current_btn));
+      aRepairMap.resetData(key);
     });
 
     // add Areas
     $.ajax({
       method: 'get',
       url: '/key_indicate_map/indicators/geo_json/areas',
-      dataType: 'json',
+      dataType: 'json'
     })
     .done(function (data) {
-      var key = $('.tab-pane.in.active .collapse_btn.active').data('id');
+      var btn = $('.tab-pane.in.active .collapse_btn.active');
+      key = btn.data('id');
+      general_content = generate_content(btn);
       aRepairMap.addGeoJsonSvg(data, key, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
@@ -91,18 +112,6 @@
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent
       })
-    })
-    .fail(function () {
-    });
-
-    // get indicators for Ukraine
-    $.ajax({
-      method: 'get',
-      url: '/key_indicate_map/indicators/forUkraine/type',
-      dataType: 'json'
-    })
-    .done(function (data) {
-      console.log(data)
     })
     .fail(function () {
     });
@@ -137,9 +146,31 @@
     }
 
     function getInfoContent(properties) {
-      var content =
-        '<h3>' + properties.title + '</h3>' +
-        '<p>Документів: ' + properties.indicators + '</p>'
+      var content = "";
+      if(properties == "Ukraine") {
+        content = general_content;
+      } else {
+        var value = 0;
+        if(properties['indicators']['2013'][key]) {
+          value = properties['indicators']['2013'][key]['value'];
+          if(properties['indicators']['2013'][key]['unit']) {
+            value += " " + properties['indicators']['2013'][key]['unit']
+          }
+        }
+        content =
+        '<div class="title">' + key_name + '</div>' +
+        '<h4>' + properties.title + '</h4>' +
+        '<span style="font-size: 1.1em;">' + value + '</span>'
+      }
       return content;
+    }
+
+    function generate_content(btn) {
+        key_name = btn.data('name');
+        var content =
+            '<div class="title">' + key_name + '</div>' +
+            '<h4>' + I18n.t('ukraine') + '</h4>' +
+            '<span style="font-size: 1.1em;">' + btn.data('value') + " " + btn.data('unit') + '</span>';
+        return content;
     }
   });
