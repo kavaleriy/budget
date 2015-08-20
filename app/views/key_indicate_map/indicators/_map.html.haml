@@ -34,48 +34,72 @@
     color: #777;
   }
 
+  .info.field {
+    width: 300px;
+    min-width: 300px;
+  }
+
+  .legend {
+    min-width: 180px;
+    text-align: left;
+    line-height: 18px;
+    color: #555;
+  }
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
+
+  .key_unit {
+    margin-left: 25px;
+    font-weight: bold;
+  }
+
 #map
 
 
 :javascript
 
-  var RepairMap
+  var RepairMap;
 
   $(document).ready(function() {
 
     RepairMap = function(options) {
-      options = options || {}
+      options = options || {};
 
       var map;
-      var svg, g, colorScale;
+      var svg, g, colorScale, minValue, maxValue;
       var popup;
       var router;
-      var info;
+      var info, legend;
       var current_data;
 
       var self = this;
 
       function initMap() {
-        var mapSettings = { }
-        mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
-        mapSettings.dragging = options.dragging
-        map = L.map('map', mapSettings)
+        var mapSettings = { };
+        mapSettings.scrollWheelZoom = options.scrollWheelZoom == true;
+        mapSettings.dragging = options.dragging;
+        map = L.map('map', mapSettings);
 
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
           id: 'begemot.mbl2go4k',
           accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-        }
+        };
         if (options.minZoom)
-          layerSettings.minZoom = options.minZoom
+          layerSettings.minZoom = options.minZoom;
         if (options.maxZoom)
-          layerSettings.maxZoom = options.maxZoom
+          layerSettings.maxZoom = options.maxZoom;
 
         //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
 
-        addSvgLayer()
+        addSvgLayer();
         function addSvgLayer() {
           colorScale = d3.scale.linear()
                          .range(['lightblue', 'darkblue']); // or use hex values
@@ -83,18 +107,14 @@
             g = svg.append("g").attr("class", "leaflet-zoom-hide");
         }
 
-
-
         if (options.bounds) map.fitBounds(options.bounds);
 
-
         if (options.center)
-          map.setView(options.center, options.zoom)
+          map.setView(options.center, options.zoom);
         else
-          setBrowserLocation()
+          setBrowserLocation();
 
-        L.Icon.Default.imagePath = '/assets/leaflet/images'
-
+        L.Icon.Default.imagePath = '/assets/leaflet/images';
 
         function setBrowserLocation() {
           if (navigator.geolocation) {
@@ -114,7 +134,6 @@
           }
         }
       }
-
 
       function initPopup() {
         popup = L.popup();
@@ -137,11 +156,13 @@
         router = L.Routing.osrm()
       }
 
-      function addGeoJsonSvg(data, key, options) {
+      function addGeoJsonSvg(data, key, year, options) {
         options = options || {};
 
         current_data = data;
-        setColorDomain(key);
+        setColorDomain(key, year);
+        addLegend(key);
+        addControl(options.getInfoContent("Ukraine"));
 
         // Projecting GeoJSON
         var transform = d3.geo.transform({point: projectPoint}),
@@ -153,8 +174,8 @@
             .attr("class", "fillable_path")
             .style("cursor", "pointer")
             .style("fill", function(d){
-                              if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                              if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+                                  return colorScale(d['properties']['indicators'][year][key]['value']);
                               }
                               return colorScale(0);
             })
@@ -163,7 +184,7 @@
                 info.update(options.getInfoContent(d.properties));
               })
             .on("mouseout", function () {
-              info.update();
+              info.update(options.getInfoContent("Ukraine"));
             })
             .on("click", function (d) {
               if (options.featureClickCallback) {
@@ -211,39 +232,41 @@
 
       }
 
-      function setColorDomain(key){
-        var maxValue = d3.max(current_data['features'], function(d){
+      function setColorDomain(key, year){
+        maxValue = d3.max(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-            return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            return d['properties']['indicators'][year][key]['value'];
           }
           return 0;
         });
-        var minValue = d3.min(current_data['features'], function(d){
+        minValue = d3.min(current_data['features'], function(d){
           // change to actual year and indicator key!!!
-          if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-            return d['properties']['indicators']['2013'][key]['value'];
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            return d['properties']['indicators'][year][key]['value'];
           }
           return 0;
         });
         colorScale.domain([minValue, maxValue]);
       }
 
-      function resetData(key) {
-        setColorDomain(key);
+      function resetData(key, year) {
+        setColorDomain(key, year);
+        legend.update(key);
+        info.update(options.getInfoContent("Ukraine"));
         g.selectAll('.fillable_path')
          .transition()
          .duration(750)
          .style("fill", function(d){
-                               if(d['properties']['indicators']['2013'] && d['properties']['indicators']['2013'][key]) {
-                                  return colorScale(d['properties']['indicators']['2013'][key]['value']);
+                               if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+                                  return colorScale(d['properties']['indicators'][year][key]['value']);
                                 }
                                 return colorScale(0);
                               })
       }
 
       function addGeoJsonPoints(data, getPoint, options) {
-        options = options || {}
+        options = options || {};
 
         if(!data || data.length < 1) return;
 
@@ -253,28 +276,28 @@
         var layerOptions = {
           pointToLayer: getPointToLayer,
           onEachFeature: onEachFeature,
-          coordsToLatLng: coordsToLatLng,
-        }
+          coordsToLatLng: coordsToLatLng
+        };
         if (options.style)
-          layerOptions.style = options.style
+          layerOptions.style = options.style;
         if (options.hoverStyle)
-          layerOptions.hoverStyle = options.hoverStyle
+          layerOptions.hoverStyle = options.hoverStyle;
 
         geoJson = L.geoJson(data, layerOptions).addTo(markers);
 
 
         function coordsToLatLng(coords) {
-          map.panTo(L.latLng(coords))
-          return L.latLng(coords)
+          //map.panTo(L.latLng(coords));
+          return L.latLng(coords);
         }
 
         function getPointToLayer(feature, latlng) {
-          var point = getPoint(feature.properties)
+          var point = getPoint(feature.properties);
 
           return L.marker(latlng, {
             icon: point.icon,
             opacity: 1,
-            draggable: point.draggable,
+            draggable: point.draggable
           });
         }
 
@@ -299,12 +322,12 @@
         }
       }
 
-      function addControl() {
+      function addControl(content) {
         info = L.control();
 
         info.onAdd = function (map) {
-          this._div = L.DomUtil.create('div', 'info');
-          this.update();
+          this._div = L.DomUtil.create('div', 'info field');
+          this.update(content);
           return this._div;
         };
 
@@ -321,34 +344,69 @@
         info.addTo(map);
       }
 
+      function addLegend(key) {
+        legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'info legend');
+          this.update(key);
+          return this._div;
+        };
+
+        legend.update = function(key) {
+          var d = (maxValue - minValue)/5,
+              grades = [], initial_grades = [],
+              labels = ['<span class="key_unit">' + $('#key_' + key).data('unit') + "</span>"],
+              from, to;
+
+          for(var i = 0; i < 5; i++){
+            initial_grades[i] = Math.round(minValue + d*i);
+          }
+
+          // remove duplicated values
+          $.each(initial_grades, function(i, el){
+            if($.inArray(el, grades) === -1) grades.push(el);
+          });
+
+          for (var i = 0; i < grades.length; i++) {
+            from = grades[i];
+            to = grades[i + 1];
+
+            labels.push(
+                '<i style="background:' + colorScale(from + 1) + '"></i> ' +
+                from + ((to || to == 0) ? ' - ' + to : '+'));
+          }
+          this._div.innerHTML = labels.join('<br>');
+        };
+
+        legend.addTo(map);
+      }
+
       function editRoute(waypoints, routeFoundCallback) {
         var line;
 
         if (self.selectedRoute) {
-          self.selectedRoute.setWaypoints(waypoints)
+          self.selectedRoute.setWaypoints(waypoints);
           self.selectedRoute.route()
         } else {
           self.selectedRoute = L.Routing.control({
             routeWhileDragging: true,
             waypoints: waypoints
-          })
+          });
 
           self.selectedRoute.on('routesfound', function(router) {
             if (routeFoundCallback) {
               routeFoundCallback(router.routes[0].coordinates)
             }
-          })
+          });
 
           self.selectedRoute.addTo(map);
         }
       }
 
-
-
       initMap();
       initPopup();
       initRouting();
-      addControl();
 
       return {
         map: map,

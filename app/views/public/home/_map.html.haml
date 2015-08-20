@@ -58,7 +58,10 @@
         var mapSettings = { }
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
         map = L.map('map', mapSettings)
-
+        if (options.center)
+          map.setView(options.center, options.zoom)
+        else
+          setBrowserLocation()
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -80,14 +83,8 @@
         }
 
 
-
         if (options.bounds) map.fitBounds(options.bounds);
 
-
-        if (options.center)
-          map.setView(options.center, options.zoom)
-        else
-          setBrowserLocation()
 
         L.Icon.Default.imagePath = '/assets/leaflet/images'
 
@@ -204,7 +201,6 @@
 
 
         function coordsToLatLng(coords) {
-          map.panTo(L.latLng(coords))
           return L.latLng(coords)
         }
 

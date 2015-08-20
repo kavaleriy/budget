@@ -60,6 +60,10 @@
               = link_to static_key_indicator_file_help_path do
                 %i.fa.fa-info-circle
                   =t('static.budget_file_help.help')
+            %li.divider
+            %li=link_to 'Довідник ключових показників (карта)', key_indicate_map_indicator_keys_path
+            %li=link_to 'Завантажити файли з показниками (карта)', key_indicate_map_indicator_files_path
+            %li=link_to 'Порівняння ключових показників (карта)', key_indicate_map_indicators_path
 
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
@@ -84,7 +88,7 @@
             - if current_user
               %li= link_to t('.documentation_categories'), documentation_categories_path
               %li= link_to t('.documentation_branches'), documentation_branches_path
-
+              %li= link_to t('.documentation_links'), documentation_link_categories_path
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-map-marker
@@ -95,6 +99,9 @@
             %li.divider
             - if current_user
               %li= link_to t('.repairing_layers'), repairing_layers_path
+              - if current_user.has_role?(:admin)
+                %li.dropdown
+                %li= link_to t('.repairing_category'), repairing_categories_path
         .lang.pull-right
           = render partial: 'layouts/lang'
         %li.dropdown

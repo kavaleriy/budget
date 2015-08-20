@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Category:
+  = @documentation_document.category.title
+%p
+  %b Title:
+  = @documentation_document.title
+%p
+  %b Description:
+  = @documentation_document.description
+%p
+  %b Issued:
+  = "#{@documentation_document.yearFrom} - #{@documentation_document.yearTo}"
+%p
+  %b File:
+  - if @documentation_document.doc_file?
+    = link_to @documentation_document.doc_file.url do
+      %i.fa.fa-2x{ class: "#{get_file_type_icon(@documentation_document.doc_file_identifier)}" }
+
+= link_to 'Back', documentation_documents_path

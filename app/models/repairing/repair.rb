@@ -1,28 +1,32 @@
-class Repairing::Repair
-  include Mongoid::Document
+module Repairing
+  class Repair
+    include Mongoid::Document
 
-  belongs_to :layer, class_name: 'Repairing::Layer'
+    belongs_to :layer, class_name: 'Repairing::Layer'
 
-  field :title, type: String
+    belongs_to :category, class_name: 'Repairing::Category'
 
-  field :obj_owner, type: String
+    field :title, type: String
 
-  field :subject, type: String
-  field :work, type: String
+    field :obj_owner, type: String
 
-  field :amount, type: Float
-  field :repair_date, type: Date
-  field :warranty_date, type: Date
+    field :subject, type: String
+    field :work, type: String
 
-  field :description, type: String
+    field :amount, type: Float
+    field :repair_date, type: Date
+    field :warranty_date, type: Date
 
-  field :address, type: String
-  field :address_to, type: String
+    field :description, type: String
 
-  field :coordinates, type: Array
+    field :address, type: String
+    field :address_to, type: String
 
-  # include Geocoder::Model::Mongoid
-  # geocoded_by :address               # can also be an IP address
-  #
-  # after_validation :geocode          # auto-fetch coordinates
+    field :coordinates, type: Array
+
+    # include Geocoder::Model::Mongoid
+    # geocoded_by :address               # can also be an IP address
+    #
+    # after_validation :geocode          # auto-fetch coordinates
+  end
 end

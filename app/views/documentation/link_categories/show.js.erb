@@ -1,0 +1,3 @@
+$('.documentation #link_category_content').html('<%= escape_javascript(render @documentation_link_category) %>')
+$('.documentation #documentation_link_link_category_id').val('<%= @documentation_link_category.id %>')
+$('.documentation .links').html('<%= escape_javascript( render :partial => 'documentation/links/links', :locals => { :links => @links } ) %>')

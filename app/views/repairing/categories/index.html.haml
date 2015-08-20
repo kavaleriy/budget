@@ -1,0 +1,21 @@
+%h1 Listing repairing_categories
+
+%table
+  %tr
+    %th Title
+    %th Img
+    %th
+    %th
+    %th
+
+  - @repairing_categories.each do |repairing_category|
+    %tr
+      %td= repairing_category.title
+      %td= repairing_category.img
+      %td= link_to 'Show', repairing_category
+      %td= link_to 'Edit', edit_repairing_category_path(repairing_category)
+      %td= link_to 'Destroy', repairing_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Category', new_repairing_category_path

@@ -1,0 +1,46 @@
+= stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
+
+.tree_view{ id: "#{prefix}_tree_view" }
+
+:javascript
+
+  $(document).ready(function() {
+
+    draw_tree('##{prefix}_tree_view', '#{tree_root}', '#{tree}')
+
+    function draw_tree(tree_view_id, tree_root_url, tree_url) {
+      $.getScript("/assets/jstree/jstree.js")
+        .done(function() {
+          $(tree_view_id).jstree({
+            "core" : {
+              "animation" : 0,
+              "check_callback" : true,
+              "themes" : { "stripes" : true },
+              'data' : {
+                'url' : function (node) {
+                  return node.id === '#' ? tree_root_url : tree_url
+                },
+                'data' : function (node) {
+                  return { 'id' : node.id };
+                }
+              },
+              "types" : {
+                "default" : {
+                  "icon" : "glyphicon glyphicon-flash"
+                },
+                "demo" : {
+                  "icon" : "glyphicon glyphicon-ok"
+                }
+              },
+            },
+            "plugins" : [
+              "contextmenu", "dnd", "search",
+              "state", "types", "wholerow"
+            ]
+          })
+        }).fail(function() {
+          console.log("fail")
+        });
+    }
+
+  })

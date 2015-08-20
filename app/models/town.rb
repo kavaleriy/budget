@@ -20,7 +20,6 @@ class Town
   field :geometry_type, type: String
 
   require 'carrierwave/mongoid'
-
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
@@ -79,7 +78,7 @@ class Town
   # key indicators for key_indicate_map
   def get_key_indicators
     indicators = {}
-    self.key_indicate_map_indicators.group_by{|i| i.key_indicate_map_indicator_file.year }.each{|year,group|
+    self.key_indicate_map_indicators.reject{|i| i.town.nil? || i.key_indicate_map_indicator_key.nil? }.group_by{|i| i.key_indicate_map_indicator_file.year }.each{|year,group|
       indicators[year] = {} if indicators[year].nil?
       group.each{|i|
         id = i.key_indicate_map_indicator_key._id.to_s

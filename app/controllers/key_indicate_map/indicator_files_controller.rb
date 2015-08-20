@@ -45,7 +45,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
       @indicator_files << doc
 
       table = read_table_from_file 'public/uploads/key_indicate_map/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
-      doc.import table, doc.year
+      @errors = doc.import table, doc.year
     end unless params['indicate_file'].nil?
 
     respond_to do |format|
@@ -57,14 +57,16 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
   # PATCH/PUT /key_indicate_map/indicator_files/1
   # PATCH/PUT /key_indicate_map/indicator_files/1.json
   def update
-    year = @key_indicate_map_indicator_file.year.to_s
-    KeyIndicateMap::IndicatorKey.each{|key|
-      if key['history'] && key['history'][year]
-        attrs = key['history'].reject{|key, value| key == year }
-        attrs[key_indicate_map_indicator_file_params[:year]] = key['history'][year]
-        key.update_attributes({'history' => attrs})
-      end
-    }
+    if key_indicate_map_indicator_file_params[:year]
+      year = @key_indicate_map_indicator_file.year.to_s
+      KeyIndicateMap::IndicatorKey.each{|key|
+        if key['history'] && key['history'][year]
+          attrs = key['history'].reject{|key, value| key == year }
+          attrs[key_indicate_map_indicator_file_params[:year]] = key['history'][year]
+          key.update_attributes({'history' => attrs})
+        end
+      }
+    end
     respond_to do |format|
       if @key_indicate_map_indicator_file.update(key_indicate_map_indicator_file_params)
         format.js {}

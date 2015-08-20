@@ -8,47 +8,27 @@
   }
 
 
+
+-#-binding.pry
 =content_for :header do
   .head.pull-left
     =@town.title
 
+
+
+
+
 .col-xs-2
-
   %img.thumbnail{src: @town.img.thumb.url}
+.col-xs-6
+  %h4
+    Корисні посилання
+    - unless (@town.links.nil?)
+      %p
+        =@town.links.html_safe
 
-  %h3
-    Візуалізації
-
-  - @budgets.each do |budget|
-    %p
-      %h4.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
-        = budget.title
-    %hr
-
-  %h3
-    Календарі
-
-  - @calendars.each do |calendar|
-    %p
-      %h4.calendar{ 'data-id' => calendar.id }
-        = calendar.title
-    %hr
-
-  -#%h3
-  -#  Документи
-  -#
-  -#- @town.documentation_documents.each do |doc|
-  -#  %p
-  -#    %h4.document{ 'data-id' => doc.id }
-  -#      %a{href: doc.doc_file.url}
-  -#        = doc.title
-  -#  %hr
-
-
-
+.clear
 .col-xs-10
-  -#%iframe#budget{ :style => 'width: 100%; height: 100vh; border: none;' }
-
   = render partial: 'docs'
 
 
@@ -78,5 +58,7 @@
       frame_url = path + "/widgets/visify/"+ vis + "/" + id + '/?' + query
       $('iframe#budget').attr('src', frame_url)
     }
+=======
+  = render partial: 'docs'
+>>>>>>> bd95d1749bf792f8b78a58bc1a208f2cf1e6ae7b
 
-  })

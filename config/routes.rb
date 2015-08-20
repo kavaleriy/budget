@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :repairing do
+    resources :categories
+  end
+
   namespace :key_indicate_map do
     resources :indicators
   end
@@ -11,7 +15,6 @@ Rails.application.routes.draw do
   namespace :key_indicate_map do
     resources :indicator_keys
     get 'indicators/geo_json/:type' => 'indicators#geo_json'
-    get 'indicators/forUkraine/:type' => 'indicators#forUkraine'
   end
 
   namespace :key_indicate do
@@ -73,8 +76,11 @@ Rails.application.routes.draw do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
     get 'categories_tree' => 'categories#tree'
-
+    resources :link_categories
+    get 'link_categories_tree_root' => 'link_categories#tree_root'
+    get 'link_categories_tree' => 'link_categories#tree'
     resources :documents
+    resources :links
     put 'documents/lock/:id' => 'documents#lock'
   end
 
