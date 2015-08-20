@@ -1,0 +1,6 @@
+<% if @link.errors.empty? %>
+  $('.documentation .links table tbody').prepend('<%= escape_javascript( render :partial => 'documentation/links/link', :locals => { :link => @link } ) %>');
+<% else %>
+    alert('Помилка додавання посилання. Перевірте дані');
+<% end %>
+

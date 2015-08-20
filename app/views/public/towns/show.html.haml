@@ -7,42 +7,104 @@
     font-weight: bold;
   }
 
+  .leftimg {
+    float:left; /* Выравнивание по левому краю */
+    margin: 7px 7px 7px 0; /* Отступы вокруг картинки */
+   }
 
+
+  .grid-item {
+        width: 800px;
+        background:#FFF;
+        margin-bottom: 20px;
+        border: 1px solid #F0F0F0;
+        border-radius: 5px 5px 5px 5px;
+
+  }
+  .grid-item--width2 { width: 1620px; }
+
+-#-binding.pry
 =content_for :header do
   .head.pull-left
     =@town.title
 
+
+
+
+
+
 .col-xs-2
-
   %img.thumbnail{src: @town.img.thumb.url}
+.col-xs-6
+  %h4
+    Корисні посилання
+    -if(!@town.links.nil?)
+      =@town.links.html_safe
 
-  %h3
-    Візуалізації
+.clear
 
-  - @budgets.each do |budget|
-    %p
-      %h4.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
-        = budget.title
-    %hr
+.grid
+  .grid-item
+    =image_tag 'budjet.jpg', class: "leftimg"
+    =image_tag 'budjet.jpg', class: "leftimg"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in viverra nisi.
+    In hac habitasse platea dictumst. Fusce quis justo in metus rutrum varius.
+    Vivamus euismod tristique placerat. Maecenas ac accumsan massa, vitae rhoncus magna. Nulla non tincidunt magna.
+    Nulla a ultricies sapien. Phasellus volutpat lorem nec mauris laoreet, ut sagittis leo pharetra.
+    Morbi eu dui vel lorem tristique sagittis condimentum nec risus.
+    = link_to "Докладніше", budget_files_path, :class => 'btn btn-default'
+  .grid-item
+    =image_tag 'sankey.jpg', width: "600px", class: "leftimg"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in viverra nisi.
+    In hac habitasse platea dictumst. Fusce quis justo in metus rutrum varius.
+    Vivamus euismod tristique placerat. Maecenas ac accumsan massa, vitae rhoncus magna. Nulla non tincidunt magna.
+    Nulla a ultricies sapien. Phasellus volutpat lorem nec mauris laoreet, ut sagittis leo pharetra.
+    Morbi eu dui vel lorem tristique sagittis condimentum nec risus.
+    = link_to "Докладніше", budget_files_path, :class => 'btn btn-default'
+  .grid-item.grid-item--width2
+    =image_tag 'program.jpg', class: "leftimg"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in viverra nisi.
+    In hac habitasse platea dictumst. Fusce quis justo in metus rutrum varius.
+    Vivamus euismod tristique placerat. Maecenas ac accumsan massa, vitae rhoncus magna. Nulla non tincidunt magna.
+    Nulla a ultricies sapien. Phasellus volutpat lorem nec mauris laoreet, ut sagittis leo pharetra.
+    Morbi eu dui vel lorem tristique sagittis condimentum nec risus.
+    = link_to "Докладніше", budget_files_path, :class => 'btn btn-default'
+  .grid-item.grid-item--width2
+    =image_tag 'timeline.jpg', class: "leftimg"
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in viverra nisi.
+    In hac habitasse platea dictumst. Fusce quis justo in metus rutrum varius.
+    Vivamus euismod tristique placerat. Maecenas ac accumsan massa, vitae rhoncus magna. Nulla non tincidunt magna.
+    Nulla a ultricies sapien. Phasellus volutpat lorem nec mauris laoreet, ut sagittis leo pharetra.
+    Morbi eu dui vel lorem tristique sagittis condimentum nec risus.
+    = link_to "Докладніше", budget_files_path, :class => 'btn btn-default'
 
-  %h3
-    Календарі
+%h3
+  Візуалізації
 
-  - @calendars.each do |calendar|
-    %p
-      %h4.calendar{ 'data-id' => calendar.id }
-        = calendar.title
-    %hr
+- @budgets.each do |budget|
+  %p
+    %h4.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
+      = budget.title
+  %hr
 
-  %h3
-    Документи
+%h3
+  Календарі
 
-  - @town.documentation_documents.each do |doc|
-    %p
-      %h4.document{ 'data-id' => doc.id }
-        %a{href: doc.doc_file.url}
-          = doc.title
-    %hr
+- @calendars.each do |calendar|
+  %p
+    %h4.calendar{ 'data-id' => calendar.id }
+      = calendar.title
+  %hr
+
+%h3
+  Документи
+
+- @town.documentation_documents.each do |doc|
+  %p
+    %h4.document{ 'data-id' => doc.id }
+      %a{href: doc.doc_file.url}
+        = doc.title
+  %hr
 
 
 
@@ -53,6 +115,13 @@
 :javascript
 
   $(document).ready(function() {
+    $('.grid').masonry({
+      // options
+      itemSelector: '.grid-item',
+      "gutter": 20,
+
+      columnWidth: 800
+    });
 
     $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')

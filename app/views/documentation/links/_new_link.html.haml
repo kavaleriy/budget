@@ -1,0 +1,69 @@
+-#= stylesheet_link_tag "kartik-fileinput/css/fileinput.css", :media => "all"
+
+= form_for new_link, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal'} do |f|
+
+  - if new_link.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(new_link.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - new_link.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.hidden_field :link_category_id
+
+  .form-group
+    .col-md-6
+      %label
+        %i.glyphicon.glyphicon-header
+          = t('form.title')
+      = text_field :documentation_link, :title, :class => 'form-control can_be_disable'
+    .col-md-6
+      %label
+        %i.glyphicon.glyphicon-link
+          = t('form.value')
+      = text_field :documentation_link, :value, :class => 'form-control can_be_disable'
+  .actions
+    = f.button :class => 'btn btn-default can_be_disable' do
+      %i.glyphicon.glyphicon-plus
+        = t('form.add')
+
+:javascript
+
+  $(document).ready(function() {
+
+    if('#{defined? branch_field}') {
+      $('.can_be_disable').attr("disabled","disabled");
+
+      $('.documentation_document_branch').on("change", function(){
+        if($(this).find('option:selected').val()) {
+          $('.can_be_disable').removeAttr("disabled");
+        } else {
+          $('.can_be_disable').attr("disabled","disabled");
+        }
+      })
+    }
+
+    $.when(
+      //$.getScript( "/assets/kartik-fileinput/js/fileinput.js" ),
+      //$.getScript( "/assets/kartik-fileinput/js/fileinput_locale_uk.js" ),
+      //$.Deferred(function( deferred ){
+      //    $( deferred.resolve );
+      //})
+    ).done(function(){
+      //$("#new_documentation_document #doc_file_").fileinput({
+      //  language: 'uk',
+      //  minFileCount: 1,
+      //  maxFileCount: 5,
+      //  maxFileSize: 1000000,
+      //  allowedPreviewTypes: ['image'],
+      //  showRemove: false,
+      //  showUpload: false,
+      //  uploadAsync:false,
+      //});
+      //
+      //$('#new_documentation_document').bind("ajax:success", function(f){
+      //  $("#new_documentation_document #doc_file_").fileinput("clear");
+      //});
+    })
+
+  });

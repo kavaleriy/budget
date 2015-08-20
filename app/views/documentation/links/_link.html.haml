@@ -1,0 +1,16 @@
+%tr.link{'data-id' => "#{link.id}"}
+  %td
+    %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'Вкажіть назву посилання...' }
+      =link.title
+  %td
+    %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'Вкажіть посилання...' }
+      =link.value
+  %td
+    = link_to link, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+      %i.fa.fa-times.pull-right
+
+:javascript
+  I18n.locale = window.aHelper.lang();
+  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value').editable();
+
+
