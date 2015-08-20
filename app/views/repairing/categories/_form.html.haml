@@ -1,0 +1,9 @@
+= bootstrap_form_for @repairing_category, :html => { :class => '', :multipart => true} do |f|
+  .col-md-5
+    .upload_img
+      = f.file_field :img, :class => 'btn btn-default'
+  .col-md-7
+    = f.text_field :title
+
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
