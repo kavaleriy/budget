@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :repairing do
+    resources :categories
+  end
+
   namespace :key_indicate_map do
     resources :indicators
   end
