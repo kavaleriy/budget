@@ -8,27 +8,20 @@
   }
 
 
-
--#-binding.pry
 =content_for :header do
   .head.pull-left
     =@town.title
 
-
-
-
-
 .col-xs-2
   %img.thumbnail{src: @town.img.thumb.url}
-.col-xs-6
+.col-xs-10
   %h4
     Корисні посилання
     - unless (@town.links.nil?)
       %p
         =@town.links.html_safe
 
-.clear
-.col-xs-10
+.col-xs-12
   = render partial: 'docs'
 
 
@@ -47,18 +40,8 @@
     });
 
     $(".owl-example").owlCarousel({
-
       //Count on page
-      items : 4
+      items : 6
     });
 
-    function set_iframe(vis, id) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ vis + "/" + id + '/?' + query
-      $('iframe#budget').attr('src', frame_url)
-    }
-=======
-  = render partial: 'docs'
->>>>>>> bd95d1749bf792f8b78a58bc1a208f2cf1e6ae7b
-
+  })
