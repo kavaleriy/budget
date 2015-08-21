@@ -25,7 +25,7 @@
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
       .col-sm-2.doc_btn
-        %btn.btn.btn-primary{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add' }
+        %btn.btn.btn-primary{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add', :onclick => "get_dialog(this);" }
           %i.fa.fa-plus.fa-lg
 
     .clear
@@ -84,19 +84,13 @@
 
 :javascript
 
-  $(document).ready(function() {
-    //$('.modal form').submit(function(){
-    //  $('.modal').modal('hide');
-    //});
-
-    $('.btn_city_add').on("click", function(){
-      if(!"#{current_user}"){
-        $($(this).data('target')).modal({show: false});
-        window.location.href = "#{public_documents_check_auth_path}";
-      } else {
-        $($(this).data('target')).modal({show: true});
-      }
-    });
+  function get_dialog(el){
+    if(!"#{current_user}"){
+      $($(el).data('target')).modal({show: false});
+      window.location.href = "#{public_documents_check_auth_path}";
+    } else {
+      $($(el).data('target')).modal({show: true});
+    }
 
     $('.city_add').on('shown.bs.modal', function() {
         if($(this).find('option:selected').val()) {
@@ -105,4 +99,4 @@
           $('.can_be_disable').attr("disabled","disabled");
         }
     })
-  })
+  };
