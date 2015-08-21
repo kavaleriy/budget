@@ -1,45 +1,59 @@
 :css
   .bsize {
     font-size: .73em;
-  }
-  .poz-down {
-    z-index: 9000;
-  }
-    .poz-up {
-    z-index: 9001;
+    background-color: rgba(128,128,128,.35);
+
   }
   .fa-t-fix {
-    font-size: .5em;
+    font-size: .47em;
   }
-  .col-fix {
+  .fa-folder-o {
     color: #808080;
   }
+  .fa-stack:hover .fa-folder-o {
+    color: #0099da !important;
+  }
   .bcol :hover {
+    color: #0099da !important;
+  }
+  .br-red{
+  border: solid 1px red;
+  }
+  .right-line {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
     color: #0099da;
+    margin: 30px 0;
+  }
+  .right-line:after {
+    position: absolute;
+    top: 55%;
+    overflow: hidden;
+    width: 100%;
+    height: 1px;
+    content: '\a0';
+    background-color: #ddd;
+    border-left: solid 20px #fff;
   }
 
-.row
-  .col-xs-2
-    %h3
-      Документи
-      %span.badge.bsize.count
-        = @town.documentation_documents.count()
-  .col-xs-10
-.row
-  .col-xs-2
-  .col-xs-10
-    .owl-example.owl-carousel
-      - Documentation::Branch.all.each do |br|
-        - count = @town.documentation_documents.where(:branch => br).count()
-        - if count > 0
-          .owl-carousel-item
-            .town.thumbnailexit
-              .icon-docs
-                %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
-                  %span.fa-stack.fa-3x
-                    %i.fa.fa-folder-o.fa-stack-2x.col-fix
-                    %strong.fa-stack-text.fa-t-fix
-                      = count
-              .title-docs
-                %p
-                  = br.title
+%h3.right-line
+  Документи
+  %span.badge.bsize.count
+    = @town.documentation_documents.count()
+
+.owl-example.owl-carousel
+  - Documentation::Branch.all.each do |br|
+    - count = @town.documentation_documents.where(:branch => br).count()
+    - if count > 0
+      .owl-carousel-item
+        .town.thumbnailexit
+          .icon-docs
+            %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
+              %span.fa-stack.fa-3x
+                %i.fa.fa-folder-o.fa-stack-2x
+                %strong.fa-stack-1x.fa-t-fix
+                  = count
+          .title-docs
+            %p
+              = br.title
