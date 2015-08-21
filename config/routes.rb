@@ -6,15 +6,10 @@ Rails.application.routes.draw do
 
   namespace :key_indicate_map do
     resources :indicators
-  end
-
-  namespace :key_indicate_map do
     resources :indicator_files
-  end
-
-  namespace :key_indicate_map do
     resources :indicator_keys
     get 'indicators/geo_json/:type' => 'indicators#geo_json'
+    put 'indicator_files/update_town/:id/:old_town' => 'indicator_files#update_town'
   end
 
   namespace :key_indicate do
@@ -86,6 +81,7 @@ Rails.application.routes.draw do
 
 
   get 'search_town' => 'towns#search'
+  get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   resources :towns
 

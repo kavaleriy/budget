@@ -62,6 +62,14 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
     end
   end
 
+  def search
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @keys = KeyIndicateMap::IndicatorKey.where(:name => Regexp.new("^#{q}.*")).order_by(:level => :asc)
+      format.json
+    end
+  end
+
   private
 
     def sort_column
@@ -79,6 +87,6 @@ class KeyIndicateMap::IndicatorKeysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_key_params
-      params.require(:key_indicate_map_indicator_key).permit(:name, :group, :unit, :integer_or_float)
+      params.require(:key_indicate_map_indicator_key).permit(:name, :group, :unit, :integer_or_float, :query)
     end
 end
