@@ -4,7 +4,7 @@ module Repairing
 
     belongs_to :layer, class_name: 'Repairing::Layer'
 
-    belongs_to :category
+    belongs_to :category, class_name: 'Repairing::Category'
 
     field :title, type: String
 

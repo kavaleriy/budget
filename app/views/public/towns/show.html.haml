@@ -13,43 +13,16 @@
     =@town.title
 
 .col-xs-2
-
   %img.thumbnail{src: @town.img.thumb.url}
-
-  %h3
-    Візуалізації
-
-  - @budgets.each do |budget|
-    %p
-      %h4.budget{ 'data-id' => budget.id, 'data-vis' => 'bubbletree' }
-        = budget.title
-    %hr
-
-  %h3
-    Календарі
-
-  - @calendars.each do |calendar|
-    %p
-      %h4.calendar{ 'data-id' => calendar.id }
-        = calendar.title
-    %hr
-
-  %h3
-    Документи
-
-  - @town.documentation_documents.each do |doc|
-    %p
-      %h4.document{ 'data-id' => doc.id }
-        %a{href: doc.doc_file.url}
-          = doc.title
-    %hr
-
-
-
 .col-xs-10
-  %iframe#budget{ :style => 'width: 100%; height: 100vh; border: none;' }
+  %h4
+    Корисні посилання
+    - unless (@town.links.nil?)
+      %p
+        =@town.links.html_safe
 
-  -#= render partial: 'docs'
+.col-xs-12
+  = render partial: 'docs'
 
 
 :javascript
@@ -67,16 +40,8 @@
     });
 
     $(".owl-example").owlCarousel({
-
       //Count on page
-      items : 4
+      items : 6
     });
-
-    function set_iframe(vis, id) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + "/widgets/visify/"+ vis + "/" + id + '/?' + query
-      $('iframe#budget').attr('src', frame_url)
-    }
 
   })

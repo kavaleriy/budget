@@ -5,7 +5,7 @@
     %h1=t '.title', :default => model_class.model_name.human.titleize
 
 %p
-  -if !@town.links.nil?
+  -unless @town.links.nil?
     %strong= model_class.human_attribute_name(:img) + ':'
     %br
     =image_tag @town.img.thumb

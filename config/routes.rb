@@ -76,8 +76,11 @@ Rails.application.routes.draw do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
     get 'categories_tree' => 'categories#tree'
-
+    resources :link_categories
+    get 'link_categories_tree_root' => 'link_categories#tree_root'
+    get 'link_categories_tree' => 'link_categories#tree'
     resources :documents
+    resources :links
     put 'documents/lock/:id' => 'documents#lock'
   end
 
@@ -203,7 +206,7 @@ Rails.application.routes.draw do
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
-  get 'public/documents/:town_select/:branch_select' => 'public/documents#index'
+  get 'public/documents                                                 ' => 'public/documents#index'
   get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'

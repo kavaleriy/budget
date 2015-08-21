@@ -1,4 +1,4 @@
-= text_field_tag 'town_select', ''
+= text_field_tag 'town_select', @town_select[:id]
 
 :javascript
 
@@ -7,6 +7,9 @@
     I18n.locale = window.aHelper.lang();
 
     $('#town_select').select2({
+      initSelection: function(element, callback) {
+        callback( [ { id: '#{@town_select[:id]}', text: '#{@town_select[:title]}' } ]);
+      },
       placeholder: I18n.t('documentation.documents.search.town_region'),
       allowClear: true,
       multiSelect: true,

@@ -1,6 +1,6 @@
 :css
   .map_container {
-    height: 600px;
+    height: 500px;
   }
 
   .map_container svg {
@@ -21,7 +21,7 @@
 
 
 = content_for :top do
-  .map_container.col-sm-9
+  .map_container.col-sm-12
     = render partial: 'map'
 
 
@@ -30,9 +30,9 @@
 
   $(document).ready(function() {
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 8,
-      center: [48.31973, 30.17944],
-      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 9,
+      center: [48.91973, 31.17944],
+      //bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     })
 
 
