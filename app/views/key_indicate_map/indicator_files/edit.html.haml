@@ -1,7 +1,10 @@
-%h1 Editing key_indicate_map_indicator_file
+= content_for :header do
+  .header.pull-left
+    %h3
+      = t('key_indicate_map.indicator_files.edit.header')
+      %small
+        = @key_indicate_map_indicator_file.title
 
 = render 'form'
 
-= link_to 'Show', @key_indicate_map_indicator_file
-\|
-= link_to 'Back', key_indicate_map_indicator_files_path
+= link_to t('form.back'), key_indicate_map_indicator_files_path, :class => 'btn btn-default'
