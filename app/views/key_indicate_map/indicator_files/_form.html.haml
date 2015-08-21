@@ -12,24 +12,49 @@
           Місто/Область
         - @indicators.each do |key, value|
           %th
-            = key
+            - if value['error']
+              %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_file', id: 'indicator_key', 'data-type' => 'select2', 'data-pk' => "#{@key_indicate_map_indicator_file.key_indicate_map_indicators}", 'data-url' => '/key_indicate_map/indicator_files/update_key/' + @key_indicate_map_indicator_file.id + '/' + key, 'data-emptytext' => 'Вкажіть показник...' }
+                = key
+            - else
+              = key
     %tbody
       - @towns.each do |town, val|
         %tr
           %td
-            = town
+            - if val['error']
+              %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_file', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@key_indicate_map_indicator_file.key_indicate_map_indicators}", 'data-url' => '/key_indicate_map/indicator_files/update_town/' + @key_indicate_map_indicator_file.id + '/' + town, 'data-emptytext' => 'Вкажіть місто...' }
+                = town
+            - else
+              = town
           - @indicators.each do |key, value|
             %td
-              = val[key]
-
-          -#- value['towns'].each do |k, v|
-          -#  %td
-          -#    = v
-        -#= render :partial => 'key_indicate_map/indicator_keys/indicator_editable', :locals => { :key => key_indicate_map_indicator_key }
+              = val['values'][key]
   %br
 
 :javascript
 
   $(document).ready(function(){
+
+    I18n.locale = window.aHelper.lang();
+
     $('#indicators').css('height',$(window).height()*0.8 + 'px');
+
+    $('#indicators #town').editable({
+      source: '#{search_town_path}',
+      select2: {
+        width: '450px',
+        minimumInputLength: 2,
+        allowClear: true
+      }
+    });
+
+    $('#indicators #indicator_key').editable({
+      source: '#{search_indicator_key_path}',
+      select2: {
+        width: '450px',
+        minimumInputLength: 2,
+        allowClear: true
+      }
+    });
+
   })

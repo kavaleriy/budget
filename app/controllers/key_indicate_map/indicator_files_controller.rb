@@ -1,5 +1,5 @@
 class KeyIndicateMap::IndicatorFilesController < ApplicationController
-  before_action :set_key_indicate_map_indicator_file, only: [:show, :edit, :update, :destroy]
+  before_action :set_key_indicate_map_indicator_file, only: [:show, :edit, :update, :update_town, :update_key, :destroy]
   before_action :authenticate_user!
   load_and_authorize_resource
 
@@ -29,6 +29,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
       if indicator.key_indicate_map_indicator_key
         name = indicator.key_indicate_map_indicator_key['name']
         @indicators[name] = {} if @indicators[name].nil?
+        @indicators[name]['indicator_id'] = indicator.id
         @indicators[name]['description'] = indicator.key_indicate_map_indicator_key['history'][year]['description'] if indicator.key_indicate_map_indicator_key['history'][year]
         @indicators[name]['total'] = indicator.key_indicate_map_indicator_key['history'][year]['total'] if indicator.key_indicate_map_indicator_key['history'][year]
       else
@@ -36,13 +37,17 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
         @indicators[name] = {} if @indicators[name].nil?
         @indicators[name]['description'] = indicator['indicator_errors']['1']['description']
         @indicators[name]['total'] = indicator['indicator_errors']['1']['total']
+        @indicators[name]['error'] = true
       end
       if indicator.town
         @towns[indicator.town['title']] = {} if @towns[indicator.town['title']].nil?
-        @towns[indicator.town['title']][name] = indicator.value
+        @towns[indicator.town['title']]['values'] = {} if @towns[indicator.town['title']]['values'].nil?
+        @towns[indicator.town['title']]['values'][name] = indicator.value
       else
         @towns[indicator['indicator_errors']['2']] = {} if @towns[indicator['indicator_errors']['2']].nil?
-        @towns[indicator['indicator_errors']['2']][name] = indicator.value
+        @towns[indicator['indicator_errors']['2']]['values'] = {} if @towns[indicator['indicator_errors']['2']]['values'].nil?
+        @towns[indicator['indicator_errors']['2']]['values'][name] = indicator.value
+        @towns[indicator['indicator_errors']['2']]['error'] = true
       end
     }
   end
@@ -81,6 +86,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
   # PATCH/PUT /key_indicate_map/indicator_files/1
   # PATCH/PUT /key_indicate_map/indicator_files/1.json
   def update
+
     if key_indicate_map_indicator_file_params[:year]
       year = @key_indicate_map_indicator_file.year.to_s
       KeyIndicateMap::IndicatorKey.each{|key|
@@ -91,6 +97,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
         end
       }
     end
+
     respond_to do |format|
       if @key_indicate_map_indicator_file.update(key_indicate_map_indicator_file_params)
         format.js {}
@@ -99,6 +106,33 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
         format.html { render :edit }
         format.json { render json: @key_indicate_map_indicator_file.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_town
+    @key_indicate_map_indicator_file.key_indicate_map_indicators.select{|i| i['indicator_errors'] && i['indicator_errors']['2'] == params[:old_town]}.each{|indicator|
+      indicator['indicator_errors'].reject!{|key, value| key == '2'}
+      indicator.town_id = key_indicate_map_indicator_file_params[:town]
+      indicator.save
+    }
+
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :updated }
+    end
+  end
+
+  def update_key
+    binding.pry
+    @key_indicate_map_indicator_file.key_indicate_map_indicators.select{|i| i['indicator_errors'] && i['indicator_errors']['1'] == params[:old_key]}.each{|indicator|
+      indicator['indicator_errors'].reject!{|key, value| key == '1'}
+      indicator.indicator_key_id = key_indicate_map_indicator_file_params[:indicator_key]
+      indicator.save
+    }
+
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :updated }
     end
   end
 
@@ -127,6 +161,6 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_file_params
-      params.require(:key_indicate_map_indicator_file).permit(:title, :description, :year)
+      params.require(:key_indicate_map_indicator_file).permit(:title, :description, :year, :town, :old_town, :indicator_key, :old_key)
     end
 end
