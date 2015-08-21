@@ -21,6 +21,30 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
 
   # GET /key_indicate_map/indicator_files/1/edit
   def edit
+    @indicators = {}
+    @towns = {}
+    year = @key_indicate_map_indicator_file['year'].to_s
+
+    @key_indicate_map_indicator_file.key_indicate_map_indicators.each{|indicator|
+      if indicator.key_indicate_map_indicator_key
+        name = indicator.key_indicate_map_indicator_key['name']
+        @indicators[name] = {} if @indicators[name].nil?
+        @indicators[name]['description'] = indicator.key_indicate_map_indicator_key['history'][year]['description'] if indicator.key_indicate_map_indicator_key['history'][year]
+        @indicators[name]['total'] = indicator.key_indicate_map_indicator_key['history'][year]['total'] if indicator.key_indicate_map_indicator_key['history'][year]
+      else
+        name = indicator['indicator_errors']['1']['key']
+        @indicators[name] = {} if @indicators[name].nil?
+        @indicators[name]['description'] = indicator['indicator_errors']['1']['description']
+        @indicators[name]['total'] = indicator['indicator_errors']['1']['total']
+      end
+      if indicator.town
+        @towns[indicator.town['title']] = {} if @towns[indicator.town['title']].nil?
+        @towns[indicator.town['title']][name] = indicator.value
+      else
+        @towns[indicator['indicator_errors']['2']] = {} if @towns[indicator['indicator_errors']['2']].nil?
+        @towns[indicator['indicator_errors']['2']][name] = indicator.value
+      end
+    }
   end
 
   # POST /key_indicate_map/indicator_files
@@ -63,7 +87,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
         if key['history'] && key['history'][year]
           attrs = key['history'].reject{|key, value| key == year }
           attrs[key_indicate_map_indicator_file_params[:year]] = key['history'][year]
-          key.update_attributes({'history' => attrs})
+          key.update_attributes({:history => attrs})
         end
       }
     end
@@ -81,10 +105,10 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
   # DELETE /key_indicate_map/indicator_files/1
   # DELETE /key_indicate_map/indicator_files/1.json
   def destroy
-    year = @key_indicate_map_indicator_file.year.to_s
+    year = @key_indicate_map_indicator_file['year'].to_s
     KeyIndicateMap::IndicatorKey.each{|key|
-      if key['history'] && key['history'][year]
-        attrs = {history: key['history'].reject{|key, value| key == year }}
+      if !key['history'].nil? && !key['history'][year].nil?
+        attrs = {:history => key['history'].reject{|key, value| key == year }}
         key.update_attributes(attrs)
       end
     }

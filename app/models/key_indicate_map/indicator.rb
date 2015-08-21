@@ -2,6 +2,7 @@ class KeyIndicateMap::Indicator
   include Mongoid::Document
 
   field :value, type: String
+  field :indicator_errors, type: Hash
 
   belongs_to :key_indicate_map_indicator_file, :class_name => 'KeyIndicateMap::IndicatorFile', autosave: true
   belongs_to :key_indicate_map_indicator_key, :class_name => 'KeyIndicateMap::IndicatorKey', autosave: true

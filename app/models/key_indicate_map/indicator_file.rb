@@ -39,7 +39,7 @@ class KeyIndicateMap::IndicatorFile
         attrs[year]['total'] = table[:rows][1][key] unless table[:rows][1][key].blank?
         indicator_key.update_attributes({'history' => attrs})
       else
-        errors['1'].push(key) unless indicator_key
+        errors['1'].push(key)
       end
 
     }
@@ -53,9 +53,22 @@ class KeyIndicateMap::IndicatorFile
         next if key == "towns" || val.blank?
         indicator = KeyIndicateMap::Indicator.new
         indicator.value = val
-        indicator.town = town if town
+        if town
+          indicator.town = town
+        else
+          indicator['indicator_errors'] = {} if indicator['indicator_errors'].nil?
+          indicator['indicator_errors']['2'] = row['towns']
+        end
+        if indicator_keys[key]
+          indicator.key_indicate_map_indicator_key = indicator_keys[key]
+        else
+          indicator['indicator_errors'] = {} if indicator['indicator_errors'].nil?
+          indicator['indicator_errors']['1'] = {}
+          indicator['indicator_errors']['1']['key'] = key
+          indicator['indicator_errors']['1']['description'] = table[:rows][0][key]['description']
+          indicator['indicator_errors']['1']['total'] = table[:rows][1][key]['total']
+        end
         indicator.key_indicate_map_indicator_file = self._id.to_s
-        indicator.key_indicate_map_indicator_key = indicator_keys[key] if indicator_keys[key]
         indicator.save
       }
     }

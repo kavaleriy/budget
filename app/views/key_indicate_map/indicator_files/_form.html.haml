@@ -1,10 +1,35 @@
-= form_for @key_indicate_map_indicator_file do |f|
-  - if @key_indicate_map_indicator_file.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@key_indicate_map_indicator_file.errors.count, "error")} prohibited this key_indicate_map_indicator_file from being saved:"
-      %ul
-        - @key_indicate_map_indicator_file.errors.full_messages.each do |msg|
-          %li= msg
+:css
+  #indicators {
+    max-width: 100%;
+    overflow: auto;
+  }
 
-  .actions
-    = f.submit 'Save'
+.col-sm-12#indicators
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+          Місто/Область
+        - @indicators.each do |key, value|
+          %th
+            = key
+    %tbody
+      - @towns.each do |town, val|
+        %tr
+          %td
+            = town
+          - @indicators.each do |key, value|
+            %td
+              = val[key]
+
+          -#- value['towns'].each do |k, v|
+          -#  %td
+          -#    = v
+        -#= render :partial => 'key_indicate_map/indicator_keys/indicator_editable', :locals => { :key => key_indicate_map_indicator_key }
+  %br
+
+:javascript
+
+  $(document).ready(function(){
+    $('#indicators').css('height',$(window).height()*0.8 + 'px');
+  })
