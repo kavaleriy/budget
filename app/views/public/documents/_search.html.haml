@@ -7,7 +7,7 @@
 
   .col-sm-3
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.sort_by{|b| b.title }.collect { |t| [t.title, t.id, { 'data-color' => t.color }]}, @branch_select), { multiple: true, class: 'branch_select'  }
-  -#- binding.pry
+
   .col-sm-2.form-inline
     .input-group
       %span.input-group-addon
