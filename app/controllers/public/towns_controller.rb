@@ -26,8 +26,20 @@ class Public::TownsController < ApplicationController
               Town.cities + Town.towns
           end
 
-      towns.reject{|town| town.documentation_documents.empty?}.each do |town|
-        geo = TownGeojsonBuilder.build(town)
+      kyiv = ""
+      # level = 1 - regions, level = 13 - region centers
+      towns.reject{|town| town.documentation_documents.empty? && (town.level != 1 && town.level != 13) }.each do |town|
+        if town.koatuu == "8000000000"
+          kyiv = town
+        else
+          geo = TownGeojsonBuilder.build(town)
+          result << geo unless geo.blank?
+        end
+      end
+
+      if params[:type] == 'areas'
+        # Kyiv would be the last in array to be over all other svg elements
+        geo = TownGeojsonBuilder.build(kyiv)
         result << geo unless geo.blank?
       end
 

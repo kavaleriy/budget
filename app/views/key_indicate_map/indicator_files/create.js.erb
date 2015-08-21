@@ -1,26 +1,27 @@
 <% @indicator_files.each do |file| %>
     $('.documentation table tbody').append('<%= escape_javascript( render :partial => 'indicator_file', :locals => { :file => file } ) %>');
-<% end %>
-var content = "";
-$('#file_errors').html(content);
-<% if @errors["1"].length > 0 %>
-    content += "<span style='color: red;'>Наступні показники не знайдені у довіднику показників:</span>" +
-               "<ul>";
-    <% @errors["1"].each do |error| %>
-        content += "<li>" + '<%= error %>' + "</li>"
-    <% end %>
-    content += "</ul>";
-<% end %>
-<% if @errors["2"].length > 0 %>
-    content += "<span style='color: red;'>Наступні міста не знайдені у довіднику міст:</span>" +
-            "<ul>";
-    <% @errors["2"].each do |error| %>
-        content += "<li>" + '<%= error %>' + "</li>"
-    <% end %>
-    content += "</ul>";
-<% end %>
-<% if @errors["1"].length > 0 || @errors["2"].length > 0 %>
-    content += "<span style='color: red;'>Значення для цих показників/міст не будуть відображатись у порівнянні. Їх потрібно <a href='<%= %>'>відредагувати</a>.</span>";
+    var content = "";
     $('#file_errors').html(content);
+    <% if @errors["1"].length > 0 %>
+        content += "<span style='color: red;'>Наступні показники не знайдені у довіднику показників:</span>" +
+                "<ul>";
+        <% @errors["1"].each do |error| %>
+            content += "<li>" + '<%= error %>' + "</li>"
+        <% end %>
+        content += "</ul>";
+    <% end %>
+    <% if @errors["2"].length > 0 %>
+        content += "<span style='color: red;'>Наступні міста не знайдені у довіднику міст:</span>" +
+                "<ul>";
+        <% @errors["2"].each do |error| %>
+            content += "<li>" + '<%= error %>' + "</li>"
+        <% end %>
+        content += "</ul>";
+    <% end %>
+    <% if @errors["1"].length > 0 || @errors["2"].length > 0 %>
+        content += "<span style='color: red;'>Значення для цих показників/міст не будуть відображатись у порівнянні. Їх потрібно <a href='<%= edit_key_indicate_map_indicator_file_path(file) %>'>відредагувати</a>.</span>";
+        $('#file_errors').html(content);
+    <% end %>
 <% end %>
+
 

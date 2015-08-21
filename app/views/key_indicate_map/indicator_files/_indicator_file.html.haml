@@ -9,6 +9,9 @@
     %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_file', id: 'year', 'data-type' => 'select', 'data-pk' => "#{file.id}", 'data-url' => key_indicate_map_indicator_file_path(file.id), 'data-emptytext' => 'Вкажіть рік...' }
       = file['year'].to_s
   %td
+    = link_to edit_key_indicate_map_indicator_file_path(file), {:type => "button", :method => :get, :class => "btn btn-primary btn-xs"} do
+      %i.fa.fa-edit
+  %td
     = link_to 'x', file, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
 
 :javascript
