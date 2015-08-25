@@ -1,4 +1,8 @@
 :css
+  .collapse_btn {
+    border-radius: 10px;
+  }
+
   .collapse_btn.active {
     color: inherit;
   }
@@ -48,7 +52,7 @@
             - else
               - ind_value = ""
             .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-unit' => indicator.unit ? indicator.unit : ""}
-              %i.fa.fa-check
+              %i.fa.fa-circle
             %span{:style => 'font-size: 1.0em; font-weight: bold;'}
               = indicator.name
             .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : "", 'data-unit' => indicator.unit ? indicator.unit : "" }
