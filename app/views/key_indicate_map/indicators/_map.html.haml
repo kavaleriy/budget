@@ -194,7 +194,7 @@
 
         feature.attr("d", function(d){
                               var path_d = path(d);
-                              if(path(d).startsWith('ZZ')) {    // fix for Kherson region
+                              if(path_d && path_d.startsWith('ZZ')) {    // fix for Kherson region
                                  path_d = path(d).substring(2);
                               }
                               return path_d;
@@ -223,7 +223,7 @@
 
           feature.attr("d", function(d){
                                 var path_d = path(d);
-                                if(path(d).startsWith('ZZ')) {    // fix for Kherson region
+                                if(path_d && path_d.startsWith('ZZ')) {    // fix for Kherson region
                                    path_d = path(d).substring(2);
                                 }
                                 return path_d;
