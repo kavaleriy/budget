@@ -53,25 +53,23 @@
       getInfoContent: getInfoContent
     });
 
-    var key, key_name, general_content, year;
+    var key, key_name, year, current_btn, maxValue;
 
     // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
       var collapse_btn = $('.tab-pane.active .collapse_btn');
       collapse_btn.removeClass('active').addClass('non-active');
       $('.tab-pane.active .collapse_descr.in').removeClass('in');
-      var current_btn = $(this);
+      current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
       key = current_btn.data('id');
-      general_content = generate_content(current_btn);
       aRepairMap.resetData(key, year);
     });
 
     // find active button with key in shown collapse panel
     $('#indicators_list a[data-toggle="tab"]').click(function(){
-      var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
-      key = $(current_btn).data('id');
-      general_content = generate_content($(current_btn));
+      current_btn = $($($(this).attr('href')).find('.collapse_btn.active')[0]);
+      key = current_btn.data('id');
       aRepairMap.resetData(key, year);
     });
 
@@ -88,10 +86,9 @@
       dataType: 'json'
     })
     .done(function (data) {
-      var btn = $('.tab-pane.in.active .collapse_btn.active');
+      current_btn = $('.tab-pane.in.active .collapse_btn.active');
       year = $('#year_change select option:selected').val();
-      key = btn.data('id');
-      general_content = generate_content(btn);
+      key = current_btn.data('id');
       aRepairMap.addGeoJsonSvg(data, key, year, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
@@ -155,11 +152,12 @@
     function getInfoContent(properties) {
       var content = "";
       if(properties == "Ukraine") {
-        content = general_content;
+        content = generate_content();
       } else {
-        var value = 0;
+        var value = 0, num_value = 0;
         if(properties['indicators'][year] && properties['indicators'][year][key]) {
           value = properties['indicators'][year][key]['value'];
+          num_value = value;
           if(properties['indicators'][year][key]['unit']) {
             value += " " + properties['indicators'][year][key]['unit']
           }
@@ -167,17 +165,37 @@
         content =
         '<div class="title">' + key_name + '</div>' +
         '<h4>' + properties.title + '</h4>' +
-        '<span style="font-size: 1.1em;">' + value + '</span>'
+        '<span style="font-size: 1.1em;">' + value + '</span></br>';
+        content += addPercentOfMax(num_value);
       }
       return content;
     }
 
-    function generate_content(btn) {
-        key_name = btn.data('name');
+    function generate_content() {
+        key_name = current_btn.data('name');
         var content =
             '<div class="title">' + key_name + '</div>' +
             '<h4>' + I18n.t('ukraine') + '</h4>' +
-            '<span style="font-size: 1.1em;">' + btn.data('value') + " " + btn.data('unit') + '</span>';
+            '<span style="font-size: 1.1em;">' + current_btn.data('value') + " " + current_btn.data('unit') + '</span></br>';
+        if(current_btn.data('value') <= aRepairMap.getMaxValue()){
+          maxValue = aRepairMap.getMaxValue();
+        } else {
+          maxValue = current_btn.data('value');
+        }
+        content += addPercentOfMax(current_btn.data('value'));
         return content;
+    }
+
+    function addPercentOfMax(value){
+      content = "";
+      if(value <= maxValue){
+        for(var i = 0; i < Math.round((value*10)/maxValue); i++) {
+          content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
+        }
+        for(var i = 0; i < 10-Math.round((value*10)/maxValue); i++) {
+          content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
+        }
+      }
+      return content;
     }
   });

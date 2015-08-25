@@ -404,6 +404,10 @@
         }
       }
 
+      function getMaxValue() {
+        return maxValue;
+      }
+
       initMap();
       initPopup();
       initRouting();
@@ -413,7 +417,8 @@
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
         editRoute: editRoute,
-        resetData: resetData
+        resetData: resetData,
+        getMaxValue: getMaxValue
       }
     }
 
