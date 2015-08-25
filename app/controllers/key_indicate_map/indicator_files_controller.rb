@@ -123,10 +123,17 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
   end
 
   def update_key
-    binding.pry
-    @key_indicate_map_indicator_file.key_indicate_map_indicators.select{|i| i['indicator_errors'] && i['indicator_errors']['1'] == params[:old_key]}.each{|indicator|
+    old_key = params[:old_key].split("indicator_key=")[1].gsub("+"," ")
+    @key_indicate_map_indicator_file.key_indicate_map_indicators.select{|i| i['indicator_errors'] && i['indicator_errors']['1'] && i['indicator_errors']['1']['key'] == old_key}.each{|indicator|
+      key = KeyIndicateMap::IndicatorKey.find(key_indicate_map_indicator_file_params[:indicator_key])
+      key['history'] = {} if key['history'].nil?
+      year = @key_indicate_map_indicator_file.year.to_s
+      key['history'][year] = {}
+      key['history'][year]['description'] = indicator['indicator_errors']['1']['description'] unless indicator['indicator_errors']['1']['description'].nil?
+      key['history'][year]['total'] = indicator['indicator_errors']['1']['total'] unless indicator['indicator_errors']['1']['total'].nil?
+      key.save
+      indicator.key_indicate_map_indicator_key = key
       indicator['indicator_errors'].reject!{|key, value| key == '1'}
-      indicator.indicator_key_id = key_indicate_map_indicator_file_params[:indicator_key]
       indicator.save
     }
 
