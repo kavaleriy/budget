@@ -196,7 +196,7 @@
       function addGeoJsonPoints(data, getPoint, options) {
         options = options || {}
 
-        var markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
+        var markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 40 }) : new L.layerGroup();
         map.addLayer(markers);
 
         var layerOptions = {
