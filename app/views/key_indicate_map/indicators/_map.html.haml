@@ -172,6 +172,7 @@
             .data(data.features)
           .enter().append("path")
             .attr("class", "fillable_path")
+            .attr("data-id", function(d){return d.properties.id;})
             .style("cursor", "pointer")
             .style("fill", function(d){
                               if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
@@ -188,6 +189,12 @@
             })
             .on("click", function (d) {
               if (options.featureClickCallback) {
+                var el = d3.select(this);
+                if(el.style('stroke') != 'rgb(255, 255, 255)'){
+                  el.style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
+                } else {
+                  el.style('stroke','orange').style('stroke-width','3px');
+                }
                 options.featureClickCallback(d);
               }
             });
@@ -258,8 +265,39 @@
          .transition()
          .duration(750)
          .style("fill", function(d){
+                               var content = "";
+                               var compare_tr = $('#tr_' + d['properties']['id']);
                                if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+                                  if(compare_tr.length > 0) {
+                                     var value = d['properties']['indicators'][year][key]['value'];
+                                     if(value <= maxValue){
+                                        var stop;
+                                        if(value < 0) {
+                                          if(maxValue < 0) {
+                                            stop = 10 - Math.round((value*10)/(maxValue + value));
+                                          } else {
+                                            stop = 10 - Math.round(-(value*10)/(maxValue - value));
+                                          }
+                                        } else {
+                                          stop = Math.round((value*10)/maxValue);
+                                        }
+                                        for(var i = 0; i < stop; i++) {
+                                          content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
+                                        }
+                                        for(var i = 0; i < 10-stop; i++) {
+                                          content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
+                                        }
+                                     }
+                                     content += " " + value;
+                                     compare_tr.find('.key_value').html(content);
+                                  }
                                   return colorScale(d['properties']['indicators'][year][key]['value']);
+                                }
+                                if(compare_tr.length > 0) {
+                                  for(var i = 0; i < 10; i++) {
+                                    content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
+                                  }
+                                  compare_tr.find('.key_value').html(content);
                                 }
                                 return colorScale(0);
                               })

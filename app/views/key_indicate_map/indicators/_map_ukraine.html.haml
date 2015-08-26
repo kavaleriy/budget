@@ -63,6 +63,7 @@
       current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
       key = current_btn.data('id');
+      $('#key_description .content').html(current_btn.data('description'));
       aRepairMap.resetData(key, year);
     });
 
@@ -70,6 +71,7 @@
     $('#indicators_list a[data-toggle="tab"]').click(function(){
       current_btn = $($($(this).attr('href')).find('.collapse_btn.active')[0]);
       key = current_btn.data('id');
+      $('#key_description .content').html(current_btn.data('description'));
       aRepairMap.resetData(key, year);
     });
 
@@ -89,6 +91,7 @@
       current_btn = $('.tab-pane.in.active .collapse_btn.active');
       year = $('#year_change select option:selected').val();
       key = current_btn.data('id');
+      $('#key_description .content').html(current_btn.data('description'));
       aRepairMap.addGeoJsonSvg(data, key, year, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
@@ -145,8 +148,28 @@
     }
 
     function onFeatureClick(feature) {
-      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
-      window.location = town_url
+      removeRow = function(el) {
+          d3.select('path[data-id="' + $(el).parents("tr").attr('id').split('tr_')[1] + '"]').style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
+          $(el).parents("tr").remove();
+      }
+      if($('#tr_' + feature.properties.id).length > 0) {
+        $('#tr_' + feature.properties.id).remove();
+      } else {
+        var content =
+          '<tr id="tr_' + feature.properties.id + '">' +
+          '<td><button class="btn btn-xs btn-default" onclick="removeRow(this)" style="border:none;">x</button></td>' +
+          '<td><a href="' + "#{public_path('ID')}".replace('ID', feature.properties.id) + '">' + feature.properties.title + '</a></td>';
+        if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
+          var value = feature.properties['indicators'][year][key]['value'];
+          content += '<td class="key_value">';
+          content += addPercentOfMax(value);
+          content += " " + value + '</td>';
+        } else {
+          content += '<td class="key_value"></td>';
+        }
+        content += '</tr>';
+        $('#key_comparison table').append(content);
+      }
     }
 
     function getInfoContent(properties) {
@@ -189,10 +212,20 @@
     function addPercentOfMax(value){
       content = "";
       if(value <= maxValue){
-        for(var i = 0; i < Math.round((value*10)/maxValue); i++) {
+        var stop;
+        if(value < 0) {
+          if(maxValue < 0) {
+            stop = 10 - Math.round((value*10)/(maxValue + value));
+          } else {
+            stop = 10 - Math.round(-(value*10)/(maxValue - value));
+          }
+        } else {
+          stop = Math.round((value*10)/maxValue);
+        }
+        for(var i = 0; i < stop; i++) {
           content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
         }
-        for(var i = 0; i < 10-Math.round((value*10)/maxValue); i++) {
+        for(var i = 0; i < 10-stop; i++) {
           content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
         }
       }

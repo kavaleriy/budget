@@ -44,19 +44,42 @@
         - j = 0
         - value['indicators'].each do |indicator|
           .container
-            - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['total']
-              - if indicator['integer_or_float'] == 'float'
-                - ind_value = indicator['history'][current_year.to_s]['total'].to_f.round(2)
+            - if indicator['history'] && indicator['history'][current_year.to_s]
+              - if indicator['history'][current_year.to_s]['total']
+                - if indicator['integer_or_float'] == 'float'
+                  - ind_value = indicator['history'][current_year.to_s]['total'].to_f.round(2)
+                - else
+                  - ind_value = indicator['history'][current_year.to_s]['total']
               - else
-                - ind_value = indicator['history'][current_year.to_s]['total']
+                - ind_value = ""
+              - if indicator['history'][current_year.to_s]['description']
+                - ind_description = indicator['history'][current_year.to_s]['description']
+              - else
+                - ind_description = ""
             - else
               - ind_value = ""
-            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-toggle' => 'collapse', 'data-target' => '#key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-unit' => indicator.unit ? indicator.unit : ""}
+              - ind_description = ""
+            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", :id => 'key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-description' => ind_description, 'data-unit' => indicator.unit ? indicator.unit : ""}
               %i.fa.fa-circle
             %span{:style => 'font-size: 1.0em; font-weight: bold;'}
               = indicator.name
-            .collapse_descr.collapse{:id => 'key_' + indicator._id.to_s, :class => j == 0 ? "in" : "", 'data-unit' => indicator.unit ? indicator.unit : "" }
-              - if indicator['history'] && indicator['history'][current_year.to_s] && indicator['history'][current_year.to_s]['description']
-                = indicator['history'][current_year.to_s]['description']
           - j = j + 1
       - i = i + 1
+  #key_description
+    %h4
+      Пояснення
+    .content
+  #key_comparison
+    %h4
+      Порівняння
+    %table.table
+      %thead
+        %tr
+          %th
+          %th
+          %th
+      %tbody
+    %small
+      * додати місто/область у порівняння: клікніть по місту/області на карті
+      %br
+      * видалити місто/область з порівняння: повторно клікніть по місту/області на карті, або клікніть по 'x' у потрібній стрічці
