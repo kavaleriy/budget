@@ -75,12 +75,12 @@ namespace :koatuu do
   desc "Set geo-data from OSM"
   task :update_coordinates => :environment do
     Town.each do |town|
-      town.update(:coordinates => get_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
+      town.update(:coordinates => get_town_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
     end
   end
 
   private
-    def get_coordinates location
+    def get_town_coordinates location
       Geocoder.coordinates(location)
     end
 
