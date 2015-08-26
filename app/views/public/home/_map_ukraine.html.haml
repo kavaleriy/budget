@@ -1,6 +1,6 @@
 :css
   .map_container {
-    height: 500px;
+    height: 600px;
   }
 
   .map_container svg {
@@ -80,7 +80,7 @@
     var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
 
     var icons = {}
-    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'})
+    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
     icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
 
     function getPoint(properties) {
