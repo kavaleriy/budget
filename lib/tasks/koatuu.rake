@@ -39,13 +39,11 @@ namespace :koatuu do
 
 
     # post-process
-    Town.where(:koatuu => ['8000000000', '1210400000', '1211000000', '1410600000', '1412300000', '1413500000']).update_all( {:level => 2 } )
-
-    Town.where(:koatuu => '8000000000').first.update( { :level => 1} ) # kyiv
-
+    # Town.where(:koatuu => '8000000000').first.update( { :level => 1} ) # kyiv
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
 
     # Town.delete_all(:koatuu => '8500000000') # Sevastopol
+
     Town.delete_all(:level => nil)
 
     # calculate area title

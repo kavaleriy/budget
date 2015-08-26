@@ -39,6 +39,8 @@ namespace :uk_areas do
     end
   end
 
+  private
+
   def get_coordinates(lat, lon)
     [lat.to_f.round(2), lon.to_f.round(2)]
   end
