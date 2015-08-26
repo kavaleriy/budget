@@ -1,29 +1,34 @@
 :css
-  .map_container {
+  #custom_map {
     height: 600px;
+    border: 1px solid #777;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background: #ddd;
   }
 
-  .map_container svg {
+  #custom_map svg {
     position: relative;
   }
 
-  .map_container path {
+  #custom_map path {
     fill: orange;
     fill-opacity: .5;
     stroke: #fff;
     stroke-width: 1.5px;
   }
 
-  .map_container path:hover {
+  #custom_map path:hover {
     fill-opacity: 1.0;
   }
 
-  .leaflet-container {
+  #custom_map .leaflet-container {
     background: transparent;
     cursor: default;
   }
 
-  .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
+  #custom_map .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
     display: none;
   }
 
@@ -37,9 +42,8 @@
     margin: 0 0 10px 0;
   }
 
-= content_for :top do
-  .map_container.col-sm-12.col-md-8
-    = render partial: 'map'
+#custom_map.map_container
+  = render partial: 'map'
 
 :javascript
 
