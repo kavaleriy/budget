@@ -7,9 +7,17 @@
 
 :javascript
   $(document).ready(function() {
-    $(".owl-example").owlCarousel({
+
+    var owl = $(".owl-example");
+
+    owl.owlCarousel({
 
       //Count on page
-      items : 6
+      items : 8,
+      navigation: true,
+      navigationText: [
+      "<span class='fa fa-chevron-left fa-3x'></span>",
+      "<span class='fa fa fa-chevron-right fa-3x'></span>"
+      ]
       });
   })

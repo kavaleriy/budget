@@ -11,19 +11,22 @@
 /* Styling Next and Prev buttons */
 
 .owl-theme .owl-controls .owl-buttons div{
-	color: #FFF;
+	color: #869791;
 	display: inline-block;
-	zoom: 1;
+	/*zoom: 1;*/
 	*display: inline;/*IE7 life-saver */
-	margin: 5px;
-	padding: 3px 10px;
-	font-size: 12px;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	border-radius: 30px;
-	background: #869791;
+	/*margin: 5px;*/
+	/*font-size: 12px;*/
+	/*-webkit-border-radius: 30px;*/
+	/*-moz-border-radius: 30px;*/
+	/*border-radius: 30px;*/
+	/*background: #869791;*/
 	filter: Alpha(Opacity=50);/*IE7 fix*/
 	opacity: 0.5;
+
+    /*width: 3vw;*/
+    /*height: 3vw;*/
+    padding: 6px
 }
 /* Clickable class fix problem with hover on touch devices */
 /* Use it for non-touch hover action */
@@ -76,4 +79,23 @@
 .owl-item.loading{
 	min-height: 150px;
 	background: url(AjaxLoader.gif) no-repeat center center
+}
+
+
+.wrapper-with-margin{
+    margin:0px 50px;
+}
+
+.owl-theme .owl-controls .owl-buttons div {
+    position: absolute;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-prev{
+    left: -30px;
+    top: 35%;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-next{
+    right: -30px;
+    top: 35%;
 }
