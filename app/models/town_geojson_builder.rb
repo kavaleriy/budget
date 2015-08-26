@@ -1,6 +1,7 @@
 class TownGeojsonBuilder
 
   def self.build(town)
+
     if town.get_level == :area
       build_area town
     else

@@ -238,6 +238,7 @@
 
           feature.attr("d", function(d){
                                 var path_d = path(d);
+                                console.log(d)
                                 if(path_d && path_d.startsWith('ZZ')) {    // fix for Kherson region
                                    path_d = path(d).substring(2);
                                 }
