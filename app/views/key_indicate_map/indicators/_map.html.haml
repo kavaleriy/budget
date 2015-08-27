@@ -81,22 +81,23 @@
       function initMap() {
         var mapSettings = { };
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true;
+        mapSettings.maxZoom = options.maxZoom;
         mapSettings.dragging = options.dragging;
         map = L.map('map', mapSettings);
-
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
           id: 'begemot.mbl2go4k',
           accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
         };
-        if (options.minZoom)
+        if (options.minZoom){
           layerSettings.minZoom = options.minZoom;
-        if (options.maxZoom)
+        }
+        if (options.maxZoom){
           layerSettings.maxZoom = options.maxZoom;
+        }
 
         //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
-
 
         addSvgLayer();
         function addSvgLayer() {
@@ -348,7 +349,7 @@
             },
             mouseout: function () {
               //geoJson.resetStyle(layer)
-              info.update();
+              info.update(options.getInfoContent("Ukraine"));
             }
           });
         }

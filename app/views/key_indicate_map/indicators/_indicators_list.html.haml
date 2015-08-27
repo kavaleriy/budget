@@ -44,22 +44,7 @@
         - j = 0
         - value['indicators'].each do |indicator|
           .container
-            - if indicator['history'] && indicator['history'][current_year.to_s]
-              - if indicator['history'][current_year.to_s]['total']
-                - if indicator['integer_or_float'] == 'float'
-                  - ind_value = indicator['history'][current_year.to_s]['total'].to_f.round(2)
-                - else
-                  - ind_value = indicator['history'][current_year.to_s]['total']
-              - else
-                - ind_value = ""
-              - if indicator['history'][current_year.to_s]['description']
-                - ind_description = indicator['history'][current_year.to_s]['description']
-              - else
-                - ind_description = ""
-            - else
-              - ind_value = ""
-              - ind_description = ""
-            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", :id => 'key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-description' => ind_description, 'data-unit' => indicator.unit ? indicator.unit : ""}
+            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", :id => 'key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-unit' => indicator.unit ? indicator.unit : ""}
               %i.fa.fa-circle
             %span{:style => 'font-size: 1.0em; font-weight: bold;'}
               = indicator.name

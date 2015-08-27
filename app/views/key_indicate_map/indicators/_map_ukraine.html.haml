@@ -42,8 +42,27 @@
     margin: 0 0 10px 0;
   }
 
+  #spinner {
+    display: none;
+  }
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 100px; /* width of the spinner gif */
+    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+  }
+
 #custom_map.map_container
   = render partial: 'map'
+  #spinner.spinner
+    %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
 
 :javascript
 
@@ -51,7 +70,9 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
+    $("#spinner").show();
+
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 9, dragging: false,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       getInfoContent: getInfoContent
@@ -92,6 +113,7 @@
       dataType: 'json'
     })
     .done(function (data) {
+      $("#spinner").hide();
       current_btn = $('.tab-pane.in.active .collapse_btn.active');
       year = $('#year_change select option:selected').val();
       key = current_btn.data('id');
@@ -108,17 +130,17 @@
     // add markers
     $.ajax({
       method: 'get',
-      url: '/key_indicate_map/indicators/geo_json',
+      url: '/key_indicate_map/indicators/geo_json/towns',
       dataType: 'json'
     })
     .done(function (data) {
       aRepairMap.addGeoJsonPoints(data, getPoint, {
         clustered: true,
         style: {
-          opacity: 0.8,
+          opacity: 0.8
         },
         hoverStyle: {
-          opacity: 1,
+          opacity: 1
         },
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent
@@ -131,8 +153,8 @@
     var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
 
     var icons = {};
-    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'});
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'});
+    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
 
     function getPoint(properties) {
       var point = {};

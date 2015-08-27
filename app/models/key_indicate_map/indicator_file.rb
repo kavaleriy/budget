@@ -47,7 +47,7 @@ class KeyIndicateMap::IndicatorFile
     # rows for all other towns and regions
     table[:rows].each_with_index { |row, index|
       next if index < 2
-      town = ::Town.any_of(:title => /#{row['towns']}/i).first # case insensitive search of town or region
+      town = ::Town.any_of(:title => /#{row['towns'].strip}/i).first # case insensitive search of town or region
       errors['2'].push(row['towns']) unless town
       row.each{|key, val|
         next if key == "towns" || val.blank?
