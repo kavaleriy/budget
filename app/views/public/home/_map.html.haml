@@ -179,7 +179,7 @@
       }
 
       function addGeoJsonPoints(data, getPoint, options) {
-        options = options || {}
+        options = options || {};
 
         var markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
         map.addLayer(markers);
@@ -202,12 +202,12 @@
         }
 
         function getPointToLayer(feature, latlng) {
-          var point = getPoint(feature.properties)
+          var point = getPoint(feature.properties);
 
           return L.marker(latlng, {
             icon: point.icon,
             opacity: 1,
-            draggable: point.draggable,
+            draggable: point.draggable
           });
         }
 

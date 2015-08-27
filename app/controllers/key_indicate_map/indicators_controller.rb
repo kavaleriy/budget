@@ -84,19 +84,8 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
               Town.cities + Town.towns
           end
 
-      kyiv = ""
       towns.reject{|town| town.key_indicate_map_indicators.empty? }.each do |town|
-        if town.koatuu == "8000000000"
-          kyiv = town
-        else
-          geo = TownIndicatorsGeojsonBuilder.build(town)
-          result << geo unless geo.blank?
-        end
-      end
-
-      if params[:type] == 'areas'
-        # Kyiv would be the last in array to be over all other svg elements
-        geo = TownIndicatorsGeojsonBuilder.build(kyiv)
+        geo = TownIndicatorsGeojsonBuilder.build(town)
         result << geo unless geo.blank?
       end
 
