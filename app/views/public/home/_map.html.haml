@@ -187,15 +187,14 @@
         var layerOptions = {
           pointToLayer: getPointToLayer,
           onEachFeature: onEachFeature,
-          coordsToLatLng: coordsToLatLng,
-        }
+          coordsToLatLng: coordsToLatLng
+        };
         if (options.style)
-          layerOptions.style = options.style
+          layerOptions.style = options.style;
         if (options.hoverStyle)
-          layerOptions.hoverStyle = options.hoverStyle
+          layerOptions.hoverStyle = options.hoverStyle;
 
         geoJson = L.geoJson(data, layerOptions).addTo(markers);
-
 
         function coordsToLatLng(coords) {
           return L.latLng(coords)
@@ -212,6 +211,7 @@
         }
 
         function onEachFeature(feature, layer) {
+
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
           layer.on({
@@ -270,30 +270,28 @@
           self.selectedRoute = L.Routing.control({
             routeWhileDragging: true,
             waypoints: waypoints
-          })
+          });
 
           self.selectedRoute.on('routesfound', function(router) {
             if (routeFoundCallback) {
               routeFoundCallback(router.routes[0].coordinates)
             }
-          })
+          });
 
           self.selectedRoute.addTo(map);
         }
       }
 
-
-
-      initMap()
-      initPopup()
-      initRouting()
-      addControl()
+      initMap();
+      initPopup();
+      initRouting();
+      addControl();
 
       return {
         map: map,
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
-        editRoute: editRoute,
+        editRoute: editRoute
       }
     }
 
