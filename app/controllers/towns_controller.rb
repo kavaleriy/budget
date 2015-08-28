@@ -66,7 +66,6 @@ class TownsController < ApplicationController
       attrs = town_params
       attrs.delete(:coordinates)
       coordinates = eval(town_params[:coordinates] || '')
-      binding.pry
 
       if @town.update(attrs)
         @town.update(coordinates: coordinates)
