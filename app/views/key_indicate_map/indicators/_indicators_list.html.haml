@@ -17,12 +17,26 @@
     margin-bottom: 15px;
   }
 
+  .select_tag {
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+
+  @media screen and (min-width: 1300px) {
+    h2 {
+      font-size: 1.4em;
+      moz-font-size: 1.0em;
+    }
+  }
+
 - if @indicator_keys.length > 0
   - current_year = @years.max
   .container
   %h2#year_change
     = t('key_indicate_map.indicators.indicators_list.keys')
-    = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
+    .select_tag
+      = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
     = t('key_indicate_map.indicators.indicators_list.year')
   %ul.nav.nav-tabs
     - i = 0
@@ -31,20 +45,24 @@
         %a{:href => "#group_" + i.to_s, 'data-toggle' => "tab", :title => group}
           %i.fa.fa-lg{:class => value['group_icon']}
       - i = i + 1
-  .tab-content
+  .tab-content.group_content
     - i = 0
     - @indicator_keys.each do |group, value|
       .tab-pane{:class => i == 0 ? "in active" : "", :id => "group_" + i.to_s}
         .group_header
           = group
-        - j = 0
-        - value['indicators'].each do |indicator|
-          .container
-            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-id' => indicator['id'], 'data-name' => indicator['name'] }
-              %i.fa.fa-circle
-            %span{:style => 'font-size: 1.0em; font-weight: bold;'}
-              = indicator['name']
-          - j = j + 1
+        %table
+          %tbody
+            - j = 0
+            - value['indicators'].each do |indicator|
+              %tr
+                %td
+                  .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-id' => indicator['id'], 'data-name' => indicator['name'] }
+                    %i.fa.fa-circle
+                %td{:class => 'key_href'}
+                  %a{:href => '#'}
+                    = indicator['name']
+              - j = j + 1
       - i = i + 1
   #key_description
     %h4

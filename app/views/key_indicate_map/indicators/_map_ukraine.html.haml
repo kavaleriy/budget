@@ -9,9 +9,15 @@
 
     I18n.locale = window.aHelper.lang();
 
+    var zoom = 6;
+    var window_width = $(window).width();
+    if(window_width < 1300) {
+      zoom = 5.5;
+    }
+
     $("#spinner").show();
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 9, dragging: false,
+    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: zoom, minZoom: 6, maxZoom: 9, dragging: false,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       getInfoContent: getInfoContent,
@@ -62,6 +68,11 @@
     $('#year_change').on("change", function(){
       year = $('#year_change select option:selected').val();
       resetData();
+    });
+
+    // on key click
+    $('.key_href a').on("click", function(){
+      $(this).parent().prev().find('.collapse_btn').click();
     });
 
     function resetData() {
