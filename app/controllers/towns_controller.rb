@@ -63,9 +63,12 @@ class TownsController < ApplicationController
   # PATCH/PUT /indicator_files/1.json
   def update
     respond_to do |format|
-      params[:town]['coordinates'] = eval(params[:town]['coordinates'])
+      attrs = town_params
+      attrs.delete(:coordinates)
+      coordinates = eval(town_params[:coordinates] || '')
 
-      if @town.update(town_params)
+      if @town.update(attrs)
+        @town.update(coordinates: coordinates)
         format.html { redirect_to @town, notice: 'Town was successfully updated.' }
         format.json { render :show, status: :ok, location: @town }
       else
