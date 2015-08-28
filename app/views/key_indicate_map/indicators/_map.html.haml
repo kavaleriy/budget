@@ -12,20 +12,6 @@
 = javascript_include_tag "leaflet/markercluster.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
-:css
-  .css-icon {
-    border-radius: 50%;
-    background-color: red;
-  }
-
-  .css-icon:hover {
-    border: 3px solid orange;
-  }
-
-  .css-icon.selected-icon {
-    border: 3px solid orange;
-  }
-
 #map
 
 :javascript
@@ -38,7 +24,7 @@
       options = options || {};
 
       var map;
-      var svg, g, colorScale, sizeScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue;
+      var svg, g, colorScale, sizeScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue, selected_towns = [];
       var popup;
       var router;
       var info, legend, markers, towns_options;
@@ -245,42 +231,42 @@
          .transition()
          .duration(750)
          .style("fill", function(d){
-                               var content = "";
-                               var compare_tr = $('#tr_' + d['properties']['id']);
+                               updateTownsCompareInfo(d, key, year);
                                if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
-                                  if(compare_tr.length > 0) {
-                                     var value = d['properties']['indicators'][year][key];
-                                     if(value <= areas_maxValue){
-                                        var stop;
-                                        if(value < 0) {
-                                          if(areas_maxValue < 0) {
-                                            stop = 10 - Math.round((value*10)/(areas_maxValue + value));
-                                          } else {
-                                            stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
-                                          }
-                                        } else {
-                                          stop = Math.round((value*10)/areas_maxValue);
-                                        }
-                                        for(var i = 0; i < stop; i++) {
-                                          content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
-                                        }
-                                        for(var i = 0; i < 10-stop; i++) {
-                                          content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
-                                        }
-                                     }
-                                     content += " " + value;
-                                     compare_tr.find('.key_value').html(content);
-                                  }
                                   return colorScale(d['properties']['indicators'][year][key]);
-                                }
-                                if(compare_tr.length > 0) {
-                                  for(var i = 0; i < 10; i++) {
-                                    content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
-                                  }
-                                  compare_tr.find('.key_value').html(content);
                                 }
                                 return colorScale(0);
                               })
+      }
+
+      function updateTownsCompareInfo(d, key, year) {
+         var content = "";
+         var compare_tr = $('#tr_' + d['properties']['id']);
+         if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            if(compare_tr.length > 0) {
+               var value = d['properties']['indicators'][year][key];
+               if(value <= areas_maxValue){
+                  var stop;
+                  if(value < 0) {
+                    if(areas_maxValue < 0) {
+                      stop = 10 - Math.round((value*10)/(areas_maxValue + value));
+                    } else {
+                      stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
+                    }
+                  } else {
+                    stop = Math.round((value*10)/areas_maxValue);
+                  }
+                  for(var i = 0; i < stop; i++) {
+                    content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
+                  }
+                  for(var i = 0; i < 10-stop; i++) {
+                    content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
+                  }
+               }
+               content += " " + value;
+               compare_tr.find('.key_value').html(content);
+            }
+          }
       }
 
       function addGeoJsonPoints(data, options) {
@@ -333,11 +319,18 @@
           } else {
             size = sizeScale(0);
           }
-
-          var svgIcon = L.divIcon({
-            className: 'css-icon',
-            iconSize: [size, size]
-          });
+          var svgIcon;
+          if(selected_towns.indexOf(feature.properties.id) >= 0) {
+             svgIcon = L.divIcon({
+               className: 'css-icon selected-icon',
+               iconSize: [size, size]
+             });
+          } else {
+            svgIcon = L.divIcon({
+              className: 'css-icon',
+              iconSize: [size, size]
+            });
+          }
 
           return L.marker(latlng, {
             icon: svgIcon,
@@ -353,16 +346,19 @@
           } else {
             size = sizeScale(0);
           }
+          updateTownsCompareInfo(feature, key, year);
 
           layer.on({
             click: function (e) {
               if(e.target.options.icon.options.className == "css-icon") {
+                selected_towns.push(feature.properties.id);
                 var selectedIcon = L.divIcon({
                   className: 'css-icon selected-icon',
                   iconSize: [size, size]
                 });
                 e.target.setIcon(selectedIcon);
               } else {
+                selected_towns.splice(selected_towns.indexOf(feature.properties.id), 1);
                 var selectedIcon = L.divIcon({
                   className: 'css-icon',
                   iconSize: [size, size]

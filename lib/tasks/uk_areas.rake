@@ -17,7 +17,7 @@ namespace :uk_areas do
       geometry_type = f['geometry']['type']
       coordinates = []
 
-      divider = 10
+      divider = 3
 
       case geometry_type
         when 'MultiPolygon'
