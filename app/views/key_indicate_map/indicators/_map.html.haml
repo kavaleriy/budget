@@ -12,6 +12,20 @@
 = javascript_include_tag "leaflet/markercluster.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
+:css
+  .css-icon {
+    border-radius: 50%;
+    background-color: red;
+  }
+
+  .css-icon:hover {
+    border: 3px solid orange;
+  }
+
+  .css-icon.selected-icon {
+    border: 3px solid orange;
+  }
+
 #map
 
 :javascript
@@ -24,11 +38,11 @@
       options = options || {};
 
       var map;
-      var svg, g, colorScale, minValue, maxValue;
+      var svg, g, colorScale, sizeScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue;
       var popup;
       var router;
-      var info, legend;
-      var current_data;
+      var info, legend, markers, towns_options;
+      var areas_data, towns_data;
 
       var self = this;
 
@@ -38,7 +52,7 @@
         mapSettings.maxZoom = options.maxZoom;
         mapSettings.dragging = options.dragging;
         map = L.map('map', mapSettings);
-        map.doubleClickZoom.disable(); 
+        map.doubleClickZoom.disable();
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -114,7 +128,7 @@
       function addGeoJsonSvg(data, options) {
         options = options || {};
 
-        current_data = data;
+        areas_data = data;
         var key = options.key;
         var year = options.year;
         setColorDomain(key, year);
@@ -188,27 +202,45 @@
       }
 
       function setColorDomain(key, year){
-        maxValue = d3.max(current_data['features'], function(d){
+        areas_maxValue = d3.max(areas_data['features'], function(d){
           // change to actual year and indicator key!!!
           if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
             return d['properties']['indicators'][year][key];
           }
           return 0;
         });
-        minValue = d3.min(current_data['features'], function(d){
+        areas_minValue = d3.min(areas_data['features'], function(d){
           // change to actual year and indicator key!!!
           if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
             return d['properties']['indicators'][year][key];
           }
           return 0;
         });
-        colorScale.domain([minValue, maxValue]);
+        colorScale.domain([areas_minValue, areas_maxValue]);
+      }
+
+      function setSizeDomain(key, year){
+        towns_maxValue = d3.max(towns_data['features'], function(d){
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+
+            return d['properties']['indicators'][year][key];
+          }
+          return 0;
+        });
+        towns_minValue = d3.min(towns_data['features'], function(d){
+          if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+            return d['properties']['indicators'][year][key];
+          }
+          return 0;
+        });
+        sizeScale.domain([towns_minValue, towns_maxValue]);
       }
 
       function resetData(key, year) {
         setColorDomain(key, year);
         legend.update(key);
         info.update(options.getInfoContent("Ukraine"));
+        resetMarkers(key, year, {});
         g.selectAll('.fillable_path')
          .transition()
          .duration(750)
@@ -218,16 +250,16 @@
                                if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
                                   if(compare_tr.length > 0) {
                                      var value = d['properties']['indicators'][year][key];
-                                     if(value <= maxValue){
+                                     if(value <= areas_maxValue){
                                         var stop;
                                         if(value < 0) {
-                                          if(maxValue < 0) {
-                                            stop = 10 - Math.round((value*10)/(maxValue + value));
+                                          if(areas_maxValue < 0) {
+                                            stop = 10 - Math.round((value*10)/(areas_maxValue + value));
                                           } else {
-                                            stop = 10 - Math.round(-(value*10)/(maxValue - value));
+                                            stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
                                           }
                                         } else {
-                                          stop = Math.round((value*10)/maxValue);
+                                          stop = Math.round((value*10)/areas_maxValue);
                                         }
                                         for(var i = 0; i < stop; i++) {
                                           content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
@@ -251,13 +283,32 @@
                               })
       }
 
-      function addGeoJsonPoints(data, getPoint, options) {
+      function addGeoJsonPoints(data, options) {
         options = options || {};
+        towns_options = options;
 
         if(!data || data.length < 1) return;
 
-        var markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
+        towns_data = data;
+
+        sizeScale = d3.scale.linear()
+                         .range([10, 60]);
+
+        resetMarkers(options.key, options.year, options);
+      }
+
+      function resetMarkers(key, year, options) {
+        if(markers){
+          map.removeLayer(markers);
+        }
+        if($.isEmptyObject(options)) {
+          options = towns_options;
+        }
+
+        markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
         map.addLayer(markers);
+
+        setSizeDomain(key, year);
 
         var layerOptions = {
           pointToLayer: getPointToLayer,
@@ -269,29 +320,56 @@
         if (options.hoverStyle)
           layerOptions.hoverStyle = options.hoverStyle;
 
-        geoJson = L.geoJson(data, layerOptions).addTo(markers);
-
+        geoJson = L.geoJson(towns_data, layerOptions).addTo(markers);
 
         function coordsToLatLng(coords) {
-          //map.panTo(L.latLng(coords));
           return L.latLng(coords);
         }
 
         function getPointToLayer(feature, latlng) {
-          var point = getPoint(feature.properties);
+          var size = 0;
+          if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
+            size = sizeScale(feature.properties['indicators'][year][key]);
+          } else {
+            size = sizeScale(0);
+          }
+
+          var svgIcon = L.divIcon({
+            className: 'css-icon',
+            iconSize: [size, size]
+          });
 
           return L.marker(latlng, {
-            icon: point.icon,
-            opacity: 1,
-            draggable: point.draggable
+            icon: svgIcon,
+            opacity: 1
           });
         }
 
         function onEachFeature(feature, layer) {
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
+          var size = 0;
+          if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
+            size = sizeScale(feature.properties['indicators'][year][key]);
+          } else {
+            size = sizeScale(0);
+          }
 
           layer.on({
-            click: function () {
+            click: function (e) {
+              if(e.target.options.icon.options.className == "css-icon") {
+                var selectedIcon = L.divIcon({
+                  className: 'css-icon selected-icon',
+                  iconSize: [size, size]
+                });
+                e.target.setIcon(selectedIcon);
+              } else {
+                var selectedIcon = L.divIcon({
+                  className: 'css-icon',
+                  iconSize: [size, size]
+                });
+                e.target.setIcon(selectedIcon);
+              }
+
               if (options.featureClickCallback)
                 options.featureClickCallback(feature, popup);
             },
@@ -340,13 +418,13 @@
         };
 
         legend.update = function(key) {
-          var d = (maxValue - minValue)/5,
+          var d = (areas_maxValue - areas_minValue)/5,
               grades = [], initial_grades = [],
               labels = ['<span class="key_unit">' + options.getUnit() + "</span>"],
               from, to;
 
           for(var i = 0; i < 5; i++){
-            initial_grades[i] = Math.round(minValue + d*i);
+            initial_grades[i] = Math.round(areas_minValue + d*i);
           }
 
           // remove duplicated values
@@ -390,8 +468,8 @@
         }
       }
 
-      function getMaxValue() {
-        return maxValue;
+      function getAreasMaxValue() {
+        return areas_maxValue;
       }
 
       initMap();
@@ -404,7 +482,7 @@
         addGeoJsonPoints: addGeoJsonPoints,
         editRoute: editRoute,
         resetData: resetData,
-        getMaxValue: getMaxValue
+        getAreasMaxValue: getAreasMaxValue
       }
     }
 

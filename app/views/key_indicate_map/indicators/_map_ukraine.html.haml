@@ -18,7 +18,7 @@
       getUnit: getUnit
     });
 
-    var keys, maxValue;
+    var keys, areas_maxValue;
     var key_description = $('#key_description .content');
     var current_btn = $('.tab-pane.in.active .collapse_btn.active');
     var year = $('#year_change select option:selected').val();
@@ -105,7 +105,7 @@
       dataType: 'json'
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
+      aRepairMap.addGeoJsonPoints(data, {
         clustered: true,
         style: {
           opacity: 0.8
@@ -114,36 +114,14 @@
           opacity: 1
         },
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent
+        getInfoContent: getInfoContent,
+        key: key,
+        year: year
       })
     })
     .fail(function () {
       console.log("towns were not loaded");
     });
-
-    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-
-    var icons = {};
-    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
-
-    function getPoint(properties) {
-      var point = {};
-      switch (properties.level) {
-        case 'city':
-          point.icon = icons.city;
-          break;
-        case 'town':
-          point.icon = icons.town;
-          break;
-        default:
-          point.icon = new L.Icon.Default();
-          break
-      }
-
-      return point
-    }
 
     function onFeatureClick(feature) {
       removeRow = function(el) {
@@ -211,10 +189,10 @@
             '<div class="title">' + keys[key]['name'] + '</div>' +
             '<h4>' + I18n.t('ukraine') + '</h4>' +
             '<span style="font-size: 1.1em;">' + total_value + " " + keys[key]['unit'] + '</span></br>';
-        if(total_value <= aRepairMap.getMaxValue()){
-          maxValue = aRepairMap.getMaxValue();
+        if(total_value <= aRepairMap.getAreasMaxValue()){
+          areas_maxValue = aRepairMap.getAreasMaxValue();
         } else {
-          maxValue = total_value;
+          areas_maxValue = total_value;
         }
         content += addPercentOfMax(total_value);
         return content;
@@ -222,16 +200,16 @@
 
     function addPercentOfMax(value){
       content = "";
-      if(value <= maxValue){
+      if(value <= areas_maxValue){
         var stop;
         if(value < 0) {
-          if(maxValue < 0) {
-            stop = 10 - Math.round((value*10)/(maxValue + value));
+          if(areas_maxValue < 0) {
+            stop = 10 - Math.round((value*10)/(areas_maxValue + value));
           } else {
-            stop = 10 - Math.round(-(value*10)/(maxValue - value));
+            stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
           }
         } else {
-          stop = Math.round((value*10)/maxValue);
+          stop = Math.round((value*10)/areas_maxValue);
         }
         for(var i = 0; i < stop; i++) {
           content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
