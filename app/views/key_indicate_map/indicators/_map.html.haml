@@ -12,52 +12,6 @@
 = javascript_include_tag "leaflet/markercluster.js"
 = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
-
-:css
-  #map {
-    width: 100%;
-    height: 100%;
-  }
-
-  .info {
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    background: white;
-    opacity: .9;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-  }
-  .info .title {
-    /*margin: 0 0 5px;*/
-    color: #777;
-  }
-
-  .info.field {
-    width: 300px;
-    min-width: 300px;
-  }
-
-  .legend {
-    min-width: 180px;
-    text-align: left;
-    line-height: 18px;
-    color: #555;
-  }
-  .legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-  }
-
-  .key_unit {
-    margin-left: 25px;
-    font-weight: bold;
-  }
-
 #map
 
 :javascript
@@ -156,10 +110,12 @@
         router = L.Routing.osrm()
       }
 
-      function addGeoJsonSvg(data, key, year, options) {
+      function addGeoJsonSvg(data, options) {
         options = options || {};
 
         current_data = data;
+        var key = options.key;
+        var year = options.year;
         setColorDomain(key, year);
         addLegend(key);
         addControl(options.getInfoContent("Ukraine"));
@@ -178,8 +134,8 @@
             .attr("data-id", function(d){return d.properties.id;})
             .style("cursor", "pointer")
             .style("fill", function(d){
-                              if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
-                                  return colorScale(d['properties']['indicators'][year][key]['value']);
+                              if(d['properties']['indicators'][year]) {
+                                  return colorScale(d['properties']['indicators'][year][key] || 0);
                               }
                               return colorScale(0);
             })
@@ -194,14 +150,10 @@
               if (options.featureClickCallback) {
                 var el = d3.select(this);
                 if(el.style('stroke') != 'rgb(255, 255, 255)'){
-                  if(d['properties']['id'] != "55ba08da6f6475349ad54000") { // Kyiv
-                    $('#map svg .area:first').before(this);
-                  }
+                  $('#map svg .area:first').before(this);
                   el.style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
                 } else {
-                  if(d['properties']['id'] != "55ba08da6f6475349ad54000") { // Kyiv
-                    $('#map svg .area:last').before(this);
-                  }
+                  $('#map svg .area:last').after(this);
                   el.style('stroke','orange').style('stroke-width','3px');
                 }
                 options.featureClickCallback(d);
@@ -238,14 +190,14 @@
         maxValue = d3.max(current_data['features'], function(d){
           // change to actual year and indicator key!!!
           if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
-            return d['properties']['indicators'][year][key]['value'];
+            return d['properties']['indicators'][year][key];
           }
           return 0;
         });
         minValue = d3.min(current_data['features'], function(d){
           // change to actual year and indicator key!!!
           if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
-            return d['properties']['indicators'][year][key]['value'];
+            return d['properties']['indicators'][year][key];
           }
           return 0;
         });
@@ -264,7 +216,7 @@
                                var compare_tr = $('#tr_' + d['properties']['id']);
                                if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
                                   if(compare_tr.length > 0) {
-                                     var value = d['properties']['indicators'][year][key]['value'];
+                                     var value = d['properties']['indicators'][year][key];
                                      if(value <= maxValue){
                                         var stop;
                                         if(value < 0) {
@@ -286,7 +238,7 @@
                                      content += " " + value;
                                      compare_tr.find('.key_value').html(content);
                                   }
-                                  return colorScale(d['properties']['indicators'][year][key]['value']);
+                                  return colorScale(d['properties']['indicators'][year][key]);
                                 }
                                 if(compare_tr.length > 0) {
                                   for(var i = 0; i < 10; i++) {
@@ -389,7 +341,7 @@
         legend.update = function(key) {
           var d = (maxValue - minValue)/5,
               grades = [], initial_grades = [],
-              labels = ['<span class="key_unit">' + $('#key_' + key).data('unit') + "</span>"],
+              labels = ['<span class="key_unit">' + options.getUnit() + "</span>"],
               from, to;
 
           for(var i = 0; i < 5; i++){

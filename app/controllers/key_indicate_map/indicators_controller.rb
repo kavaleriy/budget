@@ -9,13 +9,15 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
   def index
     @indicator_keys = {}
     KeyIndicateMap::IndicatorKey.all.reject{|i| i.key_indicate_map_indicators.empty? }.each{|indicator|
-      @indicator_keys[indicator['group']] = {} if @indicator_keys[indicator['group']].nil?
-      @indicator_keys[indicator['group']]['group_icon'] = indicator['group_icon']
-      @indicator_keys[indicator['group']]['group_color'] = indicator['group_color']
-      @indicator_keys[indicator['group']]['indicators'] = [] if @indicator_keys[indicator['group']]['indicators'].nil?
-      @indicator_keys[indicator['group']]['indicators'].push(indicator)
+      group = indicator['group']
+      @indicator_keys[group] = {} if @indicator_keys[group].nil?
+      @indicator_keys[group]['group_icon'] = indicator['group_icon']
+      @indicator_keys[group]['group_color'] = indicator['group_color']
+      @indicator_keys[group]['indicators'] = [] if @indicator_keys[group]['indicators'].nil?
+      @indicator_keys[group]['indicators'].push({"id" => indicator.id.to_s, "name" => indicator['name']})
     }
-    @years = KeyIndicateMap::Indicator.all.group_by{|i| i.key_indicate_map_indicator_file.year }.keys
+    @indicator_keys = @indicator_keys.sort_by{|key, value| key }
+    @years = KeyIndicateMap::IndicatorFile.only(:year).map{|f| f.year}
   end
 
   # GET /key_indicate_map/indicators/1
@@ -101,6 +103,24 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
 
   end
 
+  def get_keys
+    @keys = {}
+
+    KeyIndicateMap::IndicatorKey.all.each{|indicator|
+      next if indicator.key_indicate_map_indicators.empty?
+      id = indicator['id'].to_s
+      @keys[id] = {} if @keys[id].nil?
+      @keys[id]['name'] = indicator['name']
+      @keys[id]['unit'] = indicator['unit']
+      @keys[id]['integer_or_float'] = indicator['integer_or_float']
+      @keys[id]['history'] = indicator['history']
+    }
+
+    respond_to do |format|
+      format.json { render json: @keys }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_key_indicate_map_indicator
@@ -109,6 +129,6 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_params
-      params[:key_indicate_map_indicator, :type]
+      params[:key_indicate_map_indicator, :type, :history]
     end
 end
