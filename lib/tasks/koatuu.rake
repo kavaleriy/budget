@@ -2,7 +2,7 @@
 
 namespace :koatuu do
 
-  desc "Load KOATUU from file"
+    desc "Load KOATUU from file"
   task :load => :environment do
 
     require 'roo'
@@ -39,7 +39,7 @@ namespace :koatuu do
 
 
     # post-process
-    Town.where(:koatuu => '8000000000').first.update( { :level => 13} ) # kyiv
+    # Town.where(:koatuu => '8000000000').first.update( { :level => 13} ) # kyiv
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
 
     # Town.delete_all(:koatuu => '8500000000') # Sevastopol
