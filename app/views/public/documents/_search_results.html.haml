@@ -11,6 +11,10 @@
     margin-top: 20px;
   }
 
+  .btn_city_add {
+    background-color: #69AEEB;
+  }
+
 #results.col-xs-12
   - if current_user
     .text-center
@@ -27,8 +31,8 @@
       - documents.select{ |doc| doc.town_id == town.id }.each do |document|
         - if document.doc_file?
           = render :partial => 'thumbnail', :locals => { :document => document }
-      .col-sm-2.doc_btn
-        %btn.btn.btn-primary{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add', :onclick => "get_dialog(this);" }
+      .col-sm-2
+        %btn.btn.btn-primary.btn-lg{:title => "додати файли", 'data-dismiss' => 'modal', 'data-target' => '#city_add_' + town.id, :class => 'btn_city_add', :onclick => "get_dialog(this);" }
           %i.fa.fa-plus.fa-lg
 
     .clear
