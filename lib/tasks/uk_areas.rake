@@ -46,7 +46,6 @@ namespace :uk_areas do
   end
 
   def get_hash
-
     file = File.read('db/uk_map_areas.geojson')
     data_hash = JSON.parse(file)
     data_hash
