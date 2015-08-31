@@ -51,7 +51,7 @@
         amountFonds += '</div>'
 
         amount_tag = ''
-        if("#{@data_type}" == "fact") {
+        if("#{@data_type}" == "fact" || node.amount_plan) {
           amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
         } else {
           amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"

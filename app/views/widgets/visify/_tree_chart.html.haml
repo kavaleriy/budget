@@ -22,6 +22,15 @@
 
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
+        - if @types_count == 2
+          .pull-right
+            .btn-group{'data-toggle' => 'buttons'}
+              %label.btn.btn-default.active.data_type
+                %input{:name => "data_type", :type => "radio", :value => "plan"}
+                = t('js.visify.plan')
+              %label.btn.btn-default.data_type
+                %input{:name => "data_type", :type => "radio", :value => "fact"}
+                = t('js.visify.fact')
         #chart
         %canvas{:style => "display: none;"}
         .pull-right
@@ -29,10 +38,6 @@
       .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
         = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
       .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
-        .pull-right
-          #pie_tooltip.hidden
-            %p
-              %span#value
         = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
       .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
         = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
@@ -53,8 +58,39 @@
 
   $(document).ready(function() {
 
-    // create chart according to the window size
-    iframe_resize();
+    var data_type = "#{@data_type}",
+        year = "#{@sel_year}",
+        month = "#{@sel_month}",
+        quarter = 0,
+        sequence = aSequence('.visify'),
+        under_sequence = aUnderSequence('.visify'),
+        chart = aTreeChart('.bubbletree'),
+        slider = aSliderCompare('.sidebar_modify #slider_compare'),
+        slider_chart = aSliderChart('.sidebar_modify #slider_chart', slider),
+        sidebar = aSidebar('.visify'),
+        init_levels = JSON.parse('#{@levels.to_json}'),
+        draggable = 1,
+        file_type = '#{@file_type}',
+        centerNode = null,
+        last_node = null,
+        current_data,
+        _data,
+        width;
+
+    if(file_type == "TaxonomyRot") {
+      draggable = 0;
+    }
+
+    d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
+      _data = data;
+      iframe_resize();
+    })
+
+    // radio buttons to switch plan/fact
+    $('.data_type').on("click", function(){
+      data_type = $(this).children(':first').val();
+      iframe_resize();
+    });
 
     $(window).resize(function() {
       // create chart according to the window size
@@ -63,29 +99,8 @@
 
     // Responsive SVG charts
     function iframe_resize() {
-      var year = "#{@sel_year}",
-          month = "#{@sel_month}",
-          quarter = 0,
-          data_type = "#{@data_type}";
 
-      var sequence = aSequence('.visify')
-      var under_sequence = aUnderSequence('.visify')
-      var chart = aTreeChart('.bubbletree');
-      var slider = aSliderCompare('.sidebar_modify #slider_compare');
-      var slider_chart = aSliderChart('.sidebar_modify #slider_chart', slider);
-      var sidebar = aSidebar('.visify');
-      var init_levels = JSON.parse('#{@levels.to_json}');
-      var draggable = 1;
-      var file_type = '#{@file_type}';
-      if(file_type == "TaxonomyRot") {
-        draggable = 0;
-      }
-
-      var centerNode = null;
-      var last_node = null;
-      var current_data, _data;
-
-      var width;
+      // set width and height
       document_width = $(document).width();
       sidebar_width = $('.visify .sidebar').width();
       if(document_width > 2*sidebar_width) {
@@ -98,6 +113,7 @@
       $("#tab_pie").height(height);
       $("#tab_table").height(height);
 
+      // initialize blocks of visualization
       sequence.initializeBreadcrumbTrail({clickCallback: ItemClick, dropCallback: ItemDrop, levels: init_levels, draggable: draggable});
       slider.initialize(100, {clickCallback: sliderItemClick});
       slider_chart.initialize(40, {clickCallback: yearItemClick});
@@ -105,266 +121,267 @@
       $("#chart").html('');
       chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, hoverCallback: hoverCallback });
 
-      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
-        _data = data;
-        current_data = buildData(_data);
-        preprocessData(current_data, 9);
-        centerNode = current_data;
+      // build data
+      current_data = buildData(_data);
+      preprocessData(current_data, 9);
+      centerNode = current_data;
 
-        chart.set_centerNode(null);
+      // show initial data
+      chart.set_centerNode(null);
+      chart.show(current_data);
+      sequence.show(current_data);
+      under_sequence.show(current_data);
+      slider_chart.show(current_data, year);
+      slider.show(current_data, year);
+      sidebar.show(current_data);
+    }
+
+    // ---------------------------------- FUNCTIONS ------------------------------------
+
+    function bubbleItemClick(node) {
+      sequence.show(node);
+      under_sequence.show(node);
+      slider_chart.show(node, year);
+      if(slider.current_node() != centerNode || slider.current_year() != year) {
+        slider.show(node, year);
+      }
+      sidebar.show(node);
+      chart.set_centerNode(node);
+      centerNode = node;
+    }
+
+    function yearItemClick(new_year) {
+      if(slider_chart.current_month != 0 && year == new_year) {
+        month = 0;
+        slider.set_month(month);
+        $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
+      }
+      if(slider_chart.current_quarter != 0 && year == new_year) {
+        quarter = 0;
+        slider.set_quarter(quarter);
+        $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+      }
+      year = new_year;
+      monthItemClick(month);
+    }
+
+    function sliderItemClick(element, curr_slider) {
+      if(curr_slider == "month") {
+        monthItemClick(element);
+      } else if(curr_slider == "quarter") {
+        quarterItemClick(element);
+      }
+    }
+
+    function monthItemClick(new_month) {
+      if (month == new_month && slider.current_year() == year ) {
+        month = 0;
+      } else {
+        month = new_month;
+        if(slider.current_year() == year) {
+          quarter = 0;
+        }
+      }
+
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
+      var curr_node;
+      if (chart.getCenterNode) {
+        curr_node = chart.getCenterNode(current_data);
+        slider.set_centerNode(centerNode);
+      } else if(centerNode != current_data && !chart.getCenterNode) {
+        curr_node = chart.get_CenterNode(centerNode);
+        slider.set_centerNode(curr_node);
+      }
+      chart.show(current_data);
+      chart.selectNode(curr_node);
+    }
+
+    function quarterItemClick(new_quarter) {
+      if(quarter == new_quarter && slider.current_year() == year) {
+        quarter = 0;
+      } else {
+        quarter = new_quarter;
+        if(slider.current_year() == year) {
+          month = 0;
+        }
+      }
+      current_data = buildData(_data)
+      preprocessData(current_data, 7);
+
+      var curr_node;
+      if (chart.getCenterNode) {
+        curr_node = chart.getCenterNode(current_data);
+        slider.set_centerNode(centerNode);
+      } else if(centerNode != current_data && !chart.getCenterNode) {
+        curr_node = chart.get_CenterNode(centerNode);
+        slider.set_centerNode(curr_node);
+      }
+      chart.show(current_data);
+      chart.selectNode(curr_node);
+    }
+
+    function ItemClick(node) {
+      sidebar.show(node);
+      sequence.show(node);
+      under_sequence.show(node);
+      slider_chart.show(node, year);
+      slider.show(node, year);
+      chart.set_centerNode(node);
+      chart.selectNode(node);
+    }
+
+    function ItemDrop(levels, node) {
+
+      //if(file_type == "TaxonomyRot") {
+      //  levels[0] = "_" + levels[0]
+      //}
+      last_node = node;
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+        _data = data
+        centerNode = null;
+        current_data = buildData(_data)
+        preprocessData(current_data, 9);
+        centerNode = last_node;
+
+        chart.set_centerNode(last_node);
         chart.show(current_data);
-        sequence.show(current_data);
-        under_sequence.show(current_data);
-        slider_chart.show(current_data, year);
-        slider.show(current_data, year);
-        sidebar.show(current_data);
+
+      })
+    }
+
+    function hoverCallback(d) {
+      under_sequence.show(d);
+      slider_chart.show(d, year);
+      slider.show(d, year);
+      sidebar.description(d);
+    }
+
+    function preprocessData(root, maxNodes) {
+      if (root.children.length > maxNodes + 1) {
+        var tmp = sortChildren(root.children);
+        tmp.reverse();
+        var keep = [], move = [], moveAmount = 0, moveAmountFact = 0, breakdown;
+        for (var i in root.children) {
+          if (i < maxNodes) {
+            keep.push(root.children[i]);
+          } else {
+            move.push(root.children[i]);
+            moveAmount += Math.max(0, root.children[i].amount);
+            moveAmountFact += Math.max(0, root.children[i].amount_fact);
+          }
+        }
+
+        root.children = keep;
+        root.children.push({
+          'label': I18n.t('other'),
+          'name': I18n.t('other'),
+          'amount': moveAmount,
+          'amount_fact': moveAmountFact,
+          'children': move,
+          'aggregated': true,
+          'breakdown': true,
+          'color': 'green',
+        });
+      }
+
+      for (var i in root.children) {
+        if (root.children[i].children)
+          preprocessData(root.children[i], maxNodes)
+      }
+    }
+
+    function sortChildren(children, alternate, sortBy) {
+      var tmp = [], odd = true;
+      if (sortBy == 'label') {
+        sortBy = compareLabels;
+        alternate = false;
+      } else sortBy = compareAmounts;
+
+      children.sort(sortBy);
+      if (alternate) {
+        while (children.length > 0) {
+          tmp.push(odd ? children.pop() : children.shift());
+          odd = !odd;
+        }
+        return tmp;
+      } else {
+        return children;
+      }
+
+      /*
+       * compares two items by amount
+       */
+      function compareAmounts(a, b) {
+          if (a.amount > b.amount) return 1;
+          if (a.amount == b.amount) return 0;
+          return -1;
+      };
+
+      /*
+       * compares to item by label
+       */
+      function compareLabels(a, b) {
+          if (a.label > b.label) return 1;
+          if (a.label == b.label) return 0;
+          return -1;
+      };
+    }
+
+    // get current data for all visifies
+    function buildData(item) {
+      if (!item.amount)
+        return;
+
+      var node = {}
+
+      node['taxonomy'] = item.taxonomy
+
+      $.each(item.amount, function(k, v) {
+        var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
+
+        if (k == "" || k == data_type) {
+          if(quarter != 0 && v[year]) {
+            amount = 0;
+            var x = quarter*3 - 2;
+            for(var i = x; i < x + 3; i++) {
+              if(v[year][i]) amount += v[year][i]['total']
+            }
+            node['amount'] = amount
+          } else {
+            node['amount'] = amount['total']
+            if (amount['fonds']) {
+              node['amount_fond'] = amount['fonds']
+            }
+          }
+        } else {
+          node['amount_'+k] = amount['total']
+        }
       })
 
-      function preprocessData(root, maxNodes) {
-        if (root.children.length > maxNodes + 1) {
-          var tmp = sortChildren(root.children);
-          tmp.reverse();
-          var keep = [], move = [], moveAmount = 0, moveAmountFact = 0, breakdown;
-          for (var i in root.children) {
-            if (i < maxNodes) {
-              keep.push(root.children[i]);
-            } else {
-              move.push(root.children[i]);
-              moveAmount += Math.max(0, root.children[i].amount);
-              moveAmountFact += Math.max(0, root.children[i].amount_fact);
-            }
-          }
+      if (node['amount'] == undefined || node['amount'] == 0)
+        return;
 
-          root.children = keep;
-          root.children.push({
-            'label': I18n.t('other'),
-            'name': I18n.t('other'),
-            'amount': moveAmount,
-            'amount_fact': moveAmountFact,
-            'children': move,
-            'aggregated': true,
-            'breakdown': true,
-            'color': 'green',
-          });
-        }
+      node['history'] = item.amount[data_type]
+      node['total_history'] = item.amount
 
-        for (var i in root.children) {
-          if (root.children[i].children)
-            preprocessData(root.children[i], maxNodes)
-        }
+      $.each(['key', 'label', 'color', 'icon'], function(k, v) {
+        node[v] = item[v]
+      })
+
+      if (item.children) {
+        node.children = []
+        $.each(item.children, function(k, v) {
+          child = buildData(v)
+          if (child) node.children.push(child)
+        });
       }
 
-      function sortChildren(children, alternate, sortBy) {
-        var tmp = [], odd = true;
-        if (sortBy == 'label') {
-          sortBy = compareLabels;
-          alternate = false;
-        } else sortBy = compareAmounts;
-
-        children.sort(sortBy);
-        if (alternate) {
-          while (children.length > 0) {
-            tmp.push(odd ? children.pop() : children.shift());
-            odd = !odd;
-          }
-          return tmp;
-        } else {
-          return children;
-        }
-
-        /*
-         * compares two items by amount
-         */
-        function compareAmounts(a, b) {
-            if (a.amount > b.amount) return 1;
-            if (a.amount == b.amount) return 0;
-            return -1;
-        };
-
-        /*
-         * compares to item by label
-         */
-        function compareLabels(a, b) {
-            if (a.label > b.label) return 1;
-            if (a.label == b.label) return 0;
-            return -1;
-        };
-      }
-
-      function bubbleItemClick(node) {
-        sequence.show(node);
-        under_sequence.show(node);
-        slider_chart.show(node, year);
-        if(slider.current_node() != centerNode || slider.current_year() != year) {
-          slider.show(node, year);
-        }
-        sidebar.show(node);
-        chart.set_centerNode(node);
-        centerNode = node;
-      }
-
-      function yearItemClick(new_year) {
-        if(slider_chart.current_month != 0 && year == new_year) {
-          month = 0;
-          slider.set_month(month);
-          $(".bar.month").css("fill-opacity", "0.5").css("fill", "#A4A4A4");
-        }
-        if(slider_chart.current_quarter != 0 && year == new_year) {
-          quarter = 0;
-          slider.set_quarter(quarter);
-          $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
-        }
-        year = new_year;
-        monthItemClick(month);
-      }
-
-      function sliderItemClick(element, curr_slider) {
-        if(curr_slider == "month") {
-          monthItemClick(element);
-        } else if(curr_slider == "quarter") {
-          quarterItemClick(element);
-        }
-      }
-
-      function monthItemClick(new_month) {
-        if (month == new_month && slider.current_year() == year ) {
-          month = 0;
-        } else {
-          month = new_month;
-          if(slider.current_year() == year) {
-            quarter = 0;
-          }
-        }
-
-        current_data = buildData(_data)
-        preprocessData(current_data, 7);
-
-        var curr_node;
-        if (chart.getCenterNode) {
-          curr_node = chart.getCenterNode(current_data);
-          slider.set_centerNode(centerNode);
-        } else if(centerNode != current_data && !chart.getCenterNode) {
-          curr_node = chart.get_CenterNode(centerNode);
-          slider.set_centerNode(curr_node);
-        }
-        chart.show(current_data);
-        chart.selectNode(curr_node);
-      }
-
-      function quarterItemClick(new_quarter) {
-        if(quarter == new_quarter && slider.current_year() == year) {
-          quarter = 0;
-        } else {
-          quarter = new_quarter;
-          if(slider.current_year() == year) {
-            month = 0;
-          }
-        }
-        current_data = buildData(_data)
-        preprocessData(current_data, 7);
-
-        var curr_node;
-        if (chart.getCenterNode) {
-          curr_node = chart.getCenterNode(current_data);
-          slider.set_centerNode(centerNode);
-        } else if(centerNode != current_data && !chart.getCenterNode) {
-          curr_node = chart.get_CenterNode(centerNode);
-          slider.set_centerNode(curr_node);
-        }
-        chart.show(current_data);
-        chart.selectNode(curr_node);
-      }
-
-      function ItemClick(node) {
-        sidebar.show(node);
-        sequence.show(node);
-        under_sequence.show(node);
-        slider_chart.show(node, year);
-        slider.show(node, year);
-        chart.set_centerNode(node);
-        chart.selectNode(node);
-      }
-
-      function ItemDrop(levels, node) {
-
-        //if(file_type == "TaxonomyRot") {
-        //  levels[0] = "_" + levels[0]
-        //}
+      if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
         last_node = node;
-        d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
-          _data = data
-          centerNode = null;
-          current_data = buildData(_data)
-          preprocessData(current_data, 9);
-          centerNode = last_node;
-
-          chart.set_centerNode(last_node);
-          chart.show(current_data);
-
-        })
       }
-
-      // get current data for all visifies
-      function buildData(item) {
-        if (!item.amount)
-          return;
-
-        var node = {}
-
-        node['taxonomy'] = item.taxonomy
-
-        $.each(item.amount, function(k, v) {
-          var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
-
-          if (k == "" || k == data_type) {
-            if(quarter != 0 && v[year]) {
-              amount = 0;
-              var x = quarter*3 - 2;
-              for(var i = x; i < x + 3; i++) {
-                if(v[year][i]) amount += v[year][i]['total']
-              }
-              node['amount'] = amount
-            } else {
-              node['amount'] = amount['total']
-              if (amount['fonds']) {
-                node['amount_fond'] = amount['fonds']
-              }
-            }
-          } else {
-            node['amount_'+k] = amount['total']
-          }
-        })
-
-        if (node['amount'] == undefined || node['amount'] == 0)
-          return;
-
-        node['history'] = item.amount[data_type]
-        node['total_history'] = item.amount
-
-        $.each(['key', 'label', 'color', 'icon'], function(k, v) {
-          node[v] = item[v]
-        })
-
-        if (item.children) {
-          node.children = []
-          $.each(item.children, function(k, v) {
-            child = buildData(v)
-            if (child) node.children.push(child)
-          });
-        }
-
-        if(!centerNode && last_node && last_node.taxonomy == node.taxonomy && last_node.key == node.key) {
-          last_node = node;
-        }
-        return node;
-      }
-
-      function hoverCallback(d) {
-        under_sequence.show(d);
-        slider_chart.show(d, year);
-        slider.show(d, year);
-        sidebar.description(d);
-      }
+      return node;
     }
 
   });
