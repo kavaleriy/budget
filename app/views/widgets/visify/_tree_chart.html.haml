@@ -20,18 +20,8 @@
         %a{href: '#tab_table', 'aria-controls' => 'tab_table', role: 'tab', 'data-toggle' => 'tab'}
           %i.fa.fa-table.fa-2x
 
-    #charts_tooltip.hidden
-      %p
-        %span#value
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
-        %span#svg_tooltip.tooltip-inspiration.tooltip-turnleft
-          .tooltip-item
-          .tooltip-content
-            #tooltip-header
-            #tooltip-year-slider
-            #tooltip-month-slider
-            %i#reset_chart.fa.fa-refresh.pull-right
         #chart
         %canvas{:style => "display: none;"}
         .pull-right
@@ -47,9 +37,6 @@
       .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
         = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
 
-    -#.slider
-    -#  = render partial: 'slider_chart'
-    -#  = render partial: 'slider_compare', :locals => { budget_file_id: @taxonomy.id }
   .col-xs-12.col-md-4.sidebar_modify
     = render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
     = render partial: 'slider_chart'
@@ -60,8 +47,6 @@
     %h3.col-xs-12
       = t('description') + ": #{@taxonomy.description}"
 
-
-
   = render partial: 'helpers'
 
 :javascript
@@ -70,27 +55,6 @@
 
     // create chart according to the window size
     iframe_resize();
-
-    // make tooltip movable with mouse
-    var visifier = $(".visify").parent().attr('class');
-
-    window.onmousemove = function (e) {
-      if(visifier != "bubbletree") {
-        var tooltipSpan = document.getElementById('charts_tooltip');
-        var sequence_height = $('#sequence').outerHeight() + $('#under_sequence').outerHeight();
-        var x = e.clientX || e.pageX,
-            y = (e.clientY || e.pageY) - sequence_height;
-        tooltipSpan.style.top = y + 'px';
-        tooltipSpan.style.left = x + 'px';
-      } else {
-        var tooltipSpan = document.getElementById('charts_tooltip');
-        var evt = e || window.event;
-        var x = evt.pageX,
-            y = evt.pageY;
-        tooltipSpan.style.top = (y-100) + 'px';
-        tooltipSpan.style.left = (x+20) + 'px';
-      }
-    }
 
     $(window).resize(function() {
       // create chart according to the window size
@@ -119,6 +83,7 @@
 
       var centerNode = null;
       var last_node = null;
+      var current_data, _data;
 
       var width;
       document_width = $(document).width();
@@ -138,17 +103,18 @@
       slider_chart.initialize(40, {clickCallback: yearItemClick});
       sidebar.initialize(height, {clickCallback: ItemClick, hoverCallback: hoverCallback});
       $("#chart").html('');
-      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, tooltipCallback: tooltipCallback });
+      chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, hoverCallback: hoverCallback });
 
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
-        _data = data
+        _data = data;
         current_data = buildData(_data);
         preprocessData(current_data, 9);
         centerNode = current_data;
 
         chart.set_centerNode(null);
-        sequence.show(current_data);
         chart.show(current_data);
+        sequence.show(current_data);
+        under_sequence.show(current_data);
         slider_chart.show(current_data, year);
         slider.show(current_data, year);
         sidebar.show(current_data);
@@ -391,20 +357,6 @@
           last_node = node;
         }
         return node;
-      }
-
-      function tooltipCallback(e) {
-        var circle_id = $(e.circle.node).attr("id");
-        var pathEl = Snap.select('#' + circle_id);
-        $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
-
-        if(e.type == "SHOW") {
-          pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
-          hoverCallback(e.node)
-        } else {
-          pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
-          hoverCallback(centerNode)
-        }
       }
 
       function hoverCallback(d) {

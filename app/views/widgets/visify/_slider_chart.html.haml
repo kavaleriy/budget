@@ -221,7 +221,8 @@
       },
       hide: hide,
       show: function(node, year) {
-        if(!node.history) {
+
+        if(!node || !node.history) {
           hide();
           return;
         }
@@ -233,6 +234,7 @@
         }
 
         // cache onhover result
+
         if(node.id) {
           d3.selectAll(".year_slider_chart").style("display","none");
           if($("#year_slider_" + node.id).length) {

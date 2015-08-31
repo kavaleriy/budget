@@ -44,7 +44,7 @@
           .attr("display", function(d) { return d.depth ? null : "none"; })
           .attr("d", arc)
           .attr("fill-rule", "evenodd")
-          .attr("id", function(d, i) { return 'path' + i; })
+          .attr("id", function(d, i) { d.id = i + "bubble"; return 'path' + i; })
           .style("fill", function(d) { return d.color || color(d.value); })
           .style("fill-opacity", 1)
           .on("mouseover", mouseover)
@@ -91,11 +91,13 @@
       self.clickCallback(d);
       path_animation('start', this);
       text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+      self.hoverCallback(d);
     }
 
     function node_mouseleave(d) {
       path_animation('stop', this);
       text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+      self.hoverCallback(centerNode);
     }
 
     // Restore everything to full opacity when moving off the visualization.
@@ -113,6 +115,7 @@
                   d3.select(this).on("mouseover", mouseover);
                 });
       self.clickCallback(d);
+      self.hoverCallback(centerNode);
     }
 
     function clear() {
@@ -124,6 +127,7 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         width = options.width;
         height = options.height;
 
