@@ -163,6 +163,21 @@
 
         feature.attr("d", path);
 
+        g.selectAll("path")
+                .each(function (d, i) {
+                   var centroid = path.centroid(d);
+                   g.append("text")
+                    .attr("x", centroid[0])
+                    .attr("y", centroid[1])
+                    .attr("text-anchor", "middle")
+                    .text(function(){
+                      if(d['properties']['indicators'][year]){
+                        return d['properties']['indicators'][year][key];
+                      }
+                      return 0;
+                    });
+                });
+
         map.on("viewreset", reset);
         reset();
 
@@ -236,7 +251,16 @@
                                   return colorScale(d['properties']['indicators'][year][key]);
                                 }
                                 return colorScale(0);
-                              })
+                              });
+         g.selectAll("text")
+          .data(areas_data['features'])
+          .each(function(d){
+            var text = "0";
+            if(d['properties']['indicators'][year] && d['properties']['indicators'][year][key]) {
+              text = d['properties']['indicators'][year][key];
+            }
+            $(this).text(text)
+          })
       }
 
       function updateTownsCompareInfo(d, key, year) {
