@@ -12,6 +12,10 @@ class Public::TownsController < ApplicationController
   def show
     @budgets = Taxonomy.where(:owner => @town.title)
     @calendars = Calendar.where(:town => @town)
+    @total_amounts = {}
+    @budgets.each{|budget|
+      @total_amounts[budget._type] = budget.get_total_amounts
+    }
   end
 
   def geo_json

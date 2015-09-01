@@ -1,0 +1,85 @@
+:css
+  .axis text {
+    font-size: 1.0em;
+    font-weight: bold;
+  }
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  .bar {
+    fill-opacity: .7;
+  }
+
+%h3
+  Доходи і видатки
+
+#coins_chart
+
+:javascript
+
+  $(document).ready(function(){
+    var width = 500;
+    var height = 180;
+    var margin = {top: 10, right: 10, bottom: 10, left: 10};
+
+    var svg = d3.select("#coins_chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom);
+
+    var data = JSON.parse('#{@total_amounts.to_json}');
+    var year = new Date().getFullYear();
+    var rev_num = 0, exp_num = 0;
+    var rev_total = 0;
+    if(data["TaxonomyRot"] && data["TaxonomyRot"]["fact"] && data["TaxonomyRot"]["fact"][year]) {
+      rev_total = data["TaxonomyRot"]["fact"][year]["total"]
+    }
+    var exp_total = 0;
+    if(data["TaxonomyRov"] && data["TaxonomyRov"]["fact"] && data["TaxonomyRov"]["fact"][year]) {
+      exp_total = data["TaxonomyRov"]["fact"][year]["total"]
+    }
+    if (rev_total && rev_total >= exp_total) {
+      rev_num = 10;
+      exp_num = parseInt(exp_total*10/rev_total);
+    } else if(exp_total) {
+      exp_num = 10;
+      rev_num = parseInt(rev_total*10/exp_total);
+    }
+
+    var revenues_rects = svg.append("g")
+                            .attr("transform", "translate(0," + (height - rev_num*15) + ")");
+
+    var expences_rects = svg.append("g")
+                            .attr("transform", "translate(150," + (height - exp_num*15) + ")");
+
+    for(var i = 0; i < rev_num; i++){
+      revenues_rects.append("rect")
+                    .attr("y", i*15)
+                    .attr("width", 100)
+                    .attr("height", 10)
+                    .style("fill", "#FFC625")
+    }
+
+    revenues_rects.append("text")
+                  .attr("y", rev_num*15 + 15)
+                  .attr("x", 50)
+                  .attr("text-anchor", "middle")
+                  .text("Доходи")
+
+    for(var i = 0; i < exp_num; i++){
+      expences_rects.append("rect")
+                    .attr("y", i*15)
+                    .attr("width", 100)
+                    .attr("height", 10)
+                    .style("fill", "#FFC625")
+    }
+
+    expences_rects.append("text")
+                  .attr("y", exp_num*15 + 15)
+                  .attr("x", 50)
+                  .attr("text-anchor", "middle")
+                  .text("Видатки")
+  })
