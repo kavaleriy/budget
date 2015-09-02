@@ -1,5 +1,5 @@
 #custom_map.map_container
-  = render partial: 'map'
+  = render partial: 'widgets/map'
   #spinner.spinner
     %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
   .pull-left#key_map_export{:style => 'margin-top: -42px; margin-left: 8px;'}
@@ -19,7 +19,12 @@
 
     $("#spinner").show();
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: zoom, minZoom: 6, maxZoom: 9, dragging: false,
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       getInfoContent: getInfoContent,
@@ -103,6 +108,7 @@
         zIndex: 1,
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
+        selectPath: true,
         key: key,
         year: year
       })
@@ -128,6 +134,7 @@
         },
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
+        selectPath: true,
         key: key,
         year: year
       })

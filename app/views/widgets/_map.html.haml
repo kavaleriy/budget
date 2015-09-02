@@ -117,13 +117,16 @@
         areas_data = data;
         var key = options.key;
         var year = options.year;
-        setColorDomain(key, year);
-        addLegend(key);
+        if(key && year) {
+          setColorDomain(key, year);
+          addLegend(key);
+        }
+
         addControl(options.getInfoContent("Ukraine"));
 
         // Projecting GeoJSON
         var transform = d3.geo.transform({point: projectPoint}),
-          path = d3.geo.path().projection(transform);
+            path = d3.geo.path().projection(transform);
 
         var feature = g.selectAll("path")
             .data(data.features)
@@ -135,10 +138,13 @@
             .attr("data-id", function(d){return d.properties.id;})
             .style("cursor", "pointer")
             .style("fill", function(d){
-                              if(d['properties']['indicators'][year]) {
+                              if(key && year) {
+                                if(d['properties']['indicators'][year]) {
                                   return colorScale(d['properties']['indicators'][year][key] || 0);
+                                }
+                                return colorScale(0);
                               }
-                              return colorScale(0);
+                              return "blue";
             })
             .on("mouseover", function (d) {
               if (options.getInfoContent)
@@ -149,13 +155,15 @@
             })
             .on("click", function (d) {
               if (options.featureClickCallback) {
-                var el = d3.select(this);
-                if(el.style('stroke') != 'rgb(255, 255, 255)'){
-                  $('#map svg .area:first').before(this);
-                  el.style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
-                } else {
-                  $('#map svg .area:last').after(this);
-                  el.style('stroke','orange').style('stroke-width','3px');
+                if(options.selectPath) {
+                  var el = d3.select(this);
+                  if(el.style('stroke') != 'rgb(255, 255, 255)'){
+                    $('#map svg .area:first').before(this);
+                    el.style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
+                  } else {
+                    $('#map svg .area:last').after(this);
+                    el.style('stroke','orange').style('stroke-width','3px');
+                  }
                 }
                 options.featureClickCallback(d);
               }
@@ -171,10 +179,13 @@
                     .attr("y", centroid[1])
                     .attr("text-anchor", "middle")
                     .text(function(){
-                      if(d['properties']['indicators'][year]){
-                        return d['properties']['indicators'][year][key];
+                      if(key && year) {
+                        if(d['properties']['indicators'][year]){
+                          return d['properties']['indicators'][year][key];
+                        }
+                        return 0;
                       }
-                      return 0;
+                      return "";
                     });
                 });
 
@@ -301,8 +312,10 @@
 
         towns_data = data;
 
-        sizeScale = d3.scale.linear()
-                         .range([10, 60]);
+        if(options.key && options.year) {
+          sizeScale = d3.scale.linear()
+                        .range([10, 60]);
+        }
 
         resetMarkers(options.key, options.year, options);
       }
@@ -318,10 +331,12 @@
         markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
         map.addLayer(markers);
 
-        setSizeDomain(key, year);
+        if(key && year) {
+          setSizeDomain(key, year);
+        }
 
         var layerOptions = {
-          pointToLayer: getPointToLayer,
+          pointToLayer: (key && year) ? getSVGPointToLayer : getPointToLayer,
           onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng
         };
@@ -336,7 +351,7 @@
           return L.latLng(coords);
         }
 
-        function getPointToLayer(feature, latlng) {
+        function getSVGPointToLayer(feature, latlng) {
           var size = 0;
           if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
             size = sizeScale(feature.properties['indicators'][year][key]);
@@ -362,32 +377,47 @@
           });
         }
 
+        function getPointToLayer(feature, latlng) {
+          var point = options.getPoint(feature.properties);
+
+          return L.marker(latlng, {
+            icon: point.icon,
+            opacity: 1,
+            draggable: point.draggable
+          });
+        }
+
         function onEachFeature(feature, layer) {
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-          var size = 0;
-          if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
-            size = sizeScale(feature.properties['indicators'][year][key]);
-          } else {
-            size = sizeScale(0);
+
+          if(key && year) {
+            var size = 0;
+            if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
+              size = sizeScale(feature.properties['indicators'][year][key]);
+            } else {
+              size = sizeScale(0);
+            }
+            updateTownsCompareInfo(feature, key, year);
           }
-          updateTownsCompareInfo(feature, key, year);
 
           layer.on({
             click: function (e) {
-              if(e.target.options.icon.options.className == "css-icon") {
-                selected_towns.push(feature.properties.id);
-                var selectedIcon = L.divIcon({
-                  className: 'css-icon selected-icon',
-                  iconSize: [size, size]
-                });
-                e.target.setIcon(selectedIcon);
-              } else {
-                selected_towns.splice(selected_towns.indexOf(feature.properties.id), 1);
-                var selectedIcon = L.divIcon({
-                  className: 'css-icon',
-                  iconSize: [size, size]
-                });
-                e.target.setIcon(selectedIcon);
+              if(key && year) {
+                if(e.target.options.icon.options.className == "css-icon") {
+                  selected_towns.push(feature.properties.id);
+                  var selectedIcon = L.divIcon({
+                    className: 'css-icon selected-icon',
+                    iconSize: [size, size]
+                  });
+                  e.target.setIcon(selectedIcon);
+                } else {
+                  selected_towns.splice(selected_towns.indexOf(feature.properties.id), 1);
+                  var selectedIcon = L.divIcon({
+                    className: 'css-icon',
+                    iconSize: [size, size]
+                  });
+                  e.target.setIcon(selectedIcon);
+                }
               }
 
               if (options.featureClickCallback)
