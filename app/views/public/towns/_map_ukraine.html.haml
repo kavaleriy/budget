@@ -1,0 +1,127 @@
+:css
+  #custom_map {
+    border: none;
+    margin-top: 10px;
+    box-shadow: none;
+    background: transparent;
+    height: 400px;
+    width: 100%;
+  }
+
+  #custom_map .info h3 {
+    margin: 0px;
+  }
+
+.map_container#custom_map
+  = render partial: 'widgets/map'
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    var zoom = 5.5;
+    var window_width = $(window).width();
+    if(window_width < 1300) {
+      zoom = 4.9;
+    }
+
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
+      center: [48.5, 31.2],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getInfoContent: getInfoContent
+    })
+
+
+    // add Areas
+    $.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}&type=areas',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonSvg(data, {
+        zIndex: 1,
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+        selectPath: false
+      })
+      if(!'#{@town.area_title}') {
+        var el = $("path[data-id='" + '#{@town.id}' + "']");
+        el.insertAfter('#map svg .area:last');
+        el.css('stroke','orange').css('stroke-width','3px').css('fill-opacity','1');
+      }
+    })
+    .fail(function () {
+    });
+
+
+    // add markers
+    /*$.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonPoints(data, {
+        clustered: false,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+        getPoint: getPoint,
+        selectPath: false
+      })
+    })
+    .fail(function () {
+    });*/
+
+    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+
+    var icons = {}
+    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
+
+    function getPoint(properties) {
+      var point = {}
+      switch (properties.level) {
+        case 'city':
+          point.icon = icons.city
+          break
+        case 'town':
+          point.icon = icons.town
+          break
+        default:
+          point.icon = new L.Icon.Default()
+          break
+      }
+
+      return point
+    }
+
+    function onFeatureClick(feature) {
+      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
+      window.location = town_url
+    }
+
+    function getInfoContent(properties) {
+      var content = "";
+      if(properties == "Ukraine") {
+        content = "Клікніть по області, щоб перейти на її профіль. Або оберіть місто у випадаючому списку нижче, щоб перейти на профіль міста.";
+      } else {
+        content = '<h3>' + properties.title + '</h3>';
+      }
+      return content;
+    }
+  });

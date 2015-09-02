@@ -53,6 +53,11 @@ class Public::TownsController < ApplicationController
 
   def set_town
     @town = Town.find(params[:town_id])
+    if @town.level == 1 #area
+      @towns = Town.all.where(:area_title => @town.title)
+    else
+      @towns = Town.all.where(:area_title => @town.area_title)
+    end
   end
 
 end

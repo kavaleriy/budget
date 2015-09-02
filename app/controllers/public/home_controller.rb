@@ -8,8 +8,8 @@ module Public
 
 
     def index
-      @areas = Town.areas
-      @towns = Town.cities
+      # @areas = Town.areas
+      # @towns = Town.cities
     end
 
     def budget
