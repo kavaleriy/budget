@@ -202,6 +202,7 @@ Rails.application.routes.draw do
 
     get 'towns/:town_id' => 'towns#show'
     get 'ukraine_geo_json' => 'towns#geo_json'
+    get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'

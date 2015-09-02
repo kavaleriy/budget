@@ -49,6 +49,18 @@ class Public::TownsController < ApplicationController
 
   end
 
+  def geo_json_town
+    town = Town.find(params[:town_id])
+    @geo_json = {
+                  "type" => "FeatureCollection",
+                  "features" => [TownGeojsonBuilder.build(town)]
+              }
+
+    respond_to do |format|
+      format.json { render json: @geo_json }
+    end
+  end
+
   private
 
   def set_town

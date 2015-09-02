@@ -63,29 +63,32 @@
     });
 
 
-    // add markers
-    /*$.ajax({
-      method: 'get',
-      url: '#{public_ukraine_geo_json_path}',
-      dataType: 'json',
-    })
-    .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, {
-        clustered: false,
-        style: {
-          opacity: 0.8,
-        },
-        hoverStyle: {
-          opacity: 1,
-        },
-        featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent,
-        getPoint: getPoint,
-        selectPath: false
+    // add marker only for current town
+    if('#{@town.area_title}') {
+      $.ajax({
+        method: 'get',
+        url: '#{public_ukraine_geo_json_town_path}',
+        dataType: 'json',
+        data: {'town_id': '#{@town.id}'}
       })
-    })
-    .fail(function () {
-    });*/
+      .done(function (data) {
+        aRepairMap.addGeoJsonPoints(data, {
+          clustered: false,
+          style: {
+            opacity: 0.8,
+          },
+          hoverStyle: {
+            opacity: 1,
+          },
+          featureClickCallback: onFeatureClick,
+          getInfoContent: getInfoContent,
+          getPoint: getPoint,
+          selectPath: false
+        })
+      })
+      .fail(function () {
+      });
+    }
 
     var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
     var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
@@ -95,7 +98,8 @@
     icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
 
     function getPoint(properties) {
-      var point = {}
+      point = {}
+
       switch (properties.level) {
         case 'city':
           point.icon = icons.city
