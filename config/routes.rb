@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
+  get 'search_for_towns_town' => 'towns#search_for_towns'
   resources :towns
 
   namespace :repairing do

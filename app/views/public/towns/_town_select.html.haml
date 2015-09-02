@@ -1,0 +1,39 @@
+%label Перейти на профіль міста:
+= text_field_tag 'town_select', @town[:id]
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    $('#town_select').select2({
+      initSelection: function(element, callback) {
+        if('#{@town[:area_title]}') {
+          callback({ id: '#{@town[:id]}', text: '#{@town[:title]}' });
+        }
+      },
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_for_towns_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      var town_url = "#{public_path('ID')}".replace('ID', $(this).val())
+      window.location = town_url
+    });
+  });
