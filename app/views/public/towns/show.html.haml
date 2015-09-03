@@ -29,8 +29,8 @@
 #portfolio
   .container.col-xs-12.col-xs-offset-0.col-md-5.col-md-offset-2.col-lg-6
     .row
-      - (1..6).each do |i|
-        = render partial: 'portfolio'
+      - %w(budget programs keys calendar docs repair).each do |item|
+        = render partial: 'portfolio', :locals => { :item => item }
 
 .col-xs-12
   = render partial: 'docs'
