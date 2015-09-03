@@ -26,8 +26,13 @@
   .col-sm-12.col-md-5.col-lg-4
     = render partial: 'map_ukraine'
 
-.col-xs-10
+#portfolio
+  .container.col-xs-12.col-xs-offset-0.col-md-5.col-md-offset-2.col-lg-6
+    .row
+      - (1..6).each do |i|
+        = render partial: 'portfolio'
 
+.col-xs-12
   = render partial: 'docs'
   - if @total_amounts != {}
     = render partial: 'revenues_expences'
