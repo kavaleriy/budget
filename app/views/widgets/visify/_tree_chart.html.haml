@@ -3,6 +3,17 @@
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
+  #functional_buttons.col-xs-12
+    - if @types_count > 1
+      .pull-left
+        .btn-group{'data-toggle' => 'buttons'}
+          %label.btn.btn-default.active.data_type
+            %input{:name => "data_type", :type => "radio", :value => "plan"}
+            = t('js.visify.plan')
+          %label.btn.btn-default.data_type
+            %input{:name => "data_type", :type => "radio", :value => "fact"}
+            = t('js.visify.fact')
+
   .chart.col-xs-12.col-md-8
     //= render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
 
@@ -22,15 +33,6 @@
 
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
-        - if @types_count == 2
-          .pull-right
-            .btn-group{'data-toggle' => 'buttons'}
-              %label.btn.btn-default.active.data_type
-                %input{:name => "data_type", :type => "radio", :value => "plan"}
-                = t('js.visify.plan')
-              %label.btn.btn-default.data_type
-                %input{:name => "data_type", :type => "radio", :value => "fact"}
-                = t('js.visify.fact')
         #chart
         %canvas{:style => "display: none;"}
         .pull-right
