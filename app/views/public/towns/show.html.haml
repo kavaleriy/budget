@@ -26,17 +26,17 @@
   .col-sm-12.col-md-5.col-lg-4
     = render partial: 'map_ukraine'
 
-#portfolio
-  .container.col-xs-12.col-xs-offset-0.col-md-5.col-md-offset-2.col-lg-6
-    .row
-      - %w(budget programs keys calendar sankey repair).each do |item|
-        = render partial: 'portfolio', :locals => { :item => item }
+#portfolio.container.col-xs-12.col-xs-offset-0.col-md-5.col-md-offset-2.col-lg-6
+  .row
+    - %w(budget programs keys calendar sankey repair).each do |item|
+      = render partial: 'portfolio', :locals => { :item => item }
 
-.col-xs-12
-  = render partial: 'docs'
+#sidebar_info.col-xs-12.col-md-5.col-lg-4
   - if @total_amounts != {}
     = render partial: 'revenues_expences'
 
+.col-xs-12
+  = render partial: 'docs'
 
 :javascript
 

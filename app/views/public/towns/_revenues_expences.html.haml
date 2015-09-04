@@ -1,18 +1,3 @@
-:css
-  .axis text {
-    font-size: 1.0em;
-    font-weight: bold;
-  }
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
-  .bar {
-    fill-opacity: .7;
-  }
-
 %h3
   Доходи і видатки
 
@@ -22,7 +7,7 @@
 
   $(document).ready(function(){
     var width = 500;
-    var height = 180;
+    var height = 170;
     var margin = {top: 10, right: 10, bottom: 10, left: 10};
 
     var svg = d3.select("#coins_chart")
@@ -69,6 +54,12 @@
                   .attr("text-anchor", "middle")
                   .text("Доходи")
 
+    revenues_rects.append("text")
+                  .attr("y", height - (rev_num+1)*15 - 10)
+                  .attr("x", 50)
+                  .attr("text-anchor", "middle")
+                  .text((rev_total/window.aHelper.k(rev_total)).toFixed(2) + window.aHelper.short_unit(rev_total))
+
     for(var i = 0; i < exp_num; i++){
       expences_rects.append("rect")
                     .attr("y", i*15)
@@ -82,4 +73,10 @@
                   .attr("x", 50)
                   .attr("text-anchor", "middle")
                   .text("Видатки")
+
+    expences_rects.append("text")
+                  .attr("y", height - (exp_num+1)*15 - 10)
+                  .attr("x", 50)
+                  .attr("text-anchor", "middle")
+                  .text((exp_total/window.aHelper.k(exp_total)).toFixed(2) + window.aHelper.short_unit(exp_total))
   })
