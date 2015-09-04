@@ -171,9 +171,17 @@
 
         feature.attr("d", path);
 
-        g.selectAll("path")
+        if(year && key) {
+          g.selectAll("path")
                 .each(function (d, i) {
                    var centroid = path.centroid(d);
+                   g.append("rect")
+                    .attr("x", centroid[0] - 25)
+                    .attr("y", centroid[1] - 14)
+                    .attr("width", '50px')
+                    .attr("height", '20px' )
+                    .attr("fill", "yellow");
+
                    g.append("text")
                     .attr("x", centroid[0])
                     .attr("y", centroid[1])
@@ -188,6 +196,7 @@
                       return "";
                     });
                 });
+        }
 
         map.on("viewreset", reset);
         reset();
