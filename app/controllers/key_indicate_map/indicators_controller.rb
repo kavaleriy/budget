@@ -18,6 +18,11 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
     }
     @indicator_keys = @indicator_keys.sort_by{|key, value| key }
     @years = KeyIndicateMap::IndicatorFile.only(:year).map{|f| f.year}
+    @selected_year = params[:year].to_i if params[:year]
+    if params[:key]
+      @selected_key = params[:key]
+      @group = KeyIndicateMap::IndicatorKey.find(@selected_key).group
+    end
   end
 
   # GET /key_indicate_map/indicators/1

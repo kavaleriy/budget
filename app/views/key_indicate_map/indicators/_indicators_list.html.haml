@@ -36,19 +36,19 @@
   %h2#year_change
     = t('key_indicate_map.indicators.indicators_list.keys')
     .select_tag
-      = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
+      = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse, @selected_year || current_year.to_i )
     = t('key_indicate_map.indicators.indicators_list.year')
   %ul.nav.nav-tabs
     - i = 0
     - @indicator_keys.each do |group, value|
-      %li{:class => i == 0 ? "active" : ""}
+      %li{:class => @group ? (group == @group ? "active" : "") : (i == 0 ? "active" : "")}
         %a{:href => "#group_" + i.to_s, 'data-toggle' => "tab", :title => group}
           %i.fa.fa-lg{:class => value['group_icon']}
       - i = i + 1
   .tab-content.group_content
     - i = 0
     - @indicator_keys.each do |group, value|
-      .tab-pane{:class => i == 0 ? "in active" : "", :id => "group_" + i.to_s}
+      .tab-pane{:class => @group ? (group == @group ? "in active" : "") : (i == 0 ? "in active" : ""), :id => "group_" + i.to_s}
         .group_header
           = group
         %table
@@ -57,7 +57,7 @@
             - value['indicators'].each do |indicator|
               %tr
                 %td
-                  .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", 'data-id' => indicator['id'], 'data-name' => indicator['name'] }
+                  .collapse_btn.btn.btn-default.btn-xs{:class => @selected_key ? (group == @group ? (indicator['id'] == @selected_key ? "active" : "non-active") : (j == 0 ? "active" : "non-active")) : (j == 0 ? "active" : "non-active"), 'data-id' => indicator['id'], 'data-name' => indicator['name'] }
                     %i.fa.fa-circle
                 %td{:class => 'key_href'}
                   %a{:href => '#'}

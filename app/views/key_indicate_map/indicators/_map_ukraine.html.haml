@@ -2,8 +2,6 @@
   = render partial: 'widgets/map'
   #spinner.spinner
     %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
-  -#.pull-left#key_map_export{:style => 'margin-top: -42px; margin-left: 8px;'}
-  -#  = render partial: 'layouts/export_img', :locals => { container: '#custom_map svg' }
 
 :javascript
 
@@ -84,6 +82,7 @@
     });
 
     function resetData() {
+      window.history.pushState("", "", '/key_indicate_map/indicators/' + year + '/' + key);
       key = current_btn.data('id');
       if(keys[key]['history'][year] && keys[key]['history'][year]['description']) {
         key_description.html(keys[key]['history'][year]['description']);

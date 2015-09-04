@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :indicator_keys
     get 'indicators/geo_json/:type' => 'indicators#geo_json'
     get 'indicators/get/keys' => 'indicators#get_keys'
+    get 'indicators/:year/:key' => 'indicators#index'
     put 'indicator_files/update_town/:id/:old_town' => 'indicator_files#update_town'
     put 'indicator_files/update_key/:id/:old_key' => 'indicator_files#update_key'
   end
