@@ -2,8 +2,8 @@
   = render partial: 'widgets/map'
   #spinner.spinner
     %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
-  .pull-left#key_map_export{:style => 'margin-top: -42px; margin-left: 8px;'}
-    = render partial: 'layouts/export_img', :locals => { container: '#custom_map svg' }
+  -#.pull-left#key_map_export{:style => 'margin-top: -42px; margin-left: 8px;'}
+  -#  = render partial: 'layouts/export_img', :locals => { container: '#custom_map svg' }
 
 :javascript
 
@@ -112,7 +112,8 @@
         selectPath: true,
         key: key,
         year: year
-      })
+      });
+      addExportBtnLogic();
     })
     .fail(function () {
       console.log("areas were not loaded");
@@ -240,5 +241,33 @@
         }
       }
       return content;
+    }
+
+    function addExportBtnLogic() {
+      $.when(
+        $.getScript( "/assets/html2canvas/html2canvas.js" ),
+        $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+      ).done(function(){
+        $('#export').on('click', function() {
+          html2canvas($("#svg_for_export"), {
+            //logging: true,
+            background :'#FFFFFF',
+            onrendered: function(canvas) {
+              //document.body.appendChild(canvas);
+              var canvasdata = canvas.toDataURL("image/png");
+
+              var theEvent = document.createEvent("MouseEvent");
+              theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+              var a = document.createElement("a");
+              a.download = "sample.png";
+              a.href = canvasdata;
+              a.dispatchEvent(theEvent);
+            }
+          });
+        })
+      })
     }
   });

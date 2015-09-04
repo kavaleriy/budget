@@ -27,7 +27,7 @@
       var svg, g, colorScale, sizeScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue, selected_towns = [];
       var popup;
       var router;
-      var info, legend, markers, towns_options;
+      var info, legend, markers, towns_options, exportBtn;
       var areas_data, towns_data;
 
       var self = this;
@@ -61,7 +61,7 @@
         function addSvgLayer() {
           colorScale = d3.scale.linear()
                          .range(['lightblue', 'darkblue']); // or use hex values
-          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
+          svg = d3.select(map.getPanes().overlayPane).append("svg").attr('id', 'svg_for_export').style("z-index", options.zIndex || 999),
             g = svg.append("g").attr("class", "leaflet-zoom-hide");
         }
 
@@ -123,6 +123,7 @@
         if(key && year) {
           setColorDomain(key, year);
           addLegend(key);
+          addExportBtn();
         }
 
         addControl(options.getInfoContent("Ukraine"));
@@ -506,6 +507,18 @@
         };
 
         legend.addTo(map);
+      }
+
+      function addExportBtn() {
+        exportBtn = L.control({position: 'bottomleft'});
+
+        exportBtn.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'info exportBtn');
+          this._div.innerHTML = '#{ escape_javascript render partial: "layouts/export_img", :locals => { container: "#svg_for_export" } }';
+          return this._div;
+        };
+
+        exportBtn.addTo(map);
       }
 
       function editRoute(waypoints, routeFoundCallback) {
