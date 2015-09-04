@@ -211,7 +211,12 @@ Rails.application.routes.draw do
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
-
+  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
+  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile'
+  get 'key_indicate_map/indicators/town_profile/:town_id' => 'key_indicate_map/indicators#index'
+  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
+  get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
+  get 'repairing/map/town_profile/:town_id' => 'repairing/map/town_profile#town_profile'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -86,6 +86,12 @@ class SankeysController < ApplicationController
     render json: { 'rows_rot' => @budget_file_rot.get_level_with_fonds("kkd_a"), 'rows_rov' => @budget_file_rov.get_level_with_fonds("ktfk_aaa") }
   end
 
+  def town_profile
+    town = Town.find(params[:town_id])
+    @sankey = Sankey.where(:owner => town.title).first
+    render 'show'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sankey

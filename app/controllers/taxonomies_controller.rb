@@ -3,9 +3,8 @@ class TaxonomiesController < ApplicationController
   before_action :set_taxonomy, only: [:show, :show_modify, :edit, :update, :destroy]
   before_action :set_params, only: [:show_modify]
   before_action :set_attachments, only: [:show, :show_modify, :edit]
-  before_action :set_attachment, only: [:update_files_description, :delete_attachments, :download_attachments]
 
-  before_action :authenticate_user!, except: [:show, :show_modify, :download_attachments]
+  before_action :authenticate_user!, except: [:show, :show_modify, :town_profile]
   load_and_authorize_resource
 
   def index
@@ -82,6 +81,12 @@ class TaxonomiesController < ApplicationController
     end
   end
 
+  def town_profile
+    town = Town.find(params[:town_id])
+    @taxonomy = Taxonomy.where(:owner => town.title).first
+    render 'show'
+  end
+
   private
 
   def set_taxonomy
@@ -110,11 +115,6 @@ class TaxonomiesController < ApplicationController
 
   rescue => e
     logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
-  end
-
-  def set_attachment
-    @taxonomy = Taxonomy.find(params[:taxonomy_id])
-    @attachment = @taxonomy.taxonomy_attachments.find(params[:attachment_id])
   end
 
   def set_attachments

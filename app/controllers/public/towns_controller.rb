@@ -16,6 +16,13 @@ class Public::TownsController < ApplicationController
     @budgets.each{|budget|
       @total_amounts[budget._type] = budget.get_total_amounts
     }
+    @town_items = []
+    @town_items.push('budget') if Taxonomy.where(:owner => @town.title).first
+    @town_items.push('programs') if Programs::Town.where(:name => @town.title).first
+    @town_items.push('keys') if @town.key_indicate_map_indicators
+    @town_items.push('calendar') if Calendar.where(:town => @town.title).first
+    @town_items.push('sankey') if Sankey.where(:owner => @town.title).first
+    @town_items.push('repair') if Repairing::Repair.where(:obj_owner => @town.title).first
   end
 
   def geo_json
