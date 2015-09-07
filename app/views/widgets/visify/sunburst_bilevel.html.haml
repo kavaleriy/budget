@@ -48,7 +48,7 @@
           .data(partition.nodes(root).slice(1))
         .enter().append("path")
           .attr("d", arc)
-          .attr("id", function(d, i) { return 'path' + i + d.depth; })
+          .attr("id", function(d, i) { d.id = (i+1) + "bubble"; return 'path' + i + d.depth; })
           .style("fill", function(d) { return d.fill; })
           .each(function(d) { this._current = updateArc(d); })
           .on("click", zoomIn)
@@ -72,13 +72,13 @@
     }
 
     function mouseover(d) {
-      //add_tooltip(d3.event, d);
+      self.hoverCallback(d);
       path_animation('start', this);
       text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
     }
 
     function mouseout(d) {
-      remove_tooltip(d);
+      self.hoverCallback(centerNode);
       path_animation('stop', this);
       text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
     }
@@ -149,7 +149,7 @@
         path.enter().append("path")
             .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
             .style("fill", function(d) { return d.fill; })
-            .attr("id", function(d, i) { return 'path' + i + d.depth + count; })
+            .attr("id", function(d, i) { d.id = (i+1) + "bubble"; return 'path' + i + d.depth + count; })
             .on("click", zoomIn)
             .each(function(d) { this._current = enterArc(d); })
             .on("mouseover", mouseover)
@@ -189,10 +189,11 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         width = options.width;
         height = options.height;
 
-        color = d3.scale.category20c()
+        color = d3.scale.category20c();
 
         margin = {top: 20, right: 20, bottom: 20, left: 20},
         radius = Math.min(width, height) / 2;
@@ -218,6 +219,7 @@
         createVisualization(data);
         if(!centerNode) {
           centerNode = data;
+          data.id = "0bubble";
         }
       },
       selectNode: function (node) {

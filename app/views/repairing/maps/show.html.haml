@@ -6,15 +6,16 @@
 
 = content_for :top do
   .map_container
-    = render partial: '/public/home/map'
-
-
+    = render partial: 'map'
 
 :javascript
 
   $(document).ready(function() {
 
-    var aRepairMap = RepairMap({ zoom: 6, minZoom: 5, maxZoom: 14,
+    var aRepairMap = RepairMap({
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 14,
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     })
 
@@ -36,6 +37,8 @@
         featureClickCallback: onFeatureClick,
         getMapPopupContent: getMapPopupContent,
         getInfoContent: getInfoContent,
+        selectPath: false,
+        getPoint: getPoint
       })
     })
     .fail(function () {
@@ -75,14 +78,15 @@
     }
 
     function getInfoContent(properties) {
-      var content =
-            '<div class="popup">' +
-              '<h3>' + properties.title + '</h3>' +
-              '<p>' + properties.address + '</p>' +
-              '<p>' + properties.amount + '</p>' +
-            '</div>'
-
-      return content
+      var content = "";
+      if(properties != "Ukraine") {
+      content += '<div class="popup">' +
+                  '<h3>' + properties.title + '</h3>' +
+                  '<p>' + properties.address + '</p>' +
+                  '<p>' + properties.amount + '</p>' +
+                 '</div>';
+      }
+      return content;
     }
 
   });

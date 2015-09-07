@@ -25,11 +25,25 @@
       self.clickCallback(node);
     }
 
+    function tooltipCallback(e) {
+      var circle_id = $(e.circle.node).attr("id");
+      var pathEl = Snap.select('#' + circle_id);
+      $(e.circle.node).attr("stroke", $(e.circle.node).attr("fill"));
+
+      if(e.type == "SHOW") {
+        pathEl.stop().animate( { 'stroke-width': 10, 'stroke-opacity': 0.6 }, 2000, mina.elastic);
+        self.hoverCallback(e.node)
+      } else {
+        pathEl.stop().animate( { 'stroke-width': 0 }, 1000, mina.elastic);
+        self.hoverCallback(centerNode)
+      }
+    }
+
     return {
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
-        self.tooltipCallback = options.tooltipCallback;
+        self.hoverCallback = options.hoverCallback;
 
         $(aContainer + ' #chart').height(options.height);
       },
@@ -45,7 +59,7 @@
             bubbleType: ['icon', 'plain'],
             centerNode: centerNode,
             nodeClickCallback: nodeClick,
-            tooltipCallback: self.tooltipCallback
+            tooltipCallback: tooltipCallback
         });
       },
       selectNode: function (node) {

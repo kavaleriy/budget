@@ -1443,7 +1443,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		me.circle.attr({ cx: me.pos.x, cy: me.pos.y, r: r, 'fill-opacity': me.alpha });
         me.text.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y-10) + ")").style("fill-opacity", 1);
         me.text2.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y+r+10) + ")").style("fill-opacity", 1);
-		me.text3.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y+5) + ")").style("fill-opacity", 1);
+		me.text3.attr("transform", "translate(" + me.pos.x + "," + (me.pos.y+5-15) + ")").style("fill-opacity", 1);
 		me.overlay.attr({ cx: me.pos.x, cy: me.pos.y, r: r });
 		if (me.node.children.length > 1) me.dashedBorder.attr({ cx: me.pos.x, cy: me.pos.y, r: r-4, 'stroke-opacity': me.alpha * 0.9 });
 		else me.dashedBorder.attr({ 'stroke-opacity': 0 });
@@ -1454,8 +1454,9 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 		if (r >= me.bc.config.minRadiusLabels) {
 			// full label
 			//me.label2.hide();
-            me.text2.style("fill-opacity", 0);
-			me.text3.style("fill-opacity", 0);
+			me.text.style("fill-opacity", 0);
+            //me.text2.style("fill-opacity", 0);
+            //me.text3.style("fill-opacity", 0);
 		} else if (r >= me.bc.config.minRadiusAmounts) {
 			// full label
 			//me.label.find('.desc').hide();
@@ -1468,7 +1469,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			//me.label.hide();
 			//me.label2.hide();
 			me.text.style("fill-opacity", 0);
-			me.text2.style("fill-opacity", 0);
+			//me.text2.style("fill-opacity", 0);
 			me.text3.style("fill-opacity", 0);
 		}
 
@@ -1565,7 +1566,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.append('g')
 			.attr("transform", "translate(" + cx + "," + cy + ")")
 		me.text2.append('text')
-			.style('fill','#0b387c')
+			.style('fill','#000000')
 			.style('font-size','0.8em')
 			.attr('text-anchor', 'middle')
 			.text(me.node.shortLabel);
@@ -1579,6 +1580,25 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.style('font-weight','bold')
 			.attr('text-anchor', 'middle')
 			.text(utils.formatNumber(me.node.amount));
+		me.text3.append('text')
+			.attr('y', '1.2em')
+			.style('fill','white')
+			.attr('text-anchor', 'middle')
+			.style('font-family', 'FontAwesome')
+			.style('font-size', '1.8em')
+			.text(function(){
+				if(me.node.icon) {
+					d3.select('body')
+						.append('div')
+						.attr("id", "svg_icon_content")
+						.html("<i class='fa " + me.node.icon + "'></i>");
+					var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
+					$("#svg_icon_content").remove();
+					return content[1];
+				} else {
+					return "";
+				}
+			});
 
 //		var list = [me.circle.node, me.label, me.dashedBorder.node];
 //

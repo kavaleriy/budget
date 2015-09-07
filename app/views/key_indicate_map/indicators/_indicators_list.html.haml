@@ -11,14 +11,23 @@
     color: transparent;
   }
 
-  .collapse_descr {
-    margin-left: 30px;
-  }
-
   .group_header {
     font-size: 1.3em;
     font-weight: bold;
     margin-bottom: 15px;
+  }
+
+  .select_tag {
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+
+  @media screen and (min-width: 1300px) {
+    h2 {
+      font-size: 1.4em;
+      moz-font-size: 1.0em;
+    }
   }
 
 - if @indicator_keys.length > 0
@@ -26,44 +35,34 @@
   .container
   %h2#year_change
     = t('key_indicate_map.indicators.indicators_list.keys')
-    = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse)
+    .select_tag
+      = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse, @selected_year || current_year.to_i )
     = t('key_indicate_map.indicators.indicators_list.year')
   %ul.nav.nav-tabs
     - i = 0
-    - @indicator_keys.sort_by{ |key, value| key }.each do |group, value|
-      %li{:class => i == 0 ? "active" : ""}
+    - @indicator_keys.each do |group, value|
+      %li{:class => @group ? (group == @group ? "active" : "") : (i == 0 ? "active" : "")}
         %a{:href => "#group_" + i.to_s, 'data-toggle' => "tab", :title => group}
           %i.fa.fa-lg{:class => value['group_icon']}
       - i = i + 1
-  .tab-content
+  .tab-content.group_content
     - i = 0
-    - @indicator_keys.sort_by{ |key, value| key }.each do |group, value|
-      .tab-pane{:class => i == 0 ? "in active" : "", :id => "group_" + i.to_s}
+    - @indicator_keys.each do |group, value|
+      .tab-pane{:class => @group ? (group == @group ? "in active" : "") : (i == 0 ? "in active" : ""), :id => "group_" + i.to_s}
         .group_header
           = group
-        - j = 0
-        - value['indicators'].each do |indicator|
-          .container
-            - if indicator['history'] && indicator['history'][current_year.to_s]
-              - if indicator['history'][current_year.to_s]['total']
-                - if indicator['integer_or_float'] == 'float'
-                  - ind_value = indicator['history'][current_year.to_s]['total'].to_f.round(2)
-                - else
-                  - ind_value = indicator['history'][current_year.to_s]['total']
-              - else
-                - ind_value = ""
-              - if indicator['history'][current_year.to_s]['description']
-                - ind_description = indicator['history'][current_year.to_s]['description']
-              - else
-                - ind_description = ""
-            - else
-              - ind_value = ""
-              - ind_description = ""
-            .collapse_btn.btn.btn-default.btn-xs{:class => j == 0 ? "active" : "non-active", :id => 'key_' + indicator._id.to_s, 'data-id' => indicator._id.to_s, 'data-name' => indicator.name, 'data-value' => ind_value, 'data-description' => ind_description, 'data-unit' => indicator.unit ? indicator.unit : ""}
-              %i.fa.fa-circle
-            %span{:style => 'font-size: 1.0em; font-weight: bold;'}
-              = indicator.name
-          - j = j + 1
+        %table
+          %tbody
+            - j = 0
+            - value['indicators'].each do |indicator|
+              %tr
+                %td
+                  .collapse_btn.btn.btn-default.btn-xs{:class => @selected_key ? (group == @group ? (indicator['id'] == @selected_key ? "active" : "non-active") : (j == 0 ? "active" : "non-active")) : (j == 0 ? "active" : "non-active"), 'data-id' => indicator['id'], 'data-name' => indicator['name'] }
+                    %i.fa.fa-circle
+                %td{:class => 'key_href'}
+                  %a{:href => '#'}
+                    = indicator['name']
+              - j = j + 1
       - i = i + 1
   #key_description
     %h4

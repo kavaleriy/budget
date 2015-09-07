@@ -22,8 +22,11 @@
           width = $('#chart').width();
         },
         hide: function(){
-          if (_self.pie)
-            _self.pie.destroy()
+          if (_self.pie){
+             _self.pie.destroy()
+          } else {
+            $('#sidebar_pie').html('');
+          }
         },
         show: function(_data) {
           this.hide()

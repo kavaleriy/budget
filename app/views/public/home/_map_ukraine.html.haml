@@ -1,38 +1,36 @@
 :css
-  .map_container {
-    height: 600px;
+  #custom_map {
+    border: none;
+    margin-top: 10px;
+    box-shadow: none;
+    background: transparent;
   }
 
-  .map_container svg {
-    position: relative;
-  }
-
-  .map_container path {
-    fill: orange;
-    fill-opacity: .2;
-    stroke: #fff;
-    stroke-width: 1.5px;
-  }
-
-  .map_container path:hover {
-    fill-opacity: .5;
-  }
-
-
-
-= content_for :top do
-  .map_container.col-sm-12
-    = render partial: 'map'
-
-
+.map_container#custom_map.col-sm-12.col-md-6
+  = render partial: 'widgets/map'
 
 :javascript
 
   $(document).ready(function() {
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, minZoom: 6, maxZoom: 9,
-      center: [48.91973, 31.17944],
-      //bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+    I18n.locale = window.aHelper.lang();
+
+    var zoom = 6;
+    var window_width = $(window).width();
+    if(window_width < 1300) {
+      zoom = 5.5;
+    }
+
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
+      map_static: true,
+      center: [48.5, 31.2],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getInfoContent: getInfoContent
     })
 
 
@@ -47,6 +45,7 @@
         zIndex: 1,
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
+        selectPath: false
       })
     })
     .fail(function () {
@@ -60,8 +59,8 @@
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
-        clustered: true,
+      aRepairMap.addGeoJsonPoints(data, {
+        clustered: false,
         style: {
           opacity: 0.8,
         },
@@ -70,6 +69,8 @@
         },
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
+        getPoint: getPoint,
+        selectPath: false
       })
     })
     .fail(function () {
@@ -106,9 +107,11 @@
     }
 
     function getInfoContent(properties) {
-      var content =
-        '<h3>' + properties.title + '</h3>' +
-        '<p>Документів: ' + properties.documents_count + '</p>'
-      return content
+      var content = "";
+      if(properties != "Ukraine") {
+        content += '<h3>' + properties.title + '</h3>' +
+                   '<p>Документів: ' + properties.documents_count + '</p>';
+      }
+      return content;
     }
   });

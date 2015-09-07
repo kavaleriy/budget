@@ -68,6 +68,15 @@ module Repairing
       end
     end
 
+    def town_profile
+      town = Town.find(params[:town_id])
+      @repairing_repair = Repairing::Repair.where(:obj_owner => town.title).first
+      respond_to do |format|
+        format.json { render json: Repairing::GeojsonBuilder.build_repair(@repairing_repair) }
+      end
+      render 'show'
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_repair

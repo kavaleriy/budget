@@ -270,7 +270,7 @@
       hide: hide,
       show: function(node, year) {
 
-        if(!node.history) {
+        if(!node || !node.history) {
           hide();
           return;
         }

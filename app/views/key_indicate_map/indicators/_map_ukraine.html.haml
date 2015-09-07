@@ -1,49 +1,7 @@
-:css
-  #custom_map {
-    height: 600px;
-    border: 1px solid #777;
-    border-radius: 10px;
-    margin-top: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    background: #ddd;
-  }
-
-  #custom_map svg {
-    position: relative;
-  }
-
-  #custom_map path {
-    fill: orange;
-    fill-opacity: .5;
-    stroke: #fff;
-    stroke-width: 1.5px;
-  }
-
-  #custom_map path:hover {
-    fill-opacity: 1.0;
-  }
-
-  #custom_map .leaflet-container {
-    background: transparent;
-    cursor: default;
-  }
-
-  #custom_map .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
-    display: none;
-  }
-
-  .info .title {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  .info h4 {
-    margin: 0 0 10px 0;
-  }
-
 #custom_map.map_container
-  = render partial: 'map'
+  = render partial: 'widgets/map'
+  #spinner.spinner
+    %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
 
 :javascript
 
@@ -51,13 +9,50 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
+    var zoom = 6;
+    var window_width = $(window).width();
+    if(window_width < 1300) {
+      zoom = 5.5;
+    }
+
+    $("#spinner").show();
+
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
+      map_static: true,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
-      getInfoContent: getInfoContent
+      getInfoContent: getInfoContent,
+      getUnit: getUnit
     });
 
-    var key, key_name, year, current_btn, maxValue;
+    var keys, areas_maxValue;
+    var key_description = $('#key_description .content');
+    var current_btn = $('.tab-pane.in.active .collapse_btn.active');
+    var year = $('#year_change select option:selected').val();
+    var key = current_btn.data('id');
+
+    // get keys array
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/get/keys',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      keys = data;
+      if(keys[key]['history'][year] && keys[key]['history'][year]['description']) {
+        key_description.html(keys[key]['history'][year]['description']);
+      } else {
+        key_description.html("");
+      }
+    })
+    .fail(function () {
+      console.log("keys were not loaded");
+    });
 
     // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
@@ -66,24 +61,40 @@
       $('.tab-pane.active .collapse_descr.in').removeClass('in');
       current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
-      key = current_btn.data('id');
-      $('#key_description .content').html(current_btn.data('description'));
-      aRepairMap.resetData(key, year);
+      resetData();
     });
 
     // find active button with key in shown collapse panel
     $('#indicators_list a[data-toggle="tab"]').click(function(){
       current_btn = $($($(this).attr('href')).find('.collapse_btn.active')[0]);
-      key = current_btn.data('id');
-      $('#key_description .content').html(current_btn.data('description'));
-      aRepairMap.resetData(key, year);
+      resetData();
     });
 
     // if year changed
     $('#year_change').on("change", function(){
       year = $('#year_change select option:selected').val();
+      resetData();
+    });
+
+    // on key click
+    $('.key_href a').on("click", function(){
+      $(this).parent().prev().find('.collapse_btn').click();
+    });
+
+    function resetData() {
+      window.history.pushState("", "", '/key_indicate_map/indicators/' + year + '/' + key);
+      key = current_btn.data('id');
+      if(keys[key]['history'][year] && keys[key]['history'][year]['description']) {
+        key_description.html(keys[key]['history'][year]['description']);
+      } else {
+        key_description.html("");
+      }
       aRepairMap.resetData(key, year);
-    })
+    }
+
+    function getUnit(){
+      return keys[key]['unit'];
+    }
 
     // add Areas
     $.ajax({
@@ -92,64 +103,46 @@
       dataType: 'json'
     })
     .done(function (data) {
-      current_btn = $('.tab-pane.in.active .collapse_btn.active');
-      year = $('#year_change select option:selected').val();
-      key = current_btn.data('id');
-      $('#key_description .content').html(current_btn.data('description'));
-      aRepairMap.addGeoJsonSvg(data, key, year, {
+      $("#spinner").hide();
+      aRepairMap.addGeoJsonSvg(data, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent
-      })
+        getInfoContent: getInfoContent,
+        selectPath: true,
+        key: key,
+        year: year
+      });
+      addExportBtnLogic();
     })
     .fail(function () {
+      console.log("areas were not loaded");
     });
 
     // add markers
     $.ajax({
       method: 'get',
-      url: '/key_indicate_map/indicators/geo_json',
+      url: '/key_indicate_map/indicators/geo_json/towns',
       dataType: 'json'
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
+      aRepairMap.addGeoJsonPoints(data, {
         clustered: true,
         style: {
-          opacity: 0.8,
+          opacity: 0.8
         },
         hoverStyle: {
-          opacity: 1,
+          opacity: 1
         },
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent
+        getInfoContent: getInfoContent,
+        selectPath: true,
+        key: key,
+        year: year
       })
     })
     .fail(function () {
+      console.log("towns were not loaded");
     });
-
-    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-
-    var icons = {};
-    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'});
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'});
-
-    function getPoint(properties) {
-      var point = {};
-      switch (properties.level) {
-        case 'city':
-          point.icon = icons.city;
-          break;
-        case 'town':
-          point.icon = icons.town;
-          break;
-        default:
-          point.icon = new L.Icon.Default();
-          break
-      }
-
-      return point
-    }
 
     function onFeatureClick(feature) {
       removeRow = function(el) {
@@ -164,7 +157,7 @@
           '<td><button class="btn btn-xs btn-default" onclick="removeRow(this)" style="border:none;">x</button></td>' +
           '<td><a href="' + "#{public_path('ID')}".replace('ID', feature.properties.id) + '">' + feature.properties.title + '</a></td>';
         if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
-          var value = feature.properties['indicators'][year][key]['value'];
+          var value = feature.properties['indicators'][year][key];
           content += '<td class="key_value">';
           content += addPercentOfMax(value);
           content += " " + value + '</td>';
@@ -183,14 +176,18 @@
       } else {
         var value = 0, num_value = 0;
         if(properties['indicators'][year] && properties['indicators'][year][key]) {
-          value = properties['indicators'][year][key]['value'];
+          if(keys[key]['history']['integer_or_float'] == 'integer') {
+            value = parseInt(properties['indicators'][year][key]);
+          } else {
+            value = parseFloat(properties['indicators'][year][key]).toFixed(2);
+          }
           num_value = value;
-          if(properties['indicators'][year][key]['unit']) {
-            value += " " + properties['indicators'][year][key]['unit']
+          if(keys[key]['unit']) {
+            value += " " + keys[key]['unit']
           }
         }
         content =
-        '<div class="title">' + key_name + '</div>' +
+        '<div class="title">' + keys[key]['name'] + '</div>' +
         '<h4>' + properties.title + '</h4>' +
         '<span style="font-size: 1.1em;">' + value + '</span></br>';
         content += addPercentOfMax(num_value);
@@ -199,32 +196,41 @@
     }
 
     function generate_content() {
-        key_name = current_btn.data('name');
-        var content =
-            '<div class="title">' + key_name + '</div>' +
-            '<h4>' + I18n.t('ukraine') + '</h4>' +
-            '<span style="font-size: 1.1em;">' + current_btn.data('value') + " " + current_btn.data('unit') + '</span></br>';
-        if(current_btn.data('value') <= aRepairMap.getMaxValue()){
-          maxValue = aRepairMap.getMaxValue();
+        var total_value;
+        if(keys[key]['history'][year] && keys[key]['history'][year]['total']) {
+          if(keys[key]['history']['integer_or_float'] == 'integer') {
+            total_value = parseInt(keys[key]['history'][year]['total']);
+          } else {
+            total_value = parseFloat(keys[key]['history'][year]['total']).toFixed(2);
+          }
         } else {
-          maxValue = current_btn.data('value');
+          total_value = 0;
         }
-        content += addPercentOfMax(current_btn.data('value'));
+        var content =
+            '<div class="title">' + keys[key]['name'] + '</div>' +
+            '<h4>' + I18n.t('ukraine') + '</h4>' +
+            '<span style="font-size: 1.1em;">' + total_value + " " + keys[key]['unit'] + '</span></br>';
+        if(total_value <= aRepairMap.getAreasMaxValue()){
+          areas_maxValue = aRepairMap.getAreasMaxValue();
+        } else {
+          areas_maxValue = total_value;
+        }
+        content += addPercentOfMax(total_value);
         return content;
     }
 
     function addPercentOfMax(value){
       content = "";
-      if(value <= maxValue){
+      if(value <= areas_maxValue){
         var stop;
         if(value < 0) {
-          if(maxValue < 0) {
-            stop = 10 - Math.round((value*10)/(maxValue + value));
+          if(areas_maxValue < 0) {
+            stop = 10 - Math.round((value*10)/(areas_maxValue + value));
           } else {
-            stop = 10 - Math.round(-(value*10)/(maxValue - value));
+            stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
           }
         } else {
-          stop = Math.round((value*10)/maxValue);
+          stop = Math.round((value*10)/areas_maxValue);
         }
         for(var i = 0; i < stop; i++) {
           content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
@@ -234,5 +240,33 @@
         }
       }
       return content;
+    }
+
+    function addExportBtnLogic() {
+      $.when(
+        $.getScript( "/assets/html2canvas/html2canvas.js" ),
+        $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+      ).done(function(){
+        $('#export').on('click', function() {
+          html2canvas($("#svg_for_export"), {
+            //logging: true,
+            background :'#FFFFFF',
+            onrendered: function(canvas) {
+              //document.body.appendChild(canvas);
+              var canvasdata = canvas.toDataURL("image/png");
+
+              var theEvent = document.createEvent("MouseEvent");
+              theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+              var a = document.createElement("a");
+              a.download = "sample.png";
+              a.href = canvasdata;
+              a.dispatchEvent(theEvent);
+            }
+          });
+        })
+      })
     }
   });

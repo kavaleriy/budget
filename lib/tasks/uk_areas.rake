@@ -17,7 +17,7 @@ namespace :uk_areas do
       geometry_type = f['geometry']['type']
       coordinates = []
 
-      divider = 10
+      divider = 3
 
       case geometry_type
         when 'MultiPolygon'
@@ -46,7 +46,6 @@ namespace :uk_areas do
   end
 
   def get_hash
-
     file = File.read('db/uk_map_areas.geojson')
     data_hash = JSON.parse(file)
     data_hash

@@ -23,6 +23,19 @@ class TownsController < ApplicationController
     end
   end
 
+  def search_for_towns
+    @towns = use_cache controller_path do
+      Town.all.reject{|town| town.level == 2 || town.level == 1 }
+    end
+
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @towns = @towns.select{ |t| Regexp.new("^#{q}.*") =~ t.title }
+      format.json
+    end
+
+  end
+
   # GET /indicator_files
   # GET /indicator_files.json
   def index
@@ -63,7 +76,12 @@ class TownsController < ApplicationController
   # PATCH/PUT /indicator_files/1.json
   def update
     respond_to do |format|
-      if @town.update(town_params)
+      attrs = town_params
+      attrs.delete(:coordinates)
+      coordinates = eval(town_params[:coordinates] || '')
+
+      if @town.update(attrs)
+        @town.update(coordinates: coordinates)
         format.html { redirect_to @town, notice: 'Town was successfully updated.' }
         format.json { render :show, status: :ok, location: @town }
       else
@@ -95,6 +113,6 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:title, :img, :links)
+      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type)
     end
 end
