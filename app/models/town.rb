@@ -8,6 +8,7 @@ class Town
   field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
+  field :description, type: String
   def get_level
     return :area if self.level == 1
     return :city if self.level == 13
