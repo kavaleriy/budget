@@ -38,6 +38,10 @@
 -#    = render partial: 'revenues_expences'
 
 .container.col-xs-12
+  %h3.right-line
+    Документи
+    %span.badge.bsize.count
+      = @town.documentation_documents.count()
   = render partial: 'docs'
 
 :javascript
