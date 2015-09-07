@@ -4,19 +4,19 @@
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
   #functional_buttons.col-xs-12
-    - if @types_count > 1
+    - if @taxonomy._type == "TaxonomyRov"
       .pull-left
         .btn-group{'data-toggle' => 'buttons'}
-          %label.btn.btn-default.active.data_type
-            %input{:name => "data_type", :type => "radio", :value => "plan"}
-            = t('js.visify.plan')
-          %label.btn.btn-default.data_type
-            %input{:name => "data_type", :type => "radio", :value => "fact"}
-            = t('js.visify.fact')
+          %label.btn.btn-default.active.level
+            %input{:name => "level", :type => "radio", :value => "ktfk_aaa"}
+            = 'ktfk_aaa'
+          %label.btn.btn-default.level
+            %input{:name => "level", :type => "radio", :value => "kekv"}
+            = 'kekv'
+        %span#level_name{:style => 'position:relative;top:1.0em;'}
+          Функціональний рівень
 
   .chart.col-xs-12.col-md-8
-    //= render partial: 'under_sequence', :locals => { fond_codes: @fond_codes }
-
     %ul.nav.nav-tabs{role: 'tablist'}
       %li.active{'role' => 'presentation'}
         %a{href: '#tab_bubbletree', 'aria-controls' => 'tab_bubbletree', role: 'tab', 'data-toggle' => 'tab'}
@@ -30,7 +30,15 @@
       %li{'role' => 'presentation'}
         %a{href: '#tab_table', 'aria-controls' => 'tab_table', role: 'tab', 'data-toggle' => 'tab'}
           %i.fa.fa-table.fa-2x
-
+      - if @types_count > 1
+        .pull-right
+          .btn-group{'data-toggle' => 'buttons'}
+            %label.btn.btn-default.active.data_type
+              %input{:name => "data_type", :type => "radio", :value => "plan"}
+              = t('js.visify.plan')
+            %label.btn.btn-default.data_type
+              %input{:name => "data_type", :type => "radio", :value => "fact"}
+              = t('js.visify.fact')
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
         #chart
@@ -83,15 +91,31 @@
       draggable = 0;
     }
 
-    d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + init_levels, function(data) {
-      _data = data;
-      iframe_resize();
-    })
+    get_data(init_levels);
+
+    function get_data(levels) {
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+        _data = data;
+        iframe_resize();
+      })
+    }
 
     // radio buttons to switch plan/fact
     $('.data_type').on("click", function(){
       data_type = $(this).children(':first').val();
       iframe_resize();
+    });
+
+    // radio buttons to switch level
+    $('.level').on("click", function(){
+      level = $(this).children(':first').val();
+      if(level == 'ktfk_aaa') {
+        get_data(['ktfk_aaa', 'ktfk', 'kekv']);
+        $('#level_name').text("Функціональний рівень");
+      } else if(level == 'kekv') {
+        get_data(['kekv', 'ktfk_aaa', 'ktfk']);
+        $('#level_name').text("Економічний рівень");
+      }
     });
 
     $(window).resize(function() {
@@ -236,9 +260,6 @@
 
     function ItemDrop(levels, node) {
 
-      //if(file_type == "TaxonomyRot") {
-      //  levels[0] = "_" + levels[0]
-      //}
       last_node = node;
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
         _data = data
