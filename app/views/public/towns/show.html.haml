@@ -27,6 +27,8 @@
     = render partial: 'map_ukraine'
 
 #portfolio.col-xs-12
+  %h3.right-line
+    = t('public.towns.portfolio.visuals')
   .row
     - %w(budget programs keys calendar sankey repair).each do |item|
       = render partial: 'portfolio', :locals => { :item => item }
@@ -35,7 +37,7 @@
 -#  - if @total_amounts != {}
 -#    = render partial: 'revenues_expences'
 
-.container.col-xs-12.col-xs-offset-0.col-md-offset-2.col-md-8.col-lg-10
+.container.col-xs-12
   = render partial: 'docs'
 
 :javascript
