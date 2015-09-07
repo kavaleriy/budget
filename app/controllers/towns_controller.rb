@@ -113,6 +113,6 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type)
+      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description)
     end
 end
