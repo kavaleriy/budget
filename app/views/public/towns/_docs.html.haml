@@ -4,12 +4,21 @@
     - if count > 0
       .owl-carousel-item
         .town.thumbnail
-          .row
-            .col-md-4
-              %i.fa.fa-folder-o.fa-4x
-            .col-md-8
-              = br.title
-            %span.stat
-              %i.fa.fa-file-text-o
-              %span
-                =count
+          .folder
+            .front
+              %p.text
+                = br.title
+            .back
+              %span.number
+                = count
+
+        -#.town.thumbnail
+        -#  .row
+        -#    .col-md-4
+        -#      %i.fa.fa-folder-o.fa-4x
+        -#    .col-md-8
+        -#      = br.title
+        -#    %span.stat
+        -#      %i.fa.fa-file-text-o
+        -#      %span
+        -#        =count

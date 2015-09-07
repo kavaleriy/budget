@@ -101,3 +101,136 @@
 
 /*End. towns/docs block*/
 
+/*Begin. Folder view block*/
+
+.folder {
+  /* This will enable the 3D effect. Decrease this value
+   * to make the perspective more pronounced: */
+
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  perspective: 800px;
+
+//  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+
+  width: 160px;
+  height: 120px;
+//  margin: -100px 0 0 -60px;
+}
+
+.folder div{
+  width:150px;
+  height:115px;
+
+  background-color:#93bad8;
+
+  /* Enabling 3d space for the transforms */
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+  /* Enabling a smooth animated transition */
+  -webkit-transition:0.5s;
+  -moz-transition:0.5s;
+  transition:0.5s;
+
+  /* Disable text seleltion on the folder */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  position:absolute;
+  top:0;
+  left:50%;
+  margin-left:-75px;
+}
+
+.folder .front{
+  border-radius:5px 5px 0 0;
+
+  -moz-transform:rotateX(-30deg);
+  -webkit-transform:rotateX(-30deg);
+  transform:rotateX(-30deg);
+
+  -moz-transform-origin:50% 100%;
+  -webkit-transform-origin:50% 100%;
+  transform-origin:50% 100%;
+
+  background-image: -moz-linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
+  background-image: -webkit-linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
+  background-image: linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
+
+  box-shadow:0 -2px 2px rgba(0,0,0,0.1), 0 1px rgba(255,255,255,0.35) inset;
+
+  z-index:10;
+
+  font: bold 26px sans-serif;
+  color: #5A88A9;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.folder .back{
+  background-image: -webkit-linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
+  background-image: -moz-linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
+  background-image: linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
+
+  border-radius:0 5px 0 0;
+  box-shadow:0 -1px 1px rgba(0,0,0,0.15);
+}
+
+.folder .back:before{
+  content:'';
+  width:60px;
+  height:10px;
+  border-radius:4px 4px 0 0;
+  background-color:#93bad8;
+  position:absolute;
+  top:-10px;
+  left:0px;
+  box-shadow:0 -1px 1px rgba(0,0,0,0.15);
+}
+
+.folder .back:after{
+  content:'';
+  width:100%;
+  height:4px;
+  border-radius:5px;
+  position:absolute;
+  bottom:5px;
+  left:0px;
+  box-shadow:0 4px 8px #333;
+}
+
+.folder.open .front{
+  -moz-transform:rotateX(-50deg);
+  -webkit-transform:rotateX(-50deg);
+  transform:rotateX(-50deg);
+}
+
+.number {
+  margin: -12px 0 0 -70px;
+  font-size: 1.2em;
+  position: absolute;
+  color: white;
+  font-weight: bold;
+}
+
+.text {
+  line-height: 30px;
+  margin: 15px 0 0 0;
+  color: white;
+}
+
+/*if use owl carousel*/
+.owl-item .town {
+  padding: 0 0 0 70px;
+}
+.thumbnail {
+  border: none;
+}
+/*endif owl carousel*/
+/*End. Folder view block*/
