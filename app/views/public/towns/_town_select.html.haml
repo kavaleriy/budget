@@ -13,10 +13,25 @@
           callback({ id: '#{@town[:id]}', text: '#{@town[:title]}' });
         }
       },
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+    },
       allowClear: false,
       multiSelect: false,
       multiple: false,
-      minimumInputLength: 2,
+      //minimumInputLength: 2,
       width: '100%',
       ajax: {
         url: '#{search_for_towns_town_path}',
@@ -34,6 +49,6 @@
       },
     }).on("change", function(){
       var town_url = "#{public_path('ID')}".replace('ID', $(this).val())
-      window.location = town_url
+      window.location = town_url;
     });
   });
