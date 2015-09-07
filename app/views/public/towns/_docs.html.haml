@@ -19,6 +19,11 @@
   .br-red{
   border: solid 1px red;
   }
+  .stat {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+  }
 
 
 %h3.right-line
@@ -31,13 +36,13 @@
     - count = @town.documentation_documents.where(:branch => br).count()
     - if count > 0
       .owl-carousel-item
-        .town.thumbnailexit
-          .icon-docs
-            %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
-              %span.fa-stack.fa-3x
-                %i.fa.fa-folder-o.fa-stack-2x
-                %strong.fa-stack-1x.fa-t-fix
-                  = count
-          .title-docs
-            %p
+        .town.thumbnail
+          .row
+            .col-md-4
+              %i.fa.fa-folder-o.fa-4x
+            .col-md-8
               = br.title
+            %span.stat
+              %i.fa.fa-file-text-o
+              %span
+                =count
