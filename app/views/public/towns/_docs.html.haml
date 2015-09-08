@@ -1,16 +1,55 @@
-.owl-example.owl-carousel
+-#Begin. CSS for Default folder view
+:css
+  .docs-inline {
+    vertical-align: middle;
+  }
+
+  .folder {
+    float: left;
+    vertical-align: middle;
+    margin: 25px 25px 0 0;
+  }
+
+  .folder .back .number {
+    margin: -12px 0 0 2px;
+  }
+-#End. CSS for Default folder view
+
+
+-# Begin. Carousel variant
+
+-#.owl-example.owl-carousel
+-#  - Documentation::Branch.all.each do |br|
+-#    - count = @town.documentation_documents.where(:branch => br).count()
+-#    - if count > 0
+-#      .owl-carousel-item
+-#        .town.thumbnail
+-#          .folder
+-#            .front
+-#              %p.text
+-#                = br.title
+-#            .back
+-#              %span.number
+-#                = count
+
+-# End. Carousel variant
+
+-# Begin. Default variant
+
+.docs-inline
   - Documentation::Branch.all.each do |br|
     - count = @town.documentation_documents.where(:branch => br).count()
     - if count > 0
-      .owl-carousel-item
-        .town.thumbnail
-          .folder
-            .front
-              %p.text
-                = br.title
-            .back
-              %span.number
-                = count
+      %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
+        .folder
+          .front
+            %p.text
+              = br.title
+          .back
+            %span.number
+              = count
+
+-# End. Default variant
 
         -#.town.thumbnail
         -#  .row
