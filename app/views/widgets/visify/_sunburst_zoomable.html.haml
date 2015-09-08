@@ -1,7 +1,7 @@
 -#http://bl.ocks.org/mbostock/4348373
 
 .sunburst
-  .sunburst-zoom
+  .sunburst_zoomable
     #chart
     %canvas{:style => "display: none;"}
     .pull-right
@@ -27,7 +27,7 @@
             .data(partition.nodes(root))
           .enter().append("path")
             .attr("d", arc)
-            .attr("id", function(d, i) { return 'path' + i; })
+            .attr("id", function(d, i) { d.id = i + "bubble"; return 'path' + i; })
             .style("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
             .style("stroke", "#ffffff")
             .style("stroke-width", 1)
@@ -37,14 +37,14 @@
     }
 
     function mouseover(d) {
-      add_tooltip(d3.event, d);
       path_animation('start', this);
+      self.hoverCallback(d);
     }
 
     // Restore everything to full opacity when moving off the visualization.
     function mouseleave(d) {
-      remove_tooltip(d);
       path_animation('stop', this);
+      self.hoverCallback(center_node);
     }
 
     function click(d) {
@@ -78,6 +78,7 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         width = options.width;
         height = options.height;
         radius = Math.min(width, height) / 2;
@@ -90,7 +91,7 @@
         y = d3.scale.sqrt()
             .range([0, radius]);
 
-        svg = d3.select(".sunburst-zoom #chart").append("svg:svg")
+        svg = d3.select(".sunburst_zoomable #chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
             .attr("version", 1.1)
@@ -111,23 +112,23 @@
       show: function(data) {
           clear();
           createVisualization(data);
-          centerNode = data;
+          center_node = data;
       },
       selectNode: function (node) {
         click(node);
       },
       set_centerNode: function(node) {
-        centerNode = node;
+        center_node = node;
       },
       current_node: function() {
-        return centerNode;
+        return center_node;
       },
       getCenterNode: function(data) {
         var nodes = partition(data);
         for(var i in nodes) {
-          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
-            if(centerNode.parent) {
-              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+          if(nodes[i].label == center_node.label && nodes[i].level == center_node.level) {
+            if(center_node.parent) {
+              if(center_node.parent.label == nodes[i].parent.label && center_node.parent.level == nodes[i].parent.level) {
                 return nodes[i];
               }
             } else {
@@ -138,7 +139,6 @@
       }
     }
   }
-
 
 
 

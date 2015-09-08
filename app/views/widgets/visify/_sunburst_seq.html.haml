@@ -1,0 +1,183 @@
+.sunburst_seq
+  #chart
+  %canvas{:style => "display: none;"}
+  .pull-right
+    = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  function aTreeChart(aContainer) {
+    var totalSize, self;
+    var width, height, radius;
+    var color;
+    var vis, partition, arc;
+    var current_year, current_month;
+    var centerNode = null, center_text;
+
+    function getAncestors(node) {
+      var path = [];
+      var current = node;
+      while (current.parent) {
+        path.unshift(current);
+        current = current.parent;
+      }
+      path.unshift(current);
+      return path;
+    }
+
+    // Main function to draw and set up the visualization, once we have the data.
+    function createVisualization(json) {
+      // Bounding circle underneath the sunburst, to make it easier to detect
+      // when the mouse leaves the parent g.
+
+      vis.append("svg:circle")
+          .attr("r", radius)
+          .style("opacity", 0);
+
+      // For efficiency, filter nodes to keep only those large enough to see.
+      var nodes = partition.nodes(json)
+          .filter(function(d) {
+            return (d.dx > 0.005); // 0.005 radians = 0.29 degrees
+          });
+
+      var path = vis.data([json]).selectAll("path")
+          .data(nodes)
+          .enter().append("svg:path")
+          .attr("display", function(d) { return d.depth ? null : "none"; })
+          .attr("d", arc)
+          .attr("fill-rule", "evenodd")
+          .attr("id", function(d, i) { d.id = i + "bubble"; return 'path' + i; })
+          .style("fill", function(d) { return d.color || color(d.value); })
+          .style("fill-opacity", 1)
+          .on("mouseover", mouseover)
+          .on("mouseleave", node_mouseleave);
+
+      // Add the mouseleave handler to the bounding circle.
+      d3.select("#container").on("mouseleave", mouseleave);
+
+      // Get total size of the tree = value of root node from partition.
+      totalSize = json.amount;
+
+      center_text = [(json.amount/window.aHelper.k(json.amount)).toFixed(2) + window.aHelper.short_unit(json.amount), json.label];
+      var text = vis.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', '#0b387c')
+         .style('font-weight', 'bold')
+         .style('font-size', '1.2em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
+    };
+
+    // Fade all but the current sequence, and show it in the breadcrumb trail.
+    function mouseover(d) {
+      // Fade all the segments.
+
+      vis.selectAll("path")
+          .style("fill-opacity", 0.6);
+
+      var sequenceArray = getAncestors(d);
+
+      // Then highlight only those that are an ancestor of the current segment.
+      vis.selectAll("path")
+          .filter(function(node) {
+                    return (sequenceArray.indexOf(node) >= 0);
+                  })
+          .style("fill-opacity", 1);
+
+      self.clickCallback(d);
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+      self.hoverCallback(d);
+    }
+
+    function node_mouseleave(d) {
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+      self.hoverCallback(centerNode);
+    }
+
+    // Restore everything to full opacity when moving off the visualization.
+    function mouseleave(d) {
+
+      // Deactivate all segments during transition.
+      vis.selectAll("path").on("mouseover", null);
+
+      // Transition each segment to full opacity and then reactivate it.
+      vis.selectAll("path")
+          .transition()
+          .duration(100)
+          .style("fill-opacity", 1)
+          .each("end", function() {
+                  d3.select(this).on("mouseover", mouseover);
+                });
+      self.clickCallback(d);
+      self.hoverCallback(centerNode);
+    }
+
+    function clear() {
+      vis.selectAll("*").remove();
+    }
+
+
+    return {
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
+        width = options.width;
+        height = options.height;
+
+        $('.sunburst_seq #chart').width(width).height(height)
+
+        // Dimensions of sunburst.
+        radius = Math.min(width, height) / 2;
+
+        color = d3.scale.category20c()
+
+        //$(".sunburst-seq #explanation").width(120).css("top", height / 2 ).css("left", width/2 - 70);
+
+
+        // Mapping of step names to colors.
+        // Total size of all segments; we set this later, after loading the data.
+        totalSize = 0;
+
+        vis = d3.select(".sunburst_seq #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .append("svg:g")
+            .attr("id", "container")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        partition = d3.layout.partition()
+            .size([2 * Math.PI, radius * radius])
+            .value(function(d) { return d.amount; });
+
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return d.x; })
+            .endAngle(function(d) { return d.x + d.dx; })
+            .innerRadius(function(d) { return Math.sqrt(d.y); })
+            .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+      },
+      clear: clear,
+      show: function(data) {
+        clear();
+        createVisualization(data);
+      },
+      selectNode: function (node) {
+        click(node);
+      },
+      current_node: function() {
+        return centerNode;
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      }
+    }
+  }

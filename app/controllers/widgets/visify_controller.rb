@@ -11,6 +11,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def visify
   end
 
+  def type
+    render :partial => 'widgets/visify/' + params[:type]
+  end
+
   def get_bubbletree_data
     result = use_cache do
       params[:levels] ? levels = params[:levels].split(",") : levels = []
