@@ -78,7 +78,19 @@
 
 .bsize {
   font-size: .73em;
-  background-color: rgba(128, 128, 128, 0.35);
+  background-color: rgba(128, 128, 128, .35);
+  border-radius: 4px;
+  line-height: 1.2em;
+  padding: 4px 4px;
+
+}
+
+.nav > li > a:hover > .bsize {
+  background-color: rgba(128, 128, 128, .85);
+}
+
+.nav > li.active > a:focus > .bsize {
+  background-color: rgba(128, 128, 128, .85);
 }
 
 .fa-t-fix {
