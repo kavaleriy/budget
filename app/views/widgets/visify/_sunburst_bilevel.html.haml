@@ -1,0 +1,255 @@
+-#http://bl.ocks.org/mbostock/5944371
+
+.sunburst_bievel
+  #chart
+  %canvas{:style => "display: none;"}
+  .pull-right
+    = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  function aTreeChart(aContainer, sequence, sidebar, slider, slider_year) {
+    var totalSize, self;
+    var width, height, margin
+    var hue, luminance
+    var svg, partition, arc, path, center
+    var current_year, current_month;
+    var centerNode = null, center_text;
+    var count = 0;
+
+    function createVisualization(root) {
+      totalSize = root.amount;
+
+      luminance = d3.scale.sqrt()
+          .domain([0, root.amount])
+          .clamp(true)
+          .range([90, 20]);
+
+      partition = d3.layout.partition()
+                  .sort(function(a, b) { return d3.ascending(a.label, b.label); })
+                  .size([2 * Math.PI, radius]);
+
+      partition
+          .value(function(d) { return d.amount; })
+          .nodes(root)
+          .forEach(function(d) {
+            d._children = d.children;
+            d.key = Math.random();
+            d.fill = fill(d);
+          });
+
+      // Now redefine the value function to use the previously-computed sum.
+      partition
+          .children(function(d, depth) { return depth < 2 ? d._children : null; })
+          .value(function(d) { return d.amount; });
+
+      center = svg.append("circle")
+          .style("fill", 'transparent')
+          .attr("r", radius / 3)
+          .on("click", zoomOut);
+
+      path = svg.selectAll("path")
+          .data(partition.nodes(root).slice(1))
+        .enter().append("path")
+          .attr("d", arc)
+          .attr("id", function(d, i) { d.id = (i+1) + "bubble"; return 'path' + i + d.depth; })
+          .style("fill", function(d) { return d.fill; })
+          .each(function(d) { this._current = updateArc(d); })
+          .on("click", zoomIn)
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout);
+
+      center_text = [(root.amount/window.aHelper.k(root.amount)).toFixed(2) + window.aHelper.short_unit(root.amount), root.label];
+      var text = svg.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', '#0b387c')
+         .style('font-weight', 'bold')
+         .style('font-size', '1.2em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
+    }
+
+    function mouseover(d) {
+      self.hoverCallback(d);
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+    }
+
+    function mouseout(d) {
+      self.hoverCallback(centerNode);
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': '#0b387c', 'font-weight': 'bold', 'font-size': '1.2em' });
+    }
+
+    function zoomIn(p) {
+      self.clickCallback(p);
+      if (p.depth > 1) {
+        //p = p.parent;
+      }
+      if (!p.children) { return; }
+      zoom(p, p);
+     }
+
+    function zoomOut(p) {
+      self.clickCallback(p);
+      if (!p || !p.parent) return;
+      zoom(p.parent, p);
+    }
+
+    // Zoom to the specified new root.
+    function zoom(root, p) {
+      centerNode = root;
+      if (document.documentElement.__transition__) return;
+
+      // Rescale outside angles to match the new layout.
+      var enterArc,
+          exitArc,
+          outsideAngle = d3.scale.linear().domain([0, 2 * Math.PI]);
+
+      function insideArc(d) {
+        return p.key > d.key
+            ? {depth: d.depth - 1, x: 0, dx: 0} : p.key < d.key
+            ? {depth: d.depth - 1, x: 2 * Math.PI, dx: 0}
+            : {depth: 0, x: 0, dx: 2 * Math.PI};
+      }
+
+      function outsideArc(d) {
+        return {depth: d.depth + 1, x: outsideAngle(d.x), dx: outsideAngle(d.x + d.dx) - outsideAngle(d.x)};
+      }
+
+      center.datum(root);
+
+      // When zooming in, arcs enter from the outside and exit to the inside.
+      // Entering outside arcs start from the old layout.
+      if (root === p) enterArc = outsideArc, exitArc = insideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+      path = path.data(partition.nodes(root).slice(1), function(d) { return d.key; });
+
+      // When zooming out, arcs enter from the inside and exit to the outside.
+      // Exiting outside arcs transition to the new layout.
+      if (root !== p) enterArc = insideArc, exitArc = outsideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+      if(d3.event) {
+        d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+          move_to_node();
+        });
+      } else {
+        move_to_node();
+      }
+
+      function move_to_node() {
+        count++;
+        path.exit().transition()
+            .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
+            .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
+            .remove();
+
+        path.enter().append("path")
+            .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
+            .style("fill", function(d) { return d.fill; })
+            .attr("id", function(d, i) { d.id = (i+1) + "bubble"; return 'path' + i + d.depth + count; })
+            .on("click", zoomIn)
+            .each(function(d) { this._current = enterArc(d); })
+            .on("mouseover", mouseover)
+            .on("mouseout", mouseout);
+
+        path.transition()
+            .style("fill-opacity", 1)
+            .attrTween("d", function(d) { return arcTween.call(this, updateArc(d)); });
+      }
+    }
+
+    function fill(d) {
+      var p = d;
+      while (p.depth > 1) p = p.parent;
+      var c = d3.lab(p.color);
+      c.l = luminance(d.amount);
+      return c;
+    }
+
+    function arcTween(b) {
+      var i = d3.interpolate(this._current, b);
+      this._current = i(0);
+      return function(t) {
+        return arc(i(t));
+      };
+    }
+
+    function updateArc(d) {
+      return {depth: d.depth, x: d.x, dx: d.dx};
+    }
+
+    function clear() {
+      svg.selectAll("*").remove();
+    }
+
+    return {
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
+        width = options.width;
+        height = options.height;
+
+        color = d3.scale.category20c();
+
+        margin = {top: 20, right: 20, bottom: 20, left: 20},
+        radius = Math.min(width, height) / 2;
+
+        hue = d3.scale.category10();
+
+        svg = d3.select(".sunburst_bievel #chart").append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+          .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        arc = d3.svg.arc()
+            .startAngle(function(d) { return d.x; })
+            .endAngle(function(d) { return d.x + d.dx - .01 / (d.depth + .5); })
+            .innerRadius(function(d) { return radius / 3 * d.depth; })
+            .outerRadius(function(d) { return radius / 3 * (d.depth + 1) - 1; });
+      },
+      show: function(data) {
+        clear();
+        createVisualization(data);
+        if(!centerNode) {
+          centerNode = data;
+          data.id = "0bubble";
+        }
+      },
+      selectNode: function (node) {
+        zoomIn(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
+      },
+      getCenterNode: function(data) {
+        createVisualization(data);
+        var nodes = partition(data);
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].taxonomy == centerNode.taxonomy) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.taxonomy == nodes[i].parent.taxonomy) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
+      }
+    }
+  }
+
+

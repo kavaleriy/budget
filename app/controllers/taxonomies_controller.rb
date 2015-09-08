@@ -99,6 +99,7 @@ class TaxonomiesController < ApplicationController
 
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
+    @types_count = @taxonomy.budget_files.group_by{|f| f.data_type}.count
 
     @sel_year = '0'
     @sel_month = '0'

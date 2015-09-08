@@ -1,0 +1,171 @@
+-# http://bl.ocks.org/mbostock/1005873
+-#http://bl.ocks.org/mbostock/4347473
+-#http://bl.ocks.org/mbostock/1005873
+
+  = render partial: 'tree_chart', :locals => { budget_file_id: @budget_file.id }
+
+:css
+  .node {
+    fill: #ddd;
+    stroke: #fff;
+    width: 5px;
+  }
+
+.icicle
+  #chart
+  %canvas{:style => "display: none;"}
+  .pull-right
+    = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  function aTreeChart(aContainer) {
+    var width, height;
+    var color;
+
+    var vis, partition;
+
+    var x, y, g, t, kx, ky;
+
+    var totalSize, self;
+
+    var lastClicked;
+    var current_year, current_month;
+    var centerNode = null;
+
+    // Main function to draw and set up the visualization, once we have the data.
+    function createVisualization(root) {
+
+      g = vis.selectAll("g")
+          .data(partition.nodes(root))
+        .enter().append("svg:g")
+          .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
+          .on("click", mouseclick)
+          //.on("dblclick", function(d) {})
+          .on("mouseover", function(d){ mouseover(d3.event, d) })
+          .on("mouseleave", mouseleave);
+
+      totalSize = root.amount;
+
+      kx = width / root.dx;
+      ky = height / 1;
+
+      g.append("svg:rect")
+          .attr("width", root.dy * kx)
+          .attr("height", function(d, i) { d.id = i + "bubble"; return d.dx * ky; })
+          .attr("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
+
+      g.append("svg:text")
+          .attr("transform", transform)
+          .attr("dy", ".35em")
+          .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
+          .text(function(d) { return d.label; })
+
+    };
+
+    function mouseover(event, d) {
+      self.hoverCallback(d);
+    }
+
+    function mouseleave(d) {
+      self.hoverCallback(centerNode);
+    }
+
+    function mouseclick(d) {
+      dblclick(d);
+      self.clickCallback(d);
+    }
+
+    function dblclick(d) {
+      if (!d.children) return;
+      kx = (d.y ? width - 40 : width) / (1 - d.y);
+      ky = height / d.dx;
+      x.domain([d.y, 1]).range([d.y ? 40 : 0, width]);
+      y.domain([d.x, d.x + d.dx]);
+
+      var t;
+      if(d3.event) {
+        t = g.transition()
+            .duration(d3.event.altKey ? 7500 : 750)
+            .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+      } else {
+        t = g.transition()
+            .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+      }
+
+      t.select("rect")
+          .attr("width", d.dy * kx)
+          .attr("height", function(d) { return d.dx * ky; });
+
+      t.select("text")
+          .attr("transform", transform)
+          .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
+      if(d3.event) {
+        d3.event.stopPropagation();
+      }
+    }
+
+    function transform(d) {
+      return "translate(8," + d.dx * ky / 2 + ")";
+    }
+
+    function clear() {
+      vis.selectAll("*").remove();
+    }
+
+    return {
+      initialize: function(options) {
+        self = this;
+        self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
+        width = options.width;
+        height = options.height;
+
+        $('.icicle #chart').width(width).height(height)
+
+        color = d3.scale.category20c()
+
+        totalSize = 0;
+
+        x = d3.scale.linear().range([0, width]),
+        y = d3.scale.linear().range([0, height]),
+
+        vis = d3.select('.icicle #chart')
+          .append("svg:svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg");
+
+        partition = d3.layout.partition()
+            .value(function(d) { return d.amount; });
+      },
+      show: function(data) {
+        clear();
+        createVisualization(data);
+        centerNode = data;
+      },
+      selectNode: function (node) {
+        mouseclick(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
+      }
+    }
+  }

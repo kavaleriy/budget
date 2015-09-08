@@ -1,0 +1,190 @@
+.sunburst
+  #chart
+  %canvas{:style => "display: none;"}
+  .pull-right
+    = render partial: 'layouts/export_img', :locals => { container: '#chart' }
+
+:javascript
+  function aTreeChart(aContainer) {
+    var totalSize;
+    var width, height, radius;
+    var color;
+    var svg, partition, arc;
+    var current_year, current_month;
+    var centerNode = null, center_text;
+    var self;
+
+    function clear() {
+      svg.selectAll("*").remove();
+    }
+
+    // Main function to draw and set up the visualization, once we have the data.
+    function createVisualization(json) {
+
+      root = json;
+      totalSize = json.amount;
+
+      partition = d3.layout.partition()
+        .size([2 * Math.PI, radius])
+        .value(function(d) { if (d.amount > totalSize * 0.001) return d.amount; });
+
+      path = svg.data([root]).selectAll("path")
+        .data(partition.nodes)
+        .enter().append("svg:path")
+        .attr("d", arc)
+        .style("fill", function(d) { return ((d.children ? d : d.parent).color); })
+        .attr("id", function(d, i) { d.id = i + "bubble"; return 'path' + i; })
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .on("click", click)
+        .each(stash)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+
+      center_text = [(json.amount/window.aHelper.k(json.amount)).toFixed(2) + window.aHelper.short_unit(json.amount), json.key];
+      var text = svg.append('text')
+         .attr('x', 0)
+         .attr('y', 0)
+         .style('fill', 'white')
+         .style('font-size', '0.8em')
+         .attr('text-anchor', 'middle')
+         .text(center_text[0]);
+
+      text.append('tspan')
+          .attr('x', 0)
+          .attr('y', '1.5em')
+          .text(center_text[1]);
+    };
+
+    // Fade all but the current sequence, and show it in the breadcrumb trail.
+    function mouseover(d) {
+      path_animation('start', this);
+      text_animation([(d.amount/window.aHelper.k(d.amount)).toFixed(2) + window.aHelper.short_unit(d.amount), d.label], {'fill': 'white'});
+      self.hoverCallback(d);
+    }
+
+    // Restore everything to full opacity when moving off the visualization.
+    function mouseout(d) {
+      path_animation('stop', this);
+      text_animation(center_text, {'fill': 'white'});
+      self.hoverCallback(centerNode);
+    }
+
+    function click(d) {
+      self.clickCallback(d);
+      magnify(d);
+    }
+
+    // Distort the specified node to 80% of its parent.
+    function magnify(node) {
+      if (parent = node.parent) {
+        var parent,
+            x = parent.x,
+            k = .8;
+        parent.children.forEach(function(sibling) {
+          x += reposition(sibling, x, sibling === node
+              ? parent.dx * k / node.value
+              : parent.dx * (1 - k) / (parent.value - node.value));
+        });
+      } else {
+        reposition(node, 0, node.dx / node.value);
+      }
+
+      path.transition()
+          .duration(750)
+          .attrTween("d", arcTween);
+    }
+
+    // Recursively reposition the node at position x with scale k.
+    function reposition(node, x, k) {
+      node.x = x;
+      if (node.children && (n = node.children.length)) {
+        var i = -1, n;
+        while (++i < n) x += reposition(node.children[i], x, k);
+      }
+      return node.dx = node.value * k;
+    }
+
+    // Stash the old values for transition.
+    function stash(d) {
+      d.x0 = d.x;
+      d.dx0 = d.dx;
+    }
+
+    // Interpolate the arcs in data space.
+    function arcTween(a) {
+      var i = d3.interpolate({x: a.x0, dx: a.dx0}, a);
+      return function(t) {
+        var b = i(t);
+        a.x0 = b.x;
+        a.dx0 = b.dx;
+        return arc(b);
+      };
+    }
+
+    return {
+      initialize: function(options) {
+        width = options.width;
+        height = options.height;
+        self = this;
+        self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
+
+        $(aContainer + ' #chart').width(width).height(height)
+
+        $('.sunburst #explanation').width(120).css("top", height / 2 + 60 ).css("left", width/2 - 60 );
+
+        // Dimensions of sunburst.
+        radius = Math.min(width, height) / 2;
+
+        color = d3.scale.category20c()
+
+        // Mapping of step names to colors.
+        // Total size of all segments; we set this later, after loading the data.
+        totalSize = 0;
+
+       arc = d3.svg.arc()
+         .startAngle(function(d) { return d.x; })
+         .endAngle(function(d) { return d.x + d.dx; })
+         .innerRadius(function(d) { return d.y; })
+         .outerRadius(function(d) { return d.y + d.dy; });
+
+       svg = d3.select(".sunburst #chart").append("svg:svg")
+         .attr("width", width)
+         .attr("height", height)
+         .attr("version", 1.1)
+         .attr("xmlns", "http://www.w3.org/2000/svg")
+         .append("svg:g")
+         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+      },
+      show: function(data) {
+        clear();
+        createVisualization(data);
+        centerNode = data;
+      },
+      selectNode: function (node) {
+        click(node);
+      },
+      set_centerNode: function(node) {
+        centerNode = node;
+      },
+      current_node: function() {
+        return centerNode;
+      },
+      getCenterNode: function(data) {
+        var nodes = partition(data);
+        for(i in nodes) {
+          if(nodes[i].label == centerNode.label && nodes[i].level == centerNode.level) {
+            if(centerNode.parent) {
+              if(centerNode.parent.label == nodes[i].parent.label && centerNode.parent.level == nodes[i].parent.level) {
+                return nodes[i];
+              }
+            } else {
+              return nodes[i];
+            }
+          }
+        }
+      }
+    }
+  }
