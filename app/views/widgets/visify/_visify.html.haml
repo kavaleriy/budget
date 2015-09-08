@@ -60,24 +60,6 @@
 
   $(document).ready(function() {
 
-    $('.chart .dropdown a[role="tab"]').click(function(){
-      var vis = $(this).attr('data-chart');
-      $('#tab_bubbletree').html('');
-      $.ajax({
-        method: 'get',
-        url: '/widgets/visify/type/#{budget_file_id}' + '/' + vis,
-        dataType: 'html',
-      })
-      .done(function (data) {
-        $('#tab_bubbletree').html(data);
-        chart = aTreeChart('.' + vis);
-        iframe_resize();
-      })
-      .fail(function (e) {
-        console.log("error", e)
-      });
-    })
-
     var data_type = "#{@data_type}",
         year = "#{@sel_year}",
         month = "#{@sel_month}",
@@ -96,6 +78,28 @@
         current_data,
         _data,
         width;
+
+    $('.chart .dropdown a[role="tab"]').click(function(){
+      var vis = $(this).attr('data-chart');
+      if($('#tab_bubbletree .' + vis).length != 1) {
+        $('#tab_bubbletree').html('');
+        $.ajax({
+          method: 'get',
+          url: '/widgets/visify/type/#{budget_file_id}' + '/' + vis,
+          dataType: 'html',
+        })
+        .done(function (data) {
+          $('#tab_bubbletree').html(data);
+          chart = aTreeChart('.' + vis);
+          chart.initialize({ width: width, height: height, clickCallback: bubbleItemClick, hoverCallback: hoverCallback });
+          chart.set_centerNode(null);
+          chart.show(current_data);
+        })
+        .fail(function (e) {
+          console.log("error", e)
+        });
+        }
+    })
 
     if(file_type == "TaxonomyRot") {
       draggable = 0;
