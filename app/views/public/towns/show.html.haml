@@ -11,38 +11,47 @@
   .head.pull-left
     =@town.title
 
-.row{:style => 'margin-top: 10px;'}
-  .col-sm-12.col-md-2{:style => 'margin-top: 25px;'}
-    %img.thumbnail{src: @town.img.thumb.url, :style => 'display:block; margin:auto;'}
-  .col-sm-12.col-md-5.col-lg-6
-    %h3
-      Короткі відомості
-    = @town.description ? @town.description : ''
-    %h3
-      Корисні посилання
-      - unless (@town.links.nil?)
-        %p
-          =@town.links.html_safe
-  .col-sm-12.col-md-5.col-lg-4
-    = render partial: 'map_ukraine'
-
-#portfolio.col-xs-12
-  %h3.right-line
-    = t('public.towns.portfolio.visuals')
-  .row
-    - %w(budget programs keys calendar sankey repair).each do |item|
-      = render partial: 'portfolio', :locals => { :item => item }
-
+.col-sm-8#towns_profile{:style => 'margin-top: 10px;'}
+  / tabs left
+  .tabbable.tabs-left
+    %ul.nav.nav-tabs
+      %li
+        %img.thumbnail{src: @town.img.thumb.url, :style => 'display:block; margin:auto;'}
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#description"} Короткі відомості
+      %li
+        %a{"data-toggle" => "tab", :href => "#portfolio"} Візуалізації
+      %li
+        %a{"data-toggle" => "tab", :href => "#documents"} Документи
+    .tab-content
+      #description.tab-pane.active.fade.in
+        .col-sm-12.col-md-5.col-lg-6
+          %h3
+            Короткі відомості
+          = @town.description ? @town.description : ''
+          %h3
+            Корисні посилання
+            - unless (@town.links.nil?)
+              %p
+                =@town.links.html_safe
+      #portfolio.tab-pane.fade
+        %h3
+          = t('public.towns.portfolio.visuals')
+        .row
+          - %w(budget programs keys calendar sankey repair).each do |item|
+            = render partial: 'portfolio', :locals => { :item => item }
+      #documents.tab-pane.fade
+        %h3
+          Документи
+          %span.badge.bsize.count
+            = @town.documentation_documents.count()
+        = render partial: 'docs'
+  / /tabs
+.col-sm-4
+  = render partial: 'map_ukraine'
 -##sidebar_info.col-xs-12.col-md-5.col-lg-4
 -#  - if @total_amounts != {}
 -#    = render partial: 'revenues_expences'
-
-.container.col-xs-12
-  %h3.right-line
-    Документи
-    %span.badge.bsize.count
-      = @town.documentation_documents.count()
-  = render partial: 'docs'
 
 :javascript
 
