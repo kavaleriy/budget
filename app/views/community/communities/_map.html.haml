@@ -159,16 +159,6 @@
             })
             .on("click", function (d) {
               if (options.featureClickCallback) {
-                if(options.selectPath) {
-                  var el = d3.select(this);
-                  if(el.style('stroke') != 'rgb(255, 255, 255)'){
-                    $('#map svg .area:first').before(this);
-                    el.style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
-                  } else {
-                    $('#map svg .area:last').after(this);
-                    el.style('stroke','orange').style('stroke-width','3px');
-                  }
-                }
                 options.featureClickCallback(d);
               }
             });
@@ -330,11 +320,12 @@
                         .range([10, 60]);
         }
 
-        resetMarkers(options.key, options.year, options);
+        resetMarkers(data, options);
       }
 
-      function resetMarkers(key, year, options) {
+      function resetMarkers(data, options) {
         if(markers){
+          towns_data = data;
           map.removeLayer(markers);
         }
         if($.isEmptyObject(options)) {
@@ -343,10 +334,6 @@
 
         markers = (options.clustered == true) ? new L.MarkerClusterGroup() : new L.layerGroup();
         map.addLayer(markers);
-
-        if(key && year) {
-          setSizeDomain(key, year);
-        }
 
         var layerOptions = {
           pointToLayer: getSVGPointToLayer,
@@ -545,7 +532,7 @@
         addGeoJsonPoints: addGeoJsonPoints,
         editRoute: editRoute,
         resetData: resetData,
-        getAreasMaxValue: getAreasMaxValue
+        resetMarkers: resetMarkers
       }
     }
 

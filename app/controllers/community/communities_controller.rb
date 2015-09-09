@@ -1,4 +1,5 @@
 class Community::CommunitiesController < ApplicationController
+  include ControllerCaching
   layout 'application_community'
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
 
@@ -60,6 +61,33 @@ class Community::CommunitiesController < ApplicationController
       format.html { redirect_to community_communities_url, notice: 'Community was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def geo_json
+    @geo_json = use_cache do
+      result = []
+
+      towns = Town.cities + Town.towns
+
+      towns.select{|town| town.area_title == params[:area_title] && town.level == 31 }.each do |town|
+        geo = TownGeojsonBuilder.build(town)
+        result << geo unless geo.blank?
+      end
+      # geo['areas'] =
+      # {
+      #     "type" => "FeatureCollection",
+      #     "features" => result
+      # }
+
+      {
+          "type" => "FeatureCollection",
+          "features" => result
+      }
+    end
+    respond_to do |format|
+      format.json { render json: @geo_json }
+    end
+
   end
 
   private
