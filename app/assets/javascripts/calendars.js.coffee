@@ -62,13 +62,43 @@ $(document).on 'ready page:change', ->
     select: (start, end, allDay) ->
       dt_start = moment(start).format("DD/MM/YYYY")
       dt_end = moment(end).subtract(1, 'days').format("DD/MM/YYYY")
+
       $.get $('#calendar').attr('calendar_id') + "/events/new",
         starts_at: dt_start
         ends_at: dt_end
         all_day: true
-#          .done (data) ->
+      .done (data) ->
 #            $("#eventModal .modal-content").html data
 #            $('#eventModal').modal('show')
+        $('.fa-select').select2
+          allowClear: true
+          formatResult: formatFaSelect
+          formatSelection: formatFaSelect
+          escapeMarkup: (m) ->
+            m
+        $('.color-select').select2
+          allowClear: true
+          formatResult: formatColorSelect
+          formatSelection: formatColorSelect
+          escapeMarkup: (m) ->
+            m
+        I18n.locale = window.aHelper.lang()
+        editor_locale = undefined
+        if I18n.locale == 'uk'
+          editor_locale = 'ua-UA'
+        else
+          editor_locale = ''
+        $('.wysihtml5').wysihtml5
+          'font-styles': true
+          'emphasis': true
+          'lists': true
+          'html': false
+          'link': true
+          'image': true
+          'color': false
+          'size': 'sm'
+          'locale': editor_locale
+        return
 
 #            calendar.fullCalendar('unselect');
 
@@ -149,3 +179,10 @@ $(document).on 'ready page:change', ->
     else
       alert(I18n.t("calendars_err.save_error") + data.responseText)
     err = 'null'
+
+  formatFaSelect = (el) ->
+    '<i class=\'fa ' + el.id + '\'/> ' + el.id
+
+  formatColorSelect = (el) ->
+    '<div style=\'width: 100%; height: 43px; background-color: ' + el.id + '\'/>'
+
