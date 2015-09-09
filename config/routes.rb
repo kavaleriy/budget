@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :indicator_files
     resources :indicator_keys
     get 'indicators/geo_json/:type' => 'indicators#geo_json'
+    get 'indicators/get/keys' => 'indicators#get_keys'
+    get 'indicators/:year/:key' => 'indicators#index'
     put 'indicator_files/update_town/:id/:old_town' => 'indicator_files#update_town'
     put 'indicator_files/update_key/:id/:old_key' => 'indicator_files#update_key'
   end
@@ -84,6 +86,7 @@ Rails.application.routes.draw do
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
+  get 'search_for_towns_town' => 'towns#search_for_towns'
   resources :towns
 
   namespace :repairing do
@@ -107,6 +110,7 @@ Rails.application.routes.draw do
 
   namespace :widgets do
     get 'visify/visify/:file_id' => 'visify#visify'
+    get 'visify/type/:file_id/:type' => 'visify#type', as: 'visify_type'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
     get 'visify/get_bubbletree_data/:file_id/:levels' => 'visify#get_bubbletree_data'
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
@@ -200,6 +204,7 @@ Rails.application.routes.draw do
 
     get 'towns/:town_id' => 'towns#show'
     get 'ukraine_geo_json' => 'towns#geo_json'
+    get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
 
   get 'public/calendar/:calendar_id' => 'public#calendar'
@@ -208,7 +213,12 @@ Rails.application.routes.draw do
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
-
+  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
+  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile'
+  get 'key_indicate_map/indicators/town_profile/:town_id' => 'key_indicate_map/indicators#index'
+  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
+  get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
+  get 'repairing/map/town_profile/:town_id' => 'repairing/map/town_profile#town_profile'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

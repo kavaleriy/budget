@@ -3,6 +3,9 @@
     = t('key_indicate_map.indicators.index.header')
 
 .row
-  = render partial: 'map_ukraine'
-  #indicators_list.col-sm-12.col-md-4
+  #indicators_list.col-sm-12.col-md-3
     = render partial: 'indicators_list'
+  .col-sm-12.col-md-6
+    = render partial: 'map_ukraine'
+  .col-sm-12.col-md-3
+    = render partial: 'towns_comparison'

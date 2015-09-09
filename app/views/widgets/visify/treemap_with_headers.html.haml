@@ -91,7 +91,11 @@
           });
       var parentEnterTransition = parentCells.enter()
           .append("g")
-          .attr("class", "cell parent")
+          .attr("class", function(d,i){ d.id = i + "bubble_cell_parent"; return "cell parent";})
+          .on("mouseover", function(d) {
+              self.hoverCallback(d);
+          })
+          .on("mouseleave", self.hoverCallback(centerNode))
           .on("click", function(d) {
               zoom(d);
           });
@@ -140,7 +144,11 @@
       // enter transition
       var childEnterTransition = childrenCells.enter()
           .append("g")
-          .attr("class", "cell child")
+          .attr("class", function(d,i){ d.id = i + "bubble_cell_parent"; return "cell child";})
+          .on("mouseover", function(d) {
+              self.hoverCallback(d);
+          })
+          .on("mouseleave", self.hoverCallback(centerNode))
           .on("click", function(d) {
               zoom(node === d.parent ? root : d.parent);
           });
@@ -334,6 +342,7 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         //isIE = BrowserDetect.browser == 'Explorer';
         chartWidth = options.width;
         chartHeight = options.height;

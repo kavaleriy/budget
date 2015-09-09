@@ -2,7 +2,7 @@
 
 namespace :koatuu do
 
-  desc "Load KOATUU from file"
+    desc "Load KOATUU from file"
   task :load => :environment do
 
     require 'roo'
@@ -39,13 +39,11 @@ namespace :koatuu do
 
 
     # post-process
-    Town.where(:koatuu => ['1210400000', '1211000000', '1410600000', '1412300000', '1413500000']).update_all( {:level => 2 } )
-
-    Town.where(:koatuu => '8000000000').first.update( { :level => 1} ) # kyiv
-
+    Town.where(:koatuu => '8000000000').first.update( { :level => 13} ) # kyiv
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
 
     # Town.delete_all(:koatuu => '8500000000') # Sevastopol
+
     Town.delete_all(:level => nil)
 
     # calculate area title
@@ -77,12 +75,12 @@ namespace :koatuu do
   desc "Set geo-data from OSM"
   task :update_coordinates => :environment do
     Town.each do |town|
-      town.update(:coordinates => get_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
+      town.update(:coordinates => get_town_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
     end
   end
 
   private
-    def get_coordinates location
+    def get_town_coordinates location
       Geocoder.coordinates(location)
     end
 

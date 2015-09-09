@@ -11,6 +11,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def visify
   end
 
+  def type
+    render :partial => 'widgets/visify/' + params[:type]
+  end
+
   def get_bubbletree_data
     result = use_cache do
       params[:levels] ? levels = params[:levels].split(",") : levels = []
@@ -204,8 +208,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     if @budget_file.nil?
       @budget_file = @taxonomy
+      @types_count = @taxonomy.budget_files.group_by{|f| f.data_type}.count
     else
       @data_type = @budget_file.data_type
+      @types_count = 1
     end
     @data_type = 'plan' if @data_type.blank?
 

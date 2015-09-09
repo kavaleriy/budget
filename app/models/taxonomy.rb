@@ -250,6 +250,42 @@
       create_tree_item(tree)
     end
 
+    # get only total amounts (without levels and fonds) only for years (0 month)
+    # used in public/towns profile for revenues_expences view
+    def get_total_amounts
+      rows = { }
+      self.budget_files.each{ |file|
+        data_type = file.data_type
+        data_type = :plan if data_type.blank?
+
+        file.rows.keys.each {|year|
+          rows[data_type] = {} if rows[data_type].nil?
+          if rows[data_type][year].nil?
+            rows[data_type][year] = file.rows[year]['0']
+          else
+            rows[data_type][year] += file.rows[year]['0'].flatten
+          end
+        }
+      }
+
+      node = {}
+
+      rows.keys.each do |dt|
+        rows[dt].keys.each do |year|
+          rows[dt][year].each do |row|
+            data_type = row['_amount_type'] || dt
+            node[data_type] = {}  if node[data_type].nil?
+            node[data_type][year] = {}  if node[data_type][year].nil?
+            node[data_type][year] = {}  if node[data_type][year].nil?
+            node[data_type][year]['total'] = 0 if node[data_type][year]['total'].nil?
+            node[data_type][year]['total'] += row['amount']
+          end
+        end
+      end
+
+      node
+    end
+
     protected
 
     def create_tree_sceleton rows, filter = [], levels = []
@@ -313,7 +349,7 @@
           end
         end
       end
-
+      # binding.pry
       tree
     end
 

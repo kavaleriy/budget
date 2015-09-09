@@ -74,7 +74,7 @@ class KeyIndicateMap::IndicatorFilesController < ApplicationController
       @indicator_files << doc
 
       table = read_table_from_file 'public/uploads/key_indicate_map/indicator_file/indicate_file/' + doc._id.to_s + '/' + doc.indicate_file.filename
-      @errors = doc.import table, doc.year
+      @errors = doc.import table, doc.year.to_s
     end unless params['indicate_file'].nil?
 
     respond_to do |format|

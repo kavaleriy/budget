@@ -12,6 +12,17 @@ class Public::TownsController < ApplicationController
   def show
     @budgets = Taxonomy.where(:owner => @town.title)
     @calendars = Calendar.where(:town => @town)
+    @total_amounts = {}
+    @budgets.each{|budget|
+      @total_amounts[budget._type] = budget.get_total_amounts
+    }
+    @town_items = []
+    @town_items.push('budget') if Taxonomy.where(:owner => @town.title).first
+    @town_items.push('programs') if Programs::Town.where(:name => @town.title).first
+    @town_items.push('keys') if @town.key_indicate_map_indicators
+    @town_items.push('calendar') if Calendar.where(:town => @town.title).first
+    @town_items.push('sankey') if Sankey.where(:owner => @town.title).first
+    @town_items.push('repair') if Repairing::Repair.where(:obj_owner => @town.title).first
   end
 
   def geo_json
@@ -29,17 +40,7 @@ class Public::TownsController < ApplicationController
       kyiv = ""
       # level = 1 - regions, level = 13 - region centers
       towns.reject{|town| town.documentation_documents.empty? && (town.level != 1 && town.level != 13) }.each do |town|
-        if town.koatuu == "8000000000"
-          kyiv = town
-        else
-          geo = TownGeojsonBuilder.build(town)
-          result << geo unless geo.blank?
-        end
-      end
-
-      if params[:type] == 'areas'
-        # Kyiv would be the last in array to be over all other svg elements
-        geo = TownGeojsonBuilder.build(kyiv)
+        geo = TownGeojsonBuilder.build(town)
         result << geo unless geo.blank?
       end
 
@@ -55,10 +56,27 @@ class Public::TownsController < ApplicationController
 
   end
 
+  def geo_json_town
+    town = Town.find(params[:town_id])
+    @geo_json = {
+                  "type" => "FeatureCollection",
+                  "features" => [TownGeojsonBuilder.build(town)]
+              }
+
+    respond_to do |format|
+      format.json { render json: @geo_json }
+    end
+  end
+
   private
 
   def set_town
     @town = Town.find(params[:town_id])
+    if @town.level == 1 #area
+      @towns = Town.all.where(:area_title => @town.title)
+    else
+      @towns = Town.all.where(:area_title => @town.area_title)
+    end
   end
 
 end

@@ -29,15 +29,11 @@ class KeyIndicateMap::IndicatorFile
       indicator_keys[key] = indicator_key
 
       if indicator_key
-        if indicator_key['history'].nil? || indicator_key['history'].empty?
-          attrs = {}
-        else
-          attrs = indicator_key['history']
-        end
-        attrs[year] = {} if attrs[year].nil?
-        attrs[year]['description'] = val unless val.blank?
-        attrs[year]['total'] = table[:rows][1][key] unless table[:rows][1][key].blank?
-        indicator_key.update_attributes({'history' => attrs})
+        indicator_key.history = {} if indicator_key.history.nil?
+        indicator_key.history[year] = {} if indicator_key.history[year].nil?
+        indicator_key.history[year]['description'] = val unless val.blank?
+        indicator_key.history[year]['total'] = table[:rows][1][key] unless table[:rows][1][key].blank?
+        indicator_key.save!
       else
         errors['1'].push(key)
       end
@@ -47,7 +43,7 @@ class KeyIndicateMap::IndicatorFile
     # rows for all other towns and regions
     table[:rows].each_with_index { |row, index|
       next if index < 2
-      town = ::Town.any_of(:title => /#{row['towns']}/i).first # case insensitive search of town or region
+      town = ::Town.any_of(:title => /#{row['towns'].strip}/i).first # case insensitive search of town or region
       errors['2'].push(row['towns']) unless town
       row.each{|key, val|
         next if key == "towns" || val.blank?

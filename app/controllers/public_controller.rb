@@ -44,6 +44,13 @@ class PublicController < ApplicationController
     end
   end
 
+  def town_profile
+    town = Town.find(params[:town_id])
+    @calendar = Calendar.where(:town => town.title).first
+    @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
+    render 'widgets/calendar/calendar_box'
+  end
+
   private
 
   def set_calendar

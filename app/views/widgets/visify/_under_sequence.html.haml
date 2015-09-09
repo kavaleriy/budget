@@ -17,6 +17,8 @@
       container: aContainer,
 
       show: function(node) {
+        if(!node) return;
+
         I18n.locale = window.aHelper.lang()
         label = node.label || ''
 
@@ -49,7 +51,7 @@
         amountFonds += '</div>'
 
         amount_tag = ''
-        if("#{@data_type}" == "fact") {
+        if("#{@data_type}" == "fact" || node.amount_plan) {
           amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
         } else {
           amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
@@ -65,7 +67,7 @@
           icon_tag =  '<i class="fa ' + node.icon + '"></i> '
 
 
-        div = '<div style="height: 50px"><h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
+        div = '<div style="height: 80px"><h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
           + '<b>' + aVisify.helpers.formatNumber(node.amount) + '</b>'
           + percentage_tag
           + "</h4></div>"

@@ -1,0 +1,24 @@
+:css
+  @media screen and (max-width: 1500px) {
+    #key_comparison table tr td:nth-child(3) {
+        display: block;
+    }
+    #key_comparison table tr td:nth-child(1), table tr td:nth-child(2) {
+        display: inline-block;
+    }
+  }
+
+#key_comparison
+  %h4
+    Порівняння
+  %table.table
+    %thead
+      %tr
+        %th
+        %th
+        %th
+    %tbody
+  %small
+    * додати місто/область у порівняння: клікніть по місту/області на карті
+    %br
+    * видалити місто/область з порівняння: повторно клікніть по місту/області на карті, або клікніть по 'x' у потрібній стрічці

@@ -8,6 +8,7 @@ class Town
   field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
+  field :description, type: String
   def get_level
     return :area if self.level == 1
     return :city if self.level == 13
@@ -78,19 +79,17 @@ class Town
   # key indicators for key_indicate_map
   def get_key_indicators
     indicators = {}
-    self.key_indicate_map_indicators.reject{|i| i.town.nil? || i.key_indicate_map_indicator_key.nil? }.group_by{|i| i.key_indicate_map_indicator_file.year }.each{|year,group|
+    self.key_indicate_map_indicators.each{|indicator|
+      next if indicator.key_indicate_map_indicator_key.nil?
+      year = indicator.key_indicate_map_indicator_file['year'].to_s
+      id = indicator.key_indicate_map_indicator_key._id.to_s
       indicators[year] = {} if indicators[year].nil?
-      group.each{|i|
-        id = i.key_indicate_map_indicator_key._id.to_s
-        transform = i.key_indicate_map_indicator_key['integer_or_float']
-        indicators[year][id] = {} if indicators[year][id].nil?
-        if transform == 'integer'
-          indicators[year][id]['value'] = i['value'].to_i
-        elsif transform == 'float'
-          indicators[year][id]['value'] = i['value'].to_f.round(2)
-        end
-        indicators[year][id]['unit'] = i.key_indicate_map_indicator_key['unit']
-      }
+      transform = indicator.key_indicate_map_indicator_key['integer_or_float']
+      if transform == 'integer'
+        indicators[year][id] = indicator['value'].to_i
+      elsif transform == 'float'
+        indicators[year][id] = indicator['value'].to_f.round(2)
+      end
     }
     indicators
   end

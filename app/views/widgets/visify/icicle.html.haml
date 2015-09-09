@@ -48,7 +48,7 @@
 
       g.append("svg:rect")
           .attr("width", root.dy * kx)
-          .attr("height", function(d) { return d.dx * ky; })
+          .attr("height", function(d, i) { d.id = i + "bubble"; return d.dx * ky; })
           .attr("fill", function(d) { return d.color || color((d.children ? d : d.parent).label); })
 
       g.append("svg:text")
@@ -60,11 +60,11 @@
     };
 
     function mouseover(event, d) {
-      add_tooltip(event, d);
+      self.hoverCallback(d);
     }
 
     function mouseleave(d) {
-      remove_tooltip(d);
+      self.hoverCallback(centerNode);
     }
 
     function mouseclick(d) {
@@ -113,6 +113,7 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         width = options.width;
         height = options.height;
 

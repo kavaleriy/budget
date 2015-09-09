@@ -131,6 +131,18 @@ class Programs::TargetProgramsController < ApplicationController
     end
   end
 
+  def town_profile
+    town = Town.find(params[:town_id])
+    @programs_town = Programs::Town.where(:name => town.title).first
+    @year = Time.now.year
+    @programs_target_programs = @programs_town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
+    @amounts = {}
+    @programs_target_programs.each{|program|
+      @amounts[program.id.to_s] = program.get_total_amount @year
+    }
+    render 'list'
+  end
+
   protected
 
   def upload_file uploaded_io, town_id

@@ -1,45 +1,7 @@
-:css
-  .map_container {
-    height: 600px;
-  }
-
-  .map_container svg {
-    position: relative;
-  }
-
-  .map_container path {
-    fill: orange;
-    fill-opacity: .5;
-    stroke: #fff;
-    stroke-width: 1.5px;
-  }
-
-  .map_container path:hover {
-    fill-opacity: 1.0;
-  }
-
-  .leaflet-container {
-    background: transparent;
-    cursor: default;
-  }
-
-  .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
-    display: none;
-  }
-
-  .info .title {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  .info h4 {
-    margin: 0 0 10px 0;
-  }
-
-= content_for :top do
-  .map_container.col-sm-12.col-md-8
-    = render partial: 'map'
+#custom_map.map_container
+  = render partial: 'widgets/map'
+  #spinner.spinner
+    %img#img-spinner{:src => '/assets/loading.gif', :alt => 'Loading'}
 
 :javascript
 
@@ -47,39 +9,92 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var aRepairMap = RepairMap({ scrollWheelZoom: false, zoom: 6, dragging: false,
+    var zoom = 6;
+    var window_width = $(window).width();
+    if(window_width < 1300) {
+      zoom = 5.5;
+    }
+
+    $("#spinner").show();
+
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
+      map_static: true,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
-      getInfoContent: getInfoContent
+      getInfoContent: getInfoContent,
+      getUnit: getUnit
     });
 
-    var key, key_name, general_content, year;
+    var keys, areas_maxValue;
+    var key_description = $('#key_description .content');
+    var current_btn = $('.tab-pane.in.active .collapse_btn.active');
+    var year = $('#year_change select option:selected').val();
+    var key = current_btn.data('id');
+
+    // get keys array
+    $.ajax({
+      method: 'get',
+      url: '/key_indicate_map/indicators/get/keys',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      keys = data;
+      if(keys[key]['history'][year] && keys[key]['history'][year]['description']) {
+        key_description.html(keys[key]['history'][year]['description']);
+      } else {
+        key_description.html("");
+      }
+    })
+    .fail(function () {
+      console.log("keys were not loaded");
+    });
 
     // trigger map click on collapse button click
     $('.collapse_btn').click(function(){
       var collapse_btn = $('.tab-pane.active .collapse_btn');
       collapse_btn.removeClass('active').addClass('non-active');
       $('.tab-pane.active .collapse_descr.in').removeClass('in');
-      var current_btn = $(this);
+      current_btn = $(this);
       current_btn.removeClass('non-active').addClass('active');
-      key = current_btn.data('id');
-      general_content = generate_content(current_btn);
-      aRepairMap.resetData(key, year);
+      resetData();
     });
 
     // find active button with key in shown collapse panel
     $('#indicators_list a[data-toggle="tab"]').click(function(){
-      var current_btn = $($(this).attr('href')).find('.collapse_btn.active')[0];
-      key = $(current_btn).data('id');
-      general_content = generate_content($(current_btn));
-      aRepairMap.resetData(key, year);
+      current_btn = $($($(this).attr('href')).find('.collapse_btn.active')[0]);
+      resetData();
     });
 
     // if year changed
     $('#year_change').on("change", function(){
       year = $('#year_change select option:selected').val();
+      resetData();
+    });
+
+    // on key click
+    $('.key_href a').on("click", function(){
+      $(this).parent().prev().find('.collapse_btn').click();
+    });
+
+    function resetData() {
+      window.history.pushState("", "", '/key_indicate_map/indicators/' + year + '/' + key);
+      key = current_btn.data('id');
+      if(keys[key]['history'][year] && keys[key]['history'][year]['description']) {
+        key_description.html(keys[key]['history'][year]['description']);
+      } else {
+        key_description.html("");
+      }
       aRepairMap.resetData(key, year);
-    })
+    }
+
+    function getUnit(){
+      return keys[key]['unit'];
+    }
 
     // add Areas
     $.ajax({
@@ -88,96 +103,170 @@
       dataType: 'json'
     })
     .done(function (data) {
-      var btn = $('.tab-pane.in.active .collapse_btn.active');
-      year = $('#year_change select option:selected').val();
-      key = btn.data('id');
-      general_content = generate_content(btn);
-      aRepairMap.addGeoJsonSvg(data, key, year, {
+      $("#spinner").hide();
+      aRepairMap.addGeoJsonSvg(data, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent
-      })
+        getInfoContent: getInfoContent,
+        selectPath: true,
+        key: key,
+        year: year
+      });
+      addExportBtnLogic();
     })
     .fail(function () {
+      console.log("areas were not loaded");
     });
 
     // add markers
     $.ajax({
       method: 'get',
-      url: '/key_indicate_map/indicators/geo_json',
+      url: '/key_indicate_map/indicators/geo_json/towns',
       dataType: 'json'
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
+      aRepairMap.addGeoJsonPoints(data, {
         clustered: true,
         style: {
-          opacity: 0.8,
+          opacity: 0.8
         },
         hoverStyle: {
-          opacity: 1,
+          opacity: 1
         },
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent
+        getInfoContent: getInfoContent,
+        selectPath: true,
+        key: key,
+        year: year
       })
     })
     .fail(function () {
+      console.log("towns were not loaded");
     });
 
-    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-
-    var icons = {};
-    icons.city = new CityIcon({iconUrl: '/assets/map/iconCity.png'});
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'});
-
-    function getPoint(properties) {
-      var point = {};
-      switch (properties.level) {
-        case 'city':
-          point.icon = icons.city;
-          break;
-        case 'town':
-          point.icon = icons.town;
-          break;
-        default:
-          point.icon = new L.Icon.Default();
-          break
-      }
-
-      return point
-    }
-
     function onFeatureClick(feature) {
-      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
-      window.location = town_url
+      removeRow = function(el) {
+          d3.select('path[data-id="' + $(el).parents("tr").attr('id').split('tr_')[1] + '"]').style('stroke','rgb(255, 255, 255)').style('stroke-width','1.5px');
+          $(el).parents("tr").remove();
+      }
+      if($('#tr_' + feature.properties.id).length > 0) {
+        $('#tr_' + feature.properties.id).remove();
+      } else {
+        var content =
+          '<tr id="tr_' + feature.properties.id + '">' +
+          '<td><button class="btn btn-xs btn-default" onclick="removeRow(this)" style="border:none;">x</button></td>' +
+          '<td><a href="' + "#{public_path('ID')}".replace('ID', feature.properties.id) + '">' + feature.properties.title + '</a></td>';
+        if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
+          var value = feature.properties['indicators'][year][key];
+          content += '<td class="key_value">';
+          content += addPercentOfMax(value);
+          content += " " + value + '</td>';
+        } else {
+          content += '<td class="key_value"></td>';
+        }
+        content += '</tr>';
+        $('#key_comparison table').append(content);
+      }
     }
 
     function getInfoContent(properties) {
       var content = "";
       if(properties == "Ukraine") {
-        content = general_content;
+        content = generate_content();
       } else {
-        var value = 0;
+        var value = 0, num_value = 0;
         if(properties['indicators'][year] && properties['indicators'][year][key]) {
-          value = properties['indicators'][year][key]['value'];
-          if(properties['indicators'][year][key]['unit']) {
-            value += " " + properties['indicators'][year][key]['unit']
+          if(keys[key]['history']['integer_or_float'] == 'integer') {
+            value = parseInt(properties['indicators'][year][key]);
+          } else {
+            value = parseFloat(properties['indicators'][year][key]).toFixed(2);
+          }
+          num_value = value;
+          if(keys[key]['unit']) {
+            value += " " + keys[key]['unit']
           }
         }
         content =
-        '<div class="title">' + key_name + '</div>' +
+        '<div class="title">' + keys[key]['name'] + '</div>' +
         '<h4>' + properties.title + '</h4>' +
-        '<span style="font-size: 1.1em;">' + value + '</span>'
+        '<span style="font-size: 1.1em;">' + value + '</span></br>';
+        content += addPercentOfMax(num_value);
       }
       return content;
     }
 
-    function generate_content(btn) {
-        key_name = btn.data('name');
+    function generate_content() {
+        var total_value;
+        if(keys[key]['history'][year] && keys[key]['history'][year]['total']) {
+          if(keys[key]['history']['integer_or_float'] == 'integer') {
+            total_value = parseInt(keys[key]['history'][year]['total']);
+          } else {
+            total_value = parseFloat(keys[key]['history'][year]['total']).toFixed(2);
+          }
+        } else {
+          total_value = 0;
+        }
         var content =
-            '<div class="title">' + key_name + '</div>' +
+            '<div class="title">' + keys[key]['name'] + '</div>' +
             '<h4>' + I18n.t('ukraine') + '</h4>' +
-            '<span style="font-size: 1.1em;">' + btn.data('value') + " " + btn.data('unit') + '</span>';
+            '<span style="font-size: 1.1em;">' + total_value + " " + keys[key]['unit'] + '</span></br>';
+        if(total_value <= aRepairMap.getAreasMaxValue()){
+          areas_maxValue = aRepairMap.getAreasMaxValue();
+        } else {
+          areas_maxValue = total_value;
+        }
+        content += addPercentOfMax(total_value);
         return content;
+    }
+
+    function addPercentOfMax(value){
+      content = "";
+      if(value <= areas_maxValue){
+        var stop;
+        if(value < 0) {
+          if(areas_maxValue < 0) {
+            stop = 10 - Math.round((value*10)/(areas_maxValue + value));
+          } else {
+            stop = 10 - Math.round(-(value*10)/(areas_maxValue - value));
+          }
+        } else {
+          stop = Math.round((value*10)/areas_maxValue);
+        }
+        for(var i = 0; i < stop; i++) {
+          content += '<i class="fa fa-square fa-lg" style="color: #82a2cf;"></i>';
+        }
+        for(var i = 0; i < 10-stop; i++) {
+          content += '<i class="fa fa-square fa-lg" style="color: lightgray;"></i>';
+        }
+      }
+      return content;
+    }
+
+    function addExportBtnLogic() {
+      $.when(
+        $.getScript( "/assets/html2canvas/html2canvas.js" ),
+        $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+      ).done(function(){
+        $('#export').on('click', function() {
+          html2canvas($("#svg_for_export"), {
+            //logging: true,
+            background :'#FFFFFF',
+            onrendered: function(canvas) {
+              //document.body.appendChild(canvas);
+              var canvasdata = canvas.toDataURL("image/png");
+
+              var theEvent = document.createEvent("MouseEvent");
+              theEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+              var a = document.createElement("a");
+              a.download = "sample.png";
+              a.href = canvasdata;
+              a.dispatchEvent(theEvent);
+            }
+          });
+        })
+      })
     }
   });

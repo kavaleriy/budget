@@ -100,7 +100,7 @@
           .attr("class", "node")
           .attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; })
-          .attr("r", function(d) { return size_scale(d.amount) })
+          .attr("r", function(d, i) { d.id = i + "bubble"; return size_scale(d.amount) })
           .style("fill", color)
           .on("click", mouseclick)
           .on("mouseover", function(d){ mouseover(d3.event, d) })
@@ -116,11 +116,11 @@
       }
 
       function mouseover(event, d) {
-        add_tooltip(event, d);
+        self.hoverCallback(d);
       }
 
       function mouseleave(d) {
-        remove_tooltip(d);
+        self.hoverCallback(centerNode);
       }
 
       function mouseclick(d) {
@@ -153,6 +153,7 @@
       initialize: function(options) {
         self = this;
         self.clickCallback = options.clickCallback;
+        self.hoverCallback = options.hoverCallback;
         width = options.width;
         height = options.height;
 

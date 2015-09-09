@@ -1,5 +1,7 @@
 function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
+    I18n.locale = window.aHelper.lang();
+
     var svg_height;
     var shift = 1, curr_parent = null, curr_type = null, first_level_energy = null, child_level_energy = null;
     var data_labels = {}, children = {}, init_data_labels = {};

@@ -53,6 +53,8 @@
         this.getLevelInfo(node)
       },
       description: function(node){
+        if(!node) return;
+
         $.getJSON("/widgets/visify/get_bubbletree_nodedata/#{file.id}/" + node.taxonomy + "/" + node.key, function(data) {
           div_descr = '';
           $('#collapseDesc').height('auto');
