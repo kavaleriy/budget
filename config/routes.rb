@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :community do
+    resources :communities
+  end
+
   namespace :repairing do
     resources :categories
   end
