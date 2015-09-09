@@ -134,6 +134,6 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def key_indicate_map_indicator_params
-      params[:key_indicate_map_indicator, :type, :history]
+      params[:key_indicate_map_indicator, :type, :history, :year, :key, :town_id]
     end
 end

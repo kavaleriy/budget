@@ -215,7 +215,7 @@ Rails.application.routes.draw do
 
   get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
   get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile'
-  get 'key_indicate_map/indicators/town_profile/:town_id' => 'key_indicate_map/indicators#index'
+  get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index'
   get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
   get 'repairing/map/town_profile/:town_id' => 'repairing/map/town_profile#town_profile'

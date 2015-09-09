@@ -1,12 +1,16 @@
-.col-sm-12.col-md-6
-  .view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
-    %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}
-      .mask
-        %h2
-          = t('public.towns.portfolio.' + item)
-        %p Lorem ipsum dolor asit amet
-        %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id }
-          = t('public.towns.portfolio.detail')
-    - if !@town_items.include?(item)
-      %span.no_data
-        = t('public.towns.portfolio.no_data')
+.circle_block{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
+  %a{:href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id}
+    %img{:src => "/assets/public/" + item + ".svg", :class => 'circle'}
+  %p
+    = t('public.towns.portfolio.' + item)
+  -#.view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
+  -#  %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}
+  -#    .mask
+  -#      %h2
+  -#        = t('public.towns.portfolio.' + item)
+  -#      %p Lorem ipsum dolor asit amet
+  -#      %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id }
+  -#        = t('public.towns.portfolio.detail')
+  -#  - if !@town_items.include?(item)
+  -#    %span.no_data
+  -#      = t('public.towns.portfolio.no_data')
