@@ -2,18 +2,4 @@
   .head.pull-left
     = t('community.community.index.header')
 
-%table
-  %tr
-    %th
-    %th
-    %th
-
-  - @community_communities.each do |community_community|
-    %tr
-      %td= link_to 'Show', community_community
-      %td= link_to 'Edit', edit_community_community_path(community_community)
-      %td= link_to 'Destroy', community_community, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Community', new_community_community_path
+= render partial: 'map_ukraine'

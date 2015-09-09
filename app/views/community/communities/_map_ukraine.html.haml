@@ -1,0 +1,117 @@
+:css
+  #custom_map {
+    border: none;
+    margin-top: 10px;
+    box-shadow: none;
+    background: transparent;
+  }
+
+.map_container#custom_map.col-sm-12
+  = render partial: 'map'
+
+:javascript
+
+  $(document).ready(function() {
+
+    I18n.locale = window.aHelper.lang();
+
+    var zoom = 6;
+    //var window_width = $(window).width();
+    //if(window_width < 1300) {
+    //  zoom = 5.5;
+    //}
+
+    var aRepairMap = RepairMap({
+      scrollWheelZoom: false,
+      zoom: zoom,
+      minZoom: 6,
+      maxZoom: 9,
+      dragging: false,
+      map_static: true,
+      center: [48.5, 31.2],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getInfoContent: getInfoContent
+    })
+
+
+    // add Areas
+    $.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}&type=areas',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonSvg(data, {
+        zIndex: 1,
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+        selectPath: false
+      })
+    })
+    .fail(function () {
+    });
+
+
+    // add markers
+    $.ajax({
+      method: 'get',
+      url: '#{public_ukraine_geo_json_path}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+      aRepairMap.addGeoJsonPoints(data, {
+        clustered: false,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        getInfoContent: getInfoContent,
+        getPoint: getPoint,
+        selectPath: false
+      })
+    })
+    .fail(function () {
+    });
+
+
+    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
+
+    var icons = {}
+    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
+    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
+
+    function getPoint(properties) {
+      var point = {}
+      switch (properties.level) {
+        case 'city':
+          point.icon = icons.city
+          break
+        case 'town':
+          point.icon = icons.town
+          break
+        default:
+          point.icon = new L.Icon.Default()
+          break
+      }
+
+      return point
+    }
+
+    function onFeatureClick(feature) {
+      var town_url = "#{public_path('ID')}".replace('ID', feature.properties.id)
+      window.location = town_url
+    }
+
+    function getInfoContent(properties) {
+      var content = "";
+      if(properties != "Ukraine") {
+        content += '<h3>' + properties.title + '</h3>' +
+                   '<p>Документів: ' + properties.documents_count + '</p>';
+      }
+      return content;
+    }
+  });
