@@ -2,17 +2,27 @@
 :css
   .docs-inline {
     vertical-align: middle;
+    display: block;
+  }
+  .fol {
+    display: inline-block;
+    height: 140px;
+    padding: 5px;
+    margin: 5px;
   }
 
-  .folder {
-    float: left;
-    vertical-align: middle;
-    margin: 25px 25px 0 0;
-  }
+  /*.folder {*/
+    /*float: left;*/
+    /*vertical-align: middle;*/
+    /*margin: 25px 25px 0 0;*/
+  /*}*/
 
-  .folder .back .number {
-    margin: -12px 0 0 2px;
-  }
+  /*.folder .back .number {*/
+    /*margin: -12px 0 0 2px;*/
+  /*}*/
+
+
+
 -#End. CSS for Default folder view
 
 
@@ -40,14 +50,17 @@
   - Documentation::Branch.all.each do |br|
     - count = @town.documentation_documents.where(:branch => br).count()
     - if count > 0
-      %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
-        .folder
-          .front
-            %p.text
-              = br.title
-          .back
-            %span.number
-              = count
+      .fol
+        %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
+          .folder
+            .folder-text
+              %p
+                = br.title
+            .folder-inside
+
+            -#.back
+            -#  %span.number
+            -#    = count
 
 -# End. Default variant
 

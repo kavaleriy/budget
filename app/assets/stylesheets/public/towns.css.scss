@@ -11,12 +11,12 @@
   width: 250px;
   margin: 10px;
   height: 250px;
-//  background-color: rgba(128, 128, 128, 0.05);
+  //  background-color: rgba(128, 128, 128, 0.05);
   transition: all .25s ease;
   text-align: center;
 
   &:hover {
-//    background-color: rgba(128, 128, 128, 0.1);
+    //    background-color: rgba(128, 128, 128, 0.1);
   }
 
   .title-town {
@@ -51,27 +51,6 @@
 
   .row div {
     margin: 0 0 15px 0;
-  }
-
-  .circle_block {
-    width: 125px;
-    height: 165px;
-    text-align: center;
-    float: left;
-  }
-
-  .circle {
-    width: 115px;
-    height: 115px;
-    margin-top: 5px;
-    margin-bottom: -5px;
-  }
-
-  .circle:hover {
-    width: 125px;
-    height: 125px;
-    margin-top: 0;
-    opacity: 0.7;
   }
 }
 
@@ -123,7 +102,7 @@
 }
 
 .fa-stack:hover .fa-folder-o, .bcol :hover {
-  color: #0099da !important;
+  //  color: #0099da !important;
 }
 
 .stat {
@@ -135,139 +114,110 @@
 /*End. towns/docs block*/
 
 /*Begin. Folder view block*/
-
 .folder {
-  /* This will enable the 3D effect. Decrease this value
-   * to make the perspective more pronounced: */
-
-  -webkit-perspective: 800px;
-  -moz-perspective: 800px;
-  perspective: 800px;
-
-//  position: absolute;
-  top: 50%;
+  -webkit-perspective: 500px;
+  perspective: 500px;
+  width: 194px;
+  height: 60px;
+  background: rgba(0,0,255, .85);
+  //  position: absolute;
+  top: 20%;
   left: 50%;
-  z-index: 0;
-
-  width: 160px;
-  height: 120px;
-//  margin: -100px 0 0 -60px;
-}
-
-.folder div{
-  width:150px;
-  height:115px;
-
-  background-color:#93bad8;
-
-  /* Enabling 3d space for the transforms */
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-
-  /* Enabling a smooth animated transition */
-  -webkit-transition:0.5s;
-  -moz-transition:0.5s;
-  transition:0.5s;
-
-  /* Disable text seleltion on the folder */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-
-  position:absolute;
-  top:0;
-  left:50%;
-  margin-left:-75px;
-}
-
-.folder .front{
-  border-radius:5px 5px 0 0;
-
-  -moz-transform:rotateX(-30deg);
-  -webkit-transform:rotateX(-30deg);
-  transform:rotateX(-30deg);
-
-  -moz-transform-origin:50% 100%;
-  -webkit-transform-origin:50% 100%;
-  transform-origin:50% 100%;
-
-  background-image: -moz-linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
-  background-image: -webkit-linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
-  background-image: linear-gradient(top, #93bad8 0%, #6c9dc0 85%, #628faf 100%);
-
-  box-shadow:0 -2px 2px rgba(0,0,0,0.1), 0 1px rgba(255,255,255,0.35) inset;
-
-  z-index:10;
-
-  font: bold 16px sans-serif;
-  color: #5A88A9;
-  text-align: center;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
-  display: table;
-}
-
-.folder .back{
-  background-image: -webkit-linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
-  background-image: -moz-linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
-  background-image: linear-gradient(top, #93bad8 0%, #89afcc 10%, #5985a5 60%);
-
-  border-radius:0 5px 0 0;
-  box-shadow:0 -1px 1px rgba(0,0,0,0.15);
-}
-
-.folder .back:before{
-  content:'';
-  width:60px;
-  height:10px;
-  border-radius:4px 4px 0 0;
-  background-color:#93bad8;
-  position:absolute;
-  top:-10px;
-  left:0px;
-  box-shadow:0 -1px 1px rgba(0,0,0,0.15);
-}
-
-.folder .back:after{
-  content:'';
-  width:100%;
-  height:4px;
-  border-radius:5px;
-  position:absolute;
-  bottom:5px;
-  left:0px;
-  box-shadow:0 4px 8px #333;
-}
-
-.folder.open .front{
-  -moz-transform:rotateX(-50deg);
-  -webkit-transform:rotateX(-50deg);
-  transform:rotateX(-50deg);
-}
-
-.number {
-  margin: -12px 0 0 -70px;
-  font-size: 1.2em;
-  position: absolute;
-  color: white;
-  font-weight: bold;
-}
-
-.text {
-//  line-height: 30px;
-  margin: 5px 0 0 5px;
-  color: white;
-  display: table-cell;
-  vertical-align: middle;
-}
-
-/*if use owl carousel*/
-.owl-item .town {
-  padding: 0 0 0 70px;
-}
-.thumbnail {
-  border: none;
+  //  -webkit-transform: translate(-50%, -50%);
+  //  transform: translate(-50%, -50%);
+  border-top-right-radius: 5px;
   cursor: pointer;
+  -webkit-transition: all 400ms ease;
+  transition: all 400ms ease;
 }
-/*endif owl carousel*/
+.folder::before {
+  width: 40px;
+  height: 10px;
+  content: '';
+  background: rgba(0,0,255, .85);
+  position: absolute;
+  top: -10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.folder::after {
+  width: 194px;
+  height: 120px;
+  position: absolute;
+  content: '';
+  background: rgba(0,0,255, .95);
+  top: 15px;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.3);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -webkit-transform: rotateX(-10deg);
+  transform: rotateX(-10deg);
+  -webkit-transition: all 400ms ease;
+  transition: all 400ms ease;
+}
+
+.folder-text p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(255,255,255);
+  font: normal 16px sans-serif;
+}
+
+.folder-text {
+  padding: 5px;
+  position: absolute;
+  top: 30%;
+  left: 3%;
+  display: flex;
+  width: 185px;
+  height: 110px;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.folder-inside {
+  width: 180px;
+  height: 113px;
+  position: absolute;
+  background: #fff;
+  top: 8px;
+  left: 7px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
+  -webkit-transform: rotate(-1deg);
+  transform: rotate(-1deg);
+  border: 1px solid #ddd;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.folder-inside::before {
+  content: '';
+  background: -webkit-repeating-linear-gradient(145deg, #ffffff, #ffffff 10px, #333333 7px, #333333 20px);
+  background: repeating-linear-gradient(0deg, #ffffff, #ffffff 10px, #333333 10px, #333333 20px);
+  position: absolute;
+  top: -15px;
+  left: 35px;
+  width: 113px;
+  height: 150px;
+  color: #343434;
+  font-size: 60px;
+  line-height: 30px;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  opacity: 0.15;
+}
+.folder:hover {
+  //  -webkit-transform: translate(-50%, -52%);
+  //  transform: translate(-50%, -52%);
+}
+.folder:hover::after {
+  -webkit-transform: rotateX(-15deg);
+  transform: rotateX(-15deg);
+}
+.folder:hover .folder-inside {
+  -webkit-transform: rotate(-7deg) translateY(-15%);
+  transform: rotate(-7deg) translateY(-15%);
+}
+
 /*End. Folder view block*/
