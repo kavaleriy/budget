@@ -138,9 +138,9 @@
 .folder {
   -webkit-perspective: 500px;
   perspective: 500px;
-  width: 194px;
-  height: 60px;
-  background: rgba(0,0,255, .85);
+  width: 146px;
+  height: 45px;
+  background: #2980DE;
   //  position: absolute;
   top: 20%;
   left: 50%;
@@ -155,18 +155,18 @@
   width: 40px;
   height: 10px;
   content: '';
-  background: rgba(0,0,255, .85);
+  background: #2980DE;
   position: absolute;
   top: -10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 .folder::after {
-  width: 194px;
-  height: 120px;
+  width: 146px;
+  height: 90px;
   position: absolute;
   content: '';
-  background: rgba(0,0,255, .95);
+  background: #2980DE;
   top: 15px;
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.3);
   border-top-left-radius: 5px;
@@ -188,22 +188,22 @@
 .folder-text {
   padding: 5px;
   position: absolute;
-  top: 30%;
-  left: 3%;
+  top: 35%;
+  left: 2%;
   display: flex;
-  width: 185px;
-  height: 110px;
+  width: 143px;
+  height: 90px;
   z-index: 1;
   justify-content: center;
   align-items: center;
 }
 
 .folder-inside {
-  width: 180px;
-  height: 113px;
+  width: 132px;
+  height: 83px;
   position: absolute;
   background: #fff;
-  top: 8px;
+  top: 7px;
   left: 7px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);
   -webkit-transform: rotate(-1deg);
@@ -214,16 +214,13 @@
 }
 .folder-inside::before {
   content: '';
-  background: -webkit-repeating-linear-gradient(145deg, #ffffff, #ffffff 10px, #333333 7px, #333333 20px);
-  background: repeating-linear-gradient(0deg, #ffffff, #ffffff 10px, #333333 10px, #333333 20px);
+  background: -webkit-repeating-linear-gradient(145deg, white, white 10px, #333333 7px, #333333 20px);
+  background: repeating-linear-gradient(0deg, white, white 5px, #333333 5px, #333333 10px);
   position: absolute;
-  top: -15px;
-  left: 35px;
-  width: 113px;
-  height: 150px;
-  color: #343434;
-  font-size: 60px;
-  line-height: 30px;
+  top: -20px;
+  left: 25px;
+  width: 83px;
+  height: 130px;
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
   opacity: 0.15;
@@ -239,6 +236,25 @@
 .folder:hover .folder-inside {
   -webkit-transform: rotate(-7deg) translateY(-15%);
   transform: rotate(-7deg) translateY(-15%);
+}
+
+.icon-folder-num {
+  background-color: #FFF;
+  height: 20px;
+  width: 20px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 75px;
+  z-index: 1;
+  position: relative;
+  float: right;
+  left: -100px;
+  top: -20px;
+  border: 1px solid;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*End. Folder view block*/

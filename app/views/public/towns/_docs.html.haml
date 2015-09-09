@@ -51,6 +51,8 @@
     - count = @town.documentation_documents.where(:branch => br).count()
     - if count > 0
       .fol
+        %p.icon-folder-num
+          =count
         %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
           .folder
             .folder-text
