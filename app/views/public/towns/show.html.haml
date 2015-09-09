@@ -51,9 +51,9 @@
           = @town.description ? @town.description : ''
           %h3
             Корисні посилання
-            - unless (@town.links.nil?)
-              %p
-                =@town.links.html_safe
+          - unless (@town.links.nil?)
+            %p
+              =@town.links.html_safe
       #portfolio.tab-pane.fade
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
