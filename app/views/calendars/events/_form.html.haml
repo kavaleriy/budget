@@ -36,7 +36,7 @@
       .col-md-4
         = f.static_control label: t('.text_color') do
           = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @event.text_color), { }, { class: 'color-select' }
-    = f.text_area :description, :rows => "3", label: t('.description'), class: "form-control", placeholder: "Вкажіть детальний опис"
+    = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: "Вкажіть детальний опис"
     .row
       .col-md-4
         = f.text_field :starts_at, :value => date_dmY(@event.starts_at), label: t('.starts_at')
@@ -83,6 +83,26 @@
             escapeMarkup: function(m) { return m; },
         }
     );
+    I18n.locale = window.aHelper.lang();
+    var editor_locale;
+    if(I18n.locale == "uk") {
+      editor_locale = "ua-UA";
+    } else {
+      editor_locale = "";
+    }
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5({
+        "font-styles": true, // Font styling, e.g. h1, h2, etc.
+        "emphasis": true, // Italics, bold, etc.
+        "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+        "html": false, // Button which allows you to edit the generated HTML.
+        "link": true, // Button to insert a link.
+        "image": true, // Button to insert an image.
+        "color": false, // Button to change color of font
+        "size": 'sm', // options are xs, sm, lg
+        "locale": editor_locale
+      });
+    });
 
     function formatColorSelect(el) {
         console.log(el);

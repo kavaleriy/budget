@@ -6,11 +6,27 @@
     %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'Вкажіть посилання...' }
       =link.value
   %td
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'з...' }
+      = link.yearFrom
+    %span -
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'по...' }
+      = link.yearTo
+  %td
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => 'Вкажіть місто...' }
+      = link.town.to_s if link.town
+  %td
     = link_to link, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
   I18n.locale = window.aHelper.lang();
-  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value').editable();
-
+  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
+  $('.link[data-id="#{link.id}"] #town').editable({
+    source: '#{search_town_path}',
+    select2: {
+      width: '450px',
+      minimumInputLength: 2,
+      allowClear: true
+    }
+  });
 
