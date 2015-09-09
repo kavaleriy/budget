@@ -363,7 +363,6 @@
 
       $.each(item.amount, function(k, v) {
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
-
         if (k == "" || k == data_type) {
           if(quarter != 0 && v[year]) {
             amount = 0;
@@ -379,7 +378,16 @@
             }
           }
         } else {
-          node['amount_'+k] = amount['total']
+          if(quarter != 0 && v[year]) {
+            amount = 0;
+            var x = quarter*3 - 2;
+            for(var i = x; i < x + 3; i++) {
+              if(v[year][i]) amount += v[year][i]['total']
+            }
+            node['amount_'+k] = amount
+          } else {
+            node['amount_'+k] = amount['total']
+          }
         }
       })
 
