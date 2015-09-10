@@ -47,7 +47,7 @@
           .folder
             .folder-text
               %p
-                = br.title
+                = truncate(br.title, length:48, separator: ' ')
             .folder-inside
 
             -#.back
