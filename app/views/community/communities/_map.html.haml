@@ -55,7 +55,7 @@
           layerSettings.maxZoom = options.maxZoom;
         }
 
-        //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
         addSvgLayer();
         function addSvgLayer() {
@@ -366,8 +366,8 @@
         function getSVGPointToLayer(feature, latlng) {
           var svgIcon = L.divIcon({
               className: 'yellow-town-icon',
-              iconSize: [10, 10],
-              html: "<p>" + feature.properties.title + "<p/>"
+              iconSize: [20, 20],
+              //html: "<p>" + feature.properties.title + "<p/>"
             });
 
           return L.marker(latlng, {
