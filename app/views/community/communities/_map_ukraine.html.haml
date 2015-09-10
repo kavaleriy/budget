@@ -4,6 +4,7 @@
     margin-top: 10px;
     box-shadow: none;
     background: transparent;
+    height: 800px;
   }
 
 .map_container#custom_map.col-sm-12
@@ -117,16 +118,16 @@
         });*/
         var aRepairMap = RepairMap({
           scrollWheelZoom: false,
-          zoom: zoom,
+          zoom: 8,
           minZoom: 6,
           maxZoom: 9,
           dragging: false,
           map_static: true,
-          center: [48.5, 31.2],
+          center: [49, 40],
           bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
           getInfoContent: getInfoContent
         });
-        aRepairMap.resetMarkers(data, pointOptions);
+        aRepairMap.addGeoJsonPoints(data, pointOptions);
       })
       .fail(function (e) {
         console.log(e)
