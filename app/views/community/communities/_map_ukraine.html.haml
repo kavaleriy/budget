@@ -121,17 +121,13 @@
           bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
           getInfoContent: getInfoContent
         });
-        aRepairMap.addGeoJsonSvg(data["areas"], {
+        aRepairMap.addGeoJsonSvg(data, {
           zIndex: 1,
           featureClickCallback: onCommunityClick,
           getInfoContent: getInfoContent,
           selectPath: false,
           scale: "community"
         });
-        pointOptions.community = true
-        pointOptions.featureClickCallback = onCommunityClick
-        pointOptions.scale = "community"
-        aRepairMap.addGeoJsonPoints(data["communities"], pointOptions);
       })
       .fail(function (e) {
         console.log(e)

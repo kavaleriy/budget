@@ -28,7 +28,7 @@ class Town
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
-  has_one :community_community, :class_name => 'Community::Community', autosave: true
+  has_many :community_communities, :class_name => 'Community::Community', autosave: true
 
   after_update :clear_cache
   def clear_cache

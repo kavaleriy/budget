@@ -1,6 +1,8 @@
 class Community::Community
   include Mongoid::Document
 
+  field :title, type: String
+  field :participants, type: String
   field :coordinates, type: Array
   field :geometry_type, type: String
   field :agree, type: Boolean
