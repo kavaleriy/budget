@@ -42,7 +42,7 @@
         getInfoContent: getInfoContent,
         getPoint: getPoint,
         selectPath: false,
-        community: false
+        scale: "Ukraine"
       };
 
     // add Areas
@@ -56,7 +56,8 @@
         zIndex: 1,
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
-        selectPath: false
+        selectPath: false,
+        scale: "Ukraine"
       })
     })
     .fail(function () {
@@ -124,10 +125,12 @@
           zIndex: 1,
           featureClickCallback: onCommunityClick,
           getInfoContent: getInfoContent,
-          selectPath: false
+          selectPath: false,
+          scale: "community"
         });
         pointOptions.community = true
         pointOptions.featureClickCallback = onCommunityClick
+        pointOptions.scale = "community"
         aRepairMap.addGeoJsonPoints(data["communities"], pointOptions);
       })
       .fail(function (e) {

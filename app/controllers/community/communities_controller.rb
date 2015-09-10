@@ -109,8 +109,9 @@ class Community::CommunitiesController < ApplicationController
           properties: {
               id: "#{community[:id]}",
               title: community.town ? community.town.title : "",
-              # level:community.get_level,
-              # documents_count:town.documentation_documents.count,
+              agree: community.agree,
+              color: community.color,
+              icon: community.icon
           }
       }
     end
