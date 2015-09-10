@@ -79,6 +79,22 @@ namespace :koatuu do
     end
   end
 
+  # =====================================================================================================
+  # only for presentation version! - Lugansk region
+  desc "Load communities"
+  task :load_communities => :environment do
+    puts "agreed communities"
+    %w(4420955100 4423155100 4423355100).each{|koatuu|
+      puts koatuu
+      Town.where(:koatuu => koatuu).first.update( { :community => true, :community_agree => true} )
+    }
+    puts "other communities"
+    %w(4425455100 4420955700 4424055400 4424010100 4421655400 4421610100 4412500000 4423355300 4425110100 4422555100 4420655100 4422855100 4410161400 4424855100 4412900000 4412170500).each{|koatuu|
+      puts koatuu
+      Town.where(:koatuu => koatuu).first.update( { :community => true, :community_agree => false} )
+    }
+  end
+
   private
     def get_town_coordinates location
       Geocoder.coordinates(location)

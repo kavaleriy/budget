@@ -8,6 +8,8 @@ class Town
   field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
+  field :community, type: Boolean
+  field :community_agree, type: Boolean
   field :description, type: String
   def get_level
     return :area if self.level == 1

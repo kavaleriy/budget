@@ -69,7 +69,7 @@ class Community::CommunitiesController < ApplicationController
 
       towns = Town.cities + Town.towns
 
-      towns.select{|town| town.area_title == params[:area_title] && town.level == 31 }.each do |town|
+      towns.reject{|town| !town.community }.each do |town|
         geo = TownGeojsonBuilder.build(town)
         result << geo unless geo.blank?
       end
