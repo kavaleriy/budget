@@ -337,7 +337,7 @@
 
         var layerOptions = {
           pointToLayer: getSVGPointToLayer,
-          //onEachFeature: onEachFeature,
+          onEachFeature: options.community ? onEachFeature : "",
           coordsToLatLng: coordsToLatLng
         };
 
@@ -378,46 +378,16 @@
         function onEachFeature(feature, layer) {
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
-          if(key && year) {
-            var size = 0;
-            if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
-              size = sizeScale(feature.properties['indicators'][year][key]);
-            } else {
-              size = sizeScale(0);
-            }
-            updateTownsCompareInfo(feature, key, year);
-          }
-
           layer.on({
             click: function (e) {
-              if(key && year) {
-                if(e.target.options.icon.options.className == "css-icon") {
-                  selected_towns.push(feature.properties.id);
-                  var selectedIcon = L.divIcon({
-                    className: 'css-icon selected-icon',
-                    iconSize: [size, size]
-                  });
-                  e.target.setIcon(selectedIcon);
-                } else {
-                  selected_towns.splice(selected_towns.indexOf(feature.properties.id), 1);
-                  var selectedIcon = L.divIcon({
-                    className: 'css-icon',
-                    iconSize: [size, size]
-                  });
-                  e.target.setIcon(selectedIcon);
-                }
-              }
-
               if (options.featureClickCallback)
                 options.featureClickCallback(feature, popup);
             },
             mouseover: function () {
-              //layer.setStyle(options.hoverStyle);
               if (options.getInfoContent)
                 info.update(options.getInfoContent(feature.properties));
             },
             mouseout: function () {
-              //geoJson.resetStyle(layer)
               info.update(options.getInfoContent("Ukraine"));
             }
           });

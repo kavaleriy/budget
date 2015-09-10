@@ -41,7 +41,8 @@
         featureClickCallback: onFeatureClick,
         getInfoContent: getInfoContent,
         getPoint: getPoint,
-        selectPath: false
+        selectPath: false,
+        community: false
       };
 
     // add Areas
@@ -100,7 +101,6 @@
     }
 
     function onFeatureClick(feature) {
-      console.log(feature.properties.title)
       $("#custom_map").html('');
       $.ajax({
         method: 'get',
@@ -108,14 +108,7 @@
         dataType: 'json',
       })
       .done(function (data) {
-        console.log(data)
         $("#custom_map").html('#{ j render :partial => 'map'}');
-        /*aRepairMap.addGeoJsonSvg(data["areas"], {
-          zIndex: 1,
-          featureClickCallback: onFeatureClick,
-          getInfoContent: getInfoContent,
-          selectPath: false
-        });*/
         var aRepairMap = RepairMap({
           scrollWheelZoom: false,
           zoom: 8,
@@ -127,11 +120,23 @@
           bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
           getInfoContent: getInfoContent
         });
-        aRepairMap.addGeoJsonPoints(data, pointOptions);
+        aRepairMap.addGeoJsonSvg(data, {
+          zIndex: 1,
+          featureClickCallback: onCommunityClick,
+          getInfoContent: getInfoContent,
+          selectPath: false
+        });
+        /*pointOptions.community = true
+        pointOptions.featureClickCallback = onCommunityClick
+        aRepairMap.addGeoJsonPoints(data, pointOptions);*/
       })
       .fail(function (e) {
         console.log(e)
       });
+    }
+
+    function onCommunityClick(feature) {
+      console.log(feature.properties.title);
     }
 
     function getInfoContent(properties) {
