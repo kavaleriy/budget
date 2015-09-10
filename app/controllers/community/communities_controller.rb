@@ -65,24 +65,32 @@ class Community::CommunitiesController < ApplicationController
 
   def geo_json
     @geo_json = use_cache do
-      result = []
+      result_areas = []
+      result_communities = []
 
-      # towns = Town.cities + Town.towns
-      #
-      # towns.reject{|town| !town.community }.each do |town|
-      #   geo = TownGeojsonBuilder.build(town)
-      #   result << geo unless geo.blank?
-      # end
+      towns = Town.cities + Town.towns
+
+      towns.reject{|town| town.area_title != params[:area_title] || town.community_community.nil? }.each do |town|
+        geo = TownGeojsonBuilder.build(town)
+        result_communities << geo unless geo.blank?
+      end
 
       Community::Community.each do |community|
         geo = build_area(community)
-        result << geo unless geo.blank?
+        result_areas << geo unless geo.blank?
       end
 
-
       {
-          "type" => "FeatureCollection",
-          "features" => result
+        "areas" =>
+        {
+            "type" => "FeatureCollection",
+            "features" => result_areas
+        },
+        "communities" =>
+        {
+            "type" => "FeatureCollection",
+            "features" => result_communities
+        }
       }
     end
     respond_to do |format|
@@ -100,7 +108,7 @@ class Community::CommunitiesController < ApplicationController
           },
           properties: {
               id: "#{community[:id]}",
-              title: community.town.title,
+              title: community.town ? community.town.title : "",
               # level:community.get_level,
               # documents_count:town.documentation_documents.count,
           }

@@ -16,6 +16,7 @@ namespace :community do
       town = Town.where(:koatuu => koatuu).first
       Community::Community.create({:agree => false, :town => town})
     }
+    Community::Community.create({:agree => false}) #occupied territory
   end
 
   desc "Load area polygons"
@@ -24,11 +25,13 @@ namespace :community do
 
     hash['features'].each do |f|
       koatuu = f['properties']['koatuu']
-      next if koatuu.blank?
+      next if koatuu.blank? && f['properties']['NAME_1'] != "occupied"
 
       puts koatuu
 
       community = Community::Community.where(:town => Town.where(:koatuu => koatuu).first).first
+      community = Community::Community.where(:town => nil).first if f['properties']['NAME_1'] == "occupied"
+
       unless community.nil?   # delete after adding villages to koatuu
         geometry_type = f['geometry']['type']
         coordinates = []
