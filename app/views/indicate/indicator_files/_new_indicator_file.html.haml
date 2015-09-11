@@ -77,8 +77,6 @@
       })
     })
 
-    if("#{@indicate_taxonomy.town}") {
-      town_select.select2("data", {id: "#{@indicate_taxonomy.town.id}", text: "#{@indicate_taxonomy.town.title}" });
-    }
+    town_select.select2("data", {id: "#{@indicate_taxonomy.town ? @indicate_taxonomy.town.id : ""}", text: "#{@indicate_taxonomy.town ? @indicate_taxonomy.town.title : ""}" });
 
   })
