@@ -17,9 +17,6 @@ class Indicate::TaxonomiesController < ApplicationController
   def show
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
-    unless @indicate_taxonomy.town
-      @indicate_taxonomy.town = ""
-    end
   end
 
   def indicators
