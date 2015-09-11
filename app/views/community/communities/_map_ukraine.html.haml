@@ -7,6 +7,10 @@
     height: 800px;
   }
 
+  #custom_map .leaflet-control-zoom.leaflet-bar.leaflet-control, .leaflet-control-attribution.leaflet-control {
+    display: block;
+  }
+
 .col-sm-12{:style => 'margin-top: 10px;'}
   = render partial: 'sequence'
 
@@ -19,38 +23,46 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var zoom = 6;
+    var zoom = 6, zoom_region = 8;
     var data_areas, data_towns;
-
-    var aRepairMap = RepairMap({
-      scrollWheelZoom: false,
+    var repairMapOptions = {
+      scrollWheelZoom: true,
       zoom: zoom,
       minZoom: 6,
       maxZoom: 9,
-      dragging: false,
-      map_static: true,
+      dragging: true,
+      map_static: false,
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
-    });
+    };
+    var pointOptions = {
+      clustered: false,
+      style: {
+        opacity: 0.8,
+      },
+      hoverStyle: {
+        opacity: 1,
+      },
+      featureClickCallback: onFeatureClick,
+      getInfoContent: getTownsContent,
+      selectPath: false,
+      scale: "Ukraine"
+    };
+    var areasOptions = {
+      zIndex: 1,
+      featureClickCallback: onFeatureClick,
+      getInfoContent: getAreasContent,
+      selectPath: false,
+      scale: "Ukraine"
+    };
+
+    var aRepairMap = RepairMap(repairMapOptions);
 
     var sequence = aSequence('#sequence');
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceClick});
     sequence.show("Ukraine");
 
-    var pointOptions = {
-        clustered: false,
-        style: {
-          opacity: 0.8,
-        },
-        hoverStyle: {
-          opacity: 1,
-        },
-        featureClickCallback: onFeatureClick,
-        getInfoContent: getTownsContent,
-        getPoint: getPoint,
-        selectPath: false,
-        scale: "Ukraine"
-      };
+
 
     // add Areas
     $.ajax({
@@ -60,17 +72,10 @@
     })
     .done(function (data) {
       data_areas = data;
-      aRepairMap.addGeoJsonSvg(data, {
-        zIndex: 1,
-        featureClickCallback: onFeatureClick,
-        getInfoContent: getAreasContent,
-        selectPath: false,
-        scale: "Ukraine"
-      })
+      aRepairMap.addGeoJsonSvg(data, areasOptions)
     })
     .fail(function () {
     });
-
 
     // add markers
     $.ajax({
@@ -85,31 +90,6 @@
     .fail(function () {
     });
 
-
-    var CityIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-    var TownIcon = L.Icon.extend({ options: { iconSize: [32, 32] }});
-
-    var icons = {}
-    icons.city = new CityIcon({iconUrl: '/assets/map/city-hall.png'})
-    icons.town = new TownIcon({iconUrl: '/assets/map/iconTown.png'})
-
-    function getPoint(properties) {
-      var point = {}
-      switch (properties.level) {
-        case 'city':
-          point.icon = icons.city
-          break
-        case 'town':
-          point.icon = icons.town
-          break
-        default:
-          point.icon = new L.Icon.Default()
-          break
-      }
-
-      return point
-    }
-
     function onFeatureClick(feature) {
       sequence.show(feature.properties.title);
       $("#custom_map").html('');
@@ -120,23 +100,13 @@
       })
       .done(function (data) {
         $("#custom_map").html('#{ j render :partial => 'map'}');
-        aRepairMap = RepairMap({
-          scrollWheelZoom: false,
-          zoom: 8,
-          minZoom: 6,
-          maxZoom: 9,
-          dragging: false,
-          map_static: true,
-          center: [49, 40],
-          bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
-        });
-        aRepairMap.addGeoJsonSvg(data, {
-          zIndex: 1,
-          featureClickCallback: onCommunityClick,
-          getInfoContent: getCommunityContent,
-          selectPath: false,
-          scale: "community"
-        });
+        repairMapOptions.center = [49, 40];
+        repairMapOptions.zoom = zoom_region;
+        aRepairMap = RepairMap(repairMapOptions);
+        areasOptions.featureClickCallback = onCommunityClick;
+        areasOptions.getInfoContent = getCommunityContent;
+        areasOptions.scale = "community";
+        aRepairMap.addGeoJsonSvg(data, areasOptions);
       })
       .fail(function (e) {
         console.log(e)
@@ -182,24 +152,14 @@
     function sequenceClick(){
       $("#custom_map").html('#{ j render :partial => 'map'}');
       sequence.show("Ukraine");
-      aRepairMap = RepairMap({
-        scrollWheelZoom: false,
-        zoom: zoom,
-        minZoom: 6,
-        maxZoom: 9,
-        dragging: false,
-        map_static: true,
-        center: [48.5, 31.2],
-        bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
-      });
+      repairMapOptions.center = [48.5, 31.2];
+      repairMapOptions.zoom = zoom;
+      aRepairMap = RepairMap(repairMapOptions);
       // add Areas
-      aRepairMap.addGeoJsonSvg(data_areas, {
-        zIndex: 1,
-        featureClickCallback: onFeatureClick,
-        getInfoContent: getAreasContent,
-        selectPath: false,
-        scale: "Ukraine"
-      });
+      areasOptions.featureClickCallback = onFeatureClick;
+      areasOptions.getInfoContent = getAreasContent;
+      areasOptions.scale = "Ukraine";
+      aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
       // add markers
       aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
     }
