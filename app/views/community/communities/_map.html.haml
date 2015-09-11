@@ -38,6 +38,7 @@
         mapSettings.maxZoom = options.maxZoom;
         mapSettings.dragging = options.dragging;
         map = L.map('map', mapSettings);
+
         if(options.map_static) {
           map.doubleClickZoom.disable();
           map.keyboard.disable();

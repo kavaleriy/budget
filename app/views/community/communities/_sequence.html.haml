@@ -4,7 +4,7 @@
 
   function aSequence(aContainer) {
     var b = {
-          w: 200, h: 45, s: 3, t: 10
+          w: 220, h: 45, s: 3, t: 10
         };
     var self, path;
 
@@ -46,20 +46,6 @@
         if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
           points.push(b.t + "," + (b.h / 2));
         }
-        //this.points = points
-        return points.join(" ");
-      },
-
-      breadcrumbLevelPoints: function(d, i) {
-        // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-
-        points = []
-        points.push(b.w - 20 + ",0");
-        points.push(b.w + ",0");
-        points.push(b.w + b.t + "," + (b.h / 2));
-        points.push(b.w + "," + b.h);
-        points.push(b.w - 20 + "," + b.h);
-        //this.points = points
         return points.join(" ");
       },
 
@@ -77,49 +63,33 @@
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("svg:g")
                                 .attr('transform', "translate(0,0)")
-                                .attr("cursor", "pointer")
-                                .attr("id", function(d){ return "drag" + (d.depth || d.level) })
+                                .attr("cursor", function(d){ return (d == "Ukraine") ? 'pointer' : 'default'})
+                                .attr("pointer-events", function(d){return (d == "Ukraine") ? 'auto' : 'none'})
+                                .on("mouseover",function(d,i){
+                                    d3.select('#breadcrumb_' + i).style("fill", "#357ebd");
+                                })
+                                .on("mouseout",function(d,i){
+                                    d3.select('#breadcrumb_' + i).style("fill", "#428bca");
+                                })
                                 .on('click', function(d) {
-                                  if (dragged == 1) return;
                                   self.clickCallback(d);
-                                  d3.event.stopPropagation();
                                 });
 
-        if(draggable == 1) {
-          entering.call(drag);
-        }
-
         entering.append("svg:polygon")
+            .attr("id", function(d,i){return "breadcrumb_" + i})
             .attr("points", this.breadcrumbPoints)
-            .style("fill", "blue")
-            .style("stroke", "white")
-
-        entering.append("svg:polygon")
-            .attr("points", this.breadcrumbLevelPoints)
-            .style("fill", "blue")
-            .style("stroke", "white")
+            .style("fill", "#428bca")
+            .style("stroke", "white");
 
         entering.append("svg:text")
-            .attr("x", 0)
-            .attr("y", 10)
+            .attr("x", 15)
+            .attr("y", 20)
             .attr("dy", "0.35em")
-            .attr("text-anchor", "cent")
-            .text(function(d) { return d.label; })
-            .call(aVisify.helpers.wrap, b.w - 40)
-
-        entering.append("svg:text")
-            .attr("x", b.w - 8)
-            .attr("y", 23)
-            .attr("dy", "0.35em")
-            .attr("text-anchor", "middle")
-            .style("font-size", "1.2em")
+            .attr("data-id", function(d,i){return "breadcrumb_" + i})
+            .attr("text-anchor", "start")
+            .style("fill", "white")
             .style("font-weight", "bold")
-            .text(function(d) {
-              if(init_levels.indexOf(d.taxonomy) == -1) {
-                return d.parent ? init_levels.indexOf(d.parent.taxonomy) + 1 : 0;
-              }
-              return init_levels.indexOf(d.taxonomy) + 1;
-            })
+            .text(function(d) { if(d=="Ukraine") return "Україна"; return d; });
 
         // Set position for entering and updating nodes.
         g.attr("transform", function(d, i) {
@@ -128,14 +98,6 @@
 
         // Remove exiting nodes.
         g.exit().remove();
-
-        // Now move and update the percentage at the end.
-        d3.select(aContainer + " #trail").select("#endlabel")
-            .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
-            .attr("y", b.h / 2)
-            .attr("dy", "0.35em")
-            .attr("text-anchor", "middle")
-            .text(percentageString);
 
         // Make the breadcrumb trail visible, if it's hidden.
         $(aContainer + " #trail g").attr("style", "visibility: ;");
