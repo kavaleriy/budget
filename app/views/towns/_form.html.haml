@@ -6,6 +6,14 @@
 .width-container.clearfix
   .column_container.clearfix
     = bootstrap_form_for @town, :html => { :class => 'edit_town', :multipart => true} do |f|
+      .row.top-user-menu
+        .col-md-6
+          %a{ :href => '#', 'data-resource' => 'town', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@town.id}", 'data-url' => "#{town_path(@town)}", 'data-emptytext' => 'Введіть назву територіальної одиниці' }
+            = @town.title
+        .col-md-6.fix-pad
+          = link_to content_tag(:i, nil, class: 'fa fa-times'), towns_path, :class => 'btn btn-default pull-right'
+          = button_tag(:class => 'btn btn-primary pull-right') do
+            %i.fa.fa-floppy-o
       .row
         .col-md-5
           .upload_img
@@ -13,18 +21,25 @@
               =image_tag @town.img.thumb.url
             -else
               =image_tag "no_image.png"
-            = f.file_field :img, :class => 'btn btn-default'
-        .col-md-7
-          = f.text_field :title, :readonly => (UsersHelper.is_admin?(current_user) == false), :class => 'control-label'
-          = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
-          = f.text_area :description, :placeholder => t("town_description_placeholder"), class: 'wysihtml5'
-          = f.text_field :koatuu, :readonly => true, :class => 'control-label'
-          = f.text_field :level, :readonly => true, :class => 'control-label'
-          = f.text_area :coordinates, :class => 'control-label'
-          = f.text_field :geometry_type, :class => 'control-label'
+          = f.file_field :img, :class => 'btn btn-default'
+          %a.btn.btn-default.button-toggle
+            %i.fa.fa-cog
+          .toggle-element{"data-state" => "closed"}
+            .col-md-6.r-pad
+              = f.text_field :koatuu, :readonly => true, :class => 'control-label'
+            .col-md-6
+              = f.text_field :level, :readonly => true, :class => 'control-label'
+            = f.text_area :coordinates, :class => 'control-label'
+            = f.text_field :geometry_type, :class => 'control-label'
 
-      = f.submit nil, :class => 'btn btn-primary'
-      = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default'
+        .col-md-7
+          = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
+          %hr.towns-form
+          = f.text_area :description, :placeholder => t("town_description_placeholder"), class: 'wysihtml5'
+      .row.buttom-user-menu
+        .col-md-12.fix-pad
+          = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default pull-right'
+          = f.submit nil, :class => 'btn btn-primary pull-right'
 
 
 
@@ -72,5 +87,25 @@
       readURL(this);
     });
 
+    (function () {
+
+      var toggleState = function (elem, one, two) {
+        elem.setAttribute('data-state', elem.getAttribute('data-state') === one ? two : one);
+      };
+
+      var toggleButton = document.querySelector('.button-toggle');
+      var toggleElement = document.querySelector('.toggle-element');
+
+      toggleButton.onclick = function (e) {
+        toggleState(toggleElement, 'closed', 'open');
+      };
+
+    })();
+
+    $('#title').editable(
+    'option',
+    'disabled',
+    #{UsersHelper.is_admin?(current_user) == false}
+    );
   })
 

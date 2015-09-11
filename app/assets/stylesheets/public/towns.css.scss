@@ -277,14 +277,85 @@
   height: 120px;
   margin: 0 30px 20px 0;
 }
-
 /*End. Folder view block*/
 
+/*Begin. Blazon border fix*/
 .thumbnail {
   border: none;
   margin-bottom: 10px !important;
 }
+/*End. Blazon border fix*/
 
 .nav-tabs {
   padding-right: 0;
 }
+
+hr.towns-form {
+  margin: 0 0 5px 0;
+}
+
+/*Begin. Toggle button*/
+.toggle-element {
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+  .r-pad {
+    padding: 0 5px 0 0 !important;
+  }
+  .control-label {
+    resize: vertical;
+  }
+}
+.toggle-element[data-state=closed] {
+  max-height: 0;
+}
+.toggle-element[data-state=open] {
+//  max-height: 15em;
+}
+/*End. Toggle button*/
+/*Begin. Town profile buttons menu*/
+//Top menu
+.top-user-menu {
+  margin-top: -15px;
+  margin-bottom: 5px;
+
+  .fix-pad {
+    padding: 0;
+  }
+  .btn {
+    margin-left: 1px;
+  }
+  #title {
+    font-style: normal;
+    font-size: 20px;
+  }
+  .editable {
+    border: none;
+    color: black;
+  }
+  .editable-click, a.editable-click, a.editable-click:hover {
+    border: none;
+  }
+  .editable-click, a.editable-click, a.editable-click:focus {
+    text-decoration: none;
+  }
+  .editable:before {
+    content: "\270E";
+    font-size: 16px;
+    margin-top: -5px;
+  }
+  .editable-disabled:before {
+    content: none !important;
+  }
+}
+//Bottom menu
+.buttom-user-menu {
+
+  .fix-pad {
+    padding: 0;
+  }
+  .btn {
+    margin-left: 5px;
+  }
+
+}
+/*End. Town profile buttons menu*/
