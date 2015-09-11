@@ -55,7 +55,7 @@
           layerSettings.maxZoom = options.maxZoom;
         }
 
-        //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
         addSvgLayer();
         function addSvgLayer() {
@@ -140,15 +140,26 @@
                                 return "fillable_path";
                            })
             .attr("data-id", function(d){return d.properties.id;})
-            .style("cursor", "pointer")
-            .style("fill", function(d){
-                              if(key && year) {
-                                if(d['properties']['indicators'][year]) {
-                                  return colorScale(d['properties']['indicators'][year][key] || 0);
+            .style("cursor", function(d){
+                                if (options.scale == "Ukraine" || d['properties']['agree']) {
+                                  return "pointer";
                                 }
-                                return colorScale(0);
+                                return "default";
+                              })
+            .style("pointer-events", function(d){
+                                if (options.scale == "Ukraine" || d['properties']['agree']) {
+                                  return "auto";
+                                }
+                                return "none";
+                              })
+            .style("fill", function(d){
+                              if (options.scale == "Ukraine") {
+                                return "blue";
                               }
-                              return "blue";
+                              if(d['properties']['agree']) {
+                                return d['properties']['color'] ? d['properties']['color'] : "blue";
+                              }
+                              return "grey";
             })
             .on("mouseover", function (d) {
               if (options.getInfoContent)
@@ -165,29 +176,29 @@
 
         feature.attr("d", path);
 
-        if(year && key) {
+        if(options.scale == "community") {
           g.selectAll("path")
                 .each(function (d, i) {
                    var centroid = path.centroid(d);
-                   g.append("rect")
-                    .attr("x", centroid[0] - 25)
-                    .attr("y", centroid[1] - 14)
-                    .attr("width", '50px')
-                    .attr("height", '20px' )
-                    .attr("fill", "yellow");
-
-                   g.append("text")
-                    .attr("x", centroid[0])
-                    .attr("y", centroid[1])
-                    .attr("text-anchor", "middle")
-                    .text(function(){
-                      if(key && year) {
-                        if(d['properties']['indicators'][year]){
-                          return d['properties']['indicators'][year][key];
-                        }
-                        return 0;
+                   g.append("circle")
+                    .attr("cx", centroid[0] - 5)
+                    .attr("cy", centroid[1] - 5)
+                    .attr("r", '5px')
+                    .attr("stroke", 'orange')
+                    .attr("stroke-width", '2px')
+                    .attr("fill", "yellow")
+                    .attr("cursor", 'pointer')
+                    .on("mouseover", function () {
+                      if (options.getInfoContent)
+                        info.update(options.getInfoContent(d.properties));
+                      })
+                    .on("mouseout", function () {
+                      info.update(options.getInfoContent("Ukraine"));
+                    })
+                    .on("click", function () {
+                      if (options.featureClickCallback) {
+                        options.featureClickCallback(d);
                       }
-                      return "";
                     });
                 });
         }
@@ -337,7 +348,7 @@
 
         var layerOptions = {
           pointToLayer: getSVGPointToLayer,
-          //onEachFeature: onEachFeature,
+          onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng
         };
 
@@ -356,7 +367,7 @@
           var svgIcon = L.divIcon({
               className: 'yellow-town-icon',
               iconSize: [10, 10],
-              html: "<p>" + feature.properties.title + "<p/>"
+              //html: "<p>" + feature.properties.title + "<p/>"
             });
 
           return L.marker(latlng, {
@@ -378,46 +389,16 @@
         function onEachFeature(feature, layer) {
           if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
-          if(key && year) {
-            var size = 0;
-            if(feature.properties['indicators'][year] && feature.properties['indicators'][year][key]) {
-              size = sizeScale(feature.properties['indicators'][year][key]);
-            } else {
-              size = sizeScale(0);
-            }
-            updateTownsCompareInfo(feature, key, year);
-          }
-
           layer.on({
             click: function (e) {
-              if(key && year) {
-                if(e.target.options.icon.options.className == "css-icon") {
-                  selected_towns.push(feature.properties.id);
-                  var selectedIcon = L.divIcon({
-                    className: 'css-icon selected-icon',
-                    iconSize: [size, size]
-                  });
-                  e.target.setIcon(selectedIcon);
-                } else {
-                  selected_towns.splice(selected_towns.indexOf(feature.properties.id), 1);
-                  var selectedIcon = L.divIcon({
-                    className: 'css-icon',
-                    iconSize: [size, size]
-                  });
-                  e.target.setIcon(selectedIcon);
-                }
-              }
-
               if (options.featureClickCallback)
                 options.featureClickCallback(feature, popup);
             },
             mouseover: function () {
-              //layer.setStyle(options.hoverStyle);
               if (options.getInfoContent)
                 info.update(options.getInfoContent(feature.properties));
             },
             mouseout: function () {
-              //geoJson.resetStyle(layer)
               info.update(options.getInfoContent("Ukraine"));
             }
           });

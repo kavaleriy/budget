@@ -26,8 +26,7 @@
       dragging: false,
       map_static: true,
       center: [48.5, 31.2],
-      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
-      getInfoContent: getInfoContent
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     });
 
     var pointOptions = {
@@ -39,23 +38,25 @@
           opacity: 1,
         },
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent,
+        getInfoContent: getTownsContent,
         getPoint: getPoint,
-        selectPath: false
+        selectPath: false,
+        scale: "Ukraine"
       };
 
     // add Areas
     $.ajax({
       method: 'get',
-      url: '#{public_ukraine_geo_json_path}&type=areas',
+      url: '#{community_geo_json_path}&type=areas',
       dataType: 'json',
     })
     .done(function (data) {
       aRepairMap.addGeoJsonSvg(data, {
         zIndex: 1,
         featureClickCallback: onFeatureClick,
-        getInfoContent: getInfoContent,
-        selectPath: false
+        getInfoContent: getAreasContent,
+        selectPath: false,
+        scale: "Ukraine"
       })
     })
     .fail(function () {
@@ -65,7 +66,7 @@
     // add markers
     $.ajax({
       method: 'get',
-      url: '#{public_ukraine_geo_json_path}',
+      url: '#{community_geo_json_path}',
       dataType: 'json',
     })
     .done(function (data) {
@@ -100,7 +101,6 @@
     }
 
     function onFeatureClick(feature) {
-      console.log(feature.properties.title)
       $("#custom_map").html('');
       $.ajax({
         method: 'get',
@@ -108,14 +108,7 @@
         dataType: 'json',
       })
       .done(function (data) {
-        console.log(data)
         $("#custom_map").html('#{ j render :partial => 'map'}');
-        /*aRepairMap.addGeoJsonSvg(data["areas"], {
-          zIndex: 1,
-          featureClickCallback: onFeatureClick,
-          getInfoContent: getInfoContent,
-          selectPath: false
-        });*/
         var aRepairMap = RepairMap({
           scrollWheelZoom: false,
           zoom: 8,
@@ -124,21 +117,53 @@
           dragging: false,
           map_static: true,
           center: [49, 40],
-          bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
-          getInfoContent: getInfoContent
+          bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
         });
-        aRepairMap.addGeoJsonPoints(data, pointOptions);
+        aRepairMap.addGeoJsonSvg(data, {
+          zIndex: 1,
+          featureClickCallback: onCommunityClick,
+          getInfoContent: getCommunityContent,
+          selectPath: false,
+          scale: "community"
+        });
       })
       .fail(function (e) {
         console.log(e)
       });
     }
 
-    function getInfoContent(properties) {
+    function onCommunityClick(feature) {
+      console.log(feature.properties.title);
+    }
+
+    function getAreasContent(properties) {
       var content = "", title = "";
       if(properties != "Ukraine") {
         content += '<h3>' + properties.title + '</h3>' +
-                   '<p>Територіальних громад:</p>';
+                   '<p>Територіальних громад: ' + properties.communities_count + '</p>';
+      }
+      return content;
+    }
+
+    function getTownsContent(properties) {
+      var content = "", title = "";
+      if(properties != "Ukraine") {
+        content += '<h3>' + properties.title + '</h3>';
+      }
+      return content;
+    }
+
+    function getCommunityContent(properties) {
+      var content = "", title = "";
+      if(properties != "Ukraine") {
+        content += '<h3>' + properties.title + '</h3>';
+        if(properties.participants) {
+          content += '<p><b>Склад громади: </b></p><ul>';
+          $.each(properties.participants.split(','), function(p, i){
+            content += '<li>' + i + '</li>';
+          })
+          content += '</ul>';
+        }
       }
       return content;
     }

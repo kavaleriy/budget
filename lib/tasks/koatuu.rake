@@ -39,7 +39,7 @@ namespace :koatuu do
 
 
     # post-process
-    Town.where(:koatuu => '8000000000').first.update( { :level => 13} ) # kyiv
+    Town.where(:koatuu => '8000000000').first.update( { :level => 13, :area_title => "Київська область"} ) # kyiv
     # Town.delete_all(:koatuu => Regexp.new("^01.*"))
 
     # Town.delete_all(:koatuu => '8500000000') # Sevastopol
@@ -49,7 +49,7 @@ namespace :koatuu do
     # calculate area title
     Town.each do |town|
       unless town.level == 1
-        next if town.koatuu.blank?
+        next if town.koatuu.blank? || town.koatuu == '8000000000'
         area_title = Town.areas(town.koatuu.slice(0, 2)).first
         town.update( area_title: area_title )
       end
@@ -57,18 +57,17 @@ namespace :koatuu do
 
   end
 
-
-    private
-    def self.extract_name name
-      index = name.index('/')
-      name = name.slice(0, index) if index
-      if /^М\./ =~ name
-        name = $'.mb_chars.capitalize
-      else
-        name.mb_chars.capitalize
-      end
-      # name.mb_chars.gsub(/ ОБЛАСТЬ$/, '').gsub(/ РАЙОН$/, '').capitalize
+  private
+  def self.extract_name name
+    index = name.index('/')
+    name = name.slice(0, index) if index
+    if /^М\./ =~ name
+      name = $'.mb_chars.capitalize
+    else
+      name.mb_chars.capitalize
     end
+    # name.mb_chars.gsub(/ ОБЛАСТЬ$/, '').gsub(/ РАЙОН$/, '').capitalize
+  end
 
 
   # =====================================================================================================
@@ -77,22 +76,6 @@ namespace :koatuu do
     Town.each do |town|
       town.update(:coordinates => get_town_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
     end
-  end
-
-  # =====================================================================================================
-  # only for presentation version! - Lugansk region
-  desc "Load communities"
-  task :load_communities => :environment do
-    puts "agreed communities"
-    %w(4420955100 4423155100 4423355100).each{|koatuu|
-      puts koatuu
-      Town.where(:koatuu => koatuu).first.update( { :community => true, :community_agree => true} )
-    }
-    puts "other communities"
-    %w(4425455100 4420955700 4424055400 4424010100 4421655400 4421610100 4412500000 4423355300 4425110100 4422555100 4420655100 4422855100 4410161400 4424855100 4412900000 4412170500).each{|koatuu|
-      puts koatuu
-      Town.where(:koatuu => koatuu).first.update( { :community => true, :community_agree => false} )
-    }
   end
 
   private

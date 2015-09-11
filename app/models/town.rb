@@ -8,8 +8,6 @@ class Town
   field :area_title, type: String
   field :note, type: String
   field :level, type: Integer
-  field :community, type: Boolean
-  field :community_agree, type: Boolean
   field :description, type: String
   def get_level
     return :area if self.level == 1
@@ -30,6 +28,7 @@ class Town
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
+  has_many :community_communities, :class_name => 'Community::Community', autosave: true
 
   after_update :clear_cache
   def clear_cache
