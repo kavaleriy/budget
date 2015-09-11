@@ -102,10 +102,9 @@
 
     })();
 
-    $('#title').editable(
-    'option',
-    'disabled',
-    #{UsersHelper.is_admin?(current_user) == false}
-    );
+    $('#title').editable({
+      'disabled': #{UsersHelper.is_admin?(current_user) == false},
+      'mode': 'inline'
+    })
   })
 
