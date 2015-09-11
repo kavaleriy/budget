@@ -176,29 +176,29 @@
 
         feature.attr("d", path);
 
-        if(year && key) {
+        if(options.scale == "community") {
           g.selectAll("path")
                 .each(function (d, i) {
                    var centroid = path.centroid(d);
-                   g.append("rect")
-                    .attr("x", centroid[0] - 25)
-                    .attr("y", centroid[1] - 14)
-                    .attr("width", '50px')
-                    .attr("height", '20px' )
-                    .attr("fill", "yellow");
-
-                   g.append("text")
-                    .attr("x", centroid[0])
-                    .attr("y", centroid[1])
-                    .attr("text-anchor", "middle")
-                    .text(function(){
-                      if(key && year) {
-                        if(d['properties']['indicators'][year]){
-                          return d['properties']['indicators'][year][key];
-                        }
-                        return 0;
+                   g.append("circle")
+                    .attr("cx", centroid[0] - 5)
+                    .attr("cy", centroid[1] - 5)
+                    .attr("r", '5px')
+                    .attr("stroke", 'orange')
+                    .attr("stroke-width", '2px')
+                    .attr("fill", "yellow")
+                    .attr("cursor", 'pointer')
+                    .on("mouseover", function () {
+                      if (options.getInfoContent)
+                        info.update(options.getInfoContent(d.properties));
+                      })
+                    .on("mouseout", function () {
+                      info.update(options.getInfoContent("Ukraine"));
+                    })
+                    .on("click", function () {
+                      if (options.featureClickCallback) {
+                        options.featureClickCallback(d);
                       }
-                      return "";
                     });
                 });
         }
@@ -348,7 +348,7 @@
 
         var layerOptions = {
           pointToLayer: getSVGPointToLayer,
-          onEachFeature: options.scale != "Ukraine" ? onEachFeature : "",
+          onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng
         };
 
@@ -366,7 +366,7 @@
         function getSVGPointToLayer(feature, latlng) {
           var svgIcon = L.divIcon({
               className: 'yellow-town-icon',
-              iconSize: [20, 20],
+              iconSize: [10, 10],
               //html: "<p>" + feature.properties.title + "<p/>"
             });
 

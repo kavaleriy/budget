@@ -67,9 +67,28 @@ class Community::CommunitiesController < ApplicationController
     @geo_json = use_cache do
       result = []
 
-      Community::Community.each do |community|
-        geo = build_area(community)
-        result << geo unless geo.blank?
+      if params[:area_title]
+        Community::Community.each do |community|
+          geo = build_community(community)
+          result << geo unless geo.blank?
+        end
+      else
+        towns =
+            case params[:type]
+              when 'areas'
+                Town.areas
+              else
+                Town.cities + Town.towns
+            end
+        towns.reject{|town| town.level != 1 && town.level != 13}.each do |town|
+          geo = case params[:type]
+            when 'areas'
+              build_area(town)
+            else
+              build_point(town)
+          end
+          result << geo unless geo.blank?
+        end
       end
 
       {
@@ -82,7 +101,43 @@ class Community::CommunitiesController < ApplicationController
     end
   end
 
-  def build_area(community)
+  def build_area(town)
+    unless town[:coordinates].blank?
+      {
+          type: "Feature",
+          geometry: {
+              type: town[:geometry_type],
+              coordinates: town[:coordinates]
+          },
+          properties: {
+              id: "#{town[:id]}",
+              title: town.title,
+              level:town.get_level,
+              communities_count:town.community_communities.length
+          }
+      }
+    end
+  end
+
+  def build_point(town)
+    unless town[:coordinates].blank?
+      {
+          type: "Feature",
+          geometry: {
+              type: 'Point',
+              coordinates: town[:coordinates]
+          },
+          properties: {
+              id: "#{town[:id]}",
+              title: town.title,
+              level:town.get_level,
+              communities_count:town.community_communities.length
+          }
+      }
+    end
+  end
+
+  def build_community(community)
     unless community[:coordinates].blank?
       {
           type: "Feature",

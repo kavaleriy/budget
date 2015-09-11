@@ -14,7 +14,7 @@ namespace :community do
       puts koatuu
 
       town = Town.where(:koatuu => koatuu).first
-      community = Community::Community.create({:town => town, :title => f['properties']['NAME_1'], :agree => f['properties']['NAME_1'] ? true : false, :participants => f['properties']['participants']})
+      community = Community::Community.create({:town => town, :title => f['properties']['NAME_1'], :agree => f['properties']['agree'] ? true : false, :participants => f['properties']['participants']})
 
       geometry_type = f['geometry']['type']
       coordinates = []
