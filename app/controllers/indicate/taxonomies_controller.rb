@@ -1,5 +1,6 @@
 class Indicate::TaxonomiesController < ApplicationController
   before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators, :get_indicators]
+  before_action :create_indicate_taxonomy, only: [:new]
 
   before_action :authenticate_user!, only: [:new, :edit, :show]
   load_and_authorize_resource
@@ -31,12 +32,6 @@ class Indicate::TaxonomiesController < ApplicationController
 
   # GET /indicate/taxonomies/indicator_file
   def new
-    if current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
-    elsif current_user.has_role? :admin
-      @indicate_taxonomy = Indicate::Taxonomy.new
-      @indicate_taxonomy.town = ::Town.new(:title => "")
-    end
   end
 
   # GET /indicate/taxonomies/1/edit
@@ -89,13 +84,23 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_indicate_taxonomy
-      @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_indicate_taxonomy
+    @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
+    @indicate_taxonomy.town = ::Town.new(:title => "") if @indicate_taxonomy.town.nil?
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def indicate_taxonomy_params
-      params[:indicate_taxonomy]
+  def create_indicate_taxonomy
+    if current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
+    elsif current_user.has_role? :admin
+      @indicate_taxonomy = Indicate::Taxonomy.new
+      @indicate_taxonomy.town = ::Town.new(:title => "")
     end
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def indicate_taxonomy_params
+    params[:indicate_taxonomy]
+  end
 end
