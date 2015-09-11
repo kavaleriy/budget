@@ -7,6 +7,8 @@
     height: 800px;
   }
 
+= render partial: 'sequence'
+
 .map_container#custom_map.col-sm-12
   = render partial: 'map'
 
@@ -28,6 +30,10 @@
       center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
     });
+
+    var sequence = aSequence('#sequence');
+    sequence.initializeBreadcrumbTrail({clickCallback: sequenceClick});
+    sequence.show("Ukraine");
 
     var pointOptions = {
         clustered: false,
@@ -101,6 +107,7 @@
     }
 
     function onFeatureClick(feature) {
+      sequence.show(feature.properties.title);
       $("#custom_map").html('');
       $.ajax({
         method: 'get',
@@ -166,5 +173,9 @@
         }
       }
       return content;
+    }
+
+    function sequenceClick(el){
+      console.log("sequence click");
     }
   });
