@@ -44,35 +44,9 @@
   -#        =t('static.budget_file_help.help')
   .clear
 
-  .disclaimer.col-xs-6
-    %a{ 'rel' => 'license', 'href' => 'http://creativecommons.org/licenses/by-nc-sa/4.0/'}
-      %img{'alt' => "Ліцензія Creative Commons", 'style' => 'border-width: 0', 'src' => 'https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png'}
-    %br
-    %span{'xmlns:dct' => 'http://purl.org/dc/terms/', 'href' => 'http://purl.org/dc/dcmitype/InteractiveResource', 'property' => 'dct:title', 'rel' => 'dct:type'}
-      Портал
-      %i
-        Відкритий бюджет
-      створено
-      %span{'xmlns:cc' => 'http://creativecommons.org/ns#', 'property' => 'cc:attributionName'}
-        Центром політичних студій та аналітики за за участі Представництва Європейського Союзу в Україні, Міжнародного фонду "Відродження" і Програми розвитку ООН в Україні за
-      %a{'rel' => 'license', 'href' => 'http://creativecommons.org/licenses/by-nc-sa/4.0/'}
-        ліцензією Creative Commons Із зазначенням авторства - Некомерційна - Розповсюдження на тих самих умовах 4.0 Міжнародна
-      %br
-      Засновано на коді з
-      %a{'xmlns:dct' => 'http://purl.org/dc/terms/', 'href' => 'https://github.com/kavaleriy/budget', 'rel' => 'dct:source'}
-        %i.fa.fa-github
-        https://github.com/kavaleriy/budget
-      %br
-      Права, що виходять за рамки цієї ліцензії доступні за адресою
-      %a{'xmlns:cc' => 'http://creativecommons.org/ns#', 'href'=> 'mailto:begemot.lery@mail.ru?subject=openbudget.in.ua%20support', 'rel' => 'cc:morePermissions'}
-        Valeriy Kashpruk
-  .logos.col-xs-6
-    = link_to '', 'http://cpsa.org.ua/napryam/byudzhetna-polityka/', :target => '_blank', class: 'logo1'
-    = link_to '', 'http://eeas.europa.eu/delegations/ukraine/', :target => '_blank', class: 'logo2'
-    = link_to '', 'http://www.internews.org/global-issues/center-innovation-and-learning', :target => '_blank', class: 'logo3'
-    = link_to '', 'http://www.irf.ua/', :target => '_blank', class: 'logo4'
-    = link_to '', 'http://um.dk/en', :target => '_blank', class: 'logo5'
-    = link_to '', 'http://www.ua.undp.org/', :target => '_blank', class: 'logo6'
+-#Render footer block from view/layouts
+
+  = render :partial => 'layouts/footer'
 
 :javascript
   $(document).ready(function() {
