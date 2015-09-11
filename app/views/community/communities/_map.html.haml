@@ -136,10 +136,6 @@
         var feature = g.selectAll("path")
             .data(data.features)
           .enter().append("path")
-            .attr("class", function(d){
-                                if(d['properties']['level'] == 'area') return "fillable_path area";
-                                return "fillable_path";
-                           })
             .attr("data-id", function(d){return d.properties.id;})
             .style("cursor", function(d){
                                 if (options.scale == "Ukraine" || d['properties']['agree']) {
@@ -178,14 +174,45 @@
           g.selectAll("path")
                 .each(function (d, i) {
                    var centroid = path.centroid(d);
-                   g.append("circle")
-                    .attr("cx", centroid[0] - 5)
-                    .attr("cy", centroid[1] - 5)
-                    .attr("r", '5px')
-                    .attr("stroke", 'orange')
-                    .attr("stroke-width", '2px')
-                    .attr("fill", "yellow")
-                    .attr("cursor", 'pointer')
+                    g.append("text")
+                     .attr("x", centroid[0] - 10)
+                     .attr("y", centroid[1] - 10)
+                     .style('fill','green')
+                     .style('fill-opacity', function(){
+                                if (d['properties']['agree']) {
+                                  return 1;
+                                }
+                                return 0.5;
+                              })
+                     .attr("text-anchor", "middle")
+                     .attr('text-anchor', 'middle')
+                     .style('font-family', 'FontAwesome')
+                     .style('stroke', function(){
+                                if (d['properties']['agree']) {
+                                  return "yellow";
+                                }
+                                return "grey";
+                              })
+                     .style('font-size', '1.8em')
+                     .style("cursor", function(){
+                                if (d['properties']['agree']) {
+                                  return "pointer";
+                                }
+                                return "default";
+                              })
+                     .text(function(){
+                        if(d['properties']['icon']) {
+                            d3.select('body')
+                                .append('div')
+                                .attr("id", "svg_icon_content")
+                                .html("<i class='fa " + d['properties']['icon'] + "'></i>");
+                            var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
+                            $("#svg_icon_content").remove();
+                            return content[1];
+                        } else {
+                            return "\uf0c0";
+                        }
+                     })
                     .on("mouseover", function () {
                       if (options.getInfoContent)
                         info.update(options.getInfoContent(d.properties));
@@ -199,7 +226,9 @@
                       }
                     });
                 });
-        }
+        };
+
+
 
         map.on("viewreset", reset);
         reset();
