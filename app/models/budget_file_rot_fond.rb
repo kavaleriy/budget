@@ -16,7 +16,7 @@ class BudgetFileRotFond < BudgetFileRot
       next if line[:amount].to_i == 0
 
       fond = line[:fond]
-      amount = line[:amount] / 100
+      amount = line[:amount]
 
       item = {
           'amount' => amount,
