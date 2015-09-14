@@ -24,6 +24,15 @@ class Community::CommunitiesController < ApplicationController
   def edit
   end
 
+  def group_edit
+
+  end
+
+  def get_communities
+    @community_communities = Community::Community.all.where(:town_id => params[:area_id])
+    render partial: 'communities'
+  end
+
   # POST /community/communities
   # POST /community/communities.json
   def create
@@ -43,10 +52,15 @@ class Community::CommunitiesController < ApplicationController
   # PATCH/PUT /community/communities/1
   # PATCH/PUT /community/communities/1.json
   def update
+
+    unless community_community_params[:coordinates].nil?
+      @community_community.update(:coordinates => eval(community_community_params[:coordinates]))
+    end
+
     respond_to do |format|
-      if @community_community.update(community_community_params)
-        format.html { redirect_to @community_community, notice: 'Community was successfully updated.' }
-        format.json { render :show, status: :ok, location: @community_community }
+      if @community_community.update(community_community_params.except!(:coordinates))
+        format.js
+        format.json { head :no_content }
       else
         format.html { render :edit }
         format.json { render json: @community_community.errors, status: :unprocessable_entity }
@@ -59,7 +73,7 @@ class Community::CommunitiesController < ApplicationController
   def destroy
     @community_community.destroy
     respond_to do |format|
-      format.html { redirect_to community_communities_url, notice: 'Community was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end
@@ -169,6 +183,6 @@ class Community::CommunitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def community_community_params
-      params[:community_community]
+      params.require(:community).permit(:title, :participants, :coordinates, :geometry_type, :agree, :color, :icon)
     end
 end

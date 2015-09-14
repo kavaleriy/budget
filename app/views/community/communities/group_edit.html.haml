@@ -1,0 +1,62 @@
+= content_for :header do
+  .head.pull-left
+    = 'Редагування територіальних громад'
+
+.col-sm-12.col-md-3
+  = label_tag 'Оберіть область'
+  = text_field_tag 'town_select'
+
+.col-sm-12#communities
+
+.col-sm-12
+  = link_to 'Назад', community_communities_path, :class => 'btn btn-default'
+
+:javascript
+
+  $(document).ready(function() {
+    $('#town_select').select2({
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+      },
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_for_areas_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      $.ajax({
+        url: '/community/get_communities/' + $(this).val(),
+        dataType: 'html',
+        success: function (html) {
+          $('#communities').html(html);
+        },
+        cache: true
+      });
+    });
+  })
