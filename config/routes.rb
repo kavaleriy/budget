@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   namespace :community do
     get 'geo_json' => 'communities#geo_json'
+    get 'map' => 'communities#map'
     resources :communities
   end
 

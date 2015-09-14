@@ -1,6 +1,7 @@
 class Community::CommunitiesController < ApplicationController
   include ControllerCaching
   layout 'application_community'
+  layout 'visify', only: [:map]
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
 
   # GET /community/communities
@@ -61,6 +62,9 @@ class Community::CommunitiesController < ApplicationController
       format.html { redirect_to community_communities_url, notice: 'Community was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def map
   end
 
   def geo_json

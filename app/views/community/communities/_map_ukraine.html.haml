@@ -100,7 +100,7 @@
       })
       .done(function (data) {
         $("#custom_map").html('#{ j render :partial => 'map'}');
-        repairMapOptions.center = [49, 40];
+        repairMapOptions.center = [49, 39];
         repairMapOptions.zoom = zoom_region;
         aRepairMap = RepairMap(repairMapOptions);
         areasOptions.featureClickCallback = onCommunityClick;
