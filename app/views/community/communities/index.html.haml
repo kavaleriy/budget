@@ -4,8 +4,10 @@
 
 = render partial: 'map_ukraine'
 
-#embed_code_timeline.col-sm-12
-  = render partial: 'widgets/visify/embed_code'
+.col-sm-12{:style => 'margin-top: 10px;'}
+  = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary'
+  #embed_code_timeline.pull-right
+    = render partial: 'widgets/visify/embed_code'
 
 :javascript
 

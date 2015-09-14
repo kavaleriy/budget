@@ -127,12 +127,6 @@
                                 }
                                 return "default";
                               })
-            .style("pointer-events", function(d){
-                                if((options.scale == "Ukraine" && d['properties']['communities_count'] > 0) || d['properties']['agree']) {
-                                  return "auto";
-                                }
-                                return "none";
-                              })
             .style("fill", function(d){
                               if((options.scale == "Ukraine" && d['properties']['communities_count'] > 0) || d['properties']['agree']) {
                                 return d['properties']['color'] ? d['properties']['color'] : "blue";

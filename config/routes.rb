@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :community do
     get 'geo_json' => 'communities#geo_json'
     get 'map' => 'communities#map'
+    get 'communities_edit' => 'communities#group_edit'
+    get 'get_communities/:area_id' => 'communities#get_communities'
     resources :communities
   end
 
@@ -93,6 +95,7 @@ Rails.application.routes.draw do
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
+  get 'search_for_areas_town' => 'towns#search_for_areas'
   resources :towns
 
   namespace :repairing do

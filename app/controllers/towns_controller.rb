@@ -36,6 +36,19 @@ class TownsController < ApplicationController
 
   end
 
+  def search_for_areas
+    @towns = use_cache controller_path do
+      Town.all.reject{|town| town.level != 1 }
+    end
+
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @towns = @towns.select{ |t| Regexp.new("^#{q}.*") =~ t.title }
+      format.json
+    end
+
+  end
+
   # GET /indicator_files
   # GET /indicator_files.json
   def index
