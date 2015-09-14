@@ -126,7 +126,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
     return if tree.nil?
 
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
-
   end
 
   def get_bubble_tree_item(item, info)
