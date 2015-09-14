@@ -116,7 +116,9 @@
     }
 
     function onCommunityClick(feature) {
-      console.log(feature.properties.title);
+      if(feature.properties.link) {
+        window.open(feature.properties.link,'_blank');
+      }
     }
 
     function getAreasContent(properties) {

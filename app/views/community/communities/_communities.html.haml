@@ -16,8 +16,9 @@
   %thead
     %tr
       %th.col-sm-2 Назва
+      %th.col-sm-2 Посилання
       %th.col-sm-3 Склад
-      %th.col-sm-3 Координати
+      %th.col-sm-1 Координати
       %th Геометричний тип
       %th.centered Узгоджено
       %th.centered Колір
@@ -29,6 +30,9 @@
         %td
           %a{:href => '#', :class => 'editable', :id => 'title', 'data-resource' => 'community', 'data-type' => 'text', 'data-pk' => community.id, 'data-url' => community_community_path(community), 'data-emptytext' => 'Вкажіть назву громади...'}
             = community.title
+        %td
+          %a{:href => '#', :class => 'editable', :id => 'link', 'data-resource' => 'community', 'data-type' => 'text', 'data-pk' => community.id, 'data-url' => community_community_path(community), 'data-emptytext' => 'Вкажіть посилання...'}
+            = community.link
         %td
           %a{:href => '#', :class => 'editable', :id => 'participants', 'data-resource' => 'community', 'data-type' => 'textarea', 'data-pk' => community.id, 'data-url' => community_community_path(community), 'data-emptytext' => 'Вкажіть склад громади...'}
             = community.participants

@@ -167,6 +167,7 @@ class Community::CommunitiesController < ApplicationController
           properties: {
               id: "#{community[:id]}",
               title: community.title,
+              link: community.link,
               participants: community.participants,
               agree: community.agree,
               color: community.color,
@@ -184,6 +185,6 @@ class Community::CommunitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def community_community_params
-      params.require(:community).permit(:title, :participants, :coordinates, :geometry_type, :agree, :color, :icon)
+      params.require(:community).permit(:title, :participants, :coordinates, :geometry_type, :agree, :color, :icon, :link)
     end
 end
