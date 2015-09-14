@@ -91,22 +91,24 @@
     });
 
     function onFeatureClick(feature) {
-      sequence.show(feature.properties.title);
-      $("#custom_map").html('');
       $.ajax({
         method: 'get',
         url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
         dataType: 'json',
       })
       .done(function (data) {
-        $("#custom_map").html('#{ j render :partial => 'map'}');
-        repairMapOptions.center = [49, 39];
-        repairMapOptions.zoom = zoom_region;
-        aRepairMap = RepairMap(repairMapOptions);
-        areasOptions.featureClickCallback = onCommunityClick;
-        areasOptions.getInfoContent = getCommunityContent;
-        areasOptions.scale = "community";
-        aRepairMap.addGeoJsonSvg(data, areasOptions);
+        if(data['features'].length > 0) {
+          sequence.show(feature.properties.title);
+          $("#custom_map").html('');
+          $("#custom_map").html('#{ j render :partial => 'map'}');
+          repairMapOptions.center = [49, 39];
+          repairMapOptions.zoom = zoom_region;
+          aRepairMap = RepairMap(repairMapOptions);
+          areasOptions.featureClickCallback = onCommunityClick;
+          areasOptions.getInfoContent = getCommunityContent;
+          areasOptions.scale = "community";
+          aRepairMap.addGeoJsonSvg(data, areasOptions);
+        }
       })
       .fail(function (e) {
         console.log(e)

@@ -86,7 +86,8 @@ class Community::CommunitiesController < ApplicationController
       result = []
 
       if params[:area_title]
-        Community::Community.each do |community|
+        town_id = Town.where(:title => params[:area_title]).first['id']
+        Community::Community.all.where(:town_id => town_id).each do |community|
           geo = build_community(community)
           result << geo unless geo.blank?
         end
