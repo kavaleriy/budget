@@ -12,7 +12,7 @@ class TownsController < ApplicationController
   end
 
   def search_for_documents
-    @towns = use_cache controller_path do
+    @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.documentation_documents.empty?}
     end
 
@@ -24,7 +24,7 @@ class TownsController < ApplicationController
   end
 
   def search_for_towns
-    @towns = use_cache controller_path do
+    @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.level == 2 || town.level == 1 }
     end
 
@@ -37,7 +37,7 @@ class TownsController < ApplicationController
   end
 
   def search_for_areas
-    @towns = use_cache controller_path do
+    @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.level != 1 }
     end
 
