@@ -26,7 +26,7 @@ class BudgetFileRovFond < BudgetFile
         {
             'fond' => line[:fond],
 
-            'amount' => line[:amount] / 100,
+            'amount' => line[:amount],
             'kvk' => kvk,
             'krk' => krk,
             'kekv' => kekv,
