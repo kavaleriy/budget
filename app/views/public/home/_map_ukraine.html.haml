@@ -4,11 +4,23 @@
     margin-top: 10px;
     box-shadow: none;
     background: transparent;
+    height: 400px;
+    overflow-x: auto;
+    min-width: 610px;
+  }
+  #select_map{
+    /*border-top: 1px dotted #777;*/
+    /*border-bottom: 1px dotted #777;*/
+    margin: 10px 0;
+    padding: 5px 10px 10px 10px;
+    background: #EEEEEE;
   }
 
-.map_container#custom_map
+.map_container.hidden-xs#custom_map
   = render partial: 'widgets/map'
-  -#= render partial: 'town_select'
+#select_map.visible-xs
+  %h4Оберіть для відображення деталей:
+  = render partial: 'town_select'
 
 :javascript
 
