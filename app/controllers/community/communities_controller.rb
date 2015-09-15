@@ -1,6 +1,5 @@
 class Community::CommunitiesController < ApplicationController
   include ControllerCaching
-  layout 'application_community'
   layout 'visify', only: [:map]
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
 
