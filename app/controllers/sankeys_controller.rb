@@ -87,8 +87,12 @@ class SankeysController < ApplicationController
   end
 
   def town_profile
-    town = Town.find(params[:town_id])
-    @sankey = Sankey.where(:owner => town.title).first
+    if params[:town_id] == 'test'
+      @sankey = Sankey.where(:owner => '').first
+    else
+      town = Town.find(params[:town_id])
+      @sankey = Sankey.where(:owner => town.title).first
+    end
     render 'show'
   end
 

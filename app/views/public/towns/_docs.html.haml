@@ -38,7 +38,7 @@
 
 .docs-inline
   - Documentation::Branch.all.each do |br|
-    - count = @town.documentation_documents.where(:branch => br).count()
+    - count = @documents.select{|t| t.branch == br}.length
     - if count > 0
       .fol
         %p.icon-folder-num

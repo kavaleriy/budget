@@ -42,7 +42,7 @@
         %a{"data-toggle" => "tab", :href => "#documents"}
           = t('public.towns.portfolio.documents')
           %span.badge.bsize.count
-            = @town.documentation_documents.count()
+            = @documents.length
     .tab-content
       #description.tab-pane.active.fade.in
         .col-sm-12.col-md-5.col-lg-6

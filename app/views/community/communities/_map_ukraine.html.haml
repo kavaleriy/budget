@@ -46,10 +46,10 @@
     var pointOptions = {
       clustered: false,
       style: {
-        opacity: 0.8,
+        opacity: 0.8
       },
       hoverStyle: {
-        opacity: 1,
+        opacity: 1
       },
       featureClickCallback: onFeatureClick,
       getInfoContent: getTownsContent,
@@ -98,7 +98,8 @@
     .fail(function () {
     });
 
-    function onFeatureClick(feature) {
+    function onFeatureClick(feature, bounds, center) {
+      //console.log(bounds, center)
       $.ajax({
         method: 'get',
         url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
@@ -110,6 +111,7 @@
           $("#custom_map").html('');
           $("#custom_map").html('#{ j render :partial => 'map'}');
           repairMapOptions.center = [49, 39];
+          //repairMapOptions.bounds = [49, 39];
           repairMapOptions.zoom = zoom_region;
           aRepairMap = RepairMap(repairMapOptions);
           areasOptions.featureClickCallback = onCommunityClick;

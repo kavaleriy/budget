@@ -10,19 +10,29 @@ class Public::TownsController < ApplicationController
   end
 
   def show
-    @budgets = Taxonomy.where(:owner => @town.title)
     @calendars = Calendar.where(:town => @town)
+    town = ''
+    town = @town.title unless @town.blank?
+    @budgets = Taxonomy.where(:owner => town)
     @total_amounts = {}
     @budgets.each{|budget|
       @total_amounts[budget._type] = budget.get_total_amounts
     }
     @town_items = []
-    @town_items.push('budget') if Taxonomy.where(:owner => @town.title).first
-    @town_items.push('programs') if Programs::Town.where(:name => @town.title).first
-    @town_items.push('keys') if @town.key_indicate_map_indicators
-    @town_items.push('calendar') if Calendar.where(:town => @town.title).first
-    @town_items.push('sankey') if Sankey.where(:owner => @town.title).first
-    @town_items.push('repair') if Repairing::Repair.where(:obj_owner => @town.title).first
+    @town_items.push('budget') if Taxonomy.where(:owner => town).first
+    @town_items.push('programs') if Programs::Town.where(:name => town).first
+    @town_items.push('calendar') if Calendar.where(:town => town).first
+    @town_items.push('sankey') if Sankey.where(:owner => town).first
+    @town_items.push('repair') if Repairing::Repair.where(:obj_owner => town).first
+    if @town.blank?
+      @town_items.push('keys')
+      @town = Town.new(:id => 'test',
+                       :title => 'Демонстрація типового профілю міста',
+                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
+    else
+      @town_items.push('keys') if @town.key_indicate_map_indicators
+    end
   end
 
   def geo_json
@@ -71,11 +81,17 @@ class Public::TownsController < ApplicationController
   private
 
   def set_town
-    @town = Town.find(params[:town_id])
-    if @town.level == 1 #area
-      @towns = Town.all.where(:area_title => @town.title)
+    if params[:town_id] == "test"
+      @town = ''
+      @documents = Documentation::Document.all.select{|t| t.town.nil?}
     else
-      @towns = Town.all.where(:area_title => @town.area_title)
+      @town = Town.find(params[:town_id])
+      @documents = Documentation::Document.all.select{|t| t.town == @town}
+      if @town.level == 1 #area
+        @towns = Town.all.where(:area_title => @town.title)
+      else
+        @towns = Town.all.where(:area_title => @town.area_title)
+      end
     end
   end
 
