@@ -23,7 +23,7 @@ class Public::DocumentsController < ApplicationController
       @documentation_documents.sort_by!{|doc| doc.title ? doc.title : ""  }
     end
 
-    @towns = use_cache controller_path do
+    @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.documentation_documents.empty?}
     end
 
