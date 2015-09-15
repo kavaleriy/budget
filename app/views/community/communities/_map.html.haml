@@ -129,15 +129,21 @@
                               })
             .style("fill", function(d){
                               if((options.scale == "Ukraine" && d['properties']['communities_count'] > 0) || d['properties']['agree']) {
-                                return d['properties']['color'] ? d['properties']['color'] : "blue";
+                                return d['properties']['color'] ? d['properties']['color'] : "#0098dd";
                               }
                               return "grey";
             })
             .on("mouseover", function (d) {
+              if((options.scale == "Ukraine" && d['properties']['communities_count'] > 0)) {
+                $(this).css("fill", "#fbd902").css("fill-opacity", 0.3);
+              }
               if (options.getInfoContent)
                 info.update(options.getInfoContent(d.properties));
               })
-            .on("mouseout", function () {
+            .on("mouseout", function (d) {
+              if((options.scale == "Ukraine" && d['properties']['communities_count'] > 0)) {
+                $(this).css("fill", "#0098dd");
+              }
               info.update(options.getInfoContent("Ukraine"));
             })
             .on("click", function (d) {
