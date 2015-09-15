@@ -95,6 +95,7 @@ Rails.application.routes.draw do
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
+  get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
   get 'search_for_areas_town' => 'towns#search_for_areas'
   resources :towns
 

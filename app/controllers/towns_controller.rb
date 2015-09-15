@@ -23,6 +23,19 @@ class TownsController < ApplicationController
     end
   end
 
+  def search_for_towns_and_areas
+    @towns = use_cache get_controller_action_key do
+      Town.all.reject{|town| town.level != 13 && town.level != 1 }
+    end
+
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @towns = @towns.select{ |t| Regexp.new("^#{q}.*") =~ t.title }
+      format.json
+    end
+
+  end
+
   def search_for_towns
     @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.level == 2 || town.level == 1 }

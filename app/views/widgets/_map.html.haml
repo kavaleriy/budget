@@ -23,7 +23,7 @@
     RepairMap = function(options) {
       options = options || {};
 
-      var map;
+      var map, bounds;
       var svg, g, colorScale, sizeScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue, selected_towns = [];
       var popup;
       var router;
@@ -37,6 +37,7 @@
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true;
         mapSettings.maxZoom = options.maxZoom;
         mapSettings.dragging = options.dragging;
+        bounds = options.bounds;
         map = L.map('map', mapSettings);
         if(options.map_static) {
           map.doubleClickZoom.disable();
@@ -205,6 +206,12 @@
         map.on("viewreset", reset);
         reset();
 
+        map.on('resize', function(e) {
+          //map.fitBounds(bounds);
+          var w = map.getSize()['x'];
+          $('#custom_map').css('height', w/1.5 + 'px');
+        });
+
         function projectPoint(x, y) {
           var point = map.latLngToLayerPoint(new L.LatLng(y, x));
           this.stream.point(point.x, point.y);
@@ -222,6 +229,7 @@
             .style("top", topLeft[1] + "px");
 
           g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+          feature.attr("d", path);
         }
 
       }

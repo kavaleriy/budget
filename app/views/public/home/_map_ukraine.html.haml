@@ -8,6 +8,7 @@
 
 .map_container#custom_map
   = render partial: 'widgets/map'
+  -#= render partial: 'town_select'
 
 :javascript
 
@@ -15,16 +16,16 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var zoom = 6;
-    var window_width = $(window).width();
-    if(window_width < 1300) {
-      zoom = 5.5;
-    }
+    var zoom = 5.5;
+    //var window_width = $(window).width();
+    //if(window_width < 1300) {
+    //  zoom = 5.5;
+    //}
 
     var aRepairMap = RepairMap({
       scrollWheelZoom: false,
       zoom: zoom,
-      minZoom: 6,
+      minZoom: 1,
       maxZoom: 9,
       dragging: false,
       map_static: true,
