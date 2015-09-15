@@ -82,8 +82,12 @@ class TaxonomiesController < ApplicationController
   end
 
   def town_profile
-    town = Town.find(params[:town_id])
-    @taxonomy = Taxonomy.where(:owner => town.title).first
+    if params[:town_id] == 'test'
+      @taxonomy = Taxonomy.where(:owner => '').first
+    else
+      town = Town.find(params[:town_id])
+      @taxonomy = Taxonomy.where(:owner => town.title).first
+    end
     render 'show'
   end
 

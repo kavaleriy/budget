@@ -148,7 +148,11 @@
             })
             .on("click", function (d) {
               if (options.featureClickCallback) {
-                options.featureClickCallback(d);
+                if(options.scale == "Ukraine") {
+                  options.featureClickCallback(d, path.bounds(d), path.centroid(d));
+                } else {
+                  options.featureClickCallback(d);
+                }
               }
             });
 
