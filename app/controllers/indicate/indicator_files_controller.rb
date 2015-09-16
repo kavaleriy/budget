@@ -25,9 +25,11 @@ class Indicate::IndicatorFilesController < ApplicationController
   # POST /indicate/indicator_files
   # POST /indicate/indicator_files.json
   def create
+
     @indicator_files = []
     if current_user.has_role? :admin
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.find(params[:town_select])).first || Indicate::Taxonomy.new(:town => ::Town.find(params[:town_select]))
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:id => params[:town_select]).first ).first || Indicate::Taxonomy.new(:town => ::Town.where(:id => params[:town_select]).first)
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => nil).first || Indicate::Taxonomy.create(:town => nil) if @indicate_taxonomy.nil?
     end
 
     params['indicate_file'].each do |f|
@@ -136,9 +138,11 @@ class Indicate::IndicatorFilesController < ApplicationController
     end
 
   def set_indicate_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first
-    if @indicate_taxonomy.nil?
-      @indicate_taxonomy = Indicate::Taxonomy.new(:town => ::Town.where(:title => current_user.town).first)
+    if current_user.has_role? :admin
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first if current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.new(:town => ::Town.new(:title => '')) unless current_user.town.blank?
+    else
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town_id => ::Town.where(:title => current_user.town).first.id).first
     end
 
   end
