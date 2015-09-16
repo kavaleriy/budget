@@ -31,15 +31,10 @@
 
   $(document).ready(function() {
 
-    if(!"#{current_user.town}") {
-      $('.can_be_disable').attr('disabled', 'disabled');
-    }
-
     $("#select_indicate_town").on("change", function() {
       town = $(this).val();
 
       if(town) {
-        $('.can_be_disable').removeAttr('disabled');
         $.ajax({
           url: "get_taxonomy/" + town,
           type: "GET",
@@ -49,7 +44,6 @@
           }
         })
       } else {
-        $('.can_be_disable').attr('disabled', 'disabled');
         $('.documents').html('');
       }
 

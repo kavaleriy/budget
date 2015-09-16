@@ -83,6 +83,18 @@ class Indicate::TaxonomiesController < ApplicationController
     render :partial => '/indicate/indicator_files/indicator_files', :locals => {:files => @indicate_taxonomy.indicate_indicator_files}
   end
 
+  def town_profile
+    if params[:town_id] == 'test'
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => nil).first
+    else
+      town = Town.find(params[:town_id])
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => town).first
+    end
+    @indicators = @indicate_taxonomy.get_indicators
+    @years = @indicators.keys.sort!.reverse!
+    render 'show'
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_indicate_taxonomy
@@ -91,11 +103,12 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def create_indicate_taxonomy
-    if current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
-    elsif current_user.has_role? :admin
-      @indicate_taxonomy = Indicate::Taxonomy.new
-      @indicate_taxonomy.town = ::Town.new(:title => "")
+    if current_user.has_role?(:admin)
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first ).first if current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.new(:town => ::Town.new(:title => '') ) unless current_user.town.nil?
+      @indicate_taxonomy.town = ::Town.new(:title => '') unless @indicate_taxonomy.town.nil?
+    elsif current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.where(:town_id => ::Town.where(:title => current_user.town).first.id).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
     end
   end
 
