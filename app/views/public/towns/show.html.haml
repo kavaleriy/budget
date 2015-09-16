@@ -20,6 +20,42 @@
   #towns_profile .tabs-left > .nav-tabs .active > a:focus {
     border-color: #0199DA transparent #0199DA #0199DA;
   }
+  .title-town {
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: rgb(1, 153, 218);
+    line-height: 1em;
+  }
+
+  @media(min-width: 320px) and (max-width: 767px){
+    .thumbnail {
+      width: 75%;
+    }
+  }
+  @media(min-width: 768px) and (max-width: 991px){
+    .thumbnail {
+      width: 95%;
+    }
+  }
+  @media(min-width: 992px) and (max-width: 1199px){
+
+  }
+  @media(min-width: 1200px) and (max-width: 1349px){
+
+  }
+  @media(min-width: 1350px) and (max-width: 1579px){
+    .tabbable {
+     width: 80%;
+    }
+  }
+  @media(min-width: 1580px) and (max-width: 1920px){
+    .tabbable {
+     width: 70%;
+    }
+  }
+
 
 -#=content_for :header do
 -#  .head.pull-left
@@ -30,7 +66,7 @@
   .tabbable.tabs-left
     %ul.nav.nav-tabs.col-sm-3
       .col-xs-12.head.pull-left.title-town
-      =@town.title
+        =@town.title
       %li
         %img.thumbnail{src: @town.img.thumb.url, :style => 'display:block; margin:auto;'}
       %li.active
