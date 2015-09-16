@@ -20,6 +20,47 @@
   #towns_profile .tabs-left > .nav-tabs .active > a:focus {
     border-color: #0199DA transparent #0199DA #0199DA;
   }
+  .title-town {
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: rgb(1, 153, 218);
+    line-height: 1em;
+  }
+
+  .links, .desc-ons {
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid rgb(1, 153, 218);
+  }
+
+  @media(min-width: 320px) and (max-width: 767px){
+    .thumbnail {
+      width: 75%;
+    }
+  }
+  @media(min-width: 768px) and (max-width: 991px){
+    .thumbnail {
+      width: 95%;
+    }
+  }
+  @media(min-width: 992px) and (max-width: 1199px){
+
+  }
+  @media(min-width: 1200px) and (max-width: 1349px){
+
+  }
+  @media(min-width: 1350px) and (max-width: 1579px){
+    .tabbable {
+     width: 80%;
+    }
+  }
+  @media(min-width: 1580px) and (max-width: 1920px){
+    .tabbable {
+     width: 70%;
+    }
+  }
+
 
 -#=content_for :header do
 -#  .head.pull-left
@@ -30,7 +71,7 @@
   .tabbable.tabs-left
     %ul.nav.nav-tabs.col-sm-3
       .col-xs-12.head.pull-left.title-town
-      =@town.title
+        =@town.title
       %li
         %img.thumbnail{src: @town.img.thumb.url, :style => 'display:block; margin:auto;'}
       %li.active
@@ -48,12 +89,13 @@
     .tab-content
       #description.tab-pane.active.fade.in
         .col-sm-12.col-md-5.col-lg-6
-          %h3
-            Короткі відомості
-          = @town.description ? @town.description : ''
-          %h3
-            Корисні посилання
-          - unless (@town.links.nil?)
+          - unless (@town.description.empty?)
+            %h3.desc-ons
+              = t('public.towns.portfolio.sh-description')
+            = @town.description ? @town.description : ''
+          - unless (@town.links.empty?)
+            %h3.links
+              = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
       #portfolio.tab-pane.fade
