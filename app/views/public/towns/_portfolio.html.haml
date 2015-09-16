@@ -1,3 +1,21 @@
+:css
+  .view a.info {
+    background: rgb(1, 153, 218);
+  }
+
+  .view a.info:hover {
+    background: #000000;
+  }
+
+  .blue-line {
+    border-top: 1px solid rgb(1, 153, 218);
+  }
+
+  .portfolio-title {
+    color: rgb(1, 153, 218);
+    font-weight: 700;
+    opacity: .9;
+  }
 -#.circle_block{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
 -#  %a{:href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id}
 -#    %img{:src => "/assets/public/" + item + ".svg", :class => 'circle'}
@@ -15,6 +33,6 @@
     - if !@town_items.include?(item)
       %span.no_data
         = t('public.towns.portfolio.no_data')
-    %hr
+    %hr.blue-line
       .portfolio-title
         = t('public.towns.portfolio.' + item)
