@@ -16,7 +16,7 @@ class Programs::IndicatorFile
 
   def import table, town
 
-    groups = self.load_from_csv 'db/program_indicator_group_codes.csv'    # group of indicators
+    groups = self.load_from_csv 'db/program_indicator_group_codes.uk.csv'    # group of indicators
 
     table[:rows].each{|row|
       indicator = Programs::Indicators.new
