@@ -23,7 +23,7 @@ class Public::TownsController < ApplicationController
     @town_items.push('programs') if Programs::Town.where(:name => town).first
     @town_items.push('calendar') if Calendar.where(:town => town).first
     @town_items.push('sankey') if Sankey.where(:owner => town).first
-    @town_items.push('repair') if Repairing::Repair.where(:obj_owner => town).first
+    @town_items.push('repair')
     if @town.blank?
       @town_items.push('keys')
       @town = Town.new(:id => 'test',
