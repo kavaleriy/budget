@@ -29,6 +29,11 @@
     line-height: 1em;
   }
 
+  .links, .desc-ons {
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid rgb(1, 153, 218);
+  }
+
   @media(min-width: 320px) and (max-width: 767px){
     .thumbnail {
       width: 75%;
@@ -84,12 +89,13 @@
     .tab-content
       #description.tab-pane.active.fade.in
         .col-sm-12.col-md-5.col-lg-6
-          %h3
-            Короткі відомості
-          = @town.description ? @town.description : ''
-          %h3
-            Корисні посилання
-          - unless (@town.links.nil?)
+          - unless (@town.description.empty?)
+            %h3.desc-ons
+              = t('public.towns.portfolio.sh-description')
+            = @town.description ? @town.description : ''
+          - unless (@town.links.empty?)
+            %h3.links
+              = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
       #portfolio.tab-pane.fade
