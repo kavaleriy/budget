@@ -89,11 +89,11 @@
     .tab-content
       #description.tab-pane.active.fade.in
         .col-sm-12.col-md-5.col-lg-6
-          - unless (@town.description.empty?)
+          - if @town.description && !@town.description.blank?
             %h3.desc-ons
               = t('public.towns.portfolio.sh-description')
-            = @town.description ? @town.description : ''
-          - unless (@town.links.empty?)
+            = @town.description
+          - if @town.links && !@town.links.blank?
             %h3.links
               = t('public.towns.portfolio.links')
             %p
