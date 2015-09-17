@@ -24,6 +24,7 @@ class Public::TownsController < ApplicationController
     @town_items.push('calendar') if Calendar.where(:town => town).first
     @town_items.push('sankey') if Sankey.where(:owner => town).first
     @town_items.push('repair')
+    @town_items.push('purchase')
     if @town.blank?
       @town_items.push('keys')
       @town = Town.new(:id => 'test',

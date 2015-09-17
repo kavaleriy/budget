@@ -28,8 +28,12 @@
         -#%h2
         -#  = t('public.towns.portfolio.' + item)
         -#%p Lorem ipsum dolor asit amet
-        %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id }
-          = t('public.towns.portfolio.detail')
+        - if item == 'purchase'
+          %a.info{ :href => t('public.towns.portfolio.' + item + '_path'), :target => 'blank' }
+            = t('public.towns.portfolio.detail')
+        - else
+          %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id, :target => 'blank' }
+            = t('public.towns.portfolio.detail')
     - if !@town_items.include?(item)
       %span.no_data
         = t('public.towns.portfolio.no_data')
