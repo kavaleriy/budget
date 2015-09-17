@@ -68,8 +68,6 @@
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceClick});
     sequence.show("Ukraine");
 
-
-
     // add Areas
     $.ajax({
       method: 'get',
@@ -78,7 +76,11 @@
     })
     .done(function (data) {
       data_areas = data;
-      aRepairMap.addGeoJsonSvg(data, areasOptions)
+      aRepairMap.addGeoJsonSvg(data, areasOptions);
+      if('#{@area.title}') {
+        var coords = aRepairMap.getGeoCoords('#{@area.id}');
+        onFeatureClick(coords['node'], coords['bounds'], coords['center']);
+      }
     })
     .fail(function () {
     });
@@ -91,7 +93,7 @@
     })
     .done(function (data) {
       data_towns = data;
-      aRepairMap.addGeoJsonPoints(data, pointOptions)
+      aRepairMap.addGeoJsonPoints(data, pointOptions);
     })
     .fail(function () {
     });
@@ -104,6 +106,7 @@
       })
       .done(function (data) {
         if(data['features'].length > 0) {
+          window.history.pushState("", "", '/community/communities/' + feature.properties.id);
           sequence.show(feature.properties.title);
           $("#custom_map").html('');
           $("#custom_map").html('#{ j render :partial => 'map'}');
@@ -160,6 +163,7 @@
     }
 
     function sequenceClick(){
+      window.history.pushState("", "", '/community/communities');
       $("#custom_map").html('#{ j render :partial => 'map'}');
       sequence.show("Ukraine");
       repairMapOptions.center = [48.5, 31.2];

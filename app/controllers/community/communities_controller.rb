@@ -2,6 +2,7 @@ class Community::CommunitiesController < ApplicationController
   include ControllerCaching
   layout 'visify', only: [:map]
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
+  before_action :set_area, only: [:index]
 
   # GET /community/communities
   # GET /community/communities.json
@@ -181,6 +182,15 @@ class Community::CommunitiesController < ApplicationController
     def set_community_community
       @community_community = Community::Community.find(params[:id])
     end
+
+  def set_area
+    if params[:area_id].nil?
+      @area = Town.new(:title => '')
+    else
+      @area = Town.where(:id => params[:area_id]).first unless params[:area_id].nil?
+    end
+
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def community_community_params
