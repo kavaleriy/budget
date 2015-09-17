@@ -109,15 +109,15 @@
       },
       display: function(value, sourceData) {
         if(value) {
-          $(this).html("<div style='width: 100%; height: 43px; background-color: " + value + "; border-radius: 10px;'/>");
+          $(this).html("<div style='width: 100%; height: 43px; background-color: " + value + "; border-radius: 10px; opacity: 0.3;'/>");
         } else {
-          $(this).html("<div style='width: 100%; height: 43px; background-color: #428bca; border-radius: 10px;'/>");
+          $(this).html("<div style='width: 100%; height: 43px; background-color: #0098dd; border-radius: 10px; opacity: 0.3;'/>");
         }
       }
     });
 
     function formatColorSelect(el) {
-      return "<div style='width: 100%; height: 43px; background-color: " + el.id + "'/>";
+      return "<div style='width: 100%; height: 43px; background-color: " + el.id + "; opacity: 0.3;'/>";
     }
 
     $('.icon').editable({
@@ -131,9 +131,9 @@
       },
       display: function(value, sourceData) {
         if(value) {
-          $(this).html("<i class='fa " + value + "'/>");
+          $(this).html("<i class='fa " + value + " fa-2x'/>");
         } else {
-          $(this).html("<i class='fa fa-users'/>");
+          $(this).html("<i class='fa fa-users fa-2x'/>");
         }
       }
     });
