@@ -20,7 +20,8 @@
 
   @media(min-width: 320px) and (max-width: 767px){
     .main-pic {
-      display: none;
+      width: 300px;
+      height: 150px;
     }
     .main-block {
       padding: 15px 0 30px 0;
@@ -60,7 +61,8 @@
 
 .row
   .col-sm-12.col-lg-6.col-md-5.col-sm-4.main-block
-    = image_tag('main-pic.jpg', class:'main-pic img-rounded img-responsive')
+    .main-pic
+      = image_tag('main-pic.jpg', class:'img-rounded img-responsive')
     .main-text
       %p
         Портал

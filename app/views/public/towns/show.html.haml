@@ -78,9 +78,9 @@
         =@town.title
       %li
         %img.thumbnail{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
-      %li.active
-        %a{"data-toggle" => "tab", :href => "#description"} Короткі відомості
       %li
+        %a{"data-toggle" => "tab", :href => "#description"} Короткі відомості
+      %li.active
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
           %span.badge.bsize.count
@@ -91,7 +91,7 @@
           %span.badge.bsize.count
             = @documents.length
     .tab-content
-      #description.tab-pane.active.fade.in
+      #description.tab-pane.fade
         .col-sm-12.col-md-5.col-lg-6
           - if @town.description && !@town.description.blank?
             %h3.desc-ons
@@ -102,7 +102,7 @@
               = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
-      #portfolio.tab-pane.fade
+      #portfolio.tab-pane.active.fade.in
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
         .row
