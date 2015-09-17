@@ -44,6 +44,7 @@ class Public::TownsController < ApplicationController
     @town_items.push('sankey') if Sankey.where(:owner => town).first
     @town_items.push('repair')
     @town_items.push('purchase')
+    @town_items.push('key_docs')
     if @town.blank?
       @town_items.push('keys')
       @town = Town.new(:id => 'test',

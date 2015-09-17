@@ -232,6 +232,7 @@ Rails.application.routes.draw do
   get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
   get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show'
+  get 'public/documents/town_profile/:town_id' => 'public/documents#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
