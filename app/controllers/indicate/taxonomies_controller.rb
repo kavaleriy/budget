@@ -92,6 +92,7 @@ class Indicate::TaxonomiesController < ApplicationController
     end
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
+    @current_user = current_user || User.new(:town => 'test')
     render 'show'
   end
 
