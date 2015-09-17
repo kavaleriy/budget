@@ -149,7 +149,11 @@
             .on("click", function (d) {
               if (options.featureClickCallback) {
                 if(options.scale == "Ukraine") {
-                  options.featureClickCallback(d, path.bounds(d), path.centroid(d));
+                  var points = path.centroid(d);
+                  var bounds = path.bounds(d);
+                  var bounds_1 = [map.layerPointToLatLng(bounds[0])['lat'],map.layerPointToLatLng(bounds[0])['lng']];
+                  var bounds_2 = [map.layerPointToLatLng(bounds[1])['lat'],map.layerPointToLatLng(bounds[1])['lng']];
+                  options.featureClickCallback(d, [bounds_1, bounds_2], map.layerPointToLatLng(points));
                 } else {
                   options.featureClickCallback(d);
                 }

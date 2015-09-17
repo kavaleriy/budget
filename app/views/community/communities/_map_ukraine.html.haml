@@ -31,17 +31,15 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var zoom = 6, zoom_region = 8;
     var data_areas, data_towns;
     var repairMapOptions = {
       scrollWheelZoom: true,
-      zoom: zoom,
       minZoom: 6,
       maxZoom: 13,
       dragging: true,
       map_static: false,
       center: [48.5, 31.2],
-      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+      bounds: [ [45, 21.44531], [52.32182, 41.52832]]
     };
     var pointOptions = {
       clustered: false,
@@ -99,7 +97,6 @@
     });
 
     function onFeatureClick(feature, bounds, center) {
-      //console.log(bounds, center)
       $.ajax({
         method: 'get',
         url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
@@ -110,9 +107,8 @@
           sequence.show(feature.properties.title);
           $("#custom_map").html('');
           $("#custom_map").html('#{ j render :partial => 'map'}');
-          repairMapOptions.center = [49, 39];
-          //repairMapOptions.bounds = [49, 39];
-          repairMapOptions.zoom = zoom_region;
+          repairMapOptions.center = center;
+          repairMapOptions.bounds = bounds;
           aRepairMap = RepairMap(repairMapOptions);
           areasOptions.featureClickCallback = onCommunityClick;
           areasOptions.getInfoContent = getCommunityContent;
@@ -167,7 +163,7 @@
       $("#custom_map").html('#{ j render :partial => 'map'}');
       sequence.show("Ukraine");
       repairMapOptions.center = [48.5, 31.2];
-      repairMapOptions.zoom = zoom;
+      repairMapOptions.bounds = [ [45, 21.44531], [52.32182, 41.52832]];
       aRepairMap = RepairMap(repairMapOptions);
       // add Areas
       areasOptions.featureClickCallback = onFeatureClick;
