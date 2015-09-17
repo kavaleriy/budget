@@ -1,0 +1,73 @@
+-# http://tympanus.net/codrops/2012/03/15/parallax-content-slider-with-css3-and-jquery/
+
+= stylesheet_link_tag "parallax_slider/jquery.cslider.css", :media => "all"
+= javascript_include_tag "parallax_slider/jquery.cslider.js"
+= javascript_include_tag "parallax_slider/modernizr.custom.28468.js"
+
+:css
+  .da-slider {
+    margin-top: 0px;
+  }
+
+-#= content_for :top do
+#da-slider.da-slider
+  .da-slide
+    %h2
+      Відкритий бюджет: просто про складне
+    %p
+      When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.
+    %a.da-link{ href: "#{public_budget_path}"}
+      Докладніше
+    .da-img
+      %img{ src: "assets/slider/budget.png", alt: "Відкритий бюджет"}
+
+  .da-slide
+    %h2
+      Бюджетний календар
+    %p
+      Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean
+    %a.da-link{ href: "#"}
+      Докладніше
+    .da-img
+      %img{ src: "assets/slider/3.png", alt: "image02"}
+
+  .da-slide
+    %h2
+      Бібліотека бюджетних документів ОМС
+    %p
+      З відкритих джерел зібрано пакет бюджетних документів ОМС за 2010-2014: Затверджені звіти про виконання бюджетів та пояснювальні записки до них, Стратегічні плани та звіти про їх виконання, Проекти соціально-економічного розвитку, тощо.
+      %br Всього близько 400 документів від близько 100 територіальних одиниць
+
+    %a.da-link{ href: "#{public_documents_path}"}
+      Докладніше
+    .da-img
+      %img{ src: "assets/slider/2.png", alt: "image02"}
+
+
+  %nav.da-arrows
+    %span.da-arrows-prev
+    %span.da-arrows-next
+
+:javascript
+
+  $(function() {
+
+    $('#da-slider').cslider({
+
+      current		: 0,
+      // index of current slide
+
+      bgincrement	: 50,
+      // increment the background position
+      // (parallax effect) when sliding
+
+      autoplay	: true,
+      // slideshow on / off
+
+      interval	: 7000
+      // time between transitions
+
+    });
+  });
+
+
