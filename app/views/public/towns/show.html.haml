@@ -209,10 +209,10 @@
         =@town.title
       %li
         %img.thumbnail{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
-      %li.active
-        %a{"data-toggle" => "tab", :href => "#description"}
-          = t('public.towns.portfolio.sh_description')
       %li
+        %a{"data-toggle" => "tab", :href => "#description"}
+          = t('public.towns.portfolio.description')
+      %li.active
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
           %span.badge.bsize.count
@@ -228,22 +228,22 @@
           %span.badge.bsize.count
             = @town_br_links.length
     .tab-content
-      #description.tab-pane.active.fade.in
+      #description.tab-pane.fade
         .col-sm-12.col-md-5.col-lg-6
           - if @town.description && !@town.description.blank?
             %h3.desc-ons
-              = t('public.towns.portfolio.sh_description')
+              = t('public.towns.portfolio.sh-description')
             = @town.description
           - if @town.links && !@town.links.blank?
             %h3.links
               = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
-      #portfolio.tab-pane.fade
+      #portfolio.tab-pane.active.fade.in
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
         .row
-          - %w(budget programs indicators keys calendar sankey repair).each do |item|
+          - %w(budget programs indicators keys calendar sankey repair purchase).each do |item|
             = render partial: 'portfolio', :locals => { :item => item }
       #documents.tab-pane.fade
         -#%h3

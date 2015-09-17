@@ -5,7 +5,7 @@
 = render partial: 'map_ukraine'
 
 .col-sm-12{:style => 'margin-top: 10px;'}
-  = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary'
+  = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary', :id => 'edit_btn'
   #embed_code_timeline.pull-right
     = render partial: 'widgets/visify/embed_code'
 

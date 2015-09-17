@@ -23,8 +23,8 @@
     RepairMap = function(options) {
       options = options || {};
 
-      var map;
-      var svg, g, colorScale, areas_minValue, areas_maxValue, towns_minValue, towns_maxValue, selected_towns = [];
+      var map, path;
+      var svg, g, colorScale, areas_minValue, areas_maxValue, areas_data;
       var popup;
       var router;
       var info, legend, markers, exportBtn;
@@ -110,17 +110,19 @@
 
       function addGeoJsonSvg(data, options) {
         options = options || {};
+        areas_data = data;
 
         addControl(options.getInfoContent("Ukraine"));
 
         // Projecting GeoJSON
-        var transform = d3.geo.transform({point: projectPoint}),
-            path = d3.geo.path().projection(transform);
+        var transform = d3.geo.transform({point: projectPoint});
+        path = d3.geo.path().projection(transform);
 
         var feature = g.selectAll("path")
             .data(data.features)
           .enter().append("path")
             .attr("data-id", function(d){return d.properties.id;})
+            .attr("data-node", function(d){return d;})
             .style("cursor", function(d){
                                 if (options.scale == "Ukraine" || d['properties']['agree']) {
                                   return "pointer";
@@ -149,7 +151,11 @@
             .on("click", function (d) {
               if (options.featureClickCallback) {
                 if(options.scale == "Ukraine") {
-                  options.featureClickCallback(d, path.bounds(d), path.centroid(d));
+                  var points = path.centroid(d);
+                  var bounds = path.bounds(d);
+                  var bounds_1 = [map.layerPointToLatLng(bounds[0])['lat'],map.layerPointToLatLng(bounds[0])['lng']];
+                  var bounds_2 = [map.layerPointToLatLng(bounds[1])['lat'],map.layerPointToLatLng(bounds[1])['lng']];
+                  options.featureClickCallback(d, [bounds_1, bounds_2], map.layerPointToLatLng(points));
                 } else {
                   options.featureClickCallback(d);
                 }
@@ -406,6 +412,23 @@
         }
       }
 
+      function getGeoCoords(id){
+        var d;
+        $.each(areas_data['features'], function(i,f){
+          if(f['properties']['id'] == id){
+            d = f;
+            return false;
+          }
+        });
+        var points = path.centroid(d);
+        var bounds = path.bounds(d);
+        var bounds_1 = [map.layerPointToLatLng(bounds[0])['lat'],map.layerPointToLatLng(bounds[0])['lng']];
+        var bounds_2 = [map.layerPointToLatLng(bounds[1])['lat'],map.layerPointToLatLng(bounds[1])['lng']];
+        return {"node": d,
+                "bounds": [bounds_1, bounds_2],
+                "center": map.layerPointToLatLng(points)};
+      }
+
       initMap();
       initPopup();
       initRouting();
@@ -414,7 +437,8 @@
         map: map,
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
-        editRoute: editRoute
+        editRoute: editRoute,
+        getGeoCoords: getGeoCoords
       }
     }
 
