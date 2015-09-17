@@ -37,17 +37,16 @@
 -# Begin. Default variant
 
 .docs-inline
-  - Documentation::Branch.all.each do |br|
-    - count = @documents.select{|t| t.branch == br}.length
-    - if count > 0
+  - @branches.each do |key,br|
+    - if br['count'] > 0
       .fol
         %p.icon-folder-num
-          =count
-        %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{br.id}" }
+          =br['count']
+        %a.bcol{ :href => "/public/documents?town_select=#{@town.id}&branch_select=#{key}" }
           .folder
             .folder-text
               %p
-                = truncate(br.title, length:48, separator: ' ')
+                = truncate(br['title'], length:48, separator: ' ')
             .folder-inside
 
             -#.back

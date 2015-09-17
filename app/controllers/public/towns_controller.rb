@@ -11,6 +11,25 @@ class Public::TownsController < ApplicationController
 
   def show
     @calendars = Calendar.where(:town => @town)
+    @branches = {}
+    Documentation::Branch.all.each{|br|
+      @branches[br.id.to_s] = {}
+      @branches[br.id.to_s]['title'] = br.title
+      @branches[br.id.to_s]['count'] = @documents.select{|t| t.branch == br}.length
+    }
+    @town_links = {}
+    if @town.blank?
+      @town_br_links = Documentation::Link.all.where(:town => nil)
+    else
+      @town_br_links = Documentation::Link.all.where(:town => @town)
+    end
+
+    Documentation::LinkCategory.all.each{|br|
+      @town_links[br.id.to_s] = {}
+      @town_links[br.id.to_s]['title'] = br.title
+      @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
+
+    }
     town = ''
     town = @town.title unless @town.blank?
     @budgets = Taxonomy.where(:owner => town)
@@ -35,6 +54,7 @@ class Public::TownsController < ApplicationController
       @town_items.push('keys') if @town.key_indicate_map_indicators
       @town_items.push('indicators') if Indicate::Taxonomy.where(:town => town)
     end
+
   end
 
   def geo_json

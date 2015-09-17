@@ -65,6 +65,137 @@
     }
   }
 
+  /*Acordion*/
+
+  .heading-primary {
+    font-size: 2em;
+    padding: 2em;
+    text-align: center;
+  }
+  .accordion dl,
+  .accordion-list {
+    /*border: 1px solid #ddd;*/
+  }
+  .accordion dl:after,
+  .accordion-list:after {
+    content: "";
+    display: block;
+    /*height: 1em;*/
+    width: 100%;
+    background-color: #2ba659;
+  }
+  .accordion dd,
+  .accordion__panel {
+    /*background-color: #eee;*/
+    font-size: 1em;
+    line-height: 1.5em;
+    padding: 10px 0 0 0;
+  }
+  .accordion p {
+    padding: 1em 2em 1em 2em;
+  }
+  .accordion {
+    position: relative;
+    /*background-color: #eee;*/
+  }
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    /*padding: 2em 0 2em 0;*/
+  }
+  .accordionTitle,
+  .accordion__Heading {
+    /*background-color: #38cc70; */
+    /*text-align: center;*/
+    font-weight: 700;
+    padding: 1em;
+    display: block;
+    text-decoration: none;
+    color: #000;
+    transition: background-color 0.5s ease-in-out;
+    border-bottom: 1px solid rgb(1, 153, 218);
+  }
+  .accordionTitle:before,
+  .accordion__Heading:before {
+    content: ">";
+    font-size: 1.5em;
+    line-height: 0.5em;
+    float: right;
+    color: rgb(1, 153, 218);
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(-270deg);
+  }
+  .accordionTitle:hover,
+  .accordion__Heading:hover {
+    /*background-color: #2ba659;*/
+  }
+  .accordionTitleActive,
+  .accordionTitle.is-expanded {
+    /*background-color: #2ba659;*/
+    /*color: rgb(1, 153, 218)!important;*/
+    opacity: .8;
+  }
+  .accordionTitleActive:before,
+  .accordionTitle.is-expanded:before {
+    transform: rotate(270deg);
+    color: black;
+  }
+  .accordionItem {
+    height: auto;
+    overflow: hidden;
+    max-height: 50em;
+    transition: max-height 1s;
+  }
+  @media screen and (min-width: 48em) {
+    .accordionItem {
+      max-height: 15em;
+      transition: max-height 0.5s;
+    }
+  }
+  .accordionItem.is-collapsed {
+    max-height: 0;
+  }
+  .no-js .accordionItem.is-collapsed {
+    max-height: auto;
+  }
+  .animateIn {
+    animation: accordionIn 0.65s normal ease-in-out both 1;
+  }
+  .animateOut {
+    animation: accordionOut 0.75s alternate ease-in-out both 1;
+  }
+  @keyframes accordionIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9) rotateX(-60deg);
+      transform-origin: 50% 0;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes accordionOut {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.9) rotateX(-60deg);
+    }
+  }
+  .accordion a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+  .link-title {
+    float: left;
+  }
+  .link-value {
+    float: right;
+  }
+
 
 -#=content_for :header do
 -#  .head.pull-left
@@ -79,7 +210,8 @@
       %li
         %img.thumbnail{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
       %li.active
-        %a{"data-toggle" => "tab", :href => "#description"} Короткі відомості
+        %a{"data-toggle" => "tab", :href => "#description"}
+          = t('public.towns.portfolio.sh_description')
       %li
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
@@ -90,12 +222,17 @@
           = t('public.towns.portfolio.documents')
           %span.badge.bsize.count
             = @documents.length
+      %li
+        %a{"data-toggle" => "tab", :href => "#links"}
+          = t('public.towns.portfolio.town_links')
+          %span.badge.bsize.count
+            = @town_br_links.length
     .tab-content
       #description.tab-pane.active.fade.in
         .col-sm-12.col-md-5.col-lg-6
           - if @town.description && !@town.description.blank?
             %h3.desc-ons
-              = t('public.towns.portfolio.sh-description')
+              = t('public.towns.portfolio.sh_description')
             = @town.description
           - if @town.links && !@town.links.blank?
             %h3.links
@@ -114,6 +251,32 @@
           -#%span.badge.bsize.count
           -#  = @town.documentation_documents.count()
         = render partial: 'docs'
+      #links.tab-pane.fade
+
+        - @town_links.each do |key,tl|
+          - counter = 1
+
+          -#- if tl['links'].length > 0
+            -#- tl['links'].each do |link|
+              -#= link.title
+              -#= link.value
+          .col-sm-12.col-md-5.col-lg-6
+            .container
+              .accordion
+                %dl
+                  %dt
+                    %a.accordion-title.accordionTitle.js-accordionTrigger{"aria-controls" => "accordion#{counter}", "aria-expanded" => "false", :href => "#accordion#{counter}"}
+                      =tl['title']
+                  %dd#accordion1.accordion-content.accordionItem.is-collapsed{"aria-hidden" => "true"}
+                    - if tl['links'].length > 0
+                      - tl['links'].each do |link|
+                        .link-title
+                          = link.title
+                        .link-value
+                          = link.value
+                  %dt
+          - counter = counter + 1
+
   / /tabs
 .col-sm-4
   = render partial: 'map_ukraine'
@@ -141,4 +304,65 @@
       //autoWidth:true
     });
 
+    //Accordion content
+    //uses classList, setAttribute, and querySelectorAll
+    //if you want this to work in IE8/9 youll need to polyfill these
+    (function(){
+      var d = document,
+      accordionToggles = d.querySelectorAll('.js-accordionTrigger'),
+      setAria,
+      setAccordionAria,
+      switchAccordion,
+        touchSupported = ('ontouchstart' in window),
+        pointerSupported = ('pointerdown' in window);
+
+        skipClickDelay = function(e){
+          e.preventDefault();
+          e.target.click();
+        }
+
+        setAriaAttr = function(el, ariaType, newProperty){
+        el.setAttribute(ariaType, newProperty);
+      };
+      setAccordionAria = function(el1, el2, expanded){
+        switch(expanded) {
+          case "true":
+            setAriaAttr(el1, 'aria-expanded', 'true');
+            setAriaAttr(el2, 'aria-hidden', 'false');
+            break;
+          case "false":
+            setAriaAttr(el1, 'aria-expanded', 'false');
+            setAriaAttr(el2, 'aria-hidden', 'true');
+            break;
+          default:
+          break;
+        }
+      };
+    //function
+    switchAccordion = function(e) {
+      e.preventDefault();
+      var thisAnswer = e.target.parentNode.nextElementSibling;
+      var thisQuestion = e.target;
+      if(thisAnswer.classList.contains('is-collapsed')) {
+        setAccordionAria(thisQuestion, thisAnswer, 'true');
+      } else {
+        setAccordionAria(thisQuestion, thisAnswer, 'false');
+      }
+        thisQuestion.classList.toggle('is-collapsed');
+        thisQuestion.classList.toggle('is-expanded');
+        thisAnswer.classList.toggle('is-collapsed');
+        thisAnswer.classList.toggle('is-expanded');
+
+          thisAnswer.classList.toggle('animateIn');
+      };
+      for (var i=0,len=accordionToggles.length; i<len; i++) {
+        if(touchSupported) {
+          accordionToggles[i].addEventListener('touchstart', skipClickDelay, false);
+          }
+          if(pointerSupported){
+            accordionToggles[i].addEventListener('pointerdown', skipClickDelay, false);
+          }
+          accordionToggles[i].addEventListener('click', switchAccordion, false);
+        }
+    })();
   })
