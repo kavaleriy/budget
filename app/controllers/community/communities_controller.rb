@@ -25,7 +25,10 @@ class Community::CommunitiesController < ApplicationController
   end
 
   def group_edit
-
+    @town_select = unless params[:area_id].blank?
+                     town_select = Town.where(:id => params[:area_id]).first
+                     { :id => town_select[:id].to_s, :title => town_select[:title] }
+                   end || { }
   end
 
   def get_communities

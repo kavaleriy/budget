@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     get 'geo_json' => 'communities#geo_json'
     get 'map' => 'communities#map'
     get 'communities_edit' => 'communities#group_edit'
+    get 'communities_edit/:area_id' => 'communities#group_edit'
     get 'get_communities/:area_id' => 'communities#get_communities'
     get 'communities/:area_id' => 'communities#index'
     resources :communities

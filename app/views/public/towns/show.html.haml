@@ -79,7 +79,8 @@
       %li
         %img.thumbnail{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
       %li
-        %a{"data-toggle" => "tab", :href => "#description"} Короткі відомості
+        %a{"data-toggle" => "tab", :href => "#description"}
+          = t('public.towns.portfolio.description')
       %li.active
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
@@ -106,7 +107,7 @@
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
         .row
-          - %w(budget programs indicators keys calendar sankey repair).each do |item|
+          - %w(budget programs indicators keys calendar sankey repair purchase).each do |item|
             = render partial: 'portfolio', :locals => { :item => item }
       #documents.tab-pane.fade
         -#%h3

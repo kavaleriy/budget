@@ -117,6 +117,7 @@
           areasOptions.getInfoContent = getCommunityContent;
           areasOptions.scale = "community";
           aRepairMap.addGeoJsonSvg(data, areasOptions);
+          $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
         }
       })
       .fail(function (e) {
@@ -176,5 +177,6 @@
       aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
       // add markers
       aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
+      $('#edit_btn').attr("href", "/community/communities_edit");
     }
   });
