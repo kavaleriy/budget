@@ -219,10 +219,10 @@
   / tabs left
   .tabbable.tabs-left
     %ul.nav.nav-tabs.col-sm-3.bar
-      .col-xs-12.head.pull-left.title-town
-        =@town.title
       %li
-        %img.thumbnail{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
+        %a{:href => "#", :style => 'pointer-events:none;'}
+          =@town.title
+          %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
       %li
         %a{"data-toggle" => "tab", :href => "#description"}
           = t('public.towns.portfolio.description')
