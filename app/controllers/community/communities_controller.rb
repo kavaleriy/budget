@@ -2,7 +2,7 @@ class Community::CommunitiesController < ApplicationController
   include ControllerCaching
   layout 'visify', only: [:map]
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
-  before_action :set_area, only: [:index]
+  before_action :set_area, only: [:index, :map]
 
   # GET /community/communities
   # GET /community/communities.json
