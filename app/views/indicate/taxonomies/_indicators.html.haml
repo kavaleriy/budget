@@ -209,7 +209,7 @@
             current_year = d["year"];
             var indicator_id = v[current_year]['id'];
 
-            if(current_user) {
+            if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
               $('div[data-value="' + k + '"] .comments .editable-href').attr("data-pk", indicator_id)
                                                           .attr("data-url", "/indicate/indicators/" + indicator_id);
 
