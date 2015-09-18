@@ -6,6 +6,7 @@
 
 .col-sm-12{:style => 'margin-top: 10px;'}
   = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary', :id => 'edit_btn'
+  = link_to 'Завантажити', '/community/communities_load', :class => 'btn btn-primary'
   #embed_code_timeline.pull-right
     = render partial: 'widgets/visify/embed_code'
 

@@ -31,6 +31,10 @@ class Community::CommunitiesController < ApplicationController
                    end || { }
   end
 
+  def load
+
+  end
+
   def get_communities
     @community_communities = Community::Community.all.where(:town_id => params[:area_id])
     render partial: 'communities'

@@ -1,0 +1,26 @@
+= form_for new_file, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+
+  - if new_file.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(new_file.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - new_file.errors.full_messages.each do |msg|
+          %li= msg
+
+  .col-sm-12
+    .form-group
+      %label
+        = t('name')
+      = f.text_field :title, :class => 'form-control'
+
+  .col-sm-12
+    .form-group
+      %label
+        %i.glyphicon.glyphicon-folder-open
+          = t('form.upload')
+      = file_field_tag "file[]", multiple: true, :class => 'form-control'
+
+  .actions
+    = f.button :class => 'btn btn-default btn-sm' do
+      %i.fa.fa-upload
+        = t('form.upload')

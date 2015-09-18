@@ -1,0 +1,20 @@
+= content_for :header do
+  .head.pull-left
+    = 'Завантаження громад'
+
+.documentation
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'community/files/new_file', :locals => { :new_file => Community::File.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
+        = render :partial => 'community/files/files', :locals => { :files => Community::File.all }
+
+.col-sm-12
+  = link_to 'Назад', community_communities_path, :class => 'btn btn-default btn-sm'
