@@ -22,11 +22,16 @@
   }
   .title-town {
     text-align: center;
-    padding-bottom: 5px;
     font-size: 1.2em;
     font-weight: bold;
     color: rgb(1, 153, 218);
     line-height: 1em;
+    padding: 0 5px 5px 5px !important;
+    margin: 0;
+  }
+
+  .img-town {
+    padding: 0 0 10px 0;
   }
 
   .links, .desc-ons {
@@ -220,9 +225,9 @@
   .tabbable.tabs-left
     %ul.nav.nav-tabs.col-sm-3.bar
       %li
-        %a{:href => "#", :style => 'pointer-events:none;'}
+        %a{:href => "#", :style => 'pointer-events:none;', :class => 'title-town'}
           =@town.title
-          %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;'}
+        %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;', :class => 'img-town'}
       %li
         %a{"data-toggle" => "tab", :href => "#description"}
           = t('public.towns.portfolio.description')
