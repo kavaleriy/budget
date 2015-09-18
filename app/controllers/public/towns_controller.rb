@@ -54,7 +54,7 @@ class Public::TownsController < ApplicationController
       @town_items.push('indicators') if Indicate::Taxonomy.where(:town => nil)
     else
       @town_items.push('keys') if @town.key_indicate_map_indicators
-      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => town)
+      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => @town).first
     end
 
   end
