@@ -30,11 +30,8 @@
 
 = render 'form'
 
-= link_to 'Show', @repairing_layer
-\|
-= link_to 'Back', repairing_layers_path
-
-
+= link_to t('form.show'), @repairing_layer, :class => 'btn btn-primary'
+= link_to t('form.back'), repairing_layers_path, :class => 'btn btn-default'
 
 :javascript
 
