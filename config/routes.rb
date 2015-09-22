@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   namespace :repairing do
     resources :categories
+    get 'categories_tree_root' => 'categories#tree_root'
+    get 'categories_tree' => 'categories#tree'
   end
 
   namespace :key_indicate_map do

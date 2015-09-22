@@ -1,21 +1,135 @@
-%h1 Listing repairing_categories
+= stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
-%table
-  %tr
-    %th Title
-    %th Img
-    %th
-    %th
-    %th
+:css
+  .documentation {
+    min-height: 400px;
+    padding-top: 15px;
+  }
 
-  - @repairing_categories.each do |repairing_category|
-    %tr
-      %td= repairing_category.title
-      %td= repairing_category.img
-      %td= link_to 'Show', repairing_category
-      %td= link_to 'Edit', edit_repairing_category_path(repairing_category)
-      %td= link_to 'Destroy', repairing_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  .documentation .tree_view{
+    min-height: 400px;
+    padding-top: 15px;
+  }
 
-%br
+  .documentation .documents {
+    overflow: visible;
+  }
 
-= link_to 'New Category', new_repairing_category_path
+-#= content_for :header do
+-#  .head.pull-left
+-#    = t('.header')
+-#
+-#.documentation
+-#  .panel.panel-default.col-sm-4
+-#    .panel-body
+-#      = render :partial => 'tree_control', :locals => { prefix: 'documentation_category' }
+-#      = render :partial => 'tree_view', :locals => { prefix: 'documentation_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+-#
+-#      #category_content
+-#
+-#  .col-sm-8
+-#    .panel.panel-default
+-#      .panel-heading
+-#        = t('form.new_document')
+-#      .new_document.panel-body
+-#        = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new }
+-#
+-#    .panel.panel-default
+-#      .panel-heading
+-#        = t('form.uploaded_documents')
+-#      .documents.panel-body
+
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#documentation_category_tree_view').on("changed.jstree", function(e, data){
+      if(data && data.selected && data.selected.length) {
+          $.get('categories/' + data.selected, function (d) {
+          });
+      }
+      else {
+          $('.documentation #category_content').html('')
+      }
+    });
+
+    $('#documentation_category_tree_view').on("delete_node.jstree", function(e, data){
+      $.ajax({
+          method: 'DELETE',
+          url: 'categories/' + data.node.id + '.json'
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("create_node.jstree", function(e, data){
+      $.ajax({
+          method: 'post',
+          url: '/documentation/categories',
+          dataType: 'json',
+          data: {
+              documentation_category: {
+                  category_id: data.node.parent,
+                  title: data.node.text,
+                  position: data.position
+              }
+          }
+      })
+      .done(function (d) {
+          data.instance.set_id(data.node, d.id);
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("rename_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              documentation_category: {
+                  title: data.text
+              }
+          }
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("move_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              documentation_category: {
+                  category_id: data.parent,
+                  position: data.position
+              }
+          }
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#documentation_category_tree_view').on("copy_node.jstree", function(e, data){
+      $.post('/documentation/categories', {
+          documentation_category: {
+              category_id: data.node.parent,
+              title: data.node.text,
+              position: data.position
+          }
+      })
+      .always(function () {
+          data.instance.refresh();
+      });
+    })
+
+  })

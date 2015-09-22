@@ -12,6 +12,14 @@ class Repairing::CategoriesController < ApplicationController
   def show
   end
 
+  def tree_root
+    @documentation_categories = Documentation::Category.tree_root
+  end
+
+  def tree
+    @documentation_categories = Documentation::Category.tree(params[:id])
+  end
+
   # GET /repairing/categories/new
   def new
     @repairing_category = Repairing::Category.new

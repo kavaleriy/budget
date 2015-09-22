@@ -1,11 +1,23 @@
 class Repairing::Category
   include Mongoid::Document
 
+  default_scope lambda { order_by(:position => :asc) }
+  scope :tree_root, lambda { where( :category_id.in =>[ nil, '#']) }
+  scope :tree, lambda { |category_id| where( :category_id => category_id) }
+
+  has_one :parent, class_name: 'Documentation::Category', :dependent => :nullify
+  belongs_to :category, class_name: 'Documentation::Category'
+
   field :title, type: String
+  field :description, type: String
+  field :preview_ico, type: String
+  field :position, type: Integer
 
-  require 'carrierwave/mongoid'
-  mount_uploader :img, CategoryImgUploader
-  skip_callback :update, :before, :store_previous_model_for_img
+  def self.tree_root
+    Documentation::Category.where( :category_id.in =>[ nil, '#'])
+  end
 
-  has_many :repairs, class_name: 'Repairing::Repair', autosave: true, :dependent => :destroy
+  def childrens
+    Documentation::Category.where(category_id: id).all
+  end
 end
