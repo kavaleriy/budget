@@ -1,20 +1,29 @@
-= content_for :header do
-  .head
+:css
+  .jumbotron {
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    margin-bottom: 0;
+  }
+
+.jumbotron.header.col-xs-12
+  .head.col-xs-9
     %i.fa.fa-calendar
     #{@calendar.title}
+    %p
     %span.descr
       = @calendar.description
-
   #calendar_subscriber.col-xs-3.pull-right
     = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
-
 
 = content_for :top do
   .timeline
 
-    = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
-    #embed_code_timeline.embed_code
-      = render partial: 'widgets/visify/embed_code'
+= render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
+#embed_code_timeline.embed_code
+  = render partial: 'widgets/visify/embed_code'
 
 .col-sm-6.col-xs-12
   .panel.panel-default
