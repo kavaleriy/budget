@@ -73,6 +73,9 @@ class Repairing::CategoriesController < ApplicationController
   # DELETE /repairing/categories/1
   # DELETE /repairing/categories/1.json
   def destroy
+    Repairing::Category.where(:category_id => @repairing_category.id).each{|category|
+      category.destroy
+    }
     @repairing_category.destroy
     respond_to do |format|
       format.html { redirect_to repairing_categories_url, notice: 'Category was successfully destroyed.' }

@@ -15,29 +15,29 @@
     overflow: visible;
   }
 
--#= content_for :header do
--#  .head.pull-left
--#    = t('layouts.navbar.repairing_category')
--#
--#.repairing
--#  .panel.panel-default.col-sm-4
--#    .panel-body
--#      = render :partial => 'tree_control', :locals => { prefix: 'repairing_category' }
--#      = render :partial => 'tree_view', :locals => { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
--#
--#      #category_content
--#
--#  .col-sm-8
--#    .panel.panel-default
--#      .panel-heading
--#        = t('repairing.repairs.form.add_category')
--#      .new_document.panel-body
--#        = render :partial => 'form', :locals => { :new_category => Repairing::Category.new }
--#
--#    .panel.panel-default
--#      .panel-heading
--#        = t('repairing.repairs.form.edit_categories')
--#      .documents.panel-body
+= content_for :header do
+  .head.pull-left
+    = t('layouts.navbar.repairing_category')
+
+.repairing
+  .panel.panel-default.col-sm-4
+    .panel-body
+      = render :partial => 'tree_control', :locals => { prefix: 'repairing_category' }
+      = render :partial => 'tree_view', :locals => { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+
+      #category_content
+
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('repairing.repairs.form.add_category')
+      .new_document.panel-body
+        = render :partial => 'form', :locals => { :new_category => Repairing::Category.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('repairing.repairs.form.edit_categories')
+      .documents.panel-body
 
 :javascript
 
@@ -129,6 +129,14 @@
       .always(function () {
           data.instance.refresh();
       });
+    })
+
+    $('#repairing_category_tree_view').on("select_node.jstree", function(e, data){
+      if(data.node.parents.length > 1) {
+        $('#repairing_category_create').attr("disabled","disabled");
+      } else {
+        $('#repairing_category_create').removeAttr("disabled");
+      }
     })
 
   })

@@ -4,5 +4,6 @@ json.array!(@repairing_categories) do |repairing_category|
   json.children Repairing::Category.where( :category_id => repairing_category.id ).present?
   json.text repairing_category.title
   json.position repairing_category.position
+  json.type 'root'
   json.url repairing_category_url(repairing_category, format: :json)
 end

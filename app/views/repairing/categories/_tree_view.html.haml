@@ -1,4 +1,13 @@
 = stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
+:css
+  .jstree-icon.jstree-themeicon.glyphicon-folder-open {
+    color: #f0ad4e;
+    opacity: 0.5;
+  }
+  .jstree-icon.jstree-themeicon.glyphicon-file {
+    color: #3276b1;
+    opacity: 0.5;
+  }
 
 .tree_view{ id: "#{prefix}_tree_view" }
 
@@ -23,19 +32,18 @@
                 'data' : function (node) {
                   return { 'id' : node.id };
                 }
+              }
+            },
+            "types" : {
+              "root" : {
+                "icon" : "glyphicon glyphicon-folder-open",
               },
-              "types" : {
-                "default" : {
-                  "icon" : "glyphicon glyphicon-flash"
-                },
-                "demo" : {
-                  "icon" : "glyphicon glyphicon-ok"
-                }
-              },
+              "child" : {
+                "icon" : "glyphicon glyphicon-file"
+              }
             },
             "plugins" : [
-              "contextmenu", "dnd", "search",
-              "state", "types", "wholerow"
+              "search", 'theme', "html_data", "state", "types", "wholerow"
             ]
           })
         }).fail(function() {
