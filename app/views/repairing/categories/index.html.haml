@@ -1,61 +1,59 @@
 = stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
 :css
-  .documentation {
+  .repairing {
     min-height: 400px;
     padding-top: 15px;
   }
 
-  .documentation .tree_view{
+  .repairing .tree_view{
     min-height: 400px;
     padding-top: 15px;
   }
 
-  .documentation .documents {
+  .repairing .documents {
     overflow: visible;
   }
 
--#= content_for :header do
--#  .head.pull-left
--#    = t('.header')
--#
--#.documentation
--#  .panel.panel-default.col-sm-4
--#    .panel-body
--#      = render :partial => 'tree_control', :locals => { prefix: 'documentation_category' }
--#      = render :partial => 'tree_view', :locals => { prefix: 'documentation_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
--#
--#      #category_content
--#
--#  .col-sm-8
--#    .panel.panel-default
--#      .panel-heading
--#        = t('form.new_document')
--#      .new_document.panel-body
--#        = render :partial => 'documentation/documents/new_document', :locals => { :new_document => Documentation::Document.new }
--#
--#    .panel.panel-default
--#      .panel-heading
--#        = t('form.uploaded_documents')
--#      .documents.panel-body
+= content_for :header do
+  .head.pull-left
+    = t('.header')
 
+.repairing
+  .panel.panel-default.col-sm-4
+    .panel-body
+      = render :partial => 'tree_control', :locals => { prefix: 'repairing_category' }
+      = render :partial => 'tree_view', :locals => { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
+      #category_content
+
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        = t('form.new_document')
+      .new_document.panel-body
+        = render :partial => 'new', :locals => { :new_document => Repairing::Category.new }
+
+    .panel.panel-default
+      .panel-heading
+        = t('form.uploaded_documents')
+      .documents.panel-body
 
 :javascript
 
   $(document).ready(function() {
 
-    $('#documentation_category_tree_view').on("changed.jstree", function(e, data){
+    $('#repairing_category_tree_view').on("changed.jstree", function(e, data){
       if(data && data.selected && data.selected.length) {
           $.get('categories/' + data.selected, function (d) {
           });
       }
       else {
-          $('.documentation #category_content').html('')
+          $('.repairing #category_content').html('')
       }
     });
 
-    $('#documentation_category_tree_view').on("delete_node.jstree", function(e, data){
+    $('#repairing_category_tree_view').on("delete_node.jstree", function(e, data){
       $.ajax({
           method: 'DELETE',
           url: 'categories/' + data.node.id + '.json'
@@ -65,13 +63,13 @@
       });
     })
 
-    $('#documentation_category_tree_view').on("create_node.jstree", function(e, data){
+    $('#repairing_category_tree_view').on("create_node.jstree", function(e, data){
       $.ajax({
           method: 'post',
-          url: '/documentation/categories',
+          url: '/repairing/categories',
           dataType: 'json',
           data: {
-              documentation_category: {
+              repairing_category: {
                   category_id: data.node.parent,
                   title: data.node.text,
                   position: data.position
@@ -86,29 +84,30 @@
       });
     })
 
-    $('#documentation_category_tree_view').on("rename_node.jstree", function(e, data){
+    $('#repairing_category_tree_view').on("rename_node.jstree", function(e, data){
       $.ajax({
           method: 'PUT',
           url: 'categories/' + data.node.id,
           dataType: 'json',
           data: {
-              documentation_category: {
+              repairing_category: {
                   title: data.text
               }
           }
       })
       .fail(function () {
+          console.log("fail rename_node", data)
           data.instance.refresh();
       });
     })
 
-    $('#documentation_category_tree_view').on("move_node.jstree", function(e, data){
+    $('#repairing_category_tree_view').on("move_node.jstree", function(e, data){
       $.ajax({
           method: 'PUT',
           url: 'categories/' + data.node.id,
           dataType: 'json',
           data: {
-              documentation_category: {
+              repairing_category: {
                   category_id: data.parent,
                   position: data.position
               }
@@ -119,9 +118,9 @@
       });
     })
 
-    $('#documentation_category_tree_view').on("copy_node.jstree", function(e, data){
-      $.post('/documentation/categories', {
-          documentation_category: {
+    $('#repairing_category_tree_view').on("copy_node.jstree", function(e, data){
+      $.post('/repairing/categories', {
+          repairing_category: {
               category_id: data.node.parent,
               title: data.node.text,
               position: data.position

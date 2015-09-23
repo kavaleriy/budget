@@ -1,1 +1,4 @@
-json.extract! @repairing_category, :id, :title, :img, :created_at, :updated_at
+json.extract! @repairing_category, :title
+json.id "#{@repairing_category.id}"
+json.category_id "#{@repairing_category.category_id}"
+json.position @repairing_category.position

@@ -13,12 +13,12 @@
   }
 
 
-%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
+%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@repairing_category.id}", 'data-resource' => 'repairing_category', 'data-url' => "#{repairing_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
 
 :javascript
   $(document).ready(function() {
 
-      $('#description').html('#{@documentation_category.description.html_safe() if @documentation_category.description}');
+      $('#description').html('#{@repairing_category.description.html_safe() if @repairing_category.description}');
 
       I18n.locale = window.aHelper.lang();
       var editor_locale;
