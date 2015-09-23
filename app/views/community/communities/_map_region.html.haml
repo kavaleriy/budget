@@ -19,9 +19,6 @@
     display: block;
   }
 
-.col-sm-12{:style => 'margin-top: 10px;'}
-  = render partial: 'sequence'
-
 .map_container#custom_map.col-sm-12
   = render partial: 'map'
 
@@ -30,10 +27,6 @@
   $(document).ready(function() {
 
     I18n.locale = window.aHelper.lang();
-
-    var embed_code = aEmbedCode();
-    var src = 'http://' + window.location.host + "/community/map";
-    embed_code.initialize({width: '100%', height: '900px', el_id: "#embed_code_timeline", src: src});
 
     var data_areas, data_towns;
     var repairMapOptions = {
@@ -67,10 +60,6 @@
     };
 
     var aRepairMap = RepairMap(repairMapOptions);
-
-    var sequence = aSequence('#sequence');
-    sequence.initializeBreadcrumbTrail({clickCallback: sequenceClick});
-    sequence.show("Ukraine");
 
     // add Areas
     $.ajax({
@@ -111,7 +100,6 @@
       .done(function (data) {
         if(data['features'].length > 0) {
           window.history.pushState("", "", '/community/communities/' + feature.properties.id);
-          sequence.show(feature.properties.title);
           $("#custom_map").html('');
           $("#custom_map").html('#{ j render :partial => 'map'}');
           repairMapOptions.center = center;
@@ -122,9 +110,6 @@
           areasOptions.scale = "community";
           aRepairMap.addGeoJsonSvg(data, areasOptions);
           $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
-          var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
-          $('#embed_code_timeline').css("display","block");
-          embed_code.set_iframe(src);
         }
       })
       .fail(function (e) {
@@ -168,23 +153,5 @@
         }
       }
       return content;
-    }
-
-    function sequenceClick(){
-      window.history.pushState("", "", '/community/communities');
-      $("#custom_map").html('#{ j render :partial => 'map'}');
-      $('#embed_code_timeline').css("display","none");
-      sequence.show("Ukraine");
-      repairMapOptions.center = [48.5, 31.2];
-      repairMapOptions.bounds = [ [45, 21.44531], [52.32182, 41.52832]];
-      aRepairMap = RepairMap(repairMapOptions);
-      // add Areas
-      areasOptions.featureClickCallback = onFeatureClick;
-      areasOptions.getInfoContent = getAreasContent;
-      areasOptions.scale = "Ukraine";
-      aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
-      // add markers
-      aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
-      $('#edit_btn').attr("href", "/community/communities_edit");
     }
   });
