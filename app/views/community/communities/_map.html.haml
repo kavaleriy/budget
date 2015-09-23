@@ -168,45 +168,59 @@
           g.selectAll("path")
                 .each(function (d, i) {
                    var centroid = path.centroid(d);
-                    g.append("text")
+                    g.append("circle")
                      .attr("id",function(){return "community-icon-" + d.properties.id})
-                     .attr("x", centroid[0] - 10)
-                     .attr("y", centroid[1] - 10)
-                     .style('fill','green')
-                     .style('fill-opacity', function(){
-                                if (d['properties']['agree']) {
-                                  return 1;
-                                }
-                                return 0.5;
-                              })
-                     .attr("text-anchor", "middle")
-                     .style('font-family', 'FontAwesome')
-                     .style('stroke', function(){
-                                if (d['properties']['agree']) {
-                                  return "yellow";
-                                }
-                                return "grey";
-                              })
-                     .style('font-size', '1.8em')
-                     .style("cursor", function(){
+                     .attr("cx", centroid[0])
+                     .attr("cy", centroid[1])
+                     .attr("r", 4)
+                     .style('fill', 'yellow')
+                     .style('stroke', 'orange')
+                     .style('stroke-width', '2px')
+                     .style('cursor', function(){
                                 if (d['properties']['agree']) {
                                   return "pointer";
                                 }
                                 return "default";
                               })
-                     .text(function(){
-                        if(d['properties']['icon']) {
-                            d3.select('body')
-                                .append('div')
-                                .attr("id", "svg_icon_content")
-                                .html("<i class='fa " + d['properties']['icon'] + "'></i>");
-                            var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
-                            $("#svg_icon_content").remove();
-                            return content[1];
-                        } else {
-                            return "\uf0c0";
-                        }
-                     })
+                     //.append("text")
+                     //.attr("id",function(){return "community-icon-" + d.properties.id})
+                     //.attr("x", centroid[0] - 10)
+                     //.attr("y", centroid[1] - 10)
+                     //.style('fill','green')
+                     //.style('fill-opacity', function(){
+                     //           if (d['properties']['agree']) {
+                     //             return 1;
+                     //           }
+                     //           return 0.5;
+                     //         })
+                     //.attr("text-anchor", "middle")
+                     //.style('font-family', 'FontAwesome')
+                     //.style('stroke', function(){
+                     //           if (d['properties']['agree']) {
+                     //             return "yellow";
+                     //           }
+                     //           return "grey";
+                     //         })
+                     //.style('font-size', '1.8em')
+                     //.style("cursor", function(){
+                     //           if (d['properties']['agree']) {
+                     //             return "pointer";
+                     //           }
+                     //           return "default";
+                     //         })
+                     //.text(function(){
+                     //   if(d['properties']['icon']) {
+                     //       d3.select('body')
+                     //           .append('div')
+                     //           .attr("id", "svg_icon_content")
+                     //           .html("<i class='fa " + d['properties']['icon'] + "'></i>");
+                     //       var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
+                     //       $("#svg_icon_content").remove();
+                     //       return content[1];
+                     //   } else {
+                     //       return "\uf0c0";
+                     //   }
+                     //})
                     .on("mouseover", function () {
                       if (options.getInfoContent)
                         info.update(options.getInfoContent(d.properties));
