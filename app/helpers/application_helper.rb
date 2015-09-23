@@ -42,7 +42,7 @@ module ApplicationHelper
     elsif current_user.has_role? :admin
       Calendar.all
     else
-      Calendar.where(:author => nil) + Calendar.where(:author => current_user.email)
+      Calendar.where(:author => nil) + Calendar.any_of({:author => current_user.email},{:town => current_user.town})
     end
 
     calendars || []
