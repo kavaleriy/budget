@@ -17,8 +17,6 @@ class Community::File
       koatuu = f['properties']['koatuu']
       next if koatuu.blank?
 
-      puts koatuu
-
       town = Town.where(:koatuu => koatuu).first
       community = Community::Community.where(:town => town, :title => f['properties']['NAME_1']).first
       community.destroy unless community.nil?
@@ -27,23 +25,19 @@ class Community::File
       geometry_type = f['geometry']['type']
       coordinates = []
 
-      divider = 1
-
       case geometry_type
         when 'MultiPolygon'
           f['geometry']['coordinates'].each_with_index do |m, l|
             coordinates << []
             m[0].each_with_index do |c, i|
-              coordinates[l] << get_community_coordinates(c[0], c[1]) if i % divider == 0
+              coordinates[l] << get_community_coordinates(c[0], c[1])
             end
           end
         when 'Polygon'
           f['geometry']['coordinates'][0].each_with_index do |c, i|
-            coordinates << get_community_coordinates(c[0], c[1]) if i % divider == 0
+            coordinates << get_community_coordinates(c[0], c[1])
           end
       end
-
-      puts "#{f['geometry']['coordinates'][0].count} #{coordinates.count}"
 
       community.update(geometry_type: geometry_type, coordinates: [ coordinates ])
     end
@@ -53,7 +47,7 @@ class Community::File
   private
 
   def get_community_coordinates(lat, lon)
-    [lat.to_f.round(2), lon.to_f.round(2)]
+    [lat.to_f, lon.to_f]
   end
 
 end
