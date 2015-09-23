@@ -258,7 +258,7 @@
           g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
 
           feature.attr("d", function(d){
-            $("#community-icon-" + d.properties.id).attr("x", path.centroid(d)[0]).attr("y", path.centroid(d)[1]);
+            $("#community-icon-" + d.properties.id).attr("cx", path.centroid(d)[0]).attr("cy", path.centroid(d)[1]);
             return path(d);
           });
         }
