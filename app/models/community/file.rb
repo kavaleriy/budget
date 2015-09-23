@@ -1,11 +1,12 @@
 class Community::File
   include Mongoid::Document
-  store_in database: 'community_files'
 
   require 'carrierwave/mongoid'
 
   field :author, type: String
   field :title, type: String
+
+  has_many :community_communities, :class_name => 'Community::Community', dependent: :destroy, :autosave => true
 
   mount_uploader :file, CommunityFileUploader
   validates_presence_of :file, message: 'Потрібно вибрати Файл'
@@ -19,7 +20,9 @@ class Community::File
       puts koatuu
 
       town = Town.where(:koatuu => koatuu).first
-      community = Community::Community.create({:town => town, :title => f['properties']['NAME_1'], :agree => f['properties']['agree'] ? true : false, :participants => f['properties']['participants']})
+      community = Community::Community.where(:town => town, :title => f['properties']['NAME_1']).first
+      community.destroy unless community.nil?
+      community = Community::Community.create({:town => town, :title => f['properties']['NAME_1'], :community_file_id => self.id, :agree => f['properties']['agree'] ? true : false, :participants => f['properties']['participants']})
 
       geometry_type = f['geometry']['type']
       coordinates = []

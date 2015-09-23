@@ -15,7 +15,6 @@ class Community::FilesController < ApplicationController
       doc.save
 
       file = File.read('public/uploads/community/file/file/' + doc._id.to_s + '/' + doc.file.filename)
-      JSON.parse(file)
 
       doc.import JSON.parse(file)
     } unless params['file'].nil?

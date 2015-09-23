@@ -11,5 +11,6 @@ class Community::Community
   field :icon, type: String
 
   belongs_to :town, :class_name => '::Town', autosave: true
+  belongs_to :community_file, :class_name => 'Community::File', autosave: true
 
 end
