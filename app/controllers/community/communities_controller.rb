@@ -1,6 +1,8 @@
 class Community::CommunitiesController < ApplicationController
   include ControllerCaching
   layout 'visify', only: [:map]
+  after_filter :allow_iframe, only: [:map]
+
   before_action :set_community_community, only: [:show, :edit, :update, :destroy]
   before_action :set_area, only: [:index, :map]
 
@@ -185,6 +187,12 @@ class Community::CommunitiesController < ApplicationController
   end
 
   private
+
+    def allow_iframe
+      response.headers['x-frame-options'] = 'ALLOWALL'
+      response.headers['Access-Control-Allow-Origin'] = '*'
+      response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_community_community
       @community_community = Community::Community.find(params[:id])
