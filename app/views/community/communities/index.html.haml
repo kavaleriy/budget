@@ -9,11 +9,3 @@
   = link_to 'Завантажити', '/community/communities_load', :class => 'btn btn-primary'
   #embed_code_timeline.pull-right{:style => 'display: none;'}
     = render partial: 'widgets/visify/embed_code'
-
-:javascript
-
-  $(document).ready(function(){
-    var embed_code = aEmbedCode();
-    var src = 'http://' + window.location.host + "/community/map";
-    embed_code.initialize({width: '100%', height: '900px', el_id: "#embed_code_timeline", src: src});
-  })
