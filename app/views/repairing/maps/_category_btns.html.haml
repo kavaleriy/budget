@@ -1,0 +1,15 @@
+:css
+  #category_btns span {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+#category_btns
+  %span
+    Категорії робіт:
+  .btn-group
+    - Repairing::Category.all.select{|p| p.category.nil? }.each do |category|
+      .btn.btn-primary{:title => category.title, 'data-id' => category.id}
+        %i.fa{ :class => category.icon.blank? ? 'fa-asterisk' : category.icon }
+
+

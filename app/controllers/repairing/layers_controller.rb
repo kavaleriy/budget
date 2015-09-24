@@ -64,13 +64,13 @@ module Repairing
     def create
       @repairing_layer = Repairing::Layer.new(repairing_layer_params)
 
-      if current_user.has_role?(:admin) && !repairing_layer_params['town'].nil?
+      if current_user.has_role?(:admin)
         @repairing_layer.town = Town.find(repairing_layer_params['town'])
       else
         @repairing_layer.town = Town.where(title: current_user.town).first_or_create
       end
       @repairing_layer.owner = current_user
-      @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) if repairing_layer_params['repairing_category']
+      @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) unless repairing_layer_params['repairing_category'].blank?
 
       respond_to do |format|
         if @repairing_layer.save
@@ -127,7 +127,7 @@ module Repairing
               location
             end
 
-        layer.repairs.new(
+        layer_repair = Repairing::Repair.create(
             title: "#{repair['Адреса']}, #{repair['Робота']}",
             obj_owner: repair['Балансоутримувач'],
             subject: repair['Об\'єкт'],
@@ -140,8 +140,10 @@ module Repairing
             address: repair['Адреса'],
             address_to: repair['Адреса1'],
 
-            coordinates: coordinates,
-        ).save!
+            coordinates: coordinates
+        )
+        layer_repair.layer = layer
+        layer_repair.save!
       end
     end
 

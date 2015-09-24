@@ -16,7 +16,8 @@
       zoom: 6,
       minZoom: 5,
       maxZoom: 14,
-      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]]
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      scrollWheelZoom: true
     })
 
     // add markers
@@ -26,19 +27,32 @@
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
-        clustered: true,
-        style: {
-          opacity: 0.8,
-        },
-        hoverStyle: {
-          opacity: 1,
-        },
-        featureClickCallback: onFeatureClick,
-        getMapPopupContent: getMapPopupContent,
-        getInfoContent: getInfoContent,
-        selectPath: false,
-        getPoint: getPoint
+      $.each(data, function(i, d){
+        aRepairMap.addGeoJsonPoints([i, d], getPoint, {
+          clustered: true,
+          style: {
+            opacity: 0.8,
+          },
+          hoverStyle: {
+            opacity: 1,
+          },
+          featureClickCallback: onFeatureClick,
+          getMapPopupContent: getMapPopupContent,
+          getInfoContent: getInfoContent,
+          selectPath: false,
+          getPoint: getPoint
+        })
+      })
+      aRepairMap.addCategoryControl([]);
+      $('#category_btns .btn').on("click",function(){
+        if($(this).hasClass('active')){
+          $('#category_btns .btn').removeClass('active');
+          aRepairMap.addCategoryLayer("all");
+        } else {
+          $('#category_btns .btn').removeClass('active');
+          $(this).addClass('active');
+          aRepairMap.addCategoryLayer($(this).data('id'));
+        }
       })
     })
     .fail(function () {

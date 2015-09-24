@@ -30,8 +30,10 @@
     border-radius: 5px;
   }
   .info .title {
-    /*margin: 0 0 5px;*/
     color: #777;
+  }
+  .info.categoryBtns {
+    opacity: 1;
   }
 
 #map
@@ -46,7 +48,7 @@
     RepairMap = function(options) {
       options = options || {}
 
-      var map;
+      var map, layers = {};
       var svg, g;
       var popup;
       var router;
@@ -57,7 +59,8 @@
       function initMap() {
         var mapSettings = { }
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
-        map = L.map('map', mapSettings)
+        map = L.map('map', mapSettings);
+        map.doubleClickZoom.disable();
         if (options.center)
           map.setView(options.center, options.zoom)
         else
@@ -74,7 +77,6 @@
           layerSettings.maxZoom = options.maxZoom
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
-
 
         addSvgLayer()
         function addSvgLayer() {
@@ -178,11 +180,14 @@
         }
       }
 
-      function addGeoJsonPoints(data, getPoint, options) {
+      function addGeoJsonPoints(category_data, getPoint, options) {
         options = options || {};
+        var category = category_data[0];
+        var data = category_data[1];
 
         var markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
         map.addLayer(markers);
+        layers[category] = markers;
 
         var layerOptions = {
           pointToLayer: getPointToLayer,
@@ -216,6 +221,7 @@
 
           layer.on({
             click: function () {
+              //map.removeLayer(layers["no_category"]);
               if (options.featureClickCallback)
                 options.featureClickCallback(feature, popup);
             },
@@ -260,6 +266,18 @@
         info.addTo(map);
       }
 
+      function addCategoryControl(categories) {
+        var categoryBtns = L.control({position: 'bottomleft'});
+
+        categoryBtns.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'info categoryBtns');
+          this._div.innerHTML = '#{ escape_javascript render partial: "repairing/maps/category_btns" }';
+          return this._div;
+        };
+
+        categoryBtns.addTo(map);
+      }
+
       function editRoute(waypoints, routeFoundCallback) {
         var line;
 
@@ -282,6 +300,15 @@
         }
       }
 
+      function addCategoryLayer(category){
+        $.each(layers, function(i,d){
+          map.removeLayer(d);
+          if(i == category || category == "all") {
+            map.addLayer(d);
+          }
+        })
+      }
+
       initMap();
       initPopup();
       initRouting();
@@ -291,7 +318,9 @@
         map: map,
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
-        editRoute: editRoute
+        editRoute: editRoute,
+        addCategoryControl: addCategoryControl,
+        addCategoryLayer: addCategoryLayer
       }
     }
 

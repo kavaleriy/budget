@@ -5,12 +5,24 @@ module Repairing
     end
 
     def geo_json
-      @geoJsons = []
-      Repairing::Layer.each { |layer| @geoJsons << layer.to_geo_json }
+      @geoJsons = {}
+      Repairing::Layer.each { |layer|
+        if layer.repairing_category.nil?
+          category = "no_category"
+        else
+          category = layer.repairing_category.id.to_s
+        end
+        @geoJsons[category] = [] if @geoJsons[category].nil?
+        @geoJsons[category] << layer.to_geo_json
+      }
 
-      result = {
-          "type" => "FeatureCollection",
-          "features" => @geoJsons.flatten
+      result = {}
+
+      @geoJsons.each{|key, category|
+        result[key] = {
+            "type" => "FeatureCollection",
+            "features" => category.flatten
+        }
       }
 
       respond_to do |format|
