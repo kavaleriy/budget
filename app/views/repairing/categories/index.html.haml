@@ -30,18 +30,14 @@
   .col-sm-8
     .panel.panel-default
       .panel-heading
-        = t('repairing.repairs.form.add_category')
+        = t('repairing.repairs.form.edit_category')
       .new_document.panel-body
-        = render :partial => 'form', :locals => { :new_category => Repairing::Category.new }
-
-    .panel.panel-default
-      .panel-heading
-        = t('repairing.repairs.form.edit_categories')
-      .documents.panel-body
 
 :javascript
 
   $(document).ready(function() {
+
+    console.log($('#repairing_category_tree_view').jstree("get_selected").text());
 
     $('#repairing_category_tree_view').on("changed.jstree", function(e, data){
       if(data && data.selected && data.selected.length) {
