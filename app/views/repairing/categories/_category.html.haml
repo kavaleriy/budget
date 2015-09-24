@@ -1,46 +1,81 @@
-:css
-  .dropdown > a:after {
-    content: ""
-  }
-
-  .editable-wysihtml5 {
-    width: 100%;
-  }
-
-  .editable-buttons {
-    margin-left: 0;
-    display: block;
-  }
-
-
-%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{category.id}", 'data-resource' => 'repairing_category', 'data-url' => "#{category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
+%table.table
+  %thead
+    %th
+      Іконка
+    %th
+      Назва
+    %th
+      Колір
+  %tbody
+    %tr
+      %td
+        %a.icon{:href => '#', :id => 'icon', 'data-resource' => 'repairing_category', 'data-type' => 'select2', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть іконку...', 'data-value' => @repairing_category.icon ? @repairing_category.icon : ""}
+      %td
+        %a.editable{:href => '#', :id => 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть назву категорії...'}
+          = @repairing_category.title
+      %td
+        %a.color{:href => '#', :id => 'color', 'data-resource' => 'repairing_category', 'data-type' => 'select2', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть колір...', 'data-value' => @repairing_category.color ? @repairing_category.color : ""}
 
 :javascript
+
   $(document).ready(function() {
+    $('.editable').editable();
 
-      $('#description').html('#{category.description.html_safe() if category.description}');
+    var icons = [], colors = [];
 
-      I18n.locale = window.aHelper.lang();
-      var editor_locale;
-      if(I18n.locale == "uk") {
-        editor_locale = "ua-UA";
-      } else {
-        editor_locale = "";
-      }
-
-      $('#description').editable({
-        escape: false,
-        wysihtml5: {
-          "font-styles": true, // Font styling, e.g. h1, h2, etc.
-          "emphasis": true, // Italics, bold, etc.
-          "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
-          "html": false, // Button which allows you to edit the generated HTML.
-          "link": true, // Button to insert a link.
-          "image": true, // Button to insert an image.
-          "color": false, // Button to change color of font
-          "inline": true,
-          "size": 'xm', // options are xs, sm, lg
-          "locale": editor_locale
-        },
+    /* Loading colors and icons once while loading the page.*/
+    if(icons == "" || colors == "") {
+      $.getJSON( "#{asset_path('enums.json') }", function( data ) {
+        $.each( data['fa_icon_list'], function(key,val) {
+          icons.push({id: val, text: val});
+        })
+        $.each( data['undp_colors_list'], function(key,val) {
+          colors.push({id: val, text: val});
+        })
       });
+    }
+
+    $('.color').editable({
+      source: colors,
+      select2: {
+        width: '200px',
+        allowClear: true,
+        multiple: false,
+        formatResult: formatColorSelect,
+        formatSelection: formatColorSelect,
+      },
+      display: function(value, sourceData) {
+        if(value) {
+          $(this).html("<div style='width: 50px; height: 20px; background-color: " + value + "; border-radius: 10px;'/>");
+        } else {
+          $(this).html("<div style='width: 50px; height: 20px; background-color: #0098dd; border-radius: 10px;'/>");
+        }
+      }
+    });
+
+    function formatColorSelect(el) {
+      return "<div style='width: 100%; height: 43px; background-color: " + el.id + ";'/>";
+    }
+
+    $('.icon').editable({
+      source: icons,
+      select2: {
+        width: '200px',
+        allowClear: true,
+        multiple: false,
+        formatResult: formatFaSelect,
+        formatSelection: formatFaSelect,
+      },
+      display: function(value, sourceData) {
+        if(value) {
+          $(this).html("<i class='fa " + value + "'/>");
+        } else {
+          $(this).html("<i class='fa fa-users'/>");
+        }
+      }
+    });
+
+    function formatFaSelect(el) {
+      return "<i class='fa " + el.id + "'/>" + el.id;
+    }
   });
