@@ -5,6 +5,7 @@ class Repairing::Category
   scope :tree_root, lambda { where( :category_id.in =>[ nil, '#']) }
   scope :tree, lambda { |category_id| where( :category_id => category_id) }
 
+  has_many :repairing_layers, :class_name => 'Repairing::Layer', autosave: true, :dependent => :nullify
   has_one :parent, class_name: 'Repairing::Category', :dependent => :nullify
   belongs_to :category, class_name: 'Repairing::Category'
 

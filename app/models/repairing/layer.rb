@@ -5,6 +5,7 @@ class Repairing::Layer
 
   belongs_to :town, :dependent => :nullify
   belongs_to :owner, class_name: 'User', :dependent => :nullify
+  belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
 
   field :title, type: String
   field :description, type: String
