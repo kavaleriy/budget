@@ -64,8 +64,13 @@ module Repairing
     def create
       @repairing_layer = Repairing::Layer.new(repairing_layer_params)
 
-      @repairing_layer.town = Town.where(title: current_user.town).first_or_create
+      if current_user.has_role?(:admin) && !repairing_layer_params['town'].nil?
+        @repairing_layer.town = Town.find(repairing_layer_params['town'])
+      else
+        @repairing_layer.town = Town.where(title: current_user.town).first_or_create
+      end
       @repairing_layer.owner = current_user
+      @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) if repairing_layer_params['repairing_category']
 
       respond_to do |format|
         if @repairing_layer.save
@@ -172,7 +177,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category)
       end
   end
 end

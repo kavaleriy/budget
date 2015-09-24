@@ -16,7 +16,7 @@
       %tr
         %td= link_to layer.id, repairing_layer_path(layer)
         %td= layer.title
-        %td= layer.repairing_category
+        %td= layer.repairing_category.title unless layer.repairing_category.nil?
         %td= "#{layer.town.title unless layer.town.blank?} "
         %td= layer.owner.email
         %td
