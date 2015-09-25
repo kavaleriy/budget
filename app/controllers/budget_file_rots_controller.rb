@@ -14,4 +14,8 @@ class BudgetFileRotsController < BudgetFilesController
     TaxonomyRot.create!(:owner => owner)
   end
 
+  def find_taxonomy owner
+    TaxonomyRot.where(:owner => owner).first
+  end
+
 end

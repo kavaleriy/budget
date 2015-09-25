@@ -29,7 +29,9 @@ class BudgetFilesController < ApplicationController
   def create
     @budget_file.author = current_user.email unless current_user.nil?
 
-    @budget_file.taxonomy = if params[:budget_file_taxonomy].empty?
+    @budget_file.taxonomy = if current_user.has_role?(:admin) && !params['town'].blank?
+                              find_taxonomy(params['town']) || create_taxonomy(params['town'])
+                            elsif params[:budget_file_taxonomy].empty?
                               create_taxonomy current_user.town
                             else
                               Taxonomy.find(params[:budget_file_taxonomy])

@@ -14,4 +14,8 @@ class BudgetFileRovsController < BudgetFilesController
     TaxonomyRov.create!(:owner => owner)
   end
 
+  def find_taxonomy owner
+    TaxonomyRov.where(:owner => owner).first
+  end
+
 end
