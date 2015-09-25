@@ -4,7 +4,7 @@ module Repairing
 
     belongs_to :layer, class_name: 'Repairing::Layer'
 
-    belongs_to :category, class_name: 'Repairing::Category'
+    belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
 
     field :title, type: String
 

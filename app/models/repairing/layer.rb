@@ -18,7 +18,9 @@ class Repairing::Layer
 
   def to_geo_json
     geoJson = []
-    self.repairs.each { |repair| geoJson << Repairing::GeojsonBuilder.build_repair(repair)}
+    self.repairs.each { |repair|
+      geoJson << Repairing::GeojsonBuilder.build_repair(repair)
+    }
 
     geoJson.compact
   end

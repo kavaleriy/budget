@@ -3,10 +3,11 @@ class BudgetFileRov < BudgetFile
   protected
 
   def readline row
+
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
-    ktfk = row['KTFK'].to_s.gsub(/^0*/, "")
+    ktfk = row['KTFK'].to_i.to_s.gsub(/^0*/, "")
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
