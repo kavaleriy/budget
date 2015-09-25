@@ -122,7 +122,7 @@ class Community::CommunitiesController < ApplicationController
         "type" => "FeatureCollection",
         "features" => result
     }
-    
+
     respond_to do |format|
       format.json { render json: @geo_json }
     end

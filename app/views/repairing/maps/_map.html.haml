@@ -48,7 +48,7 @@
     RepairMap = function(options) {
       options = options || {}
 
-      var map, layers = {};
+      var map, layers = {}, categories;
       var svg, g;
       var popup;
       var router;
@@ -217,31 +217,35 @@
 
         function onEachFeature(feature, layer) {
 
-          if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
+          //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
 
-          layer.on({
-            click: function () {
-              if (options.featureClickCallback)
-                options.featureClickCallback(feature, popup);
-            },
-            mouseover: function () {
-              //layer.setStyle(options.hoverStyle);
-              if (options.getInfoContent)
-                info.update(options.getInfoContent(feature.properties));
-            },
-            mouseout: function () {
-              //geoJson.resetStyle(layer)
-              info.update();
-            },
-            dragend: function(e) {
-              if (options.dragCallback) {
-                var layer = e.target;
-                var ll = layer.getLatLng();
+          if (options.getInfoContent) {
+            layer.bindPopup( options.getInfoContent(feature.properties) )
+          }
 
-                options.dragCallback(layer, ll)
-              }
-            }
-          });
+          //layer.on({
+          //  click: function () {
+          //    if (options.featureClickCallback)
+          //      options.featureClickCallback(feature, popup);
+          //  },
+          //  mouseover: function () {
+          //    //layer.setStyle(options.hoverStyle);
+          //    if (options.getInfoContent)
+          //      info.update(options.getInfoContent(feature.properties));
+          //  },
+          //  mouseout: function () {
+          //    //geoJson.resetStyle(layer)
+          //    info.update();
+          //  },
+          //  dragend: function(e) {
+          //    if (options.dragCallback) {
+          //      var layer = e.target;
+          //      var ll = layer.getLatLng();
+          //
+          //      options.dragCallback(layer, ll)
+          //    }
+          //  }
+          //});
         }
       }
 
@@ -257,16 +261,17 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function (content) {
           if (content)
-            this._div.innerHTML = content
+            this._div.innerHTML = content;
           else
-            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей'
+            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
           };
 
         info.addTo(map);
       }
 
-      function addCategoryControl(categories) {
-        var categoryBtns = L.control({position: 'bottomleft'});
+      function addCategoryControl(data) {
+        categories = data;
+        var categoryBtns = L.control({position: 'topright'});
 
         categoryBtns.onAdd = function (map) {
           this._div = L.DomUtil.create('div', 'info categoryBtns');
@@ -305,13 +310,43 @@
           if(i == category || category == "all") {
             map.addLayer(d);
           }
-        })
+        });
+        if(category == "all") {
+          $('#subcategories').html('');
+        } else {
+          var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
+          $.each(categories[category], function(i,d){
+            content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
+          });
+          $('#subcategories').html(content);
+          var all_work = $('input[value="all"]');
+          all_work.on("change", function(){
+            var subcategories = $('#subcategories input[type="checkbox"]');
+            if($(this).attr('checked')){
+              subcategories.removeAttr('checked');
+              subcategories.prop('checked', false);
+            } else {
+              subcategories.attr('checked','checked');
+              subcategories.prop('checked', true);
+            }
+          })
+          $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
+            var checked = $('#subcategories input[type="checkbox"]:checked');
+            if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
+              all_work.removeAttr('checked');
+              all_work.prop('checked', false);
+            } else {
+              all_work.attr('checked','checked');
+              all_work.prop('checked', true);
+            }
+          })
+        }
       }
 
       initMap();
       initPopup();
       initRouting();
-      addControl();
+      //addControl();
 
       return {
         map: map,

@@ -2,6 +2,11 @@ module Repairing
   class MapsController < ApplicationController
 
     def show
+      @categories = {}
+      Repairing::Category.all.reject{|p| p.category.nil? }.each{|category|
+        @categories[category.category.id.to_s] = [] if @categories[category.category.id.to_s].nil?
+        @categories[category.category.id.to_s] << category
+      }
     end
 
     def geo_json

@@ -43,14 +43,16 @@
           getPoint: getPoint
         })
       })
-      aRepairMap.addCategoryControl([]);
+      aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json}'));
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
           $('#category_btns .btn').removeClass('active');
+          $('#category_title').html('');
           aRepairMap.addCategoryLayer("all");
         } else {
           $('#category_btns .btn').removeClass('active');
           $(this).addClass('active');
+          $('#category_title').html($(this).attr('title'));
           aRepairMap.addCategoryLayer($(this).data('id'));
         }
       })
