@@ -91,39 +91,38 @@ class Community::CommunitiesController < ApplicationController
   end
 
   def geo_json
-    @geo_json = use_cache do
-      result = []
+    result = []
 
-      if params[:area_title]
-        town_id = Town.where(:title => params[:area_title]).first['id']
-        Community::Community.all.where(:town_id => town_id).each do |community|
-          geo = build_community(community)
-          result << geo unless geo.blank?
-        end
-      else
-        towns =
-            case params[:type]
-              when 'areas'
-                Town.areas
-              else
-                Town.cities + Town.towns
-            end
-        towns.reject{|town| town.level != 1 && town.level != 13}.each do |town|
-          geo = case params[:type]
-            when 'areas'
-              build_area(town)
-            else
-              build_point(town)
-          end
-          result << geo unless geo.blank?
-        end
+    if params[:area_title]
+      town_id = Town.where(:title => params[:area_title]).first['id']
+      Community::Community.all.where(:town_id => town_id).each do |community|
+        geo = build_community(community)
+        result << geo unless geo.blank?
       end
-
-      {
-          "type" => "FeatureCollection",
-          "features" => result
-      }
+    else
+      towns =
+          case params[:type]
+            when 'areas'
+              Town.areas
+            else
+              Town.cities + Town.towns
+          end
+      towns.reject{|town| town.level != 1 && town.level != 13}.each do |town|
+        geo = case params[:type]
+          when 'areas'
+            build_area(town)
+          else
+            build_point(town)
+        end
+        result << geo unless geo.blank?
+      end
     end
+
+    @geo_json = {
+        "type" => "FeatureCollection",
+        "features" => result
+    }
+    
     respond_to do |format|
       format.json { render json: @geo_json }
     end
