@@ -28,7 +28,7 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
   def create
     @budget_file.author = current_user.email unless current_user.nil?
-    binding.pry
+    # binding.pry
     @budget_file.taxonomy = if current_user.has_role?(:admin) && !params['town'].blank?
                               find_taxonomy(params['town']) || create_taxonomy(params['town'])
                             elsif params[:budget_file_taxonomy].empty?
