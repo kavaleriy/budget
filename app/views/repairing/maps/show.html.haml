@@ -28,19 +28,21 @@
     })
     .done(function (data) {
       $.each(data, function(i, d){
-        aRepairMap.addGeoJsonPoints([i, d], getPoint, {
-          clustered: true,
-          style: {
-            opacity: 0.8,
-          },
-          hoverStyle: {
-            opacity: 1,
-          },
-          featureClickCallback: onFeatureClick,
-          getMapPopupContent: getMapPopupContent,
-          getInfoContent: getInfoContent,
-          selectPath: false,
-          getPoint: getPoint
+        $.each(d[0], function(j, ds) {
+          aRepairMap.addGeoJsonPoints([i, j, ds], getPoint, {
+            clustered: true,
+            style: {
+              opacity: 0.8,
+            },
+            hoverStyle: {
+              opacity: 1,
+            },
+            featureClickCallback: onFeatureClick,
+            getMapPopupContent: getMapPopupContent,
+            getInfoContent: getInfoContent,
+            selectPath: false,
+            getPoint: getPoint
+          })
         })
       })
       aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json}'));

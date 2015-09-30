@@ -21,14 +21,16 @@ module Repairing
         @geoJsons[category] << layer.to_geo_json
       }
 
-      result = {}
+      # result = {}
+      #
+      # @geoJsons.each{|key, category|
+      #   result[key] = {
+      #       "type" => "FeatureCollection",
+      #       "features" => category.flatten
+      #   }
+      # }
 
-      @geoJsons.each{|key, category|
-        result[key] = {
-            "type" => "FeatureCollection",
-            "features" => category.flatten
-        }
-      }
+      result = @geoJsons
 
       respond_to do |format|
         format.json { render json: result }
