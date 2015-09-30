@@ -28,7 +28,7 @@
     })
     .done(function (data) {
       $.each(data, function(i, d){
-        $.each(d[0], function(j, ds) {
+        $.each(d, function(j, ds) {
           aRepairMap.addGeoJsonPoints([i, j, ds], getPoint, {
             clustered: true,
             style: {

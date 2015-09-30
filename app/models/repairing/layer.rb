@@ -17,28 +17,12 @@ class Repairing::Layer
 
 
   def to_geo_json
-    geoJson = {}
+    geoJson = []
     self.repairs.each { |repair|
-      if repair.repairing_category.nil?
-        category = "no_category"
-      else
-        category = repair.repairing_category.id.to_s
-      end
-      geoJson[category] = [] if geoJson[category].nil?
-      geoJson[category] << Repairing::GeojsonBuilder.build_repair(repair)
-      # geoJson << Repairing::GeojsonBuilder.build_repair(repair)
+      geoJson << Repairing::GeojsonBuilder.build_repair(repair)
     }
 
-    # geoJson.compact
-
-    result = {}
-    geoJson.each{|key, category|
-      result[key] = {
-          "type" => "FeatureCollection",
-          "features" => category.flatten
-      }
-    }
-    result
+    geoJson.compact
 
   end
 end

@@ -17,8 +17,22 @@ module Repairing
         else
           category = layer.repairing_category.id.to_s
         end
-        @geoJsons[category] = [] if @geoJsons[category].nil?
-        @geoJsons[category] << layer.to_geo_json
+        @geoJsons[category] = {} if @geoJsons[category].nil?
+
+        layer.repairs.each{|repair|
+          if repair.repairing_category.nil?
+            sub = "no_category"
+          else
+            sub = repair.repairing_category.id.to_s
+          end
+
+          @geoJsons[category][sub] = {
+              "type" => "FeatureCollection",
+              "features" => []
+          } if @geoJsons[category][sub].nil?
+
+          @geoJsons[category][sub]["features"] << Repairing::GeojsonBuilder.build_repair(repair)
+        }
       }
 
       # result = {}

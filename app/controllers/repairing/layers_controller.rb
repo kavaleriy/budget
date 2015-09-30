@@ -143,7 +143,7 @@ module Repairing
             coordinates: coordinates
         )
         layer_repair.layer = layer
-        category = Repairing::Repair.where(:title => repair['Робота']).first
+        category = Repairing::Category.where(:title => repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
         layer_repair.save!
       end
