@@ -377,6 +377,10 @@
         }
       }
 
+      function removeMarker(data){
+        map.removeLayer(layers[data['properties']['id']][0]);
+      }
+
       initMap();
       initPopup();
       initRouting();
@@ -388,7 +392,8 @@
         addGeoJsonPoints: addGeoJsonPoints,
         editRoute: editRoute,
         addCategoryControl: addCategoryControl,
-        addCategoryLayer: addCategoryLayer
+        addCategoryLayer: addCategoryLayer,
+        removeMarker: removeMarker
       }
     }
 

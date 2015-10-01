@@ -28,6 +28,7 @@
       = t('repairing.layers.edit.repair')
     .panel-body
       #repair
+      #remove_repair
 
 .clear
 
@@ -51,17 +52,19 @@
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints([0, 0, data], getPoint, {
-        clustered: true,
-        style: {
-          opacity: 0.8,
-        },
-        hoverStyle: {
-          opacity: 1,
-        },
-        featureClickCallback: onFeatureClick,
-        dragCallback: onDrag,
-        editInfoContent: true
+      $.each(data['features'], function(i, d){
+        aRepairMap.addGeoJsonPoints([d['properties']['id'], 0, d], getPoint, {
+          clustered: true,
+          style: {
+            opacity: 0.8,
+          },
+          hoverStyle: {
+            opacity: 1,
+          },
+          featureClickCallback: onFeatureClick,
+          dragCallback: onDrag,
+          editInfoContent: true
+        })
       })
     })
     .fail(function () {
@@ -140,7 +143,7 @@
       if (data.features) {
         selectFeature(data.features[0]);
       } else {
-        aRepairMap.addGeoJsonPoints([0, 0, data], getPoint, {
+        aRepairMap.addGeoJsonPoints([data['properties']['id'], 0, data], getPoint, {
           clustered: true,
           style: {
             opacity: 0.8,
@@ -180,10 +183,9 @@
           cache: false,
           url: '#{edit_repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
           success: function(){
-            /*console.log($('#remove_repair').html())
             $('#remove_repair').on('click',function(){
-                console.log('deleted');
-            });*/
+                aRepairMap.removeMarker(_selectedFeature);
+            });
           }
         })
         .fail(function () {
