@@ -1,0 +1,58 @@
+:css
+  .editable-pre-wrapped {
+    white-space: nowrap;
+  }
+
+.panel.panel-default
+  .panel-heading
+    = t('repairing.layers.edit.layer')
+  .panel-body
+    %table.table#edit_layer
+      %thead
+        %tr
+          %th
+            = t('repairing.repairs.form.title')
+          %th
+            = t('repairing.repairs.form.category')
+          %th
+            = t('repairing.repairs.form.town')
+          %th
+            = t('repairing.repairs.form.description')
+      %tbody
+        %tr
+          %td
+            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть назву прошарку...' }
+              = @repairing_layer.title
+          %td
+            %a.edit_category{ href: '#', 'data-resource' => 'repairing_layer', id: 'repairing_category', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть категорію робіт...' }
+              = @repairing_layer.repairing_category.title if @repairing_layer.repairing_category
+          %td
+            %a.edit_twn{ href: '#', 'data-resource' => 'repairing_layer', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть місто...' }
+              = @repairing_layer.town.title if @repairing_layer.town
+          %td
+            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Детальний опис прошарку...' }
+              = @repairing_layer.description
+.clear
+
+:javascript
+
+  $(document).ready(function(){
+    $('#edit_layer .editable').editable();
+
+    $('#edit_layer .edit_category').editable({
+      source: '#{get_categories_repairing_layer_path}',
+      select2: {
+        width: '350px',
+        allowClear: true
+      }
+    });
+
+    $('#edit_layer .edit_twn').editable({
+      source: '#{search_town_path}',
+      select2: {
+        width: '350px',
+        allowClear: true,
+        minimumInputLength: 2
+      }
+    });
+  })

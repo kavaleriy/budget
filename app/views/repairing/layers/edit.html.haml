@@ -8,27 +8,28 @@
 = content_for :header do
   .head
     %i.fa.fa-map
-    = "#{@repairing_layer.town}, #{@repairing_layer.title}"
+    = @repairing_layer.town.title if @repairing_layer.town
+    = ", " + @repairing_layer.title unless @repairing_layer.title.blank?
 
-  .col-xs-6.pull-right
-    = render partial: 'search', :locals => {layer: @repairing_layer }
+.col-xs-12
+  = render 'edit_form'
 
-.map_container.col-xs-9
-  = render partial: 'repairing/maps/map'
+.col-xs-9
+  .panel.panel-default
+    .panel-heading
+      = render partial: 'search', :locals => {layer: @repairing_layer }
+    .panel-body
+      .map_container.col-xs-12
+        = render partial: 'repairing/maps/map'
 
 .col-xs-3
   .panel.panel-default
     .panel-heading
-      Вибрано на карті
+      = t('repairing.layers.edit.repair')
     .panel-body
       #repair
 
 .clear
-
-%hr
-
-
-= render 'form'
 
 = link_to t('form.show'), @repairing_layer, :class => 'btn btn-primary'
 = link_to t('form.back'), repairing_layers_path, :class => 'btn btn-default'
@@ -40,16 +41,17 @@
     var aRepairMap = RepairMap({ zoom: 6, minZoom: 5, maxZoom: 24,
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       getMapPopupContent: getMapPopupContent,
-    })
+      scrollWheelZoom: true
+    });
 
     // add markers
     $.ajax({
       method: 'get',
-      url: '#{repairing_geo_json_path}',
+      url: '#{geo_json_repairing_layer_path}',
       dataType: 'json',
     })
     .done(function (data) {
-      aRepairMap.addGeoJsonPoints(data, getPoint, {
+      aRepairMap.addGeoJsonPoints([0, 0, data], getPoint, {
         clustered: true,
         style: {
           opacity: 0.8,
@@ -59,7 +61,7 @@
         },
         featureClickCallback: onFeatureClick,
         dragCallback: onDrag,
-        getInfoContent: getInfoContent,
+        editInfoContent: true
       })
     })
     .fail(function () {
@@ -110,7 +112,6 @@
       return content
     }
 
-
     var _removedFeature
     var _selectedFeature
 
@@ -135,16 +136,25 @@
       })
     }
 
-
-
     $('.search_map form').bind("ajax:success", function(f, data){
       if (data.features) {
-        selectFeature(data.features[0])
+        selectFeature(data.features[0]);
       } else {
-        aRepairMap.addGeoJson(data)
+        aRepairMap.addGeoJsonPoints([0, 0, data], getPoint, {
+          clustered: true,
+          style: {
+            opacity: 0.8,
+          },
+          hoverStyle: {
+            opacity: 1,
+          },
+          featureClickCallback: onFeatureClick,
+          dragCallback: onDrag,
+          editInfoContent: true
+        });
+        selectFeature(data);
       }
     });
-
 
     function selectFeature(feature, target) {
       $('#repair').html('');
@@ -158,7 +168,7 @@
           cache: false,
           url: url,
         }).done(function (data) {
-          aRepairMap.addGeoJson(data)
+          aRepairMap.addGeoJson(data);
         })
       }
 
@@ -169,6 +179,12 @@
           method: 'GET',
           cache: false,
           url: '#{edit_repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
+          success: function(){
+            /*console.log($('#remove_repair').html())
+            $('#remove_repair').on('click',function(){
+                console.log('deleted');
+            });*/
+          }
         })
         .fail(function () {
           console.log('click fail')

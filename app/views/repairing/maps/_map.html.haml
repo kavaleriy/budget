@@ -225,6 +225,13 @@
 
           if (options.getInfoContent) {
             layer.bindPopup( options.getInfoContent(feature.properties) )
+          } else if(options.editInfoContent) {
+            layer.on({
+              click: function () {
+                if (options.featureClickCallback)
+                  options.featureClickCallback(feature, popup);
+              }
+            })
           }
 
           //layer.on({

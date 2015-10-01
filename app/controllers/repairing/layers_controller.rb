@@ -154,11 +154,11 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_layer.update(repairing_layer_params)
-          format.html { redirect_to @repairing_layer, notice: 'Layer was successfully updated.' }
-          format.json { render :show, status: :ok, location: @repairing_layer }
+          format.js
+          format.json { head :no_content }
         else
-          format.html { render :edit }
-          format.json { render json: @repairing_layer.errors, status: :unprocessable_entity }
+          format.js
+          format.json { head :no_content }
         end
       end
     end
@@ -170,6 +170,14 @@ module Repairing
       respond_to do |format|
         format.html { redirect_to repairing_layers_url, notice: 'Layer was successfully destroyed.' }
         format.json { head :no_content }
+      end
+    end
+
+    def get_categories
+      categories = Repairing::Category.all.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
+
+      respond_to do |format|
+        format.json { render json: categories}
       end
     end
 

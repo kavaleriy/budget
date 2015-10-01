@@ -112,6 +112,7 @@ Rails.application.routes.draw do
     resources :layers do
       member do
         get 'geo_json'
+        get 'get_categories'
         post 'create_repair_by_addr'
       end
 

@@ -3,7 +3,7 @@
   = f.text_field :title, :label => t('repairing.repairs.form.title')
   = f.text_field :obj_owner, :label => t('repairing.repairs.form.obj_owner')
   = f.text_field :subject, :label => t('repairing.repairs.form.subject')
-  = f.text_field :work, :label => t('repairing.repairs.form.work')
+  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { :label => t('repairing.repairs.form.work') }, :class => 'form-control'
 
   .col-xs-4
     = f.text_field :amount, :label => t('repairing.repairs.form.amount')
@@ -21,4 +21,12 @@
 
   .clear
   = f.submit t('form.save'), :class => 'btn btn-primary'
-  = link_to t('form.destroy'), repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), :method => :delete, remote: true, :data => { :confirm => 'Are you sure?' }, class: "btn btn-warning"
+  = link_to t('form.destroy'), repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), :method => :delete, remote: true, :data => { :confirm => 'Are you sure?' }, class: "btn btn-warning", id: "remove_repair"
+
+:javascript
+
+  $(document).ready(function(){
+    $('.edit_repairing_repair').on('ajax:success',function(){
+        alert('Дані успішно збережені');
+    });
+  })
