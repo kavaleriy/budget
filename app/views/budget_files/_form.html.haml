@@ -14,9 +14,11 @@
     %label.control-label
       = t('owner')
     - if current_user && current_user.has_role?(:admin)
-      = select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+      -#= select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
+      = text_field_tag 'town_select', current_user.town
     - else
-      = ": #{current_user.town}"
+      -#= ": #{current_user.town}"
+      = select_tag :town, options_for_select(Town.all.where(:title => current_user.town) + Town.all.where(:area_title => current_user.town), current_user.town), class: 'select-town form-control'
 
   .form-group
     = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
@@ -33,4 +35,55 @@
         allowClear: true,
         placeholder: "Нова візуалізація",
     });
+
+    $('#town_select').select2({
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+      },
+      initSelection: function(element, callback) {
+        callback({id: '#{current_user.town}', text: '#{current_user.town}' });
+      },
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      if($(this).val()) {
+        $.ajax({
+          url: '/community/get_communities/' + $(this).val(),
+          dataType: 'html',
+          success: function (html) {
+            $('#communities').html(html);
+          },
+          cache: true
+        });
+      }
+    }).val('#{current_user.town}').trigger('change');
   })
