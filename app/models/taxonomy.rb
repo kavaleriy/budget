@@ -21,7 +21,8 @@
                 if user.has_role? :admin
                   Taxonomy.all
                 else
-                  Taxonomy.where(:owner => user.town).not{budget_files == nil}
+                  Taxonomy.all.where({:owner => {"$in" => Town.all.where(:title => user.town).map{|t| t.title} + Town.all.where(:area_title => user.town).map{|t| t.title}}}).not{budget_files == nil}
+                  # Taxonomy.where(:owner => user.town).not{budget_files == nil} + Taxonomy.where(:owner => user.town.area_title).not{budget_files == nil}
                 end
               else
                 Taxonomy.where(:owner => '').not{budget_files == nil}

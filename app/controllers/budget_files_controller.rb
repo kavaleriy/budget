@@ -28,14 +28,26 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
   def create
     @budget_file.author = current_user.email unless current_user.nil?
+
+    town = Town.find(params['town_select']) unless params['town_select'].blank?
+
+    unless params['town'].blank?
+      town = params['town'].split(',')
+      if town.length > 1
+        town = Town.where(:title => town[0].strip, :area_title => town[1].strip).first
+      else
+        town = Town.where(:title => town[0].strip).first
+      end
+    end
     # binding.pry
-    @budget_file.taxonomy = if current_user.has_role?(:admin) && !params['town'].blank?
-                              find_taxonomy(params['town']) || create_taxonomy(params['town'])
-                            elsif params[:budget_file_taxonomy].empty?
-                              create_taxonomy current_user.town
-                            else
-                              Taxonomy.find(params[:budget_file_taxonomy])
-                            end
+    @budget_file.taxonomy = find_taxonomy(town.title) || create_taxonomy(town.title)
+    # @budget_file.taxonomy = if current_user.has_role?(:admin) && !params['town'].blank?
+    #                           find_taxonomy(params['town']) || create_taxonomy(params['town'])
+    #                         elsif params[:budget_file_taxonomy].empty?
+    #                           create_taxonomy current_user.town
+    #                         else
+    #                           Taxonomy.find(params[:budget_file_taxonomy])
+    #                         end
 
     @budget_file.taxonomy.locale = params['locale'] || 'uk'
 

@@ -32,11 +32,11 @@ class Public::TownsController < ApplicationController
     }
     town = ''
     town = @town.title unless @town.blank?
-    @budgets = Taxonomy.where(:owner => town)
-    @total_amounts = {}
-    @budgets.each{|budget|
-      @total_amounts[budget._type] = budget.get_total_amounts
-    }
+    # @budgets = Taxonomy.where(:owner => town)
+    # @total_amounts = {}
+    # @budgets.each{|budget|
+    #   @total_amounts[budget._type] = budget.get_total_amounts
+    # }
     @town_items = []
     @town_items.push('budget') if Taxonomy.where(:owner => town).first
     @town_items.push('programs') if Programs::Town.where(:name => town).first
