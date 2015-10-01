@@ -18,7 +18,11 @@
       = text_field_tag 'town_select', current_user.town
     - else
       -#= ": #{current_user.town}"
-      = select_tag :town, options_for_select(Town.all.where(:title => current_user.town) + Town.all.where(:area_title => current_user.town), current_user.town), class: 'select-town form-control'
+      - town = current_user.town.split(',')
+      - if town.length > 1
+        = select_tag :town, options_for_select(Town.all.where(:title => town[0].strip, :area_title => town[1].strip), current_user.town), class: 'select-town form-control'
+      - else
+        = select_tag :town, options_for_select(Town.all.where(:title => current_user.town) + Town.all.where(:area_title => current_user.town), current_user.town), class: 'select-town form-control'
 
   .form-group
     = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
