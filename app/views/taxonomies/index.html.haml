@@ -15,9 +15,9 @@
         = t('owner')
       %th
         =t 'form.actions', :default => t("helpers.actions")
-  %tbody
+  %tbody#taxonomies_list
     - @taxonomies.each do |taxonomy|
-      %tr
+      %tr{'data-id' => taxonomy.id}
         %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
         %td
           = link_to taxonomy.title, taxonomy
@@ -26,4 +26,4 @@
         %td
           -#= link_to 'test_new_show', '/taxonomies/show_modify/' + taxonomy.id, :class => 'btn btn-default btn-xs'
           = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
-          = link_to t('form.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'
+          = link_to t('form.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :remote => true, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'

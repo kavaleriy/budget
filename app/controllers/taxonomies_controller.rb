@@ -32,7 +32,7 @@ class TaxonomiesController < ApplicationController
   def destroy
     @taxonomy.destroy
     respond_to do |format|
-      format.html { redirect_to taxonomies_path, notice: t('taxonomies_controller.delete_success') }
+      format.js
       format.json { head :no_content }
     end
   end
