@@ -43,7 +43,7 @@ class SankeysController < ApplicationController
   # POST /sankeys.json
   def create
     @sankey = Sankey.new(sankey_params)
-    @sankey.owner = current_user.town
+    @sankey.owner = Taxonomy.find(sankey_params[:rot_file_id]).owner
 
     respond_to do |format|
       if @sankey.save
