@@ -1,3 +1,9 @@
+:css
+  .documents_search {
+    margin: 15px;
+    border-radius: 5px;
+  }
+
 - model_class = BudgetFile
 =content_for :header do
   .head.pull-left
@@ -58,6 +64,9 @@
   =link_to static_budget_file_help_path, :class => 'btn btn-default' do
     %i.fa.fa-info-circle
       =t('static.budget_file_help.help')
+
+.col-xs-12.documents_search
+  = render partial: 'search'
 
 .col-xs-12
   = render partial: 'budget_files', :locals => { budget_files: @budget_files }

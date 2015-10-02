@@ -14,7 +14,7 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-
+    # binding.pry
     case sort_column
       when "title"
         @budget_files = BudgetFile.all.sort_by{|b| b.title }
@@ -26,6 +26,22 @@ class BudgetFilesController < ApplicationController
         @budget_files = BudgetFile.all.sort_by{|b| b.author }
     end
     @budget_files.reverse! if sort_direction == "desc"
+
+    unless params["town_select"].blank?
+      towns = []
+      params["town_select"].split(",").each{|town_id|
+        towns << Town.find(town_id).title
+      }
+      @budget_files = @budget_files.select{|b| towns.include? b.taxonomy.owner }
+    end
+
+    @budget_files = @budget_files.select{|b| b.data_type.to_s == params["data_type"] } unless params["data_type"].blank?
+    @budget_files = @budget_files.select{|b| Regexp.new(".*"+params["q"]+".*").match(b.title) } unless params["q"].blank?
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
 
   end
 

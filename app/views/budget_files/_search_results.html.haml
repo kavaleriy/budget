@@ -1,0 +1,15 @@
+- budget_files.each do |budget_file|
+  %tr
+    %td=link_to "#{budget_file.id} (#{budget_file.class})", budget_file
+    %td
+      =link_to budget_file.title, budget_file
+      -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
+    %td
+      = link_to budget_file_download_path(budget_file), :class => '' do
+        %i.fa.fa-download.fa-2x.fa-border
+    %td= budget_file.taxonomy.owner
+    %td= budget_file.data_type
+    %td= budget_file.author
+    %td
+      =link_to t('form.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'
+      =link_to t('form.destroy', :default => t("helpers.links.destroy")), polymorphic_path(budget_file), :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
