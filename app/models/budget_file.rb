@@ -26,7 +26,7 @@ class BudgetFile
       self.all
     else
       self.where(:author => nil) + BudgetFile.all.reject{|f| user.is_locked? || f.author != user.email}
-    end.sort_by { |f| f.author }
+    end
 
     files || []
   end

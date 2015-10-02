@@ -4,15 +4,15 @@
       %th
         =t('key')
       %th
-        =t('budget')
+        = sortable "title", t('budget')
       %th
         =t('file')
       %th
-        =t('owner')
+        = sortable "taxonomy.owner", t('owner')
       %th
-        =t('data_type')
+        = sortable "data_type", t('data_type')
       %th
-        =t('author')
+        = sortable "author", t('author')
       %th
         =t 'form.actions', :default => t("helpers.actions")
   %tbody

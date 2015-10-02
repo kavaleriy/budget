@@ -1,4 +1,5 @@
 class BudgetFilesController < ApplicationController
+  helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:create, :new]
@@ -13,7 +14,19 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.visible_to current_user
+
+    case sort_column
+      when "title"
+        @budget_files = BudgetFile.all.sort_by{|b| b.title }
+      when "taxonomy.owner"
+        @budget_files = BudgetFile.all.sort_by{|b| b.taxonomy.owner }
+      when "data_type"
+        @budget_files = BudgetFile.all.sort_by{|b| b.data_type.to_s }
+      when "author"
+        @budget_files = BudgetFile.all.sort_by{|b| b.author }
+    end
+    @budget_files.reverse! if sort_direction == "desc"
+
   end
 
   def show
@@ -205,6 +218,15 @@ class BudgetFilesController < ApplicationController
   end
 
   private
+
+  def sort_column
+    params[:sort] ? params[:sort] : "title"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
 
   def set_budget_file_data_type
     @budget_file.data_type = params[:data_type].to_sym unless params[:data_type].nil?
