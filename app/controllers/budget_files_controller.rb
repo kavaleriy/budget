@@ -17,13 +17,13 @@ class BudgetFilesController < ApplicationController
     # binding.pry
     case sort_column
       when "title"
-        @budget_files = BudgetFile.all.sort_by{|b| b.title }
+        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.title }
       when "taxonomy.owner"
-        @budget_files = BudgetFile.all.sort_by{|b| b.taxonomy.owner }
+        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.taxonomy.owner }
       when "data_type"
-        @budget_files = BudgetFile.all.sort_by{|b| b.data_type.to_s }
+        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.data_type.to_s }
       when "author"
-        @budget_files = BudgetFile.all.sort_by{|b| b.author }
+        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.author }
     end
     @budget_files.reverse! if sort_direction == "desc"
 
