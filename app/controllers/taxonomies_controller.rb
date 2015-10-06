@@ -54,7 +54,7 @@ class TaxonomiesController < ApplicationController
         format.json { head :no_content, status: :updated }
       else
         format.js { render status: :unprocessable_entity }
-        format.json { render json: @indicate_indicator_file.errors, status: :unprocessable_entity }
+        format.json { render json: @taxonomy.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -78,6 +78,54 @@ class TaxonomiesController < ApplicationController
     respond_to do |format|
       format.js {}
       format.json { head :no_content, status: :created }
+    end
+  end
+
+  def acceptors_file_create
+    @acceptors_files = []
+    taxonomy_type = @taxonomy.class.to_s.split(/(?=[A-Z])/).join('_').downcase!
+
+    params['acceptors_file'].each do |f|
+      doc = TaxonomyAcceptorsFile.new
+      doc.acceptors_file = f
+      params[taxonomy_type][:taxonomy_acceptors_files][:title].blank? ? doc.title = f.original_filename : doc.title = params[taxonomy_type][:taxonomy_acceptors_files][:title]
+      doc.taxonomy = @taxonomy
+      doc.author = current_user.email
+      doc.save
+      @acceptors_files << doc
+
+      table = read_table_from_file 'public/uploads/taxonomy_acceptors_file/acceptors_file/' + doc._id.to_s + '/' + doc.acceptors_file.filename
+
+      doc.import table
+
+    end unless params['acceptors_file'].nil?
+
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :created }
+    end
+  end
+
+  def acceptors_file_destroy
+    acceptors_file = TaxonomyAcceptorsFile.where(:id => params[:acceptors_file_id])
+    acceptors_file.destroy
+    respond_to do |format|
+      format.js {}
+      format.json { head :no_content, status: :deleted }
+    end
+  end
+
+  def acceptors_file_update
+    acceptors_file = TaxonomyAcceptorsFile.where(:id => params[:acceptors_file_id])
+
+    respond_to do |format|
+      if acceptors_file.update(params[:taxonomy_acceptors_file])
+        format.js {}
+        format.json { head :no_content, status: :updated }
+      else
+        format.js { render status: :unprocessable_entity }
+        format.json { render json: @taxonomy.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -124,10 +172,11 @@ class TaxonomiesController < ApplicationController
 
   def set_attachments
     @attachments = @taxonomy.taxonomy_attachments
+    @acceptors_files = @taxonomy.taxonomy_acceptors_files
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title, :description, :is_kvk, :attachment_id, :description)
+    params.require(params[:controller].singularize).permit(:title, :description, :is_kvk, :attachment_id, :acceptors_file_id, :description)
   end
 
 end

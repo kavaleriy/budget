@@ -199,6 +199,9 @@ Rails.application.routes.draw do
   delete 'taxonomies/attachment_destroy/:attachment_id' => 'taxonomies#attachment_destroy'
   put 'taxonomies/attachment_update/:attachment_id' => 'taxonomies#attachment_update'
   post 'taxonomies/:id/attachment_create' => 'taxonomies#attachment_create'
+  delete 'taxonomies/acceptors_file_destroy/:acceptors_file_id' => 'taxonomies#acceptors_file_destroy'
+  put 'taxonomies/acceptors_file_update/:acceptors_file_id' => 'taxonomies#acceptors_file_update'
+  post 'taxonomies/:id/acceptors_file_create' => 'taxonomies#acceptors_file_create'
 
   namespace :calendars do
     resources :calendars do

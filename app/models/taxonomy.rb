@@ -14,6 +14,7 @@
     field :explanation, :type => Hash
 
     has_many :budget_files, autosave: true, :dependent => :destroy
+    has_many :taxonomy_acceptors_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
 
     def self.visible_to user

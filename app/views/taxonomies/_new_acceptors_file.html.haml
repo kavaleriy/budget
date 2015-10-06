@@ -1,0 +1,24 @@
+= form_for @taxonomy, :url => 'acceptors_file_create', :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  - if @taxonomy.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@taxonomy.errors.count, "error")} prohibited this documentation_document from being saved:"
+      %ul
+        - @taxonomy.errors.full_messages.each do |msg|
+          %li= msg
+  = f.fields_for :taxonomy_acceptors_files do |e|
+    .col-sm-12
+      .form-group
+        %label
+          = t('name')
+        = e.text_field :title, :class => 'form-control'
+
+      .form-group
+        %label
+          %i.glyphicon.glyphicon-folder-open
+            = t('form.file')
+        = file_field_tag "acceptors_file[]", multiple: true, :class => 'form-control'
+
+  .actions
+    = f.button :class => 'btn btn-default' do
+      %i.fa.fa-upload
+        = t('form.upload')
