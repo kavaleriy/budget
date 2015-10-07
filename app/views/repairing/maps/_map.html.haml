@@ -61,10 +61,12 @@
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
         map = L.map('map', mapSettings);
         map.doubleClickZoom.disable();
-        if (options.center)
+        if (options.center){
           map.setView(options.center, options.zoom)
-        else
+        }
+        else{
           setBrowserLocation()
+        }
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
