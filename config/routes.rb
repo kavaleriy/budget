@@ -110,6 +110,8 @@ Rails.application.routes.draw do
     get 'geo_json' => 'maps#geo_json'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame'
     get 'maps/frame/:zoom' => 'maps#frame'
+    get 'maps/instruction' => 'maps#instruction'
+    get 'download' => 'maps#download'
 
     resources :layers do
       member do

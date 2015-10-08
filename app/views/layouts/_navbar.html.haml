@@ -102,6 +102,11 @@
               - if current_user.has_role?(:admin)
                 %li.dropdown
                 %li= link_to t('.repairing_category'), repairing_categories_path
+              %li.divider
+              %li
+                = link_to repairing_maps_instruction_path do
+                  %i.fa.fa-info-circle
+                    = t('layouts.navbar.repairing_maps_instruction')
         %li
           = link_to community_communities_path do
             %i.fa.fa-dot-circle-o

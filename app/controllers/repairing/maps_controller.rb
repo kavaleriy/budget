@@ -36,6 +36,20 @@ module Repairing
       end
     end
 
+    def instruction
+
+    end
+
+    def download
+      file_path = Rails.public_path.to_s + '/files/files_for_instructions/repairing_map.xlsx'
+      if File.exist?(file_path)
+        send_file(
+            "#{file_path}",
+            :x_sendfile=>true
+        )
+      end
+    end
+
     private
 
     def allow_iframe
