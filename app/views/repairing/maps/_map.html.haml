@@ -48,7 +48,7 @@
     RepairMap = function(options) {
       options = options || {}
 
-      var map, categories, markers, town = "", category = "all";
+      var map, categories, markers, town = "", category = "all", year;
       var svg, g;
       var popup;
       var router;
@@ -315,7 +315,7 @@
 
         markers.getLayers()[0].eachLayer(function(layer){
           map.removeLayer(layer);
-          if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town)){
+          if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && (layer.feature.properties.year == year) && layer.feature.properties.year == year){
             map.addLayer(layer);
           }
         });
@@ -341,7 +341,7 @@
               subcategories.attr('checked','checked');
               subcategories.prop('checked', true);
               markers.getLayers()[0].eachLayer(function(layer){
-                if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town)){
+                if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
                   map.addLayer(layer);
                 }
               });
@@ -354,7 +354,7 @@
                 map.removeLayer(layer);
                 $.each(checked, function(i,d){
                   var sub = $(d).val();
-                  if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town)) {
+                  if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
                     map.addLayer(layer);
                   }
                 })
@@ -378,7 +378,7 @@
         if(category == "all") {
           markers.getLayers()[0].eachLayer(function(layer){
             map.removeLayer(layer);
-            if(layer.feature.properties.town_id == town || !town){
+            if((layer.feature.properties.town_id == town || !town)  && layer.feature.properties.year == year){
               map.addLayer(layer);
             }
           });
@@ -389,7 +389,32 @@
               map.removeLayer(layer);
               $.each(checked, function(i,d){
                 var sub = $(d).val();
-                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town)) {
+                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+                  map.addLayer(layer);
+                }
+              })
+            }
+          });
+        }
+      }
+
+      function addYearLayer(y){
+        year = y;
+        if(category == "all") {
+          markers.getLayers()[0].eachLayer(function(layer){
+            map.removeLayer(layer);
+            if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+              map.addLayer(layer);
+            }
+          });
+        } else {
+          var checked = $('#subcategories input[type="checkbox"]:checked');
+          markers.getLayers()[0].eachLayer(function(layer){
+            if(layer.feature.properties.parent_category_id == category){
+              map.removeLayer(layer);
+              $.each(checked, function(i,d){
+                var sub = $(d).val();
+                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
                   map.addLayer(layer);
                 }
               })
@@ -415,6 +440,7 @@
         addCategoryControl: addCategoryControl,
         addCategoryLayer: addCategoryLayer,
         addTownLayer: addTownLayer,
+        addYearLayer: addYearLayer,
         removeMarker: removeMarker
       }
     }

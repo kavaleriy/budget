@@ -42,6 +42,7 @@
         getPoint: getPoint
       })
       aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json}'));
+      aRepairMap.addYearLayer(new Date().getFullYear());
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
           $('#category_btns .btn').removeClass('active');
@@ -56,6 +57,12 @@
           aRepairMap.addCategoryLayer(category);
         }
       })
+
+      $("#year_select").on("change", function(){
+        aRepairMap.addYearLayer($(this).val());
+      })
+
+
       $('#map_town').select2({
         sortResults: function(results, container, query) {
           if (query.term) {
@@ -100,7 +107,6 @@
     })
     .fail(function () {
     });
-
 
     var HouseIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});
     var RoadIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});

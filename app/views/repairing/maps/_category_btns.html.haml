@@ -21,7 +21,7 @@
   }
 
   #s2id_map_town .select2-choice {
-    height: 30px !important;
+    height: 34px !important;
   }
 
 #category_description
@@ -36,4 +36,9 @@
   #subcategories
 
 - if @town.blank?
-  = text_field_tag 'map_town', ''
+  .form-group
+    = text_field_tag 'map_town', ''
+.input-group
+  %span.input-group-addon
+    %b рік
+  = select_tag 'year_select', options_for_select((2012..Time.now.year).to_a.reverse), :class => 'form-control'
