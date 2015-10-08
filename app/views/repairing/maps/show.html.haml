@@ -182,9 +182,10 @@
       var content = "";
       if(properties != "Ukraine") {
       content += '<div class="popup">' +
-                  '<h3>' + properties.title + '</h3>' +
-                  '<p>' + properties.address + '</p>' +
-                  '<p>' + properties.amount + '</p>' +
+                  'роботи: <b>' + properties.work + '</b></br>' +
+                  'адреса: <b>' + properties.address + '</b></br>' +
+                  'балансоутримувач: <b>' + properties.obj_owner + '</b></br>' +
+                  'вартість: <b>' + properties.amount + " грн.</b>" +
                  '</div>';
       }
       return content;
