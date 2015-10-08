@@ -75,6 +75,9 @@ class Repairing::GeojsonBuilder
   def self.extract_props repair
     {
         id: "#{repair[:id]}",
+        parent_category_id: repair.layer[:repairing_category_id].to_s,
+        category_id: repair[:repairing_category_id].to_s,
+        town_id: repair.layer.town_id.to_s,
         obj_owner: "#{repair[:obj_owner]}",
         title: "#{repair[:title]}",
         subject: "#{repair[:subject]}",
@@ -83,6 +86,7 @@ class Repairing::GeojsonBuilder
         address: "#{repair[:address]}",
         amount: "#{repair[:amount]}",
         repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
+        year: "#{repair[:repair_date].to_s.split('-')[0] if repair[:repair_date]}",
         warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
     }
   end

@@ -16,6 +16,14 @@
     width: 300px;
   }
 
+  #s2id_map_town {
+    font-size: 1.2em;
+  }
+
+  #s2id_map_town .select2-choice {
+    height: 30px !important;
+  }
+
 #category_description
   %span
     Вибрати категорію робіт:
@@ -27,3 +35,5 @@
   #category_title
   #subcategories
 
+- if @town.blank?
+  = text_field_tag 'map_town', ''

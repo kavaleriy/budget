@@ -48,7 +48,7 @@
     RepairMap = function(options) {
       options = options || {}
 
-      var map, layers = {}, categories;
+      var map, categories, markers, town = "", category = "all";
       var svg, g;
       var popup;
       var router;
@@ -182,18 +182,11 @@
         }
       }
 
-      function addGeoJsonPoints(category_data, getPoint, options) {
+      function addGeoJsonPoints(data, getPoint, options) {
         options = options || {};
-        var category = category_data[0];
-        var sub_category = category_data[1];
-        var data = category_data[2];
 
-        var markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+        markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
         map.addLayer(markers);
-        if(!layers[category]) {
-          layers[category] = {};
-        }
-        layers[category][sub_category] = markers;
 
         var layerOptions = {
           pointToLayer: getPointToLayer,
@@ -317,15 +310,16 @@
         }
       }
 
-      function addCategoryLayer(category){
-        $.each(layers, function(i,d){
-          $.each(d, function(j,ds){
-            map.removeLayer(ds);
-            if(i == category || category == "all") {
-              map.addLayer(ds);
-            }
-          });
+      function addCategoryLayer(c){
+        category = c;
+
+        markers.getLayers()[0].eachLayer(function(layer){
+          map.removeLayer(layer);
+          if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town)){
+            map.addLayer(layer);
+          }
         });
+
         if(category == "all") {
           $('#subcategories').html('');
         } else {
@@ -340,34 +334,32 @@
             if($(this).attr('checked')){
               subcategories.removeAttr('checked');
               subcategories.prop('checked', false);
-              if(layers[category]) {
-                $.each(layers[category], function(j,ds){
-                  map.removeLayer(ds);
-                });
-              }
+              markers.getLayers()[0].eachLayer(function(layer){
+                map.removeLayer(layer);
+              });
             } else {
               subcategories.attr('checked','checked');
               subcategories.prop('checked', true);
-              if(layers[category]) {
-                $.each(layers[category], function(j,ds){
-                  map.addLayer(ds);
-                });
-              }
+              markers.getLayers()[0].eachLayer(function(layer){
+                if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town)){
+                  map.addLayer(layer);
+                }
+              });
             }
           });
           $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
             var checked = $('#subcategories input[type="checkbox"]:checked');
-            if(layers[category]) {
-              $.each(layers[category], function(j,ds){
-                map.removeLayer(ds);
+            markers.getLayers()[0].eachLayer(function(layer){
+              if(layer.feature.properties.parent_category_id == category){
+                map.removeLayer(layer);
                 $.each(checked, function(i,d){
                   var sub = $(d).val();
-                  if(sub == j) {
-                    map.addLayer(ds);
+                  if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town)) {
+                    map.addLayer(layer);
                   }
                 })
-              });
-            }
+              }
+            });
             if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
               all_work.removeAttr('checked');
               all_work.prop('checked', false);
@@ -376,6 +368,33 @@
               all_work.prop('checked', true);
             }
           })
+        }
+
+      }
+
+      function addTownLayer(t) {
+        town = t;
+
+        if(category == "all") {
+          markers.getLayers()[0].eachLayer(function(layer){
+            map.removeLayer(layer);
+            if(layer.feature.properties.town_id == town || !town){
+              map.addLayer(layer);
+            }
+          });
+        } else {
+          var checked = $('#subcategories input[type="checkbox"]:checked');
+          markers.getLayers()[0].eachLayer(function(layer){
+            if(layer.feature.properties.parent_category_id == category){
+              map.removeLayer(layer);
+              $.each(checked, function(i,d){
+                var sub = $(d).val();
+                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town)) {
+                  map.addLayer(layer);
+                }
+              })
+            }
+          });
         }
       }
 
@@ -395,6 +414,7 @@
         editRoute: editRoute,
         addCategoryControl: addCategoryControl,
         addCategoryLayer: addCategoryLayer,
+        addTownLayer: addTownLayer,
         removeMarker: removeMarker
       }
     }

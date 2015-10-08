@@ -3,7 +3,7 @@
   = f.text_field :title, :label => t('repairing.repairs.form.title')
   = f.text_field :obj_owner, :label => t('repairing.repairs.form.obj_owner')
   = f.text_field :subject, :label => t('repairing.repairs.form.subject')
-  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { :label => t('repairing.repairs.form.work') }, :class => 'form-control'
+  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| !p.category || p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { :label => t('repairing.repairs.form.work') }, :class => 'form-control'
 
   .col-xs-4
     = f.text_field :amount, :label => t('repairing.repairs.form.amount')
