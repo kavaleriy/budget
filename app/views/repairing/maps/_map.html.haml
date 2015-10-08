@@ -423,6 +423,21 @@
         }
       }
 
+      function showAdressMarker(query){
+        var check = 0;
+        markers.getLayers()[0].eachLayer(function(layer){
+          if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+            var coords = layer.feature.geometry.coordinates;
+            map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
+            check++;
+            return true;  // find first result and show on map
+          }
+        });
+        if(check == 0) {
+          alert("Для заданих параметрів за вказаною адресою робіт немає");
+        }
+      }
+
       function removeMarker(data){
         map.removeLayer(layers[data['properties']['id']][0]);
       }
@@ -441,7 +456,8 @@
         addCategoryLayer: addCategoryLayer,
         addTownLayer: addTownLayer,
         addYearLayer: addYearLayer,
-        removeMarker: removeMarker
+        removeMarker: removeMarker,
+        showAdressMarker: showAdressMarker
       }
     }
 

@@ -1,6 +1,35 @@
-= render partial: 'map_ukraine'
-#embed_code.pull-right
-  = render partial: 'embed_code'
+:css
+  .form-inline .form-control {
+    width: 100%;
+  }
+
+  .search_block, .search_block div {
+    margin: 0;
+    margin-bottom: 5px;
+  }
+
+  .search_block .form-control {
+    height: 37px;
+  }
+
+  #embed_code {
+    margin-top: 5px;
+  }
+
+.search_block.col-xs-12
+  .input-group
+    = text_field_tag :q, '', :class => 'form-control', :placeholder => "Пошук за адресою ремонту"
+    .input-group-btn
+      = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
+        = t('form.search')
+        %i.fa.fa-search.fa-lg
+
+.col-xs-12
+  = render partial: 'map_ukraine'
+
+.col-xs-12
+  #embed_code.pull-right
+    = render partial: 'embed_code'
 
 :javascript
 
@@ -60,8 +89,18 @@
 
       $("#year_select").on("change", function(){
         aRepairMap.addYearLayer($(this).val());
-      })
+      });
 
+      $('#q').keypress(function (e) {
+        if (e.which == 13) {
+          $('#search_btn').trigger("click");
+          return false;
+        }
+      });
+
+      $("#search_btn").on("click", function(){
+        aRepairMap.showAdressMarker($("#q").val());
+      })
 
       $('#map_town').select2({
         sortResults: function(results, container, query) {
@@ -102,7 +141,6 @@
       }).on("change", function(){
         town = $(this).val();
         aRepairMap.addTownLayer(town);
-        /*aRepairMap.map.setView(new L.LatLng(39, 40), 14);*/
       });
     })
     .fail(function () {
