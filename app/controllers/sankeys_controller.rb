@@ -28,8 +28,14 @@ class SankeysController < ApplicationController
       @budget_files_rot = TaxonomyRot.all
       @budget_files_rov = TaxonomyRov.all
     else
-      @budget_files_rot = TaxonomyRot.all.where({:owner => {"$in" => Town.all.where(:title => current_user.town).map{|t| t.title} + Town.all.where(:area_title => current_user.town).map{|t| t.title}}}).not{budget_files == nil}
-      @budget_files_rov = TaxonomyRov.all.where({:owner => {"$in" => Town.all.where(:title => current_user.town).map{|t| t.title} + Town.all.where(:area_title => current_user.town).map{|t| t.title}}}).not{budget_files == nil}
+      town = current_user.town.split(",")
+      if town.length > 1
+        @budget_files_rot = TaxonomyRot.all.where(:owner => {"$in" => Town.all.where(:title => town[0].strip, :area_title => town[1].strip).map{|t| t.title}}).not{budget_files == nil}
+        @budget_files_rov = TaxonomyRov.all.where(:owner => {"$in" => Town.all.where(:title => town[0].strip, :area_title => town[1].strip).map{|t| t.title}}).not{budget_files == nil}
+      else
+        @budget_files_rot = TaxonomyRot.all.where({:owner => {"$in" => Town.all.where(:title => current_user.town).map{|t| t.title} + Town.all.where(:area_title => current_user.town).map{|t| t.title}}}).not{budget_files == nil}
+        @budget_files_rov = TaxonomyRov.all.where({:owner => {"$in" => Town.all.where(:title => current_user.town).map{|t| t.title} + Town.all.where(:area_title => current_user.town).map{|t| t.title}}}).not{budget_files == nil}
+      end
     end
   end
 
