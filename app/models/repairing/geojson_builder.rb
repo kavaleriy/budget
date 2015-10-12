@@ -75,7 +75,7 @@ class Repairing::GeojsonBuilder
   def self.extract_props repair
     {
         id: "#{repair[:id]}",
-        parent_category_id: "#{repair.layer[:repairing_category_id]}",
+        parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
         category_id: "#{repair[:repairing_category_id]}",
         town_id: "#{repair.layer.town_id}",
         obj_owner: "#{repair[:obj_owner]}",
