@@ -1,0 +1,22 @@
+.btn-group{'data-toggle' => 'buttons'}
+  %label.btn.btn-default.active.level
+    %input{:name => "level", :type => "radio", :value => "ktfk_aaa"}
+    = 'Програмний'
+
+  %label.btn.btn-default.level
+    %input{:name => "level", :type => "radio", :value => "kekv"}
+    = 'Екомічний'
+
+:javascript
+
+  $(document).ready(function() {
+    // radio buttons to switch level
+    $('.level').on("click", function(){
+      level = $(this).children(':first').val();
+      if(level == 'ktfk_aaa') {
+        aTreeChart.get_data(['ktfk_aaa', 'ktfk', 'kekv']);
+      } else if(level == 'kekv') {
+        aTreeChart.get_data(['kekv', 'ktfk_aaa', 'ktfk']);
+      }
+    });
+  })

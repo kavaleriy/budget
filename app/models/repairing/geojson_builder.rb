@@ -73,6 +73,7 @@ class Repairing::GeojsonBuilder
   private
 
   def self.extract_props repair
+    binding.pry
     {
         id: "#{repair[:id]}",
         parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",

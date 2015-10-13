@@ -5,16 +5,14 @@
 
   #functional_buttons.col-xs-12
     - if @taxonomy._type == "TaxonomyRov"
-      .pull-left
+      .pull-right.col-xs-3
         .btn-group{'data-toggle' => 'buttons'}
           %label.btn.btn-default.active.level
             %input{:name => "level", :type => "radio", :value => "ktfk_aaa"}
-            = 'ktfk_aaa'
+            = t('ktfk_aaa')
           %label.btn.btn-default.level
             %input{:name => "level", :type => "radio", :value => "kekv"}
-            = 'kekv'
-        %span#level_name{:style => 'position:relative;top:1.0em;'}
-          Функціональний рівень
+            = t('kekv')
 
   .chart.col-xs-12.col-md-8
 
@@ -366,6 +364,8 @@
       };
     }
 
+    var color = d3.scale.category10()
+
     // get current data for all visifies
     function buildData(item) {
       if (!item.amount)
@@ -411,6 +411,11 @@
 
       node['history'] = item.amount[data_type]
       node['total_history'] = item.amount
+
+      // set default color
+      if (item['color'] == undefined) {
+        item['color'] = color(item['key'])
+      }
 
       $.each(['key', 'label', 'color', 'icon'], function(k, v) {
         node[v] = item[v]

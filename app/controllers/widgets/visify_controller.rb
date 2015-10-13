@@ -155,7 +155,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # color = colors.sample
       node['color'] = '#a8bccc'
     elsif node['color'].nil?
-      node['color'] = '#265f91'
+      # node['color'] = '#265f91'
     end
 
     child_count = if item['children'].nil?
