@@ -67,6 +67,9 @@ window.aHelper = {
         locale = document.location.href.split("locale=")[1] || 'uk'
         return locale.substr(0,2)
     },
+    short_label: function(amount) {
+        return amount / window.aHelper.k(amount).toFixed(2) + window.aHelper.short_unit(amount)
+    },
     short_unit: function(totalSize) {
         if (totalSize >= 1000000000000) return I18n.t("short_units.trillion");
         if (totalSize >= 1000000000) return I18n.t("short_units.billion");
