@@ -173,6 +173,8 @@ Rails.application.routes.draw do
     get 'download' => 'budget_files#download'
   end
 
+  resources :zip_budget_files
+
   resources :budget_file_frees
   resources :budget_file_lvivobl_rots
   resources :budget_file_lvivobl_rovs
@@ -184,6 +186,7 @@ Rails.application.routes.draw do
   resources :budget_file_rot_facts
   resources :budget_file_rov_facts
   resources :budget_file_rov_planfacts
+
 
   get 'static/budget_file_help' => 'static#budget_file_help'
   get 'static/key_indicator_file_help' => 'static#key_indicator_file_help'

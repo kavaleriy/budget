@@ -41,15 +41,15 @@
 %ul
   %li
     ROT*.dbf (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити доходи > Завантажити доходи ROT). ROT*.dbf імпортується з зовнішньої системи та має жорстку структуру.
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRot.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRot.first}
 
   %li
     Файл «Доходи – Фонд» (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити доходи > Завантажити доходи - Фонд) дозволяє завантажити доходи в розрізі загального та спеціального фондів та містить наступні стовпці: «kkd, Загальний фонд, Спеціальний фонд», останні два стовпці відповідають за суму загального фонду та суму спеціального фонду відповідно.
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRotFond.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRotFond.first}
 
   %li
     Файл «Доходи План + Факт» (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити доходи > План + Факт)
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRotPlanfact.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRotPlanfact.first}
 
 %hr
 
@@ -58,13 +58,13 @@
 %ul
   %li
     ROV*.dbf (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити видатки > Завантажити видатки ROV). ROV*.dbf імпортується з зовнішньої системи та має жорстку структуру.
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRov.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRov.first}
   %li
     Файл «Видатки – Фонд» (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити видатки > Видатки – Фонд) дозволяє завантажити видатки в розрізі загального та спеціального фондів та містить наступні стовпці: «Джерело, Розпорядник, Функц класифікація, Загальний фонд, Спеціальний фонд», останні два стовпці відповідають за суму загального фонду та суму спеціального фонду відповідно,
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRovFond.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRovFond.first}
   %li
     Файл «Видатки План + Факт» (пункт меню Візуалізація бюджету > Бюджетні файли > Завантажити Видатки > План + Факт)
-    = render partial: 'example_budget_file', :locals => {file: BudgetFileRovPlanfact.last}
+    = render partial: 'example_budget_file', :locals => {file: BudgetFileRovPlanfact.first}
 
 %hr
 

@@ -14,8 +14,4 @@ class BudgetFileFreesController < BudgetFilesController
     TaxonomyFree.create!(:owner => owner)
   end
 
-  def find_taxonomy owner
-    TaxonomyFree.where(:owner => owner).first
-  end
-
 end

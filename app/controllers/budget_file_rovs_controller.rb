@@ -7,15 +7,11 @@ class BudgetFileRovsController < BudgetFilesController
   end
 
   def get_taxonomies owner
-    TaxonomyRov.where(:owner => owner)
+    TaxonomyRov.owned_by(current_user.town)
   end
 
   def create_taxonomy owner
     TaxonomyRov.create!(:owner => owner)
-  end
-
-  def find_taxonomy owner
-    TaxonomyRov.where(:owner => owner).first
   end
 
 end

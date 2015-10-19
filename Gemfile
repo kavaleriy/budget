@@ -73,6 +73,8 @@ gem 'momentjs-rails', '>= 2.5.0'
 # https://github.com/galetahub/ckeditor
 # gem 'ckeditor'
 # gem 'mongoid-paperclip', :require => 'mongoid_paperclip'
+
+# https://github.com/rubyzip/rubyzip
 gem 'rubyzip'
 
 # https://github.com/argerim/select2-rails

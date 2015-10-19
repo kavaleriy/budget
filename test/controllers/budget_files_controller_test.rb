@@ -8,7 +8,7 @@ class BudgetFilesControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:budget_files)
+    assert_not_nil assigns(:zip_budget_files)
   end
 
   test "should get indicator_file" do

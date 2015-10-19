@@ -1,6 +1,8 @@
   class Taxonomy
     include Mongoid::Document
 
+    scope :owned_by, lambda { |owner| where(:owner => owner) }
+
     before_save :generate_title
 
     attr_accessor :locale
