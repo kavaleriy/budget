@@ -235,7 +235,6 @@
         data_type = file.data_type
         data_type = :plan if data_type.blank?
 
-        binding.pry
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
             rows[data_type] = {} if rows[data_type].nil?
@@ -359,7 +358,6 @@
           end
         end
       end
-      # binding.pry
       tree
     end
 

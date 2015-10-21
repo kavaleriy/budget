@@ -28,7 +28,6 @@ class Community::FilesController < ApplicationController
   # PATCH/PUT /community/communities/1
   # PATCH/PUT /community/communities/1.json
   def update
-    binding.pry
     respond_to do |format|
       if @file.update(community_file_params)
         format.js

@@ -7,7 +7,6 @@ module Documentation
     # GET /documentation/link_categories
     # GET /documentation/link_categories.json
     def index
-      # binding.pry
     end
 
     def tree_root
@@ -39,9 +38,7 @@ module Documentation
     # POST /documentation/link_categories
     # POST /documentation/link_categories.json
     def create
-      # binding.pry
       @documentation_link_category = Documentation::LinkCategory.new(documentation_link_category_params)
-       # binding.pry
       @documentation_link_category.parent = Documentation::LinkCategory.find(documentation_link_category_params.link_category_id) if documentation_link_category_params.respond_to? :link_category_id
 
       respond_to do |format|
@@ -105,7 +102,6 @@ module Documentation
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def documentation_link_category_params
-        # binding.pry
         params.require(:documentation_link_category).permit(:link_category_id, :title, :preview_ico, :description, :position)
       end
   end

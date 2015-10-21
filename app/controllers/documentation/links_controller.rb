@@ -28,7 +28,6 @@ module Documentation
       @link = Documentation::Link.new(documentation_link_params)
       respond_to do |format|
         if @link.save
-          # binding.pry
           format.js
           format.json { head :no_content, status: :created }
           # format.json { render :create, status: :created, location: @link }

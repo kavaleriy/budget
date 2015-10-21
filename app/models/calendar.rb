@@ -40,12 +40,10 @@ class Calendar
 
   def to_xls()
     require 'rubyXL'
-    # binding.pry
     this_calendar = Calendar.find(id)
     workbook = RubyXL::Workbook.new
     worksheet = workbook[0]
     worksheet.sheet_name = 'Calendar'
-    # binding.pry
     i=0
     this_calendar.attributes.each do |attr_name, attr_value|
       if(attr_name != 'events')

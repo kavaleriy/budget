@@ -16,7 +16,6 @@ class Documentation::LinkCategory
   has_many :documentation_links, :class_name => 'Documentation::Link', autosave: true, :dependent => :nullify
 
   def self.tree_root
-    # binding.pry
     Documentation::LinkCategory.where( :link_category_id.in =>[ nil, '#'])
   end
 
