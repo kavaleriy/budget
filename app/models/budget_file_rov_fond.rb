@@ -3,8 +3,8 @@ class BudgetFileRovFond < BudgetFile
   protected
 
   def readline row
-
     ktfk = row['ktfk'].to_s.split('.')[0].gsub(/^0*/, "")
+    return if (ktfk =~ /000$/) != nil
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
