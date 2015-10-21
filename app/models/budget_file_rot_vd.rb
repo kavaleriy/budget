@@ -12,7 +12,6 @@ class BudgetFileRotVd < BudgetFile
     kkd_b = kkd.slice(0, 2)
     kkd_cc = kkd.slice(0, 4)
     kkd_dd = kkd.slice(0, 6)
-    kkd_ee = kkd
 
     [
         { :amount => row['N1'].to_i, :fond => 1 },
@@ -29,7 +28,7 @@ class BudgetFileRotVd < BudgetFile
         item[key] = row[key].to_i unless row[key].nil?
       }
 
-      [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd_ee', key: kkd_ee}].map { |v|
+      [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd_ee', key: kkd}].map { |v|
         item[v[:t]] = v[:key]
       }
 

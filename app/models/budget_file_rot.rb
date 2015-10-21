@@ -20,6 +20,6 @@ class BudgetFileRot < BudgetFile
       line[v[:t]] = v[:key]
     }
 
-    line
+    line if (line['kkd_dd'] =~ /00$/) == nil
   end
 end
