@@ -139,6 +139,7 @@ class BudgetFilesController < ApplicationController
   def destroy
     @budget_file.destroy
     respond_to do |format|
+      format.html { redirect_to budget_files_path, notice: 'BudgetFile was successfully destroyed.' }
       format.js
       format.json { head :no_content }
     end
