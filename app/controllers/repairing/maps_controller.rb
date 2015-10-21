@@ -23,9 +23,10 @@ module Repairing
     def geo_json
       @geoJsons = []
       Repairing::Repair.each { |repair|
-        @geoJsons << Repairing::GeojsonBuilder.build_repair(repair)
+        repair = Repairing::GeojsonBuilder.build_repair(repair)
+        @geoJsons << repair if repair
       }
-
+      
       result = {
                 "type" => "FeatureCollection",
                 "features" => @geoJsons
