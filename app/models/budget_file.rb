@@ -13,6 +13,7 @@ class BudgetFile
   field :rows, :type => Hash
 
   belongs_to :taxonomy, autosave: true
+  belongs_to :zip_budget_file, autosave: true
 
   # calculated tree
   field :tree, :type => Hash
@@ -31,10 +32,23 @@ class BudgetFile
     files || []
   end
 
-  def import town, table, create_new_taxonomy
+  def import table
     rows = table[:rows].map { |row|
       readline(row)
-    }.compact.flatten.sort_by{|row| -row['amount']}
+    }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
+
+    # tree = {}
+    # table[:rows].each { |row|
+    #   parsed_rows = readline(row)
+    #   parsed_rows.map{ |line|
+    #     taxonomy.add_leaf(tree, line)
+    #   } unless parsed_rows.nil?
+    # }
+    #
+    # rows = taxonomy.extract_rows(tree).compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
+
+    # binding.pry
+
 
 
     years = {}

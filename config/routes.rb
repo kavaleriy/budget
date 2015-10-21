@@ -180,12 +180,15 @@ Rails.application.routes.draw do
   resources :budget_file_lvivobl_rovs
   resources :budget_file_rots
   resources :budget_file_rot_planfacts
+  resources :budget_file_rot_vds
+
   resources :budget_file_rovs
   resources :budget_file_rot_fonds
   resources :budget_file_rov_fonds
   resources :budget_file_rot_facts
   resources :budget_file_rov_facts
   resources :budget_file_rov_planfacts
+  resources :budget_file_rov_vds
 
 
   get 'static/budget_file_help' => 'static#budget_file_help'

@@ -1,114 +1,111 @@
 class ZipBudgetFilesController < ApplicationController
 
+  include BudgetFileUpload
+
+  before_action :generate_vd_file, only: [:create, :new]
+
   def new
-    @vd_file = ZipBudgetFile.new
-
-    @taxonomy_rots = TaxonomyRot.owned_by(current_user.town)
-    @current_taxonomy_rot_id = @taxonomy_rots.last.id unless @taxonomy_rots.empty?
-
-    @taxonomy_rovs = TaxonomyRov.owned_by(current_user.town)
-    @current_taxonomy_rov_id = @taxonomy_rovs.last.id unless @taxonomy_rovs.empty?
   end
 
   def create
-    # read zip
+    file_path = nil
 
-    rot_file = generate_rot_file
-    rov_file = generate_rov_file
+    Zip::File.open(zipbudgetfile_params[:path].tempfile) do |zip_file|
+      # Find specific entry
+      entry = zip_file.glob('*ZVED.dbf').first
 
-    @vd = Vd.create!(rot_file: rot_file, rov_file: rov_file)
+      next if entry.nil?
+
+      @vd_file.title = entry.name
+
+      file_path = Rails.root.join('public', 'files', entry.name)
+      entry.extract(file_path)
+
+      @vd_file.path = file_path
+
+      @vd_file.rot_file = create_rot_file
+      @vd_file.rov_file = create_rov_file
+
+      table = read_table_from_file file_path
+
+      load_vd_budget_file @vd_file.rot_file, table
+      load_vd_budget_file @vd_file.rov_file, table
+    end
 
     respond_to do |format|
-      if @vd.save
-        format.html { redirect_to @vd, notice: t('budget_files_controller.load_success') }
-        format.json { render :show, status: :created, location: @vd }
+      if @vd_file.path && @vd_file.save! && @vd_file.rot_file.save! && @vd_file.rov_file.save!
+        format.html { redirect_to budget_files_path, notice: t('budget_files_controller.load_success') }
+        format.json { render :show, status: :created, location: @vd_file }
       else
         format.html { render :new }
-        format.json { render json: @budget_file.errors, status: :unprocessable_entity }
+        format.json { render json: @vd_file.errors, status: :unprocessable_entity }
       end
     end
 
   end
+
 
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def zipbudgetfile_params
-    params.requirex(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :path, :town)
+    params.require(params[:controller].singularize).permit(:title, :data_type, :path)
   end
-
 
 
   protected
 
-  def generate_vd_budget_file budget_file
+  def load_vd_budget_file budget_file, table
+    budget_file.data_type = :fact
+
+    budget_file.title = zipbudgetfile_params[:title].empty? ? "#{@vd_file.title} - #{DateTime.now.strftime('%d-%m-%Y')}" : zipbudgetfile_params[:title]
     budget_file.author = current_user.email unless current_user.nil?
 
     budget_file.taxonomy.locale = params['locale'] || 'uk'
 
-    file = upload_file budget_file_params[:path]
-    file_name = file[:name]
-    file_path = file[:path].to_s
+    budget_file.import table
+  end
 
-    @budget_file.path = file_path
+  def create_rot_file
+    budget_file = BudgetFileRotVd.new
 
-    @budget_file.title = budget_file_params[:title].empty? ? "#{file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
-
-    table = read_table_from_file file_path
-
-    town =
-        if UsersHelper.is_admin?(current_user)
-          params[:town]
+    budget_file.taxonomy =
+        if params[:budget_file_taxonomy_rot].blank?
+          town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+          TaxonomyRot.create!(:owner => town_title)
         else
-          current_user.town
+          Taxonomy.find params[:budget_file_taxonomy_rot]
         end
 
-    @budget_file.import town, table, params[:create_new_taxonomy] == 'true'
-
+    budget_file
   end
 
-  def generate_rot_file
-    budget_file = BudgetFileRotVd.new
-    if params[:taxonomy_rot_id]
-      budget_file.taxonomy = Taxonomy.find params[:taxonomy_rot_id]
-      town = budget_file.taxonomy.owner
-    else
-      town = find_town
-
-      budget_file.taxonomy = TaxonomyRot.create!(:owner => town)
-    end
-
-    generate_vd_budget_file budget_file
-  end
-
-  def generate_rov_file
+  def create_rov_file
     budget_file = BudgetFileRovVd.new
-    if params[:taxonomy_rov_id]
-      budget_file.taxonomy = Taxonomy.find params[:taxonomy_rov_id]
-      town = budget_file.taxonomy.owner
-    else
-      town = find_town
 
-      budget_file.taxonomy = TaxonomyRov.create!(:owner => town)
-    end
+    budget_file.taxonomy =
+        if params[:budget_file_taxonomy_rov].blank?
+          town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+          TaxonomyRov.create!(:owner => town_title)
+        else
+          Taxonomy.find params[:budget_file_taxonomy_rov]
+        end
 
-    generate_vd_budget_file budget_file
+    budget_file
   end
 
-  def find_town
-    Town.find(params['town_select']) unless params['town_select'].blank?
+  private
 
-    unless params['town'].blank?
-      town = params['town'].split(',')
-      if town.length > 1
-        town = Town.where(:title => town[0].strip, :area_title => town[1].strip).first
-      else
-        town = Town.where(:title => town[0].strip).first
-      end
+  def generate_vd_file
+    @vd_file = ZipBudgetFile.new
 
-      town
-    end
+    @taxonomy_rots = TaxonomyRot.owned_by(current_user.town)
+    @current_taxonomy_rot_id = params[:budget_file_taxonomy_rot] || @taxonomy_rots.last.id unless @taxonomy_rots.empty?
 
+    @taxonomy_rovs = TaxonomyRov.owned_by(current_user.town)
+    @current_taxonomy_rov_id = params[:budget_file_taxonomy_rov] ||@taxonomy_rovs.last.id unless @taxonomy_rovs.empty?
   end
+
+
 
 end

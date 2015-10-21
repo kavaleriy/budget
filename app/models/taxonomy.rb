@@ -54,8 +54,8 @@
         when 'fond'
           revenue_fond_codes[key]
 
-        when 'kkd', 'kkd_a', '_kkd_a', 'kkd_bb', 'kkd_cc'
-          revenue_codes[key.ljust(8, '0')]
+        when 'kkd_a', 'kkd_b', 'kkd_cc', 'kkd_dd', 'kkd_ee'
+            revenue_codes[key.ljust(8, '0')]
 
         when 'ktfk'
           expense_codes[key] || expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
@@ -235,6 +235,7 @@
         data_type = file.data_type
         data_type = :plan if data_type.blank?
 
+        binding.pry
         file.rows.keys.each {|year|
           file.rows[year].keys.each {|month|
             rows[data_type] = {} if rows[data_type].nil?

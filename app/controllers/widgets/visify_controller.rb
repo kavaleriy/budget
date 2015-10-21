@@ -8,9 +8,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   MAX_NODES_PER_LEVEL = 100
 
-  def visify
-  end
-
   def type
     render :partial => 'widgets/visify/' + params[:type]
   end
