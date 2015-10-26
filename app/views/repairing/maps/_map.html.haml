@@ -43,422 +43,418 @@
 
   var RepairMap
 
-  $(document).ready(function() {
+  RepairMap = function(options) {
+    options = options || {}
 
-    RepairMap = function(options) {
+    var map, categories, markers, town = "", category = "all", year;
+    var svg, g;
+    var popup;
+    var router;
+    var info;
+
+    var self = this;
+
+    function initMap() {
+      var mapSettings = { }
+      mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
+      map = L.map('map', mapSettings);
+      map.doubleClickZoom.disable();
+      if (options.center){
+        map.setView(options.center, options.zoom)
+      }
+      else{
+        setBrowserLocation()
+      }
+
+      var layerSettings = {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: 'begemot.mbl2go4k',
+        accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
+      }
+      if (options.minZoom)
+        layerSettings.minZoom = options.minZoom
+      if (options.maxZoom)
+        layerSettings.maxZoom = options.maxZoom
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
+
+      addSvgLayer()
+      function addSvgLayer() {
+        svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
+          g = svg.append("g").attr("class", "leaflet-zoom-hide");
+      }
+
+
+      if (options.bounds) map.fitBounds(options.bounds);
+
+
+      L.Icon.Default.imagePath = '/assets/leaflet/images'
+
+
+      function setBrowserLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
+        } else {
+          // unsupported
+        }
+
+        function positionSuccess(position) {
+          var lat = position.coords.latitude;
+          var lon = position.coords.longitude;
+          var acr = position.coords.accuracy;
+
+          map.setView([lat, lon], options.zoom)
+        }
+        function positionError(err) {
+        }
+      }
+    }
+
+
+    function initPopup() {
+      popup = L.popup();
+
+      function onMapClick(e) {
+        if (options.getMapPopupContent) {
+          popup
+            .setLatLng(e.latlng)
+            .setContent(options.getMapPopupContent(e))
+            .openOn(map);
+        }
+      }
+
+      map.on('click', onMapClick);
+    }
+
+
+    function initRouting() {
+      // routing machine
+      router = L.Routing.osrm()
+    }
+
+    function addGeoJsonSvg(data, options) {
       options = options || {}
 
-      var map, categories, markers, town = "", category = "all", year;
-      var svg, g;
-      var popup;
-      var router;
-      var info;
+      // Projecting GeoJSON
+      var transform = d3.geo.transform({point: projectPoint}),
+        path = d3.geo.path().projection(transform);
 
-      var self = this;
-
-      function initMap() {
-        var mapSettings = { }
-        mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
-        map = L.map('map', mapSettings);
-        map.doubleClickZoom.disable();
-        if (options.center){
-          map.setView(options.center, options.zoom)
-        }
-        else{
-          setBrowserLocation()
-        }
-
-        var layerSettings = {
-          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-          id: 'begemot.mbl2go4k',
-          accessToken: 'pk.eyJ1IjoiYmVnZW1vdCIsImEiOiJlMjk1ODk0MDIzOTgxODUxNzFjNDk5YTBhNGNmNjQ3YyJ9.N5HyCJcDWeQGJcqCl1nHVQ'
-        }
-        if (options.minZoom)
-          layerSettings.minZoom = options.minZoom
-        if (options.maxZoom)
-          layerSettings.maxZoom = options.maxZoom
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
-
-        addSvgLayer()
-        function addSvgLayer() {
-          svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
-            g = svg.append("g").attr("class", "leaflet-zoom-hide");
-        }
-
-
-        if (options.bounds) map.fitBounds(options.bounds);
-
-
-        L.Icon.Default.imagePath = '/assets/leaflet/images'
-
-
-        function setBrowserLocation() {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
-          } else {
-            // unsupported
-          }
-
-          function positionSuccess(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var acr = position.coords.accuracy;
-
-            map.setView([lat, lon], options.zoom)
-          }
-          function positionError(err) {
-          }
-        }
-      }
-
-
-      function initPopup() {
-        popup = L.popup();
-
-        function onMapClick(e) {
-          if (options.getMapPopupContent) {
-            popup
-              .setLatLng(e.latlng)
-              .setContent(options.getMapPopupContent(e))
-              .openOn(map);
-          }
-        }
-
-        map.on('click', onMapClick);
-      }
-
-
-      function initRouting() {
-        // routing machine
-        router = L.Routing.osrm()
-      }
-
-      function addGeoJsonSvg(data, options) {
-        options = options || {}
-
-        // Projecting GeoJSON
-        var transform = d3.geo.transform({point: projectPoint}),
-          path = d3.geo.path().projection(transform);
-
-        var feature = g.selectAll("path")
-            .data(data.features)
-          .enter().append("path")
-            .on("mouseover", function (d) {
-              if (options.getInfoContent)
-                info.update(options.getInfoContent(d.properties));
-              })
-            .on("mouseout", function () {
-              info.update();
+      var feature = g.selectAll("path")
+          .data(data.features)
+        .enter().append("path")
+          .on("mouseover", function (d) {
+            if (options.getInfoContent)
+              info.update(options.getInfoContent(d.properties));
             })
-            .on("click", function (d) {
-              if (options.featureClickCallback) {
-                options.featureClickCallback(d);
-              }
-            })
-
-        map.on("viewreset", reset);
-        reset();
-
-        function projectPoint(x, y) {
-          var point = map.latLngToLayerPoint(new L.LatLng(y, x));
-          this.stream.point(point.x, point.y);
-        }
-
-        // Reposition the SVG to cover the features.
-        function reset() {
-          var bounds = path.bounds(data),
-            topLeft = bounds[0],
-            bottomRight = bounds[1];
-
-          svg.attr("width", bottomRight[0] - topLeft[0])
-            .attr("height", bottomRight[1] - topLeft[1])
-            .style("left", topLeft[0] + "px")
-            .style("top", topLeft[1] + "px");
-
-          g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
-
-          feature.attr("d", path);
-        }
-      }
-
-      function addGeoJsonPoints(data, getPoint, options) {
-        options = options || {};
-
-        markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
-        map.addLayer(markers);
-
-        var layerOptions = {
-          pointToLayer: getPointToLayer,
-          onEachFeature: onEachFeature,
-          coordsToLatLng: coordsToLatLng
-        };
-        if (options.style)
-          layerOptions.style = options.style;
-        if (options.hoverStyle)
-          layerOptions.hoverStyle = options.hoverStyle;
-
-        geoJson = L.geoJson(data, layerOptions).addTo(markers);
-
-        function coordsToLatLng(coords) {
-          return L.latLng(coords)
-        }
-
-        function getPointToLayer(feature, latlng) {
-          var point = getPoint(feature.properties);
-
-          return L.marker(latlng, {
-            icon: point.icon,
-            opacity: 1,
-            draggable: point.draggable
-          });
-        }
-
-        function onEachFeature(feature, layer) {
-
-          //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-
-          if (options.getInfoContent) {
-            layer.bindPopup( options.getInfoContent(feature.properties) )
-          } else if(options.editInfoContent) {
-            layer.on({
-              click: function () {
-                if (options.featureClickCallback)
-                  options.featureClickCallback(feature, popup);
-              }
-            })
-          }
-
-          //layer.on({
-          //  click: function () {
-          //    if (options.featureClickCallback)
-          //      options.featureClickCallback(feature, popup);
-          //  },
-          //  mouseover: function () {
-          //    //layer.setStyle(options.hoverStyle);
-          //    if (options.getInfoContent)
-          //      info.update(options.getInfoContent(feature.properties));
-          //  },
-          //  mouseout: function () {
-          //    //geoJson.resetStyle(layer)
-          //    info.update();
-          //  },
-          //  dragend: function(e) {
-          //    if (options.dragCallback) {
-          //      var layer = e.target;
-          //      var ll = layer.getLatLng();
-          //
-          //      options.dragCallback(layer, ll)
-          //    }
-          //  }
-          //});
-        }
-      }
-
-      function addControl() {
-        info = L.control();
-
-        info.onAdd = function (map) {
-          this._div = L.DomUtil.create('div', 'info');
-          this.update();
-          return this._div;
-        };
-
-        // method that we will use to update the control based on feature properties passed
-        info.update = function (content) {
-          if (content)
-            this._div.innerHTML = content;
-          else
-            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
-          };
-
-        info.addTo(map);
-      }
-
-      function addCategoryControl(data) {
-        categories = data;
-        var categoryBtns = L.control({position: 'topright'});
-
-        categoryBtns.onAdd = function (map) {
-          this._div = L.DomUtil.create('div', 'info categoryBtns');
-          this._div.innerHTML = '#{ escape_javascript render partial: "repairing/maps/category_btns" }';
-          return this._div;
-        };
-
-        categoryBtns.addTo(map);
-      }
-
-      function editRoute(waypoints, routeFoundCallback) {
-        var line;
-
-        if (self.selectedRoute) {
-          self.selectedRoute.setWaypoints(waypoints)
-          self.selectedRoute.route()
-        } else {
-          self.selectedRoute = L.Routing.control({
-            routeWhileDragging: true,
-            waypoints: waypoints
-          });
-
-          self.selectedRoute.on('routesfound', function(router) {
-            if (routeFoundCallback) {
-              routeFoundCallback(router.routes[0].coordinates)
+          .on("mouseout", function () {
+            info.update();
+          })
+          .on("click", function (d) {
+            if (options.featureClickCallback) {
+              options.featureClickCallback(d);
             }
-          });
+          })
 
-          self.selectedRoute.addTo(map);
-        }
+      map.on("viewreset", reset);
+      reset();
+
+      function projectPoint(x, y) {
+        var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+        this.stream.point(point.x, point.y);
       }
 
-      function addCategoryLayer(c){
-        category = c;
+      // Reposition the SVG to cover the features.
+      function reset() {
+        var bounds = path.bounds(data),
+          topLeft = bounds[0],
+          bottomRight = bounds[1];
 
-        markers.getLayers()[0].eachLayer(function(layer){
-          map.removeLayer(layer);
-          if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && (layer.feature.properties.year == year) && layer.feature.properties.year == year){
-            map.addLayer(layer);
-          }
+        svg.attr("width", bottomRight[0] - topLeft[0])
+          .attr("height", bottomRight[1] - topLeft[1])
+          .style("left", topLeft[0] + "px")
+          .style("top", topLeft[1] + "px");
+
+        g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+
+        feature.attr("d", path);
+      }
+    }
+
+    function addGeoJsonPoints(data, getPoint, options) {
+      options = options || {};
+
+      markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+      map.addLayer(markers);
+
+      var layerOptions = {
+        pointToLayer: getPointToLayer,
+        onEachFeature: onEachFeature,
+        coordsToLatLng: coordsToLatLng
+      };
+      if (options.style)
+        layerOptions.style = options.style;
+      if (options.hoverStyle)
+        layerOptions.hoverStyle = options.hoverStyle;
+
+      geoJson = L.geoJson(data, layerOptions).addTo(markers);
+
+      function coordsToLatLng(coords) {
+        return L.latLng(coords)
+      }
+
+      function getPointToLayer(feature, latlng) {
+        var point = getPoint(feature.properties);
+
+        return L.marker(latlng, {
+          icon: point.icon,
+          opacity: 1,
+          draggable: point.draggable
         });
+      }
 
-        if(category == "all") {
-          $('#subcategories').html('');
-        } else {
-          var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
-          $.each(categories[category], function(i,d){
-            content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
-          });
-          $('#subcategories').html(content);
-          var all_work = $('input[value="all"]');
-          all_work.on("change", function(){
-            var subcategories = $('#subcategories input[type="checkbox"]');
-            if($(this).attr('checked')){
-              subcategories.removeAttr('checked');
-              subcategories.prop('checked', false);
-              markers.getLayers()[0].eachLayer(function(layer){
-                map.removeLayer(layer);
-              });
-            } else {
-              subcategories.attr('checked','checked');
-              subcategories.prop('checked', true);
-              markers.getLayers()[0].eachLayer(function(layer){
-                if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-                  map.addLayer(layer);
-                }
-              });
-            }
-          });
-          $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
-            var checked = $('#subcategories input[type="checkbox"]:checked');
-            markers.getLayers()[0].eachLayer(function(layer){
-              if(layer.feature.properties.parent_category_id == category){
-                map.removeLayer(layer);
-                $.each(checked, function(i,d){
-                  var sub = $(d).val();
-                  if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-                    map.addLayer(layer);
-                  }
-                })
-              }
-            });
-            if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
-              all_work.removeAttr('checked');
-              all_work.prop('checked', false);
-            } else {
-              all_work.attr('checked','checked');
-              all_work.prop('checked', true);
+      function onEachFeature(feature, layer) {
+
+        //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
+
+        if (options.getInfoContent) {
+          layer.bindPopup( options.getInfoContent(feature.properties) )
+        } else if(options.editInfoContent) {
+          layer.on({
+            click: function () {
+              if (options.featureClickCallback)
+                options.featureClickCallback(feature, popup);
             }
           })
         }
 
-      }
-
-      function addTownLayer(t) {
-        town = t;
-
-        if(category == "all") {
-          markers.getLayers()[0].eachLayer(function(layer){
-            map.removeLayer(layer);
-            if((layer.feature.properties.town_id == town || !town)  && layer.feature.properties.year == year){
-              map.addLayer(layer);
-            }
-          });
-        } else {
-          var checked = $('#subcategories input[type="checkbox"]:checked');
-          markers.getLayers()[0].eachLayer(function(layer){
-            if(layer.feature.properties.parent_category_id == category){
-              map.removeLayer(layer);
-              $.each(checked, function(i,d){
-                var sub = $(d).val();
-                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-                  map.addLayer(layer);
-                }
-              })
-            }
-          });
-        }
-      }
-
-      function addYearLayer(y){
-        year = y;
-        if(category == "all") {
-          markers.getLayers()[0].eachLayer(function(layer){
-            map.removeLayer(layer);
-            if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-              map.addLayer(layer);
-            }
-          });
-        } else {
-          var checked = $('#subcategories input[type="checkbox"]:checked');
-          markers.getLayers()[0].eachLayer(function(layer){
-            if(layer.feature.properties.parent_category_id == category){
-              map.removeLayer(layer);
-              $.each(checked, function(i,d){
-                var sub = $(d).val();
-                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-                  map.addLayer(layer);
-                }
-              })
-            }
-          });
-        }
-      }
-
-      function showAdressMarker(query){
-        var check = 0;
-        markers.getLayers()[0].eachLayer(function(layer){
-          if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-            var coords = layer.feature.geometry.coordinates;
-            map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
-            check++;
-            return true;  // find first result and show on map
-          }
-        });
-        if(check == 0) {
-          alert("Для заданих параметрів за вказаною адресою робіт немає");
-        }
-      }
-
-      function removeMarker(data){
-        map.removeLayer(layers[data['properties']['id']][0]);
-      }
-
-      initMap();
-      initPopup();
-      initRouting();
-      //addControl();
-
-      return {
-        map: map,
-        addGeoJsonSvg: addGeoJsonSvg,
-        addGeoJsonPoints: addGeoJsonPoints,
-        editRoute: editRoute,
-        addCategoryControl: addCategoryControl,
-        addCategoryLayer: addCategoryLayer,
-        addTownLayer: addTownLayer,
-        addYearLayer: addYearLayer,
-        removeMarker: removeMarker,
-        showAdressMarker: showAdressMarker
+        //layer.on({
+        //  click: function () {
+        //    if (options.featureClickCallback)
+        //      options.featureClickCallback(feature, popup);
+        //  },
+        //  mouseover: function () {
+        //    //layer.setStyle(options.hoverStyle);
+        //    if (options.getInfoContent)
+        //      info.update(options.getInfoContent(feature.properties));
+        //  },
+        //  mouseout: function () {
+        //    //geoJson.resetStyle(layer)
+        //    info.update();
+        //  },
+        //  dragend: function(e) {
+        //    if (options.dragCallback) {
+        //      var layer = e.target;
+        //      var ll = layer.getLatLng();
+        //
+        //      options.dragCallback(layer, ll)
+        //    }
+        //  }
+        //});
       }
     }
 
-  });
+    function addControl() {
+      info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+      };
+
+      // method that we will use to update the control based on feature properties passed
+      info.update = function (content) {
+        if (content)
+          this._div.innerHTML = content;
+        else
+          this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
+        };
+
+      info.addTo(map);
+    }
+
+    function addCategoryControl(data) {
+      categories = data;
+      var categoryBtns = L.control({position: 'topright'});
+
+      categoryBtns.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info categoryBtns');
+        this._div.innerHTML = '#{ escape_javascript render partial: "repairing/maps/category_btns" }';
+        return this._div;
+      };
+
+      categoryBtns.addTo(map);
+    }
+
+    function editRoute(waypoints, routeFoundCallback) {
+      var line;
+
+      if (self.selectedRoute) {
+        self.selectedRoute.setWaypoints(waypoints)
+        self.selectedRoute.route()
+      } else {
+        self.selectedRoute = L.Routing.control({
+          routeWhileDragging: true,
+          waypoints: waypoints
+        });
+
+        self.selectedRoute.on('routesfound', function(router) {
+          if (routeFoundCallback) {
+            routeFoundCallback(router.routes[0].coordinates)
+          }
+        });
+
+        self.selectedRoute.addTo(map);
+      }
+    }
+
+    function addCategoryLayer(c){
+      category = c;
+
+      markers.getLayers()[0].eachLayer(function(layer){
+        map.removeLayer(layer);
+        if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && (layer.feature.properties.year == year) && layer.feature.properties.year == year){
+          map.addLayer(layer);
+        }
+      });
+
+      if(category == "all") {
+        $('#subcategories').html('');
+      } else {
+        var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
+        $.each(categories[category], function(i,d){
+          content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
+        });
+        $('#subcategories').html(content);
+        var all_work = $('input[value="all"]');
+        all_work.on("change", function(){
+          var subcategories = $('#subcategories input[type="checkbox"]');
+          if($(this).attr('checked')){
+            subcategories.removeAttr('checked');
+            subcategories.prop('checked', false);
+            markers.getLayers()[0].eachLayer(function(layer){
+              map.removeLayer(layer);
+            });
+          } else {
+            subcategories.attr('checked','checked');
+            subcategories.prop('checked', true);
+            markers.getLayers()[0].eachLayer(function(layer){
+              if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+                map.addLayer(layer);
+              }
+            });
+          }
+        });
+        $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
+          var checked = $('#subcategories input[type="checkbox"]:checked');
+          markers.getLayers()[0].eachLayer(function(layer){
+            if(layer.feature.properties.parent_category_id == category){
+              map.removeLayer(layer);
+              $.each(checked, function(i,d){
+                var sub = $(d).val();
+                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+                  map.addLayer(layer);
+                }
+              })
+            }
+          });
+          if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
+            all_work.removeAttr('checked');
+            all_work.prop('checked', false);
+          } else {
+            all_work.attr('checked','checked');
+            all_work.prop('checked', true);
+          }
+        })
+      }
+
+    }
+
+    function addTownLayer(t) {
+      town = t;
+
+      if(category == "all") {
+        markers.getLayers()[0].eachLayer(function(layer){
+          map.removeLayer(layer);
+          if((layer.feature.properties.town_id == town || !town)  && layer.feature.properties.year == year){
+            map.addLayer(layer);
+          }
+        });
+      } else {
+        var checked = $('#subcategories input[type="checkbox"]:checked');
+        markers.getLayers()[0].eachLayer(function(layer){
+          if(layer.feature.properties.parent_category_id == category){
+            map.removeLayer(layer);
+            $.each(checked, function(i,d){
+              var sub = $(d).val();
+              if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+                map.addLayer(layer);
+              }
+            })
+          }
+        });
+      }
+    }
+
+    function addYearLayer(y){
+      year = y;
+      if(category == "all") {
+        markers.getLayers()[0].eachLayer(function(layer){
+          map.removeLayer(layer);
+          if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+            map.addLayer(layer);
+          }
+        });
+      } else {
+        var checked = $('#subcategories input[type="checkbox"]:checked');
+        markers.getLayers()[0].eachLayer(function(layer){
+          if(layer.feature.properties.parent_category_id == category){
+            map.removeLayer(layer);
+            $.each(checked, function(i,d){
+              var sub = $(d).val();
+              if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+                map.addLayer(layer);
+              }
+            })
+          }
+        });
+      }
+    }
+
+    function showAdressMarker(query){
+      var check = 0;
+      markers.getLayers()[0].eachLayer(function(layer){
+        if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+          var coords = layer.feature.geometry.coordinates;
+          map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
+          check++;
+          return true;  // find first result and show on map
+        }
+      });
+      if(check == 0) {
+        alert("Для заданих параметрів за вказаною адресою робіт немає");
+      }
+    }
+
+    function removeMarker(data){
+      map.removeLayer(layers[data['properties']['id']][0]);
+    }
+
+    initMap();
+    initPopup();
+    initRouting();
+    //addControl();
+
+    return {
+      map: map,
+      addGeoJsonSvg: addGeoJsonSvg,
+      addGeoJsonPoints: addGeoJsonPoints,
+      editRoute: editRoute,
+      addCategoryControl: addCategoryControl,
+      addCategoryLayer: addCategoryLayer,
+      addTownLayer: addTownLayer,
+      addYearLayer: addYearLayer,
+      removeMarker: removeMarker,
+      showAdressMarker: showAdressMarker
+    }
+  }
