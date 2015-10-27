@@ -1,8 +1,13 @@
+:css
+  .map_wrap {
+    height: 700px;
+  }
 = content_for :header do
   .head.pull-left
     = t('community.community.index.header')
 
-= render partial: 'map_ukraine'
+.map_wrap
+  = render partial: 'map_ukraine'
 
 .col-sm-12{:style => 'margin-top: 10px;'}
   = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary', :id => 'edit_btn'
