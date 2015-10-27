@@ -27,7 +27,7 @@
       var svg, g, colorScale, areas_minValue, areas_maxValue, areas_data;
       var popup;
       var router;
-      var info, legend, markers, exportBtn;
+      var info, legend, markers, exportBtn, logosControl;
 
       var self = this;
 
@@ -392,6 +392,44 @@
         legend.addTo(map);
       }
 
+      function addLegend(key) {
+        legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'info legend');
+          this.update(key);
+          return this._div;
+        };
+
+        legend.update = function(key) {
+          var d = (areas_maxValue - areas_minValue)/5,
+              grades = [], initial_grades = [],
+              labels = ['<span class="key_unit">' + options.getUnit() + "</span>"],
+              from, to;
+
+          for(var i = 0; i < 5; i++){
+            initial_grades[i] = Math.round(areas_minValue + d*i);
+          }
+
+          // remove duplicated values
+          $.each(initial_grades, function(i, el){
+            if($.inArray(el, grades) === -1) grades.push(el);
+          });
+
+          for (var i = 0; i < grades.length; i++) {
+            from = grades[i];
+            to = grades[i + 1];
+
+            labels.push(
+                '<i style="background:' + colorScale(from + 1) + '"></i> ' +
+                from + ((to || to == 0) ? ' - ' + to : '+'));
+          }
+          this._div.innerHTML = labels.join('<br>');
+        };
+
+        legend.addTo(map);
+      }
+
       function addExportBtn() {
         exportBtn = L.control({position: 'bottomleft'});
 
@@ -402,6 +440,19 @@
         };
 
         exportBtn.addTo(map);
+      }
+
+      // add partners logos
+      function addLogosControl() {
+        logosControl = L.control({ position: 'bottomright' });
+
+        logosControl.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'community_logos');
+          this._div.innerHTML = '#{ escape_javascript render partial: "logos" }';
+          return this._div;
+        };
+
+        logosControl.addTo(map);
       }
 
       function editRoute(waypoints, routeFoundCallback) {
@@ -446,6 +497,8 @@
       initMap();
       initPopup();
       initRouting();
+
+      addLogosControl()
 
       return {
         map: map,
