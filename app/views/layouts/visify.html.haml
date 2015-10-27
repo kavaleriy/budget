@@ -1,4 +1,9 @@
 !!! 5
+:css
+  html, body {
+    height: 100%;
+  }
+
 %html(lang="en")
   %head
     %meta(charset="utf-8")
@@ -12,6 +17,5 @@
     = yield :head
 
 %body
-  .row-fluid
-    .budget
-      = yield
+  .budget
+    = yield
