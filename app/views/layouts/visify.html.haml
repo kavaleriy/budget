@@ -1,9 +1,5 @@
 !!! 5
 :css
-  html, body {
-    height: 100%;
-  }
-
 %html(lang="en")
   %head
     %meta(charset="utf-8")
@@ -15,6 +11,11 @@
     = javascript_include_tag "application"
 
     = yield :head
+
+:css
+  html, body, .budget {
+    height: 100%;
+  }
 
 %body
   .budget
