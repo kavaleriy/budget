@@ -1,4 +1,4 @@
-class BudgetFileRotVd < BudgetFile
+class BudgetFileRotFt < BudgetFile
 
   protected
 
@@ -14,19 +14,18 @@ class BudgetFileRotVd < BudgetFile
     kkd_dd = kkd.slice(0, 6)
 
     [
-        { :amount => row['N1'].to_i, :fond => 1 },
-        { :amount => row['N4'].to_i, :fond => 7 },
+        { :amount => row['T020'].to_i, :amount_type => :plan },
+        { :amount => row['T060'].to_i, :amount_type => :fact },
     ].map do |line|
       next if line[:amount].to_i == 0
 
       item = {
           'amount' => line[:amount],
-          'fond' => line[:fond],
+          '_amount_type' => line[:amount_type],
       }
 
-      %w(_year _month).each{ |key|
-        item[key] = row[key].to_i unless row[key].nil?
-      }
+      dt = row['DT'].to_date
+      item['_year'] = dt.year.to_s
 
       [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd_ee', key: kkd}].map { |v|
         item[v[:t]] = v[:key]

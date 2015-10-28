@@ -3,38 +3,36 @@ class BudgetFileRovVd < BudgetFile
   protected
 
   def readline row
-    ktfk = row['KFK'].to_s
-    kekv = row['KOD'].to_s
+    ktfk = row['KTFK'].to_s.split('.')[0].gsub(/^0*/, "")
+    kekv = row['KEKV'].to_s.split('.')[0]
 
-    return unless kekv.length == 4
-    return if %w(900203).include?(ktfk)
     return if (ktfk =~ /000$/) != nil
     return if (ktfk =~ /^900$/) != nil
+    return unless kekv.length == 4
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    kvk = row['KVK'].to_s
+    fond = row['KF'].to_s.split('.')[0]
 
     [
-        { :amount => row['N1'].to_i, :fond => 1 },
-        { :amount => row['N4'].to_i, :fond => 7 },
+        { :amount => row['VKNP'].to_i, :amount_type => :plan },
+        { :amount => row['KVNP'].to_i, :amount_type => :fact },
     ].map do |line|
       next if line[:amount].to_i == 0
 
       item = {
           'amount' => line[:amount],
-          'fond' => line[:fond],
+          'fond' => fond,
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
-          'kvk' => kvk,
           'kekv' => kekv,
+          '_amount_type' => line[:amount_type],
       }
 
-      %w(_year _month).each{ |key|
-        item[key] = row[key].to_i unless row[key].nil?
-      }
+      dt = row['DT'].to_date
+      item['_year'] = dt.year.to_s
 
       item
     end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}

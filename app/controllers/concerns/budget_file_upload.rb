@@ -5,6 +5,7 @@ module BudgetFileUpload
     file_name = uploaded_io.original_filename
     file_path = Rails.root.join('public', 'files', file_name)
 
+
     File.open(file_path, 'wb') do |file|
       file.write(uploaded_io.read)
     end
@@ -18,7 +19,11 @@ module BudgetFileUpload
     case File.extname(path).upcase
       when '.CSV'
         read_csv_xls Roo::CSV.new(path, csv_options: {col_sep: ";"})
-      when '.XLS', '.XLSX'
+      when '.XLS'
+        xls = Roo::Excel.new(path)
+        xls.default_sheet = xls.sheets.first
+        read_csv_xls xls
+      when '.XLSX'
         xls = Roo::Excelx.new(path)
         xls.default_sheet = xls.sheets.first
         read_csv_xls xls

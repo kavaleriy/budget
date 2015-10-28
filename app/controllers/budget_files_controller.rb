@@ -76,7 +76,6 @@ class BudgetFilesController < ApplicationController
 
     @budget_file.taxonomy.locale = params['locale'] || 'uk'
 
-
     @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
 
     file = upload_file budget_file_params[:path]
