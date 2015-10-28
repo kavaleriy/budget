@@ -47,8 +47,6 @@ class BudgetFile
     #
     # rows = taxonomy.extract_rows(tree).compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
-
-
     years = {}
     rows.each { |row|
 

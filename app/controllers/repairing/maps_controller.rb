@@ -26,7 +26,7 @@ module Repairing
         repair = Repairing::GeojsonBuilder.build_repair(repair)
         @geoJsons << repair if repair
       }
-      
+
       result = {
                 "type" => "FeatureCollection",
                 "features" => @geoJsons
