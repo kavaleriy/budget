@@ -10,7 +10,3 @@
 
 .col-xs-12.col-md-6#attachments
   = render :partial => 'file_upload', :locals => { :attachments => @attachments, :taxonomy_id=>@taxonomy.id }
-
-- if @taxonomy._type == 'TaxonomyRov'
-  .col-xs-12#acceptors
-    = render :partial => 'acceptors_upload', :locals => { :acceptors_files => @acceptors_files, :taxonomy_id=>@taxonomy.id }

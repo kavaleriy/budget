@@ -1,11 +1,36 @@
 class TaxonomiesController < ApplicationController
 
   before_action :set_taxonomy, only: [:show, :show_modify, :edit, :update, :destroy]
+  before_action :set_taxonomy, only: [:recipients, :recipient_by_code]
   before_action :set_params, only: [:show_modify]
   before_action :set_attachments, only: [:show, :show_modify, :edit]
 
   before_action :authenticate_user!, except: [:show, :show_modify, :town_profile]
   load_and_authorize_resource
+
+  def recipients
+    @recipients = []
+    @taxonomy.explanation[:ktfk].each { |k, v|
+      recipient = @taxonomy.recipients.find_or_create_by(code: k)
+      @recipients << { code: recipient[:code], title: v[:title], amount: recipient[:amount] }
+    }
+    @recipients.sort_by!{ |item| item[:code] }
+  end
+
+  def recipient_by_code
+    code = params[:code]
+
+    @recipient = @taxonomy.recipients.find_or_create_by(code: code)
+    @recipient.amount = taxonomy_params[:recipient_amount]
+
+    respond_to do |format|
+      if @recipient.save!
+        format.json { render status: :ok }
+      else
+        format.json { render json: @recipient.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   def index
     @taxonomies = Taxonomy.visible_to current_user
@@ -81,54 +106,6 @@ class TaxonomiesController < ApplicationController
     end
   end
 
-  def acceptors_file_create
-    @acceptors_files = []
-    taxonomy_type = @taxonomy.class.to_s.split(/(?=[A-Z])/).join('_').downcase!
-
-    params['acceptors_file'].each do |f|
-      doc = TaxonomyAcceptorsFile.new
-      doc.acceptors_file = f
-      params[taxonomy_type][:taxonomy_acceptors_files][:title].blank? ? doc.title = f.original_filename : doc.title = params[taxonomy_type][:taxonomy_acceptors_files][:title]
-      doc.taxonomy = @taxonomy
-      doc.author = current_user.email
-      doc.save
-      @acceptors_files << doc
-
-      table = read_table_from_file 'public/uploads/taxonomy_acceptors_file/acceptors_file/' + doc._id.to_s + '/' + doc.acceptors_file.filename
-
-      doc.import table
-
-    end unless params['acceptors_file'].nil?
-
-    respond_to do |format|
-      format.js {}
-      format.json { head :no_content, status: :created }
-    end
-  end
-
-  def acceptors_file_destroy
-    acceptors_file = TaxonomyAcceptorsFile.where(:id => params[:acceptors_file_id])
-    acceptors_file.destroy
-    respond_to do |format|
-      format.js {}
-      format.json { head :no_content, status: :deleted }
-    end
-  end
-
-  def acceptors_file_update
-    acceptors_file = TaxonomyAcceptorsFile.where(:id => params[:acceptors_file_id])
-
-    respond_to do |format|
-      if acceptors_file.update(params[:taxonomy_acceptors_file])
-        format.js {}
-        format.json { head :no_content, status: :updated }
-      else
-        format.js { render status: :unprocessable_entity }
-        format.json { render json: @taxonomy.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def town_profile
     if params[:town_id] == 'test'
       @taxonomy = Taxonomy.where(:owner => '').first
@@ -171,12 +148,12 @@ class TaxonomiesController < ApplicationController
   end
 
   def set_attachments
+    @taxonomy = Taxonomy.find(params[:id]) unless @taxonomy
     @attachments = @taxonomy.taxonomy_attachments
-    @acceptors_files = @taxonomy.taxonomy_acceptors_files
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title, :description, :is_kvk, :attachment_id, :acceptors_file_id, :description)
+    params.require(params[:controller].singularize).permit(:title, :description, :is_kvk, :attachment_id, :description, :recipient_amount)
   end
 
 end

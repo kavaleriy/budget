@@ -15,8 +15,9 @@
 
     field :explanation, :type => Hash
 
+    embeds_many :recipients, class_name: 'TaxonomyRecipient'
+
     has_many :budget_files, autosave: true, :dependent => :destroy
-    has_many :taxonomy_acceptors_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
 
     def self.visible_to user

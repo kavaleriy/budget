@@ -1,6 +1,9 @@
 class CurrenciesController < ApplicationController
   before_action :set_currency, only: [:show, :edit, :update, :destroy, :rate_by_year]
 
+  before_action :authenticate_user!, except: [:show, :town_profile]
+  load_and_authorize_resource
+
   def rate_by_year
     year = params[:year]
 
@@ -11,7 +14,7 @@ class CurrenciesController < ApplicationController
       if @rate.save!
         format.json { render status: :ok }
       else
-        # format.json { render json: @rate.errors, status: :unprocessable_entity }
+        format.json { render json: @rate.errors, status: :unprocessable_entity }
       end
     end
   end

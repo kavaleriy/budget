@@ -111,8 +111,6 @@
           = link_to community_communities_path do
             %i.fa.fa-dot-circle-o
             = t('community.community.index.header')
-        .lang.pull-right
-          = render partial: 'layouts/lang'
         %li.dropdown
           - if current_user
             %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
@@ -127,6 +125,9 @@
             = link_to new_user_session_path do
               %i.fa.fa-key
               = t('.login')
+
+        .lang.pull-right
+          = render partial: 'layouts/lang'
 
         = render partial: 'layouts/nav_admin'
 

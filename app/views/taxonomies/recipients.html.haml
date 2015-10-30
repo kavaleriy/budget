@@ -1,0 +1,30 @@
+= content_for :header do
+  .head.pull-left
+    %i.fa.fa-money
+    #{t('.title')}
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        = t('code')
+      %th
+        = t('amount')
+      %th
+        = t('code_title')
+  %tbody
+    - @recipients.each do |recipient|
+      %tr.recipient
+        %td= recipient[:code]
+        %td
+          %a{ href: '#', 'data-resource' => 'taxonomy', id: 'recipient_amount', 'data-type' => 'text', 'data-url' => "recipient_by_code/#{recipient[:code]}", 'data-emptytext' => 'не вказано' }
+            = recipient[:amount]
+        %td= recipient[:title]
+
+= link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
+
+:javascript
+  $(document).ready(function() {
+    $('.recipient a').editable({
+    })
+  });

@@ -29,8 +29,6 @@
               %li.divider
               %li= link_to t('.subscribers'), subscribers_path
 
-        .lang.pull-right
-          = render partial: 'layouts/lang'
         %li.dropdown
           - if current_user
             %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
@@ -45,6 +43,9 @@
             = link_to new_user_session_path do
               %i.fa.fa-key
               = t('.login')
+
+        .lang.pull-right
+          = render partial: 'layouts/lang'
 
     .header
       = yield :header

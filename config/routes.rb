@@ -169,12 +169,16 @@ Rails.application.routes.draw do
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
   get 'sankeys/sankey/:id' => 'sankeys#sankey'
 
-  resources :taxonomies
+  resources :taxonomies do
+    member do
+      get 'recipients'  => 'taxonomies#recipients'
+      put 'recipient_by_code/:code' => 'taxonomies#recipient_by_code'
+    end
+  end
+
   resources :taxonomy_frees
   resources :taxonomy_rots
   resources :taxonomy_rovs
-  resources :taxonomy_rov_facts
-  resources :taxonomy_rov_fact_zvits
 
   resources :budget_files do
     get 'download' => 'budget_files#download'
@@ -218,9 +222,6 @@ Rails.application.routes.draw do
   delete 'taxonomies/attachment_destroy/:attachment_id' => 'taxonomies#attachment_destroy'
   put 'taxonomies/attachment_update/:attachment_id' => 'taxonomies#attachment_update'
   post 'taxonomies/:id/attachment_create' => 'taxonomies#attachment_create'
-  delete 'taxonomies/acceptors_file_destroy/:acceptors_file_id' => 'taxonomies#acceptors_file_destroy'
-  put 'taxonomies/acceptors_file_update/:acceptors_file_id' => 'taxonomies#acceptors_file_update'
-  post 'taxonomies/:id/acceptors_file_create' => 'taxonomies#acceptors_file_create'
 
   namespace :calendars do
     resources :calendars do
