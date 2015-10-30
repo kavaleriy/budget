@@ -36,11 +36,14 @@
           = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
           %hr.towns-form
           = f.text_area :description, :placeholder => t("town_description_placeholder"), class: 'wysihtml5'
+      .row
+        = f.fields_for :counters, @town.counters || @town.build_counters do |c|
+          = render 'counters', :f => c
+
       .row.buttom-user-menu
         .col-md-12.fix-pad
           = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default pull-right'
           = f.submit nil, :class => 'btn btn-primary pull-right'
-
 
 
 :javascript

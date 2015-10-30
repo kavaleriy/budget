@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :currencies do
+    member do
+      put 'rate_by_year/:year' => 'currencies#rate_by_year'
+    end
+  end
+
   namespace :community do
     get 'geo_json' => 'communities#geo_json'
     get 'map/:area_id' => 'communities#map'
@@ -53,6 +59,7 @@ Rails.application.routes.draw do
 
   namespace :programs do
     resources :towns
+
     resources :target_programs
     resources :expences_files
     resources :attachments

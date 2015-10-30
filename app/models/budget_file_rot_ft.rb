@@ -20,12 +20,13 @@ class BudgetFileRotFt < BudgetFile
       next if line[:amount].to_i == 0
 
       item = {
-          'amount' => line[:amount],
+          'amount' => line[:amount] / 100,
           '_amount_type' => line[:amount_type],
       }
 
       dt = row['DT'].to_date
       item['_year'] = dt.year.to_s
+      item['_month'] = dt.month.to_s
 
       [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd_ee', key: kkd}].map { |v|
         item[v[:t]] = v[:key]

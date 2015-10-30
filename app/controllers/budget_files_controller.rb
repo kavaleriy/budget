@@ -78,7 +78,8 @@ class BudgetFilesController < ApplicationController
 
     @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
 
-    file = upload_file budget_file_params[:path]
+    new_file_name = get_file_name_for budget_file_params[:path]
+    file = upload_file budget_file_params[:path], new_file_name
     file_name = file[:name]
     file_path = file[:path].to_s
 
@@ -155,6 +156,10 @@ class BudgetFilesController < ApplicationController
   end
 
   protected
+
+  def get_file_name_for uploaded_io
+    uploaded_io.original_filename
+  end
 
   def generate_budget_file
     @budget_file = BudgetFile.new

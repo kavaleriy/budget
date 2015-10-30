@@ -24,6 +24,9 @@ class Town
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
+  # counters for per-capita calculations
+  embeds_one :counters, class_name: 'TownCounter'
+
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
@@ -45,7 +48,7 @@ class Town
   end
 
   def self.to_tree
-    Rails.cache.fetch( Town.name, :expires_in => Rails.env.development? ? 15.minutes : 24.hours) do
+    Rails.cache.fetch( Town.name, :expires_in => Rails.env.development? ? 10.seconds : 2.hours) do
       tree = []
       self.areas.each do |area|
         area_code = area.koatuu.slice(0, 2)

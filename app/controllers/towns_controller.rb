@@ -106,7 +106,7 @@ class TownsController < ApplicationController
       attrs.delete(:coordinates)
       coordinates = eval(town_params[:coordinates] || '')
 
-      if @town.update(attrs)
+      if @town.update_attributes(attrs)
         @town.update(coordinates: coordinates)
         format.html { redirect_to @town, notice: 'Town was successfully updated.' }
         format.json { render :show, status: :ok, location: @town }
@@ -139,6 +139,7 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description)
+      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description,
+                                   :counters => [:citizens, :house_holdings, :square])
     end
 end

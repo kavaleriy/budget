@@ -1,16 +1,14 @@
 module BudgetFileUpload
   extend ActiveSupport::Concern
 
-  def upload_file uploaded_io
-    file_name = uploaded_io.original_filename
-    file_path = Rails.root.join('public', 'files', file_name)
-
+  def upload_file uploaded_io, new_file_name
+    file_path = Rails.root.join('public', 'files', new_file_name )
 
     File.open(file_path, 'wb') do |file|
       file.write(uploaded_io.read)
     end
 
-    { name: file_name, path: file_path }
+    { name: new_file_name, path: file_path }
   end
 
   def read_table_from_file path

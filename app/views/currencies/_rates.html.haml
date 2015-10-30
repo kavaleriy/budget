@@ -1,0 +1,19 @@
+:css
+  #currency_rates>div {
+    margin: 5px;
+  }
+
+%b Rates
+
+#currency_rates
+  - rates.each do |rate|
+    .col-xs-2
+      = "#{rate[:year]} - "
+      %a{ href: '#', 'data-resource' => 'currency', id: 'rate', 'data-type' => 'text', 'data-pk' => "#{rate[:id]}", 'data-url' => "rate_by_year/#{rate[:year]}", 'data-emptytext' => 'не вказано' }
+        = rate[:rate]
+
+:javascript
+  $(document).ready(function() {
+    $('#currency_rates a').editable({
+    })
+  });

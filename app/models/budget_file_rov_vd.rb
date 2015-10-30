@@ -23,7 +23,7 @@ class BudgetFileRovVd < BudgetFile
       next if line[:amount].to_i == 0
 
       item = {
-          'amount' => line[:amount],
+          'amount' => line[:amount] / 100,
           'fond' => fond,
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
@@ -33,6 +33,7 @@ class BudgetFileRovVd < BudgetFile
 
       dt = row['DT'].to_date
       item['_year'] = dt.year.to_s
+      item['_month'] = dt.month.to_s
 
       item
     end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}

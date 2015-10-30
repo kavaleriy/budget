@@ -1,0 +1,11 @@
+= bootstrap_form_for @currency, :html => { :class => 'col-xs-12', :multipart => true} do |f|
+  = f.text_field :title
+  = f.text_field :short_title
+
+  = f.submit nil, :class => 'btn btn-primary pull-right'
+  = link_to t('.cancel', :default => t("helpers.links.cancel")), currencies_path, :class => 'btn btn-default pull-right'
+
+.col-xs-12
+  = render 'rates', { currency: @currency, rates: @rates } unless @currency.new_record?
+
+%hr
