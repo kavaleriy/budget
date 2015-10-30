@@ -11,6 +11,10 @@ class TaxonomyRot < Taxonomy
       }
   end
 
+  def recipients_column
+    :kkd_ee
+  end
+
   # def add_leaf tree, row
   #   kkd_a = row['kkd_a']
   #   kkd_b = row['kkd_b']
