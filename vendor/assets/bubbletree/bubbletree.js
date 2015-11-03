@@ -1301,8 +1301,8 @@ BubbleTree.Utils.formatNumber = function(n) {
 	if (n >= 1000000000) return prefix+Math.round(n / 100000000)/10 + I18n.t("short_units.billion");
 	if (n >= 1000000) return prefix+Math.round(n / 100000)/10 + I18n.t("short_units.million");
 	if (n >= 1000) return prefix+Math.round(n / 100)/10 + I18n.t("short_units.thousand");
-	else return prefix+n;
-	
+    if (n < 1) return '< 1';
+    else return prefix + Math.round(n);
 };
 /*jshint undef: true, browser:true, jquery: true, devel: true, smarttabs: true */
 /*global BubbleTree */
