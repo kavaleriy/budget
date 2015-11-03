@@ -1,5 +1,7 @@
 class TaxonomyRov < Taxonomy
 
+  FUNCTIONAL_CODE = 'ktfk'
+
   def columns
 
     if is_kvk

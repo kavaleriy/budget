@@ -20,6 +20,9 @@
       - if @taxonomy._type == "TaxonomyRov"
         .pull-right.col-xs-3
           = render partial: 'select_level'
+      - if @amounts.count > 0
+        .pull-right.col-xs-3
+          = render partial: 'select_amount'
       - if @types_count > 1
         .pull-right.col-xs-3
           .btn-group{'data-toggle' => 'buttons'}
@@ -61,6 +64,9 @@
   $(document).ready(function() {
     // export methods
     aTreeChart.get_data = get_data
+    aTreeChart.refresh = refresh
+    aTreeChart.divider = { amount: 1, recalc_per: false}
+
 
 
     var data_type = "#{@data_type}",
@@ -95,6 +101,10 @@
       })
     }
 
+    function refresh() {
+      update_data()
+    }
+
     // radio buttons to switch plan/fact
     $('.data_type').on("click", function(){
       data_type = $(this).children(':first').val();
@@ -108,7 +118,6 @@
 
     // Responsive SVG charts
     function iframe_resize() {
-
       // set width and height
       document_width = $(document).width();
       sidebar_width = $('.visify .sidebar').width();
@@ -135,7 +144,10 @@
       preprocessData(current_data, 9);
       centerNode = current_data;
 
-      // show initial data
+      show_data(current_data, year)
+    }
+
+    function show_data(current_data, year) {
       chart.set_centerNode(null);
       chart.show(current_data);
       sequence.show(current_data);
@@ -192,19 +204,7 @@
         }
       }
 
-      current_data = buildData(_data)
-      preprocessData(current_data, 7);
-
-      var curr_node;
-      if (chart.getCenterNode) {
-        curr_node = chart.getCenterNode(current_data);
-        slider.set_centerNode(centerNode);
-      } else if(centerNode != current_data && !chart.getCenterNode) {
-        curr_node = chart.get_CenterNode(centerNode);
-        slider.set_centerNode(curr_node);
-      }
-      chart.show(current_data);
-      chart.selectNode(curr_node);
+      update_data()
     }
 
     function quarterItemClick(new_quarter) {
@@ -216,8 +216,13 @@
           month = 0;
         }
       }
+
+      update_data()
+    }
+
+    function update_data() {
       current_data = buildData(_data)
-      preprocessData(current_data, 7);
+      preprocessData(current_data, 9);
 
       var curr_node;
       if (chart.getCenterNode) {
@@ -229,7 +234,9 @@
       }
       chart.show(current_data);
       chart.selectNode(curr_node);
+
     }
+
 
     function ItemClick(node) {
       sidebar.show(node);
@@ -242,7 +249,6 @@
     }
 
     function ItemDrop(levels, node) {
-
       last_node = node;
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
         _data = data
@@ -265,7 +271,7 @@
     }
 
     function preprocessData(root, maxNodes) {
-      if (root.children.length > maxNodes + 1) {
+      if (root.children.length >= maxNodes) {
         var tmp = sortChildren(root.children);
         tmp.reverse();
         var keep = [], move = [], moveAmount = 0, moveAmountFact = 0, breakdown;
@@ -346,6 +352,9 @@
 
       node['taxonomy'] = item.taxonomy
 
+      var _amount_divider = aTreeChart.divider.amount
+      var _recalc_per = aTreeChart.divider.recalc_per
+
       $.each(item.amount, function(k, v) {
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
         if (k == "" || k == data_type) {
@@ -359,7 +368,10 @@
           } else {
             node['amount'] = amount['total']
             if (amount['fonds']) {
-              node['amount_fond'] = amount['fonds']
+               node['amount_fond'] = {}
+              $.each(amount['fonds'], function(k, v) {
+                node['amount_fond'][k] = v / _amount_divider
+              })
             }
           }
         } else {
@@ -369,15 +381,23 @@
             for(var i = x; i < x + 3; i++) {
               if(v[year][i]) amount += v[year][i]['total']
             }
-            node['amount_'+k] = amount
+            node['amount_'+k] = amount / _amount_divider
           } else {
-            node['amount_'+k] = amount['total']
+            node['amount_'+k] = amount['total'] / _amount_divider
           }
         }
       })
 
       if (node['amount'] == undefined || node['amount'] == 0)
         return;
+
+      if (item['recipient_amount'] != undefined) {
+        node['recipient_amount'] = node['amount'] / item['recipient_amount']
+
+        if (_recalc_per == true)
+          node['recipient_amount'] = node['recipient_amount'] / _amount_divider
+      }
+      node['amount'] = node['amount'] / _amount_divider
 
       node['history'] = item.amount[data_type]
       node['total_history'] = item.amount

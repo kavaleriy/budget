@@ -1,5 +1,7 @@
 class TaxonomyRot < Taxonomy
 
+  FUNCTIONAL_CODE = 'kkd_ee'
+
   def columns
       {
         'kkd_a'=>{:level => 1, :title=>I18n.t('mongoid.taxonomy_rot.rankA')},

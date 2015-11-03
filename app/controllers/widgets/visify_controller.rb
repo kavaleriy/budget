@@ -138,13 +138,16 @@ class Widgets::VisifyController < Widgets::WidgetsController
         'taxonomy' => item['taxonomy']
     }
 
-
-
     if info
       node['label'] = info['title'] unless info['title'].nil?
       node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
       node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
+    end
+
+    if @taxonomy.recipients and node['taxonomy'] == @taxonomy.class::FUNCTIONAL_CODE
+      recipient = @taxonomy.recipients.where(code: node['key']).first
+      node['recipient_amount'] = recipient.amount unless recipient.blank? or recipient.amount == 0
     end
 
     # colors = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf']
@@ -166,7 +169,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
       item['children'].each { |child_node|
         explanation = ( @taxonomy.explanation[child_node['taxonomy']][child_node['key']] rescue {} )
-
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
@@ -215,6 +217,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
+
+    @town = Town.find_by(title: @taxonomy.owner)
   end
 
   def set_params
@@ -231,12 +235,35 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 
+    @amounts = build_amounts_list()
+
   rescue => e
     logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   end
 
   def visify_params
-    params.permit(:file_id, :year, :month, :key, :taxonomy, :levels)
+    params.permit(:file_id, :year, :month, :key, :taxonomy, :levels, :amount_type)
   end
+
+  protected
+
+  def build_amounts_list
+    amounts = []
+
+    amounts << { title: 'Гривня', amount: 1 }
+
+    usd_rate = Currency.find_or_create_by!(:short_title => 'USD').rates.where(:year => @sel_year).last
+    amounts << { title: t('amount_usd'), amount: usd_rate.rate, recalc_per: true } if usd_rate and usd_rate.rate
+
+    counters = @town.counters
+    unless counters.nil?
+      amounts << { title: t('amount_citizens'), amount: counters.citizens, amount_pre: t('amount_citizens_short'),  } if counters.citizens
+      amounts << { title: t('amount_house_holdings'), amount_pre: t('amount_house_holdings_short'), amount: counters.house_holdings } if counters.house_holdings
+      amounts << { title: t('amount_square'), amount_pre: t('amount_square_short'), amount: counters.square } if counters.square
+    end
+
+    amounts if amounts.count > 1
+  end
+
 
 end

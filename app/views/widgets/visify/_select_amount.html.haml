@@ -1,0 +1,21 @@
+:css
+  .amount_select {
+    padding-top: 11px;
+  }
+
+.amount_select
+  = select_tag :amount_select, options_for_select(@amounts.collect { |t| [ t[:title], amount: t[:amount], amount_pre: t[:amount_pre], recalc_per: t[:recalc_per] ] } ), { class: 'form-control' }
+
+:javascript
+
+  $(document).ready(function() {
+    // radio buttons to switch level
+    $('.amount_select select').on("change", function(){
+      selected = $(this).find(":selected")
+      aTreeChart.divider.amount = selected.attr('amount') || 1
+      aTreeChart.divider.amount_pre = selected.attr('amount_pre')
+      aTreeChart.divider.recalc_per = (selected.attr('recalc_per') == 'true')
+
+      aTreeChart.refresh()
+    });
+  })

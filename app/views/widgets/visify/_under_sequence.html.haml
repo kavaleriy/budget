@@ -22,12 +22,24 @@
         I18n.locale = window.aHelper.lang()
         label = node.label || ''
 
+
+        amount_tag = aVisify.helpers.formatNumber(node.amount)
+        if (aTreeChart.divider.amount_pre) {
+          amount_tag += ' <small>' + aTreeChart.divider.amount_pre + '</small>'
+        }
+
+        recipient_amount_tag = ''
+        if (node.recipient_amount) {
+          recipient_amount = aVisify.helpers.formatNumber(node.recipient_amount)
+          recipient_amount_tag = ", <small class='recipient_amount'>" + recipient_amount + " на одного отримувача</small>"
+        }
+
         percentage_tag = ''
         if (node.parent && node.amount <= node.parent.amount) {
           percentage = aVisify.helpers.getPercentageString(node.amount, node.parent.amount)
           percParentTitle = I18n.t("js.visify.of") + "<span style='font-weight: bold;'>" + node.parent.label || ''
 
-          percentage_tag = "<br/><small class='percentage'>" + percentage + percParentTitle + "</small>"
+          percentage_tag = "<small class='percentage'>" + percentage + percParentTitle + "</small>"
         }
 
         var fond_count = 0
@@ -50,11 +62,11 @@
         }
         amountFonds += '</div>'
 
-        amount_tag = ''
+        amount_type_tag = ''
         if("#{@data_type}" == "fact" || node.amount_plan) {
-          amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          amount_type_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
         } else {
-          amount_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
+          amount_type_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
         }
 
         amountFact_tag = ''
@@ -67,13 +79,17 @@
           icon_tag =  '<i class="fa ' + node.icon + '"></i> '
 
 
-        div = '<div style="height: 80px"><h4 style="color: #FF9933;">' + icon_tag + '<span>' + label + ': '
-          + '<b>' + aVisify.helpers.formatNumber(node.amount) + '</b>'
+        div = '<div style="height: auto; color: #FF9933;">'
+          + '<h2>' + amount_tag + recipient_amount_tag + '</h2>'
+          + '<h4>' + icon_tag + ' ' + label + "</h4>"
+          + "</div>"
+
+          + '<h5>'
           + percentage_tag
-          + "</h4></div>"
-          + amount_tag
+          + amount_type_tag
           + amountFact_tag
-          + "</h5></div>"
+          + "</h5>"
+
           + amountFonds
 
         $(aContainer + ' #under_sequence').html(div)
