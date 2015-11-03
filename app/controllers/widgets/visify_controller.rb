@@ -145,7 +145,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
-    if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column
+    if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column.to_s
       recipient = @taxonomy.recipients.where(code: node['key']).first
       node['recipient_amount'] = recipient.amount unless recipient.blank? or recipient.amount == 0
     end
@@ -262,7 +262,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       amounts << { title: t('amount_square'), amount_pre: t('amount_square_short'), amount: counters.square } if counters.square
     end
 
-    amounts if amounts.count > 1
+    amounts
   end
 
 

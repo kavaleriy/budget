@@ -20,9 +20,8 @@
       - if @taxonomy._type == "TaxonomyRov"
         .pull-right.col-xs-3
           = render partial: 'select_level'
-      - if @amounts.count > 0
-        .pull-right.col-xs-3
-          = render partial: 'select_amount'
+      .pull-right.col-xs-3
+        = render partial: 'select_amount'
       - if @types_count > 1
         .pull-right.col-xs-3
           .btn-group{'data-toggle' => 'buttons'}
