@@ -15,8 +15,8 @@ class BudgetFileRot < BudgetFile
         'fond' => row['KKFN'].to_s.split('.')[0],
         'amount' => amount / 100,
     }
-    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_b', key: kkd.slice(0, 2)}, {t: 'kkd_cc', key: kkd.slice(0, 4)}, {t: 'kkd_dd', key: kkd.slice(0, 6)}, {t: 'kkd_ee', key: kkd},
-     {t: '_kkd_a', key: kkd.slice(0, 1)}, {t: '_kkd_b', key: kkd.slice(1, 1)}, {t: '_kkd_cc', key: kkd.slice(2, 2)}, {t: '_kkd_dd', key: kkd.slice(4, 2)}, {t: '_kkd_ee', key: kkd.slice(6, 2)}].map { |v|
+    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_b', key: kkd.slice(0, 2)}, {t: 'kkd_cc', key: kkd.slice(0, 4)}, {t: 'kkd_dd', key: kkd.slice(0, 6)}, {t: 'kkd', key: kkd},
+     {t: '_kkd_a', key: kkd.slice(0, 1)}, {t: '_kkd_b', key: kkd.slice(1, 1)}, {t: '_kkd_cc', key: kkd.slice(2, 2)}, {t: '_kkd_dd', key: kkd.slice(4, 2)}, {t: '_kkd', key: kkd.slice(6, 2)}].map { |v|
       line[v[:t]] = v[:key]
     }
 

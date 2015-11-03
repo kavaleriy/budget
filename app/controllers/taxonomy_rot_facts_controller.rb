@@ -1,2 +1,0 @@
-class TaxonomyRotFactsController < TaxonomiesController
-end

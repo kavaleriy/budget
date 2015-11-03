@@ -14,7 +14,7 @@ class BudgetFileRotFact < BudgetFile
         'fond' => row['KKFN'].to_s,
         'amount' => amount / 100,
     }
-    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_b', key: kkd.slice(0, 2)}, {t: 'kkd_cc', key: kkd.slice(0, 4)}, {t: 'kkd_dd', key: kkd.slice(0, 6)}, {t: 'kkd_ee', key: kkd}].map { |v|
+    [{t: 'kkd_a', key: kkd.slice(0, 1)}, {t: 'kkd_b', key: kkd.slice(0, 2)}, {t: 'kkd_cc', key: kkd.slice(0, 4)}, {t: 'kkd_dd', key: kkd.slice(0, 6)}, {t: 'kkd', key: kkd}].map { |v|
       item[v[:t]] = v[:key]
     }
 

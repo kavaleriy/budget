@@ -28,7 +28,7 @@ class BudgetFileRotFt < BudgetFile
       item['_year'] = dt.year.to_s
       item['_month'] = dt.month.to_s
 
-      [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd_ee', key: kkd}].map { |v|
+      [{t: 'kkd_a', key: kkd_a}, {t: 'kkd_b', key: kkd_b}, {t: 'kkd_cc', key: kkd_cc}, {t: 'kkd_dd', key: kkd_dd}, {t: 'kkd', key: kkd}].map { |v|
         item[v[:t]] = v[:key]
       }
 

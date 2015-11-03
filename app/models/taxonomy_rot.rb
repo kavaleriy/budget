@@ -6,13 +6,13 @@ class TaxonomyRot < Taxonomy
         'kkd_b'=>{:level => 2, :title=>I18n.t('mongoid.taxonomy_rot.rankB')},
         'kkd_cc'=>{:level => 3, :title=>I18n.t('mongoid.taxonomy_rot.rankCC')},
         'kkd_dd'=>{:level => 4, :title=>I18n.t('mongoid.taxonomy_rot.rankDD')},
-        'kkd_ee'=>{:level => 5, :title=>I18n.t('mongoid.taxonomy_rot.rankEE')},
+        'kkd'=>{:level => 5, :title=>I18n.t('mongoid.taxonomy_rot.rank')},
         # 'fond'=>{:level => 5, :title=> I18n.t('mongoid.taxonomy_rot.fond')},
       }
   end
 
   def recipients_column
-    :kkd_ee
+    :kkd
   end
 
   # def add_leaf tree, row
@@ -20,15 +20,15 @@ class TaxonomyRot < Taxonomy
   #   kkd_b = row['kkd_b']
   #   kkd_cc = row['kkd_cc']
   #   kkd_dd = row['kkd_dd']
-  #   kkd_ee = row['kkd_ee']
+  #   kkd = row['kkd']
   #
   #   tree[kkd_a] = {} if tree[kkd_a].nil?
   #   tree[kkd_a][kkd_b] = {} if tree[kkd_a][kkd_b].nil?
   #   tree[kkd_a][kkd_b][kkd_cc] = {} if tree[kkd_a][kkd_b][kkd_cc].nil?
   #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd] = {} if tree[kkd_a][kkd_b][kkd_cc][kkd_dd].nil?
-  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee] = [] if tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee].nil?
+  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd] = [] if tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd].nil?
   #
-  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee] << row
+  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd] << row
   # end
   #
   # def extract_rows tree

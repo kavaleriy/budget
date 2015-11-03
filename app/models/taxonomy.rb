@@ -55,7 +55,7 @@
         when 'fond'
           revenue_fond_codes[key]
 
-        when 'kkd_a', 'kkd_b', 'kkd_cc', 'kkd_dd', 'kkd_ee'
+        when 'kkd_a', 'kkd_b', 'kkd_cc', 'kkd_dd', 'kkd'
             revenue_codes[key.ljust(8, '0')]
 
         when 'ktfk'

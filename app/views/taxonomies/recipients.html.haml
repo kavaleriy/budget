@@ -23,7 +23,7 @@
             = recipient[:amount]
         %td= recipient[:title]
 
-= link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
+= link_to t('form.back', :default => t("helpers.links.back")), taxonomy_path(@taxonomy), :class => 'btn btn-default'
 
 :javascript
   $(document).ready(function() {
