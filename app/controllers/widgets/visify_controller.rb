@@ -145,7 +145,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
-    if @taxonomy.recipients and node['taxonomy'] == @taxonomy.class::FUNCTIONAL_CODE
+    if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column
       recipient = @taxonomy.recipients.where(code: node['key']).first
       node['recipient_amount'] = recipient.amount unless recipient.blank? or recipient.amount == 0
     end

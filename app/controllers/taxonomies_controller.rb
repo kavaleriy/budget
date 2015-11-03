@@ -10,10 +10,16 @@ class TaxonomiesController < ApplicationController
 
   def recipients
     @recipients = []
-    @taxonomy.explanation[:ktfk].each { |k, v|
-      recipient = @taxonomy.recipients.find_or_create_by(code: k)
-      @recipients << { code: recipient[:code], title: v[:title], amount: recipient[:amount] }
-    }
+
+    code = @taxonomy.recipients_column
+
+    unless @taxonomy.explanation[code].nil?
+      @taxonomy.explanation[code].each { |k, v|
+        recipient = @taxonomy.recipients.find_or_create_by(code: k)
+        @recipients << { code: recipient[:code], title: v[:title], amount: recipient[:amount] }
+      }
+    end
+
     @recipients.sort_by!{ |item| item[:code] }
   end
 

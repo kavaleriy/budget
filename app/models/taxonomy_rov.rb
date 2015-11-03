@@ -1,7 +1,5 @@
 class TaxonomyRov < Taxonomy
 
-  FUNCTIONAL_CODE = 'ktfk'
-
   def columns
 
     if is_kvk
@@ -23,7 +21,10 @@ class TaxonomyRov < Taxonomy
           'kekv' =>{:level => 4, :draggable => true, :title=>I18n.t('mongoid.taxonomy_rov.economy')},
       }
     end
+  end
 
+  def recipients_column
+    :ktfk
   end
 
 end

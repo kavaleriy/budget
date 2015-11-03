@@ -1,7 +1,5 @@
 class TaxonomyRot < Taxonomy
 
-  FUNCTIONAL_CODE = 'kkd_ee'
-
   def columns
       {
         'kkd_a'=>{:level => 1, :title=>I18n.t('mongoid.taxonomy_rot.rankA')},
@@ -11,6 +9,10 @@ class TaxonomyRot < Taxonomy
         'kkd_ee'=>{:level => 5, :title=>I18n.t('mongoid.taxonomy_rot.rankEE')},
         # 'fond'=>{:level => 5, :title=> I18n.t('mongoid.taxonomy_rot.fond')},
       }
+  end
+
+  def recipients_column
+    :kkd_ee
   end
 
   # def add_leaf tree, row
