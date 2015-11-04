@@ -48,7 +48,7 @@ class BudgetFileLvivoblRov < BudgetFile
       }
 
       item
-    }.reject {|c| c.nil? || c['amount'] == 0 }
+    }.reject {|c| c.nil? || c['amount'] == 0 || (c['kkd_dd'] =~ /00$/) != nil}
   end
 
 end
