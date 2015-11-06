@@ -125,8 +125,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
   end
 
-  def get_bubble_tree_item(item, info)
-
+  def get_bubble_tree_item(item, info = nil)
     node = {
         'amount' => item['amount'],
         'label' => item['key'],
@@ -134,14 +133,21 @@ class Widgets::VisifyController < Widgets::WidgetsController
         'taxonomy' => item['taxonomy']
     }
 
-    item = item['children'][0] if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+    info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} ) unless info
+    node['label'] = info['title'] unless info['title'].blank?
+    node['icon'] = info['icon'] unless info['icon'].blank?
+    node['color'] = info['color'] unless info['color'].blank?
+    # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
 
-    if info
-      node['label'] = info['title'] unless info['title'].blank?
-      node['icon'] = info['icon'] unless info['icon'].blank?
-      node['color'] = info['color'] unless info['color'].blank?
-      # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
+
+    if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+      item = item['children'][0]
+      new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
+
+      node['key'] = "#{node['key']} | #{item['key']}" unless item['key'].blank?
+      node['label'] = "#{node['label']} | #{new_info['title']}" unless new_info['title'].blank?
     end
+
 
     if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column.to_s
       recipient = @taxonomy.recipients.where(code: node['key']).first
@@ -166,9 +172,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       node['children'] = []
 
       item['children'].each { |child_node|
-        explanation = ( @taxonomy.explanation[child_node['taxonomy']][child_node['key']] rescue {} )
-
-        ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
+        ti = get_bubble_tree_item(child_node) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
           node['children'] << ti
         end
