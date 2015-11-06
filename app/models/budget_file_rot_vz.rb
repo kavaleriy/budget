@@ -14,12 +14,15 @@ class BudgetFileRotVz < BudgetFile
     kkd_dd = kkd.slice(0, 6)
 
     [
-        { :amount => row['N1'].to_i, :fond => 1 },
-        { :amount => row['N4'].to_i, :fond => 7 },
+        { :amount => row['N1'].to_i, :fond => 1, :amount_type => :plan },
+        { :amount => row['N3'].to_i, :fond => 7, :amount_type => :plan },
+        { :amount => row['N2'].to_i, :fond => 1, :amount_type => :fact },
+        { :amount => row['N5'].to_i, :fond => 7, :amount_type => :fact },
     ].map do |line|
       next if line[:amount].to_i == 0
 
       item = {
+          '_amount_type' => line[:amount_type],
           'amount' => line[:amount],
           'fond' => line[:fond],
       }

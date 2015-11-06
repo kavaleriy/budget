@@ -13,6 +13,8 @@
 
     field :is_kvk, type: Boolean
 
+    field :cumulative_sum, :type => Boolean
+
     field :explanation, :type => Hash
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
@@ -70,77 +72,78 @@
       end
     end
 
-    def get_level level
-
-      totals = {}
-
-      rows = self.get_rows
-
-      rows[:plan].each do |year, months|
-        totals[year] = { } if totals[year].nil?
-
-        months.each do |month, rows|
-          totals[year][month] = 0 if totals[year][month].nil?
-
-          rows.each do |row|
-            totals[year][month] += row[:amount]
-          end
-        end
-      end
-
-      for i in 0..3
-        totals.each do |year, months|
-          totals[year]['quarters'] = [] if totals[year]['quarters'].nil?
-          totals[year]['quarters'][i+1] = 0 if totals[year]['quarters'][i+1].nil?
-          j = i*3 + 1
-          while j < i*3 + 4
-            totals[year]['quarters'][i+1] += months[j.to_s]
-            j = j + 1
-          end
-        end
-      end
-
-      levels = {}
-      explanation = self.explanation[level.to_s]
-      rows[:plan].each do |year, months|
-        months.each do |month, rows|
-          rows.each do |row|
-            key = row[level]
-
-            if levels[key].nil?
-              levels[key] = {}
-
-              levels[key]['label'] = explanation[key]['title'] || key
-              %w(icon color).map{|k|
-                levels[key][k] = explanation[key][k]
-              } unless explanation[key].nil?
-            end
-
-            levels[key][:amount] = {} if levels[key][:amount].nil?
-            levels[key][:amount][year] = {} if levels[key][:amount][year].nil?
-            levels[key][:amount][year][month] = 0 if levels[key][:amount][year][month].nil?
-            levels[key][:amount][year][month] += row[:amount]
-          end
-        end
-      end
-
-      for i in 0..3
-        levels.each do |key, value|
-          value['quarters'] = {} if value['quarters'].nil?
-          value[:amount].each do |year, months|
-            value['quarters'][year] = [] if value['quarters'][year].nil?
-            value['quarters'][year][i+1] = 0 if value['quarters'][year][i+1].nil?
-            j = i*3 + 1
-            while j < i*3 + 4
-              value['quarters'][year][i+1] += months[j.to_s]
-              j = j + 1
-            end
-          end
-        end
-      end
-
-      { totals: totals, levels: levels }
-    end
+    # def get_level level
+    #
+    #   totals = {}
+    #
+    #   rows = self.get_rows
+    #
+    #   rows[:plan].each do |year, months|
+    #     totals[year] = { } if totals[year].nil?
+    #
+    #     months.each do |month, rows|
+    #       totals[year][month] = 0 if totals[year][month].nil?
+    #
+    #       rows.each do |row|
+    #         totals[year][month] += row[:amount]
+    #       end
+    #     end
+    #   end
+    #
+    #   for i in 0..3
+    #     totals.each do |year, months|
+    #       totals[year]['quarters'] = [] if totals[year]['quarters'].nil?
+    #       totals[year]['quarters'][i+1] = 0 if totals[year]['quarters'][i+1].nil?
+    #       j = i*3 + 1
+    #       while j < i*3 + 4
+    #         totals[year]['quarters'][i+1] += months[j.to_s]
+    #         j = j + 1
+    #       end
+    #     end
+    #   end
+    #
+    #   levels = {}
+    #   explanation = self.explanation[level.to_s]
+    #   rows[:plan].each do |year, months|
+    #     months.each do |month, rows|
+    #       rows.each do |row|
+    #         key = row[level]
+    #
+    #         if levels[key].nil?
+    #           levels[key] = {}
+    #
+    #           levels[key]['label'] = explanation[key]['title'] || key
+    #           %w(icon color).map{|k|
+    #             levels[key][k] = explanation[key][k]
+    #           } unless explanation[key].nil?
+    #         end
+    #
+    #         levels[key][:amount] = {} if levels[key][:amount].nil?
+    #         levels[key][:amount][year] = {} if levels[key][:amount][year].nil?
+    #         levels[key][:amount][year][month] = 0 if levels[key][:amount][year][month].nil?
+    #         levels[key][:amount][year][month] += row[:amount]
+    #       end
+    #     end
+    #   end
+    #
+    #   for i in 0..3
+    #     levels.each do |key, value|
+    #       value['quarters'] = {} if value['quarters'].nil?
+    #       value[:amount].each do |year, months|
+    #         value['quarters'][year] = [] if value['quarters'][year].nil?
+    #         value['quarters'][year][i+1] = 0 if value['quarters'][year][i+1].nil?
+    #         j = i*3 + 1
+    #         while j < i*3 + 4
+    #           value['quarters'][year][i+1] += months[j.to_s]
+    #           j = j + 1
+    #         end
+    #       end
+    #     end
+    #   end
+    #
+    #   { totals: totals, levels: levels }
+    # end
+    #
 
     def get_level_with_fonds level
       levels = {}
@@ -185,30 +188,31 @@
       create_tree rows, [], levels
     end
 
-    def get_subtree level, key, filter
-      subrows = get_subrows level, key, filter
+    # def get_subtree level, key, filter
+    #   subrows = get_subrows level, key, filter
+    #
+    #   create_tree subrows, filter
+    # end
 
-      create_tree subrows, filter
-    end
-
-    def get_subrows level, key, filter, rows = get_rows
-
-      subrows = {}
-      rows.keys.each { |data_type|
-        subrows[data_type] = {} if subrows[data_type].nil?
-        rows[data_type].keys.each { |year|
-          subrows[data_type][year] = {} if subrows[data_type][year].nil?
-          rows[data_type][year].keys.each { |month|
-            subrows[data_type][year][month] = [] if subrows[data_type][year][month].nil?
-            rows[data_type][year][month].each { |row|
-              subrows[data_type][year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
-            }
-          }
-        }
-      }
-
-      subrows
-    end
+    # def get_subrows level, key, filter, rows = get_rows
+    #
+    #   subrows = {}
+    #   rows.keys.each { |data_type|
+    #     subrows[data_type] = {} if subrows[data_type].nil?
+    #     rows[data_type].keys.each { |year|
+    #       subrows[data_type][year] = {} if subrows[data_type][year].nil?
+    #       rows[data_type][year].keys.each { |month|
+    #         subrows[data_type][year][month] = [] if subrows[data_type][year][month].nil?
+    #         rows[data_type][year][month].each { |row|
+    #           subrows[data_type][year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
+    #         }
+    #       }
+    #     }
+    #   }
+    #
+    #   subrows
+    # end
+    #
 
     def get_plan_fact_rows
       rows = {}
@@ -232,6 +236,7 @@
 
     def get_rows
       rows = { }
+
       self.budget_files.each{ |file|
         data_type = file.data_type
         data_type = :plan if data_type.blank?
@@ -240,14 +245,17 @@
           file.rows[year].keys.each {|month|
             rows[data_type] = {} if rows[data_type].nil?
             rows[data_type][year] = {} if rows[data_type][year].nil?
+
+            new_rows = file.rows[year][month].flatten
             if rows[data_type][year][month].nil?
-              rows[data_type][year][month] = file.rows[year][month]
+              rows[data_type][year][month] = new_rows
             else
-              rows[data_type][year][month] += file.rows[year][month].flatten
+              rows[data_type][year][month] += new_rows
             end
           }
         }
       }
+
       rows
     end
 
@@ -309,7 +317,7 @@
 
       rows.keys.each do |dt|
         rows[dt].keys.each do |year|
-          rows[dt][year].keys.each do |month|
+          rows[dt][year].keys.sort.each do |month|
             rows[dt][year][month].each do |row|
               node = tree
 
@@ -368,6 +376,48 @@
           'key' => key,
           'taxonomy' => items[:taxonomy]
       }
+
+      if self.cumulative_sum == true
+        if node['amount'][:fact]
+          node['amount'][:fact].each{ |year, months|
+            next if months.length == 1
+            last_month = months.keys.max
+            annual =  months[last_month].deep_dup
+            months.sort.reverse.to_h.each_key{ |month|
+              prev_month = "#{month.to_i - 1}"
+              next if prev_month == '0'
+
+              if months[prev_month].nil?
+                months.delete(month)
+              else
+                months[month]['total'] -= months[prev_month]['total']
+                months.delete(month) if months[month]['total'] == 0
+              end
+            }
+            months['0'] = annual
+          }
+        end
+
+        if node['amount'][:plan]
+          node['amount'][:plan].each{ |year, months|
+            next if months.length == 1
+            last_month = months.keys.max
+            annual =  months[last_month].deep_dup
+            months.sort.reverse.to_h.each_key{ |month|
+              prev_month = "#{month.to_i - 1}"
+              next if prev_month == '0'
+
+              if months[prev_month].nil?
+                months.delete(month)
+              else
+                months[month]['total'] = months[month]['total'] / 12 + months[month]['total'] - months[prev_month]['total']
+                months.delete(month) if months[month]['total'] == 0
+              end
+            }
+            months['0'] = annual
+          }
+        end
+      end
 
       children = items.keys.reject{|k| k.in?([:amount, :taxonomy]) }
 
