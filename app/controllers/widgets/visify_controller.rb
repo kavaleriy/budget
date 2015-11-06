@@ -13,10 +13,10 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubbletree_data
-    result = use_cache do
-      params[:levels] ? levels = params[:levels].split(",") : levels = []
-      get_bubble_tree(levels)
-    end
+    # result = use_cache do
+    levels = params[:levels] ? params[:levels].split(",") : []
+    result = get_bubble_tree(levels)
+    # end
 
     render json: result
   end
@@ -127,10 +127,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   def get_bubble_tree_item(item, info)
 
-    if (item['children'] && item['children'].count == 1 && @taxonomy.is_a?(TaxonomyRot))
-      item = item['children'][0]
-    end
-
     node = {
         'amount' => item['amount'],
         'label' => item['key'],
@@ -138,10 +134,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
         'taxonomy' => item['taxonomy']
     }
 
+    item = item['children'][0] if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+
     if info
-      node['label'] = info['title'] unless info['title'].nil?
-      node['icon'] = info['icon'] unless info['icon'].nil? or info['icon'].empty?
-      node['color'] = info['color'] unless info['color'].nil? or info['color'].empty?
+      node['label'] = info['title'] unless info['title'].blank?
+      node['icon'] = info['icon'] unless info['icon'].blank?
+      node['color'] = info['color'] unless info['color'].blank?
       # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
     end
 
@@ -158,13 +156,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
       # node['color'] = '#265f91'
     end
 
-    child_count = if item['children'].nil?
-                    0
-                  else
-                    item['children'].reject{|c| ((c['amount'][@sel_year][@sel_month].to_i rescue 0) || 0) == 0 }.length
-                  end
+    # child_count = if item['children'].nil?
+    #                 0
+    #               else
+    #                 item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+    #               end
 
-    unless item['children'].nil?
+    if item['children']
       node['children'] = []
 
       item['children'].each { |child_node|
@@ -172,32 +170,11 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
         ti = get_bubble_tree_item(child_node, explanation) # if child_node[:amount].abs > cut_amount
         unless ti.nil?
-          # if node['children'].length >= MAX_NODES_PER_LEVEL && child_count > MAX_NODES_PER_LEVEL + 2
-          #   if node['children'][MAX_NODES_PER_LEVEL].nil?
-          #     node['children'][MAX_NODES_PER_LEVEL] =
-          #         { 'label' => I18n.t('aggregated'),
-          #           'color' => 'green',
-          #           'icon' => 'fa-folder-open-o'
-          #         }
-          #     node['children'][MAX_NODES_PER_LEVEL]['children'] = []
-          #   end
-          #
-          #   node['children'][MAX_NODES_PER_LEVEL]['amount'] = {} if node['children'][MAX_NODES_PER_LEVEL]['amount'].nil?
-          #   ti['amount'].each { |year, months|
-          #     node['children'][MAX_NODES_PER_LEVEL]['amount'][year] = {} if node['children'][MAX_NODES_PER_LEVEL]['amount'][year].nil?
-          #     months.each { |month, amount|
-          #       node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month] = 0 if node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month].nil?
-          #       node['children'][MAX_NODES_PER_LEVEL]['amount'][year][month] += amount
-          #     }
-          #   }
-          #   node['children'][MAX_NODES_PER_LEVEL]['children'] << ti
-          # else
-            node['children'] << ti
-          # end
+          node['children'] << ti
         end
       }
     end
-    node unless node['amount'].nil?
+    node
   end
 
   def set_budget_file
