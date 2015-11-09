@@ -20,15 +20,15 @@ class TaxonomyRot < Taxonomy
   #   kkd_b = row['kkd_b']
   #   kkd_cc = row['kkd_cc']
   #   kkd_dd = row['kkd_dd']
-  #   kkd = row['kkd']
+  #   kkd = row['kkd_ee']
   #
   #   tree[kkd_a] = {} if tree[kkd_a].nil?
   #   tree[kkd_a][kkd_b] = {} if tree[kkd_a][kkd_b].nil?
   #   tree[kkd_a][kkd_b][kkd_cc] = {} if tree[kkd_a][kkd_b][kkd_cc].nil?
   #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd] = {} if tree[kkd_a][kkd_b][kkd_cc][kkd_dd].nil?
-  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd] = [] if tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd].nil?
+  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee] = [] if tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee].nil?
   #
-  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd] << row
+  #   tree[kkd_a][kkd_b][kkd_cc][kkd_dd][kkd_ee] << row
   # end
   #
   # def extract_rows tree

@@ -142,12 +142,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     # if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
 
-    until item['children'] and 1 == item['children'].length
+    while item['children'] and item['children'].length == 1
       item = item['children'][0]
       new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
 
       node['key'] = "#{node['key']} | #{item['key']}" unless item['key'].blank?
-      node['label'] = "#{node['label']} | #{new_info['title']}" unless new_info['title'].blank?
+      node['label'] = "#{node['label']} | #{new_info['title']}" unless new_info['title'].blank? or node['label'] == new_info['title']
     end
 
 
