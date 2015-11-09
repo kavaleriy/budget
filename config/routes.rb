@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   namespace :community do
     get 'geo_json' => 'communities#geo_json'
     get 'map/:area_id' => 'communities#map'
-    get 'communities_edit' => 'communities#group_edit'
-    get 'communities_edit/:area_id' => 'communities#group_edit'
+    get 'edit' => 'communities#edit'
+    get 'edit/:area_id' => 'communities#edit'
+    get 'edit_table/:feature_id' => 'communities#edit_table'
     get 'communities_load' => 'communities#load'
     get 'get_communities/:area_id' => 'communities#get_communities'
     get 'communities/:area_id' => 'communities#index'

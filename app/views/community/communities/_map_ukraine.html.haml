@@ -128,7 +128,8 @@
       window.history.pushState("", "", '/community/communities');
       $("#custom_map").html('#{ j render :partial => 'map'}');
       $('#embed_code_timeline').css("display","none");
-      $('#edit_btn').attr("href", "/community/communities_edit");
+      $('#edit_btn').css("display","none");
+      $('#upload_btn').css("display","inline-block");
       sequence.show("Ukraine");
       repairMapOptions.center = [48.5, 31.2];
       repairMapOptions.bounds = [ [45, 21.44531], [52.32182, 41.52832]];
@@ -153,6 +154,7 @@
       })
       .done(function (data) {
         data_areas = data;
+        console.log(data)
         aRepairMap.addGeoJsonSvg(data, areasOptions);
       })
       .fail(function () {
@@ -191,7 +193,8 @@
           areasOptions.getInfoContent = getCommunityContent;
           areasOptions.scale = "community";
           aRepairMap.addGeoJsonSvg(data, areasOptions);
-          $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
+          $('#edit_btn').attr("href", "/community/edit/" + feature.properties.id).css("display","inline-block");
+          $('#upload_btn').css("display","none");
           var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
           $('#embed_code_timeline').css("display","block");
           embed_code.set_iframe(src);

@@ -1,7 +1,23 @@
-%h1 Editing community_community
+:css
+  #custom_map {
+    padding: 0px;
+  }
+  .map_wrap {
+    margin-bottom: 10px;
+  }
 
-= render 'form'
+= content_for :header do
+  .head.pull-left
+    = 'Редагування територіальних громад'
 
-= link_to 'Show', @community_community
-\|
-= link_to 'Back', community_communities_path
+.col-xs-12
+  #flash_message
+
+.map_wrap.col-xs-12.col-md-6
+  = render partial: 'map_region'
+
+#edit_table.col-xs-12.col-md-6
+  Натисніть на громаді, щоб відредагувати дані по ній
+
+.col-xs-12
+  = link_to 'Назад', '/community/communities/' + @feature[:properties][:id], :class => 'btn btn-default'

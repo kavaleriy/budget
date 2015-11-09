@@ -1,7 +1,3 @@
-:css
-  .map_wrap {
-    height: 700px;
-  }
 = content_for :header do
   .head.pull-left
     = t('community.community.index.header')
@@ -10,7 +6,7 @@
   = render partial: 'map_ukraine'
 
 .col-sm-12{:style => 'margin-top: 10px;'}
-  = link_to 'Редагувати', '/community/communities_edit', :class => 'btn btn-primary', :id => 'edit_btn'
-  = link_to 'Завантажити', '/community/communities_load', :class => 'btn btn-primary'
+  = link_to 'Редагувати громади', '/community/edit', :class => 'btn btn-primary', :id => 'edit_btn', :style => 'display: none;'
+  = link_to 'Завантажити громади', '/community/communities_load', :class => 'btn btn-primary', :id => 'upload_btn'
   #embed_code_timeline.pull-right{:style => 'display: none;'}
     = render partial: 'widgets/visify/embed_code'

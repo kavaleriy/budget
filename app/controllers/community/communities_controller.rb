@@ -3,8 +3,8 @@ class Community::CommunitiesController < ApplicationController
   layout 'visify', only: [:map]
   after_filter :allow_iframe, only: [:map]
 
-  before_action :set_community_community, only: [:show, :edit, :update, :destroy]
-  before_action :set_area, only: [:index, :map]
+  before_action :set_community_community, only: [:show, :update, :destroy]
+  before_action :set_area, only: [:index, :map, :edit]
 
   # GET /community/communities
   # GET /community/communities.json
@@ -22,15 +22,15 @@ class Community::CommunitiesController < ApplicationController
     @community_community = Community::Community.new
   end
 
-  # GET /community/communities/1/edit
   def edit
-  end
-
-  def group_edit
     @town_select = unless params[:area_id].blank?
                      town_select = Town.where(:id => params[:area_id]).first
                      { :id => town_select[:id].to_s, :title => town_select[:title] }
                    end || { }
+  end
+
+  def edit_table
+    render partial: 'edit_table', locals: { community: Community::Community.find(params[:feature_id]) }, layout: false
   end
 
   def load
@@ -62,17 +62,26 @@ class Community::CommunitiesController < ApplicationController
   # PATCH/PUT /community/communities/1.json
   def update
 
-    unless community_community_params[:coordinates].nil?
+    unless community_community_params[:coordinates].blank?
       @community_community.update(:coordinates => eval(community_community_params[:coordinates]))
     end
 
+    unless community_community_params[:center].blank?
+      @community_community.update(:centers => eval(community_community_params[:center]))
+    end
+
+    agree = community_community_params[:agree] || false
+    @community_community.update(:agree => agree)
+
     respond_to do |format|
-      if @community_community.update(community_community_params.except!(:coordinates))
+      if @community_community.update(community_community_params.except!(:coordinates, :center, :agree))
+        @flash = {"message" => "Дані успішно збережені", "class" => "alert-success" }
         format.js
         format.json { head :no_content }
       else
-        format.html { render :edit }
-        format.json { render json: @community_community.errors, status: :unprocessable_entity }
+        @flash = {"message" => "Помилка збереження даних", "class" => "alert-danger" }
+        format.js
+        format.json { head :no_content }
       end
     end
   end
@@ -207,7 +216,8 @@ class Community::CommunitiesController < ApplicationController
       @feature = {:properties => {:id => area.id.to_s,
                                   :title => area.title,
                                   :bounds => area.bounds,
-                                  :center => area.center
+                                  :center => area.center,
+                                  :edit => params[:action] == "edit"
                                  }
                   }
     end
@@ -215,6 +225,6 @@ class Community::CommunitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def community_community_params
-      params.require(:community).permit(:title, :participants, :coordinates, :geometry_type, :agree, :color, :icon, :link)
+      params.require(:community).permit(:title, :participants, :coordinates, :center, :geometry_type, :agree, :color, :icon, :link, :feature_id)
     end
 end

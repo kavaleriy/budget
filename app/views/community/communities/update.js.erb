@@ -1,0 +1,5 @@
+var flash_message = $("#flash_message");
+flash_message.html('<%= @flash['message'] %>').attr('class','alert ' + '<%= @flash['class'] %>');
+flash_message.delay(100).fadeIn('normal', function() {
+    $(this).delay(3000).fadeOut();
+});

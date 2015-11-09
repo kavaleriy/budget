@@ -4,6 +4,7 @@ class Community::Community
   field :title, type: String
   field :link, type: String
   field :participants, type: String
+  field :center, type: Array
   field :coordinates, type: Array
   field :geometry_type, type: String
   field :agree, type: Boolean

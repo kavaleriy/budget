@@ -30,6 +30,7 @@
     I18n.locale = window.aHelper.lang();
 
     var feature = JSON.parse('#{@feature.to_json}');
+    var editable = feature.properties.edit;
 
     var repairMapOptions = {
       scrollWheelZoom: true,
@@ -78,7 +79,11 @@
     });
 
     function onCommunityClick(feature) {
-      if(feature.properties.link) {
+      if(editable) {
+        $.get("/community/edit_table/" + feature.properties.id, function(data){
+          $("#edit_table").html(data);
+        }, "html")
+      } else if(feature.properties.link) {
         window.open(feature.properties.link,'_blank');
       }
     }
