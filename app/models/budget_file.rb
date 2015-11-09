@@ -11,6 +11,7 @@ class BudgetFile
 
   # source data
   field :rows, :type => Hash
+  field :rows, :type => Hash
 
   belongs_to :taxonomy, autosave: true
   belongs_to :zip_budget_file, autosave: true
