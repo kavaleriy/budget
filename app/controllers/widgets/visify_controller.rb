@@ -141,7 +141,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
 
     # if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
-    if item['children'] and 1 == item['children'].length
+
+    until item['children'] and 1 == item['children'].length
       item = item['children'][0]
       new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
 
