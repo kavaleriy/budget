@@ -433,12 +433,12 @@
 
 
     def revenue_codes
-      @kkd_info = Taxonomy.load_from_csv "db/revenue_codes.#{@locale}.csv" if @kkd_info.nil?
+      @kkd_info = Taxonomy.load_from_csv "db/revenue_codes.#{@locale || 'uk'}.csv" if @kkd_info.nil?
       @kkd_info
     end
 
     def expense_codes
-      @ktfk_info = Taxonomy.load_from_csv "db/expense_codes.#{@locale}.csv" if @ktfk_info.nil?
+      @ktfk_info = Taxonomy.load_from_csv "db/expense_codes.#{@locale || 'uk'}.csv" if @ktfk_info.nil?
       @ktfk_info
     end
 
@@ -447,17 +447,17 @@
     end
 
     def revenue_fond_codes
-      @fond_info = Taxonomy.load_from_csv "db/revenue_fond_codes.#{@locale}.csv" if @fond_info.nil?
+      @fond_info = Taxonomy.load_from_csv "db/revenue_fond_codes.#{@locale || 'uk'}.csv" if @fond_info.nil?
       @fond_info
     end
 
     def expense_ekv_codes
-      @kekv_info = Taxonomy.load_from_csv "db/expense_ekv_codes.#{@locale}.csv" if @kekv_info.nil?
+      @kekv_info = Taxonomy.load_from_csv "db/expense_ekv_codes.#{@locale || 'uk'}.csv" if @kekv_info.nil?
       @kekv_info
     end
 
     def expense_kvk_codes
-      @kvk_info = Taxonomy.load_from_csv "db/expense_kvk_codes.#{@locale}.csv" if @kvk_info.nil?
+      @kvk_info = Taxonomy.load_from_csv "db/expense_kvk_codes.#{@locale || 'uk'}.csv" if @kvk_info.nil?
       @kvk_info
     end
 
