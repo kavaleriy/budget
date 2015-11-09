@@ -1,4 +1,4 @@
-# encoding: utf-8
+#encoding: utf-8
 
 namespace :koatuu do
 
@@ -75,6 +75,17 @@ namespace :koatuu do
   task :update_coordinates => :environment do
     Town.each do |town|
       town.update(:coordinates => get_town_coordinates("#{town.title}, #{town.area_title}")) if town.coordinates.blank?
+    end
+  end
+
+  desc "Add center and bounds to Ukraine regions"
+  task :add_bounds => :environment do
+    require 'csv'
+
+    csv_text = File.read('db/koatuu/koatuu_bounds_center.csv')
+    csv = CSV.parse(csv_text, :headers => true, :col_sep => ";")
+    csv.each do |row|
+      Town.where(:koatuu => row['koatuu']).first.update( { :bounds => eval(row['bounds']), :center => eval(row['center'])} )
     end
   end
 

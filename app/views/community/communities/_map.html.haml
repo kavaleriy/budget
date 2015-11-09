@@ -149,17 +149,7 @@
               info.update(options.getInfoContent("Ukraine"));
             })
             .on("click", function (d) {
-              if (options.featureClickCallback) {
-                if(options.scale == "Ukraine") {
-                  var points = path.centroid(d);
-                  var bounds = path.bounds(d);
-                  var bounds_1 = [map.layerPointToLatLng(bounds[0])['lat'],map.layerPointToLatLng(bounds[0])['lng']];
-                  var bounds_2 = [map.layerPointToLatLng(bounds[1])['lat'],map.layerPointToLatLng(bounds[1])['lng']];
-                  options.featureClickCallback(d, [bounds_1, bounds_2], map.layerPointToLatLng(points));
-                } else {
-                  options.featureClickCallback(d);
-                }
-              }
+              options.featureClickCallback(d);
             });
 
         feature.attr("d", path);
@@ -182,45 +172,6 @@
                                 }
                                 return "default";
                               })
-                     //.append("text")
-                     //.attr("id",function(){return "community-icon-" + d.properties.id})
-                     //.attr("x", centroid[0] - 10)
-                     //.attr("y", centroid[1] - 10)
-                     //.style('fill','green')
-                     //.style('fill-opacity', function(){
-                     //           if (d['properties']['agree']) {
-                     //             return 1;
-                     //           }
-                     //           return 0.5;
-                     //         })
-                     //.attr("text-anchor", "middle")
-                     //.style('font-family', 'FontAwesome')
-                     //.style('stroke', function(){
-                     //           if (d['properties']['agree']) {
-                     //             return "yellow";
-                     //           }
-                     //           return "grey";
-                     //         })
-                     //.style('font-size', '1.8em')
-                     //.style("cursor", function(){
-                     //           if (d['properties']['agree']) {
-                     //             return "pointer";
-                     //           }
-                     //           return "default";
-                     //         })
-                     //.text(function(){
-                     //   if(d['properties']['icon']) {
-                     //       d3.select('body')
-                     //           .append('div')
-                     //           .attr("id", "svg_icon_content")
-                     //           .html("<i class='fa " + d['properties']['icon'] + "'></i>");
-                     //       var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
-                     //       $("#svg_icon_content").remove();
-                     //       return content[1];
-                     //   } else {
-                     //       return "\uf0c0";
-                     //   }
-                     //})
                     .on("mouseover", function () {
                       if (options.getInfoContent)
                         info.update(options.getInfoContent(d.properties));
@@ -477,35 +428,17 @@
         }
       }
 
-      function getGeoCoords(id){
-        var d;
-        $.each(areas_data['features'], function(i,f){
-          if(f['properties']['id'] == id){
-            d = f;
-            return false;
-          }
-        });
-        var points = path.centroid(d);
-        var bounds = path.bounds(d);
-        var bounds_1 = [map.layerPointToLatLng(bounds[0])['lat'],map.layerPointToLatLng(bounds[0])['lng']];
-        var bounds_2 = [map.layerPointToLatLng(bounds[1])['lat'],map.layerPointToLatLng(bounds[1])['lng']];
-        return {"node": d,
-                "bounds": [bounds_1, bounds_2],
-                "center": map.layerPointToLatLng(points)};
-      }
-
       initMap();
       initPopup();
       initRouting();
 
-      addLogosControl()
+      addLogosControl();
 
       return {
         map: map,
         addGeoJsonSvg: addGeoJsonSvg,
         addGeoJsonPoints: addGeoJsonPoints,
-        editRoute: editRoute,
-        getGeoCoords: getGeoCoords
+        editRoute: editRoute
       }
     }
 

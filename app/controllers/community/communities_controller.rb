@@ -140,7 +140,9 @@ class Community::CommunitiesController < ApplicationController
               id: "#{town[:id]}",
               title: town.title,
               level:town.get_level,
-              communities_count:town.community_communities.length
+              communities_count:town.community_communities.length,
+              bounds: town.bounds,
+              center: town.center
           }
       }
     end
@@ -199,11 +201,16 @@ class Community::CommunitiesController < ApplicationController
 
   def set_area
     if params[:area_id].nil?
-      @area = Town.new(:title => '')
+      @feature = {:properties => ""}
     else
-      @area = Town.where(:id => params[:area_id]).first unless params[:area_id].nil?
+      area = Town.where(:id => params[:area_id]).first
+      @feature = {:properties => {:id => area.id.to_s,
+                                  :title => area.title,
+                                  :bounds => area.bounds,
+                                  :center => area.center
+                                 }
+                  }
     end
-
   end
 
     # Never trust parameters from the scary internet, only allow the white list through.

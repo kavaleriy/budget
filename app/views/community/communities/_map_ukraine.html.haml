@@ -71,66 +71,19 @@
 
     var sequence = aSequence('#sequence');
     sequence.initializeBreadcrumbTrail({clickCallback: sequenceClick});
-    sequence.show("Ukraine");
 
-    // add Areas
-    $.ajax({
-      method: 'get',
-      url: '#{community_geo_json_path}&type=areas',
-      dataType: 'json',
-    })
-    .done(function (data) {
-      data_areas = data;
-      aRepairMap.addGeoJsonSvg(data, areasOptions);
-      if('#{@area.title}') {
-        var coords = aRepairMap.getGeoCoords('#{@area.id}');
-        onFeatureClick(coords['node'], coords['bounds'], coords['center']);
-      }
-    })
-    .fail(function () {
-    });
+    var feature = JSON.parse('#{@feature.to_json}');
 
-    // add markers
-    $.ajax({
-      method: 'get',
-      url: '#{community_geo_json_path}',
-      dataType: 'json',
-    })
-    .done(function (data) {
-      data_towns = data;
-      aRepairMap.addGeoJsonPoints(data, pointOptions);
-    })
-    .fail(function () {
-    });
+    if(feature.properties) {
+      create_community_map(feature);
+      sequence.show(feature.properties.title);
+    } else {
+      create_Ukraine_map();
+      sequence.show("Ukraine");
+    }
 
-    function onFeatureClick(feature, bounds, center) {
-      $.ajax({
-        method: 'get',
-        url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
-        dataType: 'json',
-      })
-      .done(function (data) {
-        if(data['features'].length > 0) {
-          window.history.pushState("", "", '/community/communities/' + feature.properties.id);
-          sequence.show(feature.properties.title);
-          $("#custom_map").html('');
-          $("#custom_map").html('#{ j render :partial => 'map'}');
-          repairMapOptions.center = center;
-          repairMapOptions.bounds = bounds;
-          aRepairMap = RepairMap(repairMapOptions);
-          areasOptions.featureClickCallback = onCommunityClick;
-          areasOptions.getInfoContent = getCommunityContent;
-          areasOptions.scale = "community";
-          aRepairMap.addGeoJsonSvg(data, areasOptions);
-          $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
-          var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
-          $('#embed_code_timeline').css("display","block");
-          embed_code.set_iframe(src);
-        }
-      })
-      .fail(function (e) {
-        console.log(e)
-      });
+    function onFeatureClick(feature) {
+      create_community_map(feature);
     }
 
     function onCommunityClick(feature) {
@@ -175,18 +128,78 @@
       window.history.pushState("", "", '/community/communities');
       $("#custom_map").html('#{ j render :partial => 'map'}');
       $('#embed_code_timeline').css("display","none");
+      $('#edit_btn').attr("href", "/community/communities_edit");
       sequence.show("Ukraine");
       repairMapOptions.center = [48.5, 31.2];
       repairMapOptions.bounds = [ [45, 21.44531], [52.32182, 41.52832]];
       aRepairMap = RepairMap(repairMapOptions);
-      // add Areas
       areasOptions.featureClickCallback = onFeatureClick;
       areasOptions.getInfoContent = getAreasContent;
       areasOptions.scale = "Ukraine";
-      aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
+      if(data_towns && data_areas) {
+        aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
+        aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
+      } else {
+        create_Ukraine_map()
+      }
+    }
+
+    function create_Ukraine_map() {
+      // add Areas
+      $.ajax({
+        method: 'get',
+        url: '#{community_geo_json_path}&type=areas',
+        dataType: 'json',
+      })
+      .done(function (data) {
+        data_areas = data;
+        aRepairMap.addGeoJsonSvg(data, areasOptions);
+      })
+      .fail(function () {
+      });
+
       // add markers
-      aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
-      $('#edit_btn').attr("href", "/community/communities_edit");
+      $.ajax({
+        method: 'get',
+        url: '#{community_geo_json_path}',
+        dataType: 'json',
+      })
+      .done(function (data) {
+        data_towns = data;
+        aRepairMap.addGeoJsonPoints(data, pointOptions);
+      })
+      .fail(function () {
+      });
+    }
+
+    function create_community_map(feature){
+      $.ajax({
+        method: 'get',
+        url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
+        dataType: 'json',
+      })
+      .done(function (data) {
+        if(data['features'].length > 0) {
+          window.history.pushState("", "", '/community/communities/' + feature.properties.id);
+          sequence.show(feature.properties.title);
+          $("#custom_map").html('');
+          $("#custom_map").html('#{ j render :partial => 'map'}');
+          repairMapOptions.center = feature.properties.center;
+          repairMapOptions.bounds = feature.properties.bounds;
+          aRepairMap = RepairMap(repairMapOptions);
+          areasOptions.featureClickCallback = onCommunityClick;
+          areasOptions.getInfoContent = getCommunityContent;
+          areasOptions.scale = "community";
+          aRepairMap.addGeoJsonSvg(data, areasOptions);
+          $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
+          var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
+          $('#embed_code_timeline').css("display","block");
+          embed_code.set_iframe(src);
+        }
+      })
+      .fail(function (e) {
+        console.log(e)
+      });
     }
 
   });

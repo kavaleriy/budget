@@ -29,15 +29,16 @@
 
     I18n.locale = window.aHelper.lang();
 
-    var data_areas, data_towns;
+    var feature = JSON.parse('#{@feature.to_json}');
+
     var repairMapOptions = {
       scrollWheelZoom: true,
       minZoom: 6,
       maxZoom: 13,
       dragging: true,
       map_static: false,
-      center: [48.5, 31.2],
-      bounds: [ [45, 21.44531], [52.32182, 41.52832]]
+      center: feature.properties.center,
+      bounds: feature.properties.bounds
     };
     var pointOptions = {
       clustered: false,
@@ -47,98 +48,39 @@
       hoverStyle: {
         opacity: 1
       },
-      featureClickCallback: onFeatureClick,
-      getInfoContent: getTownsContent,
+      featureClickCallback: onCommunityClick,
+      getInfoContent: getCommunityContent,
       selectPath: false,
-      scale: "Ukraine"
+      scale: "community"
     };
     var areasOptions = {
       zIndex: 1,
-      featureClickCallback: onFeatureClick,
-      getInfoContent: getAreasContent,
+      featureClickCallback: onCommunityClick,
+      getInfoContent: getCommunityContent,
       selectPath: false,
-      scale: "Ukraine"
+      scale: "community"
     };
 
     var aRepairMap = RepairMap(repairMapOptions);
 
-    // add Areas
     $.ajax({
       method: 'get',
-      url: '#{community_geo_json_path}&type=areas',
+      url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
       dataType: 'json',
     })
     .done(function (data) {
-      data_areas = data;
-      aRepairMap.addGeoJsonSvg(data, areasOptions);
-      if('#{@area.title}') {
-        var coords = aRepairMap.getGeoCoords('#{@area.id}');
-        onFeatureClick(coords['node'], coords['bounds'], coords['center']);
+      if(data['features'].length > 0) {
+        aRepairMap.addGeoJsonSvg(data, areasOptions);
       }
     })
-    .fail(function () {
+    .fail(function (e) {
+      console.log(e)
     });
-
-    // add markers
-    $.ajax({
-      method: 'get',
-      url: '#{community_geo_json_path}',
-      dataType: 'json',
-    })
-    .done(function (data) {
-      data_towns = data;
-      aRepairMap.addGeoJsonPoints(data, pointOptions);
-    })
-    .fail(function () {
-    });
-
-    function onFeatureClick(feature, bounds, center) {
-      $.ajax({
-        method: 'get',
-        url: '#{community_geo_json_path}&area_title=' + feature.properties.title,
-        dataType: 'json',
-      })
-      .done(function (data) {
-        if(data['features'].length > 0) {
-          window.history.pushState("", "", '/community/communities/' + feature.properties.id);
-          $("#custom_map").html('');
-          $("#custom_map").html('#{ j render :partial => 'map'}');
-          repairMapOptions.center = center;
-          repairMapOptions.bounds = bounds;
-          aRepairMap = RepairMap(repairMapOptions);
-          areasOptions.featureClickCallback = onCommunityClick;
-          areasOptions.getInfoContent = getCommunityContent;
-          areasOptions.scale = "community";
-          aRepairMap.addGeoJsonSvg(data, areasOptions);
-          $('#edit_btn').attr("href", "/community/communities_edit/" + feature.properties.id);
-        }
-      })
-      .fail(function (e) {
-        console.log(e)
-      });
-    }
 
     function onCommunityClick(feature) {
       if(feature.properties.link) {
         window.open(feature.properties.link,'_blank');
       }
-    }
-
-    function getAreasContent(properties) {
-      var content = "", title = "";
-      if(properties != "Ukraine") {
-        content += '<h3>' + properties.title + '</h3>' +
-                   '<p>Територіальних громад: ' + properties.communities_count + '</p>';
-      }
-      return content;
-    }
-
-    function getTownsContent(properties) {
-      var content = "", title = "";
-      if(properties != "Ukraine") {
-        content += '<h3>' + properties.title + '</h3>';
-      }
-      return content;
     }
 
     function getCommunityContent(properties) {
