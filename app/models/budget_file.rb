@@ -4,6 +4,7 @@ class BudgetFile
   field :author, type: String
 
   field :title, type: String
+  field :name, type: String
   field :path, type: String
 
   # plan, fact etc

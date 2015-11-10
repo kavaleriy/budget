@@ -140,12 +140,14 @@ class Widgets::VisifyController < Widgets::WidgetsController
     # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
 
 
-    if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+    # if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
+
+    while item['children'] and item['children'].length == 1
       item = item['children'][0]
       new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
 
       node['key'] = "#{node['key']} | #{item['key']}" unless item['key'].blank?
-      node['label'] = "#{node['label']} | #{new_info['title']}" unless new_info['title'].blank?
+      node['label'] = new_info['title'] unless new_info['title'].blank? or node['label'] == new_info['title']
     end
 
 
@@ -214,8 +216,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @budget_file.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
     @range = range.sort_by{|k,v| k.to_i}
 
-    @sel_year = visify_params[:year] || @range.last[0]
-    @sel_month = visify_params[:month] || @range.last[1].first
+    @sel_year = @range.last[0]
 
     @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 

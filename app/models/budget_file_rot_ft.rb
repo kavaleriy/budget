@@ -14,14 +14,12 @@ class BudgetFileRotFt < BudgetFile
     kkd_dd = kkd.slice(0, 6)
 
     [
-        { :amount => row['T020'].to_i, :amount_type => :plan },
-        { :amount => row['T060'].to_i, :amount_type => :fact },
+        { :amount => row['T060'].to_i },
     ].map do |line|
       next if line[:amount].to_i == 0
 
       item = {
           'amount' => line[:amount] / 100,
-          '_amount_type' => line[:amount_type],
       }
 
       dt = row['DT'].to_date

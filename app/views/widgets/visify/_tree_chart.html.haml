@@ -66,10 +66,11 @@
     aTreeChart.refresh = refresh
     aTreeChart.divider = { amount: 1, recalc_per: false}
 
+    aTreeChart.data_type = "#{@data_type}"
 
 
-    var data_type = "#{@data_type}",
-        year = "#{@sel_year}",
+
+    var year = "#{@sel_year}",
         month = "#{@sel_month}",
         quarter = 0,
         sequence = aSequence('.visify'),
@@ -96,6 +97,11 @@
     function get_data(levels) {
       d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
         _data = data;
+
+        if (data.amount[aTreeChart.data_type] == undefined) {
+          if (data.amount.fact) aTreeChart.data_type = 'fact'
+          if (data.amount.plan) aTreeChart.data_type = 'plan'
+        }
         iframe_resize();
       })
     }
@@ -106,7 +112,7 @@
 
     // radio buttons to switch plan/fact
     $('.data_type').on("click", function(){
-      data_type = $(this).children(':first').val();
+      aTreeChart.data_type = $(this).children(':first').val();
       iframe_resize();
     });
 
@@ -356,7 +362,7 @@
 
       $.each(item.amount, function(k, v) {
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
-        if (k == "" || k == data_type) {
+        if (k == "" || k == aTreeChart.data_type) {
           if(quarter != 0 && v[year]) {
             amount = 0;
             var x = quarter*3 - 2;
@@ -398,7 +404,7 @@
       }
       node['amount'] = node['amount'] / _amount_divider
 
-      node['history'] = item.amount[data_type]
+      node['history'] = item.amount[aTreeChart.data_type]
       node['total_history'] = item.amount
 
       // set default color

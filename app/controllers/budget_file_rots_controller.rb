@@ -10,8 +10,8 @@ class BudgetFileRotsController < BudgetFilesController
     TaxonomyRot.owned_by(current_user.town)
   end
 
-  def create_taxonomy owner
-    TaxonomyRot.create!(:owner => owner)
+  def create_taxonomy
+    TaxonomyRot.create!(:owner => @town_title)
   end
 
 end
