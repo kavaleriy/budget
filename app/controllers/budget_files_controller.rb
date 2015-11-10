@@ -4,7 +4,7 @@ class BudgetFilesController < ApplicationController
   helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
-  before_action :generate_budget_file, only: [:create, :new]
+  before_action :generate_budget_file, only: [:new]
   # before_action :set_budget_file_data_type, only: [:new]
 
   # before_action :update_user_town, only: [:create]
@@ -56,48 +56,60 @@ class BudgetFilesController < ApplicationController
 
   def new
     @taxonomies = get_taxonomies(current_user.town)
-    @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.empty?
+    @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
   end
 
   # POST /revenues
   # POST /revenues.json
   def create
-    @budget_file.author = current_user.email unless current_user.nil?
+    @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
 
-    @budget_file.taxonomy =
-      if params[:budget_file_taxonomy].blank?
-        town_title = params['town_select'].blank? ? current_user.town : params['town_select']
-        create_taxonomy(town_title)
-      else
-        Taxonomy.find params[:budget_file_taxonomy]
-      end
+    budget_file_params[:path].each do |uploaded|
+      new_file_name = get_file_name_for uploaded
+      file = upload_file uploaded, new_file_name
+      @file_name = file[:name]
+      file_path = file[:path].to_s
 
-    @budget_file.taxonomy.locale = params['locale'] || 'uk'
+      @taxonomy =
+        if params[:budget_file_taxonomy].blank?
+          create_taxonomy
+        else
+          Taxonomy.find params[:budget_file_taxonomy]
+        end
 
-    @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
+      @taxonomy.locale = params['locale'] || 'uk'
 
-    new_file_name = get_file_name_for budget_file_params[:path]
-    file = upload_file budget_file_params[:path], new_file_name
-    file_name = file[:name]
-    file_path = file[:path].to_s
+      generate_budget_file
 
-    @budget_file.path = file_path
+      @budget_file.author = current_user.email unless current_user.nil?
 
-    @budget_file.title = budget_file_params[:title].empty? ? "#{file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
+      @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
 
-    table = read_table_from_file file_path
+      @budget_file.path = file_path
 
-    @budget_file.import table
+      @budget_file.title = budget_file_params[:title].empty? ? "#{@file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
+
+
+      table = read_table_from_file file_path
+
+      @budget_file.import table
+
+      @budget_file.save!
+    end
 
     respond_to do |format|
-      if @budget_file.save
-        format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }
-        format.json { render :show, status: :created, location: @budget_file }
-      else
-        format.html { render :new }
-        format.json { render json: @budget_file.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }
+      format.json { render :show, status: :created, location: @budget_file }
     end
+  # rescue => e
+  #   binding.pry
+  #
+  #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
+  #
+  #   respond_to do |format|
+  #     format.html { render :new }
+  #     format.json { render json: e, status: :unprocessable_entity }
+  #   end
   end
 
   # PATCH/PUT /revenues/1
@@ -179,7 +191,7 @@ class BudgetFilesController < ApplicationController
   end
 
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :path, :town)
+    params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :town, :path => [])
   end
 
   def set_budget_file

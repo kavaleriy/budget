@@ -4,10 +4,11 @@
 
 
   - if @budget_file.new_record?
-    .form-group
-      %label.control-label
-        = t('taxonomy')
-      = select_tag :budget_file_taxonomy, options_for_select( [nil] + @taxonomies.all.collect { |p| [ p.title, p.id ] }, @current_taxonomy_id ) , class: 'form-control'
+    - unless @taxonomies.blank?
+      .form-group
+        %label.control-label
+          = t('taxonomy')
+        = select_tag :budget_file_taxonomy, options_for_select( [nil] + @taxonomies.all.collect { |p| [ p.title, p.id ] }, @current_taxonomy_id ) , class: 'form-control'
 
 
   .form-group
@@ -27,7 +28,7 @@
   .form-group
     = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
 
-  = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
+  = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'

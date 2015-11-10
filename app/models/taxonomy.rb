@@ -8,6 +8,7 @@
     attr_accessor :locale
 
     field :title, type: String
+    field :name, type: String
     field :description, type: String
     field :owner, type: String
 
@@ -418,6 +419,17 @@
           }
         end
       end
+
+      node['amount'].each_key {|dt|
+        node['amount'][dt].each{ |year, months|
+          next if months[0]
+          annual = { 'total' => 0 }
+          months.each_key{ |month|
+            annual['total'] += months[month]['total']
+          }
+          months['0'] = annual
+        }
+      }
 
       children = items.keys.reject{|k| k.in?([:amount, :taxonomy]) }
 

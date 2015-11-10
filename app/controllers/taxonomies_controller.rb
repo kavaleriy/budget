@@ -130,7 +130,6 @@ class TaxonomiesController < ApplicationController
 
   def set_params
     @budget_file = @taxonomy
-    @data_type = 'plan'
 
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type

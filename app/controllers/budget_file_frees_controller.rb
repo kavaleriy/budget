@@ -10,8 +10,8 @@ class BudgetFileFreesController < BudgetFilesController
     TaxonomyFree.where(:owner => owner)
   end
 
-  def create_taxonomy owner
-    TaxonomyFree.create!(:owner => owner)
+  def create_taxonomy
+    TaxonomyFree.create!(:owner => @town_title)
   end
 
 end

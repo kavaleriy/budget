@@ -63,7 +63,7 @@
         amountFonds += '</div>'
 
         amount_type_tag = ''
-        if("#{@data_type}" == "fact" || node.amount_plan) {
+        if(aTreeChart.data_type == "fact" || node.amount_plan) {
           amount_type_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.fact") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"
         } else {
           amount_type_tag = "<div style='height: 50px'><h5>" + I18n.t("js.visify.plan") + ": <b>" + aVisify.helpers.formatNumber(node.amount) + "</b>"

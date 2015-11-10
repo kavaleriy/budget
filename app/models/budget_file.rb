@@ -4,13 +4,13 @@ class BudgetFile
   field :author, type: String
 
   field :title, type: String
+  field :name, type: String
   field :path, type: String
 
   # plan, fact etc
   field :data_type
 
   # source data
-  field :rows, :type => Hash
   field :rows, :type => Hash
 
   belongs_to :taxonomy, autosave: true

@@ -17,8 +17,7 @@ class BudgetFileRovVd < BudgetFile
     fond = row['KF'].to_s.split('.')[0]
 
     [
-        { :amount => row['VKNP'].to_i, :amount_type => :plan },
-        { :amount => row['KVNP'].to_i, :amount_type => :fact },
+        { :amount => row['KVNP'].to_i },
     ].map do |line|
       next if line[:amount].to_i == 0
 
@@ -28,7 +27,6 @@ class BudgetFileRovVd < BudgetFile
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
           'kekv' => kekv,
-          '_amount_type' => line[:amount_type],
       }
 
       dt = row['DT'].to_date

@@ -113,7 +113,6 @@
 
         var width_s = 9, space_s = 4;
         var file_type = "#{@file_type}";
-        var data_type = "#{@data_type}";
 
         // fact rectangle
         bars.enter().append("rect")
@@ -157,7 +156,7 @@
           if(node.amount >= node.amount_fact) {
             plan_width = Math.ceil(x(node.amount)/(width_s + space_s))*(width_s + space_s) + 6;
             plan_num = (plan_width-6)/(width_s + space_s);
-            if(data_type == "fact") {
+            if(aTreeChart.data_type == "fact") {
               fact_width = plan_width;
             } else {
               fact_width = plan_width*(node.amount_fact/node.amount);
@@ -205,7 +204,7 @@
                       return width_s;
                    },
             fill: function (d,i){
-                      if((fact_num < plan_num && i > fact_num) || (!fact && data_type == "plan")) {
+                      if((fact_num < plan_num && i > fact_num) || (!fact && aTreeChart.data_type == "plan")) {
                         return "#E6E6E6";
                       }
                       return colors(d);
@@ -249,7 +248,7 @@
         bar_text.selectAll("g")
                 .append("text")
                 .html(function(d, i) {
-                  if (data_type == "fact") return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
+                  if (aTreeChart.data_type == "fact") return I18n.t('js.visify.fact') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                   return I18n.t('js.visify.plan') + ": " + aVisify.helpers.formatNumber(data[i].amount || 0);
                 })
                 .attr("x",-margin.left)

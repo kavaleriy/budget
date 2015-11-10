@@ -147,7 +147,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
 
       node['key'] = "#{node['key']} | #{item['key']}" unless item['key'].blank?
-      node['label'] = "#{node['label']} | #{new_info['title']}" unless new_info['title'].blank? or node['label'] == new_info['title']
+      node['label'] = new_info['title'] unless new_info['title'].blank? or node['label'] == new_info['title']
     end
 
 
@@ -216,8 +216,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @budget_file.get_range.each{ |item| item.each{ |k, v| range[k] = v } }
     @range = range.sort_by{|k,v| k.to_i}
 
-    @sel_year = visify_params[:year] || @range.last[0]
-    @sel_month = visify_params[:month] || @range.last[1].first
+    @sel_year = @range.last[0]
 
     @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 
