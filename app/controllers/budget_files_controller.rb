@@ -81,6 +81,7 @@ class BudgetFilesController < ApplicationController
 
       generate_budget_file
 
+      @budget_file.taxonomy = @taxonomy
       @budget_file.author = current_user.email unless current_user.nil?
 
       @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
