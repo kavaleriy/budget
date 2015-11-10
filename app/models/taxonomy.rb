@@ -422,7 +422,8 @@
 
       node['amount'].each_key {|dt|
         node['amount'][dt].each{ |year, months|
-          next if months[0]
+          next if months['0']
+          
           annual = { 'total' => 0 }
           months.each_key{ |month|
             annual['total'] += months[month]['total']
