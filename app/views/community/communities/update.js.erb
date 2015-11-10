@@ -3,3 +3,4 @@ flash_message.html('<%= @flash['message'] %>').attr('class','alert ' + '<%= @fla
 flash_message.delay(100).fadeIn('normal', function() {
     $(this).delay(3000).fadeOut();
 });
+d3.select('path[data-id="' + '<%= @community_community.id.to_s %>' + '"]').style("fill", '<%= @community_community.agree ? "true" : "" %>' ? "#0098dd" : "grey");

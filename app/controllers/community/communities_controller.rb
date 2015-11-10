@@ -23,10 +23,6 @@ class Community::CommunitiesController < ApplicationController
   end
 
   def edit
-    @town_select = unless params[:area_id].blank?
-                     town_select = Town.where(:id => params[:area_id]).first
-                     { :id => town_select[:id].to_s, :title => town_select[:title] }
-                   end || { }
   end
 
   def edit_table
@@ -62,12 +58,34 @@ class Community::CommunitiesController < ApplicationController
   # PATCH/PUT /community/communities/1.json
   def update
 
-    unless community_community_params[:coordinates].blank?
-      @community_community.update(:coordinates => eval(community_community_params[:coordinates]))
+    if community_community_params[:coordinates].blank?
+      @community_community.update(:coordinates => nil)
+    else
+      begin
+        @community_community.update(:coordinates => eval(community_community_params[:coordinates]))
+      rescue
+        respond_to do |format|
+          @flash = {"message" => "Помилка збереження даних: перевірте поле Межі громади (геокоординати)", "class" => "alert-danger" }
+          format.js
+          format.json { head :no_content }
+          return
+        end
+      end
     end
 
-    unless community_community_params[:center].blank?
-      @community_community.update(:centers => eval(community_community_params[:center]))
+    if community_community_params[:center].blank?
+      @community_community.update(:center => nil)
+    else
+      begin
+        @community_community.update(:center => eval(community_community_params[:center]))
+      rescue
+        respond_to do |format|
+          @flash = {"message" => "Помилка збереження даних: перевірте поле Центр громади (геокоординати)", "class" => "alert-danger" }
+          format.js
+          format.json { head :no_content }
+          return
+        end
+      end
     end
 
     agree = community_community_params[:agree] || false
@@ -100,15 +118,28 @@ class Community::CommunitiesController < ApplicationController
   end
 
   def geo_json
-    result = []
 
     if params[:area_title]
+      areas = []
+      centers = []
       town_id = Town.where(:title => params[:area_title]).first['id']
       Community::Community.all.where(:town_id => town_id).each do |community|
         geo = build_community(community)
-        result << geo unless geo.blank?
+        areas << geo unless geo.blank?
+        geo = build_community_centers(community)
+        centers << geo unless geo.blank?
       end
+      @geo_json = { "areas" => {
+                      "type" => "FeatureCollection",
+                      "features" => areas
+                  },
+                    "centers" => {
+                        "type" => "FeatureCollection",
+                        "features" => centers
+                  }
+      }
     else
+      result = []
       towns =
           case params[:type]
             when 'areas'
@@ -125,12 +156,11 @@ class Community::CommunitiesController < ApplicationController
         end
         result << geo unless geo.blank?
       end
+      @geo_json = {
+          "type" => "FeatureCollection",
+          "features" => result
+      }
     end
-
-    @geo_json = {
-        "type" => "FeatureCollection",
-        "features" => result
-    }
 
     respond_to do |format|
       format.json { render json: @geo_json }
@@ -182,6 +212,28 @@ class Community::CommunitiesController < ApplicationController
           geometry: {
               type: community[:geometry_type],
               coordinates: community[:coordinates]
+          },
+          properties: {
+              id: "#{community[:id]}",
+              title: community.title,
+              link: community.link,
+              participants: community.participants,
+              agree: community.agree,
+              color: community.color,
+              icon: community.icon,
+              center: community.center
+          }
+      }
+    end
+  end
+
+  def build_community_centers(community)
+    unless community[:center].blank?
+      {
+          type: "Feature",
+          geometry: {
+              type: 'Point',
+              coordinates: community[:center]
           },
           properties: {
               id: "#{community[:id]}",

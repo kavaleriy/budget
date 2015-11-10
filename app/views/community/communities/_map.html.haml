@@ -23,7 +23,7 @@
     RepairMap = function(options) {
       options = options || {};
 
-      var map, path;
+      var map, path, mouse_position;
       var svg, g, colorScale, areas_minValue, areas_maxValue, areas_data;
       var popup;
       var router;
@@ -36,7 +36,12 @@
         mapSettings.scrollWheelZoom = options.scrollWheelZoom == true;
         mapSettings.maxZoom = options.maxZoom;
         mapSettings.dragging = options.dragging;
+        mapSettings.editable = options.editable;
         map = L.map('map', mapSettings);
+
+        map.on("mouseup", function(e){
+          mouse_position = e.latlng;
+        })
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -155,35 +160,61 @@
         feature.attr("d", path);
 
         if(options.scale == "community") {
+          var drag;
+
+          if(map.options.editable) {
+            drag = d3.behavior.drag()
+                              .on("dragstart", dragstarted)
+                              .on("drag", dragged)
+                              .on("dragend", dragended);
+
+            function dragstarted(d) {
+              d3.event.sourceEvent.stopPropagation();
+              d3.select(this).classed("dragging", true);
+              options.featureClickCallback({"properties": {"id": d3.select(this).attr("data-id")}});
+            }
+
+            function dragged(d) {
+              d3.select(this).attr("cx", d3.event.x).attr("cy", d3.event.y);
+            }
+
+            function dragended(d) {
+              var elem = d3.select(this);
+              elem.classed("dragging", false);
+              $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );
+            }
+          }
+
           g.selectAll("path")
                 .each(function (d, i) {
-                   var centroid = path.centroid(d);
-                    g.append("circle")
+                   var points = path.centroid(d);
+                   g.append("circle")
                      .attr("id",function(){return "community-icon-" + d.properties.id})
-                     .attr("cx", centroid[0])
-                     .attr("cy", centroid[1])
-                     .attr("r", 4)
+                     .attr("data-id", function(){return d.properties.id;})
+                     .attr("cx", points[0])
+                     .attr("cy", points[1])
+                     .attr("r", d.properties.center ? 0 : 4)
                      .style('fill', 'yellow')
                      .style('stroke', 'orange')
                      .style('stroke-width', '2px')
                      .style('cursor', function(){
-                                if (d['properties']['agree']) {
-                                  return "pointer";
-                                }
-                                return "default";
+                                return map.options.editable ? "crosshair" : (d['properties']['agree'] ? "pointer" : "default");
                               })
-                    .on("mouseover", function () {
-                      if (options.getInfoContent)
-                        info.update(options.getInfoContent(d.properties));
-                      })
-                    .on("mouseout", function () {
-                      info.update(options.getInfoContent("Ukraine"));
-                    })
-                    .on("click", function () {
-                      if (options.featureClickCallback) {
-                        options.featureClickCallback(d);
-                      }
-                    });
+                     .on("mouseenter", function () {
+                       if (options.getInfoContent && !map.options.editable) {
+                         info.update(options.getInfoContent(d.properties));
+                       } else {
+                         map.dragging.disable();
+                       }})
+                     .on("mouseout", function () {
+                       map.options.editable ? map.dragging.enable() : info.update(options.getInfoContent("Ukraine"));
+                     })
+                     .on("click", function () {
+                       if (options.featureClickCallback && !map.options.editable) {
+                         options.featureClickCallback(d);
+                       }
+                     })
+                     .call(map.options.editable ? drag : function(){return false;});
                 });
         };
 
@@ -243,14 +274,15 @@
 
         function getSVGPointToLayer(feature, latlng) {
           var svgIcon = L.divIcon({
-              className: 'yellow-town-icon',
+              className: map.options.editable ? 'yellow-town-icon-editable' : 'yellow-town-icon',
               iconSize: [10, 10],
               //html: "<p>" + feature.properties.title + "<p/>"
             });
 
           return L.marker(latlng, {
             icon: svgIcon,
-            opacity: 1
+            opacity: 1,
+            draggable: map.options.editable
           });
         }
 
@@ -278,6 +310,12 @@
             },
             mouseout: function () {
               info.update(options.getInfoContent("Ukraine"));
+            },
+            dragstart: function() {
+              options.featureClickCallback(feature);
+            },
+            dragend: function() {
+              $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );
             }
           });
         }
@@ -298,7 +336,7 @@
             this._div.innerHTML = content
           }
           else {
-            this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей або натисніть, щоб переглянути громади у вибраній області'
+            map.options.editable ? this._div.innerHTML = "" : this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей або натисніть, щоб переглянути громади у вибраній області'
           }
           };
 
