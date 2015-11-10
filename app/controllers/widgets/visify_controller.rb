@@ -127,11 +127,14 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubble_tree_item(item, info = nil)
+    while item['children'] and item['children'].length == 1
+      item = item['children'][0]
+    end
     node = {
-        'amount' => item['amount'],
-        'label' => item['key'],
-        'key' => item['key'],
-        'taxonomy' => item['taxonomy']
+      'amount' => item['amount'],
+      'label' => item['key'],
+      'key' => item['key'],
+      'taxonomy' => item['taxonomy']
     }
 
     info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} ) unless info
@@ -139,18 +142,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
     node['icon'] = info['icon'] unless info['icon'].blank?
     node['color'] = info['color'] unless info['color'].blank?
     # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
-
-
-    # if item['children'] and 1 == item['children'].reject{|c| ((c['amount'][@data_type.to_sym][@sel_year][@sel_month]['total'].to_i rescue 0) || 0) == 0 }.length
-
-    while item['children'] and item['children'].length == 1
-      item = item['children'][0]
-      new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
-
-      node['key'] = item['key']
-      node['label'] = new_info['title'] unless new_info['title'].blank? or node['label'] == new_info['title']
-    end
-
 
     if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column.to_s
       recipient = @taxonomy.recipients.where(code: node['key']).first
