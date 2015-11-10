@@ -163,11 +163,6 @@
           var drag;
 
           if(map.options.editable) {
-            drag = d3.behavior.drag()
-                              .on("dragstart", dragstarted)
-                              .on("drag", dragged)
-                              .on("dragend", dragended);
-
             function dragstarted(d) {
               d3.event.sourceEvent.stopPropagation();
               d3.select(this).classed("dragging", true);
@@ -183,6 +178,11 @@
               elem.classed("dragging", false);
               $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );
             }
+            
+            drag = d3.behavior.drag()
+                              .on("dragstart", dragstarted)
+                              .on("drag", dragged)
+                              .on("dragend", dragended);
           }
 
           g.selectAll("path")
