@@ -147,7 +147,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       item = item['children'][0]
       new_info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} )
 
-      node['key'] = "#{node['key']} | #{item['key']}" unless item['key'].blank?
+      node['key'] = item['key']
       node['label'] = new_info['title'] unless new_info['title'].blank? or node['label'] == new_info['title']
     end
 
