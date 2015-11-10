@@ -5,6 +5,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   before_action :set_budget_file
   before_action :set_params, :except => [:get_bubbletree_nodedata]
+  before_action :set_amounts, :except => [:get_bubbletree_nodedata]
 
   MAX_NODES_PER_LEVEL = 100
 
@@ -220,10 +221,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     @fond_codes = Taxonomy.fond_codes(params['locale'] || 'uk')
 
-    @amounts = build_amounts_list()
-
   rescue => e
     logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
+  end
+
+  def set_amounts
+    @amounts = build_amounts_list()
   end
 
   def visify_params
@@ -240,7 +243,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     usd_rate = Currency.find_or_create_by!(:short_title => 'USD').rates.where(:year => @sel_year).last
     amounts << { title: t('amount_usd'), amount: usd_rate.rate, recalc_per: true } if usd_rate and usd_rate.rate
 
-    counters = @town.counters
+    counters = @town.counters if @town
     unless counters.nil?
       amounts << { title: t('amount_citizens'), amount: counters.citizens, amount_pre: t('amount_citizens_short'),  } if counters.citizens
       amounts << { title: t('amount_house_holdings'), amount_pre: t('amount_house_holdings_short'), amount: counters.house_holdings } if counters.house_holdings
