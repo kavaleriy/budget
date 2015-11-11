@@ -130,6 +130,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     while @taxonomy.is_a?(TaxonomyRot) and item['children'] and item['children'].length == 1
       item = item['children'][0]
     end
+
     node = {
       'amount' => item['amount'],
       'label' => item['key'],

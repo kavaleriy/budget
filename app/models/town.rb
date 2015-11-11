@@ -63,6 +63,11 @@ class Town
           row_area[:indicator_files] << get_node(city)
         end
 
+        self.regions(area_code).each do |city|
+          city_code = city.koatuu
+          row_area[:indicator_files] << get_node(city)
+        end
+
         tree << row_area
       end
       tree
