@@ -7,7 +7,7 @@
     %td
       = link_to budget_file_download_path(budget_file), :class => '' do
         %i.fa.fa-download.fa-2x.fa-border
-    %td= budget_file.taxonomy.owner
+    %td= budget_file.taxonomy.owner if budget_file.taxonomy
     %td= budget_file.data_type
     %td= budget_file.author
     %td
