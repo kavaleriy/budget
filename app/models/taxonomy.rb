@@ -384,13 +384,11 @@
             next if months.length == 1
             last_month = months.keys.max
             annual =  months[last_month].deep_dup
-            months.sort.reverse.to_h.each_key{ |month|
+            months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
               prev_month = "#{month.to_i - 1}"
               next if prev_month == '0'
 
-              if months[prev_month].nil?
-                months.delete(month)
-              else
+              unless months[prev_month].nil?
                 months[month]['total'] -= months[prev_month]['total']
                 months.delete(month) if months[month]['total'] == 0
               end

@@ -19,8 +19,8 @@ class BudgetFileRovVdsController < BudgetFileRovsController
   end
 
   def create_taxonomy
-    t_title = @file_name.gsub(/vd(?<VDGZ>\d\d)\d\d\w\d/i, 'VD\k<VDGZ>XXXX')
-    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: t_title)
+    t_title = @file_name.gsub(/vd\d\d\d\d\d\d.(?<TERRA>\d\d\d)/i, 'VDxxxxxx.\k<TERRA>')
+    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: t_title, cumulative_sum: true)
     taxonomy.title = t_title
     taxonomy
   end
