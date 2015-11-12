@@ -1,5 +1,7 @@
 # encoding: utf-8
+
 class Repairing::CategoryImgUploader < CarrierWave::Uploader::Base
+
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -31,11 +33,21 @@ class Repairing::CategoryImgUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :thumb do
-    process :resize_to_fit => [128, 128]
+    process :resize_to_fit => [50, 66]
+    process crop: '44x44+3+3'
   end
 
   version :icon do
-    process :resize_to_fit => [64, 64]
+    process :resize_to_fit => [28, 37]
+  end
+
+  private
+
+  def crop geometry
+    manipulate! do |img|
+      img.crop(geometry)
+      img
+    end
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

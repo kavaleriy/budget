@@ -73,6 +73,9 @@ class Repairing::GeojsonBuilder
   private
 
   def self.extract_props repair
+    if repair.layer && repair.layer[:repairing_category_id]
+      category = Repairing::Category.find(repair.layer[:repairing_category_id])
+    end
     {
         id: "#{repair[:id]}",
         parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
@@ -89,6 +92,7 @@ class Repairing::GeojsonBuilder
         repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: "#{repair[:repair_date].to_s.split('-')[0] if repair[:repair_date]}",
         warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
+        img: "#{category.img ? category.img.icon.url : ''}"
     }
   end
 

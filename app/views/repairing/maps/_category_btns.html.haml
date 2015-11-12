@@ -24,13 +24,17 @@
     height: 34px !important;
   }
 
+  #category_btns .btn {
+    padding: 4px;
+  }
+
 #category_description
   %span
     Вибрати категорію робіт:
 #category_btns.btn-group
   - Repairing::Category.all.select{|p| p.category.nil? }.each do |category|
-    .btn.btn-primary{:title => category.title, 'data-id' => category.id}
-      %i.fa{ :class => category.icon.blank? ? 'fa-asterisk' : category.icon }
+    .btn.btn-default{:title => category.title, 'data-id' => category.id}
+      = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
 #category_content
   #category_title
   #subcategories

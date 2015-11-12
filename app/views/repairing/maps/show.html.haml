@@ -52,7 +52,8 @@
     var aRepairMap = RepairMap({
       zoom: 6,
       minZoom: 5,
-      maxZoom: 14,
+      maxZoom: 18,
+      center: [48.5, 31.2],
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       scrollWheelZoom: true
     })
@@ -79,7 +80,7 @@
         getPoint: getPoint
       })
 
-      aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json}'));
+      aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json(:except => :img)}'));
 
       aRepairMap.addYearLayer(new Date().getFullYear());
       $('#category_btns .btn').on("click",function(){
@@ -156,28 +157,17 @@
     .fail(function () {
     });
 
-    var HouseIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});
-    var RoadIcon = L.Icon.extend({ options: { iconSize: [32, 28] }});
-
-    var icons = {}
-    icons.house = new HouseIcon({iconUrl: '/assets/repairing/repair_house_small.png'})
-    icons.road = new RoadIcon({iconUrl: '/assets/repairing/repair_road_small.png'})
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
 
     function getPoint(properties) {
       var point = {}
-      switch (properties.repair) {
-        case 'house':
-          point.icon = icons.house
-          break
-        case 'road':
-          point.icon = icons.road
-          break
-        default:
-          point.icon = new L.Icon.Default()
-          break
+      if(properties.img) {
+        point.icon = new Icon({iconUrl: properties.img});
+      } else {
+        //point.icon = new L.Icon.Default();
+        point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
       }
-
-      return point
+      return point;
     }
 
     function onFeatureClick(feature, popup) {

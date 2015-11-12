@@ -1,0 +1,8 @@
+var flash_message = $("#flash_message");
+flash_message.html('<%= @flash['message'] %>').attr('class','alert ' + '<%= @flash['class'] %>');
+flash_message.delay(100).fadeIn('normal', function() {
+    $(this).delay(3000).fadeOut();
+});
+if('<%= @repairing_category.img %>') {
+    $(".upload_img").html("<img src='" + '<%= @repairing_category.img.thumb.url if @repairing_category.img%>' + "'>");
+}

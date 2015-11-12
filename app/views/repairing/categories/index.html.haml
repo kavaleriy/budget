@@ -9,6 +9,7 @@
   .repairing .tree_view{
     min-height: 400px;
     padding-top: 15px;
+    overflow-x: auto;
   }
 
   .repairing .documents {
@@ -19,13 +20,16 @@
   .head.pull-left
     = t('layouts.navbar.repairing_category')
 
+#flash_message.col-xs-12
+
 .repairing
-  .panel.panel-default.col-sm-4
+
+  .panel.panel-default.col-xs-12.col-md-5
     .panel-body
       = render :partial => 'tree_control', :locals => { prefix: 'repairing_category' }
       = render :partial => 'tree_view', :locals => { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
-  .col-sm-8
+  .col-xs-12.col-md-7
     .panel.panel-default
       .panel-heading
         = t('repairing.repairs.form.edit_category')
@@ -123,11 +127,20 @@
       });
     })
 
+    var selected_node = null;
     $('#repairing_category_tree_view').on("select_node.jstree", function(e, data){
-      if(data.node.parents.length > 1) {
-        $('#repairing_category_create').attr("disabled","disabled");
-      } else {
+      if(data.node.id == selected_node){
+        $('#repairing_category_tree_view').jstree('deselect_all');
         $('#repairing_category_create').removeAttr("disabled");
+        $('#category_content').html('');
+        selected_node = null;
+      } else {
+        selected_node = data.node.id;
+        if(data.node.parents.length > 1) {
+          $('#repairing_category_create').attr("disabled","disabled");
+        } else {
+          $('#repairing_category_create').removeAttr("disabled");
+        }
       }
     })
 

@@ -1,81 +1,27 @@
 %table.table
   %thead
     %th
-      Іконка
-    %th
       Назва
     %th
-      Колір
+      Зображення
   %tbody
     %tr
-      %td
-        %a.icon{:href => '#', :id => 'icon', 'data-resource' => 'repairing_category', 'data-type' => 'select2', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть іконку...', 'data-value' => @repairing_category.icon ? @repairing_category.icon : ""}
       %td
         %a.editable{:href => '#', :id => 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть назву категорії...'}
           = @repairing_category.title
       %td
-        %a.color{:href => '#', :id => 'color', 'data-resource' => 'repairing_category', 'data-type' => 'select2', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть колір...', 'data-value' => @repairing_category.color ? @repairing_category.color : ""}
+        = bootstrap_form_for @repairing_category, html: {class: 'form-inline'}, remote: true do |f|
+          .upload_img{:style => 'float:left;margin-right:10px;'}
+            -if @repairing_category.img?
+              =image_tag @repairing_category.img.thumb.url
+            -else
+              =image_tag "no_image.png"
+          = f.file_field :img, :label => "Завантажити/змінити", :multiple => false
+          = f.button :class => 'btn btn-primary' do
+            %i.fa.fa-upload
 
 :javascript
 
   $(document).ready(function() {
-    $('.editable').editable();
-
-    var icons = [], colors = [];
-
-    /* Loading colors and icons once while loading the page.*/
-    if(icons == "" || colors == "") {
-      $.getJSON( "#{asset_path('enums.json') }", function( data ) {
-        $.each( data['fa_icon_list'], function(key,val) {
-          icons.push({id: val, text: val});
-        })
-        $.each( data['undp_colors_list'], function(key,val) {
-          colors.push({id: val, text: val});
-        })
-      });
-    }
-
-    $('.color').editable({
-      source: colors,
-      select2: {
-        width: '200px',
-        allowClear: true,
-        multiple: false,
-        formatResult: formatColorSelect,
-        formatSelection: formatColorSelect,
-      },
-      display: function(value, sourceData) {
-        if(value) {
-          $(this).html("<div style='width: 50px; height: 20px; background-color: " + value + "; border-radius: 10px;'/>");
-        } else {
-          $(this).html("<div style='width: 50px; height: 20px; background-color: #0098dd; border-radius: 10px;'/>");
-        }
-      }
-    });
-
-    function formatColorSelect(el) {
-      return "<div style='width: 100%; height: 43px; background-color: " + el.id + ";'/>";
-    }
-
-    $('.icon').editable({
-      source: icons,
-      select2: {
-        width: '200px',
-        allowClear: true,
-        multiple: false,
-        formatResult: formatFaSelect,
-        formatSelection: formatFaSelect,
-      },
-      display: function(value, sourceData) {
-        if(value) {
-          $(this).html("<i class='fa " + value + "'/>");
-        } else {
-          $(this).html("<i class='fa fa-users'/>");
-        }
-      }
-    });
-
-    function formatFaSelect(el) {
-      return "<i class='fa " + el.id + "'/>" + el.id;
-    }
-  });
+    $(".editable").editable();
+  })

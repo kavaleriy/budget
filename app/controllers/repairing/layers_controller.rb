@@ -135,7 +135,7 @@ module Repairing
             amount: repair['Вартість'],
             repair_date: repair['Дата ремонту'],
             warranty_date: repair['Гарантія'],
-            description: repair['Додаткова інфориація'],
+            description: repair['Додаткова інформація'],
 
             address: repair['Адреса'],
             address_to: repair['Адреса1'],

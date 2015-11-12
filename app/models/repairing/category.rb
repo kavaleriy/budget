@@ -15,6 +15,10 @@ class Repairing::Category
   field :color, type: String
   field :position, type: Integer
 
+  require 'carrierwave/mongoid'
+  mount_uploader :img, Repairing::CategoryImgUploader
+  skip_callback :update, :before, :store_previous_model_for_img
+
   def self.tree_root
     Repairing::Category.where( :category_id.in =>[ nil, '#'])
   end

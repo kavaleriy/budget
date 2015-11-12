@@ -19,7 +19,7 @@
       $('##{prefix}_create').on('click', function () {
         var sel = tree.get_selected();
         sel = sel.length > 0 ? sel[0] : null
-        sel = tree.create_node(sel, {"type": "file"});
+        sel = tree.create_node(sel, {"type": sel ? "child" : "root" });
         if (sel) {
           tree.edit(sel);
         }

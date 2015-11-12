@@ -51,20 +51,23 @@ class Repairing::CategoriesController < ApplicationController
   # PATCH/PUT /repairing/categories/1
   # PATCH/PUT /repairing/categories/1.json
   def update
-    new_position = repairing_category_params[:position].to_i
-    new_category_id = repairing_category_params[:category_id]
-    old_category_id = @repairing_category.category_id.to_s
-    id = params[:id]
 
-    recalc_positions(new_category_id, id, new_position)
+    unless repairing_category_params[:position].nil? && repairing_category_params[:category_id].nil?
+      new_position = repairing_category_params[:position].to_i
+      new_category_id = repairing_category_params[:category_id]
+      old_category_id = @repairing_category.category_id.to_s
+      recalc_positions(new_category_id, params[:id], new_position)
+    end
 
     respond_to do |format|
       if @repairing_category.update(repairing_category_params)
-        recalc_positions(old_category_id, nil) unless old_category_id == new_category_id
+        recalc_positions(old_category_id, nil) unless old_category_id.nil? && new_category_id.nil? && old_category_id == new_category_id
+        @flash = {"message" => "Дані успішно збережені", "class" => "alert-success" }
         format.js
         format.json { render :show, status: :ok, location: @repairing_category }
       else
-        format.js { render js: 'alert("Помилка збереження")' }
+        @flash = {"message" => "Помилка збереження даних.", "class" => "alert-danger" }
+        format.js
         format.json { render json: @repairing_category.errors, status: :unprocessable_entity }
       end
     end
@@ -103,6 +106,6 @@ class Repairing::CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_category_params
-      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position)
+      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position, :img)
     end
 end
