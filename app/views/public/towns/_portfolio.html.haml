@@ -16,11 +16,7 @@
     font-weight: 700;
     opacity: .9;
   }
--#.circle_block{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
--#  %a{:href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id}
--#    %img{:src => "/assets/public/" + item + ".svg", :class => 'circle'}
--#  %p
--#    = t('public.towns.portfolio.' + item)
+
 .col-sm-3
   .view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
     %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}

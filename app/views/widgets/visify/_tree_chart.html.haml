@@ -61,15 +61,6 @@
   var aTreeChart = {}
 
   $(document).ready(function() {
-    // export methods
-    aTreeChart.get_data = get_data
-    aTreeChart.refresh = refresh
-    aTreeChart.divider = { amount: 1, recalc_per: false}
-
-    aTreeChart.data_type = "#{@data_type}"
-
-
-
     var year = "#{@sel_year}",
         month = "#{@sel_month}",
         quarter = 0,
@@ -87,6 +78,20 @@
         current_data,
         _data,
         width;
+
+    // export methods
+    aTreeChart.get_data = get_data
+    aTreeChart.refresh = refresh
+    aTreeChart.divider = { amount: 1, recalc_per: false}
+
+    aTreeChart.setCumulative = function(is_cumulative) {
+      aTreeChart.is_cumulative = is_cumulative == true
+      refresh()
+    }
+    aTreeChart.is_cumulative = false
+
+    aTreeChart.data_type = "#{@data_type}"
+
 
     if(file_type == "TaxonomyRot") {
       draggable = 0;
@@ -185,7 +190,7 @@
       if(slider_chart.current_quarter != 0 && year == new_year) {
         quarter = 0;
         slider.set_quarter(quarter);
-        $(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
+        //$(".bar.quarter").css("fill-opacity", "0.5").css("fill", "#9ecae1");
       }
       year = new_year;
       monthItemClick(month);
@@ -239,9 +244,7 @@
       }
       chart.show(current_data);
       chart.selectNode(curr_node);
-
     }
-
 
     function ItemClick(node) {
       sidebar.show(node);
@@ -363,7 +366,21 @@
       $.each(item.amount, function(k, v) {
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
         if (k == "" || k == aTreeChart.data_type) {
-          if(quarter != 0 && v[year]) {
+          if(aTreeChart.is_cumulative && month != 0 && v[year]) {
+            c_amount = 0;
+            for(var i = 1; i < month + 1; i++) {
+              if(v[year][i]) c_amount += v[year][i]['total']
+
+              if (amount['fonds']) {
+                 node['amount_fond'] = {}
+                $.each(amount['fonds'], function(k, v) {
+                  node['amount_fond'][k] = v / _amount_divider
+                })
+              }
+
+            }
+            node['amount'] = c_amount
+          } else if (quarter != 0 && v[year]) {
             amount = 0;
             var x = quarter*3 - 2;
             for(var i = x; i < x + 3; i++) {

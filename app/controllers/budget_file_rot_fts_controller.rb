@@ -19,8 +19,8 @@ class BudgetFileRotFtsController < BudgetFileRotsController
   end
 
   def create_taxonomy
-    t_title = @file_name.gsub(/ft(?<FTGZ>\d\d)\d\d\w\d/i, 'FT\k<FTGZ>XXXX')
-    taxonomy = TaxonomyRot.find_or_create_by!(owner: @town_title, name: t_title)
+    t_title = @file_name.gsub(/ft\d\d\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FTxxxxxx.\k<TERRA>')
+    taxonomy = TaxonomyRot.find_or_create_by!(owner: @town_title, name: t_title, cumulative_sum: true)
     taxonomy.title = t_title
     taxonomy
   end

@@ -21,15 +21,20 @@
     font-size: 0.6em;
   }
 
-  label {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
 
 #slider_compare
+.pull-right
+  = check_box_tag 'is_cumulative_sum', false, false
+  = label_tag :is_cumulative_sum, t('cumulative_sum')
 
 :javascript
+
+  $(document).ready(function() {
+    $('#is_cumulative_sum').click(function(e) {
+      aTreeChart.setCumulative(this.checked)
+    })
+  })
+
   function aSliderCompare(aContainer) {
     var margin = {top: 20, right: 20, bottom: 30, left: 20},
         width, height;
@@ -78,7 +83,6 @@
     function get_history_data(data) {
       compare_months = {}
       compare_months["months"] = []
-      compare_months["quarters"] = []
       var count = 0;
       for(var i = 0; i < 12; i++) {
         if (data[i+1]) {
@@ -91,6 +95,7 @@
 
       if (count == 12) return;
 
+      compare_months["quarters"] = []
       for(var i = 0; i < 4; i++) {
         compare_months["quarters"][i] = {}
         compare_months["quarters"][i]["label"] = i+1
@@ -103,6 +108,7 @@
           }
         }
       }
+
       return compare_months
     }
 
@@ -178,6 +184,7 @@
           .attr("class", "x axis")
           .attr("transform", "translate(0," + (height+1) + ")")
           .call(xAxis);
+
 
       var quarters = svg.selectAll(".quarters")
                          .data(data["quarters"])
@@ -269,11 +276,11 @@
       },
       hide: hide,
       show: function(node, year) {
-
         if(!node || !node.history) {
           hide();
           return;
         }
+
         data = get_history_data(node.history[year]);
 
         if (!data || data["months"].length == 0){
