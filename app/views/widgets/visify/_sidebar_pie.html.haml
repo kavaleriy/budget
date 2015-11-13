@@ -2,6 +2,10 @@
 
 = javascript_include_tag "d3pie.js"
 
+:css
+  #sidebar_pie {
+    margin-top: 20px;
+  }
 #sidebar_pie
 
 :javascript
@@ -98,9 +102,13 @@
               },
               labels: {
                 outer: {
+                  format: 'label'
+                },
+                inner: {
                   format: 'none'
                 }
               },
+
               tooltips: {
                   enabled: true,
                   //type: "placeholder",

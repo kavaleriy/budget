@@ -1,7 +1,6 @@
 class TaxonomiesController < ApplicationController
 
-  before_action :set_taxonomy, only: [:show, :show_modify, :edit, :update, :destroy]
-  before_action :set_taxonomy, only: [:recipients, :recipient_by_code]
+  before_action :set_taxonomy, only: [:update, :show, :show_modify, :edit, :destroy, :recipients, :recipient_by_code]
   before_action :set_params, only: [:show_modify]
   before_action :set_attachments, only: [:show, :show_modify, :edit]
 
@@ -49,6 +48,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def update
+    binding.pry
     respond_to do |format|
       if @taxonomy.update(taxonomy_params)
         format.html { redirect_to @taxonomy, notice: t('taxonomies_controller.save_success') }
