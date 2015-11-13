@@ -196,7 +196,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
     town_title = @taxonomy.owner.split(',')
     @town = Town.where(title: town_title[0])
-    @town = Town.where(area_title: town_title[1].squish) if town_title[1]
+    @town = @town.where(area_title: town_title[1].squish) if town_title[1]
     @town = @town.first
   end
 
