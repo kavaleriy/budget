@@ -14,7 +14,7 @@ class BudgetFileRotFt < BudgetFile
     kkd_dd = kkd.slice(0, 6)
 
     [
-        { :amount => row['T060'].to_i },
+        { :amount => row['T020'].to_i },
     ].map do |line|
       next if line[:amount].to_i == 0
 

@@ -32,8 +32,6 @@
               %th
                 = t('.color')
               %th
-                =t('.acceptors')
-              %th
                 = t('.description')
 
             - unless @budget_file.taxonomy.explanation[key].nil?
@@ -52,8 +50,6 @@
                       %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][color]", value: @budget_file.taxonomy.explanation[key][t_key]['color'] }
                       %span.input-group-addon
                         %i
-                  %td
-                    %input{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][capita]", value: @budget_file.taxonomy.explanation[key][t_key]['capita'] }
                   %td
                     %textarea{name: "taxonomy[#{CGI.escape key}][#{CGI.escape t_key}][description]", cols: 80, rows: 3}
                       = @budget_file.taxonomy.explanation[key][t_key]['description']

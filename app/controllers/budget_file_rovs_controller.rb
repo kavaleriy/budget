@@ -11,7 +11,7 @@ class BudgetFileRovsController < BudgetFilesController
   end
 
   def create_taxonomy
-    TaxonomyRov.create!(:owner => @owner)
+    TaxonomyRov.create!(:owner => @town_title)
   end
 
 end
