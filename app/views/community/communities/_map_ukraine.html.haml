@@ -56,6 +56,7 @@
       },
       featureClickCallback: onFeatureClick,
       getInfoContent: getTownsContent,
+      getPoint: getPoint,
       selectPath: false,
       scale: "Ukraine"
     };
@@ -80,6 +81,14 @@
     } else {
       create_Ukraine_map();
       sequence.show("Ukraine");
+    }
+
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
+
+    function getPoint(properties) {
+      var point = {}
+      point.icon = new Icon({iconUrl: '/assets/community/community_center.png'});
+      return point;
     }
 
     function onFeatureClick(feature) {

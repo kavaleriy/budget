@@ -170,7 +170,7 @@
             }
 
             function dragged(d) {
-              d3.select(this).attr("cx", d3.event.x).attr("cy", d3.event.y);
+              d3.select(this).attr("x", d3.event.x-14).attr("y", d3.event.y-14);
             }
 
             function dragended(d) {
@@ -187,34 +187,35 @@
 
           g.selectAll("path")
                 .each(function (d, i) {
-                   var points = path.centroid(d);
-                   g.append("circle")
-                     .attr("id",function(){return "community-icon-" + d.properties.id})
-                     .attr("data-id", function(){return d.properties.id;})
-                     .attr("cx", points[0])
-                     .attr("cy", points[1])
-                     .attr("r", d.properties.center ? 0 : 4)
-                     .style('fill', 'yellow')
-                     .style('stroke', 'orange')
-                     .style('stroke-width', '2px')
-                     .style('cursor', function(){
-                                return map.options.editable ? "crosshair" : (d['properties']['agree'] ? "pointer" : "default");
-                              })
-                     .on("mouseenter", function () {
-                       if (options.getInfoContent && !map.options.editable) {
-                         info.update(options.getInfoContent(d.properties));
-                       } else {
-                         map.dragging.disable();
-                       }})
-                     .on("mouseout", function () {
-                       map.options.editable ? map.dragging.enable() : info.update(options.getInfoContent("Ukraine"));
-                     })
-                     .on("click", function () {
-                       if (options.featureClickCallback && !map.options.editable) {
-                         options.featureClickCallback(d);
-                       }
-                     })
-                     .call(map.options.editable ? drag : function(){return false;});
+                   if(!d.properties.center) {
+                     var points = path.centroid(d);
+                     g.append("image")
+                       .attr("id",function(){return "community-icon-" + d.properties.id})
+                       .attr("data-id", function(){return d.properties.id;})
+                       .attr("xlink:href", '/assets/community/community_center.png')
+                       .attr("x", points[0]-14)
+                       .attr("y", points[1]-28)
+                       .attr("width", 28)
+                       .attr("height", 37)
+                       .style('cursor', function(){
+                                  return d['properties']['agree'] ? "pointer" : "default";
+                                })
+                       .on("mouseenter", function () {
+                         if (options.getInfoContent && !map.options.editable) {
+                           info.update(options.getInfoContent(d.properties));
+                         } else {
+                           map.dragging.disable();
+                         }})
+                       .on("mouseout", function () {
+                         map.options.editable ? map.dragging.enable() : info.update(options.getInfoContent("Ukraine"));
+                       })
+                       .on("click", function () {
+                         if (options.featureClickCallback && !map.options.editable) {
+                           options.featureClickCallback(d);
+                         }
+                       })
+                       .call(map.options.editable ? drag : function(){return false;});
+                   }
                 });
         };
 
@@ -240,7 +241,7 @@
           g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
 
           feature.attr("d", function(d){
-            $("#community-icon-" + d.properties.id).attr("cx", path.centroid(d)[0]).attr("cy", path.centroid(d)[1]);
+            $("#community-icon-" + d.properties.id).attr("x", path.centroid(d)[0]-14).attr("y", path.centroid(d)[1]-28);
             return path(d);
           });
         }
@@ -256,7 +257,7 @@
         map.addLayer(markers);
 
         var layerOptions = {
-          pointToLayer: getSVGPointToLayer,
+          pointToLayer: options.scale == "community" ? getPointToLayer : getSVGPointToLayer,
           onEachFeature: onEachFeature,
           coordsToLatLng: coordsToLatLng
         };
