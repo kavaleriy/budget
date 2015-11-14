@@ -14,7 +14,7 @@
 .col-xs-12
   = render 'edit_form'
 
-.col-xs-9
+.col-xs-12.col-md-6
   .panel.panel-default
     .panel-heading
       = render partial: 'search', :locals => {layer: @repairing_layer }
@@ -22,7 +22,7 @@
       .map_container.col-xs-12
         = render partial: 'repairing/maps/map'
 
-.col-xs-3
+.col-xs-12.col-md-6
   .panel.panel-default
     .panel-heading
       = t('repairing.layers.edit.repair')
