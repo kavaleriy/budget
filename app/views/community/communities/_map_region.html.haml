@@ -46,7 +46,7 @@
       map_static: false,
       center: feature.properties.center,
       bounds: feature.properties.bounds,
-      editable: feature.properties.edit
+      editable: editable
     };
     var pointOptions = {
       clustered: false,
@@ -58,6 +58,7 @@
       },
       featureClickCallback: onCommunityClick,
       getInfoContent: getCommunityContent,
+      getPoint: getPoint,
       selectPath: false,
       scale: "community"
     };
@@ -85,6 +86,15 @@
     .fail(function (e) {
       console.log(e)
     });
+
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
+
+    function getPoint(properties) {
+      var point = {}
+      point.icon = new Icon({iconUrl: '/assets/community/community_center.png'});
+      point.draggable = editable;
+      return point;
+    }
 
     function onCommunityClick(feature) {
       if(editable) {
