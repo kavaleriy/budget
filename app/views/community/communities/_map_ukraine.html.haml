@@ -87,7 +87,11 @@
 
     function getPoint(properties) {
       var point = {}
-      point.icon = new Icon({iconUrl: '/assets/community/community_center.png'});
+      if(aRepairMap.map.getZoom() <= 7) {
+        point.icon = new Icon({iconSize: [15, 20], iconUrl: '/assets/community/community_center_small.png'});
+      } else {
+        point.icon = new Icon({iconSize: [28, 37], iconUrl: '/assets/community/community_center.png'});
+      }
       return point;
     }
 
@@ -146,6 +150,7 @@
       areasOptions.featureClickCallback = onFeatureClick;
       areasOptions.getInfoContent = getAreasContent;
       areasOptions.scale = "Ukraine";
+      pointOptions.scale = "Ukraine";
       if(data_towns && data_areas) {
         aRepairMap.addGeoJsonSvg(data_areas, areasOptions);
         aRepairMap.addGeoJsonPoints(data_towns, pointOptions);
