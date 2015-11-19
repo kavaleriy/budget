@@ -28,13 +28,7 @@
                 if user.has_role? :admin
                   Taxonomy.all
                 else
-                  town = user.town.split(",")
-                  if town.length > 1
-                    Taxonomy.all.where(:owner => {"$in" => Town.all.where(:title => town[0].strip, :area_title => town[1].strip).map{|t| t.title}}).not{budget_files == nil}
-                  else
-                    Taxonomy.all.where({:owner => {"$in" => Town.all.where(:title => user.town).map{|t| t.title} + Town.all.where(:area_title => user.town).map{|t| t.title}}}).not{budget_files == nil}
-                  end
-                  # Taxonomy.where(:owner => user.town).not{budget_files == nil} + Taxonomy.where(:owner => user.town.area_title).not{budget_files == nil}
+                  Taxonomy.where(:owner => user.town).not{budget_files == nil}
                 end
               else
                 Taxonomy.where(:owner => '').not{budget_files == nil}
