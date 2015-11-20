@@ -27,7 +27,7 @@ class Indicate::IndicatorFilesController < ApplicationController
   def create
 
     @indicator_files = []
-    if current_user.has_role? :admin
+    if current_user.has_role?(:admin) || params[:town_select]
       @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:id => params[:town_select]).first ).first || Indicate::Taxonomy.new(:town => ::Town.where(:id => params[:town_select]).first)
       @indicate_taxonomy = Indicate::Taxonomy.where(:town => nil).first || Indicate::Taxonomy.create(:town => nil) if @indicate_taxonomy.nil?
     end
