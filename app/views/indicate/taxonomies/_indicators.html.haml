@@ -167,39 +167,41 @@
                 .on("mouseout", mouseout)
                 .on("click", mouseclick);
 
-        var indicator_id = v[current_year]['id'];
+        if(v[current_year]) {
+          var indicator_id = v[current_year]['id'];
 
-        if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
-          $('div[data-value="' + k + '"] .comments a').html(v[current_year]['comment'])
-                                                      .attr("href", "#")
-                                                      .attr("id", "indicate_indicator")
-                                                      .attr("data-type", "wysihtml5")
-                                                      .attr("data-escape", false)
-                                                      .attr("data-pk", indicator_id)
-                                                      .attr("data-emptytext", "додати коментар...")
-                                                      .attr("data-resource", "documentation_category")
-                                                      .attr("data-url", "/indicate/indicators/" + indicator_id);
+          if("#{@current_user.town}" == "#{@indicate_taxonomy.town}" || "#{@current_user.has_role? :admin}" == "true") {
+            $('div[data-value="' + k + '"] .comments a').html(v[current_year]['comment'])
+                                                        .attr("href", "#")
+                                                        .attr("id", "indicate_indicator")
+                                                        .attr("data-type", "wysihtml5")
+                                                        .attr("data-escape", false)
+                                                        .attr("data-pk", indicator_id)
+                                                        .attr("data-emptytext", "додати коментар...")
+                                                        .attr("data-resource", "documentation_category")
+                                                        .attr("data-url", "/indicate/indicators/" + indicator_id);
 
-          $('div[data-value="' + k + '"] .comments .editable-href').editable({
-            escape: false,
-            wysihtml5: {
-                "font-styles": true, // Font styling, e.g. h1, h2, etc.
-                "emphasis": true, // Italics, bold, etc.
-                "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
-                "html": false, // Button which allows you to edit the generated HTML.
-                "link": true, // Button to insert a link.
-                "image": true, // Button to insert an image.
-                "color": false, // Button to change color of font
-                "size": 'xs', // options are xs, sm, lg
-                "locale": editor_locale
-             },
-             success: function(response, newValue) {
-                 console.log(newValue)
-                 v[current_year]['comment'] = newValue;
-             }
-          });
-        } else {
-          $('div[data-value="' + k + '"] .comments').html(v[current_year]['comment']);
+            $('div[data-value="' + k + '"] .comments .editable-href').editable({
+              escape: false,
+              wysihtml5: {
+                  "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                  "emphasis": true, // Italics, bold, etc.
+                  "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                  "html": false, // Button which allows you to edit the generated HTML.
+                  "link": true, // Button to insert a link.
+                  "image": true, // Button to insert an image.
+                  "color": false, // Button to change color of font
+                  "size": 'xs', // options are xs, sm, lg
+                  "locale": editor_locale
+               },
+               success: function(response, newValue) {
+                   console.log(newValue)
+                   v[current_year]['comment'] = newValue;
+               }
+            });
+          } else {
+            $('div[data-value="' + k + '"] .comments').html(v[current_year]['comment']);
+          }
         }
 
         function mouseclick(d) {
