@@ -75,11 +75,13 @@ class ZipBudgetFilesController < ApplicationController
   def create_rot_file entry
     town_title = params['town_select'].blank? ? current_user.town : params['town_select']
     t_title = entry.name.gsub(/\d\dM/i, 'XX')
-    taxonomy = TaxonomyRot.find_or_create_by!(owner: town_title, name: t_title, cumulative_sum: true)
+    taxonomy = TaxonomyRot.find_or_create_by!(owner: town_title, name: t_title)
     taxonomy.title = t_title
 
     budget_file = BudgetFileRotVz.find_or_create_by(taxonomy: taxonomy, path: entry.name)
     budget_file.title = "#{entry.name} | #{@vz_file.title} - #{DateTime.now.strftime('%d-%m-%Y')}"
+
+    budget_file.cumulative_sum = true
 
     budget_file
   end
@@ -87,11 +89,13 @@ class ZipBudgetFilesController < ApplicationController
   def create_rov_file entry
     town_title = params['town_select'].blank? ? current_user.town : params['town_select']
     t_title = entry.name.gsub(/\d\dM/i, 'XX')
-    taxonomy = TaxonomyRov.find_or_create_by!(owner: town_title, name: t_title, cumulative_sum: true)
+    taxonomy = TaxonomyRov.find_or_create_by!(owner: town_title, name: t_title)
     taxonomy.title = t_title
 
     budget_file = BudgetFileRovVz.find_or_create_by(taxonomy: taxonomy, path: entry.name)
     budget_file.title = "#{entry.name} | #{@vz_file.title} - #{DateTime.now.strftime('%d-%m-%Y')}"
+
+    budget_file.cumulative_sum = true
 
     budget_file
   end

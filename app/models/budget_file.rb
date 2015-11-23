@@ -10,6 +10,8 @@ class BudgetFile
   # plan, fact etc
   field :data_type
 
+  field :cumulative_sum, :type => Boolean
+
   # source data
   field :rows, :type => Hash
 
@@ -74,8 +76,23 @@ class BudgetFile
     end
   end
 
+
+  def get_rows
+    rows = self.rows
+
+    amount_type = self.data_type || :plan
+    is_cumulative_sum = (self.cumulative_sum == true)
+
+    rows.each{|year, months| months.each{ |month, items| items.each { |item|
+      item['_amount_type'] ||= amount_type
+      item['_cumulative'] = is_cumulative_sum
+    } } }
+
+    rows
+  end
+
   def get_tree levels
-    rows = {self.data_type => self.rows}
+    rows = get_rows
     self.taxonomy.create_tree(rows, [], levels)
   end
 

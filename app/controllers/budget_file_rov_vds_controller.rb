@@ -12,7 +12,10 @@ class BudgetFileRovVdsController < BudgetFileRovsController
     else
       @budget_file = BudgetFileRovVd.new
     end
+
     @budget_file.data_type = :fact
+
+    @budget_file.cumulative_sum = true
   end
 
   def get_taxonomies owner
@@ -20,7 +23,7 @@ class BudgetFileRovVdsController < BudgetFileRovsController
 
   def create_taxonomy
     t_title = @file_name.gsub(/vd\d\d\d\d\d\d.(?<TERRA>\d\d\d)/i, 'VDxxxxxx.\k<TERRA>')
-    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: t_title, cumulative_sum: true)
+    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: t_title)
     taxonomy.title = t_title
     taxonomy
   end

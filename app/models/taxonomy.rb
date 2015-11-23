@@ -14,8 +14,6 @@
 
     field :is_kvk, type: Boolean
 
-    field :cumulative_sum, :type => Boolean
-
     field :explanation, :type => Hash
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
@@ -230,28 +228,26 @@
     end
 
     def get_rows
-      rows = { }
+      combined_rows = { }
 
       self.budget_files.each{ |file|
-        data_type = file.data_type
-        data_type = :plan if data_type.blank?
+        rows = file.get_rows
 
-        file.rows.keys.each {|year|
-          file.rows[year].keys.each {|month|
-            rows[data_type] = {} if rows[data_type].nil?
-            rows[data_type][year] = {} if rows[data_type][year].nil?
+        rows.each {|year, months|
+          months.each {|month, file_rows|
+            combined_rows[year] = {} if combined_rows[year].nil?
 
-            new_rows = file.rows[year][month].flatten
-            if rows[data_type][year][month].nil?
-              rows[data_type][year][month] = new_rows
+            if combined_rows[year][month].nil?
+              combined_rows[year][month] = file_rows.flatten
             else
-              rows[data_type][year][month] += new_rows
+              combined_rows[year][month] += file_rows.flatten
             end
           }
         }
       }
 
-      rows
+      binding.pry
+      combined_rows
     end
 
     def get_range
@@ -310,55 +306,53 @@
         columns = levels
       end
 
-      rows.keys.each do |dt|
-        rows[dt].keys.each do |year|
-          rows[dt][year].keys.sort.each do |month|
-            rows[dt][year][month].each do |row|
-              node = tree
+      rows.keys.each do |year|
+        rows[year].keys.sort.each do |month|
+          rows[year][month].each do |row|
+            node = tree
 
-              data_type = row['_amount_type'] || dt
-              fond = row['fond'] || ''
+            data_type = row['_amount_type']
+            fond = row['fond'] || ''
 
-              node[:amount] = {} if node[:amount].nil?
-              node[:amount][data_type] = {}  if node[:amount][data_type].nil?
-              node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
-              node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
-              node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
-              node[:amount][data_type][year][month]['total'] += row['amount']
+            node[:amount] = {} if node[:amount].nil?
+            node[:amount][data_type] = {}  if node[:amount][data_type].nil?
+            node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
+            node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
+            node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
+            node[:amount][data_type][year][month]['total'] += row['amount']
 
-              node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
-              node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
-              node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
+            node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
+            node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
+            node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
 
-              columns.each { |taxonomy_key|
-                if row[taxonomy_key].nil?
-                  next unless taxonomy_key == 'ktfk_aaa'
-                  taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
-                else
-                  taxonomy_value = row[taxonomy_key]
+            columns.each { |taxonomy_key|
+              if row[taxonomy_key].nil?
+                next unless taxonomy_key == 'ktfk_aaa'
+                taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
+              else
+                taxonomy_value = row[taxonomy_key]
+              end
+
+              if node[taxonomy_value].nil?
+                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
+              else
+                node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
+                node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
+                node[taxonomy_value][:amount][data_type][year][month] = {} if node[taxonomy_value][:amount][data_type][year][month].nil?
+                node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
+                node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
+
+                unless fond.nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += row['amount']
                 end
+              end
 
-                if node[taxonomy_value].nil?
-                  node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
-                  node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
-                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
-                else
-                  node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
-                  node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
-                  node[taxonomy_value][:amount][data_type][year][month] = {} if node[taxonomy_value][:amount][data_type][year][month].nil?
-                  node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
-                  node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
-
-                  unless fond.nil?
-                    node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
-                    node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
-                    node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += row['amount']
-                  end
-                end
-
-                node = node[taxonomy_value]
-              }
-            end
+              node = node[taxonomy_value]
+            }
           end
         end
       end
@@ -372,7 +366,7 @@
           'taxonomy' => items[:taxonomy]
       }
 
-      if self.cumulative_sum
+      if node['_cumulative']
         if node['amount'][:fact]
           node['amount'][:fact].each{ |year, months|
             next if months.length == 1
