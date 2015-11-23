@@ -228,22 +228,10 @@
     end
 
     def get_rows
-      combined_rows = { }
+      combined_rows = {}
 
-      self.budget_files.each{ |file|
-        rows = file.get_rows
-
-        rows.each {|year, months|
-          months.each {|month, file_rows|
-            combined_rows[year] = {} if combined_rows[year].nil?
-
-            if combined_rows[year][month].nil?
-              combined_rows[year][month] = file_rows.flatten
-            else
-              combined_rows[year][month] += file_rows.flatten
-            end
-          }
-        }
+      self.budget_files.collect { |file| file.get_rows }.collect{ |rows|
+        combined_rows.deep_merge!(rows){ |key, this_val, other_val| this_val + other_val }
       }
 
       combined_rows
