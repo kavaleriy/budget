@@ -246,7 +246,6 @@
         }
       }
 
-      binding.pry
       combined_rows
     end
 
