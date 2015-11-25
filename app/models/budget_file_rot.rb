@@ -2,8 +2,7 @@ class BudgetFileRot < BudgetFile
 
   protected
 
-  def readitem row
-
+  def readline row
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
 
