@@ -41,7 +41,11 @@
 
         map.on("mouseup", function(e){
           mouse_position = e.latlng;
-        })
+        });
+
+        map.on("mousemove", function(e){
+          mouse_position = e.latlng;
+        });
 
         var layerSettings = {
           attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -171,6 +175,7 @@
 
             function dragged(d) {
               d3.select(this).attr("x", d3.event.x-14).attr("y", d3.event.y-14);
+              $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );
             }
 
             function dragended(d) {
@@ -192,11 +197,15 @@
                      g.append("image")
                        .attr("id",function(){return "community-icon-" + d.properties.id})
                        .attr("data-id", function(){return d.properties.id;})
-                       .attr("xlink:href", map.getZoom() <= 7 ? '/assets/community/community_center_small.png' : '/assets/community/community_center.png')
-                       .attr("x", map.getZoom() <= 7 ? points[0]-7 : points[0]-14)
-                       .attr("y", map.getZoom() <= 7 ? points[1]-20 : points[1]-28)
-                       .attr("width", map.getZoom() <= 7 ? 15 : 28)
-                       .attr("height", map.getZoom() <= 7 ? 20 : 37)
+                       .attr("xlink:href", map.getZoom() <= 7 ? '/assets/community/community_center_small.png' : '/assets/community/community_center_small.png')
+                       //.attr("x", map.getZoom() <= 7 ? points[0]-7 : points[0]-14)
+                       //.attr("y", map.getZoom() <= 7 ? points[1]-20 : points[1]-28)
+                       //.attr("width", map.getZoom() <= 7 ? 15 : 28)
+                       //.attr("height", map.getZoom() <= 7 ? 20 : 37)
+                       .attr("x", points[0]-7)
+                       .attr("y", points[1]-20)
+                       .attr("width", 15)
+                       .attr("height", 20)
                        .style('cursor', function(){
                                   return d['properties']['agree'] ? "pointer" : "default";
                                 })
@@ -242,11 +251,13 @@
 
           feature.attr("d", function(d){
             var zoom = map.getZoom();
-            $("#community-icon-" + d.properties.id).attr("xlink:href", zoom <= 7 ? '/assets/community/community_center_small.png' : '/assets/community/community_center.png')
-                                                   .attr("x", zoom <= 7 ? path.centroid(d)[0]-7 : path.centroid(d)[0]-14)
-                                                   .attr("y", zoom <= 7 ? path.centroid(d)[1]-20 : path.centroid(d)[1]-28)
-                                                   .attr("width", zoom <= 7 ? 15 : 28)
-                                                   .attr("height", zoom <= 7 ? 20 : 37);
+            $("#community-icon-" + d.properties.id).attr("xlink:href", zoom <= 7 ? '/assets/community/community_center_small.png' : '/assets/community/community_center_small.png')
+                                                   //.attr("x", zoom <= 7 ? path.centroid(d)[0]-7 : path.centroid(d)[0]-14)
+                                                   //.attr("y", zoom <= 7 ? path.centroid(d)[1]-20 : path.centroid(d)[1]-28)
+                                                   //.attr("width", zoom <= 7 ? 15 : 28)
+                                                   //.attr("height", zoom <= 7 ? 20 : 37)
+                                                   .attr("x", path.centroid(d)[0]-7)
+                                                   .attr("y", path.centroid(d)[1]-20);
             return path(d);
           });
         }
@@ -274,23 +285,23 @@
 
         geoJson = L.geoJson(data, layerOptions).addTo(markers);
 
-        if(options.scale == "community") {
-          var myIcon = L.Icon.extend({ options: { }});
-          smallIcon = new myIcon({iconSize: [15, 20], iconUrl: '/assets/community/community_center_small.png'});
-          bigIcon = new myIcon({iconSize: [28, 37], iconUrl: '/assets/community/community_center.png'});
-
-          map.on("zoomend", function(){
-            markers.eachLayer(function(marker) {
-              marker.eachLayer(function(m) {
-                if(map.getZoom() <= 7){
-                  m.setIcon(smallIcon);
-                } else {
-                  m.setIcon(bigIcon);
-                }
-              });
-            });
-          });
-        }
+        //if(options.scale == "community") {
+        //  var myIcon = L.Icon.extend({ options: { }});
+        //  smallIcon = new myIcon({iconSize: [15, 20], iconUrl: '/assets/community/community_center_small.png'});
+        //  bigIcon = new myIcon({iconSize: [28, 37], iconUrl: '/assets/community/community_center.png'});
+        //
+        //  map.on("zoomend", function(){
+        //    markers.eachLayer(function(marker) {
+        //      marker.eachLayer(function(m) {
+        //        if(map.getZoom() <= 7){
+        //          m.setIcon(smallIcon);
+        //        } else {
+        //          m.setIcon(bigIcon);
+        //        }
+        //      });
+        //    });
+        //  });
+        //}
 
         function coordsToLatLng(coords) {
           return L.latLng(coords);
@@ -337,6 +348,9 @@
             },
             dragstart: function() {
               options.featureClickCallback(feature);
+            },
+            drag: function() {
+              $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );
             },
             dragend: function() {
               $("#community_center").val("[" + mouse_position['lat'] + "," + mouse_position['lng'] + "]" );

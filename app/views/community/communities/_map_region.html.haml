@@ -91,11 +91,12 @@
 
     function getPoint(properties) {
       var point = {}
-      if(aRepairMap.map.getZoom() <= 7) {
+      point.icon = new Icon({iconSize: [15, 20], iconUrl: '/assets/community/community_center_small.png'});
+      /*if(aRepairMap.map.getZoom() <= 7) {
         point.icon = new Icon({iconSize: [15, 20], iconUrl: '/assets/community/community_center_small.png'});
       } else {
         point.icon = new Icon({iconSize: [28, 37], iconUrl: '/assets/community/community_center.png'});
-      }
+      }*/
       point.draggable = editable;
       return point;
     }
