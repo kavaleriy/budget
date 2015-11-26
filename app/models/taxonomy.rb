@@ -303,6 +303,7 @@
 
             node[:amount] = {} if node[:amount].nil?
             node[:amount][data_type] = {}  if node[:amount][data_type].nil?
+            node[:amount][data_type]['_cumulative'] = row['_cumulative']
             node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
             node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
@@ -338,6 +339,8 @@
                 end
               end
 
+              node[taxonomy_value][:amount][data_type]['_cumulative'] = row['_cumulative']
+
               node = node[taxonomy_value]
             }
           end
@@ -353,52 +356,55 @@
           'taxonomy' => items[:taxonomy]
       }
 
-      if node['_cumulative']
-        if node['amount'][:fact]
-          node['amount'][:fact].each{ |year, months|
-            next if months.length == 1
-            last_month = months.keys.max_by{|k| k.to_i}
-            annual = months[last_month].deep_dup
-            months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
-              prev_month = "#{month.to_i - 1}"
-              next if prev_month == '0'
+      if node['amount'][:fact] and node['amount'][:fact]['_cumulative']
+        node['amount'][:fact].each{ |year, months|
+          next if year == '_cumulative'
+          next if months.length == 1
+          last_month = months.keys.max_by{|k| k.to_i}
+          annual = months[last_month].deep_dup
+          months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
+            prev_month = "#{month.to_i - 1}"
+            next if prev_month == '0'
 
-              unless months[prev_month].nil?
-                months[month]['total'] -= months[prev_month]['total']
-                months.delete(month) if months[month]['total'] == 0
+            if months[prev_month]
+              months[month]['total'] -= months[prev_month]['total']
 
-                unless months[prev_month]['fonds']
-                  months[month]['fonds'].each_key{ |fond| months[month]['fonds'][fond] -= months[prev_month]['fonds'][fond] if months[prev_month]['fonds'][fond]}
-                end
+              if months[prev_month]['fonds']
+                months[month]['fonds'].each_key{ |fond| months[month]['fonds'][fond] = months[month]['fonds'][fond] - months[prev_month]['fonds'][fond] if months[prev_month]['fonds'][fond]}
               end
-            }
-            months['0'] = annual
-          }
-        end
 
-        if node['amount'][:plan]
-          node['amount'][:plan].each{ |year, months|
-            next if months.length == 1
-            last_month = months.keys.max
-            annual =  months[last_month].deep_dup
-            months.sort.reverse.to_h.each_key{ |month|
-              prev_month = "#{month.to_i - 1}"
-              next if prev_month == '0'
-
-              if months[prev_month].nil?
-                months.delete(month)
-              else
-                months[month]['total'] = months[month]['total'] / 12 + months[month]['total'] - months[prev_month]['total']
-                months.delete(month) if months[month]['total'] == 0
-              end
-            }
-            months['0'] = annual
+              months.delete(month) if months[month]['total'] == 0
+            end
           }
-        end
+          months['0'] = annual
+        }
       end
 
-      node['amount'].each_key {|dt|
+      if node['amount'][:plan] and node['amount'][:plan]['_cumulative']
+        node['amount'][:plan].each{ |year, months|
+          next if year == '_cumulative'
+          next if months.length == 1
+          last_month = months.keys.max
+          annual =  months[last_month].deep_dup
+          months.sort.reverse.to_h.each_key{ |month|
+            prev_month = "#{month.to_i - 1}"
+            next if prev_month == '0'
+
+            if months[prev_month].nil?
+              months.delete(month)
+            else
+              months[month]['total'] = months[month]['total'] / 12 + months[month]['total'] - months[prev_month]['total']
+              months.delete(month) if months[month]['total'] == 0
+            end
+          }
+          months['0'] = annual
+        }
+      end
+
+      [:plan, :fact].each {|dt|
+        next unless node['amount'][dt]
         node['amount'][dt].each{ |year, months|
+          next if year == '_cumulative'
           next if months['0']
           
           annual = { 'total' => 0 }

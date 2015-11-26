@@ -365,47 +365,41 @@
 
       $.each(item.amount, function(k, v) {
         var amount = (v[year] && v[year][month]) ? v[year][month] : { total: 0 }
-        if (k == "" || k == aTreeChart.data_type) {
-          if(aTreeChart.is_cumulative && month != 0 && v[year]) {
-            c_amount = 0;
-            for(var i = 1; i < month + 1; i++) {
-              if(v[year][i]) c_amount += v[year][i]['total']
 
-              if (amount['fonds']) {
-                 node['amount_fond'] = {}
-                $.each(amount['fonds'], function(k, v) {
-                  node['amount_fond'][k] = v / _amount_divider
-                })
-              }
+        amount_k = (k == "" || k == aTreeChart.data_type) ? 'amount' : 'amount_'+k
 
-            }
-            node['amount'] = c_amount
-          } else if (quarter != 0 && v[year]) {
-            amount = 0;
-            var x = quarter*3 - 2;
-            for(var i = x; i < x + 3; i++) {
-              if(v[year][i]) amount += v[year][i]['total']
-            }
-            node['amount'] = amount
-          } else {
-            node['amount'] = amount['total']
-            if (amount['fonds']) {
-               node['amount_fond'] = {}
-              $.each(amount['fonds'], function(k, v) {
-                node['amount_fond'][k] = v / _amount_divider
-              })
-            }
+        if (aTreeChart.is_cumulative && month != 0 && v[year]) {
+          c_amount = 0;
+          for(var i = 1; i < month + 1; i++) {
+            if(v[year][i]) c_amount += v[year][i]['total']
           }
+          node[amount_k] = c_amount
+
+          if (amount_k == 'amount' && amount['fonds']) {
+            node['amount_fond'] = {}
+            $.each(v[year][month]['fonds'], function(f, vv) {
+              var amount_fond_m = 0;
+              for(var m = 1; m < month + 1; m++) {
+                if (v[year][m] && v[year][m]['fonds'] && v[year][m]['fonds'][f])
+                  amount_fond_m += v[year][m]['fonds'][f]
+              }
+              node['amount_fond'][f] = amount_fond_m / _amount_divider
+            })
+          }
+        } else if (quarter != 0 && v[year]) {
+          amount = 0;
+          var x = quarter*3 - 2;
+          for(var i = x; i < x + 3; i++) {
+            if(v[year][i]) amount += v[year][i]['total']
+          }
+          node[amount_k] = amount
         } else {
-          if(quarter != 0 && v[year]) {
-            amount = 0;
-            var x = quarter*3 - 2;
-            for(var i = x; i < x + 3; i++) {
-              if(v[year][i]) amount += v[year][i]['total']
-            }
-            node['amount_'+k] = amount / _amount_divider
-          } else {
-            node['amount_'+k] = amount['total'] / _amount_divider
+          node[amount_k] = amount['total']
+          if (amount_k == 'amount' && amount['fonds']) {
+             node['amount_fond'] = {}
+            $.each(amount['fonds'], function(k, v) {
+              node['amount_fond'][k] = v / _amount_divider
+            })
           }
         }
       })
