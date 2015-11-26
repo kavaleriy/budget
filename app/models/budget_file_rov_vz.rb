@@ -7,6 +7,9 @@ class BudgetFileRovVz < BudgetFile
     kekv = row['KOD'].to_s
 
     return unless kekv.length == 4
+
+    return if is_grouped_kekv kekv
+
     return if (ktfk =~ /000$/) != nil
     return if (ktfk =~ /^900/) != nil
 

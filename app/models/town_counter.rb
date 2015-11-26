@@ -5,5 +5,5 @@ class TownCounter
 
   field :citizens, type: Integer
   field :house_holdings, type: Integer
-  field :square, type: Integer
+  field :square, type: Float
 end

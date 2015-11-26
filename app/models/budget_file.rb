@@ -23,6 +23,10 @@ class BudgetFile
 
   field :meta_data, :type => Hash
 
+  def is_grouped_kekv kekv
+    %w(2000 2100 2110 2200 2270 2280 2400 2600 2700 3000 3100 3120 3130 3140 3200 4100 4110 4200).include?(kekv)
+  end
+
   def self.visible_to user
     files = if user.nil?
       self.where(:author => nil)

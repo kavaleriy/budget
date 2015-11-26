@@ -57,6 +57,31 @@ namespace :koatuu do
 
   end
 
+
+  desc "Load KOATUU town squares"
+  task :load_town_squares => :environment do
+    require 'roo'
+    xls = Roo::Excelx.new("db/koatuu_sqareas.xlsx")
+    xls.default_sheet = xls.sheets.first
+
+    2.upto(xls.last_row) do |line|
+      koatuu = xls.cell(line,'A').to_s.gsub('.0', '').rjust(10, '0')
+
+      town_sq = xls.cell(line,'C').to_f / 100
+
+      town = Town.where(:koatuu => koatuu).first
+      next if town.nil?
+
+      puts "#{koatuu} = #{town_sq}"
+
+
+      town.build_counters if town.counters.nil?
+      town.counters.square = town_sq
+
+      town.save
+    end
+  end
+
   private
   def self.extract_name name
     index = name.index('/')
