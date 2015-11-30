@@ -103,8 +103,6 @@ class BudgetFilesController < ApplicationController
       format.json { render :show, status: :created, location: @budget_file }
     end
   # rescue => e
-  #   binding.pry
-  #
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   #
   #   respond_to do |format|

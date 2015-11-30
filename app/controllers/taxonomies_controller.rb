@@ -48,7 +48,6 @@ class TaxonomiesController < ApplicationController
   end
 
   def update
-    binding.pry
     respond_to do |format|
       if @taxonomy.update(taxonomy_params)
         format.html { redirect_to @taxonomy, notice: t('taxonomies_controller.save_success') }
