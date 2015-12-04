@@ -384,18 +384,26 @@
         node['amount'][:plan].each{ |year, months|
           next if year == '_cumulative'
           next if months.length == 1
-          last_month = months.keys.max
-          annual =  months[last_month].deep_dup
-          months.sort.reverse.to_h.each_key{ |month|
+          last_month = months.keys.max_by{|k| k.to_i}
+          annual = months[last_month].deep_dup
+          months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
+            months[month]['total'] = months[month]['total'] / 12
+            months[month]['fonds'].each_key{ |fond| months[month]['fonds'][fond] = months[month]['fonds'][fond] / 12 }
+
             prev_month = "#{month.to_i - 1}"
             next if prev_month == '0'
 
-            if months[prev_month].nil?
-              months.delete(month)
-            else
-              months[month]['total'] = months[month]['total'] / 12 + months[month]['total'] - months[prev_month]['total']
-              months.delete(month) if months[month]['total'] == 0
+            if months[prev_month]
+              # months[month]['total'] -= months[prev_month]['total']
+              #
+              # if months[prev_month]['fonds']
+              #   months[month]['fonds'].each_key{ |fond| months[month]['fonds'][fond] = months[month]['fonds'][fond] - months[prev_month]['fonds'][fond] if months[prev_month]['fonds'][fond]}
+              # end
+
+              months[month]['total'] += months[month]['total'] - months[prev_month]['total'] / 12
             end
+
+            months.delete(month) if months[month]['total'] == 0
           }
           months['0'] = annual
         }

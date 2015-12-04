@@ -4,6 +4,7 @@ class BudgetFileRovVz < BudgetFile
 
   def readline row
     ktfk = row['KFK'].to_s
+
     kekv = row['KOD'].to_s
 
     return unless kekv.length == 4
