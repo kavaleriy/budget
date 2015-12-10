@@ -1,0 +1,40 @@
+:css
+  .documents_search {
+    margin-top: 20px;
+  }
+
+= content_for :header do
+  .header.pull-left
+    %h1
+      = "wwwwww"   #t('.documents')
+      %small
+        = "fffff"  #t('.documents_search')
+
+-#.col-xs-12.documents_search
+-#  = render partial: 'search'
+
+.documentation.col-xs-12.table-responsive
+  %h1= link_to 'New book', new_library_book_path, :class => 'btn btn-primary'
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+          = "title"
+        %th
+          = "description"
+        -#%th
+        -#  = sortable "yearFrom", t('.years')
+        -#%th
+        -#  = sortable "town_id", t('.town')
+        -#%th
+        -#  = sortable "branch_id", t('.type')
+        -#%th
+        -#  = sortable "locked", t('.locked')
+    %tbody#results
+
+    - @library_books.each do |book|
+      %tr
+        %td= book.title
+        %td= "#{book.description if book.description}"
+        -#%td
+        -#  %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }

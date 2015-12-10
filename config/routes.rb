@@ -104,6 +104,17 @@ Rails.application.routes.draw do
     put 'documents/lock/:id' => 'documents#lock'
   end
 
+  namespace :library do
+    # resources :categories
+    # get 'categories_tree_root' => 'categories#tree_root'
+    # get 'categories_tree' => 'categories#tree'
+
+    resources :books
+
+    # resources :links
+    # put 'documents/lock/:id' => 'documents#lock'
+  end
+
 
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
