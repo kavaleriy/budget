@@ -1,0 +1,35 @@
+= form_for @library_book, :html => { :class => 'form-horizontal', :multipart => false } do |f|
+
+  - if @library_book.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@library_book.errors.count, "error")} prohibited this library_book from being saved:"
+      %ul
+        - @library_book.errors.full_messages.each do |msg|
+          %li= msg
+
+  -#.field
+  -#  = f.label :category
+  -#  = f.select :category_id, options_for_select(Documentation::Category.all.collect { |c| [c.title, c.id] }, @library_book.category_id)
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :description
+    = f.text_area :description
+  .field
+    = f.label :doc_file
+    = f.file_field :doc_file
+
+  -#.form-group
+  -#  %label
+  -#    %i.glyphicon.glyphicon-folder-open
+  -#      = t('form.file')
+  -#  = file_field_tag "doc_file[]", multiple: true, :class => 'form-control can_be_disable'
+
+  -#.actions
+  -#  = f.button :class => 'btn btn-default can_be_disable' do
+  -#    %i.fa.fa-upload
+  -#      = t('form.upload')
+  .actions
+    = f.submit 'Save'
+
