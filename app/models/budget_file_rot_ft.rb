@@ -8,6 +8,9 @@ class BudgetFileRotFt < BudgetFile
     return unless kkd.length == 8
     return if %w(90010100 90010200 90010300).include?(kkd)
 
+    gr = row['GR'].to_s
+    # return if gr == '4'
+
     kkd_a = kkd.slice(0, 1)
     kkd_b = kkd.slice(0, 2)
     kkd_cc = kkd.slice(0, 4)
@@ -20,6 +23,7 @@ class BudgetFileRotFt < BudgetFile
 
       item = {
           'amount' => line[:amount] / 100,
+          'fond' => gr.to_i,
       }
 
       dt = row['DT'].to_date
