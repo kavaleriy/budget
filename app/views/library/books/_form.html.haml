@@ -2,7 +2,9 @@
 
   - if @library_book.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@library_book.errors.count, "error")} prohibited this library_book from being saved:"
+      %h2
+        = pluralize(@library_book.errors.count, "error")
+        prohibited this product from being saved:
       %ul
         - @library_book.errors.full_messages.each do |msg|
           %li= msg
@@ -10,26 +12,43 @@
   -#.field
   -#  = f.label :category
   -#  = f.select :category_id, options_for_select(Documentation::Category.all.collect { |c| [c.title, c.id] }, @library_book.category_id)
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :description
-    = f.text_area :description
-  .field
-    = f.label :doc_file
-    = f.file_field :doc_file
+
+  .form-group
+    .field.col-md-12
+      = f.label :title, "Назва книги"
+      = f.text_field :title, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :author, "Автор"
+      = f.text_field :author, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :year_publication, "Рік видання"
+      = f.text_field :year_publication, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :description, "Опис книги"
+      = f.text_area :description, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :book_url, "Силка на книгу"
+      = f.text_field :book_url, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :doc_file, "Обрати книгу"
+      = f.file_field :doc_file, :class => 'form-control can_be_disable'
 
   -#.form-group
   -#  %label
   -#    %i.glyphicon.glyphicon-folder-open
   -#      = t('form.file')
   -#  = file_field_tag "doc_file[]", multiple: true, :class => 'form-control can_be_disable'
-
+  -#
   -#.actions
   -#  = f.button :class => 'btn btn-default can_be_disable' do
   -#    %i.fa.fa-upload
   -#      = t('form.upload')
   .actions
-    = f.submit 'Save'
+    = f.submit 'Зберегти', :class => 'btn btn-primary can_be_disable'
+    = link_to 'Назад', library_books_path, :class => 'btn btn-info can_be_disable'
 

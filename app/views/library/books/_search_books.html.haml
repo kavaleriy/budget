@@ -1,0 +1,15 @@
+- @library_books.each do |book|
+  %tr
+    %td
+      - if book.doc_file?
+        = link_to book.doc_file.url do
+          %i.fa.fa-2x{ class: "#{get_file_type_icon(book.doc_file_identifier)}" }
+    %td= book.title
+    %td= book.author
+    %td= book.year_publication
+    %td= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
+    %td= link_to "Show", library_book_path(book), :class => 'btn btn-info'
+    %td= link_to 'Edit', edit_library_book_path(book), :class => 'btn btn-warning'
+    %td= link_to 'Destroy', library_book_path(book), :class => 'btn btn-danger',
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' }

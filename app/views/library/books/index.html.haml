@@ -8,22 +8,26 @@
     %h1
       = t('.library')
       %small
-        = t('.library')
+        = "books"
 
 -#.col-xs-12.documents_search
 -#  = render partial: 'search'
 
 .documentation.col-xs-12.table-responsive
-  %h1= link_to 'New book', new_library_book_path, :class => 'btn btn-primary'
+  %h1= link_to 'New book', new_library_book_path, :class => 'btn btn-success'
   %table.table.table-striped
     %thead
       %tr
         %th
-          = "file"
+          = "File"
         %th
-          = "title"
+          = sortable "title"
         %th
-          = "description"
+          = sortable "author"
+        %th
+          = sortable "year_publication"
+        %th
+          = "Description"
         -#%th
         -#  = sortable "yearFrom", t('.years')
         -#%th
@@ -33,18 +37,4 @@
         -#%th
         -#  = sortable "locked", t('.locked')
     %tbody#results
-
-    - @library_books.each do |book|
-      %tr
-        %td
-          - if book.doc_file?
-            = link_to book.doc_file.url do
-              %i.fa.fa-2x{ class: "#{get_file_type_icon(book.doc_file_identifier)}" }
-        %td= book.title
-        %td= "#{book.description if book.description}"
-        %td= link_to "Show book", library_book_path(book), :class => 'btn btn-primary'
-        %td= link_to 'Edit', edit_library_book_path(book), :class => 'btn btn-primary'
-        %td= link_to 'Destroy', library_book_path(book), :class => 'btn btn-primary',
-                  method: :delete,
-                  data: { confirm: 'Are you sure?' }
-        -#  %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
+      = render partial: 'search_books', :locals => { books: @library_books }

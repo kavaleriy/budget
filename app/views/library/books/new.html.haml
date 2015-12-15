@@ -1,5 +1,13 @@
-%h1 New library_book
-
-= render 'form'
-
-= link_to 'Back', library_books_path
+= content_for :header do
+  .header.pull-left
+    %h1
+      = "Завантаження"
+      %small
+        = "книги"
+.container
+  .col-md-8.col-md-offset-2
+    .panel.panel-default
+      .panel-heading
+        = "Нова книга"   #t('form.new_link')
+      .new_link.panel-body
+        = render 'form'

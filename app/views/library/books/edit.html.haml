@@ -1,5 +1,12 @@
-%h1 Edit library_book
-
-= render 'form'
-
-= link_to 'Back', library_books_path
+= content_for :header do
+  .header.pull-left
+    %h1
+      = "Редагування"
+      %small
+        = " книги"
+  .col-md-8.col-md-offset-2
+    .panel.panel-default
+      .panel-heading
+        = "Редагування книги"   #t('form.new_link')
+      .new_link.panel-body
+        = render 'form'
