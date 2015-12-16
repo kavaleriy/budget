@@ -13,11 +13,12 @@ class Library::Book
 
 
 
-  # validates_presence_of :doc_file, message: 'Потрібно вибрати Файл'
-  # validates :book_url, :presence => true if validates :doc_file, :presence => false,
-
-  validates :doc_file,
-            :presence => true,
+  # validates_presence_of :book_file, message: 'Потрібно вибрати Файл'
+  # validates :book_url, :presence => true if validates :book_file, :presence => false,
+  validates :description, :presence => true
+  validates :book_url, :presence => true, if: "book_file.blank?"
+  validates :book_file,
+            :presence => true, if: "book_url.blank?",
             :file_size => {
                 :maximum => 11.megabytes.to_i, message: 'Максимально-можливий розмір файлу - 11 мб.'
             }
@@ -27,11 +28,11 @@ class Library::Book
   # private
   #
   # def generate_title
-  #   self.title = self.doc_file_identifier unless self.title?
+  #   self.title = self.book_file_identifier unless self.title?
   # end
 
   private
-    mount_uploader :doc_file, BookUploader
-    skip_callback :update, :before, :store_previous_model_for_doc_file
+    mount_uploader :book_file, BookUploader
+    skip_callback :update, :before, :store_previous_model_for_book_file
 
 end

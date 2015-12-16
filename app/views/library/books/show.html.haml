@@ -1,10 +1,32 @@
+= content_for :header do
+  .header.pull-left
+    %h1
+      = "Про книгу"
+      %small
+        = @library_book.title
+
 %p#notice= notice
 
-%p
-  %b Title:
-  = @library_book.title
-%p
-  %b Description:
-  = @library_book.description
+.container
+  .col-md-10.col-md-offset-1
+    .panel.panel-default
 
-= link_to 'Back', library_books_path, :class => 'btn btn-info can_be_disable'
+      .panel-heading
+        = "Назва: " + @library_book.title   #t('form.new_link')
+
+        - if @library_book.book_file?
+          = link_to @library_book.book_file.url , :class => 'link' do
+            = "Загрузити "
+            %i.fa.fa-2x{ class: "#{get_file_type_icon(@library_book.book_file_identifier)}" }
+      .new_link.panel-body
+        %p
+          %b Автор:
+          = @library_book.author
+        %p
+          %b Рік видання:
+          = @library_book.year_publication
+        %p
+          %b Опис:
+          = @library_book.description
+
+        = link_to 'Back', library_books_path, :class => 'btn btn-info can_be_disable'

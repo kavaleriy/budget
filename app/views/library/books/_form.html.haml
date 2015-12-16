@@ -2,7 +2,7 @@
 
   - if @library_book.errors.any?
     #error_explanation
-      %h2
+      %h3
         = pluralize(@library_book.errors.count, "error")
         prohibited this product from being saved:
       %ul
@@ -33,17 +33,21 @@
     .field.col-md-12
       = f.label :book_url, "Силка на книгу"
       = f.text_field :book_url, :class => 'form-control can_be_disable'
+  -#.form-group
+  -#  .field.col-md-12
+  -#    = f.label :book_file, "Обрати книгу"
+  -#    = f.file_field :book_file, :class => 'form-control can_be_disable'
   .form-group
     .field.col-md-12
-      = f.label :doc_file, "Обрати книгу"
-      = f.file_field :doc_file, :class => 'form-control can_be_disable'
+      = f.label :book_file, "Обрати книгу"
+      = f.file_field :book_file, :class => 'form-control can_be_disable'
 
   -#.form-group
   -#  %label
   -#    %i.glyphicon.glyphicon-folder-open
   -#      = t('form.file')
-  -#  = file_field_tag "doc_file[]", multiple: true, :class => 'form-control can_be_disable'
-  -#
+  -#  = file_field_tag "book_file[]", multiple: true, :class => 'form-control can_be_disable'
+
   -#.actions
   -#  = f.button :class => 'btn btn-default can_be_disable' do
   -#    %i.fa.fa-upload

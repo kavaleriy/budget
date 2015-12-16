@@ -70,7 +70,7 @@ module Library
     end
 
     def library_book_params
-      params.require(:library_book).permit( :title, :author, :year_publication, :description, :book_url, :doc_file)
+      params.require(:library_book).permit( :title, :author, :year_publication, :description, :book_url, :book_file )
     end
   end
 end
