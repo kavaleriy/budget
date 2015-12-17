@@ -5,8 +5,6 @@
       %small
         = @library_book.title
 
-%p#notice= notice
-
 .container
   .col-md-10.col-md-offset-1
     .panel.panel-default
@@ -14,10 +12,15 @@
       .panel-heading
         = "Назва: " + @library_book.title   #t('form.new_link')
 
+        - if @library_book.book_url?
+          = link_to @library_book.book_url, target: "_blank", :class => 'link' do
+            = "Ресурс "
+            %i.fa.fa-share.fa-2x
         - if @library_book.book_file?
-          = link_to @library_book.book_file.url , :class => 'link' do
+          = link_to @library_book.book_file.url, target: "_blank", :class => 'link' do
             = "Загрузити "
             %i.fa.fa-2x{ class: "#{get_file_type_icon(@library_book.book_file_identifier)}" }
+
       .new_link.panel-body
         %p
           %b Автор:
@@ -28,5 +31,13 @@
         %p
           %b Опис:
           = @library_book.description
+        %p
+          %b Користувач:
+          = current_user.name
 
         = link_to 'Back', library_books_path, :class => 'btn btn-info can_be_disable'
+        - if current_user.id == @library_book.owner_id || current_user.has_role?(:admin)
+          %td= link_to 'Edit', edit_library_book_path(@library_book), :class => 'btn btn-warning'
+          %td= link_to 'Destroy', library_book_path(@library_book), :class => 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' }

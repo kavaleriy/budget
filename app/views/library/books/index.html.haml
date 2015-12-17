@@ -18,16 +18,18 @@
   %table.table.table-striped
     %thead
       %tr
+        %th{:colspan =>2}
+          = "Файл"
         %th
-          = "File"
+          = sortable "title", "Назва"
         %th
-          = sortable "title"
+          = sortable "author", "Автор"
         %th
-          = sortable "author"
+          = sortable "year_publication", "Опубліковано"
         %th
-          = sortable "year_publication"
+          = "Опис"
         %th
-          = "Description"
+          = "Дії"
         -#%th
         -#  = sortable "yearFrom", t('.years')
         -#%th
@@ -38,3 +40,4 @@
         -#  = sortable "locked", t('.locked')
     %tbody#results
       = render partial: 'search_books', :locals => { books: @library_books }
+  = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => "Назад", :next_label => "Вперед"

@@ -11,6 +11,7 @@ class Library::Book
   field :description, type: String
   field :book_url, type: String
 
+  belongs_to :owner, class_name: 'User'
 
 
   # validates_presence_of :book_file, message: 'Потрібно вибрати Файл'
@@ -35,4 +36,6 @@ class Library::Book
     mount_uploader :book_file, BookUploader
     skip_callback :update, :before, :store_previous_model_for_book_file
 
+    # after_commit :remove_previously_stored_avatar, on: :update
+    skip_callback :update, :after, :remove_previously_stored_book_file
 end

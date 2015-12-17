@@ -3,7 +3,7 @@ module Library
     helper_method :sort_column, :sort_direction
 
     def index
-      @library_books = Library::Book.order(sort_column + " " + sort_direction)
+      @library_books = Library::Book.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 25)
 
       respond_to do |format|
         format.js
@@ -21,6 +21,7 @@ module Library
 
     def create
       @library_book = Book.new(library_book_params)
+      @library_book.owner = current_user
 
       respond_to do |format|
         if @library_book.save
@@ -55,6 +56,7 @@ module Library
     def destroy
       @library_book = Library::Book.find(params[:id])
       @library_book.destroy
+
 
       redirect_to library_book_path
     end
