@@ -40,6 +40,7 @@ module Library
 
     def update
       @library_book = Library::Book.find(params[:id])
+      @library_book.remove_book_file! unless params[:library_book][:book_file].blank?
 
       respond_to do |format|
         if @library_book.update(library_book_params)

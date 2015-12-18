@@ -15,6 +15,7 @@
 
   .form-group
     .field.col-md-12
+      -# Field "Title Book", params [:title], class form [:form_for] (See more: gem simple form)
       = f.label :title, "Назва книги"
       = f.text_field :title, :class => 'form-control can_be_disable'
   .form-group
@@ -24,7 +25,8 @@
   .form-group
     .field.col-md-12
       = f.label :year_publication, "Рік видання"
-      = f.text_field :year_publication, :class => 'form-control can_be_disable'
+      - dates = 1955..Date.today.year
+      = f.select(:year_publication, dates.collect {|d| [d.to_s,d.to_s]}, {:include_blank => "Select"}, {:class => "form-control can_be_disable"} )
   .form-group
     .field.col-md-12
       = f.label :description, "Опис книги"
@@ -41,6 +43,7 @@
     .field.col-md-12
       = f.label :book_file, "Обрати книгу"
       = f.file_field :book_file, :class => 'form-control can_be_disable'
+      -#= f.hidden_field :book_file_cache #, :value => @library_book.book_file_cache
 
   -#.form-group
   -#  %label

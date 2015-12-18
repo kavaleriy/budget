@@ -7,12 +7,13 @@ class Library::Book
   include Mongoid::Timestamps
   field :title, type: String
   field :author, type: String
-  field :year_publication, type: String
+  field :year_publication, type: Integer
   field :description, type: String
   field :book_url, type: String
 
   belongs_to :owner, class_name: 'User'
 
+  # attr_accessor :book_file_cache
 
   # validates_presence_of :book_file, message: 'Потрібно вибрати Файл'
   # validates :book_url, :presence => true if validates :book_file, :presence => false,
@@ -34,8 +35,11 @@ class Library::Book
 
   private
     mount_uploader :book_file, BookUploader
+    # skip_callback :update, :before, :remove_book_file!, on: :update
     skip_callback :update, :before, :store_previous_model_for_book_file
 
+    # skip_callback :update, :before, :remove_book_file!, on: :update
+
     # after_commit :remove_previously_stored_avatar, on: :update
-    skip_callback :update, :after, :remove_previously_stored_book_file
+    # skip_callback :update, :before, :remove_previously_stored_book_file, on: :update
 end
