@@ -12,6 +12,9 @@ module Public
       # @towns = Town.cities
     end
 
+    def about
+    end
+
     def budget
       @budgets = Taxonomy.all
     end

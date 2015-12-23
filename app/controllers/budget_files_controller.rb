@@ -36,14 +36,6 @@ class BudgetFilesController < ApplicationController
     end
     @budget_files.reverse! if sort_direction == "desc"
 
-    unless params["town_select"].blank?
-      towns = []
-      params["town_select"].split(",").each{|town_id|
-        towns << Town.find(town_id).title
-      }
-      @budget_files = @budget_files.select{|b| towns.include? b.taxonomy.owner }
-    end
-
     @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
     unless params["q"].blank?
       @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
@@ -51,7 +43,17 @@ class BudgetFilesController < ApplicationController
 
 
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
-    @file_owners = Taxonomy.where(:id.in => taxonomy_ids).pluck(:id, :owner).to_h
+    file_owners = Taxonomy.where(:id.in => taxonomy_ids)
+
+    unless params["town_select"].blank?
+      towns = []
+      params["town_select"].split(",").each{|town_id|
+        towns << Town.find(town_id).title
+      }
+      file_owners = file_owners.where(:owner.in => towns)
+    end
+
+    @file_owners = file_owners.pluck(:id, :owner).to_h
 
 
     respond_to do |format|
