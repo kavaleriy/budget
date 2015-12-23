@@ -14,7 +14,6 @@
 
       if (size == 0) return
 
-
       $.getJSON( "/widgets/calendar/pie_data/#{calendar.id}", function( data ) {
         var pie = d3.layout.pie()
             .sort(null)

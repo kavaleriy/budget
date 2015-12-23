@@ -1,5 +1,5 @@
 <% if current_user %>
-$("#calendar_event").html("<%= escape_javascript(render partial: 'show') %>");
+    $(".calendar_event[owner=<%= @event.holder %>]").html("<%= escape_javascript(render partial: 'show') %>");
 <% else %>
-$("#calendar_event").html("<%= escape_javascript(render partial: 'show_guest') %>");
+    $(".calendar_event[owner=<%= @event.holder %>]").html("<%= escape_javascript(render partial: 'show_guest') %>");
 <% end %>

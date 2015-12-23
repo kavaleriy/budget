@@ -260,6 +260,18 @@
         .row
           - %w(budget programs indicators keys calendar sankey repair purchase key_docs).each do |item|
             = render partial: 'portfolio', :locals => { :item => item }
+
+          .col-sm-3
+            .view.view-tenth
+              %img.img-responsive{src: '/assets/public/purchase.jpg'}
+                .mask
+                  %a.info{href: 'http://www.spending.gov.ua/', target: 'blank'}
+                    Докладніше
+
+              %hr.blue-line
+                .portfolio-title
+                  Портал публічних фінансів
+
       #documents.tab-pane.fade
         -#%h3
         -#  = t('public.towns.portfolio.documents')

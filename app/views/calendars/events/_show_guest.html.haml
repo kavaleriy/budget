@@ -4,9 +4,8 @@
   }
 
 - model_class = Event
-%h3
-  %strong= "#{holder_to_string(@event.holder)} - події:"
 %h4
+  %strong= "#{holder_to_string(@event.holder)}: "
   %strong= " " + date_to_string(@event.starts_at)
   %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
 
@@ -20,19 +19,10 @@
             = event.title
       .panel-collapse.collapse{:id => "collapse_" + event.id, :class => event.id == @event.id ? "in" : ""}
         .panel-body
-          %h5
-            Детально про подію
-          %hr
           = event.description.html_safe
-          %h5
-            Додатки
           = render :partial => 'calendars/event_attachments/attachments', :locals => { :attachments => @attachments[event.id], :calendar_id=>@calendar.id, :event_id=>event.id}
-          - if current_user
-            = render :partial => 'calendars/event_attachments/new_attachment', :locals => { :attachments => @attachments[event.id], :new_attachment => EventAttachment.new, :event_id=>event.id, :calendar_id=>@calendar.id, :event =>event, :calendar =>@calendar }
 
 :javascript
-
-  $('a[data-pk], div[data-pk]').editable();
 
   $(document).ready(function() {
     $('a[data-toggle="collapse"]').on("click", function(){
