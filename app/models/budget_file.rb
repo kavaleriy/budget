@@ -30,10 +30,10 @@ class BudgetFile
   def self.visible_to user
     files = if user.nil?
       self.where(:author => nil)
-    elsif user.has_role? :admin
+    elsif user.has_role? :admin1
       self.all
     else
-      self.where(:author => nil) + BudgetFile.all.reject{|f| user.is_locked? || f.author != user.email}
+      self.or({author: nil}, {author: user.email})
     end
 
     files || []
