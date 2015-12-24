@@ -9,7 +9,6 @@
       %h3= t '.city_actions.title'
       = render partial: "default_actions", :locals => { actions: @city_actions }
     .col-md-8
-
       #calendar.fc.fc-ltr{:calendar_id => @calendar.id }
       .actions
         = link_to t('form.back', :default => t("helpers.links.back")), calendars_calendars_path, :class => 'btn btn-default'

@@ -16,8 +16,10 @@ module Calendars
     # GET /calendars/1.json
     def show
       # require 'to_xls-rails'
-      @city_actions = CalendarAction.where(:holder => '1')
-      @people_actions = CalendarAction.where(:holder => '2')
+      @city_actions = CalendarAction.where(:holder => '1').to_a
+      @city_actions.map{ |action| action.text_color = 'black' if action.text_color.blank?; }
+      @people_actions = CalendarAction.where(:holder => '2').to_a
+      @people_actions.map{ |action| action.text_color = 'black' if action.text_color.blank?; }
       respond_to do |format|
         format.html{}
         format.xls { send_data @calendar.to_xls() }

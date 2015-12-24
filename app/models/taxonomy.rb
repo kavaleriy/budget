@@ -26,13 +26,13 @@
                 if user.has_role? :admin
                   Taxonomy.all
                 else
-                  Taxonomy.where(:owner => user.town).not{budget_files == nil}
+                  Taxonomy.where(:owner => user.town)
                 end
               else
-                Taxonomy.where(:owner => '').not{budget_files == nil}
-              end.sort_by { |t| t.owner || '' }
+                Taxonomy.where(:owner => '')
+              end.order_by(:owner.asc)
 
-      files || []
+      files
     end
 
     def explain taxonomy, key

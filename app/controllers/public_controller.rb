@@ -1,5 +1,5 @@
 class PublicController < ApplicationController
-  layout 'application_public'
+  # layout 'application_public'
 
   before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]
 
@@ -12,6 +12,10 @@ class PublicController < ApplicationController
 
   def calendar
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
+
+    @curr_town_event = @calendar.events.where(holder: 1, :starts_at.lte => Date.current).last
+    @curr_people_event = @calendar.events.where(holder: 2, :starts_at.lte => Date.current).last
+
     render "widgets/calendar/calendar_box"
   end
 
