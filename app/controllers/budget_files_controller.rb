@@ -21,7 +21,6 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-
     @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :data_type, :author).visible_to(current_user)
 
     case sort_column
