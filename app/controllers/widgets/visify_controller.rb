@@ -84,7 +84,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
         end
 
     filter = ['fond', taxonomy]
-    binding.pry
+
     tree = @budget_file.get_subtree(taxonomy, key, filter) || {}
 
     render json: get_bubble_tree_item(tree, {  'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
@@ -108,12 +108,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: { 'attachments' => @taxonomy.taxonomy_attachments }
   end
 
-  # def get_visify_level
-  #   taxonomy = visify_params[:taxonomy]
-  #
-  #   render json: @taxonomy.get_level(taxonomy)
-  # end
-  #
+  def get_visify_level
+    taxonomy = visify_params[:taxonomy]
+
+    render json: @taxonomy.get_level(taxonomy)
+  end
+
   private
 
   def set_locale
