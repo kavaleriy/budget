@@ -2,10 +2,13 @@
   .head.pull-left
     = t('key_indicate_map.indicators.index.header')
 
-.row
-  #indicators_list.col-sm-12.col-md-3
+.content
+  = render partial: 'indicators_select'
+
+
+  #indicators_list.col-md-12.col-lg-3
     = render partial: 'indicators_list'
-  .col-sm-12.col-md-6
+  .col-md-12.col-lg-9
     = render partial: 'map_ukraine'
-  .col-sm-12.col-md-3
+  .col-md-12.col-lg-12
     = render partial: 'towns_comparison'

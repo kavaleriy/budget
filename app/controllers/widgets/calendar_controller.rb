@@ -2,6 +2,11 @@ class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
   before_action :set_calendar
 
+  def pie_cycle
+    @curr_town_event = @calendar.events.where(holder: 1, :starts_at.lte => Date.current).last
+    @curr_people_event = @calendar.events.where(holder: 2, :starts_at.lte => Date.current).last
+  end
+
   def pie_data
     starts_at = '2015-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
     ends_at = '2016-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date

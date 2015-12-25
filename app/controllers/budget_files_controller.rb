@@ -21,28 +21,39 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :data_type, :author).visible_to(current_user)
+
     case sort_column
       when "title"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.title || '' }
+        @budget_files.sort_by{|b| b.title || '' }
       when "taxonomy.owner"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.taxonomy.owner }
+        @budget_files.sort_by{|b| b.taxonomy.owner }
       when "data_type"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.data_type.to_s }
+        @budget_files.sort_by{|b| b.data_type.to_s }
       when "author"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.author }
+        @budget_files.sort_by{|b| b.author }
     end
     @budget_files.reverse! if sort_direction == "desc"
+
+    @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
+    unless params["q"].blank?
+      @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
+    end
+
+
+    taxonomy_ids = @budget_files.pluck(:taxonomy_id)
+    file_owners = Taxonomy.where(:id.in => taxonomy_ids)
 
     unless params["town_select"].blank?
       towns = []
       params["town_select"].split(",").each{|town_id|
         towns << Town.find(town_id).title
       }
-      @budget_files = @budget_files.select{|b| towns.include? b.taxonomy.owner }
+      file_owners = file_owners.where(:owner.in => towns)
     end
 
-    @budget_files = @budget_files.select{|b| b.data_type.to_s == params["data_type"] } unless params["data_type"].blank?
-    @budget_files = @budget_files.select{|b| Regexp.new(".*"+params["q"]+".*").match(b.title) } unless params["q"].blank?
+    @file_owners = file_owners.pluck(:id, :owner).to_h
+
 
     respond_to do |format|
       format.js

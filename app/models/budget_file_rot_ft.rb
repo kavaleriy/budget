@@ -9,7 +9,7 @@ class BudgetFileRotFt < BudgetFile
     return if %w(90010100 90010200 90010300).include?(kkd)
 
     gr = row['GR'].to_s
-    # return if gr == '4'
+    return if gr == '4'
 
     kkd_a = kkd.slice(0, 1)
     kkd_b = kkd.slice(0, 2)

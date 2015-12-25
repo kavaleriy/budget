@@ -1,3 +1,8 @@
+:css
+  .navbar.navbar-default{
+    height: 100px;
+  }
+
 .navbar.navbar-default.navbar-static-top
   .container-fluid
 
@@ -9,18 +14,14 @@
       -#= t('.brand')
 
 
-    .navbar-collapse.collapse.navbar-responsive-collapse.navbar-right
-      %ul.nav.navbar-nav
+    .navbar-collapse.collapse.navbar-responsive-collapse
+      %ul.nav.navbar-nav.navbar-left
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
             %i.fa.fa-bar-chart-o
             = t('.budget')
 
-          %ul.dropdown-menu{'role' => "menu"}
-            - Taxonomy.visible_to(current_user).each do |taxonomy|
-              %li= link_to "#{taxonomy.title}, #{taxonomy.owner}", taxonomy_path(taxonomy)
-
-            %li.divider
+          %ul.dropdown-menu
             %li= link_to t('.taxonomies'), taxonomies_path
             %li= link_to t('.budget_files'), budget_files_path
 
@@ -34,6 +35,15 @@
                 %i.fa.fa-info-circle
                   =t('static.budget_file_help.help')
 
+            %li.divider
+
+            - Taxonomy.visible_to(current_user).reject{|t| t.budget_files.empty?}.each do |taxonomy|
+              %li
+                =link_to taxonomy_path(taxonomy), {title: "#{taxonomy.title}"} do
+                  %strong
+                    =taxonomy.title.truncate(40)
+                  %br
+                  =taxonomy.owner
 
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
@@ -181,5 +191,5 @@
         -#        Показати всі
         -#        %i.fa.fa-angle-double-right
 
-    .header
+    .header.pull-left
       = yield :header
