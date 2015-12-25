@@ -1,0 +1,13 @@
+= content_for :header do
+  .header.pull-left
+    %h1
+      = t('.download')
+      %small
+        = t('library.books.index.w_books')
+.container
+  .col-md-8.col-md-offset-2
+    .panel.panel-default
+      .panel-heading
+        = t('.new_book')   #t('form.new_link')
+      .new_link.panel-body
+        = render 'form'
