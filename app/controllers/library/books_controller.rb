@@ -3,7 +3,7 @@ module Library
     helper_method :sort_column, :sort_direction
 
     def index
-      @library_books = Library::Book.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 25)
+      @library_books = Library::Book.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10)
 
       respond_to do |format|
         format.js
@@ -40,7 +40,12 @@ module Library
 
     def update
       @library_book = Library::Book.find(params[:id])
-      @library_book.remove_book_file! unless params[:library_book][:book_file].blank?
+
+      unless params[:library_book][:description].blank?
+        unless params[:library_book][:book_file].blank?
+          @library_book.remove_book_file!
+        end
+      end
 
       respond_to do |format|
         if @library_book.update(library_book_params)
@@ -57,8 +62,6 @@ module Library
     def destroy
       @library_book = Library::Book.find(params[:id])
       @library_book.destroy
-
-
       redirect_to library_book_path
     end
 

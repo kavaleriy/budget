@@ -14,9 +14,10 @@
     %td= book.year_publication
     %td= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
     .grud
-      %td= link_to "Show", library_book_path(book), :class => 'btn btn-info'
-      - if current_user.id == book.owner_id || current_user.has_role?(:admin)
-        %td= link_to 'Edit', edit_library_book_path(book), :class => 'btn btn-warning'
-        %td= link_to 'Destroy', library_book_path(book), :class => 'btn btn-danger',
-                      method: :delete,
-                      data: { confirm: 'Are you sure?' }
+      %td= link_to t('library.books.index.r_more'), library_book_path(book), :class => 'btn btn-info'
+      - unless current_user.nil?
+        - if current_user.id == book.owner_id || current_user.has_role?(:admin)
+          %td= link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-warning'
+          %td= link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: t('library.books.index.ask') }

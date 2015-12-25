@@ -6,38 +6,27 @@
 = content_for :header do
   .header.pull-left
     %h1
-      = t('.library')
+      = t('layouts.navbar.library')
       %small
-        = "books"
-
--#.col-xs-12.documents_search
--#  = render partial: 'search'
-
+        = t('.w_books')
 .documentation.col-xs-12.table-responsive
-  %h1= link_to 'New book', new_library_book_path, :class => 'btn btn-success'
+  - if current_user
+    %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
   %table.table.table-striped
     %thead
       %tr
         %th{:colspan =>2}
-          = "Файл"
+          = t('.file')
         %th
-          = sortable "title", "Назва"
+          = sortable "title", t('.title')
         %th
-          = sortable "author", "Автор"
+          = sortable "author", t('.author')
         %th
-          = sortable "year_publication", "Опубліковано"
+          = sortable "year_publication", t('.year_publication')
         %th
-          = "Опис"
+          = t('.description')
         %th
-          = "Дії"
-        -#%th
-        -#  = sortable "yearFrom", t('.years')
-        -#%th
-        -#  = sortable "town_id", t('.town')
-        -#%th
-        -#  = sortable "branch_id", t('.type')
-        -#%th
-        -#  = sortable "locked", t('.locked')
+          = t('.actions')
     %tbody#results
       = render partial: 'search_books', :locals => { books: @library_books }
-  = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => "Назад", :next_label => "Вперед"
+  = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
