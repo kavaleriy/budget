@@ -1,5 +1,7 @@
 module Repairing
   class RepairsController < ApplicationController
+    layout 'application_admin'
+
     before_filter :update_repairing_coordinates, only: [:update]
 
     before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy]

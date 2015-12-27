@@ -1,8 +1,6 @@
 class Public::TownsController < ApplicationController
   include ControllerCaching
 
-  layout 'application_public'
-
   before_action :set_town, only: [:show]
 
   def index

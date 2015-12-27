@@ -1,5 +1,6 @@
 class Widgets::WidgetsController < ApplicationController
   after_filter :allow_iframe
+
   layout 'visify'
 
 private

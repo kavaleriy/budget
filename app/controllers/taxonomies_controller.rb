@@ -1,4 +1,5 @@
 class TaxonomiesController < ApplicationController
+  layout 'application_admin'
 
   before_action :set_taxonomy, only: [:update, :show, :show_modify, :edit, :destroy, :recipients, :recipient_by_code]
   before_action :set_params, only: [:show_modify]

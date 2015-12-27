@@ -1,4 +1,5 @@
 class ZipBudgetFilesController < ApplicationController
+  layout 'application_admin'
 
   include BudgetFileUpload
 

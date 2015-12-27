@@ -1,4 +1,6 @@
 class KeyIndicate::IndicatorFilesController < ApplicationController
+  layout 'application_admin'
+
   include ControllerCaching
 
   before_action :authenticate_user!, only: [:new, :edit]

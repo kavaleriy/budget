@@ -1,5 +1,9 @@
 module Calendars
+
   class CalendarsController < ApplicationController
+
+    layout 'application_admin'
+
     before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
     before_action :authenticate_user!, only: [:show, :edit]

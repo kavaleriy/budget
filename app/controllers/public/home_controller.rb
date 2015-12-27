@@ -1,7 +1,5 @@
 module Public
   class HomeController < ApplicationController
-    layout 'application_public'
-
     include ControllerCaching
 
     before_action :set_calendar, only: [:calendar, :subscribe, :unsubscribe]

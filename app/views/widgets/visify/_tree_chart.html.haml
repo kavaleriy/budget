@@ -1,5 +1,8 @@
+:css
+  .vis_controls div {
+    padding-right: 10px;
+  }
 .visify.row-eq-height
-
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
@@ -17,20 +20,23 @@
       %li{'role' => 'presentation'}
         %a{href: '#tab_table', 'aria-controls' => 'tab_table', role: 'tab', 'data-toggle' => 'tab'}
           %i.fa.fa-table.fa-2x
-      - if @taxonomy._type == "TaxonomyRov"
-        .pull-right.col-xs-3
-          = render partial: 'select_level'
-      .pull-right.col-xs-3
-        = render partial: 'select_amount'
-      - if @types_count > 1
-        .pull-right.col-xs-3
-          .btn-group{'data-toggle' => 'buttons'}
-            %label.btn.btn-default.active.data_type
-              %input{:name => "data_type", :type => "radio", :value => "plan"}
-              = t('js.visify.plan')
-            %label.btn.btn-default.data_type
-              %input{:name => "data_type", :type => "radio", :value => "fact"}
-              = t('js.visify.fact')
+
+      .vis_controls
+        - if @taxonomy._type == "TaxonomyRov"
+          .pull-right
+            = render partial: 'select_level'
+        - if @types_count > 1
+          .pull-right
+            .btn-group{'data-toggle' => 'buttons'}
+              %label.btn.btn-default.active.data_type
+                %input{:name => "data_type", :type => "radio", :value => "plan"}
+                = t('js.visify.plan')
+              %label.btn.btn-default.data_type
+                %input{:name => "data_type", :type => "radio", :value => "fact"}
+                = t('js.visify.fact')
+        .pull-right
+          = render partial: 'select_amount'
+
     .tab-content
       .tab-pane.fade.in.active{'role' => 'tabpanel', 'id' => 'tab_bubbletree'}
         #chart

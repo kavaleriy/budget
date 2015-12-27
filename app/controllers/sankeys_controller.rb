@@ -1,6 +1,9 @@
 class SankeysController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_sankey, only: [:show, :sankey, :edit, :update, :destroy]
   after_action :allow_iframe, only: [:sankey]
+
   layout 'visify', only: [:sankey]
 
   before_action :authenticate_user!, only: [:new, :edit]

@@ -1,4 +1,6 @@
 class KeyIndicate::DictionariesController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_key_indicate_dictionary, only: [:show, :edit, :update, :destroy, :dictionary_file_create, :dictionary_file_update, :dictionary_file_destroy]
   before_action :authenticate_user!
   load_and_authorize_resource

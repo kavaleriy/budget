@@ -1,5 +1,6 @@
 include BudgetFileUpload
 class BudgetFilesController < ApplicationController
+  layout 'application_admin'
 
   helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]

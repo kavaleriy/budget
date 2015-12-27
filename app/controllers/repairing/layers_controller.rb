@@ -1,5 +1,7 @@
 module Repairing
   class LayersController < ApplicationController
+    layout 'application_admin'
+
     before_action :authenticate_user!, except: [:geo_json]
     load_and_authorize_resource
 

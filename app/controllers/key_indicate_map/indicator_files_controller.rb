@@ -1,4 +1,6 @@
 class KeyIndicateMap::IndicatorFilesController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_key_indicate_map_indicator_file, only: [:show, :edit, :update, :update_town, :update_key, :destroy]
   before_action :authenticate_user!
   load_and_authorize_resource

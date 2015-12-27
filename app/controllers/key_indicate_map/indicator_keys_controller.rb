@@ -1,4 +1,6 @@
 class KeyIndicateMap::IndicatorKeysController < ApplicationController
+  layout 'application_admin'
+
 
   helper_method :sort_column, :sort_direction
 

@@ -1,4 +1,6 @@
 class CalendarActionsController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_calendar_action, only: [:show, :edit, :update, :destroy]
 
   before_action :authenticate_user!, only: [:index, :edit]

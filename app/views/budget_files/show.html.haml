@@ -3,11 +3,12 @@
 = content_for :header do
   .head
     %i.fa.fa-money
-    #{t('.title')}:
+      = @budget_file.taxonomy.owner
+
     %span.descr
       #{@budget_file.title}
 
-  = render partial: 'visify_list', :locals => { id: @budget_file.id }
+  -#= render partial: 'visify_list', :locals => { id: @budget_file.id }
 
 .budget
 
@@ -22,6 +23,11 @@
 
 #embed_code_visify.embed_code
   = render partial: 'widgets/visify/embed_code'
+
+.col-xs-12
+  %p
+    Створено:
+    = @budget_file.author
 
 :javascript
 

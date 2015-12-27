@@ -1,4 +1,6 @@
 class Programs::TargetProgramsController < ApplicationController
+  layout 'application_admin'
+
 
   layout 'visify', only: [:show_indicators]
 

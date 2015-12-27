@@ -30,7 +30,7 @@ class BudgetFile
   def self.visible_to user
     files = if user.nil?
       self.where(:author => nil)
-    elsif user.has_role? :admin1
+    elsif user.has_role? :admin
       self.all
     else
       self.or({author: nil}, {author: user.email})

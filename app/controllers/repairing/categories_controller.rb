@@ -1,4 +1,6 @@
 class Repairing::CategoriesController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_repairing_category, only: [:show, :edit, :update, :destroy]
 
   # GET /repairing/categories
