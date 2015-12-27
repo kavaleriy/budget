@@ -21,7 +21,7 @@ class TownGeojsonBuilder
               id: "#{town[:id]}",
               title: town.title,
               level:town.get_level,
-              documents_count:town.documentation_documents.count,
+              # documents_count:town.documentation_documents.count,
           }
       }
     end
@@ -39,7 +39,7 @@ class TownGeojsonBuilder
               id: "#{town[:id]}",
               title: town.title,
               level:town.get_level,
-              documents_count:town.documentation_documents.count,
+              # documents_count:town.documentation_documents.count,
           }
       }
     end

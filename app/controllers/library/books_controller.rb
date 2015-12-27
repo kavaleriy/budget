@@ -1,5 +1,7 @@
 module Library
   class BooksController < ApplicationController
+    layout 'application_admin'
+
     helper_method :sort_column, :sort_direction
 
     def index

@@ -1,0 +1,195 @@
+:css
+  .navbar.navbar-default{
+    height: 100px;
+  }
+
+.navbar.navbar-default.navbar-static-top
+  .container-fluid
+
+    %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse")
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    -#.navbar-brand
+      -#= t('.brand')
+
+
+    .navbar-collapse.collapse.navbar-responsive-collapse
+      %ul.nav.navbar-nav.navbar-left
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-bar-chart-o
+            = t('.budget')
+
+          %ul.dropdown-menu
+            %li= link_to t('.taxonomies'), taxonomies_path
+            %li= link_to t('.budget_files'), budget_files_path
+
+            %li.divider
+            %li= link_to t('.sankey'), "/sankeys"
+
+            %li.divider
+
+            %li
+              = link_to static_budget_file_help_path do
+                %i.fa.fa-info-circle
+                  =t('static.budget_file_help.help')
+
+            %li.divider
+
+            - Taxonomy.visible_to(current_user).reject{|t| t.budget_files.empty?}.each do |taxonomy|
+              %li
+                =link_to taxonomy_path(taxonomy), {title: "#{taxonomy.title}"} do
+                  %strong
+                    =taxonomy.title.truncate(40)
+                  %br
+                  =taxonomy.owner
+
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-bar-chart-o
+            = t('.townprogs')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            %li= link_to t('.townprogs'), programs_towns_path
+
+
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-bar-chart-o
+            = t('.townmarks')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            %li= link_to t('.townmarks'), indicate_taxonomies_path
+            %li.divider
+            %li= link_to t('.townmarksdictionary'), key_indicate_dictionaries_path
+            %li.divider
+            %li= link_to t('.keytownmarks'), key_indicate_indicator_files_path
+            %li= link_to t('key_indicate.indicator_files.index.upload_files'), new_key_indicate_indicator_file_path
+            %li
+              = link_to static_key_indicator_file_help_path do
+                %i.fa.fa-info-circle
+                  =t('static.budget_file_help.help')
+            %li.divider
+            %li=link_to 'Довідник ключових показників (карта)', key_indicate_map_indicator_keys_path
+            %li=link_to 'Завантажити файли з показниками (карта)', key_indicate_map_indicator_files_path
+            %li=link_to 'Порівняння ключових показників (карта)', key_indicate_map_indicators_path
+
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-calendar
+            = t('.calendar')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            - get_calendars.each do |c|
+              %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
+            %li.divider
+            %li= link_to t('.calendars'), calendars_calendars_path
+            %li= link_to t('.actions'), calendar_actions_path
+
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-file-text-o
+            = t('.documentation')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            %li= link_to t('.documentation_files'), documentation_documents_path
+            %li.divider
+            - if current_user
+              %li= link_to t('.documentation_categories'), documentation_categories_path
+              %li= link_to t('.documentation_branches'), documentation_branches_path
+              %li= link_to t('.documentation_links'), documentation_link_categories_path
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-book.fa-fw
+            = t('.library')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            %li= link_to t('library.books.show.books'), library_books_path
+        %li.dropdown
+          %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+            %i.fa.fa-map-marker
+            = t('.repairing')
+
+          %ul.dropdown-menu{'role' => "menu"}
+            %li= link_to t('.repairing_maps'), repairing_map_path
+            %li.divider
+            - if current_user
+              %li= link_to t('.repairing_layers'), repairing_layers_path
+              - if current_user.has_role?(:admin)
+                %li.dropdown
+                %li= link_to t('.repairing_category'), repairing_categories_path
+              %li.divider
+              %li
+                = link_to repairing_maps_instruction_path do
+                  %i.fa.fa-info-circle
+                    = t('layouts.navbar.repairing_maps_instruction')
+        %li
+          = link_to community_communities_path do
+            %i.fa.fa-dot-circle-o
+            = t('community.community.index.header')
+        %li.dropdown
+          - if current_user
+            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+              %i.fa.fa-user.fa-fw
+              = current_user.name
+
+            %ul.dropdown-menu{'role' => "menu"}
+              %li= link_to t('.edit_profile'), edit_user_registration_path
+              %li.divider
+              %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+          - else
+            = link_to new_user_session_path do
+              %i.fa.fa-key
+              = t('.login')
+
+        .lang.pull-right
+          = render partial: 'layouts/lang'
+
+        = render partial: 'layouts/nav_admin'
+
+
+        -#%li.todo
+        -#  %a.dropdown-toggle(data-toggle="dropdown" href="#")
+        -#    %i.fa.fa-calendar
+        -#    %span.badge.badge-grey
+        -#      4
+        -#
+        -#  %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+        -#    %li.nav-header
+        -#      %i.fa.fa-calendar-o
+        -#      4 Активні дії
+        -#    %li
+        -#      %a(href="#")
+        -#        .clearfix
+        -#          %span.pull-left Розгляд ....
+        -#          %span.pull-right 65%
+        -#          .progress.progress-mini
+        -#            .bar(style="width:65%")
+        -#    %li
+        -#      %a(href="#")
+        -#        Показати всі дії
+        -#        %i.fa.fa-angle-double-right
+        -#%li.messages
+        -#  %a.dropdown-toggle(data-toggle="dropdown" href="#")
+        -#    %i.fa.fa-envelope-o
+        -#    %span.badge.badge-grey 2
+        -#
+        -#  %ul.dropdown-navbar.dropdown-menu.dropdown-caret.dropdown-closer
+        -#    %li.nav-header
+        -#      %i.fa.fa-calendar-o
+        -#      2 Повідомлення
+        -#    %li
+        -#      %a(href="#")
+        -#        .clearfix
+        -#          %span.pull-left Розгляд ....
+        -#          %span.pull-right 65%
+        -#          .progress.progress-mini
+        -#            .bar(style="width:65%")
+        -#    %li
+        -#      %a(href="#")
+        -#        Показати всі
+        -#        %i.fa.fa-angle-double-right
+
+    .header.pull-left
+      = yield :header

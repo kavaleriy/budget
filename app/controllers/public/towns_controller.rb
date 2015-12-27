@@ -71,7 +71,7 @@ class Public::TownsController < ApplicationController
 
       kyiv = ""
       # level = 1 - regions, level = 13 - region centers
-      towns.reject{|town| town.documentation_documents.empty? && (town.level != 1 && town.level != 13) }.each do |town|
+      towns.reject{|town| (town.level != 1 && town.level != 13) }.each do |town|
         geo = TownGeojsonBuilder.build(town)
         result << geo unless geo.blank?
       end
