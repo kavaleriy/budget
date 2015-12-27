@@ -1,0 +1,42 @@
+= form_for @library_book, :html => { :class => 'form-horizontal', :multipart => false } do |f|
+
+  - if @library_book.errors.any?
+    #error_explanation
+      %h3
+        = pluralize(@library_book.errors.count, "error")
+        prohibited this product from being saved:
+      %ul
+        - @library_book.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    .field.col-md-12
+      -# Field "Title Book", params [:title], class form [:form_for] (See more: gem simple form)
+      = f.label :title, t('library.books.index.title')
+      = f.text_field :title, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :author, t('library.books.index.author')
+      = f.text_field :author, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :year_publication, t('library.books.index.year_publication')
+      - dates = 1955..Date.today.year
+      = f.select(:year_publication, dates.collect {|d| [d.to_s,d.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable"} )
+  .form-group
+    .field.col-md-12
+      = f.label :description, t('library.books.index.description')
+      = f.text_area :description, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :book_url, t('library.books.show.link')
+      = f.text_field :book_url, :class => 'form-control can_be_disable'
+  .form-group
+    .field.col-md-12
+      = f.label :book_file, t('library.books.new.chose_book')
+      = f.file_field :book_file, :class => 'form-control can_be_disable'
+      -#= f.hidden_field :book_file_cache #, :value => @library_book.book_file_cache
+  .actions
+    = f.submit t('library.books.new.save'), :class => 'btn btn-primary can_be_disable'
+    = link_to t('library.books.index.p_back'), library_books_path, :class => 'btn btn-info can_be_disable'
+

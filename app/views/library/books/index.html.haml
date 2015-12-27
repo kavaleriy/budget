@@ -1,0 +1,32 @@
+:css
+  .documents_search {
+    margin-top: 20px;
+  }
+
+= content_for :header do
+  .header.pull-left
+    %h1
+      = t('layouts.navbar.library')
+      %small
+        = t('.w_books')
+.documentation.col-xs-12.table-responsive
+  - if current_user
+    %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{:colspan =>2}
+          = t('.file')
+        %th
+          = sortable "title", t('.title')
+        %th
+          = sortable "author", t('.author')
+        %th
+          = sortable "year_publication", t('.year_publication')
+        %th
+          = t('.description')
+        %th
+          = t('.actions')
+    %tbody#results
+      = render partial: 'search_books', :locals => { books: @library_books }
+  = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')

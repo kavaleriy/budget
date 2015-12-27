@@ -119,3 +119,12 @@ gem 'kaminari'
 
 # https://github.com/cyu/rack-cors
 gem 'rack-cors', :require => 'rack/cors'
+
+# https://github.com/mislav/will_paginate
+gem 'will_paginate', '~> 3.0.6'
+
+# https://github.com/lucasas/will_paginate_mongoid
+gem "will_paginate_mongoid"
+
+# https://github.com/bootstrap-ruby/will_paginate-bootstrap
+gem 'will_paginate-bootstrap'

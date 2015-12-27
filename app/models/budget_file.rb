@@ -111,7 +111,6 @@ class BudgetFile
         }
       }
     }
-
     self.taxonomy.create_tree subrows, filter
   end
 

@@ -1,0 +1,23 @@
+- @library_books.each do |book|
+  %tr
+    %td
+      - if book.book_file?
+        = link_to book.book_file.url, target: "_blank" do
+          %i.fa.fa-2x{ class: "#{get_file_type_icon(book.book_file_identifier)}" }
+    %td
+      - if book.book_url?
+        = link_to book.book_url, target: "_blank" do
+          %i.fa.fa-share.fa-2x
+            -#{ class: "#{get_file_type_icon(book.book_url_identifier)}" }
+    %td= book.title
+    %td= book.author
+    %td= book.year_publication
+    %td= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
+    .grud
+      %td= link_to t('library.books.index.r_more'), library_book_path(book), :class => 'btn btn-info'
+      - unless current_user.nil?
+        - if current_user.id == book.owner_id || current_user.has_role?(:admin)
+          %td= link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-warning'
+          %td= link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: t('library.books.index.ask') }

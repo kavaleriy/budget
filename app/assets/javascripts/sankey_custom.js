@@ -2,6 +2,18 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
     I18n.locale = window.aHelper.lang();
 
+    var rot_month, rov_month;
+    if(data["rows_rot"][year] && data["rows_rot"][year]['totals']['0']){
+        rot_month = '0';
+    } else {
+        rot_month = Math.max.apply(Math, Object.keys(data["rows_rot"][year]['totals']));
+    }
+    if(data["rows_rov"][year] && data["rows_rov"][year]['totals']['0']){
+        rov_month = '0';
+    } else {
+        rov_month = Math.max.apply(Math, Object.keys(data["rows_rov"][year]['totals']));
+    }
+
     var svg_height;
     var shift = 1, curr_parent = null, curr_type = null, first_level_energy = null, child_level_energy = null;
     var data_labels = {}, children = {}, init_data_labels = {};
@@ -45,10 +57,10 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
         }
     }
     if(data["rows_rot"][year-1]){
-        gather_previous_amounts(data["rows_rot"][year-1]["0"]);
+        gather_previous_amounts(data["rows_rot"][year-1][rot_month]);
     }
     if(data["rows_rov"][year-1]){
-        gather_previous_amounts(data["rows_rov"][year-1]["0"]);
+        gather_previous_amounts(data["rows_rov"][year-1][rov_month]);
     }
 
     // gather data for revenues side
@@ -57,8 +69,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     var elseAmounts_prev = 0;
 
     if(data["rows_rot"][year]) {
-        var d = data["rows_rot"][year]["0"];
-        revenues = data["rows_rot"][year]["totals"]["0"];
+        var d = data["rows_rot"][year][rot_month];
+        revenues = data["rows_rot"][year]["totals"][rot_month];
         var names = {};
         for(var i in d) {
             var fond = get_fond(i);
@@ -115,8 +127,8 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     elseAmounts_prev = 0;
 
     if(data["rows_rov"][year]) {
-        var d = data["rows_rov"][year]["0"];
-        expences = data["rows_rov"][year]["totals"]["0"];
+        var d = data["rows_rov"][year][rov_month];
+        expences = data["rows_rov"][year]["totals"][rov_month];
         var names = {};
         for(var i in d) {
             var fond = get_fond(i);
@@ -229,7 +241,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                         get_subtree(d.key, d.type, d.pos);
                     } else if(d.node && d.node.children) {
                         get_children(d.node, d.pos, d.parent);
-                    } else { // case if it is Aggregated node
+                    } else if (!d.node) { // case if it is Aggregated node
                         $('#percent_list a[data-value="0"]').click();
                     }
                 } else {
@@ -503,7 +515,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
             d = data["rows_rot"][year-1];
             if(d && j == 0) { // if previous year rot exists
-                prev_revenues = d["totals"]["0"];
+                prev_revenues = d["totals"][rot_month];
                 text.append('tspan')
                     .text((prev_revenues/window.aHelper.k(prev_revenues)).toFixed(2) + " " + window.aHelper.short_unit(prev_revenues) + I18n.t("short_units.unit") + " - " + (year-1) + I18n.t("short_units.year"))
                     .attr("dy", "1.1em")
@@ -522,7 +534,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
                     .style("font-weight", "normal")
                     .attr("fill", function(d) {return revenues >= prev_revenues ? "green" : "red"; });
             } else if(data["rows_rov"][year-1] && j == 1){
-                prev_expences = data["rows_rov"][year-1]["totals"]["0"];
+                prev_expences = data["rows_rov"][year-1]["totals"][rov_month];
                 text.append('tspan')
                     .text((prev_expences/window.aHelper.k(prev_expences)).toFixed(2) + " " + window.aHelper.short_unit(prev_expences) + I18n.t("short_units.unit") + " - " + (year-1) + I18n.t("short_units.year"))
                     .attr("dy", "1.1em")
@@ -697,6 +709,7 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
             taxonomy = "ktfk_aaa";
             xPos = 2;
         }
+
         d3.json("/widgets/visify/get_bubblesubtree/" + file_id + "/" + taxonomy + "/" + key, function(data) {
             data_labels = {};
             data_labels[pos] = xPos;
