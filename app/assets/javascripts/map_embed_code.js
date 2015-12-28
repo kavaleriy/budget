@@ -10,7 +10,6 @@ function aMapEmbedCode() {
 
     return {
         initialize: function(options) {
-            I18n.locale = window.aHelper.lang();
             width = options.width;
             min_width = width - 300;
             max_width = width + 300;

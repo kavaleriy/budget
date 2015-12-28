@@ -1,7 +1,5 @@
 function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
 
-    I18n.locale = window.aHelper.lang();
-
     var rot_month, rov_month;
     if(data["rows_rot"][year] && data["rows_rot"][year]['totals']['0']){
         rot_month = '0';

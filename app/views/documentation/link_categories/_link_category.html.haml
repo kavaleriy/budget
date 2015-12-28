@@ -20,7 +20,6 @@
 
       $('#description').html('#{@documentation_link_category.description.html_safe() if @documentation_link_category.description}');
 
-      I18n.locale = window.aHelper.lang();
       var editor_locale;
       if(I18n.locale == "uk") {
         editor_locale = "ua-UA";

@@ -17,7 +17,7 @@
   $(document).ready(function() {
 
     // ------------------------ DATEPICKER -----------------------------
-    $.fn.datepicker.dates[window.aHelper.lang()];
+    $.fn.datepicker.dates[I18n.locale];
     var endDate = new Date(parseInt("#{$key_indicators.keys.max}"),0,1);
     var startDate = new Date(parseInt("#{$key_indicators.keys.min}"),0,1);
 
@@ -27,7 +27,7 @@
       endDate: endDate,
       startDate: startDate,
       multidate: true,
-      language: window.aHelper.lang(),
+      language: I18n.locale,
       autoclose: true,
       minViewMode: 'years',
       viewMode: 'years',

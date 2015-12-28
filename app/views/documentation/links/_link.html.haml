@@ -19,7 +19,6 @@
       %i.fa.fa-times.pull-right
 
 :javascript
-  I18n.locale = window.aHelper.lang();
   $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
   $('.link[data-id="#{link.id}"] #town').editable({
     source: '#{search_town_path}',
