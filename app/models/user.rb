@@ -37,7 +37,6 @@ class User
   field :last_sign_in_ip
   field :remember_created_at
 
-  has_many :book
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask
