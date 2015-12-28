@@ -35,7 +35,7 @@ class BudgetFileRotFt < BudgetFile
       }
 
       item
-    end.reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
+    end # .reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
   end
 
 end

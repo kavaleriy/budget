@@ -40,7 +40,7 @@ class BudgetFileRovVd < BudgetFile
       item['_month'] = dt.month.to_s
 
       item
-    end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
+    end # .reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
   end
 
 end
