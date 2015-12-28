@@ -5,7 +5,7 @@ class TaxonomiesController < ApplicationController
   before_action :set_params, only: [:show_modify]
   before_action :set_attachments, only: [:show, :show_modify, :edit]
 
-  before_action :authenticate_user!, except: [:show, :show_modify, :town_profile]
+  before_action :authenticate_user!, except: [:show, :show_modify]
   load_and_authorize_resource
 
   def recipients
@@ -110,16 +110,6 @@ class TaxonomiesController < ApplicationController
       format.js {}
       format.json { head :no_content, status: :created }
     end
-  end
-
-  def town_profile
-    if params[:town_id] == 'test'
-      @taxonomy = Taxonomy.where(:owner => '').first
-    else
-      town = Town.find(params[:town_id])
-      @taxonomy = Taxonomy.where(:owner => town.title).first
-    end
-    render 'show'
   end
 
   private

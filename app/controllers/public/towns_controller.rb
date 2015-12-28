@@ -1,7 +1,9 @@
 class Public::TownsController < ApplicationController
   include ControllerCaching
 
-  before_action :set_town, only: [:show]
+  before_action :set_town, only: [:show, :budget]
+
+  before_action :set_documents, only: [:show]
 
   def index
     @towns = Town.all
@@ -9,12 +11,7 @@ class Public::TownsController < ApplicationController
 
   def show
     @calendars = Calendar.where(:town => @town)
-    @branches = {}
-    Documentation::Branch.all.each{|br|
-      @branches[br.id.to_s] = {}
-      @branches[br.id.to_s]['title'] = br.title
-      @branches[br.id.to_s]['count'] = @documents.select{|t| t.branch == br}.length
-    }
+
     @town_links = {}
     if @town.blank?
       @town_br_links = Documentation::Link.all.where(:town => nil)
@@ -39,9 +36,8 @@ class Public::TownsController < ApplicationController
     @town_items.push('budget') if Taxonomy.where(:owner => town).first
     @town_items.push('programs') if Programs::Town.where(:name => town).first
     @town_items.push('calendar') if Calendar.where(:town => town).first
-    @town_items.push('sankey') if Sankey.where(:owner => town).first
+    # @town_items.push('sankey') if Sankey.where(:owner => town).first
     @town_items.push('repair')
-    @town_items.push('purchase')
     @town_items.push('key_docs')
     if @town.blank?
       @town_items.push('keys')
@@ -55,6 +51,27 @@ class Public::TownsController < ApplicationController
       @town_items.push('indicators') if Indicate::Taxonomy.where(:town => @town).first
     end
 
+  end
+
+
+  def budget
+    @tabs = []
+
+    if params[:town_id] == 'test'
+      taxonomy_rot = TaxonomyRot.where(:owner => '').first
+      taxonomy_rov = TaxonomyRov.where(:owner => '').first
+      sankey = Sankey.where(:owner => '').first
+    else
+      town = Town.find(params[:town_id])
+      taxonomy_rot = TaxonomyRot.where(:owner => town.title).first
+      taxonomy_rov = TaxonomyRov.where(:owner => town.title).first
+      sankey = Sankey.where(:owner => town.title).first
+    end
+
+    @tabs << { title: t('.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
+    @tabs << { title: t('.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
+    @tabs << { title: t('.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}"} if sankey
+    @tabs.first[:cname] = 'active'
   end
 
   def geo_json
@@ -102,13 +119,15 @@ class Public::TownsController < ApplicationController
 
   private
 
+  def test_town?
+    params[:town_id] == "test"
+  end
+
   def set_town
-    if params[:town_id] == "test"
+    if test_town?
       @town = ''
-      @documents = Documentation::Document.all.select{|t| t.town.nil?}
     else
       @town = Town.find(params[:town_id])
-      @documents = Documentation::Document.all.select{|t| t.town == @town}
       if @town.level == 1 #area
         @towns = Town.all.where(:area_title => @town.title)
       else
@@ -117,4 +136,14 @@ class Public::TownsController < ApplicationController
     end
   end
 
+  def set_documents
+    if test_town?
+      @documents = Documentation::Document.all.select{|t| t.town.nil?}
+    else
+      @documents = Documentation::Document.where(locked: false)
+      @documents = @documents.select{ |doc| params[:town_id].include? doc.town_id.to_s }
+
+      @documents.sort_by!{|doc| doc.title ? doc.title : ""  }
+    end
+  end
 end

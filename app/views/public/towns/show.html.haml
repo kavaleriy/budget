@@ -215,14 +215,14 @@
     }
   }
 
+= content_for :header do
+  .head
+    = @town.title
 
-.col-sm-8#towns_profile
-  / tabs left
+#towns_profile
   .tabbable.tabs-left
-    %ul.nav.nav-tabs.col-sm-3.bar
+    %ul.nav.nav-tabs.bar
       %li
-        %a{:href => "#", :style => 'pointer-events:none;', :class => 'title-town'}
-          =@town.title
         %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;', :class => 'img-town'}
       %li
         %a{"data-toggle" => "tab", :href => "#description"}
@@ -245,7 +245,8 @@
       %li
         %a{"data-toggle" => "tab", :href => "#pub_budget"}
           = t('public.towns.portfolio.pub_budget')
-    .tab-content
+
+    .tab-content.col-sm-9
       #description.tab-pane.fade
         .col-sm-12.col-md-5.col-lg-6
           - if @town.description && !@town.description.blank?
@@ -261,25 +262,24 @@
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
         .row
-          - %w(budget programs indicators keys calendar sankey repair purchase key_docs).each do |item|
+          - %w(budget programs indicators keys calendar repair).each do |item|
             = render partial: 'portfolio', :locals => { :item => item }
 
-          .col-sm-3
-            .view.view-tenth
-              %img.img-responsive{src: '/assets/public/purchase.jpg'}
-                .mask
-                  %a.info{href: 'http://www.spending.gov.ua/', target: 'blank'}
-                    Докладніше
+          - [{ title: 'Перевірити державні закупівлі', url: 'https://ips.vdz.ua/ua/purchase_search.htm'},
+             { title: 'Портал публічних фінансів', url: 'http://www.spending.gov.ua/'},
+             { title: 'Prozorro', url: 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis'} ].each do |item|
+            .col-sm-3
+              .view.view-tenth
+                %img.img-responsive{src: '/assets/public/purchase.jpg'}
+                  .mask
+                    %a.info{href: "#{item[:url]}", target: 'blank'}
+                      Докладніше
 
-              %hr.blue-line
-                .portfolio-title
-                  Портал публічних фінансів
+                %hr.blue-line
+                  .portfolio-title
+                    = item[:title]
 
       #documents.tab-pane.fade
-        -#%h3
-        -#  = t('public.towns.portfolio.documents')
-          -#%span.badge.bsize.count
-          -#  = @town.documentation_documents.count()
         = render partial: 'docs'
       #links.tab-pane.fade
 
@@ -307,9 +307,9 @@
                   %dt
           - counter = counter + 1
 
-  / /tabs
-.col-sm-4
-  = render partial: 'map_ukraine'
+    .col-xs-9
+      = render partial: 'map_ukraine'
+
 
 :javascript
 

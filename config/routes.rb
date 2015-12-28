@@ -249,14 +249,14 @@ Rails.application.routes.draw do
 
 
   namespace :public do
-    get 'budget' => 'home#budget'
-
     get 'about' => 'home#about'
 
     get 'documents' => 'documents#index'
 
-
     get 'towns/:town_id' => 'towns#show'
+
+    get 'budget_files/:town_id' => 'towns#budget'
+
     get 'ukraine_geo_json' => 'towns#geo_json'
     get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
