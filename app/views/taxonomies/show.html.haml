@@ -14,6 +14,11 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
+.col-xs-12
+  %p
+    Автор:
+    = @taxonomy.budget_files.first.author
+
 = link_to t('taxonomies.recipients.title'), recipients_taxonomy_path(@taxonomy), :class => 'btn btn-info'
 = link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
 = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@taxonomy), :class => 'btn btn-primary'
