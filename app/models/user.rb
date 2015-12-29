@@ -37,6 +37,9 @@ class User
   field :last_sign_in_ip
   field :remember_created_at
 
+  field :reset_password_token, type: String
+  field :reset_password_sent_at, type: DateTime
+
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask
