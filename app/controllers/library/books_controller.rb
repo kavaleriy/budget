@@ -43,9 +43,15 @@ module Library
     def update
       @library_book = Library::Book.find(params[:id])
 
-      unless params[:library_book][:description].blank?
+      unless params[:library_book][:title].blank?
         unless params[:library_book][:book_file].blank?
           @library_book.remove_book_file!
+        end
+      end
+
+      unless params[:library_book][:title].blank?
+        unless params[:library_book][:book_img].blank?
+          @library_book.remove_book_img!
         end
       end
 
@@ -78,7 +84,7 @@ module Library
     end
 
     def library_book_params
-      params.require(:library_book).permit( :title, :author, :year_publication, :description, :book_url, :book_file )
+      params.require(:library_book).permit( :title, :author, :year_publication, :description, :book_url, :book_file, :book_img )
     end
   end
 end

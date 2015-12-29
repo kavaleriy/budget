@@ -9,6 +9,9 @@
         = link_to book.book_url, target: "_blank" do
           %i.fa.fa-share.fa-2x
             -#{ class: "#{get_file_type_icon(book.book_url_identifier)}" }
+    %td.book_image{ align: 'center' }
+      - if book.book_img?
+        = image_tag book.book_img.icon
     %td= book.title
     %td= book.author
     %td= book.year_publication
