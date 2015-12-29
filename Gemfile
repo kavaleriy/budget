@@ -104,6 +104,7 @@ gem 'font-awesome-rails'
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem "mini_magick"
+# gem 'mini_magick', '3.5', :require => 'mini_gmagick'
 
 # https://github.com/JangoSteve/remotipart
 gem 'remotipart', '~> 1.2'
@@ -128,3 +129,8 @@ gem "will_paginate_mongoid"
 
 # https://github.com/bootstrap-ruby/will_paginate-bootstrap
 gem 'will_paginate-bootstrap'
+
+# Export to PDF
+# See more at: https://github.com/mileszs/wicked_pdf
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

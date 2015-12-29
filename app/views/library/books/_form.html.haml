@@ -36,6 +36,10 @@
       = f.label :book_file, t('library.books.new.chose_book')
       = f.file_field :book_file, :class => 'form-control can_be_disable'
       -#= f.hidden_field :book_file_cache #, :value => @library_book.book_file_cache
+  .form-group
+    .field.col-md-12
+      = f.label :book_img, t('library.books.index.cover')
+      = f.file_field :book_img, :class => 'form-control can_be_disable'
   .actions
     = f.submit t('library.books.new.save'), :class => 'btn btn-primary can_be_disable'
     = link_to t('library.books.index.p_back'), library_books_path, :class => 'btn btn-info can_be_disable'
