@@ -34,8 +34,6 @@
     var town_select = $(".town_select");
     var compare_btn = $('#compare_btn');
 
-    I18n.locale = window.aHelper.lang();
-
     // ------------ Dynamically select town to compare ----------------
     town_select.select2(
       {
@@ -107,7 +105,7 @@
     })
 
     // ------------------------ DATEPICKER -----------------------------
-    $.fn.datepicker.dates[window.aHelper.lang()];
+    $.fn.datepicker.dates[I18n.locale];
     var endDate = new Date(new Date().getFullYear() - 1,0,1);
     var year_datepicker = $(".year_datepicker");
 
@@ -116,7 +114,7 @@
       startView: 2,
       endDate: endDate,
       multidate: true,
-      language: window.aHelper.lang(),
+      language: I18n.locale,
       autoclose: true,
       minViewMode: 'years',
       viewMode: 'years',

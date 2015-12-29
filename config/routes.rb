@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'topdf/index'
+
   resources :currencies do
     member do
       put 'rate_by_year/:year' => 'currencies#rate_by_year'
@@ -115,7 +117,6 @@ Rails.application.routes.draw do
     # put 'documents/lock/:id' => 'documents#lock'
   end
 
-
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
@@ -141,6 +142,10 @@ Rails.application.routes.draw do
 
       resources :repairs
     end
+  end
+
+  namespace :to_pdf do
+
   end
 
   resources :sankeys

@@ -1,8 +1,6 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   include ControllerCaching
 
-  before_action :set_locale
-
   before_action :set_budget_file
   before_action :set_params, :except => [:get_bubbletree_nodedata]
   before_action :set_amounts, :except => [:get_bubbletree_nodedata]
@@ -115,10 +113,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   private
-
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-  end
 
   def get_bubble_tree levels
     tree = @budget_file.get_tree levels

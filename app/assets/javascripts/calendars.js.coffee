@@ -28,7 +28,7 @@ $(document).on 'ready page:change', ->
   #	-----------------------------------------------------------------
 
   $('#calendar').fullCalendar
-    lang: window.aHelper.lang(),
+    lang: I18n.locale,
     editable: true,
     header:
       left: 'prev,next today',
@@ -82,7 +82,7 @@ $(document).on 'ready page:change', ->
           formatSelection: formatColorSelect
           escapeMarkup: (m) ->
             m
-        I18n.locale = window.aHelper.lang()
+
         editor_locale = undefined
         if I18n.locale == 'uk'
           editor_locale = 'ua-UA'

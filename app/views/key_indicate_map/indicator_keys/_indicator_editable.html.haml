@@ -19,8 +19,6 @@
 :javascript
 
   $(document).ready(function(){
-    I18n.locale = window.aHelper.lang();
-
     $('tr[data-id="#{key.id}"] #name,tr[data-id="#{key.id}"] #unit,tr[data-id="#{key.id}"] #group').editable();
     $('tr[data-id="#{key.id}"] #integer_or_float').editable({
       value: "#{key.integer_or_float}",

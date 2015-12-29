@@ -129,3 +129,8 @@ gem "will_paginate_mongoid"
 
 # https://github.com/bootstrap-ruby/will_paginate-bootstrap
 gem 'will_paginate-bootstrap'
+
+# Export to PDF
+# See more at: https://github.com/mileszs/wicked_pdf
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

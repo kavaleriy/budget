@@ -52,7 +52,6 @@
 
   $(document).ready(function() {
 
-    I18n.locale = window.aHelper.lang();
     add_datepicker('term_start', 'term_end');
 
     var next = 1;
@@ -93,13 +92,13 @@
     });
 
     function add_datepicker(id_start, id_end) {
-      $.fn.datepicker.dates[window.aHelper.lang()];
+      $.fn.datepicker.dates[I18n.locale];
 
       $(".year_datepicker").datepicker( {
         format: 'dd.mm.yyyy',
         startView: 2,
         multidate: true,
-        language: window.aHelper.lang(),
+        language: I18n.locale,
         autoclose: true,
         minViewMode: 'years',
         viewMode: 'years',

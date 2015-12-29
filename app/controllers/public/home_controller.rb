@@ -19,6 +19,7 @@ module Public
 
     def calendar
       @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
+
     end
 
     def subscribe

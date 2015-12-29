@@ -56,13 +56,13 @@
 :javascript
 
   $(document).ready(function() {
-    $.fn.datepicker.dates[window.aHelper.lang()];
+    $.fn.datepicker.dates[I18n.locale];
 
     $(".year_datepicker").datepicker( {
       format: 'dd.mm.yyyy',
       startView: 2,
       multidate: true,
-      language: window.aHelper.lang(),
+      language: I18n.locale,
       autoclose: true,
       minViewMode: 'years',
       viewMode: 'years',

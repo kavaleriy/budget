@@ -28,8 +28,6 @@
 
   $(document).ready(function(){
 
-    I18n.locale = window.aHelper.lang();
-
     $.ajax({
       url: '/indicate/taxonomies/#{@indicate_taxonomy.id}/get_indicators',
       type: "post",
@@ -74,7 +72,6 @@
   });
 
   function create_graphs(num_of_years) {
-    I18n.locale = window.aHelper.lang();
     var editor_locale;
     if(I18n.locale == "uk") {
       editor_locale = "ua-UA";
