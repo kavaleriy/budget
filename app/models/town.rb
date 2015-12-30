@@ -35,6 +35,8 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
 
+  has_one :export_budget
+
   after_update :clear_cache
   def clear_cache
     Rails.cache.delete(Town.name)

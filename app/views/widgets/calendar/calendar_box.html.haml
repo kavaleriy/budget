@@ -202,3 +202,21 @@
     if (townEvent_id) selectEvent(townEvent_id)
     if (peopleEvent_id) selectEvent(peopleEvent_id)
   })
+
+-# timeline
+:javascript
+  $(document).ready(function() {
+    $('.ui-timeline article.tl-item').on('click', function(e) {
+
+      e = $(e.currentTarget)
+
+      event_id = e.attr('event_id')
+
+      if (event_id == null)
+        return
+
+      calendar_id = "#{@calendar.id}"
+      $.get("/events/"+event_id, { calendar_id: @calendar_id });
+    })
+  })
+

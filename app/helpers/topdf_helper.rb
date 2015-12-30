@@ -1,2 +1,0 @@
-module TopdfHelper
-end

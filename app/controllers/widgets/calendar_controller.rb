@@ -7,6 +7,9 @@ class Widgets::CalendarController < Widgets::WidgetsController
     @curr_people_event = @calendar.events.where(holder: 2, :starts_at.lte => Date.current).last
   end
 
+  def timeline
+  end
+
   def pie_data
     starts_at = '2015-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
     ends_at = '2016-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
@@ -70,6 +73,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
     events = @calendar.events.event_timeline(event.holder, starts_at, ends_at)
     render :json => {:parent_event => events.uniq{|e| [e.starts_at, e.ends_at-e.starts_at]}.select{|e| e.starts_at == event.starts_at && e.ends_at == event.ends_at}}
   end
+
 
 
   private

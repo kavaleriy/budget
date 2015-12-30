@@ -246,6 +246,13 @@
         %a{"data-toggle" => "tab", :href => "#pub_budget"}
           = t('public.towns.portfolio.pub_budget')
 
+      %li
+        -#-binding.pry
+        -if !(@town.export_budget.blank?)
+          %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
+            %i.fa.fa-file-pdf-o
+              timeline
+
     .tab-content.col-sm-9
       #description.tab-pane.fade
         .col-sm-12.col-md-5.col-lg-6
