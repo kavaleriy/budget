@@ -15,6 +15,11 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
+.col-xs-12
+  %p
+    Автор:
+    = @budget_file.author
+
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
   %i.fa.fa-comment-o
@@ -23,11 +28,6 @@
 
 #embed_code_visify.embed_code
   = render partial: 'widgets/visify/embed_code'
-
-.col-xs-12
-  %p
-    Створено:
-    = @budget_file.author
 
 :javascript
 
