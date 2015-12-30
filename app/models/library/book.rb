@@ -13,7 +13,7 @@ class Library::Book
 
   belongs_to :owner, class_name: 'User'
 
-  validates :description, :presence => true
+  validates :title, :presence => true
   validates :book_url, :presence => true, if: "book_file.blank?"
   validates :book_file,
             :presence => true, if: "book_url.blank?",
@@ -22,7 +22,12 @@ class Library::Book
             }
 
   private
+    mount_uploader :book_img, ImgBookUploader
+    skip_callback :update, :before, :store_previous_model_for_book_img
+
     mount_uploader :book_file, BookUploader
     skip_callback :update, :before, :store_previous_model_for_book_file
+
+
 
 end

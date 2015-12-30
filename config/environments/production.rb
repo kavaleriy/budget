@@ -81,4 +81,16 @@ Rails.application.configure do
 
   config.assets.debug = true
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { :host => "www.openbudget.in.ua" }
+  config.action_mailer.smtp_settings = {
+      address: 'smtp.gmail.com',
+      port: 587,
+      domain: 'openbudget.in.ua',
+      authentication: 'plain',
+      user_name: 'openbudget.in.ua@gmail.com',
+      password: ENV['MAIL_PWD'],
+      enable_starttls_auto: true
+  }
+
 end

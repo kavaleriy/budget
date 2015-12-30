@@ -18,7 +18,7 @@
 
 :javascript
 
-  var zoom = 5.5;
+  var zoom = 5;
   var window_width = $(window).width();
   if(window_width < 1300) {
     zoom = 4.9;
@@ -27,8 +27,8 @@
   var aRepairMap = RepairMap({
     scrollWheelZoom: false,
     zoom: zoom,
-    minZoom: 6,
-    maxZoom: 9,
+    minZoom: 4,
+    maxZoom: 5,
     dragging: false,
     map_static: true,
     center: [48.5, 31.2],

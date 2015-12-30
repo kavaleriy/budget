@@ -1,23 +1,33 @@
 - @library_books.each do |book|
   %tr
-    %td
+    %td.book_image{ align: 'center' }
       - if book.book_file?
-        = link_to book.book_file.url, target: "_blank" do
-          %i.fa.fa-2x{ class: "#{get_file_type_icon(book.book_file_identifier)}" }
+        = link_to book.book_file.url do
+          - if book.book_img?
+            = image_tag book.book_img.thumb
+          - else
+            = link_to image_tag("book_off.png"), book.book_file.url
+      - elsif book.book_url?
+        - if book.book_img?
+          = link_to image_tag(book.book_img.thumb), book.book_url
+        - else
+          = link_to image_tag("book_off.png"), book.book_url
     %td
-      - if book.book_url?
-        = link_to book.book_url, target: "_blank" do
-          %i.fa.fa-share.fa-2x
-            -#{ class: "#{get_file_type_icon(book.book_url_identifier)}" }
-    %td= book.title
-    %td= book.author
-    %td= book.year_publication
-    %td= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
-    .grud
-      %td= link_to t('library.books.index.r_more'), library_book_path(book), :class => 'btn btn-info'
-      - unless current_user.nil?
-        - if current_user.id == book.owner_id || current_user.has_role?(:admin)
-          %td= link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-warning'
-          %td= link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
-                        method: :delete,
-                        data: { confirm: t('library.books.index.ask') }
+      %p
+        - unless current_user.nil?
+          - if current_user.id == book.owner_id || current_user.has_role?(:admin)
+            .buttom
+              = link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-default'
+              = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
+                                method: :delete,
+                                data: { confirm: t('library.books.index.ask') }
+        - if book.book_file?
+          = link_to book.book_file.url do
+            = book.title
+        - elsif book.book_url?
+          = link_to book.book_url do
+            = book.title
+      %p= book.author
+      %p= book.year_publication
+      %p= book.description if book.description
+      -#%p= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
