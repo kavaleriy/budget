@@ -2,8 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .index{
-  th:nth-child(2){
+  box-shadow: 2px 2px 10px #428bca;
+  margin-top: -10px;
+  padding-top: 10px;
+  table{
+    .headt{
+      background: #897CA7;
+      color:#ffffff;
+    }
+  }
+  th:nth-child(1){
     text-align: center;
+    border-radius: 15px 0 0 0;
+  }
+  th:nth-child(2){
+    border-radius: 0 15px 0 0;
   }
   .book_image {
     img{
@@ -12,7 +25,13 @@
   }
   td{
     a {
-      margin-left: 7px;
+      //margin-left: 7px;
+    }
+  }
+  .buttom{
+    float:right;
+    .btn{
+      padding: 5px 10px;
     }
   }
 }

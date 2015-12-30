@@ -134,3 +134,6 @@ gem 'will_paginate-bootstrap'
 # See more at: https://github.com/mileszs/wicked_pdf
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+
+# error
+gem "binding_of_caller"
