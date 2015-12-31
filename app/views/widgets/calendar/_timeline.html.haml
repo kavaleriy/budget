@@ -27,7 +27,7 @@
             = event[:action]
             %hr
             .description
-              = event[:description].html_safe
+              = event[:description].to_s.html_safe
 
 :javascript
 
