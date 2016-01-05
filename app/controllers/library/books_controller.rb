@@ -5,7 +5,7 @@ module Library
     helper_method :sort_column, :sort_direction
 
     def index
-      @library_books = Library::Book.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10)
+      @library_books = Library::Book.order(sort_column + " " + sort_direction).page(params[:page]).per(10)
 
       respond_to do |format|
         format.js
@@ -86,7 +86,7 @@ module Library
     end
 
     def library_book_params
-      params.require(:library_book).permit( :title, :author, :year_publication, :description, :book_url, :book_file, :book_img )
+      params.require(:library_book).permit(:category, :title, :author, :year_publication, :description, :book_url, :book_file, :book_img )
     end
   end
 end

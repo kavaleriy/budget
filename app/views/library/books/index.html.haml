@@ -24,4 +24,6 @@
             = t('.description')
       %tbody#results
         = render partial: "search_books", :locals => { books: @library_books }
-    = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    -#= will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    #books-paginator
+      = paginate @library_books, :remote => true

@@ -2,11 +2,10 @@
   %tr
     %td.book_image{ align: 'center' }
       - if book.book_file?
-        = link_to book.book_file.url do
-          - if book.book_img?
-            = image_tag book.book_img.thumb
-          - else
-            = link_to image_tag("book_off.png"), book.book_file.url
+        - if book.book_img?
+          = link_to image_tag(book.book_img.thumb), book.book_file.url
+        - else
+          = link_to image_tag("book_off.png"), book.book_file.url
       - elsif book.book_url?
         - if book.book_img?
           = link_to image_tag(book.book_img.thumb), book.book_url
