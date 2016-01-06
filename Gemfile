@@ -78,7 +78,8 @@ gem 'momentjs-rails', '>= 2.5.0'
 gem 'rubyzip'
 
 # https://github.com/argerim/select2-rails
-gem 'select2-rails'
+# https://rubygems.org/gems/select2-rails/versions/4.0.0
+gem 'select2-rails', '~> 4.0'
 
 # https://github.com/infused/dbf
 gem 'dbf'

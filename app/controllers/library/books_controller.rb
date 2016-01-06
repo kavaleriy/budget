@@ -14,7 +14,12 @@ module Library
     end
 
     def new
+      # @find_categories = Library::Book.pluck(:category).uniq
       @library_book = Library::Book.new
+      # respond_to do |format|
+      #   format.js { @categories = @find_categories }
+      #   format.html
+      # end
     end
 
     def edit

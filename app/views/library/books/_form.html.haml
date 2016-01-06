@@ -9,16 +9,11 @@
         - @library_book.errors.full_messages.each do |msg|
           %li= msg
 
-  -#.form-group
-  -#  .field.col-md-12
-  -#    = f.label :category, "Category"
-  -#    = f.text_field :category, :class => 'form-control can_be_disable'
-  -#.form-group
-  -#  .field.col-md-12
-  -#    = f.label :category, "Category"
-  -#    -#- categories = Library::Book.pluck(:category).uniq.sort_by
-  -#    = f.select(:category, categories.collect {|d| [d.to_s,d.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable", :id => "category"} )
-  -#    -#= select_tag :category, options_for_select(categories), class: 'select-town form-control'
+  .form-group
+    .field.col-md-12
+      = f.label :category, t('library.books.index.category')
+      - categories = Library::Book.pluck(:category).uniq
+      = f.select(:category, categories.collect {|d| [d.to_s,d.to_s]}, { multiple: true}, class: "select2 form-control can_be_disable", id: "category" )
   .form-group
     .field.col-md-12
       -# Field "Title Book", params [:title], class form [:form_for] (See more: gem simple form)
@@ -57,9 +52,8 @@
 :javascript
 
   $(document).ready(function() {
-    //$("#category").select2({});
-    $("#category").select2({
-      //tags:["red", "green", "blue"],
-      maximumInputLength: 5
+    $('.select2').select2({
+      tags: true,
+      maximumSelectionSize: 1
     });
   });
