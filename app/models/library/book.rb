@@ -25,6 +25,10 @@ class Library::Book
 
   scope :category, -> { select(where(author: true)).distinct }
 
+
+  scope :active, -> { where category: "" }
+  scope :inactive, -> { where category: nil }
+
   def self.category
     self.categories
   end

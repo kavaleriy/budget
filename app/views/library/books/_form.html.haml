@@ -12,7 +12,7 @@
   .form-group
     .field.col-md-12
       = f.label :category, t('library.books.index.category')
-      - categories = Library::Book.pluck(:category).uniq
+      - categories = Library::Book.pluck(:category).uniq.compact.sort
       = f.select(:category, categories.collect {|d| [d.to_s,d.to_s]}, { multiple: true}, class: "select2 form-control can_be_disable", id: "category" )
   .form-group
     .field.col-md-12

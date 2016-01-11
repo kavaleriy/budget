@@ -5,7 +5,25 @@ module Library
     helper_method :sort_column, :sort_direction
 
     def index
-      @library_books = Library::Book.order(sort_column + " " + sort_direction).page(params[:page]).per(10)
+      @library_books = Library::Book.order(sort_column + " " + sort_direction)
+      @library_books = @library_books.where(:category => params[:category]) unless params[:category].blank?
+      @library_books = @library_books.where(category: "") unless params[:category_empty].blank?
+      @library_books = @library_books.where(category: nil) unless params[:category_nil].blank?
+
+      # (["name = ? and email = ?", "Joe", "joe@example.com"])
+      # @library_books = @library_books.where(["category = ? or category = ?", "", nil]) unless params[:category_p].blank?
+      # User.where(a).where(b).or(User.where(c))
+      # Device.where("parent_id = ? OR status = ?", @parent.id, 0)
+      # @library_books = @library_books.where(category: params[:category_p]) unless params[:category_p].blank?
+      # @library_books = @library_books.where(:category => "").or(@library_books.where(:category => nil)) unless params[:category_p].blank?
+      # @library_books = @library_books.where(category: nil) unless params[:category_p].blank?
+      # @library_books = @library_books.where(:category => "", :category.exists => true).all unless params[:category_p].blank?
+      # (["name = :name and email = :email", { name: "Joe", email: "joe@example.com" }])
+      # @niiil = nil
+      # @space = ""
+      # @library_books = @library_books.where(:category.all => [ @space, @niiil] ) unless params[:category_p].blank?
+      # @library_books = @library_books.inactive.active unless params[:category_p].blank?
+      @library_books = @library_books.page(params[:page]).per(10)
 
       respond_to do |format|
         format.js
