@@ -13,6 +13,7 @@
         = t('.w_books')
 .container.index
   .documentation.col-xs-12.table-responsive
+    = render partial: "categories"
     - if current_user
       %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
     %table.table.table-striped
