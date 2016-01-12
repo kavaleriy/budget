@@ -52,7 +52,7 @@ module Calendars
 
       unless current_user.nil?
         @calendar.author = current_user.email
-        @calendar.town = current_user.town unless current_user.nil?
+        @calendar.town = current_user.town
       end
 
       respond_to do |format|
@@ -69,10 +69,16 @@ module Calendars
     # PATCH/PUT /calendars/1
     # PATCH/PUT /calendars/1.json
     def update
+      new_params = calendar_params
+      unless current_user.nil?
+        new_params[:author] = current_user.email
+        new_params[:town] = current_user.town
+      end
+
       respond_to do |format|
-        if @calendar.update(calendar_params)
-          format.html { redirect_to @calendar, notice: t('calendar.update') }
-          format.json { render :show, status: :ok, location: @calendar }
+        if @calendar.update(new_params)
+          format.html { redirect_to calendars_calendars_url, notice: t('calendar.update') }
+          format.json { render :show, status: :ok, location: calendars_calendars_url }
         else
           format.html { render :edit }
           format.json { render json: @calendar.errors, status: :unprocessable_entity }

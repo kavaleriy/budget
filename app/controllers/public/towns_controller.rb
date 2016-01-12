@@ -25,7 +25,7 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
 
     }
-    town = ''
+    town = nil
     town = @town.title unless @town.blank?
     # @budgets = Taxonomy.where(:owner => town)
     # @total_amounts = {}
@@ -50,7 +50,6 @@ class Public::TownsController < ApplicationController
       @town_items.push('keys') if @town.key_indicate_map_indicators
       @town_items.push('indicators') if Indicate::Taxonomy.where(:town => @town).first
     end
-
   end
 
 

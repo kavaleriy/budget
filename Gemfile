@@ -79,7 +79,7 @@ gem 'rubyzip'
 
 # https://github.com/argerim/select2-rails
 # https://rubygems.org/gems/select2-rails/versions/4.0.0
-gem 'select2-rails', '~> 4.0'
+gem 'select2-rails', '~> 3.5'
 
 # https://github.com/infused/dbf
 gem 'dbf'
