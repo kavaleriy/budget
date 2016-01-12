@@ -11,6 +11,11 @@
 
   .form-group
     .field.col-md-12
+      = f.label :category, t('library.books.index.category')
+      - categories = Library::Book.pluck(:category).uniq.compact.sort
+      = f.select(:category, categories.collect {|d| [d.to_s,d.to_s]}, { multiple: true}, class: "select2 form-control can_be_disable", id: "category" )
+  .form-group
+    .field.col-md-12
       -# Field "Title Book", params [:title], class form [:form_for] (See more: gem simple form)
       = f.label :title, t('library.books.index.title')
       = f.text_field :title, :class => 'form-control can_be_disable'
@@ -44,3 +49,11 @@
     = f.submit t('library.books.new.save'), :class => 'btn btn-primary can_be_disable'
     = link_to t('library.books.index.p_back'), :class => 'btn btn-info can_be_disable'
 
+:javascript
+
+  $(document).ready(function() {
+    $('.select2').select2({
+      tags: true,
+      maximumSelectionSize: 1
+    });
+  });

@@ -5,6 +5,7 @@ class Library::Book
   require 'carrierwave/mongoid'
 
   include Mongoid::Timestamps
+  field :category, type: String
   field :title, type: String
   field :author, type: String
   field :year_publication, type: Integer
@@ -27,7 +28,5 @@ class Library::Book
 
     mount_uploader :book_file, BookUploader
     skip_callback :update, :before, :store_previous_model_for_book_file
-
-
 
 end

@@ -35,7 +35,7 @@
                 = t('.description')
 
             - unless @budget_file.taxonomy.explanation[key].nil?
-              - @budget_file.taxonomy.explanation[key].keys.sort_by { |item| item }.each do |t_key|
+              - @budget_file.taxonomy.explanation[key].keys.sort_by { |item| item }.reject{|key| key.blank?}.each do |t_key|
                 %tr
                   %td{style:'text-align: right'}
                     %h4=t_key

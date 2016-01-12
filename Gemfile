@@ -78,7 +78,8 @@ gem 'momentjs-rails', '>= 2.5.0'
 gem 'rubyzip'
 
 # https://github.com/argerim/select2-rails
-gem 'select2-rails'
+# https://rubygems.org/gems/select2-rails/versions/4.0.0
+gem 'select2-rails', '~> 3.5'
 
 # https://github.com/infused/dbf
 gem 'dbf'
@@ -121,19 +122,7 @@ gem 'kaminari'
 # https://github.com/cyu/rack-cors
 gem 'rack-cors', :require => 'rack/cors'
 
-# https://github.com/mislav/will_paginate
-gem 'will_paginate', '~> 3.0.6'
-
-# https://github.com/lucasas/will_paginate_mongoid
-gem "will_paginate_mongoid"
-
-# https://github.com/bootstrap-ruby/will_paginate-bootstrap
-gem 'will_paginate-bootstrap'
-
 # Export to PDF
 # See more at: https://github.com/mileszs/wicked_pdf
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-
-# error
-gem "binding_of_caller"

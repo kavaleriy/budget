@@ -1,0 +1,30 @@
+:scss
+  .buttons{
+    .button_to, div{
+      display: inline-block;
+    }
+    form{
+        margin: 5px 2px;
+    }
+    div input{
+      font-size: 14px;
+      padding: 4px 10px;
+      //color: white;
+      //background: #fbf069;
+    }
+    input:hover{
+      background: transparent;
+    }
+  }
+
+.buttons
+  = button_to "Усі книги", library_books_path, remote: true, :method => :get
+  - cat_nil = Library::Book.pluck(category: nil).uniq
+  - categories = Library::Book.pluck(:category).uniq.compact.sort   # .compact - delete all nil elements
+    -# books without category
+    - if categories[0] == '' || cat_nil[0] == nil
+    = button_to "Без категорії", library_books_path(category_empty: "empty"), remote: true, :method => :get
+  - categories.each do |catg|
+    -# books with category
+    - if catg != ''
+      = button_to "#{catg}", library_books_path(category: catg), remote: true, :method => :get

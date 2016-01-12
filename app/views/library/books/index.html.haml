@@ -13,6 +13,7 @@
         = t('.w_books')
 .container.index
   .documentation.col-xs-12.table-responsive
+    = render partial: "categories"
     - if current_user
       %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
     %table.table.table-striped
@@ -24,4 +25,6 @@
             = t('.description')
       %tbody#results
         = render partial: "search_books", :locals => { books: @library_books }
-    = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    -#= will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    #books-paginator
+      = paginate @library_books, :remote => true
