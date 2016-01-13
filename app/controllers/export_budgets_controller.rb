@@ -12,7 +12,6 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-    # -binding.pry
     respond_to do |format|
       format.html
       format.pdf do
@@ -32,6 +31,8 @@ class ExportBudgetsController < ApplicationController
 
   # GET /export_budgets/1/edit
   def edit
+    # -binding.pry
+    # @export_budget = ExportBudget.find(params[:id])
   end
 
   # POST /export_budgets
@@ -77,15 +78,17 @@ class ExportBudgetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget
+      # -binding.pry
       @export_budget = ExportBudget.find(params[:id])
     end
 
     def get_town_calendar
+      # -binding.pry
       @town_calendar = Calendar.where(:town => @export_budget.town.title).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
-      params.require(:export_budget).permit(:year, :title, :template)
+      params.require(:export_budget).permit(:year, :title, :template, :town_id)
     end
 end
