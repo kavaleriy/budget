@@ -11,7 +11,7 @@
           = link_to image_tag(book.book_img.thumb), book.book_url
         - else
           = link_to image_tag("book_off.png"), book.book_url
-    %td
+    %td.lead
       %p
         - unless current_user.nil?
           - if current_user.id == book.owner_id || current_user.has_role?(:admin)
@@ -20,13 +20,17 @@
               = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
                                 method: :delete,
                                 data: { confirm: t('library.books.index.ask') }
-        - if book.book_file?
-          = link_to book.book_file.url do
-            = book.title
-        - elsif book.book_url?
-          = link_to book.book_url do
-            = book.title
-      %p= book.author
-      %p= book.year_publication
-      %p= book.description if book.description
+        %h3
+          - if book.book_file?
+            = link_to book.book_file.url do
+              = book.title
+          - elsif book.book_url?
+            = link_to book.book_url do
+              = book.title
+      %p
+        %span= book.author
+      %p
+        %span= book.year_publication
+      %p
+        %span= book.description if book.description
       -#%p= "#{truncate(strip_tags(book.description),length: 300) if book.description}"

@@ -6,12 +6,12 @@
   //}
 
 = content_for :header do
-  .header.pull-left
+  .head.pull-left
     %h1
       = t('layouts.navbar.library')
       %small
         = t('.w_books')
-.container.index
+.container.book-index
   .documentation.col-xs-12.table-responsive
     = render partial: "categories"
     - if current_user
