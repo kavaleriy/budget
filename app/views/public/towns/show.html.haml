@@ -247,11 +247,8 @@
           = t('public.towns.portfolio.pub_budget')
 
       %li
-        -#-binding.pry
-        -if !(@town.export_budget.blank?)
-          %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
-            %i.fa.fa-file-pdf-o
-              timeline
+        %a{"data-toggle" => "tab", :href => "#pdf_docs"}
+          PDS doc's
 
     .tab-content.col-sm-9
       #description.tab-pane.fade
@@ -313,6 +310,11 @@
                           = link.value
                   %dt
           - counter = counter + 1
+      #pdf_docs.tab-pane.fade
+        -if !(@town.export_budget.blank?)
+          %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
+            %i.fa.fa-file-pdf-o
+              timeline
 
       .col-xs-5.pull-right
         = render partial: 'map_ukraine'
