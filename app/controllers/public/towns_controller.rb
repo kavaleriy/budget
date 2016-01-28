@@ -12,6 +12,8 @@ class Public::TownsController < ApplicationController
   def show
     @calendars = Calendar.where(:town => @town)
 
+    @town_export_budgets = ExportBudget.where(:town => @town.id)
+
     @town_links = {}
     if @town.blank?
       @town_br_links = Documentation::Link.all.where(:town => nil)
