@@ -19,10 +19,14 @@ module Library
 
     def new
       @library_book = Library::Book.new
+      @categories = get_categories
+      @years = get_years
     end
 
     def edit
       @library_book = Library::Book.find(params[:id])
+      @categories = get_categories
+      @years = get_years
     end
 
     def create
@@ -80,6 +84,14 @@ module Library
     end
 
     private
+
+    def get_years
+      1955..Date.today.year
+    end
+
+    def get_categories
+      Library::Book.pluck(:category).uniq.compact.sort
+    end
 
     def sort_column
       Library::Book.fields.keys.include?(params[:sort]) ? params[:sort] : "updated_at"
