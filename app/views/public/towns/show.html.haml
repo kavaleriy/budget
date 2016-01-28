@@ -312,29 +312,32 @@
           - counter = counter + 1
       #pdf_docs.tab-pane.fade
         .col-xs-7
-        -if (current_user && current_user.admin?)
-          .add_new
-            =button_to('Add new', new_export_budget_path, method: :get, data: {toggle: "modal", target: "#modal"}, :class => 'btn btn-large btn-primary')
-        -if !(@town.export_budget.blank?)
-          %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
-            %i.fa.fa-file-pdf-o
-              timeline - #{@town.export_budget.title}
-              %br
-          .col-xs-6
+          -if (current_user && current_user.admin?)
+            .add_new
+              =button_to('Add new', new_export_budget_path, method: :get, data: {toggle: "modal", target: "#modal"}, :class => 'btn btn-large btn-primary')
+          -if !(@town_export_budgets.blank?)
             %table.table.table-striped{"data-sort-name" => "name", "data-sort-order" => "desc"}
               %thead
                 %tr
                   %th{"data-field" => "name", "data-sortable" => "true"} Year
                   %th{"data-field" => "age", "data-sortable" => "true"} Title
                   %th{"data-field" => "age", "data-sortable" => "true"} Template
+                  %th{"data-field" => "age", "data-sortable" => "true"} View
+                  %th{"data-field" => "age", "data-sortable" => "true"} Save
+                  %th{"data-field" => "age", "data-sortable" => "true"} Drop
               %tbody
               - @town_export_budgets.each do |teb|
                 %tr
                   %td= teb.year
                   %td= teb.title
                   %td= teb.template
-        -else
-          no data yet
+                  %td= link_to 'Show', teb
+                  %td
+                    %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
+                      %i.fa.fa-file-pdf-o
+                  %td= link_to 'Destroy', teb, :method => :delete, :data => { :confirm => 'Are you sure?' }
+          -else
+            no data yet
         .col-xs-5.pull-right
           = render partial: 'map_ukraine'
 
