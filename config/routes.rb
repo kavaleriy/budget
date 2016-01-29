@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :budget_news
+
   resources :export_budgets
 
   resources :currencies do
