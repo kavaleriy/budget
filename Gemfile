@@ -126,3 +126,6 @@ gem 'rack-cors', :require => 'rack/cors'
 # See more at: https://github.com/mileszs/wicked_pdf
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+
+# https://github.com/ifad/data-confirm-modal
+gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'

@@ -1,0 +1,22 @@
+%p#notice= notice
+.col-md-6
+  .ul.list-group
+    %li.list-group-item
+      %b Title:
+      = @budget_news.title
+    %li.list-group-item
+      %b News text:
+      = @budget_news.news_text
+    %li.list-group-item
+      %b Link:
+      = @budget_news.link
+    %li.list-group-item
+      %b Img:
+      = @budget_news.img
+    %li.list-group-item
+      %b News date:
+      = @budget_news.news_date
+
+  = link_to t('budget_news.index.edit'), edit_budget_news_path(@budget_news)
+  \|
+  = link_to t('budget_news.new.back'), budget_news_index_path
