@@ -134,9 +134,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     }
 
     info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} ) unless info
-    node['label'] = info['title'] unless info['title'].blank?
-    node['icon'] = info['icon'] unless info['icon'].blank?
-    node['color'] = info['color'] unless info['color'].blank?
+
+    if info
+      node['label'] = info['title'] unless info['title'].blank?
+      node['icon'] = info['icon'] unless info['icon'].blank?
+      node['color'] = info['color'] unless info['color'].blank?
+    end
     # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
 
     if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column.to_s
