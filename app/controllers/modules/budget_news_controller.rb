@@ -28,7 +28,10 @@ module Modules
     end
 
     def update
-      @budget_news.update(modules_budget_news_params)
+      # abort modules_budget_news_params['news_date'].inspect
+      if (validate_date modules_budget_news_params['news_date'])
+        @budget_news.update(modules_budget_news_params)
+      end
       respond_with(@budget_news)
     end
 
@@ -38,6 +41,22 @@ module Modules
     end
 
     private
+
+      def validate_date(date)
+        regExp = Regexp.new /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
+        result = regExp.match(date)
+        if result
+          str = Date.parse date
+          if str.is_a?(Date)
+            return true
+          end
+        else
+          @budget_news.errors.add(:news_date, t('activerecord.attributes.invalid.date'))
+          return false
+        end
+
+      end
+    
       def set_budget_news
         @budget_news = Modules::BudgetNews.find(params[:id])
       end
