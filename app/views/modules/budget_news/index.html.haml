@@ -2,7 +2,7 @@
   %h1
     = t('.header')
 
-  = link_to t('.create'),new_budget_news_path
+  = link_to t('.create'),new_modules_budget_news_path
   %br
   %br
   -if(!@budget_news.blank?)
@@ -26,8 +26,8 @@
           %td= budget_news.news_text
           %td= budget_news.link
           %td= budget_news.news_date
-          %td= link_to t('budget_news.edit.show'), budget_news
-          %td= link_to t('.edit'), edit_budget_news_path(budget_news)
+          %td= link_to t('modules.budget_news.edit.show'), budget_news
+          %td= link_to t('.edit'), edit_modules_budget_news_path(budget_news)
           %td= link_to t('.destroy'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
   -else
     На данний момент новин немає.

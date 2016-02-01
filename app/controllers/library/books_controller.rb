@@ -30,6 +30,7 @@ module Library
     end
 
     def create
+      abort params.inspect
       @library_book = Book.new(library_book_params)
       @library_book.owner = current_user
 

@@ -129,3 +129,5 @@ gem 'wkhtmltopdf-binary'
 
 # https://github.com/ifad/data-confirm-modal
 gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'
+
+gem 'simple_form'
