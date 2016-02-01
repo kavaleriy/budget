@@ -55,3 +55,47 @@
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('form.close')
 
     = link_to t('form.destroy', :default => t("helpers.links.destroy")), [:calendars, @calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
+
+:javascript
+
+  $(document).ready(function() {
+    formatFaSelect = function(el) {
+      return '<i class=\'fa ' + el.id + '\'/> ' + el.id;
+    };
+    formatColorSelect = function(el) {
+      return '<div style=\'width: 100%; height: 43px; background-color: ' + el.id + '\'/>';
+    };
+    $('.fa-select').select2({
+      allowClear: true,
+      formatResult: formatFaSelect,
+      formatSelection: formatFaSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+    $('.color-select').select2({
+      allowClear: true,
+      formatResult: formatColorSelect,
+      formatSelection: formatColorSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+    editor_locale = void 0;
+    if (I18n.locale === 'uk') {
+      editor_locale = 'ua-UA';
+    } else {
+      editor_locale = '';
+    }
+    $('.wysihtml5').wysihtml5({
+      'font-styles': true,
+      'emphasis': true,
+      'lists': true,
+      'html': false,
+      'link': true,
+      'image': false,
+      'color': false,
+      'size': 'sm',
+      'locale': editor_locale
+    });
+  });

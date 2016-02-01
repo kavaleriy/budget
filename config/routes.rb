@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :modules do
+    resources :budget_news
+  end
+
   resources :export_budgets
 
   resources :currencies do

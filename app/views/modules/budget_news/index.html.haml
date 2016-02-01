@@ -1,0 +1,40 @@
+.col-md-12
+  %h1
+    = t('.header')
+
+  = link_to t('.create'),new_modules_budget_news_path
+  %br
+  %br
+  -if(!@budget_news.blank?)
+    %table.table.table-hover
+      %tr
+        %th
+          = t('.title')
+        %th
+          = t('.text')
+        %th
+          = t('.link')
+        %th
+          = t('.date')
+        %th
+        %th
+        %th
+
+      - @budget_news.each do |budget_news|
+        %tr
+          %td= budget_news.title
+          %td= budget_news.news_text
+          %td= budget_news.link
+          %td= budget_news.news_date
+          %td= link_to t('modules.budget_news.edit.show'), budget_news
+          %td= link_to t('.edit'), edit_modules_budget_news_path(budget_news)
+          %td= link_to t('.destroy'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+  -else
+    На данний момент новин немає.
+  %br
+
+:javascript
+  dataConfirmModal.setDefaults({
+    title:  'Видалення новини',
+    cancel: 'Відмінити'
+  });

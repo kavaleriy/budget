@@ -1,0 +1,19 @@
+%table
+  %tr
+    %th Year
+    %th Title
+    %th Template
+    %th
+    %th
+    %th
+
+  - @export_budgets.each do |export_budget|
+    %tr
+      %td= export_budget.year
+      %td= export_budget.title
+      %td= export_budget.template
+      %td= link_to 'Show', export_budget
+      %td= link_to 'Edit', edit_export_budget_path(export_budget)
+      %td= link_to 'Destroy', export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br

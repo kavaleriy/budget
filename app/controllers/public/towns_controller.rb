@@ -10,7 +10,13 @@ class Public::TownsController < ApplicationController
   end
 
   def show
+    @export_budget = ExportBudget.new
+
+    @export_budgets = ExportBudget.all
+
     @calendars = Calendar.where(:town => @town)
+
+    @town_export_budgets = ExportBudget.where(:town => @town.id)
 
     @town_links = {}
     if @town.blank?

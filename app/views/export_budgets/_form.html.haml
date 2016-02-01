@@ -1,3 +1,8 @@
+:scss
+  .tsel {
+    width: 250px;
+  }
+
 = form_for @export_budget do |f|
   - if @export_budget.errors.any?
     #error_explanation
@@ -15,8 +20,55 @@
   .field
     = f.label :template
     = f.text_field :template
-  .field
+  .field.tsel
     = f.label :town_id
     = f.text_field :town_id
   .actions
     = f.submit 'Save'
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#export_budget_town_id').select2({
+
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+    },
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_for_towns_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      var town_url = "#{public_path('ID')}".replace('ID', $(this).val())
+      $('#export_budget_town_id').val($(this).val());
+      //console.log($(this).val());
+    });
+  });

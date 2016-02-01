@@ -1,0 +1,18 @@
+.row-fluid
+  .span4.well
+    -#= abort @budget_news.inspect
+    = simple_form_for @budget_news do |f|
+      = f.input :title, label: t('modules.budget_news.index.title')
+      = f.input :news_text, label: t('modules.budget_news.index.text')
+      = f.input :link , label: t('modules.budget_news.index.link')
+      = f.input :img , label: t('modules.budget_news.index.image')
+      = f.input :news_date,label: t('modules.budget_news.index.choose_date'), as: :string,
+                             input_html: { class: "datepicker" }
+      = f.button :submit,t('.save'), class: 'btn btn-primary'
+
+:javascript
+  $(document).ready(function(){
+    $('.datepicker').datepicker({
+      format: 'yyyy-mm-dd'
+    });
+  });

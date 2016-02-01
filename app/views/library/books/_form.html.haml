@@ -1,3 +1,4 @@
+
 = form_for @library_book, :html => { :class => 'form-horizontal', :multipart => false } do |f|
 
   - if @library_book.errors.any?
@@ -12,8 +13,11 @@
   .form-group
     .field.col-md-12
       = f.label :category, t('library.books.index.category')
-      - categories = Library::Book.pluck(:category).uniq.compact.sort
-      = f.select(:category, categories.collect {|d| [d.to_s,d.to_s]}, { multiple: true}, class: "select2 form-control can_be_disable", id: "category" )
+      = f.text_field(:category, class: "select2 form-control can_be_disable", id: "category" )
+  -#.form-group  -# for gem select2 v.4.0
+  -#  .field.col-md-12
+  -#    = f.label :category, t('library.books.index.category')
+  -#    = f.select(:category, @categories.collect {|d| [d.to_s,d.to_s]}, { multiple: true}, class: "select2 form-control can_be_disable", id: "category" )
   .form-group
     .field.col-md-12
       -# Field "Title Book", params [:title], class form [:form_for] (See more: gem simple form)
@@ -26,8 +30,7 @@
   .form-group
     .field.col-md-12
       = f.label :year_publication, t('library.books.index.year_publication')
-      - dates = 1955..Date.today.year
-      = f.select(:year_publication, dates.collect {|d| [d.to_s,d.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable"} )
+      = f.select(:year_publication, @years.collect {|y| [y.to_s,y.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable"} )
   .form-group
     .field.col-md-12
       = f.label :description, t('library.books.index.description')
@@ -50,10 +53,10 @@
     = link_to t('library.books.index.p_back'), library_books_path, :class => 'btn btn-info can_be_disable'
 
 :javascript
-
+  var js_array = #{raw @categories.to_json};
   $(document).ready(function() {
     $('.select2').select2({
-      tags: true,
+      tags: js_array,
       maximumSelectionSize: 1
     });
   });
