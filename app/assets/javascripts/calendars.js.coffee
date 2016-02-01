@@ -94,7 +94,7 @@ $(document).on 'ready page:change', ->
           'lists': true
           'html': false
           'link': true
-          'image': true
+          'image': false
           'color': false
           'size': 'sm'
           'locale': editor_locale
