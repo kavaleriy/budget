@@ -22,14 +22,15 @@ module Modules
     end
 
     def create
-      @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
-      @budget_news.save
+      # if validate_date modules_budget_news_params['news_date']
+        @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
+        @budget_news.save
+      # end
       respond_with(@budget_news)
     end
 
     def update
-      # abort modules_budget_news_params['news_date'].inspect
-      if (validate_date modules_budget_news_params['news_date'])
+      if validate_date modules_budget_news_params['news_date']
         @budget_news.update(modules_budget_news_params)
       end
       respond_with(@budget_news)
@@ -51,8 +52,10 @@ module Modules
             return true
           end
         else
-          @budget_news.errors.add(:news_date, t('activerecord.attributes.invalid.date'))
-          return false
+          if @budget_news
+            @budget_news.errors.add(:news_date, t('activerecord.attributes.invalid.date'))
+            return false
+          end
         end
 
       end

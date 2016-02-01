@@ -2,19 +2,24 @@
 .col-md-6
   .ul.list-group
     %li.list-group-item
-      %b Title:
+      %b
+        = t('modules.budget_news.index.title')+':'
       = @budget_news.title
     %li.list-group-item
-      %b News text:
+      %b
+        = t('modules.budget_news.index.text')+':'
       = @budget_news.news_text
     %li.list-group-item
-      %b Link:
+      %b
+        = t('modules.budget_news.index.link')+':'
       = @budget_news.link
     %li.list-group-item
-      %b Img:
+      %b
+        = t('modules.budget_news.index.image')+':'
       = @budget_news.img
     %li.list-group-item
-      %b News date:
+      %b
+        = t('modules.budget_news.index.date')+':'
       = @budget_news.news_date
 
   = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
