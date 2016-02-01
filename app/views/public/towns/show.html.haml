@@ -313,8 +313,10 @@
       #pdf_docs.tab-pane.fade
         .col-xs-7
           -if (current_user && current_user.admin?)
-            .add_new
-              =button_to('Add new', new_export_budget_path, method: :get, data: {toggle: "modal", target: "#modal"}, :class => 'btn btn-large btn-primary')
+            .buttons
+              = link_to 'Add new', '#add-modal', id: 'mAddWindow', :class => 'btn btn-large btn-primary', :remote => true
+              = link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true
+              = render partial: 'export_budgets/modal'
           -if !(@town_export_budgets.blank?)
             %table.table.table-striped{"data-sort-name" => "name", "data-sort-order" => "desc"}
               %thead
@@ -332,7 +334,7 @@
                   %td= teb.year
                   %td= teb.title
                   %td= teb.template
-                  %td= link_to 'Show', teb
+                  %td= link_to 'Show', teb, target: '_blank'
                   %td
                     %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
                       %i.fa.fa-file-pdf-o
@@ -347,6 +349,7 @@
 :javascript
 
   $(document).ready(function() {
+
 
     $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')

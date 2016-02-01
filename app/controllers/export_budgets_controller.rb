@@ -31,8 +31,7 @@ class ExportBudgetsController < ApplicationController
 
   # GET /export_budgets/1/edit
   def edit
-    # -binding.pry
-    # @export_budget = ExportBudget.find(params[:id])
+    @export_budget = ExportBudget.find(params[:id])
   end
 
   # POST /export_budgets
@@ -42,8 +41,8 @@ class ExportBudgetsController < ApplicationController
 
     respond_to do |format|
       if @export_budget.save
-        format.html { redirect_to @export_budget, notice: 'Export budget was successfully created.' }
-        format.json { render :show, status: :created, location: @export_budget }
+        format.html { redirect_to :back, notice: 'Export budget was successfully created.' }
+        format.json { render :back, status: :created, location: @export_budget }
       else
         format.html { render :new }
         format.json { render json: @export_budget.errors, status: :unprocessable_entity }
@@ -70,7 +69,7 @@ class ExportBudgetsController < ApplicationController
   def destroy
     @export_budget.destroy
     respond_to do |format|
-      format.html { redirect_to export_budgets_url, notice: 'Export budget was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Export budget was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
