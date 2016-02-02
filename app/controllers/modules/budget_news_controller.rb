@@ -22,17 +22,19 @@ module Modules
     end
 
     def create
-      # if validate_date modules_budget_news_params['news_date']
-        @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
-        @budget_news.save
-      # end
+      @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
+      @budget_news.save
       respond_with(@budget_news)
     end
 
     def update
       if validate_date modules_budget_news_params['news_date']
+        unless modules_budget_news_params[:img].blank?
+          @budget_news.delete_image_file!
+        end
         @budget_news.update(modules_budget_news_params)
       end
+
       respond_with(@budget_news)
     end
 
@@ -42,7 +44,6 @@ module Modules
     end
 
     private
-
       def validate_date(date)
         regExp = Regexp.new /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
         result = regExp.match(date)
