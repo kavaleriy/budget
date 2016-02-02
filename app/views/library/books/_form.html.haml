@@ -1,11 +1,12 @@
 
 = form_for @library_book, :html => { :class => 'form-horizontal', :multipart => false } do |f|
-
   - if @library_book.errors.any?
     #error_explanation
       %h3
-        = pluralize(@library_book.errors.count, "error")
-        prohibited this product from being saved:
+        = t('library.books.index.errors')
+        (
+        = pluralize(@library_book.errors.count, "")
+        )
       %ul
         - @library_book.errors.full_messages.each do |msg|
           %li= msg
@@ -29,8 +30,9 @@
       = f.text_field :author, :class => 'form-control can_be_disable'
   .form-group
     .field.col-md-12
+      - years = 1955..Date.today.year
       = f.label :year_publication, t('library.books.index.year_publication')
-      = f.select(:year_publication, @years.collect {|y| [y.to_s,y.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable"} )
+      = f.select(:year_publication, years.collect {|y| [y.to_s,y.to_s]}, {:include_blank => t('library.books.new.select')}, {:class => "form-control can_be_disable"} )
   .form-group
     .field.col-md-12
       = f.label :description, t('library.books.index.description')
