@@ -8,6 +8,8 @@ module Public
     def index
       # @areas = Town.areas
       # @towns = Town.cities
+      @news = Modules::BudgetNews.all
+      # abort @news[0].inspect
     end
 
     def about

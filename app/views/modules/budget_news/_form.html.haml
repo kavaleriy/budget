@@ -1,9 +1,18 @@
+:scss
+  .row-fluid {
+    .well {
+      .text_area {
+        resize: vertical;
+       }
+    }
+  }
+
 .row-fluid
   .span4.well
     -#= abort @budget_news.inspect
     = simple_form_for @budget_news do |f|
       = f.input :title, label: t('modules.budget_news.index.title')
-      = f.input :news_text, label: t('modules.budget_news.index.text')
+      = f.input :news_text, as: :text, label: t('modules.budget_news.index.text'), input_html: { class: 'text_area' }
       = f.input :link , label: t('modules.budget_news.index.link')
       = f.input :img , as: :file, label: t('modules.budget_news.index.image')
       = f.input :news_date,label: t('modules.budget_news.index.choose_date'), as: :string,

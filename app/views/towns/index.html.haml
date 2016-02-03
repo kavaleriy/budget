@@ -1,15 +1,15 @@
 - model_class = Town
 = content_for :header do
   .head.pull-left
-    %h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+    %h1=t '.header', :default => model_class.model_name.human.pluralize.titleize
 
 
 %table.table.table-striped
   %thead
     %tr
       %th{width: '70px'}
-      %th title
-      %th=t '.actions', :default => t("helpers.actions")
+      %th= t ('.title')
+      %th= t '.actions', :default => t("helpers.actions")
   %tbody
 
   - @towns.each do |area|
