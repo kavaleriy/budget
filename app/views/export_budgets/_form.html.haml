@@ -3,28 +3,19 @@
     width: 250px;
   }
 
-= form_for @export_budget do |f|
+= simple_form_for(@export_budget) do |f|
   - if @export_budget.errors.any?
     #error_explanation
       %h2= "#{pluralize(@export_budget.errors.count, "error")} prohibited this export_budget from being saved:"
       %ul
         - @export_budget.errors.full_messages.each do |msg|
           %li= msg
+  = f.input :year, label: t('.year')
+  = f.input :title, label: t('.title')
+  = f.input :template, label: t('.template')
+  = f.label t('.town_name')
+  = f.text_field :town_id
 
-  .field
-    = f.label :year
-    = f.number_field :year
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :template
-    = f.text_field :template
-  .field.tsel
-    = f.label :town_id
-    = f.text_field :town_id
-  .actions
-    = f.submit 'Save'
 
 :javascript
 

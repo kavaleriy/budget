@@ -1,3 +1,10 @@
+:scss
+  .modal-footer {
+    .btn-default {
+      background-image: none;
+    }
+  }
+
 #add-modal.modal.fade{:role => "dialog", :tabindex => "-1"}
   .modal-dialog
     .modal-content
@@ -7,7 +14,8 @@
       .modal-body
         = render partial: '/export_budgets/form'
       .modal-footer
-        %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Close
+        = simple_form_for(@export_budget) do |f|
+          = f.button :submit, t('.save'), class: 'btn btn-primary'
 
 #my-modal.modal.fade{:role => "dialog", :tabindex => "-1"}
   .modal-dialog
@@ -22,6 +30,7 @@
 
 :javascript
   $(document).ready(function() {
+
     $('.buttons a#mWindow').on('click', function(){
       $('#my-modal').modal();
     }),
