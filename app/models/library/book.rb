@@ -21,6 +21,10 @@ class Library::Book
             :file_size => {
                 :maximum => 50.megabytes.to_i, message: 'Максимально-можливий розмір файлу - 50 мб.'
             }
+  validates :book_img,
+            :file_size => {
+                :maximum => 1.megabytes.to_i, message: 'Максимально-можливий розмір картнки - 1 мб.'
+            }
 
   private
     mount_uploader :book_img, ImgBookUploader

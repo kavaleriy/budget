@@ -20,7 +20,7 @@ module Library
     def new
       @library_book = Library::Book.new
       @categories = get_categories
-      @years = get_years
+      # @years = get_years
     end
 
     def edit
@@ -86,7 +86,7 @@ module Library
     private
 
     def get_years
-      1955..Date.today.year
+      return 1955..Date.today.year
     end
 
     def get_categories
