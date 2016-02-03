@@ -68,22 +68,26 @@
     overflow-y: scroll;
   }
 
-%h1 asdasdadsa
-
-.col-md-12.news_wrapper
-  - @news.each do |newsItem|
-    .col-md-6
-      .cl-block-item
-        .cl-block-date
-          .cl-block-date-month
-            = l(newsItem.news_date, :format => '%B')
-          .cl-block-date-day
-            = newsItem.news_date.strftime('%d')
-        %h3.cl-block-title
-          %a{ "href" => newsItem.link }
-            = newsItem.title
-        .clearfix
-        .cl-block-img
-          = image_tag newsItem.img.thumb
-        .cl-block-text
-          = newsItem.news_text
+%h1
+  =t(".title")
+-unless @news.blank?
+  .col-md-12.news_wrapper
+    - @news.each do |newsItem|
+      .col-md-6
+        .cl-block-item
+          .cl-block-date
+            .cl-block-date-month
+              = l(newsItem.news_date, :format => '%B')
+            .cl-block-date-day
+              = newsItem.news_date.strftime('%d')
+          %h3.cl-block-title
+            %a{ "href" => newsItem.link }
+              = newsItem.title
+          .clearfix
+          .cl-block-img
+            = image_tag newsItem.img.thumb
+          .cl-block-text
+            = newsItem.news_text
+-else
+  .no-news
+    = t(".no_news")
