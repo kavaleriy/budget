@@ -16,24 +16,24 @@
     font-weight: 700;
     opacity: .9;
   }
+- if @town_items.include?(item)
+  .col-sm-3
+    .view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
+      %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}
+        .mask
+          -#%h2
+          -#  = t('public.towns.portfolio.' + item)
+          -#%p Lorem ipsum dolor asit amet
 
-.col-sm-3
-  .view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
-    %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}
-      .mask
-        -#%h2
-        -#  = t('public.towns.portfolio.' + item)
-        -#%p Lorem ipsum dolor asit amet
-
-        - if item == 'budget'
-          %a.info{ :href => '/public/budget_files/' + @town.id }
-            = t('public.towns.portfolio.detail')
-        - else
-          %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id, :target => '_blank' }
-            = t('public.towns.portfolio.detail')
-    - if !@town_items.include?(item)
-      %span.no_data
-        = t('public.towns.portfolio.no_data')
-    %hr.blue-line
-      .portfolio-title
-        = t('public.towns.portfolio.' + item)
+          - if item == 'budget'
+            %a.info{ :href => '/public/budget_files/' + @town.id }
+              = t('public.towns.portfolio.detail')
+          - else
+            %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id, :target => '_blank' }
+              = t('public.towns.portfolio.detail')
+      - if !@town_items.include?(item)
+        %span.no_data
+          = t('public.towns.portfolio.no_data')
+      %hr.blue-line
+        .portfolio-title
+          = t('public.towns.portfolio.' + item)
