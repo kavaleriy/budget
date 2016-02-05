@@ -346,6 +346,7 @@
                   %td= teb.template
                   %td= link_to 'Show', teb, target: '_blank'
                   %td
+                    -#=link_to "D", download_pdf_path(format: "pdf"), target: "_blank"
                     %a{:href => export_budget_path(@town.export_budget, format: 'pdf'), target: '_blank'}
                       %i.fa.fa-file-pdf-o
                   -if (current_user && current_user.admin?)

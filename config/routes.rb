@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   resources :export_budgets
 
+  get 'download_pdf' => 'export_budgets#download_pdf'
+
   resources :currencies do
     member do
       put 'rate_by_year/:year' => 'currencies#rate_by_year'

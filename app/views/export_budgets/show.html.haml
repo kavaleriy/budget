@@ -1,11 +1,10 @@
 !!! 5
-:css
 %html(lang="en")
   %head
     %meta(charset="utf-8")
 
-= render partial: '/widgets/calendar/timeline', :locals => {calendar: @town_calendar}
-= render partial: '/widgets/calendar/timelinejs', :locals => {calendar: @town_calendar}
+= render partial: '/widgets/calendar/timeline_pdf', :locals => {calendar: @town_calendar}
+-#= render partial: '/widgets/calendar/timelinejs', :locals => {calendar: @town_calendar}
 
 -#=@export_budget.template.html_safe
 -#=@export_budget.town
