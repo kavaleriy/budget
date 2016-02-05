@@ -38,6 +38,7 @@ class ExportBudgetsController < ApplicationController
   # POST /export_budgets
   # POST /export_budgets.json
   def create
+    # abort params.inspect
     @export_budget = ExportBudget.new(export_budget_params)
 
     respond_to do |format|

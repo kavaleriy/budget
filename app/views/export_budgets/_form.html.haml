@@ -2,6 +2,10 @@
   .tsel {
     width: 250px;
   }
+  .datepicker
+  {
+    z-index: 1051 !important;
+  }
 
 = simple_form_for(@export_budget) do |f|
   - if @export_budget.errors.any?
@@ -10,17 +14,23 @@
       %ul
         - @export_budget.errors.full_messages.each do |msg|
           %li= msg
-  = f.input :year, label: t('.year')
+  = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
   = f.input :title, label: t('.title')
   = f.input :template, label: t('.template')
   = f.label t('.town_name')
   = f.text_field :town_id
-  = f.button :submit, 'save', class: 'btn btn-primary'
-
+  = f.button :submit, t('.save'), class: 'btn btn-primary'
 
 :javascript
 
   $(document).ready(function() {
+    $('#export_budget_year').datepicker({
+      format: 'yyyy',
+      viewMode: 'years',
+      minViewMode: 'years',
+      locale: 'ua'
+    });
+
 
     $('#export_budget_town_id').select2({
 
