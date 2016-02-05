@@ -5,9 +5,11 @@ module EventsHelper
 
   def holder_to_string(holder)
     if holder == 1
-      t('eventowner_select.town')
+      # t('eventowner_select.town')
+      image_tag("calendar/city.png")
     else
-      t('eventowner_select.community')
+      # t('eventowner_select.community')
+      image_tag("calendar/people.png")
     end
   end
 end

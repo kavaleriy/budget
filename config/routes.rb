@@ -1,15 +1,7 @@
 Rails.application.routes.draw do
 
   namespace :modules do
-    get 'budget_news/ajax_test' =>'budget_news#ajax_test'
-    post 'budget_news/ajax_test_update' =>'budget_news#ajax_test_update'
-    # namespace :budget_news do
-    #   get 'ajax_test' =>'budget_news#ajax_test'
-    #   get 'ajax_test_update' =>'budget_news#ajax_test_update'
-    # end
     resources :budget_news
-      # post 'ajax_test_update'
-
   end
 
   resources :export_budgets
