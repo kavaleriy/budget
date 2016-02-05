@@ -15,8 +15,8 @@
     %p
     %span.descr
       = @calendar.description
-  #calendar_subscriber.col-xs-3.pull-right
-    = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
+  -##calendar_subscriber.col-xs-3.pull-right
+  -#  = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
 -#.timeline
 -#  = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
