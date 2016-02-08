@@ -1,0 +1,216 @@
+:scss
+  .wrapper {
+    padding: 10px 50px;
+    .title-right,
+    .title-left {
+      text-align: center;
+    }
+  }
+
+  @media only screen and (max-width: 794px) {
+    .wrapper {
+      padding: 7px;
+      border: 1px solid red;
+      .top {
+        display: none;
+      }
+      .titles {
+        width: 100%;
+        .title-left {
+          width: 50%;
+          float: left;
+        }
+        .title-right {
+          width: 50%;
+          float: right;
+        }
+      }
+
+      .t {
+        width: 100%;
+        border: 1px solid darkgoldenrod;
+        .bt {
+          width: 100%;
+          border: 1px solid darkgoldenrod;
+          .trl {
+            display: block;
+            width: 38%;
+            border: 1px solid darkgoldenrod;
+            .tl-content {
+              width: 100%;
+              overflow: hidden;
+            }
+          }
+          .trc {
+            width: 24%;
+            border: 1px solid darkgoldenrod;
+          }
+          .trr {
+            float: ;
+            width: 38%;
+            border: 1px solid darkgoldenrod;
+          }
+        }
+      }
+
+      .ui-timeline {
+        width: 100%;
+        &:before {
+          //background-color: #d5d5d5;
+          bottom: 0px;
+          content: "";
+          left: 50%;
+          position: absolute;
+          top: 30px;
+          width: 1px;
+          z-index: 0;
+        }
+        .tl-item {
+          border: 1px solid green;
+          width: 100%;
+          &:after {
+            content: "";
+            display: block;
+            width: 50%;
+          }
+          .tl-body {
+            width: 390px;
+            display: table-cell;
+              //width: 50%;
+            vertical-align: top;
+            .tl-entry {
+              background-color: transparent;
+              //margin: 0 77px 15px 0;
+              .tl-icon {
+                right: -102px;
+                left: auto;
+                top: 5px;
+              }
+              .round-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                border-radius: 50px;
+                border: 2px solid #DBDBDB;
+              }
+              .tl-time {
+                right: -139px;
+                left: auto;
+                text-align: center;
+                padding: 10px;
+              }
+              .tl-content {
+                width: 210px;
+                //padding: 25px;
+                //position: relative;
+                //border-radius: 5px;
+                //border: 1px solid #DBDBDB;
+                //text-align: left;
+                //-webkit-box-shadow: inset 0px -3px 0px 0px whitesmoke;
+                //-moz-box-shadow: inset 0px -3px 0px 0px whitesmoke;
+                //box-shadow: inset 0px -3px 0px 0px whitesmoke;
+              }
+            }
+          }
+        }
+        .alt {
+          float: left;
+        }
+        .right {
+          float: right;
+        }
+      }
+    }
+  }
+
+.wrapper
+  %hr.top
+
+  .row.titles
+    .col-xs-6.title-right
+      %h3= 'Місто'
+    .col-xs-6.title-left
+      %h3= 'Громада'
+
+  %hr.bottom
+  .t
+    - calendar.events.each do |event|
+      .bt
+        - if (event[:holder] == 1)
+          .trl{:class => 'alt', 'event_id' => event[:id] }
+            .tl-content
+              %span.tl-title{ :style => ("color: #{event[:color]}") }
+                = event[:title]
+              = event[:action]
+              %hr
+              %span.description
+                = event[:description].to_s.html_safe
+          .trc
+            .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
+              %i.fa.fa-3{:class => event[:icon] }
+            .tl-time
+              = "#{event[:starts_at].strftime('%d-%m-%Y') }"
+              - if event[:ends_at]
+                %br
+                = event[:ends_at].strftime('%d-%m-%Y')
+          .trr
+
+        - else
+          .trl
+
+          .trc
+            .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
+              %i.fa.fa-3{:class => event[:icon] }
+            .tl-time
+              = "#{event[:starts_at].strftime('%d-%m-%Y') }"
+              - if event[:ends_at]
+                %br
+                = event[:ends_at].strftime('%d-%m-%Y')
+          .trr{:class => 'right', 'event_id' => event[:id] }
+            .tl-content
+              %p.tl-title{ :style => ("color: #{event[:color]}") }
+                = event[:title]
+              = event[:action]
+              %hr
+              .description
+                = event[:description].to_s.html_safe
+
+
+  %section.ui-timeline
+    - calendar.events.each do |event|
+      %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right', 'event_id' => event[:id] }
+        .tl-body
+          .tl-entry{ :style => 'background-color: rgba(128,128,128, .05);'}
+            .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
+              %i.fa.fa-3{:class => event[:icon] }
+            .tl-time
+              = "#{event[:starts_at].strftime('%d-%m-%Y') }"
+              - if event[:ends_at]
+                %br
+                = event[:ends_at].strftime('%d-%m-%Y')
+            .tl-content
+              %img.arrow{:src => event[:holder] == 1 ? '/assets/arrow.jpg' : '/assets/arrowL.jpg' }
+              %p.tl-title{ :style => ("color: #{event[:color]}") }
+                = event[:title]
+              = event[:action]
+              %hr
+              .description
+                = event[:description].to_s.html_safe
+
+:javascript
+
+  $(document).ready(function() {
+    $('.ui-timeline article.tl-item').on('click', function(e) {
+
+      e = $(e.currentTarget)
+
+      event_id = e.attr('event_id')
+
+      if (event_id == null)
+        return
+
+      calendar_id = "#{calendar.id}"
+      $.get("/events/"+event_id, { calendar_id: calendar_id });
+    })
+  })
+

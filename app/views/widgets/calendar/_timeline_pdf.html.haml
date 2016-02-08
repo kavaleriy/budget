@@ -4,17 +4,80 @@
     text-align: center;
   }
 
+  @media screen and (max-width: 794px) {
+    .title-left {
+      float: left;
+      width: 50%;
+    }
+    .title-right {
+      float: right;
+      width: 50%;
+    }
+
+    .ui-timeline {
+      .tl-item {
+        width: 794px;
+        .tl-body {
+          width: 392px;
+          display: table-cell;
+          .tl-entry {
+              width: 310px;
+              //margin: 0 77px 15px 0;
+            .tl-content {
+              width: 250px;
+            }
+          }
+        }
+      }
+      .alt {
+        float: left;
+        .tl-body {
+          vertical-align: top;
+          .tl-entry {
+            position: relative;
+            padding: 0 10px 0 0;
+            background-color: transparent !important;
+            .tl-time {
+            }
+            .tl-content {
+              position: relative;
+              background-color: rgba(128,128,128, .05);
+              .arrow {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      .right {
+        //float: left;
+        .tl-body {
+          .tl-entry {
+            background-color: transparent !important;
+            .tl-content {
+              background-color: rgba(128,128,128, .05);
+              .arrow {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
 %hr
 
 .row
-  .col-md-6.title-right
+  .col-xs-6.title-right
     %h3= t('.city')
-  .col-md-6.title-left
+  .col-xs-6.title-left
     %h3= t('.people')
 
 %hr
-.col-md-12
-  %section.ui-timeline.row
+.col-xs-12
+  %section.ui-timeline
     - calendar.events.each do |event|
       %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right', 'event_id' => event[:id] }
         .tl-body

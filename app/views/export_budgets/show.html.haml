@@ -1,7 +1,15 @@
 !!! 5
-%html(lang="en")
+%html
   %head
     %meta(charset="utf-8")
+    = stylesheet_link_tag    "application", :media => "all"
+    = wicked_pdf_stylesheet_link_tag    'timelines'
+    = wicked_pdf_stylesheet_link_tag    'timelinejs'
+    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/timeline'
+    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/bootstrap.css'
+    -#= wicked_pdf_javascript_include_tag "application"
+    = javascript_include_tag "application"
+
 
 = render partial: '/widgets/calendar/timeline_pdf', :locals => {calendar: @town_calendar}
 -#= render partial: '/widgets/calendar/timelinejs', :locals => {calendar: @town_calendar}
