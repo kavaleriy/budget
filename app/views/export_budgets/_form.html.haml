@@ -6,20 +6,17 @@
   {
     z-index: 1051 !important;
   }
+  #export_button_submit
+  {
+    margin-top: 10px;
+  }
 
-= simple_form_for(@export_budget) do |f|
-  - if @export_budget.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@export_budget.errors.count, "error")} prohibited this export_budget from being saved:"
-      %ul
-        - @export_budget.errors.full_messages.each do |msg|
-          %li= msg
+= simple_form_for(@export_budget, remote: :true) do |f|
   = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
   = f.input :title, label: t('.title')
   = f.input :template, label: t('.template')
-  = f.label t('.town_name')
-  = f.text_field :town_id
-  = f.button :submit, t('.save'), class: 'btn btn-primary'
+  = f.input :town_id, :as => :hidden, :input_html => { :value => @town.blank? ? :town_id : @town.id.to_s }
+  = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 
 :javascript
 
@@ -64,6 +61,7 @@
           };
         },
         results: function (data, page) {
+          //console.log(data);
           return { results: data };
         },
         cache: true
@@ -71,6 +69,5 @@
     }).on("change", function(){
       var town_url = "#{public_path('ID')}".replace('ID', $(this).val())
       $('#export_budget_town_id').val($(this).val());
-      //console.log($(this).val());
     });
   });

@@ -12,9 +12,9 @@
         %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
         %h4.modal-title Title
       .modal-body
-        = render partial: '/export_budgets/form'
+        #export_budget_form
+          = render partial: '/export_budgets/form'
       .modal-footer
-        gtftrd
 
 #my-modal.modal.fade{:role => "dialog", :tabindex => "-1"}
   .modal-dialog
