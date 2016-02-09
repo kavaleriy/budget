@@ -19,7 +19,7 @@ class Public::TownsController < ApplicationController
     @town_export_budgets = ExportBudget.where(:town => @town.id)
 
     @town_links = {}
-    if @town.blank?
+    if test_town?
       @town_br_links = Documentation::Link.all.where(:town => nil)
     else
       @town_br_links = Documentation::Link.all.where(:town => @town)
@@ -45,12 +45,8 @@ class Public::TownsController < ApplicationController
     # @town_items.push('sankey') if Sankey.where(:owner => town).first
     @town_items.push('repair')
     @town_items.push('key_docs')
-    if @town.blank?
+    if test_town?
       @town_items.push('keys')
-      @town = Town.new(:id => 'test',
-                       :title => 'Демонстрація типового профілю міста',
-                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
       @town_items.push('indicators') if Indicate::Taxonomy.where(:town => nil)
     else
       @town_items.push('keys') if @town.key_indicate_map_indicators
@@ -62,7 +58,7 @@ class Public::TownsController < ApplicationController
   def budget
     @tabs = []
 
-    if params[:town_id] == 'test'
+    if test_town?
       taxonomy_rot = TaxonomyRot.where(:owner => '').first
       taxonomy_rov = TaxonomyRov.where(:owner => '').first
       sankey = Sankey.where(:owner => '').first
@@ -130,7 +126,11 @@ class Public::TownsController < ApplicationController
 
   def set_town
     if test_town?
-      @town = ''
+      # binding.pry
+      @town = Town.new(:id => 'test',
+                       :title => 'Демонстрація типового профілю міста',
+                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
     else
       @town = Town.find(params[:town_id])
       if @town.level == 1 #area
