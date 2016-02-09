@@ -1,7 +1,8 @@
 module Modules
   class BudgetNewsController < ApplicationController
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
-
+    before_action :check_permission
+    load_and_authorize_resource
     respond_to :html
 
     def index
@@ -64,13 +65,30 @@ module Modules
         end
 
       end
-    
+
+      def check_permission
+        unless current_user && current_user.admin?
+          go_back
+        end
+      end
+
       def set_budget_news
         @budget_news = Modules::BudgetNews.find(params[:id])
       end
 
       def modules_budget_news_params
         params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date)
+      end
+
+      #Redirect_to_back
+      def go_back
+
+        #Attempt to redirect
+        redirect_to :back
+
+          #Catch exception and redirect to root
+      rescue ActionController::RedirectBackError
+        redirect_to root_path
       end
   end
 end
