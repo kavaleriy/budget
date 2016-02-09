@@ -107,11 +107,57 @@ class Town
     indicators
   end
 
+  def self.get_town_items_hash (town_object)
+    @town = town_object
+    town = nil
+    town = @town.title unless @town.blank?
+    result = {}
+    result.store("budget" ,Town.get_hash_by_item("budget",@town)) if Taxonomy.where(:owner => town).first
+    result.store("programs" ,Town.get_hash_by_item("programs",@town)) if Programs::Town.where(:name => town).first
+    result.store("calendar" ,Town.get_hash_by_item("calendar",@town)) if Calendar.where(:town => town).first
+    result.store("repair" ,Town.get_hash_by_item("repair",@town))
+    result.store("key_docs" ,Town.get_hash_by_item("keys_docs",@town))
+    if @town.blank?
+      @town = Town.new(:id => 'test',
+                       :title => 'Демонстрація типового профілю міста',
+                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
+      result.store("keys" ,Town.get_hash_by_item("keys",@town))
+      result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => nil)
+    else
+
+      result.store("keys" ,Town.get_hash_by_item("keys",@town)) if @town.key_indicate_map_indicators
+      result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => @town).first
+    end
+
+    result
+  end
+
+
+
   private
 
   def self.get_node(node)
     { id: "#{node.id}", title: node.title, img_url: node.img.icon.url } unless node.nil?
   end
 
+  def self.img_url (item)
+    "/assets/public/" + item + ".jpg"
+  end
 
+  def self.title_for_portfolio (item)
+    I18n.t('public.towns.portfolio.' + item)
+  end
+
+  def self.get_item_hash(item_img_src,item_title,item_url)
+    arr = {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url}
+    arr
+  end
+  def self.get_hash_by_item(item,town_object)
+    item_img_src = self.img_url(item)
+    item_title = self.title_for_portfolio(item)
+    item_url = "public_budget_files_path(town_object)"
+    arr = get_item_hash(item_img_src,item_title,item_url)
+    arr
+  end
 end
