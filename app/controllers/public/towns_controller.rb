@@ -130,6 +130,7 @@ class Public::TownsController < ApplicationController
 
   def get_town_items town_object
     town_items = Town.get_town_items_hash(town_object)
+    binding.pry
     town_items
   end
 end

@@ -276,22 +276,22 @@
         -#%h3
         -#  = t('public.towns.portfolio.visuals')
         .row
-          - %w(budget programs indicators keys calendar repair).each do |item|
-            = render partial: 'portfolio', :locals => { :item => item }
+          -@town_items.each do |key, value|
+            = render partial: 'portfolio', :locals => { :item => value }
 
-          - [{ title: 'Перевірити державні закупівлі', url: 'https://ips.vdz.ua/ua/purchase_search.htm', img: '/assets/public/purchase.jpg'},
-             { title: 'Портал публічних фінансів', url: 'http://www.spending.gov.ua/', img: '/assets/public/edata.jpg'},
-             { title: 'Prozorro', url: 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', img: '/assets/public/prozoroo.png'} ].each do |item|
-            .col-sm-3
-              .view.view-tenth
-                %img.img-responsive{src: "#{item[:img]}"}
-                  .mask
-                    %a.info{href: "#{item[:url]}", target: 'blank'}
-                      Докладніше
-
-                %hr.blue-line
-                  .portfolio-title
-                    = item[:title]
+          -#- [{ title: 'Перевірити державні закупівлі', url: 'https://ips.vdz.ua/ua/purchase_search.htm', img: '/assets/public/purchase.jpg'},
+          -#   { title: 'Портал публічних фінансів', url: 'http://www.spending.gov.ua/', img: '/assets/public/edata.jpg'},
+          -#   { title: 'Prozorro', url: 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', img: '/assets/public/prozoroo.png'} ].each do |item|
+          -#  .col-sm-3
+          -#    .view.view-tenth
+          -#      %img.img-responsive{src: "#{item[:img]}"}
+          -#        .mask
+          -#          %a.info{href: "#{item[:url]}", target: 'blank'}
+          -#            Докладніше
+          -#
+          -#      %hr.blue-line
+          -#        .portfolio-title
+          -#          = item[:title]
 
       #documents.tab-pane.fade
         = render partial: 'docs'
