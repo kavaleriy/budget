@@ -29,7 +29,6 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s] = {}
       @town_links[br.id.to_s]['title'] = br.title
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-
     }
     @town_items = get_town_items(@town)
   end
@@ -130,7 +129,6 @@ class Public::TownsController < ApplicationController
 
   def get_town_items town_object
     town_items = Town.get_town_items_hash(town_object)
-    binding.pry
     town_items
   end
 end
