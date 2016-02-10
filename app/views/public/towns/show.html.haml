@@ -273,6 +273,7 @@
             %p
               =@town.links.html_safe
       #portfolio.tab-pane.active.fade.in
+        = render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
         -#-#%h3
         -#-#  = t('public.towns.portfolio.visuals')
         -#.row

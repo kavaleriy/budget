@@ -200,15 +200,14 @@
   }
   /*///////////////////////////////////*/
 %link{href: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel: "stylesheet", integrity: "sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==", crossorigin: "anonymous"}
-.col-xs-10.col-xs-offset-1.fix
-  .row
-    -town_items.each do |key, value|
-      .col-md-3
-        .view.view-tenth
-          %img.img-responsive{:src => value['img_src']}
-            .mask
-              %a.info{ :href => value['url'] }
-                = t('public.towns.portfolio.detail')
-          %hr.blue-line
-            .portfolio-title
-              =value['title']
+.row
+  -town_items.each do |key, value|
+    .col-md-3
+      .view.view-tenth
+        %img.img-responsive{:src => value['img_src']}
+          .mask
+            %a.info{ :href => value['url'] }
+              = t('public.towns.portfolio.detail')
+        %hr.blue-line
+          .portfolio-title
+            =value['title']
