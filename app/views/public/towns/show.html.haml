@@ -342,12 +342,25 @@
       .col-xs-5.pull-right
         = render partial: 'map_ukraine'
 
-
+.col-sm-12
+  #embed_code_town.embed_code
+    = render partial: 'widgets/visify/embed_code'
 :javascript
 
-  $(document).ready(function() {
 
-    $('a[href="#portfolio"]').attr('data-remote',"true")
+
+  $(document).ready(function() {
+  //#-------------------------------Embed code init----------------------------------------------------
+    var town = "#{@town.id}"
+    //el_id this is dom element selector, where render size form for iframe
+    var embed_code_timeline = aEmbedCode();
+    var src = window.location.origin + "/widgets/town/profile/" + town;
+    embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embed_code_town", src: src});
+    embed_code_timeline.set_iframe(src);
+
+
+  //---------------------------------------------------------------------------------------------------
+
     $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')
       $(this).addClass('active')
