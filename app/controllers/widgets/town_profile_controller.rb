@@ -5,7 +5,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     @town_items = get_town_items_hash(@town)
     respond_to do |format|
       format.js {}
-      format.html{}
+      format.html{render :partial => 'portfolio'}
     end
 
   end
@@ -16,14 +16,15 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     town = nil
     town = town_object.title unless town_object.blank?
-    taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
-    taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
+    # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
+    # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
+    taxonomy = Taxonomy.get_taxonomy_by_town(town).last
     calendar = Calendar.get_calendar_by_town(town).last
     # indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town.last
     result = []
     # result << get_indicate_hash(indicate_taxonomy,'indicators')
-    result << get_taxonomy_rot_hash(taxonomy_rot,'budget')
-    result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
+    result << get_taxonomy_rot_hash(taxonomy,'budget')
+    # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
     result << get_programs_hash('programs')
     result << get_calendar_hash(calendar,'calendar')

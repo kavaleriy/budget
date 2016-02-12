@@ -1,6 +1,6 @@
 class TaxonomyRot < Taxonomy
 
-  scope :get_rot_by_owner_city, ->(town) { where(:owner => town) }
+  # scope :get_rot_by_owner_city, ->(town) { where(:owner => town) }
 
   def columns
       {
