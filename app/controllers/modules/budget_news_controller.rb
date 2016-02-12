@@ -58,14 +58,34 @@ module Modules
             return false
           end
         end
+
       end
-    
+
+
+
       def set_budget_news
         @budget_news = Modules::BudgetNews.find(params[:id])
       end
 
       def modules_budget_news_params
         params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date)
+      end
+
+      def check_permission
+        unless current_user && current_user.admin?
+          go_back
+        end
+      end
+
+      #Redirect_to_back
+      def go_back
+
+        #Attempt to redirect
+        redirect_to :back
+
+          #Catch exception and redirect to root
+      rescue ActionController::RedirectBackError
+        redirect_to root_path
       end
   end
 end
