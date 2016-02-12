@@ -1,6 +1,7 @@
 class Calendar
   include Mongoid::Document
 
+  scope :get_calendar_by_town, ->(town){ where(:town => town) }
   field :author, type: String
 
   field :town, type: String

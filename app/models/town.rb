@@ -112,6 +112,7 @@ class Town
     town = nil
     town = @town.title unless @town.blank?
     result = {}
+    # @items << get_item_hash(calendar, 'town_profile_calendar', 'title', calendar_path(budget_rot))
     result.store("budget" ,Town.get_hash_by_item("budget",@town)) if Taxonomy.where(:owner => town).first
     result.store("programs" ,Town.get_hash_by_item("programs",@town)) if Programs::Town.where(:name => town).first
     result.store("calendar" ,Town.get_hash_by_item("calendar",@town)) if Calendar.where(:town => town).first
@@ -131,6 +132,7 @@ class Town
       result.store("keys" ,Town.get_hash_by_item("keys",@town)) if @town.key_indicate_map_indicators
       result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => @town).first
     end
+    # binding.pry
     result
   end
 

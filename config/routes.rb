@@ -275,20 +275,20 @@ Rails.application.routes.draw do
     get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
 
-  get 'public/calendar/:calendar_id' => 'public#calendar'
+  get 'public/calendar/:calendar_id' => 'public#calendar', as:'public_calendar'
   get 'public/documents' => 'public/documents#index'
   get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
   get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
-  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile'
-  get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile'
-  get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index'
-  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
+  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
+  get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile',as: 'indicate_taxonomies_town_profile'
+  get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
+  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile', as: 'calendars_calendars_town'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
-  get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show'
-  get 'public/documents/town_profile/:town_id' => 'public/documents#index'
+  get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
+  get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

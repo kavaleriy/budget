@@ -2,7 +2,7 @@
     include Mongoid::Document
 
     scope :owned_by, lambda { |owner| where(:owner => owner) }
-
+    scope :get_indicate_by_town, ->(town){ where(:town => town) }
     before_save :generate_title
 
     attr_accessor :locale

@@ -1,5 +1,7 @@
 class TaxonomyRot < Taxonomy
 
+  scope :get_rot_by_owner_city, ->(town) { where(:owner => town) }
+
   def columns
       {
         'kkd_a'=>{:level => 1, :title=>I18n.t('mongoid.taxonomy_rot.rankA')},
