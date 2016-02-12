@@ -2,7 +2,7 @@ class Modules::BudgetNews
   include Mongoid::Document
   require 'carrierwave/mongoid'
 
-  validates :title,:news_text,:link,:img,:news_date, presence: true
+  validates :title,:news_text,:img,:news_date, presence: true
   validates :link, format: { with: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/,
                              message: I18n.t('activerecord.attributes.invalid.link') }
 

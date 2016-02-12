@@ -53,6 +53,10 @@ class Public::TownsController < ApplicationController
     @tabs << { title: t('.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}"} if sankey
     @tabs.first[:cname] = 'active'
   end
+  def pdf_docs
+    abort 'dsada'
+  end
+
 
   def geo_json
     @geo_json = use_cache do

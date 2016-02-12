@@ -98,7 +98,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_prozorro_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis')
+    get_item_hash("/assets/public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis')
   end
   def get_edata_hash(name)
     get_item_hash(img_url(name), title_for_portfolio(name), 'http://www.spending.gov.ua/')
