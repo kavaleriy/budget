@@ -35,15 +35,15 @@
                 %i.fa.fa-info-circle
                   =t('static.budget_file_help.help')
 
-            %li.divider
-
-            - Taxonomy.visible_to(current_user).reject{|t| t.budget_files.empty?}.each do |taxonomy|
-              %li
-                =link_to taxonomy_path(taxonomy), {title: "#{taxonomy.title}"} do
-                  %strong
-                    =taxonomy.title.truncate(40)
-                  %br
-                  =taxonomy.owner
+            -#%li.divider
+            -#
+            -#- Taxonomy.visible_to(current_user).reject{|t| t.budget_files.empty?}.each do |taxonomy|
+            -#  %li
+            -#    =link_to taxonomy_path(taxonomy), {title: "#{taxonomy.title}"} do
+            -#      %strong
+            -#        =taxonomy.title.truncate(40)
+            -#      %br
+            -#      =taxonomy.owner
 
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
@@ -81,9 +81,9 @@
             = t('.calendar')
 
           %ul.dropdown-menu{'role' => "menu"}
-            - get_calendars.each do |c|
-              %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
-            %li.divider
+            -#- get_calendars.each do |c|
+            -#  %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
+            -#%li.divider
             %li= link_to t('.calendars'), calendars_calendars_path
             %li= link_to t('.actions'), calendar_actions_path
 

@@ -43,10 +43,6 @@ module Modules
       respond_with(@budget_news)
     end
 
-    def hello
-      puts "Hello"
-    end
-
     private
       def validate_date(date)
         regExp = Regexp.new /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
@@ -62,7 +58,6 @@ module Modules
             return false
           end
         end
-
       end
     
       def set_budget_news
