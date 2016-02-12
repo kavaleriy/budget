@@ -240,8 +240,8 @@
       %li.active
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
-          %span.badge.bsize.count
-            = @town_items.length.to_s
+          %span.badge.bsize.count#town_items_length
+            -#= @town_items.length.to_s
       %li
         %a{"data-toggle" => "tab", :href => "#documents"}
           = t('public.towns.portfolio.documents')
@@ -273,7 +273,7 @@
             %p
               =@town.links.html_safe
       #portfolio.tab-pane.active.fade.in
-        = render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
+        -#= render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
         -#-#%h3
         -#-#  = t('public.towns.portfolio.visuals')
         -#.row
@@ -341,7 +341,7 @@
             no data yet
       .col-xs-5.pull-right
         = render partial: 'map_ukraine'
-<iframe width=700 height=700 src='http://localhost:3000/widgets/town/profile/55a807946b61730709600400'></iframe>
+-#<iframe width=700 height=700 src='http://localhost:3000/widgets/town/profile/55a807946b61730709600400'></iframe>
 .col-sm-12
   #embed_code_town.embed_code
     = render partial: 'widgets/visify/embed_code'
@@ -360,8 +360,17 @@
 
 
   //---------------------------------------------------------------------------------------------------
+    var portfolio_url = "#{widgets_town_profile_path(@town)}"
+    console.log(portfolio_url)
+    $.ajax({
+      url: portfolio_url,
+      success: function(data){
+      }
+    });
 
-    $('.budget[data-id]').on('click', function (e) {
+
+
+  $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')
       $(this).addClass('active')
 

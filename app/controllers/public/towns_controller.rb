@@ -30,7 +30,7 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s]['title'] = br.title
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
     }
-    @town_items = get_town_items(@town)
+    # @town_items = get_town_items(@town)
   end
 
 

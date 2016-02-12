@@ -1,19 +1,21 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
   def portfolio
-
     @town = Town.find(params[:town_id])
-    town_items = get_town_items_hash(@town)
-    render :partial => 'portfolio', :locals => {:town_items => town_items}
+    @town_items = get_town_items_hash(@town)
+    respond_to do |format|
+      format.js {}
+      format.html{}
+    end
+
   end
 
   private
 
   def get_town_items_hash (town_object)
-    @town = town_object
 
     town = nil
-    town = @town.title unless @town.blank?
+    town = town_object.title unless town_object.blank?
     taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
     taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
     calendar = Calendar.get_calendar_by_town(town).last
@@ -31,7 +33,6 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_purchase_hash('purchase')
     result << get_keys_hash('keys')
 
-    binding.pry
   end
 
   def get_taxonomy_rot_hash(taxonomy_rot,name)

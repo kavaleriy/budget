@@ -189,7 +189,7 @@ Rails.application.routes.draw do
     get 'calendar/get_parent_event/:calendar_id/:event_id' => 'calendar#get_parent_event'
     get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
 
-    get 'town/profile/:town_id' => 'town_profile#portfolio'
+    get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
