@@ -19,7 +19,7 @@ class Public::TownsController < ApplicationController
     @town_export_budgets = ExportBudget.where(:town => @town.id)
 
     @town_links = {}
-    if @town.blank?
+    if test_town?
       @town_br_links = Documentation::Link.all.where(:town => nil)
     else
       @town_br_links = Documentation::Link.all.where(:town => @town)
@@ -29,15 +29,40 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s] = {}
       @town_links[br.id.to_s]['title'] = br.title
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
+
     }
-    # @town_items = get_town_items(@town)
+    town = nil
+    town = @town.title unless @town.blank?
+    # @budgets = Taxonomy.where(:owner => town)
+    # @total_amounts = {}
+    # @budgets.each{|budget|
+    #   @total_amounts[budget._type] = budget.get_total_amounts
+    # }
+    @town_items = []
+    @town_items.push('budget') if Taxonomy.where(:owner => town).first
+    @town_items.push('programs') if Programs::Town.where(:name => town).first
+    @town_items.push('calendar') if Calendar.where(:town => town).first
+    # @town_items.push('sankey') if Sankey.where(:owner => town).first
+    @town_items.push('repair')
+    @town_items.push('key_docs')
+    if @town.blank?
+      @town_items.push('keys')
+      @town = Town.new(:id => 'test',
+                       :title => 'Демонстрація типового профілю міста',
+                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
+      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => nil)
+    else
+      @town_items.push('keys') if @town.key_indicate_map_indicators
+      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => @town).first
+    end
   end
 
 
   def budget
     @tabs = []
 
-    if params[:town_id] == 'test'
+    if test_town?
       taxonomy_rot = TaxonomyRot.where(:owner => '').first
       taxonomy_rov = TaxonomyRov.where(:owner => '').first
       sankey = Sankey.where(:owner => '').first
@@ -109,7 +134,11 @@ class Public::TownsController < ApplicationController
 
   def set_town
     if test_town?
-      @town = ''
+      # binding.pry
+      @town = Town.new(:id => 'test',
+                       :title => 'Демонстрація типового профілю міста',
+                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
     else
       @town = Town.find(params[:town_id])
       if @town.level == 1 #area
@@ -129,10 +158,5 @@ class Public::TownsController < ApplicationController
 
       @documents.sort_by!{|doc| doc.title ? doc.title : ""  }
     end
-  end
-
-  def get_town_items town_object
-    town_items = Town.get_town_items_hash(town_object)
-    town_items
   end
 end

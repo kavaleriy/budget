@@ -4,17 +4,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :cancan_hack
-
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => t('application.auth_error') + "#{exception.message}"
-  end
-
 
   # dealing with mass assignment
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  before_filter :cancan_hack
 
+
+
+  before_action :set_locale
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => t('application.auth_error') + "#{exception.message}"
+  end
   rescue_from Mongoid::Errors::DocumentNotFound, :with => :record_not_found
 
   def record_not_found
@@ -57,8 +59,6 @@ class ApplicationController < ActionController::Base
     method = "#{resource}_params"
     params[resource] &&= send(method) if respond_to?(method, true)
   end
-
-  before_action :set_locale
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale

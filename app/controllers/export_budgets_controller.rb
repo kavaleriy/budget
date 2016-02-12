@@ -1,4 +1,4 @@
-class ExportBudgetsController < ApplicationController
+class ExportBudgetsController < AdminController
   layout 'visify', only: [:show]
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy]
@@ -17,8 +17,7 @@ class ExportBudgetsController < ApplicationController
       format.pdf do
         render pdf: 'test_name',
                formats: [:html],
-               # template: 'export_budgets/show',
-               :layout => 'templs/templ',
+               template: 'export_budgets/show',
                show_as_html: params.key?('debug')
       end
     end
@@ -75,16 +74,6 @@ class ExportBudgetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Export budget was successfully destroyed.' }
       format.json { head :no_content }
-    end
-  end
-
-  # Download pdf
-  def download_pdf
-    pdf = render_to_string(pdf: 'test.pdf', template: 'export_budgets/show.html.haml', encoding: "UTF-8", layout: 'application')
-    send_data pdf ,:disposition => 'inline', filename: 'something.pdf', :type => 'application/pdf'
-    save_path = Rails.root.join('pdfs','filename.pdf')
-    File.open(save_path, 'wb') do |file|
-      file << pdf
     end
   end
 
