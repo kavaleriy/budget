@@ -1,4 +1,4 @@
-class ExportBudgetsController < ApplicationController
+class ExportBudgetsController < AdminController
   layout 'visify', only: [:show]
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy]

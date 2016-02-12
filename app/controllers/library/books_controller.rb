@@ -1,5 +1,5 @@
 module Library
-  class BooksController < ApplicationController
+  class BooksController < AdminController
 
     layout 'application'
     helper_method :sort_column, :sort_direction
