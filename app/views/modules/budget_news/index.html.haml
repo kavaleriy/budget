@@ -27,7 +27,7 @@
           %td= budget_news.title
           %td= budget_news.news_preview
           %td
-            %a{:href => budget_news.link}= budget_news.title
+            %a{:href => budget_news.get_link}= budget_news.title
           %td= budget_news.news_date
           %td= image_tag budget_news.img.thumb
           %td= link_to t('modules.budget_news.edit.show'), budget_news
