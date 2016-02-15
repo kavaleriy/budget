@@ -31,31 +31,11 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
 
     }
-    town = nil
-    town = @town.title unless @town.blank?
-    # @budgets = Taxonomy.where(:owner => town)
-    # @total_amounts = {}
-    # @budgets.each{|budget|
-    #   @total_amounts[budget._type] = budget.get_total_amounts
-    # }
-    @town_items = []
-    @town_items.push('budget') if Taxonomy.where(:owner => town).first
-    @town_items.push('programs') if Programs::Town.where(:name => town).first
-    @town_items.push('calendar') if Calendar.where(:town => town).first
-    # @town_items.push('sankey') if Sankey.where(:owner => town).first
-    @town_items.push('repair')
-    @town_items.push('key_docs')
-    if @town.blank?
-      @town_items.push('keys')
-      @town = Town.new(:id => 'test',
-                       :title => 'Демонстрація типового профілю міста',
-                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
-      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => nil)
-    else
-      @town_items.push('keys') if @town.key_indicate_map_indicators
-      @town_items.push('indicators') if Indicate::Taxonomy.where(:town => @town).first
-    end
+    @portfolio_url = get_portfolio_url
+
+
+
+
   end
 
 
@@ -127,6 +107,14 @@ class Public::TownsController < ApplicationController
   end
 
   private
+  def get_portfolio_url
+    if test_town?
+      @portfolio_url = widgets_town_profile_path(Town.first)
+    else
+      @portfolio_url = widgets_town_profile_path(@town)
+    end
+  end
+
 
   def test_town?
     params[:town_id] == "test"

@@ -225,6 +225,9 @@
     }
   }
 
+-#-if(@town.id == 'test')?portfolio_url = widgets_town_profile_path(@town.id):
+-#  -
+
 = content_for :header do
   .head
     = @town.title
@@ -359,8 +362,8 @@
 
 
   //---------------------------------------------------------------------------------------------------
-    var portfolio_url = "#{widgets_town_profile_path(@town)}"
-    console.log(portfolio_url)
+    var portfolio_url = "#{@portfolio_url}"
+    console.log(portfolio_url);
     $.ajax({
       url: portfolio_url,
       success: function(data){
