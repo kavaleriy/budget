@@ -5,7 +5,9 @@ module Modules
     respond_to :html
 
     def index
+
       @budget_news = Modules::BudgetNews.all
+
       respond_with(@budget_news)
     end
 
@@ -28,12 +30,10 @@ module Modules
     end
 
     def update
-      if validate_date modules_budget_news_params['news_date']
-        unless modules_budget_news_params[:img].blank?
-          @budget_news.delete_image_file!
-        end
-        @budget_news.update(modules_budget_news_params)
+      unless modules_budget_news_params[:img].blank?
+        @budget_news.delete_image_file!
       end
+      @budget_news.update(modules_budget_news_params)
 
       respond_with(@budget_news)
     end
@@ -43,29 +43,7 @@ module Modules
       respond_with(@budget_news)
     end
 
-    def hello
-      puts 'hello'
-    end
-
     private
-      def validate_date(date)
-        regExp = Regexp.new /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/
-        result = regExp.match(date)
-        if result
-          str = Date.parse date
-          if str.is_a?(Date)
-            return true
-          end
-        else
-          if @budget_news
-            @budget_news.errors.add(:news_date, t('activerecord.attributes.invalid.date'))
-            return false
-          end
-        end
-
-      end
-
-
 
       def set_budget_news
         @budget_news = Modules::BudgetNews.find(params[:id])

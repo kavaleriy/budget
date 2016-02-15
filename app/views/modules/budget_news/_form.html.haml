@@ -3,21 +3,20 @@
     .well {
       .text_area {
         resize: vertical;
+        min-height: 250px;
        }
     }
   }
-
-.row-fluid
-  .span4.well
-    -#= abort @budget_news.inspect
-    = simple_form_for @budget_news do |f|
-      = f.input :title, label: t('modules.budget_news.index.title')
-      = f.input :news_text, as: :text, label: t('modules.budget_news.index.text'), input_html: { class: 'text_area' }
-      = f.input :link , label: t('modules.budget_news.index.link')
-      = f.input :img , as: :file, label: t('modules.budget_news.index.image')
-      = f.input :news_date,label: t('modules.budget_news.index.choose_date'), as: :string,
-                             input_html: { class: "datepicker" }
-      = f.button :submit,t('.save'), class: 'btn btn-primary'
+.col-md-10
+  .row-fluid
+    .span4.well
+      -#= abort @budget_news.inspect
+      = simple_form_for @budget_news do |f|
+        = f.input :title, label: t('modules.budget_news.index.title')
+        = f.input :news_text, as: :text, label: t('modules.budget_news.index.text'), input_html: { class: 'text_area' }
+        = f.input :link , label: t('modules.budget_news.index.link')
+        = f.input :img , as: :file, label: t('modules.budget_news.index.image')
+        = f.button :submit,t('.save'), class: 'btn btn-primary'
 
 :javascript
   $(document).ready(function(){
