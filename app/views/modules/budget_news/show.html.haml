@@ -1,5 +1,5 @@
 %p#notice= notice
-.col-md-10
+.col-md-8
   .ul.list-group
     %li.list-group-item
       %b
@@ -9,18 +9,21 @@
       %b
         = t('modules.budget_news.index.text')+':'
       = @budget_news.news_text
-    %li.list-group-item
-      %b
-        = t('modules.budget_news.index.link')+':'
-      = @budget_news.link
-    %li.list-group-item
-      %b
-        = t('modules.budget_news.index.image')+':'
-      = image_tag @budget_news.img.thumb
     -#%li.list-group-item
     -#  %b
-    -#    = t('modules.budget_news.index.date')+':'
-    -#  = @budget_news.news_date
-  = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
-  \|
-  = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
+    -#    = t('modules.budget_news.index.link')+':'
+    -#  = @budget_news.link
+    -#%li.list-group-item
+    -#  %b
+    -#    = t('modules.budget_news.index.image')+':'
+    -#  = image_tag @budget_news.img.thumb
+  -if current_user.admin?
+    = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
+    \|
+    = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
+
+.col-md-4
+  -@budgets_news.each  do |news|
+    =news.title
+
+

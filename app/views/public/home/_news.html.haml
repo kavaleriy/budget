@@ -23,21 +23,25 @@
   .cl-block-date{
     width: 46px;
     height: 48px;
-    background: url(/assets/cl-date-item.png) top left no-repeat;
+    /*background: url(/assets/cl-date-item.png) top left no-repeat;*/
+    /*background: url('/assets/news.jpg');*/
     overflow: hidden;
     float: left;
     margin-right: 10px;
   }
-  .cl-block-date-month{
-    text-align: center;
-    color: #fff;
-    font-size: 9px;
-    padding-top:3px ;
+  .cl-block-date img{
+    height: 100%;
   }
-  .cl-block-date-day{
-    text-align: center;
-    font-size: 21px;
-  }
+  /*.cl-block-date-month{*/
+    /*text-align: center;*/
+    /*color: #fff;*/
+    /*font-size: 9px;*/
+    /*padding-top:3px ;*/
+  /*}*/
+  /*.cl-block-date-day{*/
+    /*text-align: center;*/
+    /*font-size: 21px;*/
+  /*}*/
 
   h3.cl-block-title{
     margin: 0 0 10px 0;
@@ -76,10 +80,11 @@
       .col-md-6
         .cl-block-item
           .cl-block-date
-            .cl-block-date-month
-              = l(newsItem.news_date, :format => '%B')
-            .cl-block-date-day
-              = newsItem.news_date.strftime('%d')
+            =image_tag('news.jpg', class: 'img-responsive')
+            -#.cl-block-date-month
+            -#  = l(newsItem.news_date, :format => '%B')
+            -#.cl-block-date-day
+            -#  = newsItem.news_date.strftime('%d')
           %h3.cl-block-title
             %a{ "href" => newsItem.link }
               = newsItem.title
