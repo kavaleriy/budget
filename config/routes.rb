@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
   namespace :modules do
+    get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
     resources :budget_news
+
   end
 
   resources :export_budgets

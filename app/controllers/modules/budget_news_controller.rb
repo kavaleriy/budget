@@ -6,8 +6,7 @@ module Modules
 
     def index
 
-      @budget_news = Modules::BudgetNews.all
-      # @budget_news = BudgetNews.order(:news_date).page params[:page]
+      # @budget_news = Modules::BudgetNews.all
       @budget_news = @budget_news.page(params[:page]).per(10)
 
       respond_with(@budget_news)
@@ -45,6 +44,11 @@ module Modules
     def destroy
       @budget_news.destroy
       respond_with(@budget_news)
+    end
+
+
+    def all_news
+      @budget_news = @budget_news.page(params[:page]).per(10)
     end
 
     private
