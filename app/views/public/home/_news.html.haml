@@ -73,7 +73,7 @@
   }
 
 %h1
-  =t(".title")
+  = link_to t(".title"),modules_all_budget_news_path
 -unless @news.blank?
   .col-md-12.news_wrapper
     - @news.each do |newsItem|
