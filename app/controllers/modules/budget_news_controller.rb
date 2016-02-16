@@ -1,7 +1,7 @@
 module Modules
   class BudgetNewsController < AdminController
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
-    before_action :check_admin_permission ,except: [:show]
+    before_action :check_admin_permission ,except: [:show,:all_news]
     respond_to :html
 
     def index
@@ -48,7 +48,7 @@ module Modules
 
 
     def all_news
-      @budget_news = @budget_news.page(params[:page]).per(10)
+      @budget_news = @budget_news.page(params[:page]).per(10).order(news_date: :desc)
     end
 
     private
