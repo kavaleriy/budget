@@ -1,13 +1,15 @@
+:scss
+  .news_text{
+    white-space: pre-wrap;
+  }
+
 %p#notice= notice
 .col-md-8
   .ul.list-group
     %li.list-group-item
       %b
-        = t('modules.budget_news.index.title')+':'
-      = @budget_news.title
-    %li.list-group-item
-      %b
-        = t('modules.budget_news.index.text')+':'
+        = @budget_news.title
+    %li.list-group-item.news_text
       = @budget_news.news_text
     -#%li.list-group-item
     -#  %b
@@ -17,13 +19,11 @@
     -#  %b
     -#    = t('modules.budget_news.index.image')+':'
     -#  = image_tag @budget_news.img.thumb
-  -if current_user.admin?
-    = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
-    \|
-    = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
+  -if current_user
+    -if current_user.admin?
+      = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
+      \|
+      = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
 
-.col-md-4
-  -@budgets_news.each  do |news|
-    =news.title
-
+= render partial: 'news_list'
 

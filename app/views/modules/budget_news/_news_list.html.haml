@@ -1,0 +1,64 @@
+:scss
+  .news-block{
+    height: 150px;
+    width: 100%;
+    padding: 20px;
+    .wr-it{
+      overflow: hidden;
+      height: 100%;
+      img{
+        float: left;
+        margin-right: 10px;
+      }
+
+      .news-title{
+        top: 5px;
+
+        p{
+          margin-bottom: 0px;
+          color: #808080;
+          font-size: 12px;
+        }
+        hr{
+          margin: 0px;
+          padding: 2px;
+        }
+
+      }
+      .news_preview{
+          font-size: 13px;
+          color: #000000;
+      }
+
+    }
+
+
+  }
+  .all_news{
+      text-align: center;
+    }
+  .list-group-item.news-helper {
+    color: #0044cc;
+    text-align: center;
+  }
+
+
+
+
+.col-md-4
+  .ul.list-group
+    %li.list-group-item.news-helper
+      = t('modules.budget_news.index.actual_news')
+    - @budgets_news.each do |news|
+      %li.list-group-item.news-block
+        .wr-it
+          = image_tag news.img.thumb
+          .news-title
+            %p
+              = news.get_date
+              %hr
+            = link_to news.title , news.get_link
+          %p.news_preview
+            = news.news_preview
+    %li.list-group-item.news-helper
+      =link_to t('modules.budget_news.index.show_all_news')

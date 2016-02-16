@@ -14,7 +14,7 @@ module Modules
     end
 
     def show
-      @budgets_news = BudgetNews.all
+      @budgets_news = BudgetNews.limit(10)
       respond_with(@budget_news)
     end
 
@@ -28,6 +28,7 @@ module Modules
 
     def create
       @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
+
       @budget_news.save
       respond_with(@budget_news)
     end

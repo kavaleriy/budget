@@ -4,7 +4,7 @@
     border-top: 1px solid #e2242d;
     padding-top: 10px;
     margin-bottom: 20px;
-    max-height: 180px;
+    height: 180px;
     overflow: hidden;
     position: relative;
   }
@@ -86,11 +86,11 @@
             -#.cl-block-date-day
             -#  = newsItem.news_date.strftime('%d')
           %h3.cl-block-title
-            %a{ "href" => newsItem.link }
+            %a{ "href" => newsItem.get_link }
               = newsItem.title
           .clearfix
-          .cl-block-img
-            = image_tag newsItem.img.thumb
+          -#.cl-block-img
+          -#  = image_tag newsItem.img.thumb
           .cl-block-text
             = newsItem.news_text
 -else
