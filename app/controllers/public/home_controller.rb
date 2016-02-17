@@ -8,7 +8,7 @@ module Public
     def index
       # @areas = Town.areas
       # @towns = Town.cities
-      @news = Modules::BudgetNews.order(news_date: :desc).limit(4)
+      @news = Modules::BudgetNews.get_last_news(4)
       # abort @news[0].inspect
     end
 
