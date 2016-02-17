@@ -1,5 +1,6 @@
 class ExportBudget
   include Mongoid::Document
+  scope :get_export_budget_by_town, -> (town) { where(:town => town) }
   has_one :calendar
   belongs_to :town
 

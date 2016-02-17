@@ -14,23 +14,22 @@ class Public::TownsController < ApplicationController
 
     @export_budgets = ExportBudget.all
 
-    @calendars = Calendar.where(:town => @town)
+    # @calendars = Calendar.get_calendar_by_town(@town)
 
-    @town_export_budgets = ExportBudget.where(:town => @town.id)
+    @town_export_budgets = ExportBudget.get_export_budget_by_town(@town.id)
 
     @town_links = {}
-    if test_town?
-      @town_br_links = Documentation::Link.all.where(:town => nil)
-    else
-      @town_br_links = Documentation::Link.all.where(:town => @town)
-    end
+
+    @town_br_links = Documentation::Link.get_link_by_town(@town)
 
     Documentation::LinkCategory.all.each{|br|
       @town_links[br.id.to_s] = {}
       @town_links[br.id.to_s]['title'] = br.title
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-
     }
+
+
+
     @portfolio_url = get_portfolio_url
 
 

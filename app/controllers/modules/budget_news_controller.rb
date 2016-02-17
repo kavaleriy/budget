@@ -7,13 +7,13 @@ module Modules
     def index
 
       # @budget_news = Modules::BudgetNews.all
-      @budget_news = @budget_news.page(params[:page]).per(10)
+      @budget_news = @budget_news.page(params[:page]).per(10).order(news_date: :desc)
 
       respond_with(@budget_news)
     end
 
     def show
-      @budgets_news = BudgetNews.limit(10)
+      @budgets_news = BudgetNews.get_last_news(10)
       respond_with(@budget_news)
     end
 
