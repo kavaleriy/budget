@@ -18,8 +18,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     town = town_object.title unless town_object.blank?
     # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
     # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
-    taxonomy = Taxonomy.get_taxonomy_by_town(town).last
-    calendar = Calendar.get_calendar_by_town(town).last
+    taxonomy = Taxonomy.get_taxonomy_by_town(town).first
+    calendar = Calendar.get_calendar_by_town(town).first
     # indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town.last
     result = []
     # result << get_indicate_hash(indicate_taxonomy,'indicators')

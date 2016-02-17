@@ -81,9 +81,9 @@
             = t('.calendar')
 
           %ul.dropdown-menu{'role' => "menu"}
-            -#- get_calendars.each do |c|
-            -#  %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
-            -#%li.divider
+            - get_calendars.each do |c|
+              %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
+            %li.divider
             %li= link_to t('.calendars'), calendars_calendars_path
             %li= link_to t('.actions'), calendar_actions_path
 

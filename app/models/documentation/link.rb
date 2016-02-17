@@ -8,4 +8,14 @@ class Documentation::Link
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
 
+
+  def self.get_link_by_town (town)
+
+    if town.id == 'test'
+      Documentation::Link.all.where(:town => nil)
+    else
+      Documentation::Link.all.where(:town => town)
+    end
+
+  end
 end
