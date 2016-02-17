@@ -6,7 +6,6 @@ class BudgetFilesController < ApplicationController
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:new]
-  # before_action :set_budget_file_data_type, only: [:new]
 
   # before_action :update_user_town, only: [:create]
 
@@ -96,12 +95,11 @@ class BudgetFilesController < ApplicationController
       @budget_file.taxonomy = @taxonomy
       @budget_file.author = current_user.email unless current_user.nil?
 
-      @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
+      @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].nil?
 
       @budget_file.path = file_path
 
       @budget_file.title = budget_file_params[:title].empty? ? "#{@file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
-
 
       table = read_table_from_file file_path
 
@@ -111,7 +109,7 @@ class BudgetFilesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }
+      format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
       format.json { render :show, status: :created, location: @budget_file }
     end
   # rescue => e
@@ -196,10 +194,6 @@ class BudgetFilesController < ApplicationController
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 
-
-  def set_budget_file_data_type
-    @budget_file.data_type = params[:data_type].to_sym unless params[:data_type].nil?
-  end
 
   def budget_file_params
     params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :town, :path => [])

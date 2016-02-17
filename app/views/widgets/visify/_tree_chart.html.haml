@@ -169,6 +169,7 @@
       sequence.show(current_data);
       under_sequence.show(current_data);
       slider_chart.show(current_data, year);
+
       slider.show(current_data, year);
       sidebar.show(current_data);
     }
@@ -248,8 +249,8 @@
         curr_node = chart.get_CenterNode(centerNode);
         slider.set_centerNode(curr_node);
       }
-      chart.show(current_data);
-      chart.selectNode(curr_node);
+
+      show_data(current_data, year)
     }
 
     function ItemClick(node) {
