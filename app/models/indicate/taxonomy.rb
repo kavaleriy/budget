@@ -1,6 +1,8 @@
 class Indicate::Taxonomy
   include Mongoid::Document
 
+  scope :get_indicate_by_town, ->(town){ where(:town => town) }
+
   belongs_to :town, :class_name => 'Town'
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
 

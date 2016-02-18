@@ -40,14 +40,10 @@ class TaxonomiesController < ApplicationController
 
   def town_profile
     if params[:town_id] == 'test'
-      binding.pry
       @taxonomy = Taxonomy.where(:owner => '').first
     else
-      binding.pry
       town = Town.find(params[:town_id])
       @taxonomy = Taxonomy.where(:owner => town.title).first
-
-
     end
 
     render 'show'
