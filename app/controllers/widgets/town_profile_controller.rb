@@ -39,7 +39,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_taxonomy_rot_hash(taxonomy_rot,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#') do
       unless taxonomy_rot.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomy_path(taxonomy_rot)}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomies_town_profile_path(taxonomy_rot)}
       end
     end
   end
@@ -47,7 +47,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_indicate_hash(indicate,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#') do
       unless indicate.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> indicate_taxonomies_town_profile(indicate)}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> indicate_taxonomies_town_profile_path(indicate)}
       end
     end
   end
@@ -55,7 +55,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_taxonomy_rov_hash(taxonomy_rov,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#') do
       unless taxonomy_rov.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomy_path(taxonomy_rov)}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomies_town_profile_path(taxonomy_rov)}
       end
     end
   end
