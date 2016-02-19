@@ -80,7 +80,7 @@
           .news_title
             = news.title
           .all_news_text
-            = news.news_preview
+            = news.news_preview.html_safe
 %br
 .col-xs-12.text-center
   = paginate @budget_news
