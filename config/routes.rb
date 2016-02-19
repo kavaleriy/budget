@@ -284,7 +284,7 @@ Rails.application.routes.draw do
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
   get 'public/towns/pdf_doc' => 'public/towns#pdf_docs',as: 'public_towns_pdf_docs'
-  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
+  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile', as: 'taxonomies_town_profile'
   get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
   get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile',as: 'indicate_taxonomies_town_profile'
   get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
