@@ -1,6 +1,6 @@
 module Library
   class BooksController < AdminController
-
+    before_action :check_admin_permission, except: :index
     layout 'application'
     helper_method :sort_column, :sort_direction
 
