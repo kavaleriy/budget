@@ -31,27 +31,27 @@
 
 :javascript
 
-  //$(document).ready(function() {
-  //  formatFaSelect = function(el) {
-  //    return '<i class=\'fa ' + el.id + '\'/> ' + el.id;
-  //  };
-  //  formatColorSelect = function(el) {
-  //    return '<div style=\'width: 100%; height: 43px; background-color: ' + el.id + '\'/>';
-  //  };
-  //  $('.fa-select').select2({
-  //    allowClear: true,
-  //    formatResult: formatFaSelect,
-  //    formatSelection: formatFaSelect,
-  //    escapeMarkup: function(m) {
-  //      return m;
-  //    }
-  //  });
-  //  $('.color-select').select2({
-  //    allowClear: true,
-  //    formatResult: formatColorSelect,
-  //    formatSelection: formatColorSelect,
-  //    escapeMarkup: function(m) {
-  //      return m;
-  //    }
-  //  });
-  //});
+  $(document).ready(function() {
+    formatFaSelect = function(el) {
+      return '<i class=\'fa ' + el.id + '\'/> ' + el.id;
+    };
+    formatColorSelect = function(el) {
+      return '<div style=\'width: 100%; height: 43px; background-color: ' + el.id + '\'/>';
+    };
+    $('.fa-select').select2({
+      allowClear: true,
+      formatResult: formatFaSelect,
+      formatSelection: formatFaSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+    $('.color-select').select2({
+      allowClear: true,
+      formatResult: formatColorSelect,
+      formatSelection: formatColorSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+  });
