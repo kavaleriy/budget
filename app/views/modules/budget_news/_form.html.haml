@@ -19,8 +19,12 @@
         = f.button :submit,t('.save'), class: 'btn btn-primary'
 
 :javascript
+
   $(document).ready(function(){
-    $('.datepicker').datepicker({
-      format: 'yyyy-mm-dd'
+    $.fn.editable.defaults.mode = 'inline';
+
+    $('#modules_budget_news_news_text').wysihtml5({
+        url: $("form").prop("action"),
+
     });
   });

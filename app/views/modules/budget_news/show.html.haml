@@ -12,8 +12,8 @@
     %li.list-group-item
       %b
         = @budget_news.title
-    %li.list-group-item.news_text
-      = @budget_news.news_text
+    %li.list-group-item
+      = @budget_news.news_text.html_safe
     -#%li.list-group-item
     -#  %b
     -#    = t('modules.budget_news.index.link')+':'
