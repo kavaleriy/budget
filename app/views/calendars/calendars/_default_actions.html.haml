@@ -1,13 +1,31 @@
-.external-events
-  - actions.each do |calendar_action|
-    .external-event.ui-draggable{:style => "color: #{calendar_action.text_color}; background-color: #{calendar_action.color}; position: relative;",
-                                  "data-holder" => calendar_action.holder,
-                                  "data-title" => calendar_action.title.html_safe,
-                                  "data-icon" => calendar_action.icon.html_safe,
-                                  "data-description" => calendar_action.description.html_safe,
-                                  "data-color" => calendar_action.color,
-                                  "data-text_color" => calendar_action.text_color}
+:scss
+  .e-e-left .external-events{
+    direction: rtl;
+  }
+  .e-e-left .external-events .e-e-left-text{
+    direction: ltr;
+  }
+  .external-events{
+    overflow-y:auto;
+    overflow-x: hidden;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: solid 1px gainsboro;
+    height: 100%;
+    border-radius:5px ;
+  }
 
-      %h5.title{:style => "position: relative;"}
-        %span.fa{class: calendar_action.icon}
-        = truncate calendar_action.title.html_safe, :length => 100, :omission => '...'
+.external-events
+  .e-e-left-text
+    - actions.each do |calendar_action|
+      .external-event.ui-draggable{:style => "color: #{calendar_action.text_color}; background-color: #{calendar_action.color}; position: relative;",
+                                    "data-holder" => calendar_action.holder,
+                                    "data-title" => calendar_action.title.html_safe,
+                                    "data-icon" => calendar_action.icon.html_safe,
+                                    "data-description" => calendar_action.description.html_safe,
+                                    "data-color" => calendar_action.color,
+                                    "data-text_color" => calendar_action.text_color}
+
+        %h5.title{:style => "position: relative;"}
+          %span.fa{class: calendar_action.icon}
+          = truncate calendar_action.title.html_safe, :length => 100, :omission => '...'
