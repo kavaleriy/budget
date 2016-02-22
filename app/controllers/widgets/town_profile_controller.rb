@@ -41,7 +41,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_taxonomy_rot_hash(taxonomy_rot,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#') do
       unless taxonomy_rot.nil?
-        return {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomies_town_profile_path(@town)}
+        return {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> public_budget_files_path(@town)}
       end
     end
   end

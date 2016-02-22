@@ -271,7 +271,7 @@ Rails.application.routes.draw do
 
     get 'towns/:town_id' => 'towns#show'
 
-    get 'budget_files/:town_id' => 'towns#budget', as: 'public_budget_files_path'
+    get 'budget_files/:town_id' => 'towns#budget', as: 'budget_files'
 
     get 'ukraine_geo_json' => 'towns#geo_json'
     get 'ukraine_geo_json_town' => 'towns#geo_json_town'

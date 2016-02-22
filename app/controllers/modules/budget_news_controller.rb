@@ -34,7 +34,9 @@ module Modules
 
     def update
       unless modules_budget_news_params[:img].blank?
-        @budget_news.delete_image_file!
+         if BudgetNews.new(modules_budget_news_params).valid?
+           @budget_news.delete_image_file!
+         end
       end
       @budget_news.update(modules_budget_news_params)
 
