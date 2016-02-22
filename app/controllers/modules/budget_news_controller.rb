@@ -48,6 +48,7 @@ module Modules
 
 
     def all_news
+      binding.pry
       @budget_news = @budget_news.page(params[:page]).per(10).order(news_date: :desc)
     end
 
