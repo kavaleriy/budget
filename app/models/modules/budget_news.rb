@@ -3,9 +3,11 @@ class Modules::BudgetNews
   include Rails.application.routes.url_helpers
   require 'carrierwave/mongoid'
 
+  scope :get_last_news, ->(count) {order("news_date DESC").limit(count)}
+
   before_save :set_date
 
-  validates :title,:news_text,:img, presence: true
+  validates :title,:news_text, presence: true
   validates :link, format: { with: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/,
                              message: I18n.t('activerecord.attributes.invalid.link') }, allow_blank: true
 

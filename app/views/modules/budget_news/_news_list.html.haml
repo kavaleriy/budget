@@ -57,9 +57,6 @@
     text-align: center;
   }
 
-
-
-
 .col-md-4
   .ul.list-group#news_link_without_decoration
     %li.list-group-item.news-helper
@@ -68,7 +65,6 @@
       = link_to news.get_link do
         %li.list-group-item.news-block
           .wr-it
-            = image_tag news.img.thumb
             .news-title
               %p
                 = news.get_date

@@ -10,6 +10,10 @@
     margin: 10px 0px;
     overflow: hidden;
     &:hover, &:focus {
+      transition: box-shadow 1.1s ease-in-out;
+      -moz-box-shadow:     0 0 10px #000000;
+      -webkit-box-shadow:  0 0 10px #000000;
+      box-shadow:          0 0 10px #000000;
       img {
         transform: scale(1.1);
         -webkit-transition: transform 1.25s ease-in-out;
@@ -70,17 +74,14 @@
   .col-xs-12.col-md-6
     = link_to news.get_link do
       .news_wrapper
-        .col-md-4.col-xs-3.no_padding.no_margin
-          .all_news_img
-            = image_tag news.img.thumb, class: 'img-responsive'
-        .col-md-8.col-xs-9
+        .col-md-12.col-xs-12
           .news_time
             %span.glyphicon.glyphicon-time{"aria-hidden" => "true"}
             = news.news_date.strftime "%H:%M %m-%d"
           .news_title
             = news.title
           .all_news_text
-            = news.news_preview.html_safe
+            = news.news_text[0...400].html_safe
 %br
 .col-xs-12.text-center
   = paginate @budget_news
