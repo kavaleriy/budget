@@ -347,20 +347,13 @@
 .col-sm-12
   #embed_code_town.embed_code
     = render partial: 'widgets/visify/embed_code'
-
-  <iframe width=700 height=700 src='http://localhost:3000/widgets/town/profile/55a807946b61730709600400'></iframe>
 :javascript
 
 
 
   $(document).ready(function() {
   //#-------------------------------Embed code init----------------------------------------------------
-    var town = "#{@town.id}"
-    //el_id this is dom element selector, where render size form for iframe
-    var embed_code_timeline = aEmbedCode();
-    var src = window.location.origin + "/widgets/town/profile/" + town;
-    embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embed_code_town", src: src});
-    embed_code_timeline.set_iframe(src);
+
 
 
   //---------------------------------------------------------------------------------------------------
@@ -371,7 +364,16 @@
       }
     });
 
-
+    $('.embed_btn').on('click',function(){
+      var town = "#{@town.id}"
+      //el_id this is dom element selector, where render size form for iframe
+      var embed_code_timeline = aEmbedCode();
+      var src = window.location.origin + "/widgets/town/profile/" + town;
+      embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
+      embed_code_timeline.set_iframe(src);
+      $('#embeded_code_modal_window').find('#embed_src').html(src);
+      $('#embeded_code_modal_window').modal();
+    })
 
   $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')

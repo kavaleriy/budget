@@ -1,0 +1,30 @@
+.modal.fade{:role => "dialog", :id => 'embeded_code_modal_window', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title Modal title
+      .modal-body
+        .form-horizontal
+          .form-group
+            .input-group
+              %input.form-control{}
+              =link_to 'Copy', "#" , class: 'input-group-addon'
+          %table
+            %tr
+              %td
+                =t('iframe.select')
+              %td
+                %select.form-control.iframe_size_select
+            %tr
+              %td
+              %td.iframe_other_size
+        =t('iframe.link')
+        .input-group
+          %input.form-control#embed_src
+          =link_to 'Copy', "#" , class: 'input-group-addon'
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-primary{:type => "button"} Save changes
+
