@@ -371,7 +371,7 @@
       var src = window.location.origin + "/widgets/town/profile/" + town;
       embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
       embed_code_timeline.set_iframe(src);
-      $('#embeded_code_modal_window').find('#embed_src').html(src);
+      $('#embeded_code_modal_window').find('#embed_src').val(src);
       $('#embeded_code_modal_window').modal();
     })
 
