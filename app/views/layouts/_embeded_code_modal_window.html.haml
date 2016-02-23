@@ -1,3 +1,10 @@
+:scss
+  #embeded_code_modal_window a{
+    color: #3276B1;
+    text-decoration: none;
+  }
+
+
 .modal.fade{:role => "dialog", :id => 'embeded_code_modal_window', :tabindex => "-1"}
   .modal-dialog
     .modal-content
@@ -20,7 +27,8 @@
             %tr
               %td
               %td.iframe_other_size
-        =t('iframe.link')
+        %p
+          =t('iframe.link')
         .input-group
           %input.form-control#embed_src
           =link_to 'Copy', "#" , class: 'input-group-addon',id:'embeded_code_copy_link'
