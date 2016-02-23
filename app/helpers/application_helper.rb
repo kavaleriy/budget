@@ -94,7 +94,7 @@ module ApplicationHelper
   def get_bg_colors_list(holder = nil)
     colors = [nil]
     if holder.nil? or holder == 1
-      colors += %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026)
+      colors += %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026 red)
     end
     if holder.nil? or holder == 2
       colors += %w(#f7fcf0 #e0f3db #ccebc5 #a8ddb5 #7bccc4 #4eb3d3 #2b8cbe #0868ac #084081)
