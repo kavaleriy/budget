@@ -23,7 +23,6 @@ class CalendarAction
   scope :people_actions, lambda { where(holder: 2) }
 
 
-
   def get_folding_type
     ACTION_TYPE_FOLDING
   end
@@ -40,6 +39,7 @@ class CalendarAction
     ACTION_TYPE_EXECUTION
   end
 
+  private
   def set_default_color
     if self.color.nil?
        case self.action_type
@@ -49,10 +49,7 @@ class CalendarAction
          when ACTION_TYPE_DISCUSSION then set_color('#0000FF')
          else raise "undefined type"
        end
-
     end
-
-    binding.pry
   end
 
   def set_color(color)
