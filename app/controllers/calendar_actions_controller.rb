@@ -31,7 +31,6 @@ class CalendarActionsController < ApplicationController
   # POST /calendar_actions.json
   def create
     @calendar_action = CalendarAction.new(calendar_action_params)
-    binding.pry
     respond_to do |format|
       if @calendar_action.save
         format.html { redirect_to @calendar_action, notice: t('calendar_action.create') }
