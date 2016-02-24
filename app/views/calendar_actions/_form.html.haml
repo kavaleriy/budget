@@ -92,12 +92,18 @@
       .pull-left
         = f.static_control label: t('.icon') do
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @calendar_action.icon), {}, { class: 'fa-select' }
-      .pull-left
-        = f.static_control label: t('.text_color') do
-          = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @calendar_action.text_color), {}, { class: 'color-select' }
-      .pull-left
-        = f.static_control label: t('.color') do
-          = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list(@calendar_action.holder), @calendar_action.color), {}, { class: 'color-select' }
+
+        =f.form_group :action_type, label: { text: t('.radio_header') }  do
+          = f.radio_button :action_type, 1, label: t('.radio_folding'), checked: true
+          = f.radio_button :action_type, 2, label: t('.radio_analysis')
+          = f.radio_button :action_type, 3, label: t('.radio_discussion')
+          = f.radio_button :action_type, 4, label: t('.radio_execution')
+      -#.pull-left
+      -#  = f.static_control label: t('.text_color') do
+      -#    = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @calendar_action.text_color), {}, { class: 'color-select' }
+      -#.pull-left
+      -#  = f.static_control label: t('.color') do
+      -#    = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list(@calendar_action.holder), @calendar_action.color), {}, { class: 'color-select' }
       -#.pull-left
       -#  = f.hidden_field :text_color, value: "yellow"
       -#.pull-left.div1

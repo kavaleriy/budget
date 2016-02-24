@@ -7,7 +7,7 @@ class CalendarAction
   field :description, type: String
   field :text_color, type: String
   field :color, type: String
-
+  field :action_type, type: Integer
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }
 
