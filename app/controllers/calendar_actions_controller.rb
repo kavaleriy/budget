@@ -47,6 +47,7 @@ class CalendarActionsController < ApplicationController
   def update
     respond_to do |format|
       if @calendar_action.update(calendar_action_params)
+        # binding.pry
         format.html { redirect_to @calendar_action, notice: t('calendar_action.update') }
         format.json { render :show, status: :ok, location: @calendar_action }
       else

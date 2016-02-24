@@ -1,5 +1,5 @@
 .calendar_action
-  %h4.title{ 'style' => "color: #{calendar_action.text_color || "black"}; background-color: #{calendar_action.color} || silver"}
+  %h4.title{ 'style' => "color: #{calendar_action.text_color || "black"}; background-color: #{calendar_action.color || "silver"}"}
     %span.fa{:class => calendar_action.icon}
     %strong= calendar_action.title
   %div.description

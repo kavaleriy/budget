@@ -6,6 +6,8 @@ class CalendarAction
   ACTION_TYPE_DISCUSSION = 3
   ACTION_TYPE_EXECUTION = 4
 
+  before_save :set_default_color
+
   field :holder, type: Integer
   field :title, type: String
   field :icon, type: String
@@ -13,11 +15,14 @@ class CalendarAction
   field :text_color, type: String
   field :color, type: String
   field :action_type, type: Integer
-  scope :city_actions, lambda { where(holder: 1) }
-  scope :people_actions, lambda { where(holder: 2) }
 
   validates_presence_of :holder, message: I18n.t('errors.messages.empty')
   validates_presence_of :title, message: I18n.t('errors.messages.empty')
+
+  scope :city_actions, lambda { where(holder: 1) }
+  scope :people_actions, lambda { where(holder: 2) }
+
+
 
   def get_folding_type
     ACTION_TYPE_FOLDING
@@ -35,7 +40,30 @@ class CalendarAction
     ACTION_TYPE_EXECUTION
   end
 
-  # attr_accessor :holder_string
+  def set_default_color
+    if self.color.nil?
+       case self.action_type
+         when ACTION_TYPE_FOLDING then set_color('#FF0000')
+         when ACTION_TYPE_ANALYSIS then set_color('#FF5D00')
+         when ACTION_TYPE_EXECUTION then set_color('#008800')
+         when ACTION_TYPE_DISCUSSION then set_color('#0000FF')
+         else raise "undefined type"
+       end
+
+    end
+
+    binding.pry
+  end
+
+  def set_color(color)
+    self.color = color
+    self.text_color = color_invert(color)
+  end
+  def color_invert(color)
+    color_code = color.gsub(/^#/, '')
+    '#' + sprintf("%X", color_code.hex ^ 0xFFFFFF)
+  end
+    # attr_accessor :holder_string
   # after_initialize :do_after_initialize
   # def do_after_initialize
   #   self.holder_string =
