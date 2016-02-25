@@ -11,6 +11,12 @@ class CalendarAction
   ACTION_TYPE_ANALYSIS_COLOR = '#FF5D00'
   ACTION_TYPE_FOLDING_COLOR = '#FF0000'
 
+  CITY_HOLDER = 1
+  PEOPLE_ACTION = 2
+
+  scope :action_by_type, -> (type) { where(action_type: type) }
+  scope :action_city, -> {where(holder: CITY_HOLDER)}
+  scope :action_people, -> {where(holder: PEOPLE_ACTION)}
   before_save :set_default_color
 
   field :holder, type: Integer
