@@ -4,6 +4,8 @@ module Calendars
 
     layout 'application_admin'
 
+    before_action :set_action_type_if_empty # callback for initialize all no indicated action_type in calendar_action
+
     before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
     before_action :authenticate_user!, only: [:show, :edit]
@@ -31,13 +33,13 @@ module Calendars
       @analysis_city_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_city.to_a
       @discussion_city_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_city.to_a
       @execution_city_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_city.to_a
-      @other_city_action = CalendarAction.action_by_type(nil).action_city.to_a
+      @other_city_action = CalendarAction.action_by_type(cal_obj.get_no_indicate_type).action_city.to_a
 
       @folding_people_action = CalendarAction.action_by_type(cal_obj.get_folding_type).action_people.to_a
       @analysis_people_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_people.to_a
       @discussion_people_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_people.to_a
       @execution_people_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_people.to_a
-      @other_people_action = CalendarAction.action_by_type(nil).action_people.to_a
+      @other_people_action = CalendarAction.action_by_type(cal_obj.get_no_indicate_type).action_people.to_a
 
       respond_to do |format|
         format.html{}
@@ -112,6 +114,14 @@ module Calendars
     end
 
     private
+
+      def set_action_type_if_empty
+        no_indicate_type = CalendarAction.action_by_type(nil).to_a
+        no_indicate_type.each do |indicate|
+          indicate.action_type = indicate.get_no_indicate_type
+          indicate.save
+        end
+      end
       # Use callbacks to share common setup or constraints between actions.
       def set_calendar
         @calendar = Calendar.find(params[:id])

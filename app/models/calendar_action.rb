@@ -1,15 +1,18 @@
 class CalendarAction
   include Mongoid::Document
 
+  ACTION_TYPE_NO_INDICATED = 0
   ACTION_TYPE_FOLDING = 1
   ACTION_TYPE_ANALYSIS = 2
   ACTION_TYPE_DISCUSSION = 3
   ACTION_TYPE_EXECUTION = 4
 
+
   ACTION_TYPE_DISCUSSION_COLOR = '#0000FF'
   ACTION_TYPE_EXECUTION_COLOR = '#008800'
   ACTION_TYPE_ANALYSIS_COLOR = '#FF5D00'
   ACTION_TYPE_FOLDING_COLOR = '#FF0000'
+  ACTION_TYPE_NO_INDICATED_COLOR = '#BBBBBB'
 
   CITY_HOLDER = 1
   PEOPLE_ACTION = 2
@@ -17,6 +20,7 @@ class CalendarAction
   scope :action_by_type, -> (type) { where(action_type: type) }
   scope :action_city, -> {where(holder: CITY_HOLDER)}
   scope :action_people, -> {where(holder: PEOPLE_ACTION)}
+
   before_save :set_default_color
 
   field :holder, type: Integer
@@ -50,14 +54,24 @@ class CalendarAction
     ACTION_TYPE_EXECUTION
   end
 
+  def get_no_indicate_type
+    ACTION_TYPE_NO_INDICATED
+  end
+
   private
+
+
+
+
   def set_default_color
     if self.color.nil?
+      binding.pry
        case self.action_type
          when ACTION_TYPE_FOLDING then set_color(ACTION_TYPE_FOLDING_COLOR)
          when ACTION_TYPE_ANALYSIS then set_color(ACTION_TYPE_ANALYSIS_COLOR)
          when ACTION_TYPE_EXECUTION then set_color(ACTION_TYPE_EXECUTION_COLOR)
          when ACTION_TYPE_DISCUSSION then set_color(ACTION_TYPE_DISCUSSION_COLOR)
+         when ACTION_TYPE_NO_INDICATED then set_color(ACTION_TYPE_NO_INDICATED_COLOR)
          else raise "undefined type"
        end
     end
