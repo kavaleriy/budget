@@ -1,0 +1,55 @@
+:scss
+  .e-e-left .external-events{
+    direction: rtl;
+  }
+  .e-e-left .external-events .e-e-left-text{
+    direction: ltr;
+  }
+  .external-events{
+    overflow-y:auto;
+    overflow-x: hidden;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: solid 1px gainsboro;
+    height: 100%;
+    border-radius:5px;
+  }
+  .no_overflow{
+
+  }
+
+.external-events
+  .e-e-left-text
+    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      .panel.panel-default.no_overflow
+        #cityOne.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a{"aria-controls" => "cityCollapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseOne", :role => "button"}
+              =t('calendar_actions.form.radio_folding')
+        #cityCollapseOne.panel-collapse.collapse.in{"aria-labelledby" => "cityOne", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: @folding_city_action }
+      .panel.panel-default.no_overflow
+        #cityTwo.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "cityCollapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseTwo", :role => "button"}
+              =t('calendar_actions.form.radio_analysis')
+        #cityCollapseTwo.panel-collapse.collapse{"aria-labelledby" => "cityTwo", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: @analysis_city_action }
+      .panel.panel-default.no_overflow
+        #cityThree.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "cityCollapseThree", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseThree", :role => "button"}
+              =t('calendar_actions.form.radio_discussion')
+        #cityCollapseThree.panel-collapse.collapse{"aria-labelledby" => "cityThree", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: @discussion_city_action }
+      .panel.panel-default.no_overflow
+        #cityFour.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "cityCollapseFour", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseFour", :role => "button"}
+              =t('calendar_actions.form.radio_execution')
+        #cityCollapseFour.panel-collapse.collapse{"aria-labelledby" => "cityFour", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: @execution_city_action }
