@@ -53,3 +53,11 @@
         #peopleCollapseFour.panel-collapse.collapse{"aria-labelledby" => "peopleFour", :role => "tabpanel"}
           .panel-body
             = render partial: "show_action", locals: {actions: @execution_people_action }
+      .panel.panel-default.no_overflow
+        #peopleFive.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "peopleCollapseFive", "aria-expanded" => "false", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseFive", :role => "button"}
+              =t('calendar_actions.form.radio_other')
+        #peopleCollapseFive.panel-collapse.collapse{"aria-labelledby" => "peopleFive", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: @other_people_action }
