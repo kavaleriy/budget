@@ -14,18 +14,55 @@
     height: 100%;
     border-radius:5px;
   }
+  .no_overflow{
+
+  }
 
 .external-events
   .e-e-left-text
-    - actions.each do |calendar_action|
-      .external-event.ui-draggable{:style => "color: #{calendar_action.text_color}; background-color: #{calendar_action.color}; position: relative;",
-                                    "data-holder" => calendar_action.holder,
-                                    "data-title" => calendar_action.title.html_safe,
-                                    "data-icon" => calendar_action.icon.html_safe,
-                                    "data-description" => calendar_action.description.html_safe,
-                                    "data-color" => calendar_action.color,
-                                    "data-text_color" => calendar_action.text_color}
+    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      .panel.panel-default.no_overflow
+        #headingOne.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne", :role => "button"}
+              =t('calendar_actions.form.radio_folding')
+        #collapseOne.panel-collapse.collapse.in{"aria-labelledby" => "headingOne", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: folding_action }
+      .panel.panel-default.no_overflow
+        #headingTwo.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo", :role => "button"}
+              =t('calendar_actions.form.radio_analysis')
+        #collapseTwo.panel-collapse.collapse{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: analysis_action }
+      .panel.panel-default.no_overflow
+        #headingThree.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapseThree", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseThree", :role => "button"}
+              =t('calendar_actions.form.radio_discussion')
+        #collapseThree.panel-collapse.collapse{"aria-labelledby" => "headingThree", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: discussion_action }
+      .panel.panel-default.no_overflow
+        #headingFour.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapseFour", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFour", :role => "button"}
+              =t('calendar_actions.form.radio_execution')
+        #collapseFour.panel-collapse.collapse{"aria-labelledby" => "headingFour", :role => "tabpanel"}
+          .panel-body
+            = render partial: "show_action", locals: {actions: execution_action }
 
-        %h5.title{:style => "position: relative;"}
-          %span.fa{class: calendar_action.icon}
-          = truncate calendar_action.title.html_safe, :length => 100, :omission => '...'
+    -#- actions.each do |calendar_action|
+    -#  .external-event.ui-draggable{:style => "color: #{calendar_action.text_color}; background-color: #{calendar_action.color}; position: relative;",
+    -#                                "data-holder" => calendar_action.holder,
+    -#                                "data-title" => calendar_action.title.html_safe,
+    -#                                "data-icon" => calendar_action.icon.html_safe,
+    -#                                "data-description" => calendar_action.description.html_safe,
+    -#                                "data-color" => calendar_action.color,
+    -#                                "data-text_color" => calendar_action.text_color}
+    -#
+    -#    %h5.title{:style => "position: relative;"}
+    -#      %span.fa{class: calendar_action.icon}
+    -#      = truncate calendar_action.title.html_safe, :length => 100, :omission => '...'
