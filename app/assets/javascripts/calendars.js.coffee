@@ -13,6 +13,7 @@ $(document).on 'ready page:change', ->
       description: $(this).attr("data-description")
       text_color: $(this).attr("data-text_color")
       color: $(this).attr("data-color")
+      action_type: $(this).attr("data-action_type")
       holder: $(this).attr("data-holder")
 
     $(this).data "eventObject", eventObject
@@ -143,6 +144,7 @@ $(document).on 'ready page:change', ->
           ends_at: dt_end
           all_day: event.allDay
           holder: event.holder
+          action_type: event.action_type
     .success (data) ->
       event.id = data.id
       #      $("#calendar").fullCalendar "renderEvent", event, true

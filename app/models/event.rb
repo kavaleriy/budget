@@ -20,6 +20,7 @@ class Event
   field :text_color, type: String
   field :color, type: String
   field :countdown_file, type: File
+  field :action_type, type: Integer
 
   embeds_many :event_attachments
 
@@ -39,6 +40,7 @@ class Event
         :allDay => self.all_day,
         :text_color => self.text_color,
         :color => self.color,
+        :action_type => self.action_type
     }
   end
 

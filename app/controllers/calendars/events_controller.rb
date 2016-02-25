@@ -69,7 +69,6 @@ module Calendars
     # PATCH/PUT /events/1
     # PATCH/PUT /events/1.json
     def update
-
       respond_to do |format|
         if @event.update(event_params)
           format.json { render json: @event }
@@ -109,6 +108,7 @@ module Calendars
 
 
     def set_attachments
+
       # @attachments = @event.event_attachments
       @attachments = {}
       @events.each{|event|
@@ -117,7 +117,7 @@ module Calendars
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
+      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
     end
 
   end
