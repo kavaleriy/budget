@@ -31,11 +31,13 @@ module Calendars
       @analysis_city_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_city.to_a
       @discussion_city_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_city.to_a
       @execution_city_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_city.to_a
+      @other_city_action = CalendarAction.action_by_type(nil).action_city.to_a
 
       @folding_people_action = CalendarAction.action_by_type(cal_obj.get_folding_type).action_people.to_a
       @analysis_people_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_people.to_a
       @discussion_people_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_people.to_a
       @execution_people_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_people.to_a
+      @other_people_action = CalendarAction.action_by_type(nil).action_people.to_a
 
       respond_to do |format|
         format.html{}

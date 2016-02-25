@@ -20,11 +20,11 @@
 
 .external-events
   .e-e-left-text
-    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    #people_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
       .panel.panel-default.no_overflow
         #peopleOne.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a{"aria-controls" => "peopleCollapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#peopleCollapseOne", :role => "button"}
+            %a{"aria-controls" => "peopleCollapseOne", "aria-expanded" => "true", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseOne", :role => "button"}
               =t('calendar_actions.form.radio_folding')
         #peopleCollapseOne.panel-collapse.collapse.in{"aria-labelledby" => "peopleOne", :role => "tabpanel"}
           .panel-body
@@ -32,7 +32,7 @@
       .panel.panel-default.no_overflow
         #peopleTwo.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "peopleCollapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#peopleCollapseTwo", :role => "button"}
+            %a.collapsed{"aria-controls" => "peopleCollapseTwo", "aria-expanded" => "false", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseTwo", :role => "button"}
               =t('calendar_actions.form.radio_analysis')
         #peopleCollapseTwo.panel-collapse.collapse{"aria-labelledby" => "peopleTwo", :role => "tabpanel"}
           .panel-body
@@ -40,7 +40,7 @@
       .panel.panel-default.no_overflow
         #peopleThree.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "peopleCollapseThree", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#peopleCollapseThree", :role => "button"}
+            %a.collapsed{"aria-controls" => "peopleCollapseThree", "aria-expanded" => "false", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseThree", :role => "button"}
               =t('calendar_actions.form.radio_discussion')
         #peopleCollapseThree.panel-collapse.collapse{"aria-labelledby" => "peopleThree", :role => "tabpanel"}
           .panel-body
@@ -48,7 +48,7 @@
       .panel.panel-default.no_overflow
         #peopleFour.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "peopleCollapseFour", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#peopleCollapseFour", :role => "button"}
+            %a.collapsed{"aria-controls" => "peopleCollapseFour", "aria-expanded" => "false", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseFour", :role => "button"}
               =t('calendar_actions.form.radio_execution')
         #peopleCollapseFour.panel-collapse.collapse{"aria-labelledby" => "peopleFour", :role => "tabpanel"}
           .panel-body

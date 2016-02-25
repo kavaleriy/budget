@@ -20,11 +20,11 @@
 
 .external-events
   .e-e-left-text
-    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    #city_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
       .panel.panel-default.no_overflow
         #cityOne.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a{"aria-controls" => "cityCollapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseOne", :role => "button"}
+            %a{"aria-controls" => "cityCollapseOne", "aria-expanded" => "true", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapseOne", :role => "button"}
               =t('calendar_actions.form.radio_folding')
         #cityCollapseOne.panel-collapse.collapse.in{"aria-labelledby" => "cityOne", :role => "tabpanel"}
           .panel-body
@@ -32,7 +32,7 @@
       .panel.panel-default.no_overflow
         #cityTwo.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "cityCollapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseTwo", :role => "button"}
+            %a.collapsed{"aria-controls" => "cityCollapseTwo", "aria-expanded" => "false", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapseTwo", :role => "button"}
               =t('calendar_actions.form.radio_analysis')
         #cityCollapseTwo.panel-collapse.collapse{"aria-labelledby" => "cityTwo", :role => "tabpanel"}
           .panel-body
@@ -40,7 +40,7 @@
       .panel.panel-default.no_overflow
         #cityThree.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "cityCollapseThree", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseThree", :role => "button"}
+            %a.collapsed{"aria-controls" => "cityCollapseThree", "aria-expanded" => "false", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapseThree", :role => "button"}
               =t('calendar_actions.form.radio_discussion')
         #cityCollapseThree.panel-collapse.collapse{"aria-labelledby" => "cityThree", :role => "tabpanel"}
           .panel-body
@@ -48,7 +48,7 @@
       .panel.panel-default.no_overflow
         #cityFour.panel-heading{:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "cityCollapseFour", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#cityCollapseFour", :role => "button"}
+            %a.collapsed{"aria-controls" => "cityCollapseFour", "aria-expanded" => "false", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapseFour", :role => "button"}
               =t('calendar_actions.form.radio_execution')
         #cityCollapseFour.panel-collapse.collapse{"aria-labelledby" => "cityFour", :role => "tabpanel"}
           .panel-body
