@@ -1,5 +1,5 @@
 = render partial: 'sankey', :locals => { sankey: @sankey }
-#embed_code_visify
+#embed_code_sankey
   = render partial: 'widgets/visify/embed_code'
 
 = link_to t('form.edit'), edit_sankey_path(@sankey), :class => "btn btn-primary"
@@ -11,6 +11,6 @@
 
     var embed_code = aEmbedCode();
     var src = 'http://' + window.location.host + "/sankeys/sankey/#{@sankey.id}";
-    embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_visify", src: src});
+    embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_sankey", src: src});
 
   })

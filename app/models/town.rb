@@ -9,6 +9,7 @@ class Town
   field :note, type: String
   field :level, type: Integer
   field :description, type: String
+
   def get_level
     return :area if self.level == 1
     return :city if self.level == 13
@@ -38,10 +39,10 @@ class Town
   has_one :export_budget
 
   after_update :clear_cache
+
   def clear_cache
     Rails.cache.delete(Town.name)
   end
-
 
   def to_s
     if [1, 13].index(level)
