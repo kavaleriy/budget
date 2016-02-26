@@ -91,15 +91,27 @@ module ApplicationHelper
     [nil] + %w(#8dd3c7 #ffffb3 #bebada #fb8072 #ffffff #80b1d3 #fdb462 #b3de69 #fccde5 #d9d9d9 #bc80bd #ccebc5 #ffed6f)
   end
 
-  def get_bg_colors_list(holder = nil)
-    colors = [nil]
-    if holder.nil? or holder == 1
-      colors += %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026 red)
-    end
-    if holder.nil? or holder == 2
-      colors += %w(#f7fcf0 #e0f3db #ccebc5 #a8ddb5 #7bccc4 #4eb3d3 #2b8cbe #0868ac #084081)
+  def get_bg_colors_list(type,holder = nil)
+    colors = []
+    case type
+      when CalendarAction::ACTION_TYPE_FOLDING
+        then colors += %w(#FF0000  #EF827F #CC5A59 #FC403F #DC143B #FE0034 #E0517C)
+      when CalendarAction::ACTION_TYPE_ANALYSIS
+        then colors += %w(#FF5D00 #EA7501 #FF7518 #FF8800 #FFA500 #FFA500 #FF8400)
+      when CalendarAction::ACTION_TYPE_EXECUTION
+        then colors += %w(#008800 #64FE02 #5E9F32 #34CA21 #00A86B #167145 #00A900)
+      when CalendarAction::ACTION_TYPE_DISCUSSION
+        then colors += %w(#0000FF #012E4D #073082 #34489E #284DB7 #0091B2 #001AD1)
+      when CalendarAction::ACTION_TYPE_NO_INDICATED
+        then colors += %w(#BBBBBB #BBBBA7 #BBC5A7 #C9C5A7 #C9C5B6 #C9E2B6 #C9E9B6)
     end
 
+    # if holder.nil? or holder == 1
+    #   colors += %w(#ffffcc #ffeda0 #fed976 #feb24c #fd8d3c #fc4e2a #e31a1c #bd0026 red)
+    # end
+    # if holder.nil? or holder == 2
+    #   colors += %w(#f7fcf0 #e0f3db #ccebc5 #a8ddb5 #7bccc4 #4eb3d3 #2b8cbe #0868ac #084081)
+    # end
     colors
   end
 

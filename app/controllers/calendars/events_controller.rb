@@ -31,7 +31,6 @@ module Calendars
 
     # GET /events/indicator_file
     def new
-      binding.pry
       all_day = params[:all_day] == "true"
       @event = @calendar.events.new(
           :starts_at => params[:starts_at],
@@ -57,7 +56,6 @@ module Calendars
     # POST /events.json
     def create
       @event = @calendar.events.new(event_params)
-      binding.pry
       respond_to do |format|
         if @event.save
           format.json { render json: @event }
@@ -110,7 +108,6 @@ module Calendars
 
 
     def set_attachments
-
       # @attachments = @event.event_attachments
       @attachments = {}
       @events.each{|event|

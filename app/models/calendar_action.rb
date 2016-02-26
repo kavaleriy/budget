@@ -65,7 +65,6 @@ class CalendarAction
 
   def set_default_color
     if self.color.nil?
-      binding.pry
        case self.action_type
          when ACTION_TYPE_FOLDING then set_color(ACTION_TYPE_FOLDING_COLOR)
          when ACTION_TYPE_ANALYSIS then set_color(ACTION_TYPE_ANALYSIS_COLOR)
