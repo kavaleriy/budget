@@ -38,6 +38,7 @@ module Calendars
           :all_day => all_day,
           :text_color => '#ffffff',
           :color => '#8cc0f1',
+          :action_type => CalendarAction::ACTION_TYPE_NO_INDICATED
       )
 
       respond_to do |format|
