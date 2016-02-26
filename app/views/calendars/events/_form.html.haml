@@ -25,6 +25,22 @@
         .input-group-addon
           %span.glyphicon.glyphicon-pencil
         = text_field(:event, :title, class: "form-control", placeholder: t('.placeholder_name'))
+    .row
+      .col-md-12
+        =f.select :action_type,
+           [[t('calendar_actions.form.radio_folding'), CalendarAction::ACTION_TYPE_FOLDING],
+            [t('calendar_actions.form.radio_analysis'),CalendarAction::ACTION_TYPE_ANALYSIS],
+            [t('calendar_actions.form.radio_discussion'),CalendarAction::ACTION_TYPE_DISCUSSION],
+            [t('calendar_actions.form.radio_execution'),CalendarAction::ACTION_TYPE_EXECUTION],
+            [t('calendar_actions.form.radio_no_indicated'),CalendarAction::ACTION_TYPE_NO_INDICATED]],
+             { label: t('calendar_actions.form.radio_header') }, { class: "selectpicker" }
+      -#=f.form_group :action_type  do
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_FOLDING, label: t('calendar_actions.form.radio_folding')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_ANALYSIS, label: t('calendar_actions.form.radio_analysis')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_DISCUSSION, label: t('calendar_actions.form.radio_discussion')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_EXECUTION, label: t('calendar_actions.form.radio_execution')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_NO_INDICATED, label: t('calendar_actions.form.radio_no_indicated')
+
 
     .row
       .col-md-4
@@ -44,7 +60,6 @@
         = f.text_field :ends_at, :value => date_dmY(@event.ends_at), label: t('.ends_at')
       .col-md-4
         = f.check_box :all_day, label: t('.all_day')
-
 
 
 

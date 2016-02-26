@@ -14,6 +14,21 @@
     height: 100%;
     border-radius:5px;
   }
+  #peopleOne{
+    background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
+  }
+  #peopleTwo{
+    background: #{CalendarAction::ACTION_TYPE_ANALYSIS_COLOR};
+  }
+  #peopleThree{
+    background: #{CalendarAction::ACTION_TYPE_DISCUSSION_COLOR};
+  }
+  #peopleFour{
+    background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
+  }
+  #peopleFive{
+    background: #{CalendarAction::ACTION_TYPE_NO_INDICATED_COLOR};
+  }
   .no_overflow{
 
   }
@@ -26,7 +41,7 @@
           %h4.panel-title
             %a{"aria-controls" => "peopleCollapseOne", "aria-expanded" => "true", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapseOne", :role => "button"}
               =t('calendar_actions.form.radio_folding')
-        #peopleCollapseOne.panel-collapse.collapse.in{"aria-labelledby" => "peopleOne", :role => "tabpanel"}
+        #peopleCollapseOne.panel-collapse.collapse{"aria-labelledby" => "peopleOne", :role => "tabpanel"}
           .panel-body
             = render partial: "show_action", locals: {actions: @folding_people_action }
       .panel.panel-default.no_overflow

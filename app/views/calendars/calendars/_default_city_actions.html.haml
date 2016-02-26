@@ -14,6 +14,22 @@
     height: 100%;
     border-radius:5px;
   }
+  #cityOne{
+    background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
+  }
+  #cityTwo{
+    background: #{CalendarAction::ACTION_TYPE_ANALYSIS_COLOR};
+  }
+  #cityThree{
+    background: #{CalendarAction::ACTION_TYPE_DISCUSSION_COLOR};
+  }
+  #cityFour{
+    background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
+  }
+  #cityFive{
+    background: #{CalendarAction::ACTION_TYPE_NO_INDICATED_COLOR};
+  }
+
   .no_overflow{
 
   }
@@ -26,7 +42,7 @@
           %h4.panel-title
             %a{"aria-controls" => "cityCollapseOne", "aria-expanded" => "true", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapseOne", :role => "button"}
               =t('calendar_actions.form.radio_folding')
-        #cityCollapseOne.panel-collapse.collapse.in{"aria-labelledby" => "cityOne", :role => "tabpanel"}
+        #cityCollapseOne.panel-collapse.collapse{"aria-labelledby" => "cityOne", :role => "tabpanel"}
           .panel-body
             = render partial: "show_action", locals: {actions: @folding_city_action }
       .panel.panel-default.no_overflow
