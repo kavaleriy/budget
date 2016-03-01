@@ -76,7 +76,7 @@
   $(document).ajaxComplete(function() {
     $('#event_action_type').on('change',function(){
       colorArr = getColorByActionType($(this).val());
-
+      $('#s2id_event_color').change();
       setCollorByActionType(colorArr);
     });
 
@@ -145,10 +145,11 @@
   }
 
   function setCollorByActionType(colorArr){
-      $('#event_color').empty;
+      $('#event_color').empty();
+
       $('#select2-chosen-2 > div').css('background-color',colorArr[0]);
       colorArr.forEach(function(item, i, colorArr) {
-        $('#event_color').append($('<option value="'+item+'"></option>'))
+        $('#event_color').append($('<option value="'+item+'">"'+ item +'"</option>'))
       });
 
   }
