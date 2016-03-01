@@ -97,11 +97,11 @@ module ApplicationHelper
       when CalendarAction::ACTION_TYPE_FOLDING
         then colors += %w(#FF0000  #EF827F #CC5A59 #FC403F #DC143B #FE0034 #E0517C)
       when CalendarAction::ACTION_TYPE_ANALYSIS
-        then colors += %w(#FF5D00 #EA7501 #FF7518 #FF8800 #FFA500 #FFA500 #FF8400)
+        then colors += %w(#0000FF #012E4D #073082 #34489E #284DB7 #0091B2 #001AD1)
       when CalendarAction::ACTION_TYPE_EXECUTION
         then colors += %w(#008800 #64FE02 #5E9F32 #34CA21 #00A86B #167145 #00A900)
       when CalendarAction::ACTION_TYPE_DISCUSSION
-        then colors += %w(#0000FF #012E4D #073082 #34489E #284DB7 #0091B2 #001AD1)
+        then colors += %w(#FF5D00 #EA7501 #FF7518 #FF8800 #FFA500 #FFA500 #FF8400)
       when CalendarAction::ACTION_TYPE_NO_INDICATED
         then colors += %w(#BBBBBB #BBBBA7 #BBC5A7 #C9C5A7 #C9C5B6 #C9E2B6 #C9E9B6)
     end
