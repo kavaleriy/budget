@@ -5,6 +5,29 @@
   .e-e-left{
     height: inherit;
   }
+
+  #peopleOne, #cityOne{
+    background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
+  }
+  #peopleTwo, #cityTwo{
+    background: #{CalendarAction::ACTION_TYPE_ANALYSIS_COLOR};
+  }
+  #peopleThree, #cityThree{
+    background: #{CalendarAction::ACTION_TYPE_DISCUSSION_COLOR};
+  }
+  #peopleFour, #cityFour{
+    background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
+  }
+  #peopleFive, cityFive{
+    background: #{CalendarAction::ACTION_TYPE_NO_INDICATED_COLOR};
+  }
+
+
+  .external-events{
+    padding: 5px;
+    margin-bottom: 10px;
+    height: 100%;
+  }
 - model_class = Calendar
 = content_for :header do
   .head.pull-left
