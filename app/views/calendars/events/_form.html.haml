@@ -74,7 +74,11 @@
 :javascript
 
   $(document).ajaxComplete(function() {
+    $('#event_action_type').on('change',function(){
+      colorArr = getColorByActionType($(this).val());
 
+      setCollorByActionType(colorArr);
+    });
 
     formatFaSelect = function(el) {
       return '<i class=\'fa ' + el.id + '\'/> ' + el.id;
@@ -116,3 +120,35 @@
       'locale': editor_locale
     });
   });
+
+  function getColorByActionType(actionTypeIndex){
+    switch (actionTypeIndex) {
+        case '#{CalendarAction::ACTION_TYPE_FOLDING}' :
+            result = ["#FF0000","#EF827F","#CC5A59","#FC403F","#DC143B","#FE0034","#E0517C"];
+          break;
+        case '#{CalendarAction::ACTION_TYPE_ANALYSIS}' :
+            result = ["#FF5D00","#EA7501","#FF7518","#FF8800","#FFA500","#FFA500","#FF8400"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_EXECUTION}' :
+            result = ["#008800","#64FE02","#5E9F32","#34CA21","#00A86B","#167145","#00A900"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_DISCUSSION}' :
+            result = ["#0000FF","#012E4D","#073082","#34489E","#284DB7","#0091B2","#001AD1"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_NO_INDICATED}' :
+          result = ["#BBBBBB","#BBBBA7","#BBC5A7","#C9C5A7","#C9C5B6","#C9E2B6","#C9E9B6"]
+          break;
+    }
+
+    return result;
+
+  }
+
+  function setCollorByActionType(colorArr){
+      $('#event_color').empty;
+      $('#select2-chosen-2 > div').css('background-color',colorArr[0]);
+      colorArr.forEach(function(item, i, colorArr) {
+        $('#event_color').append($('<option value="'+item+'"></option>'))
+      });
+
+  }
