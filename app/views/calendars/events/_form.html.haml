@@ -76,7 +76,6 @@
   $(document).ajaxComplete(function() {
     $('#event_action_type').on('change',function(){
       colorArr = getColorByActionType($(this).val());
-
       setCollorByActionType(colorArr);
     });
 
@@ -146,8 +145,7 @@
 
   function setCollorByActionType(colorArr){
       $('#event_color').empty();
-
-      $('#select2-chosen-2 > div').css('background-color',colorArr[0]);
+      $('.select2-chosen > div').css('background-color',colorArr[0]);
       colorArr.forEach(function(item, i, colorArr) {
         $('#event_color').append($('<option value="'+item+'">"'+ item +'"</option>'))
       });
