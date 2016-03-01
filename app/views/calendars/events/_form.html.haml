@@ -76,7 +76,7 @@
   $(document).ajaxComplete(function() {
     $('#event_action_type').on('change',function(){
       colorArr = getColorByActionType($(this).val());
-      $('#s2id_event_color').change();
+
       setCollorByActionType(colorArr);
     });
 
