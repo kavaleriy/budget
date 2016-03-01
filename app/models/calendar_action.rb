@@ -38,31 +38,7 @@ class CalendarAction
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }
 
-
-  def get_folding_type
-    ACTION_TYPE_FOLDING
-  end
-
-  def get_analysis_type
-    ACTION_TYPE_ANALYSIS
-  end
-
-  def get_discusion_type
-    ACTION_TYPE_DISCUSSION
-  end
-
-  def get_execution_type
-    ACTION_TYPE_EXECUTION
-  end
-
-  def get_no_indicate_type
-    ACTION_TYPE_NO_INDICATED
-  end
-
   private
-
-
-
 
   def set_default_color
     if self.color.nil?

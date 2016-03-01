@@ -27,19 +27,17 @@ module Calendars
       # @people_actions = CalendarAction.where(:holder => '2').to_a
       # @people_actions.map{ |action| action.text_color = 'black' if action.text_color.blank?; }
 
-      cal_obj = CalendarAction.new  # for constant
+      @folding_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_city.to_a
+      @analysis_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_city.to_a
+      @discussion_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_city.to_a
+      @execution_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_city.to_a
+      @other_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_city.to_a
 
-      @folding_city_action = CalendarAction.action_by_type(cal_obj.get_folding_type).action_city.to_a
-      @analysis_city_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_city.to_a
-      @discussion_city_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_city.to_a
-      @execution_city_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_city.to_a
-      @other_city_action = CalendarAction.action_by_type(cal_obj.get_no_indicate_type).action_city.to_a
-
-      @folding_people_action = CalendarAction.action_by_type(cal_obj.get_folding_type).action_people.to_a
-      @analysis_people_action = CalendarAction.action_by_type(cal_obj.get_analysis_type).action_people.to_a
-      @discussion_people_action = CalendarAction.action_by_type(cal_obj.get_discusion_type).action_people.to_a
-      @execution_people_action = CalendarAction.action_by_type(cal_obj.get_execution_type).action_people.to_a
-      @other_people_action = CalendarAction.action_by_type(cal_obj.get_no_indicate_type).action_people.to_a
+      @folding_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_people.to_a
+      @analysis_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_people.to_a
+      @discussion_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_people.to_a
+      @execution_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_people.to_a
+      @other_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_people.to_a
 
       respond_to do |format|
         format.html{}
