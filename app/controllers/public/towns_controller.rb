@@ -32,10 +32,6 @@ class Public::TownsController < ApplicationController
 
     }
     @portfolio_url = get_portfolio_url
-
-
-
-
   end
 
 
@@ -48,14 +44,15 @@ class Public::TownsController < ApplicationController
       sankey = Sankey.where(:owner => '').first
     else
       town = Town.find(params[:town_id])
-      taxonomy_rot = TaxonomyRot.where(:owner => town.title).first
-      taxonomy_rov = TaxonomyRov.where(:owner => town.title).first
-      sankey = Sankey.where(:owner => town.title).first
+      taxonomy_rot = TaxonomyRot.owned_by(town.to_s).first
+      taxonomy_rov = TaxonomyRov.owned_by(town.to_s).first
+      sankey = Sankey.owned_by(town.to_s).first
     end
 
     @tabs << { title: t('.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
     @tabs << { title: t('.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
-    @tabs << { title: t('.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}"} if sankey
+    @tabs << { title: t('.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
+
     @tabs.first[:cname] = 'active'
   end
   def pdf_docs
@@ -122,7 +119,6 @@ class Public::TownsController < ApplicationController
 
   def set_town
     if test_town?
-      # binding.pry
       @town = Town.new(:id => 'test',
                        :title => 'Демонстрація типового профілю міста',
                        :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',

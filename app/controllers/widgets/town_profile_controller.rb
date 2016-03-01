@@ -13,13 +13,12 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   private
 
   def get_town_items_hash (town_object)
-
     @town = town_object
     town = nil
     town = town_object.title unless town_object.blank?
     # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
     # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
-    taxonomy = Taxonomy.get_taxonomy_by_town(town).first
+    taxonomy = Taxonomy.owned_by(town_object.to_s).first
     calendar = Calendar.get_calendar_by_town(town).first
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town).last
     result = []
@@ -34,8 +33,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_edata_hash('edata')
     result << get_purchase_hash('purchase')
     result << get_keys_hash('keys')
-    result.delete_if {|key, value| key.nil? }
-    return result
+
+    result.compact
   end
 
   def get_taxonomy_rot_hash(taxonomy_rot,name)

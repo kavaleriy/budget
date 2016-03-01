@@ -1,6 +1,8 @@
 class Sankey
   include Mongoid::Document
 
+  scope :owned_by, lambda { |owner| where(:owner => owner) }
+
   field :title, type: String
   field :owner, type: String
   

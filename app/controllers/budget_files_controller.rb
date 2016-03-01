@@ -73,7 +73,7 @@ class BudgetFilesController < ApplicationController
   # POST /revenues
   # POST /revenues.json
   def create
-    @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+    @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
 
     budget_file_params[:path].each do |uploaded|
       new_file_name = get_file_name_for uploaded
