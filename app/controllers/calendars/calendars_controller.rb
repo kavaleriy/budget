@@ -29,7 +29,7 @@ module Calendars
 
       @city_action = {}
       @city_action.store('folding',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_city.to_a)
-      @city_action.store('analisys',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_city.to_a)
+      @city_action.store('analysis',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_city.to_a)
       @city_action.store('discussion',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_city.to_a)
       @city_action.store('execution',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_city.to_a)
       @city_action.store('other',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_city.to_a)
@@ -40,11 +40,17 @@ module Calendars
       # @execution_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_city.to_a
       # @other_city_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_city.to_a
 
-      @folding_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_people.to_a
-      @analysis_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_people.to_a
-      @discussion_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_people.to_a
-      @execution_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_people.to_a
-      @other_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_people.to_a
+      @people_action = {}
+      @people_action.store('folding',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_people.to_a)
+      @people_action.store('analysis',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_people.to_a)
+      @people_action.store('discussion',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_people.to_a)
+      @people_action.store('execution',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_people.to_a)
+      @people_action.store('other',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_people.to_a)
+      # @folding_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_people.to_a
+      # @analysis_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_people.to_a
+      # @discussion_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_people.to_a
+      # @execution_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_people.to_a
+      # @other_people_action = CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_people.to_a
 
       respond_to do |format|
         format.html{}
