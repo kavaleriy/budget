@@ -1,7 +1,12 @@
 class Town
   include Mongoid::Document
+  require 'carrierwave/mongoid'
 
   default_scope lambda { order_by(:title => :asc) }
+  scope :get_test_town, -> {where(title: 'test')}
+
+  skip_callback :update, :before, :store_previous_model_for_img
+  after_update :clear_cache
 
   field :koatuu, type: String
   field :title, type: String
@@ -9,36 +14,30 @@ class Town
   field :note, type: String
   field :level, type: Integer
   field :description, type: String
+  field :links, type: String
+  field :coordinates, type: Array
+  field :bounds, type: Array
+  field :center, type: Array
+  field :geometry_type, type: String
+
+  mount_uploader :img, TownUploader
+
+  # counters for per-capita calculations
+  embeds_one :counters, class_name: 'TownCounter'
+  has_many :documentation_documents, class_name: 'Documentation::Document'
+  has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
+  has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
+  has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
+  has_many :community_communities, :class_name => 'Community::Community', autosave: true
+  has_one :export_budget
+
+
 
   def get_level
     return :area if self.level == 1
     return :city if self.level == 13
     return :town if [3, 31].include? self.level
   end
-
-  field :links, type: String
-
-  field :coordinates, type: Array
-  field :bounds, type: Array
-  field :center, type: Array
-  field :geometry_type, type: String
-
-  require 'carrierwave/mongoid'
-  mount_uploader :img, TownUploader
-  skip_callback :update, :before, :store_previous_model_for_img
-
-  # counters for per-capita calculations
-  embeds_one :counters, class_name: 'TownCounter'
-
-  has_many :documentation_documents, class_name: 'Documentation::Document'
-  has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
-  has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
-  has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
-  has_many :community_communities, :class_name => 'Community::Community', autosave: true
-
-  has_one :export_budget
-
-  after_update :clear_cache
 
   def clear_cache
     Rails.cache.delete(Town.name)

@@ -105,8 +105,9 @@ class Public::TownsController < ApplicationController
 
   private
   def get_portfolio_url
+    binding.pry
     if test_town?
-      @portfolio_url = widgets_town_profile_path(Town.first)
+      @portfolio_url = widgets_town_profile_path(Town.get_test_town)
     else
       @portfolio_url = widgets_town_profile_path(@town)
     end

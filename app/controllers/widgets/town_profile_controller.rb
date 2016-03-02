@@ -21,13 +21,14 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
     calendar = Calendar.get_calendar_by_town(town).first
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town).last
+    # binding.pry
     result = []
     result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
+    result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
     result << get_programs_hash('programs')
-    result << get_calendar_hash(calendar,'calendar')
     result << get_key_docs_hash('key_docs')
     result << get_prozorro_hash('prozoroo')
     result << get_edata_hash('edata')
