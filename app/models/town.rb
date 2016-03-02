@@ -132,7 +132,6 @@ class Town
       result.store("keys" ,Town.get_hash_by_item("keys",@town)) if @town.key_indicate_map_indicators
       result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => @town).first
     end
-    # binding.pry
     result
   end
 

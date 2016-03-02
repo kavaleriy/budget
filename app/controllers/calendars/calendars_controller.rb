@@ -86,8 +86,10 @@ module Calendars
     def update
       new_params = calendar_params
       unless current_user.nil?
-        new_params[:author] = current_user.email
-        new_params[:town] = current_user.town
+        if @calendar.is_test.nil?
+          new_params[:author] = current_user.email
+          new_params[:town] = current_user.town
+        end
       end
 
       respond_to do |format|

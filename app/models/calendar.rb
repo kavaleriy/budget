@@ -10,7 +10,7 @@ class Calendar
   field :countdown_title, type: String
   field :countdown_event, type: Event
   field :import_file, type: String
-
+  field :is_test, type: Boolean
   embeds_many :events
   has_and_belongs_to_many :subscribers
 
