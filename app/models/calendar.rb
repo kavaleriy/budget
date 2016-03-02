@@ -2,18 +2,18 @@ class Calendar
   include Mongoid::Document
 
   scope :get_calendar_by_town, ->(town){ where(:town => town) }
+
   field :author, type: String
-
   field :town, type: String
-
   field :title, type: String
   field :description, type: String
-
   field :countdown_title, type: String
   field :countdown_event, type: Event
   field :import_file, type: String
+
   embeds_many :events
   has_and_belongs_to_many :subscribers
+
 
   def import(path)
     workbook = RubyXL::Parser.parse(path)

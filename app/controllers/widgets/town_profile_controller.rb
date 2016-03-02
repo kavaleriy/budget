@@ -20,8 +20,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
     calendar = Calendar.get_calendar_by_town(town).first
-    indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town).last
-    # binding.pry
+    indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     result = []
     result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
@@ -79,8 +78,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_item_hash(item_img_src,item_title,item_url)
-    yield if block_given?
-
+    result = yield if block_given?
+    unless result.nil?
+      return result
+    end
     unless item_url == "#"
       {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url}
     end
