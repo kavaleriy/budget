@@ -17,6 +17,7 @@ class BudgetFile
 
   belongs_to :taxonomy, autosave: true
   belongs_to :zip_budget_file, autosave: true
+  belongs_to :fz_budget_file, autosave: true
 
   # calculated tree
   field :tree, :type => Hash
