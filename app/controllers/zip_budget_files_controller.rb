@@ -16,6 +16,7 @@ class ZipBudgetFilesController < ApplicationController
       month = (entry.name.match /(\d\d)M/)[1]
       table = read_table_from_file file_path
       table[:rows].each{|row| row.merge!('_month' => month) }
+
       table
     end
 

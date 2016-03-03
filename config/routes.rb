@@ -213,6 +213,7 @@ Rails.application.routes.draw do
   end
 
   resources :zip_budget_files
+  resources :fz_budget_files
 
   resources :budget_file_frees
   resources :budget_file_lvivobl_rots
