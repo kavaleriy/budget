@@ -6,9 +6,10 @@
       -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
     %td
       = link_to budget_file_download_path(budget_file), :class => '' do
-        %i.fa.fa-download.fa-2x.fa-border
-    %td= (@file_owners[budget_file.taxonomy_id] || ' - ') if budget_file.taxonomy_id
+        %i.fa.fa-download.fa.fa-border
+        = budget_file.name
     %td= budget_file.data_type
+    %td= (@file_owners[budget_file.taxonomy_id] || ' - ') if budget_file.taxonomy_id
     %td= budget_file.author
     %td
       =link_to t('form.edit', :default => t("helpers.links.edit")), edit_budget_file_path(budget_file), :class => 'btn btn-default btn-xs'

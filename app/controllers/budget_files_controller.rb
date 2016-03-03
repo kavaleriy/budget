@@ -21,7 +21,7 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :data_type, :author).visible_to(current_user)
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user)
 
     case sort_column
       when "title"
@@ -54,7 +54,6 @@ class BudgetFilesController < ApplicationController
 
     @file_owners = file_owners.pluck(:id, :owner).to_h
 
-
     respond_to do |format|
       format.js
       format.html
@@ -72,22 +71,19 @@ class BudgetFilesController < ApplicationController
 
   # POST /revenues
   # POST /revenues.json
+
   def create
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
 
     budget_file_params[:path].each do |uploaded|
+      @file_name = uploaded.original_filename
+
       new_file_name = get_file_name_for uploaded
       file = upload_file uploaded, new_file_name
-      @file_name = file[:name]
+
       file_path = file[:path].to_s
 
-      @taxonomy =
-        if params[:budget_file_taxonomy].blank?
-          create_taxonomy
-        else
-          Taxonomy.find params[:budget_file_taxonomy]
-        end
-
+      @taxonomy = params[:budget_file_taxonomy].blank? ? create_taxonomy : Taxonomy.find(params[:budget_file_taxonomy])
       @taxonomy.locale = params['locale'] || 'uk'
 
       generate_budget_file
@@ -99,7 +95,8 @@ class BudgetFilesController < ApplicationController
 
       @budget_file.path = file_path
 
-      @budget_file.title = budget_file_params[:title].empty? ? "#{@file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
+      @budget_file.title = "#{get_file_title} - #{DateTime.now.strftime('%d-%m-%Y')}"
+      @budget_file.name = @file_name if @budget_file.name.nil?
 
       table = read_table_from_file file_path
 
@@ -176,6 +173,10 @@ class BudgetFilesController < ApplicationController
 
   protected
 
+  def get_file_title
+    @file_name
+  end
+
   def get_file_name_for uploaded_io
     uploaded_io.original_filename
   end
@@ -196,7 +197,7 @@ class BudgetFilesController < ApplicationController
 
 
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :town, :path => [])
+    params.require(params[:controller].singularize).permit(:taxonomy, :data_type, :town, :path => [])
   end
 
   def set_budget_file

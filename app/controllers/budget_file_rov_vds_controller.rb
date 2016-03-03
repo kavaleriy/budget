@@ -1,10 +1,10 @@
 class BudgetFileRovVdsController < BudgetFileRovsController
 
-  protected
+  include BudgetFileTerra
 
-  def get_file_name_for uploaded_io
-    "#{uploaded_io.original_filename}.dbf"
-  end
+  before_action :set_areas, only: [:new]
+
+  protected
 
   def generate_budget_file
     if @taxonomy
@@ -14,18 +14,28 @@ class BudgetFileRovVdsController < BudgetFileRovsController
     end
 
     @budget_file.data_type = :fact
-
     @budget_file.cumulative_sum = true
   end
 
-  def get_taxonomies owner
+  def create_taxonomy
+    name = @file_name.gsub(/vd\d\d\d\d\d\d.(?<TERRA>\d\d\d)/i, 'VDxxxxxx.\k<TERRA>')
+    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: name)
+    taxonomy.title = get_title
+    taxonomy
   end
 
-  def create_taxonomy
-    t_title = @file_name.gsub(/vd\d\d\d\d\d\d.(?<TERRA>\d\d\d)/i, 'VDxxxxxx.\k<TERRA>')
-    taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: t_title)
-    taxonomy.title = t_title
-    taxonomy
+  def get_file_name_for uploaded_io
+    "#{uploaded_io.original_filename}.dbf"
+  end
+
+  def get_file_title
+    get_title
+  end
+
+  def get_title
+    /vd(?<code>\d\d)\d\d\d\d.(?<town_id>\d\d\d)/i =~ @file_name
+    area_id = params[:area]
+    get_terra_title area_id, town_id
   end
 
 end

@@ -36,5 +36,8 @@ module Budget
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
+
+
+    config.watchable_dirs['lib'] = [:rb]
   end
 end

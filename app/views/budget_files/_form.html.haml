@@ -1,8 +1,4 @@
 = bootstrap_form_for @budget_file, :html => { :class => 'form-vertical' } do |f|
-  .form-group
-    = f.text_field :title, label: t('budget_file_name')
-
-
   - if @budget_file.new_record?
     - unless @taxonomies.blank?
       .form-group

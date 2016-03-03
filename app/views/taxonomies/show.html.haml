@@ -5,7 +5,7 @@
     %i.fa.fa-money
       = @taxonomy.title
     %span.descr
-      = @taxonomy.owner
+      = @taxonomy.name
 
   = render partial: 'budget_files/visify_list', :locals => { id: @taxonomy.id }
 
@@ -17,7 +17,7 @@
 .col-xs-12
   %p
     Автор:
-    = @taxonomy.budget_files.first.author
+    = "#{@taxonomy.budget_files.last.author}, #{@taxonomy.owner}"
 
 = link_to t('taxonomies.recipients.title'), recipients_taxonomy_path(@taxonomy), :class => 'btn btn-info'
 = link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'

@@ -3,10 +3,10 @@
 = content_for :header do
   .head
     %i.fa.fa-money
-      = @budget_file.taxonomy.owner
+      = @budget_file.title
 
     %span.descr
-      #{@budget_file.title}
+      = @budget_file.name
 
   = render partial: 'visify_list', :locals => { id: @budget_file.id }
 
@@ -18,7 +18,7 @@
 .col-xs-12
   %p
     Автор:
-    = @budget_file.author
+    = "#{@budget_file.author}, #{@budget_file.taxonomy.owner}"
 
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do
