@@ -65,11 +65,23 @@
     text-align: justify;
     line-height: 1.4;
   }
+  
 :scss
   .news_wrapper {
     height: 300px;
     overflow: hidden;
     overflow-y: scroll;
+  }
+  .cl-block-text{
+    p{
+      margin: 0;
+      br{
+        display: none;
+      }
+    }
+    img,table{
+      display: none;
+    }
   }
 
 %h1
@@ -92,7 +104,7 @@
           -#.cl-block-img
           -#  = image_tag newsItem.img.thumb
           .cl-block-text
-            = newsItem.news_text
+            = newsItem.news_text.html_safe
 -else
   .no-news
     = t(".no_news")

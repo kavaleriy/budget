@@ -65,7 +65,9 @@
       color: #808080;
       margin: 13px 0px;
       height: 69px;
-
+      img,table,br{
+        display: none;
+      }
 
     }
   }
@@ -81,7 +83,7 @@
           .news_title
             = news.title
           .all_news_text
-            = news.news_text[0...400].html_safe
+            = news.news_text.html_safe
 %br
 .col-xs-12.text-center
   = paginate @budget_news
