@@ -7,6 +7,7 @@
        }
     }
   }
+-#%link{:href => "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css", :rel => "stylesheet"}
 .col-md-10
   .row-fluid
     .span4.well
@@ -22,8 +23,7 @@
 
   $(document).ready(function(){
     $.fn.editable.defaults.mode = 'inline';
-    $('#modules_budget_news_news_text').wysihtml5({
-        url: $("form").prop("action"),
-
+    $('#modules_budget_news_news_text').summernote({
+        //url: $("form").prop("action"),
     });
   });
