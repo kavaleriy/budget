@@ -2,11 +2,11 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :header,as: :text,label:'Header'
-    = f.input :content, as: :text, label: "Content", input_html: { class: 'text_area' }
+    = f.input :header,as: :text,label: t('content_manager.page_containers.header')
+    = f.input :content, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
 
   .form-actions
-    = f.button :submit
+    = f.button :submit,t('save'), class: 'btn btn-primary'
 
 :javascript
 

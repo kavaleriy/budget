@@ -6,6 +6,6 @@
   .panel-body
     = @page_container.content.html_safe
 
-= link_to 'Edit', edit_content_manager_page_container_path(@page_container)
+= link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-primary'
 \|
-= link_to 'Back', content_manager_page_containers_path
+= link_to t('content_manager.page_containers.main'), content_manager_page_containers_path, class: 'btn btn-primary'

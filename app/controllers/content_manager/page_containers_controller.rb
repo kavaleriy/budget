@@ -1,4 +1,4 @@
-class ContentManager::PageContainersController < ApplicationController
+class ContentManager::PageContainersController < AdminController
   before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
