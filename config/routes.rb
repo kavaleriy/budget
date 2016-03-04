@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :content_manager do
     resources :page_containers
   end
-
+  get 'pages/:id' => 'content_manager/page_containers#show_to_user',as: 'content_pages'
   namespace :modules do
     get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
     resources :budget_news

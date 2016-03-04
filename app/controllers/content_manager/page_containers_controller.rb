@@ -1,5 +1,5 @@
 class ContentManager::PageContainersController < AdminController
-  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
+  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy,:show_to_user]
 
   respond_to :html
 
@@ -29,6 +29,9 @@ class ContentManager::PageContainersController < AdminController
   def update
     @page_container.update(content_manager_page_container_params)
     respond_with(@page_container)
+  end
+
+  def show_to_user
   end
 
   def destroy
