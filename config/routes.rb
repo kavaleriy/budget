@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :content_manager do
+    resources :page_containers
+  end
+
   namespace :modules do
     get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
     resources :budget_news

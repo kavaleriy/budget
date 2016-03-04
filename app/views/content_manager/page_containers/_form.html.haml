@@ -1,0 +1,18 @@
+= simple_form_for(@page_container) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :header,as: :text,label:'Header'
+    = f.input :content, as: :text, label: "Content", input_html: { class: 'text_area' }
+
+  .form-actions
+    = f.button :submit
+
+:javascript
+
+  $(document).ready(function(){
+    $.fn.editable.defaults.mode = 'inline';
+    $('#content_manager_page_container_content').summernote({
+        //url: $("form").prop("action"),
+    });
+  });

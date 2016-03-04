@@ -1,0 +1,2 @@
+module ContentManager::PageContainersHelper
+end

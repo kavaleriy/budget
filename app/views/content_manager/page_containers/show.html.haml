@@ -1,0 +1,11 @@
+%p#notice= notice
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = @page_container.header
+  .panel-body
+    = @page_container.content.html_safe
+
+= link_to 'Edit', edit_content_manager_page_container_path(@page_container)
+\|
+= link_to 'Back', content_manager_page_containers_path
