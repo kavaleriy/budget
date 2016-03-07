@@ -9,8 +9,9 @@ class ContentManager::PageContainer
 
   field :header, type: String
   field :content, type: String
-  field :alias, type: Integer
+  field :alias, type: String
   field :p_id, type: String
+  field :link, type: String
 
   validates :header, presence: true
   validates :alias, uniqueness: true
