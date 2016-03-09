@@ -16,7 +16,7 @@ namespace :content_page do
   desc "Create about page"
   task :create_about_page => :create_menu_nav do
     about_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::ABOUT_US).first
-    page_obj = ContentManager::PageContainer.new({header: '.about', content: 'About description',
+    page_obj = ContentManager::PageContainer.new({header: get_title('about'), content: 'About description',
                                                   alias: 'about',p_id: about_menu.id})
     page_obj.save
   end

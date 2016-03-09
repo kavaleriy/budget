@@ -16,7 +16,7 @@ module Public
     end
 
     def show_pages
-      abort 'dasdadsa'
+      @page = ContentManager::PageContainer.get_page_by_alias(params[:alias]).first
     end
 
     # def budget
