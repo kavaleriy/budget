@@ -1,0 +1,13 @@
+%h1= t('content_manager.page_containers.show_header')
+
+%p#notice= notice
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = @page_container.header
+  .panel-body
+    = @page_container.content.html_safe
+
+= link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-primary'
+\|
+= link_to t('content_manager.page_containers.main'), content_manager_page_containers_path, class: 'btn btn-primary'

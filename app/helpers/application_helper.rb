@@ -412,4 +412,18 @@ module ApplicationHelper
      fa-wrench'
     )
   end
+
+  def get_nav_link(menu_list)
+
+    if menu_list.link.nil?
+      show_pages_path(menu_list.alias)
+    else
+      menu_list.link
+    end
+  end
+
+ def check_admin
+   current_user && current_user.admin?
+ end
+
 end

@@ -1,0 +1,20 @@
+%h3= t(@page_container.header)
+= simple_form_for(@page_container) do |f|
+  = f.error_notification
+
+
+  .form-inputs
+    -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
+    = f.input :content, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
+
+  .form-actions
+    = f.button :submit,t('save'), class: 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function(){
+    $.fn.editable.defaults.mode = 'inline';
+    $('#content_manager_page_container_content').summernote({
+        //url: $("form").prop("action"),
+    });
+  });

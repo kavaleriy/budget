@@ -1,0 +1,18 @@
+:scss
+  #edit_link{
+    img{
+       width:30px;
+    }
+  }
+
+= content_for :header do
+  .head.pull-left
+    %h1= t(@page.header)
+
+.container
+  -#-binding.pry
+  -if check_admin
+    .pull-right#edit_link
+      = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
+
+  = @page.content.html_safe

@@ -15,6 +15,10 @@ module Public
     def about
     end
 
+    def show_pages
+      @page = ContentManager::PageContainer.get_page_by_alias(params[:alias]).first
+    end
+
     # def budget
     #   @budgets = Taxonomy.all
     # end

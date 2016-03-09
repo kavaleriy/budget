@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :cancan_hack
 
-
+  before_action :set_menu
 
   before_action :set_locale
 
@@ -66,6 +66,10 @@ class ApplicationController < ActionController::Base
 
   def default_url_options(options={})
     { locale: I18n.locale }.merge options
+  end
+
+  def set_menu
+    @menu = ContentManager::PageContainer.get_all_menu
   end
 
 end

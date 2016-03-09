@@ -1,0 +1,34 @@
+:scss
+  .crud_icons{
+    img{
+      width: 30px;
+    }
+  }
+
+%h1= t('content_manager.page_containers.title')
+%p
+  = link_to t('content_manager.page_containers.new'), new_content_manager_page_container_path, class: 'btn btn-primary'
+
+%table.table.table-striped
+  %tr
+    %th= t('content_manager.page_containers.header')
+    %th= t('content_manager.page_containers.content')
+    %th= t('content_manager.page_containers.action')
+
+  - @page_containers.each do |page_container|
+    %tr.crud_icons
+      %td= t(page_container.header)
+      %td= page_container.content.html_safe
+      %td
+        = link_to image_tag('icons/loupe.png'), page_container
+        = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
+        = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
+                :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+
+:javascript
+  dataConfirmModal.setDefaults({
+    title:  'Видалення контенту',
+    cancel: 'Відмінити'
+  });
+
+
