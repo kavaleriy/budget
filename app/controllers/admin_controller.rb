@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
 
   load_and_authorize_resource
-  # before_action :check_admin_permission
+  before_action :check_admin_permission
 
   def check_admin_permission
     unless current_user && current_user.admin?

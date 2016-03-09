@@ -31,9 +31,6 @@ class ContentManager::PageContainersController < AdminController
     respond_with(@page_container)
   end
 
-  def show_to_user
-  end
-
   def destroy
     @page_container.destroy
     respond_with(@page_container)
