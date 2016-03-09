@@ -412,4 +412,13 @@ module ApplicationHelper
      fa-wrench'
     )
   end
+
+  def get_nav_link(link)
+    if link.nil?
+      "#"
+    else
+      link
+    end
+  end
+
 end

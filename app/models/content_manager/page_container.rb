@@ -34,7 +34,7 @@ class ContentManager::PageContainer
     const_arr.each do |key,value|
       obj = ContentManager::PageContainer.get_page_by_alias(value).first
       arr = get_child_link(obj.id).to_a
-      result.store(key,arr)
+      result.store(obj,arr)
       # binding.pry
     end
     # binding.pry
