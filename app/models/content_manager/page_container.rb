@@ -6,6 +6,8 @@ class ContentManager::PageContainer
   PUBLIC_CONTROL = 3
 
   scope :get_parent_menu, ->(category) { where(alias: category) }
+  scope :get_child_link, ->(parent) { where(p_id: parent)}
+  scope :get_page_by_alias, ->(as) { where(alias: as )}
 
   field :header, type: String
   field :content, type: String
@@ -24,5 +26,18 @@ class ContentManager::PageContainer
     end
     result
 
+  end
+
+  def self.get_all_menu
+    result = {}
+    const_arr = get_constant_to_h
+    const_arr.each do |key,value|
+      obj = ContentManager::PageContainer.get_page_by_alias(value).first
+      arr = get_child_link(obj.id).to_a
+      result.store(key,arr)
+      # binding.pry
+    end
+    # binding.pry
+    result
   end
 end

@@ -13,7 +13,7 @@ namespace :content_page do
   task :create_about_page => :create_menu_nav do
     about_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::ABOUT_US).first
     page_obj = ContentManager::PageContainer.new({header: 'About us',content: 'About description',
-                                                  alias: 'about',p_id: about_menu})
+                                                  alias: 'about',p_id: about_menu.id})
     page_obj.save
   end
 
@@ -23,9 +23,8 @@ namespace :content_page do
     page_arr = %w( Budget_system Budget_process Glossary)
     page_arr.each do |page|
       page_obj = ContentManager::PageContainer.new({header: page,content: "#{page} content",
-                                                alias: page ,p_id: budget_system_menu})
+                                                alias: page ,p_id: budget_system_menu.id})
 
-      binding.pry
       page_obj.save
     end
   end
@@ -36,7 +35,7 @@ namespace :content_page do
     page_arr = %w( Budget_system Budget_process Glossary)
     page_arr.each do |page|
       page_obj = ContentManager::PageContainer.new({header: page,content: "#{page} content",
-                                                    alias: page, p_id: visualisation_menu})
+                                                    alias: page, p_id: visualisation_menu.id})
       page_obj.save
     end
   end
