@@ -45,6 +45,6 @@ class ContentManager::PageContainersController < AdminController
     end
 
     def content_manager_page_container_params
-      params.require(:content_manager_page_container).permit(:header,:content,:alias)
+      params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id)
     end
 end
