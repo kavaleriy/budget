@@ -2,7 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :header,as: :text,label: t('content_manager.page_containers.header')
+    = f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header')
     = f.input :content, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
 
   .form-actions
