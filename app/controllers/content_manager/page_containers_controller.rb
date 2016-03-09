@@ -4,9 +4,9 @@ class ContentManager::PageContainersController < AdminController
   respond_to :html
 
   def index
-    @page_containers = ContentManager::PageContainer.get_all_child
+    # @page_containers = ContentManager::PageContainer.get_all_child
     # parent = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::VISUALISATION).first
-    @test = ContentManager::PageContainer.get_all_menu
+    @page_containers = ContentManager::PageContainer.get_all_menu
     # binding.pry
     respond_with(@page_containers)
   end

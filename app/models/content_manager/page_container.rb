@@ -18,7 +18,7 @@ class ContentManager::PageContainer
   field :p_id, type: String
   field :link, type: String
 
-  validates :header, presence: true
+  validates :alias,:content, presence: true
   validates :alias, uniqueness: true
 
   def self.get_constant_to_h
