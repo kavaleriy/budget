@@ -5,6 +5,9 @@ class ContentManager::PageContainer
   VISUALISATION = 2
   PUBLIC_CONTROL = 3
 
+  has_many :subordinates, class_name: "ContentManager::PageContainer",foreign_key: "p_id"
+
+  scope :get_all_child, -> { where(:p_id.ne => nil )}
   scope :get_parent_menu, ->(category) { where(alias: category) }
   scope :get_child_link, ->(parent) { where(p_id: parent)}
   scope :get_page_by_alias, ->(as) { where(alias: as )}

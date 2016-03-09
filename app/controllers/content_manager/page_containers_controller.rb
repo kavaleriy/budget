@@ -4,7 +4,10 @@ class ContentManager::PageContainersController < AdminController
   respond_to :html
 
   def index
-    @page_containers = ContentManager::PageContainer.all
+    @page_containers = ContentManager::PageContainer.get_all_child
+    # parent = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::VISUALISATION).first
+    @test = ContentManager::PageContainer.get_all_menu
+    # binding.pry
     respond_with(@page_containers)
   end
 
@@ -42,6 +45,6 @@ class ContentManager::PageContainersController < AdminController
     end
 
     def content_manager_page_container_params
-      params.require(:content_manager_page_container).permit(:header,:content)
+      params.require(:content_manager_page_container).permit(:header,:content,:alias)
     end
 end
