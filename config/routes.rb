@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+
+  get '/:link' => 'public/home#show_pages',as: 'show_pages'
   namespace :content_manager do
     resources :page_containers
   end

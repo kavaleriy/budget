@@ -15,6 +15,10 @@ module Public
     def about
     end
 
+    def show_pages
+      abort 'dasdadsa'
+    end
+
     # def budget
     #   @budgets = Taxonomy.all
     # end

@@ -413,11 +413,12 @@ module ApplicationHelper
     )
   end
 
-  def get_nav_link(link)
-    if link.nil?
-      "#"
+  def get_nav_link(menu_list)
+
+    if menu_list.link.nil?
+      show_pages_path(menu_list.id)
     else
-      link
+      menu_list.link
     end
   end
 
