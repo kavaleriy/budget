@@ -5,10 +5,10 @@
     }
   }
 
-= content_for :header do
-  .head.pull-left
-    %h1= get_header_by_locale(@page)
-
+-#= content_for :header do
+-#  .head.pull-left
+%h1= get_header_by_locale(@page)
+%hr
 .container
   -#-binding.pry
   -if check_admin
