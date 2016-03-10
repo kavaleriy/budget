@@ -13,9 +13,10 @@ namespace :content_page do
     constants_hash = ContentManager::PageContainer.get_constant_to_h
     index = 0
     head_arr = %w(about bud_sys visual public_control)
+    head_arr_en = ['About', 'Budget system', 'Visualisation', 'Public control']
     constants_hash.each do |key,value|
 
-      create_page_cont(key, I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
+      create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
 
       index += 1
     end
@@ -29,26 +30,36 @@ namespace :content_page do
 
   desc "Create budget page"
   task :create_budget_system_page => :create_about_page do
+    index = 0
+    head_arr_en = ['Ukraine budget system', 'Budget process', 'Glossary']
     head_arr = %w(bud_sys_ua bud_proc bud_glos)
     budget_system_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::BUDGET_SYSTEM).first
     head_arr.each do |page|
-      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+
+      create_page_cont(head_arr_en[index],I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
                        budget_system_menu.id)
+      index += 1
     end
   end
 
   desc "Create visualisation page"
   task :create_visualisation_page => :create_budget_system_page do
+    index = 0
+    head_arr_en = ['People budget', 'Compare budget', 'Kpi', 'Budget', 'Budget calendar',
+                   'Towns programs','Budget at map']
     visualisation_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::VISUALISATION).first
     page_arr = %w( grom_budget compare_budget kpi budget budget_cal towns_programs budget_at_map)
     page_arr.each do |page|
-      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+      create_page_cont(head_arr_en[index],I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
                        visualisation_menu.id)
+    index += 1
     end
   end
 
   desc "Create People control page"
   task :create_people_control_page => :create_visualisation_page do
+    index = 0
+    head_arr_en = ['Library', 'History success']
     budget_system_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::PUBLIC_CONTROL).first
     page_arr = %w( library history_success )
     page_arr.each do |page|
@@ -56,8 +67,9 @@ namespace :content_page do
       if(page == 'library')
         link = library_books_path
       end
-      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+      create_page_cont(head_arr_en[index],I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
                             budget_system_menu.id,link)
+      index += 1
     end
   end
 
