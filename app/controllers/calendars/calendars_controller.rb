@@ -131,8 +131,9 @@ module Calendars
       def set_action_type_if_empty
         no_indicate_type = CalendarAction.action_by_type(nil).to_a
         no_indicate_type.each do |indicate|
-          indicate.action_type = indicate.get_no_indicate_type
-          indicate.save
+          # TODO
+          # indicate.action_type = indicate.get_no_indicate_type
+          # indicate.save
         end
       end
       # Use callbacks to share common setup or constraints between actions.
