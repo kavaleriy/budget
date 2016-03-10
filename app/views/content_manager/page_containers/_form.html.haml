@@ -6,13 +6,18 @@
   .form-inputs
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias,as: :text,label: t('content_manager.page_containers.alias')
-    = f.input :p_id, collection:  get_menu_list.map { |r| [r.uk[:header], r.id] } ,label: t('content_manager.page_containers.parent')
+    = f.input :p_id, collection:  get_menu_list.map { |r| [r.uk[:header], r.id] } ,
+                                      label: t('content_manager.page_containers.parent')
     = f.simple_fields_for :en do |ff|
-      = ff.input :header,label: t('content_manager.page_containers.en_header')
-      = ff.input :content,as: :text,label: t('content_manager.page_containers.en_content')
+      = ff.input :header,:input_html => { :value => get_header_by_locale(@page_container,:en)},
+                                      label: t('content_manager.page_containers.en_header')
+      = ff.input :content,as: :text,:input_html => { :value => get_content_by_locale(@page_container,:en)},
+                                    label: t('content_manager.page_containers.en_content')
     = f.simple_fields_for :uk do |ff|
-      = ff.input :header,label: t('content_manager.page_containers.uk_header')
-      = ff.input :content,as: :text,label: t('content_manager.page_containers.uk_content')
+      = ff.input :header,:input_html => { :value => get_header_by_locale(@page_container,:uk)},
+                                          label: t('content_manager.page_containers.uk_header')
+      = ff.input :content,:input_html => { :value => get_content_by_locale(@page_container,:uk)},
+                                as: :text,label: t('content_manager.page_containers.uk_content')
   .form-actions
     = f.button :submit,t('save'), class: 'btn btn-primary'
 

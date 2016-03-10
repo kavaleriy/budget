@@ -25,14 +25,12 @@ class ContentManager::PageContainersController < AdminController
   end
 
   def create
-    binding.pry
     @page_container = ContentManager::PageContainer.new(content_manager_page_container_params)
     @page_container.save
     respond_with(@page_container)
   end
 
   def update
-    binding.pry
     @page_container.update(content_manager_page_container_params)
     respond_with(@page_container)
   end
