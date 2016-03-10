@@ -7,7 +7,6 @@
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias,as: :text,label: t('content_manager.page_containers.alias')
     = f.input :p_id, collection:  get_menu_list.map { |r| [r.uk[:header], r.id] } ,label: t('content_manager.page_containers.parent')
-    -#= f.input :locale, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
     = f.simple_fields_for :en do |ff|
       = ff.input :header,label: t('content_manager.page_containers.en_header')
       = ff.input :content,as: :text,label: t('content_manager.page_containers.en_content')
