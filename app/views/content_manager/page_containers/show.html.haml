@@ -4,9 +4,9 @@
 .panel.panel-default
   .panel-heading
     %h3.panel-title
-      = t(@page_container.header)
+      = get_header_by_locale(@page_container)
   .panel-body
-    = @page_container.content.html_safe
+    = get_content_by_locale(@page_container).html_safe
 
 = link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-primary'
 \|

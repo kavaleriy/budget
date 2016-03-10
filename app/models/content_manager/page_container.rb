@@ -14,14 +14,18 @@ class ContentManager::PageContainer
   scope :get_page_by_alias, ->(as) { where(alias: as )}
   scope :get_menu_list, -> { where(p_id: nil) }
 
+  field :uk, type: Hash
+  field :en, type: Hash
   field :header, type: String
   field :content, type: String
   field :alias, type: String
   field :p_id, type: String
   field :link, type: String
 
-  validates :alias,:content, presence: true
+  validates :alias, presence: true
   validates :alias, uniqueness: true
+
+
 
   def self.get_constant_to_h
     result = {}

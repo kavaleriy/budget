@@ -1,5 +1,6 @@
 class ContentManager::PageContainersController < AdminController
-  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy,:show_to_user]
+  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
+  before_action :set_locale_content, only: [:create, :update]
 
   respond_to :html
 
@@ -45,6 +46,11 @@ class ContentManager::PageContainersController < AdminController
     end
 
     def content_manager_page_container_params
-      params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id)
+      params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id,
+                                           :uk => [:content,:header],:en => [:content,:header])
+    end
+
+    def set_locale_content
+
     end
 end

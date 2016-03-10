@@ -17,7 +17,7 @@
       #heading.panel-heading{:role => "tab",id: key.alias}
         %h4.panel-title
           %a{"aria-controls" => "collapse_#{key.alias}", "aria-expanded" => "true", "data-parent" => "#content_accordion", "data-toggle" => "collapse", :href => "#collapse_#{key.alias}", :role => "button"}
-            = t(key.header)
+            = get_header_by_locale(key)
       #collapse.panel-collapse.collapse{"aria-labelledby" => "heading_#{key.alias}", :role => "tabpanel",id: key.alias}
         .panel-body
           .back
@@ -31,8 +31,8 @@
               -value.each do |page_container|
                 -#- @page_containers.each do |page_container|
                 %tr.crud_icons
-                  %td= t(page_container.header)
-                  %td= page_container.content.html_safe
+                  %td= get_header_by_locale(page_container)
+                  %td= get_content_by_locale(page_container).html_safe
                   -#%td= page_container.p_id
                   %td= page_container.alias
                   %td

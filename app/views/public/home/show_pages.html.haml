@@ -7,7 +7,7 @@
 
 = content_for :header do
   .head.pull-left
-    %h1= t(@page.header)
+    %h1= get_header_by_locale(@page)
 
 .container
   -#-binding.pry
@@ -15,4 +15,4 @@
     .pull-right#edit_link
       = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
 
-  = @page.content.html_safe
+  = get_content_by_locale(@page).html_safe
