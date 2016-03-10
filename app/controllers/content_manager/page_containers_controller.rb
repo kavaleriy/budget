@@ -1,5 +1,6 @@
 class ContentManager::PageContainersController < AdminController
-  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy,:show_to_user]
+  before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
+  before_action :set_locale_content, only: [:create, :update]
 
   respond_to :html
 
@@ -24,12 +25,14 @@ class ContentManager::PageContainersController < AdminController
   end
 
   def create
+    binding.pry
     @page_container = ContentManager::PageContainer.new(content_manager_page_container_params)
     @page_container.save
     respond_with(@page_container)
   end
 
   def update
+    binding.pry
     @page_container.update(content_manager_page_container_params)
     respond_with(@page_container)
   end
@@ -45,6 +48,12 @@ class ContentManager::PageContainersController < AdminController
     end
 
     def content_manager_page_container_params
-      params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id)
+      params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id,
+                                           :locale => [:content,:header] )
+
+    end
+
+    def set_locale_content
+
     end
 end

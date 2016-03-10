@@ -7,8 +7,10 @@
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias,as: :text,label: t('content_manager.page_containers.alias')
     = f.input :p_id, collection:  get_menu_list.map { |r| [t(r.header), r.id] } ,label: "Parent"
-    = f.input :content, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
-
+    -#= f.input :locale, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
+    = f.simple_fields_for :locale do |ff|
+      = ff.input :content
+      = ff.input :header
   .form-actions
     = f.button :submit,t('save'), class: 'btn btn-primary'
 

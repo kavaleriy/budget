@@ -1,14 +1,22 @@
 include Rails.application.routes.url_helpers
+include I18n
 namespace :content_page do
+  desc "Remove all content page"
+  task remove_page: :environment do
+    ContentManager::PageContainer.all.each do |page|
+      page.destroy
+    end
+  end
+
   desc "Create menu_nav"
-  task create_menu_nav: :environment do
+  task create_menu_nav: :remove_page do
     constants_hash = ContentManager::PageContainer.get_constant_to_h
     index = 0
     head_arr = %w(about bud_sys visual public_control)
     constants_hash.each do |key,value|
-      page = ContentManager::PageContainer.new({header: get_title(head_arr[index]) ,content: "#{key} description",
-                                                alias: value})
-      page.save
+
+      create_page_cont(key, I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
+
       index += 1
     end
   end
@@ -16,9 +24,7 @@ namespace :content_page do
   desc "Create about page"
   task :create_about_page => :create_menu_nav do
     about_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::ABOUT_US).first
-    page_obj = ContentManager::PageContainer.new({header: get_title('about'), content: 'About description',
-                                                  alias: 'about',p_id: about_menu.id})
-    page_obj.save
+    create_page_cont('About','Про нас','About description','Про нас опис' ,'about',about_menu.id)
   end
 
   desc "Create budget page"
@@ -26,9 +32,8 @@ namespace :content_page do
     head_arr = %w(bud_sys_ua bud_proc bud_glos)
     budget_system_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::BUDGET_SYSTEM).first
     head_arr.each do |page|
-      page_obj = ContentManager::PageContainer.new({header: get_title(page),content: "#{page} content",
-                                                alias: page ,p_id: budget_system_menu.id})
-      page_obj.save
+      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+                       budget_system_menu.id)
     end
   end
 
@@ -37,9 +42,8 @@ namespace :content_page do
     visualisation_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::VISUALISATION).first
     page_arr = %w( grom_budget compare_budget kpi budget budget_cal towns_programs budget_at_map)
     page_arr.each do |page|
-      page_obj = ContentManager::PageContainer.new({header: get_title(page),content: "#{page} content",
-                                                    alias: page, p_id: visualisation_menu.id})
-      page_obj.save
+      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+                       visualisation_menu.id)
     end
   end
 
@@ -52,13 +56,21 @@ namespace :content_page do
       if(page == 'library')
         link = library_books_path
       end
-      page_obj = ContentManager::PageContainer.new({header: get_title(page),content: "#{page} content",
-                                                link: link,alias: page ,p_id: budget_system_menu.id})
-      page_obj.save
+      create_page_cont(page,I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+                            budget_system_menu.id,link)
     end
   end
 
+
+
   def get_title(head)
     "layouts.navbar.#{head}"
+  end
+
+  def create_page_cont(title_en,title_uk,desc_en,desc_uk,as,p_id,link = '')
+    page_obj = ContentManager::PageContainer.new( :en => {header: title_en, content: desc_en},
+                                                    :uk => {header: title_uk, content: desc_uk},
+                                                 alias: as,p_id: p_id, link: link)
+    page_obj.save
   end
 end
