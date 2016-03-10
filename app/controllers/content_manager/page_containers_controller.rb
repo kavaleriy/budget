@@ -49,8 +49,7 @@ class ContentManager::PageContainersController < AdminController
 
     def content_manager_page_container_params
       params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id,
-                                           :locale => [:content,:header] )
-
+                                           :uk => [:content,:header],:en => [:content,:header])
     end
 
     def set_locale_content

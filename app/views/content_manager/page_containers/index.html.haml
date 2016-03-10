@@ -12,34 +12,34 @@
   = link_to t('content_manager.page_containers.new'), new_content_manager_page_container_path, class: 'btn btn-primary'
 
 #content_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
-  -@page_containers.each do |key,value|
-    .panel.panel-default
-      #heading.panel-heading{:role => "tab",id: key.alias}
-        %h4.panel-title
-          %a{"aria-controls" => "collapse_#{key.alias}", "aria-expanded" => "true", "data-parent" => "#content_accordion", "data-toggle" => "collapse", :href => "#collapse_#{key.alias}", :role => "button"}
-            = t(key.header)
-      #collapse.panel-collapse.collapse{"aria-labelledby" => "heading_#{key.alias}", :role => "tabpanel",id: key.alias}
-        .panel-body
-          .back
-            %table.table.table-striped
-              %tr
-                %th= t('content_manager.page_containers.header')
-                %th= t('content_manager.page_containers.content')
-                -#%th= "Parent"
-                %th= t('content_manager.page_containers.alias')
-                %th= t('content_manager.page_containers.action')
-              -value.each do |page_container|
-                -#- @page_containers.each do |page_container|
-                %tr.crud_icons
-                  %td= t(page_container.header)
-                  %td= page_container.content.html_safe
-                  -#%td= page_container.p_id
-                  %td= page_container.alias
-                  %td
-                    = link_to image_tag('icons/loupe.png'), page_container
-                    = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
-                    = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
-                            :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+  -#-@page_containers.each do |key,value|
+  -#  .panel.panel-default
+  -#    #heading.panel-heading{:role => "tab",id: key.alias}
+  -#      %h4.panel-title
+  -#        %a{"aria-controls" => "collapse_#{key.alias}", "aria-expanded" => "true", "data-parent" => "#content_accordion", "data-toggle" => "collapse", :href => "#collapse_#{key.alias}", :role => "button"}
+  -#          = t(key.header)
+  -#    #collapse.panel-collapse.collapse{"aria-labelledby" => "heading_#{key.alias}", :role => "tabpanel",id: key.alias}
+  -#      .panel-body
+  -#        .back
+  -#          %table.table.table-striped
+  -#            %tr
+  -#              %th= t('content_manager.page_containers.header')
+  -#              %th= t('content_manager.page_containers.content')
+  -#              -#%th= "Parent"
+  -#              %th= t('content_manager.page_containers.alias')
+  -#              %th= t('content_manager.page_containers.action')
+  -#            -value.each do |page_container|
+  -#              -#- @page_containers.each do |page_container|
+  -#              %tr.crud_icons
+  -#                %td= t(page_container.header)
+  -#                %td= page_container.content.html_safe
+  -#                -#%td= page_container.p_id
+  -#                %td= page_container.alias
+  -#                %td
+  -#                  = link_to image_tag('icons/loupe.png'), page_container
+  -#                  = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
+  -#                  = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
+  -#                          :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
 
 
 

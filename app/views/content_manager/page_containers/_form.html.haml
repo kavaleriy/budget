@@ -6,11 +6,14 @@
   .form-inputs
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias,as: :text,label: t('content_manager.page_containers.alias')
-    = f.input :p_id, collection:  get_menu_list.map { |r| [t(r.header), r.id] } ,label: "Parent"
+    = f.input :p_id, collection:  get_menu_list.map { |r| [r.uk[:header], r.id] } ,label: t('content_manager.page_containers.parent')
     -#= f.input :locale, as: :text, label: t('content_manager.page_containers.content'), input_html: { class: 'text_area' }
-    = f.simple_fields_for :locale do |ff|
-      = ff.input :content
-      = ff.input :header
+    = f.simple_fields_for :en do |ff|
+      = ff.input :header,label: t('content_manager.page_containers.en_header')
+      = ff.input :content,as: :text,label: t('content_manager.page_containers.en_content')
+    = f.simple_fields_for :uk do |ff|
+      = ff.input :header,label: t('content_manager.page_containers.uk_header')
+      = ff.input :content,as: :text,label: t('content_manager.page_containers.uk_content')
   .form-actions
     = f.button :submit,t('save'), class: 'btn btn-primary'
 
@@ -18,7 +21,8 @@
 
   $(document).ready(function(){
     $.fn.editable.defaults.mode = 'inline';
-    $('#content_manager_page_container_content').summernote({
-        //url: $("form").prop("action"),
+    $('#content_manager_page_container_uk_content').summernote({
+    });
+    $('#content_manager_page_container_en_content').summernote({
     });
   });
