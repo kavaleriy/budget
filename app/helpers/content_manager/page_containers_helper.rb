@@ -5,7 +5,8 @@ module ContentManager::PageContainersHelper
 
   def get_header_by_locale(content,locals = '')
     if locals.empty?
-      content[params[:locale]][:header]
+      locals = params[:locale] || :uk
+      content[locals][:header]
     else
       unless content[locals].nil?
         content[locals][:header]
