@@ -73,21 +73,20 @@ class Repairing::GeojsonBuilder
   private
 
   def self.extract_props repair
-    if repair.layer && repair.layer[:repairing_category_id]
-      category = Repairing::Category.find(repair.layer[:repairing_category_id])
-    end
+    category = Repairing::Category.find(repair.layer[:repairing_category_id]) if repair.layer && repair.layer[:repairing_category_id]
+
     {
         id: "#{repair[:id]}",
         parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
         category: "#{Repairing::Category.find(repair[:repairing_category_id]).title if repair[:repairing_category_id]}",
         category_id: "#{repair[:repairing_category_id]}",
         town_id: "#{repair.layer.town_id if repair.layer}",
-        obj_owner: "#{repair[:obj_owner]}",
-        title: "#{repair[:title]}",
-        subject: "#{repair[:subject]}",
+        obj_owner: "#{repair[:obj_owner].gsub('\'', '`')}",
+        title: "#{repair[:title].gsub('\'', '`')}",
+        subject: "#{repair[:subject].gsub('\'', '`')}",
         work: "#{repair[:work]}",
         # description: repair[:description],
-        address: "#{repair[:address]}",
+        address: "#{repair[:address].gsub('\'', '`')}",
         amount: "#{repair[:amount]}",
         repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: "#{repair[:repair_date].to_s.split('-')[0] if repair[:repair_date]}",
