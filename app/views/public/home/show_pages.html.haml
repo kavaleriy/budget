@@ -11,8 +11,8 @@
 
 .container
   -#-binding.pry
-  -if check_admin
-    .pull-right#edit_link
-      = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
-
-  = get_content_by_locale(@page).html_safe
+  -#-if check_admin
+  -#  .pull-right#edit_link
+  -#    = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
+  -#
+  -#= get_content_by_locale(@page).html_safe
