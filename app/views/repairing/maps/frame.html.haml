@@ -65,7 +65,7 @@
         selectPath: false,
         getPoint: getPoint
       })
-      aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json(:except => :img)}'));
+      aRepairMap.addCategoryControl(JSON.parse('#{@categories.to_json(:except => :img).to_s.gsub('\'', '`')}'));
       aRepairMap.addYearLayer(new Date().getFullYear());
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
