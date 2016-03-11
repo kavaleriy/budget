@@ -4,23 +4,27 @@ module ContentManager::PageContainersHelper
   end
 
   def get_header_by_locale(content,locals = '')
-    # if locals.empty?
-    #   locals = params[:locale] || :uk
-    #   content[locals][:header]
-    # else
-    #   unless content[locals].nil?
-    #     content[locals][:header]
-    #   end
-    # end
+    return unless content
+    if locals.empty?
+      locals = params[:locale] || :uk
+      content[locals][:header]
+    else
+      unless content[locals].nil?
+        content[locals][:header]
+      end
+    end
   end
 
   def get_content_by_locale(content,locals = '')
-    # if locals.empty?
-    #   content[params[:locale]][:content]
-    # else
-    #   unless content[locals].nil?
-    #     content[locals][:content]
-    #   end
-    # end
+    return unless content
+
+    if locals.empty?
+      content[params[:locale]][:content]
+    else
+      unless content[locals].nil?
+        content[locals][:content]
+      end
+    end
+
   end
 end

@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-
-  get '/:alias' => 'public/home#show_pages',as: 'show_pages'
-
   namespace :content_manager do
     resources :page_containers
   end
@@ -306,6 +303,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'public/home#index'
+
+  get '/:alias' => 'public/home#show_pages',as: 'show_pages'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
