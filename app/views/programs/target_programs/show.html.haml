@@ -2,18 +2,24 @@
   .head.pull-left
     = t('programs.target_programs.show.header')
 
-.container.col-sm-12.col-md-6
+.col-sm-12
+  %h3
+    = @programs_target_program.title
+
+.col-sm-12.col-md-4
   = render 'show_info'
 
-.container.col-sm-12.col-md-6
-  %br
-    %ul.nav.nav-tabs
-      %li.active
-        %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
-          = t('programs.target_programs.show.tab_expences')
-      %li
-        %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
-          = t('programs.target_programs.show.tab_indicators')
+.col-sm-12.col-md-8
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
+        = t('programs.target_programs.show.tab_expences')
+    %li
+      %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
+        = t('programs.target_programs.show.tab_indicators')
+    %li
+      %a{:href => '#tab_gantt', role: 'tab', 'data-toggle' => 'tab'}
+        = t('programs.target_programs.show.tab_gantt')
 
   .tab-content
     #tab_expences.tab-pane.fade.in.active
@@ -22,6 +28,8 @@
       = render 'show_indicators'
       #embed_code_programs_indicators.embed_code
         = render partial: 'widgets/visify/embed_code'
+    #tab_gantt.tab-pane.fade.in.active
+      = render partial: 'show_gantt'
 
 #charts_tooltip.hidden
   %p

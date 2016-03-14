@@ -1,0 +1,24 @@
+%tr{class: %w(active success warning danger info).sample}
+  %td
+    - color = program.programs_town.explanation['kfkv'][program.kfkv]['color']
+    - if color == ''
+      - color = '#0b387c'
+    %i{ :class => "fa fa-2x #{program.programs_town.explanation['kfkv'][program.kfkv]['icon']}",
+        :style => "color: #{color};" }
+  %td
+    = link_to program.title, program
+    %br
+    = render 'programs/target_programs/progressbar', :amounts => amount
+  %td
+    = program.term_start.to_s + ' - ' + program.term_end.to_s
+  %td
+    - if program.term_end > year
+      %i{ :class => "fa fa-lg fa-square-o", :style => "color: #66c2ff;" }
+    - else
+      %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #66c2ff;" }
+  %td
+    %b
+      = number_to_currency(number_to_human(amount['amount_plan'], strip_insignificant_zeros: false), :locale => :uk) || '-'
+  %td
+    = link_to t('form.edit'), edit_programs_target_program_path(program), :class => 'btn btn-default btn-xs'
+    = link_to t('form.destroy', :default => t("helpers.links.destroy")), program, :method => "delete", :town => @programs_town.id, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger btn-xs'

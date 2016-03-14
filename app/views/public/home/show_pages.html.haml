@@ -10,9 +10,10 @@
 %h1= get_header_by_locale(@page)
 %hr
 .container
-  -#-binding.pry
-  -if check_admin
+  -if check_admin && @page
     .pull-right#edit_link
       = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
 
-  = get_content_by_locale(@page).html_safe
+
+  -if @page
+    = get_content_by_locale(@page).html_safe

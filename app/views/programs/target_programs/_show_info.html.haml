@@ -1,5 +1,3 @@
-%h2
-  = @programs_target_program.title
 #accordion.panel-group
   .panel.panel-default
     .panel-heading
@@ -9,7 +7,7 @@
     #responsible.panel-collapse.collapse.in
       .panel-body
         - chief_steward = @programs_target_program.kpkv[0, 3]
-        - if @programs_target_program.programs_town.explanation['kvkv'][chief_steward]
+        - if @programs_target_program.programs_town.explanation['kvkv'] && @programs_target_program.programs_town.explanation['kvkv'][chief_steward]
           - chief_steward_description = @programs_target_program.programs_town.explanation['kvkv'][chief_steward]['description']
           - if !chief_steward_description
             - chief_steward_description = chief_steward
@@ -19,7 +17,7 @@
         %a{ href: '#', 'data-descr' => chief_steward_description ,'data-name' => "[explanation][kvkv][#{@programs_target_program.kpkv[0, 3].to_i}]", 'data-type' => 'indicate_indicator', 'data-pk' => "#{@programs_target_program.programs_town_id}", 'data-url' => '/programs/towns/update_custom/' + "#{@programs_target_program.programs_town_id}", 'data-emptytext' => 'Вкажіть назву...' }
         %br
         - main_executor = @programs_target_program.kpkv[3, 1]
-        - if @programs_target_program.programs_town.explanation['sub_kvkv'][main_executor]
+        - if @programs_target_program.programs_town.explanation['sub_kvkv'] && @programs_target_program.programs_town.explanation['sub_kvkv'][chief_steward]
           - main_executor_description = @programs_target_program.programs_town.explanation['sub_kvkv'][main_executor]['description']
           - if !main_executor_description
             - main_executor_description = main_executor

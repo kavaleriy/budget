@@ -8,7 +8,7 @@
   .head.pull-left
     = t('programs.target_programs.index.header') + @programs_town.name
 
-.col-sm-12{'style' => 'position: relative;'}
+.col-sm-offset-2.col-sm-10{'style' => 'position: relative;'}
   .input-daterange.pull-left{'style' => 'margin-right: 10px;'}
     = t('programs.target_programs.list.data_header')
     %input{name: :term_end, :type => "text", :class => "year_datepicker form-control" }
@@ -18,8 +18,15 @@
     %i{ :class => "fa fa-lg fa-check-square-o", :style => "color: #66c2ff;" }
     = t('programs.target_programs.list.accomplished_programs')
 
-#programs_list.col-sm-12
+
+#spending_bar.col-sm-offset-2.col-sm-8
+  = render partial: 'spending_bar'
+
+
+#programs_list.col-sm-offset-2.col-sm-8
   = render 'list', :programs => @programs_target_programs, :amounts => @amounts, :year => @year
+
+.clear
 
 = link_to t('form.explanation'), edit_programs_town_path(@programs_town.id), :class => 'btn btn-primary'
 = link_to t('programs.target_programs.edit.tab_expences'), '/programs/load_expences/' + @programs_town.id, :type => "button", :method => :get, :class => "btn btn-primary"
