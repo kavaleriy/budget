@@ -1,0 +1,118 @@
+:css
+  .main-pic {
+    width: 500px;
+    height: 250px;
+    clear: right;
+    float: left;
+    margin: 0 15px 0 15px;
+  }
+
+  .main-text {
+    font-size: 1.1em;
+    padding-left: 15px;
+    text-align: justify;
+  }
+  .demo {
+    z-index: 10010;
+  }
+  .main-block {
+    padding: 15px 0 0 0;
+  }
+
+  @media(min-width: 320px) and (max-width: 767px){
+    .main-pic {
+      width: 300px;
+      height: 150px;
+    }
+    .main-block {
+      padding: 15px 0 30px 0;
+    }
+    .demo {
+      margin-right: 15px;
+    }
+  }
+  @media(min-width: 768px) and (max-width: 991px){
+    .main-pic {
+      display: none;
+    }
+    .demo {
+      float: none;
+    }
+    .no_float{
+      float: right;
+    }
+  }
+  @media(min-width: 992px) and (max-width: 1199px){
+    .main-pic {
+      display: none;
+    }
+  }
+  @media(min-width: 1200px) and (max-width: 1349px){
+    .main-pic {
+      width: 300px;
+      height: 150px;
+    }
+  }
+  @media(min-width: 1350px) and (max-width: 1579px){
+    .main-pic {
+      width: 350px;
+      height: 175px;
+    }
+  }
+  @media(min-width: 1580px) and (max-width: 1920px){
+
+  }
+
+:scss
+  .simple {
+    .news_on_main {
+      height: 398px;
+      h1 {
+        text-align: center;
+      }
+      .no-news {
+        position: relative;
+        top: 35%;
+        font-size: 18px;
+        color: gray;
+        text-align: center;
+      }
+    }
+  }
+
+.row
+  .col-sm-12.col-lg-6.col-md-5.col-sm-4.main-block
+  .col-md-8
+    .col-xs-12
+      = render partial: 'map_ukraine'
+    .col-xs-12.hidden-xs.hidden-sm
+      = render partial: 'slider'
+    .col-xs-12
+      .main-pic
+        = image_tag('main-pic.jpg', class:'img-rounded img-responsive')
+      .main-text
+        %p
+          Портал
+          %strong
+            "Відкритий бюджет"
+          покликаний створити умови для задоволення потреб громадян в інформації про використання коштів місцевих бюджетів.
+        %p
+          Портал містить комплекс програмного забезпечення для створення візуалізацій дохідної та видаткової частини місцевих бюджетів, ключових показників діяльності та бюджету адаптованого для пересічних громадян.
+        %p
+          Користуючись програмним забезпечення порталу органи місцевого самоврядування мають можливість створювати візуалізації на основі фінансової та статистичної звітності та розміщувати їх на своїх веб-сайтах.
+        %p
+          Журналісти та громадські активісти мають нагоду отримати інформацію про використання бюджетних коштів в доступному вигляді та порівняти відповідну інформацію з іншими регіонами України.
+        %p
+          Для отримання детальнішої інформації оберіть на карті свій регіон
+
+  -#.col-md-4
+  .news_on_main
+    = render partial: 'modules/budget_news/news_list'
+
+.row
+  <p>&nbsp;</p>
+
+  -#.row.simple
+
+  .col-sm-12.col-md-6.news_on_main
+    -#= render partial: 'news'

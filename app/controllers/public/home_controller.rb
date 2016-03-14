@@ -19,6 +19,9 @@ module Public
       @page = ContentManager::PageContainer.get_page_by_alias(params[:alias]).first
     end
 
+    def demo_index
+      @budgets_news = Modules::BudgetNews.order(news_date: :desc).limit(7)
+    end
     # def budget
     #   @budgets = Taxonomy.all
     # end
