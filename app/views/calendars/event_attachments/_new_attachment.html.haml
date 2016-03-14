@@ -1,3 +1,7 @@
+:scss
+
+
+
 = form_for [:calendars, @calendar, event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => '', :multipart => true } do |f|
 
   - if new_attachment.errors.any?
@@ -12,12 +16,12 @@
         %label
           Опис
         = f.text_field :description, :class => 'form-control'
-    .col-sm-5
+    .col-sm-4
       .form-group
         %label
           Файл
         = f.file_field :doc_file,:class => 'form-control'
-    .col-sm-3
+    .col-sm-4
       .actions
         = f.button :class => 'btn btn-default' do
           %i.fa.fa-upload
