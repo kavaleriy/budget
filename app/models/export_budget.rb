@@ -10,4 +10,6 @@ class ExportBudget
   field :title, type: String
   field :template, type: String
   field :town_id, type: String
+  field :header, type: String
+  field :footer, type: String
 end

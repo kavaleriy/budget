@@ -10,12 +10,16 @@
   {
     margin-top: 10px;
   }
-
+  #new_export_budget > div.form-group.string.optional.export_budget_header > label{
+    width: 50%;
+  }
 = simple_form_for(@export_budget, remote: :true) do |f|
+  = f.input :header,label: t('.header')
   = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
   = f.input :title, label: t('.title')
   = f.input :template, label: t('.template')
   = f.input :town_id, :as => :hidden, :input_html => { :value => @town.blank? ? :town_id : @town.id.to_s }
+  = f.input :footer, label: t('.footer')
   = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 
 :javascript
