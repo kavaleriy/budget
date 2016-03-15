@@ -47,12 +47,7 @@
             = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
           #calendar_timeline.tab-pane.fade
             = render partial: '/widgets/calendar/timeline', :locals => { calendar: @calendar }
-
-        -#.legend
-        -#  .pull-left
-        -#    = image_tag("calendar/inf-city.png", width: '200px')
-        -#  .pull-right
-        -#    = image_tag("calendar/inf-people.png", width: '200px')
+  = render partial: 'calendar_actions/default_action_list'
 
 .col-sm-5.col-xs-12
   = render partial: '/widgets/calendar/event', :locals => { owner: 1 }
