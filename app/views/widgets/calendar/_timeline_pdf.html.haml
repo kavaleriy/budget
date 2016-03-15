@@ -3,6 +3,15 @@
   .title-left {
     text-align: center;
   }
+  .ex_footer,.ex_header{
+    background-color: #F9F9F9;
+    text-align: center;
+    border: 1px solid #DBDBDB;
+  }
+
+  .tl-item{
+    page-break-inside: avoid !important;
+  }
 
   @media screen and (max-width: 794px) {
     .title-left {
@@ -65,8 +74,8 @@
       }
     }
   }
-
-
+.col-xs-12.ex_header
+  %h2= @export_budget.header
 %hr
 
 .row
@@ -95,8 +104,10 @@
                 = event[:title]
               = event[:action]
               %hr
-              .description
+              .ex_description
                 = event[:description].to_s.html_safe
+.col-xs-12.ex_footer
+  %h2= @export_budget.footer
 
 :javascript
 
