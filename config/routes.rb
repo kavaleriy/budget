@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
 
-  get '/:alias' => 'public/home#show_pages',as: 'show_pages'
+  get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/show' => 'public/home#demo_index',as: 'demo'
   namespace :content_manager do
     resources :page_containers

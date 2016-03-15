@@ -7,8 +7,6 @@ class CalendarAction
   ACTION_TYPE_DISCUSSION = 2
   ACTION_TYPE_EXECUTION = 4
 
-
-
   ACTION_TYPE_DISCUSSION_COLOR = '#FF5D00'
   ACTION_TYPE_EXECUTION_COLOR = '#008800'
   ACTION_TYPE_ANALYSIS_COLOR = '#0000FF'
@@ -38,10 +36,10 @@ class CalendarAction
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }
 
-  private
+
 
   def set_default_color
-    if self.color.nil?
+    if self.color.nil? || self.color.empty?
        case self.action_type
          when ACTION_TYPE_FOLDING then set_color(ACTION_TYPE_FOLDING_COLOR)
          when ACTION_TYPE_ANALYSIS then set_color(ACTION_TYPE_ANALYSIS_COLOR)
@@ -61,6 +59,7 @@ class CalendarAction
     color_code = color.gsub(/^#/, '')
     '#' + sprintf("%X", color_code.hex ^ 0xFFFFFF)
   end
+  private
     # attr_accessor :holder_string
   # after_initialize :do_after_initialize
   # def do_after_initialize
