@@ -1,7 +1,3 @@
-:scss
-
-
-
 = form_for [:calendars, @calendar, event, new_attachment], :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => '', :multipart => true } do |f|
 
   - if new_attachment.errors.any?
@@ -11,12 +7,12 @@
         - new_attachment.errors.full_messages.each do |msg|
           %li= msg
   .row
-    .col-sm-4
+    .col-xs-12
       .form-group
         %label
           Опис
         = f.text_field :description, :class => 'form-control'
-    .col-sm-4
+    .col-sm-8
       .form-group
         %label
           Файл
