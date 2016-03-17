@@ -2,13 +2,10 @@ module Repairing
   class MapsController < ApplicationController
     layout 'visify', only: [:frame]
     after_filter :allow_iframe, only: [:frame]
-
-    def show
+    before_filter :set_map_params, only: [:show, :frame]
+    def set_map_params
       @categories = get_categories
-    end
 
-    def frame
-      @categories = get_categories
       @zoom = params[:zoom]
 
       if params[:town_id]
@@ -18,6 +15,12 @@ module Repairing
         @town = ""
         @map_center = [48.5, 31.2] # center of Ukraine
       end
+    end
+
+    def show
+    end
+
+    def frame
     end
 
     def geo_json

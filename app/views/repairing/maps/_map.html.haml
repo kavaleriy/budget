@@ -184,6 +184,12 @@
     function addGeoJsonPoints(data, getPoint, options) {
       options = options || {};
 
+      // remove ol markers
+      if (markers) {
+        map.removeLayer(markers);
+        markers = undefined
+      }
+
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
       map.addLayer(markers);
 
@@ -309,68 +315,6 @@
       }
     }
 
-    function addCategoryLayer(c){
-      category = c;
-
-      markers.getLayers()[0].eachLayer(function(layer){
-        map.removeLayer(layer);
-        if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && (layer.feature.properties.year == year) && layer.feature.properties.year == year){
-          map.addLayer(layer);
-        }
-      });
-
-      if(category == "all") {
-        $('#subcategories').html('');
-      } else {
-        var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
-        $.each(categories[category], function(i,d){
-          content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
-        });
-        $('#subcategories').html(content);
-        var all_work = $('input[value="all"]');
-        all_work.on("change", function(){
-          var subcategories = $('#subcategories input[type="checkbox"]');
-          if($(this).attr('checked')){
-            subcategories.removeAttr('checked');
-            subcategories.prop('checked', false);
-            markers.getLayers()[0].eachLayer(function(layer){
-              map.removeLayer(layer);
-            });
-          } else {
-            subcategories.attr('checked','checked');
-            subcategories.prop('checked', true);
-            markers.getLayers()[0].eachLayer(function(layer){
-              if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-                map.addLayer(layer);
-              }
-            });
-          }
-        });
-        $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
-          var checked = $('#subcategories input[type="checkbox"]:checked');
-          markers.getLayers()[0].eachLayer(function(layer){
-            if(layer.feature.properties.parent_category_id == category){
-              map.removeLayer(layer);
-              $.each(checked, function(i,d){
-                var sub = $(d).val();
-                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-                  map.addLayer(layer);
-                }
-              })
-            }
-          });
-          if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
-            all_work.removeAttr('checked');
-            all_work.prop('checked', false);
-          } else {
-            all_work.attr('checked','checked');
-            all_work.prop('checked', true);
-          }
-        })
-      }
-
-    }
-
     function addTownLayer(t) {
       town = t;
 
@@ -452,7 +396,6 @@
       addGeoJsonPoints: addGeoJsonPoints,
       editRoute: editRoute,
       addCategoryControl: addCategoryControl,
-      addCategoryLayer: addCategoryLayer,
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
