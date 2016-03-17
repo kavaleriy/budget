@@ -40,13 +40,11 @@ class ContentManager::PageContainer
   def self.get_all_menu
     result = {}
     const_arr = get_constant_to_h
-    const_arr.each do |key,value|
+    const_arr.each do |key, value|
       obj = ContentManager::PageContainer.get_page_by_alias(value).first
       arr = get_child_link(obj.id).to_a
       result.store(obj,arr)
-      # binding.pry
     end
-    # binding.pry
     result
   end
 end

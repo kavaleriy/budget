@@ -400,7 +400,7 @@
     function addYearLayer(y){
       year = y;
       if(category == "all") {
-        markers.getLayers()[0].eachLayer(function(layer){
+        markers.getLayers().each(function(layer){
           map.removeLayer(layer);
           if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
             map.addLayer(layer);
@@ -408,7 +408,7 @@
         });
       } else {
         var checked = $('#subcategories input[type="checkbox"]:checked');
-        markers.getLayers()[0].eachLayer(function(layer){
+        markers.getLayers().each(function(layer){
           if(layer.feature.properties.parent_category_id == category){
             map.removeLayer(layer);
             $.each(checked, function(i,d){
