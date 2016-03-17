@@ -4,8 +4,11 @@ class BudgetFileRotFz < BudgetFile
 
   def readline row
     return unless row['type_rozd'].to_s == '2'
+    return unless row['kmb'].to_s == self.taxonomy.kmb
 
     kkd = row['fcode'].to_s
+    fond = row['cf'].to_s
+    return unless %w(1 2).include? fond
 
     return if %w(90010100 90010200 90010300).include?(kkd)
 
@@ -16,7 +19,7 @@ class BudgetFileRotFz < BudgetFile
 
     (1..12).map do |i|
       amount = row["m#{i}"].to_i / 100
-      fond = row['cf']
+      fond = fond
 
       next if amount == 0
 

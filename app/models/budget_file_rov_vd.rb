@@ -3,6 +3,8 @@ class BudgetFileRovVd < BudgetFile
   protected
 
   def readline row
+    return if row['GR'].to_s == '4'
+
     ktfk = row['KTFK'].to_s.split('.')[0].gsub(/^0*/, "")
     kekv = row['KEKV'].to_s.split('.')[0]
 

@@ -13,6 +13,7 @@
     field :owner, type: String
     field :is_kvk, type: Boolean
     field :explanation, :type => Hash
+    field :kmb, :type => String # код місцевого бюджета
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
 
