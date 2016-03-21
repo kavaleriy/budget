@@ -25,6 +25,7 @@ class ContentManager::PageContainersController < AdminController
   end
 
   def create
+    binding.pry
     @page_container = ContentManager::PageContainer.new(content_manager_page_container_params)
     @page_container.save
     respond_with(@page_container)
@@ -46,8 +47,9 @@ class ContentManager::PageContainersController < AdminController
     end
 
     def content_manager_page_container_params
+      locale_for_data = params[:locale].to_s || :uk
       params.require(:content_manager_page_container).permit(:header,:content,:alias,:p_id,
-                                           :uk => [:content,:header],:en => [:content,:header])
+                                                             :locale_data => [locale_for_data => [:content,:header]])
     end
 
     def set_locale_content
