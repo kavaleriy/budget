@@ -7,7 +7,9 @@ module ContentManager::PageContainersHelper
     return unless content
     if locals.empty?
       locals = params[:locale] || :uk
-      content[locals][:header]
+      unless content[locals].nil?
+        content[locals][:header]
+      end
     else
       unless content[locals].nil?
         content[locals][:header]
