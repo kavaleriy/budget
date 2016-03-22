@@ -29,53 +29,16 @@
                 %th= t('content_manager.page_containers.alias')
                 %th= t('content_manager.page_containers.action')
               -value.each do |page_container|
-                -#- @page_containers.each do |page_container|
                 %tr.crud_icons
-                  %td= get_header_by_locale(page_container)
-                  %td= get_content_by_locale(page_container).html_safe
-                  -#%td= page_container.p_id
-                  %td= page_container.alias
-                  %td
-                    = link_to image_tag('icons/loupe.png'), page_container
-                    = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
-                    = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
-                            :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
-
-
-
--##city_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
--#  - @city_action.each do |key,value|
--#    .panel.panel-default.no_overflow
--#      #city.panel-heading{:role => "tab",id: key }
--#        %h4.panel-title
--#          %a{"aria-controls" => "cityCollapse_#{key}", "aria-expanded" => "true", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapse_#{key}", :role => "button"}
--#            =t("calendar_actions.form.radio_#{key}")
--#      #cityCollapse.panel-collapse.collapse{"aria-labelledby" => "cityOne", :role => "tabpanel",id: key}
--#        .panel-body
--#          = render partial: "show_action", locals: {actions: value }
--#-binding.pry
--#%p
--#  = link_to t('content_manager.page_containers.new'), new_content_manager_page_container_path, class: 'btn btn-primary'
--#
--#%table.table.table-striped
--#  %tr
--#    %th= t('content_manager.page_containers.header')
--#    %th= t('content_manager.page_containers.content')
--#    %th= "Parent"
--#    %th= "Alias"
--#    %th= t('content_manager.page_containers.action')
--#
--#  - @page_containers.each do |page_container|
--#    %tr.crud_icons
--#      %td= t(page_container.header)
--#      %td= page_container.content.html_safe
--#      %td= page_container.p_id
--#      %td= page_container.alias
--#      %td
--#        = link_to image_tag('icons/loupe.png'), page_container
--#        = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
--#        = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
--#                :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+                  -unless check_content_by_locale(page_container)
+                    %td= get_header_by_locale(page_container)
+                    %td= get_content_by_locale(page_container)
+                    %td= page_container.alias
+                    %td
+                      = link_to image_tag('icons/loupe.png'), page_container
+                      = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
+                      = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
+                              :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
 
 :javascript
   dataConfirmModal.setDefaults({

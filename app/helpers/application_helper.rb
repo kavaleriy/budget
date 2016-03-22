@@ -414,7 +414,8 @@ module ApplicationHelper
   end
 
   def get_nav_link(menu_list)
-    if menu_list.link.empty?
+
+    if menu_list.link.nil? || menu_list.link.empty?
       show_pages_path(menu_list.alias)
     else
       menu_list.link

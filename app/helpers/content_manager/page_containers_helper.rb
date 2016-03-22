@@ -20,7 +20,7 @@ module ContentManager::PageContainersHelper
     if check_locale_data?(content)
       locales = get_locale_for_translate
       unless  content.locale_data[locales].nil?
-        content.locale_data[locales][:header]
+        content.locale_data[locales][:header].html_safe
       end
     end
   end
@@ -32,4 +32,12 @@ module ContentManager::PageContainersHelper
   def check_locale_data?(content)
      content.locale_data.nil? ? false : true
   end
+
+  def check_content_by_locale(content)
+    if check_locale_data?(content)
+      content.locale_data[get_locale_for_translate].nil?
+    end
+
+  end
+
 end

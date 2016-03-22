@@ -15,7 +15,7 @@ namespace :content_page do
     head_arr = %w(about bud_sys visual public_control)
     head_arr_en = ['About', 'Budget system', 'Visualisation', 'Public control']
     constants_hash.each do |key,value|
-      create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description","#{I18n.t(get_title(head_arr[index]))} опис",value,nil)
+      create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
       index += 1
     end
   end
