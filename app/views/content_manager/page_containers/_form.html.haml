@@ -6,14 +6,14 @@
   .form-inputs
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias,as: :text,label: t('content_manager.page_containers.alias')
-    = f.input :p_id, collection:  get_menu_list.map { |r| [get_header_by_locale(r), r.id] },selected: 0,
+    = f.input :p_id, collection:  get_menu_list.map { |r| [r.alias, r.id] },selected: 0,
                           label: t('content_manager.page_containers.parent')
     = f.simple_fields_for :locale_data do |ff|
       = ff.simple_fields_for params[:locale] do |fff|
         = fff.input :header,:input_html => { :value => get_header_by_locale(@page_container,:uk)},
-                                          label: t('content_manager.page_containers.uk_header')
+                                          label: t("content_manager.page_containers.#{get_locale_for_translate}_header")
         = fff.input :content,:input_html => { :value => get_content_by_locale(@page_container,:uk)},
-                                as: :text,label: t('content_manager.page_containers.uk_content')
+                                as: :text,label: t("content_manager.page_containers.#{get_locale_for_translate}_content")
   .form-actions
     = f.button :submit,t('save'), class: 'btn btn-primary'
 
@@ -21,8 +21,7 @@
 
   $(document).ready(function(){
     $.fn.editable.defaults.mode = 'inline';
-    $('#content_manager_page_container_uk_content').summernote({
-    });
-    $('#content_manager_page_container_en_content').summernote({
+    $("#content_manager_page_container_locale_data_#{params[:locale]}_content").summernote({
+      minHeight: 200,
     });
   });

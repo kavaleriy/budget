@@ -4,7 +4,7 @@ module ContentManager::PageContainersHelper
   end
 
   def get_header_by_locale(content,locals = '')
-    binding.pry
+    # binding.pry
     return unless content
     if locals.empty?
       locals = params[:locale] || :uk
@@ -29,5 +29,9 @@ module ContentManager::PageContainersHelper
       end
     end
 
+  end
+
+  def get_locale_for_translate
+    params[:locale] || 'uk'
   end
 end
