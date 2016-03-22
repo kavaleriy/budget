@@ -5,7 +5,6 @@ module ContentManager::PageContainersHelper
 
   def get_header_by_locale(content)
     return unless content
-    # binding.pry
     if check_locale_data?(content)
       locales = get_locale_for_translate
       unless  content.locale_data[locales].nil?

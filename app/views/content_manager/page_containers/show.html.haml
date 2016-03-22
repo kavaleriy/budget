@@ -1,5 +1,4 @@
 %h1= t('content_manager.page_containers.show_header')
--#-binding.pry
 %p#notice= notice
 .panel.panel-default
   .panel-heading
@@ -8,6 +7,6 @@
   .panel-body
     = get_content_by_locale(@page_container).html_safe
 
-= link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-primary'
+= link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-info'
 \|
-= link_to t('content_manager.page_containers.main'), content_manager_page_containers_path, class: 'btn btn-primary'
+= link_to t('content_manager.page_containers.main'), content_manager_page_containers_path, class: 'btn btn-info'
