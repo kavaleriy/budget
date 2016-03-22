@@ -40,7 +40,7 @@
                   .enter().append("g")
                   .attr("class", "arc"+i+j);
 
-              append_pathAndText(g, arc)
+              append_pathAndText(g, arc,this.ends_at)
 
               cycle.radius = cycle.radius - cycle.cut;
             }
@@ -61,7 +61,8 @@
           .innerRadius(radius2);
     }
 
-    function append_pathAndText(g, arc) {
+    function append_pathAndText(g, arc,event_date) {
+      event_year = new Date(event_date).getFullYear();
       var div = d3.select("body").append("div")
           .attr("class", "tooltip")
           .style("opacity", 0);
@@ -90,7 +91,6 @@
            })
 
        // Add text "2015 Year" into the middle of Calendar pie
-
        g.append("text")                // append text
          .style("font-size", "250%")
          .style("font-family", "Helvetica, Times New Roman,Times,serif")
@@ -98,7 +98,7 @@
          .attr("dy", "0.2em")           // shift on dy
          .attr("dx", "-0.2em")          // shift on dx
          .attr("text-anchor", "middle") // set anchor y justification
-         .text("2015 " + I18n.t('widgets.calendar.pie_cycle.year'));
+         .text(event_year + " " + I18n.t('widgets.calendar.pie_cycle.year'));
     }
 
     function get_html_for_ev(d) {
