@@ -3,35 +3,34 @@ module ContentManager::PageContainersHelper
     ContentManager::PageContainer.get_menu_list
   end
 
-  def get_header_by_locale(content,locals = '')
-    # binding.pry
+  def get_header_by_locale(content)
     return unless content
-    if locals.empty?
-      locals = params[:locale] || :uk
-      unless content[locals].nil?
-        content[locals][:header]
-      end
-    else
-      unless content[locals].nil?
-        content[locals][:header]
+    # binding.pry
+    if check_locale_data?(content)
+      locales = get_locale_for_translate
+      unless  content.locale_data[locales].nil?
+        content.locale_data[locales][:header]
       end
     end
+
   end
 
-  def get_content_by_locale(content,locals = '')
+  def get_content_by_locale(content)
     return unless content
 
-    if locals.empty?
-      content[params[:locale]][:content]
-    else
-      unless content[locals].nil?
-        content[locals][:content]
+    if check_locale_data?(content)
+      locales = get_locale_for_translate
+      unless  content.locale_data[locales].nil?
+        content.locale_data[locales][:header]
       end
     end
-
   end
 
   def get_locale_for_translate
     params[:locale] || 'uk'
+  end
+
+  def check_locale_data?(content)
+     content.locale_data.nil? ? false : true
   end
 end

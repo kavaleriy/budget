@@ -15,9 +15,7 @@ namespace :content_page do
     head_arr = %w(about bud_sys visual public_control)
     head_arr_en = ['About', 'Budget system', 'Visualisation', 'Public control']
     constants_hash.each do |key,value|
-
-      create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
-
+      create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description","#{I18n.t(get_title(head_arr[index]))} опис",value,nil)
       index += 1
     end
   end
@@ -80,8 +78,8 @@ namespace :content_page do
   end
 
   def create_page_cont(title_en,title_uk,desc_en,desc_uk,as,p_id,link = '')
-    page_obj = ContentManager::PageContainer.new( :en => {header: title_en, content: desc_en},
-                                                    :uk => {header: title_uk, content: desc_uk},
+    page_obj = ContentManager::PageContainer.new( :locale_data =>{:en => {header: title_en, content: desc_en},
+                                                                  :uk => {header: title_uk, content: desc_uk}},
                                                  alias: as,p_id: p_id, link: link)
     page_obj.save
   end
