@@ -1,0 +1,14 @@
+.modal.fade{:role => "dialog", :tabindex => "-1",id:'xls_modal'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title Edit city by koatuu
+      .modal-body
+        = form_tag(edit_by_xls_path,method: 'post',multipart: true) do
+          = label_tag(:xls,'Add xls file')
+          = file_field_tag(:xls)
+          = submit_tag('Edit')
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
