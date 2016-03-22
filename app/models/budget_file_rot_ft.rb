@@ -3,7 +3,8 @@ class BudgetFileRotFt < BudgetFile
   protected
 
   def readline row
-    return if row['GR'].to_s == '4'
+    fond = row['GR'].to_s.split('.')[0]
+    return if fond == '4'
 
     kkd = row['KOD'].to_s
 
@@ -16,6 +17,7 @@ class BudgetFileRotFt < BudgetFile
     kkd_cc = kkd.slice(0, 4)
     kkd_dd = kkd.slice(0, 6)
 
+
     [
         { :amount => row['T020'].to_i },
     ].map do |line|
@@ -23,7 +25,7 @@ class BudgetFileRotFt < BudgetFile
 
       item = {
           'amount' => line[:amount] / 100,
-          'fond' => gr.to_i,
+          'fond' => fond.to_i,
       }
 
       dt = row['DT'].to_date
