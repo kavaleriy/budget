@@ -11,9 +11,16 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
   def pie_data
-    starts_at = '2016-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = '2017-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    # binding.pry
+    last_event_date = get_last_event_date
+    # last_event_date = @calendar.events.desc(:ends_at).limit(1).first.ends_at
+    # @calendar.events.desc(:ends_at).limit(1).first.ends_at.strftime("%Y-1-1")
 
+    starts_at = Date.new(last_event_date.year,01,01)
+    ends_at = Date.new(last_event_date.year+1,01,01)
+    # starts_at_old = '2016-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    # ends_at_old = '2017-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    # binding.pry
     events = { e1: [], e2: [] }
 
     events[:e1] = build_pie starts_at, ends_at, @calendar.events.event_timeline(1, starts_at, ends_at)
@@ -24,7 +31,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   def timelinejs_data
     starts_at = Date.current.strftime('%Y,%m,%d') #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-
+    binding.pry
     timeline = {
         'timeline' => {
             'uniqueid' => "#{@calendar.id}",
@@ -122,6 +129,10 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
+  end
+
+  def get_last_event_date
+    @calendar.events.desc(:ends_at).limit(1).first.ends_at
   end
 
 end
