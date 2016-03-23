@@ -133,39 +133,12 @@ class TownsController < ApplicationController
   end
 
   def edit_by_xls
-    file = upload_file(params[:xls],params[:xls].original_filename)
-    table = read_table_from_file file[:path]
-    errors_arr = []
-    binding.pry
-    index = 1
-    unless table.nil?
-      table[:rows].each do |rows|
-        koatuu = rows.delete('koatuu').to_i
-        town = Town.get_town_by_koatuu(koatuu).first
-        unless town.nil?
-          if town.counters.nil?
-            town.counters = TownCounter.new(rows)
-          else
-            town.counters.update(rows)
-          end
-          town.counters.save!
-        else
-          arr = []
-          arr << koatuu
-          arr << index
-          errors_arr << arr
-        end
-        index = index+1
-      end
-    end
-    binding.pry
+    table = get_arr_by_table_path(params[:xls])
+    errors_arr = Town.edit_counters_by_table(table)
     if errors_arr.empty?
       redirect_to :back, notice: I18n.t('xls.done')
     else
-      errors_str = []
-      errors_str << I18n.t('xls.not_done')
-      errors_arr.each { |errors| errors_str << I18n.t('xls.error_row_number',koatuu: errors[0],row: errors[1])}
-      redirect_to :back, alert: errors_str
+      redirect_to :back, alert: errors_arr
     end
 
   end
@@ -180,4 +153,6 @@ class TownsController < ApplicationController
       params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description,
                                    :counters => [:citizens, :house_holdings, :square])
     end
+
+
 end

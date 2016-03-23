@@ -65,4 +65,9 @@ module BudgetFileUpload
     { :rows => rows, :cols => cols }
   end
 
+  def get_arr_by_table_path(file_arr)
+    file = upload_file(file_arr,file_arr.original_filename)
+    read_table_from_file file[:path]
+  end
+
 end
