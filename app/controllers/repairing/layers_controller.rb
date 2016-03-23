@@ -131,7 +131,7 @@ module Repairing
 
         layer_repair = Repairing::Repair.create(
             title: "#{repair['Адреса']}, #{repair['Робота']}",
-            obj_owner: repair['Власник'],
+            obj_owner: repair['Виконавець'],
             subject: repair['Об\'єкт'],
             work: repair['Робота'],
             amount: repair['Вартість'],
