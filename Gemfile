@@ -87,6 +87,7 @@ gem 'dbf'
 # https://github.com/Empact/roo
 gem 'roo'
 
+gem 'roo-xls'
 
 # Authentication
 # http://www.phase2technology.com/blog/authentication-permissions-and-roles-in-rails-with-devise-cancan-and-role-model/

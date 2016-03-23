@@ -2,6 +2,7 @@ class TownsController < ApplicationController
   before_action :set_town, only: [:show, :edit, :update, :destroy]
 
   include ControllerCaching
+  include BudgetFileUpload
 
   def search
     respond_to do |format|
@@ -132,6 +133,8 @@ class TownsController < ApplicationController
   end
 
   def edit_by_xls
+    file = upload_file(params[:xls],params[:xls].original_filename)
+    table = read_table_from_file file[:path]
     binding.pry
   end
   private
