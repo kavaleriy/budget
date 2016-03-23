@@ -135,6 +135,9 @@ class TownsController < ApplicationController
   def edit_by_xls
     file = upload_file(params[:xls],params[:xls].original_filename)
     table = read_table_from_file file[:path]
+    errors_arr = []
+    binding.pry
+    index = 1
     unless table.nil?
       table[:rows].each do |rows|
         koatuu = rows.delete('koatuu').to_i
@@ -147,11 +150,24 @@ class TownsController < ApplicationController
           end
           town.counters.save!
         else
-          raise 'Town not found!!!'
+          arr = []
+          arr << koatuu
+          arr << index
+          errors_arr << arr
         end
+        index = index+1
       end
     end
-    redirect_to :back, notice: I18n.t('xls.done')
+    binding.pry
+    if errors_arr.empty?
+      redirect_to :back, notice: I18n.t('xls.done')
+    else
+      errors_str = []
+      errors_str << I18n.t('xls.not_done')
+      errors_arr.each { |errors| errors_str << I18n.t('xls.error_row_number',koatuu: errors[0],row: errors[1])}
+      redirect_to :back, alert: errors_str
+    end
+
   end
   private
     # Use callbacks to share common setup or constraints between actions.

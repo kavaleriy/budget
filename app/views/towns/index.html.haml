@@ -2,8 +2,9 @@
 = content_for :header do
   .head.pull-left
     %h1=t '.header', :default => model_class.model_name.human.pluralize.titleize
-
+=binding.pry
 - flash[:notice]
+- flash[:alert]
 .pull-right
   %button#edit_by_xls.btn.btn-info
     Edit
