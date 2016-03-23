@@ -4,7 +4,7 @@ class Town
 
   default_scope lambda { order_by(:title => :asc) }
   scope :get_test_town, -> {where(title: 'test')}
-
+  scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   skip_callback :update, :before, :store_previous_model_for_img
   after_update :clear_cache
 
@@ -30,8 +30,6 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
-
-
 
   def get_level
     return :area if self.level == 1

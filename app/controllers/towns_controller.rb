@@ -135,7 +135,23 @@ class TownsController < ApplicationController
   def edit_by_xls
     file = upload_file(params[:xls],params[:xls].original_filename)
     table = read_table_from_file file[:path]
-    binding.pry
+    unless table.nil?
+      table[:rows].each do |rows|
+        koatuu = rows.delete('koatuu').to_i
+        town = Town.get_town_by_koatuu(koatuu).first
+        unless town.nil?
+          if town.counters.nil?
+            town.counters = TownCounter.new(rows)
+          else
+            town.counters.update(rows)
+          end
+          town.counters.save!
+        else
+          raise 'Town not found!!!'
+        end
+      end
+    end
+    redirect_to :back, notice: I18n.t('xls.done')
   end
   private
     # Use callbacks to share common setup or constraints between actions.
