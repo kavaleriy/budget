@@ -3,7 +3,11 @@
   .head.pull-left
     %h1=t '.header', :default => model_class.model_name.human.pluralize.titleize
 
-
+- flash[:notice]
+- flash[:alert]
+.pull-right
+  %button#edit_by_xls.btn.btn-info
+    = t('xls.edit_button')
 %table.table.table-striped
   %thead
     %tr
@@ -21,3 +25,11 @@
       = render :partial => 'towns', :locals => {:town => town, css: ''}
 
   -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
+
+
+:javascript
+   $(document).ready(function(){
+     $('#edit_by_xls').click(function(){
+        $('#xls_modal').modal();
+     });
+   });

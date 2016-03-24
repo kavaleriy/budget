@@ -4,7 +4,7 @@ class Town
 
   default_scope lambda { order_by(:title => :asc) }
   scope :get_test_town, -> {where(title: 'test')}
-
+  scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   skip_callback :update, :before, :store_previous_model_for_img
   after_update :clear_cache
 
@@ -30,8 +30,6 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
-
-
 
   def get_level
     return :area if self.level == 1
@@ -107,34 +105,42 @@ class Town
     indicators
   end
 
-  def self.get_town_items_hash (town_object)
-    @town = town_object
-    town = nil
-    town = @town.title unless @town.blank?
-    result = {}
-    # @items << get_item_hash(calendar, 'town_profile_calendar', 'title', calendar_path(budget_rot))
-    result.store("budget" ,Town.get_hash_by_item("budget",@town)) if Taxonomy.where(:owner => town).first
-    result.store("programs" ,Town.get_hash_by_item("programs",@town)) if Programs::Town.where(:name => town).first
-    result.store("calendar" ,Town.get_hash_by_item("calendar",@town)) if Calendar.where(:town => town).first
-    result.store("repair" ,Town.get_hash_by_item("repair",@town))
-    result.store("key_docs" ,Town.get_hash_by_item("key_docs",@town))
-    result.store("prozoroo" ,Town.get_hash_by_item("prozoroo",@town))
-    result.store("edata" ,Town.get_hash_by_item("edata",@town))
-    result.store("purchase" ,Town.get_hash_by_item("purchase",@town))
-    if @town.blank?
-      @town = Town.new(:id => 'test',
-                       :title => 'Демонстрація типового профілю міста',
-                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
-      result.store("keys" ,Town.get_hash_by_item("keys",@town))
-      result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => nil)
-    else
-      result.store("keys" ,Town.get_hash_by_item("keys",@town)) if @town.key_indicate_map_indicators
-      result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => @town).first
-    end
-    result
-  end
+  # def self.get_town_items_hash (town_object)
+  #   @town = town_object
+  #   town = nil
+  #   town = @town.title unless @town.blank?
+  #   result = {}
+  #   # @items << get_item_hash(calendar, 'town_profile_calendar', 'title', calendar_path(budget_rot))
+  #   result.store("budget" ,Town.get_hash_by_item("budget",@town)) if Taxonomy.where(:owner => town).first
+  #   result.store("programs" ,Town.get_hash_by_item("programs",@town)) if Programs::Town.where(:name => town).first
+  #   result.store("calendar" ,Town.get_hash_by_item("calendar",@town)) if Calendar.where(:town => town).first
+  #   result.store("repair" ,Town.get_hash_by_item("repair",@town))
+  #   result.store("key_docs" ,Town.get_hash_by_item("key_docs",@town))
+  #   result.store("prozoroo" ,Town.get_hash_by_item("prozoroo",@town))
+  #   result.store("edata" ,Town.get_hash_by_item("edata",@town))
+  #   result.store("purchase" ,Town.get_hash_by_item("purchase",@town))
+  #   if @town.blank?
+  #     @town = Town.new(:id => 'test',
+  #                      :title => 'Демонстрація типового профілю міста',
+  #                      :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+  #                      :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
+  #     result.store("keys" ,Town.get_hash_by_item("keys",@town))
+  #     result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => nil)
+  #   else
+  #     result.store("keys" ,Town.get_hash_by_item("keys",@town)) if @town.key_indicate_map_indicators
+  #     result.store("indicators" ,Town.get_hash_by_item("indicators",@town)) if Indicate::Taxonomy.where(:town => @town).first
+  #   end
+  #   result
+  # end
 
+  def save_counter_by_xls(arr)
+    if self.counters.nil?
+      self.counters = TownCounter.new(arr)
+    else
+      self.counters.update(arr)
+    end
+    self.counters.save!
+  end
 
 
   private
@@ -147,48 +153,66 @@ class Town
     "/assets/public/" + item + ".jpg"
   end
 
-  def self.title_for_portfolio (item)
-    I18n.t('public.towns.portfolio.' + item)
-  end
+  # def self.title_for_portfolio (item)
+  #   I18n.t('public.towns.portfolio.' + item)
+  # end
+  #
+  # def self.get_item_hash(item_img_src,item_title,item_url)
+  #   arr = {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url}
+  #   arr
+  # end
+  # def self.get_hash_by_item(item,town_object)
+  #
+  #   item_img_src = self.img_url(item)
+  #   item_title = self.title_for_portfolio(item)
+  #   item_url = self.get_url_by_item(item,town_object.id)
+  #   arr = get_item_hash(item_img_src,item_title,item_url)
+  #   arr
+  # end
 
-  def self.get_item_hash(item_img_src,item_title,item_url)
-    arr = {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url}
-    arr
-  end
-  def self.get_hash_by_item(item,town_object)
-
-    item_img_src = self.img_url(item)
-    item_title = self.title_for_portfolio(item)
-    item_url = self.get_url_by_item(item,town_object.id)
-    arr = get_item_hash(item_img_src,item_title,item_url)
-    arr
-  end
-
-  def self.get_url_by_item (item, town_id)
-    result =''
-    case item
-      when 'budget'
-        result = '/public/budget_files/' + town_id   #@town.id
-      when 'programs'
-        result = '/programs/towns/town_profile/' + town_id  # @town.id
-      when 'calendar'
-        result = '/calendars/calendars/town_profile/' + town_id  # @town.id
-      when 'repair'
-        result = '/repairing/map/town_profile/' + town_id  # @town.id
-      when 'key_docs'
-        result = '/public/documents/town_profile/' + town_id  # @town.id
-      when 'keys'
-        result = '/key_indicate_map/indicators/get/town_profile/' + town_id  # @town.id
-      when 'indicators'
-        result = '/indicate/taxonomies/town_profile/' + town_id  # @town.id
-      when 'prozoroo'
-        result = 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis'
-      when 'edata'
-        result = 'http://www.spending.gov.ua/'
-      when 'purchase'
-        result = 'https://ips.vdz.ua/ua/purchase_search.htm'
-      else
-        raise "error with item name #{item}"
+  # def self.get_url_by_item (item, town_id)
+  #   result =''
+  #   case item
+  #     when 'budget'
+  #       result = '/public/budget_files/' + town_id   #@town.id
+  #     when 'programs'
+  #       result = '/programs/towns/town_profile/' + town_id  # @town.id
+  #     when 'calendar'
+  #       result = '/calendars/calendars/town_profile/' + town_id  # @town.id
+  #     when 'repair'
+  #       result = '/repairing/map/town_profile/' + town_id  # @town.id
+  #     when 'key_docs'
+  #       result = '/public/documents/town_profile/' + town_id  # @town.id
+  #     when 'keys'
+  #       result = '/key_indicate_map/indicators/get/town_profile/' + town_id  # @town.id
+  #     when 'indicators'
+  #       result = '/indicate/taxonomies/town_profile/' + town_id  # @town.id
+  #     when 'prozoroo'
+  #       result = 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis'
+  #     when 'edata'
+  #       result = 'http://www.spending.gov.ua/'
+  #     when 'purchase'
+  #       result = 'https://ips.vdz.ua/ua/purchase_search.htm'
+  #     else
+  #       raise "error with item name #{item}"
+  #   end
+  # end
+  def self.edit_counters_by_table(table)
+    errors_arr = []
+    index = 1
+    unless table.nil?
+      table[:rows].each do |rows|
+        koatuu = rows.delete('koatuu').to_i
+        town = Town.get_town_by_koatuu(koatuu).first
+        unless town.nil?
+          town.save_counter_by_xls(rows)
+        else
+          errors_arr << I18n.t('xls.error_row_number',koatuu: koatuu,row: index)
+        end
+        index = index+1
+      end
     end
+    errors_arr
   end
+
 end

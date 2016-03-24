@@ -2,6 +2,7 @@ class TownsController < ApplicationController
   before_action :set_town, only: [:show, :edit, :update, :destroy]
 
   include ControllerCaching
+  include BudgetFileUpload
 
   def search
     respond_to do |format|
@@ -131,6 +132,16 @@ class TownsController < ApplicationController
     # code here
   end
 
+  def edit_by_xls
+    table = get_arr_by_table_path(params[:xls])
+    errors_arr = Town.edit_counters_by_table(table)
+    if errors_arr.empty?
+      redirect_to :back, notice: I18n.t('xls.done')
+    else
+      redirect_to :back, alert: errors_arr
+    end
+
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_town
@@ -142,4 +153,6 @@ class TownsController < ApplicationController
       params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description,
                                    :counters => [:citizens, :house_holdings, :square])
     end
+
+
 end
