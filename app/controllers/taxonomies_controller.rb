@@ -54,6 +54,9 @@ class TaxonomiesController < ApplicationController
   end
 
   def show
+    email = @taxonomy.budget_files.last.author
+    author = User.find_by(email: email).name rescue email
+    @author = "#{author}, #{@taxonomy.owner}"
   end
 
   def show_modify
