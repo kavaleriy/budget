@@ -2,6 +2,10 @@
   .form-group
     = render partial: 'budget_files/area_select', :locals => {areas: @areas, current_area_id: @current_area_id }
 
+  .form-group
+    = t('year')
+    = select_year Date.today, :start_year => 5.years.ago.year, :end_year => Date.today.year, :prefix => "year", :discard_type => true, class: 'form-control'
+
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
 
   = f.submit nil, :class => 'btn btn-primary'

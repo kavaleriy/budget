@@ -89,9 +89,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
   end
 
-
   def get_repair_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_profile_path(@town))
+    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_path) #(6, @town))
   end
 
   def get_key_docs_hash(name)

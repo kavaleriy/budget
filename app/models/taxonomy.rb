@@ -13,6 +13,7 @@
     field :owner, type: String
     field :is_kvk, type: Boolean
     field :explanation, :type => Hash
+    field :area, :type => String # код області
     field :kmb, :type => String # код місцевого бюджета
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
@@ -61,6 +62,8 @@
           expense_kvk_codes[key.split(':')[0]]
         when 'kekv'
           expense_ekv_codes[key]
+        when 'krk'
+          expense_krk_codes[key]
       end
     end
 
@@ -464,6 +467,12 @@
       @kvk_info
     end
 
+    def expense_krk_codes
+      file_name = "db/expense_krk_codes.#{self.area}.#{@locale || 'uk'}.csv"
+      @krk_info = Taxonomy.load_from_csv file_name if @krk_info.nil?
+      @krk_info
+    end
+
     protected
 
     def self.load_from_csv file_name
@@ -471,7 +480,10 @@
       CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
         items[row[0]] = { title: row[I18n.t('mongoid.taxonomy.short_title')], color: row[I18n.t('mongoid.taxonomy.color')], icon: row[I18n.t('mongoid.taxonomy.icon')], description: row[I18n.t('mongoid.taxonomy.description')] }
       end
+
       items
+    rescue => e
+      {}
     end
 
     private

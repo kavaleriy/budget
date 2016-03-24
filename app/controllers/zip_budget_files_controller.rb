@@ -29,6 +29,8 @@ class ZipBudgetFilesController < ApplicationController
     def generate_budget_file entry, taxonomy, budget_file
       table = extract_file_data(entry)
 
+      table[:rows].each{|row| row.merge!('_year' => params[:year]) } if params[:year]
+
       area_id = params[:area]
       town_id = table[:rows].last['ID_KEY']
       town = get_town area_id, town_id

@@ -3,7 +3,7 @@ class BudgetFileRovVd < BudgetFile
   protected
 
   def readline row
-    return if row['GR'].to_s == '4'
+    fond = row['KF'].to_s.split('.')[0]
 
     ktfk = row['KTFK'].to_s.split('.')[0].gsub(/^0*/, "")
     kekv = row['KEKV'].to_s.split('.')[0]
@@ -16,11 +16,8 @@ class BudgetFileRovVd < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-
     kvk = row['KVK'].to_s.split('.')[0]
     krk = row['KRK'].to_s.split('.')[0]
-
-    fond = row['KF'].to_s.split('.')[0]
 
     [
         { :amount => row['KVNP'].to_i },
