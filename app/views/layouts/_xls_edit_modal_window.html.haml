@@ -32,8 +32,8 @@
       var error_div = $('#xls_error');
       var file_value = $('#xls').val();
       if (file_value){
-        var ext = file_value.match(/\.(.+)$/)[1];
-        if (ext !== 'xls'){
+        var ext = file_value.match(/\.(.+)$/);
+        if (!ext || ext[1] !== 'xls'){
           error_div.html('Invalid extension');
           return false;
         }
