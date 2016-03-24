@@ -11,9 +11,8 @@
       = t('xls.edit_button')
 %br
 .row
-  #town_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+  #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
-      = binding.pry
       = render :partial => 'towns_test', :locals => {:town => area, css: 'font-size: 26px'}
 %table.table.table-striped
   %thead
@@ -40,4 +39,16 @@
      $('#edit_by_xls').click(function(){
         $('#xls_modal').modal();
      });
+
+     $('[data-parent = "#area_acordion"]').click(function(){
+        $.ajax({
+          method: 'post',
+          url: $(this).attr('data-url')
+        })
+     });
+
+
+
+
    });
+

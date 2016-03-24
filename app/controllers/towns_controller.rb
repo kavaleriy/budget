@@ -141,8 +141,21 @@ class TownsController < ApplicationController
     else
       redirect_to :back, alert: errors_arr
     end
-
   end
+
+  def get_child_regions
+    @koatuu = params[:koatuu]
+    area_code = params[:koatuu].slice(0,2)
+    @town = Town.cities(area_code)
+    @regions = Town.regions(area_code).to_a
+  end
+
+  def get_child_towns
+    @koatuu = params[:koatuu]
+    area_code = params[:koatuu].slice(0,2)
+    @cities = Town.towns(area_code)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_town
