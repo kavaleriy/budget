@@ -134,8 +134,15 @@ class TownsController < ApplicationController
   end
 
   def edit_by_xls
-    table = get_arr_by_table_path(params[:xls])
-    errors_arr = Town.edit_counters_by_table(table)
+    begin
+      errors_arr = []
+      table = get_arr_by_table_path(params[:xls])
+      errors_arr = Town.edit_counters_by_table(table)
+    rescue Mongoid::Errors::UnknownAttribute => detail
+      errors_arr << I18n.t('xls.check_row_name')
+
+    end
+
     if errors_arr.empty?
       redirect_to :back, notice: I18n.t('xls.done')
     else
