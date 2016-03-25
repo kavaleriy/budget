@@ -15,10 +15,6 @@ class ContentManager::PageContainer
   scope :get_menu_list, -> { where(p_id: nil) }
 
   field :locale_data, type: Hash
-  # field :uk, type: Hash
-  # field :en, type: Hash
-  # field :header, type: String
-  # field :content, type: String
   field :alias, type: String
   field :p_id, type: String
   field :link, type: String
