@@ -139,6 +139,8 @@ Rails.application.routes.draw do
   get 'search_for_towns_town' => 'towns#search_for_towns'
   get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
   get 'search_for_areas_town' => 'towns#search_for_areas'
+  post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
+  post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
 
   namespace :repairing do

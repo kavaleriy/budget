@@ -1,0 +1,14 @@
+.panel.panel-default.no_overflow
+  #people.panel-heading{:role => "tab",id: town[:koatuu]}
+    %h4.panel-title
+      %a{"aria-controls" => "peopleCollapse_#{town[:koatuu]}", "data-url" => child_regions_path(town[:koatuu]),"aria-expanded" => "true", "data-parent" => "#area_acordion", "data-toggle" => "collapse", :href => "#peopleCollapse_#{town[:koatuu]}", :role => "button"}
+        .row
+          .col-xs-4
+            = image_tag town[:img_url] unless town[:img_url].blank?
+          .col-xs-6{style: css}
+            =  town[:title]
+          .col-xs-2.pull-right
+            = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town[:id]), :class => 'btn btn-default btn-xs'
+  #peopleCollapse.panel-collapse.collapse{"aria-labelledby" => "peopleOne", :role => "tabpanel",id: town[:koatuu]}
+    .panel-body#towns_area
+      #regions_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist",id: town[:koatuu]}

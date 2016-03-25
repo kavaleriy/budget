@@ -5,9 +5,15 @@
 
 - flash[:notice]
 - flash[:alert]
-.pull-right
-  %button#edit_by_xls.btn.btn-info
-    = t('xls.edit_button')
+.row
+  .pull-right
+    %button#edit_by_xls.btn.btn-info
+      = t('xls.edit_button')
+%br
+.row
+  #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    - @towns.each do |area|
+      = render :partial => 'towns_test', :locals => {:town => area, css: 'font-size: 26px'}
 %table.table.table-striped
   %thead
     %tr
@@ -15,14 +21,15 @@
       %th= t ('.title')
       %th= t '.actions', :default => t("helpers.actions")
   %tbody
+    -##town_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    -#  - @towns.each do |area|
+    -#    = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
 
-  - @towns.each do |area|
-    = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
 
-    = render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
-
-    - area[:indicator_files].each do |town|
-      = render :partial => 'towns', :locals => {:town => town, css: ''}
+  -#= render :partial => 'towns', :locals => {:town => area[:city], css: 'font-size: 20px'} unless area[:city].blank?
+    -#
+    -#- area[:indicator_files].each do |town|
+    -#  = render :partial => 'towns', :locals => {:town => town, css: ''}
 
   -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
 
@@ -32,4 +39,16 @@
      $('#edit_by_xls').click(function(){
         $('#xls_modal').modal();
      });
+
+     $('[data-parent = "#area_acordion"]').click(function(){
+        $.ajax({
+          method: 'post',
+          url: $(this).attr('data-url')
+        })
+     });
+
+
+
+
    });
+

@@ -1,0 +1,19 @@
+.row
+  = render :partial => 'towns/town_header', :locals => {:town => @town.first, css: 'font-size: 26px'}
+-regions.each do |region|
+  .panel.panel-default.no_overflow
+    #people.panel-heading{:role => "tab",id: region[:koatuu]}
+      %h4.panel-title
+        %a{"aria-controls" => "regionCollapse_#{region[:koatuu]}", "data-url" => child_towns_path(region[:koatuu]),
+             "aria-expanded" => "true", "data-parent" => "#regions_acordion", "data-toggle" => "collapse", :href => "#regionCollapse_#{region[:koatuu]}",
+             :role => "button"}
+          .row
+            .col-xs-4
+              = image_tag region[:img_url] unless region[:img_url].blank?
+            .col-xs-6
+              =  region[:title]
+            .col-xs-2.pull-right
+              = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(region[:id]), :class => 'btn btn-default btn-xs'
+    #regionCollapse.panel-collapse.collapse{"aria-labelledby" => "peopleOne", :role => "tabpanel",id: region[:koatuu]}
+      .panel-body#city_area
+        #city_acordion.panel{id: region[:koatuu]}
