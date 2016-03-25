@@ -1,3 +1,17 @@
+:scss
+  #xls_info_content{
+    display: none;
+  }
+  #xls_info{
+    height: 34px;
+    img{
+      height: 20px ;
+    }
+  }
+  .popover
+  {
+    min-width: 700px ! important;
+  }
 - model_class = Town
 = content_for :header do
   .head.pull-left
@@ -7,20 +21,25 @@
 - flash[:alert]
 .row
   .pull-right
-    %button#edit_by_xls.btn.btn-info
-      = t('xls.edit_button')
+    .btn-group
+      %button.btn.btn-primary#edit_by_xls{:type => "button"}
+        = t('xls.edit_button')
+      %button.btn.btn-info#xls_info{:type => "button",  "data-toggle" => "popover","data-trigger"=>"focus", :title => "Інструкція по оформленню таблиці"}
+        =image_tag("icons/info.svg",class: 'img-circle')
+      -#  %button#edit_by_xls.btn.btn-info
+      -#= t('xls.edit_button')
 %br
 .row
   #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
       = render :partial => 'towns_test', :locals => {:town => area, css: 'font-size: 26px'}
-%table.table.table-striped
-  %thead
-    %tr
-      %th{width: '70px'}
-      %th= t ('.title')
-      %th= t '.actions', :default => t("helpers.actions")
-  %tbody
+-#%table.table.table-striped
+-#  %thead
+-#    %tr
+-#      %th{width: '70px'}
+-#      %th= t ('.title')
+-#      %th= t '.actions', :default => t("helpers.actions")
+-#  %tbody
     -##town_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     -#  - @towns.each do |area|
     -#    = render :partial => 'towns', :locals => {:town => area, css: 'font-size: 26px'}
@@ -32,6 +51,40 @@
     -#  = render :partial => 'towns', :locals => {:town => town, css: ''}
 
   -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
+
+#xls_info_content
+  .col-xs-10.col-xs-offset-1
+    .row
+      %table.table.table-bordered
+        %tr
+          %td koatuu
+          %td citizens
+          %td house_holdings
+          %td square
+        %tr
+          %td 1424555100
+          %td 2000
+          %td 312
+          %td 1234211.1
+        %tr
+          %td 3224555100
+          %td 30210
+          %td 3132
+          %td 4432211.1
+        %tr
+          %td 4354555100
+          %td 54224
+          %td 1223
+          %td 545431.1
+    .row
+      %p
+        Де <mark>koatuu</mark>: koatuu міста
+      %p
+        Де <mark>citizens</mark>: кільість мешканців міста
+      %p
+        Де <mark>house_holdings</mark>: кількість домогосподарств міста
+      %p
+        Де <mark>square</mark>: площа міста
 
 
 :javascript
@@ -46,7 +99,12 @@
           url: $(this).attr('data-url')
         })
      });
-
+     $('#xls_info').popover({
+      container: 'body',
+      html: true,
+      placement: 'left',
+      content: $('#xls_info_content').html()
+     });
 
 
 
