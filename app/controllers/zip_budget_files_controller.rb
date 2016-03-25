@@ -59,7 +59,7 @@ class ZipBudgetFilesController < ApplicationController
         taxonomy_name = entry.name.gsub(/\d\dM/i, 'XX')
         taxonomy = TaxonomyRot.find_or_create_by!(owner: owner, name: taxonomy_name)
 
-        budget_file = BudgetFileRotVz.find_or_create_by(taxonomy: taxonomy, path: entry.name)
+        budget_file = BudgetFileRotVz.find_or_create_by(taxonomy: taxonomy, path: "#{entry.name}.#{params[:year]}")
 
         generate_budget_file entry, taxonomy, budget_file
 
@@ -72,7 +72,7 @@ class ZipBudgetFilesController < ApplicationController
         taxonomy_name = entry.name.gsub(/\d\dM/i, 'XX')
         taxonomy = TaxonomyRov.find_or_create_by!(owner: owner, name: taxonomy_name)
 
-        budget_file = BudgetFileRovVz.find_or_create_by(taxonomy: taxonomy, path: entry.name)
+        budget_file = BudgetFileRovVz.find_or_create_by(taxonomy: taxonomy, path: "#{entry.name}.#{params[:year]}")
 
         generate_budget_file entry, taxonomy, budget_file
 
