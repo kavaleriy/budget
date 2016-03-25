@@ -31,7 +31,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   def timelinejs_data
     starts_at = Date.current.strftime('%Y,%m,%d') #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    binding.pry
+    # binding.pry
     timeline = {
         'timeline' => {
             'uniqueid' => "#{@calendar.id}",
