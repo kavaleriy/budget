@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
 
+  namespace :modules do
+    resources :sliders
+  end
+
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
   namespace :content_manager do

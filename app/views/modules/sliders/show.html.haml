@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Text:
+  = @modules_slider.text
+%p
+  %b Img:
+  = @modules_slider.img
+
+= link_to 'Edit', edit_modules_slider_path(@modules_slider)
+\|
+= link_to 'Back', modules_sliders_path

@@ -1,0 +1,9 @@
+= simple_form_for(@modules_slider) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :text
+    = f.input :img,as: :file
+
+  .form-actions
+    = f.button :submit

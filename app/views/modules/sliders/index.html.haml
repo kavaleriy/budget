@@ -1,0 +1,20 @@
+%h1 Listing modules_sliders
+%table.table
+  %thead.thead-inverse
+    %tr
+      %th #
+      %th First Name
+      %th Last Name
+      %th Username
+  %tbody
+    - @modules_sliders.each do |modules_slider|
+      %tr
+        %td= modules_slider.text
+        %td= modules_slider.img
+        %td= link_to 'Show', modules_slider
+        %td= link_to 'Edit', edit_modules_slider_path(modules_slider)
+        %td= link_to 'Destroy', modules_slider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+%br
+
+= link_to 'New Slider', new_modules_slider_path,class: 'btn btn-primary'
+  
