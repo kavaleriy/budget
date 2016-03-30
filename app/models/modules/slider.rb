@@ -1,5 +1,6 @@
 require 'carrierwave/mongoid'
 class Modules::Slider
+
   include Mongoid::Document
   validates :text,:img, presence: true
 
@@ -8,4 +9,9 @@ class Modules::Slider
 
   mount_uploader :img, SliderUploader
 
+  skip_callback :update, :store_previous_model_for_img
+
+  def delete_image_file!
+    self.remove_img!;
+  end
 end

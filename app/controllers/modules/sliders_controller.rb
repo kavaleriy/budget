@@ -27,6 +27,11 @@ class Modules::SlidersController < AdminController
   end
 
   def update
+    unless modules_slider_params[:img].blank?
+      if Modules::Slider.new(modules_slider_params).valid?
+        @modules_slider.delete_image_file!
+      end
+    end
     @modules_slider.update(modules_slider_params)
     respond_with(@modules_slider)
   end
