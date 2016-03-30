@@ -1,10 +1,11 @@
-= simple_form_for(@modules_slider) do |f|
-  = f.error_notification
+.col-md-12
+  = simple_form_for(@modules_slider) do |f|
+    -#= f.error_notification
 
-  .form-inputs
-    = f.input :sl_order
-    = f.input :text
-    = f.input :img,as: :file
+    .form-inputs
+      = f.input :sl_order,label: t('modules.sliders.index.order'),as: :integer
+      = f.input :text,label: t('modules.sliders.index.text')
+      = f.input :img,as: :file,label: t('modules.sliders.index.img')
 
-  .form-actions
-    = f.button :submit
+    .form-actions
+      = f.button :submit,t('save')

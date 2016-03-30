@@ -4,8 +4,8 @@
   %b=t('modules.sliders.index.text')
   = @modules_slider.text
 %p
-  %b =t('modules.sliders.index.img')
-  = @modules_slider.img
+  %b=t('modules.sliders.index.img')
+  =image_tag @modules_slider.img
 
 = link_to t('edit'), edit_modules_slider_path(@modules_slider),class: 'btn btn-primary'
 \|

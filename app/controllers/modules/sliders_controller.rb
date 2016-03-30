@@ -1,4 +1,4 @@
-class Modules::SlidersController < ApplicationController
+class Modules::SlidersController < AdminController
   before_action :set_modules_slider, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -21,13 +21,13 @@ class Modules::SlidersController < ApplicationController
   end
 
   def create
-    @modules_slider = Modules::Slider.new(slider_params)
+    @modules_slider = Modules::Slider.new(modules_slider_params)
     @modules_slider.save
     respond_with(@modules_slider)
   end
 
   def update
-    @modules_slider.update(slider_params)
+    @modules_slider.update(modules_slider_params)
     respond_with(@modules_slider)
   end
 
@@ -42,6 +42,6 @@ class Modules::SlidersController < ApplicationController
     end
 
     def modules_slider_params
-      params.require(:modules_slider).permit(:text, :img)
+      params.require(:modules_slider).permit(:text, :img,:sl_order)
     end
 end
