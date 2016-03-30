@@ -1,12 +1,12 @@
 %p#notice= notice
 
 %p
-  %b Text:
+  %b=t('modules.sliders.index.text')
   = @modules_slider.text
 %p
-  %b Img:
+  %b =t('modules.sliders.index.img')
   = @modules_slider.img
 
-= link_to 'Edit', edit_modules_slider_path(@modules_slider)
+= link_to t('edit'), edit_modules_slider_path(@modules_slider),class: 'btn btn-primary'
 \|
-= link_to 'Back', modules_sliders_path
+= link_to t('back'), modules_sliders_path,class: 'btn btn-primary'

@@ -1,7 +1,8 @@
-%h1 Editing modules_slider
+%h1
+  =t('header')
 
 = render 'form'
 
-= link_to 'Show', @modules_slider
+= link_to t('show'), @modules_slider,class: 'btn btn-primary'
 \|
-= link_to 'Back', modules_sliders_path
+= link_to t('back'), modules_sliders_path,class: 'btn btn-primary'
