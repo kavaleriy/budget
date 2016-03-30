@@ -1,3 +1,9 @@
+:scss
+  .preview_result{
+    width: 301px;
+    height: 161px;
+    overflow: hidden;
+    }
 .container-fluid
   .animated.fadeIn
     .row
@@ -18,7 +24,7 @@
                     = link_to 'Cancel', @modules_slider, class: 'btn btn-sm btn-danger', type: 'button'
               .col-md-3
                 %h4 Preview result
-                %div{:style => "width:100px; height:100px; overflow:hidden"}
+                %div.preview_result
                   = image_tag @modules_slider.img, :id => "preview"
 :javascript
   $(document).ready(function() {
@@ -27,14 +33,14 @@
       onChange: update_crop,
       onSelect: update_crop,
       setSelect: [0, 0, 600, 600],
-      aspectRatio: 1
+      //aspectRatio: 1
     });
   });
 
   function update_crop(coords) {
 
-    var rx = 100/coords.w;
-    var ry = 100/coords.h;
+    var rx = 301/coords.w;
+    var ry = 161/coords.h;
     var lw = $('#cropbox').width();
     var lh = $('#cropbox').height();
     var ratio = '#{@modules_slider.profile_geometry[:width]}' / lw;

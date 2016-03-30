@@ -1,11 +1,26 @@
+:scss
+  .preview{
+    .img-bg{
+      background: url("/assets/no_data.png") center no-repeat;
+      background-size: contain;
+      width: 100%;
+      min-height: 172px;
+      margin-bottom: 0.5rem;
+      position: relative;
+      img{
+        width: 100%;
+      }
+    }
+  }
 .col-md-12
   = simple_form_for(@modules_slider) do |f|
-    -#= f.error_notification
-
-    .form-inputs
-      = f.input :sl_order,label: t('modules.sliders.index.order'),as: :integer
-      = f.input :text,label: t('modules.sliders.index.text')
-      = f.input :img,as: :file,label: t('modules.sliders.index.img')
-
-    .form-actions
-      = f.button :submit,t('save')
+    .row
+      .col-md-4.preview
+        .img-bg
+          = image_tag @modules_slider.img.slider
+      .col-md-6
+        .form-inputs
+          = f.input :sl_order,label: t('modules.sliders.index.order'),as: :integer
+          = f.input :text,label: t('modules.sliders.index.text')
+          = f.input :img,as: :file,label: t('modules.sliders.index.img')
+          = f.button :submit,t('save')
