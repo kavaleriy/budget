@@ -1,5 +1,5 @@
 class Modules::SlidersController < AdminController
-  before_action :set_modules_slider, only: [:show, :edit, :update, :destroy]
+  before_action :set_modules_slider, only: [:show, :edit, :update, :destroy,:crop_update]
 
   respond_to :html
 
@@ -13,6 +13,7 @@ class Modules::SlidersController < AdminController
   end
 
   def new
+    Modules::Slider.all.each { |sl| sl.destroy }
     @modules_slider = Modules::Slider.new
     respond_with(@modules_slider)
   end
@@ -22,8 +23,11 @@ class Modules::SlidersController < AdminController
 
   def create
     @modules_slider = Modules::Slider.new(modules_slider_params)
-    @modules_slider.save
-    respond_with(@modules_slider)
+    if @modules_slider.save
+      render 'crop'
+    else
+      respond_with(@modules_slider)
+    end
   end
 
   def update
@@ -33,12 +37,23 @@ class Modules::SlidersController < AdminController
       end
     end
     @modules_slider.update(modules_slider_params)
-    respond_with(@modules_slider)
+    render 'crop'
+    # respond_with(@modules_slider)
   end
 
   def destroy
+    @modules_slider.delete_image_file!
     @modules_slider.destroy
     respond_with(@modules_slider)
+  end
+
+  def crop_update
+    @modules_slider.crop_x = params[:modules_slider]["crop_x"]
+    @modules_slider.crop_y = params[:modules_slider]["crop_y"]
+    @modules_slider.crop_h = params[:modules_slider]["crop_h"]
+    @modules_slider.crop_w = params[:modules_slider]["crop_w"]
+    @modules_slider.save
+    redirect_to modules_sliders_path
   end
 
   private

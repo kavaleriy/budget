@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
 
 
-  namespace :modules do
-    resources :sliders
-  end
 
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
@@ -14,7 +11,8 @@ Rails.application.routes.draw do
   namespace :modules do
     get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
     resources :budget_news
-
+    resources :sliders
+    patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
   end
 
   resources :export_budgets

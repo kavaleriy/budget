@@ -1,0 +1,53 @@
+.container-fluid
+  .animated.fadeIn
+    .row
+      .col-md-10
+        .card
+          .card-header
+            %strong Crop Image
+          .card-block
+            .row
+              .col-md-9
+                %h4 Choose area
+                = image_tag @modules_slider.img, id: 'cropbox'
+                = simple_form_for @modules_slider, :url => modules_crop_p_path(@modules_slider) do |f|
+                  - for attribute in [:crop_x, :crop_y, :crop_h, :crop_w]
+                    = f.hidden_field attribute, :id => attribute
+                  .actions
+                    = f.button :submit, 'Crop & Save', class: 'btn btn-sm btn-primary'
+                    = link_to 'Cancel', @modules_slider, class: 'btn btn-sm btn-danger', type: 'button'
+              .col-md-3
+                %h4 Preview result
+                %div{:style => "width:100px; height:100px; overflow:hidden"}
+                  = image_tag @modules_slider.img, :id => "preview"
+:javascript
+  $(document).ready(function() {
+
+    $('#cropbox').Jcrop({
+      onChange: update_crop,
+      onSelect: update_crop,
+      setSelect: [0, 0, 600, 600],
+      aspectRatio: 1
+    });
+  });
+
+  function update_crop(coords) {
+
+    var rx = 100/coords.w;
+    var ry = 100/coords.h;
+    var lw = $('#cropbox').width();
+    var lh = $('#cropbox').height();
+    var ratio = '#{@modules_slider.profile_geometry[:width]}' / lw;
+
+
+    $('#preview').css({
+      width: Math.round(rx * lw) + 'px',
+      height: Math.round(ry * lh) + 'px',
+      marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+      marginTop: '-' + Math.round(ry * coords.y) + 'px'
+    });
+    $("#crop_x").val(Math.round(coords.x * ratio));
+    $("#crop_y").val(Math.round(coords.y * ratio));
+    $("#crop_w").val(Math.round(coords.w * ratio));
+    $("#crop_h").val(Math.round(coords.h * ratio));
+  }
