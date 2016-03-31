@@ -13,7 +13,7 @@ class Modules::SlidersController < AdminController
   end
 
   def new
-    Modules::Slider.all.each { |sl| sl.destroy }
+    Modules::Slider.all.each { |s| s.destroy }
     @modules_slider = Modules::Slider.new
     respond_with(@modules_slider)
   end
@@ -48,6 +48,7 @@ class Modules::SlidersController < AdminController
   end
 
   def crop_update
+    binding.pry
     @modules_slider.crop_x = params[:modules_slider]["crop_x"]
     @modules_slider.crop_y = params[:modules_slider]["crop_y"]
     @modules_slider.crop_h = params[:modules_slider]["crop_h"]
@@ -62,6 +63,6 @@ class Modules::SlidersController < AdminController
     end
 
     def modules_slider_params
-      params.require(:modules_slider).permit(:text, :img,:sl_order)
+      params.require(:modules_slider).permit(:text, :img,:sl_order,:crop_x,:crop_y,:crop_h,:crop_w)
     end
 end

@@ -10,20 +10,20 @@
       .col-md-10
         .card
           .card-header
-            %strong Crop Image
+            %strong=t('.header')
           .card-block
             .row
               .col-md-9
-                %h4 Choose area
+                %h4=t('.area')
                 = image_tag @modules_slider.img, id: 'cropbox'
                 = simple_form_for @modules_slider, :url => modules_crop_p_path(@modules_slider) do |f|
                   - for attribute in [:crop_x, :crop_y, :crop_h, :crop_w]
                     = f.hidden_field attribute, :id => attribute
                   .actions
-                    = f.button :submit, 'Crop & Save', class: 'btn btn-sm btn-primary'
-                    = link_to 'Cancel', @modules_slider, class: 'btn btn-sm btn-danger', type: 'button'
+                    = f.button :submit, t('.crop_save'), class: 'btn btn-sm btn-primary'
+                    = link_to t('cancel'), @modules_slider, class: 'btn btn-sm btn-danger', type: 'button'
               .col-md-3
-                %h4 Preview result
+                %h4=t('.preview')
                 %div.preview_result
                   = image_tag @modules_slider.img, :id => "preview"
 :javascript

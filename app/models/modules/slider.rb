@@ -2,6 +2,7 @@ require 'carrierwave/mongoid'
 class Modules::Slider
   include Mongoid::Document
 
+  after_update :reprocess_image, :if => :cropping?
 
   validates :text,:img, presence: true
   validates :sl_order, uniqueness: true
@@ -19,8 +20,24 @@ class Modules::Slider
     @geometry = {:width => img[:width], :height => img[:height] }
   end
 
-  def delete_image_file!
+  def cropping?
     binding.pry
+    !crop_x.blank? and !crop_y.blank? and !crop_w.blank? and !crop_h.blank?
+  end
+
+  def delete_image_file!
     self.remove_img!;
   end
+
+  private
+
+  def reprocess_image
+    img = MiniMagick::Image.open(self.img.slider.path)
+    crop_params = "#{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"
+    img.crop(crop_params)
+    img.write(self.img.slider.path)
+    # binding.pry
+    # img.recreate_versions!
+  end
+
 end
