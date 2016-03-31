@@ -13,7 +13,6 @@ class Modules::SlidersController < AdminController
   end
 
   def new
-    Modules::Slider.all.each { |s| s.destroy }
     @modules_slider = Modules::Slider.new
     respond_with(@modules_slider)
   end
@@ -48,7 +47,6 @@ class Modules::SlidersController < AdminController
   end
 
   def crop_update
-    binding.pry
     @modules_slider.crop_x = params[:modules_slider]["crop_x"]
     @modules_slider.crop_y = params[:modules_slider]["crop_y"]
     @modules_slider.crop_h = params[:modules_slider]["crop_h"]

@@ -21,7 +21,6 @@ class Modules::Slider
   end
 
   def cropping?
-    binding.pry
     !crop_x.blank? and !crop_y.blank? and !crop_w.blank? and !crop_h.blank?
   end
 
@@ -32,12 +31,10 @@ class Modules::Slider
   private
 
   def reprocess_image
-    img = MiniMagick::Image.open(self.img.slider.path)
+    img = MiniMagick::Image.open(self.img.path)
     crop_params = "#{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"
     img.crop(crop_params)
     img.write(self.img.slider.path)
-    # binding.pry
-    # img.recreate_versions!
   end
 
 end
