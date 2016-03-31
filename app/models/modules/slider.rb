@@ -9,6 +9,7 @@ class Modules::Slider
   validates :sl_order, uniqueness: true
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
+  field :link, type: String
   field :text, type: String
   field :sl_order, type:Integer
 
