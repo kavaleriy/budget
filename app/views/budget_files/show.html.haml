@@ -15,10 +15,6 @@
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
 
-.col-xs-12
-  %p
-    Автор:
-    = "#{@budget_file.author}, #{@budget_file.taxonomy.owner}"
 
 = link_to t('form.back', :default => t("helpers.links.back")), budget_files_path, :class => 'btn btn-default'
 = link_to "#{edit_budget_file_path(@budget_file)}", :class => 'btn btn-primary' do

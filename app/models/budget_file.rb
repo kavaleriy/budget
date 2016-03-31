@@ -34,7 +34,8 @@ class BudgetFile
     elsif user.has_role? :admin
       self.all
     else
-      self.or({author: nil}, {author: user.email})
+      self.where(author: user.email)
+      # self.or({author: nil}, {author: user.email})
     end
 
     files || []
