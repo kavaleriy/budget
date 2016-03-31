@@ -13,6 +13,7 @@ class Modules::SlidersController < AdminController
   end
 
   def new
+    Modules::Slider.all.each { |s| s.destroy }
     @modules_slider = Modules::Slider.new
     respond_with(@modules_slider)
   end
@@ -22,6 +23,7 @@ class Modules::SlidersController < AdminController
 
   def create
     @modules_slider = Modules::Slider.new(modules_slider_params)
+    @modules_slider.set_sl_order
     if @modules_slider.save
       render 'crop'
     else
@@ -38,8 +40,6 @@ class Modules::SlidersController < AdminController
     else
       respond_with(@modules_slider)
     end
-
-
   end
 
   def destroy

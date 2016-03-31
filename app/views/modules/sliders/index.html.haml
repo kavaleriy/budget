@@ -8,6 +8,9 @@
       width: 40px;
     }
   }
+  .img_slider{
+    width: 100%;
+  }
 %h1
   =t('.header')
 
@@ -27,7 +30,7 @@
         %tr
           %td= modules_slider.sl_order
           %td= modules_slider.text
-          %td= image_tag modules_slider.img.slider
+          %td.img_slider= image_tag modules_slider.img.slider
           %td.action_button
             = link_to image_tag('icons/loupe.png'), modules_slider
             = link_to image_tag('icons/pencil.png'), edit_modules_slider_path(modules_slider)

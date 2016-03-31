@@ -3,8 +3,9 @@ class Modules::Slider
   include Mongoid::Document
 
   after_update :reprocess_image, :if => :cropping?
+  # before_save :set_sl_order
 
-  validates :text, presence: true
+  validates :text,:sl_order, presence: true
   validates :sl_order, uniqueness: true
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
@@ -28,13 +29,24 @@ class Modules::Slider
     self.remove_img!;
   end
 
+  def set_sl_order
+    last_order = Modules::Slider.order("sl_order desc").limit(1).first
+    unless last_order.nil?
+      self.sl_order = last_order.sl_order + 1
+    else
+      self.sl_order = 1
+    end
+
+  end
+
   private
 
   def reprocess_image
-    img = MiniMagick::Image.open(self.img.path)
+    img1 = MiniMagick::Image.open(self.img.path)
     crop_params = "#{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"
-    img.crop(crop_params)
-    img.write(self.img.slider.path)
+    img1.crop(crop_params)
+    img1.write(self.img.slider.path)
+    self.img.slider.recreate_versions!
   end
 
 end
