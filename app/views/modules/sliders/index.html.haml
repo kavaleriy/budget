@@ -1,0 +1,28 @@
+%h1
+  =t('.header')
+
+= link_to t('.add'), new_modules_slider_path,class: 'btn btn-primary'
+-unless @modules_sliders.blank?
+  %table.table
+    %thead.thead-inverse
+      %tr
+        %th
+          = t('.order')
+        %th
+          = t('.text')
+        %th
+          = t('.img')
+    %tbody
+      - @modules_sliders.each do |modules_slider|
+        %tr
+          %td= modules_slider.sl_order
+          %td= modules_slider.text
+          %td= image_tag modules_slider.img.slider
+          %td= link_to t('show'), modules_slider
+          %td= link_to t('edit'), edit_modules_slider_path(modules_slider)
+          %td= link_to t('destroy'), modules_slider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  %br
+-else
+  %p
+    %b Слайдер пустий
+
