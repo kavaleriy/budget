@@ -31,13 +31,15 @@ class Modules::SlidersController < AdminController
 
   def update
     unless modules_slider_params[:img].blank?
-      if Modules::Slider.new(modules_slider_params).valid?
-        @modules_slider.delete_image_file!
-      end
+      @modules_slider.delete_image_file!
     end
-    @modules_slider.update(modules_slider_params)
-    render 'crop'
-    # respond_with(@modules_slider)
+    if @modules_slider.update(modules_slider_params)
+      render 'crop'
+    else
+      respond_with(@modules_slider)
+    end
+
+
   end
 
   def destroy

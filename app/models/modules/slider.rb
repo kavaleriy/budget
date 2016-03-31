@@ -4,7 +4,7 @@ class Modules::Slider
 
   after_update :reprocess_image, :if => :cropping?
 
-  validates :text,:img, presence: true
+  validates :text, presence: true
   validates :sl_order, uniqueness: true
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
