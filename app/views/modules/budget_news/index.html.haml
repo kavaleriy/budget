@@ -1,3 +1,16 @@
+:scss
+  .news_action_button{
+    display: flex;
+    a{
+      text-decoration: none;
+      background: transparent;
+    }
+    img{
+      width: 2em;
+      height: 2em;
+      padding: 0 3px;
+    }
+    }
 .col-md-12
   %h1
     = t('.header')
@@ -6,7 +19,7 @@
   %br
   %br
   -if(!@budget_news.blank?)
-    %table.table.table-hover
+    %table.table
       %tr
         %th
           = t('.title')
@@ -19,20 +32,20 @@
         %th
           = t('.image')
         %th
-        %th
-        %th
+          = t('.action')
 
       - @budget_news.each do |budget_news|
         %tr
           %td= budget_news.title
-          %td= budget_news.news_preview
+          %td= sanitize(budget_news.news_text[0...600])
           %td
             %a{:href => budget_news.get_link}= budget_news.title
           %td= budget_news.get_date
           %td= image_tag budget_news.img.thumb
-          %td= link_to t('modules.budget_news.edit.show'), budget_news
-          %td= link_to t('.edit'), edit_modules_budget_news_path(budget_news)
-          %td= link_to t('.destroy'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+          %td.news_action_button
+            = link_to image_tag('icons/loupe.png'), budget_news
+            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
   -else
     На данний момент новин немає.
   %br

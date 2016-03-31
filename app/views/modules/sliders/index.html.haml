@@ -1,3 +1,13 @@
+:scss
+  .action_button{
+    a{
+      text-decoration: none;
+      background: transparent;
+    }
+    img{
+      width: 40px;
+    }
+  }
 %h1
   =t('.header')
 
@@ -18,9 +28,10 @@
           %td= modules_slider.sl_order
           %td= modules_slider.text
           %td= image_tag modules_slider.img.slider
-          %td= link_to t('show'), modules_slider
-          %td= link_to t('edit'), edit_modules_slider_path(modules_slider)
-          %td= link_to t('destroy'), modules_slider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+          %td.action_button
+            = link_to image_tag('icons/loupe.png'), modules_slider
+            = link_to image_tag('icons/pencil.png'), edit_modules_slider_path(modules_slider)
+            = link_to image_tag('icons/X_icon.png'), modules_slider, :method => :delete, :data => { :confirm => 'Are you sure?' }
   %br
 -else
   %p
