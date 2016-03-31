@@ -46,7 +46,6 @@ class Modules::Slider
     crop_params = "#{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"
     img1.crop(crop_params)
     img1.write(self.img.slider.path)
-    self.img.slider.recreate_versions!
   end
 
 end
