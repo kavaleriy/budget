@@ -84,7 +84,7 @@
         //point.icon = new L.Icon.Default();
         point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
       }
-      point.draggable = true;
+      point.draggable = false;
       return point;
     }
 
@@ -197,7 +197,7 @@
       }
 
       function editRoute() {
-        var coordinates = _selectedFeature.properties.route
+        var coordinates = _selectedFeature.properties.route;
 
         var waypoints = []
         waypoints.push({ latLng: L.latLng(coordinates[0]) });
