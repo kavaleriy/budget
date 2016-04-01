@@ -8,7 +8,7 @@ class BudgetFileRotFz < BudgetFile
 
     kkd = row['fcode'].to_s
     fond = row['cf'].to_s
-    return unless %w(1 2).include? fond
+    return unless %w(1 2 3 7).include? fond
 
     return if %w(90010100 90010200 90010300).include?(kkd)
 
