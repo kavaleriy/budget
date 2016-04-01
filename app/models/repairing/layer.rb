@@ -3,9 +3,9 @@ class Repairing::Layer
   # bootstrap form
   include ColumnsList
 
-  belongs_to :town, :dependent => :nullify
-  belongs_to :owner, class_name: 'User', :dependent => :nullify
-  belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
+  belongs_to :town, class_name: 'Town'
+  belongs_to :owner, class_name: 'User'
+  belongs_to :repairing_category, :class_name => 'Repairing::Category'
 
   field :title, type: String
   field :description, type: String
@@ -14,7 +14,6 @@ class Repairing::Layer
   skip_callback :update, :before, :store_previous_model_for_repairs_file
 
   has_many :repairs, :class_name => 'Repairing::Repair', autosave: true, :dependent => :destroy
-
 
   def to_geo_json
     geoJson = []

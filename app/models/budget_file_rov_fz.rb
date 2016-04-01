@@ -15,7 +15,7 @@ class BudgetFileRovFz < BudgetFile
     return if is_grouped_kekv kekv
 
     fond = row['cf'].to_s
-    return unless %w(1 2).include? fond
+    return unless %w(1 2 3 7).include? fond
 
     kvk = row['kvk'].to_s
 
