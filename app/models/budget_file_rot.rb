@@ -8,7 +8,7 @@ class BudgetFileRot < BudgetFile
     fond = row['KKFN'].to_s.split('.')[0]
 
     return if amount.nil? || amount == 0
-    return unless %w(2 12).include? kod
+    # return unless %w(2 12).include? kod
     return unless %w(1 2 3 7).include? fond
 
     kkd = row['KKD'].to_s
