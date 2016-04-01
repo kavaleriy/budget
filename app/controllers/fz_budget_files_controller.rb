@@ -33,7 +33,7 @@ class FzBudgetFilesController < ApplicationController
       table = read_table_from_file fz_file.path
 
       fz_file.rot_file = BudgetFileRotFz.new(title: 'Доходи - ', taxonomy: taxonomy_rot) if taxonomy_rot
-      fz_file.rov_file = BudgetFileRovFz.new(title: 'Видатки  ', taxonomy: taxonomy_rov) if taxonomy_rov
+      fz_file.rov_file = BudgetFileRovFz.new(title: 'Видатки - ', taxonomy: taxonomy_rov) if taxonomy_rov
 
       [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
         budget_file.title += fz_file.title

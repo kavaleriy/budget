@@ -77,9 +77,10 @@ module Repairing
       respond_to do |format|
         if @repairing_layer.save
 
-          repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-
-          import(@repairing_layer, repairs[:rows])
+          unless @repairing_layer.repairs_file.path.nil?
+            repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+            import(@repairing_layer, repairs[:rows])
+          end
 
           format.html { redirect_to @repairing_layer, notice: 'Layer was successfully created.' }
           format.json { render :show, status: :created, location: @repairing_layer }
