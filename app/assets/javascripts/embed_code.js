@@ -5,10 +5,10 @@ function aEmbedCode() {
         max_width, max_height;
 
     function reset() {
-        $(el_id).find('input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+        $(el_id).find('input').val("<iframe width='100%' height=" + height + " src='" + src + "'></iframe>");
         $(el_id + ' .iframe_other_size').html('');
         $(el_id).find('.iframe_size_select').html("<option value=\"min\">" + min_width + "x" + min_height + "</option>\
-                                                 <option value=\"default\" selected>" + width + "x" + height + "</option>" +
+                                                 <option value=\"default\" selected>100%x" + height + "</option>" +
             "<option value=\"max\">" + max_width + "x" + max_height + "</option>\
                                                  <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
     }
@@ -33,10 +33,10 @@ function aEmbedCode() {
                 title: I18n.t('embed'),
                 content: function() {
                     var content = "";
-                    $(el_id).find('input').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>")
+                    $(el_id).find('input').val("<iframe width='100%' height=" + height + " src='" + src + "'></iframe>")
                     if(el_id != "#embed_code_timeline") {
                         $(el_id).find('.iframe_size_select').html("<option value=\"min\">" + min_width + "x" + min_height + "</option>\
-                                                         <option value=\"default\" selected>" + width + "x" + height + "</option>" +
+                                                         <option value=\"default\" selected>100%x" + height + "</option>" +
                             "<option value=\"max\">" + max_width + "x" + max_height + "</option>\
                                                          <option value=\"other\">" + I18n.t('iframe.size') + "</option>")
                         $(el_id).find('.iframe_other_size').html("");
@@ -61,6 +61,8 @@ function aEmbedCode() {
             });
 
             $(document.body).on('shown.bs.popover', function () {
+                reset();
+
                 $(el_id + ' .iframe_size_select').change(function(e) {
                     var option = $(this).find(":selected").val();
                     if(option == "other" && $('.iframe_other_size').text() == "") {
@@ -76,23 +78,26 @@ function aEmbedCode() {
                 })
 
                 // function to dynamically fill the embed code with indicator_file width and height
-                $('.iframe_other_size').on('focusout', 'input', function(event){
+                $(el_id + ' .iframe_other_size').on('focusout', 'input', function(event){
                     var curr_value = $(this).val();
                     var curr_field = $(this).attr('name');
 
                     var sibling_value = $(this).siblings().val();
                     var width, height;
 
-                    if(!$.isNumeric(curr_value) || curr_value < (curr_field == "width" ? min_width : min_height)) {
-                        curr_field == "width" ? width = min_width : height = min_height;
-                    } else if(curr_value > (curr_field == "width" ? max_width : max_height)) {
-                        curr_field == "width" ? width = max_width : height = max_height;
-                    } else {
-                        curr_field == "width" ? width = curr_value : height = curr_value;
+                    if(sibling_value != "") {
+                        if(!$.isNumeric(curr_value) || curr_value < (curr_field == "width" ? min_width : min_height)) {
+                            curr_field == "width" ? width = min_width : height = min_height;
+                        } else if(curr_value > (curr_field == "width" ? max_width : max_height)) {
+                            curr_field == "width" ? width = max_width : height = max_height;
+                        } else {
+                            curr_field == "width" ? width = curr_value : height = curr_value;
+                        }
+                        curr_field == "width" ? height = width/k : width = height*k;
+                        $(this).siblings().val(curr_field == "width" ? height : width);
+                        $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + src + "'></iframe>");
                     }
-                    curr_field == "width" ? height = width/k : width = height*k
-                    $(this).siblings().val(curr_field == "width" ? height : width);
-                    $(el_id + ' input').val("<iframe width='" + width + "' height='" + height + "' src='" + src + "'></iframe>");
+
                 });
             })
 
@@ -104,9 +109,6 @@ function aEmbedCode() {
         set_iframe: function(new_src) {
             src = new_src;
             reset();
-            $(document.body).on('shown.bs.popover', function () {
-                reset();
-            })
         }
     }
 }
