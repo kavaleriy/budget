@@ -282,6 +282,18 @@
       node
     end
 
+    def get_author
+      # binding.pry
+      if self.budget_files.any?
+        email = self.budget_files.last.author
+        author = User.find_by(email: email).organisation rescue email
+        author = email if author.empty?
+        author
+      else
+        ""
+      end
+    end
+
     protected
 
     def create_tree_sceleton rows, filter = [], levels = []
