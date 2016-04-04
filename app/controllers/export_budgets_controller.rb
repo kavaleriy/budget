@@ -12,16 +12,23 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.pdf do
-        render pdf: 'test_name',
-               formats: [:html],
-               template: 'export_budgets/show',
-               show_as_html: params.key?('debug')
-      end
-    end
+    taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+    @url = "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
+    render 'taxonomy_rot_for_pdf.html.haml'
+    # respond_to do |format|
+    #   format.html
+    #   format.pdf do
+    #     render pdf: 'test_name',
+    #            formats: [:html],
+    #            template: 'export_budgets/show',
+    #            show_as_html: params.key?('debug')
+    #   end
+    # end
 
+  end
+
+  def create_pdf
+    binding.pry
   end
 
   # GET /export_budgets/new

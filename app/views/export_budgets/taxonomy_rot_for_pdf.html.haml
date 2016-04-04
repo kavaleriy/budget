@@ -1,0 +1,45 @@
+:scss
+  #res{
+    //display: none;
+  }
+
+%iframe#res{:height => "900", :src => @url, :width => "1200",'data-url' => create_pdf_path }
+
+Please wait
+#img-out
+:javascript
+
+  $(document).ready(function(){
+    console.log('start');
+    setInterval(function(){
+
+      html2canvas($("#widget"), {
+            onrendered: function(canvas) {
+                theCanvas = canvas;
+                document.body.appendChild(canvas);
+
+                // Convert and download as image
+                Canvas2Image.saveAsPNG(canvas);
+                $("#img-out").append(canvas);
+                // Clean up
+                //document.body.removeChild(canvas);
+            }
+        });
+      //var test = $("#res").contents().find("#sidebar_pie").html();
+      //var url = $('#res').attr('data-url');
+      //var imgsrc = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(test)));
+      ////console.log(imgsrc);
+      //var canvas = $("#res").contents().find("canvas");
+      //console.log(canvas);
+      //context = canvas.getContext("2d");
+      //canvas.setAttribute('width', 526);
+      //canvas.setAttribute('height', 233);
+      //console.log(canvas);
+      //$.ajax({
+      //  type: 'post',
+      //  url: url,
+      //  data: {test:test}
+      //});
+    },13000)
+
+  });
