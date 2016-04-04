@@ -81,7 +81,11 @@ class Town
     self.where(:level => 2).where(:koatuu => Regexp.new("^#{koatuu}.*"))
   end
   def self.cities(koatuu = '')
-    self.where(:level => 13).where(:koatuu => Regexp.new("^#{koatuu}.*"))
+    koatuu_code = koatuu
+    if koatuu == '32'
+      koatuu_code = '80'
+    end
+    self.where(:level => 13).where(:koatuu => Regexp.new("^#{koatuu_code}.*"))
   end
   def self.towns(koatuu = '')
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
