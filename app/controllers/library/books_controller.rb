@@ -94,7 +94,7 @@ module Library
     end
 
     def sort_column
-      Library::Book.fields.keys.include?(params[:sort]) ? params[:sort] : "updated_at"
+      Library::Book.fields.keys.include?(params[:sort]) ? params[:sort] : "year_publication"
     end
 
     def sort_direction
