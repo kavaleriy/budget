@@ -203,15 +203,15 @@
   $(document).ready(function() {
     $('.ui-timeline article.tl-item').on('click', function(e) {
 
-      e = $(e.currentTarget)
+      e = $(e.currentTarget);
 
-      event_id = e.attr('event_id')
+      event_id = e.attr('event_id');
 
       if (event_id == null)
-        return
+        return;
 
-      calendar_id = "#{@calendar.id}"
-      $.get("/events/"+event_id, { calendar_id: @calendar_id });
+      calendar_id = "#{@calendar.id}";
+      $.get("/events/"+event_id, { calendar_id: "#{@calendar.id}" });
     })
   })
 

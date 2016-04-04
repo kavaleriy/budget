@@ -132,7 +132,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
   def get_last_event_date
-    @calendar.events.desc(:ends_at).limit(1).first.ends_at
+    @calendar.events.where(:ends_at.ne =>  nil).desc(:ends_at).limit(1).first.ends_at
   end
 
 end

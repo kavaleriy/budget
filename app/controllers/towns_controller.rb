@@ -159,7 +159,7 @@ class TownsController < ApplicationController
 
   def get_child_towns
     @koatuu = params[:koatuu]
-    area_code = params[:koatuu].slice(0,2)
+    area_code = params[:koatuu].slice(0,5)
     @cities = Town.towns(area_code)
   end
 

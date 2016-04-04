@@ -63,8 +63,6 @@
       function addMarkers() {
         filtered_data = {type: data.type, features: []}
         data.features.forEach(function (feature){
-          console.log(selected_year)
-
           if ((selected_year == '' || feature.properties.year == selected_year)
             && (category == 'all' || category == feature.properties.parent_category_id)) {
             filtered_data.features.push(feature)
@@ -241,6 +239,7 @@
     }
 
     function onFeatureClick(feature, popup) {
+        aRepairMap.showRoute(feature);
     }
 
     function getMapPopupContent(e) {

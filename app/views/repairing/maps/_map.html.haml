@@ -7,12 +7,12 @@
 = stylesheet_link_tag 'leaflet/leaflet.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
+= stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
 
--#= content_for :head do
--#  = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
--#  = javascript_include_tag "leaflet/markercluster.js"
--#  = javascript_include_tag "leaflet/leaflet-routing-machine.js"
--#
+= content_for :head do
+  = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
+  = javascript_include_tag "leaflet/markercluster.js"
+  = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
 :css
   #map {
@@ -79,7 +79,7 @@
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
-      addSvgLayer()
+      addSvgLayer();
       function addSvgLayer() {
         svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
           g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -184,7 +184,7 @@
     function addGeoJsonPoints(data, getPoint, options) {
       options = options || {};
 
-      // remove ol markers
+      // remove all markers
       if (markers) {
         map.removeLayer(markers);
         markers = undefined
@@ -202,7 +202,6 @@
         layerOptions.style = options.style;
       if (options.hoverStyle)
         layerOptions.hoverStyle = options.hoverStyle;
-
       geoJson = L.geoJson(data, layerOptions).addTo(markers);
 
       function coordsToLatLng(coords) {
@@ -225,14 +224,14 @@
 
         if (options.getInfoContent) {
           layer.bindPopup( options.getInfoContent(feature.properties) )
-        } else if(options.editInfoContent) {
-          layer.on({
-            click: function () {
-              if (options.featureClickCallback)
-                options.featureClickCallback(feature, popup);
-            }
-          })
         }
+        layer.on({
+          click: function () {
+            if (options.featureClickCallback){
+              options.featureClickCallback(feature, popup);
+            }
+          }
+        })
 
         //layer.on({
         //  click: function () {
@@ -297,12 +296,12 @@
       var line;
 
       if (self.selectedRoute) {
-        self.selectedRoute.setWaypoints(waypoints)
-        self.selectedRoute.route()
+        self.selectedRoute.setWaypoints(waypoints);
+        self.selectedRoute.route();
       } else {
         self.selectedRoute = L.Routing.control({
-          routeWhileDragging: true,
-          waypoints: waypoints
+          waypoints: waypoints,
+          routeWhileDragging: true
         });
 
         self.selectedRoute.on('routesfound', function(router) {
@@ -312,6 +311,32 @@
         });
 
         self.selectedRoute.addTo(map);
+      }
+    }
+
+    function showRoute(feature) {
+      if(feature.properties.route){
+        feature.waypoints = feature.properties.route;
+      } else if(feature.properties.address && feature.properties.address_to){
+        feature.waypoints = [feature.properties.address.split(","), feature.properties.address_to.split(",")];
+      }
+      if(feature.waypoints){
+        if(feature.selected) {
+          $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+          feature.selectedRoute.spliceWaypoints(0, feature.waypoints.length-1);
+          feature.selected = false;
+        } else {
+          feature.selectedRoute = L.Routing.control({
+            waypoints: feature.waypoints,
+            draggableWaypoints: false,
+            createMarker: function() { return null; },
+            lineOptions : {
+                addWaypoints: false
+            }
+          });
+          feature.selectedRoute.addTo(map);
+          feature.selected = true;
+        }
       }
     }
 
@@ -395,6 +420,7 @@
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       editRoute: editRoute,
+      showRoute: showRoute,
       addCategoryControl: addCategoryControl,
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,

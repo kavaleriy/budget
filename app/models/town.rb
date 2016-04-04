@@ -5,7 +5,6 @@ class Town
   default_scope lambda { order_by(:title => :asc) }
   scope :get_test_town, -> {where(title: 'test')}
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
-  skip_callback :update, :before, :store_previous_model_for_img
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -21,6 +20,7 @@ class Town
   field :geometry_type, type: String
 
   mount_uploader :img, TownUploader
+  skip_callback :update, :before, :store_previous_model_for_img
 
   # counters for per-capita calculations
   embeds_one :counters, class_name: 'TownCounter'

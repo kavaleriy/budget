@@ -7,6 +7,7 @@
     %tr
       %th=t('key')
       %th=t('repairing.repairs.form.title')
+      %th=t('file')
       %th=t('repairing.repairs.form.category')
       %th=t('repairing.repairs.form.town')
       %th=t('author')
@@ -15,7 +16,12 @@
     - @layers.each do |layer|
       %tr
         %td= link_to layer.id, repairing_layer_path(layer)
-        %td= layer.title
+        %td
+          = layer.title
+        %td
+          = link_to layer.repairs_file.url, :class => '' do
+            %i.fa.fa-download.fa.fa-border
+            = layer.repairs_file_identifier
         %td= layer.repairing_category.title unless layer.repairing_category.nil?
         %td= "#{layer.town.title unless layer.town.blank?} "
         %td= layer.owner.email

@@ -3,7 +3,6 @@
  */
 $("#regions_acordion_<%= @koatuu %>").html("<%= escape_javascript( render partial: 'regions_accordion', :locals => { regions: @regions }) %>");
 $('[data-parent = "#regions_acordion"]').click(function(){
-  console.log($(this));
   $.ajax({
     method: 'post',
     url: $(this).attr('data-url')

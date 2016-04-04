@@ -5,7 +5,7 @@
 
 - model_class = Event
 %h4
-  %strong= "#{holder_to_string(@event.holder)}: "
+  %strong= holder_to_string(@event.holder)
   %strong= " " + date_to_string(@event.starts_at)
   %strong= " - #{date_to_string(@event.ends_at)}" unless @event.ends_at.nil? || @event.ends_at == @event.starts_at
 
