@@ -13,7 +13,6 @@ class Modules::SlidersController < AdminController
   end
 
   def new
-    Modules::Slider.all.each { |s| s.destroy }
     @modules_slider = Modules::Slider.new
     respond_with(@modules_slider)
   end

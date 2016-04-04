@@ -4,7 +4,7 @@ class Modules::Slider
 
   after_update :reprocess_image, :if => :cropping?
   # before_save :set_sl_order
-
+  scope :get_slider_by_order, -> {order("sl_order ASC")}
   validates :text,:sl_order, presence: true
   validates :sl_order, uniqueness: true
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
