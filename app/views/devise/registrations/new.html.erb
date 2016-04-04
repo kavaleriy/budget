@@ -1,3 +1,5 @@
+<%= javascript_include_tag "town_typeahead.js"%>
+
 <%= content_for :header do %>
     <div class="head"><h2><%= t('devise.sessions.sign_up') %></h2>
     </div>
@@ -42,24 +44,24 @@
     <% end %>
   </div>
 </div>
-
 <script>
   $(document).ready(function(){
-    var typeahead_count = 3;
-    $('#user_town').typeahead({
-      minLength: typeahead_count,
-      source: function (query, process) {
-        return $.get("<%= search_town_path %>", { query: $('#user_town').val() }, function (json) {
-          var data = [];
-          $.each(json,function(i,name){
-            data.push(name.text);
-          });
-          return process(data)
-        },'json');
-      }, highlighter: function(item) {
-        return item;
-      }
-    });
+    init_town_typeahead("<%= search_town_path %>");
+//    var typeahead_count = 3;
+//    $('#user_town').typeahead({
+//      minLength: typeahead_count,
+//      source: function (query, process) {
+//        return $.get("<%= search_town_path %>", { query: $('#user_town').val() }, function (json) {
+//          var data = [];
+//          $.each(json,function(i,name){
+//            data.push(name.text);
+//          });
+//          return process(data)
+//        },'json');
+//      }, highlighter: function(item) {
+//        return item;
+//      }
+//    });
   });
 
 
