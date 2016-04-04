@@ -1,7 +1,30 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
+  before_action :set_town
+
+  def budget_files
+    @tabs = []
+
+    if test_town?
+      taxonomy_rot = TaxonomyRot.where(:owner => '').first
+      taxonomy_rov = TaxonomyRov.where(:owner => '').first
+      sankey = Sankey.where(:owner => '').first
+    else
+      town = Town.find(params[:town_id])
+      taxonomy_rot = TaxonomyRot.owned_by(town.to_s).first
+      taxonomy_rov = TaxonomyRov.owned_by(town.to_s).first
+      sankey = Sankey.owned_by(town.to_s).first
+    end
+
+    @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
+    @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
+    @tabs << { title: t('public.towns.budget.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
+
+    @tabs.first[:cname] = 'active'
+  end
+
   def portfolio
-    @town = Town.find(params[:town_id])
+    # @town = Town.find(params[:town_id])
     @town_items = get_town_items_hash(@town)
     respond_to do |format|
       format.js {}
@@ -11,6 +34,13 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   private
+
+  def set_town
+    @town = Town.find(params[:town_id])
+  end
+  def test_town?
+    params[:town_id] == "test"
+  end
 
   def get_town_items_hash (town_object)
     @town = town_object

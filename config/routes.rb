@@ -204,6 +204,7 @@ Rails.application.routes.draw do
     get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
 
     get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
+    get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'

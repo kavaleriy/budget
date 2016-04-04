@@ -4,18 +4,9 @@
   .head
     = @town.title
 
-.row-fluid
-  %ul.nav.nav-tabs.pull-left{role: 'tablist'}
-    - active = 'active'
-    - @tabs.each do |tab|
-      %li{ class: tab[:cname]}
-        %a{role: 'tab', 'data-toggle' => 'tab', 'data-url' => tab[:url]}
-          = tab[:title]
-
-
 .budget.row-fluid
   .tab-content
-    %iframe{ 'width' => '100%', 'height' => '800' }
+    %iframe{ 'width' => '100%', 'height' => '1000',src: widgets_budget_files_path(@town),id: 'budget_iframe' }
 
 = link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 .col-sm-12
@@ -24,28 +15,12 @@
 :javascript
 
   $(document).on('ready page:load', function() {
+    var embed_code = aEmbedCode();
+    var iframe_url = $('#budget_iframe').attr('src');
 
     $('#embed_code_budget').on('click',function(){
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
+      $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
        $('#embeded_code_modal_window').modal();
     });
-
-    var embed_code = aEmbedCode();
-
-    var curr_tab = $('li.active a').attr('data-url')
-    set_iframe(curr_tab);
-
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      set_iframe($(this).attr('data-url'));
-    });
-
-    function set_iframe(url) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + '/' + url + '/?' + query
-      $('.tab-content iframe').attr('src', frame_url)
-      embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
-      $('#embeded_code_modal_window').find('#embed_src').val(frame_url);
-      console.log(frame_url);
-    }
-
-  })
+  });
