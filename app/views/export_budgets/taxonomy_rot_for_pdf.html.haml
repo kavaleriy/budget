@@ -1,5 +1,24 @@
+:scss
+  #res{
+
+    //position: absolute;
+  }
+  #back{
+    z-index: 15;
+    img{
+      width: 1368px;
+      height: 760px;
+    }
+
+    position: fixed;
+  }
+
+
+
 
 %iframe#res{:height => "900", :src => @url, :width => "1200",'data-url' => create_pdf_path }
+#back
+  =image_tag('budjet.jpg')
 :javascript
 
 
@@ -11,26 +30,22 @@
         $( deferred.resolve );
       })
     ).done(function(){
-        alert('Load!!!');
-        var test = $("#res").contents();
-        test.find('.chart li:eq(2) a').tab('show');
-        test.find('.active').removeClass('active');
-        test.find('#tab_pie').addClass('active');
+        var iframe_dom = $("#res").contents();
+        iframe_dom.find('.chart li:eq(2) a').tab('show');
+        iframe_dom.find('.active').removeClass('active');
+        iframe_dom.find('#tab_pie').addClass('active');
         var url_data = $('#res').attr('data-url');
         setTimeout(function(){
-            html2canvas(test.find('#tab_pie'), {
+            html2canvas(iframe_dom.find('#tab_pie'), {
 
             onrendered: function(canvas) {
             canvas.getContext('2d');
             var canvasdata = canvas.toDataURL("image/png");
-            sendAjax(canvasdata,url_data);
-            //var image = new Image();
-            //image.src = canvasdata;
 
-            //document.body.appendChild(image);
+            sendAjax(canvasdata,url_data);
             }
           });
-        },1000);
+        },1500);
     });
   });
   var sendAjax = function(data,url){
