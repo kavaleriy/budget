@@ -1,45 +1,42 @@
-:scss
-  #res{
-    //display: none;
-  }
 
 %iframe#res{:height => "900", :src => @url, :width => "1200",'data-url' => create_pdf_path }
-
-Please wait
-#img-out
 :javascript
 
-  $(document).ready(function(){
-    console.log('start');
-    setInterval(function(){
 
-      html2canvas($("#widget"), {
+  $('#res').on('load',function(){
+    $.when(
+      $.getScript( "/assets/html2canvas/html2canvas.js" ),
+      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+      $.Deferred(function( deferred ){
+        $( deferred.resolve );
+      })
+    ).done(function(){
+        alert('Load!!!');
+        var test = $("#res").contents();
+        test.find('.chart li:eq(2) a').tab('show');
+        test.find('.active').removeClass('active');
+        test.find('#tab_pie').addClass('active');
+        var url_data = $('#res').attr('data-url');
+        setTimeout(function(){
+            html2canvas(test.find('#tab_pie'), {
+
             onrendered: function(canvas) {
-                theCanvas = canvas;
-                document.body.appendChild(canvas);
+            canvas.getContext('2d');
+            var canvasdata = canvas.toDataURL("image/png");
+            sendAjax(canvasdata,url_data);
+            //var image = new Image();
+            //image.src = canvasdata;
 
-                // Convert and download as image
-                Canvas2Image.saveAsPNG(canvas);
-                $("#img-out").append(canvas);
-                // Clean up
-                //document.body.removeChild(canvas);
+            //document.body.appendChild(image);
             }
-        });
-      //var test = $("#res").contents().find("#sidebar_pie").html();
-      //var url = $('#res').attr('data-url');
-      //var imgsrc = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(test)));
-      ////console.log(imgsrc);
-      //var canvas = $("#res").contents().find("canvas");
-      //console.log(canvas);
-      //context = canvas.getContext("2d");
-      //canvas.setAttribute('width', 526);
-      //canvas.setAttribute('height', 233);
-      //console.log(canvas);
-      //$.ajax({
-      //  type: 'post',
-      //  url: url,
-      //  data: {test:test}
-      //});
-    },13000)
-
+          });
+        },1000);
+    });
   });
+  var sendAjax = function(data,url){
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {test : data}
+    });
+  };
