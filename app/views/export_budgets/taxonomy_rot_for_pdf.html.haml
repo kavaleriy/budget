@@ -36,6 +36,7 @@
   var sendAjax = function(data,url){
     $.ajax({
         url: url,
+        dataType: 'json',
         type: 'post',
         data: {test : data}
     });

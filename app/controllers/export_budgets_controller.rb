@@ -1,5 +1,7 @@
 class ExportBudgetsController < ApplicationController
   layout 'visify', only: [:show]
+  skip_before_action :verify_authenticity_token,only: [:create_pdf]
+
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy]
 
@@ -98,6 +100,7 @@ class ExportBudgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
+      binding.pry
       params.require(:export_budget).permit(:year, :title, :template, :town_id,:header,:footer)
     end
 end
