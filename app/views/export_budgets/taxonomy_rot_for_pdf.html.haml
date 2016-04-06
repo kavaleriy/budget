@@ -19,6 +19,11 @@
 %iframe#res{:height => "900", :src => @url, :width => "1200",'data-url' => create_pdf_path }
 #back
   =image_tag('budjet.jpg')
+= form_tag(create_pdf_path) do
+  =text_field_tag :base64
+  =hidden_field_tag :id, @export_budget.id
+  =submit_tag
+
 :javascript
 
 
@@ -42,7 +47,9 @@
             canvas.getContext('2d');
             var canvasdata = canvas.toDataURL("image/png");
 
-            sendAjax(canvasdata,url_data);
+            $('#base64').val(canvasdata);
+            $('form').submit();
+            //sendAjax(canvasdata,url_data);
             }
           });
         },1500);

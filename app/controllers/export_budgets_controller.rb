@@ -2,8 +2,8 @@ class ExportBudgetsController < ApplicationController
   layout 'visify', only: [:show]
   skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
-  before_action :set_export_budget, only: [:show, :edit, :update, :destroy]
-  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy]
+  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
+  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
 
   # GET /export_budgets
   # GET /export_budgets.json
@@ -30,7 +30,11 @@ class ExportBudgetsController < ApplicationController
   end
 
   def create_pdf
-    binding.pry
+    @img_base64 = params[:base64]
+    render pdf: 'test_name',
+           formats: [:html],
+           template: 'export_budgets/show',
+           show_as_html: params.key?('debug')
   end
 
   # GET /export_budgets/new
@@ -89,7 +93,7 @@ class ExportBudgetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget
-      # -binding.pry
+      binding.pry
       @export_budget = ExportBudget.find(params[:id])
     end
 
