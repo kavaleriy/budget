@@ -7,7 +7,7 @@
         %a{"aria-controls" => "regionCollapse_#{region[:koatuu]}", "data-url" => child_towns_path(region[:koatuu]),
              "aria-expanded" => "true", "data-parent" => "#regions_acordion", "data-toggle" => "collapse", :href => "#regionCollapse_#{region[:koatuu]}",
              :role => "button"}
-          =render partial: 'town_row', locals:{css: css, town: region}
+          =render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: region}
           -#.row
           -#  .col-xs-4
           -#    = image_tag region[:img_url] unless region[:img_url].blank?
