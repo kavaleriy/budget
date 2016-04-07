@@ -150,6 +150,10 @@ class TownsController < ApplicationController
     end
   end
 
+  def export_town_in_xls
+    binding.pry
+  end
+
   def get_child_regions
     @koatuu = params[:koatuu]
     area_code = params[:koatuu].slice(0,2)

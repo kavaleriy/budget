@@ -112,9 +112,16 @@
       %p
         Де <mark>square</mark>: площа міста
 
+:javascript
 
 :javascript
+
    $(document).ready(function(){
+     $('body').on('click','.export-btn',function(){
+      console.log(this.href);
+      return false;
+     });
+
      $('#edit_by_xls').click(function(){
         $('#xls_modal').modal();
      });
