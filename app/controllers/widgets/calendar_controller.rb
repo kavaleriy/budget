@@ -11,7 +11,6 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
   def pie_data
-    binding.pry
     last_event_date = get_last_event_date || Time.now
     # last_event_date = @calendar.events.desc(:ends_at).limit(1).first.ends_at
     # @calendar.events.desc(:ends_at).limit(1).first.ends_at.strftime("%Y-1-1")
