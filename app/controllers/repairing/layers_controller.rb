@@ -44,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.all
+      @repairing_layers = Repairing::Layer.visible_to(current_user)
     end
 
     # GET /repairing/layers/1

@@ -20,3 +20,4 @@ Rails.application.config.assets.precompile += %w( page_navigation/menu.js page_n
 Rails.application.config.assets.precompile += %w( revolution_slider/jquery.themepunch.plugins.min.js revolution_slider/jquery.themepunch.revolution.min.js revolution_slider/rs-style.css revolution_slider/settings.css )
 Rails.application.config.assets.precompile += %w(*.jpg, *.png)
 Rails.application.config.assets.precompile += %w( town_typeahead.js )
+

@@ -1,6 +1,5 @@
 class Repairing::Layer
   include Mongoid::Document
-  # bootstrap form
   include ColumnsList
 
   belongs_to :town, class_name: 'Town'
@@ -14,6 +13,18 @@ class Repairing::Layer
   skip_callback :update, :before, :store_previous_model_for_repairs_file
 
   has_many :repairs, :class_name => 'Repairing::Repair', autosave: true, :dependent => :destroy
+
+  def self.visible_to user
+    files = if user.nil?
+      self.where(:owner => nil)
+    elsif user.has_role? :admin
+      self.all
+    else
+      self.where(owner: user.id)
+    end
+
+    files || []
+  end
 
   def to_geo_json
     geoJson = []
