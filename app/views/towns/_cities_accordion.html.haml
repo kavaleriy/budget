@@ -2,7 +2,7 @@
   .row
     .col-xs-4
       = image_tag city[:img_url] unless city[:img_url].blank?
-    .col-xs-6
+    .col-xs-6{style:"#{ css if defined? css }" }
       =  city[:title]
     .col-xs-2.pull-right
       = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(city[:id]), :class => 'btn btn-default btn-xs'

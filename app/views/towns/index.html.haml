@@ -58,7 +58,7 @@
 .row
   #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
-      = render :partial => 'towns_test', :locals => {:town => area, css: 'font-size: 26px'}
+      = render :partial => 'towns_accordion', :locals => {:town => area, css: 'font-size: 26px'}
 -#%table.table.table-striped
 -#  %thead
 -#    %tr
