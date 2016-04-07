@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   get 'download_pdf' => 'export_budgets#download_pdf'
   post 'create_pdf' => 'export_budgets#create_pdf', as: 'create_pdf'
+  get 'save_as_pdf/:id' => 'export_budgets#save_as_pdf',as: 'save_as_pdf'
 
   resources :currencies do
     member do

@@ -2,8 +2,8 @@ class ExportBudgetsController < ApplicationController
   layout 'visify', only: [:show]
   skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
-  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
-  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
+  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
+  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
 
   # GET /export_budgets
   # GET /export_budgets.json
@@ -16,7 +16,7 @@ class ExportBudgetsController < ApplicationController
   def show
     @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
     @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
-    render 'taxonomy_rot_for_pdf.html.haml'
+    # render 'taxonomy_rot_for_pdf.html.haml'
     # respond_to do |format|
     #   format.html
     #   format.pdf do
@@ -28,6 +28,13 @@ class ExportBudgetsController < ApplicationController
     # end
 
   end
+
+  def save_as_pdf
+    @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+    @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
+    render 'taxonomy_rot_for_pdf.html.haml' , :layout => false
+  end
+
 
   def create_pdf
     @img_base64 = params[:base64]
@@ -93,7 +100,6 @@ class ExportBudgetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget
-      binding.pry
       @export_budget = ExportBudget.find(params[:id])
     end
 
@@ -104,7 +110,6 @@ class ExportBudgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
-      binding.pry
       params.require(:export_budget).permit(:year, :title, :template, :town_id,:header,:footer)
     end
 end
