@@ -62,6 +62,6 @@ class Modules::SlidersController < AdminController
     end
 
     def modules_slider_params
-      params.require(:modules_slider).permit(:text, :img,:sl_order,:crop_x,:crop_y,:crop_h,:crop_w)
+      params.require(:modules_slider).permit(:text, :img,:sl_order,:link,:crop_x,:crop_y,:crop_h,:crop_w)
     end
 end

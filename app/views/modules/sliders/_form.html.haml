@@ -30,5 +30,7 @@
         .form-inputs
           -#= f.input :sl_order,label: t('modules.sliders.index.order'),as: :integer
           = f.input :text,label: t('modules.sliders.index.text')
+          = f.input :link,label: t('modules.sliders.index.link')
           = f.input :img,as: :file,label: t('modules.sliders.index.img')
+
           = f.button :submit,t('save')
