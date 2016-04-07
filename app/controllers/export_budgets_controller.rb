@@ -16,7 +16,7 @@ class ExportBudgetsController < ApplicationController
   def show
     @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
     @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
-    # render 'taxonomy_rot_for_pdf.html.haml'
+    # render 'taxonomy_panel_for_pdf.html.haml'
     # respond_to do |format|
     #   format.html
     #   format.pdf do
@@ -30,9 +30,9 @@ class ExportBudgetsController < ApplicationController
   end
 
   def save_as_pdf
-    @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
-    @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
-    render 'taxonomy_rot_for_pdf.html.haml' , :layout => false
+    url = get_bubbletree_url_by_taxonomy_rot
+    panel_id = '#tab_pie'
+    render 'taxonomy_panel_for_pdf' , :layout => false, locals: { export_budget_id: @export_budget.id ,url: url , panel_id: panel_id }
   end
 
 
@@ -98,6 +98,13 @@ class ExportBudgetsController < ApplicationController
   end
 
   private
+
+    def get_bubbletree_url_by_taxonomy_rot
+      taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+      "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
+    end
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget
       @export_budget = ExportBudget.find(params[:id])
