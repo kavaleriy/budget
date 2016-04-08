@@ -191,7 +191,7 @@ Rails.application.routes.draw do
     get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'
     get 'visify/sunburst_bilevel/:file_id' => 'visify#sunburst_bilevel'
     get 'visify/sunburst_zoomable/:file_id' => 'visify#sunburst_zoomable'
-    get 'visify/bubbletree/:file_id' => 'visify#bubbletree'
+    get 'visify/bubbletree/:file_id' => 'visify#bubbletree',as: 'bubbletree'
     get 'visify/circles/:file_id' => 'visify#circles'
     get 'visify/treemap/:file_id' => 'visify#treemap'
     get 'visify/treemap_with_headers/:file_id' => 'visify#treemap_with_headers'
