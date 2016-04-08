@@ -1,0 +1,8 @@
+.row
+  .col-xs-4
+    = image_tag town[:img_url] unless town[:img_url].blank?
+  .col-xs-6{style:"#{ css if defined? css }" }
+    =  town[:title]
+  .col-xs-2.pull-right
+    = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town[:id]), :class => 'btn btn-default btn-xs'
+    = link_to 'Export', export_town_in_xls_path(town[:id], format: :xls),:class => 'btn btn-default btn-xs export-btn'

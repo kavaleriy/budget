@@ -135,7 +135,7 @@ Rails.application.routes.draw do
     # resources :links
     # put 'documents/lock/:id' => 'documents#lock'
   end
-
+  get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
   post 'edit_by_xls' => 'towns#edit_by_xls',as: 'edit_by_xls'
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'

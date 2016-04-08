@@ -58,7 +58,7 @@
 .row
   #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
-      = render :partial => 'towns_test', :locals => {:town => area, css: 'font-size: 26px'}
+      = render :partial => 'towns_accordion', :locals => {:town => area, css: 'font-size: 26px'}
 -#%table.table.table-striped
 -#  %thead
 -#    %tr
@@ -112,9 +112,18 @@
       %p
         Де <mark>square</mark>: площа міста
 
+:javascript
 
 :javascript
+
    $(document).ready(function(){
+     //$('body').on('click','.export-btn',function(){
+     // $.ajax({
+     //   url: this.href
+     // });
+     // return false;
+     //});
+
      $('#edit_by_xls').click(function(){
         $('#xls_modal').modal();
      });
