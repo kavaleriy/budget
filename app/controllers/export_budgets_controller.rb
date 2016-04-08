@@ -1,7 +1,9 @@
 class ExportBudgetsController < ApplicationController
   layout 'visify', only: [:show]
-  before_action :set_export_budget, only: [:show, :edit, :update, :destroy]
-  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token,only: [:create_pdf]
+
+  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
+  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
 
   # GET /export_budgets
   # GET /export_budgets.json
@@ -12,16 +14,34 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.pdf do
-        render pdf: 'test_name',
-               formats: [:html],
-               template: 'export_budgets/show',
-               show_as_html: params.key?('debug')
-      end
-    end
+    @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+    @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
+    # render 'taxonomy_panel_for_pdf.html.haml'
+    # respond_to do |format|
+    #   format.html
+    #   format.pdf do
+    #     render pdf: 'test_name',
+    #            formats: [:html],
+    #            template: 'export_budgets/show',
+    #            show_as_html: params.key?('debug')
+    #   end
+    # end
 
+  end
+
+  def save_as_pdf
+    url = get_bubbletree_url_by_taxonomy_rot
+    panel_id = '#tab_pie'
+    render 'taxonomy_panel_for_pdf' , :layout => false, locals: { export_budget_id: @export_budget.id ,url: url , panel_id: panel_id }
+  end
+
+
+  def create_pdf
+    @img_base64 = params[:base64]
+    render pdf: 'test_name',
+           formats: [:html],
+           template: 'export_budgets/show',
+           show_as_html: params.key?('debug')
   end
 
   # GET /export_budgets/new
@@ -78,9 +98,15 @@ class ExportBudgetsController < ApplicationController
   end
 
   private
+
+    def get_bubbletree_url_by_taxonomy_rot
+      taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+      "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
+    end
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget
-      # -binding.pry
       @export_budget = ExportBudget.find(params[:id])
     end
 

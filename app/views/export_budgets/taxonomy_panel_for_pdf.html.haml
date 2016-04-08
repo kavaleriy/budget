@@ -1,0 +1,177 @@
+:scss
+  html{
+    overflow: hidden;
+  }
+  #res{
+
+    position: absolute;
+  }
+  #back{
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #17296D;
+    z-index: 55;
+  //  img{
+  //    width: 1368px;
+  //    height: 760px;
+  //  }
+    position: fixed;
+  }
+  #hidden_form{
+    display: none;
+  }
+  .sk-folding-cube {
+  margin: 25% auto;
+  width: 80px;
+  height: 80px;
+  //position: relative;
+  -webkit-transform: rotateZ(45deg);
+          transform: rotateZ(45deg);
+  }
+
+  .sk-folding-cube .sk-cube {
+    float: left;
+    width: 50%;
+    height: 50%;
+    position: relative;
+    -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+        transform: scale(1.1);
+  }
+  .sk-folding-cube .sk-cube:before {
+    background-color: #00ccaa;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    //background-color: #333;
+    -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+      animation: sk-foldCubeAngle 2.4s infinite linear both;
+    -webkit-transform-origin: 100% 100%;
+      -ms-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+  }
+  .sk-folding-cube .sk-cube2 {
+    -webkit-transform: scale(1.1) rotateZ(90deg);
+      transform: scale(1.1) rotateZ(90deg);
+  }
+  .sk-folding-cube .sk-cube3 {
+    -webkit-transform: scale(1.1) rotateZ(180deg);
+      transform: scale(1.1) rotateZ(180deg);
+  }
+  .sk-folding-cube .sk-cube4 {
+    -webkit-transform: scale(1.1) rotateZ(270deg);
+      transform: scale(1.1) rotateZ(270deg);
+  }
+  .sk-folding-cube .sk-cube2:before {
+    -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+  }
+  .sk-folding-cube .sk-cube3:before {
+    -webkit-animation-delay: 0.6s;
+      animation-delay: 0.6s;
+  }
+  .sk-folding-cube .sk-cube4:before {
+    -webkit-animation-delay: 0.9s;
+      animation-delay: 0.9s;
+  }
+  @-webkit-keyframes sk-foldCubeAngle {
+    0%, 10% {
+      -webkit-transform: perspective(140px) rotateX(-180deg);
+        transform: perspective(140px) rotateX(-180deg);
+      opacity: 0;
+    } 25%, 75% {
+      -webkit-transform: perspective(140px) rotateX(0deg);
+        transform: perspective(140px) rotateX(0deg);
+      opacity: 1;
+    } 90%, 100% {
+      -webkit-transform: perspective(140px) rotateY(180deg);
+        transform: perspective(140px) rotateY(180deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes sk-foldCubeAngle {
+    0%, 10% {
+      -webkit-transform: perspective(140px) rotateX(-180deg);
+        transform: perspective(140px) rotateX(-180deg);
+      opacity: 0;
+    } 25%, 75% {
+      -webkit-transform: perspective(140px) rotateX(0deg);
+        transform: perspective(140px) rotateX(0deg);
+      opacity: 1;
+    } 90%, 100% {
+      -webkit-transform: perspective(140px) rotateY(180deg);
+        transform: perspective(140px) rotateY(180deg);
+      opacity: 0;
+    }
+  }
+
+=javascript_include_tag "application"
+
+%iframe#res{:height => "700", :src => url, :width => "1200",'data_panel_id' => panel_id }
+#back
+  .sk-folding-cube
+    .sk-cube1.sk-cube
+    .sk-cube2.sk-cube
+    .sk-cube4.sk-cube
+    .sk-cube3.sk-cube
+#hidden_form
+  = form_tag(create_pdf_path) do
+    =text_field_tag :base64
+    =hidden_field_tag :id, export_budget_id
+    =submit_tag
+
+:javascript
+
+
+  $('#res').on('load',function(){
+    $.when(
+      $.getScript( "/assets/html2canvas/html2canvas.js" ),
+      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+      $.Deferred(function( deferred ){
+        $( deferred.resolve );
+      })
+    ).done(function(){
+        var iframe_dom = $("#res").contents();
+        var panel_id = $("#res").attr('data_panel_id');
+        set_visible_panel(iframe_dom,panel_id);
+
+        convert_html_to_canvas(iframe_dom.find(panel_id));
+        //setTimeout(function(){
+        //    html2canvas(iframe_dom.find('#tab_pie'), {
+        //      onrendered: function(canvas) {
+        //        canvas.getContext('2d');
+        //        var canvasdata = canvas.toDataURL("image/png");
+        //
+        //        $('#base64').val(canvasdata);
+        //        $('form').submit();
+        //      }
+        //    });
+        //},2000);
+    });
+  });
+
+  var convert_html_to_canvas = function(panel){
+     setTimeout(function(){
+        html2canvas(panel, {
+          onrendered: function(canvas) {
+            canvas.getContext('2d');
+            var canvasdata = canvas.toDataURL("image/png");
+            set_and_submit_base64_value(canvasdata);
+          }
+        });
+      },2000);
+  }
+
+  var set_and_submit_base64_value = function(base64_val){
+      $('#base64').val(base64_val);
+      $('form').submit();
+  }
+  var set_visible_panel = function(iframe_dom_el,panel_id){
+    iframe_dom_el.find('.chart a[href="'+panel_id+'"]').tab('show');
+    iframe_dom_el.find('.active').removeClass('active');
+    iframe_dom_el.find(panel_id).addClass('active');
+  }
