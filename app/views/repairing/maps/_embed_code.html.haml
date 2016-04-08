@@ -61,7 +61,10 @@
     .form-group
       = text_field_tag 'town_select', ''
     .form-group
-      %label Zoom
+      %label Рік
+      = text_field_tag 'year_select', ''
+    .form-group
+      %label Масштаб
       = select_tag 'zoom_select', options_for_select((6..14).to_a), :class => 'form-control'
 
 .clear

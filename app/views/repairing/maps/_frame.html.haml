@@ -41,8 +41,8 @@
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code", src: src});
 
     var categories, category = "all"
-    var town
-    var selected_year='';
+    var town = '#{@town}'
+    var selected_year='#{@year}';
 
     var aRepairMap = RepairMap({
       zoom: parseInt('#{@zoom}'),
@@ -56,15 +56,20 @@
     $.ajax({
       method: 'get',
       url: '#{repairing_geo_json_path}',
+      data: {
+        town: town,
+      },
       dataType: 'json',
     })
     .done(function (data) {
 
       function addMarkers() {
         filtered_data = {type: data.type, features: []}
+
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)
-            && (category == 'all' || category == feature.properties.parent_category_id)) {
+           && (town == '' || feature.properties.town_id == town)
+           && (category == 'all' || category == feature.properties.parent_category_id)) {
             filtered_data.features.push(feature)
           }
         })
@@ -219,7 +224,8 @@
         },
       }).on("change", function(){
         town = $(this).val();
-        aRepairMap.addTownLayer(town);
+        addMarkers()
+        //aRepairMap.addTownLayer(town);
       });
     })
     .fail(function () {
@@ -261,54 +267,5 @@
       return content;
     }
 
-    $('#town_select').select2({
-      sortResults: function(results, container, query) {
-        if (query.term) {
-            // use the built in javascript sort function
-            return results.sort(function(a, b) {
-                if (a.text.length > b.text.length) {
-                    return 1;
-                } else if (a.text.length < b.text.length) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
-        }
-        return results;
-    },
-      allowClear: true,
-      multiSelect: false,
-      multiple: false,
-      minimumInputLength: 2,
-      placeholder: "Обрати місто",
-      width: '100%',
-      ajax: {
-        url: '#{search_for_towns_town_path}',
-        dataType: 'json',
-        quietMillis: 250,
-        data: function (term, page) {
-          return {
-            query: term, // search term
-          };
-        },
-        results: function (data, page) {
-          return { results: data };
-        },
-        cache: true
-      },
-    }).on("change", function(){
-      set_frame_url($(this).val(), $('#zoom_select').val());
-      /*aRepairMap.map.setView(new L.LatLng(39, 40), 14);*/
-    });
-
-    $('#zoom_select').on("change", function(){
-      set_frame_url($('#town_select').val(), $(this).val());
-    })
-
-    function set_frame_url(town_id, zoom){
-      var src = 'http://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town_id;
-      embed_code.set_iframe(src);
-    }
 
   })
