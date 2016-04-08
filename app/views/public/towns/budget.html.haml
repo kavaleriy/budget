@@ -3,10 +3,21 @@
 = content_for :header do
   .head
     = @town.title
-
-.budget.row-fluid
-  .tab-content
-    %iframe{ 'width' => '100%', 'height' => '850',src: widgets_budget_files_url(@town),id: 'budget_iframe' }
+-unless @taxonomy_rot_list.empty?
+  .panel.panel-default
+    .panel-heading.col-sm-6.col-sm-offset-3
+      =select_tag('ddd',options_for_select(@taxonomy_rot_list.map { |rot|[rot.title,rot.id ] }) ,class: 'form-control')
+    .panel-body
+      %iframe{ 'width' => '100%', 'height' => '850', src: '',  id: 'taxonomy_rot_iframe'}
+-unless @taxonomy_rov_list.empty?
+  .panel.panel-default
+    .panel-heading.col-sm-6.col-sm-offset-3
+      =select_tag('ddd',options_for_select(@taxonomy_rov_list.map { |rov|[rov.title,rov.id ] }) ,class: 'form-control')
+    .panel-body
+      %iframe{ 'width' => '100%', 'height' => '850', src: '', id: 'taxonomy_rot_iframe'}
+-#.budget.row-fluid
+-#  .tab-content
+-#    %iframe{ 'width' => '100%', 'height' => '850',src: widgets_budget_files_url(@town),id: 'budget_iframe' }
 
 = link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 .col-sm-12
