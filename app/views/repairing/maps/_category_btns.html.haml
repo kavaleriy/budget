@@ -45,4 +45,4 @@
 .input-group
   %span.input-group-addon
     %b рік
-  = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse), :class => 'form-control'
+  = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse, :selected => "#{@year}"), :class => 'form-control'

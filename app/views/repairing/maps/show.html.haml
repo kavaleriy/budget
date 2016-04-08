@@ -58,8 +58,17 @@
       set_frame_url($('#town_select').val(), $(this).val());
     })
 
+    $('#embed_code #year_select').on("change", function(){
+      set_frame_url($('#town_select').val(), $('#zoom_select').val());
+    })
+
     function set_frame_url(town_id, zoom){
       var src = 'http://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town_id;
+
+      var year = $('#embed_code #year_select').val()
+      if (year != '')
+        src += "/" + year
+
       embed_code.set_iframe(src);
     }
 

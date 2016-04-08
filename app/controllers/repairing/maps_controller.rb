@@ -15,6 +15,8 @@ module Repairing
         @town = ""
         @map_center = [48.5, 31.2] # center of Ukraine
       end
+
+      @year = params[:year] || ''
     end
 
     def show
@@ -25,9 +27,12 @@ module Repairing
 
     def geo_json
       @geoJsons = []
-      Repairing::Repair.each { |repair|
-        repair = Repairing::GeojsonBuilder.build_repair(repair)
-        @geoJsons << repair if repair
+      town = params[:town]
+      repairings = Repairing::Repair
+      repairings.each { |repair|
+        next unless repair.layer.town_id.to_s == town || town == ''
+        repair_json = Repairing::GeojsonBuilder.build_repair(repair)
+        @geoJsons << repair_json if repair_json
       }
 
       result = {
