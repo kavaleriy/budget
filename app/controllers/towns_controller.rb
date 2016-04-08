@@ -1,5 +1,5 @@
 class TownsController < ApplicationController
-  before_action :set_town, only: [:show, :edit, :update, :destroy]
+  before_action :set_town, only: [:show, :edit, :update, :destroy, :export_town_in_xls]
 
   include ControllerCaching
   include BudgetFileUpload
@@ -151,6 +151,8 @@ class TownsController < ApplicationController
   end
 
   def export_town_in_xls
+    require 'xls_worker'
+    res_table =  XlsWorker.create_xls_by_town(@town)
     binding.pry
   end
 

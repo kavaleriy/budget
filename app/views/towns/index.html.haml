@@ -118,7 +118,9 @@
 
    $(document).ready(function(){
      $('body').on('click','.export-btn',function(){
-      console.log(this.href);
+      $.ajax({
+        url: this.href
+      });
       return false;
      });
 
