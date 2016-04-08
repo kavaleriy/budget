@@ -153,7 +153,10 @@ class TownsController < ApplicationController
   def export_town_in_xls
     require 'xls_worker'
     @res_table =  XlsWorker.create_xls_by_town(@town)
-    send_data @res_table
+    respond_to do |format|
+      format.xls { send_data @res_table }
+    end
+
   end
 
   def get_child_regions

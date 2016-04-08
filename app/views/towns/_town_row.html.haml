@@ -5,4 +5,4 @@
     =  town[:title]
   .col-xs-2.pull-right
     = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town[:id]), :class => 'btn btn-default btn-xs'
-    = link_to 'Export', export_town_in_xls_path(town[:id]),:class => 'btn btn-default btn-xs export-btn'
+    = link_to 'Export', export_town_in_xls_path(town[:id], format: :xls),:class => 'btn btn-default btn-xs export-btn'
