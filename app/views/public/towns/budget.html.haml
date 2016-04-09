@@ -1,7 +1,5 @@
 :scss
-  iframe{
-    overflow: hidden;
-  }
+
 - model_class = Taxonomy
 
 = content_for :header do
@@ -10,15 +8,15 @@
 -unless @taxonomy_rot_list.empty?
   .panel.panel-default
     .panel-heading.col-sm-6.col-sm-offset-3
-      =select_tag('taxonomy_rot',options_for_select(@taxonomy_rot_list.map { |rot|[rot.title,widgets_bubbletree_path(rot.id) ] }) ,
-          class: 'form-control taxonomy_select')
+      =select_tag('taxonomy_rot',options_for_select(@taxonomy_rot_list.map { |rot|[rot.title,rot.id,'data'=> widgets_bubbletree_path(rot.id)] }) ,
+          class: 'form-control taxonomy_select',id: 'taxonomy_rot')
     .panel-body
       %iframe{ 'width' => '100%', 'height' => '850', src: widgets_bubbletree_path(@taxonomy_rot_list.first)}
 -unless @taxonomy_rov_list.empty?
   .panel.panel-default
     .panel-heading.col-sm-6.col-sm-offset-3
-      =select_tag('taxonomy_rov',options_for_select(@taxonomy_rov_list.map { |rov|[rov.title,widgets_bubbletree_path(rov.id) ] }) ,
-          class: 'form-control taxonomy_select')
+      =select_tag('taxonomy_rov',options_for_select(@taxonomy_rov_list.map { |rov|[rov.title,rov.id,'data'=> widgets_bubbletree_path(rov.id) ] }) ,
+          class: 'form-control taxonomy_select',id: 'taxonomy_rov')
     .panel-body
       %iframe{ 'width' => '100%', 'height' => '850', src: widgets_bubbletree_path(@taxonomy_rov_list.first)}
 -#.budget.row-fluid
@@ -36,11 +34,12 @@
 
 
       var embed_code = aEmbedCode();
-      var iframe_url = $(this).val();
+      var iframe_url = $('option:selected', this).attr('data');
       var parent_panel = $(this).parents('.panel');
 
       parent_panel.find('iframe').attr('src',iframe_url);
       $('#embed_code_budget').on('click',function(){
+        //var taxonomy_rot_link =
         embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
         $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
          $('#embeded_code_modal_window').modal();
