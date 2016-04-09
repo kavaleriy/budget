@@ -45,9 +45,9 @@
           = render partial: 'layouts/export_img', :locals => { container: '#chart' }
       .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_chart'}
         = render partial: 'widgets/visify/sidebar_chart_battery', :locals => { budget_file_id: @taxonomy.id }
-      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_pie'}
+      .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_pie'}
         = render partial: 'widgets/visify/sidebar_pie', :locals => { budget_file_id: @taxonomy.id }
-      .tab-pane{'role' => 'tabpanel', 'id' => 'tab_table'}
+      .tab-pane.fade.in{'role' => 'tabpanel', 'id' => 'tab_table'}
         = render partial: 'widgets/visify/sidebar_table', :locals => { budget_file_id: @taxonomy.id }
 
   .col-xs-12.col-md-4.sidebar_modify
