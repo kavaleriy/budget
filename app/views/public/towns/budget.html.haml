@@ -1,37 +1,57 @@
+:scss
+
 - model_class = Taxonomy
 
 = content_for :header do
   .head
     = @town.title
 -unless @taxonomy_rot_list.empty?
-  .panel.panel-default
-    .panel-heading.col-sm-6.col-sm-offset-3
-      =select_tag('ddd',options_for_select(@taxonomy_rot_list.map { |rot|[rot.title,rot.id ] }) ,class: 'form-control')
-    .panel-body
-      %iframe{ 'width' => '100%', 'height' => '850', src: widgets_bubbletree_path(@taxonomy_rot_list.first), id: 'taxonomy_rot_iframe'}
+  =render partial: 'taxonomy',locals: {taxonomies: @taxonomy_rot_list, name: 'taxonomy_rot' }
+
 -unless @taxonomy_rov_list.empty?
-  .panel.panel-default
-    .panel-heading.col-sm-6.col-sm-offset-3
-      =select_tag('ddd',options_for_select(@taxonomy_rov_list.map { |rov|[rov.title,rov.id ] }) ,class: 'form-control')
-    .panel-body
-      %iframe{ 'width' => '100%', 'height' => '850', src: widgets_bubbletree_path(@taxonomy_rov_list.first), id: 'taxonomy_rot_iframe'}
--#.budget.row-fluid
--#  .tab-content
--#    %iframe{ 'width' => '100%', 'height' => '850',src: widgets_budget_files_url(@town),id: 'budget_iframe' }
+  =render partial: 'taxonomy',locals: {taxonomies: @taxonomy_rov_list, name: 'taxonomy_rov' }
+
+#sankey_frame
+  =render partial: 'widgets/visify/sankey', locals: {sankey_url: @sankey_url }
 
 = link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
-.col-sm-12
+.pull-right
   #embed_code_budget.embed_code
     = render partial: 'widgets/visify/embed_code'
 :javascript
 
   $(document).on('ready page:load', function() {
-    var embed_code = aEmbedCode();
-    var iframe_url = $('#budget_iframe').attr('src');
+    $('.taxonomy_select').change(function(){
+      changeIframe(this);
+      getSankey($('#taxonomy_rot').val(),$('#taxonomy_rov').val());
+    });
 
     $('#embed_code_budget').on('click',function(){
+      var embed_code = aEmbedCode();
+      var taxonomy_rot_link = $('#taxonomy_rot').val();
+      var taxonomy_rov_link = $('#taxonomy_rov').val();
+
+      var iframe_url = location.origin + '/widgets/town_profile/budget_files_by_taxonomies/' + taxonomy_rot_link + '/' + taxonomy_rov_link
+      //console.log(iframe_url);
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
       $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
-       $('#embeded_code_modal_window').modal();
+      $('#embeded_code_modal_window').modal();
+
     });
   });
+
+  var changeIframe = function(dom_elem){
+    var iframe_url = $('option:selected', dom_elem).attr('data');
+    var parent_panel = $(dom_elem).parents('.panel');
+
+    parent_panel.find('iframe').attr('src',iframe_url);
+  };
+
+  var getSankey = function(tax_rot,tax_rov){
+    var sankeyUrl = location.origin + '/widgets/town_profile/sankey_by_taxonomies/' + tax_rot + '/' + tax_rov;
+    $.ajax({
+      method: 'post',
+      url: sankeyUrl,
+      dataType : 'script'
+    })
+  };

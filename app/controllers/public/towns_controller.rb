@@ -36,9 +36,10 @@ class Public::TownsController < ApplicationController
 
 
   def budget
-    # binding.pry
+
     @taxonomy_rot_list = TaxonomyRot.owned_by(@town.title)
     @taxonomy_rov_list = TaxonomyRov.owned_by(@town.title)
+    @sankey_url = get_sankey_url_by_taxonomies(@taxonomy_rot_list.first,@taxonomy_rov_list.first)
     # @tabs = []
     #
     # if test_town?
@@ -58,6 +59,14 @@ class Public::TownsController < ApplicationController
     #
     # @tabs.first[:cname] = 'active'
   end
+
+  def get_sankey_url_by_taxonomies (tax_rot,tax_rov)
+    sankey_url = nil
+    sankey = Sankey.by_taxonomies(tax_rot.id,tax_rov.id).first
+    sankey_url = get_sankey_path(sankey) unless sankey.nil?
+    sankey_url
+  end
+
   def pdf_docs
     abort 'dsada'
   end
