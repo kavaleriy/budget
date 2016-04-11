@@ -1,8 +1,8 @@
--unless sankey_url.nil?
-  .panel.panel-info
-    .panel-heading.col-sm-6.col-sm-offset-3
-      Sankey
-    .panel-body
+.panel.panel-info
+  .panel-heading.col-sm-6.col-sm-offset-3
+    Sankey
+  .panel-body
+    -unless sankey_url.nil?
       %iframe{ 'width' => '100%', 'height' => '850', src: sankey_url}
--else
-  Sankey not found
+    -else
+      Sankey not found

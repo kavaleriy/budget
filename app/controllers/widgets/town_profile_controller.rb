@@ -32,10 +32,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     render 'budget_files'
 
   end
+
   def sankey_by_taxonomies
     sankey = Sankey.by_taxonomies(params[:tax_rot],params[:tax_rov]).first
     @url = get_sankey_path(sankey) if sankey
-
   end
 
   def portfolio
@@ -45,7 +45,6 @@ class Widgets::TownProfileController < Widgets::WidgetsController
       format.js {}
       format.html{render :partial => 'portfolio'}
     end
-
   end
 
   private

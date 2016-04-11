@@ -1,7 +1,7 @@
 :scss
 
 - model_class = Taxonomy
-<iframe width='100%' height=900 src='http://localhost:3000/widgets/town_profile/budget_files_by_taxonomies/55b2462c6b6173070b000000/564f41c06b61732264000000'></iframe>
+-#<iframe width='100%' height=900 src='http://localhost:3000/widgets/town_profile/budget_files_by_taxonomies/55b2462c6b6173070b000000/564f41c06b61732264000000'></iframe>
 = content_for :header do
   .head
     = @town.title
@@ -12,7 +12,6 @@
   =render partial: 'taxonomy',locals: {taxonomies: @taxonomy_rov_list, name: 'taxonomy_rov' }
 
 #sankey_frame
-  -binding.pry
   =render partial: 'widgets/visify/sankey', locals: {sankey_url: @sankey_url }
 
 = link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
@@ -50,5 +49,9 @@
 
   var getSankey = function(tax_rot,tax_rov){
     var sankeyUrl = location.origin + '/widgets/town_profile/sankey_by_taxonomies/' + tax_rot + '/' + tax_rov;
-    $.ajax({url: sankeyUrl});
+    $.ajax({
+      method: 'post',
+      url: sankeyUrl,
+      dataType : 'script'
+    })
   };
