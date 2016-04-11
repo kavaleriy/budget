@@ -1,6 +1,6 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
-  before_action :set_town,:except => [:budget_files_by_taxonomies]
+  before_action :set_town,:except => [:budget_files_by_taxonomies, :sankey_by_taxonomies]
 
   def budget_files
     @tabs = []
@@ -18,7 +18,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
     @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
-    @tabs << { title: t('public.towns.budget.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
+    @tabs << { title: t('public.towns.budget.tab_sankey'), url: get_sankey_path(sankey.id) } if sankey
 
     @tabs.first[:cname] = 'active'
   end
@@ -26,10 +26,15 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def budget_files_by_taxonomies
     taxonomy_rot = TaxonomyRot.find(params[:tax_rot])
     taxonomy_rov = TaxonomyRov.find(params[:tax_rov])
-    sankey = Sankey.where('rot_file_id' => taxonomy_rot,'rov_file_id' => taxonomy_rov).first
+    sankey = Sankey.by_taxonomies(taxonomy_rot,taxonomy_rov).first
     @tabs = fill_budget_files_tabs(taxonomy_rot,taxonomy_rov,sankey)
 
     render 'budget_files'
+
+  end
+  def sankey_by_taxonomies
+    sankey = Sankey.by_taxonomies(params[:tax_rot],params[:tax_rov]).first
+    @url = get_sankey_path(sankey) if sankey
 
   end
 
