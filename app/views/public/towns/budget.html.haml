@@ -31,18 +31,26 @@
 
   $(document).on('ready page:load', function() {
     $('.taxonomy_select').change(function(){
+      changeIframe(this);
+    });
 
-
+    $('#embed_code_budget').on('click',function(){
       var embed_code = aEmbedCode();
-      var iframe_url = $('option:selected', this).attr('data');
-      var parent_panel = $(this).parents('.panel');
+      var taxonomy_rot_link = $('#taxonomy_rot').val();
+      var taxonomy_rov_link = $('#taxonomy_rov').val();
 
-      parent_panel.find('iframe').attr('src',iframe_url);
-      $('#embed_code_budget').on('click',function(){
-        //var taxonomy_rot_link =
-        embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
-        $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
-         $('#embeded_code_modal_window').modal();
-      });
+      var iframe_url = location.origin + '/widgets/town_profile/budget_files_by_taxonomies/' + taxonomy_rot_link + '/' + taxonomy_rov_link
+      //console.log(iframe_url);
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
+      $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
+      $('#embeded_code_modal_window').modal();
+
     });
   });
+
+  var changeIframe = function(dom_elem){
+    var iframe_url = $('option:selected', dom_elem).attr('data');
+    var parent_panel = $(dom_elem).parents('.panel');
+
+    parent_panel.find('iframe').attr('src',iframe_url);
+  };

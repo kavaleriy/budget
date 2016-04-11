@@ -36,7 +36,6 @@ class Public::TownsController < ApplicationController
 
 
   def budget
-    # binding.pry
     @taxonomy_rot_list = TaxonomyRot.owned_by(@town.title)
     @taxonomy_rov_list = TaxonomyRov.owned_by(@town.title)
     # @tabs = []
