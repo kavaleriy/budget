@@ -26,7 +26,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def budget_files_by_taxonomies
     taxonomy_rot = TaxonomyRot.find(params[:tax_rot])
     taxonomy_rov = TaxonomyRov.find(params[:tax_rov])
-    sankey = Sankey.by_taxonomies(taxonomy_rot,taxonomy_rov).first
+    sankey = Sankey.by_taxonomies(taxonomy_rot.id,taxonomy_rov.id).first
     @tabs = fill_budget_files_tabs(taxonomy_rot,taxonomy_rov,sankey)
 
     render 'budget_files'
@@ -53,7 +53,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     tabs = []
     tabs << { title: t('public.towns.budget.tab_rot'), url: widgets_bubbletree_path(tax_rot)} if tax_rot
     tabs << { title: t('public.towns.budget.tab_rov'), url: widgets_bubbletree_path(tax_rov)} if tax_rov
-    tabs << { title: t('public.towns.budget.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
+    tabs << { title: t('public.towns.budget.tab_sankey'), url: get_sankey_path(sankey.id) } if sankey
 
     tabs.first[:cname] = 'active'
     tabs
