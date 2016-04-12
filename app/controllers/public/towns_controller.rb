@@ -62,7 +62,7 @@ class Public::TownsController < ApplicationController
 
   def get_sankey_url_by_taxonomies (tax_rot,tax_rov)
     sankey_url = nil
-    sankey = Sankey.by_taxonomies(tax_rot.id,tax_rov.id).first
+    sankey = Sankey.by_taxonomies(tax_rot.id,tax_rov.id).first unless tax_rot.nil? && tax_rov.nil?
     sankey_url = get_sankey_path(sankey) unless sankey.nil?
     sankey_url
   end

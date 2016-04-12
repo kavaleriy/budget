@@ -198,8 +198,11 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @town = @town.first
 
     def get_author taxonomy
-      email = taxonomy.budget_files.last.author
-      author = User.find_by(email: email).organisation rescue email
+      author = ''
+      unless taxonomy.budget_files
+        email = taxonomy.budget_files.last.author
+        author = User.find_by(email: email).organisation rescue email
+      end
       "#{author}, #{taxonomy.owner}"
     end
     @author = get_author(@taxonomy)
