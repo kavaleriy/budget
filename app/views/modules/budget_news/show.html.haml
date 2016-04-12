@@ -2,6 +2,12 @@
   .container_fluid_color{
     background: #EAEAEA;
   }
+  .news_text{
+    overflow: hidden;
+    img{
+      max-width: 100%;
+    }
+  }
 
 %p#notice= notice
 .col-md-8
@@ -9,7 +15,7 @@
     %li.list-group-item
       %b
         = @budget_news.title
-    %li.list-group-item
+    %li.list-group-item.news_text
       = @budget_news.news_text.html_safe
     -#%li.list-group-item
     -#  %b

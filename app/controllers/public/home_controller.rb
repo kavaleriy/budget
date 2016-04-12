@@ -6,11 +6,8 @@ module Public
 
 
     def index
-      # @areas = Town.areas
-      # @towns = Town.cities
       @sliders = Modules::Slider.get_slider_by_order
-      @news = Modules::BudgetNews.order(news_date: :desc).limit(4)
-      # abort @news[0].inspect
+      @news = Modules::BudgetNews.get_last_news(4)
     end
 
     def about
@@ -21,7 +18,8 @@ module Public
     end
 
     def demo_index
-      @budgets_news = Modules::BudgetNews.order(news_date: :desc).limit(7)
+      @sliders = Modules::Slider.get_slider_by_order
+      @budgets_news = Modules::BudgetNews.get_last_news(7)
     end
     # def budget
     #   @budgets = Taxonomy.all

@@ -37,7 +37,7 @@
       - @budget_news.each do |budget_news|
         %tr
           %td= budget_news.title
-          %td= sanitize(budget_news.news_text[0...600])
+          %td.news_text= sanitize(budget_news.news_text)
           %td
             %a{:href => budget_news.get_link}= budget_news.title
           %td= budget_news.get_date
