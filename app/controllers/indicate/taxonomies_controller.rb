@@ -5,6 +5,8 @@ class Indicate::TaxonomiesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :show]
   load_and_authorize_resource
 
+  skip_before_filter :verify_authenticity_token, :only => [:get_indicators]
+
   layout 'visify', only: [:indicators]
 
   # GET /indicate/taxonomies
