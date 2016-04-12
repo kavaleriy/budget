@@ -23,7 +23,7 @@
             <%= f.text_field :organisation %>
           </div>
           <div class="col-md-6">
-            <%= f.text_field :town, class:'typeahead', :readonly => true, help: t('ask_admin') %>
+            <%= f.text_field :town, :readonly => true, help: t('ask_admin') %>
           </div>
         </div>
         <div class="row">
@@ -48,7 +48,7 @@
 
 <script>
   $(document).ready(function() {
-    init_town_typeahead("<%= search_for_towns_town_path %>");
+    init_town_select2("<%= search_for_towns_town_path %>");
   });
 
 </script>
