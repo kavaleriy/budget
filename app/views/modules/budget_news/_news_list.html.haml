@@ -41,7 +41,7 @@
 
       }
       .news_preview{
-          font-size: 13px;
+          font-size: 12px;
           color: #000000;
       }
 
@@ -81,7 +81,7 @@
                 %hr
               = news.title
             .news_preview.news_preview_bl
-              = news.news_text.html_safe
+              = sanitize(news.news_text)
     =link_to modules_all_budget_news_path do
       %li.list-group-item.news-helper
         = t('modules.budget_news.index.show_all_news')

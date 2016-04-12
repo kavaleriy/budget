@@ -61,7 +61,7 @@
 
     .all_news_text{
       overflow: hidden;
-      font-size: 13px;
+      font-size: 12px;
       color: #808080;
       margin: 13px 0px;
       height: 69px;
@@ -83,7 +83,7 @@
           .news_title
             = news.title
           .all_news_text
-            = news.news_text.html_safe
+            = sanitize(news.news_text)
 %br
 .col-xs-12.text-center
   = paginate @budget_news

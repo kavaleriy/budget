@@ -104,7 +104,7 @@
           -#.cl-block-img
           -#  = image_tag newsItem.img.thumb
           .cl-block-text
-            = newsItem.news_text.html_safe
+            = sanitize(newsItem.news_text)
 -else
   .no-news
     = t(".no_news")
