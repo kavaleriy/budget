@@ -8,7 +8,7 @@
     }
   }
 -#%link{:href => "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css", :rel => "stylesheet"}
-.col-md-10
+.col-md-8
   .row-fluid
     .span4.well
       -#= abort @budget_news.inspect
@@ -25,6 +25,7 @@
     $.fn.editable.defaults.mode = 'inline';
     $('#modules_budget_news_news_text').summernote({
       maximumImageFileSize: 1000000,
+      minHeight: 200,
         //url: $("form").prop("action"),
     });
   });

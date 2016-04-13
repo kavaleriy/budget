@@ -8,12 +8,15 @@
       max-width: 100%;
     }
   }
+  .news_header{
+    font-weight: bold;
+  }
 
 %p#notice= notice
 .col-md-8
   .ul.list-group
     %li.list-group-item
-      %b
+      .text-center.news_header
         = @budget_news.title
     %li.list-group-item.news_text
       = @budget_news.news_text.html_safe
