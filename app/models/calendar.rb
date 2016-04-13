@@ -16,24 +16,24 @@ class Calendar
 
 
   def import(path)
-    workbook = RubyXL::Parser.parse(path)
+    require 'xls_parser'
+    workbook = XlsParser.get_workbook(path)
     worksheet = workbook[0]
-    table=worksheet.get_table
-    table[:table][0].each do |name, value|
-      if(name != '_id')
-        self[name] = value
-      end
+
+    unless worksheet.nil?
+      table = XlsParser.get_table_hash(worksheet)
+
+      table.first.delete_if{ |key, value| key == '_id'}
+
+      self.update(table.first)
     end
+
     worksheet = workbook['Events']
-    if(!worksheet.nil?)
-      table=worksheet.get_table
-      table[:table].each do |event_import|
-        event = self.events.new
-        event_import.each do |name, value|
-          if(name != '_id')
-            event[name] = value
-          end
-        end
+    unless worksheet.nil?
+      events_table = XlsParser.get_table_hash(worksheet)
+      events_table.each do |new_event|
+        event = self.events.new(new_event)
+        event.save
       end
     end
   end
@@ -53,10 +53,6 @@ class Calendar
       end
       i=i+1
     end
-    # worksheet.add_cell(0, 0, 'Title')
-    # worksheet.add_cell(0, 1, 'Description')
-    # worksheet.add_cell(1, 0, title)
-    # worksheet.add_cell(1, 1, description)
 
     worksheet = workbook.add_worksheet('Events')
     events = this_calendar.events
