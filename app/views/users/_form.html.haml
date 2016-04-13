@@ -9,7 +9,7 @@
     .form-group
       = f.text_field :email
     .form-group
-      = f.select :town, options_for_select( @towns, @user.town), class: 'select-town form-control'
+      = f.text_field :town
 
   .col-sm-6
     .form-group
@@ -27,3 +27,9 @@
 
   .clear
   = f.submit 'Save', class: 'btn btn-primary'
+:javascript
+
+  $(document).ready(function() {
+    init_town_select2("#{search_for_towns_town_path}");
+  });
+
