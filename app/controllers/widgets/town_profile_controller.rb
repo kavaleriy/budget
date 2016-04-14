@@ -18,9 +18,34 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
     @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
-    @tabs << { title: t('public.towns.budget.tab_sankey'), url: get_sankey_path(sankey.id) } if sankey
+    @tabs << { title: t('public.towns.budget.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
 
     @tabs.first[:cname] = 'active'
+    # that code get taxonomy_rot.id and taxonomy_rov.id
+    # find taxonomies
+    # find sankey by taxonomies
+    # create table hash with : title and iframe url
+    # return table hash
+
+    #
+    # @tabs = []
+    #
+    # if test_town?
+    #   taxonomy_rot = TaxonomyRot.where(:owner => '').first
+    #   taxonomy_rov = TaxonomyRov.where(:owner => '').first
+    #   sankey = Sankey.where(:owner => '').first
+    # else
+    #   town = Town.find(params[:town_id])
+    #   taxonomy_rot = TaxonomyRot.owned_by(town.to_s).first
+    #   taxonomy_rov = TaxonomyRov.owned_by(town.to_s).first
+    #   sankey = Sankey.owned_by(town.to_s).first
+    # end
+    #
+    # @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
+    # @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
+    # @tabs << { title: t('public.towns.budget.tab_sankey'), url: get_sankey_path(sankey.id) } if sankey
+    #
+    # @tabs.first[:cname] = 'active'
   end
 
   def budget_files_by_taxonomies
