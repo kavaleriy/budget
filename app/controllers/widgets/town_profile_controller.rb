@@ -13,12 +13,13 @@ class Widgets::TownProfileController < Widgets::WidgetsController
       town = Town.find(params[:town_id])
       taxonomy_rot = TaxonomyRot.owned_by(town.to_s).first
       taxonomy_rov = TaxonomyRov.owned_by(town.to_s).first
-      sankey = Sankey.owned_by(town.to_s).first
+      sankey_url = widgets_sankey_by_taxonomies_path(taxonomy_rot.id,taxonomy_rov.id) unless taxonomy_rov.nil? && taxonomy_rot.nil?
+      # sankey = Sankey.owned_by(town.to_s).first
     end
 
     @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
     @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
-    @tabs << { title: t('public.towns.budget.tab_sankey'), url: "/sankeys/sankey/#{sankey.id}" } if sankey
+    @tabs << { title: t('public.towns.budget.tab_sankey'), url: sankey_url }
 
     @tabs.first[:cname] = 'active'
     # that code get taxonomy_rot.id and taxonomy_rov.id
@@ -48,6 +49,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # @tabs.first[:cname] = 'active'
   end
 
+
   def budget_files_by_taxonomies
     taxonomy_rot = TaxonomyRot.find(params[:tax_rot])
     taxonomy_rov = TaxonomyRov.find(params[:tax_rov])
@@ -59,8 +61,15 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def sankey_by_taxonomies
-    sankey = Sankey.by_taxonomies(params[:tax_rot],params[:tax_rov]).first
-    @url = get_sankey_path(sankey) if sankey
+    # this function have url 'widgets/town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov'
+
+    # get two parameters(TaxonomyRot.id and TaxonomyRov.id)
+    # create sankey by Taxonomies
+    # send sankey to 'sankeys/sankey' with 'sankey' data
+    @sankey = Sankey.new('rot_file_id' => params[:tax_rot],'rov_file_id' => params[:tax_rov])
+    @sankey.owner = Taxonomy.find(params[:tax_rot]).owner
+
+    render partial: 'widgets/visify/sankey', :locals => { sankey: @sankey }
   end
 
   def portfolio

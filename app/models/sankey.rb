@@ -1,7 +1,6 @@
 class Sankey
   include Mongoid::Document
 
-  scope :by_taxonomies, -> (tax_rot,tax_rov)  {where(rot_file_id: tax_rot,rov_file_id: tax_rov)}
   scope :owned_by, lambda { |owner| where(:owner => owner) }
 
   field :title, type: String
