@@ -28,5 +28,10 @@ module Repairing
     # geocoded_by :address               # can also be an IP address
     #
     # after_validation :geocode          # auto-fetch coordinates
+    def get_round_coordinates(coord_arr)
+      # binding.pry
+        [coord_arr[0].round(4),coord_arr[1].round(4)]
+    end
   end
+
 end

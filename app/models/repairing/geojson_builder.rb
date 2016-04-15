@@ -15,7 +15,7 @@ class Repairing::GeojsonBuilder
         type: "Feature",
         geometry: {
             type: 'Point',
-            coordinates: repair[:coordinates]
+            coordinates: repair.get_round_coordinates(repair[:coordinates])
         },
         properties: {
             repair: "house",
@@ -34,7 +34,7 @@ class Repairing::GeojsonBuilder
           type: "Feature",
           geometry: {
             type: 'Point',
-            coordinates: repair[:coordinates][0]
+            coordinates: repair.get_round_coordinates(repair[:coordinates][0])
           },
           properties: {
             repair: "road",
@@ -68,6 +68,7 @@ class Repairing::GeojsonBuilder
         #   }
         ]
     }
+
   end
 
   private
@@ -80,19 +81,19 @@ class Repairing::GeojsonBuilder
     {
         id: "#{repair[:id]}",
         parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
-        category: "#{Repairing::Category.find(repair[:repairing_category_id]).title if repair[:repairing_category_id]}",
+        # category: "#{Repairing::Category.find(repair[:repairing_category_id]).title if repair[:repairing_category_id]}",
         category_id: "#{repair[:repairing_category_id]}",
         town_id: "#{repair.layer.town_id if repair.layer}",
-        obj_owner: "#{repair[:obj_owner]}".gsub('\'', '`'),
-        title: "#{repair[:title]}".gsub('\'', '`'),
-        subject: "#{repair[:subject]}".gsub('\'', '`'),
-        work: "#{repair[:work]}",
+        # obj_owner: "#{repair[:obj_owner]}".gsub('\'', '`'),
+        # title: "#{repair[:title]}".gsub('\'', '`'),
+        # subject: "#{repair[:subject]}".gsub('\'', '`'),
+        # work: "#{repair[:work]}",
         # description: repair[:description],
         address: "#{repair[:address]}".gsub('\'', '`'),
-        amount: "#{repair[:amount]}",
+        # amount: "#{repair[:amount]}",
         repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: year,
-        warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
+        # warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
         img: "#{category and category.img ? category.img.icon.url : ''}"
     }
   end
