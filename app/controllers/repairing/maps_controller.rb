@@ -59,6 +59,16 @@ module Repairing
       end
     end
 
+    def getInfoContentForPopup
+      # this function have url 'test'
+      # format: *.js
+      # get params Repair.id
+      # find Repair object by id
+      # render partial for popup container
+
+
+    end
+
     private
 
     def allow_iframe

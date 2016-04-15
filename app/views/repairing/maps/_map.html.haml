@@ -221,15 +221,17 @@
       function onEachFeature(feature, layer) {
 
         //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-
-        if (options.getInfoContent) {
-          layer.bindPopup( options.getInfoContent(feature.properties) )
-        }
+        //console.log(feature);
+        //if (options.getInfoContent) {
+        //  layer.bindPopup( options.getInfoContent(feature.properties) )
+        //}
         layer.on({
           click: function () {
-            if (options.featureClickCallback){
-              options.featureClickCallback(feature, popup);
-            }
+            content = getPopupInfoContent(feature.properties.id);
+            layer.bindPopup(content);
+            //if (options.featureClickCallback){
+            //  options.featureClickCallback(feature, popup);
+            //}
           }
         })
 
@@ -427,4 +429,11 @@
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker
     }
+  }
+
+  function getPopupInfoContent(featureId){
+     var res = '';
+     $.ajax({
+      url:
+     })
   }
