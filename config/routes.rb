@@ -309,6 +309,7 @@ Rails.application.routes.draw do
   get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile', as: 'calendars_calendars_town'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
   get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
+  get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'
   get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -227,8 +227,9 @@
         //}
         layer.on({
           click: function () {
-            content = getPopupInfoContent(feature.properties.id);
-            layer.bindPopup(content);
+            getPopupInfoContent(feature.properties.id,layer);
+            //console.log(content);
+            //layer.bindPopup(content);
             //if (options.featureClickCallback){
             //  options.featureClickCallback(feature, popup);
             //}
@@ -431,9 +432,12 @@
     }
   }
 
-  function getPopupInfoContent(featureId){
-     var res = '';
+  function getPopupInfoContent(featureId,layer){
+     //var res = '';
      $.ajax({
-      url:
+      url: '/repairing/map/getInfoContentForPopup/' + featureId
+     }).done(function(data){
+       layer.bindPopup(data);
      })
+
   }

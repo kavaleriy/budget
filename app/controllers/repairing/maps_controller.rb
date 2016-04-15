@@ -60,13 +60,13 @@ module Repairing
     end
 
     def getInfoContentForPopup
-      # this function have url 'test'
+      # this function have url 'repairing/map/getInfoContentForPopup/:repair_id'
       # format: *.js
-      # get params Repair.id
-      # find Repair object by id
+      # get params[:repair_id]
+      # find Repair object by params[:repair_id]
       # render partial for popup container
-
-
+      @repair = Repairing::Repair.find(params[:repair_id])
+      render partial: 'info_popup.html.haml'
     end
 
     private
