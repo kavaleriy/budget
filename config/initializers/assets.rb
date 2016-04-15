@@ -4,6 +4,7 @@ Rails.application.config.assets.precompile += %w( d3pie.js )
 Rails.application.config.assets.precompile += %w( jstree/jstree.js jstree/themes/default/style.min.css)
 Rails.application.config.assets.precompile += %w( timelinejs/storyjs-embed.js timelinejs/timeline.js timelinecss/timeline.css.scss )
 Rails.application.config.assets.precompile += %w( kartik-fileinput/js/fileinput.js kartik-fileinput/js/fileinput_locale_uk.js kartik-fileinput/css/fileinput.css )
+Rails.application.config.assets.precompile += %w( sankeys.css )
 
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css )
 Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leaflet/markercluster.default.css leaflet/markercluster.css )

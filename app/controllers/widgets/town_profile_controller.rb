@@ -16,7 +16,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
       sankey_url = widgets_sankey_by_taxonomies_path(taxonomy_rot.id,taxonomy_rov.id) unless taxonomy_rov.nil? && taxonomy_rot.nil?
       # sankey = Sankey.owned_by(town.to_s).first
     end
-
+    # binding.pryta
     @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
     @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
     @tabs << { title: t('public.towns.budget.tab_sankey'), url: sankey_url }
@@ -65,11 +65,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     # get two parameters(TaxonomyRot.id and TaxonomyRov.id)
     # create sankey by Taxonomies
-    # send sankey to 'sankeys/sankey' with 'sankey' data
+    # render partial 'sankey' with 'sankey' data
     @sankey = Sankey.new('rot_file_id' => params[:tax_rot],'rov_file_id' => params[:tax_rov])
     @sankey.owner = Taxonomy.find(params[:tax_rot]).owner
-
-    render partial: 'widgets/visify/sankey', :locals => { sankey: @sankey }
+    render partial: 'sankey', :locals => { sankey: @sankey }
   end
 
   def portfolio
