@@ -5,12 +5,14 @@ module ContentManager::PageContainersHelper
 
   def get_header_by_locale(content)
     return unless content
+    res = 'empty'
     if check_locale_data?(content)
       locales = get_locale_for_translate
       unless  content.locale_data[locales].nil?
-        content.locale_data[locales][:header]
+       res = content.locale_data[locales][:header] unless content.locale_data[locales][:header].empty?
       end
     end
+    res
 
   end
 

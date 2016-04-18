@@ -12,6 +12,9 @@
       max-width: 100%;
     }
   }
+  .content_page_headers{
+    font-weight: bold;
+  }
 %h1= t('content_manager.page_containers.title')
 %p
   = link_to t('content_manager.page_containers.new'), new_content_manager_page_container_path, class: 'btn btn-primary'
@@ -35,6 +38,7 @@
                 = t('content_manager.page_containers.alias')
               .col-xs-2
                 = t('content_manager.page_containers.action')
+            %hr
             -value.each do |page_container|
               -unless check_content_by_locale(page_container)
                 .row.content_page_content
