@@ -1,7 +1,7 @@
 class ContentManager::PageContainersController < AdminController
   before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
   before_action :set_locale_content, only: [:create, :update]
-  before_action :get_menu_list,only: [:new, :edit]
+  before_action :get_menu_list,only: [:new, :edit,:create,:update]
   respond_to :html
 
   def index

@@ -12,7 +12,7 @@ class ContentManager::PageContainer
   scope :get_parent_menu, ->(category) { where(alias: category) }
   scope :get_child_link, ->(parent) { where(p_id: parent)}
   scope :get_page_by_alias, ->(as) { where(alias: as )}
-  scope :get_menu_list, -> { where(p_id: nil) }
+  scope :get_menu_list, -> { where(:alias.in => get_constants_in_a )}
 
   field :locale_data, type: Hash
   field :alias, type: String
@@ -21,17 +21,31 @@ class ContentManager::PageContainer
 
   validates :alias, presence: true
   validates :alias, uniqueness: true
+  validate :locale_data_has_not_empty
 
-
+  def self.get_constants_in_a
+    res = []
+    consts = get_constants_name
+    consts.each { |const| res << get_const_value_by_name(const) }
+    res
+  end
 
   def self.get_constant_to_h
     result = {}
-    constants = ContentManager::PageContainer.constants(false)
+    constants = get_constants_name
     constants.each do |constant|
-      result.store(constant.to_s,ContentManager::PageContainer.const_get(constant))
+      result.store(constant.to_s,get_const_value_by_name(constant))
     end
     result
 
+  end
+
+  def self.get_constants_name
+    ContentManager::PageContainer.constants(false)
+  end
+
+  def self.get_const_value_by_name (name)
+    ContentManager::PageContainer.const_get(name)
   end
 
   def self.get_all_menu
@@ -43,5 +57,13 @@ class ContentManager::PageContainer
       result.store(obj,arr)
     end
     result
+  end
+
+  # validators
+
+  def locale_data_has_not_empty
+    locale = I18n.locale
+    errors.add(:locale_data, "Header is empty!") if locale_data[locale]['header'].empty?
+    errors.add(:locale_data, "Content is empty!") if locale_data[locale]['content'].empty?
   end
 end
