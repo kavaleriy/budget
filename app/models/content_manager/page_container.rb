@@ -1,7 +1,7 @@
 class ContentManager::PageContainer
   include Mongoid::Document
   ABOUT_US = 0
-  BUDGET_SYSTEM = 1
+  # BUDGET_SYSTEM = 1
   VISUALISATION = 2
   PUBLIC_CONTROL = 3
 
