@@ -4,16 +4,23 @@
        width:30px;
     }
   }
+  .small_margin{
+    margin: 5px;
+  }
+  .static_content{
+    img{
+      max-width: 100%;
+    }
+  }
 
 -#= content_for :header do
 -#  .head.pull-left
 %h1= get_header_by_locale(@page)
 %hr
-.container
+.small_margin
   -if check_admin && @page
     .pull-right#edit_link
       = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
-
-
   -if @page
-    = get_content_by_locale(@page)
+    .static_content
+      = get_content_by_locale(@page)
