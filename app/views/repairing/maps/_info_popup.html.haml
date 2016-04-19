@@ -4,7 +4,7 @@
     //border: 1px solid blue;
     border-radius: 3px;
     .info_header{
-      height: 25px;
+      min-height: 25px;
       border-radius: 2px;
       //background-color: #182A70;
       color: #182A70;
@@ -43,7 +43,7 @@
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.info_works')} :"
         .text_desc.col-xs-8
-          = @repair.repairing_category.title.capitalize
+          = @repair.get_repairing_category_title.capitalize
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.info_performer')} :"

@@ -434,9 +434,10 @@
 
   function getPopupInfoContent(featureId,layer){
      $.ajax({
-      url: '/repairing/map/getInfoContentForPopup/' + featureId
-     }).done(function(data){
-       layer.bindPopup(data);
+      url: '/repairing/map/getInfoContentForPopup/' + featureId,
+      success:function(data){
+       console.log(data);
+       layer.bindPopup(data).openPopup();
+      }
      })
-
   }

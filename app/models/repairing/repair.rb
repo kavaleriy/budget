@@ -32,6 +32,12 @@ module Repairing
       # binding.pry
         [coord_arr[0].round(4),coord_arr[1].round(4)]
     end
+
+    def get_repairing_category_title
+      res = ''
+      res = self.repairing_category.title unless self.repairing_category.nil?
+      res
+    end
   end
 
 end
