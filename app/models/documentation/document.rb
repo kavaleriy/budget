@@ -33,10 +33,8 @@ class Documentation::Document
     # get one parameter user model
     # return true if user admin
     # return true if user create this document
-    # by default return false
-    res = false
-    res = user.is_admin?
-
+    # else return false
+    user.is_admin? || self.owner == user
   end
 
   def get_years
