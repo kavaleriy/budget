@@ -32,9 +32,11 @@ class Documentation::Document
     # this function check access to update or destroy document
     # get one parameter user model
     # return true if user admin
-    # return true if user create this document
+    # return true if user created this document
     # else return false
-    user.is_admin? || self.owner == user
+
+    binding.pry
+    user.is_admin? || self.owner.eql?(user)
   end
 
   def get_years
