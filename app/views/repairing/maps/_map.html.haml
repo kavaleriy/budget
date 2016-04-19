@@ -436,7 +436,6 @@
      $.ajax({
       url: '/repairing/map/getInfoContentForPopup/' + featureId,
       success:function(data){
-       console.log(data);
        layer.bindPopup(data).openPopup();
       }
      })
