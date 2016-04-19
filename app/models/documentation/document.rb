@@ -34,9 +34,7 @@ class Documentation::Document
     # return true if user admin
     # return true if user created this document
     # else return false
-
-    binding.pry
-    user.is_admin? || self.owner.eql?(user)
+    user.is_admin? || self.owner.equal?(user)
   end
 
   def get_years
