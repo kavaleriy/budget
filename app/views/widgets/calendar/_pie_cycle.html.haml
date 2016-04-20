@@ -1,3 +1,10 @@
+:scss
+  #year_place{
+    font-size : 170%;
+    font-family : Helvetica, Times New Roman,Times,serif;
+    color : #4f99c6;
+  }
+
 .pies-container
   #calendar_pies
     %svg#svg_calendar
@@ -91,14 +98,15 @@
            })
 
        // Add text "2015 Year" into the middle of Calendar pie
-       g.append("text")                // append text
-         .style("font-size", "250%")
-         .style("font-family", "Helvetica, Times New Roman,Times,serif")
-         .style("fill", "#4f99c6")
-         .attr("dy", "0.2em")           // shift on dy
-         .attr("dx", "-0.2em")          // shift on dx
-         .attr("text-anchor", "middle") // set anchor y justification
-         .text(event_year + " " + I18n.t('widgets.calendar.pie_cycle.year'));
+       //g.append("text")                // append text
+        // .style("font-size", "250%")
+        // .style("font-family", "Helvetica, Times New Roman,Times,serif")
+        // .style("fill", "#4f99c6")
+        // .attr("dy", "-6.5em")           // shift on dy
+        // .attr("dx", "3.2em")          // shift on dx
+        // .attr("text-anchor", "start") // set anchor y justification
+        // .text(event_year + " " + I18n.t('widgets.calendar.pie_cycle.year'));
+        $('#year_place').html(event_year + " " + I18n.t('widgets.calendar.pie_cycle.year'));
     }
 
     function get_html_for_ev(d) {
