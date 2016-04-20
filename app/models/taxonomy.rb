@@ -144,36 +144,42 @@
       levels = {}
 
       explanation = self.explanation[level.to_s]
-      self.get_plan_fact_rows[:fact].each do |year, months|
 
-        levels[year] = { } if levels[year].nil?
+      test = self.get_plan_fact_rows[:fact]
 
-        levels[year][:totals] = {} if levels[year][:totals].nil?
+      unless test.nil?
+        test.each do |year, months|
 
-        months.each do |month, rows|
-          if levels[year][month].nil?
-            levels[year][:totals][month] = 0
-            levels[year][month] = { }
-          end
-          rows.each do |row|
-            fond = row[:fond]
-            if levels[year][month][fond].nil?
-              levels[year][month][fond] = {}
+          levels[year] = { } if levels[year].nil?
+
+          levels[year][:totals] = {} if levels[year][:totals].nil?
+
+          months.each do |month, rows|
+            if levels[year][month].nil?
+              levels[year][:totals][month] = 0
+              levels[year][month] = { }
             end
+            rows.each do |row|
+              fond = row[:fond]
+              if levels[year][month][fond].nil?
+                levels[year][month][fond] = {}
+              end
 
-            key = row[level]
-            if levels[year][month][fond][key].nil?
-              levels[year][month][fond][key] = { amount: 0 }
-              %w(title icon color).map{|k|
-                levels[year][month][fond][key][k] = explanation[key][k]
-              }
+              key = row[level]
+              if levels[year][month][fond][key].nil?
+                levels[year][month][fond][key] = { amount: 0 }
+                %w(title icon color).map{|k|
+                  levels[year][month][fond][key][k] = explanation[key][k]
+                }
+              end
+
+              levels[year][month][fond][key][:amount] += row[:amount]
+              levels[year][:totals][month] += row[:amount]
             end
-
-            levels[year][month][fond][key][:amount] += row[:amount]
-            levels[year][:totals][month] += row[:amount]
           end
         end
       end
+
       levels
     end
 
