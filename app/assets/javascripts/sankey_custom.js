@@ -4,12 +4,14 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     if(data["rows_rot"][year] && data["rows_rot"][year]['totals']['0']){
         rot_month = '0';
     } else {
-        rot_month = Math.max.apply(Math, Object.keys(data["rows_rot"][year]['totals']));
+        rot_month = get_taxonomy_month(data["rows_rot"],year);
+        //rot_month = Math.max.apply(Math, Object.keys(data["rows_rot"][year]['totals']));
     }
     if(data["rows_rov"][year] && data["rows_rov"][year]['totals']['0']){
         rov_month = '0';
     } else {
-        rov_month = Math.max.apply(Math, Object.keys(data["rows_rov"][year]['totals']));
+        rov_month = get_taxonomy_month(data["rows_rov"],year);
+        //rov_month = Math.max.apply(Math, Object.keys(data["rows_rov"][year]['totals']));
     }
 
     var svg_height;
@@ -872,6 +874,15 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
         var length = Object.keys(data_labels).length;
         shift = 1/length;
         build_sankey(child_level_energy);
+    }
+
+    function get_taxonomy_month(taxonomy,year){
+        var month = '0';
+        if(taxonomy.hasOwnProperty(year) &&  taxonomy[year].hasOwnProperty('totals')){
+            month = Math.max.apply(Math, Object.keys(taxonomy[year]['totals']));
+        }
+
+        return month;
     }
 }
 
