@@ -70,9 +70,7 @@
 
     function set_frame_url(town_id, zoom){
       var src = 'http://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town_id  ;
-      console.log(src);
-      console.log('town_id: ' + town_id);
-      console.log('zoom: ' + zoom);
+
       var year = $('#embed_code #year_select').val()
       if (year != '')
         src += "/" + year
