@@ -5,6 +5,7 @@ class Town
   default_scope lambda { order_by(:title => :asc) }
   scope :get_test_town, -> {where(title: 'Test')}
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
+  scope :get_town_by_title, -> (town_title) {where(title: town_title)}
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -116,6 +117,22 @@ class Town
       self.counters.update(arr)
     end
     self.counters.save!
+  end
+
+  def self.get_user_town(user)
+    # this function return town from user
+    # function get one parameters user model
+    # init user_town as hash with empty params
+    # if user have town, find this town
+    # and assigned to user_town hash
+    # return user_town
+    user_town = {id: '',title: ''}
+    town_title = ''
+    town_title = user.town unless user.nil?
+    unless town_title.empty?
+      user_town = Town.get_town_by_title(town_title).first
+    end
+    user_town
   end
 
   private

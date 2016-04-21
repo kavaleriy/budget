@@ -12,8 +12,14 @@
     var src = 'http://' + window.location.host + "/repairing/maps/frame/6/";
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code", src: src});
 
-
     $('#town_select').select2({
+      initSelection: function(element, callback) {
+        var current_user_town_id = "#{@current_user_town[:id]}";
+        var current_user_town_text = "#{@current_user_town[:title]}";
+        var data = {id: current_user_town_id , text: current_user_town_text };
+        set_frame_url(current_user_town_id, $('#zoom_select').val());
+        callback(data);
+      },
       sortResults: function(results, container, query) {
         if (query.term) {
             // use the built in javascript sort function
@@ -33,7 +39,7 @@
       multiSelect: false,
       multiple: false,
       minimumInputLength: 2,
-      placeholder: "Обрати місто",
+      //placeholder: "Обрати місто",
       width: '100%',
       ajax: {
         url: '#{search_for_towns_town_path}',
@@ -64,12 +70,16 @@
 
     function set_frame_url(town_id, zoom){
       var src = 'http://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town_id  ;
-
+      console.log(src);
+      console.log('town_id: ' + town_id);
+      console.log('zoom: ' + zoom);
       var year = $('#embed_code #year_select').val()
       if (year != '')
         src += "/" + year
 
       embed_code.set_iframe(src);
     }
+
+
 
   })

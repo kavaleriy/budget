@@ -20,6 +20,7 @@ module Repairing
     end
 
     def show
+      @current_user_town = Town.get_user_town(current_user)
     end
 
     def frame
