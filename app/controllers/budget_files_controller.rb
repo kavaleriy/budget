@@ -65,8 +65,11 @@ class BudgetFilesController < ApplicationController
   end
 
   def new
-    @taxonomies = get_taxonomies(current_user.town)
-    @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
+    user_visible_taxonomies = get_taxonomies(current_user.town)
+    @taxonomies = []
+    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id,text: taxonomy.title }}
+    # binding.pry
+    # @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
   end
 
   # POST /revenues
@@ -74,7 +77,7 @@ class BudgetFilesController < ApplicationController
 
   def create
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
-
+    binding.pry
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
 
