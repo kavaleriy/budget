@@ -1,7 +1,9 @@
 - model_class = Repairing::Layer
 = content_for :header do
   .head.pull-left
-    = t('layouts.navbar.repairing_layers')
+    = t('layouts.navbar_admin.repairing_layers')
+- if current_user && current_user.has_any_role?(:admin, :city_authority,:public_organisation)
+  = link_to t('.new', :default => t("helpers.links.new")), new_repairing_layer_path, :class => 'btn btn-primary'
 -unless @repairing_layers.empty?
   %table.table.table-striped
     %thead
@@ -31,5 +33,3 @@
             = link_to t('.destroy', :default => t("helpers.links.destroy")), repairing_layer_path(layer), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 -else
   Ви не завантажили жодного файлу
-- if current_user && current_user.has_any_role?(:admin, :city_authority,:public_organisation)
-  = link_to t('.new', :default => t("helpers.links.new")), new_repairing_layer_path, :class => 'btn btn-primary'

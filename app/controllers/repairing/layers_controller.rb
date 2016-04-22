@@ -79,6 +79,7 @@ module Repairing
 
           unless @repairing_layer.repairs_file.path.nil?
             repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+            binding.pry
             import(@repairing_layer, repairs[:rows])
           end
 
@@ -130,20 +131,27 @@ module Repairing
               location
             end
 
-        layer_repair = Repairing::Repair.create(
-            title: "#{repair['Адреса']}, #{repair['Робота']}",
-            obj_owner: repair['Виконавець'],
-            subject: repair['Об\'єкт'],
-            work: repair['Робота'],
-            amount: repair['Вартість'],
-            repair_date: repair['Дата ремонту'],
-            warranty_date: repair['Гарантія'],
-            description: repair['Додаткова інформація'],
+        repair_hash = build_repair_hash(repair, coordinates)
 
-            address: repair['Адреса'],
-            address_to: repair['Адреса1'],
-
-            coordinates: coordinates
+        layer_repair = Repairing::Repair.create(repair_hash
+            # title: "#{repair['Адреса']}, #{repair['Робота']}",
+            # obj_owner: repair['Виконавець'],
+            # subject: repair['Об\'єкт'],
+            # work: repair['Робота'],
+            # amount: repair['Вартість'],
+            # warranty_date: repair['Гарантія'],
+            # description: repair['Додаткова інформація'],
+            #
+            # repair_start_date: (repair['Дата початку ремонту'].to_date  unless repair['Дата ремонту'].nil?),
+            # repair_end_date: (repair['Дата закінчення ремонту'].to_date  unless repair['Дата закінчення ремонту'].nil?),
+            # edrpou_artist: repair['ЄДРПОУ виконавця'],
+            # spending_units: repair['Розпорядник бюджетних коштів'],
+            # edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+            #
+            # address: repair['Адреса'],
+            # address_to: repair['Адреса1'],
+            #
+            # coordinates: coordinates
         )
         layer_repair.layer = layer
         category = Repairing::Category.where(:title => repair['Робота']).first
@@ -185,6 +193,34 @@ module Repairing
     end
 
     private
+      def build_repair_hash(repair, coordinates)
+        # this function build hash for repair model
+        # get two parameters repair hash and coordinates array
+        # first of all convert repair start and end date to date
+        # after that build and return hash
+        start_repair_date = repair['Дата початку ремонту'].to_date  unless repair['Дата початку ремонту'].nil?
+        end_repair_date = repair['Дата закінчення ремонту'].to_date  unless repair['Дата закінчення ремонту'].nil?
+        {
+            title: "#{repair['Адреса']}, #{repair['Робота']}",
+            obj_owner: repair['Виконавець'],
+            subject: repair['Об\'єкт'],
+            work: repair['Робота'],
+            amount: repair['Вартість'],
+            warranty_date: repair['Гарантія'],
+            description: repair['Додаткова інформація'],
+
+            repair_start_date: start_repair_date,
+            repair_end_date: end_repair_date,
+            edrpou_artist: repair['ЄДРПОУ виконавця'],
+            spending_units: repair['Розпорядник бюджетних коштів'],
+            edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+
+            address: repair['Адреса'],
+            address_to: repair['Адреса1'],
+
+            coordinates: coordinates
+        }
+      end
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
         @repairing_layer = Repairing::Layer.find(params[:id])
