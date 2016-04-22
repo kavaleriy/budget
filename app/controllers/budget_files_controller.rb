@@ -67,7 +67,8 @@ class BudgetFilesController < ApplicationController
   def new
     user_visible_taxonomies = get_taxonomies(current_user.town)
     @taxonomies = []
-    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id,text: taxonomy.title }}
+    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
+
     # binding.pry
     # @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
   end
@@ -77,7 +78,7 @@ class BudgetFilesController < ApplicationController
 
   def create
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
-    binding.pry
+    errors_arr = []
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
 
@@ -85,9 +86,7 @@ class BudgetFilesController < ApplicationController
       file = upload_file uploaded, new_file_name
 
       file_path = file[:path].to_s
-
-      @taxonomy = params[:budget_file_taxonomy].blank? ? create_taxonomy : Taxonomy.find(params[:budget_file_taxonomy])
-      @taxonomy.locale = params['locale'] || 'uk'
+      @taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
 
       generate_budget_file
 
@@ -101,17 +100,27 @@ class BudgetFilesController < ApplicationController
       @budget_file.title = "#{get_file_title} - #{DateTime.now.strftime('%d-%m-%Y')}"
       @budget_file.name = @file_name if @budget_file.name.nil?
 
-      table = read_table_from_file file_path
 
-      @budget_file.import table
-
-      @budget_file.save!
+      begin
+        table = read_table_from_file file_path
+        @budget_file.import table
+        @budget_file.save!
+      rescue Ole::Storage::FormatError => detail
+        errors_arr << 'invalid format'
+      end
     end
-
-    respond_to do |format|
-      format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
-      format.json { render :show, status: :created, location: @budget_file }
+    if errors_arr.empty?
+      respond_to do |format|
+        format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
+        format.json { render :show, status: :created, location: @budget_file }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to :back, alert:  errors_arr }
+      end
     end
+    
+
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   #
@@ -189,6 +198,23 @@ class BudgetFilesController < ApplicationController
   end
 
   private
+
+  def set_taxonomy_by_budget_file(taxonomy_data)
+    # this function find or create taxonomy
+    # get one params taxonomy(new title or id)
+    # try to find Taxonomy by taxonomy parameters
+    # if Taxonomy not found
+    # create new Taxonomy
+    # return taxonomy
+    begin
+      taxonomy = Taxonomy.find(taxonomy_data)
+    rescue Mongoid::Errors::DocumentNotFound => detail
+      taxonomy = create_taxonomy
+    end
+    taxonomy.title = taxonomy_data
+    taxonomy.locale = params['locale'] || 'uk'
+    taxonomy
+  end
 
   def sort_column
     params[:sort] ? params[:sort] : "title"

@@ -33,26 +33,11 @@
 :javascript
 
   $(document).ready(function() {
-    var js_array = #{raw @taxonomies.to_json};
-    console.log(js_array);
+    var js_array = #{@taxonomies.to_json};
     $("#budget_file_taxonomy").select2( {
-         //allowClear: true,
-        //placeholder: "Нова візуалізація",
         tags: js_array,
-        //multiSelect: false,
-        //multiple: false,
-        maximumSelectionSize: 1,
-        //minimumInputLength: 2,
-        //data: [
-        //  {id:'1',text: '132'}
-        //],
-        //createSearchChoice: function(term) {
-        //return {
-        //    id: term,
-        //    text: term
-        //    };
-        //},
 
+        maximumSelectionSize: 1,
     });
 
     $('#town_select').select2({
