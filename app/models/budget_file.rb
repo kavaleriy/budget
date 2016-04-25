@@ -43,12 +43,15 @@ class BudgetFile
 
   def import table
     errorArr = []
+    if table[:rows].empty?
+      errorArr << I18n.t('budget_files.empty_table')
+    end
     rows = table[:rows].map { |row|
       readline(row)
     }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
     if rows.empty?
-      errorArr << I18n.t('budget_files.empty_table')
+      errorArr << I18n.t('budget_files.table.empty_rows.amount_not_0')
     end
 
     # tree = {}

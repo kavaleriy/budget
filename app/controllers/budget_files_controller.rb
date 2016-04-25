@@ -94,16 +94,13 @@ class BudgetFilesController < ApplicationController
       begin
         table = read_table_from_file file_path
       rescue Ole::Storage::FormatError => detail
-        errors_arr << I18n.t('invalid_error')
+        errors_arr << I18n.t('invalid_format')
       end
+      @budget_file.import(table).each { |err| errors_arr << err }
 
-      res = @budget_file.import table
-
-      errors_arr << res unless res.empty?
-
-      @budget_file.save!
     end
-    if errors_arr.empty?
+    if errors_arr.compact.empty?
+      @budget_file.save!
       respond_to do |format|
         format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
         format.json { render :show, status: :created, location: @budget_file }
