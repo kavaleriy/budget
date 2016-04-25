@@ -50,10 +50,6 @@ class BudgetFile
       readline(row)
     }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
-    if rows.empty?
-      errorArr << I18n.t('budget_files.table.empty_rows.amount_not_0')
-    end
-
     # tree = {}
     # table[:rows].each { |row|
     #   parsed_rows = readline(row)
