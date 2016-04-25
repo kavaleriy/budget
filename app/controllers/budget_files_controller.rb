@@ -77,6 +77,7 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
+    binding.pry
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
     errors_arr = []
     budget_file_params[:path].each do |uploaded|
