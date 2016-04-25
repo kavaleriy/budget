@@ -87,7 +87,6 @@ class BudgetFilesController < ApplicationController
 
       file_path = file[:path].to_s
       @taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
-
       generate_budget_file
 
       @budget_file.taxonomy = @taxonomy
