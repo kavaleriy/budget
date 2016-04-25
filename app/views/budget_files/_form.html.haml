@@ -102,12 +102,6 @@
       }
     }).val('#{current_user.town}').trigger('change');
 
-    jQuery("form input").on("invalid", function(event) {
-      this.setCustomValidity(I18n.t('empty_file'));
-    });
-
-
-
     $('form').submit(function(event){
       var error_class = "has-error";
       var file_input_dom = $("input:file");
@@ -116,6 +110,5 @@
         file_input_dom.parents('.form-group').addClass(error_class);
         event.preventDefault();
       }
-      event.preventDefault();
     });
   })

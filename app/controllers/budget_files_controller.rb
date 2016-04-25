@@ -86,27 +86,22 @@ class BudgetFilesController < ApplicationController
       file = upload_file uploaded, new_file_name
 
       file_path = file[:path].to_s
-      @taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
+      taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
       generate_budget_file
 
-      @budget_file.taxonomy = @taxonomy
-      @budget_file.author = current_user.email unless current_user.nil?
-
-      @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].nil?
-
-      @budget_file.path = file_path
-
-      @budget_file.title = "#{get_file_title} - #{DateTime.now.strftime('%d-%m-%Y')}"
-      @budget_file.name = @file_name if @budget_file.name.nil?
-
+      fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
 
       begin
         table = read_table_from_file file_path
-        @budget_file.import table
-        @budget_file.save!
       rescue Ole::Storage::FormatError => detail
-        errors_arr << 'invalid format'
+        errors_arr << I18n.t('invalid_error')
       end
+
+      res = @budget_file.import table
+
+      errors_arr << res unless res.empty?
+
+      @budget_file.save!
     end
     if errors_arr.empty?
       respond_to do |format|
@@ -197,6 +192,23 @@ class BudgetFilesController < ApplicationController
   end
 
   private
+
+  def fill_budget_file(data_type,file_path,taxonomy)
+    # this function fill budget_file model
+    # get three parameters data_type and file_path
+    # data_type is budget_file.type(can be 'plan' or 'fact')
+    # file_path is path to file,when he will be saved
+    # taxonomy is taxonomy what has this budget_file(one taxonomy -> many budget_file)
+    @budget_file.taxonomy = taxonomy
+    @budget_file.author = current_user.email unless current_user.nil?
+
+    @budget_file.data_type = data_type.to_sym unless data_type.nil?
+
+    @budget_file.path = file_path
+
+    @budget_file.title = "#{get_file_title} - #{DateTime.now.strftime('%d-%m-%Y')}"
+    @budget_file.name = @file_name if @budget_file.name.nil?
+  end
 
   def set_taxonomy_by_budget_file(taxonomy_data)
     # this function find or create taxonomy
