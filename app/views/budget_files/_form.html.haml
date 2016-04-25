@@ -3,7 +3,7 @@
     height: 25px;
     width: 97%;
     color: blue;
-    background-color: #9ecae1;
+    background: #F1F1F1 !important;
     .select2-search-choice-close{
       left: 100%;
     }
@@ -36,7 +36,7 @@
   .form-group
     = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
 
-  = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
+  = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default','required' => 'required'
 
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), budget_files_path, :class => 'btn btn-default'
@@ -101,4 +101,21 @@
         });
       }
     }).val('#{current_user.town}').trigger('change');
+
+    jQuery("form input").on("invalid", function(event) {
+      this.setCustomValidity(I18n.t('empty_file'));
+    });
+
+
+
+    $('form').submit(function(event){
+      var error_class = "has-error";
+      var file_input_dom = $("input:file");
+      if(!file_input_dom.val()){
+        file_input_dom.addClass(error_class);
+        file_input_dom.parents('.form-group').addClass(error_class);
+        event.preventDefault();
+      }
+      event.preventDefault();
+    });
   })
