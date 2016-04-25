@@ -167,6 +167,7 @@ class BudgetFilesController < ApplicationController
 
   def download
     file_path = @budget_file.path
+    @error = "Вибачте але файл ще не було завантажено"
     if File.exist?(file_path)
       send_file(
           "#{file_path}",

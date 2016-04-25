@@ -136,4 +136,20 @@ class BudgetFile
     range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
   end
 
+  def self.get_budget_file_for_example
+    # this function return model which have valid filename path
+    # first of all take first model_count model
+    # if someone model have valid filename path return him
+    # if no one model don't have valid filename path return first Budget_file
+    model_count = 20
+    res_model = self.first
+
+    models = self.asc(:title).limit(model_count).to_a
+    models.each do |model|
+    if File.exist?(model.path.to_s)
+      res_model = model
+      end
+    end
+    res_model
+  end
 end
