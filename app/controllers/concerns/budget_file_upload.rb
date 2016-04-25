@@ -27,6 +27,8 @@ module BudgetFileUpload
         read_csv_xls xls
       when '.DBF'
         read_dbf DBF::Table.new(path)
+      else
+        raise Ole::Storage::FormatError
     end
   end
 

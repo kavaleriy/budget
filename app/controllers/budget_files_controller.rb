@@ -77,7 +77,7 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
-    binding.pry
+    # binding.pry
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
     errors_arr = []
     budget_file_params[:path].each do |uploaded|
@@ -91,13 +91,16 @@ class BudgetFilesController < ApplicationController
       generate_budget_file
 
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
-
+      table_format_has_error = false
       begin
         table = read_table_from_file file_path
       rescue Ole::Storage::FormatError => detail
+        table_format_has_error = true
         errors_arr << I18n.t('invalid_format')
       end
-      @budget_file.import(table).each { |err| errors_arr << err }
+      unless table_format_has_error
+        @budget_file.import(table).each { |err| errors_arr << err }
+      end
 
     end
     if errors_arr.compact.empty?
