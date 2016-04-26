@@ -1,10 +1,13 @@
 :scss
+
   .select2_select{
+    padding: 3px 5px 3px 5px !important;
     height: 25px;
     width: 97%;
     color: blue;
     background: #F1F1F1 !important;
     .select2-search-choice-close{
+      color: red;
       left: 100%;
     }
   }
@@ -47,6 +50,7 @@
     var js_array = #{@taxonomies.to_json};
     $("#budget_file_taxonomy").select2( {
         tags: js_array,
+        placeholder: I18n.t('placeholder_select2'),
         formatSelectionCssClass: function (data, container) { return "select2_select"; },
         maximumSelectionSize: 1,
     });

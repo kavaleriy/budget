@@ -79,7 +79,7 @@ module Repairing
 
           unless @repairing_layer.repairs_file.path.nil?
             repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-            binding.pry
+            # binding.pry
             import(@repairing_layer, repairs[:rows])
           end
 
