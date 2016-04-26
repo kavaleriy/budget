@@ -137,10 +137,11 @@ class Programs::TargetProgramsController < ApplicationController
     if params[:town_id] == 'test'
       @programs_town = Programs::Town.where(:name => '').first
     else
-      town = Town.find(params[:town_id])
+      town = ::Town.find(params[:town_id])
       @programs_town = Programs::Town.where(:name => town.title).first
     end
     @year = Time.now.year
+
     @programs_target_programs = @programs_town.programs_target_programs.where(:term_start.lte => @year, :term_end.gte => @year, :kpkv => /0$/) # get only main programs
     @amounts = {}
     @programs_target_programs.each{|program|

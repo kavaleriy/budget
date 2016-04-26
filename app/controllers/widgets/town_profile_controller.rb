@@ -108,6 +108,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
     calendar = Calendar.get_calendar_by_town(town).first
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
+    programs = Programs::Town.get_town_by_title(town).first
+    # binding.pry
 
     result = []
     result << get_indicate_hash(indicate_taxonomy,'indicators')
@@ -115,7 +117,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    result << get_programs_hash('programs')
+    result << get_programs_hash('programs',programs)
     result << get_key_docs_hash('key_docs')
     result << get_prozorro_hash('prozoroo')
     result << get_edata_hash('edata')
@@ -165,6 +167,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     end
   end
 
+  def get_programs_hash(name,programs)
+    get_item_hash(img_url(name), title_for_portfolio(name), programs_towns_town_profile_path(@town)) unless programs.nil?
+  end
+
   def get_item_hash(item_img_src,item_title,item_url)
     result = yield if block_given?
     unless result.nil?
@@ -182,10 +188,6 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
   def get_key_docs_hash(name)
     get_item_hash(img_url(name), title_for_portfolio(name), public_documents_town_profile_path(@town))
-  end
-
-  def get_programs_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), programs_towns_town_profile_path(@town))
   end
 
   def get_prozorro_hash(name)

@@ -1,6 +1,8 @@
 class Programs::Town
   include Mongoid::Document
 
+  scope :get_town_by_title, -> (town_title) {where(name: town_title)}
+
   field :name, type: String
   field :explanation, :type => Hash
 
