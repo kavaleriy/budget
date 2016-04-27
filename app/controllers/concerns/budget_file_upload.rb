@@ -25,10 +25,9 @@ module BudgetFileUpload
         xls = Roo::Excelx.new(path)
         xls.default_sheet = xls.sheets.first
         read_csv_xls xls
-      when '.DBF'
+      else '.DBF'
         read_dbf DBF::Table.new(path)
-      else
-        raise Ole::Storage::FormatError
+
     end
   end
 

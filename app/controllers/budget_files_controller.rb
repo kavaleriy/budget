@@ -79,7 +79,6 @@ class BudgetFilesController < ApplicationController
   def create
     # binding.pry
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
-    errors_arr = []
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
 
@@ -91,30 +90,29 @@ class BudgetFilesController < ApplicationController
       generate_budget_file
 
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
-      table_format_has_error = false
-      begin
-        table = read_table_from_file file_path
-      rescue Ole::Storage::FormatError => detail
-        table_format_has_error = true
-        errors_arr << I18n.t('invalid_format')
-      end
-      unless table_format_has_error
-        @budget_file.import(table).each { |err| errors_arr << err }
-      end
+      table = read_table_from_file file_path
+
+      @budget_file.import(table)
 
     end
-    if errors_arr.compact.empty?
-      @budget_file.save!
+    if @budget_file.save!
       respond_to do |format|
         format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
         format.json { render :show, status: :created, location: @budget_file }
       end
-    else
-      respond_to do |format|
-        format.html { redirect_to :back, alert:  errors_arr }
-      end
     end
-    
+
+  rescue Ole::Storage::FormatError
+    message = [t('invalid_format')]
+    message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
+    respond_with_error_message(message)
+  rescue DBF::Column::NameError
+    message = [t('invalid_format')]
+    message << 'Допустимі формати .dbf, .xsl, .csv'
+    respond_with_error_message(message)
+  rescue => e
+    message = "Не вдалося створити візуалізацію : #{e}"
+    respond_with_error_message(message)
 
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
@@ -124,6 +122,13 @@ class BudgetFilesController < ApplicationController
   #     format.json { render json: e, status: :unprocessable_entity }
   #   end
   end
+
+  def respond_with_error_message(message)
+    respond_to do |format|
+      format.html { redirect_to :back, alert:  message }
+    end
+  end
+
 
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json

@@ -42,52 +42,46 @@ class BudgetFile
   end
 
   def import table
-    errorArr = []
 
-    if table.nil? || table[:rows].empty?
-      errorArr << I18n.t('budget_files.empty_table')
+    rows = table[:rows].map { |row|
+      readline(row)
+    }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
-    else
-      rows = table[:rows].map { |row|
-        readline(row)
-      }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
+    # tree = {}
+    # table[:rows].each { |row|
+    #   parsed_rows = readline(row)
+    #   parsed_rows.map{ |line|
+    #     taxonomy.add_leaf(tree, line)
+    #   } unless parsed_rows.nil?
+    # }
+    #
+    # rows = taxonomy.extract_rows(tree).compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
-      # tree = {}
-      # table[:rows].each { |row|
-      #   parsed_rows = readline(row)
-      #   parsed_rows.map{ |line|
-      #     taxonomy.add_leaf(tree, line)
-      #   } unless parsed_rows.nil?
-      # }
-      #
-      # rows = taxonomy.extract_rows(tree).compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
+    years = {}
+    rows.each { |row|
 
-      years = {}
-      rows.each { |row|
+      year = row['_year'] || Date.current.year.to_s
 
-        year = row['_year'] || Date.current.year.to_s
+      month = row['_month'] || '0'
 
-        month = row['_month'] || '0'
+      years[year] = {} if years[year].nil?
 
-        years[year] = {} if years[year].nil?
+      years[year][month] = [] if years[year][month].nil?
+      years[year][month] << row.reject{|k| k.in?(%w(_year _month))}
+    }
 
-        years[year][month] = [] if years[year][month].nil?
-        years[year][month] << row.reject{|k| k.in?(%w(_year _month))}
-      }
+    self.rows = years
 
-      self.rows = years
-
-      years.keys.each do |year|
-        years[year].keys.each do |month|
-          years[year][month].each do |row|
-            row.keys.reject{|key| key == 'amount'}.each { |key|
-              self.taxonomy.explain(key, row[key])
-            }
-          end
+    years.keys.each do |year|
+      years[year].keys.each do |month|
+        years[year][month].each do |row|
+          row.keys.reject{|key| key == 'amount'}.each { |key|
+            self.taxonomy.explain(key, row[key])
+          }
         end
       end
     end
-    errorArr
+
   end
 
 
