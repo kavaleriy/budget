@@ -77,7 +77,6 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
-    # binding.pry
     @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
@@ -94,12 +93,15 @@ class BudgetFilesController < ApplicationController
 
       @budget_file.import(table)
 
+      binding.pry
+
+      @budget_file.save!
+
     end
-    if @budget_file.save!
-      respond_to do |format|
-        format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
-        format.json { render :show, status: :created, location: @budget_file }
-      end
+
+    respond_to do |format|
+      format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
+      format.json { render :show, status: :created, location: @budget_file }
     end
 
   rescue Ole::Storage::FormatError
