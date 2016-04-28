@@ -94,7 +94,11 @@ class TownsController < ApplicationController
     @town = Town.new(town_params)
     respond_to do |format|
 
-      if @town.save
+    has_parent = Town.has_parents?(@town.level,@town.koatuu)
+    unless has_parent
+      Town.create_parent(@town.level,@town.koatuu,@town.title)
+    end
+      if  @town.save
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
       else

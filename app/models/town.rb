@@ -42,7 +42,7 @@ class Town
 
   validates :title ,presence: true
 
-  validates :koatuu, uniqueness: true,
+  validates :koatuu,
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },
             numericality: { only_integer: true }
@@ -61,6 +61,28 @@ class Town
       consts << [Town.const_get(name),I18n.t(name.to_s)]
     end
     consts
+  end
+
+  def self.has_parents?(level,koatuu)
+    area_code = ''
+    case level
+      when TOWN_LEVEL then area_code = koatuu.slice(0,5)
+    end
+
+    !Town.regions(area_code).empty?
+
+  end
+
+  def self.create_parent(level,koatuu,title)
+    town = Town.new
+    area_code = ''
+    case level
+      when TOWN_LEVEL then area_code = "#{koatuu.slice(0,5)}00000"
+    end
+    town.koatuu = area_code
+    town.title = "#{title}ий район"
+    town.level = AREA_LEVEL
+    town.save
   end
 
   def get_level
