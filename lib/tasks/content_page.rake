@@ -12,8 +12,8 @@ namespace :content_page do
   task create_menu_nav: :remove_page do
     constants_hash = ContentManager::PageContainer.get_constant_to_h
     index = 0
-    head_arr = %w(about bud_sys visual public_control)
-    head_arr_en = ['About', 'Budget system', 'Visualisation', 'Public control']
+    head_arr = %w(about visual public_control)
+    head_arr_en = ['About', 'Visualisation', 'Public control']
     constants_hash.each do |key,value|
       create_page_cont(head_arr_en[index], I18n.t(get_title(head_arr[index])), "#{key} description",'',value,nil)
       index += 1
@@ -28,16 +28,16 @@ namespace :content_page do
 
   desc "Create budget page"
   task :create_budget_system_page => :create_about_page do
-    index = 0
-    head_arr_en = ['Ukraine budget system', 'Budget process', 'Glossary']
-    head_arr = %w(bud_sys_ua bud_proc bud_glos)
-    budget_system_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::BUDGET_SYSTEM).first
-    head_arr.each do |page|
-
-      create_page_cont(head_arr_en[index],I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
-                       budget_system_menu.id)
-      index += 1
-    end
+    # index = 0
+    # head_arr_en = ['Ukraine budget system', 'Budget process', 'Glossary']
+    # head_arr = %w(bud_sys_ua bud_proc bud_glos)
+    # budget_system_menu = ContentManager::PageContainer.get_parent_menu(ContentManager::PageContainer::BUDGET_SYSTEM).first
+    # head_arr.each do |page|
+    #
+    #   create_page_cont(head_arr_en[index],I18n.t(get_title(page)),"#{page} content","#{I18n.t(get_title(page))} опис" ,page,
+    #                    budget_system_menu.id)
+    #   index += 1
+    # end
   end
 
   desc "Create visualisation page"
