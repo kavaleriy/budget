@@ -1,4 +1,12 @@
 class Town
+
+  REGION_LEVEL = 1
+  AREA_LEVEL = 2
+  TOWN_LEVEL = 3
+  CITY_LEVEL = 13
+  VILLAGE_LEVEL = 31
+
+
   include Mongoid::Document
   require 'carrierwave/mongoid'
 
@@ -32,7 +40,22 @@ class Town
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
 
-  validates :koatuu, uniqueness: true
+  validates :koatuu, uniqueness: true,allow_blank: false
+
+  def self.get_levels_array
+    # this function return levels array
+    # first of all function get all *_LEVEL consts name
+    # get value by this consts
+    # then  build hash
+    # where *_LEVEL const is key and value is human readable string
+    const_names = Town.constants(false)
+
+    consts = []
+    const_names.each do |name|
+      consts << [Town.const_get(name),I18n.t(name.to_s)]
+    end
+    consts
+  end
 
   def get_level
     return :area if self.level == 1

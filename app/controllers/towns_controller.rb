@@ -82,6 +82,7 @@ class TownsController < ApplicationController
 
   def new_town
     @town = Town.new
+    @levels = Town.get_levels_array
   end
   # GET /indicator_files/1/edit
   def edit
@@ -91,13 +92,13 @@ class TownsController < ApplicationController
   # POST /indicator_files.json
   def create
     @town = Town.new(town_params)
-
     respond_to do |format|
+
       if @town.save
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
       else
-        format.html { render :new }
+        format.html { render :new_town }
         format.json { render json: @town.errors, status: :unprocessable_entity }
       end
     end
@@ -183,7 +184,7 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:title, :img, :links, :coordinates, :geometry_type, :description,
+      params.require(:town).permit(:level,:koatuu,:title, :img, :links, :coordinates, :geometry_type, :description,
                                    :counters => [:citizens, :house_holdings, :square])
     end
 
