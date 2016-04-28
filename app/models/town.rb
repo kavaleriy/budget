@@ -40,7 +40,13 @@ class Town
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
 
-  validates :koatuu, uniqueness: true,allow_blank: false
+  validates :title ,presence: true
+
+  validates :koatuu, uniqueness: true,
+            presence: true,
+            length: {is: 10, message: I18n.t('invalid_length', length: 10) },
+            numericality: { only_integer: true }
+
 
   def self.get_levels_array
     # this function return levels array
