@@ -32,6 +32,8 @@ class Town
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
 
+  validates :koatuu, uniqueness: true
+
   def get_level
     return :area if self.level == 1
     return :city if self.level == 13

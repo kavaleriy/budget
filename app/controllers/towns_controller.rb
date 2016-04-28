@@ -80,6 +80,9 @@ class TownsController < ApplicationController
     @town = Town.new
   end
 
+  def new_town
+    @town = Town.new
+  end
   # GET /indicator_files/1/edit
   def edit
   end
@@ -122,11 +125,11 @@ class TownsController < ApplicationController
   # DELETE /indicator_files/1
   # DELETE /indicator_files/1.json
   def destroy
-    @town.destroy
-    respond_to do |format|
-      format.html { redirect_to towns_url, notice: 'Town was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    # @town.destroy
+    # respond_to do |format|
+    #   format.html { redirect_to towns_url, notice: 'Town was successfully destroyed.' }
+    #   format.json { head :no_content }
+    # end
   end
 
   def indicator_file_destroy

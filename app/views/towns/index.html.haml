@@ -35,6 +35,8 @@
 - flash[:alert]
 
 .row
+  .pull-left
+    =link_to t('.add_town'),town_new_town_path, class: 'btn btn-primary'
   .pull-right
     .btn-group
       %button.btn.btn-primary#edit_by_xls{:type => "button"}
