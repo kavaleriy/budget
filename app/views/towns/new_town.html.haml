@@ -24,29 +24,32 @@
     var region_level = 3;
     var village_level = 31;
     var region_title_dom = $('#regions_title');
+    var getParentUrl = "#{get_parent_town_path}"
 
-    if(($('#town_level').val() == region_level || $('#town_level').val() == village_level) && $('#town_koatuu').val()){
-        $.ajax({
-          url: 'towns/get_parent',
-          data: {level: $('#town_level').val(),koatuu: $('#town_koatuu').val()},
-        });
-       region_title_dom.show('fast');
-    }
 
-    $('#town_level').change(function(){
-      $('#region_title').val('');
-      if(($(this).val() == region_level || $(this).val() == village_level) && $('#town_koatuu').val()){
-        $.ajax({
-          url: 'get_parent',
-          data: {level: $(this).val(),koatuu: $('#town_koatuu').val()},
+    function getParent(levelValue,koatuuValue){
+      $.ajax({
+          url: getParentUrl,
+          data: {level: levelValue,koatuu: koatuuValue},
         });
-        if ($(this).val() == village_level){
+        if (levelValue == village_level){
           $('#region_title').attr('disabled', true);
         }
         else {
           $('#region_title').attr('disabled', false);
         }
         region_title_dom.show('slow');
+    }
+
+    if(($('#town_level').val() == region_level || $('#town_level').val() == village_level) && $('#town_koatuu').val()){
+      getParent($('#town_level').val(),$('#town_koatuu').val());
+    }
+
+    $('#town_level').change(function(){
+      $('#region_title').val('');
+      var levelValue = $(this).val();
+      if((levelValue == region_level || levelValue == village_level) && $('#town_koatuu').val()){
+        getParent(levelValue,$('#town_koatuu').val());
       }
       else {
         region_title_dom.hide('slow');
