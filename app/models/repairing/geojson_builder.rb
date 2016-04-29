@@ -94,7 +94,7 @@ class Repairing::GeojsonBuilder
         repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: year,
         # warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
-        img: "#{category and category.img ? category.img.icon.url : ''}"
+        # img: "#{category and category.img ? category.img.icon.url : ''}"
     }
   end
 
