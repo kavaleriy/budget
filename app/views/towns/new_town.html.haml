@@ -14,7 +14,9 @@
       =f.select :level,Town.get_levels_array.map{|level|[level.last,level.first]},{label: t('.level')}
       #regions_title
         .form-group
-          =text_field_tag :region_title
+          =label_tag :region_title,'Район'
+          =text_field_tag :region_title,'' ,{class: 'form-control'}
+        %br
       =f.submit t('.create_city'), {class: 'btn btn-primary'}
 
 :javascript
@@ -23,16 +25,27 @@
     var village_level = 31;
     var region_title_dom = $('#regions_title');
 
-    if($('#town_level').val() == region_level || $('#town_level').val() == village_level){
-      region_title_dom.show('fast');
+    if(($('#town_level').val() == region_level || $('#town_level').val() == village_level) && $('#town_koatuu').val()){
+        $.ajax({
+          url: 'towns/get_parent',
+          data: {level: $('#town_level').val(),koatuu: $('#town_koatuu').val()},
+        });
+       region_title_dom.show('fast');
     }
 
     $('#town_level').change(function(){
+      $('#region_title').val('');
       if(($(this).val() == region_level || $(this).val() == village_level) && $('#town_koatuu').val()){
         $.ajax({
           url: 'get_parent',
           data: {level: $(this).val(),koatuu: $('#town_koatuu').val()},
-        })
+        });
+        if ($(this).val() == village_level){
+          $('#region_title').attr('disabled', true);
+        }
+        else {
+          $('#region_title').attr('disabled', false);
+        }
         region_title_dom.show('slow');
       }
       else {

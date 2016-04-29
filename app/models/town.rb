@@ -41,12 +41,45 @@ class Town
   has_one :export_budget
 
   validates :title ,presence: true
-
-  validates :koatuu,
+  # validates :koatuu, :is_area_level
+  validates :koatuu,uniqueness: true,
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },
             numericality: { only_integer: true }
 
+  def self.town_exists?(title)
+    # this function check if exist town by title
+    # return true if exists else return false
+    town = Town.get_town_by_title(title).first
+    !town.nil?
+  end
+
+  def self.get_area_title(koatuu)
+    # this function return region title
+    # get one parameters koatuu
+    # find town with level REGION_LEVEL and first two koatuu symbol
+    # if town exist get his title
+    # by default return empty string
+    area_title = ''
+    town = Town.areas(koatuu[0...2]).first
+    area_title = town.title unless town.nil?
+    area_title
+  end
+
+  def self.create_parent_area(title,koatuu)
+    # this function create new town with level = AREA_LEVEL
+    # get two params title is he title, koatuu is child koatuu
+    # koatuu area is first 5 number params koatuu
+    # skip validation because sometime town with AREA_LEVEL can have same koatuu like child town with TOWN_LEVEL
+    town = Town.new
+    town.title = title
+    town.koatuu = "#{koatuu[0...5]}00000"
+    area_title = Town.get_area_title(koatuu)
+    town.level = AREA_LEVEL
+    town.area_title = area_title
+    town.save(validate: false)
+
+  end
 
   def self.get_levels_array
     # this function return levels array
@@ -63,7 +96,7 @@ class Town
     consts
   end
 
-  def self.has_parents?(level,koatuu)
+  def self.has_parents(level,koatuu)
     # this function return parent town or area
     # get two params level is child level,koatuu is child koatuu
     # if level = TOWN_LEVEL then we should search in regions level
@@ -72,7 +105,7 @@ class Town
     parent = Town
     case level.to_i
       when TOWN_LEVEL then parent = Town.regions(koatuu.slice(0,5)).first
-      when VILLAGE_LEVEL then parent = Town.towns(koatuu.slice(0,5)).first
+      when VILLAGE_LEVEL then parent = Town.where(:level => TOWN_LEVEL).where(:koatuu => Regexp.new("^#{koatuu}.*")).first
     end
     parent
   end

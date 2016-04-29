@@ -94,7 +94,11 @@ class TownsController < ApplicationController
     @town = Town.new(town_params)
     respond_to do |format|
 
+    @town.area_title = Town.get_area_title(town_params[:koatuu])
       if  @town.save
+        has_parent_area = Town.town_exists?(params[:region_title])
+
+        Town.create_parent_area(params[:region_title],town_params[:koatuu]) unless has_parent_area && !town_params[:level] == Town::TOWN_LEVEL
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
       else
@@ -103,6 +107,8 @@ class TownsController < ApplicationController
       end
     end
   end
+
+
 
   # PATCH/PUT /indicator_files/1
   # PATCH/PUT /indicator_files/1.json
@@ -164,7 +170,7 @@ class TownsController < ApplicationController
   end
 
   def get_parent
-    @parent = Town.has_parents?(params[:level],params[:koatuu])
+    @parent = Town.has_parents(params[:level], params[:koatuu])
   end
 
   def get_child_regions

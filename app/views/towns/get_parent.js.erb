@@ -1,1 +1,8 @@
-$('#region_title').val('<%= @parent.title unless parent.nil? %>
+var parent_title = '<%= @parent.title unless @parent.nil? %>'
+if(parent_title){
+  $('#region_title').val(parent_title);
+  $('#region_title').attr('disabled',true);
+}
+else {
+  $('#region_title').attr("placeholder", "Вкажіть назву району");
+}
