@@ -64,25 +64,17 @@ class Town
   end
 
   def self.has_parents?(level,koatuu)
-    area_code = ''
-    case level
-      when TOWN_LEVEL then area_code = koatuu.slice(0,5)
+    # this function return parent town or area
+    # get two params level is child level,koatuu is child koatuu
+    # if level = TOWN_LEVEL then we should search in regions level
+    # if level = VILLAGE_LEVEL then we should search in towns level
+
+    parent = Town
+    case level.to_i
+      when TOWN_LEVEL then parent = Town.regions(koatuu.slice(0,5)).first
+      when VILLAGE_LEVEL then parent = Town.towns(koatuu.slice(0,5)).first
     end
-
-    !Town.regions(area_code).empty?
-
-  end
-
-  def self.create_parent(level,koatuu,title)
-    town = Town.new
-    area_code = ''
-    case level
-      when TOWN_LEVEL then area_code = "#{koatuu.slice(0,5)}00000"
-    end
-    town.koatuu = area_code
-    town.title = "#{title}ий район"
-    town.level = AREA_LEVEL
-    town.save
+    parent
   end
 
   def get_level

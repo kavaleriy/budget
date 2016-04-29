@@ -94,10 +94,6 @@ class TownsController < ApplicationController
     @town = Town.new(town_params)
     respond_to do |format|
 
-    has_parent = Town.has_parents?(@town.level,@town.koatuu)
-    unless has_parent
-      Town.create_parent(@town.level,@town.koatuu,@town.title)
-    end
       if  @town.save
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
@@ -167,6 +163,10 @@ class TownsController < ApplicationController
 
   end
 
+  def get_parent
+    @parent = Town.has_parents?(params[:level],params[:koatuu])
+  end
+
   def get_child_regions
     @koatuu = params[:koatuu]
     area_code = params[:koatuu].slice(0,2)
@@ -188,7 +188,7 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:area_title,:level,:koatuu,:title, :img, :links, :coordinates, :geometry_type, :description,
+      params.require(:town).permit(:region_title,:level,:koatuu,:title, :img, :links, :coordinates, :geometry_type, :description,
                                    :counters => [:citizens, :house_holdings, :square])
     end
 

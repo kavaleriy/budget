@@ -135,7 +135,9 @@ Rails.application.routes.draw do
     # resources :links
     # put 'documents/lock/:id' => 'documents#lock'
   end
+
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
+  get 'towns/get_parent' => 'towns#get_parent',as: 'get_parent_town'
   get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
   post 'edit_by_xls' => 'towns#edit_by_xls',as: 'edit_by_xls'
   get 'search_town' => 'towns#search'
