@@ -234,18 +234,26 @@
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
 
+    function imageExist(url)
+    {
+      var img = new Image();
+      img.src = url;
+      return img.height != 0;
+    }
+
     function getIconByCategory(category_id){
 
-       var iconCategoryUrl = '/assets/repairing/default_icon.png';
-       if (categories_icons[category_id]){
-        iconCategoryUrl = categories_icons[category_id];
-       }
+      var iconCategoryUrl = '/assets/repairing/default_icon.png';
+      if (categories_icons[category_id] && imageExist(categories_icons[category_id])){
 
-       return new Icon({iconUrl: iconCategoryUrl});
+      iconCategoryUrl = categories_icons[category_id];
+      };
+
+      return new Icon({iconUrl: iconCategoryUrl});
     };
     function getPoint(properties) {
       var point = {}
-      point.icon = getIconByCategory(properties.parent_category_id)
+      point.icon = getIconByCategory(properties.parent_category_id);
 
       return point;
     }
