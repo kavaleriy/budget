@@ -104,17 +104,17 @@ class BudgetFilesController < ApplicationController
       format.json { render :show, status: :created, location: @budget_file }
     end
 
-  # rescue Ole::Storage::FormatError
-  #   message = [t('invalid_format')]
-  #   message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
-  #   respond_with_error_message(message)
-  # rescue DBF::Column::NameError
-  #   message = [t('invalid_format')]
-  #   message << 'Допустимі формати .dbf, .xsl, .csv'
-  #   respond_with_error_message(message)
-  # rescue => e
-  #   message = "Не вдалося створити візуалізацію : #{e}"
-  #   respond_with_error_message(message)
+  rescue Ole::Storage::FormatError
+    message = [t('invalid_format')]
+    message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
+    respond_with_error_message(message)
+  rescue DBF::Column::NameError
+    message = [t('invalid_format')]
+    message << 'Допустимі формати .dbf, .xsl, .csv'
+    respond_with_error_message(message)
+  rescue => e
+    message = "Не вдалося створити візуалізацію : #{e}"
+    respond_with_error_message(message)
 
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
