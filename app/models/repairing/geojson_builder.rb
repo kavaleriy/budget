@@ -15,7 +15,7 @@ class Repairing::GeojsonBuilder
         type: "Feature",
         geometry: {
             type: 'Point',
-            coordinates: repair.get_round_coordinates(repair[:coordinates])
+            coordinates: repair[:coordinates]
         },
         properties: {
             repair: "house",
@@ -34,7 +34,7 @@ class Repairing::GeojsonBuilder
           type: "Feature",
           geometry: {
             type: 'Point',
-            coordinates: repair.get_round_coordinates(repair[:coordinates][0])
+            coordinates: repair[:coordinates][0]
           },
           properties: {
             repair: "road",
