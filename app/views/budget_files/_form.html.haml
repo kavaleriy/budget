@@ -94,16 +94,16 @@
         cache: true
       },
     }).on("change", function(){
-      if($(this).val()) {
-        $.ajax({
-          url: '/community/get_communities/' + $(this).val(),
-          dataType: 'html',
-          success: function (html) {
-            $('#communities').html(html);
-          },
-          cache: true
-        });
-      }
+      //if($(this).val()) {
+      //  $.ajax({
+      //    url: '/community/get_communities/' + $(this).val(),
+      //    dataType: 'html',
+      //    success: function (html) {
+      //      $('#communities').html(html);
+      //    },
+      //    cache: true
+      //  });
+      //}
     }).val('#{current_user.town}').trigger('change');
 
     function set_parent_error_class(dom_elem,error_class){
@@ -119,13 +119,5 @@
       }
       return !valid;
     }
-
-    $('form').submit(function(event){
-      var error_class = "has-error";
-      if(!check_input_on_empty($("#budget_file_taxonomy"),error_class) || !check_input_on_empty($("input:file"),error_class)){
-        return false;
-      }
-    });
-
 
   })

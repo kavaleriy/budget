@@ -77,7 +77,8 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
-    @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+    @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
+
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
 
@@ -92,8 +93,6 @@ class BudgetFilesController < ApplicationController
       table = read_table_from_file file_path
 
       @budget_file.import(table)
-
-      # binding.pry
 
       @budget_file.save!
 
@@ -220,7 +219,7 @@ class BudgetFilesController < ApplicationController
   end
 
   def set_taxonomy_by_budget_file(taxonomy_id)
-    taxonomy_id.nil? ? create_taxonomy : Taxonomy.find(taxonomy_id)
+    taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
   end
 
   def sort_column
