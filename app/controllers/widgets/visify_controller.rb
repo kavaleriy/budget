@@ -197,15 +197,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @town = @town.where(area_title: town_title[1].squish) if town_title[1]
     @town = @town.first
 
-    def get_author taxonomy
-      author = ''
-      unless taxonomy.budget_files
-        email = taxonomy.budget_files.last.author
-        author = User.find_by(email: email).organisation rescue email
-      end
-      "#{author}, #{taxonomy.owner}"
-    end
-    @author = get_author(@taxonomy)
+    @author = "#{@taxonomy.get_author}, #{@taxonomy.owner}"
   end
 
   def set_params
