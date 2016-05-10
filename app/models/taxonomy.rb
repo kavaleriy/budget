@@ -24,12 +24,12 @@
     def self.visible_to user
       files = if user && user.is_locked? == false
                 if user.has_role? :admin
-                  Taxonomy.all
+                  self.all
                 else
-                  Taxonomy.where(:owner => user.town)
+                  self.where(:owner => user.town)
                 end
               else
-                Taxonomy.where(:owner => '')
+                self.where(:owner => '')
               end.order_by(:owner.asc)
 
       files

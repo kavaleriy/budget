@@ -208,6 +208,7 @@ Rails.application.routes.draw do
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
     get 'calendar/get_parent_event/:calendar_id/:event_id' => 'calendar#get_parent_event'
     get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
+    get 'calendar/show/:calendar_id' => 'calendar#show',as: 'calendar_show'
 
     get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
     get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'

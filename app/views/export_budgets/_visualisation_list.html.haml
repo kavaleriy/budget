@@ -11,21 +11,53 @@
   .form-group
     =label_tag('tax_rot',t('taxonomy_rot'))
     =select_tag 'tax_rot', options_from_collection_for_select(@presenter.taxonomies_rot,'id','title'),
-      class:'form-control'
+      class:'form-control',:prompt => t('.choose_taxonomy_rot')
   .form-group
-    =label_tag('tax_rot',t('taxonomy_rov'))
-    =select_tag 'tax_rot', options_from_collection_for_select(@presenter.taxonomies_rov,'id','title'),
-      class:'form-control'
+    =label_tag('tax_rov',t('taxonomy_rov'))
+    =select_tag 'tax_rov', options_from_collection_for_select(@presenter.taxonomies_rov,'id','title'),
+      class:'form-control',:prompt => t('.choose_taxonomy_rov')
   .form-group
-    =label_tag('sankey',t('taxonomy_rov'))
+    =label_tag('sankey',t('sankeys.get_sankey'))
     =check_box_tag 'sankey'
 
   .form-group
     =label_tag('calendar',t('choose_calendar'))
     =select_tag 'calendar', options_from_collection_for_select(@presenter.calendars,'id','title'),
-      class:'form-control'
+      class:'form-control',:prompt => t('.choose_calendar')
   .form-group
     =label_tag('indicates',t('indicate.taxonomies.form.header'))
     =select_tag 'indicates', options_from_collection_for_select(@presenter.indicates,'id','id'),
-      class:'form-control'
+      class:'form-control',:prompt => t('.choose_indicate')
+
+:javascript
+  $(document).ready(function(){
+      $('#calendar').change(function(){
+        var calendar_url = '/widgets/calendar/show/' + $(this).val();
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',calendar_url);
+        $('#export_budget_visualisation_modal_window').modal();
+        // $.ajax({
+        //   url: '/widgets/calendar/show/' + $(this).val(),
+        //   success : function(data){
+        //     console.log(data);
+        //     $('#export_budget_visualisation_modal_window').find('#iframe').html($(data))
+        //     $('#export_budget_visualisation_modal_window').modal();
+        //   }
+        // })
+      });
+      $('#tax_rot').change(function(){
+        alert('tax_rot change');
+      });
+      $('#tax_rov').change(function(){
+        alert('tax_rov change');
+      });
+      $('#indicates').change(function(){
+        alert('indicates change');
+      });
+      $('#sankey').change(function(){
+        if($(this).is(":checked")) {
+
+        }
+      });
+  });
+
 

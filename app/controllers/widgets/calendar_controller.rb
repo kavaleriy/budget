@@ -2,6 +2,14 @@ class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
   before_action :set_calendar
 
+  def show
+    @calendar = Calendar.find(params[:calendar_id])
+      respond_to do |format|
+        format.html {render 'widgets/calendar/calendar_box'}
+      end
+
+  end
+
   def pie_cycle
     @curr_town_event = @calendar.events.where(holder: 1, :starts_at.lte => Date.current).last
     @curr_people_event = @calendar.events.where(holder: 2, :starts_at.lte => Date.current).last

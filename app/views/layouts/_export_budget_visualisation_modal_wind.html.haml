@@ -1,0 +1,25 @@
+:scss
+  .modal-dialog{
+    width: 90%;
+  }
+.modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title
+          = t('iframe.title')
+      .modal-body
+        .input-group
+          %input.form-control#copy_img
+          =link_to 'Copy', "#" , class: 'input-group-addon',id:'visualisation_copy_img'
+        %iframe{:height => "700px", :src => "", :width => "100%",id: 'iframe'}
+      .modal-footer
+
+:javascript
+  $(document).ready(function(){
+    $('#visualisation_copy_img').click(function(){
+      $('')
+    });
+  });
