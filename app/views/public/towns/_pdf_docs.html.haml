@@ -2,29 +2,43 @@
   .budget_actions{
     img{
       width: 25px;
+      margin: 0px 5px;
     }
+  }
+  #pdf_docs{
+  .budget_actions > a > i{
+    font-size: 1.5em;
+  }
   }
 
 -if (current_user && current_user.admin?)
   .buttons
-    = link_to t('.create'), '#add-modal', id: 'mAddWindow', :class => 'btn btn-large btn-primary', :remote => true
+    = link_to t('.new_export'),new_export_budget_path,:class => 'btn btn-large btn-primary'
     -#= link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true
-    = render partial: 'export_budgets/modal'
+    -#= render partial: 'export_budgets/modal'
   -unless (export_budgets.blank?)
-    .col-xs-3
-      =t('.year')
-    .col-xs-4
-      =t('.title')
-    .col-xs-5
-      =t('actions')
-    - export_budgets.each do |export_budget|
+    .row
       .col-xs-3
-        = export_budget.year
+        %h4
+          =t('.year')
       .col-xs-4
-        = export_budget.title
-      .col-xs-5.budget_actions
-        = link_to image_tag('icons/loupe.png'), export_budget
-        = link_to 'Pdf', save_as_pdf_path(@town.export_budget)
+        %h4
+          =t('.title')
+      .col-xs-5
+        %h4
+          =t('actions')
+      - export_budgets.each do |export_budget|
+        .col-xs-3
+          %h5
+            = export_budget.year
+        .col-xs-4
+          %h5
+            = export_budget.title
+        .col-xs-5.budget_actions
+          = link_to image_tag('icons/loupe.png'), export_budget
+          = link_to save_as_pdf_path(export_budget) do
+            %i.fa.fa-file-pdf-o
+          = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
     -#%table.table.table-striped{"data-sort-name" => "name", "data-sort-order" => "desc"}
     -#  %thead
     -#    %tr
@@ -48,4 +62,4 @@
     -#        -if (current_user && current_user.admin?)
     -#          %td= link_to image_tag('icons/X_icon.png'), teb, :method => :delete, :data => { :confirm => 'Are you sure?' }
   -else
-    no data yet
+    =t('.no_data')

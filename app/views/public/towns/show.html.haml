@@ -311,8 +311,8 @@
                   %dt
           - counter = counter + 1
       #pdf_docs.tab-pane.fade
-        =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
         .col-xs-7
+          =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
 
       .col-xs-5.pull-right
         = render partial: 'map_ukraine'
