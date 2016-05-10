@@ -80,7 +80,7 @@ class Repairing::GeojsonBuilder
 
     {
         id: "#{repair[:id]}",
-        parent_category_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
+        p_cat_id: "#{repair.layer[:repairing_category_id] if repair.layer}",
         # category: "#{Repairing::Category.find(repair[:repairing_category_id]).title if repair[:repairing_category_id]}",
         category_id: "#{repair[:repairing_category_id]}",
         town_id: "#{repair.layer.town_id if repair.layer}",
