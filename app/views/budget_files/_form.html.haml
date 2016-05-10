@@ -27,7 +27,7 @@
       = t('owner')
     - if current_user && current_user.has_role?(:admin)
       -#= select_tag :town, options_for_select( [nil] + t('.cities').split('|'), current_user.town), class: 'select-town form-control'
-      = text_field_tag 'town_select', current_user.town
+      = text_field_tag 'town_select'
     - else
       -#= ": #{current_user.town}"
       - town = current_user.town.split(',')
@@ -72,7 +72,7 @@
         return results;
       },
       initSelection: function(element, callback) {
-        callback({id: '#{current_user.town}', text: '#{current_user.town}' });
+        //callback({id: '#{Town.find_by(title: current_user.town)}', text: '#{current_user.town}' });
       },
       allowClear: false,
       multiSelect: false,
@@ -104,20 +104,6 @@
       //    cache: true
       //  });
       //}
-    }).val('#{current_user.town}').trigger('change');
-
-    function set_parent_error_class(dom_elem,error_class){
-      dom_elem.parents('.form-group').addClass(error_class);
-    };
-
-    function check_input_on_empty(dom_elem,error_class){
-      var valid = false;
-      if(!dom_elem.val()){
-        set_parent_error_class(dom_elem,error_class);
-        $(dom_elem).focus();
-        return valid;
-      }
-      return !valid;
-    }
+    })
 
   })

@@ -87,6 +87,7 @@ class BudgetFilesController < ApplicationController
 
       file_path = file[:path].to_s
       taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
+
       generate_budget_file
 
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
@@ -94,8 +95,18 @@ class BudgetFilesController < ApplicationController
 
       @budget_file.import(table)
 
-      @budget_file.save!
+      if @budget_file.taxonomy.columns.blank?
+        @budget_file.taxonomy.columns = {}
 
+        column_names = table[:rows].first.keys.reject{|key| %w(_year _month).include? key }
+        column_names.delete column_names.last # remove amount
+
+        column_names.map.with_index{ |column, level|
+          @budget_file.taxonomy.columns[column] = {:level => level + 1, :title=> column }
+        }
+      end
+
+      @budget_file.save!
     end
 
     respond_to do |format|
