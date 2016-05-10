@@ -1,0 +1,31 @@
+:scss
+  .margin_like_form{
+    margin: 15px;
+  }
+  #calendar{
+    margin: 0px;
+  }
+
+
+.margin_like_form
+  .form-group
+    =label_tag('tax_rot',t('taxonomy_rot'))
+    =select_tag 'tax_rot', options_from_collection_for_select(@presenter.taxonomies_rot,'id','title'),
+      class:'form-control'
+  .form-group
+    =label_tag('tax_rot',t('taxonomy_rov'))
+    =select_tag 'tax_rot', options_from_collection_for_select(@presenter.taxonomies_rov,'id','title'),
+      class:'form-control'
+  .form-group
+    =label_tag('sankey',t('taxonomy_rov'))
+    =check_box_tag 'sankey'
+
+  .form-group
+    =label_tag('calendar',t('choose_calendar'))
+    =select_tag 'calendar', options_from_collection_for_select(@presenter.calendars,'id','title'),
+      class:'form-control'
+  .form-group
+    =label_tag('indicates',t('indicate.taxonomies.form.header'))
+    =select_tag 'indicates', options_from_collection_for_select(@presenter.indicates,'id','id'),
+      class:'form-control'
+

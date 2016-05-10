@@ -38,6 +38,7 @@ module Budget
     end
 
     config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/presenters)
     config.watchable_dirs['lib'] = [:rb]
   end
 end

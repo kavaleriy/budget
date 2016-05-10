@@ -47,6 +47,8 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
+    @presenter = ExportBudget::FormPresenter.new(current_user)
+    # binding.pry
   end
 
   # GET /export_budgets/1/edit

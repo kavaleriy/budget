@@ -15,6 +15,14 @@ class Calendar
   has_and_belongs_to_many :subscribers
 
 
+  def self.visible_to user
+    if user.is_admin?
+      self.all
+    else
+      self.get_calendar_by_town(user.town)
+    end
+  end
+
   def import(path)
     require 'xls_parser'
     workbook = XlsParser.get_workbook(path)

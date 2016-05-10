@@ -6,6 +6,14 @@ class Indicate::Taxonomy
   belongs_to :town, :class_name => 'Town'
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
 
+  def self.visible_to user
+    if user.is_admin?
+      self.all
+    else
+      self.get_indicate_by_town(user.town)
+    end
+  end
+
   def get_indicators
     indicators = {}
 
