@@ -219,21 +219,8 @@ class BudgetFilesController < ApplicationController
     @budget_file.name = @file_name if @budget_file.name.nil?
   end
 
-  def set_taxonomy_by_budget_file(taxonomy_data)
-    # this function find or create taxonomy
-    # get one params taxonomy(new title or id)
-    # try to find Taxonomy by taxonomy parameters
-    # if Taxonomy not found
-    # create new Taxonomy
-    # return taxonomy
-    begin
-      taxonomy = Taxonomy.find(taxonomy_data)
-    rescue Mongoid::Errors::DocumentNotFound => detail
-      taxonomy = create_taxonomy
-    end
-    taxonomy.title = taxonomy_data
-    taxonomy.locale = params['locale'] || 'uk'
-    taxonomy
+  def set_taxonomy_by_budget_file(taxonomy_id)
+    taxonomy_id.nil? ? create_taxonomy : Taxonomy.find(taxonomy_id)
   end
 
   def sort_column
