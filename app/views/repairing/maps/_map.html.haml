@@ -381,18 +381,18 @@
       if(category == "all") {
         markers.getLayers()[0].eachLayer(function(layer){
           map.removeLayer(layer);
-          if((layer.feature.properties.town_id == town || !town)  && layer.feature.properties.year == year){
+          if((layer.feature.properties.t_id == town || !town)  && layer.feature.properties.year == year){
             map.addLayer(layer);
           }
         });
       } else {
         var checked = $('#subcategories input[type="checkbox"]:checked');
         markers.getLayers()[0].eachLayer(function(layer){
-          if(layer.feature.properties.p_cat_id == category){
+          if(layer.feature.properties.p_c_id == category){
             map.removeLayer(layer);
             $.each(checked, function(i,d){
               var sub = $(d).val();
-              if(sub == layer.feature.properties.cat_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+              if(sub == layer.feature.properties.c_id && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year) {
                 map.addLayer(layer);
               }
             })
@@ -406,18 +406,18 @@
       if(category == "all") {
         markers.getLayers().each(function(layer){
           map.removeLayer(layer);
-          if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+          if((layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year){
             map.addLayer(layer);
           }
         });
       } else {
         var checked = $('#subcategories input[type="checkbox"]:checked');
         markers.getLayers().each(function(layer){
-          if(layer.feature.properties.p_cat_id == category){
+          if(layer.feature.properties.p_c_id == category){
             map.removeLayer(layer);
             $.each(checked, function(i,d){
               var sub = $(d).val();
-              if(sub == layer.feature.properties.cat_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+              if(sub == layer.feature.properties.c_id && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year) {
                 map.addLayer(layer);
               }
             })
@@ -429,7 +429,7 @@
     function showAdressMarker(query){
       var check = 0;
       markers.getLayers()[0].eachLayer(function(layer){
-        if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.cat_id == category || layer.feature.properties.p_cat_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+        if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.c_id == category || layer.feature.properties.p_c_id == category || category == "all") && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year){
           var coords = layer.feature.geometry.coordinates;
           map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
           check++;
