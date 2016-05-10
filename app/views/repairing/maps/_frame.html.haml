@@ -42,6 +42,7 @@
 
     var categories, category = "all"
     var categories_icons = #{Repairing::Category.get_category_icons}
+
     var town = '#{@town}'
     var selected_year='#{@year}';
 
@@ -234,19 +235,11 @@
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
 
-    function imageExist(url)
-    {
-      var img = new Image();
-      img.src = url;
-      return img.height != 0;
-    }
-
     function getIconByCategory(category_id){
 
       var iconCategoryUrl = '/assets/repairing/default_icon.png';
-      if (categories_icons[category_id] && imageExist(categories_icons[category_id])){
-
-      iconCategoryUrl = categories_icons[category_id];
+      if (categories_icons[category_id] ){
+        iconCategoryUrl = categories_icons[category_id];
       };
 
       return new Icon({iconUrl: iconCategoryUrl});
