@@ -1,7 +1,7 @@
 = bootstrap_form_for @repairing_layer do |f|
 
   - if current_user && current_user.has_role?(:admin)
-    = f.select :town, options_for_select(Town.all.collect {|p| [ p.title, p.id ] }, current_user.town), { :label => t('repairing.repairs.form.town') }, :class => 'form-control'
+    = f.text_field :town, :label => t('repairing.repairs.form.town') , :class => 'form-control'
   - else
     = t('repairing.repairs.form.town') + ": " + current_user.town
   = f.text_field :title, :label => t('repairing.repairs.form.title'), :class => 'form-control'
@@ -12,3 +12,10 @@
 
   = f.submit t('form.add'), :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), repairing_layers_path, :class => 'btn btn-default'
+
+:javascript
+  $(document).ready(function(){
+    init_town_select2_with_field_id('#repairing_layer_town',"#{search_for_towns_town_path}");
+  });
+
+

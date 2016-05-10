@@ -77,7 +77,8 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
-    @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+    @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
+
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
 
@@ -92,8 +93,6 @@ class BudgetFilesController < ApplicationController
       table = read_table_from_file file_path
 
       @budget_file.import(table)
-
-      # binding.pry
 
       @budget_file.save!
 
@@ -219,21 +218,8 @@ class BudgetFilesController < ApplicationController
     @budget_file.name = @file_name if @budget_file.name.nil?
   end
 
-  def set_taxonomy_by_budget_file(taxonomy_data)
-    # this function find or create taxonomy
-    # get one params taxonomy(new title or id)
-    # try to find Taxonomy by taxonomy parameters
-    # if Taxonomy not found
-    # create new Taxonomy
-    # return taxonomy
-    begin
-      taxonomy = Taxonomy.find(taxonomy_data)
-    rescue Mongoid::Errors::DocumentNotFound => detail
-      taxonomy = create_taxonomy
-    end
-    taxonomy.title = taxonomy_data
-    taxonomy.locale = params['locale'] || 'uk'
-    taxonomy
+  def set_taxonomy_by_budget_file(taxonomy_id)
+    taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
   end
 
   def sort_column

@@ -42,6 +42,7 @@
 
     var categories, category = "all"
     var categories_icons = #{Repairing::Category.get_category_icons}
+
     var town = '#{@town}'
     var selected_year='#{@year}';
 
@@ -69,8 +70,8 @@
 
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)
-           && (town == '' || feature.properties.town_id == town)
-           && (category == 'all' || category == feature.properties.parent_category_id)) {
+           && (town == '' || feature.properties.t_id == town)
+           && (category == 'all' || category == feature.properties.p_c_id)) {
             filtered_data.features.push(feature)
           }
         })
@@ -234,26 +235,18 @@
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
 
-    function imageExist(url)
-    {
-      var img = new Image();
-      img.src = url;
-      return img.height != 0;
-    }
-
     function getIconByCategory(category_id){
 
       var iconCategoryUrl = '/assets/repairing/default_icon.png';
-      if (categories_icons[category_id] && imageExist(categories_icons[category_id])){
-
-      iconCategoryUrl = categories_icons[category_id];
+      if (categories_icons[category_id] ){
+        iconCategoryUrl = categories_icons[category_id];
       };
 
       return new Icon({iconUrl: iconCategoryUrl});
     };
     function getPoint(properties) {
       var point = {}
-      point.icon = getIconByCategory(properties.parent_category_id);
+      point.icon = getIconByCategory(properties.p_c_id);
 
       return point;
     }
