@@ -89,9 +89,9 @@ class Repairing::GeojsonBuilder
         # subject: "#{repair[:subject]}".gsub('\'', '`'),
         # work: "#{repair[:work]}",
         # description: repair[:description],
-        address: "#{repair[:address]}".gsub('\'', '`'),
+        # address: "#{repair[:address]}".gsub('\'', '`'),
         # amount: "#{repair[:amount]}",
-        repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
+        # repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: year,
         # warranty_date: "#{repair[:warranty_date].strftime("%m/%d/%Y") if repair[:warranty_date]}",
         # img: "#{category and category.img ? category.img.icon.url : ''}"
