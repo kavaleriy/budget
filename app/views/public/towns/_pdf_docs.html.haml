@@ -1,0 +1,51 @@
+:scss
+  .budget_actions{
+    img{
+      width: 25px;
+    }
+  }
+
+-if (current_user && current_user.admin?)
+  .buttons
+    = link_to t('.create'), '#add-modal', id: 'mAddWindow', :class => 'btn btn-large btn-primary', :remote => true
+    -#= link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true
+    = render partial: 'export_budgets/modal'
+  -unless (export_budgets.blank?)
+    .col-xs-3
+      =t('.year')
+    .col-xs-4
+      =t('.title')
+    .col-xs-5
+      =t('actions')
+    - export_budgets.each do |export_budget|
+      .col-xs-3
+        = export_budget.year
+      .col-xs-4
+        = export_budget.title
+      .col-xs-5.budget_actions
+        = link_to image_tag('icons/loupe.png'), export_budget
+        = link_to 'Pdf', save_as_pdf_path(@town.export_budget)
+    -#%table.table.table-striped{"data-sort-name" => "name", "data-sort-order" => "desc"}
+    -#  %thead
+    -#    %tr
+    -#      %th{"data-field" => "name", "data-sortable" => "true"}
+    -#        =t('.year')
+    -#      %th{"data-field" => "age", "data-sortable" => "true"}
+    -#        =t('.title')
+    -#      %th{"data-field" => "age", "data-sortable" => "true"}
+    -#        =t('actions')
+    -#  %tbody
+    -#  - export_budgets.each do |teb|
+    -#    %tr
+    -#      %td= teb.year
+    -#      %td= teb.title
+    -#      .budget_actions
+    -#        %td= link_to image_tag('icons/loupe.png'), teb, target: '_blank'
+    -#        %td
+    -#          -#=link_to "D", download_pdf_path(format: "pdf"), target: "_blank"
+    -#          %a{:href => save_as_pdf_path(@town.export_budget), target: '_blank'}
+    -#            %i.fa.fa-file-pdf-o
+    -#        -if (current_user && current_user.admin?)
+    -#          %td= link_to image_tag('icons/X_icon.png'), teb, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  -else
+    no data yet
