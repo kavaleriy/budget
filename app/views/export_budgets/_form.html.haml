@@ -13,65 +13,37 @@
   #new_export_budget > div.form-group.string.optional.export_budget_header > label{
     width: 50%;
   }
-= simple_form_for(@export_budget, remote: :true) do |f|
-  = f.input :header,label: t('.header')
-  = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
-  = f.input :title, label: t('.title')
-  = f.input :template, label: t('.template')
-  = f.input :town_id, :as => :hidden, :input_html => { :value => @town.blank? ? :town_id : @town.id.to_s }
-  = f.input :footer, label: t('.footer')
-  = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 
+.col-xs-7
+  = simple_form_for(@export_budget) do |f|
+    -#= f.input :header,label: t('.header')
+    = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
+    = f.input :title, label: t('.title')
+    -#= f.input :template, label: t('.template')
+    = f.input :town,label: t('.town_name'),disabled: true,input_html: {data_admin: current_user.is_admin?, value: current_user.town}
+    = f.input :content,label: t('.content')
+    -#= f.input :footer, label: t('.footer')
+    = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
+.col-xs-5
+  dasdsa
 :javascript
 
   $(document).ready(function() {
     $('#export_budget_year').datepicker({
+      autoclose: true,
       format: 'yyyy',
       viewMode: 'years',
       minViewMode: 'years',
       locale: 'ua'
     });
 
-
-    $('#export_budget_town_id').select2({
-
-      sortResults: function(results, container, query) {
-        if (query.term) {
-            // use the built in javascript sort function
-            return results.sort(function(a, b) {
-                if (a.text.length > b.text.length) {
-                    return 1;
-                } else if (a.text.length < b.text.length) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
-        }
-        return results;
-    },
-      allowClear: false,
-      multiSelect: false,
-      multiple: false,
-      minimumInputLength: 2,
-      width: '100%',
-      ajax: {
-        url: '#{search_for_towns_town_path}',
-        dataType: 'json',
-        quietMillis: 250,
-        data: function (term, page) {
-          return {
-            query: term, // search term
-          };
-        },
-        results: function (data, page) {
-          //console.log(data);
-          return { results: data };
-        },
-        cache: true
-      },
-    }).on("change", function(){
-      var town_url = "#{public_path('ID')}".replace('ID', $(this).val())
-      $('#export_budget_town_id').val($(this).val());
+    $('#export_budget_content').summernote({
+      minHeight: 300,
     });
+
+    var town_dom = $('#export_budget_town');
+    if(town_dom.attr('data_admin') == 'true'){
+      town_dom.removeAttr('disabled');
+      init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
+    }
   });
