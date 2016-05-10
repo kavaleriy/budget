@@ -14,6 +14,7 @@ class Town
   scope :get_test_town, -> {where(title: 'Test')}
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
+  scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -200,17 +201,29 @@ class Town
   def self.get_user_town(user)
     # this function return town from user
     # function get one parameters user model
-    # init user_town as hash with empty params
+    # init user_town as new Town
     # if user have town, find this town
-    # and assigned to user_town hash
+    # if user town name have area_title
+    # add area_title to search
+    # and assigned to user_town
     # return user_town
-    user_town = {id: '',title: ''}
-    town_title = ''
-    town_title = user.town unless user.nil?
+    user_town = Town.new
+    town_arr = user.town.split(',') unless user.nil?
+
+    town_title = town_arr.first
+    town_title.strip!
+
     unless town_title.empty?
-      user_town = Town.get_town_by_title(town_title).first
+      user_town = Town.get_town_by_title(town_title)
+
+      if town_arr.size > 1
+        town_area_title = town_arr.last
+        town_area_title.strip!
+        user_town = user_town.get_town_by_area_title(town_area_title)
+      end
     end
-    user_town
+
+    user_town.first
   end
 
   private
