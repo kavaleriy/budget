@@ -31,33 +31,31 @@
 
 :javascript
   $(document).ready(function(){
-      $('#calendar').change(function(){
-        var calendar_url = '/widgets/calendar/show/' + $(this).val();
-        $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',calendar_url);
+      var show_iframe_in_modal = function(iframe_url) {
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url);
         $('#export_budget_visualisation_modal_window').modal();
-        // $.ajax({
-        //   url: '/widgets/calendar/show/' + $(this).val(),
-        //   success : function(data){
-        //     console.log(data);
-        //     $('#export_budget_visualisation_modal_window').find('#iframe').html($(data))
-        //     $('#export_budget_visualisation_modal_window').modal();
-        //   }
-        // })
+      };
+
+      $('#calendar').change(function(){
+        show_iframe_in_modal('/widgets/calendar/show/' + $(this).val());
       });
+
       $('#tax_rot').change(function(){
-        alert('tax_rot change');
+        show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
       });
+
       $('#tax_rov').change(function(){
-        alert('tax_rov change');
+        show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
       });
       $('#indicates').change(function(){
         alert('indicates change');
       });
       $('#sankey').change(function(){
         if($(this).is(":checked")) {
-
         }
       });
+
+
   });
 
 
