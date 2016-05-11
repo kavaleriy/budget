@@ -1,5 +1,5 @@
 class ExportBudgetsController < ApplicationController
-  layout 'visify', only: [:show]
+  # layout 'visify', only: [:show]
   skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
@@ -14,8 +14,8 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-    @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
-    @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
+    # @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
+    # @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
     # render 'taxonomy_panel_for_pdf.html.haml'
     # respond_to do |format|
     #   format.html

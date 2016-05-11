@@ -1,18 +1,20 @@
-!!! 5
-%html
-  %head
-    %meta(charset="utf-8")
-    = stylesheet_link_tag    "application", :media => "all"
-    = wicked_pdf_stylesheet_link_tag    'timelines'
-    = wicked_pdf_stylesheet_link_tag    'timelinejs'
-    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/timeline'
-    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/bootstrap.css'
+-#-binding.pry
+=@export_budget.content.html_safe
+-#!!! 5
+-#%html
+-#  %head
+-#    %meta(charset="utf-8")
+-#    = stylesheet_link_tag    "application", :media => "all"
+-#    = wicked_pdf_stylesheet_link_tag    'timelines'
+-#    = wicked_pdf_stylesheet_link_tag    'timelinejs'
+-#    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/timeline'
+-#    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/bootstrap.css'
     -#= wicked_pdf_javascript_include_tag "application"
-    = javascript_include_tag "application"
+    -#= javascript_include_tag "application"
 -#<iframe width=600 height=400 src='http://localhost:3000//widgets/visify/bubbletree/55b2462c6b6173070b000000/?locale=uk'></iframe>
-= render partial: '/widgets/calendar/timeline_pdf', :locals => {calendar: @town_calendar}
+-#= render partial: '/widgets/calendar/timeline_pdf', :locals => {calendar: @town_calendar}
 -#= render partial: '/widgets/calendar/timelinejs', :locals => {calendar: @town_calendar}
-=image_tag(@img_base64)
+-#=image_tag(@img_base64)
 
 -#=@export_budget.template.html_safe
 -#=@export_budget.town
