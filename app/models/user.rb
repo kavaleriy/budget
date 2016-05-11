@@ -46,7 +46,7 @@ class User
 
   # declare the valid roles -- do not change the order if you add more
   # roles later, always append them at the end!
-  roles :admin, :guest, :editor, :public_organisation, :city_authority
+  roles :admin, :guest, :editor, :public_organisation, :city_authority,:central_authority
 
   def to_s
     self.email
@@ -58,6 +58,10 @@ class User
 
   def city_authority?
     roles.member? :city_authority
+  end
+
+  def central_authority?
+    roles.member? :central_authority
   end
 
   private
