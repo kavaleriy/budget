@@ -20,7 +20,7 @@
       = f.text_field :last_sign_in_at
     .form-group
       Ролі:
-      - for role in [:public_organisation, :city_authority]
+      - for role in [:public_organisation, :city_authority,:central_authority]
         %label
           = check_box_tag "roles[]", role, @user.roles.include?(role)
           = role
