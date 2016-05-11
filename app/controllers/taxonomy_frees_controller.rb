@@ -1,2 +1,2 @@
-class TaxonomyRotFactsController < TaxonomiesController
+class TaxonomyFreesController < TaxonomiesController
 end

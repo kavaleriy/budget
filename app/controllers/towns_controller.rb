@@ -39,7 +39,8 @@ class TownsController < ApplicationController
 
   def search_for_towns
     @towns = use_cache get_controller_action_key do
-      Town.all.reject{|town| town.level == 1 }
+      # Town.all.reject{|town| town.level == 1 }
+      Town.all
     end
 
     respond_to do |format|
