@@ -28,17 +28,18 @@
         %h4
           =t('actions')
       - export_budgets.each do |export_budget|
-        .col-xs-3
-          %h5
-            = export_budget.year
-        .col-xs-4
-          %h5
-            = export_budget.title
-        .col-xs-5.budget_actions
-          = link_to image_tag('icons/loupe.png'), export_budget
-          = link_to save_as_pdf_path(export_budget) do
-            %i.fa.fa-file-pdf-o
-          = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        .row
+          .col-xs-3
+            %h5
+              = export_budget.year
+          .col-xs-4
+            %h5
+              = export_budget.title
+          .col-xs-5.budget_actions
+            = link_to image_tag('icons/loupe.png'), export_budget
+            = link_to save_as_pdf_path(export_budget) do
+              %i.fa.fa-file-pdf-o
+            = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
     -#%table.table.table-striped{"data-sort-name" => "name", "data-sort-order" => "desc"}
     -#  %thead
     -#    %tr
