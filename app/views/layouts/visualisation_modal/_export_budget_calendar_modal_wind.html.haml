@@ -1,0 +1,93 @@
+:scss
+  $copy_block_heigth : 35px;
+  .modal-dialog{
+    width: 90%;
+  }
+  #copy_img{
+    height: $copy_block_heigth;
+    overflow: hidden;
+    width: 100%;
+    resize: none;
+  }
+  #visualisation_copy_img{
+    height: $copy_block_heigth !important;
+  }
+.modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title
+          = t('iframe.title')
+      .modal-body
+        .input-group
+          =text_area 'copy','img',size: "1x2",disabled: 'disabled'
+          =link_to 'Insert', "#" , class: 'input-group-addon',id:'visualisation_copy_img',disabled: true
+        %iframe{:height => "700px", :src => "", :width => "100%",id: 'iframe'}
+      .modal-footer
+
+:javascript
+  var convert_html_to_canvas = function(panel,input_field){
+    //set input dom element
+    var input_dom = $(input_field);
+    //convert image and write to text_area input
+    html2canvas(panel, {
+      //convert element to canvas
+      onrendered: function(canvas) {
+        //convert canvas to base 64
+        canvas.getContext('2d');
+        var base64 = canvas.toDataURL("image/png");
+        //write base64 to input dom element
+        input_dom.val(base64);
+      }
+    });
+  };
+  var get_active_panel = function(iframe_id,dom_elem,input_dom){
+    //this function get dom in iframe and print base64 to input in modal window
+    var iframe_dom = $(iframe_id).contents();
+    var active_dom = iframe_dom.find(dom_elem);
+    convert_html_to_canvas(active_dom,input_dom);
+  }
+
+  var push_img_to_summernote = function(input_dom,summernote_dom_id,modal_id){
+    //get value from text_area input
+    var img_base64 = $('#copy_img').val();
+    //insert base64 to summernote editor
+    $summernote = $("#export_budget_content");
+    $summernote.summernote("insertImage",img_base64);
+    // clear text_area
+    $('#copy_img').val('');
+    //close modal window
+    $('#export_budget_visualisation_modal_window').modal('hide');
+  }
+
+
+  $(document).ready(function(){
+    $('#visualisation_copy_img').click(function(){
+      push_img_to_summernote('#copy_img',"#export_budget_content",'#export_budget_visualisation_modal_window');
+      return false;
+    });
+  });
+
+  $('#iframe').on('load',function(){
+    $.when(
+      $.getScript( "/assets/html2canvas/html2canvas.js" ),
+      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+      $.Deferred(function( deferred ){
+        $( deferred.resolve );
+      })
+    ).done(function(){
+        get_active_panel("#iframe","div.active",'#copy_img');
+        // var iframe_dom = $("#iframe").contents();
+        // $(iframe_dom.find('a[data-toggle="tab"]')).on('shown.bs.tab', function (e) {
+        //   alert('change');
+        // e.target // newly activated tab
+        // e.relatedTarget // previous active tab
+        // })
+
+      });
+  });
+
+
+
