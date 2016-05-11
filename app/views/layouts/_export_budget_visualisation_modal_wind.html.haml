@@ -1,6 +1,16 @@
 :scss
+  $copy_block_heigth : 35px;
   .modal-dialog{
     width: 90%;
+  }
+  #copy_img{
+    height: $copy_block_heigth;
+    overflow: hidden;
+    width: 100%;
+    resize: none;
+  }
+  #visualisation_copy_img{
+    height: $copy_block_heigth !important;
   }
 .modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
   .modal-dialog
@@ -12,14 +22,66 @@
           = t('iframe.title')
       .modal-body
         .input-group
-          %input.form-control#copy_img
+          =text_area 'copy','img',size: "1x2"
           =link_to 'Copy', "#" , class: 'input-group-addon',id:'visualisation_copy_img'
         %iframe{:height => "700px", :src => "", :width => "100%",id: 'iframe'}
       .modal-footer
 
 :javascript
+  var convert_html_to_canvas = function(panel,input_field){
+    var input_dom = $(input_field);
+    html2canvas(panel, {
+      onrendered: function(canvas) {
+        canvas.getContext('2d');
+        var canvasdata = canvas.toDataURL("image/png");
+
+        input_dom.val(canvasdata);
+      }
+    });
+  };
+
   $(document).ready(function(){
     $('#visualisation_copy_img').click(function(){
-      $('')
+      var message = $('#copy_img');
+      var test_value = $('#copy_img').val()
+
+      $summernote = $("#export_budget_content");
+      $summernote.summernote("insertImage",test_value);
+
+      return false;
     });
   });
+
+  $('#iframe').on('load',function(){
+    $.when(
+      $.getScript( "/assets/html2canvas/html2canvas.js" ),
+      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+      $.Deferred(function( deferred ){
+        $( deferred.resolve );
+      })
+    ).done(function(){
+        var iframe_dom = $("#iframe").contents();
+        // var panel_id = $("#res").attr('data_panel_id');
+        // set_visible_panel(iframe_dom,panel_id);
+        var active_dom = iframe_dom.find("div.active");
+        // console.log(active_dom);
+        // $('#copy_img').val('dasdsadsad');
+        convert_html_to_canvas(active_dom,'#copy_img');
+        // console.log(base64_img);
+        // $('#copy_img').val();
+        //setTimeout(function(){
+        //    html2canvas(iframe_dom.find('#tab_pie'), {
+        //      onrendered: function(canvas) {
+        //        canvas.getContext('2d');
+        //        var canvasdata = canvas.toDataURL("image/png");
+        //
+        //        $('#base64').val(canvasdata);
+        //        $('form').submit();
+        //      }
+        //    });
+        //},2000);
+    });
+  });
+
+
+

@@ -21,7 +21,7 @@
     = f.input :title, label: t('.title')
     -#= f.input :template, label: t('.template')
     = f.input :town,label: t('.town_name'),disabled: true,input_html: {data_admin: current_user.is_admin?, value: current_user.town}
-    = f.input :content,label: t('.content')
+    = f.input :content, label: t('.content'), :contenteditable => "true"
     -#= f.input :footer, label: t('.footer')
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5
