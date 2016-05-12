@@ -1,6 +1,6 @@
 class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
-  skip_before_action :verify_authenticity_token,only: [:create_pdf]
+  # skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
@@ -37,10 +37,10 @@ class ExportBudgetsController < ApplicationController
 
 
   def create_pdf
-    @img_base64 = params[:base64]
-    render pdf: 'test_name',
+    # @img_base64 = params[:base64]
+    render pdf: @export_budget.title,
            formats: [:html],
-           template: 'export_budgets/show',
+           template: 'export_budgets/create_pdf',
            show_as_html: params.key?('debug')
   end
 
