@@ -214,6 +214,7 @@ Rails.application.routes.draw do
     get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'
     get 'town_profile/budget_files_by_taxonomies/:tax_rot/:tax_rov' => 'town_profile#budget_files_by_taxonomies', as: 'budget_files_by_taxonomies'
     get 'town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov' =>'town_profile#sankey_by_taxonomies', as:'sankey_by_taxonomies'
+    get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'

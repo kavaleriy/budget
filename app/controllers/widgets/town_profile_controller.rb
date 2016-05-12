@@ -1,6 +1,6 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
-  before_action :set_town,:except => [:budget_files_by_taxonomies, :sankey_by_taxonomies]
+  before_action :set_town,:except => [:budget_files_by_taxonomies, :sankey_by_taxonomies,:show_indicates]
 
   def budget_files
     @tabs = []
@@ -58,6 +58,21 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     render 'budget_files'
 
+  end
+
+  def show_indicates
+    # this function have url '/widgets/town_profile/show_indicates/:indicate_id'
+    # get one params indicate_id(Indicate::Taxonomy.id)
+    # find Indicate::Taxonomy by params[:id]
+    # get indicators by Indicate::Taxonomy object
+    # get years list by Indicate::Taxonomy object
+    # set @current_user as current_user(crutch)
+    # render indicates/taxonomies/show without layout
+    @indicate_taxonomy = Indicate::Taxonomy.find(params[:indicate_id])
+    @indicators = @indicate_taxonomy.get_indicators
+    @years = @indicators.keys.sort!.reverse!
+    @current_user = current_user
+      # format.html { render partial: 'indicators',:locals => { indicators: @indicators }}
   end
 
   def sankey_by_taxonomies

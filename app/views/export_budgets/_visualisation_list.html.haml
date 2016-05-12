@@ -33,8 +33,10 @@
 
     $(document).ready(function(){
 
-      var show_iframe_in_modal = function(iframe_url) {
+      var show_iframe_in_modal = function(iframe_url,panel_selector = 'div.active') {
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url);
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-panel-selector',panel_selector);
+
         $('#export_budget_visualisation_modal_window').modal();
       };
 
@@ -68,15 +70,19 @@
         }
         set_sankey_button_status($('#tax_rot').val(),tax_rov_id);
       });
+
       $('#indicates').change(function(){
-        alert('indicates change');
+        if($(this).val()){
+          show_iframe_in_modal('/widgets/town_profile/show_indicates/' + $(this).val(),'div.budget');
+        }
       });
+
       $('#sankey').change(function(){
         if($(this).is(":checked")) {
-          // console.log('tax_rot: ' + $('#tax_rot').val());
-          // console.log('tax_rov: ' + $('#tax_rov').val());
-          show_iframe_in_modal('/widgets/town_profile/sankey_by_taxonomies/' +
+          if($('#tax_rot').val() && $('#tax_rov').val()){
+            show_iframe_in_modal('/widgets/town_profile/sankey_by_taxonomies/' +
                 $('#tax_rot').val() + '/' + $('#tax_rov').val());
+          }
         }
       });
 

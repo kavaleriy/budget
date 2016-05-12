@@ -63,8 +63,8 @@
 
   $(document).ready(function(){
     $('#visualisation_copy_img').click(function(){
-
-      var active_panel = get_active_panel("#iframe","div.active");
+      var panel_selector = $('#iframe').attr('data-panel-selector');
+      var active_panel = get_active_panel("#iframe",panel_selector);
       convert_html_to_canvas(active_panel,'#copy_img');
       setTimeout(function(){
         push_img_to_summernote('#copy_img',"#export_budget_content",'#export_budget_visualisation_modal_window');
