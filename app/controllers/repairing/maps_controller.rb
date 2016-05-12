@@ -8,7 +8,7 @@ module Repairing
 
       @zoom = params[:zoom]
 
-      if params[:town_id]
+      if params[:town_id] && params[:town_id] != '0'
         @town = params[:town_id]
         @map_center = Town.find(@town)['coordinates']
       else
