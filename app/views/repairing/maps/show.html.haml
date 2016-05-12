@@ -14,8 +14,8 @@
 
     $('#town_select').select2({
       initSelection: function(element, callback) {
-        var current_user_town_id = "#{@current_user_town[:id]}";
-        var current_user_town_text = "#{@current_user_town[:title]}";
+        var current_user_town_id = "#{@current_user_town[:id] unless @current_user_town.nil?}";
+        var current_user_town_text = "#{@current_user_town[:title] unless @current_user_town.nil?}";
         var data = {id: current_user_town_id , text: current_user_town_text };
         set_frame_url(current_user_town_id, $('#zoom_select').val());
         callback(data);
