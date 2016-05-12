@@ -5,7 +5,9 @@
     %span.descr
       =@indicate_taxonomy.town
 
-= render partial: 'indicators', :locals => { indicators: @indicators }
+= render partial: '/widgets/town_profile/indicates'
+
+-#= render partial: 'indicators', :locals => { indicators: @indicators }
 
 #embed_code_visify
   = render partial: 'widgets/visify/embed_code'

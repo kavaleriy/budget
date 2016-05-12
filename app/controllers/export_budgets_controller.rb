@@ -62,12 +62,10 @@ class ExportBudgetsController < ApplicationController
     @export_budget = ExportBudget.new(params[:export_budget])
     respond_to do |format|
       if @export_budget.save
-        @result = 'save'
-        format.html { redirect_to :back, notice: 'Export budget was successfully created.' }
+        format.html { redirect_to @export_budget, notice: 'Export budget was successfully created.' }
         format.js { }
         format.json { render :back, status: :created, location: @export_budget }
       else
-        @result = 'not_save'
         format.html { render :new }
         format.js { }
         format.json { render json: @export_budget.errors, status: :unprocessable_entity }

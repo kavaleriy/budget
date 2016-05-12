@@ -72,7 +72,6 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
     @current_user = current_user
-      # format.html { render partial: 'indicators',:locals => { indicators: @indicators }}
   end
 
   def sankey_by_taxonomies
