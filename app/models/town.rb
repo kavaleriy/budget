@@ -199,7 +199,7 @@ class Town
   end
 
   def self.get_user_town(user)
-    # this function return town from user
+    # this function return town from user if user not nil
     # function get one parameters user model
     # init user_town as new Town
     # if user have town, find this town
@@ -207,23 +207,26 @@ class Town
     # add area_title to search
     # and assigned to user_town
     # return user_town
-    user_town = Town.new
-    town_arr = user.town.split(',') unless user.nil?
+    unless user.nil?
+      user_town = Town.new
+      town_arr = user.town.split(',') unless user.nil?
 
-    town_title = town_arr.first
-    town_title.strip!
+      town_title = town_arr.first
+      town_title.strip!
 
-    unless town_title.empty?
-      user_town = Town.get_town_by_title(town_title)
+      unless town_title.empty?
+        user_town = Town.get_town_by_title(town_title)
 
-      if town_arr.size > 1
-        town_area_title = town_arr.last
-        town_area_title.strip!
-        user_town = user_town.get_town_by_area_title(town_area_title)
+        if town_arr.size > 1
+          town_area_title = town_arr.last
+          town_area_title.strip!
+          user_town = user_town.get_town_by_area_title(town_area_title)
+        end
       end
+
+      user_town.first
     end
 
-    user_town.first
   end
 
   private
