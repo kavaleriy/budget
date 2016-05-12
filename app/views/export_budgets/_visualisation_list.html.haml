@@ -18,7 +18,7 @@
       class:'form-control',:prompt => t('.choose_taxonomy_rov')
   .form-group
     =label_tag('sankey',t('sankeys.get_sankey'))
-    =check_box_tag 'sankey'
+    =check_box_tag 'sankey',false,false,disabled: true
 
   .form-group
     =label_tag('calendar',t('choose_calendar'))
@@ -30,28 +30,53 @@
       class:'form-control',:prompt => t('.choose_indicate')
 
 :javascript
-  $(document).ready(function(){
+
+    $(document).ready(function(){
+
       var show_iframe_in_modal = function(iframe_url) {
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url);
         $('#export_budget_visualisation_modal_window').modal();
       };
 
+      var set_sankey_button_status = function(tax_rot_value,tax_rov_value){
+        var sankey_dom = $('#sankey');
+        sankey_dom.attr('disabled','disabled');
+        if (tax_rot_value && tax_rov_value){
+          sankey_dom.removeAttr('disabled');
+        }
+      }
+
       $('#calendar').change(function(){
-        show_iframe_in_modal('/widgets/calendar/show/' + $(this).val());
+        var calendar_id = $(this).val();
+        if (calendar_id){
+          show_iframe_in_modal('/widgets/calendar/show/' + calendar_id);
+        }
       });
 
       $('#tax_rot').change(function(){
-        show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
+        var tax_rot_id = $(this).val();
+        if(tax_rot_id){
+          show_iframe_in_modal('/widgets/visify/bubbletree/' + tax_rot_id);
+        }
+        set_sankey_button_status(tax_rot_id,$('#tax_rov').val());
       });
 
       $('#tax_rov').change(function(){
-        show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
+        var tax_rov_id = $(this).val();
+        if(tax_rov_id){
+          show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
+        }
+        set_sankey_button_status($('#tax_rot').val(),tax_rov_id);
       });
       $('#indicates').change(function(){
         alert('indicates change');
       });
       $('#sankey').change(function(){
         if($(this).is(":checked")) {
+          // console.log('tax_rot: ' + $('#tax_rot').val());
+          // console.log('tax_rov: ' + $('#tax_rov').val());
+          show_iframe_in_modal('/widgets/town_profile/sankey_by_taxonomies/' +
+                $('#tax_rot').val() + '/' + $('#tax_rov').val());
         }
       });
 
