@@ -122,9 +122,9 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubble_tree_item(item, info = nil)
-    while @taxonomy.is_a?(TaxonomyRot) and item['children'] and item['children'].length == 1
-      item = item['children'][0]
-    end
+    # while @taxonomy.is_a?(TaxonomyRot) and item['children'] and item['children'].length == 1
+    #   item = item['children'][0]
+    # end
 
     node = {
       'amount' => item['amount'],
