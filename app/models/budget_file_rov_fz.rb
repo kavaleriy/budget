@@ -25,12 +25,7 @@ class BudgetFileRovFz < BudgetFile
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
 
-    (1..12).map do |i|
-      amount = row["m#{i}"].to_i / 100
-      fond = row['cf']
-
-      next if amount == 0
-
+    generate_item = ->(amount, month) do
       item = {
           'amount' => amount,
           'fond' => fond,
@@ -38,11 +33,23 @@ class BudgetFileRovFz < BudgetFile
           'ktfk_aaa' => ktfk_aaa,
           'kvk' => kvk,
           'kekv' => kekv,
-          '_month' => i.to_s
+          '_month' => month.to_s
       }
+      return item
+    end
 
-      item
+    items = (1..12).map do |i|
+      amount = row["m#{i}"].to_i / 100
+
+      next if amount == 0
+
+      generate_item.call(amount, i)
     end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
+
+    annual_amount = items.map {|s| s['amount']}.sum
+    items << generate_item.call(annual_amount, 0)
+
+    items
   end
 
 end

@@ -1,7 +1,7 @@
 .row
   .info_panel
     .info_header
-      %strong=@repair.title
+      %strong=@repair.subject || @repair.title
     %hr.heroviy
     .info_text
       .row
@@ -14,11 +14,18 @@
           %strong="#{t('repairing.maps.info_popup.info_works')} :"
         .text_desc.col-xs-8
           = @repair.work
-      .row
-        .text_title.col-xs-4
-          %strong="#{t('repairing.maps.info_popup.info_performer')} :"
-        .text_desc.col-xs-8
-          =@repair.obj_owner
+      - unless @repair.spending_units.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_spending_units')} :"
+          .text_desc.col-xs-8
+            = @repair.spending_units
+      - unless @repair.obj_owner.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_performer')} :"
+          .text_desc.col-xs-8
+            =@repair.obj_owner
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.info_price')} :"
