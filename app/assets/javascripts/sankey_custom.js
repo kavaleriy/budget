@@ -231,7 +231,12 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
         var link = svg.append("g").selectAll(".link")
             .data(energy.links)
             .enter().append("path")
-            .attr("class", "link")
+            // .attr("class", "link")
+            // add style attribute for html2canvas function (html2canvas not support css class )
+            .style("fill",'none')
+            .style("stroke",'#000')
+            .style("stroke-opacity",'.2')
+            // end style for html2canvas
             .attr("d", path)
             .style("stroke-width", function(d) { return Math.max(1, d.dy); })
             .sort(function(a, b) { return b.dy - a.dy; })
