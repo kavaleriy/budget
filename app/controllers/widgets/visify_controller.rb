@@ -230,7 +230,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def build_amounts_list
     amounts = []
 
-    amounts << { title: 'Гривня', amount: 1 }
+    amounts << { title: t('amount_uah'), amount: 1 }
 
     usd_rate = Currency.find_or_create_by!(:short_title => 'USD').rates.where(:year => @sel_year).last
     amounts << { title: t('amount_usd'), amount: usd_rate.rate, recalc_per: true } if usd_rate and usd_rate.rate
