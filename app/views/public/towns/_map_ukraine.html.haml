@@ -120,7 +120,8 @@
   function getInfoContent(properties) {
     var content = "";
     if(properties == "Ukraine") {
-      content = "Клікніть по області, щоб перейти на її профіль. Або оберіть місто у випадаючому списку нижче, щоб перейти на профіль міста.";
+
+      content = I18n.t('public.towns.map_instruction');
     } else {
       content = '<h3>' + properties.title + '</h3>';
     }

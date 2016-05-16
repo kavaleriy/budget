@@ -12,7 +12,7 @@
       = link_to file.indicate_file.url do
         %i.fa{ class: "#{get_file_type_icon(file.indicate_file_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'key_indicate_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => 'indicator_file_update/' + "#{file.id}", 'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'key_indicate_indicator_file', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => 'indicator_file_update/' + "#{file.id}", 'data-emptytext' => t('taxonomies.attachment.name_doument') }
 
   .col-sm-1
     = link_to 'x', {:controller => 'indicator_files', :action => 'indicator_file_destroy', :indicator_file_id => file.id, :town_select => @town.id }, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
