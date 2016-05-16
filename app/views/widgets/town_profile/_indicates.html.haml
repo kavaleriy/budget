@@ -177,27 +177,29 @@
         .html(function(d) { return d['value']; })
         .attr('test','test'); */
 
-
-        /*graph.selectAll("dot")
+        graph.selectAll("dot")
           .data(data)
         .enter()
-        .append("svg:g")
-        .attr('class','tool')
-        .attr('x',function(d) { return x(d["year"]) - 10 ; })
-        .attr('y',function(d) { return y(d['value']) - 10; })
-        .attr('fill','red')
-        //.html(function(d) { return d['value']; })
-        //.attr('test','test');
-        */
+        .append("rect")
+        .attr('rx','5')
+        .attr('ry','5')
+        .attr('width','50')
+        .attr('height','20')
+        .attr('text-anchor','middle')
+        .attr('x',function(d) { return x(d["year"]) - 25 ; })
+        .attr('y',function(d) { return y(d['value']) - 30; })
+        .attr('fill','#B1B1B1');
 
 
         graph.selectAll("dot")
           .data(data)
         .enter()
         .append("text")
-        .attr('x',function(d) { return x(d["year"]) - 10 ; })
-        .attr('y',function(d) { return y(d['value']) - 10; })
-        .attr('fill','red')
+        .attr('x',function(d) { return x(d["year"]); })
+        .attr('y',function(d) { return y(d['value']) - 15; })
+        .attr('fill','white')
+        .attr('text-anchor','middle')
+        .style('font-size','12')
         .html(function(d) { return d['value']; })
         .attr('test','test');
 
@@ -284,11 +286,11 @@
       //var str_to_array_space = circles[i].split(' ');
       //console.log(str_to_array_space);
     //}
-    //$("svg circle").tooltip({
-    //    'container': 'body',
-    //    'placement': 'top',
-    //    'trigger': 'manual'     // remove this string to make on hover
-    //});
+    $("svg circle").tooltip({
+        'container': 'body',
+        'placement': 'top',
+        'trigger': 'manual'     // remove this string to make on hover
+    });
 
     // make tooltips visible always, pointer events - none
     window.setTimeout(function() {
