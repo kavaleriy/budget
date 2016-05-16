@@ -8,12 +8,14 @@ module Repairing
 
       @zoom = params[:zoom]
 
+      @map_center = [48.5, 31.2] # center of Ukraine
+
       if params[:town_id] && params[:town_id] != '0'
         @town = params[:town_id]
-        @map_center = Town.find(@town)['coordinates']
+        town = Town.find(@town)
+        @map_center = town['coordinates'] if town.level > 1 # area
       else
         @town = ""
-        @map_center = [48.5, 31.2] # center of Ukraine
       end
 
       @year = params[:year] || ''
