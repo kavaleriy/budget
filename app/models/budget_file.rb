@@ -43,7 +43,7 @@ class BudgetFile
 
   def import table
 
-    rows = table[:rows].map { |row|
+    rows = table.map { |row|
       readline(row)
     }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 

@@ -23,6 +23,8 @@ class FzBudgetFilesController < ApplicationController
     taxonomy_rot = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rot])
     taxonomy_rov = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rov])
 
+    raise 'Не вказано код місцевого бюджету. Необхідно налаштувати параметри візуалізації' if taxonomy_rot.kmb.blank? || taxonomy_rov.kmb.blank?
+
     fzbudgetfile_params[:path].each do |uploaded|
       file = upload_file uploaded, uploaded.original_filename
 
@@ -30,15 +32,25 @@ class FzBudgetFilesController < ApplicationController
       fz_file.title = file[:name]
       fz_file.path = file[:path].to_s
 
-      table = read_table_from_file fz_file.path
+      remove_annual_rows = ->(rows) do
+        rows.each do |row|
+          row['m0'] = (1..12).map { |i| row["m#{i}"].to_i }.sum
+        end
 
-      fz_file.rot_file = BudgetFileRotFz.new(title: 'Доходи - ', taxonomy: taxonomy_rot) if taxonomy_rot
-      fz_file.rov_file = BudgetFileRovFz.new(title: 'Видатки - ', taxonomy: taxonomy_rov) if taxonomy_rov
+        return rows.reject do |row|
+          row['m0'] == row['m1'] && rows.detect {|f| row['m0'] == f['m0'] && row['fcode'] == f['fcode'] && row['ecode'] == f['ecode'] && row['kvk'] == f['kvk']}
+        end
+      end
+
+      rows = remove_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
+
+      fz_file.rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
+      fz_file.rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
 
       [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
-        budget_file.title += fz_file.title
         budget_file.data_type = :plan
-        budget_file.import table
+        budget_file.author = current_user.email unless current_user.nil?
+        budget_file.import rows
       end
 
       fz_file.save!
@@ -49,6 +61,11 @@ class FzBudgetFilesController < ApplicationController
       format.json { render :show, status: :created, location: @vz_file }
     end
 
+  rescue => e
+    message = "Не вдалося завантажити файл : #{e}"
+    respond_to do |format|
+      format.html { redirect_to :back, alert:  message }
+    end
   end
 
   private

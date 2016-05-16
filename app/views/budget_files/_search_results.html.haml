@@ -1,6 +1,6 @@
 - budget_files.each do |budget_file|
   %tr{'data-id' => budget_file.id}
-    %td=link_to "#{budget_file.id} (#{budget_file.class})", budget_file
+    %td=link_to budget_file.id, budget_file
     %td
       =link_to budget_file.title, budget_file
       -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
