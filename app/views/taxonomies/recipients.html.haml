@@ -19,7 +19,7 @@
       %tr.recipient
         %td= recipient[:code]
         %td
-          %a{ href: '#', 'data-resource' => 'taxonomy', id: 'recipient_amount', 'data-type' => 'text', 'data-url' => "recipient_by_code/#{recipient[:code]}", 'data-emptytext' => 'не вказано' }
+          %a{ href: '#', 'data-resource' => 'taxonomy', id: 'recipient_amount', 'data-type' => 'text', 'data-url' => "recipient_by_code/#{recipient[:code]}", 'data-emptytext' => t('taxonomies.recipients.not_specified') }
             = recipient[:amount]
         %td= recipient[:title]
 
