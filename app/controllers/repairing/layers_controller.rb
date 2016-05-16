@@ -121,14 +121,16 @@ module Repairing
     def import layer, repairs
       repairs.each do |repair|
 
-        location = Geocoder.coordinates(repair['Адреса']) unless repair['Адреса'].blank?
+        location = nil, location1 = nil
+
+        location = Geocoder.coordinates(repair['Адреса'])
         location1 = Geocoder.coordinates(repair['Адреса1']) unless repair['Адреса1'].blank?
 
         coordinates =
-            if location1
-              [location, location1]
-            else
+            if location1.blank?
               location
+            else
+              [location, location1]
             end
 
         repair_hash = build_repair_hash(repair, coordinates)
