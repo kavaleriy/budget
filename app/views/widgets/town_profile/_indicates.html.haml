@@ -41,7 +41,7 @@
     current_user = "#{@current_user}";
 
     $('#year_list a').click(function(e) {
-      //$("svg circle").tooltip('destroy');
+      $("svg circle").tooltip('destroy');
       d3.selectAll('.graph svg').remove();
       num_of_years = $(e.target).attr('data-value');
       $('#year_list .active').removeClass('active');
@@ -66,7 +66,7 @@
   })
 
   $(window).resize(function() {
-    //$("svg circle").tooltip('destroy');
+    $("svg circle").tooltip('destroy');
     d3.selectAll('.graph svg').remove();
     create_graphs(num_of_years);
   });
@@ -167,6 +167,40 @@
                 .on("mouseout", mouseout)
                 .on("click", mouseclick);
 
+        /* graph.selectAll("dot")
+          .data(data)
+        .enter()
+        .append("text")
+        .attr('x',function(d) { return x(d["year"]) - 10 ; })
+        .attr('y',function(d) { return y(d['value']) - 10; })
+        .attr('fill','red')
+        .html(function(d) { return d['value']; })
+        .attr('test','test'); */
+
+
+        /*graph.selectAll("dot")
+          .data(data)
+        .enter()
+        .append("svg:g")
+        .attr('class','tool')
+        .attr('x',function(d) { return x(d["year"]) - 10 ; })
+        .attr('y',function(d) { return y(d['value']) - 10; })
+        .attr('fill','red')
+        //.html(function(d) { return d['value']; })
+        //.attr('test','test');
+        */
+
+
+        graph.selectAll("dot")
+          .data(data)
+        .enter()
+        .append("text")
+        .attr('x',function(d) { return x(d["year"]) - 10 ; })
+        .attr('y',function(d) { return y(d['value']) - 10; })
+        .attr('fill','red')
+        .html(function(d) { return d['value']; })
+        .attr('test','test');
+
         if(v[current_year]) {
           var indicator_id = v[current_year]['id'];
 
@@ -241,15 +275,24 @@
       })
     })
 
-    $("svg circle").tooltip({
-        'container': 'body',
-        'placement': 'top',
-        'trigger': 'manual'     // remove this string to make on hover
-    });
+   // var circles = $("svg circle");
+   // console.log(circles);
+   // for(var i = 0;i < circles.length;i++){
+      //console.log('x : ' + circles[i].cx.animVal.value);
+      //console.log('y : ' + circles[i].cy.animVal.value);
+     // console.log(circles[i].toString());
+      //var str_to_array_space = circles[i].split(' ');
+      //console.log(str_to_array_space);
+    //}
+    //$("svg circle").tooltip({
+    //    'container': 'body',
+    //    'placement': 'top',
+    //    'trigger': 'manual'     // remove this string to make on hover
+    //});
 
     // make tooltips visible always, pointer events - none
     window.setTimeout(function() {
       $('.bootstrap_flash').html('');
-      $("svg circle").tooltip('show');
+      //$("svg circle").tooltip('show');
     }, 1000);
   }
