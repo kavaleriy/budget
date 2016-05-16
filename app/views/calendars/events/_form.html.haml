@@ -47,10 +47,10 @@
         = f.static_control label: t('.icon') do
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {label: t('.icon')}, { class: 'fa-select' }
       .col-md-4
-        = f.static_control label: t('.color') do
+        = f.static_control label: t('calendars.events.form.color') do
           = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list(@event.action_type), @event.color), { }, { class: 'color-select' }
       .col-md-4
-        = f.static_control label: t('.text_color') do
+        = f.static_control label: t('calendars.events.form.text_color') do
           = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @event.text_color), { }, { class: 'color-select' }
     = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: "Вкажіть детальний опис"
     .row
