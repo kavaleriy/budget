@@ -28,7 +28,7 @@ class Repairing::GeojsonBuilder
         type: "FeatureCollection",
         properties: {
           id: "#{repair[:id]}"
-        },
+        }.merge(extract_props(repair)),
         features: [
         {
           type: "Feature",
@@ -37,35 +37,11 @@ class Repairing::GeojsonBuilder
             coordinates: repair[:coordinates][0]
           },
           properties: {
+            id: "#{repair[:id]}",
             repair: "road",
             route: reduceCoordinatesCount(repair[:coordinates])
-          }.merge(extract_props(repair))
+          }
         },
-        # {
-        #     type: "Feature",
-        #     geometry: {
-        #       type: 'Point',
-        #       coordinates: repair[:coordinates][repair[:coordinates].count - 1]
-        #     },
-        #     properties: {
-        #       id: "#{repair[:id]}",
-        #       title: "#{repair[:title]}",
-        #       # description: repair[:description],
-        #       address: "#{repair[:address_to]}",
-        #       amount: "#{repair[:amount]}",
-        #       repair_date: "#{repair[:repair_date]}"
-        #     }
-        #   },
-        #   {
-        #       type: "Feature",
-        #       geometry: {
-        #         type: 'LineString',
-        #         coordinates: reduceCoordinatesCount(repair[:coordinates])
-        #       },
-        #       properties: {
-        #         id: "#{repair[:id]}",
-        #       }.merge(extract_props(repair))
-        #   }
         ]
     }
 
