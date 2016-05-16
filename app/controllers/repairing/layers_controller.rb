@@ -121,7 +121,7 @@ module Repairing
     def import layer, repairs
       repairs.each do |repair|
 
-        location = nil, location1 = nil
+        location1 = nil
 
         location = Geocoder.coordinates(repair['Адреса'])
         location1 = Geocoder.coordinates(repair['Адреса1']) unless repair['Адреса1'].blank?
