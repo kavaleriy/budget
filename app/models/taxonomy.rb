@@ -454,7 +454,6 @@
 
 
     def revenue_codes
-      binding.pry if @kkd_info.nil?
       @kkd_info = Taxonomy.load_from_csv "db/revenue_codes.#{I18n.locale.to_s || 'uk'}.csv" if @kkd_info.nil?
       @kkd_info
     end

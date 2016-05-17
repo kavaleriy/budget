@@ -18,6 +18,8 @@
       %span.caret
     %ul.dropdown-menu{'role'=>'menu'}
       %li
+        =link_to t('.upload_ft_file'), new_budget_file_rot_ft_path, :class => ''
+      %li
         =link_to "#{t('.upload_rot')}", new_budget_file_rot_path, :class => ''
       %li.divider
       %li
@@ -31,9 +33,6 @@
       %li.divider
       %li
         =link_to t('.upload_lvivobl_rot'), new_budget_file_lvivobl_rot_path, :class => ''
-      %li.divider
-      %li
-        =link_to t('.upload_ft_file'), new_budget_file_rot_ft_path, :class => ''
 
 
   .btn-group
@@ -41,6 +40,8 @@
       =t('.upload_expences')
       %span.caret
     %ul.dropdown-menu{'role'=>'menu'}
+      %li
+        =link_to t('.upload_vd_file'), new_budget_file_rov_vd_path, :class => ''
       %li
         =link_to "#{t('.upload_rov')}", new_budget_file_rov_path, :class => ''
       %li.divider
@@ -55,9 +56,6 @@
       %li.divider
       %li
         =link_to t('.upload_lvivobl_rov'), new_budget_file_lvivobl_rov_path, :class => ''
-      %li.divider
-      %li
-        =link_to t('.upload_vd_file'), new_budget_file_rov_vd_path, :class => ''
 
   =link_to t('.upload_fz_file'), new_fz_budget_file_path, :class => 'btn btn-primary'
 

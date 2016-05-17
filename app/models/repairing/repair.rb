@@ -3,6 +3,7 @@ module Repairing
     include Mongoid::Document
 
     belongs_to :layer, class_name: 'Repairing::Layer'
+    validates :layer, presence: true
 
     belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
 
@@ -21,7 +22,6 @@ module Repairing
     field :edrpou_artist, type: String
     field :spending_units, type: String
     field :edrpou_spending_units, type: String
-    #
 
     field :warranty_date, type: Date
 

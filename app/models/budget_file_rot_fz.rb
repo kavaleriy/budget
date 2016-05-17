@@ -35,7 +35,7 @@ class BudgetFileRotFz < BudgetFile
     end
 
     items = (1..12).map do |i|
-      amount = row["m#{i}"].to_i / 100
+      amount = row["m#{i}"].to_f
 
       next if amount == 0
 
