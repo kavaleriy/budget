@@ -32,13 +32,20 @@ class FzBudgetFilesController < ApplicationController
       fz_file.title = file[:name]
       fz_file.path = file[:path].to_s
 
+      def remove_old_fz user_name, file_name
+        BudgetFile.where(:author => user_name, :name => file_name).destroy_all
+      end
+
+      remove_old_fz(current_user.email, file[:name])
+
+
       remove_annual_rows = ->(rows) do
         rows.each do |row|
-          row['m0'] = (1..12).map { |i| row["m#{i}"].to_i }.sum
+          row['m0'] = (1..12).map { |i| row["m#{i}"].to_f }.sum
         end
 
         return rows.reject do |row|
-          row['m0'] == row['m1'] && rows.detect {|f| row['m0'] == f['m0'] && row['fcode'] == f['fcode'] && row['ecode'] == f['ecode'] && row['kvk'] == f['kvk']}
+          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
         end
       end
 
@@ -49,7 +56,8 @@ class FzBudgetFilesController < ApplicationController
 
       [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
         budget_file.data_type = :plan
-        budget_file.author = current_user.email unless current_user.nil?
+        budget_file.author = current_user.email
+        budget_file.name = file[:name]
         budget_file.import rows
       end
 
