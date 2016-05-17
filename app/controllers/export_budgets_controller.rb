@@ -4,7 +4,7 @@ class ExportBudgetsController < ApplicationController
 
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
-
+  before_action :set_export_budget_presenter, only: [:edit,:new]
   # GET /export_budgets
   # GET /export_budgets.json
   def index
@@ -47,7 +47,6 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
-    @presenter = ExportBudget::FormPresenter.new(current_user)
     # binding.pry
   end
 
@@ -109,7 +108,9 @@ class ExportBudgetsController < ApplicationController
     def set_export_budget
       @export_budget = ExportBudget.find(params[:id])
     end
-
+    def set_export_budget_presenter
+      @presenter = ExportBudget::FormPresenter.new(current_user)
+    end
     def get_town_calendar
       # -binding.pry
       @town_calendar = Calendar.where(:town => @export_budget.town.title).first
