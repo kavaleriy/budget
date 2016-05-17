@@ -79,11 +79,17 @@ module Repairing
 
           unless @repairing_layer.repairs_file.path.nil?
             repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-            # binding.pry
             import(@repairing_layer, repairs[:rows])
+
+            Thread.new do
+              @repairing_layer.repairs.each do |repair|
+                repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to)
+                repair.save!
+              end
+            end
           end
 
-          format.html { redirect_to @repairing_layer, notice: 'Layer was successfully created.' }
+          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count} сек." }
           format.json { render :show, status: :created, location: @repairing_layer }
         else
           format.html { render :new }
@@ -121,40 +127,11 @@ module Repairing
     def import layer, repairs
       repairs.each do |repair|
 
-        location1 = nil
-
-        location = Geocoder.coordinates(repair['Адреса'])
-        location1 = Geocoder.coordinates(repair['Адреса1']) unless repair['Адреса1'].blank?
-
-        coordinates =
-            if location1.blank?
-              location
-            else
-              [location, location1]
-            end
+        coordinates = nil # calc in background
 
         repair_hash = build_repair_hash(repair, coordinates)
 
-        layer_repair = Repairing::Repair.create(repair_hash
-            # title: "#{repair['Адреса']}, #{repair['Робота']}",
-            # obj_owner: repair['Виконавець'],
-            # subject: repair['Об\'єкт'],
-            # work: repair['Робота'],
-            # amount: repair['Вартість'],
-            # warranty_date: repair['Гарантія'],
-            # description: repair['Додаткова інформація'],
-            #
-            # repair_start_date: (repair['Дата початку ремонту'].to_date  unless repair['Дата ремонту'].nil?),
-            # repair_end_date: (repair['Дата закінчення ремонту'].to_date  unless repair['Дата закінчення ремонту'].nil?),
-            # edrpou_artist: repair['ЄДРПОУ виконавця'],
-            # spending_units: repair['Розпорядник бюджетних коштів'],
-            # edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
-            #
-            # address: repair['Адреса'],
-            # address_to: repair['Адреса1'],
-            #
-            # coordinates: coordinates
-        )
+        layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
         category = Repairing::Category.where(:title => repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
