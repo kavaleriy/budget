@@ -45,7 +45,7 @@ class FzBudgetFilesController < ApplicationController
         end
 
         return rows.reject do |row|
-          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
+          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['cf'] == 7 and f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
         end
       end
 
