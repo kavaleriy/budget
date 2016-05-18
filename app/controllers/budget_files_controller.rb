@@ -68,9 +68,6 @@ class BudgetFilesController < ApplicationController
     user_visible_taxonomies = get_taxonomies(current_user.town)
     @taxonomies = []
     user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
-
-    # binding.pry
-    # @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
   end
 
   # POST /revenues

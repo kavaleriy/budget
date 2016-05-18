@@ -7,8 +7,6 @@ module Repairing
 
     belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
 
-    field :title, type: String
-
     field :obj_owner, type: String
 
     field :subject, type: String
