@@ -1,7 +1,7 @@
 .row
   .info_panel
     .info_header
-      %strong=@repair.subject || @repair.title
+      %strong="#{@repair.subject.blank? ? @repair.work : @repair.subject}"
     %hr.heroviy
     .info_text
       .row
@@ -9,11 +9,12 @@
           %strong="#{t('repairing.maps.info_popup.info_adress')} :"
         .text_desc.col-xs-8
           =@repair.address
-      .row
-        .text_title.col-xs-4
-          %strong="#{t('repairing.maps.info_popup.info_works')} :"
-        .text_desc.col-xs-8
-          = @repair.work
+      - unless @repair.subject.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_works')} :"
+          .text_desc.col-xs-8
+            = @repair.work
       - unless @repair.spending_units.blank?
         .row
           .text_title.col-xs-4

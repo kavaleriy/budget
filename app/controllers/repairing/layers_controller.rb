@@ -13,13 +13,13 @@ module Repairing
 
       respond_to do |format|
         if @location1
-          repair = @repairing_layer.repairs.new( title: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
+          repair = @repairing_layer.repairs.new( subject: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
           # format.js { render :search_street }
         elsif @location
-          repair = repair = @repairing_layer.repairs.new( title: params[:q], coordinates: @location, address: params[:q] )
+          repair = repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
@@ -89,7 +89,7 @@ module Repairing
             end
           end
 
-          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count} сек." }
+          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count / 2} сек." }
           format.json { render :show, status: :created, location: @repairing_layer }
         else
           format.html { render :new }
@@ -180,7 +180,6 @@ module Repairing
         start_repair_date = repair['Дата початку ремонту'].to_date  unless repair['Дата початку ремонту'].nil?
         end_repair_date = repair['Дата закінчення ремонту'].to_date  unless repair['Дата закінчення ремонту'].nil?
         {
-            title: "#{repair['Адреса']}, #{repair['Робота']}",
             obj_owner: repair['Виконавець'],
             subject: repair['Об\'єкт'],
             work: repair['Робота'],

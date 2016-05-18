@@ -93,7 +93,7 @@ class BudgetFilesController < ApplicationController
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
       table = read_table_from_file file_path
 
-      @budget_file.import(table[:rows])
+      @budget_file.import(table)
 
       if @budget_file.taxonomy.columns.blank?
         @budget_file.taxonomy.columns = {}
