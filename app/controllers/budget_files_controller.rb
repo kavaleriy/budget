@@ -68,9 +68,6 @@ class BudgetFilesController < ApplicationController
     user_visible_taxonomies = get_taxonomies(current_user.town)
     @taxonomies = []
     user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
-
-    # binding.pry
-    # @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
   end
 
   # POST /revenues
@@ -93,7 +90,7 @@ class BudgetFilesController < ApplicationController
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
       table = read_table_from_file file_path
 
-      @budget_file.import(table)
+      @budget_file.import(table[:rows])
 
       if @budget_file.taxonomy.columns.blank?
         @budget_file.taxonomy.columns = {}

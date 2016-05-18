@@ -21,7 +21,6 @@
         = text_field_tag :budget_file_taxonomy,'',class: 'form-control'
         -#= select_tag :budget_file_taxonomy, options_for_select( [nil] + @taxonomies.all.collect { |p| [ p.title, p.id ] }, @current_taxonomy_id ) , class: 'form-control'
 
-
   .form-group
     %label.control-label
       = t('owner')
@@ -72,7 +71,6 @@
         return results;
       },
       initSelection: function(element, callback) {
-        //callback({id: '#{Town.find_by(title: current_user.town)}', text: '#{current_user.town}' });
       },
       allowClear: false,
       multiSelect: false,
@@ -93,17 +91,6 @@
         },
         cache: true
       },
-    }).on("change", function(){
-      //if($(this).val()) {
-      //  $.ajax({
-      //    url: '/community/get_communities/' + $(this).val(),
-      //    dataType: 'html',
-      //    success: function (html) {
-      //      $('#communities').html(html);
-      //    },
-      //    cache: true
-      //  });
-      //}
     })
 
   })
