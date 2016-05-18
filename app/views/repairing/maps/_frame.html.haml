@@ -24,7 +24,7 @@
 
 .search_block.col-xs-12
   .input-group
-    = text_field_tag :q, '', :class => 'form-control', :placeholder => "Пошук за адресою ремонту"
+    = text_field_tag :q, '', :class => 'form-control', :placeholder => t('repairing.maps.map_select.search_adress')
     .input-group-btn
       = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
         = t('form.search')
@@ -208,7 +208,7 @@
         multiSelect: false,
         multiple: false,
         minimumInputLength: 2,
-        placeholder: "Обрати місто",
+        placeholder: I18n.t('repairing.maps.map_select.select_town'),
         width: '100%',
         ajax: {
           url: '#{search_for_towns_town_path}',

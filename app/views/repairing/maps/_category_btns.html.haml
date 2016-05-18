@@ -30,7 +30,7 @@
 
 #category_description
   %span
-    Вибрати категорію робіт:
+    = t('repairing.maps.map_select.select_category_work')
 #category_btns.btn-group
   - Repairing::Category.all.select{|p| p.category.nil? }.each do |category|
     .btn.btn-default{:title => category.title, 'data-id' => category.id}
@@ -44,5 +44,5 @@
     = text_field_tag 'map_town', ''
 .input-group
   %span.input-group-addon
-    %b рік
+    %b= t('repairing.maps.map_select.year')
   = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse, :selected => "#{@year}"), :class => 'form-control'
