@@ -50,7 +50,9 @@ class Town
             numericality: { only_integer: true }
 
   def is_test?
-    self.is_test
+    # this function check if town is test
+    # test town should have TEST_TOWN_KOATUU
+    self.koatuu.eql?(TEST_TOWN_KOATUU)
   end
 
   def self.town_exists?(title)
