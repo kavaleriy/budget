@@ -1469,7 +1469,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			//me.label.hide();
 			//me.label2.hide();
 			me.text.style("fill-opacity", 0);
-			//me.text2.style("fill-opacity", 0);
+			// me.text2.style("fill-opacity", 0);
 			me.text3.style("fill-opacity", 0);
 		}
 
