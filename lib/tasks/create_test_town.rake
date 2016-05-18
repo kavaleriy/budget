@@ -7,7 +7,11 @@ namespace :create_test_town do
   end
 
   task create_test_town_task: :remove_old_test_town do
-    test_town = Town.new({title: 'Test' ,level: '3',description: 'Test town'})
+    test_town = Town.new({koatuu: '9876543210',
+                         title: 'Демонстрація типового профілю міста' ,level: '3',
+                          description: 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+                         is_test: true
+                         })
     test_town.save
   end
 

@@ -1,4 +1,14 @@
 :scss
+  .test_town{
+    color: #3088BF;
+    font-size: 24px;
+    line-height: 50px;
+    height: 50px;
+    background: #F5F5F5;
+    margin-bottom: 7px;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+  }
   #xls_info_content{
     display: none;
   }
@@ -59,6 +69,8 @@
 
 %br
 .row
+  .col-xs-12.test_town
+    =render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: @test_town }
   #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
       = render :partial => 'towns_accordion', :locals => {:town => area, css: 'font-size: 26px'}

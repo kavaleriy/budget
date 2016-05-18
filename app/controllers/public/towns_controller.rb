@@ -127,23 +127,24 @@ class Public::TownsController < ApplicationController
 
 
   def test_town?
-    params[:town_id] == "test"
+    @town.is_test?
+    # params[:town_id] == "test"
   end
 
   def set_town
-    if test_town?
-      @town = Town.new(:id => 'test',
-                       :title => 'Демонстрація типового профілю міста',
-                       :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-                       :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
-    else
+    # if test_town?
+    #   @town = Town.new(:id => 'test',
+    #                    :title => 'Демонстрація типового профілю міста',
+    #                    :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
+    #                    :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
+    # else
       @town = Town.find(params[:town_id])
       if @town.level == 1 #area
         @towns = Town.all.where(:area_title => @town.title)
       else
         @towns = Town.all.where(:area_title => @town.area_title)
       end
-    end
+    # end
   end
 
   def set_documents

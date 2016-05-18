@@ -8,6 +8,7 @@ module Public
     def index
       @sliders = Modules::Slider.get_slider_by_order
       @news = Modules::BudgetNews.get_last_news(4)
+      @test_town = Town.get_test_town.first
     end
 
     def about

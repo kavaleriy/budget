@@ -67,7 +67,7 @@ class TownsController < ApplicationController
   # GET /indicator_files
   # GET /indicator_files.json
   def index
-    # @towns = Town.to_tree
+    @test_town = Town.get_test_town.first
     @towns = Town.areas
   end
 

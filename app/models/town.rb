@@ -11,7 +11,7 @@ class Town
   require 'carrierwave/mongoid'
 
   default_scope lambda { order_by(:title => :asc) }
-  scope :get_test_town, -> {where(title: 'Test')}
+  scope :get_test_town, -> {where(is_test: true )}
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
@@ -28,6 +28,7 @@ class Town
   field :bounds, type: Array
   field :center, type: Array
   field :geometry_type, type: String
+  field :is_test,type: Boolean
 
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
@@ -47,6 +48,10 @@ class Town
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },
             numericality: { only_integer: true }
+
+  def is_test?
+    self.is_test
+  end
 
   def self.town_exists?(title)
     # this function check if exist town by title
