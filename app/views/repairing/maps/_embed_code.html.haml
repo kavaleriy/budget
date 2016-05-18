@@ -65,7 +65,7 @@
       = text_field_tag 'year_select', Date.current.year
     .form-group
       %label Масштаб
-      = select_tag 'zoom_select', options_for_select((6..14).to_a), :class => 'form-control'
+      = select_tag 'zoom_select', options_for_select((6..14).to_a, 10), :class => 'form-control'
 
 .clear
 
