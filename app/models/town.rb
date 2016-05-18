@@ -216,6 +216,7 @@ class Town
     # return user_town
     unless user.nil?
       user_town = Town.new
+
       town_arr = user.town.split(',') unless user.nil?
 
       town_title = town_arr.first
