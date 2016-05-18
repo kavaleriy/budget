@@ -16,37 +16,12 @@ class Calendar
   embeds_many :events
   has_and_belongs_to_many :subscribers
 
-  def self.get_calendars_by_locale(locale)
-    # this function return calendars by locale
-    # get one params (locale is web-site locale)
-    # if locale is nil set default locale
-    # if locale is default locale
-    # then return all calendars where locale is default locale or nil
-    # else return all calendars where locale is params(locale)
-    default_locale = 'uk'
-    if locale.nil?
-      locale = default_locale
-    end
 
-    if locale.eql? default_locale
-      where(:locale.in => [locale,nil])
-    else
-      where(:locale => locale)
-    end
+
+  def self.visible_to user,locale
+    self.get_calendars(user).get_calendars_by_locale(locale)
   end
 
-
-  def test
-    binding.pry
-  end
-
-  def self.visible_to user
-    if user.is_admin?
-      self.all
-    else
-      self.get_calendar_by_town(user.town)
-    end
-  end
 
   def import(path)
     require 'xls_parser'
@@ -111,5 +86,42 @@ class Calendar
     end
     workbook.stream.read
 
-   end
+  end
+  private
+
+  def self.get_calendars_by_locale(locale)
+    # this function return calendars by locale
+    # get one params (locale is web-site locale)
+    # if locale is nil set default locale
+    # if locale is default locale
+    # then return all calendars where locale is default locale or nil
+    # else return all calendars where locale is params(locale)
+    default_locale = 'uk'
+    if locale.nil?
+      locale = default_locale
+    end
+
+    if locale.eql? default_locale
+      where(:locale.in => [locale,nil])
+    else
+      where(:locale => locale)
+    end
+  end
+
+  def self.get_calendars(user)
+    # this function return calendars visible from user
+    # if user nil return calendars with empty author field
+    # else if user is admin return all calendars
+    # else return calendars where author is nil and any of user email or user town
+    calendars = if user.nil?
+                  self.where(:author => nil)
+                elsif user.has_role? :admin
+                  self.all
+                else
+                  self.where(:author => nil) + Calendar.any_of({:author => user.email},{:town => user.town})
+                end
+
+    calendars || []
+  end
+
 end

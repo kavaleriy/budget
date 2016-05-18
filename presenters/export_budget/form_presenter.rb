@@ -1,7 +1,8 @@
 class ExportBudget::FormPresenter
 
-  def initialize(user)
+  def initialize(user,locale)
     @user = user
+    @locale = locale
   end
 
   def taxonomies_rot
@@ -13,7 +14,7 @@ class ExportBudget::FormPresenter
   end
 
   def calendars
-    Calendar.visible_to(@user).to_a
+    Calendar.visible_to(@user,@locale).to_a
   end
 
   def indicates

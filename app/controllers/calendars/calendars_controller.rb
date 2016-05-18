@@ -14,7 +14,8 @@ module Calendars
     # GET /calendars
     # GET /calendars.json
     def index
-      @calendars = view_context.get_calendars
+      # @calendars = view_context.get_calendars
+      @calendars = Calendar.visible_to(current_user,params[:locale])
     end
 
     # GET /calendars/1

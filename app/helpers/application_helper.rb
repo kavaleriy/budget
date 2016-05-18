@@ -37,15 +37,16 @@ module ApplicationHelper
 
 
   def get_calendars
-    calendars = if current_user.nil?
-      Calendar.where(:author => nil)
-    elsif current_user.has_role? :admin
-      Calendar.all
-    else
-      Calendar.where(:author => nil) + Calendar.any_of({:author => current_user.email},{:town => current_user.town})
-    end
-
-    calendars || []
+    Calendar.visible_to(current_user,params[:locale])
+    # calendars = if current_user.nil?
+    #   Calendar.where(:author => nil)
+    # elsif current_user.has_role? :admin
+    #   Calendar.all
+    # else
+    #   Calendar.where(:author => nil) + Calendar.any_of({:author => current_user.email},{:town => current_user.town})
+    # end
+    #
+    # calendars || []
   end
 
 
