@@ -1,7 +1,8 @@
-%h1 Editing export_budget
+%h1
+  =t('.header')
 
 = render 'form'
 
-= link_to 'Show', @export_budget
+= link_to t('show'), @export_budget
 \|
-= link_to 'Back', export_budgets_path
+= link_to t('back'), export_budgets_path
