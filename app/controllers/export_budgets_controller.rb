@@ -109,7 +109,7 @@ class ExportBudgetsController < ApplicationController
       @export_budget = ExportBudget.find(params[:id])
     end
     def set_export_budget_presenter
-      @presenter = ExportBudget::FormPresenter.new(current_user)
+      @presenter = ExportBudget::FormPresenter.new(current_user,params[:locale])
     end
     def get_town_calendar
       # -binding.pry

@@ -5,7 +5,6 @@ module Calendars
     layout 'application_admin'
 
     before_action :set_action_type_if_empty # callback for initialize all no indicated action_type in calendar_action
-
     before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
     before_action :authenticate_user!, only: [:show, :edit]
@@ -15,7 +14,8 @@ module Calendars
     # GET /calendars
     # GET /calendars.json
     def index
-      @calendars = view_context.get_calendars
+      # @calendars = view_context.get_calendars
+      @calendars = Calendar.visible_to(current_user,params[:locale])
     end
 
     # GET /calendars/1
@@ -124,9 +124,11 @@ module Calendars
         @calendar = Calendar.find(params[:id])
       end
 
+
+
       # Never trust parameters from the scary internet, only allow the white list through.
       def calendar_params
-        params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event, :import_file)
+        params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event, :import_file,:locale)
       end
   end
 end
