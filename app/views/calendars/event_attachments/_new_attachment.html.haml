@@ -10,18 +10,18 @@
     .col-xs-12
       .form-group
         %label
-          Опис
+          = t('form.description')
         = f.text_field :description, :class => 'form-control'
     .col-sm-8
       .form-group
         %label
-          Файл
+          = t('form.file')
         = f.file_field :doc_file,:class => 'form-control'
     .col-sm-4
       .actions
         = f.button :class => 'btn btn-default' do
           %i.fa.fa-upload
-            Завантажити
+            = t('form.load')
 
 
 :javascript

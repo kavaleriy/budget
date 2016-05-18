@@ -13,7 +13,7 @@
   }
 
 
-%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
+%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => t('documentation.categories.index.about_category') }
 
 :javascript
   $(document).ready(function() {

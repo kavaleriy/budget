@@ -4,18 +4,18 @@
       = link_to document.doc_file.url do
         %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
   %td
-    %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.name') }
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'з...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.from') }
       = document.yearFrom
     %span -
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'по...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.to') }
       = document.yearTo
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть місто...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
       = document.town.to_s if document.town
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => 'Вкажіть тип документу...' }
+    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.type') }
       = document.branch.title if document.branch
   %td
     - if current_user.has_role? :admin
@@ -27,7 +27,7 @@
         %i.fa.fa-check-square-o
   -if document.check_access(current_user)
     %td
-      = link_to document, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+      = link_to document, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
         %i.fa.fa-times.pull-right
 
 :javascript
