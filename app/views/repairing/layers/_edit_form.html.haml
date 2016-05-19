@@ -40,6 +40,7 @@
     $('#edit_layer .editable').editable();
 
     $('#edit_layer .edit_category').editable({
+      value: "#{@repairing_layer.repairing_category.id if @repairing_layer.repairing_category}",
       source: '#{get_categories_repairing_layer_path}',
       select2: {
         width: '350px',
@@ -48,6 +49,7 @@
     });
 
     $('#edit_layer .edit_twn').editable({
+      value: "#{@repairing_layer.town.id if @repairing_layer.town}",
       source: '#{search_town_path}',
       select2: {
         width: '350px',

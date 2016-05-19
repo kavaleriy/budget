@@ -47,7 +47,7 @@
 
     $('#documentation_category_tree_view').on("changed.jstree", function(e, data){
       if(data && data.selected && data.selected.length) {
-          $.get('categories/' + data.selected, function (d) {
+          $.get('categories/' + data.selected + "?locale=" + "#{params[:locale]}" , function (d) {
           });
       }
       else {
