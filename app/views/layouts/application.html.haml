@@ -63,3 +63,9 @@
     ga('create', 'UA-56923551-1', 'auto');
     ga('send', 'pageview');
   })
+:javascript
+  dataConfirmModal.setDefaults({
+    title: I18n.t("confirm_destroy"),
+    commit: I18n.t("confirm_yes"),
+    cancel: I18n.t("confirm_no")
+  });

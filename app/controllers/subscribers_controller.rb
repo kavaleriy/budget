@@ -56,7 +56,7 @@ class SubscribersController < ApplicationController
   def destroy
     @subscriber.destroy
     respond_to do |format|
-      format.html { redirect_to subscribers_url, notice: 'Підписчик видалений.' }
+      format.html { redirect_to subscribers_url, notice: 'Deleted subscriber.' }
       format.json { head :no_content }
     end
   end

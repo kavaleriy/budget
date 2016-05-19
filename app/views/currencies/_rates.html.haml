@@ -9,7 +9,7 @@
   - rates.each do |rate|
     .col-xs-2
       = "#{rate[:year]} - "
-      %a{ href: '#', 'data-resource' => 'currency', id: 'rate', 'data-type' => 'text', 'data-pk' => "#{rate[:id]}", 'data-url' => "rate_by_year/#{rate[:year]}", 'data-emptytext' => 'не вказано' }
+      %a{ href: '#', 'data-resource' => 'currency', id: 'rate', 'data-type' => 'text', 'data-pk' => "#{rate[:id]}", 'data-url' => "rate_by_year/#{rate[:year]}", 'data-emptytext' => t('taxonomies.recipients.not_specified') }
         = rate[:rate]
 
 :javascript
