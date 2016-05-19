@@ -215,26 +215,25 @@ class Town
     # and assigned to user_town
     # return user_town
     unless user.nil?
-      user_town = Town.new
+      unless user.town.empty?
+        user_town = Town.new
+        town_arr = user.town.split(',') unless user.nil?
 
-      town_arr = user.town.split(',') unless user.nil?
+        town_title = town_arr.first
+        town_title.strip!
 
-      town_title = town_arr.first
-      town_title.strip!
+        unless town_title.empty?
+          user_town = Town.get_town_by_title(town_title)
 
-      unless town_title.empty?
-        user_town = Town.get_town_by_title(town_title)
-
-        if town_arr.size > 1
-          town_area_title = town_arr.last
-          town_area_title.strip!
-          user_town = user_town.get_town_by_area_title(town_area_title)
+          if town_arr.size > 1
+            town_area_title = town_arr.last
+            town_area_title.strip!
+            user_town = user_town.get_town_by_area_title(town_area_title)
+          end
         end
+        user_town.first
       end
-
-      user_town.first
     end
-
   end
 
   private
