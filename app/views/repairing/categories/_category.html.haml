@@ -1,9 +1,9 @@
 %table.table
   %thead
     %th
-      Назва
+      = t('repairing.category_edit.name')
     %th
-      Зображення
+      = t('repairing.category_edit.image')
   %tbody
     %tr
       %td
@@ -16,7 +16,7 @@
               =image_tag @repairing_category.img.thumb.url
             -else
               =image_tag "no_image.png"
-          = f.file_field :img, :label => "Завантажити/змінити", :multiple => false
+          = f.file_field :img, :label => t('repairing.category_edit.image_load'), :multiple => false
           = f.button :class => 'btn btn-primary' do
             %i.fa.fa-upload
 
