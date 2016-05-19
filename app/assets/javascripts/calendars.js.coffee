@@ -64,7 +64,7 @@ $(document).on 'ready page:change', ->
       dt_start = moment(start).format("DD/MM/YYYY")
       dt_end = moment(end).subtract(1, 'days').format("DD/MM/YYYY")
 
-      $.get $('#calendar').attr('calendar_id') + "/events/new",
+      $.get $('#calendar').attr('calendar_id') + "/events/new?locale="+I18n.locale,
         starts_at: dt_start
         ends_at: dt_end
         all_day: true
@@ -104,7 +104,7 @@ $(document).on 'ready page:change', ->
 #            calendar.fullCalendar('unselect');
 
     eventClick: (calEvent, jsEvent, view) ->
-      $.get $('#calendar').attr('calendar_id') + "/events/"+calEvent.id+"/edit"
+      $.get $('#calendar').attr('calendar_id') + "/events/"+calEvent.id+"/edit?locale="+I18n.locale
 #        .done (data) ->
 #          $("#eventModal .modal-content").html data
 #          $('#eventModal').modal('show')
