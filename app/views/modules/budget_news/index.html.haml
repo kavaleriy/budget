@@ -47,7 +47,7 @@
             = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
             = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
   -else
-    На данний момент новин немає.
+    = t('public.home.news.no_news')
   %br
     = paginate @budget_news
 :javascript
