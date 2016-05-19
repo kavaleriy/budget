@@ -50,7 +50,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def index
-    @taxonomies = Taxonomy.visible_to current_user
+    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
   end
 
   def show
