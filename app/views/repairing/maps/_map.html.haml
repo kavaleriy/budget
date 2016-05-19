@@ -262,9 +262,10 @@
             getPopupInfoContent(feature.properties.id,layer);
             //console.log(content);
             //layer.bindPopup(content);
-            //if (options.featureClickCallback){
-            //  options.featureClickCallback(feature, popup);
-            //}
+            // console.log(options);
+            if (options.featureClickCallback){
+             options.featureClickCallback(feature, popup);
+            }
           }
         })
 

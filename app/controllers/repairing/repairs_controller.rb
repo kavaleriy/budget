@@ -27,6 +27,7 @@ module Repairing
 
     # GET /repairing/repairs/1/edit
     def edit
+
       respond_to do |format|
         format.js { render :edit }
       end
