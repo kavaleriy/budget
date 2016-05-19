@@ -15,7 +15,7 @@
     %a{ href: '#', id: 'title', 'data-resource' => 'community_file', 'data-type' => 'text', 'data-pk' => file.id, 'data-url' => community_file_path(file.id), 'data-emptytext' => 'Вкажіть назву документа...' }
       = file.title
   .col-sm-1
-    = link_to file, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+    = link_to file, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript

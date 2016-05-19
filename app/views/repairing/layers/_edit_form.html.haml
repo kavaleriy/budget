@@ -21,16 +21,16 @@
       %tbody
         %tr
           %td
-            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть назву прошарку...' }
+            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => t('repairing.layers.edit.title') }
               = @repairing_layer.title
           %td
-            %a.edit_category{ href: '#', 'data-resource' => 'repairing_layer', id: 'repairing_category', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть категорію робіт...' }
+            %a.edit_category{ href: '#', 'data-resource' => 'repairing_layer', id: 'repairing_category', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => t('repairing.layers.edit.category') }
               = @repairing_layer.repairing_category.title if @repairing_layer.repairing_category
           %td
-            %a.edit_twn{ href: '#', 'data-resource' => 'repairing_layer', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Вкажіть місто...' }
+            %a.edit_twn{ href: '#', 'data-resource' => 'repairing_layer', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => t('repairing.layers.edit.town') }
               = @repairing_layer.town.title if @repairing_layer.town
           %td
-            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => 'Детальний опис прошарку...' }
+            %a.editable{ href: '#', 'data-resource' => 'repairing_layer', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@repairing_layer.id}", 'data-url' => "#{repairing_layer_path(@repairing_layer)}", 'data-emptytext' => t('repairing.layers.edit.description') }
               = @repairing_layer.description
 .clear
 
