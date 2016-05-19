@@ -6,7 +6,7 @@ class ExportBudget
   validates :year,:title,:town, presence: true
   validates :year, numericality: { only_integer: true }
 
-  after_initialize :initial_content_template
+  # after_initialize :initial_content_template
 
   field :year, type: Integer
   field :title, type: String

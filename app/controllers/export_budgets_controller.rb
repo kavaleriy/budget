@@ -47,7 +47,7 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
-    # binding.pry
+    @export_budget.initial_content_template
   end
 
   # GET /export_budgets/1/edit
