@@ -217,7 +217,7 @@ class BudgetFilesController < ApplicationController
     # file_path is path to file,when he will be saved
     # taxonomy is taxonomy what has this budget_file(one taxonomy -> many budget_file)
     @budget_file.taxonomy = taxonomy
-
+    @budget_file.taxonomy.author = current_user
     @budget_file.author_model = current_user
     @budget_file.author = current_user.email unless current_user.nil?
 

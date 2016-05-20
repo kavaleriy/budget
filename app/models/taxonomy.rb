@@ -18,6 +18,7 @@
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
 
+    belongs_to :author, class_name: 'User'
     has_many :budget_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
 
@@ -26,7 +27,7 @@
                 if user.has_role? :admin
                   self.all
                 else
-                  self.where(:owner => user.town)
+                  self.where(:owner => user.town,:author.in => [user,nil])
                 end
               else
                 self.where(:owner => '')
