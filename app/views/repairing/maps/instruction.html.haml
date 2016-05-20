@@ -4,51 +4,48 @@
     = t('layouts.navbar.repairing_maps_instruction')
 
 %h4
-  Загальні відомості
+  -# Загальні відомості
+  =t('repairing.maps.instruction.head_general_information')
 %p
-  Модуль "Ремонт" призначений для відображення інформації про ремонтні роботи,
-  які проводяться у місті/районі/області. На основі даних із завантажених в систему файлів будується
-  інтерактивна карта ремонтів.
+  -#Модуль "Ремонт" призначений для відображення інформації про ремонтні роботи,
+  -#які проводяться у місті/районі/області. На основі даних із завантажених в систему файлів будується
+  -#інтерактивна карта ремонтів.
+  =t('repairing.maps.instruction.sentence_1')
 %p
-
 %hr
-
 %h4
-  Довідник робіт
+  -#Довідник робіт
+  =t('repairing.maps.instruction.head_reference_works')
 %p
-  = link_to "Довідник робіт", repairing_categories_path
-  містить категорії та підкатегорії (види) робіт.
+  = link_to t('repairing.maps.instruction.head_reference_works'), repairing_categories_path
+  =t('repairing.maps.instruction.sentence_2')
 %p
-  Кожен файл з ремонтними роботами відповідає певній категорії робіт. Стовбець файлу "Робота" - відповідає підкатегорії (виду) робіт за довідником.
-
+  =t('repairing.maps.instruction.sentence_3')
 %hr
-
 %h4
-  Слої
-
+  =t('repairing.maps.instruction.head_layers')
 %p
-  В модулі
-  = link_to "Слої", repairing_layers_path
-  можна завантажити файли: 1 файл = 1 категорія робіт.
+  =t('repairing.maps.instruction.sentence_4_1')
+  = link_to t('repairing.maps.instruction.head_layers'), repairing_layers_path
+  =t('repairing.maps.instruction.sentence_4_2')
 %p
-  Файл із даними про ремонтні роботи повинен містити наступні стовбці:
+  =t('repairing.maps.instruction.sentence_5')
   %ul
-    %li Балансоутримувач
-    %li Адреса
-    %li Адреса1 (кінцева адреса: вказується за потреби, якщо це, наприклад, ремонт дороги)
-    %li Об'єкт (конкретний об'єкт, на якому проводяться роботи)
+    %li=t('repairing.maps.instruction.item_1')
+    %li=t('repairing.maps.instruction.item_2')
+    %li=t('repairing.maps.instruction.item_3')
+    %li=t('repairing.maps.instruction.item_4')
     %li
-      Робота (вид робіт з
-      = link_to "Довідника робіт", repairing_categories_path
+      =t('repairing.maps.instruction.item_5_1')
+      = link_to t('repairing.maps.instruction.item_5_2'), repairing_categories_path
       )
-    %li Вартість (в грн.)
-    %li Дата ремонту
-    %li Гарантія (дата придатності проведених робіт)
-    %li
-      Додаткова інформація
+    %li=t('repairing.maps.instruction.item_6')
+    %li=t('repairing.maps.instruction.item_7')
+    %li=t('repairing.maps.instruction.item_8')
+    %li=t('repairing.maps.instruction.item_9')
 %p
-  Адреси можна вказувати як точну геопозицію (наприклад, "49.23363, 28.46146"), так і назву (наприклад, "площа Гагаріна 4/1").
+  =t('repairing.maps.instruction.sentence_6')
 %p
-  Приклад файлу з ремонтами -
-  = link_to "завантажити", repairing_download_path
+  =t('repairing.maps.instruction.sentence_7_1')
+  = link_to t('repairing.maps.instruction.sentence_7_2'), repairing_download_path
   = "."
