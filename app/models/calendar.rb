@@ -118,10 +118,9 @@ class Calendar
                 elsif user.has_role? :admin
                   self.all
                 else
-                  self.where(:author => nil) + Calendar.any_of({:author => user.email},{:town => user.town})
+                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town})
                 end
-
-    calendars || []
+    calendars || self
   end
 
 end
