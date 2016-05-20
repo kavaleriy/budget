@@ -74,6 +74,7 @@ class BudgetFilesController < ApplicationController
   # POST /revenues.json
 
   def create
+
     @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
 
     budget_file_params[:path].each do |uploaded|
@@ -84,7 +85,6 @@ class BudgetFilesController < ApplicationController
 
       file_path = file[:path].to_s
       taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
-
       generate_budget_file
 
       fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
@@ -217,6 +217,8 @@ class BudgetFilesController < ApplicationController
     # file_path is path to file,when he will be saved
     # taxonomy is taxonomy what has this budget_file(one taxonomy -> many budget_file)
     @budget_file.taxonomy = taxonomy
+
+    @budget_file.author_model = current_user
     @budget_file.author = current_user.email unless current_user.nil?
 
     @budget_file.data_type = data_type.to_sym unless data_type.nil?
@@ -228,7 +230,12 @@ class BudgetFilesController < ApplicationController
   end
 
   def set_taxonomy_by_budget_file(taxonomy_id)
-    taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
+    taxonomy = Taxonomy.where(id: taxonomy_id).first
+    if taxonomy.nil?
+      taxonomy = create_taxonomy
+    end
+    taxonomy
+    # taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
   end
 
   def sort_column

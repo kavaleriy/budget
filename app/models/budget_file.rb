@@ -3,6 +3,7 @@ class BudgetFile
 
   field :author, type: String
 
+  belongs_to :author_model,class_name: 'User'
   field :title, type: String
   field :name, type: String
   field :path, type: String
