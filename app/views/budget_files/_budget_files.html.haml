@@ -17,3 +17,5 @@
         =t 'form.actions', :default => t("helpers.actions")
   %tbody#search_results
     = render partial: 'search_results', :locals => {budget_files: budget_files}
+.paginator
+  = paginate budget_files
