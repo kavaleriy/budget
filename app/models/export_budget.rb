@@ -15,6 +15,7 @@ class ExportBudget
   # field :header, type: String
   # field :footer, type: String
   field :content, type: String
+  field :title_page,type: String
 
   def initial_content_template
     header_style = "style='height: 100px;

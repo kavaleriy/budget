@@ -22,6 +22,7 @@
     -#= f.input :header,label: t('.header')
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
+    = f.input :title_page, label: t('.title_page')
     -#= f.input :template, label: t('.template')
     = f.input :town,label: t('.town_name'),disabled: true,input_html: {data_admin: current_user.is_admin?, value: current_user.town}
     = f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
@@ -39,6 +40,12 @@
       minViewMode: 'years',
       locale: 'ua'
     });
+
+    $('#export_budget_title_page').summernote({
+      minHeight: 300
+
+    });
+
 
     $('#export_budget_content').summernote({
       minHeight: 300,
