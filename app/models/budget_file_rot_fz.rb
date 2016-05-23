@@ -4,6 +4,7 @@ class BudgetFileRotFz < BudgetFile
 
   def readline row
     return unless row['type_rozd'].to_s == '2'
+    return if row['tf'].to_s == '3'
     return unless row['kmb'].to_s == self.taxonomy.kmb
 
     kkd = row['fcode'].to_s
