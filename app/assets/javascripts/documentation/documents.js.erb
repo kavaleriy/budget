@@ -133,8 +133,8 @@
   });
 
   Documentation_document.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-    tpl: '<div class="editable"><label><span>Назва: </span><input type="text" name="title" class="col-xs-12"></label></div>'+
-      '<div class="editable"><label><span>Докладніше:</span></label><br/><textarea class="col-xs-12" rows="5" name="description" class="input-small"></textarea></div>'+
+    tpl: '<div class="editable"><label><span>' + I18n.t('form.title') + ':</span><input type="text" name="title" class="col-xs-12"></label></div>'+
+      '<div class="editable"><label><span>' + I18n.t('form.description') + ':</span></label><br/><textarea class="col-xs-12" rows="5" name="description" class="input-small"></textarea></div>'+
       '</div><dic class="clear"></div>',
 
     inputclass: ''

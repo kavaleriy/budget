@@ -1244,7 +1244,7 @@
     };
 
     //// --------- segments.js -----------
-    var main_node = "Всього";
+    var main_node = I18n.t('mongoid.taxonomy.in_total');
     var total_value = null;
     var segments = {
 
