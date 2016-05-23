@@ -18,6 +18,12 @@
 :javascript
   $(document).ready(function() {
 
+    var getSrc = function(){
+      var indicator_file =  "#{@indicate_taxonomy.id}"
+      return location.origin + "/indicate/taxonomies/indicators/" + indicator_file;
+    }
+
+
     var embed_code = aEmbedCode();
     var src = getSrc();
     embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: src})
@@ -33,7 +39,3 @@
     //});
 
   })
-  var getSrc = function(){
-    var indicator_file =  "#{@indicate_taxonomy.id}"
-    return location.origin + "/indicate/taxonomies/indicators/" + indicator_file;
-  }
