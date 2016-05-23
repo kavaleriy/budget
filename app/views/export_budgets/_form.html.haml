@@ -28,8 +28,8 @@
     = f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
     -#= f.input :footer, label: t('.footer')
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
-.col-xs-5
-  =render partial: 'visualisation_list'
+.col-xs-5#visual_list
+  -#=render partial: 'visualisation_list'
 :javascript
 
   $(document).ready(function() {
@@ -43,14 +43,21 @@
 
     $('#export_budget_title_page').summernote({
       minHeight: 300
-
     });
-
 
     $('#export_budget_content').summernote({
       minHeight: 300,
     });
 
+    $('.visual_place').click(function(){
+      $.ajax({
+        url: "#{widgets_visualisation_list_path(current_user)}",
+        data: { data_number: $(this).attr('data-number') }
+
+      })
+      // $("#visualisation_list").find('.modal-body').html($('#visual_list').html());
+      //$("#visualisation_list").modal();
+    });
 
     var town_dom = $('#export_budget_town');
     if(town_dom.attr('data_admin') == 'true'){

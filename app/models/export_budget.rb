@@ -17,6 +17,17 @@ class ExportBudget
   field :content, type: String
   field :title_page,type: String
 
+  def set_visual_place(number)
+    "<div data-number=#{number} class ='visual_place disabled' style='
+      background:#C0C0C0;
+      width:100%;
+      color:white;
+      font-size:16px;
+      text-align:center;'
+      >Місце для вставки візуалізації <br>
+      Натисніть на цей блок і виберіть візуалізацію
+      </div> "
+  end
   def initial_content_template
     header_style = "style='height: 100px;
       line-height: 100px;
@@ -27,6 +38,8 @@ class ExportBudget
       text-align: center;'"
 
     text_style = "style='font-size: 22px;'"
+
+
 
     pre_header_style = "style='font-size:26px;
        text-align:center;
@@ -212,7 +225,7 @@ QpEgUEUCAwHaYiYEQWiQF8FAsO++qf0KBAFBlEgMBykIWJGFIgCfRUIDPvqn9KjQBQYRIHAcJCGiBlRI
 Найчастіше інформацію про
 видатки відображають за функціями які покладені на міську владу:<br>
 
-" + img_input + "
+" + set_visual_place(1) + "
 
 <div " + text_style + ">Дізнатися звідки беруться гроші в бюджеті міста та куди вони
 витрачаються Ви можете на наступній сторінці.</div>
@@ -220,7 +233,7 @@ QpEgUEUCAwHaYiYEQWiQF8FAsO++qf0KBAFBlEgMBykIWJGFIgCfRUIDPvqn9KjQBQYRIHAcJCGiBlRI
 <div " + header_style + " >— Куди йдуть мої гроші?</div>
 <div " + text_style + " > Перегляд кошторису </div>
 
-" + img_input + "
+" + set_visual_place(2) + "
 
 
 
