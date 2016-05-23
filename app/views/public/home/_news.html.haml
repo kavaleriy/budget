@@ -88,7 +88,7 @@
   = link_to t(".title"),modules_all_budget_news_path
 -unless @news.blank?
   .col-md-12.news_wrapper
-    - @news.each do |newsItem|
+    - @news.each do |news_item|
       .col-md-6
         .cl-block-item
           .cl-block-date
@@ -98,13 +98,13 @@
             -#.cl-block-date-day
             -#  = newsItem.news_date.strftime('%d')
           %h3.cl-block-title
-            %a{ "href" => newsItem.get_link }
-              = newsItem.title
+            %a{ "href" => "#{news_item.get_link}?locale=#{params[:locale]}" }
+              = news_item.title
           .clearfix
           -#.cl-block-img
           -#  = image_tag newsItem.img.thumb
           .cl-block-text
-            = sanitize(newsItem.news_text)
+            = sanitize(news_item.news_text)
 -else
   .no-news
     = t(".no_news")

@@ -74,7 +74,7 @@
 
 -@budget_news.each do |news|
   .col-xs-12.col-md-6
-    = link_to news.get_link do
+    = link_to "#{news.get_link}?locale=#{params[:locale]}" do
       .news_wrapper
         .col-md-12.col-xs-12
           .news_time

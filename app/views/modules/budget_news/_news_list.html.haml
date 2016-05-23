@@ -75,7 +75,7 @@
     %li.list-group-item.news-helper
       = t('modules.budget_news.index.actual_news')
     - @budgets_news.each do |news|
-      = link_to news.get_link do
+      = link_to "#{news.get_link}?locale=#{params[:locale]}" do
         %li.list-group-item.news-block
           .wr-it
             .news-title

@@ -39,7 +39,7 @@
           %td= budget_news.title
           %td.news_text= sanitize(budget_news.news_text)
           %td
-            %a{:href => budget_news.get_link}= budget_news.title
+            %a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
           %td= budget_news.get_date
           %td= image_tag budget_news.img.thumb
           %td.news_action_button
