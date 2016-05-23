@@ -21,7 +21,7 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user)
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
 
     case sort_column
       when "title"
@@ -53,6 +53,8 @@ class BudgetFilesController < ApplicationController
     end
 
     @file_owners = file_owners.pluck(:id, :owner).to_h
+
+    # binding.pry()
 
     respond_to do |format|
       format.js

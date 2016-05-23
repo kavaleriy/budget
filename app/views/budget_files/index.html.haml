@@ -1,16 +1,21 @@
-:css
+:scss
   .documents_search {
     margin: 15px;
     border-radius: 5px;
   }
+  .content-result {
+    .paginator {
+      text-align: center;
+    }
+  }
 
 - model_class = BudgetFile
-=content_for :header do
+= content_for :header do
   .head.pull-left
     %i.fa.fa-money
     =t('.title')
 
-.col-xs-12
+.col-xs-12.btns-menu
   =link_to t('.upload_budget_file'), new_budget_file_free_path, :class => 'btn btn-primary'
   .btn-group
     %button.btn.btn-primary.dropdown-toggle{'data-toggle'=>'dropdown', 'type' => 'button', 'aria-expanded' => 'false'}
@@ -33,7 +38,6 @@
       %li.divider
       %li
         =link_to t('.upload_lvivobl_rot'), new_budget_file_lvivobl_rot_path, :class => ''
-
 
   .btn-group
     %button.btn.btn-primary.dropdown-toggle{'data-toggle'=>'dropdown', 'type' => 'button', 'aria-expanded' => 'false'}
@@ -68,6 +72,5 @@
 .col-xs-12.documents_search
   = render partial: 'search'
 
-.col-xs-12
+.col-xs-12.content-result
   = render partial: 'budget_files', :locals => { budget_files: @budget_files }
-
