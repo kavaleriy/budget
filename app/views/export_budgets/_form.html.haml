@@ -16,6 +16,9 @@
   #new_export_budget > div.form-group.string.optional.export_budget_header > label{
     width: 50%;
   }
+  .note-editing-area > .note-editable.panel-body > img{
+    width: 100% !important;
+  }
 
 .col-xs-7
   = simple_form_for(@export_budget) do |f|
@@ -33,6 +36,27 @@
 :javascript
 
   $(document).ready(function() {
+    var send_ajax = function(number){
+      $.ajax({
+        url: "#{widgets_visualisation_list_path(current_user)}",
+        data: { data_number: number }
+      })
+    };
+    var visualButton = function (context) {
+      var ui = $.summernote.ui;
+
+      // create button
+      var button = ui.button({
+        contents: '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> Visual</span>',
+        tooltip: 'hello',
+        click: function () {
+          send_ajax('0');
+        }
+      });
+
+      return button.render();   // return button as jquery object
+    }
+
     $('#export_budget_year').datepicker({
       autoclose: true,
       format: 'yyyy',
@@ -46,17 +70,25 @@
     });
 
     $('#export_budget_content').summernote({
+       toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
+        ['fontsize', ['fontsize']],
+        ['insert',['picture','table']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        // ['height', ['height']],
+        ['mybutton', ['visualButton']]
+      ],
+      buttons: {
+        visualButton: visualButton
+      },
       minHeight: 300,
     });
 
     $('.visual_place').click(function(){
-      $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
-        data: { data_number: $(this).attr('data-number') }
-
-      })
-      // $("#visualisation_list").find('.modal-body').html($('#visual_list').html());
-      //$("#visualisation_list").modal();
+      send_ajax($(this).attr('data-number'));
     });
 
     var town_dom = $('#export_budget_town');
