@@ -17,4 +17,5 @@
         = render :partial => 'programs/expences_files/expences_files', :locals => { :files => @programs_town.programs_expences_files }
 
 .col-sm-12
-  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
+  = link_to(t('form.back'), programs_target_programs_list_path(@programs_town), :class => 'btn btn-default')
+  -#= link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id + "?locale=" + params[:locale], :class => 'btn btn-default'
