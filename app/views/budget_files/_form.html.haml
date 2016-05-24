@@ -35,7 +35,7 @@
         = select_tag :town, options_for_select(Town.all.where(:title => current_user.town) + Town.all.where(:area_title => current_user.town), current_user.town), class: 'select-town form-control'
 
   .form-group
-    = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control'
+    = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control', label: t('data_type')
 
   = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default','required' => 'required'
 

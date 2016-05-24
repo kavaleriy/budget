@@ -37,7 +37,6 @@
 
 .col-sm-12
   = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'
-  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
   = link_to t('form.back'), programs_target_programs_list_path(@programs_town), :class => 'btn btn-default'
 
 :javascript
