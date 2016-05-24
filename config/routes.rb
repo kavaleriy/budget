@@ -92,7 +92,7 @@ Rails.application.routes.draw do
     get 'load_indicators/:town' => 'target_programs#load_indicators'
     get 'towns/branch_report/:id' => 'towns#branch_report'
     post 'target_programs/create' => 'target_programs#create'
-    get 'target_programs/list/:town' => 'target_programs#list'
+    get 'target_programs/list/:town' => 'target_programs#list', as: 'target_programs_list'
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
     get 'target_programs/show_indicators/:id' => 'target_programs#show_indicators'
     put 'towns/update_custom/:id' => 'towns#update_custom'
