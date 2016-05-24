@@ -10,8 +10,7 @@
     font-size: 1.5em;
   }
   }
-
--if (current_user && current_user.admin?)
+-if (user_signed_in?)
   .buttons
     = link_to t('.new_export'),new_export_budget_path,:class => 'btn btn-large btn-primary'
     -#= link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true

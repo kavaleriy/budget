@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
 
 
+  get 'template/content'
+
+  get 'template/title'
+
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
   namespace :content_manager do
@@ -16,8 +20,6 @@ Rails.application.routes.draw do
   end
 
   resources :export_budgets
-
-
   get 'download_pdf' => 'export_budgets#download_pdf'
   get 'export_budgets/create_pdf/:id' => 'export_budgets#create_pdf', as: 'create_pdf'
 
