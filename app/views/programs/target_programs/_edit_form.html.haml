@@ -35,7 +35,8 @@
     .actions
       = f.submit t('form.save'), :class => 'btn btn-primary'
       = link_to t('form.show'), @programs_target_program, :class => 'btn btn-primary'
-      = link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
+      -#= link_to t('form.back'), '/programs/target_programs/list/' + @programs_target_program.programs_town_id, :class => 'btn btn-default'
+      = link_to t('form.back'), programs_target_programs_list_path(@programs_target_program.programs_town_id), :class => 'btn btn-default'
 
 .col-sm-12.col-md-6
   .documentation

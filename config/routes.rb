@@ -88,11 +88,11 @@ Rails.application.routes.draw do
     resources :expences_files
     resources :attachments
     get 'load' => 'target_programs#load'
-    get 'load_expences/:town' => 'target_programs#load_expences'
-    get 'load_indicators/:town' => 'target_programs#load_indicators'
-    get 'towns/branch_report/:id' => 'towns#branch_report'
+    get 'load_expences/:town' => 'target_programs#load_expences' , as: 'load_expences'
+    get 'load_indicators/:town' => 'target_programs#load_indicators', as: 'load_indicators'
+    get 'towns/branch_report/:id' => 'towns#branch_report', as: 'towns_branch_report'
     post 'target_programs/create' => 'target_programs#create'
-    get 'target_programs/list/:town' => 'target_programs#list'
+    get 'target_programs/list/:town' => 'target_programs#list', as: 'target_programs_list'
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
     get 'target_programs/show_indicators/:id' => 'target_programs#show_indicators'
     put 'towns/update_custom/:id' => 'towns#update_custom'

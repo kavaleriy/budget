@@ -11,8 +11,9 @@
     %tbody
     - @programs_towns.each do |town|
       %tr
-        %td= link_to town.name, '/programs/target_programs/list/' + town.id
+        %td= link_to(town.name, programs_target_programs_list_path(town))
+        -#%td= link_to town.name, '/programs/target_programs/list/' + town.id + "?locale=" + params[:locale]
 
   %br
 
-= link_to t('programs.target_programs.index.load'), '/programs/load', :type => "button", :method => :get, :class => "btn btn-primary"
+= link_to t('programs.target_programs.index.load'), '/programs/load' + "?locale=" + params[:locale], :type => "button", :method => :get, :class => "btn btn-primary"
