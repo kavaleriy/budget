@@ -28,7 +28,6 @@
     =label_tag('indicates',t('indicate.taxonomies.form.header'))
     =select_tag 'indicates', options_from_collection_for_select(@presenter.indicates,'id','id'),
       class:'form-control',:prompt => t('.choose_indicate')
-
 :javascript
 
     $(document).ready(function(){
@@ -36,7 +35,8 @@
       var show_iframe_in_modal = function(iframe_url,panel_selector = 'div.active') {
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url);
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-panel-selector',panel_selector);
-
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-input-selector',"#{params[:data_number]}");
+        $('#visualisation_list').modal('hide');
         $('#export_budget_visualisation_modal_window').modal();
       };
 

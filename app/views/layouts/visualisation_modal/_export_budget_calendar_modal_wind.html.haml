@@ -60,6 +60,13 @@
     $('#copy_img').val('');
   };
 
+  var unset_style_in_visual_place_div = function(){
+    var div_number = $('#iframe').attr('data-input-selector');
+    if(div_number){
+      $('[data-number='+ div_number +']').attr('style','');
+      $('[data-number='+ div_number +']').html('');
+    }
+  }
 
   $(document).ready(function(){
     $('#visualisation_copy_img').click(function(){
@@ -67,7 +74,9 @@
       var active_panel = get_active_panel("#iframe",panel_selector);
       convert_html_to_canvas(active_panel,'#copy_img');
       setTimeout(function(){
+        unset_style_in_visual_place_div();
         push_img_to_summernote('#copy_img',"#export_budget_content",'#export_budget_visualisation_modal_window');
+
         //close modal window
         $('#export_budget_visualisation_modal_window').modal('hide');
       },3000);

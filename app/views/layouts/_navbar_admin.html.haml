@@ -86,7 +86,7 @@
             %li= link_to t('.actions'), calendar_actions_path
             %li.divider
             - get_calendars.each do |c|
-              %li= link_to "#{c.title}", "/public/calendar/#{c.id}", "data-no-turbolink" => true
+              %li= link_to "#{c.title}", public_calendar_path(c), "data-no-turbolink" => true
 
         %li.dropdown
           %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}

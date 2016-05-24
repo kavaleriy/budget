@@ -1,7 +1,7 @@
 class ExportBudget::FormPresenter
 
-  def initialize(user,locale)
-    @user = user
+  def initialize(user_id,locale)
+    @user = User.find(user_id)
     @locale = locale
   end
 

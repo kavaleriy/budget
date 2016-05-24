@@ -182,6 +182,9 @@ Rails.application.routes.draw do
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
+    get 'user/widgets/visualisation_list/:user_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
+
+
     get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/type/:file_id/:type' => 'visify#type', as: 'visify_type'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
@@ -211,6 +214,7 @@ Rails.application.routes.draw do
     get 'calendar/get_parent_event/:calendar_id/:event_id' => 'calendar#get_parent_event'
     get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
     get 'calendar/show/:calendar_id' => 'calendar#show',as: 'calendar_show'
+
 
     get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
     get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'
