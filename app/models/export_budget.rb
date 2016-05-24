@@ -29,7 +29,7 @@ class ExportBudget
       </div> "
   end
   def initial_content_template
-    header_style = "style='height: 100px;
+    header_style = "style='min-height: 100px;
       line-height: 100px;
       background: blue;
       color: white;
