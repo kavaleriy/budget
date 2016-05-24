@@ -194,7 +194,7 @@
       })
       .done(function (data) {
         if(data['areas']['features'].length > 0) {
-          window.history.pushState("", "", '/community/communities/' + feature.properties.id);
+          window.history.pushState("", "", '/community/communities/' + feature.properties.id + '?locale=' + "#{params[:locale]}");
           sequence.show(feature.properties.title);
           $("#custom_map").html('');
           $("#custom_map").html('#{ j render :partial => 'map'}');
@@ -207,7 +207,7 @@
           pointOptions.scale = "community";
           aRepairMap.addGeoJsonSvg(data['areas'], areasOptions);
           aRepairMap.addGeoJsonPoints(data['centers'], pointOptions);
-          $('#edit_btn').attr("href", "/community/edit/" + feature.properties.id).css("display","inline-block");
+          $('#edit_btn').attr("href", "/community/edit/" + feature.properties.id + '?locale=' + '#{params[:locale]}').css("display","inline-block");
           $('#upload_btn').css("display","none");
           var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
           $('#embed_code_timeline').css("display","block");

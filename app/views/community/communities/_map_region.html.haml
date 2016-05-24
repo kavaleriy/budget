@@ -101,7 +101,7 @@
 
     function onCommunityClick(feature) {
       if(editable) {
-        $.get("/community/edit_table/" + feature.properties.id, function(data){
+        $.get("/community/edit_table/" + feature.properties.id + "?locale=" + "#{params[:locale]}", function(data){
           $("#edit_table").html(data);
         }, "html")
       } else if(feature.properties.link) {

@@ -8,7 +8,7 @@
 
 = content_for :header do
   .head.pull-left
-    = 'Редагування територіальних громад'
+    = t('community.community.edit.head')
 
 .col-xs-12
   #flash_message
@@ -18,11 +18,10 @@
 
 #edit_table.col-xs-12.col-md-6
   %p
-    Натисніть на громаді, щоб відредагувати дані по ній
+    = t('community.community.edit.instruction.sentence_click')
   %p
-    Перетяніть мишкою центр громади, якщо потрібно його змінити
+    = t('community.community.edit.instruction.sentence_center')
   %p
-    Не забудьте натиснути кнопку "Зберегти", щоб зберегти всі зміни по конкретній громаді
-
+    = t('community.community.edit.instruction.sentence_save')
 .col-xs-12
-  = link_to 'Назад', '/community/communities/' + @feature[:properties][:id], :class => 'btn btn-default'
+  = link_to t('back'), '/community/communities/' + @feature[:properties][:id] + '?locale=' + params[:locale], :class => 'btn btn-default'

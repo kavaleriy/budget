@@ -77,7 +77,7 @@ class Programs::TownsController < ApplicationController
     @programs_town.save
     respond_to do |format|
       if @programs_town.update(programs_town_params)
-        format.html { redirect_to '/programs/target_programs/list/' + @programs_town.id, notice: t('programs.towns.edit.notice') }
+        format.html { redirect_to programs_target_programs_list_path(@programs_town), notice: t('programs.towns.edit.notice') }
         format.json { render :show, status: :ok, location: @programs_town }
       else
         format.html { render :edit }
