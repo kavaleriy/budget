@@ -31,22 +31,38 @@
 :javascript
 
     $(document).ready(function(){
+       var set_sankey_button_status = function(){
+        var sankey_dom = $('#sankey');
+        sankey_dom.attr('disabled','disabled');
+        // sankey object should be init in parent window
+        // with two field :
+        // first  sankey.tax_rot = ''
+        // second sankey.tax_rov = ''
+        if (sankey.tax_rot && sankey.tax_rov){
+          sankey_dom.removeAttr('disabled');
+        }
+      }
+
+      var set_taxonomies_in_select = function(){
+        if(sankey.tax_rot){
+          $('#tax_rot').val(sankey.tax_rot);
+        }
+        if(sankey.tax_rov){
+          $('#tax_rov').val(sankey.tax_rov);
+        }
+      };
+      set_taxonomies_in_select();
+      set_sankey_button_status();
 
       var show_iframe_in_modal = function(iframe_url,panel_selector = 'div.active') {
-        $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url);
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url + "?locale=#{params[:locale]}");
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-panel-selector',panel_selector);
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-input-selector',"#{params[:data_number]}");
         $('#visualisation_list').modal('hide');
         $('#export_budget_visualisation_modal_window').modal();
       };
 
-      var set_sankey_button_status = function(tax_rot_value,tax_rov_value){
-        var sankey_dom = $('#sankey');
-        sankey_dom.attr('disabled','disabled');
-        if (tax_rot_value && tax_rov_value){
-          sankey_dom.removeAttr('disabled');
-        }
-      }
+
 
       $('#user_calendar').change(function(){
         var calendar_id = $(this).val();
@@ -58,17 +74,23 @@
       $('#tax_rot').change(function(){
         var tax_rot_id = $(this).val();
         if(tax_rot_id){
+          // sankey object init in parent window
+          // set to sankey object taxonomy rot id
+          sankey.tax_rot = tax_rot_id;
           show_iframe_in_modal('/widgets/visify/bubbletree/' + tax_rot_id);
         }
-        set_sankey_button_status(tax_rot_id,$('#tax_rov').val());
+        set_sankey_button_status();
       });
 
       $('#tax_rov').change(function(){
         var tax_rov_id = $(this).val();
         if(tax_rov_id){
+          // sankey object init in parent window
+          // set to sankey object taxonomy rov id
+          sankey.tax_rov = tax_rov_id;
           show_iframe_in_modal('/widgets/visify/bubbletree/' + $(this).val());
         }
-        set_sankey_button_status($('#tax_rot').val(),tax_rov_id);
+        set_sankey_button_status();
       });
 
       $('#indicates').change(function(){
@@ -79,9 +101,10 @@
 
       $('#sankey').change(function(){
         if($(this).is(":checked")) {
-          if($('#tax_rot').val() && $('#tax_rov').val()){
+          if(sankey.tax_rot && sankey.tax_rov){
+            // sankey object init in parent window
             show_iframe_in_modal('/widgets/town_profile/sankey_by_taxonomies/' +
-                $('#tax_rot').val() + '/' + $('#tax_rov').val());
+                sankey.tax_rot + '/' + sankey.tax_rov);
           }
         }
       });

@@ -34,6 +34,9 @@
 .col-xs-5#visual_list
   -#=render partial: 'visualisation_list'
 :javascript
+  var sankey = {};
+  sankey.tax_rot = '';
+  sankey.tax_rov = '';
 
   $(document).ready(function() {
     var send_ajax = function(number){
@@ -82,6 +85,7 @@
         ['mybutton', ['visualButton']]
       ],
       buttons: {
+        // add button for show visual list
         visualButton: visualButton
       },
       minHeight: 300,
