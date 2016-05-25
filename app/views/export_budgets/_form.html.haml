@@ -32,7 +32,7 @@
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: current_user.town}
-    = f.input :title_page, label: t('.title_page')
+    = f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
     = f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5#visual_list
@@ -51,6 +51,7 @@
     var set_year_in_title_page = function(year){
       $('#title_page_year').html(year);
     };
+
 
     $('#export_budget_title').change(function(){
       set_title_in_title_page($(this).val());
@@ -134,4 +135,5 @@
     $('#export_budget_town').on('change',function(){
       set_town_in_title_page($(this).select2('data').text);
     });
+
   });

@@ -14,18 +14,18 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-
+    respond_to do |format|
+      format.html
+      format.pdf {
+        render pdf: @export_budget.title,
+               formats: [:html],
+               template: 'export_budgets/create_pdf.html.haml',
+               show_as_html: params.key?('debug')
+                  }
+    end
   end
-
-  def save_as_pdf
-    url = get_bubbletree_url_by_taxonomy_rot
-    panel_id = '#tab_pie'
-    render 'taxonomy_panel_for_pdf' , :layout => false, locals: { export_budget_id: @export_budget.id ,url: url , panel_id: panel_id }
-  end
-
 
   def create_pdf
-    # @img_base64 = params[:base64]
     render pdf: @export_budget.title,
            formats: [:html],
            template: 'export_budgets/create_pdf',
@@ -45,7 +45,7 @@ class ExportBudgetsController < ApplicationController
   # POST /export_budgets
   # POST /export_budgets.json
   def create
-    @export_budget = ExportBudget.new(params[:export_budget])
+    @export_budget = ExportBudget.new(export_budget_params)
     @export_budget.author = current_user
     respond_to do |format|
       if @export_budget.save
@@ -106,6 +106,7 @@ class ExportBudgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
+      # binding.pry
       params.require(:export_budget).permit(:year, :title,:title_page,:content,:town)
     end
 end

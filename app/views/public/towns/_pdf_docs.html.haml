@@ -36,7 +36,7 @@
             = export_budget.title
         .col-xs-5.budget_actions
           = link_to image_tag('icons/loupe.png'), export_budget
-          = link_to create_pdf_path(export_budget) do
+          = link_to create_pdf_path(export_budget,format: :pdf) do
             %i.fa.fa-file-pdf-o
           -if(export_budget.user_can_edit?(current_user))
             = link_to image_tag('icons/pencil.png'),edit_export_budget_path(export_budget)
