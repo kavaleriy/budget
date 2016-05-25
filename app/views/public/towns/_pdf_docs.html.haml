@@ -38,7 +38,8 @@
             = link_to image_tag('icons/loupe.png'), export_budget
             = link_to create_pdf_path(export_budget) do
               %i.fa.fa-file-pdf-o
-            = link_to image_tag('icons/pencil.png'),edit_export_budget_path(export_budget)
-            = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
+            -if(export_budget.user_can_edit?(current_user))
+              = link_to image_tag('icons/pencil.png'),edit_export_budget_path(export_budget)
+              = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
   -else
     =t('.no_data')

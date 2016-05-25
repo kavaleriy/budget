@@ -10,13 +10,9 @@ class Public::TownsController < ApplicationController
   end
 
   def show
-    # @export_budget = ExportBudget.new
-
-    # @export_budgets = ExportBudget.all
-
     @calendars = Calendar.where(:town => @town)
 
-    @town_export_budgets = ExportBudget.visible_to(@town,current_user)
+    @town_export_budgets = ExportBudget.get_export_budget_by_town(@town)
 
     @town_links = {}
     if test_town?

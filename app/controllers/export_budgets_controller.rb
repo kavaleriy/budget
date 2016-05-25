@@ -35,7 +35,6 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
-    @export_budget.initial_content_template
   end
 
   # GET /export_budgets/1/edit
@@ -47,7 +46,7 @@ class ExportBudgetsController < ApplicationController
   # POST /export_budgets.json
   def create
     @export_budget = ExportBudget.new(params[:export_budget])
-    @export_budget.user = current_user
+    @export_budget.author = current_user
     respond_to do |format|
       if @export_budget.save
         format.html { redirect_to @export_budget, notice: 'Export budget was successfully created.' }
