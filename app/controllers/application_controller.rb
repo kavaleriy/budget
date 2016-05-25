@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
       when :user, User
         store_location = session[:return_to]
         clear_stored_location
-        (store_location.nil?) ? "/" : store_location.to_s
+        (store_location.nil?) ? root_path : store_location.to_s
       else
         super
     end
