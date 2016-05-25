@@ -18,5 +18,14 @@ class ExportBudget
     # if user nil he don't have any permissions
     # if user has role admin he have all permissions
     # else user have permissions only if user author this export budget
+    have_permissions = false
+
+    if user.nil?
+      have_permissions
+    elsif user.is_admin?
+      !have_permissions
+    elsif user.eql?(self.author)
+      !have_permissions
+    end
   end
 end
