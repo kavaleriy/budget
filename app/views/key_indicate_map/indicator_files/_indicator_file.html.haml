@@ -24,7 +24,7 @@
           description: "#{file.description}",
       },
       validate: function(value) {
-          if (value.title == '') return 'Потрібно вказати ім\'я файла!';
+          if (value.title == '') return "#{t('messages_x-editable.need_name_file')}";
       },
       display: function(value) {
           if(!value) {
