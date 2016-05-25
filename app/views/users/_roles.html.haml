@@ -1,16 +1,16 @@
 -if roles.member? :admin
   %b
     %i.fa.fa-border.fa-users
-      Адміністратор
+      =t('users.index.roles.administrator')
 
 -if roles.member? :public_organisation
   %i.fa.fa-border.fa-user
-    Громадська організація
+    =t('users.index.roles.public_organisation')
 
 -if roles.member? :city_authority
   %i.fa.fa-border.fa-university
-    Орган влади
+    =t('users.index.roles.authorities')
 
 -if roles.member? :central_authority
   %i.glyphicon.glyphicon-tower
-    Орган центральної влади
+    =t('users.index.roles.central_authorities')
