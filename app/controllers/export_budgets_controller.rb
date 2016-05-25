@@ -14,18 +14,6 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/1
   # GET /export_budgets/1.json
   def show
-    # @taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
-    # @url = "#{request.base_url}/widgets/visify/bubbletree/#{@taxonomy_rot.id}"
-    # render 'taxonomy_panel_for_pdf.html.haml'
-    # respond_to do |format|
-    #   format.html
-    #   format.pdf do
-    #     render pdf: 'test_name',
-    #            formats: [:html],
-    #            template: 'export_budgets/show',
-    #            show_as_html: params.key?('debug')
-    #   end
-    # end
 
   end
 
@@ -47,7 +35,6 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
-    @export_budget.initial_content_template
   end
 
   # GET /export_budgets/1/edit
@@ -59,6 +46,7 @@ class ExportBudgetsController < ApplicationController
   # POST /export_budgets.json
   def create
     @export_budget = ExportBudget.new(params[:export_budget])
+    @export_budget.author = current_user
     respond_to do |format|
       if @export_budget.save
         format.html { redirect_to @export_budget, notice: 'Export budget was successfully created.' }
@@ -118,6 +106,6 @@ class ExportBudgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
-      params.require(:export_budget).permit(:year, :title,:content,:town)
+      params.require(:export_budget).permit(:year, :title,:title_page,:content,:town)
     end
 end

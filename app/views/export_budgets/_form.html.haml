@@ -19,26 +19,47 @@
   .note-editing-area > .note-editable.panel-body > img{
     width: 100% !important;
   }
+  .visual_place{
+    cursor: pointer;
+    &:hover,&:focus{
+      box-shadow: 0px 0px 13px 3px rgba(0,0,0,0.73);
+      transition: all .4s linear;
+    }
+  }
 
 .col-xs-7
   = simple_form_for(@export_budget) do |f|
-    -#= f.input :header,label: t('.header')
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
+    = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: current_user.town}
     = f.input :title_page, label: t('.title_page')
-    -#= f.input :template, label: t('.template')
-    = f.input :town,label: t('.town_name'),disabled: true,input_html: {data_admin: current_user.is_admin?, value: current_user.town}
     = f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
-    -#= f.input :footer, label: t('.footer')
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5#visual_list
-  -#=render partial: 'visualisation_list'
 :javascript
   var sankey = {};
   sankey.tax_rot = '';
   sankey.tax_rov = '';
 
   $(document).ready(function() {
+    var set_town_in_title_page = function(town){
+      $('#title_page_city').html(town);
+    };
+    var set_title_in_title_page = function(title){
+      $('#title_page_title').html(title);
+    };
+    var set_year_in_title_page = function(year){
+      $('#title_page_year').html(year);
+    };
+
+    $('#export_budget_title').change(function(){
+      set_title_in_title_page($(this).val());
+    });
+    $('#export_budget_year').on("change",function(e){
+      set_year_in_title_page($(this).val());
+    });
+
+
     var send_ajax = function(number){
       $.ajax({
         url: "#{widgets_visualisation_list_path(current_user)}",
@@ -91,13 +112,26 @@
       minHeight: 300,
     });
 
-    $('.visual_place').click(function(){
-      send_ajax($(this).attr('data-number'));
+    $.ajax({
+      url: "#{template_title_path}",
+      success: function(data){
+        $('#export_budget_title_page').summernote('code',data);
+      }
     });
 
-    var town_dom = $('#export_budget_town');
-    if(town_dom.attr('data_admin') == 'true'){
-      town_dom.removeAttr('disabled');
-      init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
-    }
+    $.ajax({
+      url : "#{template_content_path}",
+      success: function(data){
+        $('#export_budget_content').summernote('code',data);
+        $('.visual_place').click(function(){
+          send_ajax($(this).attr('data-number'));
+        });
+
+      }
+    });
+
+    init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
+    $('#export_budget_town').on('change',function(){
+      set_town_in_title_page($(this).select2('data').text);
+    });
   });
