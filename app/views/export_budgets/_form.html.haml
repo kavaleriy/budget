@@ -87,17 +87,19 @@
       },
       minHeight: 300,
     });
-
-    $('.visual_place').click(function(){
-      send_ajax($(this).attr('data-number'));
-    });
-
     $.ajax({
       url : "#{template_content_path}",
       success: function(data){
         $('#export_budget_content').summernote('code',data);
+        $('.visual_place').click(function(){
+          send_ajax($(this).attr('data-number'));
+        });
+
       }
     });
+
+
+
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
 
