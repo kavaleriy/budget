@@ -3,8 +3,11 @@
   .col-xs-12{:style => "padding:25%;"}
     =image_tag('export_budget/pig.png',width: '100%')
     #title_page_title{:style => "padding-top: 40px;font-size: 60px;text-align:center;"}
-      Ltvjycnhfwsz da ad a
+      = t('.title')
     #title_page_city{:style => 'padding-top: 20px;font-size: 40px;text-align:center;'}
-      Vinnitsa
+      -if user_signed_in?
+        = current_user.town
+      -else
+        = t('.city')
     #title_page_year{:style => 'padding-top: 20px;font-size: 30px;text-align:center;'}
-      2016
+      =Time.now.year
