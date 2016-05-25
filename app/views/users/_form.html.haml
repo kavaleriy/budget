@@ -1,15 +1,15 @@
 = bootstrap_form_for @user, :html => { :class => '' } do |f|
   .col-sm-6
     .form-group
-      = f.text_field :name
+      = f.text_field :name, label: t('devise.form.name')
     .form-group
-      = f.text_field :phone
+      = f.text_field :phone, label: t('devise.form.phone')
     .form-group
-      = f.text_field :organisation
+      = f.text_field :organisation, label: t('devise.form.organization')
     .form-group
       = f.text_field :email
     .form-group
-      = f.text_field :town
+      = f.text_field :town, label: t('devise.form.city')
 
   .col-sm-6
     .form-group
@@ -17,7 +17,7 @@
         = check_box_tag :locked, @user.locked, @user.locked
         = t('.locked')
     .form-group
-      = f.text_field :last_sign_in_at
+      = f.text_field :last_sign_in_at, label: t('users.index.last_sign_in_at')
     .form-group
       Ролі:
       - for role in [:public_organisation, :city_authority,:central_authority]
@@ -26,7 +26,7 @@
           = role
 
   .clear
-  = f.submit 'Save', class: 'btn btn-primary'
+  = f.submit t('save'), class: 'btn btn-primary'
 :javascript
 
   $(document).ready(function() {
