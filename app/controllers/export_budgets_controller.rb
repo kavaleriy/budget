@@ -106,6 +106,6 @@ class ExportBudgetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
-      params.require(:export_budget).permit(:year, :title,:content,:town)
+      params.require(:export_budget).permit(:year, :title,:title_page,:content,:town)
     end
 end
