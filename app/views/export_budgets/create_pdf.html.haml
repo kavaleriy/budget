@@ -3,7 +3,7 @@
   %head
     %meta(charset="utf-8")
     = stylesheet_link_tag    "application", :media => "all"
-
+    = @export_budget.title_page.html_safe
     = @export_budget.content.html_safe
 -#    = wicked_pdf_stylesheet_link_tag    'timelines'
 -#    = wicked_pdf_stylesheet_link_tag    'timelinejs'

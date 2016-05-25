@@ -10,13 +10,9 @@ class Public::TownsController < ApplicationController
   end
 
   def show
-    @export_budget = ExportBudget.new
-
-    @export_budgets = ExportBudget.all
-
     @calendars = Calendar.where(:town => @town)
 
-    @town_export_budgets = ExportBudget.where(:town => @town.id)
+    @town_export_budgets = ExportBudget.get_export_budget_by_town(@town)
 
     @town_links = {}
     if test_town?
@@ -29,9 +25,8 @@ class Public::TownsController < ApplicationController
       @town_links[br.id.to_s] = {}
       @town_links[br.id.to_s]['title'] = br.title
       @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-
     }
-    @portfolio_url = get_portfolio_url
+
   end
 
 
@@ -117,13 +112,6 @@ class Public::TownsController < ApplicationController
   end
 
   private
-  def get_portfolio_url
-    if test_town?
-      @portfolio_url = widgets_town_profile_path(Town.get_test_town.first.to_a)
-    else
-      @portfolio_url = widgets_town_profile_path(@town)
-    end
-  end
 
 
   def test_town?
