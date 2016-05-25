@@ -7,7 +7,7 @@
   %tbody
     %tr
       %td
-        %a.editable{:href => '#', :id => 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => 'Вкажіть назву категорії...'}
+        %a.editable{:href => '#', :id => 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
           = @repairing_category.title
       %td
         = bootstrap_form_for @repairing_category, html: {class: 'form-inline'}, remote: true do |f|
