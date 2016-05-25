@@ -9,26 +9,26 @@
     <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), html: {:class=>'edit_user new_user'}) do |f| %>
         <%= devise_error_messages! %>
         <p>
-          УВАГА: обліковий запис дозволяє тільки перегляд інформації.
+          <%= t('devise.form.note_only_view') %>
           <br/>
-          Для отримання повного доступу, обліковий запис має бути активований, для цього зверніться до адміністратора системи
+          <%= t('devise.form.note_access') %>
         </p>
         <hr/>
-        <%= f.text_field :name, autofocus: true %>
+        <%= f.text_field :name, autofocus: true, label: t('devise.form.name') %>
         <div class="row">
           <div class="col-md-6">
             <%= f.email_field :email %>
           </div>
           <div class="col-md-6">
-            <%= f.text_field :phone %>
+            <%= f.text_field :phone, label: t('devise.form.phone') %>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <%= f.text_field :organisation %>
+            <%= f.text_field :organisation, label: t('devise.form.organization') %>
           </div>
           <div class="col-md-6">
-            <%= f.text_field :town,class:'typeahead' ,placeholder: 'Мінімум два символи'%>
+            <%= f.text_field :town,class:'typeahead' ,placeholder: t('devise.form.message_marginally'), label: t('devise.form.city')%>
           </div>
         </div>
         <div class="row">
