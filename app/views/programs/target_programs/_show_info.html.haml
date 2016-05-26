@@ -104,7 +104,7 @@
              comment: $(this).attr('data-descr'),
          },
          validate: function(value) {
-             if (value.comment == '') return 'Потрібно вказати коментар!';
+             if (value.comment == '') return "#{t('messages_x-editable.need_comment')}";
          },
          display: function(value) {
              if(!value) {

@@ -2,8 +2,8 @@ class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
   # skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
-  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
-  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf, :save_as_pdf]
+  before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
+  before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :set_export_budget_presenter, only: [:edit,:new]
   # GET /export_budgets
   # GET /export_budgets.json
@@ -35,6 +35,7 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets/new
   def new
     @export_budget = ExportBudget.new
+    @export_budget.town = Town.get_user_town(current_user)
   end
 
   # GET /export_budgets/1/edit
