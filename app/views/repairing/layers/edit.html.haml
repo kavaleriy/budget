@@ -48,7 +48,7 @@
       getMapPopupContent: getMapPopupContent,
       scrollWheelZoom: true
     });
-
+    var categories_icons = #{Repairing::Category.get_category_icons}
     // add markers
     $.ajax({
       method: 'get',
@@ -56,8 +56,8 @@
       dataType: 'json',
     })
     .done(function (data) {
-      $.each(data['features'], function(i, d){
-        aRepairMap.addGeoJsonPoints([d['properties']['id'], 0, d], getPoint, {
+      //$.each(data['features'], function(i, d){
+        aRepairMap.addGeoJsonPoints(data['features'], getPoint, {
           clustered: true,
           style: {
             opacity: 0.8,
@@ -69,21 +69,33 @@
           dragCallback: onDrag,
           editInfoContent: true
         })
-      })
+      //})
     })
     .fail(function () {
     });
 
-    var Icon = L.Icon.extend({ options: { iconSize: [28, 37] }});
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
+    // REPEAT !!!!!!!!!!!!
+    // Same code in repairing/maps/_iframe.html.haml
+    function getIconByCategory(category_id){
+
+      var iconCategoryUrl = '/assets/repairing/default_icon.png';
+      if (categories_icons[category_id] ){
+        iconCategoryUrl = categories_icons[category_id];
+      };
+
+      return new Icon({iconUrl: iconCategoryUrl});
+    };
 
     function getPoint(properties) {
       var point = {}
-      if(properties.img) {
-        point.icon = new Icon({iconUrl: properties.img});
-      } else {
+      point.icon = getIconByCategory(properties.p_c_id);
+      //if(properties.img) {
+      //  point.icon = new Icon({iconUrl: properties.img});
+      //} else {
         //point.icon = new L.Icon.Default();
-        point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
-      }
+      //  point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
+      //}
       point.draggable = false;
       return point;
     }
