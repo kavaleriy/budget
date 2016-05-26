@@ -213,7 +213,7 @@ class Town
     # if user town name have area_title
     # add area_title to search
     # and assigned to user_town
-    # return user_town
+    # return user_town(town model)
     unless user.nil?
       unless user.town.empty?
         user_town = Town.new
