@@ -34,9 +34,11 @@ module Repairing
       town = params[:town]
       repairings = Repairing::Repair
       repairings.each { |repair|
-        next unless repair.layer.town_id.to_s == town || town == ''
-        repair_json = Repairing::GeojsonBuilder.build_repair(repair)
-        @geoJsons << repair_json if repair_json
+        unless repair.layer.nil?
+          next unless repair.layer.town_id.to_s == town || town == ''
+          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
+          @geoJsons << repair_json if repair_json
+        end
       }
 
       result = {
