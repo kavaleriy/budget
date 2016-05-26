@@ -1,6 +1,5 @@
 %tr
-
-  %td= image_tag town[:img_url] unless town[:img_url].blank?
+  %td= image_tag town[:img_url] unless town[:img_url].nil?
   %td{style: css}=  town[:title]
   %td
     = link_to t('.edit', :default => t("helpers.links.edit")), edit_town_path(town[:id]), :class => 'btn btn-default btn-xs'

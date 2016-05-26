@@ -70,10 +70,14 @@
 %br
 .row
   .col-xs-12.test_town
-    =render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: @test_town }
+
+    -# TODO не работает на прод
+    -#=render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: @test_town }
+
   #area_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
     - @towns.each do |area|
       = render :partial => 'towns_accordion', :locals => {:town => area, css: 'font-size: 26px'}
+
 -#%table.table.table-striped
 -#  %thead
 -#    %tr

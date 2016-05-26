@@ -83,7 +83,7 @@ module Repairing
 
             Thread.new do
               @repairing_layer.repairs.each do |repair|
-                repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to)
+                repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
                 repair.save!
               end
             end
@@ -126,10 +126,11 @@ module Repairing
 
     def import layer, repairs
       repairs.each do |repair|
+        repair_hash = build_repair_hash(repair)
 
-        coordinates = nil # calc in background
-
-        repair_hash = build_repair_hash(repair, coordinates)
+        coordinates = repair['Координати']
+        coordinates1 = repair['Координати1']
+        repair_hash[:coordinates] = RepairingGeocoder.calc_coordinates(coordinates, coordinates1) unless coordinates.blank?
 
         layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
@@ -172,13 +173,15 @@ module Repairing
     end
 
     private
-      def build_repair_hash(repair, coordinates)
+      def build_repair_hash(repair)
         # this function build hash for repair model
         # get two parameters repair hash and coordinates array
         # first of all convert repair start and end date to date
         # after that build and return hash
-        start_repair_date = repair['Дата початку ремонту'].to_date  unless repair['Дата початку ремонту'].nil?
-        end_repair_date = repair['Дата закінчення ремонту'].to_date  unless repair['Дата закінчення ремонту'].nil?
+
+        start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
+        end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
+
         {
             obj_owner: repair['Виконавець'],
             subject: repair['Об\'єкт'],
@@ -195,8 +198,6 @@ module Repairing
 
             address: repair['Адреса'],
             address_to: repair['Адреса1'],
-
-            coordinates: coordinates
         }
       end
       # Use callbacks to share common setup or constraints between actions.

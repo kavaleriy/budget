@@ -13,7 +13,8 @@ module Repairing
       if params[:town_id] && params[:town_id] != '0'
         @town = params[:town_id]
         town = Town.find(@town)
-        @map_center = town['coordinates'] if town.level > 1 # area
+        binding.pry
+        @map_center = town['coordinates'] if town.level && town.level > 1 # area
       else
         @town = ""
       end

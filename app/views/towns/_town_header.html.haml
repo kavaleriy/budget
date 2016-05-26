@@ -1,5 +1,6 @@
 .col-xs-4
-= image_tag town[:img_url] unless town[:img_url].blank?
+- binding.pry
+  = image_tag town[:img_url] unless town[:img_url].nil?
 .col-xs-6{style: css}
   =  town[:title]
 .col-xs-2.pull-right
