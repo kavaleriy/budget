@@ -1,4 +1,4 @@
--#http://bost.ocks.org/mike/leaflet/
+-# http://bost.ocks.org/mike/leaflet/
 -# http://geojson.org/geojson-spec.html#examples
 -# http://www.rubydoc.info/gems/rgeo-geojson/frames
 -# https://github.com/alexreisner/geocoder
@@ -214,13 +214,16 @@
     }
 
     function addGeoJsonPoints(data, getPoint, options) {
-      options = options || {};
-
       // remove all markers
       if (markers) {
         map.removeLayer(markers);
         markers = undefined
       }
+
+      addGeoJsonPoint(data, getPoint, options)
+    }
+    function addGeoJsonPoint(data, getPoint, options) {
+      options = options || {};
 
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
       map.addLayer(markers);
@@ -269,29 +272,29 @@
           }
         })
 
-        //layer.on({
-        //  click: function () {
-        //    if (options.featureClickCallback)
-        //      options.featureClickCallback(feature, popup);
-        //  },
-        //  mouseover: function () {
-        //    //layer.setStyle(options.hoverStyle);
-        //    if (options.getInfoContent)
-        //      info.update(options.getInfoContent(feature.properties));
-        //  },
-        //  mouseout: function () {
-        //    //geoJson.resetStyle(layer)
-        //    info.update();
-        //  },
-        //  dragend: function(e) {
-        //    if (options.dragCallback) {
-        //      var layer = e.target;
-        //      var ll = layer.getLatLng();
-        //
-        //      options.dragCallback(layer, ll)
-        //    }
-        //  }
-        //});
+        layer.on({
+          //click: function () {
+          //  if (options.featureClickCallback)
+          //    options.featureClickCallback(feature, popup);
+          //},
+          //mouseover: function () {
+          //  //layer.setStyle(options.hoverStyle);
+          //  if (options.getInfoContent)
+          //    info.update(options.getInfoContent(feature.properties));
+          //},
+          //mouseout: function () {
+          //  //geoJson.resetStyle(layer)
+          //  info.update();
+          //},
+          dragend: function(e) {
+            if (options.dragCallback) {
+              var layer = e.target;
+              var ll = layer.getLatLng();
+
+              options.dragCallback(layer, ll)
+            }
+          }
+        });
       }
     }
 
@@ -443,7 +446,13 @@
     }
 
     function removeMarker(data){
-      map.removeLayer(layers[data['properties']['id']][0]);
+      var id = data['properties']['id']
+
+      markers.eachLayer(function(layer){
+        if(layer.feature.properties.id == id){
+            map.removeLayer(layer);
+        }
+      });
     }
 
     initMap();
@@ -455,6 +464,7 @@
       map: map,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
+      addGeoJsonPoint: addGeoJsonPoint,
       editRoute: editRoute,
       showRoute: showRoute,
       addCategoryControl: addCategoryControl,

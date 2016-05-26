@@ -56,20 +56,22 @@
       dataType: 'json',
     })
     .done(function (data) {
-      $.each(data['features'], function(i, d){
-        aRepairMap.addGeoJsonPoints([d['properties']['id'], 0, d], getPoint, {
-          clustered: true,
-          style: {
-            opacity: 0.8,
-          },
-          hoverStyle: {
-            opacity: 1,
-          },
-          featureClickCallback: onFeatureClick,
-          dragCallback: onDrag,
-          editInfoContent: true
-        })
+
+      //$.each(data['features'], function(i, d){
+      //  console.log(d)
+      aRepairMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        dragCallback: onDrag,
+        editInfoContent: true
       })
+      //})
     })
     .fail(function () {
     });
@@ -84,7 +86,7 @@
         //point.icon = new L.Icon.Default();
         point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
       }
-      point.draggable = false;
+      point.draggable = true;
       return point;
     }
 
@@ -135,7 +137,7 @@
       if (data.features) {
         selectFeature(data.features[0]);
       } else {
-        aRepairMap.addGeoJsonPoints([data['properties']['id'], 0, data], getPoint, {
+        aRepairMap.addGeoJsonPoint([data['properties']['id'], 0, data], getPoint, {
           clustered: true,
           style: {
             opacity: 0.8,
