@@ -9,17 +9,27 @@
     width: 100%;
     resize: none;
   }
-  #visualisation_copy_img{
-    height: $copy_block_heigth !important;
+
+  .insert{
+    width: 100%;
+    .insert-button{
+      display: none;
+      padding-left: 47%;
+      #visualisation_copy_img{
+        font-size: 20px;
+        width: 100px;
+        height: $copy_block_heigth;
+        text-decoration: none;
+        .fa-clipboard{
+          padding-right: 5px;
+        }
+      }
+    }
   }
-  .dis{
-     pointer-events: none !important;
-     cursor: default;
-     color:Gray;
+  #copy_img{
+    display: none;
   }
-  .progress-icon{
-    display:none;
-  }
+  
 .modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
   .modal-dialog
     .modal-content
@@ -29,11 +39,14 @@
         %h4.modal-title
           = t('iframe.title')
       .modal-body
-        .input-group
-          =text_area 'copy','img',size: "1x2",disabled: 'disabled'
-          =link_to 'Insert', "#" , class: 'input-group-addon dis',id:'visualisation_copy_img',disabled: true
-          =image_tag('export_budget/ajax-loader.gif',class: 'progress-icon')
+        .insert
+          .insert-button
+            =link_to "#",class: 'dis',id:'visualisation_copy_img' do
+              %i.fa.fa-clipboard{"aria-hidden" => "true"}
+              Insert
         %iframe{:height => "700px", :src => "", :width => "100%",id: 'iframe'}
+        =text_area 'copy','img',size: "1x2",disabled: 'disabled'
+
       .modal-footer
 
 :javascript
@@ -81,7 +94,7 @@
   $(document).ready(function(){
     $('#visualisation_copy_img').click(function(){
       // set copy button is disabled
-      $('#visualisation_copy_img').addClass('dis');
+      $('.insert-button').hide('fast');
       var panel_selector = $('#iframe').attr('data-panel-selector');
       var active_panel = get_active_panel("#iframe",panel_selector);
       convert_html_to_canvas(active_panel,'#copy_img');
@@ -105,7 +118,7 @@
         $( deferred.resolve );
       })
     ).done(function(){
-        $('#visualisation_copy_img').removeClass('dis');
+        $('.insert-button').toggle('slow');
         // var active_panel = get_active_panel("#iframe","div.active");
         // convert_html_to_canvas(active_panel,'#copy_img');
         // var iframe_dom = $("#iframe").contents();
