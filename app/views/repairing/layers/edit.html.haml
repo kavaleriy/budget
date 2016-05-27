@@ -48,7 +48,7 @@
       getMapPopupContent: getMapPopupContent,
       scrollWheelZoom: true
     });
-    var categories_icons = #{Repairing::Category.get_category_icons}
+
     // add markers
     $.ajax({
       method: 'get',
@@ -56,19 +56,21 @@
       dataType: 'json',
     })
     .done(function (data) {
+
       //$.each(data['features'], function(i, d){
-        aRepairMap.addGeoJsonPoints(data['features'], getPoint, {
-          clustered: true,
-          style: {
-            opacity: 0.8,
-          },
-          hoverStyle: {
-            opacity: 1,
-          },
-          featureClickCallback: onFeatureClick,
-          dragCallback: onDrag,
-          editInfoContent: true
-        })
+      //  console.log(d)
+      aRepairMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.8,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        dragCallback: onDrag,
+        editInfoContent: true
+      })
       //})
     })
     .fail(function () {
@@ -147,7 +149,7 @@
       if (data.features) {
         selectFeature(data.features[0]);
       } else {
-        aRepairMap.addGeoJsonPoints([data['properties']['id'], 0, data], getPoint, {
+        aRepairMap.addGeoJsonPoint([data['properties']['id'], 0, data], getPoint, {
           clustered: true,
           style: {
             opacity: 0.8,
