@@ -16,8 +16,11 @@
   #new_export_budget > div.form-group.string.optional.export_budget_header > label{
     width: 50%;
   }
+  #new_export_budget > div.form-group.text.optional.export_budget_title_page > div > div.note-editing-area > div.note-editable.panel-body{
+    padding: 0;
+  }
   .note-editing-area > .note-editable.panel-body > img{
-    width: 100% !important;
+
   }
   .visual_place{
     cursor: pointer;
@@ -26,7 +29,17 @@
       transition: all .4s linear;
     }
   }
-.col-xs-7
+  #new_export_budget > div.form-group.text.required.export_budget_content > div > div.note-editing-area > div.note-editable.panel-body{
+    img{
+      width: 100% !important;
+    }
+  }
+  .export-budget-form-container{
+    margin-left:25%;
+    width: 831px;
+  }
+
+.export-budget-form-container
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
@@ -90,6 +103,7 @@
     });
 
     $('#export_budget_title_page').summernote({
+      disableResizeEditor: true,
       minHeight: 300
     });
 
