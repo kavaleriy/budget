@@ -108,6 +108,11 @@
 
       return false;
     });
+
+
+    $('#export_budget_visualisation_modal_window').on('hidden.bs.modal', function () {
+      $('.insert-button').hide('fast');
+    })
   });
 
   $('#iframe').on('load',function(){
@@ -118,7 +123,7 @@
         $( deferred.resolve );
       })
     ).done(function(){
-        $('.insert-button').toggle('slow');
+        $('.insert-button').show('slow');
         // var active_panel = get_active_panel("#iframe","div.active");
         // convert_html_to_canvas(active_panel,'#copy_img');
         // var iframe_dom = $("#iframe").contents();
