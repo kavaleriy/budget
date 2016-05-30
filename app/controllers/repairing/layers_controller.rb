@@ -44,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page]).per(10)
+      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
     end
 
     # GET /repairing/layers/1

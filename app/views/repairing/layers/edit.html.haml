@@ -48,6 +48,7 @@
       getMapPopupContent: getMapPopupContent,
       scrollWheelZoom: true
     });
+    var categories_icons = #{Repairing::Category.get_category_icons}
 
     // add markers
     $.ajax({
