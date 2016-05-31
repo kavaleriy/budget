@@ -1,10 +1,17 @@
+:scss
+  .alwaysbreak { page-break-before: always; }
+
 !!! 5
 %html
   %head
     %meta(charset="utf-8")
     = stylesheet_link_tag    "application", :media => "all"
+    -#= wicked_pdf_stylesheet_link_tag "pdf"
+
     = @export_budget.title_page.html_safe
     = @export_budget.content.html_safe
+    .alwaysbreak
+      = @export_budget.last_page.html_safe
 -#    = wicked_pdf_stylesheet_link_tag    'timelines'
 -#    = wicked_pdf_stylesheet_link_tag    'timelinejs'
 -#    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/timeline'
