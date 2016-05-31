@@ -46,6 +46,7 @@
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
     = f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
     = f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
+    = f.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5#visual_list
 :javascript
@@ -72,6 +73,16 @@
       set_year_in_title_page($(this).val());
     });
 
+    var fill_input = function(input_name,url){
+      if(!$(input_name).val()){
+        $.ajax({
+          url: url,
+          success: function(data){
+            $(input_name).summernote('code',data);
+          }
+        });
+      }
+    }
 
     var send_ajax = function(number){
       $.ajax({
@@ -126,26 +137,14 @@
       minHeight: 300,
     });
 
-    if(!$('#export_budget_title_page').val()){
-      $.ajax({
-        url: "#{template_title_path}",
-        success: function(data){
-          $('#export_budget_title_page').summernote('code',data);
-        }
-      });
-    }
-    if(!$('#export_budget_content').val()){
-      $.ajax({
-        url : "#{template_content_path}",
-        success: function(data){
-          $('#export_budget_content').summernote('code',data);
-          $('.visual_place').click(function(){
-            send_ajax($(this).attr('data-number'));
-          });
+    $('#export_budget_last_page').summernote({
+      disableResizeEditor: true,
+      minHeight: 300
+    })
 
-        }
-      });
-    }
+    fill_input('#export_budget_title_page',"#{template_title_path}");
+    fill_input('#export_budget_content',"#{template_content_path}");
+    fill_input('#export_budget_last_page',"#{template_last_page_path}");
 
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
