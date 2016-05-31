@@ -130,7 +130,17 @@ module Repairing
 
         coordinates = repair['Координати']
         coordinates1 = repair['Координати1']
-        repair_hash[:coordinates] = RepairingGeocoder.calc_coordinates(coordinates, coordinates1) unless coordinates.blank?
+
+        repair_hash[:coordinates] =
+          if coordinates1.blank?
+            if coordinates.blank?
+              nil
+            else
+              coordinates.split(',').map(&:to_f)
+            end
+          else
+            [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
+          end
 
         layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer

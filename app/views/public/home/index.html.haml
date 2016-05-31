@@ -130,7 +130,7 @@
         = t('public.home.index.about.5_sentence')
 
       -# TODO не работает на прод
-      = link_to t('public.home.index.show_town_profile'), public_path(@test_town), class: 'btn btn-primary demo'
+      = link_to t('public.home.index.show_town_profile'), public_path(@test_town), class: 'btn btn-primary demo' if @test_town
 
   .col-sm-12.col-lg-6.col-md-7.col-sm-8
     = render partial: 'map_ukraine'
