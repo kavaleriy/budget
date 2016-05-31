@@ -123,7 +123,9 @@
         $( deferred.resolve );
       })
     ).done(function(){
-        $('.insert-button').show('slow');
+        if($('#iframe').attr('src')){
+          $('.insert-button').show('slow');
+        }
         // var active_panel = get_active_panel("#iframe","div.active");
         // convert_html_to_canvas(active_panel,'#copy_img');
         // var iframe_dom = $("#iframe").contents();
