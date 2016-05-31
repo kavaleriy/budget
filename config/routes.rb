@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get 'template/title'
 
+  get 'template/last_page'
+
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
   namespace :content_manager do

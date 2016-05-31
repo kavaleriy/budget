@@ -5,4 +5,7 @@ class TemplateController < ApplicationController
 
   def title
   end
+
+  def last_page
+  end
 end
