@@ -1,1 +1,16 @@
-last_page
+.page_for_pdf{:style => "width:794px;background: blue;color: white;height:1165px;"}
+  .col-xs-12{:style => "padding:15%;padding-top:80%;"}
+    #title_Last_page_title{:style => "font-size: 50px;"}
+      = t('.title')
+    #title_last_page_twitter{:style => 'padding-top: 20px;font-size: 30px;'}
+      =image_tag('export_budget/twitter.png',width: '30px')
+    #title_last_page_facebook{:style => 'padding-top: 20px;font-size: 30px;'}
+      =image_tag('export_budget/facebook.png',width: '30px')
+    #title_last_page_budget_link{:style => 'padding-top: 20px;font-size: 15px;'}
+      =image_tag('export_budget/link.png',width: '30px')
+      =public_url(Town.get_user_town(current_user))
+    #title_last_page_author{:style => 'padding-top: 20px;font-size: 20px;'}
+      =image_tag('export_budget/email.png',width: '30px')
+      =current_user.email
+    #title_last_page_created_with{:style => 'padding-top: 30px;font-size: 16px'}
+      = t('.created_with')
