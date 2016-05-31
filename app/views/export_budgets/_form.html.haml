@@ -79,6 +79,9 @@
           url: url,
           success: function(data){
             $(input_name).summernote('code',data);
+            $('.visual_place').click(function(){
+              send_ajax($(this).attr('data-number'));
+            });
           }
         });
       }
@@ -96,7 +99,7 @@
       // create button
       var button = ui.button({
         contents: '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> Visual</span>',
-        tooltip: 'hello',
+        tooltip: 'visual',
         click: function () {
           send_ajax('0');
         }
