@@ -2,7 +2,7 @@
   .vis_controls div {
     padding-right: 10px;
   }
-.visify.row-eq-height
+.visify
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
 
@@ -71,6 +71,14 @@
   var aTreeChart = {}
 
   $(document).ready(function() {
+
+    $('a[role="tab"]').on('shown.bs.tab', function (e) {
+      if($(this).attr('href') == "#tab_pie") {
+        sidebar.redraw()
+      }
+    });
+
+
     var year = "#{@sel_year}",
         month = "#{@sel_month}",
         quarter = 0,
@@ -146,7 +154,7 @@
       } else {
         width = document_width;
       }
-      height = width*0.6;
+      height = $(document).height() * .7;
       $("#tab_chart").height(height);
       $("#tab_pie").height(height);
       $("#tab_table").height(height);

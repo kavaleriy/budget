@@ -25,6 +25,9 @@
           height = pHeight - margin.top - margin.bottom;
           width = $('#chart').width();
         },
+        redraw: function() {
+          _self.pie.redraw()
+        },
         hide: function(){
           if (_self.pie){
              _self.pie.destroy()
