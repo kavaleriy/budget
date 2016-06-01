@@ -5,7 +5,7 @@ module Documentation
     before_action :authenticate_user!, except: [:index]
     load_and_authorize_resource
 
-    before_action :set_documentation_document, only: [:show, :edit, :lock, :update, :destroy]
+    before_action :set_documentation_document, only: [:show, :edit, :lock, :update, :destroy,:download]
 
     # GET /documentation/documents
     # GET /documentation/documents.json
@@ -113,6 +113,18 @@ module Documentation
       end
     end
 
+    def download
+      file_path = @documentation_document.doc_file.store_dir
+      error = t('budget_files_controller.not_download_file')
+      if File.exist?(file_path)
+        send_file(
+            "#{file_path}",
+            :x_sendfile=>true
+        )
+      else
+        redirect_to :back , alert: error
+      end
+    end
     private
 
       def sort_column

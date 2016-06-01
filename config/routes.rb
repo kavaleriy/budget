@@ -127,6 +127,7 @@ Rails.application.routes.draw do
     get 'link_categories_tree_root' => 'link_categories#tree_root'
     get 'link_categories_tree' => 'link_categories#tree'
     resources :documents
+    get 'documents/:id/download' => 'documents#download',as: 'document_download'
     resources :links
     put 'documents/lock/:id' => 'documents#lock'
   end

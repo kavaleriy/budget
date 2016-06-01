@@ -6,6 +6,9 @@
           %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
     %td= "#{document.category.title if document.category}"
     %td= document.title
+    %td
+      = link_to documentation_document_download_path(document) do
+        %i.fa.fa-download.fa.fa-border
     %td= years(document.yearFrom, document.yearTo)
     %td= "#{document.town.title if document.town}"
     %td= "#{document.branch.title if document.branch}"
