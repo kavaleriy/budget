@@ -20,7 +20,7 @@ module Documentation
 
       @documentation_documents = @documentation_documents.where(:locked => params["locked"]) unless params["locked"].blank?
 
-      @documentation_documents.page params[:page]
+      @documentation_documents.page(params[:page])
 
       respond_to do |format|
         format.js
