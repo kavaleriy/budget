@@ -114,7 +114,7 @@ module Documentation
     end
 
     def download
-      file_path = @documentation_document.doc_file.store_dir
+      file_path = @documentation_document.doc_file.path.to_s
       error = t('budget_files_controller.not_download_file')
       if File.exist?(file_path)
         send_file(
