@@ -431,16 +431,34 @@
     }
 
     function showAdressMarker(query){
-      var check = 0;
-      markers.getLayers()[0].eachLayer(function(layer){
-        if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.c_id == category || layer.feature.properties.p_c_id == category || category == "all") && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year){
-          var coords = layer.feature.geometry.coordinates;
-          map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
-          check++;
-          return true;  // find first result and show on map
+      var check = false;
+      // get all markers
+      markers.eachLayer(function(layer){
+        // check by address
+        if (new RegExp(query, 'i').test(layer.feature.properties.address)){
+          //check by category
+          if((layer.feature.properties.c_id == category || layer.feature.properties.p_c_id == category || category == "all")){
+            //check by town
+            if((layer.feature.properties.t_id == town || !town)){
+              //check by year
+              if(layer.feature.properties.year == year || !year){
+                // get marker coordinates
+                var coords = layer.feature.geometry.coordinates;
+                // show marker by coordinates
+                map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
+                // emulate click on marker
+                layer.fireEvent('click');
+                // Yes!!! we find marker
+                check = true;
+              }
+            }
+          }
+        }
+        if(check){
+          return;
         }
       });
-      if(check == 0) {
+      if(!check) {
         alert("Для заданих параметрів за вказаною адресою робіт немає");
       }
     }
