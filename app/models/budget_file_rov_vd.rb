@@ -20,12 +20,12 @@ class BudgetFileRovVd < BudgetFile
     krk = row['KRK'].to_s.split('.')[0]
 
     [
-        { :amount => row['KVNP'].to_i },
+        { :amount => row['KVNP'].to_f / 100 },
     ].map do |line|
-      next if line[:amount].to_i == 0
+      next if line[:amount] == 0
 
       item = {
-          'amount' => line[:amount] / 100,
+          'amount' => line[:amount],
           'fond' => fond,
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,

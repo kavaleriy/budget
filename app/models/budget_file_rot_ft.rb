@@ -19,7 +19,7 @@ class BudgetFileRotFt < BudgetFile
 
 
     [
-        { :amount => row['T020'].to_i },
+        { :amount => row['T020'].to_f },
     ].map do |line|
       next if line[:amount].to_i == 0
 
