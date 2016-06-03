@@ -253,6 +253,15 @@
         });
       }
 
+      function layerIsRoad(layer){
+        return layer.feature.properties.repair == 'road';
+      };
+
+
+      function clearRoadRoute(){
+        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+      }
+
       function onEachFeature(feature, layer) {
 
         //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
@@ -262,6 +271,9 @@
         //}
         layer.on({
           click: function () {
+            if(!layerIsRoad(layer)){
+              clearRoadRoute()
+            }
             getPopupInfoContent(feature.properties.id,layer);
             //console.log(content);
             //layer.bindPopup(content);
