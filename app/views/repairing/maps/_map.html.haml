@@ -272,7 +272,7 @@
         layer.on({
           click: function () {
             if(!layerIsRoad(layer)){
-              clearRoadRoute()
+              clearRoadRoute();
             }
             getPopupInfoContent(feature.properties.id,layer);
             //console.log(content);
@@ -373,7 +373,8 @@
       }
       if(feature.waypoints){
         if(feature.selected) {
-          $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+          clearRoadRoute();
+          // $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
           feature.selectedRoute.spliceWaypoints(0, feature.waypoints.length-1);
           feature.selected = false;
         } else {
@@ -460,7 +461,9 @@
 
                 map.setView((new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1]))), 16);
                 // emulate click on marker
-                setTimeout(function(){layer.fireEvent('click');},1000)
+                markers.zoomToShowLayer(layer, function() {
+                  setTimeout(function(){layer.fireEvent('click');},1000)
+                });
 
                 // Yes!!! we find marker
                 check = true;
