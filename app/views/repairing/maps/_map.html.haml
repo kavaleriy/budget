@@ -445,17 +445,20 @@
                 // get marker coordinates
                 var coords = layer.feature.geometry.coordinates;
                 // show marker by coordinates
-                map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
+
+                map.setView((new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1]))), 16);
                 // emulate click on marker
-                layer.fireEvent('click');
+                setTimeout(function(){layer.fireEvent('click');},1000)
+
                 // Yes!!! we find marker
                 check = true;
+                return false;
               }
             }
           }
         }
         if(check){
-          return;
+          return false;
         }
       });
       if(!check) {
