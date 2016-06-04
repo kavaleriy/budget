@@ -1,21 +1,89 @@
-= content_for :header do
-  .head.pull-left
-    = t('programs.target_programs.index.header') + @town
+:scss
 
-- if @programs_target_programs.length > 0
-  %table
-    %tr
-      %th
-      %th
-      %th
+  table.programs > thead > tr > td, table.programs > tbody > tr > td, table.programs > tfoot > tr > td {
+    vertical-align: middle;
+  }
 
-    - @programs_target_programs.each do |programs_target_program|
+  table.programs {
+    font-size: 14pt;
+
+    th {
+      text-align: center;
+      &.amount {
+        width: 20vw;
+      }
+    }
+
+    tr.clickable {
+      cursor: pointer;
+    }
+
+    tr {
+      &:hover {
+        i, .progress { opacity: 1; }
+      }
+
+      td {
+        &.amount > span, .progress {
+          display: inline-block;
+        }
+
+        &.amount > span {
+          padding-right: 10px;
+        }
+
+        i, .progress {
+          opacity: .7;
+        }
+
+        .progress {
+          margin-bottom: -4px;
+          width: 10vw;
+        }
+
+        &.amount {
+          text-align: right;
+        }
+
+        &.amounts {
+          text-align: center;
+          padding: 0 15px;
+          font-size: 11pt;
+        }
+      }
+    }
+  }
+
+.col-xs-12
+  %h1
+    Державні програми
+
+  .table-responsive
+    %table.programs.table.table-hover
       %tr
-        %td= link_to programs_target_program.title, programs_target_program
-        %td= link_to 'Show', programs_target_program
-        %td= link_to 'Edit', edit_programs_target_program_path(programs_target_program)
-        %td= link_to 'Destroy', programs_target_program, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %th
+        %th
+          Назва
+        %th.amount
+          Виконано в
+          = @year
+        - @years.each do |year|
+          %th
+            = year
+        %th
 
-  %br
+      - @programs.each do |program|
+        %tr.clickable{'data-href' => "#{programs_target_program_path(program[:id])}"}
+          = render partial: 'program', locals: { icon: 'fa-sun-o', :title => program[:title], amounts: program[:years], :year => @year }
+        - unless program[:sub_programs].blank?
+          - program[:sub_programs].each do |subprogram|
+            %tr.clickable{'data-href' => "#{programs_target_program_path(subprogram[:id])}"}
+              = render partial: 'program', locals: { icon: nil, :title => subprogram[:title], amounts: subprogram[:years], :year => @year }
 
-= link_to t('vtarnay.module5s.index.load'), new_programs_target_program_path, :type => "button", :method => :get, :class => "btn btn-primary"
+:javascript
+  $(document).ready(function(e){
+    $('tr.clickable').on('click', function() {
+      var url = this.getAttribute('data-href')
+      window.location = url
+    })
+  });

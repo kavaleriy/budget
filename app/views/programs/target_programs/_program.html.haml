@@ -1,0 +1,20 @@
+%td
+  - unless icon.blank?
+    %i.fa.fa-3x{class: "#{icon}"}
+
+%td
+  = title
+
+%td.amount
+  - unless amounts[year].blank?
+    %span
+      = amounts[year][:fact]
+    .progress
+      .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
+        = "#{amounts[year][:perc]}%"
+
+- @years.each do |year|
+  %td.amounts
+    = amounts[year][:plan] if amounts[year]
+
+%td

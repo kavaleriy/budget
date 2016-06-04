@@ -11,7 +11,7 @@
     %tbody
     - @programs_towns.each do |town|
       %tr
-        %td= link_to(town.name, programs_target_programs_list_path(town))
+        %td= link_to(town.name, legacy_programs_target_programs_list_path(town))
         -#%td= link_to town.name, '/programs/target_programs/list/' + town.id + "?locale=" + params[:locale]
 
   %br

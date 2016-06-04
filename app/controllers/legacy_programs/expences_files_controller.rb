@@ -1,4 +1,4 @@
-class Programs::ExpencesFilesController < ApplicationController
+class LegacyPrograms::ExpencesFilesController < ApplicationController
   before_action :set_programs_expences_file, only: [:show, :edit, :update, :destroy]
   before_action :set_programs_town, only: [:destroy]
 

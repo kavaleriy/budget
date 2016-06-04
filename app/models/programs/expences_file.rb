@@ -1,4 +1,4 @@
-class Programs::ExpencesFile
+class LegacyPrograms::ExpencesFile
   include Mongoid::Document
 
   require 'carrierwave/mongoid'
