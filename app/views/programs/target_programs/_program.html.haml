@@ -1,20 +1,30 @@
-%td
-  - unless icon.blank?
-    %i.fa.fa-3x{class: "#{icon}"}
+:scss
+  .program {
+    .fact {
+      text-align: right;
+    }
+    .bar {
+      margin-top: 20px;
+      text-align: center;
+      h3 { display: inline; }
+    }
 
-%td
-  = title
+  }
 
-%td.amount
-  - unless amounts[year].blank?
-    %span
-      = amounts[year][:fact]
-    .progress
-      .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
-        = "#{amounts[year][:perc]}%"
+.program
+  .fact.col-xs-2
+    Виконано
+    %h2
+      = number_to_currency(program[:years][year][:fact], unit: '')
 
-- @years.each do |year|
-  %td.amounts
-    = amounts[year][:plan] if amounts[year]
+  .bar.col-xs-8
+    = render partial: 'program_progress', locals: { perc: program[:years][year][:perc] }
+    Залишилось
+    %h3
+      = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
 
-%td
+  .col-xs-2
+    Заплановано
+    %h3
+      = number_to_currency(program[:years][year][:plan], unit: '')
+

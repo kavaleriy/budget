@@ -1,0 +1,89 @@
+:scss
+
+  table.programs > thead > tr > td, table.programs > tbody > tr > td, table.programs > tfoot > tr > td {
+    vertical-align: middle;
+  }
+
+  table.programs {
+
+    th {
+      text-align: center;
+
+      &.amount {
+        width: 20vw;
+      }
+    }
+
+    tr.clickable {
+      cursor: pointer;
+    }
+
+    tr {
+      &:hover {
+        i, .progress { opacity: 1; }
+      }
+
+      td {
+        &.amount > span, .progress {
+          display: inline-block;
+        }
+
+        &.amount > span {
+          padding-right: 10px;
+        }
+
+        i, .progress {
+          opacity: .7;
+        }
+
+        .progress {
+          margin-bottom: -4px;
+          width: 10vw;
+        }
+
+        &.amount {
+          text-align: right;
+        }
+
+        &.amounts {
+          text-align: center;
+          padding: 0 15px;
+          font-size: 11pt;
+        }
+      }
+    }
+  }
+
+.table-responsive
+  .pull-right
+    %b
+
+      Заплановано по роках
+  %table.programs.table.table-hover
+    %tr
+      %th
+      %th
+        Назва
+      %th.amount
+        Виконано в
+        = year
+      - years.each do |year|
+        %th
+          = year
+      %th
+
+    - programs.each do |program|
+      %tr.clickable{'data-href' => "#{programs_target_program_path(program[:id])}"}
+        = render partial: 'programs_list_item', locals: { icon: 'fa-sun-o', :title => program[:title], amounts: program[:years], :year => @year }
+      - unless program[:sub_programs].blank?
+        - program[:sub_programs].each do |subprogram|
+          %tr.clickable{'data-href' => "#{programs_target_program_path(subprogram[:id])}"}
+            = render partial: 'programs_list_item', locals: { icon: nil, :title => subprogram[:title], amounts: subprogram[:years], :year => @year }
+
+:javascript
+  $(document).ready(function(e){
+    $('tr.clickable').on('click', function() {
+      var url = this.getAttribute('data-href')
+      window.location = url
+    })
+  });
