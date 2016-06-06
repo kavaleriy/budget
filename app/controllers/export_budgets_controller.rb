@@ -30,7 +30,8 @@ class ExportBudgetsController < ApplicationController
            formats: [:html],
            dpi: '300',
            template: 'export_budgets/create_pdf',
-           show_as_html: params.key?('debug')
+           show_as_html: params.key?('debug'),
+           footer: { center: '[page]' }
   end
 
   # GET /export_budgets/new
