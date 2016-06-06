@@ -123,6 +123,124 @@
     }
   }
 
+  /* ===== Media ===== */
+  @media (min-width: 1098px) and (max-width: 1199px) {
+    nav > .container {
+      width: 1100px;
+    }
+  }
+  @media (min-width: 960px) and (max-width: 1097px) {
+    .navbar .container .navbar-header .logo-block .title {
+      word-wrap: break-word;
+      margin-left: 42px;
+    }
+  }
+  @media (min-width: 920px) and (max-width: 1099px) {
+    nav > .container {
+      width: 920px;
+    }
+    .navbar .container {
+      .navbar-header .logo-block {
+        .title {
+          font-size: 13px;
+          top: 25px;
+        }
+        width: 140px;
+      }
+      .navbar-collapse ul.navbar-nav > li > a {
+        font-size: 13px;
+      }
+    }
+    .nav > li > a {
+      padding: 15px 10px;
+    }
+  }
+  @media (min-width: 820px) and (max-width: 919px) {
+    nav > .container {
+      width: 820px;
+    }
+    .navbar .container {
+      .navbar-header .logo-block {
+        .title {
+          font-size: 12px;
+          top: 25px;
+        }
+        width: 140px;
+      }
+      .navbar-collapse ul.navbar-nav > li > a {
+        font-size: 12px;
+      }
+    }
+    .nav > li > a {
+      padding: 15px 8px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 819px) {
+    nav > .container {
+      width: 768px;
+    }
+    .navbar .container {
+      .navbar-header .logo-block {
+        .title {
+          font-size: 11px;
+          top: 27px;
+        }
+        width: 130px;
+      }
+      .navbar-collapse ul.navbar-nav > li > a {
+        font-size: 11px;
+      }
+    }
+    .nav > li > a {
+      padding: 15px 8px;
+    }
+  }
+  @media (max-width: 767px) {
+    nav.min .container .navbar-header button.navbar-toggle {
+      margin-top: 8px;
+    }
+    .navbar .container .navbar-header .logo-block {
+      margin-left: 10px;
+    }
+    nav {
+      &.min .container .navbar-header .logo-block {
+        margin-left: 10px;
+      }
+      .container .navbar-header button.navbar-toggle {
+        margin-top: 15px;
+      }
+    }
+    .navbar .container .navbar-collapse {
+      overflow-y: visible;
+      border: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      ul.navbar-nav {
+        float: none;
+        background: #0c2231;
+        > li > a {
+          &:hover, &:focus {
+            border: none;
+            padding-bottom: 10px;
+          }
+        }
+      }
+    }
+    nav .container .navbar-collapse ul > li {
+      text-align: center;
+    }
+  }
+  @media (max-width: 768px) {
+    #login-dp {
+      background-color: inherit;
+      color: #fff;
+      .bottom {
+        background-color: inherit;
+        border-top: 0 none;
+      }
+    }
+  }
+
 %nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
   .container
     -# Brand and toggle get grouped for better mobile display
