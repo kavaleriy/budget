@@ -28,7 +28,7 @@ class ExportBudgetsController < ApplicationController
   def create_pdf
     render pdf: @export_budget.title,
            formats: [:html],
-           dpi: '72',
+           dpi: '300',
            template: 'export_budgets/create_pdf',
            show_as_html: params.key?('debug')
   end
