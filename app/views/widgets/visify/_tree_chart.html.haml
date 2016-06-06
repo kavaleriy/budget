@@ -26,14 +26,8 @@
           .pull-right
             = render partial: 'select_level'
         - if @types_count > 1
-          .pull-right
-            .btn-group{'data-toggle' => 'buttons'}
-              %label.btn.btn-default.active.data_type
-                %input{:name => "data_type", :type => "radio", :value => "plan"}
-                = t('js.visify.plan')
-              %label.btn.btn-default.data_type
-                %input{:name => "data_type", :type => "radio", :value => "fact"}
-                = t('js.visify.fact')
+          =render partial: 'plan_fact_switch'
+
         .pull-right
           = render partial: 'select_amount'
 

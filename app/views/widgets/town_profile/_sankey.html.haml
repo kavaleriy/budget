@@ -1,3 +1,5 @@
+-if @switch_plan_fact
+  = render partial: 'widgets/visify/plan_fact_switch'
 %p
   #percent_list{:style => "display: none"}
     =t('sankeys.aggregation')
@@ -15,6 +17,7 @@
 
 #sankey_chart.active
 = stylesheet_link_tag "sankeys"
+= stylesheet_link_tag "application"
 = javascript_include_tag "application"
 = javascript_include_tag "biPartite.js"
 = javascript_include_tag "sankey.js"
@@ -72,5 +75,8 @@
       get_sankey(history, year, percent, rot_file_id, rov_file_id);
     });
 
+    $('.data_type').on("click", function(){
+      alert('dsdasda');
+    });
   })
 
