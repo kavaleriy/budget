@@ -1,5 +1,10 @@
+= stylesheet_link_tag "sankeys"
+= stylesheet_link_tag "application"
+= javascript_include_tag "application"
+= javascript_include_tag "biPartite.js"
+= javascript_include_tag "sankey.js"
 -if @switch_plan_fact
-  = render partial: 'widgets/visify/plan_fact_switch'
+  = render partial: 'widgets/visify/plan_fact_switch',locals: {type: 'fact'}
 %p
   #percent_list{:style => "display: none"}
     =t('sankeys.aggregation')
@@ -16,11 +21,7 @@
   %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 
 #sankey_chart.active
-= stylesheet_link_tag "sankeys"
-= stylesheet_link_tag "application"
-= javascript_include_tag "application"
-= javascript_include_tag "biPartite.js"
-= javascript_include_tag "sankey.js"
+
 
 :javascript
 
