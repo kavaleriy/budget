@@ -1,0 +1,30 @@
+:scss
+  .program {
+    .fact {
+      text-align: right;
+    }
+    .bar {
+      margin-top: 50px;
+      text-align: center;
+      h3 { display: inline; }
+    }
+
+  }
+
+.program
+  .fact.col-xs-3
+    Виконано
+    %h2
+      = number_to_currency(program[:years][year][:fact], unit: '')
+
+  .bar.col-xs-6
+    = render partial: 'program_progress', locals: { perc: program[:years][year][:perc] }
+    Залишилось
+    %h3
+      = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
+
+  .col-xs-3
+    Заплановано
+    %h3
+      = number_to_currency(program[:years][year][:plan], unit: '')
+

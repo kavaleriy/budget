@@ -1,4 +1,4 @@
-class Programs::AttachmentsController < ApplicationController
+class LegacyPrograms::AttachmentsController < ApplicationController
   before_action :set_attachment, only: [:update, :destroy]
   before_action :set_target_program, only: [:destroy]
 

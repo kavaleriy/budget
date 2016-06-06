@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-
-
   get 'template/content'
 
   get 'template/title'
@@ -10,6 +8,7 @@ Rails.application.routes.draw do
 
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
+
   namespace :content_manager do
     resources :page_containers
   end
@@ -82,10 +81,12 @@ Rails.application.routes.draw do
   get 'editor/index'
 
   namespace :programs do
-    resources :indicator_files
+    resources :target_programs
   end
 
-  namespace :programs do
+  namespace :legacy_programs do
+    resources :indicator_files
+
     resources :towns
 
     resources :target_programs
@@ -319,7 +320,7 @@ Rails.application.routes.draw do
 
   get 'public/towns/pdf_doc' => 'public/towns#pdf_docs',as: 'public_towns_pdf_docs'
   get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile', as: 'taxonomies_town_profile'
-  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
+  # get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
   get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile',as: 'indicate_taxonomies_town_profile'
   get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
   get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile', as: 'calendars_calendars_town'
