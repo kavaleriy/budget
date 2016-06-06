@@ -22,6 +22,27 @@
     has_many :budget_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
 
+    def self.check_switch_plan_fact(tax_rot_id,tax_rov_id)
+      # this function chheck if we can switch plan fact data
+      # get two params TaxonomyRot id , and TaxonomyRov id
+      # first of all we find these taxonomies
+      # after that we group budget files for these taxonomies
+      # count these group and if these group more than 1
+      # return true
+      # else return false
+
+      tax_rot = TaxonomyRot.find(tax_rot_id)
+      tax_rov = TaxonomyRov.find(tax_rov_id)
+
+      tax_rot.count_budget_files_by_data_type > 1 && tax_rov.count_budget_files_by_data_type > 1
+    end
+
+    def count_budget_files_by_data_type
+      # this function group budget files by data_type and return count of group
+      budget_files.group_by{|f| f.data_type}.count
+    end
+
+
     def self.visible_to user
       files = if user && user.is_locked? == false
                 if user.has_role? :admin

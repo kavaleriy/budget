@@ -51,9 +51,11 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     # get two parameters(TaxonomyRot.id and TaxonomyRov.id)
     # create sankey by Taxonomies
+    # check if we can switch to plan , fact
     # render partial 'sankey' with 'sankey' data
     @sankey = Sankey.new('rot_file_id' => params[:tax_rot],'rov_file_id' => params[:tax_rov])
     @sankey.owner = Taxonomy.find(params[:tax_rot]).owner
+    @switch_plan_fact = Taxonomy.check_switch_plan_fact(params[:tax_rot],params[:tax_rov])
     render partial: 'sankey', :locals => { sankey: @sankey }
   end
 
