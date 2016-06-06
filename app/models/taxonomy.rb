@@ -162,12 +162,12 @@
     end
 
 
-    def get_level_with_fonds level
+    def get_level_with_fonds level,type
       levels = {}
 
       explanation = self.explanation[level.to_s]
 
-      test = self.get_plan_fact_rows[:fact]
+      test = self.get_plan_fact_rows[type.to_sym]
 
       unless test.nil?
         test.each do |year, months|

@@ -228,7 +228,7 @@ Rails.application.routes.draw do
     get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
   end
 
-  get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
+  get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'
 
   resources :taxonomies do
     member do
