@@ -1,0 +1,230 @@
+:scss
+  .navbar {
+    margin-bottom: 0;
+    border: none;
+    border-radius: 0;
+    background: #0c2231;
+    .container {
+      .navbar-header .logo-block {
+        position: relative;
+        width: 230px;
+        height: 50px;
+        margin: 8px 0;
+        .logo {
+          position: absolute;
+          width: auto;
+          height: 100%;
+          padding-bottom: 8px;
+          top: 0;
+          left: 0;
+        }
+        .title {
+          position: absolute;
+          margin-bottom: 0;
+          bottom: 0;
+          right: 0;
+          font-size: 14px;
+          text-decoration: none;
+          font-family: 'Lato', sans-serif;
+          color: #ffd304;
+          text-transform: uppercase;
+          font-weight: 700;
+          letter-spacing: -.5px;
+        }
+      }
+      .navbar-collapse ul.navbar-nav {
+        padding-top: 23px;
+        float: right;
+        > li {
+          > a {
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: white;
+          }
+          &.dropdown > a > span.caret {
+            color: #ffd304;
+          }
+          > a {
+            &:hover, &:focus {
+              border-bottom: 3px solid #ffd304;
+              padding-bottom: 12px;
+            }
+          }
+          &.open > a {
+            &:hover, &:focus {
+              background-color: transparent;
+              color: #ffd304;
+              border-bottom: transparent;
+              margin-bottom: 3px;
+            }
+          }
+          &.active > a {
+            box-shadow: none;
+            background-image: none;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            color: #ffd304;
+            border-bottom: none;
+            cursor: text;
+          }
+        }
+      }
+    }
+  }
+
+  .dropdown-menu > li > a {
+    &:hover, &:focus {
+      color: #ffd304;
+    }
+  }
+
+  #login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+    .help-block {
+      font-size: 12px;
+    }
+    .bottom {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-top: 1px solid #ddd;
+      clear: both;
+      padding: 14px;
+    }
+    .social-buttons {
+      margin: 12px 0;
+      a {
+        width: 49%;
+      }
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+  }
+
+  .btn-fb {
+    color: #fff;
+    background-color: #3b5998;
+    &:hover {
+      color: #fff;
+      background-color: #496ebc;
+    }
+  }
+
+  .btn-tw {
+    color: #fff;
+    background-color: #55acee;
+    &:hover {
+      color: #fff;
+      background-color: #59b5fa;
+    }
+  }
+
+%nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+  .container
+    -# Brand and toggle get grouped for better mobile display
+    .navbar-header
+      %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      .logo-block
+        =link_to root_path, class: 'logo-src' do
+          = image_tag('new_design/ob-logo.svg', class: 'logo')
+          %p.title Відкритий бюджет - бета
+
+    -# Collect the nav links, forms, and other content for toggling
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li.active
+          =link_to '#' do
+            Про проект
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            Бюджетна система
+            %span.caret
+          %ul.dropdown-menu{:role => "menu"}
+            %li
+              %a{:href => "#"} Action
+            %li
+              %a{:href => "#"} Another action
+            %li
+              %a{:href => "#"} Something else here
+            %li.divider
+            %li
+              %a{:href => "#"} Separated link
+            %li.divider
+            %li
+              %a{:href => "#"} One more separated link
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            Візуалізації
+            %span.caret
+          %ul.dropdown-menu{:role => "menu"}
+            %li
+              %a{:href => "#"} Action
+            %li
+              %a{:href => "#"} Another action
+            %li
+              %a{:href => "#"} Something else here
+            %li.divider
+            %li
+              %a{:href => "#"} Separated link
+            %li.divider
+            %li
+              %a{:href => "#"} One more separated link
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            Громадський контроль
+            %span.caret
+          %ul.dropdown-menu{:role => "menu"}
+            %li
+              %a{:href => "#"} Action
+            %li
+              %a{:href => "#"} Another action
+            %li
+              %a{:href => "#"} Something else here
+            %li.divider
+            %li
+              %a{:href => "#"} Separated link
+            %li.divider
+            %li
+              %a{:href => "#"} One more separated link
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Авторизація
+          %ul#login-dp.dropdown-menu
+            %li
+              .row
+                .col-md-12
+                  Login via
+                  .social-buttons
+                    %a.btn.btn-fb{:href => "#"}
+                      %i.fa.fa-facebook
+                      Facebook
+                    %a.btn.btn-tw{:href => "#"}
+                      %i.fa.fa-twitter
+                      Twitter
+                  or
+                  %form#login-nav.form{"accept-charset" => "UTF-8", :action => "login", :method => "post", :role => "form"}
+                    .form-group
+                      %label.sr-only{:for => "exampleInputEmail2"} Email address
+                      %input#exampleInputEmail2.form-control{:placeholder => "Email address", :required => "", :type => "email"}
+                    .form-group
+                      %label.sr-only{:for => "exampleInputPassword2"} Password
+                      %input#exampleInputPassword2.form-control{:placeholder => "Password", :required => "", :type => "password"}
+                        .help-block.text-right
+                          %a{:href => ""} Forget the password ?
+                    .form-group
+                      %button.btn.btn-primary.btn-block{:type => "submit"} Sign in
+                    .checkbox
+                      %label
+                        %input{:type => "checkbox"}
+                          keep me logged-in
+                .bottom.text-center
+                  New here ?
+                  %a{:href => "#"}
+                    %b Join Us
