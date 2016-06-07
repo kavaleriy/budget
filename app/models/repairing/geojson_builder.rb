@@ -58,14 +58,14 @@ class Repairing::GeojsonBuilder
         id: "#{repair[:id]}",
         p_c_id: "#{repair.layer[:repairing_category_id] if repair.layer}", #parent_category_id
         # category: "#{Repairing::Category.find(repair[:repairing_category_id]).title if repair[:repairing_category_id]}",
-        c_id: "#{repair[:repairing_category_id]}", #category_id
+        # c_id: "#{repair[:repairing_category_id]}", #category_id
         t_id: "#{repair.layer.town_id if repair.layer}", #town_id
         # obj_owner: "#{repair[:obj_owner]}".gsub('\'', '`'),
         # title: "#{repair[:title]}".gsub('\'', '`'),
         # subject: "#{repair[:subject]}".gsub('\'', '`'),
         # work: "#{repair[:work]}",
         # description: repair[:description],
-        address: "#{repair[:address]}".gsub('\'', '`'),
+        # address: "#{repair[:address]}".gsub('\'', '`'),
         # amount: "#{repair[:amount]}",
         # repair_date: "#{repair[:repair_date].strftime("%m/%d/%Y") if repair[:repair_date]}",
         year: year,
