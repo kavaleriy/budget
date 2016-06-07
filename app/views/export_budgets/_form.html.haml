@@ -38,16 +38,19 @@
     margin-left:20%;
     width: 831px;
   }
--binding.pry
+-#-binding.pry
 .export-budget-form-container
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
-    = f.simple_fields_for :pages do |ff|
+    = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
       = ff.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
       = ff.input :content_page,as: :text, label: t('.content_page'), :contenteditable => "true"
-      = ff.input :content, as: :text, label: t('.content'), :contenteditable => "true"
+      = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
+        -@export_budget.pages[:content].each do |key,value|
+          = fff.input key,as: :text ,label: t(key),:contenteditable => "true",value: value
+      -#= ff.input :content, as: :text, label: t('.content'), :contenteditable => "true"
       = ff.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
     -#= f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
     -#= f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
@@ -92,7 +95,7 @@
     }
 
     var init_summernote = function(field_selector){
-      $(field_selector).summernote({
+      $('.summernote_input').summernote({
         disableResizeEditor: true,
         minHeight: 300
       });
@@ -128,7 +131,8 @@
       locale: 'ua'
     });
 
-    $('#export_budget_pages_content').summernote({
+    $('.summernote_input_with_visual').summernote({
+      disableDragAndDrop: true,
        toolbar: [
         // [groupName, [list of button]]
         ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -147,9 +151,9 @@
       minHeight: 300,
     });
 
-    init_summernote('#export_budget_pages_title_page');
-    init_summernote('#export_budget_pages_last_page');
-    init_summernote('#export_budget_pages_content_page');
+    //init_summernote('#export_budget_pages_title_page');
+    //init_summernote('#export_budget_pages_last_page');
+    //init_summernote('#export_budget_pages_content_page');
 
     fill_input('#export_budget_pages_title_page',"#{template_title_path}");
     fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
