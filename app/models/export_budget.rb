@@ -3,7 +3,7 @@ class ExportBudget
   belongs_to :town,class_name: 'Town'
   belongs_to :author,class_name: 'User'
 
-  validates :year,:title,:town,:author,:content,:last_page, presence: true
+  validates :year,:title,:town,:author, presence: true
   validates :year, numericality: { only_integer: true }
 
   field :year, type: Integer
