@@ -15,6 +15,8 @@
       %h2
         =t('.show')
       = link_to t('export_budgets.town_profile'),public_path(@export_budget.town),class: 'btn btn-default'
+      = link_to create_pdf_path(@export_budget,format: :pdf) do
+        %i.fa.fa-file-pdf-o
   .row.without_margin
     .panel.panel-default
       .panel-heading
