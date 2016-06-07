@@ -99,6 +99,30 @@
         minHeight: 300
       });
     }
+
+    var init_summernote_with_visual_button = function(field_selector) {
+      $(field_selector).summernote({
+        disableResizeEditor: true,
+        disableDragAndDrop: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
+          ['fontsize', ['fontsize']],
+          ['insert',['picture','table']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          // ['height', ['height']],
+          ['mybutton', ['visualButton']]
+        ],
+        buttons: {
+          // add button for show visual list
+          visualButton: visualButton
+        },
+        minHeight: 300,
+      });
+    }
+
     var send_ajax = function(number){
       $.ajax({
         url: "#{widgets_visualisation_list_path(current_user)}",
@@ -130,40 +154,16 @@
       locale: 'ua'
     });
 
-    $('.summernote_input_with_visual').summernote({
-      disableDragAndDrop: true,
-       toolbar: [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
-        ['fontsize', ['fontsize']],
-        ['insert',['picture','table']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        // ['height', ['height']],
-        ['mybutton', ['visualButton']]
-      ],
-      buttons: {
-        // add button for show visual list
-        visualButton: visualButton
-      },
-      minHeight: 300,
-    });
-
-    //init_summernote('#export_budget_pages_title_page');
-    //init_summernote('#export_budget_pages_last_page');
-    //init_summernote('#export_budget_pages_content_page');
-    //console.log($('.summernote_input').map);
     $('.summernote_input').map(function(item,i,arr){
-      console.log(item);
-      console.log(i);
-      //console.log(arr);
+      init_summernote($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
     });
-    //fill_input('#export_budget_pages_title_page',"#{template_title_path}");
-    //fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
-    //fill_input('#export_budget_pages_content_public_budget',"#{template_load_path('public_budget')}");
-    //fill_input('#export_budget_pages_last_page',"#{template_last_page_path}");
-
+    $('.summernote_input_with_visual').map(function(item,i,arr){
+      init_summernote_with_visual_button($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
+    });
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
     $('#export_budget_town').on('change',function(){
