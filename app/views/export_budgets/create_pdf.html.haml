@@ -11,15 +11,14 @@
     -#= @export_budget.title_page.html_safe
     -#= @export_budget.content.html_safe
     -#-binding.pry
-    =@export_budget.pages[:title_page].html_safe
-    =@export_budget.pages[:content_page].html_safe
-    =@export_budget.pages[:content].html_safe
-    =@export_budget.pages[:last_page].html_safe
+    -#=@export_budget.pages[:title_page].html_safe
+    -#=@export_budget.pages[:content_page].html_safe
+    -#=@export_budget.pages[:content].html_safe
+    -#=@export_budget.pages[:last_page].html_safe
 
-    -#=@export_budget.pages.each do |key,value|
-    -#  -#.alwaysbreak
-    -#  -unless key.eql? 'content_page'
-    -#    =value.to_s.html_safe
+    -@export_budget.pages.each do |key,value|
+      .alwaysbreak
+        =value.html_safe
 -#  -#.alwaysbreak.test
 -#= @export_budget.last_page.html_safe
 -#    = wicked_pdf_stylesheet_link_tag    'timelines'
