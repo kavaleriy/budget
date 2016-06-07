@@ -1,3 +1,10 @@
+= stylesheet_link_tag "sankeys"
+= stylesheet_link_tag "application"
+= javascript_include_tag "application"
+= javascript_include_tag "biPartite.js"
+= javascript_include_tag "sankey.js"
+-if @switch_plan_fact
+  = render partial: 'widgets/visify/plan_fact_switch',locals: {type: 'fact'}
 %p
   #percent_list{:style => "display: none"}
     =t('sankeys.aggregation')
@@ -14,10 +21,7 @@
   %select{:class => "selectpicker", :id => "select_year", :name => :file_year, :style => "display: none"}
 
 #sankey_chart.active
-= stylesheet_link_tag "sankeys"
-= javascript_include_tag "application"
-= javascript_include_tag "biPartite.js"
-= javascript_include_tag "sankey.js"
+
 
 :javascript
 
@@ -30,24 +34,30 @@
     var year = new Date().getFullYear();
     var rot_file_id = '#{sankey.rot_file_id}';
     var rov_file_id = '#{sankey.rov_file_id}';
+    var type = 'fact';
 
-    d3.json("/sankeys/get_rows/" + rot_file_id + "/" + rov_file_id, function(data) {
-      var year_options = "";
-      years = [];
-      // get number of years from the bigger array
-      Object.keys(data["rows_rot"]).length > Object.keys(data["rows_rov"]).length ? d = data["rows_rot"] : d = data["rows_rov"];
-      for(var year in d) {
-          years.unshift(year);
-      }
-      for(var i in years) {
-          year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
-      }
-      $('#select_year').html(year_options).css("display", "block");
-      $('#percent_list').css("display", "block");
-      history = data;
-      year = years[0];
-      get_sankey(data, year, percent, rot_file_id, rov_file_id);
-    })
+    function renderSankey(rot_id,rov_id,type){
+      d3.json("/sankeys/get_rows/" + rot_id + "/" + rov_id + "/" + type, function(data) {
+        var year_options = "";
+        years = [];
+        // get number of years from the bigger array
+        Object.keys(data["rows_rot"]).length > Object.keys(data["rows_rov"]).length ? d = data["rows_rot"] : d = data["rows_rov"];
+        for(var year in d) {
+            years.unshift(year);
+        }
+        for(var i in years) {
+            year_options += "<option value='" + years[i] + "'>" + years[i] + "</option>";
+        }
+        $('#select_year').html(year_options).css("display", "block");
+        $('#percent_list').css("display", "block");
+        history = data;
+        year = years[0];
+        get_sankey(data, year, percent, rot_file_id, rov_file_id);
+      })
+    }
+
+    renderSankey(rot_file_id,rov_file_id,type);
+
 
     // use already loaded data if user change only year
     $('#select_year').change(function() {
@@ -71,6 +81,10 @@
       // create chart according to the window size
       get_sankey(history, year, percent, rot_file_id, rov_file_id);
     });
+    $(".data_type").unbind('click');
 
+    $('.data_type').on("click", function(){
+      renderSankey(rot_file_id,rov_file_id,$(this).children(':first').val());
+    });
   })
 

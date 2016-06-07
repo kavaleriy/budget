@@ -1,0 +1,594 @@
+:scss
+  /* ===== Main section. Begin ===== */
+  .main-section {
+    height: 766px;
+    .clouds-block {
+      background: url('assets/new_design/cloud.svg');
+      background-repeat: no-repeat;
+      height: 733px;
+      position: absolute;
+      /*border: 1px solid red;*/
+      width: 100%;
+    }
+    .icons-block {
+      position: relative;
+      top: 80px;
+      margin: 0 150px;
+      .link-icons {
+        width: 100%;
+        /*border: 1px solid green;*/
+        padding: 5px 15px;
+      }
+      .first-row {
+        padding-left: 10px;
+      }
+      .second-row {
+        padding-left: 70px;
+      }
+      .link-icons .icons-wrapper {
+        .pig-block, .list-block,
+        .prozorro-block, .money-block,
+        .repair-block, .folders-block,
+        .edata-block, .sankey-block {
+          display: inline-block;
+          position: relative;
+          padding-right: 25px;
+          opacity: .5;
+        }
+        .pig-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .list-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .prozorro-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .money-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .repair-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .folders-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .edata-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .sankey-block {
+          &:hover, &:focus {
+            opacity: .9;
+            cursor: pointer;
+          }
+        }
+        .pig-block .pig-icon, .list-block .list-icon, .prozorro-block .prozorro-icon, .money-block .money-icon, .repair-block .repair-icon, .folders-block .folders-icon, .edata-block .edata-icon, .sankey-block .sankey-icon {
+          width: 88px;
+          height: 88px;
+          border-radius: 50%;
+          border: 1px solid #0c2231;
+        }
+        .pig-block .pig-icon .pig, .list-block .list-icon .list, .prozorro-block .prozorro-icon .prozorro, .money-block .money-icon .money, .repair-block .repair-icon .repair, .folders-block .folders-icon .folders, .edata-block .edata-icon .edata, .sankey-block .sankey-icon .sankey {
+          width: 78%;
+          margin: 11%;
+        }
+        .prozorro-block .prozorro-icon .prozorro {
+          width: 86%;
+          margin: 7%;
+        }
+        .money-block .money-icon .money, .folders-block .folders-icon .folders {
+          width: 74%;
+          margin: 6% 13% 20%;
+        }
+        .edata-block .edata-icon .edata {
+          width: 86%;
+          margin: 34% 7%;
+        }
+        .sankey-block .sankey-icon .sankey {
+          width: 72%;
+          margin: 10% 14% 18%;
+        }
+        .list-block {
+          top: 19px;
+        }
+        .money-block {
+          top: 18px;
+        }
+        .repair-block {
+          top: 33px;
+        }
+        .folders-block {
+          top: 5px;
+        }
+        .edata-block {
+          top: 37px;
+        }
+        .pig-block .pig-icon .vertical-line, .list-block .list-icon .vertical-line, .prozorro-block .prozorro-icon .vertical-line, .money-block .money-icon .vertical-line, .repair-block .repair-icon .vertical-line, .folders-block .folders-icon .vertical-line, .edata-block .edata-icon .vertical-line, .sankey-block .sankey-icon .vertical-line {
+          width: 100%;
+          height: 250px;
+          border-left: 2px solid #0c2231;
+          position: relative;
+          left: 50%;
+          opacity: .5;
+        }
+        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .money-block .money-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-arrow {
+          display: none;
+        }
+        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-inner, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-inner, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-inner, .money-block .money-icon a.icon-tooltip + .tooltip > .tooltip-inner, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-inner, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-inner, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-inner, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-inner {
+          background-color: #ffd304;
+          color: #000000;
+          text-transform: uppercase;
+          border-radius: 0;
+          font-weight: 400;
+        }
+      }
+    }
+    .town-block {
+      background: url('assets/new_design/main.svg');
+      background-repeat: no-repeat;
+      width: 100%;
+      top: 320px;
+      height: 488px;
+      position: absolute;
+    /*border: 1px solid red;*/
+    }
+    .row {
+      margin: 0 10.68814%;
+      position: relative;
+      top: 315px;
+    }
+    .titles-blocks {
+      .icons {
+        display: inline-flex;
+        padding: 0;
+        top: -90px;
+        .official {
+          margin-left: 70px;
+          padding: 0;
+          .icon {
+            border: 2px solid transparent;
+            padding: 0;
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            margin: 0 15px 10px;
+            background: #ffd304;
+          }
+        }
+        .people .icon {
+          border: 2px solid transparent;
+          padding: 0;
+          width: 155px;
+          height: 155px;
+          border-radius: 50%;
+          margin: 0 15px 10px;
+          background: #ffd304;
+        }
+        .official {
+          &:hover .icon, &:focus .icon {
+            border: 2px solid #0c2231;
+          }
+        }
+        .people {
+          &:hover .icon, &:focus .icon {
+            border: 2px solid #0c2231;
+          }
+        }
+        .official .icon > img, .people .icon > img {
+          margin: 10% 14% 18%;
+          width: 72%;
+          height: 72%;
+        }
+        .official .title, .people .title {
+          width: 185px;
+          padding: 0;
+          color: #000;
+        }
+        .official .title > p {
+          font-family: 'Lato', sans-serif;
+          font-size: 18px;
+          font-weight: 400;
+          text-transform: uppercase;
+          text-align: center;
+          background: #ffd304;
+          margin: 0;
+        }
+        .people {
+          .title > p {
+            font-family: 'Lato', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            text-transform: uppercase;
+            text-align: center;
+            background: #ffd304;
+            margin: 0;
+          }
+          margin: 0 70px;
+          padding: 0;
+        }
+      }
+      .titles {
+        top: -364px;
+        .main-title {
+          padding: 0;
+          width: 100%;
+          height: 120px;
+          background: #ffd304;
+          > p {
+            font-family: 'Lato', sans-serif;
+            font-size: 43px;
+            margin: 0;
+            text-align: center;
+          }
+        }
+        .text {
+          margin-bottom: 130px;
+          margin-top: 95px;
+          padding: 0;
+          > p {
+            font-family: 'Lato', sans-serif;
+            font-style: italic;
+            font-size: 26px;
+            text-align: right;
+            margin: 0;
+          }
+        }
+        .button {
+          border: 1px solid black;
+          padding: 2px;
+          width: 370px;
+          height: 70px;
+          float: right;
+          background: #000000;
+          .try {
+            > p {
+              display: inline-block;
+              text-transform: uppercase;
+              font-family: 'Lato', sans-serif;
+              font-size: 40px;
+              margin: 2px 0 2px 10px;
+              vertical-align: middle;
+              color: #ffd304;
+            }
+            .icon-block {
+              display: inline-block;
+              width: 20%;
+              height: 100%;
+              float: right;
+              background: #ffd304;
+              > i {
+                font-size: 60px;
+                margin: 0 12px;
+                color: black;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /* ===== Main section. End ===== */
+  /* ===== Media. Begin ===== */
+  @media (min-width: 1666px) and (max-width: 2240px) {
+    .main-section {
+      height: 808px;
+      .clouds-block {
+        background-position: -925px 175px;
+        background-size: 3265px auto;
+        height: 765px;
+      }
+      .town-block {
+        background-position: -1045px 0;
+        background-size: 3265px auto;
+      }
+      .titles-blocks .titles {
+        padding: 0 100px;
+      }
+      .row {
+        margin: 0 8%;
+        top: 407px;
+      }
+      .icons-block .link-icons .icons-wrapper {
+        .pig-block .pig-icon .vertical-line, .list-block .list-icon .vertical-line, .prozorro-block .prozorro-icon .vertical-line, .money-block .money-icon .vertical-line, .repair-block .repair-icon .vertical-line, .folders-block .folders-icon .vertical-line, .edata-block .edata-icon .vertical-line, .sankey-block .sankey-icon .vertical-line {
+          height: 350px;
+        }
+      }
+    }
+  }
+  @media all and (max-width: 1665px) {
+    .main-section {
+      .clouds-block {
+        background-position: -1050px 215px;
+        background-size: 2508px auto;
+      }
+      .town-block {
+        background-position: -870px 0;
+        background-size: 2500px auto;
+      }
+    }
+  }
+  @media (min-width: 1320px) and (max-width: 1410px) {
+    .main-section {
+      .row {
+        margin: 0 6%;
+      }
+      .titles-blocks .titles {
+        padding: 0 0 0 5%;
+      }
+    }
+  }
+  @media (min-width: 1198px) and (max-width: 1319px) {
+    .main-section {
+      .row {
+        margin: 0 2%;
+      }
+      .titles-blocks .titles {
+        padding: 0 0 0 4%;
+      }
+      .icons-block {
+        margin: 0 50px;
+      }
+    }
+  }
+  @media (min-width: 1098px) and (max-width: 1199px) {
+    .main-section {
+      .row {
+        margin: 0 1%;
+      }
+      .titles-blocks .titles {
+        padding: 0 0 0 5%;
+      }
+      .icons-block {
+        margin: 0 50px;
+      }
+      .titles-blocks .titles .main-title > p {
+        font-size: 38px;
+      }
+    }
+  }
+  @media (min-width: 960px) and (max-width: 1097px) {
+    .main-section {
+      .icons-block {
+        margin: 0 30px;
+      }
+      .titles-blocks .titles .main-title > p {
+        font-size: 33px;
+      }
+      .row {
+        margin: 0;
+      }
+      .titles-blocks .titles {
+        padding: 0 0 0 10%;
+        .text {
+          margin: 95px 0;
+        }
+      }
+      .icons-block {
+        .first-row {
+          margin: 0;
+        }
+        .second-row {
+          padding-left: 60px;
+        }
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 959px) {
+    .main-section {
+      .icons-block, .row {
+        margin: 0;
+      }
+      .titles-blocks .titles .main-title {
+        height: 100px;
+        > p {
+          font-size: 31px;
+        }
+      }
+      .icons-block {
+        .first-row {
+          margin: 0;
+        }
+        .second-row {
+          padding-left: 60px;
+        }
+      }
+      .titles-blocks .titles {
+        padding: 0 0 0 70px;
+        .text {
+          margin: 105px 0;
+        }
+      }
+    }
+  }
+  @media (min-width: 820px) and (max-width: 919px) {
+    .main-section .titles-blocks .titles {
+      padding: 0 0 0 110px;
+      .main-title > p {
+        font-size: 26px;
+      }
+      .button {
+        width: 330px;
+        .try > p {
+          font-size: 35px;
+          margin: 6px 0 6px 10px;
+        }
+      }
+      .main-title {
+        height: 80px;
+      }
+      .text {
+        margin: 115px 0;
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 819px) {
+    .main-section .titles-blocks .titles {
+      padding: 0 0 0 150px;
+      .main-title > p, .text > p {
+        font-size: 1.425em;
+      }
+      .button {
+        width: 230px;
+        .try {
+          > p {
+            font-size: 1.7em;
+            margin: .65em 0 .65em .3em;
+          }
+          .icon-block > i {
+            font-size: 40px;
+            margin: 10px;
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .main-section {
+      .titles-blocks .titles {
+        top: -400px;
+      }
+      .icons-block {
+        display: none;
+      }
+      .titles-blocks {
+        .icons {
+          top: 90px;
+          .people {
+            margin-left: 50px;
+            margin-right: 0;
+          }
+          .official {
+            margin-right: 50px;
+            margin-left: 0;
+          }
+        }
+        .titles {
+          .main-title > p {
+            font-size: 40px;
+          }
+          .text {
+            margin-top: 50px;
+            margin-bottom: 320px;
+            > p {
+              text-align: center;
+            }
+          }
+          .button {
+            margin: 0 60px;
+          }
+        }
+      }
+    }
+    .map-section .container .map-title-block, .news-section .container .news-title-block, .map-section .container .map-title-block .map-title, .news-section .container .news-title-block .news-title {
+      padding: 0;
+    }
+    .map-section .container .map-title-block .map-title > p, .news-section .container .news-title-block .news-title > p {
+      font-size: 32px;
+      padding: 0 90px;
+    }
+    .map-section .container .map-title-block .map-title > hr, .news-section .container .news-title-block .news-title > hr {
+      width: 45%;
+    }
+    .map-section {
+      top: -40px;
+      position: relative;
+      .container .map-block {
+        padding: 0;
+      }
+    }
+  }
+  /* ===== Media. End ===== */
+
+.main-section
+  .clouds-block
+  .icons-block
+    .col-xs-12.col-sm-5.link-icons.first-row
+      .icons-wrapper
+        .pig-block
+          .pig-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon1.png', class: 'img-responsive pig')
+            .vertical-line
+        .list-block
+          .list-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon3.png', class: 'img-responsive list')
+            .vertical-line
+        .prozorro-block
+          .prozorro-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon5.png', class: 'img-responsive prozorro')
+            .vertical-line
+        .money-block
+          .money-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon7.png', class: 'img-responsive money')
+            .vertical-line
+    .col-xs-12.col-sm-5.link-icons.second-row
+      .icons-wrapper
+        .repair-block
+          .repair-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon2.png', class: 'img-responsive repair')
+            .vertical-line
+        .folders-block
+          .folders-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon4.png', class: 'img-responsive folders')
+            .vertical-line
+        .edata-block
+          .edata-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon6.png', class: 'img-responsive edata')
+            .vertical-line
+        .sankey-block
+          .sankey-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+              = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
+            .vertical-line
+  .town-block
+  .row.titles-blocks
+    .col-xs-12.col-sm-6.icons
+      .col-xs-12.official
+        %a{:href => "#"}
+          .col-xs-12.icon
+            = image_tag('new_design/icons/!governer.png', class: 'img-responsive')
+          .col-xs-12.title
+            %p Що це дає чиновнику?
+      .col-xs-12.people
+        %a{:href => "#"}
+          .col-xs-12.icon
+            = image_tag('new_design/icons/!people.png', class: 'img-responsive')
+          .col-xs-12.title
+            %p Що це дає громаді?
+    .col-xs-12.col-sm-6.titles
+      .col-xs-12.main-title
+        %p СИСТЕМА ВІЗУАЛІЗАЦІЇ «ВІДКРИТИЙ БЮДЖЕТ»
+      .col-xs-12.text
+        %p Допомагаємо громадянам зрозуміти бюджетну інформацію
+      .col-xs-12.button
+        =link_to '#', class: 'try' do
+          %p.button-text Спробувати
+          .icon-block
+            %i.fa.fa-arrow-right{"aria-hidden" => "true"}

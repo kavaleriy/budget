@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get 'template/last_page'
 
+  get 'template/content_page'
+
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
 
@@ -229,7 +231,7 @@ Rails.application.routes.draw do
     get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
   end
 
-  get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
+  get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'
 
   resources :taxonomies do
     member do

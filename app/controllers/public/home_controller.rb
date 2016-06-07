@@ -21,6 +21,10 @@ module Public
     def demo_index
       @sliders = Modules::Slider.get_slider_by_order
       @budgets_news = Modules::BudgetNews.get_last_news(7)
+
+      # Render news design at layouts/new_design.html.haml
+      # render layout: 'new_design'
+      render 'public/home/new_design/demo_index', layout: 'new_design'
     end
     # def budget
     #   @budgets = Taxonomy.all

@@ -51,9 +51,11 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
     # get two parameters(TaxonomyRot.id and TaxonomyRov.id)
     # create sankey by Taxonomies
+    # check if we can switch to plan , fact
     # render partial 'sankey' with 'sankey' data
     @sankey = Sankey.new('rot_file_id' => params[:tax_rot],'rov_file_id' => params[:tax_rov])
     @sankey.owner = Taxonomy.find(params[:tax_rot]).owner
+    @switch_plan_fact = Taxonomy.check_switch_plan_fact(params[:tax_rot],params[:tax_rov])
     render partial: 'sankey', :locals => { sankey: @sankey }
   end
 
@@ -103,7 +105,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    result << get_programs_hash('programs',programs)
+    # result << get_programs_hash('programs',programs)
     result << get_key_docs_hash('key_docs')
     result << get_prozorro_hash('prozoroo')
     result << get_edata_hash('edata')

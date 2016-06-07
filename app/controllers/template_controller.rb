@@ -3,6 +3,9 @@ class TemplateController < ApplicationController
   def content
   end
 
+  def content_page
+  end
+
   def title
   end
 
