@@ -8,9 +8,10 @@ class ExportBudget
 
   field :year, type: Integer
   field :title, type: String
-  field :content, type: String
-  field :title_page,type: String
-  field :last_page,type: String
+  field :pages,type: Hash
+  # field :content, type: String
+  # field :title_page,type: String
+  # field :last_page,type: String
 
   scope :get_export_budget_by_town, ->(town){where(town:town).order(title: :desc)}
 
