@@ -28,7 +28,24 @@
   .map-section .container .map-block {
     padding: 0 120px;
   }
-
+  @media (max-width: 767px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
 .map-section
   .container
     .col-xs-12.map-title-block

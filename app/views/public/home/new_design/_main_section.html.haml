@@ -463,7 +463,7 @@
       }
     }
   }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .main-section {
       .titles-blocks .titles {
         top: -400px;
@@ -475,17 +475,36 @@
         .icons {
           top: 90px;
           .people {
-            margin-left: 50px;
+            margin-left: 40px;
             margin-right: 0;
+            a {
+              .icon {
+                float: left;
+              }
+              .title {
+                float: left;
+              }
+            }
           }
           .official {
-            margin-right: 50px;
+            margin-right: 40px;
             margin-left: 0;
+            a {
+              .icon {
+                float: right;
+              }
+              .title {
+                float: right;
+              }
+            }
           }
         }
         .titles {
-          .main-title > p {
-            font-size: 40px;
+          .main-title {
+            height: 100px;
+            p {
+              font-size: 32px;
+            }
           }
           .text {
             margin-top: 50px;
@@ -495,19 +514,30 @@
             }
           }
           .button {
-            margin: 0 60px;
+            margin: 0 auto;
+            float: none;
+            display: table;
           }
         }
       }
+      .row {
+        margin: 0;
+        padding: 0;
+      }
     }
-    .map-section .container .map-title-block, .news-section .container .news-title-block, .map-section .container .map-title-block .map-title, .news-section .container .news-title-block .news-title {
+    .map-section .container .map-title-block,
+    .news-section .container .news-title-block,
+    .map-section .container .map-title-block .map-title,
+    .news-section .container .news-title-block .news-title {
       padding: 0;
     }
-    .map-section .container .map-title-block .map-title > p, .news-section .container .news-title-block .news-title > p {
+    .map-section .container .map-title-block .map-title > p,
+    .news-section .container .news-title-block .news-title > p {
       font-size: 32px;
       padding: 0 90px;
     }
-    .map-section .container .map-title-block .map-title > hr, .news-section .container .news-title-block .news-title > hr {
+    .map-section .container .map-title-block .map-title > hr,
+    .news-section .container .news-title-block .news-title > hr {
       width: 45%;
     }
     .map-section {
