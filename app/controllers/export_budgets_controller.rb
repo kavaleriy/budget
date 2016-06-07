@@ -26,9 +26,14 @@ class ExportBudgetsController < ApplicationController
   end
 
   def create_pdf
+    margin_size = 5
     render pdf: @export_budget.title,
            formats: [:html],
            dpi: '300',
+           margin: {   top:               margin_size,                     # default 10 (mm)
+                       bottom:            margin_size,
+                       left:              margin_size,
+                       right:             margin_size },
            template: 'export_budgets/create_pdf',
            show_as_html: params.key?('debug'),
            footer: { center: '[page]' }
@@ -110,6 +115,6 @@ class ExportBudgetsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def export_budget_params
       # binding.pry
-      params.require(:export_budget).permit(:year, :title,:title_page,:content,:town,:last_page)
+      params.require(:export_budget).permit(:year, :title,:town,:pages => [:title_page,:content_page,:content,:last_page])
     end
 end
