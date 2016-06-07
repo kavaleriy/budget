@@ -45,13 +45,12 @@
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
     = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
-      = ff.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
-      = ff.input :content_page,as: :text, label: t('.content_page'), :contenteditable => "true"
+      = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label: t('.title_page'),:contenteditable => "true"
+      = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: t('.content_page'), :contenteditable => "true"
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
         -@export_budget.pages[:content].each do |key,value|
-          = fff.input key,as: :text ,label: t(key),:contenteditable => "true",value: value
-      -#= ff.input :content, as: :text, label: t('.content'), :contenteditable => "true"
-      = ff.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
+          = fff.input key,as: :text ,label: t(key),:input_html => { data_name: key },:contenteditable => "true",value: value
+      = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
     -#= f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
     -#= f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
     -#= f.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
@@ -154,11 +153,16 @@
     //init_summernote('#export_budget_pages_title_page');
     //init_summernote('#export_budget_pages_last_page');
     //init_summernote('#export_budget_pages_content_page');
-
-    fill_input('#export_budget_pages_title_page',"#{template_title_path}");
-    fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
-    fill_input('#export_budget_pages_content',"#{template_content_path}");
-    fill_input('#export_budget_pages_last_page',"#{template_last_page_path}");
+    //console.log($('.summernote_input').map);
+    $('.summernote_input').map(function(item,i,arr){
+      console.log(item);
+      console.log(i);
+      //console.log(arr);
+    });
+    //fill_input('#export_budget_pages_title_page',"#{template_title_path}");
+    //fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
+    //fill_input('#export_budget_pages_content_public_budget',"#{template_load_path('public_budget')}");
+    //fill_input('#export_budget_pages_last_page',"#{template_last_page_path}");
 
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");

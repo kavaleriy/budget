@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get 'template/content_page'
 
+  get 'template/load/:partial_name' => 'template#load',as: 'template_load'
+
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
 
