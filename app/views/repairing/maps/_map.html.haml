@@ -514,7 +514,7 @@
 
   function getPopupInfoContent(featureId,layer){
      $.ajax({
-      url: '/repairing/map/getInfoContentForPopup/' + featureId,
+      url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
       success:function(data){
        layer.bindPopup(data).openPopup();
       }
