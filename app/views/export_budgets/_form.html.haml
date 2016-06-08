@@ -75,7 +75,13 @@
     $('#export_budget_year').on("change",function(e){
       set_year_in_title_page($(this).val());
     });
-
+    var send_ajax = function(number,page_id){
+      $.ajax({
+        url: "#{widgets_visualisation_list_path(current_user)}",
+        data: { data_number: number,
+                page_id: page_id  }
+      })
+    };
     var fill_input = function(input_name,url){
       if(!$(input_name).val()){
         $.ajax({
@@ -83,7 +89,8 @@
           success: function(data){
             $(input_name).summernote('code',data);
             $('.visual_place').click(function(){
-              send_ajax($(this).attr('data-number'));
+               var textarea_id = "#" + $(this).parents('.note-editor').siblings('textarea').attr('id');
+              send_ajax($(this).attr('data-number'),textarea_id);
             });
           }
         });
@@ -120,12 +127,7 @@
       });
     }
 
-    var send_ajax = function(number){
-      $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
-        data: { data_number: number }
-      })
-    };
+
 
 
     var visualButton = function (context) {

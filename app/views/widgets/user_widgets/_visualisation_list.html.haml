@@ -58,6 +58,7 @@
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url + "?locale=#{params[:locale]}");
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-panel-selector',panel_selector);
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-input-selector',"#{params[:data_number]}");
+        $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-textarea-id',"#{params[:page_id]}");
         $('#visualisation_list').modal('hide');
         $('#export_budget_visualisation_modal_window').modal();
       };
