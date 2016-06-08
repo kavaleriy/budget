@@ -56,7 +56,6 @@ class ExportBudgetsController < ApplicationController
   def create
     @export_budget = ExportBudget.new(export_budget_params)
     @export_budget.author = current_user
-    binding.pry
     respond_to do |format|
       if @export_budget.save
         format.html { redirect_to @export_budget, notice: 'Export budget was successfully created.' }
