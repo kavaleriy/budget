@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo'
+  get '/demo_profile' => 'public/home#demo_profile', as: 'demo_profile' # Delete it route after upgrade new design
 
   namespace :content_manager do
     resources :page_containers

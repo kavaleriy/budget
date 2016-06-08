@@ -12,6 +12,9 @@
     .progress
       .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
         = "#{amounts[year][:perc]}%"
+%td
+  2014-
+  2019
 
 - @years.each do |year|
   %td.amounts

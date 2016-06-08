@@ -432,7 +432,7 @@
         .try > p {
           font-size: 3rem;
           margin: auto 0;
-          padding: 1rem;
+          padding: 0;
         }
       }
       .main-title {
@@ -620,7 +620,7 @@
       .col-xs-12.text
         %p Допомагаємо громадянам зрозуміти бюджетну інформацію
       .col-xs-12.button
-        =link_to '#', class: 'try' do
+        =link_to demo_profile_path(@test_town), class: 'try' do
           %p.button-text Спробувати
           .icon-block
             %i.fa.fa-arrow-right{"aria-hidden" => "true"}
