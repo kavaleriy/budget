@@ -38,20 +38,19 @@
     margin-left:20%;
     width: 831px;
   }
-
+-#-binding.pry
 .export-budget-form-container
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
-    = f.simple_fields_for :pages do |ff|
-      = ff.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
-      = ff.input :content_page,as: :text, label: t('.content_page'), :contenteditable => "true"
-      = ff.input :content, as: :text, label: t('.content'), :contenteditable => "true"
-      = ff.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
-    -#= f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
-    -#= f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
-    -#= f.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
+    = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
+      = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label: t('.title_page'),:contenteditable => "true"
+      = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: t('.content_page'), :contenteditable => "true"
+      = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
+        -@export_budget.pages[:content].each do |key,value|
+          = fff.input key,as: :text ,label: t(".#{key}"),:input_html => { data_name: key,value: value },:contenteditable => "true"
+      = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5#visual_list
 :javascript
@@ -70,13 +69,28 @@
       $('#title_page_year').html(year);
     };
 
+    var get_textarea_id = function(editor_panel){
+      // this function return textarea id
+      // get one params editor dom element
+      // first we get editor parent
+      // after that we search neighbor textarea
+      // and return textarea id
+      return  "#" + $(editor_panel).parents('.note-editor').siblings('textarea').attr('id');
+    }
+
     $('#export_budget_title').change(function(){
       set_title_in_title_page($(this).val());
     });
     $('#export_budget_year').on("change",function(e){
       set_year_in_title_page($(this).val());
     });
-
+    var send_ajax = function(number,page_id){
+      $.ajax({
+        url: "#{widgets_visualisation_list_path(current_user)}",
+        data: { data_number: number,
+                page_id: page_id  }
+      })
+    };
     var fill_input = function(input_name,url){
       if(!$(input_name).val()){
         $.ajax({
@@ -84,7 +98,7 @@
           success: function(data){
             $(input_name).summernote('code',data);
             $('.visual_place').click(function(){
-              send_ajax($(this).attr('data-number'));
+              send_ajax($(this).attr('data-number'),get_textarea_id(this));
             });
           }
         });
@@ -92,17 +106,36 @@
     }
 
     var init_summernote = function(field_selector){
-      $(field_selector).summernote({
+      $('.summernote_input').summernote({
         disableResizeEditor: true,
         minHeight: 300
       });
     }
-    var send_ajax = function(number){
-      $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
-        data: { data_number: number }
-      })
-    };
+
+    var init_summernote_with_visual_button = function(field_selector) {
+      $(field_selector).summernote({
+        disableResizeEditor: true,
+        disableDragAndDrop: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
+          ['fontsize', ['fontsize']],
+          ['insert',['picture','table']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          // ['height', ['height']],
+          ['mybutton', ['visualButton']]
+        ],
+        buttons: {
+          // add button for show visual list
+          visualButton: visualButton
+        },
+        minHeight: 300,
+      });
+    }
+
+
 
 
     var visualButton = function (context) {
@@ -113,7 +146,7 @@
         contents: '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> Visual</span>',
         tooltip: 'visual',
         click: function () {
-          send_ajax('0');
+          send_ajax('0',get_textarea_id(this));
         }
       });
 
@@ -128,34 +161,16 @@
       locale: 'ua'
     });
 
-    $('#export_budget_pages_content').summernote({
-       toolbar: [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
-        ['fontsize', ['fontsize']],
-        ['insert',['picture','table']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        // ['height', ['height']],
-        ['mybutton', ['visualButton']]
-      ],
-      buttons: {
-        // add button for show visual list
-        visualButton: visualButton
-      },
-      minHeight: 300,
+    $('.summernote_input').map(function(item,i,arr){
+      init_summernote($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
     });
-
-    init_summernote('#export_budget_pages_title_page');
-    init_summernote('#export_budget_pages_last_page');
-    init_summernote('#export_budget_pages_content_page');
-
-    fill_input('#export_budget_pages_title_page',"#{template_title_path}");
-    fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
-    fill_input('#export_budget_pages_content',"#{template_content_path}");
-    fill_input('#export_budget_pages_last_page',"#{template_last_page_path}");
-
+    $('.summernote_input_with_visual').map(function(item,i,arr){
+      init_summernote_with_visual_button($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
+    });
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
     $('#export_budget_town').on('change',function(){
