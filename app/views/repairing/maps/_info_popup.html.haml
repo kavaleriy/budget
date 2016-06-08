@@ -6,7 +6,7 @@
     .info_text
       .row
         .text_title.col-xs-4
-          %strong="#{t('repairing.maps.info_popup.info_adress')} :"
+          %strong= get_address_title
         .text_desc.col-xs-8
           =@repair.address
       - unless @repair.subject.blank?
