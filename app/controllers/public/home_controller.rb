@@ -26,6 +26,14 @@ module Public
       # render layout: 'new_design'
       render 'public/home/new_design/demo_index', layout: 'new_design'
     end
+
+    # ===== Delete it method after upgrade new design ====== #
+    def demo_profile
+      @test_town = Town.get_test_town.first
+
+      render 'public/home/new_design/demo_profile', layout: 'town_profile'
+    end
+    # ===== End. =========================================== #
     # def budget
     #   @budgets = Taxonomy.all
     # end

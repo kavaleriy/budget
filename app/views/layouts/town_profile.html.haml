@@ -1,3 +1,5 @@
+
+
 !!! 5
 %html(lang="en")
   %head
@@ -19,7 +21,7 @@
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
-      -#= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"
+    -#= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu&subset=latin,cyrillic-ext"
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Lato:400,700,100,100italic,300,300italic,400italic,700italic,900,900italic"
     = stylesheet_link_tag "application", :media => "all"
@@ -34,10 +36,27 @@
     = javascript_include_tag 'https://www.gstatic.com/charts/loader.js'
 
     = yield :head
+:scss
 
+  html {
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 120px);
+    nav {
+      flex: 0 0 auto;
+    }
+    .blocks {
+      flex: 1 0 auto;
+      padding-top: 74px;
+    }
+    footer {
+      flex: 0 0 auto;
+    }
+  }
 %body
-  /[if lt IE 8]
-  <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   -#Render navbar block from view/public/home/new_design/_navbar_new.html.haml
   = render :partial => 'public/home/new_design/navbar_new'
 
@@ -48,12 +67,13 @@
   .blocks
     = yield
 
-    -#Render footer block from view/public/home/new_design/_footer_new.html.haml
+  -#Render footer block from view/public/home/new_design/_footer_new.html.haml
   = render :partial => 'public/home/new_design/footer_new'
 
   = render partial: 'layouts/embeded_code_modal_window'
   = render partial: 'layouts/visualisation_modal/export_budget_calendar_modal_wind'
   = render partial: 'layouts/xls_edit_modal_window'
+
 :javascript
   $(document).ready(function() {
     // Google analytics

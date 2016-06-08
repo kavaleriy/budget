@@ -122,20 +122,35 @@
   }
 
   /* ====== Media ===== */
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
+    .news-section {
+      .container {
+        .news-title-block {
+          padding-top: 0;
+          .news-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
     .owl-nav {
       .owl-prev {
         left: -20px;
-        top: 150px;
+        top: 125px;
+        margin: auto 0;
       }
       .owl-next {
         right: -20px;
-        top: 150px;
+        top: 125px;
+        margin: auto 0;
       }
     }
     .owl-carousel .item a > p {
       &.title {
-        height: 40px;
+        height: 50px;
         margin: 20px 0 0;
       }
       &.text {
