@@ -49,7 +49,7 @@
       = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: t('.content_page'), :contenteditable => "true"
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
         -@export_budget.pages[:content].each do |key,value|
-          = fff.input key,as: :text ,label: t(key),:input_html => { data_name: key },:contenteditable => "true",value: value
+          = fff.input key,as: :text ,label: t(".#{key}"),:input_html => { data_name: key },:contenteditable => "true",value: value
       = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
     -#= f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
     -#= f.input :content,as: :text, label: t('.content'), :contenteditable => "true"

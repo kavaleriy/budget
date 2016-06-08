@@ -15,7 +15,7 @@ class ExportBudget
 
   scope :get_export_budget_by_town, ->(town){where(town:town).order(title: :desc)}
 
-  after_initialize :set_default_pages, :if => :new_record?
+  # after_initialize :set_default_pages, :if => :new_record?
 
   def user_can_edit?(user)
     # this function return user permissions for this export budget
@@ -33,9 +33,11 @@ class ExportBudget
     end
   end
 
-  private
     def set_default_pages
       self.pages = {
+          :title_page => '',
+          :content_page => '',
+          :last_page => '',
           :content => {
               :public_budget => '',
               :city_budget => '',

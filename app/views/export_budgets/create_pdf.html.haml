@@ -15,10 +15,18 @@
     -#=@export_budget.pages[:content_page].html_safe
     -#=@export_budget.pages[:content].html_safe
     -#=@export_budget.pages[:last_page].html_safe
-
     -@export_budget.pages.each do |key,value|
       .alwaysbreak
-        =value.html_safe
+        -if key.eql?('content')
+          -value.each do |content_key,content_value|
+            .panel-body
+              =content_value.html_safe
+        - else
+          .panel-body
+            =value.html_safe
+    -#-@export_budget.pages.each do |key,value|
+    -#  .alwaysbreak
+    -#    =value.html_safe
 -#  -#.alwaysbreak.test
 -#= @export_budget.last_page.html_safe
 -#    = wicked_pdf_stylesheet_link_tag    'timelines'

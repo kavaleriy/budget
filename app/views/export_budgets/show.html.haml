@@ -26,8 +26,13 @@
         %h3.panel-title
           = "#{t('export_budgets.form.year')} : #{ @export_budget.year }"
       -@export_budget.pages.each do |key,value|
-        .panel-body
-          =value.html_safe
+        -if key.eql?('content')
+          -value.each do |content_key,content_value|
+            .panel-body
+              =content_value.html_safe
+        - else
+          .panel-body
+            =value.html_safe
 
 -#!!! 5
 -#%html
