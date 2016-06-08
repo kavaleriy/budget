@@ -147,7 +147,11 @@
 
       return button.render();   // return button as jquery object
     }
-
+    $(".summernote_input_with_visual").on("summernote.keyup", function (e) {   // callback as jquery custom event
+      var test = $($(this).val());
+      var header= test.find('.header_title');
+      console.log(header[0].);
+    });
     $('#export_budget_year').datepicker({
       autoclose: true,
       format: 'yyyy',
