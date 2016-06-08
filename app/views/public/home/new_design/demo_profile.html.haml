@@ -68,6 +68,26 @@
       .breadcrumb li:nth-child(1):before {
         display: none;
       }
+      .modules {
+        border: 1px solid red;
+        .module {
+          padding: 0 30px 0 0;
+          a {
+            .town-budget {
+              border: 1px solid blue;
+              .img {
+
+              }
+              .title {
+
+              }
+              .more {
+
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -77,21 +97,20 @@
     width: calc(100% - 220px);
   }
 
+  /* Navigation */
+
+
   .button {
     cursor: pointer;
+    &:before {
+      font: 40px fontawesome;
+      color: white;
+    }
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
   }
-
-  .button:before {
-    font: 40px fontawesome;
-    color: white;
-  }
-
-  .button:hover,
-  .button:focus {
-    text-decoration: none;
-  }
-
-  /* Navigation */
 
   .blason-block {
     padding: 5% 30%;
@@ -193,6 +212,21 @@
           %a{:href => "#"} Доступні модулі
         %li.active
           %a{:href => '#'} Активний модуль
+      .modules
+        .col-xs-4.module
+          %a{:href => '#'}
+            .town-budget
+              .img
+                img
+              .title
+                title
+              .more
+                more
+
+        .col-xs-4.module
+          second module
+        .col-xs-4.module
+          last module
 
 :javascript
 
