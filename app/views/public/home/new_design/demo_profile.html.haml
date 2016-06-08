@@ -1,21 +1,122 @@
 :scss
-  .container-fluid {
-    padding: 0;
-    .town-nav {
-      border: 1px solid red;
-      position: relative;
-      float: left;
-      width: 20%;
-    }
-    .content {
-      border: 1px solid blue;
-      position: relative;
-      float: left;
-      width: 80%;
+  .wrapper {
+    display: flex;
+    padding-top: 73px;
+    height: calc(100vh - 121.39px);
+    min-height: calc(100vh - 121.39px);
+  }
+
+  .sidebar {
+    position: absolute;
+    width: 220px;
+    background: #0c2231;
+    min-height: calc(100% - 73px);
+  }
+
+  .content {
+    flex: 1;
+    margin-left: 50px;
+    padding: 30px;
+    background: #eee;
+    box-shadow: 0 0 5px rgba(0,0,0,1);
+    transform: translate3d(0,0,0);
+    //transition: transform .3s;
+  }
+
+  .content.isOpen {
+    margin-left: 0;
+    transform: translate3d(220px,0,0);
+  }
+
+  .button {
+    cursor: pointer;
+  }
+
+  .button:before {
+    content: '\f0c9';
+    font: 42px fontawesome;
+  }
+
+  /* Navigation */
+
+  .blason-block {
+    padding: 5% 30%;
+  }
+
+  .sidebar {
+    .sidebar-nav {
+      padding: 0;
     }
   }
-.container-fluid
-  .town-nav
-    nav
-  .content
-    content
+
+  .sidebar-nav li a {
+    position: relative;
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 15px 15px 15px 50px;
+    color: #eee;
+  }
+
+  .sidebar-nav li a:before {
+    font: 14px fontawesome;
+    position: absolute;
+    top: 14px;
+    left: 20px;
+  }
+
+  .sidebar-nav li:nth-child(1) a:before { content: '\f129'; }
+  .sidebar-nav li:nth-child(2) a:before { content: '\f200'; }
+  .sidebar-nav li:nth-child(3) a:before { content: '\f0f6'; }
+  .sidebar-nav li:nth-child(4) a:before { content: '\f0c1'; }
+  .sidebar-nav li:nth-child(5) a:before { content: '\f09d'; }
+  .sidebar-nav li:nth-child(6) a:before { content: '\f1c1'; }
+
+  .sidebar-nav li a:hover {
+    background: #807023;
+    text-decoration: none;
+  }
+
+  .sidebar-nav li a.active {
+    //box-shadow: inset 5px 0 0 #ffd304, inset 6px 0 0 #0c2231;
+    background: #ffd304;
+    color: black;
+  }
+
+  /* Description */
+
+  h1 {
+    margin: 25px 0 15px;
+    font-size: 28px;
+    font-weight: 400;
+  }
+
+.wrapper
+  .sidebar
+    .blason-block
+      =image_tag('new_design/blason.svg', class: 'img-responsive')
+    %ul.sidebar-nav
+      %li
+        %a Короткі відомості
+      %li
+        %a.active Візуалізації
+      %li
+        %a Документи
+      %li
+        %a Посилання
+      %li
+        %a Громадський бюджет
+      %li
+        %a PDF DOC'S
+  .content.isOpen
+    %a.button
+    %h1 Content
+
+:javascript
+  
+  $(document).ready(function() {
+    $('.button').on('click', function() {
+      $('.content').toggleClass('isOpen');
+    });
+  });
