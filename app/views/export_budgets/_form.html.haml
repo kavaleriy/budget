@@ -148,9 +148,13 @@
       return button.render();   // return button as jquery object
     }
     $(".summernote_input_with_visual").on("summernote.keyup", function (e) {   // callback as jquery custom event
-      var test = $($(this).val());
-      var header= test.find('.header_title');
-      console.log(header[0].);
+      var page_dom = $($(this).val());
+      var header = page_dom.find('.header_title');
+      content_page_row_number = header.attr('header_number');
+      content_page_row_text = header[0].innerHTML;
+      $("div[data-header-numb='"+ content_page_row_number +"']").html(content_page_row_text);
+      //console.log(header.attr('header_number'));
+      //console.log(header[0].innerHTML);
     });
     $('#export_budget_year').datepicker({
       autoclose: true,
