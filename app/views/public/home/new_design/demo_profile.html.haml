@@ -57,6 +57,17 @@
           }
         }
       }
+      .breadcrumb li + li:before {
+        font: 26px fontawesome;
+        content: '\f105';
+        padding: 0 5px;
+        color: black;
+        position: relative;
+        bottom: -3px;
+      }
+      .breadcrumb li:nth-child(1):before {
+        display: none;
+      }
     }
   }
 
@@ -179,11 +190,9 @@
     .content-wrapper
       %ol.breadcrumb
         %li
-          %a{:href => "#"} Home
-        %li
-          %a{:href => "#"} Library
+          %a{:href => "#"} Доступні модулі
         %li.active
-          %a{:href => '#'} Data
+          %a{:href => '#'} Активний модуль
 
 :javascript
 
