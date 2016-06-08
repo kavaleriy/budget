@@ -69,6 +69,15 @@
       $('#title_page_year').html(year);
     };
 
+    var get_textarea_id = function(editor_panel){
+      // this function return textarea id
+      // get one params editor dom element
+      // first we get editor parent
+      // after that we search neighbor textarea
+      // and return textarea id
+      return  "#" + $(editor_panel).parents('.note-editor').siblings('textarea').attr('id');
+    }
+
     $('#export_budget_title').change(function(){
       set_title_in_title_page($(this).val());
     });
@@ -89,8 +98,7 @@
           success: function(data){
             $(input_name).summernote('code',data);
             $('.visual_place').click(function(){
-               var textarea_id = "#" + $(this).parents('.note-editor').siblings('textarea').attr('id');
-              send_ajax($(this).attr('data-number'),textarea_id);
+              send_ajax($(this).attr('data-number'),get_textarea_id(this));
             });
           }
         });
@@ -138,7 +146,7 @@
         contents: '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> Visual</span>',
         tooltip: 'visual',
         click: function () {
-          send_ajax('0');
+          send_ajax('0',get_textarea_id(this));
         }
       });
 
