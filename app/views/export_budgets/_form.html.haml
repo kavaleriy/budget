@@ -43,8 +43,8 @@
       = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label: t('.title_page'),:contenteditable => "true"
       = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: t('.content_page'), :contenteditable => "true"
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
-        -@export_budget.pages[:content].each do |key,value|
-          = fff.input key,as: :text ,label: t(".#{key}"),:input_html => { data_name: key,value: value },:contenteditable => "true"
+        -@export_budget.pages[:content].each_with_index do |(key,value),index|
+          = fff.input key,as: :text ,label: t(".#{key}"),:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
       = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 .col-xs-5#visual_list
@@ -110,6 +110,7 @@
     var init_summernote_with_visual_button = function(field_selector) {
       $(field_selector).summernote({
         disableResizeEditor: true,
+        maxHeight: '1145px',
         disableDragAndDrop: true,
         toolbar: [
           // [groupName, [list of button]]
@@ -153,8 +154,6 @@
       content_page_row_number = header.attr('header_number');
       content_page_row_text = header[0].innerHTML;
       $("div[data-header-numb='"+ content_page_row_number +"']").html(content_page_row_text);
-      //console.log(header.attr('header_number'));
-      //console.log(header[0].innerHTML);
     });
     $('#export_budget_year').datepicker({
       autoclose: true,
@@ -169,6 +168,7 @@
       var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
       fill_input($(this),path);
     });
+
     $('.summernote_input_with_visual').map(function(item,i,arr){
       init_summernote_with_visual_button($(this));
       var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));

@@ -16,6 +16,6 @@ module TemplateHelper
   end
 
   def content_page_style
-    "height:#{page_height};width:#{page_width};text-overflow:elepsis;overflow: hidden;"
+    "height:#{page_height};width:#{page_width};"
   end
 end
