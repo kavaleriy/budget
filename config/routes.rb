@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   get 'template/content_page'
 
   get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
-  get '/demo_index/' => 'public/home#demo_index',as: 'demo'
+  get '/demo_index/' => 'public/home#demo_index',as: 'demo' # Delete it route after upgrade new design
   get '/demo_profile' => 'public/home#demo_profile', as: 'demo_profile' # Delete it route after upgrade new design
+  get '/demo_repair_roads_map' => 'public/home#demo_repair_roads_map', as: 'demo_repair_roads_map' # Delete it route after upgrade new design
 
   namespace :content_manager do
     resources :page_containers
@@ -166,7 +167,7 @@ Rails.application.routes.draw do
     get 'geo_json' => 'maps#geo_json'
     get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame'
-    get 'maps/frame/:zoom' => 'maps#frame'
+    get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'
 
