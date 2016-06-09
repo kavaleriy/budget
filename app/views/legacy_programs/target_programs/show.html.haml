@@ -47,5 +47,11 @@
     query = "#{URI.parse(request.url).query}"
     frame_url = path + "/programs/target_programs/show_indicators/#{@programs_target_program.id}" + '/?' + query
     $('.tab-content iframe').attr('src', frame_url)
-    embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_programs_indicators", src: frame_url})
+    //embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_programs_indicators", src: frame_url})
+
+    $('#embed_code_programs_indicators').on('click',function(){
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
+      $('#embeded_code_modal_window').find('#embed_src').val(frame_url);
+       $('#embeded_code_modal_window').modal();
+    });
   })

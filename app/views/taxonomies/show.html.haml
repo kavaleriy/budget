@@ -25,8 +25,8 @@
   = render partial: 'widgets/visify/embed_code'
 
 :javascript
-
-  $(document).ready(function() {
+  $(document).on('ready page:load', function() {
+    //$(document).ready(function() {
 
     var embed_code = aEmbedCode();
     set_iframe('bubbletree');
@@ -40,7 +40,11 @@
       query = "#{URI.parse(request.url).query}"
       frame_url = path + "/widgets/visify/"+ visualizator + "/#{@taxonomy.id}" + '/?' + query
       $('.tab-content iframe').attr('src', frame_url)
-      embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: frame_url})
-    }
 
+      $('#embed_code_visify').on('click',function(){
+        embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
+        $('#embeded_code_modal_window').find('#embed_src').val(frame_url);
+         $('#embeded_code_modal_window').modal();
+      });
+    }
   })
