@@ -346,73 +346,11 @@
   .content.isOpen
     .content-wrapper
       %ol.breadcrumb
-        %li.active
+        %li
           %a{:href => "#"} Доступні модулі
-        -#%li.active
-        -#  %a{:href => '#'} Активний модуль
-      .modules
-        .row
-          .col-xs-4.module
-            %a{:href => '#'}
-              .town-budget
-                .img
-                .icon
-                  .icon-border
-                    =image_tag('new_design/icons/!icon1w.svg', class: 'svg')
-                .title
-                  Місцевий бюджет
-                .more
-                  .more-btn
-                    %p Більше
-          .col-xs-4.module
-            =link_to demo_repair_roads_map_path do
-              .repair-map
-                .img
-                .icon
-                  .icon-border
-                    =image_tag('new_design/icons/!shovel.svg', class: 'svg')
-                .title
-                  Карта ремонтів
-                .more
-                  .more-btn
-                    %p Більше
-          .col-xs-4.module
-            %a{:href => '#'}
-              .local-programs
-                .img
-                .icon
-                  .icon-border
-                    =image_tag('new_design/icons/!office.svg', class: 'svg')
-                .title
-                  Місцеві програми
-                .more
-                  .more-btn
-                    %p Більше
-        .row
-          .col-xs-4.module
-            %a{:href => '#'}
-              .indicators
-                .img
-                .icon
-                  .icon-border
-                    =image_tag('new_design/icons/!bar-chart.svg', class: 'svg')
-                .title
-                  Ключові показники
-                .more
-                  .more-btn
-                    %p Більше
-          .col-xs-4.module
-            %a{:href => '#'}
-              .docs
-                .img
-                .icon
-                  .icon-border
-                    =image_tag('new_design/icons/!folders.svg', class: 'svg')
-                .title
-                  Ключові документи
-                .more
-                  .more-btn
-                    %p Більше
+        %li.active
+          %a{:href => '#'} Карта ремонтів
+      map
 
 :javascript
 
