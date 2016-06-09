@@ -35,6 +35,9 @@
   }
 -#-binding.pry
 .export-budget-form-container
+  .pull-right
+    -#=select_tag 'add_page',options_from_collection_for_select(@export_budget.pages[:content], binding.pry,t(".#{[0]}"))
+  %br
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
