@@ -7,10 +7,15 @@
   }
 
   .sidebar {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 220px;
-    background: #0c2231;
-    min-height: calc(100% - 73px);
+    height: 100%;
+    z-index: 10;
+    overflow: hidden;
+    background: transparent;
+    //min-height: calc(100% - 73px);
     padding-top: 73px;
   }
 
@@ -314,7 +319,7 @@
   .sidebar-nav li a.active {
     //box-shadow: inset 5px 0 0 #ffd304, inset 6px 0 0 #0c2231;
     background: #ffd304;
-    color: black;
+    color: #0c2231;
   }
 
   /* Description */
