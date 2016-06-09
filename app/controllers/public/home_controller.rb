@@ -37,6 +37,7 @@ module Public
     end
 
     def demo_repair_roads_map
+      @town = Town.get_test_town.first
       # Render news design at layouts/new_design.html.haml
       # render layout: 'new_design'
       render 'public/home/new_design/repair_roads_map', layout: 'town_profile'
