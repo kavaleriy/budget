@@ -14,4 +14,8 @@ module TemplateHelper
   def visual_place_style
     "background:#C0C0C0;width:100%; color:white;font-size:16px;text-align:center;"
   end
+
+  def content_page_style
+    "height:#{page_height};width:#{page_width};"
+  end
 end
