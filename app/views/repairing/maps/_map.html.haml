@@ -256,51 +256,21 @@
         });
       }
 
-      function layerIsRoad(layer){
-        return layer.feature.properties.repair == 'road';
-      };
-
-
-      function clearRoadRoute(){
-        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
-      }
-
       function onEachFeature(feature, layer) {
-
-        //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-        //console.log(feature);
-        //if (options.getInfoContent) {
-        //  layer.bindPopup( options.getInfoContent(feature.properties) )
-        //}
         layer.on({
           click: function () {
-            if(!layerIsRoad(layer)){
-              clearRoadRoute();
-            }
             getPopupInfoContent(feature.properties.id,layer);
-            //console.log(content);
-            //layer.bindPopup(content);
-            // console.log(options);
-            if (options.featureClickCallback){
-             options.featureClickCallback(feature, popup);
-            }
-          }
-        })
 
-        layer.on({
-          //click: function () {
-          //  if (options.featureClickCallback)
-          //    options.featureClickCallback(feature, popup);
-          //},
-          //mouseover: function () {
-          //  //layer.setStyle(options.hoverStyle);
-          //  if (options.getInfoContent)
-          //    info.update(options.getInfoContent(feature.properties));
-          //},
-          //mouseout: function () {
-          //  //geoJson.resetStyle(layer)
-          //  info.update();
-          //},
+            if (options.featureClickCallback){
+              options.featureClickCallback(feature, popup);
+            }
+          },
+          mouseover: function (e) {
+            showRoute(e.target.feature)
+          },
+          mouseout: function (e) {
+            hideRoute(e.target.feature)
+          },
           dragend: function(e) {
             if (options.dragCallback) {
               var layer = e.target;
@@ -312,6 +282,11 @@
         });
       }
     }
+
+    function layerIsRoad(layer){
+      return layer.feature.properties.repair == 'road';
+    };
+
 
     function addControl() {
       info = L.control();
@@ -368,6 +343,13 @@
       }
     }
 
+    function hideRoute(feature) {
+      if (feature.selected) {
+        feature.selectedRoute.spliceWaypoints(0, feature.waypoints.length-1);
+        feature.selected = false;
+      }
+    }
+
     function showRoute(feature) {
       if(feature.properties.route){
         feature.waypoints = feature.properties.route;
@@ -375,23 +357,24 @@
         feature.waypoints = [feature.properties.address.split(","), feature.properties.address_to.split(",")];
       }
       if(feature.waypoints){
-        if(feature.selected) {
-          clearRoadRoute();
-          // $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
-          feature.selectedRoute.spliceWaypoints(0, feature.waypoints.length-1);
-          feature.selected = false;
-        } else {
-          feature.selectedRoute = L.Routing.control({
-            waypoints: feature.waypoints,
-            draggableWaypoints: false,
-            createMarker: function() { return null; },
-            lineOptions : {
-                addWaypoints: false
-            }
-          });
-          feature.selectedRoute.addTo(map);
-          feature.selected = true;
-        }
+        hideRoute(feature);
+
+        feature.selectedRoute = L.Routing.control({
+          fitSelectedRoutes: false,
+          waypoints: feature.waypoints,
+          draggableWaypoints: false,
+          createMarker: function() { return null; },
+          lineOptions : {
+              addWaypoints: false
+          }
+        });
+        feature.selectedRoute.addTo(map);
+        feature.selected = true;
+        clearRoadRoute();
+      }
+
+      function clearRoadRoute(){
+        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
       }
     }
 
