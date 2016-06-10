@@ -1,4 +1,12 @@
-%iframe{ 'width' => '100%', 'height' => '800', 'border' => 'none', src: "maps/frame/6?locale=#{params[:locale]}"}
+:css
+  iframe {
+    width: 100%;
+    min-height: 400px;
+    height: calc(100vh - 162px);
+    border: none;
+  }
+
+%iframe{src: "maps/frame/6?locale=#{params[:locale]}"}
 
 .col-xs-12
   #embed_code.pull-right
