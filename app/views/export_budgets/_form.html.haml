@@ -30,7 +30,7 @@
     }
   }
   .hide_page{
-    padding-right: 30px;
+    padding-right: 20px;
     transform: rotate(0deg);
     transition: transform 0.8s;
   }
@@ -39,14 +39,14 @@
     transition: transform 0.8s;
   }
   .remove_page_btn{
+    margin-left: 12px;
     transform: rotate(-360deg);
     transition: transform 0.4s;
-    color: black;
+    color: red;
   }
   .fa-times-test{
     transform: rotate(360deg);
     transition: transform 0.4s;
-    color: red;
   }
 
   .action_panel{
@@ -133,6 +133,11 @@
   var sankey = {};
   sankey.tax_rot = '';
   sankey.tax_rov = '';
+
+  dataConfirmModal.setDefaults({
+    title:  'Видалення сторінки',
+    cancel: 'Відмінити'
+  });
 
   $(document).ready(function() {
 

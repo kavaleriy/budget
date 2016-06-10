@@ -2,7 +2,10 @@
   .action_panel
     .pull-right
       %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
-      %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
+      -#= link_to create_pdf_path(@export_budget,format: :pdf) do
+      =link_to '#',class: 'remove_page_btn',data: {confirm: "Really do this?", commit: "Do it", cancel: "Not really"} do
+        -#,data: {confirm: "Really do this?", commit: "Do it", cancel: "Not really"}
+        %i.fa.fa-times{"aria-hidden" => "true"}
     = f.label t(".#{key}"),class: 'page_label'
   .page_editor
     = f.input key,label: false,as: :text ,:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
