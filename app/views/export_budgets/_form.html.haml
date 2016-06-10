@@ -35,7 +35,6 @@
     transition: transform 0.8s;
   }
   .chevron-rotate{
-    //padding-right: 10px;
     transform: rotate(180deg);
     transition: transform 0.8s;
   }
@@ -50,7 +49,31 @@
     color: red;
   }
 
-
+  .action_panel{
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
+    padding: 10px;
+    background-color: #fafafa;
+    background: #efefef;
+    background: -webkit-gradient(linear,left top,left bottom,from(#fafafa),to(#efefef));
+    background: -webkit-linear-gradient(top,#fafafa,#efefef);
+    background: -moz-linear-gradient(top,#fafafa,#efefef);
+    background: -o-linear-gradient(top,#fafafa,#efefef);
+    background: -ms-linear-gradient(top,#fafafa,#efefef);
+    background: linear-gradient(top,#fafafa,#efefef);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 2px 2px 0 0;
+    -moz-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+    overflow: hidden;
+    label{
+      abbr{
+        display: none;
+      }
+    }
+  }
   .datepicker
   {
     z-index: 1051 !important;
@@ -76,8 +99,8 @@
     display: none;
   }
   .export-budget-form-container{
-    margin-left:20%;
-    width: 831px;
+    margin:auto;
+    width: 846px;
   }
 -#-binding.pry
 .export-budget-form-container
@@ -87,19 +110,19 @@
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
     = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
       .page_dom
-        .pull-right
-          .action_panel
+        .action_panel
+          .pull-right
             %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
             %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-        =ff.label t('.title_page')
+          =ff.label t('.title_page')
         .page_editor
           = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label:false,:contenteditable => "true"
       .page_dom
-        .pull-right
-          .action_panel
+        .action_panel
+          .pull-right
             %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
             %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-        =ff.label t('.content_page')
+          =ff.label t('.content_page')
         .page_editor
           = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: false, :contenteditable => "true"
           .add-btn{data_name: 'new_page'}
@@ -107,31 +130,33 @@
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
         -@export_budget.pages[:content].each_with_index do |(key,value),index|
           .page_dom
-            .pull-right
-              .action_panel
+            .action_panel
+              .pull-right
                 %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
                 %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-            = fff.label t(".#{key}"),class: 'page_label'
+              = fff.label t(".#{key}"),class: 'page_label'
             .page_editor
               = fff.input key,label: false,as: :text ,:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
               .add-btn{data_name: 'new_page'}
                 додати сторінку
       .page_dom
-        .pull-right
-          .action_panel
+        .action_panel
+          .pull-right
             %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
             %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-        =ff.label t('.last_page')
+          -#.pull-left
+          =ff.label t('.last_page')
         .page_editor
-          = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
+          = ff.input :last_page,as: :text, label: false,:input_html => { data_name: "last_page" }, :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 #add_page
   .page_dom
-    .pull-right
-      .action_panel
+    .action_panel
+      .pull-right
         %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
         %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-    =label_tag 'Test',class: 'text required control-label'
+      .pull-left
+        =label_tag 'Test','New page',class: 'text required control-label'
     .page_editor
       .form-group.text.required.export_budget_pages_content_budget_test
         %textarea
@@ -155,30 +180,8 @@
       $('#title_page_year').html(year);
     };
     var add_page_number = 0;
-    var create_textarea_input = function(path){
-      var wraper = $('<div></div>');
-      wraper.addClass('page_dom');
-
-      var form_div = $('<div></div>');
-      form_div.addClass('form-group text required export_budget_pages_content_budget_test');
-      var label = $('<label>Test</label>');
-      label.addClass('text required control-label');
-      label.attr('for','test');
-      $(form_div).append(label);
-      wraper.append(form_div);
-      var textarea_identificator = 'add_page' + add_page_number;
-      add_page_number++;
-      var textarea = $('<textarea></textarea>');
-      textarea.attr('id',textarea_identificator);
-      textarea.attr('name','export_budget[pages][content][' + textarea_identificator + ']');
-      label.after(textarea);
-      fill_input(textarea,path);
-      init_summernote_with_visual_button(textarea);
-      return form_div;
-    }
-
-    var get_new_page =function(path,button){
-      var new_page = $('#add_page').find('page_dom');
+    var get_new_page = function(path,button){
+      var new_page = $('#add_page').find('.page_dom').clone();
       var textarea = new_page.find('textarea');
       var textarea_identificator = 'add_page' + add_page_number;
       add_page_number++;
@@ -186,7 +189,6 @@
       textarea.attr('name','export_budget[pages][content][' + textarea_identificator + ']');
       fill_input(textarea,path);
       init_summernote_with_visual_button(textarea);
-      textarea.after(button);
       return new_page;
     }
 
@@ -198,10 +200,10 @@
       // and return textarea id
       return  "#" + $(editor_panel).parents('.note-editor').siblings('textarea').attr('id');
     }
-    $('.remove_page_btn').click(function(){
+    $('body').on('click','.remove_page_btn',function(){
       $(this).parents('.page_dom').remove();
     });
-    $('.hide_page').click(function(){
+    $('body').on('click','.hide_page',function(){
       $(this).toggleClass('chevron-rotate');
       $(this).siblings('.remove_page_btn').toggleClass('fa-times-test');
       $(this).parents('.page_dom').find('.page_editor').toggle('slow');
@@ -315,16 +317,7 @@
 
     $('body').on('click','.add-btn',function(){
       var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
-      var new_page = get_new_page(path,$(this).clone());
-      //var form_dom = create_textarea_input(path);
-
-      $(this).parents('.page_dom').after(new_page);
-
-
-      //var new_add_button = $(this).clone();
-      //setTimeout(function(){
-      //  form_dom.after(new_add_button);
-      //},1000);
-
+      var page = get_new_page(path,$(this).clone());
+      $(this).parents('.page_dom').after(page);
     });
   });
