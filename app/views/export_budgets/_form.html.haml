@@ -39,6 +39,7 @@
     transition: transform 0.8s;
   }
   .remove_page_btn{
+    cursor: pointer;
     margin-left: 12px;
     transform: rotate(-360deg);
     transition: transform 0.4s;
@@ -134,11 +135,6 @@
   sankey.tax_rot = '';
   sankey.tax_rov = '';
 
-  dataConfirmModal.setDefaults({
-    title:  'Видалення сторінки',
-    cancel: 'Відмінити'
-  });
-
   $(document).ready(function() {
 
     $('#add_page').change(function() { alert('dasdsad'); });
@@ -173,7 +169,16 @@
       return  "#" + $(editor_panel).parents('.note-editor').siblings('textarea').attr('id');
     }
     $('body').on('click','.remove_page_btn',function(){
-      $(this).parents('.page_dom').remove();
+      var that = $(this);
+      dataConfirmModal.confirm({
+        // title: I18n.t('.are_you_sure'),
+        text: I18n.t('export_budgets.form.really_destroy?'),
+        // commit: I18n.t('yes'),
+        // cancel: I18n.t('no'),
+        zIindex: 10099,
+        onConfirm: function() { that.parents('.page_dom').remove(); },
+        // onCancel:  function() { alert('cancelled') }
+      });
     });
     $('body').on('click','.hide_page',function(){
       $(this).toggleClass('chevron-rotate');
