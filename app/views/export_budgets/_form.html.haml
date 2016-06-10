@@ -109,45 +109,12 @@
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
     = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
-      .page_dom
-        .action_panel
-          .pull-right
-            %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
-            %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-          =ff.label t('.title_page')
-        .page_editor
-          = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label:false,:contenteditable => "true"
-      .page_dom
-        .action_panel
-          .pull-right
-            %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
-            %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-          =ff.label t('.content_page')
-        .page_editor
-          = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: false, :contenteditable => "true"
-          .add-btn{data_name: 'new_page'}
-            додати сторінку
+      =render partial: 'page_form',locals: {f: ff,key: :title_page,value: @export_budget.pages[:title_page],index: '',add_page: false}
+      =render partial: 'page_form',locals: {f: ff,key: :content_page,value: @export_budget.pages[:content_page],index: '',add_page: false}
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
         -@export_budget.pages[:content].each_with_index do |(key,value),index|
-          .page_dom
-            .action_panel
-              .pull-right
-                %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
-                %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-              = fff.label t(".#{key}"),class: 'page_label'
-            .page_editor
-              = fff.input key,label: false,as: :text ,:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
-              .add-btn{data_name: 'new_page'}
-                додати сторінку
-      .page_dom
-        .action_panel
-          .pull-right
-            %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
-            %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
-          -#.pull-left
-          =ff.label t('.last_page')
-        .page_editor
-          = ff.input :last_page,as: :text, label: false,:input_html => { data_name: "last_page" }, :contenteditable => "true"
+          =render partial: 'page_form',locals: {f: fff,key: key,value: value,index: index,add_page: true}
+      =render partial: 'page_form',locals: {f: ff,key: :last_page,value: @export_budget.pages[:last_page],index: '',add_page: false}
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
 #add_page
   .page_dom
@@ -156,12 +123,12 @@
         %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
         %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
       .pull-left
-        =label_tag 'Test','New page',class: 'text required control-label'
+        =label_tag 'Test',t('export_budgets.form.new_page'),class: 'text required control-label'
     .page_editor
       .form-group.text.required.export_budget_pages_content_budget_test
         %textarea
       .add-btn{data_name: 'new_page'}
-        додати сторінку
+        =t('.add_page')
 :javascript
   var sankey = {};
   sankey.tax_rot = '';
