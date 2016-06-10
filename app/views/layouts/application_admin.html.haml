@@ -34,7 +34,8 @@
 
   .clear
 
-    -#Render footer block from view/layouts
+  = render partial: 'layouts/embeded_code_modal_window'
+  -#Render footer block from view/layouts
   -#= render :partial => 'layouts/footer'
 :javascript
   dataConfirmModal.setDefaults({
