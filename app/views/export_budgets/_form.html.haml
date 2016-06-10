@@ -5,6 +5,9 @@
   .content_page{
     border: 1px solid red;
   }
+  #add_page{
+    display: none;
+  }
   .tsel {
     width: 250px;
   }
@@ -122,7 +125,18 @@
         .page_editor
           = ff.input :last_page,as: :text, label: t('.last_page'),:input_html => { data_name: "last_page" }, :contenteditable => "true"
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
-.col-xs-5#visual_list
+#add_page
+  .page_dom
+    .pull-right
+      .action_panel
+        %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
+        %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
+    =label_tag 'Test',class: 'text required control-label'
+    .page_editor
+      .form-group.text.required.export_budget_pages_content_budget_test
+        %textarea
+      .add-btn{data_name: 'new_page'}
+        додати сторінку
 :javascript
   var sankey = {};
   sankey.tax_rot = '';
@@ -142,6 +156,8 @@
     };
     var add_page_number = 0;
     var create_textarea_input = function(path){
+      var wraper = $('<div></div>');
+      wraper.addClass('page_dom');
 
       var form_div = $('<div></div>');
       form_div.addClass('form-group text required export_budget_pages_content_budget_test');
@@ -149,7 +165,7 @@
       label.addClass('text required control-label');
       label.attr('for','test');
       $(form_div).append(label);
-
+      wraper.append(form_div);
       var textarea_identificator = 'add_page' + add_page_number;
       add_page_number++;
       var textarea = $('<textarea></textarea>');
@@ -160,6 +176,20 @@
       init_summernote_with_visual_button(textarea);
       return form_div;
     }
+
+    var get_new_page =function(path,button){
+      var new_page = $('#add_page').find('page_dom');
+      var textarea = new_page.find('textarea');
+      var textarea_identificator = 'add_page' + add_page_number;
+      add_page_number++;
+      textarea.attr('id',textarea_identificator);
+      textarea.attr('name','export_budget[pages][content][' + textarea_identificator + ']');
+      fill_input(textarea,path);
+      init_summernote_with_visual_button(textarea);
+      textarea.after(button);
+      return new_page;
+    }
+
     var get_textarea_id = function(editor_panel){
       // this function return textarea id
       // get one params editor dom element
@@ -285,14 +315,16 @@
 
     $('body').on('click','.add-btn',function(){
       var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
-      var form_dom = create_textarea_input(path);
-      $(this).after(form_dom);
+      var new_page = get_new_page(path,$(this).clone());
+      //var form_dom = create_textarea_input(path);
+
+      $(this).parents('.page_dom').after(new_page);
 
 
-      var new_add_button = $(this).clone();
-      setTimeout(function(){
-        form_dom.after(new_add_button);
-      },1000);
+      //var new_add_button = $(this).clone();
+      //setTimeout(function(){
+      //  form_dom.after(new_add_button);
+      //},1000);
 
     });
   });
