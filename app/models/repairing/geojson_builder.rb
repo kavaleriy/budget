@@ -34,7 +34,7 @@ class Repairing::GeojsonBuilder
           type: "Feature",
           geometry: {
             type: 'Point',
-            coordinates: repair[:coordinates][0]
+            coordinates: repair[:coordinates][ repair[:coordinates].count / 2 ]
           },
           properties: {
             id: "#{repair[:id]}",
