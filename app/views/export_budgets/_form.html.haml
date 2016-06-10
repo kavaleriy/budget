@@ -8,12 +8,6 @@
   .tsel {
     width: 250px;
   }
-  //.add_page{
-    //margin: auto;
-    //width: 15%;
-    //width: 100%;
-    //border: 1px solid red;
-    //border: 1px solid red;
   .add-btn{
     width: 150px;
     margin: 0 auto;
@@ -32,7 +26,6 @@
       transition: all .8s linear;
     }
   }
-  //}
   .datepicker
   {
     z-index: 1051 !important;
@@ -60,10 +53,6 @@
   }
 -#-binding.pry
 .export-budget-form-container
-  -#.pull-right
-  -#  -#=select_tag 'add_page',options_for_select(get_content_pages.each { |hash| hash.each {|key,value| [key, value] }})
-  -#  =select_tag 'add_page',options_for_select([["Додати в початок",'new']] + @export_budget.pages[:content].map { |key,value| [ t(".#{key.to_s}"),key ]}),class:'form-control',prompt: "Додати сторінку"
-  -#%br
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
@@ -71,6 +60,8 @@
     = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
       = ff.input :title_page,as: :text ,:input_html => { data_name: "title_page" } ,label: t('.title_page'),:contenteditable => "true"
       = ff.input :content_page,as: :text,:input_html => { data_name: "content_page" }, label: t('.content_page'), :contenteditable => "true"
+      .add-btn{data_name: 'new_page'}
+        додати сторінку
       = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
         -@export_budget.pages[:content].each_with_index do |(key,value),index|
           = fff.input key,as: :text ,label: t(".#{key}"),:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
