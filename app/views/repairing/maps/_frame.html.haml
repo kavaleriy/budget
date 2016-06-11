@@ -48,8 +48,8 @@
 
     var aRepairMap = RepairMap({
       zoom: parseInt('#{@zoom}'),
-      minZoom: 5,
-      maxZoom: 16,
+      minZoom: 3,
+      maxZoom: 20,
       center: JSON.parse('#{@map_center.to_json}'),
       scrollWheelZoom: true
     })
@@ -251,7 +251,14 @@
       return point;
     }
 
-    function onFeatureClick(feature, popup) {
+    function onFeatureClick(feature, layer) {
+      featureId = feature.properties.id
+      $.ajax({
+        url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+        success:function(data){
+         layer.bindPopup(data).openPopup();
+        }
+      })
     }
 
     function getMapPopupContent(e) {

@@ -32,8 +32,13 @@
 
 .clear
 
+%button#calc_roads.btn.btn-info{disabled: 'disabled'}
+  Розрахувати координати доріг
+
 = link_to t('form.show'), @repairing_layer, :class => 'btn btn-primary'
+
 = link_to t('form.back'), repairing_layers_path, :class => 'btn btn-default'
+
 
 :javascript
 
@@ -58,12 +63,10 @@
     })
     .done(function (data) {
 
-      //$.each(data['features'], function(i, d){
-      //  console.log(d)
       aRepairMap.addGeoJsonPoints(data, getPoint, {
         clustered: true,
         style: {
-          opacity: 0.8,
+          opacity: 0.5,
         },
         hoverStyle: {
           opacity: 1,
@@ -72,10 +75,74 @@
         dragCallback: onDrag,
         editInfoContent: true
       })
-      //})
+
+      initRoads(data)
+
+      function initRoads(data) {
+        var roads = get_roads_arr()
+
+        if (roads.length > 0) {
+          $('button#calc_roads')
+            .removeAttr("disabled")
+            .click(function() {
+              reCalculateRoutes()
+            })
+        }
+
+        function get_roads_arr() {
+          var features = []
+
+          get_roads(data['features'])
+
+          function get_roads(item) {
+            if (item == null) return;
+
+            $.each(item, function(i, d){
+              if (d.properties.repair == "road")
+                features.push(d)
+
+              get_roads(d['features'])
+            })
+          }
+
+          return features;
+        }
+
+        function reCalculateRoutes() {
+          if (roads.length == 0) return;
+
+          calc_routes()
+
+          function calc_routes() {
+            var road = roads.pop()
+            if (road == null) return;
+
+            calc_road_route(road)
+
+            function calc_road_route(road) {
+              var coordinates = road.properties.route
+
+              var waypoints = []
+              waypoints.push({ latLng: L.latLng(coordinates[0]) });
+              waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
+
+              L.Routing.control({
+                waypoints: waypoints,
+                routeWhileDragging: false
+              }).on('routesfound', function(router) {
+                updateRoute(router.routes[0].coordinates, road)
+              });
+            }
+
+            calc_routes()
+          }
+        }
+      }
+
     })
     .fail(function () {
     });
+
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
     // REPEAT !!!!!!!!!!!!
@@ -93,13 +160,9 @@
     function getPoint(properties) {
       var point = {}
       point.icon = getIconByCategory(properties.p_c_id);
-      //if(properties.img) {
-      //  point.icon = new Icon({iconUrl: properties.img});
-      //} else {
-        //point.icon = new L.Icon.Default();
-      //  point.icon = new Icon({iconUrl: '/assets/repairing/default_icon.png'});
-      //}
-      point.draggable = true;
+
+      point.draggable = (properties.route == null)
+      point.showPopup = (properties.route == null)
       return point;
     }
 
@@ -111,22 +174,20 @@
       return content
     }
 
-    function getInfoContent(properties) {
-      var content =
-            '<div class="popup">' +
-              '<h3>' + properties.title + '</h3>' +
-              '<p>' + properties.address + '</p>' +
-              '<p>' + properties.amount + '</p>' +
-            '</div>'
-
-      return content
-    }
-
     var _removedFeature
     var _selectedFeature
 
-    function onFeatureClick(feature, target) {
-      selectFeature(feature, target)
+    function onFeatureClick(feature, layer) {
+      selectFeature(feature, layer)
+
+      featureId = feature.properties.id
+      $.ajax({
+        url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+        success:function(data){
+          layer.bindPopup(data).openPopup();
+        }
+      })
+
     }
 
     function onDrag(layer, ll) {
@@ -169,18 +230,18 @@
     function selectFeature(feature, target) {
       $('#repair').html('');
 
-      if (_removedFeature) {
-        url = '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
-        _removedFeature = undefined
+      //if (_removedFeature) {
+        //url = '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
+        //_removedFeature = undefined
 
-        $.ajax({
-          method: 'GET',
-          cache: false,
-          url: url,
-        }).done(function (data) {
-          aRepairMap.addGeoJson(data);
-        })
-      }
+        //$.ajax({
+        //  method: 'GET',
+        //  cache: false,
+        //  url: url,
+        //}).done(function (data) {
+        //  aRepairMap.addGeoJsonPoint(data);
+        //})
+      //}
 
       _selectedFeature = feature
 
@@ -200,48 +261,69 @@
         })
 
         if (_selectedFeature.properties.repair == "road") {
-          if (target) {
-            _removedFeature = target.feature
-            aRepairMap.map.removeLayer(target)
-          }
+          //if (target) {
+          //  _removedFeature = target.feature
+          //  aRepairMap.map.removeLayer(target)
+          //}
 
           editRoute()
         } else {
           aRepairMap.editRoute([])
         }
       }
+    }
 
-      function editRoute() {
-        var coordinates = _selectedFeature.properties.route;
+    function editRoute(feature) {
 
-        var waypoints = []
-        waypoints.push({ latLng: L.latLng(coordinates[0]) });
-        waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
+      if (feature == null)
+        feature = _selectedFeature
 
-        aRepairMap.editRoute(waypoints, routeFoundCallback)
+      var coordinates  = feature.properties.route
 
-        function routeFoundCallback(route){
-          var coordinates = ''
-          $.each(route, function(key,val) {
-            coordinates += val + ' '
-          })
+      var waypoints = []
+      waypoints.push({ latLng: L.latLng(coordinates[0]) });
+      waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
 
-          $.ajax({
-            method: 'PUT',
-            url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
-            dataType: 'json',
-            data: {
-              repairing_repair: {
-                coordinates: coordinates
-              }
-            }
-          })
-          .fail(function () {
-            alert('Не вдалось зберегти дані')
-          })
-        }
+      aRepairMap.editRoute(waypoints, routeFoundCallback)
+
+      function routeFoundCallback(route) {
+        updateRoute(route, feature)
       }
     }
 
+    function updateRoute(route, feature){
+      update_feature_coords()
+      store_route()
+
+      function update_feature_coords() {
+        feature.properties.route = []
+        $.each(route, function(key,val) {
+          feature.properties.route.push([val['lat'], val['lng']])
+        })
+      }
+
+      function store_route() {
+        var coordinates = ''
+        $.each(route, function(key,val) {
+          coordinates += val + ' '
+        })
+
+        $.ajax({
+          method: 'PUT',
+          url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", feature.properties.id),
+          dataType: 'json',
+          data: {
+            repairing_repair: {
+              coordinates: coordinates
+            }
+          }
+        })
+        .fail(function () {
+          alert('Не вдалось зберегти дані')
+        })
+      }
+    }
 
   });
+
+
