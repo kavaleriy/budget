@@ -2,8 +2,78 @@
   .note-btn-group.btn-group.note-remove {
     display:none;
   }
+  .content_page{
+    border: 1px solid red;
+  }
+  #add_page{
+    display: none;
+  }
   .tsel {
     width: 250px;
+  }
+  .add-btn{
+    width: 150px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border: 1px solid darkgrey;
+    border-radius: 4px;
+    background-color: grey;
+    color: white;
+    padding: 7px;
+    text-align: center;
+    &:hover,&:focus{
+      cursor: pointer;
+      color:grey;
+      background-color: white ;
+      //box-shadow: 0px 0px 13px 3px rgba(0,0,0,0.73);
+      transition: all .8s linear;
+    }
+  }
+  .hide_page{
+    padding-right: 20px;
+    transform: rotate(0deg);
+    transition: transform 0.8s;
+  }
+  .chevron-rotate{
+    transform: rotate(180deg);
+    transition: transform 0.8s;
+  }
+  .remove_page_btn{
+    cursor: pointer;
+    margin-left: 12px;
+    transform: rotate(-360deg);
+    transition: transform 0.4s;
+    color: red;
+  }
+  .fa-times-test{
+    transform: rotate(360deg);
+    transition: transform 0.4s;
+  }
+
+  .action_panel{
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
+    padding: 10px;
+    background-color: #fafafa;
+    background: #efefef;
+    background: -webkit-gradient(linear,left top,left bottom,from(#fafafa),to(#efefef));
+    background: -webkit-linear-gradient(top,#fafafa,#efefef);
+    background: -moz-linear-gradient(top,#fafafa,#efefef);
+    background: -o-linear-gradient(top,#fafafa,#efefef);
+    background: -ms-linear-gradient(top,#fafafa,#efefef);
+    background: linear-gradient(top,#fafafa,#efefef);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 2px 2px 0 0;
+    -moz-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+    overflow: hidden;
+    label{
+      abbr{
+        display: none;
+      }
+    }
   }
   .datepicker
   {
@@ -19,9 +89,6 @@
   .note-editable.panel-body{
     padding: 0 !important;
   }
-  .note-editing-area > .note-editable.panel-body > img{
-
-  }
   .visual_place{
     cursor: pointer;
     &:hover,&:focus{
@@ -29,37 +96,48 @@
       transition: all .4s linear;
     }
   }
-  #new_export_budget > div.form-group.text.required.export_budget_pages_content > div > div.note-editing-area > div.note-editable.panel-body{
-    img{
-      width: 100% !important;
-    }
+  .page_editor{
+    display: none;
   }
   .export-budget-form-container{
-    margin-left:20%;
-    width: 831px;
+    margin:auto;
+    width: 846px;
   }
-
+-#-binding.pry
 .export-budget-form-container
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
     = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
-    = f.simple_fields_for :pages do |ff|
-      = ff.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
-      = ff.input :content_page,as: :text, label: t('.content_page'), :contenteditable => "true"
-      = ff.input :content, as: :text, label: t('.content'), :contenteditable => "true"
-      = ff.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
-    -#= f.input :title_page,as: :text ,label: t('.title_page'),:contenteditable => "true"
-    -#= f.input :content,as: :text, label: t('.content'), :contenteditable => "true"
-    -#= f.input :last_page,as: :text, label: t('.last_page'), :contenteditable => "true"
+    = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
+      =render partial: 'page_form',locals: {f: ff,key: :title_page,value: @export_budget.pages[:title_page],index: '',add_page: false}
+      =render partial: 'page_form',locals: {f: ff,key: :content_page,value: @export_budget.pages[:content_page],index: '',add_page: false}
+      = ff.simple_fields_for :content,:defaults => { :input_html => { :class => "summernote_input_with_visual" } } do |fff|
+        -@export_budget.pages[:content].each_with_index do |(key,value),index|
+          =render partial: 'page_form',locals: {f: fff,key: key,value: value,index: index,add_page: true}
+      =render partial: 'page_form',locals: {f: ff,key: :last_page,value: @export_budget.pages[:last_page],index: '',add_page: false}
     = f.button :submit, t('.save'),id: 'export_button_submit', class: 'btn btn-primary'
-.col-xs-5#visual_list
+#add_page
+  .page_dom
+    .action_panel
+      .pull-right
+        %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
+        %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
+      .pull-left
+        =label_tag 'Test',t('export_budgets.form.new_page'),class: 'text required control-label'
+    .page_editor
+      .form-group.text.required.export_budget_pages_content_budget_test
+        %textarea
+      .add-btn{data_name: 'new_page'}
+        =t('.add_page')
 :javascript
   var sankey = {};
   sankey.tax_rot = '';
   sankey.tax_rov = '';
 
   $(document).ready(function() {
+
+    $('#add_page').change(function() { alert('dasdsad'); });
     var set_town_in_title_page = function(town){
       $('#title_page_city').html(town);
     };
@@ -69,14 +147,57 @@
     var set_year_in_title_page = function(year){
       $('#title_page_year').html(year);
     };
+    var add_page_number = 0;
+    var get_new_page = function(path,button){
+      var new_page = $('#add_page').find('.page_dom').clone();
+      var textarea = new_page.find('textarea');
+      var textarea_identificator = 'add_page' + add_page_number;
+      add_page_number++;
+      textarea.attr('id',textarea_identificator);
+      textarea.attr('name','export_budget[pages][content][' + textarea_identificator + ']');
+      fill_input(textarea,path);
+      init_summernote_with_visual_button(textarea);
+      return new_page;
+    }
 
+    var get_textarea_id = function(editor_panel){
+      // this function return textarea id
+      // get one params editor dom element
+      // first we get editor parent
+      // after that we search neighbor textarea
+      // and return textarea id
+      return  "#" + $(editor_panel).parents('.note-editor').siblings('textarea').attr('id');
+    }
+    $('body').on('click','.remove_page_btn',function(){
+      var that = $(this);
+      dataConfirmModal.confirm({
+        // title: I18n.t('.are_you_sure'),
+        text: I18n.t('export_budgets.form.really_destroy?'),
+        // commit: I18n.t('yes'),
+        // cancel: I18n.t('no'),
+        zIindex: 10099,
+        onConfirm: function() { that.parents('.page_dom').remove(); },
+        // onCancel:  function() { alert('cancelled') }
+      });
+    });
+    $('body').on('click','.hide_page',function(){
+      $(this).toggleClass('chevron-rotate');
+      $(this).siblings('.remove_page_btn').toggleClass('fa-times-test');
+      $(this).parents('.page_dom').find('.page_editor').toggle('slow');
+    });
     $('#export_budget_title').change(function(){
       set_title_in_title_page($(this).val());
     });
     $('#export_budget_year').on("change",function(e){
       set_year_in_title_page($(this).val());
     });
-
+    var send_ajax = function(number,page_id){
+      $.ajax({
+        url: "#{widgets_visualisation_list_path(current_user)}",
+        data: { data_number: number,
+                page_id: page_id  }
+      })
+    };
     var fill_input = function(input_name,url){
       if(!$(input_name).val()){
         $.ajax({
@@ -84,7 +205,7 @@
           success: function(data){
             $(input_name).summernote('code',data);
             $('.visual_place').click(function(){
-              send_ajax($(this).attr('data-number'));
+              send_ajax($(this).attr('data-number'),get_textarea_id(this));
             });
           }
         });
@@ -92,17 +213,37 @@
     }
 
     var init_summernote = function(field_selector){
-      $(field_selector).summernote({
+      $('.summernote_input').summernote({
         disableResizeEditor: true,
         minHeight: 300
       });
     }
-    var send_ajax = function(number){
-      $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
-        data: { data_number: number }
-      })
-    };
+
+    var init_summernote_with_visual_button = function(field_selector) {
+      $(field_selector).summernote({
+        disableResizeEditor: true,
+        maxHeight: '1145px',
+        disableDragAndDrop: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
+          ['fontsize', ['fontsize']],
+          ['insert',['picture','table']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          // ['height', ['height']],
+          ['mybutton', ['visualButton']]
+        ],
+        buttons: {
+          // add button for show visual list
+          visualButton: visualButton
+        },
+        minHeight: 300,
+      });
+    }
+
+
 
 
     var visualButton = function (context) {
@@ -113,13 +254,19 @@
         contents: '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> Visual</span>',
         tooltip: 'visual',
         click: function () {
-          send_ajax('0');
+          send_ajax('0',get_textarea_id(this));
         }
       });
 
       return button.render();   // return button as jquery object
     }
-
+    $(".summernote_input_with_visual").on("summernote.keyup", function (e) {   // callback as jquery custom event
+      var page_dom = $($(this).val());
+      var header = page_dom.find('.header_title');
+      content_page_row_number = header.attr('header_number');
+      content_page_row_text = header[0].innerHTML;
+      $("div[data-header-numb='"+ content_page_row_number +"']").html(content_page_row_text);
+    });
     $('#export_budget_year').datepicker({
       autoclose: true,
       format: 'yyyy',
@@ -128,38 +275,26 @@
       locale: 'ua'
     });
 
-    $('#export_budget_pages_content').summernote({
-       toolbar: [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript','fontname']],
-        ['fontsize', ['fontsize']],
-        ['insert',['picture','table']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        // ['height', ['height']],
-        ['mybutton', ['visualButton']]
-      ],
-      buttons: {
-        // add button for show visual list
-        visualButton: visualButton
-      },
-      minHeight: 300,
+    $('.summernote_input').map(function(item,i,arr){
+      init_summernote($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
     });
 
-    init_summernote('#export_budget_pages_title_page');
-    init_summernote('#export_budget_pages_last_page');
-    init_summernote('#export_budget_pages_content_page');
-
-    fill_input('#export_budget_pages_title_page',"#{template_title_path}");
-    fill_input('#export_budget_pages_content_page',"#{template_content_page_path}");
-    fill_input('#export_budget_pages_content',"#{template_content_path}");
-    fill_input('#export_budget_pages_last_page',"#{template_last_page_path}");
-
+    $('.summernote_input_with_visual').map(function(item,i,arr){
+      init_summernote_with_visual_button($(this));
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      fill_input($(this),path);
+    });
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
     $('#export_budget_town').on('change',function(){
       set_town_in_title_page($(this).select2('data').text);
     });
 
+    $('body').on('click','.add-btn',function(){
+      var path = "#{template_load_path('part_name')}".replace('part_name',$(this).attr('data_name'));
+      var page = get_new_page(path,$(this).clone());
+      $(this).parents('.page_dom').after(page);
+    });
   });

@@ -1,0 +1,11 @@
+.page_dom
+  .action_panel
+    .pull-right
+      %i.fa.fa-chevron-down.hide_page{"aria-hidden" => "true"}
+      %i.fa.fa-times.remove_page_btn{"aria-hidden" => "true"}
+    = f.label t(".#{key}"),class: 'page_label'
+  .page_editor
+    = f.input key,label: false,as: :text ,:input_html => { data_number: index , data_name: key,value: value },:contenteditable => "true"
+    -if add_page
+      .add-btn{data_name: 'new_page'}
+        =t('export_budgets.form.add_page')

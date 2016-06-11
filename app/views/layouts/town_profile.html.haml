@@ -48,12 +48,25 @@
       flex: 0 0 auto;
     }
     .blocks {
+      top: 0;
+      margin-top: 0;
+      height: 100%;
       flex: 0 0 auto;
-      //padding-top: 73px;
     }
     footer {
       flex: 0 0 auto;
       background: transparent;
+      position: fixed;
+      bottom: 0;
+      .footer-wrapper {
+        padding-left: 240px;
+        .footer-text {
+          p {
+            font-size: 1.3rem;
+            line-height: 1.5rem;
+          }
+        }
+      }
     }
   }
 %body
@@ -113,6 +126,3 @@
           });
       }
   });
-
-  // ***** Tooltip's init ***** //
-  $('[data-toggle="tooltip"]').tooltip();

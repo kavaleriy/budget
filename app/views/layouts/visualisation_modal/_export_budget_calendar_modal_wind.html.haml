@@ -9,7 +9,11 @@
     width: 100%;
     resize: none;
   }
-
+  //#iframe{
+  //  transform: -0.5;
+  //  width: 2000px;
+  //  height: 1400px;
+  //}
   .insert{
     width: 100%;
     .insert-button{
@@ -105,8 +109,10 @@
     //get value from text_area input
     var img_base64 = $('#copy_img').val();
     //insert base64 to summernote editor
-    $summernote = $("#export_budget_pages_content");
-    $summernote.summernote("insertImage",img_base64);
+    $summernote = $(summernote_dom_id);
+    $summernote.summernote("insertImage",img_base64,function($image){
+      $image.css('width','100%');
+    });
     // clear text_area
     $('#copy_img').val('');
 
@@ -126,10 +132,11 @@
       $('.insert-button').hide('fast');
       var panel_selector = $('#iframe').attr('data-panel-selector');
       var active_panel = get_active_panel("#iframe",panel_selector);
+      var summernoote_id = $('#iframe').attr('data-textarea-id');
       convert_html_to_canvas(active_panel,'#copy_img');
       setTimeout(function(){
         unset_style_in_visual_place_div();
-        push_img_to_summernote('#copy_img',"#export_budget_content",'#export_budget_visualisation_modal_window');
+        push_img_to_summernote('#copy_img',summernoote_id,'#export_budget_visualisation_modal_window');
 
         //close modal window
         $('#export_budget_visualisation_modal_window').modal('hide');
