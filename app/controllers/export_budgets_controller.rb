@@ -36,7 +36,10 @@ class ExportBudgetsController < ApplicationController
                        right:             margin_size },
            template: 'export_budgets/create_pdf',
            show_as_html: params.key?('debug'),
-           footer: { center: '[page]' }
+           # footer: { center: '[page] з [topage]' }
+           :footer => {
+               :content => render_to_string(:template => 'export_budgets/footer.pdf.erb')
+           }
   end
 
   # GET /export_budgets/new
