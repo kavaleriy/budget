@@ -1,5 +1,6 @@
 :scss
   .news-section .container {
+    border: 1px solid red;
     padding: 0;
     .news-block {
       padding: 0;
@@ -92,7 +93,7 @@
       left: 15px;
     }
     .owl-prev {
-      left: -70px;
+      left: -63px;
       border: 2px solid black;
       width: 42px;
       height: 42px;
@@ -106,7 +107,7 @@
       transform: rotate(-45deg);
     }
     .owl-next {
-      right: -70px;
+      right: -63px;
       border: 2px solid black;
       width: 42px;
       height: 42px;
@@ -122,6 +123,43 @@
   }
 
   /* ====== Media ===== */
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .owl-nav {
+      .owl-prev {
+        left: -51px;
+      }
+      .owl-next {
+        right: -51px;
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .owl-nav {
+      .owl-next,
+      .owl-prev {
+        width: 32px;
+        height: 32px;
+        top: 50px;
+        i {
+          font-size: 32px;
+        }
+      }
+      .owl-prev {
+        left: -39px;
+        i {
+          left: 7px;
+          top: -5px;
+        }
+      }
+      .owl-next {
+        right: -39px;
+        i {
+          left: 11px;
+          top: -1px;
+        }
+      }
+    }
+  }
   @media (max-width: 767px) {
     .news-section {
       .container {
@@ -137,15 +175,32 @@
       }
     }
     .owl-nav {
+      .owl-next,
       .owl-prev {
-        left: -20px;
-        top: 125px;
+        width: 30px;
+        height: 30px;
+        top: 50px;
+        i {
+          font-size: 30px;
+        }
+      }
+      .owl-prev {
+        left: -35px;
+        top: 150px;
         margin: auto 0;
+        i {
+          top: -5px;
+          left: 7px;
+        }
       }
       .owl-next {
-        right: -20px;
-        top: 125px;
+        right: -35px;
+        top: 150px;
         margin: auto 0;
+        i {
+          top: -1px;
+          left: 12px;
+        }
       }
     }
     .owl-carousel .item a > p {

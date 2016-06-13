@@ -5,6 +5,8 @@
     border-radius: 0;
     background: #0c2231;
     .container {
+      padding: 0;
+      border: 1px solid white;
       .navbar-header .logo-block {
         position: relative;
         width: 230px;
@@ -191,6 +193,11 @@
     }
   }
   @media (max-width: 767px) {
+    .navbar {
+      .container {
+        padding: 0 20px;
+      }
+    }
     nav.min .container .navbar-header button.navbar-toggle {
       margin-top: 8px;
     }
