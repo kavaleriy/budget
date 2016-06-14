@@ -5,6 +5,7 @@
     border-radius: 0;
     background: #0c2231;
     .container {
+      padding: 0;
       .navbar-header .logo-block {
         position: relative;
         width: 230px;
@@ -191,6 +192,11 @@
     }
   }
   @media (max-width: 767px) {
+    .navbar {
+      .container {
+        padding: 0 20px;
+      }
+    }
     nav.min .container .navbar-header button.navbar-toggle {
       margin-top: 8px;
     }
@@ -303,31 +309,31 @@
             %li
               .row
                 .col-md-12
-                  Login via
-                  .social-buttons
-                    %a.btn.btn-fb{:href => "#"}
-                      %i.fa.fa-facebook
-                      Facebook
-                    %a.btn.btn-tw{:href => "#"}
-                      %i.fa.fa-twitter
-                      Twitter
-                  or
+                  -#Увійти
+                  -#.social-buttons
+                  -#  %a.btn.btn-fb{:href => "#"}
+                  -#    %i.fa.fa-facebook
+                  -#    Facebook
+                  -#  %a.btn.btn-tw{:href => "#"}
+                  -#    %i.fa.fa-twitter
+                  -#    Twitter
+                  -#or
                   %form#login-nav.form{"accept-charset" => "UTF-8", :action => "login", :method => "post", :role => "form"}
                     .form-group
-                      %label.sr-only{:for => "exampleInputEmail2"} Email address
+                      %label.sr-only{:for => "exampleInputEmail2"} Email адреса
                       %input#exampleInputEmail2.form-control{:placeholder => "Email address", :required => "", :type => "email"}
                     .form-group
-                      %label.sr-only{:for => "exampleInputPassword2"} Password
+                      %label.sr-only{:for => "exampleInputPassword2"} Пароль
                       %input#exampleInputPassword2.form-control{:placeholder => "Password", :required => "", :type => "password"}
                         .help-block.text-right
-                          %a{:href => ""} Forget the password ?
+                          %a{:href => ""} Відновити пароль ?
                     .form-group
-                      %button.btn.btn-primary.btn-block{:type => "submit"} Sign in
+                      %button.btn.btn-primary.btn-block{:type => "submit"} Увійти
                     .checkbox
                       %label
                         %input{:type => "checkbox"}
-                          keep me logged-in
+                          запам'ятати
                 .bottom.text-center
-                  New here ?
+                  Вперше?
                   %a{:href => "#"}
-                    %b Join Us
+                    %b Зареєструватись

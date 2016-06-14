@@ -1,18 +1,18 @@
-%td
+.col-xs-4
   - unless icon.blank?
     %i.fa.fa-3x{class: "#{icon}"}
 
-%td
-  = title
+  %a{'href' => "#{programs_target_program_path(program_id)}"}
+    = title
 
-%td.amount
+.col-xs-3.amount
   - unless amounts[year].blank?
     %span
       = amounts[year][:fact]
     .progress
       .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
         = "#{amounts[year][:perc]}%"
-%td
+.col-xs-5
   2014-
   2019
 

@@ -225,6 +225,7 @@
 
       addGeoJsonPoint(data, getPoint, options)
     }
+
     function addGeoJsonPoint(data, getPoint, options) {
       options = options || {};
 
@@ -259,10 +260,9 @@
       function onEachFeature(feature, layer) {
         layer.on({
           click: function () {
-            getPopupInfoContent(feature.properties.id,layer);
 
             if (options.featureClickCallback){
-              options.featureClickCallback(feature, popup);
+              options.featureClickCallback(feature, layer);
             }
           },
           mouseover: function (e) {
@@ -345,32 +345,49 @@
 
     function hideRoute(feature) {
       if (feature.selected) {
-        feature.selectedRoute.spliceWaypoints(0, feature.waypoints.length-1);
         feature.selected = false;
+      }
+      if (feature.selectedRoute) {
+        feature.selectedRoute.spliceWaypoints(0, feature.properties.route.length-1);
+        feature.selectedRoute = null;
+      }
+      if (feature.selectedPath) {
+        map.removeLayer(feature.selectedPath);
+        feature.selectedPath = null;
       }
     }
 
     function showRoute(feature) {
-      if(feature.properties.route){
-        feature.waypoints = feature.properties.route;
-      } else if(feature.properties.address && feature.properties.address_to){
-        feature.waypoints = [feature.properties.address.split(","), feature.properties.address_to.split(",")];
-      }
-      if(feature.waypoints){
-        hideRoute(feature);
+      feature.selected = true;
 
-        feature.selectedRoute = L.Routing.control({
-          fitSelectedRoutes: false,
-          waypoints: feature.waypoints,
-          draggableWaypoints: false,
-          createMarker: function() { return null; },
-          lineOptions : {
-              addWaypoints: false
-          }
-        });
-        feature.selectedRoute.addTo(map);
-        feature.selected = true;
-        clearRoadRoute();
+      var route = feature.properties.route
+      if (route){
+        if (route.length == 2) {
+          feature.selectedRoute = L.Routing.control({
+            fitSelectedRoutes: false,
+            waypoints: [ route[0], route[1] ],
+            draggableWaypoints: false,
+            createMarker: function() { return null; },
+            lineOptions : {
+                addWaypoints: false
+            }
+          });
+          feature.selectedRoute.addTo(map);
+          clearRoadRoute();
+        } else {
+          routePoints = route.map(function(item) {
+            return new L.LatLng(item[0], item[1]);
+          });
+
+          feature.selectedPath = new L.polyline(routePoints, {
+            color: 'red',
+            weight: 6,
+            opacity: 0.5,
+            smoothFactor: 3,
+          });
+
+          feature.selectedPath.addTo(map);
+        }
       }
 
       function clearRoadRoute(){
@@ -484,6 +501,7 @@
 
     return {
       map: map,
+      markers: markers,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       addGeoJsonPoint: addGeoJsonPoint,
@@ -495,13 +513,4 @@
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker
     }
-  }
-
-  function getPopupInfoContent(featureId,layer){
-     $.ajax({
-      url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
-      success:function(data){
-       layer.bindPopup(data).openPopup();
-      }
-     })
   }
