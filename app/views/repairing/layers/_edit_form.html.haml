@@ -2,7 +2,7 @@
   .editable-pre-wrapped {
     white-space: nowrap;
   }
-
+=javascript_include_tag 'bootstrap_flash'
 .panel.panel-default
   .panel-heading
     = t('repairing.layers.edit.layer')
@@ -37,14 +37,20 @@
 :javascript
 
   $(document).ready(function(){
-    $('#edit_layer .editable').editable();
-
+    $('#edit_layer .editable').editable({
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
     $('#edit_layer .edit_category').editable({
       value: "#{@repairing_layer.repairing_category.id if @repairing_layer.repairing_category}",
       source: '#{get_categories_repairing_layer_path}',
       select2: {
         width: '350px',
         allowClear: true
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
       }
     });
 
@@ -55,6 +61,11 @@
         width: '350px',
         allowClear: true,
         minimumInputLength: 2
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
       }
     });
+
+
   })

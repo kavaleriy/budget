@@ -155,11 +155,17 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_layer.update(repairing_layer_params)
+          msg = {class_name: 'success', message: I18n.t('repairing.layers.update.success')}
           format.js
-          format.json { head :no_content }
+          format.json do
+            render json: msg
+          end
         else
+          msg = {class_name: 'danger' ,message: I18n.t('repairing.layers.update.error')}
           format.js
-          format.json { head :no_content }
+          format.json do
+            render json: msg
+          end
         end
       end
     end

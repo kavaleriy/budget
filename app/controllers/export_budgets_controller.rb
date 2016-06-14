@@ -27,6 +27,11 @@ class ExportBudgetsController < ApplicationController
 
   def create_pdf
     margin_size = 5
+    # count page length
+    # get all pages array size
+    # minus 1 it is content array in pages array
+    # plus content array size
+    page_length = (@export_budget.pages.size - 1) + @export_budget.pages[:content].size
     render pdf: @export_budget.title,
            formats: [:html],
            dpi: '300',
@@ -36,7 +41,9 @@ class ExportBudgetsController < ApplicationController
                        right:             margin_size },
            template: 'export_budgets/create_pdf',
            show_as_html: params.key?('debug'),
-           footer: { center: '[page]' }
+           :footer => {
+               :content => render_to_string(:template => 'export_budgets/footer.pdf.erb',locals: {page_length: page_length})
+           }
   end
 
   # GET /export_budgets/new

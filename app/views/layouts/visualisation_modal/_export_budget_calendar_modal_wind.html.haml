@@ -92,7 +92,7 @@
       onrendered: function(canvas) {
         //convert canvas to base 64
         canvas.getContext('2d');
-        var base64 = canvas.toDataURL("image/png");
+        var base64 = canvas.toDataURL("image/png",1.0);
         //write base64 to input dom element
         input_dom.val(base64);
       }

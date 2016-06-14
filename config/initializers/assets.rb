@@ -18,6 +18,7 @@ Rails.application.config.assets.precompile += %w( tab_styled/cbpFWTabs.js tab_st
 Rails.application.config.assets.precompile += %w( tooltip_inspiration/tooltip-box.css tooltip_inspiration/normalize.css tooltip_inspiration/tooltip-sharp.css)
 Rails.application.config.assets.precompile += %w( page_navigation/menu.js page_navigation/modernizr.custom.25376.js page_navigation/classie.js page_navigation/component.css page_navigation/normalize.css )
 Rails.application.config.assets.precompile += %w( town_typeahead.js )
+Rails.application.config.assets.precompile += %w( bootstrap_flash.js )
 
 Rails.application.config.assets.precompile += %w( revolution_slider/jquery.themepunch.plugins.min.js revolution_slider/jquery.themepunch.revolution.min.js revolution_slider/rs-style.css revolution_slider/settings.css )
 Rails.application.config.assets.precompile += %w(*.jpg, *.png)
