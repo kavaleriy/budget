@@ -1,21 +1,16 @@
-.col-xs-4
-  - unless icon.blank?
-    %i.fa.fa-3x{class: "#{icon}"}
+- program_id = program[:id].to_s
+- title = program[:title]
+- amounts = program[:years]
 
+.program_title.col-xs-7
   %a{'href' => "#{programs_target_program_path(program_id)}"}
-    = title
+    %i.fa{class: "#{icon || 'fa-circle-o'}"}
+      = title
 
-.col-xs-3.amount
+.program_amount.col-xs-5
   - unless amounts[year].blank?
-    %span
-      = amounts[year][:fact]
     .progress
       .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
         = "#{amounts[year][:perc]}%"
-.col-xs-5
-  2014-
-  2019
 
-- @years.each do |year|
-  %td.amounts
-    = amounts[year][:plan] if amounts[year]
+    = number_to_currency(amounts[year][:fact], unit: '')

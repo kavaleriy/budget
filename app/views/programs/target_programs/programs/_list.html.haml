@@ -1,0 +1,81 @@
+:scss
+  #target_programs {
+    .panel {
+      a.collapse_btn {
+        margin: 10px 15px;
+
+        text-decoration: none;
+        font-family: FontAwesome;
+        font-size: 30px;
+
+        &:before {
+          content: "\f106";
+        }
+
+        &.collapsed:before {
+          content: "\f107";
+        }
+      }
+    }
+
+
+    .program-item {
+      .program_title {
+        font-size: 130%;
+      }
+    }
+
+    .program-item, .program-subitem {
+      .program_amount {
+        font-size: 120%;
+      }
+
+      .program_amount {
+        & > * {
+          display: inline-block;
+        }
+
+        .progress {
+          width: 50%;
+          margin-bottom: -4px;
+
+          opacity: .6;
+          &:hover { opacity: 1; }
+        }
+      }
+    }
+  }
+
+.col-xs-12
+  .col-xs-offset-7.col-xs-5
+    = "Виконано в #{year}"
+
+
+.col-xs-12.panel-group{'role' => 'tablist'}
+  - programs.each do |program|
+    - prog_panel_id = program[:id].to_s
+    - expanded = "#{program[:sub_programs].blank? ? false : true}"
+
+    .panel.panel-default
+      .panel-heading{ id: "collapseListGroupHeading#{prog_panel_id}", 'role' => 'tab'}
+        .panel-title.row
+          .col-xs-11.program-item
+            = render partial: 'programs/target_programs/programs/item', locals: { icon: 'fa-sun-o', program: program, :year => @year }
+          .pull-right
+            %a.collapse_btn.collapsed{'role' => 'button', 'data-toggle' => 'collapse', 'href' => "#collapseListGroup#{prog_panel_id}", 'aria-expanded' => expanded, 'aria-controls' => "collapseListGroup#{prog_panel_id}"}
+
+      .panel-collapse.collapse{id: "collapseListGroup#{prog_panel_id}", 'role' => 'tabpanel', 'aria-labelledby' => "collapseListGroupHeading#{prog_panel_id}", 'aria-expanded' => expanded}
+        - unless program[:sub_programs].blank?
+          %ul.list-group
+            - program[:sub_programs].each do |subprogram|
+              %li.list-group-item.row
+                .col-xs-11.program-subitem
+                  = render partial: 'programs/target_programs/programs/item', locals: { icon: nil, program: subprogram, :year => @year }
+
+        .panel-footer.row
+          .program_chart.col-xs-12
+            -# TODO: draw svg chart here
+            -#- @years.each do |year|
+            -#    = amounts[year][:plan] if amounts[year]
+            Додатково про програму:
+            2014-2019

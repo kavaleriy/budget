@@ -4,6 +4,6 @@
 
 
 #target_programs.col-xs-12
-  = render partial: 'programs_bar'
+  = render partial: 'programs/target_programs/programs/bar'
 
-  = render partial: 'programs_list', locals: { programs: @programs, :years => @years, :year => @year }
+  = render partial: 'programs/target_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }

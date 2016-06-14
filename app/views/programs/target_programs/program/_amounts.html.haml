@@ -18,7 +18,7 @@
       = number_to_currency(program[:years][year][:fact], unit: '')
 
   .bar.col-xs-6
-    = render partial: 'program_progress', locals: { perc: program[:years][year][:perc] }
+    = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }
     Залишилось
     %h3
       = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
@@ -27,4 +27,3 @@
     Заплановано
     %h3
       = number_to_currency(program[:years][year][:plan], unit: '')
-

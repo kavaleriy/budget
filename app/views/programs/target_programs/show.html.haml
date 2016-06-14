@@ -5,14 +5,14 @@
     }
   }
 
-.program.col-xs-offset-2.col-xs-8
+.program.row
 
   .col-xs-12
     %h1
       %i.fa.fa-sun-o
         = "#{@program[:title]}, #{@year} рік"
 
-    = render partial: 'program', locals: { program: @program, :year => @year }
+    = render partial: 'programs/target_programs/program/amounts', locals: { program: @program, :year => @year }
 
   .col-xs-12
     %h2
@@ -23,12 +23,12 @@
   .indicators.col-xs-12
     %h2
       Групи показників
-    = render partial: 'program_indicators', locals: { program: @program, :year => @year }
+    = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year }
 
   .col-xs-12
     %h2
       Діаграма ганта
-    = render partial: 'program_gant'
+    = render partial: 'programs/target_programs/program/gant'
 
   .col-xs-12
     %h2
