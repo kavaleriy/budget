@@ -123,6 +123,8 @@
     if(div_number){
       $('[data-number='+ div_number +']').attr('style','');
       $('[data-number='+ div_number +']').html('');
+      $('[data-number='+ div_number +']').removeClass('visual_place');
+      $('[data-number='+ div_number +']').off();
     }
   };
 
