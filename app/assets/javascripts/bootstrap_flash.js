@@ -8,6 +8,6 @@ function show_bootstrap_flash(message,msg_class){
     $('.bootstrap_flash').append(notice_div);
     $('.bootstrap_flash').show();
     setTimeout(function(){
-        // $('.bootstrap_flash').html('');
+        $('.bootstrap_flash').html('');
     },5000);
 }

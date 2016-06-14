@@ -1,0 +1,8 @@
+var message_div = $('<div></div>');
+message_div.html('<%= escape_javascript(bootstrap_flash) %>');
+$('#repair').find('.clear').before(message_div);
+message_div.show('slow');
+<%= flash.clear %>
+setTimeout(function(){
+  message_div.hide('slow');
+},5000);

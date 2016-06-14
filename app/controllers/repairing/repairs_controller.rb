@@ -55,6 +55,8 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_repair.update(repairing_repair_params)
+          flash[:notice] = I18n.t('repairing.layers.update.success')
+          format.js {}
           format.json { render :show, status: :ok }
         else
           format.json { render json: @repairing_repair.errors, status: :unprocessable_entity }
