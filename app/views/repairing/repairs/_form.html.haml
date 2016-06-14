@@ -14,23 +14,16 @@
     .col-xs-6
       = f.date_field :repair_end_date, :label => t('repairing.repairs.form.repair_end_date')
 
-  -#= f.text_field :coordinates, multiple: true
+  -#
 
   = f.text_field :address, :label => t('repairing.repairs.form.address')
   = f.text_field :address_to, :label => t('repairing.repairs.form.address_to')
 
   = f.text_area :description, :label => t('repairing.repairs.form.description'), :rows => "4"
-  .form-group
-    = fields_for :coordinates do |ff|
-      =ff.label('','Coord1')
-      = ff.text_field :coordinates,:name => "repairing_repair[coordinates][]",class: 'form-control',value: @repairing_repair.coordinates[0]
-      =ff.label('','Coord2')
-      = ff.text_field :coordinates,label: '1',class: 'form-control',:name => "repairing_repair[coordinates][]",value: @repairing_repair.coordinates[1]
-    -#= ff.text_field :coordinates,as: :array,label: '2'
-  -#= f.simple_field :coordinates,label: 'Coord1' do |ff|
-  -#  =ff.text_field '0',label: 'Coord1'
-  -#  =ff.text_field '1',label: 'Coord2'
-  -#=f.text_field :coordinates,label: 'Coord2',multiple: true
+
+  = f.text_field :coordinates, :label => t('repairing.repairs.form.coordinates'), disabled: 'disabled'
+  -#= ff.text_field :coordinates, :name => 'repairing_repair[coordinates][]', class: 'form-control', value: @repairing_repair.coordinates
+
   .clear
   = f.submit t('form.save'), :class => 'btn btn-primary'
   = link_to t('form.destroy'), repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), :method => :delete, remote: true, :data => { :confirm => 'Are you sure?' }, class: "btn btn-warning"
