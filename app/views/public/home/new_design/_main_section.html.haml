@@ -131,6 +131,7 @@
           position: relative;
           left: 50%;
           opacity: .5;
+          top: 87px;
         }
         .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .money-block .money-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-arrow {
           display: none;
@@ -153,6 +154,9 @@
       position: absolute;
     /*border: 1px solid red;*/
     }
+    .wlines {
+      top: -126px;
+    }
     .row {
       margin: 0 10.68814%;
       position: relative;
@@ -162,7 +166,7 @@
       .icons {
         display: inline-flex;
         padding: 0;
-        top: -90px;
+        top: -300px;
         .official {
           margin-left: 70px;
           padding: 0;
@@ -229,7 +233,7 @@
         }
       }
       .titles {
-        top: -364px;
+        top: -556px;
         .main-title {
           padding: 0;
           width: 100%;
@@ -307,11 +311,19 @@
       }
       .row {
         margin: 0 8%;
-        top: 407px;
+        top: 387px;
       }
       .icons-block .link-icons .icons-wrapper {
-        .pig-block .pig-icon .vertical-line, .list-block .list-icon .vertical-line, .prozorro-block .prozorro-icon .vertical-line, .money-block .money-icon .vertical-line, .repair-block .repair-icon .vertical-line, .folders-block .folders-icon .vertical-line, .edata-block .edata-icon .vertical-line, .sankey-block .sankey-icon .vertical-line {
+        .pig-block .pig-icon .vertical-line,
+        .list-block .list-icon .vertical-line,
+        .prozorro-block .prozorro-icon .vertical-line,
+        .money-block .money-icon .vertical-line,
+        .repair-block .repair-icon .vertical-line,
+        .folders-block .folders-icon .vertical-line,
+        .edata-block .edata-icon .vertical-line,
+        .sankey-block .sankey-icon .vertical-line {
           height: 350px;
+          top: 87px;
         }
       }
     }
@@ -559,47 +571,76 @@
       .icons-wrapper
         .pig-block
           .pig-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .list-block
+          .list-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .prozorro-block
+          .prozorro-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .money-block
+          .money-icon
+            %a.icon-tooltip{}
+            .vertical-line
+    .col-xs-12.col-sm-5.link-icons.second-row
+      .icons-wrapper
+        .repair-block
+          .repair-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .folders-block
+          .folders-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .edata-block
+          .edata-icon
+            %a.icon-tooltip{}
+            .vertical-line
+        .sankey-block
+          .sankey-icon
+            %a.icon-tooltip{}
+            .vertical-line
+  .town-block
+  .icons-block.wlines
+    .col-xs-12.col-sm-5.link-icons.first-row
+      .icons-wrapper
+        .pig-block
+          .pig-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon1.png', class: 'img-responsive pig')
-            .vertical-line
         .list-block
           .list-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon3.png', class: 'img-responsive list')
-            .vertical-line
         .prozorro-block
           .prozorro-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon5.png', class: 'img-responsive prozorro')
-            .vertical-line
         .money-block
           .money-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon7.png', class: 'img-responsive money')
-            .vertical-line
     .col-xs-12.col-sm-5.link-icons.second-row
       .icons-wrapper
         .repair-block
           .repair-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon2.png', class: 'img-responsive repair')
-            .vertical-line
         .folders-block
           .folders-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon4.png', class: 'img-responsive folders')
-            .vertical-line
         .edata-block
           .edata-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon6.png', class: 'img-responsive edata')
-            .vertical-line
         .sankey-block
           .sankey-icon
             %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
-            .vertical-line
-  .town-block
   .row.titles-blocks
     .col-xs-12.col-sm-6.icons
       .col-xs-12.official
