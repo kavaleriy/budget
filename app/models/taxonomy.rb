@@ -1,5 +1,6 @@
   class Taxonomy
     include Mongoid::Document
+    include Mongoid::Timestamps
 
     scope :owned_by, lambda { |owner| where(:owner => owner) }
 
