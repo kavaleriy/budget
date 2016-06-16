@@ -14,12 +14,12 @@ class Programs::TargetProgramsController < ApplicationController
 
   def index
     stub_data
-    @programs = TargetedPrograms::Program.get_main_programs
+    @programs = Programs::TargetProgram.get_main_programs
   end
 
   def show
     stub_data
-    @program = TargetedPrograms::Program.first
+    @program = Programs::TargetProgram.first
   end
 
 

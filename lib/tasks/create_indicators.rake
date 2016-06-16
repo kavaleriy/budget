@@ -1,7 +1,7 @@
 namespace :create_indicators do
   # remove old indicators
   task remove_old_indicators: :environment do
-    TargetedPrograms::Indicator.each { |indicator| indicator.destroy}
+    Programs::Indicator.each { |indicator| indicator.destroy}
   end
   task create_indicators: :remove_old_indicators do
     indicators = [
@@ -44,10 +44,10 @@ namespace :create_indicators do
         },
     ]
     indicators.each do |indicator|
-      TargetedPrograms::Indicator.new({title: indicator[:title],items: indicator[:items],targeted_program: get_targeted_programs}).save!
+      Programs::Indicator.new({title: indicator[:title],items: indicator[:items],targeted_program: get_targeted_programs}).save!
     end
   end
   def get_targeted_programs
-    TargetedPrograms::Program.where({title:'Заходи  у сфері траспортного сполучення'}).first
+    Programs::TargetProgram.where({title:'Заходи  у сфері траспортного сполучення'}).first
   end
 end
