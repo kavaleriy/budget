@@ -17,16 +17,20 @@
   .fact.col-xs-3
     =t('.done')
     %h2
-      = number_to_currency(program[:years][year][:fact], unit: '')
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:fact], unit: '')
 
 
   .bar.col-xs-6
-    = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }
+    -unless program[:years].nil?
+      = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }
     =t('.remains')
     %h3
-      = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
 
   .col-xs-3
     =t('.planned')
     %h3
-      = number_to_currency(program[:years][year][:plan], unit: '')
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:plan], unit: '')
