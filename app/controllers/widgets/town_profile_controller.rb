@@ -96,7 +96,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
     calendar = Calendar.get_calendar_by_town(town).first
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
-    programs = Programs::Town.get_town_by_title(town).first
+    # programs = Programs::Town.get_town_by_title(town).first
     # binding.pry
 
     result = []
