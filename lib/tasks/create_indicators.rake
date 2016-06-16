@@ -1,4 +1,5 @@
 namespace :create_indicators do
+  # remove old indicators
   task remove_old_indicators: :environment do
     TargetedPrograms::Indicator.each { |indicator| indicator.destroy}
   end
