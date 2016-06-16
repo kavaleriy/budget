@@ -1,8 +1,8 @@
 = content_for :header do
   .head.pull-left
-    Державні програми
+    =t('.header')
 
-
+=link_to t('.new'),new_programs_target_program_path,class: 'btn btn-default'
 #target_programs.col-xs-12
   = render partial: 'programs/target_programs/programs/bar'
   -unless @programs.empty?

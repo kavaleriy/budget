@@ -1,0 +1,40 @@
+=bootstrap_form_for @program do |f|
+  =f.text_field :title
+  -#=f.date_field :years
+  =label_tag 'type_program','Програма'
+  =radio_button_tag 'type', 'program'
+  =label_tag 'type_subprogram','Підпрограма'
+  =radio_button_tag 'type', 'subprogram',true
+
+  =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: 'Parent_id',prompt: 'Choose parent category'
+  =f.text_field :description
+  =f.text_field :responsible
+  =f.submit t('save')
+:javascript
+  $(document).ready(function(){
+    $('input[name=type]:radio').change(function(){
+      $('#programs_target_program_p_id').parents('.form-group').toggle('slow');
+    });
+
+    $('form').submit(function(){
+      var checked_radio_value = $('input[name=type]:checked').val();
+      var parent_id_input = $('#programs_target_program_p_id');
+      var program_name = 'program';
+
+      var notice_message = $("<div></div>");
+      notice_message.addClass('alert alert-warning');
+      notice_message.attr('role','alert');
+      notice_message.html('Заповніть це поле');
+      if(checked_radio_value == program_name){
+        parent_id_input.val('');
+      }else{
+        if(!parent_id_input.val()){
+          parent_id_input.after(notice_message);
+          notice_message.fadeOut(5000);
+          parent_id_input.focus();
+          return false;
+        }
+      }
+    });
+
+  });
