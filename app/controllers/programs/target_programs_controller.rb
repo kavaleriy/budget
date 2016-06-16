@@ -69,6 +69,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   def index
     stub_data
+    @programs = TargetedPrograms::Program.get_main_programs
   end
 
   def show

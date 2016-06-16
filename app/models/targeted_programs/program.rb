@@ -7,4 +7,5 @@ class TargetedPrograms::Program
 
   field :p_id,type: String
 
+  scope :get_main_programs,-> {where(p_id: nil)}
 end
