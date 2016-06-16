@@ -13,7 +13,7 @@
 .program_indicators
   %ul.nav.nav-tabs{'role' => 'tablist'}
 
-    - program[:indicators].each_with_index do |indicator, i|
+    - program.indicators.each_with_index do |indicator, i|
       - active = (i == 0 ? 'active' : '')
       - indicator_id = "tab-#{i}"
       - indicator_id_contents = "tab-#{i}-contents"
@@ -40,7 +40,7 @@
           Поросюшка
 
   .tab-content
-    - program[:indicators].each_with_index do |indicator, i|
+    - program.indicators.each_with_index do |indicator, i|
       - indicator[:items].each_with_index do |item, j|
         - tab_id = "tab-#{i}-#{j}"
         - tab_id_content = "tab-#{i}-#{j}-content"

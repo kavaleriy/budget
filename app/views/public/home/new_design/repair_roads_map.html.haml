@@ -90,7 +90,7 @@
     }
   }
 
-  .content.isOpen {
+  .content.is-open {
     margin-left: 0;
     transform: translate3d(220px,0,0);
     width: calc(100% - 220px);
@@ -129,7 +129,7 @@
       }
     }
   }
-  .isFull {
+  .is-full {
     .sidebar-nav {
       .button {
         float: right;
@@ -187,7 +187,7 @@
   }
 
 .wrapper
-  .sidebar.isFull
+  .sidebar
     .blason-block
       =image_tag('new_design/blason.svg', class: 'img-responsive')
     %ul.sidebar-nav
@@ -204,7 +204,7 @@
       %li
         %a PDF DOC'S
       %a.button
-  .content.isOpen
+  .content
     .content-wrapper
       %ol.breadcrumb
         %li
@@ -217,9 +217,7 @@
 
   $(document).ready(function() {
     $('.button').on('click', function() {
-      $('.sidebar').toggleClass('isFull');
-      $('.content').toggleClass('isOpen');
+      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+      $('.blocks > .wrapper > .content').toggleClass('is-open');
     });
-
-
   });

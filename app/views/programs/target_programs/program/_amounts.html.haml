@@ -11,11 +11,14 @@
 
   }
 
+
+
 .program
   .fact.col-xs-3
     Виконано
     %h2
       = number_to_currency(program[:years][year][:fact], unit: '')
+
 
   .bar.col-xs-6
     = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }

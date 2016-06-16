@@ -12,6 +12,7 @@
       %i.fa.fa-sun-o
         = "#{@program[:title]}, #{@year} рік"
 
+    -#-binding.pry
     = render partial: 'programs/target_programs/program/amounts', locals: { program: @program, :year => @year }
 
   .col-xs-12
@@ -23,11 +24,13 @@
   .indicators.col-xs-12
     %h2
       Групи показників
+
     = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year }
 
   .col-xs-12
     %h2
       Діаграма ганта
+
     = render partial: 'programs/target_programs/program/gant'
 
   .col-xs-12
