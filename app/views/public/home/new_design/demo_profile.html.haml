@@ -243,7 +243,7 @@
     }
   }
 
-  .content.isOpen {
+  .content.is-open {
     margin-left: 0;
     transform: translate3d(220px,0,0);
     width: calc(100% - 220px);
@@ -282,7 +282,7 @@
       }
     }
   }
-  .isFull {
+  .is-full {
     .sidebar-nav {
       .button {
         float: right;
@@ -340,7 +340,7 @@
   }
 
 .wrapper
-  .sidebar.isFull
+  .sidebar
     .blason-block
       =image_tag('new_design/blason.svg', class: 'img-responsive')
     %ul.sidebar-nav
@@ -357,7 +357,7 @@
       %li
         %a PDF DOC'S
       %a.button
-  .content.isOpen
+  .content
     .content-wrapper
       %ol.breadcrumb
         %li.active
@@ -428,15 +428,28 @@
 
 :javascript
 
-  //Toggle button action [hide/show sidebar]
-
   $(document).ready(function() {
+  //Show full sidebar on desctops [md/lg size]
+    if($(window).width() > 1200){
+      $('.blocks > .wrapper > .sidebar').addClass('is-full');
+      $('.blocks > .wrapper > .content').addClass('is-open');
+     };
+  //Toggle button action [hide/show sidebar]
     $('.button').on('click', function() {
-      $('.sidebar').toggleClass('isFull');
-      $('.content').toggleClass('isOpen');
+      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+      $('.blocks > .wrapper > .content').toggleClass('is-open');
     });
   });
+
+  //Resize window sidebar view
   $(window).resize(function(){
-    // to do
+    if($(window).width() < 1199){
+      $('.blocks > .wrapper > .sidebar').removeClass('is-full');
+      $('.blocks > .wrapper > .content').removeClass('is-open');
+    } else
+    if($(window).width() > 1200){
+      $('.blocks > .wrapper > .sidebar').addClass('is-full');
+      $('.blocks > .wrapper > .content').addClass('is-open');
+    };
   });
 
