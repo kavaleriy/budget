@@ -10,29 +10,32 @@
   .col-xs-12
     %h1
       %i.fa.fa-sun-o
-        = "#{@program[:title]}, #{@year} рік"
+        = "#{@program[:title]}, #{@year} #{t('year')}"
 
-    -#-binding.pry
     = render partial: 'programs/target_programs/program/amounts', locals: { program: @program, :year => @year }
 
   .col-xs-12
     %h2
-      Основні цілі
+      =t('.main_target')
+
     %p
-      Впровадити......
+      =@program.description
 
   .indicators.col-xs-12
     %h2
-      Групи показників
-
+      = t('.group_indicators')
     = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year }
 
   .col-xs-12
-    %h2
-      Діаграма ганта
+    .gantt-header
+      .pull-left
+        %h2
+          Діаграма ганта
+      .pull-right
+        ="#{t('.responsible')} : #{@program.responsible}"
 
     = render partial: 'programs/target_programs/program/gant'
 
-  .col-xs-12
-    %h2
-      Відповідальні за виконання програми
+  -#.col-xs-12
+  -#  %h2
+  -#    Відповідальні за виконання програми
