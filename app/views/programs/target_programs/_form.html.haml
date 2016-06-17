@@ -1,19 +1,25 @@
 =bootstrap_form_for @program do |f|
   =f.text_field :title
-  -#=f.date_field :years
-  =label_tag 'type_program','Програма'
+  =f.text_field :town,label: t('.town')
+
+
+  =label_tag 'type_program',t('.new_program')
   =radio_button_tag 'type', 'program'
-  =label_tag 'type_subprogram','Підпрограма'
+  =label_tag 'type_subprogram',t('.sub_program')
   =radio_button_tag 'type', 'subprogram',true
 
-  =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: 'Parent_id',prompt: 'Choose parent category'
-  =f.text_field :description
-  =f.text_field :responsible
+  =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
+  =f.text_field :description,as: :text,label: t('.description')
+  =f.text_field :responsible,label: t('.responsible')
   =f.submit t('save')
 :javascript
   $(document).ready(function(){
     $('input[name=type]:radio').change(function(){
       $('#programs_target_program_p_id').parents('.form-group').toggle('slow');
+    });
+
+    $('#programs_target_program_description').summernote({
+      minHeight: 300
     });
 
     $('form').submit(function(){
@@ -25,6 +31,7 @@
       notice_message.addClass('alert alert-warning');
       notice_message.attr('role','alert');
       notice_message.html('Заповніть це поле');
+
       if(checked_radio_value == program_name){
         parent_id_input.val('');
       }else{
@@ -36,5 +43,6 @@
         }
       }
     });
+    init_town_select2_with_field_id('#programs_target_program_town',"#{search_for_towns_town_path}")
 
   });
