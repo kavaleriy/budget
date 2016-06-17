@@ -59,17 +59,57 @@
       background: transparent;
       position: fixed;
       bottom: 0;
+      left: 220px;
       .footer-wrapper {
-        padding-left: 220px;
-        .footer-text {
-          p {
-            font-size: 1.3rem;
-            line-height: 1.5rem;
+        //padding-left: 220px;
+        .container {
+          margin: 0;
+          width: calc(100vw - 220px);
+          .row {
+            .footer-text {
+              margin: 15px 0;
+              p {
+                font-size: 1.3rem;
+                line-height: 1.5rem;
+              }
+            }
           }
         }
       }
     }
   }
+
+  @media (min-width: 992px) and (max-width: 1001px) {
+    body {
+      footer {
+        .footer-wrapper {
+          .container {
+            .row {
+              .footer-text {
+                p {
+                  line-height: 1.4rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 991px) {
+    body {
+      footer {
+        .footer-wrapper {
+          .container {
+            .row {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
 %body
   -#Render navbar block from view/public/home/new_design/_navbar_new.html.haml
   = render :partial => 'public/home/new_design/navbar_new'
