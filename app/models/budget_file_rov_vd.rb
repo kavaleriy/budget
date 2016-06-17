@@ -3,6 +3,8 @@ class BudgetFileRovVd < BudgetFile
   protected
 
   def readline row
+    fond = row['KF'].to_s.split('.')[0]
+
     ktfk = row['KTFK'].to_s.split('.')[0].gsub(/^0*/, "")
     kekv = row['KEKV'].to_s.split('.')[0]
 
@@ -14,19 +16,16 @@ class BudgetFileRovVd < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
-
     kvk = row['KVK'].to_s.split('.')[0]
     krk = row['KRK'].to_s.split('.')[0]
 
-    fond = row['KF'].to_s.split('.')[0]
-
     [
-        { :amount => row['KVNP'].to_i },
+        { :amount => row['KVNP'].to_f / 100 },
     ].map do |line|
-      next if line[:amount].to_i == 0
+      next if line[:amount] == 0
 
       item = {
-          'amount' => line[:amount] / 100,
+          'amount' => line[:amount],
           'fond' => fond,
           'ktfk' => ktfk,
           'ktfk_aaa' => ktfk_aaa,
@@ -40,7 +39,8 @@ class BudgetFileRovVd < BudgetFile
       item['_month'] = dt.month.to_s
 
       item
-    end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
+    end.reject {|c| c.nil?}
+    # end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
   end
 
 end

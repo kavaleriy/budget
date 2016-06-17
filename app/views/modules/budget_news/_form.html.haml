@@ -1,0 +1,34 @@
+:scss
+  .row-fluid {
+    .well {
+      .text_area {
+        resize: vertical;
+        min-height: 250px;
+       }
+    }
+  }
+  .note-editing-area > .note-editable.panel-body > p > img{
+    width: 100% !important;
+  }
+-#%link{:href => "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css", :rel => "stylesheet"}
+.col-md-8
+  .row-fluid
+    .span4.well
+      -#= abort @budget_news.inspect
+      = simple_form_for @budget_news do |f|
+        = f.input :title, label: t('modules.budget_news.index.title')
+        = f.input :news_text, as: :text, label: t('modules.budget_news.index.text'), input_html: { class: 'text_area' }
+        = f.input :link , label: t('modules.budget_news.index.link')
+        = f.input :img , as: :file, label: t('modules.budget_news.index.image')
+        = f.button :submit,t('.save'), class: 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function(){
+    $.fn.editable.defaults.mode = 'inline';
+    $('#modules_budget_news_news_text').summernote({
+      maximumImageFileSize: 1000000,
+      minHeight: 200,
+        //url: $("form").prop("action"),
+    });
+  });

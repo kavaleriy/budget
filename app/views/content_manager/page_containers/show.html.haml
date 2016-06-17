@@ -1,0 +1,12 @@
+%h1= t('content_manager.page_containers.show_header')
+%p#notice= notice
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      = get_header_by_locale(@page_container)
+  .panel-body
+    = get_content_by_locale(@page_container)
+
+= link_to t('content_manager.page_containers.edit'), edit_content_manager_page_container_path(@page_container), class: 'btn btn-info'
+\|
+= link_to t('content_manager.page_containers.main'), content_manager_page_containers_path, class: 'btn btn-info'

@@ -1,0 +1,24 @@
+:css
+  .table {
+    font-size: 14pt;
+  }
+  .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle;
+  }
+
+  td a {
+    font-size: 1.1em;
+  }
+
+- if programs.length > 0
+  .table-responsive
+    %table.table
+      %tbody
+        - programs.each do |program|
+          = render partial: 'list_item', locals: { program: program, amount: amounts[program.id.to_s], year: year }
+          = render partial: 'list_item', locals: { program: program, amount: amounts[program.id.to_s], year: year }
+          = render partial: 'list_item', locals: { program: program, amount: amounts[program.id.to_s], year: year }
+          = render partial: 'list_item', locals: { program: program, amount: amounts[program.id.to_s], year: year }
+
+  %br
+

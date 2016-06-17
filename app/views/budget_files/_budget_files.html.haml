@@ -8,12 +8,14 @@
       %th
         =t('file')
       %th
-        = sortable "taxonomy.owner", t('owner')
-      %th
         = sortable "data_type", t('data_type')
+      %th
+        = sortable "taxonomy.owner", t('owner')
       %th
         = sortable "author", t('author')
       %th
         =t 'form.actions', :default => t("helpers.actions")
   %tbody#search_results
     = render partial: 'search_results', :locals => {budget_files: budget_files}
+.paginator
+  = paginate budget_files

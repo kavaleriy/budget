@@ -5,7 +5,11 @@ class BudgetFileRov < BudgetFile
   def readline row
 
     amount = row['SUMM'].to_i
+    kod = row['KOD'].to_s.split('.')[0]
+    fond = row['KKFN'].to_s.split('.')[0]
     return if amount.nil? || amount == 0
+    # return unless %w(1 11).include? kod
+    return unless %w(1 2 3 7).include? fond
 
     ktfk = row['KTFK'].to_i.to_s.gsub(/^0*/, "")
 
@@ -17,7 +21,7 @@ class BudgetFileRov < BudgetFile
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
         '_month' => row['MONTH'].to_s.split('.')[0],
 
-        'fond' => row['KKFN'].to_s.split('.')[0],
+        'fond' => fond,
 
         'amount' => amount / 100,
         'ktfk' => ktfk,

@@ -1,0 +1,8 @@
+= bootstrap_form_for @budget_file, :html => { :class => 'form-vertical' } do |f|
+  .form-group
+    = render partial: 'budget_files/area_select', :locals => {areas: @areas, current_area_id: @current_area_id }
+
+  = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
+
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), zip_budget_files_path, :class => 'btn btn-default'

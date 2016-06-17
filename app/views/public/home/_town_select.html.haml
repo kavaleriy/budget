@@ -4,8 +4,6 @@
 
   $(document).ready(function() {
 
-    I18n.locale = window.aHelper.lang();
-
     $('#town_select').select2({
       sortResults: function(results, container, query) {
         if (query.term) {
@@ -25,10 +23,10 @@
       allowClear: false,
       multiSelect: false,
       multiple: false,
-      //minimumInputLength: 2,
+      minimumInputLength: 2,
       width: '100%',
       ajax: {
-        url: '#{search_for_towns_and_areas_path}',
+        url: '#{search_for_towns_town_path}',
         dataType: 'json',
         quietMillis: 250,
         data: function (term, page) {

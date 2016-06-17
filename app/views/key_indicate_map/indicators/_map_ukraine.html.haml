@@ -6,9 +6,6 @@
 :javascript
 
   $(document).ready(function() {
-
-    I18n.locale = window.aHelper.lang();
-
     var zoom = 6;
     var window_width = $(window).width();
     if(window_width < 1300) {
@@ -20,7 +17,7 @@
     var aRepairMap = RepairMap({
       scrollWheelZoom: false,
       zoom: zoom,
-      minZoom: 6,
+      minZoom: 5,
       maxZoom: 9,
       dragging: false,
       map_static: true,

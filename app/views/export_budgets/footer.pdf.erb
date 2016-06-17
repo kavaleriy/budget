@@ -1,0 +1,40 @@
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <style type="text/css">
+    /*.page { color: red;}*/
+    .wrapper{ text-align: center}
+
+  </style>
+  <script>
+    function number_pages() {
+      var first_page_number = '1';
+      var second_page_number = '2';
+      var last_page_number = <%= page_length %>;
+      var vars={};
+      var search=document.location.search.substring(1).split('&');
+      for(var i in search) {
+        var z=search[i].split('=',2);
+        if(z[1] != first_page_number && z[1] != second_page_number && z[1] != last_page_number){
+          vars[z[0]] = decodeURIComponent(z[1]);
+        }
+      }
+      var array_class=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+      for(var i in array_class) {
+        var y = document.getElementsByClassName(array_class[i]);
+        for(var j=0; j<y.length; ++j)
+          if(vars[array_class[i]]){
+            y[j].textContent = vars[array_class[i]];
+          }
+      }
+    }
+  </script>
+</head>
+<body onload="number_pages()">
+<div class="wrapper">
+  <span class="page"></span>
+</div>
+
+</body>
+</html>

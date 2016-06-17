@@ -1,10 +1,10 @@
 = bootstrap_form_for community, as: 'community', url: community_community_path(community.id), remote: true do |f|
-  = f.text_field :title, :label => 'Назва громади'
-  = f.text_field :link, :label => 'Посилання'
-  = f.text_area :participants, :label => 'Склад громади', :rows => 5
-  = f.text_field :center, :label => 'Центр громади (геокоординати)'
-  = f.text_area :coordinates, :label => 'Межі громади (геокоординати)', :rows => 5
-  = f.check_box :agree, :label => 'Узгоджено'
+  = f.text_field :title, :label => t('community.community.edit.form.name')
+  = f.text_field :link, :label => t('community.community.edit.form.link')
+  = f.text_area :participants, :label => t('community.community.edit.form.composition'), :rows => 5
+  = f.text_field :center, :label => t('community.community.edit.form.center')
+  = f.text_area :coordinates, :label => t('community.community.edit.form.boundaries'), :rows => 5
+  = f.check_box :agree, :label => t('community.community.edit.form.agreed')
   .clear
   = f.submit t('form.save'), :class => 'btn btn-primary'
   = link_to t('form.destroy'), community_community_path(community.id), :method => :delete, remote: true, :data => { :confirm => 'Ви точно хочете видалити громаду?' }, class: 'btn btn-danger'

@@ -30,7 +30,7 @@
             .col-md-6
               = f.text_field :level, :readonly => true, :class => 'control-label'
             = f.text_area :coordinates, :class => 'control-label'
-            = f.text_field :geometry_type, :class => 'control-label'
+            = f.text_field :geometry_type, :class => 'control-label', label: t('mongoid.attributes.town.geographical_type')
 
         .col-md-7
           = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
@@ -50,7 +50,6 @@
 
   $(document).ready(function(){
 
-    I18n.locale = window.aHelper.lang();
       var editor_locale;
       if(I18n.locale == "uk") {
         editor_locale = "ua-UA";
@@ -106,7 +105,7 @@
     })();
 
     $('#title').editable({
-      'disabled': #{UsersHelper.is_admin?(current_user) == false},
+      'disabled': 'true',
       'mode': 'inline'
     })
   })

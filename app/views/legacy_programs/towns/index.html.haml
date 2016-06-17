@@ -1,0 +1,19 @@
+= content_for :header do
+  .head.pull-left
+    = t('programs.towns.index.header')
+
+- if @programs_towns.length > 0
+  %table{:style => 'margin-top: 20px;'}
+    %thead
+      %tr
+        %th.col-sm-4
+
+    %tbody
+    - @programs_towns.each do |town|
+      %tr
+        %td= link_to(town.name, legacy_programs_target_programs_list_path(town))
+        -#%td= link_to town.name, '/programs/target_programs/list/' + town.id + "?locale=" + params[:locale]
+
+  %br
+
+= link_to t('programs.target_programs.index.load'), '/programs/load' + "?locale=" + params[:locale], :type => "button", :method => :get, :class => "btn btn-primary"

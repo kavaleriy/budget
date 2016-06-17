@@ -1,11 +1,11 @@
 include BudgetFileUpload
 class BudgetFilesController < ApplicationController
+  layout 'application_admin'
 
   helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
   before_action :generate_budget_file, only: [:new]
-  # before_action :set_budget_file_data_type, only: [:new]
 
   # before_action :update_user_town, only: [:create]
 
@@ -21,28 +21,40 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
+
     case sort_column
       when "title"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.title || '' }
+        @budget_files.sort_by{|b| b.title || '' }
       when "taxonomy.owner"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.taxonomy.owner }
+        @budget_files.sort_by{|b| b.taxonomy.owner }
       when "data_type"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.data_type.to_s }
+        @budget_files.sort_by{|b| b.data_type.to_s }
       when "author"
-        @budget_files = BudgetFile.visible_to(current_user).sort_by{|b| b.author }
+        @budget_files.sort_by{|b| b.author }
     end
     @budget_files.reverse! if sort_direction == "desc"
+
+    @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
+    unless params["q"].blank?
+      @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
+    end
+
+
+    taxonomy_ids = @budget_files.pluck(:taxonomy_id)
+    file_owners = Taxonomy.where(:id.in => taxonomy_ids)
 
     unless params["town_select"].blank?
       towns = []
       params["town_select"].split(",").each{|town_id|
         towns << Town.find(town_id).title
       }
-      @budget_files = @budget_files.select{|b| towns.include? b.taxonomy.owner }
+      file_owners = file_owners.where(:owner.in => towns)
     end
 
-    @budget_files = @budget_files.select{|b| b.data_type.to_s == params["data_type"] } unless params["data_type"].blank?
-    @budget_files = @budget_files.select{|b| Regexp.new(".*"+params["q"]+".*").match(b.title) } unless params["q"].blank?
+    @file_owners = file_owners.pluck(:id, :owner).to_h
+
+    # binding.pry()
 
     respond_to do |format|
       format.js
@@ -55,53 +67,64 @@ class BudgetFilesController < ApplicationController
   end
 
   def new
-    @taxonomies = get_taxonomies(current_user.town)
-    @current_taxonomy_id = @taxonomies.last.id unless @taxonomies.blank?
+    user_visible_taxonomies = get_taxonomies(current_user.town)
+    @taxonomies = []
+    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
   end
 
   # POST /revenues
   # POST /revenues.json
+
   def create
-    @town_title = params['town_select'].blank? ? current_user.town : params['town_select']
+
+    @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
 
     budget_file_params[:path].each do |uploaded|
+      @file_name = uploaded.original_filename
+
       new_file_name = get_file_name_for uploaded
       file = upload_file uploaded, new_file_name
-      @file_name = file[:name]
+
       file_path = file[:path].to_s
-
-      @taxonomy =
-        if params[:budget_file_taxonomy].blank?
-          create_taxonomy
-        else
-          Taxonomy.find params[:budget_file_taxonomy]
-        end
-
-      @taxonomy.locale = params['locale'] || 'uk'
-
+      taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
       generate_budget_file
 
-      @budget_file.taxonomy = @taxonomy
-      @budget_file.author = current_user.email unless current_user.nil?
-
-      @budget_file.data_type = budget_file_params[:data_type].to_sym unless budget_file_params[:data_type].empty?
-
-      @budget_file.path = file_path
-
-      @budget_file.title = budget_file_params[:title].empty? ? "#{@file_name} - #{DateTime.now.strftime('%d-%m-%Y')}" : budget_file_params[:title]
-
-
+      fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
       table = read_table_from_file file_path
 
-      @budget_file.import table
+      @budget_file.import(table[:rows])
+
+      if @budget_file.taxonomy.columns.blank?
+        @budget_file.taxonomy.columns = {}
+
+        column_names = table[:rows].first.keys.reject{|key| %w(_year _month).include? key }
+        column_names.delete column_names.last # remove amount
+
+        column_names.map.with_index{ |column, level|
+          @budget_file.taxonomy.columns[column] = {:level => level + 1, :title=> column }
+        }
+      end
 
       @budget_file.save!
     end
 
     respond_to do |format|
-      format.html { redirect_to @budget_file, notice: t('budget_files_controller.load_success') }
+      format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
       format.json { render :show, status: :created, location: @budget_file }
     end
+
+  rescue Ole::Storage::FormatError
+    message = [t('invalid_format')]
+    message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
+    respond_with_error_message(message)
+  rescue DBF::Column::NameError
+    message = [t('invalid_format')]
+    message << 'Допустимі формати .dbf, .xsl, .csv'
+    respond_with_error_message(message)
+  rescue => e
+    message = "Не вдалося створити візуалізацію : #{e}"
+    respond_with_error_message(message)
+
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
   #
@@ -110,6 +133,13 @@ class BudgetFilesController < ApplicationController
   #     format.json { render json: e, status: :unprocessable_entity }
   #   end
   end
+
+  def respond_with_error_message(message)
+    respond_to do |format|
+      format.html { redirect_to :back, alert:  message }
+    end
+  end
+
 
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
@@ -156,6 +186,8 @@ class BudgetFilesController < ApplicationController
 
   def download
     file_path = @budget_file.path
+    # @error = "Вибачте але файл ще не було завантажено"
+    @error = t('budget_files_controller.not_download_file')
     if File.exist?(file_path)
       send_file(
           "#{file_path}",
@@ -165,6 +197,10 @@ class BudgetFilesController < ApplicationController
   end
 
   protected
+
+  def get_file_title
+    @file_name
+  end
 
   def get_file_name_for uploaded_io
     uploaded_io.original_filename
@@ -176,6 +212,34 @@ class BudgetFilesController < ApplicationController
 
   private
 
+  def fill_budget_file(data_type,file_path,taxonomy)
+    # this function fill budget_file model
+    # get three parameters data_type and file_path
+    # data_type is budget_file.type(can be 'plan' or 'fact')
+    # file_path is path to file,when he will be saved
+    # taxonomy is taxonomy what has this budget_file(one taxonomy -> many budget_file)
+    @budget_file.taxonomy = taxonomy
+    @budget_file.taxonomy.author = current_user
+    @budget_file.author_model = current_user
+    @budget_file.author = current_user.email unless current_user.nil?
+
+    @budget_file.data_type = data_type.to_sym unless data_type.nil?
+
+    @budget_file.path = file_path
+
+    @budget_file.title = "#{get_file_title} - #{DateTime.now.strftime('%d-%m-%Y')}"
+    @budget_file.name = @file_name if @budget_file.name.nil?
+  end
+
+  def set_taxonomy_by_budget_file(taxonomy_id)
+    taxonomy = Taxonomy.where(id: taxonomy_id).first
+    if taxonomy.nil?
+      taxonomy = create_taxonomy
+    end
+    taxonomy
+    # taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
+  end
+
   def sort_column
     params[:sort] ? params[:sort] : "title"
   end
@@ -185,12 +249,8 @@ class BudgetFilesController < ApplicationController
   end
 
 
-  def set_budget_file_data_type
-    @budget_file.data_type = params[:data_type].to_sym unless params[:data_type].nil?
-  end
-
   def budget_file_params
-    params.require(params[:controller].singularize).permit(:title, :taxonomy, :data_type, :town, :path => [])
+    params.require(params[:controller].singularize).permit(:taxonomy, :data_type, :town, :path => [])
   end
 
   def set_budget_file

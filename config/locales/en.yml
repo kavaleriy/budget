@@ -20,43 +20,179 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+
+  choose_calendar: "Calendar"
+  actions: "Actions"
+  REGION_LEVEL: 'Region'
+  AREA_LEVEL: 'Area'
+  TOWN_LEVEL: 'Town'
+  CITY_LEVEL: 'City'
+  VILLAGE_LEVEL: 'Village'
+  invalid_format: "Invalid format"
+  invalid_length: 'Invalid length should be % {length}'
+  empty_file: "File input can not be blank"
+  beta_test: "Under construction"
+  save: "Save"
+  edit: "Edit"
+  show: "Show"
+  destroy: "Destroy"
+  back: "Back"
+  cancel: "Cancel"
+  confirm_yes: "Yes"
+  confirm_no: "No"
+  confirm_destroy: "Extraction"
+  template:
+    title:
+      title: 'Pdf title'
+      city: 'Please input city'
+    last_page:
+      title: 'Your city,your budget'
+      created_with: 'Created with : openbudget.in.ua'
+  xls:
+    done: 'All was wrote to record of the town'
+    not_done: "Not all was wrote"
+    error_row_number: "In field #{row} wrong koatuu : #{koatuu}"
+    edit_header: "Load indexes via table"
+    edit_button: "Load indexes"
+    add_file: "Add xls file"
+    check_row_name: 'Check title in table'
+  content_manager:
+    page_containers:
+      en_header: "English header"
+      en_content: "English content"
+      uk_header: "Ukraine header"
+      uk_content: "Ukraine content"
+      parent: "Choose menu"
+      header: "Header"
+      content: "Content"
+      main: "Content list"
+      edit: "Edit"
+      alias: "Alias"
+      edit_header: "Edit content"
+      show_header: "Show content"
+      new_header: "Create new content"
+      show: "Show"
+      new: "New page content"
+      action: "Administrate"
+      title: "Content manager"
+      confirm: "Are you realy wont to remove content page?"
+      commit: "Yes"
+  errors:
+    messages:
+      carrierwave_processing_error: "Cannot resize image."
+      carrierwave_integrity_error: "Not an image."
+      carrierwave_download_error: "Couldn't download image."
+      extension_whitelist_error: "You are not allowed to upload %{extension} files, allowed types: %{allowed_types}"
+      extension_blacklist_error: "You are not allowed to upload %{extension} files, prohibited types: %{prohibited_types}"
+  activerecord:
+    attributes:
+      invalid:
+        link: "Please input valid url"
+        date: "Please choose valid date"
   date:
     formats:
       default: "%d %B %Y"
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
-
+  towns:
+    index:
+      add_town: 'Add town'
+      header: "Towns list"
+      title: "Towns"
+    new_town:
+      level: 'Choose the level'
+      select_level: 'Select level'
+      create_city: 'Create city'
+      area_title: 'Area title'
+    edit:
+      head_edit_town: "Edit town"
   layouts:
     application:
       application_title: "Municipal budget"
-    navbar:
+    navbar_admin:
+      sankey: "Sankey"
+      news_header: "News"
+      all_news: "All news"
+      create_news: "Create news"
+      documentation: "Documents"
+      documentation_categories: "Document categories"
+      documentation_branches: "Document types"
+      edit_profile: "Edit profile"
       budget: "Budget"
       budget_files: "Budget files"
       transaction: "Budget transactions"
       transactions: "Transactions"
+      townprogs: "Programs"
+      townmarks: "Indexes"
       calendar: "Budget calendar"
       calendars: "Calendars"
       actions: "Typical actions"
       library: "Library"
+      logout: "Logout"
+      login: "Login"
       subscribers: "E-mail subscription"
       taxonomies: "Visuals"
       keytownmarks: "Compare key town indicators"
       townmarksdictionary: "Town indicators dictionary"
       documentation_links: "Useful links"
       repairing_maps_instruction: "Repairing map instruction"
-    navbar_public:
+      repairing: "Repair"
+      repairing_maps: "Maps"
+      repairing_layers: "Layers"
+      repairing_category: "Reference works"
+    navbar:
+      edit_profile: "Edit profile"
+      logout: "Logout"
+      authorization: "Authorization"
       editor: "Editor"
       home: "Main"
       about: "About us"
       contacts: "Contacts"
       authorization: "Authorization"
+
+      #Budget-system dropdown. BEGIN
+      bud_sys: "Budget system"
+      bud_sys_ua: "Ukraine budget system"
+      bud_proc: "Budget process"
+      bud_glos: "Glossary"
+      #Budget-system dropdown. END
+
+      #Visualisation dropdown. BEGIN
+      visual: "Visualisation"
+      grom_budget: "Public budget"
+      compare_budget: "Compare budget"
+      kpi: "KPI"
+      budget: "Budget"
+      budget_cal: "Budget calendar"
+      towns_programs: "Towns programs"
+      budget_at_map: "Budget at map"
+      #Visualisation dropdown. END
+
+      #Public control dropdown. BEGIN
+      public_control : "People control"
+      library: "Library"
+      history_success: "Success history"
+      #Public control dropdown. END
+
+    soc_buttons:
+      lang: "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5"
+      like: "Like"
+      share: "Share"
+    nav_admin:
+      admin: "Admin"
+      users: "Users"
+      town: "Town"
+      currency: "Currency"
+      subscribers: "Subscribers"
+      news_header: "News"
+      slider_header: "Sliders"
   form:
     save: "Save"
     cancel: "Cancel"
     back: "Back"
     actions: "Actions"
-    new: "Add"
+    new: "New"
     edit: "Edit"
     destroy: "Delete"
     export: "Export"
@@ -65,6 +201,7 @@ en:
     upload: "Upload"
     add: "Add"
     file: "File"
+    load: "Load"
     title: "Title"
     value: "Value"
     new_document: "New document"
@@ -77,6 +214,7 @@ en:
     detailed: "Detailed about the document"
     show: "Show"
     search: "Search"
+    description: "Description"
   subscribers:
     index:
       title: "Subscribers"
@@ -86,8 +224,13 @@ en:
       title: "New subscriber"
     show:
       title: "Subscription"
-
+  placeholder_select2: "Choose or create new visualization"
   budget_files:
+
+    table:
+      empty_rows:
+        amount_not_0: "Table don't have rows with amount field id 0"
+    empty_table: 'Sorry, but table is empty'
     editinfo_form:
       name: "Short name"
       description: "Detailed description"
@@ -111,6 +254,20 @@ en:
       upload_rov_fact: "Upload expenditures - Fact"
       upload_rov_fact_zvit: "Upload expenditures - Fact-ZVIT"
       upload_rot_fact_zvit: "Доходи (ZvitM)"
+      upload_rot_fact: "Revenues (from Treasury)"
+      upload_rot_planfact: "Plan + Fact"
+      upload_rov_planfact: "Plan + Fact"
+      upload_lvivobl_rov: "Expenditures Lviv - area (plan/fact/fund)"
+      upload_lvivobl_rot: "Revenue Lviv - area (plan/fact/fund)"
+      upload_vz_file: "Download VZ*.ZIP"
+      upload_ft_file: "Download revenue fact FT*"
+      upload_vd_file: "Download expenditures fact VD*"
+      upload_fz_file: "Changes to plan FZ*"
+      search_town: "town/district/region"
+      type_select:
+              type: "type"
+              plan: "plan"
+              fact: "fact"
     show:
       title: "Visualizing file"
       editinfo: "Details"
@@ -132,6 +289,13 @@ en:
       description: "Description"
       text_color: "Text"
       color: "Background"
+      radio_header: "Default events"
+      radio_folding: "Folding"
+      radio_analysis: "Analysis and control"
+      radio_discussion: "Discussion and approval"
+      radio_execution: "Execution"
+      radio_other: "Other"
+      radio_no_indicated: "No indicated"
     edit:
       title: "Edit actions"
     index:
@@ -146,65 +310,118 @@ en:
     show:
       title: "Typical action"
   calendars:
-    form:
-      name: "Name"
-      description: "Detailed description"
-      countdown: "End-of-action notification"
-      countdown_title: "Header"
-      date: "Completion date"
-      countdown_event: "Action"
-      select_event: "Please select an event"
-    edit:
-      title: "Edit the calendar"
-    index:
-      title: "Calendars"
-      name: "Name"
+    calendars:
+      form:
+        name: "Name"
+        description: "Detailed description"
+        countdown: "End-of-action notification"
+        countdown_title: "Header"
+        date: "Completion date"
+        countdown_event: "Action"
+        select_event: "Please select an event"
+      edit:
+        title: "Edit the calendar"
+      index:
+        title: "Calendars"
+        name: "Name"
+      new:
+        title: "New calendar"
+      show:
+        title: "Calendar"
+        people_actions:
+          title: "Community action"
+        city_actions:
+          title: "Municipality action"
+    events:
+      form:
+        title: "Edit event"
+        name: "Header"
+        placeholder_name: "Add a a header"
+        tab1_title: "Options"
+        tab2_title: "Description"
+        tab3_title: "Date"
+        tab4_title: "Attachments"
+        town: "Town"
+        community: "Community"
+        holder: "Owner"
+        icon: "Icon"
+        color: "Background"
+        text_color: "Text color"
+        description: "Detailed event description"
+        starts_at: "Start"
+        ends_at: "Completion"
+        all_day: "All day"
+        confirm: "Save changes?"
+      show:
+        tab1_title: "Event details"
+        tab3_title: "Attachments"
+        starts_at: "Start"
+        ends_at: "Completion"
+        all_day: "All day"
+      index:
+        title: "Events"
+  export_budgets:
+    town_profile: "Show town profile"
+    visualisation_list:
+      choose_taxonomy_rot: "Choose earnings"
+      choose_taxonomy_rov: "Choose costs"
+      choose_indicate: "Choose indicate"
+      choose_calendar: "Choose calendar"
     new:
-      title: "New calendar"
-    show:
-      title: "Calendar"
-      people_actions:
-        title: "Community action"
-      city_actions:
-        title: "Municipality action"
-  events:
+      new: 'New export budget'
     form:
-      title: "Edit event"
-      name: "Header"
-      placeholder_name: "Add a a header"
-      tab1_title: "Options"
-      tab2_title: "Description"
-      tab3_title: "Date"
-      tab4_title: "Attachments"
-      town: "Town"
-      community: "Community"
-      holder: "Owner"
-      icon: "Icon"
-      color: "Background"
-      text_color: "Text color"
-      description: "Detailed event description"
-      starts_at: "Start"
-      ends_at: "Completion"
-      all_day: "All day"
-      confirm: "Save changes?"
+      really_destroy?: "You really want to destroy this page"
+      year: "Year"
+      title: "Title"
+      add_page: 'Add page'
+      town_name: "Town"
+      save: "Save"
+    page_form:
+      content_page: "Content page"
+      last_page: "Last page"
+      title_page: 'Title page'
+      public_budget: "Public budget"
+      city_budget: "City budget"
+      where_is_my_money: "Where are my money"
+      my_price: "How much spent of me"
+      indicates: "Indicates"
+      budget_influence: "Budget Influence"
+    edit:
+      hrader: 'Editing export budget'
+    modal:
+      save: "Save"
     show:
-      tab1_title: "Event details"
-      tab3_title: "Attachments"
-      starts_at: "Start"
-      ends_at: "Completion"
-      all_day: "All day"
-    index:
-      title: "Events"
+      show: "Show budget to export"
+      town_profile: "Town profile"
   community:
     community:
+      edit:
+        head: "Editing local communities"
+        instruction:
+          sentence_click: "Click on the community to edit the data on it"
+          sentence_center: "Drag the mouse community center if you need to change  it"
+          sentence_save: 'Be sure to click "Save" to save the changes in a particular community'
+        form:
+          name: "Community name"
+          link: "Link"
+          composition: "Community composition"
+          center: "Community center (coordinates)"
+          boundaries: "Community boundaries (coordinates)"
+          agreed: "Agreed"
       index:
         header: "Municipalities"
+        map_help: "Mouse over the map object to display details or click here to see the community in the selection"
+        edit_community: "Edit communities"
+        load_community: "Load communities"
   documentation:
+    branches:
+      edit_title: "Edit documents type"
     documents:
       index:
         documents: "Documents"
         documents_search: "Documents_search:"
         locked: "Locked"
+        download: "Load file"
         only_locked: "only locked"
         file: "File"
         category: "Category"
@@ -215,6 +432,12 @@ en:
         locked: "Locked"
         unlocked: "unlocked"
         locked_s: "lock"
+        documents_list:
+          name: "Name the document..."
+          from: "from..."
+          to: "to..."
+          city: "Enter the city..."
+          type: "Enter the type of the document..."
       search:
         town_region: "Select town or region"
         doc_type: "Select document type"
@@ -226,9 +449,13 @@ en:
     categories:
       index:
         header: "Documents categories"
+        about_category: "More about the category..."
     link_categories:
         index:
           header: "Links categories"
+          links_list:
+            name: "Enter name link..."
+            value: "Enter link..."
   indicate:
     taxonomies:
       index:
@@ -249,6 +476,7 @@ en:
         icon: "Icon"
         color: "Color"
         type: "Type"
+        saved: "Dictionary successfully saved."
       upload_form:
         header: "Upload dictionary"
     indicator_files:
@@ -268,6 +496,10 @@ en:
         compare_towns: "Towns to compare: "
         visual_params: "Visual parameters: "
   key_indicate_map:
+    menu_item_admin:
+      indicator_keys: "Key indicators dictionary (map)"
+      indicator_files: "Uploading files with key indicators (map)"
+      indicators: "Key indicators comparison (map)"
     indicator_keys:
       index:
         header: "Key Indicators Dictionary"
@@ -281,8 +513,16 @@ en:
         integer: "integer"
         float: "float"
         add: "Add indicator"
+        x-editable_messages:
+          name: "Name the indicator..."
+          unit: "Add a unit of measurement..."
+          group: "Add a group of indicator..."
+          integer_or_float: "integer or float?..."
     indicator_files:
       index:
+        title: 'Title'
+        year: 'Year'
+        edit_indexes: 'Edit indexes'
         header: "Uploading files with key indicators"
       edit:
         header: "Editing key indicators from file "
@@ -292,6 +532,10 @@ en:
       indicators_list:
         keys: "Key indicators by "
         year: ""
+        explanation: "Explanation"
+        comparison: "Comparison"
+        hint1: "add city/region in comparison: click on the city/region on the map"
+        hint2: "remove city/region from comparison: again click on the city/region on the map or click on the 'x' in the desire tape"
   programs:
     towns:
       index:
@@ -331,11 +575,11 @@ en:
       branch_report:
         header: "Branch report for "
       show:
+        #        old
         header: "Detailed view of a program"
         targets: "Main targets"
         tasks: "Main tasks"
         results: "Expected results"
-        responsible: "Responsible for execution"
         chief_steward: "Chief steward"
         main_executor: "Executor in charge"
         participants: "Participants"
@@ -347,6 +591,14 @@ en:
         phase: "phase"
         years: ""
         attachments: "Attachments"
+        tab_gantt: "Projects"
+        funds_spend: "Funds spent on the program:"
+
+        #        new
+
+        group_indicators: 'Group of indicates'
+        main_target: 'Main target'
+        responsible: "Responsible for execution"
       form:
         targets: "Main targets"
         target_label: "Program targets"
@@ -354,6 +606,11 @@ en:
         term: "Period of program execution"
         phase: "phase of program execution"
         add_phase: "Press + button to add a phase of program execution"
+      program:
+        amounts:
+          done: 'Done'
+          remains: 'Remains'
+          planned: 'Planned'
   public:
     timeline:
       city: "Municipality action"
@@ -363,6 +620,18 @@ en:
     event:
       empty_event: "Select an event to show"
     home:
+      index:
+        select_town: "Select town"
+        map_help: "Mouse over the map object to display details."
+        show_town_profile: "Demonstration of a typical profile of the city"
+        about:
+          portal: "Portal"
+          open_budget: "Open Budget"
+          1_sentence: "is intended to create the conditions to meet the needs of citizens for information on the use of local budgets."
+          2_sentence: "The portal contains a range of software for creating visualizations revenues and expenditures of local budgets, key performance indicators and budget adapted to ordinary citizens."
+          3_sentence: "Using Portal software, local governments can have the ability to create visualizations based on financial and statistical reports and post them on their websites."
+          4_sentence: "Journalists and civil society activists have the opportunity to get information on the use of public funds in accessible  form  and compare this information with other regions of Ukraine."
+          5_sentence: "For more information select your region on the map."
       documents:
         file: "File"
         category: "Category"
@@ -372,6 +641,9 @@ en:
         type: "Type"
         documents: "Documents"
         documents_search: "Documents search"
+      news:
+        title: "News"
+        no_news: "Sorry, but no news yet"
     documents:
         index:
           documents: "Documents"
@@ -379,6 +651,7 @@ en:
           sort_by: "Sort by "
           sort_name: "name"
           sort_type: "type"
+          edit_files: "Edit files"
     towns:
       portfolio:
         detail: "Read more"
@@ -390,21 +663,42 @@ en:
         calendar: "Budget calendar"
         sankey: "Revenues and expences correlation"
         repair: "Repairing map"
-        purchase: "Check state procurements"
         key_docs: "Key documents"
-        budget_path: "/taxonomies"
-        programs_path: "/programs/towns"
-        indicators_path: "/indicate/taxonomies"
-        keys_path: "/key_indicate_map/indicators/get"
-        calendar_path: "/calendars/calendars"
-        sankey_path: "/sankeys"
-        repair_path: "/repairing/map"
-        purchase_path: "https://ips.vdz.ua/ua/purchase_search.htm"
-        key_docs_path: "/public/documents"
+        purchase: "Check state procurements"
+        prozoroo: "Prozorro"
+        edata: "Portal of public finances"
+#        programs_path: "/programs/towns"
+#        indicators_path: "/indicate/taxonomies"
+#        keys_path: "/key_indicate_map/indicators/get"
+#        calendar_path: "/calendars/calendars"
+#        sankey_path: "/sankeys"
+#        repair_path: "/repairing/map"
+#        purchase_path: "https://ips.vdz.ua/ua/purchase_search.htm"
+#        key_docs_path: "/public/documents"
         no_data: "No data"
         visuals: "Visualizations"
         documents: "Documents"
+        town_links: "Links"
+        pub_budget: "Public budget"
+      map_instruction: "Click on the region to go to her profile. Or select a city in the dropdown list below to get to the profile of the city."
+      towns_select: "Go to the profile of the city:"
+      budget:
+        tab_rot: "Revenues"
+        tab_rov: "Expenditures"
+        tab_sankey: "Interconnection"
+      pdf_docs:
+        no_data: 'No data yet'
+        new_export: "New Export"
+        save_as_pdf: "Save as pdf"
+        year: "Year"
+        title: "Title"
+        templ: "Template"
+        view: "View"
+        dload: "Download"
+        drop: "Delete"
   sankeys:
+    get_sankey: "Get sankey"
+    not_found: "Sankeys not found"
     save: "Save visualization"
     new: "New visualization"
     create: "Create visualization"
@@ -456,11 +750,14 @@ en:
         pie: "Pie chart"
         table: "Table"
         attachments: "Attachments"
+        description: "Description"
       slider:
         by_month: "by month"
       bubbletree:
         title: "Bubble-type 1"
         descr: "Visualization"
+        programmatic: "Programmatic"
+        economic: "Economic"
       sunburst:
         title: "Pie chart type 1"
         descr: "Visualization"
@@ -503,35 +800,105 @@ en:
       help: "Instructions for file upload"
   taxonomies:
     index:
+      created_at: 'Created at'
       title: "Visualizations"
       file_title: "Title"
+      description: "Description"
     form:
       is_kvk: "Departmental classification of expenses (kvk)"
+      kmb: "Code local budget (kmb)"
     file_upload:
       title: "Add extra files"
+    attachment:
+      name_doument: "Enter the name of the document..."
+    recipients:
+      title: "Recipients"
+      not_specified: "not specified"
+  library:
+      books:
+        index:
+          file: "File"
+          cover: "Cover"
+          category: "Category"
+          title: "Title"
+          author: "Author"
+          year_publication: "Year publication"
+          description: "Description"
+          actions: "Actions"
+          w_books: "book"
+          w_book: "book"
+          add_book: "Add book"
+          p_back: "Back"
+          p_next: "Next"
+          r_more: "Read more"
+          ask: "Are you sure?"
+          edit: "Edit"
+          delete: "Delete"
+          errors: "Required fields"
+        show:
+          book_look: "Show book"
+          link: "Link"
+          download: "Download"
+          publisher: "Publisher"
+          books: "Books"
+        new:
+          download: "Download"
+          name_book: "Title book"
+          new_book: "New book"
+          chose_book: "Choose book"
+          save: "Save"
+          select: "Обрати"
+        edit:
+          editing: "Editing"
+          edit_book: "Editing book"
 
-  budget_file_name: "Budget file name"
-  budget_file_title: "Title"
-  budget_file_save: "Save budget file"
-  file_path: "Path to file"
-  owner: "City"
-  name: "Name"
-  key: "Code"
-  budget: "Name"
-  file: "File"
-  author: "Owner"
-  city_actions: "Municipality action"
-  people_actions: "Community action"
-  drag_file: "Drop files"
-  select_from_list: "or pick from a list"
-  embed: "Embed code"
-  name: "Name"
-  footer: "UNDP and Internews Network in Ukraine"
-  export: "Export"
-  aggregated: "Aggregated"
-  other: "Other"
-  ukraine: "Ukraine"
-
+  modules:
+    budget_news:
+        index:
+          choose_date: "Chose the date"
+          actual_news: "Actual news"
+          show_all_news: "Show all news"
+          header: "News"
+          title: "Title"
+          text: "Text"
+          link: "Link"
+          image: "Image"
+          date: "Create date"
+          new: "New"
+          create: "Create news"
+          edit: "Edit"
+          destroy: "Destroy"
+          confirm: "Are you sure delete news"
+          sure: "Sure"
+          action: "Action"
+        form:
+          save: "Save"
+        edit:
+          back: "Back"
+          show: "Show"
+          header: "Edit news"
+        new:
+          header: "Create news"
+          back: "Back"
+        show:
+          showin: "Show :"
+    sliders:
+        index:
+          order: "Order"
+          header: "Sliders of the main page"
+          add: "Add slider"
+          text: "Text on the slider"
+          img: "Slider image"
+          link: "Link"
+        new:
+          header: "Create slider"
+        crop:
+          header: "Crop image"
+          area: "Choose area"
+          crop_save: "Crop and save"
+          preview: "Preview"
+        edit:
+          header: "Edit slider"
   calendar:
     create: "Calendar was successfully created."
     update: "Calendar was successfully updated."
@@ -547,6 +914,7 @@ en:
     load_fail: "Cannot load a file. Check filetype =>"
     save: "Data saved successfully."
     delete: "Data deleted."
+    not_download_file: "Sorry but the file has not been downloaded"
 
   taxonomies_controller:
     save_success: "Data saved successfully."
@@ -570,19 +938,31 @@ en:
     select: "Size: "
     show_embed_code: "Show embed code"
     hide_embed_code: "Hide embed code"
-
-  js:
-    visify:
-      of: " of "
-      plan: "plan"
-      fact: "fact"
-  town: "Довідник міст"
-  select_town: "Select town"
-  town_links_placeholder: "Town links"
-  town_description_placeholder: "Town description"
-
+    link: "Link:"
+    title: "Link to widgets"
+  users:
+    form:
+      locked: "Locked"
+    index:
+      reference_towns: "Reference cities"
+      last_sign_in_at: "Last sign in at"
+      roles:
+        administrator: "Administrator"
+        public_organisation: "Public organisation"
+        city_authority: "City authority"
+        central_authority: "Central authority"
+      roles_head: "Roles"
+      role: "Role"
   repairing:
+    category: "Repairing category"
+    category_edit:
+      name: "Name"
+      image: "Picture"
+      image_load: "Load/change"
+      need_name_category: "Name the category...."
     layers:
+      index:
+        no_files: "You are don't downloaded no one file"
       search:
         search: "вкажіть адресу для пошуку"
         search1: "вкажіть кінцеву адресу для пошуку"
@@ -592,6 +972,13 @@ en:
       edit:
         repair: "Chosen on map"
         layer: "Layer parameters"
+        title: "Enter name the layer..."
+        category: "Enter category of work..."
+        town: "Enter town..."
+        description: "Detailed description layer..."
+      update:
+        success: 'Data was updated'
+        error: 'Sorry, something went wrong'
     repairs:
       form:
         title: "Title"
@@ -599,7 +986,8 @@ en:
         subject: "Subject"
         work: "Work"
         amount: "Amount"
-        repair_date: "Repair date"
+        repair_start_date: "Repair start date"
+        repair_end_date: "Repair end date"
         warranity_date: "Warranity date"
         address: "Address"
         address_to: "Address to"
@@ -609,7 +997,98 @@ en:
         add_category: "Add category"
         edit_category: "Edit category"
         category: "Category"
+    maps:
+      info_popup:
+        info_coordinates: "Coordinates"
+        info_adress: "Address"
+        info_object: 'Object'
+        info_works: 'Works'
+        info_performer: 'Performer'
+        info_spending_units: 'Manager'
+        info_price: 'Price'
+        info_currency: 'uah.'
+      map_select:
+        search_adress: "Search by address repair"
+        select_category_work: "Select a category of work:"
+        select_town: "Select town"
+        year: "year"
+      instruction:
+        head_general_information: "General Information"
+        sentence_1: 'Module "Repair" is intended to display information about repairs that are held in the city/district/region. Based on data from the uploaded files builded interactive map of repairs.'
+        head_reference_works: "Reference works"
+        sentence_2: "containing categories and subcategories (species) work."
+        sentence_3: 'Each file with repair work meets certain categories of works. Column of file "Work" - is responsible for sub-category (type) of works for reference.'
+        head_layers: "Layers"
+        sentence_4_1: "In the module"
+        sentence_4_2: "you can upload files: 1 file = 1 category of work."
+        sentence_5: "Data file repair work should include the following columns."
+        item_1: "Balanceholder"
+        item_2: "Address"
+        item_3: "Address1 (final address: indicated as needed, for example, if this repairing roads)"
+        item_4: "Facility (concrete object that is being made)"
+        item_5_1: "Work (type of work from"
+        item_5_2: "Reference works"
+        item_6: "Price (in USD)"
+        item_7: "Date of repair"
+        item_8: "Warranty (date suitability of performed works)"
+        item_9: "Additional information"
+        sentence_6: 'Addresses can be specified as an exact geolocation (eg "49.23363, 28.46146") and name (eg "Gagarin Square 4/1").'
+        sentence_7_1: "Example file with repairs -"
+        sentence_7_2: "download"
+  footer: "UNDP and Internews Network in Ukraine"
+  footer:
+    about_portal:
+      portal: "Portal"
+      open_budget: "Open Budget"
+      established: "established in the"
+      creators: 'Center for Political Studies and Analysis with participation of the EU Delegation to Ukraine, the International Fund "Renaissance", and UNDP in Ukraine under'
+      license: "license from Creative Commons With attribution - Non-profit - Dissemination under the same conditions 4.0 International"
+      based_code: "Based on the code of"
+      rules: "The rights extending beyond this license are available at"
+  js:
+    visify:
+      of: " of "
+      plan: "plan"
+      fact: "fact"
+  description: "Description"
+  currencies:
+      index:
+        head: "Reference currencies"
+        short_title: "Short title"
+        title: "Title"
+      edit:
+        head: "Edit currency"
+      new:
+        head: "New currency"
+  area: "Area"
+  town: "Довідник міст"
+  select_town: "Select town"
+  town_links_placeholder: "Town links"
+  town_description_placeholder: "Town description"
+  budget_file_name: "Budget file name"
+  budget_file_title: "Title"
+  budget_file_save: "Save budget file"
+  file_path: "Path to file"
+  owner: "City"
+  name: "Name"
+  title: "Title"
+  key: "Code"
+  budget: "Name"
+  file: "File"
+  author: "Owner"
+  city_actions: "Municipality action"
+  people_actions: "Community action"
+  data_type: "Data type"
+  drag_file: "Drop files"
+  select_from_list: "or pick from a list"
+  embed: "Embed code"
+  name: "Name"
+  export: "Export"
+  aggregated: "Aggregated"
+  other: "Other"
+  ukraine: "Ukraine"
   amount_usd: "Currency, USD"
+  amount_uah: "Currency, UAH"
   amount_citizens: "Per citizen"
   amount_house_holdings: "Per householding"
   amount_square: "Per sq.km."
@@ -617,3 +1096,14 @@ en:
   amount_house_holdings_short: "Per householding"
   amount_square_short: "Per sq.km."
   cumulative_sum: "cumulative sum"
+  quick_search: "Quick search: "
+  town_search_placeholder: "Start enter town/region name"
+  taxonomy_rot: "Revenue"
+  taxonomy_rov: "Expenditures"
+  budget_file_rot_fts:
+    new:
+      title: "Download revenue FT"
+  year: "Year"
+  messages_x-editable:
+    need_name_file: "You must specify the file name!"
+    need_comment: "You must provide a comment!"

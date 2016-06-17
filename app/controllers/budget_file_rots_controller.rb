@@ -4,6 +4,7 @@ class BudgetFileRotsController < BudgetFilesController
 
   def generate_budget_file
     @budget_file = BudgetFileRot.new
+    @budget_file.data_type = :plan
   end
 
   def get_taxonomies owner

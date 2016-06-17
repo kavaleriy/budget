@@ -1,43 +1,41 @@
-= content_for :header do
-  .head.pull-left
-    = t('programs.target_programs.show.header')
+:scss
+  .program {
+    & > div {
+      margin-top: 30px;
+    }
+  }
 
-.container.col-sm-12.col-md-6
-  = render 'show_info'
+.program.row
 
-.container.col-sm-12.col-md-6
-  %br
-    %ul.nav.nav-tabs
-      %li.active
-        %a{:href => '#tab_expences', role: 'tab', 'data-toggle' => 'tab'}
-          = t('programs.target_programs.show.tab_expences')
-      %li
-        %a{:href => '#tab_indicators', role: 'tab', 'data-toggle' => 'tab'}
-          = t('programs.target_programs.show.tab_indicators')
+  .col-xs-12
+    %h1
+      %i.fa.fa-sun-o
+        = "#{@program[:title]}, #{@year} #{t('year')}"
 
-  .tab-content
-    #tab_expences.tab-pane.fade.in.active
-      = render 'show_expences'
-    #tab_indicators.tab-pane.fade
-      = render 'show_indicators'
-      #embed_code_programs_indicators.embed_code
-        = render partial: 'widgets/visify/embed_code'
+    = render partial: 'programs/target_programs/program/amounts', locals: { program: @program, :year => @year }
 
-#charts_tooltip.hidden
-  %p
-    %span#value
+  .col-xs-12
+    %h2
+      =t('.main_target')
 
-.col-sm-12
-  = link_to t('form.edit'), edit_programs_target_program_path(@programs_target_program), :class => 'btn btn-primary'
-  = link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
+    %p
+      =@program.description
 
-:javascript
+  .indicators.col-xs-12
+    %h2
+      = t('.group_indicators')
+    = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year }
 
-  $(document).ready(function() {
-    var embed_code = aEmbedCode();
-    path = "#{request.base_url}"
-    query = "#{URI.parse(request.url).query}"
-    frame_url = path + "/programs/target_programs/show_indicators/#{@programs_target_program.id}" + '/?' + query
-    $('.tab-content iframe').attr('src', frame_url)
-    embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_programs_indicators", src: frame_url})
-  })
+  .col-xs-12
+    .gantt-header
+      .pull-left
+        %h2
+          Діаграма ганта
+      .pull-right
+        ="#{t('.responsible')} : #{@program.responsible}"
+
+    = render partial: 'programs/target_programs/program/gant'
+
+  -#.col-xs-12
+  -#  %h2
+  -#    Відповідальні за виконання програми

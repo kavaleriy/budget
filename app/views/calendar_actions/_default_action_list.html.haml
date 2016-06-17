@@ -1,0 +1,52 @@
+:scss
+  .default_action{
+    margin-left: 2px;
+    div{
+      border-radius: 2px;
+      margin: 0 2px;
+      padding: 0px;
+    }
+    p{
+      margin: 5px 0;
+      color:white;
+      text-align: center;
+    }
+  }
+  #folding{
+
+  background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
+  }
+  #analysis{
+    background: #{CalendarAction::ACTION_TYPE_ANALYSIS_COLOR};
+     p{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  #discussion{
+    width: 30%;
+    background: #{CalendarAction::ACTION_TYPE_DISCUSSION_COLOR};
+    p{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  #execution{
+    background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
+  }
+  #other{
+    background: #{CalendarAction::ACTION_TYPE_NO_INDICATED_COLOR};
+  }
+.default_action
+  .col-md-2#folding
+    %p=t('calendar_actions.form.radio_folding')
+  .col-md-2#analysis
+    %p=t('calendar_actions.form.radio_analysis')
+  .col-md-3#discussion
+    %p=t('calendar_actions.form.radio_discussion')
+  .col-md-2#execution
+    %p=t('calendar_actions.form.radio_execution')
+  .col-md-2#other
+    %p=t('calendar_actions.form.radio_no_indicated')

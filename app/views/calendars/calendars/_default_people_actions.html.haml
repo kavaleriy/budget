@@ -1,0 +1,29 @@
+:scss
+  .e-e-left .external-events{
+    direction: rtl;
+  }
+  .e-e-left .external-events .e-e-left-text{
+    direction: ltr;
+  }
+  #people_acordion > div {
+    overflow : visible;
+    border: none;
+  }
+  #people_acordion {
+    a{
+      text-decoration: none;
+    }
+  }
+
+.external-events
+  .e-e-left-text
+    #people_acordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      - @people_action.each do |key,value|
+        .panel.panel-default.no_overflow
+          #people.panel-heading{:role => "tab",id: key}
+            %h4.panel-title
+              %a{"aria-controls" => "peopleCollapse_#{key}", "aria-expanded" => "true", "data-parent" => "#people_acordion", "data-toggle" => "collapse", :href => "#peopleCollapse_#{key}", :role => "button"}
+                =t("calendar_actions.form.radio_#{key}")
+          #peopleCollapse.panel-collapse.collapse{"aria-labelledby" => "peopleOne", :role => "tabpanel",id: key}
+            .panel-body
+              = render partial: "show_action", locals: {actions: value }

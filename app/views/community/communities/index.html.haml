@@ -6,7 +6,7 @@
   = render partial: 'map_ukraine'
 
 .col-sm-12{:style => 'margin-top: 10px;'}
-  = link_to 'Редагувати громади', '/community/edit', data: { no_turbolink: true }, :class => 'btn btn-primary', :id => 'edit_btn', :style => 'display: none;'
-  = link_to 'Завантажити громади', '/community/communities_load', :class => 'btn btn-primary', :id => 'upload_btn'
+  = link_to t('community.community.index.edit_community'), '/community/edit', data: { no_turbolink: true }, :class => 'btn btn-primary', :id => 'edit_btn', :style => 'display: none;'
+  = link_to t('community.community.index.load_community'), '/community/communities_load' + '?locale=' + params[:locale], :class => 'btn btn-primary', :id => 'upload_btn'
   #embed_code_timeline.pull-right{:style => 'display: none;'}
     = render partial: 'widgets/visify/embed_code'

@@ -55,6 +55,19 @@
 //
 // This is a must
 //= require i18n/translations
+
+//= require summernote/summernote.min
+
+//= require leaflet/leaflet.js
+//= require leaflet/markercluster.js
+//= require leaflet/leaflet-routing-machine.js
+
+//= require data-confirm-modal
+
+//new design
+//= require new_design/modernizr-2.8.3-respond-1.4.2.min
+//= require new_design/owl.carousel
+
 //= require_tree .
 
 $(document).ready(function() {
@@ -86,7 +99,7 @@ window.aHelper = {
     }
 }
 
-
+I18n.locale = window.aHelper.lang()
 
 $(document).on('ready page:change', function() {
     $(".bootstrap_flash").delay(10000).fadeOut(200);

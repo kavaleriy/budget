@@ -1,0 +1,34 @@
+.row
+  .info_panel
+    .info_header
+      %strong="#{@repair.subject.blank? ? @repair.work : @repair.subject}"
+    %hr.heroviy
+    .info_text
+      .row
+        .text_title.col-xs-4
+          %strong= get_address_title
+        .text_desc.col-xs-8
+          =@repair.address
+      - unless @repair.subject.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_works')} :"
+          .text_desc.col-xs-8
+            = @repair.work
+      - unless @repair.spending_units.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_spending_units')} :"
+          .text_desc.col-xs-8
+            = @repair.spending_units
+      - unless @repair.obj_owner.blank?
+        .row
+          .text_title.col-xs-4
+            %strong="#{t('repairing.maps.info_popup.info_performer')} :"
+          .text_desc.col-xs-8
+            =@repair.obj_owner
+      .row
+        .text_title.col-xs-4
+          %strong="#{t('repairing.maps.info_popup.info_price')} :"
+        .text_desc.col-xs-8
+          ="#{number_to_currency(@repair.amount)}"

@@ -8,10 +8,10 @@
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 
-= javascript_include_tag "leaflet/leaflet.js"
-= javascript_include_tag "leaflet/markercluster.js"
-= javascript_include_tag "leaflet/leaflet-routing-machine.js"
-
+-#= javascript_include_tag "leaflet/leaflet.js"
+-#= javascript_include_tag "leaflet/markercluster.js"
+-#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
+-#
 #map
 
 :javascript
@@ -374,7 +374,7 @@
             this._div.innerHTML = content
           }
           else {
-            map.options.editable ? this._div.innerHTML = "" : this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей або натисніть, щоб переглянути громади у вибраній області'
+            map.options.editable ? this._div.innerHTML = "" : this._div.innerHTML = I18n.t('community.community.index.map_help')
           }
           };
 

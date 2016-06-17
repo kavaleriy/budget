@@ -1,23 +1,28 @@
 = bootstrap_form_for @repairing_repair, url: repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), remote: true do |f|
 
-  = f.text_field :title, :label => t('repairing.repairs.form.title')
+  = f.text_field :subject, :label => t('repairing.repairs.form.title')
   = f.text_field :obj_owner, :label => t('repairing.repairs.form.obj_owner')
   = f.text_field :subject, :label => t('repairing.repairs.form.subject')
   = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| !p.category || p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { :label => t('repairing.repairs.form.work') }, :class => 'form-control'
+  .row
+    .col-xs-6
+      = f.text_field :amount, :label => t('repairing.repairs.form.amount')
+    .col-xs-6
+      = f.date_field :warranty_date, :label => t('repairing.repairs.form.warranity_date')
+    .col-xs-6
+      = f.date_field :repair_start_date, :label => t('repairing.repairs.form.repair_start_date')
+    .col-xs-6
+      = f.date_field :repair_end_date, :label => t('repairing.repairs.form.repair_end_date')
 
-  .col-xs-4
-    = f.text_field :amount, :label => t('repairing.repairs.form.amount')
-  .col-xs-4
-    = f.text_field :repair_date, :label => t('repairing.repairs.form.repair_date')
-  .col-xs-4
-    = f.text_field :warranty_date, :label => t('repairing.repairs.form.warranity_date')
-
-  -#= f.text_field :coordinates, multiple: true
+  -#
 
   = f.text_field :address, :label => t('repairing.repairs.form.address')
   = f.text_field :address_to, :label => t('repairing.repairs.form.address_to')
 
   = f.text_area :description, :label => t('repairing.repairs.form.description'), :rows => "4"
+
+  = f.text_field :coordinates, :label => t('repairing.repairs.form.coordinates'), disabled: 'disabled'
+  -#= ff.text_field :coordinates, :name => 'repairing_repair[coordinates][]', class: 'form-control', value: @repairing_repair.coordinates
 
   .clear
   = f.submit t('form.save'), :class => 'btn btn-primary'
@@ -27,6 +32,6 @@
 
   $(document).ready(function(){
     $('.edit_repairing_repair').on('ajax:success',function(){
-        alert('Дані успішно збережені');
+        // alert('Дані успішно збережені');
     });
   })

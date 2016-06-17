@@ -1,43 +1,30 @@
-:css
-  .documents_search {
-    margin-top: 20px;
-  }
+:scss
+  //.book_image {
+  //  img{
+  //    box-shadow: 2px 2px 10px #428bca;
+  //  }
+  //}
 
 = content_for :header do
-  .header.pull-left
+  .head.pull-left
     %h1
-      = t('.library')
+      = t('layouts.navbar.library')
       %small
-        = "books"
-
--#.col-xs-12.documents_search
--#  = render partial: 'search'
-
-.documentation.col-xs-12.table-responsive
-  %h1= link_to 'New book', new_library_book_path, :class => 'btn btn-success'
-  %table.table.table-striped
-    %thead
-      %tr
-        %th{:colspan =>2}
-          = "Файл"
-        %th
-          = sortable "title", "Назва"
-        %th
-          = sortable "author", "Автор"
-        %th
-          = sortable "year_publication", "Опубліковано"
-        %th
-          = "Опис"
-        %th
-          = "Дії"
-        -#%th
-        -#  = sortable "yearFrom", t('.years')
-        -#%th
-        -#  = sortable "town_id", t('.town')
-        -#%th
-        -#  = sortable "branch_id", t('.type')
-        -#%th
-        -#  = sortable "locked", t('.locked')
-    %tbody#results
-      = render partial: 'search_books', :locals => { books: @library_books }
-  = will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => "Назад", :next_label => "Вперед"
+        = t('.w_books')
+.container.book-index
+  .documentation.col-xs-12.table-responsive
+    = render partial: "categories"
+    - if current_user
+      %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
+    %table.table.table-striped
+      %thead.headt
+        %tr
+          %th{ align: 'center' }
+            = t('.cover')
+          %th
+            = t('.description')
+      %tbody#results
+        = render partial: "search_books", :locals => { books: @library_books }
+    -#= will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    #books-paginator
+      = paginate @library_books, :remote => true

@@ -1,0 +1,2 @@
+- unless taxonomies.blank?
+  = select_tag component_name, options_for_select( [nil] + taxonomies.all.collect { |p| [ p.title, p.id ] }, id ) , class: 'form-control'

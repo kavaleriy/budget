@@ -13,6 +13,7 @@ $(document).on 'ready page:change', ->
       description: $(this).attr("data-description")
       text_color: $(this).attr("data-text_color")
       color: $(this).attr("data-color")
+      action_type: $(this).attr("data-action_type")
       holder: $(this).attr("data-holder")
 
     $(this).data "eventObject", eventObject
@@ -28,7 +29,7 @@ $(document).on 'ready page:change', ->
   #	-----------------------------------------------------------------
 
   $('#calendar').fullCalendar
-    lang: window.aHelper.lang(),
+    lang: I18n.locale,
     editable: true,
     header:
       left: 'prev,next today',
@@ -63,7 +64,7 @@ $(document).on 'ready page:change', ->
       dt_start = moment(start).format("DD/MM/YYYY")
       dt_end = moment(end).subtract(1, 'days').format("DD/MM/YYYY")
 
-      $.get $('#calendar').attr('calendar_id') + "/events/new",
+      $.get $('#calendar').attr('calendar_id') + "/events/new?locale="+I18n.locale,
         starts_at: dt_start
         ends_at: dt_end
         all_day: true
@@ -82,7 +83,7 @@ $(document).on 'ready page:change', ->
           formatSelection: formatColorSelect
           escapeMarkup: (m) ->
             m
-        I18n.locale = window.aHelper.lang()
+
         editor_locale = undefined
         if I18n.locale == 'uk'
           editor_locale = 'ua-UA'
@@ -94,7 +95,7 @@ $(document).on 'ready page:change', ->
           'lists': true
           'html': false
           'link': true
-          'image': true
+          'image': false
           'color': false
           'size': 'sm'
           'locale': editor_locale
@@ -103,7 +104,7 @@ $(document).on 'ready page:change', ->
 #            calendar.fullCalendar('unselect');
 
     eventClick: (calEvent, jsEvent, view) ->
-      $.get $('#calendar').attr('calendar_id') + "/events/"+calEvent.id+"/edit"
+      $.get $('#calendar').attr('calendar_id') + "/events/"+calEvent.id+"/edit?locale="+I18n.locale
 #        .done (data) ->
 #          $("#eventModal .modal-content").html data
 #          $('#eventModal').modal('show')
@@ -143,6 +144,7 @@ $(document).on 'ready page:change', ->
           ends_at: dt_end
           all_day: event.allDay
           holder: event.holder
+          action_type: event.action_type
     .success (data) ->
       event.id = data.id
       #      $("#calendar").fullCalendar "renderEvent", event, true

@@ -3,8 +3,8 @@ class BudgetFileRovPlanfact < BudgetFile
   protected
 
   def readline row
-    amount_plan = row['План на рік з урахуванням змін'].to_i
-    amount_fact = row['Касові видатки за вказаний період'].to_i
+    amount_plan = row['План'].to_i
+    amount_fact = row['Факт'].to_i
 
     kod = row['Код'].to_s.split('.')[0].gsub(/^0*/, "")
     if kod.length > 4 || @ktfk.nil?

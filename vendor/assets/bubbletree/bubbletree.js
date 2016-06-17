@@ -946,7 +946,7 @@ BubbleTree.Line = function(bc, attr, origin, angle, fromRad, toRad) {
 	
 	
 	this.init();
-	
+//
 };/*jshint undef: true, browser:true, jquery: true, devel: true, smarttabs: true */
 /*global vis4, BubbleTree */
 
@@ -1469,7 +1469,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			//me.label.hide();
 			//me.label2.hide();
 			me.text.style("fill-opacity", 0);
-			//me.text2.style("fill-opacity", 0);
+			// me.text2.style("fill-opacity", 0);
 			me.text3.style("fill-opacity", 0);
 		}
 
@@ -1534,33 +1534,36 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.style('fill','white')
 			.style('font-size','0.9em')
 			.style('font-weight','bold')
+			.attr('number','1.1')
 			.attr('text-anchor', 'middle')
-			.text(utils.formatNumber(me.node.amount));
+			// .text(utils.formatNumber(me.node.amount));
 		me.text.append('text')
 			.attr('y', '1.5em')
 			.style('fill','white')
 			.style('font-size','0.8em')
+			.attr('number','1.2')
 			.attr('text-anchor', 'middle')
-			.text(me.node.shortLabel);
+			// .text(me.node.shortLabel);
 		me.text.append('text')
 			.attr('y', '1.8em')
 			.style('fill','white')
 			.attr('text-anchor', 'middle')
+			.attr('number','1.3')
 			.style('font-family', 'FontAwesome')
 			.style('font-size', '1.8em')
-			.text(function(){
-				if(me.node.icon) {
-					d3.select('body')
-						.append('div')
-						.attr("id", "svg_icon_content")
-						.html("<i class='fa " + me.node.icon + "'></i>");
-					var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
-					$("#svg_icon_content").remove();
-					return content[1];
-				} else {
-					return "";
-				}
-			});
+			// .text(function(){
+			// 	if(me.node.icon) {
+			// 		d3.select('body')
+			// 			.append('div')
+			// 			.attr("id", "svg_icon_content")
+			// 			.html("<i class='fa " + me.node.icon + "'></i>");
+			// 		var content = window.getComputedStyle(document.querySelector('#svg_icon_content i'), ':before').content;
+			// 		$("#svg_icon_content").remove();
+			// 		return content[1];
+			// 	} else {
+			// 		return "";
+			// 	}
+			// });
 
 		me.text2 = d3.select("#chart svg")
 			.append('g')
@@ -1569,6 +1572,7 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.style('fill','#000000')
 			.style('font-size','0.8em')
 			.attr('text-anchor', 'middle')
+			.attr('number','2.1')
 			.text(me.node.shortLabel);
 
 		me.text3 = d3.select("#chart svg")
@@ -1578,10 +1582,12 @@ BubbleTree.Bubbles.Plain = function(node, bubblechart, origin, radius, angle, co
 			.style('fill','white')
 			.style('font-size','0.9em')
 			.style('font-weight','bold')
+			.attr('number','3.1')
 			.attr('text-anchor', 'middle')
 			.text(utils.formatNumber(me.node.amount));
 		me.text3.append('text')
 			.attr('y', '1.2em')
+			.attr('number','3.2')
 			.style('fill','white')
 			.attr('text-anchor', 'middle')
 			.style('font-family', 'FontAwesome')

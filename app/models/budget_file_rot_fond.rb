@@ -3,7 +3,7 @@ class BudgetFileRotFond < BudgetFileRot
   protected
 
   def readline row
-    kkd = row['kkd'].to_s.split('.')[0]
+    kkd = row['Код'].to_s.split('.')[0] || row['kkd'].to_s.split('.')[0]
     return if kkd == ''
 
     amount1 = row[I18n.t('mongoid.taxonomy_rot_fond.gen_fund')].to_i

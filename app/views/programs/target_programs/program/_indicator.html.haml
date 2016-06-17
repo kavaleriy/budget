@@ -1,0 +1,20 @@
+:scss
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+%h3
+  = indicator[:title]
+
+= render partial: 'programs/target_programs/program/indicator_graph'

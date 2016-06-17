@@ -1,0 +1,131 @@
+:css
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+= t('programs.target_programs.show.program_term')
+= @programs_target_program.term_start.to_s + ' - ' + @programs_target_program.term_end.to_s + t('programs.target_programs.show.years')
+%br
+- if @programs_target_program.phases.length > 0
+  = t('programs.target_programs.show.program_phases')
+  %ul{ :style => 'list-style-type:circle' }
+  - @programs_target_program.phases.each_with_index do |phase, index|
+    %li
+      = (index + 1).to_s + ' ' + t('programs.target_programs.show.phase') + ' (' + phase + t('programs.target_programs.show.years') + ');'
+
+=t('programs.target_programs.show.funds_spend')
+%i.fa.fa-square{:style => 'color: #3182bd;'}
+=t('js.visify.plan')
+%i.fa.fa-square{:style => 'color: red; opacity: 0.5; '}
+=t('js.visify.fact')
+
+#expences_chart
+
+:javascript
+
+  $(document).ready(function() {
+    var expences = JSON.parse('#{@programs_target_program.programs_expences.to_json}');
+    var year_start = parseInt('#{@programs_target_program.term_start}');
+    var year_end = parseInt('#{@programs_target_program.term_end}');
+    var years = [];
+    for(var i = year_start; i < year_end; i++) {
+      years.push(i);
+    }
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 20},
+        height = 300 - margin.top - margin.bottom,
+        width;
+
+    if(years.length == 1) {
+      width = 100 - margin.left - margin.right;
+    } else if(years.length == 2) {
+      width = 200 - margin.left - margin.right;
+    } else {
+      100*(years.length-1) > $('#tab_expences').width() ? width = $('#tab_expences').width() - margin.left - margin.right : width = 100*(years.length-1) - margin.left - margin.right;
+    }
+
+    x = d3.scale.ordinal()
+          .rangeRoundBands([0, width]);
+
+    y = d3.scale.linear()
+          .range([height, 0]);
+
+    xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    svg = d3.select("#expences_chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    x.domain(years.map(function(d) { return d; }));
+    y.domain([0, d3.max(expences, function(d) { return d['amount_plan'] > d['amount_fact'] ? d['amount_plan'] : d['amount_fact']; })]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (height+1) + ")")
+        .call(xAxis);
+
+    var amount_plan = svg.selectAll(".plan")
+                       .data(expences)
+                     .enter().append("rect")
+                       .attr("class", "bar plan")
+                       .style("fill", "#3182bd")
+                       .style("fill-opacity", "1.0")
+                       .attr("x", function(d) { return x(d['year']); })
+                       .attr("width", x.rangeBand() - 5)
+                       .attr("y", function(d) { return y(d['amount_plan']); })
+                       .attr("height", function(d) { return height - y(d['amount_plan']); })
+                       .on("mouseover", mouseover)
+                       .on("mousemove", mousemove)
+                       .on("mouseout", mouseout)
+                       //.on("click", mouseclick);
+
+    var amount_fact = svg.selectAll(".fact")
+                       .data(expences)
+                     .enter().append("rect")
+                       .attr("class", "bar fact")
+                       .style("fill", "red")
+                       .style("fill-opacity", "0.5")
+                       .attr("x", function(d) { return x(d['year']); })
+                       .attr("width", x.rangeBand() - 5)
+                       .attr("y", function(d) { return y(d['amount_fact']); })
+                       .attr("height", function(d) { return height - y(d['amount_fact']); })
+                       .on("mouseover", mouseover)
+                       .on("mousemove", mousemove)
+                       .on("mouseout", mouseout)
+                       //.on("click", mouseclick);
+
+    function mouseover(d) {
+      html = "<i class=\"fa fa-square\" style='color: #3182bd;'></i> план - " + d['amount_plan']/window.aHelper.k(d['amount_plan']) + window.aHelper.short_unit(d['amount_plan']) + "<br/>" +
+             "<i class=\"fa fa-square\" style='color: red; opacity: 0.5; '></i> факт - " + d['amount_fact']/window.aHelper.k(d['amount_fact']) + window.aHelper.short_unit(d['amount_fact']);
+      add_tooltip(d3.event, d, html);
+    }
+
+    function mouseout(d) {
+      remove_tooltip(d);
+    }
+
+    function mousemove(d) {
+      var tooltipSpan = document.getElementById('charts_tooltip');
+      var evt = d3.event || window.event;
+      var x = evt.pageX,
+          y = evt.pageY;
+      tooltipSpan.style.top = y + 'px';
+      tooltipSpan.style.left = x + 'px';
+    }
+
+  })

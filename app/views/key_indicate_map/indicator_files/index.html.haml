@@ -18,9 +18,12 @@
           %thead
             %tr
               %th
-              %th Назва
-              %th Рік
-              %th Редагувати показники
+              %th
+                = t('.title')
+              %th
+                = t('.year')
+              %th
+                = t('.edit_indexes')
               %th
           %tbody
             = render :partial => 'indicator_files', :locals => { :files => KeyIndicateMap::IndicatorFile.all }

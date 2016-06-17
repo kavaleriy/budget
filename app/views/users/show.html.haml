@@ -1,25 +1,25 @@
 %p
-  %b ФИО:
+  %b= t('devise.form.name') + ":"
   = @user.name
 %p
-  %b Телефон:
+  %b= t('devise.form.phone') + ":"
   = @user.phone
 %p
   %b Email:
   = @user.email
 %p
-  %b Організація:
+  %b= t('devise.form.organization') + ":"
   = @user.organisation
 %p
-  %b Last sign in at:
+  %b= t('users.index.last_sign_in_at') + ":"
   = @user.last_sign_in_at
 %p
-  %b Town:
+  %b= t('devise.form.city') + ":"
   = @user.town
 %p
-  Admin:
+  = t('users.index.role') + ":"
   = render partial: 'roles', :locals => { roles: @user.roles }
 
-= link_to 'Edit', edit_user_path(@user)
+= link_to t('edit'), edit_user_path(@user)
 \|
-= link_to 'Back', users_path
+= link_to t('back'), users_path

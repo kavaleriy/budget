@@ -1,0 +1,41 @@
+:scss
+  .fb-like {
+    //filter:hue-rotate(240deg);
+    //-webkit-filter: hue-rotate(240deg);
+  }
+-#.col-xs-12.soc-b.clearfix
+-#  .social
+-#    %i.fa.fa-twitter
+-#  .social
+-#    %i.fa.fa-google-plus
+-#.col-xs-12.soc-b.clearfix
+-#  .social
+-#    %i.fa.fa-facebook
+-#  .social
+-#    %i.fa.fa-vk
+
+
+-#.col-xs-12.soc-b.clearfix
+-#  .social
+-#    %i.fa.fa-facebook
+-#    %span.text Like
+-#.col-xs-12.soc-b.clearfix
+-#  .social
+-#    %i.fa.fa-facebook
+-#    %span.text Share
+
+#fb-root
+
+.fb-like{"data-action" => "like", "data-ref" => "false", "data-layout" => "button", "data-share" => "false",  "data-href" => "https://www.facebook.com/%D0%92%D1%96%D0%B4%D0%BA%D1%80%D0%B8%D1%82%D0%B8%D0%B9-%D0%B1%D1%8E%D0%B4%D0%B6%D0%B5%D1%82-%D0%9A%D0%B8%D1%94%D0%B2%D0%B0-472696706195172/"}
+.fb-share-button{"data-action" => "like", "data-layout" => "button",  "data-href" => "https://www.facebook.com/%D0%92%D1%96%D0%B4%D0%BA%D1%80%D0%B8%D1%82%D0%B8%D0%B9-%D0%B1%D1%8E%D0%B4%D0%B6%D0%B5%D1%82-%D0%9A%D0%B8%D1%94%D0%B2%D0%B0-472696706195172/"}
+
+:javascript
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = '#{raw t('layouts.soc_buttons.lang')}';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+

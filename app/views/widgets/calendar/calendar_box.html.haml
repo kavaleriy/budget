@@ -15,17 +15,15 @@
     %p
     %span.descr
       = @calendar.description
-  #calendar_subscriber.col-xs-3.pull-right
-    = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
+  -##calendar_subscriber.col-xs-3.pull-right
+  -#  = render :partial => 'subscribe', :locals => { subscriber: @subscriber, calendar: @calendar}
 
-= content_for :top do
-  .timeline
+-#.timeline
+-#  = render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
+-##embed_code_timeline.embed_code
+-#  = render partial: 'widgets/visify/embed_code'
 
-= render :partial => '/widgets/calendar/timelinejs', :locals => { calendar: @calendar }
-#embed_code_timeline.embed_code
-  = render partial: 'widgets/visify/embed_code'
-
-.col-sm-6.col-xs-12
+.col-sm-7.col-xs-12
   .panel.panel-default
     .panel-body
       #calendars
@@ -36,23 +34,26 @@
           %li
             %a{href: '#calendar_month', role: 'tab', 'data-toggle' => 'tab', 'data-content' => 'calendar'}
               = t('.tab_calendar_month')
+          %li
+            %a{href: '#calendar_timeline', role: 'tab', 'data-toggle' => 'tab', 'data-content' => 'timeline'}
+              = t('.tab_calendar_timeline')
+          #year_place.pull-right
         .clear
         .tab-content
           #calendar_year.tab-pane.fade.in.active
             = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
-            .pull-right
-              = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
+            -#.pull-right
+            -#  = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
           #calendar_month.tab-pane.fade
             = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
+          #calendar_timeline.tab-pane.fade.clearfix
+            = render partial: '/widgets/calendar/timeline', :locals => { calendar: @calendar }
 
-        -#.legend
-        -#  .pull-left
-        -#    = image_tag("calendar/inf-city.png", width: '200px')
-        -#  .pull-right
-        -#    = image_tag("calendar/inf-people.png", width: '200px')
+  = render partial: 'calendar_actions/default_action_list'
 
-.col-sm-6.col-xs-12
-  = render partial: '/widgets/calendar/event'
+.col-sm-5.col-xs-12
+  = render partial: '/widgets/calendar/event', :locals => { owner: 1 }
+  = render partial: '/widgets/calendar/event', :locals => { owner: 2 }
 
 .col-sm-12
   #embed_code_calendar.embed_code
@@ -141,7 +142,8 @@
        if (event_id == undefined)
         return;
 
-       $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id);
+       $.get("/calendars/calendars/" + "#{@calendar.id}" + "/events/" + event_id + "?locale=#{params[:locale]}"  );
+
        $.getJSON( "/widgets/calendar/get_parent_event/#{@calendar.id}/" + event_id, function( data ) {
           //console.log(data)
           var parent_id = data['parent_event'][0]['id'];
@@ -191,4 +193,27 @@
          })
     }
 
+
+    var townEvent_id = "#{@curr_town_event.id if @curr_town_event}"
+    var peopleEvent_id = "#{@curr_people_event.id if @curr_people_event}"
+    if (townEvent_id) selectEvent(townEvent_id)
+    if (peopleEvent_id) selectEvent(peopleEvent_id)
   })
+
+-# timeline
+:javascript
+  $(document).ready(function() {
+    $('.ui-timeline article.tl-item').on('click', function(e) {
+
+      e = $(e.currentTarget);
+
+      event_id = e.attr('event_id');
+
+      if (event_id == null)
+        return;
+
+      calendar_id = "#{@calendar.id}";
+      $.get("/events/"+event_id, { calendar_id: "#{@calendar.id}" });
+    })
+  })
+

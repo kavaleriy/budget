@@ -2,8 +2,9 @@ Rails.application.config.assets.precompile += %w( d3.geom.js jquery.history.js r
 Rails.application.config.assets.precompile += %w( biPartite.js sankey.js )
 Rails.application.config.assets.precompile += %w( d3pie.js )
 Rails.application.config.assets.precompile += %w( jstree/jstree.js jstree/themes/default/style.min.css)
-Rails.application.config.assets.precompile += %w( timelinejs/storyjs-embed.js timelinejs/timeline.js timelinecss/timeline.css )
+Rails.application.config.assets.precompile += %w( timelinejs/storyjs-embed.js timelinejs/timeline.js timelinecss/timeline.css.scss )
 Rails.application.config.assets.precompile += %w( kartik-fileinput/js/fileinput.js kartik-fileinput/js/fileinput_locale_uk.js kartik-fileinput/css/fileinput.css )
+Rails.application.config.assets.precompile += %w( sankeys.css )
 
 Rails.application.config.assets.precompile += %w( leaflet/leaflet.js leaflet/leaflet.css )
 Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leaflet/markercluster.default.css leaflet/markercluster.css )
@@ -16,5 +17,9 @@ Rails.application.config.assets.precompile += %w( parallax_slider/jquery.cslider
 Rails.application.config.assets.precompile += %w( tab_styled/cbpFWTabs.js tab_styled/modernizr.custom.js tab_styled/tabs.css tab_styled/tabstyles.css )
 Rails.application.config.assets.precompile += %w( tooltip_inspiration/tooltip-box.css tooltip_inspiration/normalize.css tooltip_inspiration/tooltip-sharp.css)
 Rails.application.config.assets.precompile += %w( page_navigation/menu.js page_navigation/modernizr.custom.25376.js page_navigation/classie.js page_navigation/component.css page_navigation/normalize.css )
+Rails.application.config.assets.precompile += %w( town_typeahead.js )
+Rails.application.config.assets.precompile += %w( bootstrap_flash.js )
 
 Rails.application.config.assets.precompile += %w( revolution_slider/jquery.themepunch.plugins.min.js revolution_slider/jquery.themepunch.revolution.min.js revolution_slider/rs-style.css revolution_slider/settings.css )
+Rails.application.config.assets.precompile += %w(*.jpg, *.png)
+

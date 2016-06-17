@@ -6,13 +6,13 @@
   <div class="onecolumn_container clearfix">
     <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, :class => 'edit_user' }) do |f| %>
         <%= devise_error_messages! %>
-        <%= f.text_field :name, autofocus: true %>
+        <%= f.text_field :name, autofocus: true, label: t('devise.form.name') %>
         <div class="row">
           <div class="col-md-6">
             <%= f.email_field :email %>
           </div>
           <div class="col-md-6">
-            <%= f.text_field :phone %>
+            <%= f.text_field :phone, label: t('devise.form.phone') %>
           </div>
         </div>
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -20,10 +20,10 @@
         <% end %>
         <div class="row">
           <div class="col-md-6">
-            <%= f.text_field :organisation %>
+            <%= f.text_field :organisation, label: t('devise.form.organization') %>
           </div>
           <div class="col-md-6">
-            <%= f.text_field :town,  :readonly => true, help: t('ask_admin') %>
+            <%= f.text_field :town, :readonly => true, help: t('devise.city.change_city'), label: t('devise.form.city') %>
           </div>
         </div>
         <div class="row">
@@ -45,3 +45,10 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    init_town_select2("<%= search_for_towns_town_path %>");
+  });
+
+</script>

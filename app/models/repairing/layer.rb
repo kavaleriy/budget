@@ -1,11 +1,10 @@
 class Repairing::Layer
   include Mongoid::Document
-  # bootstrap form
   include ColumnsList
 
-  belongs_to :town, :dependent => :nullify
-  belongs_to :owner, class_name: 'User', :dependent => :nullify
-  belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
+  belongs_to :town, class_name: 'Town'
+  belongs_to :owner, class_name: 'User'
+  belongs_to :repairing_category, :class_name => 'Repairing::Category'
 
   field :title, type: String
   field :description, type: String
@@ -15,14 +14,25 @@ class Repairing::Layer
 
   has_many :repairs, :class_name => 'Repairing::Repair', autosave: true, :dependent => :destroy
 
+  def self.visible_to user
+    files = if user.nil?
+      self.where(:owner => nil)
+    elsif user.has_role? :admin
+      self.all
+    else
+      self.where(owner: user.id)
+    end
+
+    files || []
+  end
 
   def to_geo_json
-    geoJson = []
+    geo_json = []
     self.repairs.each { |repair|
-      geoJson << Repairing::GeojsonBuilder.build_repair(repair)
+      geo_json << Repairing::GeojsonBuilder.build_repair(repair)
     }
 
-    geoJson.compact
+    geo_json.compact
 
   end
 end

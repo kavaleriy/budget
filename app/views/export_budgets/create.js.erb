@@ -1,0 +1,7 @@
+if('<%=@result%>' == 'not_save'){
+    $("#export_budget_form").html("<%= escape_javascript(render partial: 'form', locals: { items: @export_budget } ) %>");
+}
+else
+{
+    $('#add-modal').modal('hide')
+}

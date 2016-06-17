@@ -1,5 +1,29 @@
 Rails.application.routes.draw do
 
+  get 'template/load/:partial_name' => 'template#load',as: 'template_load'
+
+  get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
+  get '/demo_index/' => 'public/home#demo_index',as: 'demo' # Delete it route after upgrade new design
+  get '/demo_profile' => 'public/home#demo_profile', as: 'demo_profile' # Delete it route after upgrade new design
+  get '/demo_repair_roads_map' => 'public/home#demo_repair_roads_map', as: 'demo_repair_roads_map' # Delete it route after upgrade new design
+
+  namespace :content_manager do
+    resources :page_containers
+  end
+
+  namespace :modules do
+    get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
+    resources :budget_news
+    resources :sliders
+    patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
+  end
+
+  resources :export_budgets
+  get 'download_pdf' => 'export_budgets#download_pdf'
+  get 'export_budgets/create_pdf/:id' => 'export_budgets#create_pdf', as: 'create_pdf'
+
+  get 'save_as_pdf/:id' => 'export_budgets#save_as_pdf',as: 'save_as_pdf'
+
   resources :currencies do
     member do
       put 'rate_by_year/:year' => 'currencies#rate_by_year'
@@ -55,21 +79,23 @@ Rails.application.routes.draw do
   get 'editor/index'
 
   namespace :programs do
-    resources :indicator_files
+    resources :target_programs
   end
 
-  namespace :programs do
+  namespace :legacy_programs do
+    resources :indicator_files
+
     resources :towns
 
     resources :target_programs
     resources :expences_files
     resources :attachments
     get 'load' => 'target_programs#load'
-    get 'load_expences/:town' => 'target_programs#load_expences'
-    get 'load_indicators/:town' => 'target_programs#load_indicators'
-    get 'towns/branch_report/:id' => 'towns#branch_report'
+    get 'load_expences/:town' => 'target_programs#load_expences' , as: 'load_expences'
+    get 'load_indicators/:town' => 'target_programs#load_indicators', as: 'load_indicators'
+    get 'towns/branch_report/:id' => 'towns#branch_report', as: 'towns_branch_report'
     post 'target_programs/create' => 'target_programs#create'
-    get 'target_programs/list/:town' => 'target_programs#list'
+    get 'target_programs/list/:town' => 'target_programs#list', as: 'target_programs_list'
     get 'target_programs/change_list/:town/:year' => 'target_programs#change_list'
     get 'target_programs/show_indicators/:id' => 'target_programs#show_indicators'
     put 'towns/update_custom/:id' => 'towns#update_custom'
@@ -100,6 +126,7 @@ Rails.application.routes.draw do
     get 'link_categories_tree_root' => 'link_categories#tree_root'
     get 'link_categories_tree' => 'link_categories#tree'
     resources :documents
+    get 'documents/:id/download' => 'documents#download',as: 'document_download'
     resources :links
     put 'documents/lock/:id' => 'documents#lock'
   end
@@ -115,20 +142,26 @@ Rails.application.routes.draw do
     # put 'documents/lock/:id' => 'documents#lock'
   end
 
-
+  get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
+  get 'towns/get_parent' => 'towns#get_parent',as: 'get_parent_town'
+  get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
+  post 'edit_by_xls' => 'towns#edit_by_xls',as: 'edit_by_xls'
   get 'search_town' => 'towns#search'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
   get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
   get 'search_for_areas_town' => 'towns#search_for_areas'
+  post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
+  post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
 
   namespace :repairing do
     get 'map' => 'maps#show'
     get 'geo_json' => 'maps#geo_json'
+    get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame'
-    get 'maps/frame/:zoom' => 'maps#frame'
+    get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'
 
@@ -143,12 +176,19 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :to_pdf do
+
+  end
+
   resources :sankeys
 
   devise_for :users
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
+    get 'user/widgets/visualisation_list/:user_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
+
+
     get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/type/:file_id/:type' => 'visify#type', as: 'visify_type'
     get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
@@ -163,7 +203,7 @@ Rails.application.routes.draw do
     get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'
     get 'visify/sunburst_bilevel/:file_id' => 'visify#sunburst_bilevel'
     get 'visify/sunburst_zoomable/:file_id' => 'visify#sunburst_zoomable'
-    get 'visify/bubbletree/:file_id' => 'visify#bubbletree'
+    get 'visify/bubbletree/:file_id' => 'visify#bubbletree',as: 'bubbletree'
     get 'visify/circles/:file_id' => 'visify#circles'
     get 'visify/treemap/:file_id' => 'visify#treemap'
     get 'visify/treemap_with_headers/:file_id' => 'visify#treemap_with_headers'
@@ -176,10 +216,18 @@ Rails.application.routes.draw do
     get 'calendar/pie_cycle/:calendar_id' => 'calendar#pie_cycle'
     get 'calendar/calendar/:calendar_id' => 'calendar#calendar'
     get 'calendar/get_parent_event/:calendar_id/:event_id' => 'calendar#get_parent_event'
+    get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
+    get 'calendar/show/:calendar_id' => 'calendar#show',as: 'calendar_show'
+
+
+    get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
+    get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'
+    get 'town_profile/budget_files_by_taxonomies/:tax_rot/:tax_rov' => 'town_profile#budget_files_by_taxonomies', as: 'budget_files_by_taxonomies'
+    get 'town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov' =>'town_profile#sankey_by_taxonomies', as:'sankey_by_taxonomies'
+    get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
   end
 
-  get 'sankeys/get_rows/:rot_file_id/:rov_file_id' => 'sankeys#get_rows'
-  get 'sankeys/sankey/:id' => 'sankeys#sankey'
+  get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'
 
   resources :taxonomies do
     member do
@@ -197,6 +245,7 @@ Rails.application.routes.draw do
   end
 
   resources :zip_budget_files
+  resources :fz_budget_files
 
   resources :budget_file_frees
   resources :budget_file_lvivobl_rots
@@ -249,30 +298,34 @@ Rails.application.routes.draw do
 
 
   namespace :public do
-    get 'budget' => 'home#budget'
+    get 'about' => 'home#about'
 
     get 'documents' => 'documents#index'
 
-
     get 'towns/:town_id' => 'towns#show'
+
+    get 'budget_files/:town_id' => 'towns#budget', as: 'budget_files'
+
     get 'ukraine_geo_json' => 'towns#geo_json'
     get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
 
-  get 'public/calendar/:calendar_id' => 'public#calendar'
-  get 'public/documents                                                 ' => 'public/documents#index'
+  get 'public/calendar/:calendar_id' => 'public#calendar', as:'public_calendar'
+  get 'public/documents' => 'public/documents#index'
   get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
 
-  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile'
-  get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile'
-  get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile'
-  get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index'
-  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile'
+  get 'public/towns/pdf_doc' => 'public/towns#pdf_docs',as: 'public_towns_pdf_docs'
+  get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile', as: 'taxonomies_town_profile'
+  # get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
+  get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile',as: 'indicate_taxonomies_town_profile'
+  get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
+  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile', as: 'calendars_calendars_town'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
-  get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show'
-  get 'public/documents/town_profile/:town_id' => 'public/documents#index'
+  get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
+  get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'
+  get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

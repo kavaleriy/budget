@@ -1,0 +1,17 @@
+.pull-right
+  .btn-group{'data-toggle' => 'buttons','data-active' => type}
+    %label.btn.btn-default.active.data_type
+      %input{:name => "data_type", :type => "radio", :value => "plan"}
+      = t('js.visify.plan')
+    %label.btn.btn-default.data_type
+      %input{:name => "data_type", :type => "radio", :value => "fact"}
+      = t('js.visify.fact')
+:javascript
+  $(document).ready(function(){
+    var active_type = $('.btn-group').attr('data-active');
+    if(active_type == 'fact'){
+      $('.btn-group[data-toggle = "buttons"]').find('.active').removeClass('active'); //for sankey widget(because by default sankey renders by fact type)
+      $(':radio[value = ' + active_type + ']').parent().addClass('active');
+    }
+
+  })

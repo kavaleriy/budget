@@ -1,0 +1,10 @@
+/**
+ * Created by alex on 23.03.16.
+ */
+$("#regions_acordion_<%= @koatuu %>").html("<%= escape_javascript( render partial: 'regions_accordion', :locals => { regions: @regions }) %>");
+$('[data-parent = "#regions_acordion"]').click(function(){
+  $.ajax({
+    method: 'post',
+    url: $(this).attr('data-url')
+  });
+});

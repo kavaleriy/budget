@@ -7,8 +7,8 @@ class Repairing::Map
   has_many :layers, :class_name => 'Repairing::Layer', autosave: true, :dependent => :destroy
 
   def to_geo_json
-    geoJson = []
-    self.layers.each { |layer| geoJson << layer.to_geo_json }
-    geoJson
+    geo_json = []
+    self.layers.each { |layer| geo_json << layer.to_geo_json }
+    geo_json
   end
 end

@@ -1,1 +1,3 @@
 $('#search_results').html('<%= escape_javascript( render partial: 'search_results', :locals => { budget_files: @budget_files } ) %>')
+
+$('.paginator').html('<%= escape_javascript(paginate(@budget_files, :remote => true)) %>')

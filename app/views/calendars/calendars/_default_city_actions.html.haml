@@ -1,0 +1,32 @@
+:scss
+  .e-e-left .external-events{
+    direction: rtl;
+  }
+  .e-e-left .external-events .e-e-left-text{
+    direction: ltr;
+  }
+  #city_acordion > div {
+    overflow : visible;
+  }
+  #city_accordion > div {
+    overflow : visible;
+    border: none;
+  }
+  #city_accordion {
+    a{
+      text-decoration: none;
+    }
+  }
+
+.external-events
+  .e-e-left-text
+    #city_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      - @city_action.each do |key,value|
+        .panel.panel-default.no_overflow
+          #city.panel-heading{:role => "tab",id: key }
+            %h4.panel-title
+              %a{"aria-controls" => "cityCollapse_#{key}", "aria-expanded" => "true", "data-parent" => "#city_accordion", "data-toggle" => "collapse", :href => "#cityCollapse_#{key}", :role => "button"}
+                =t("calendar_actions.form.radio_#{key}")
+          #cityCollapse.panel-collapse.collapse{"aria-labelledby" => "cityOne", :role => "tabpanel",id: key}
+            .panel-body
+              = render partial: "show_action", locals: {actions: value }

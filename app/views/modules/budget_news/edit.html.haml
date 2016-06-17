@@ -1,0 +1,8 @@
+%h1
+  = t('.header')
+
+= render 'form'
+.col-xs-12
+  = link_to t('.show'), @budget_news
+  \|
+  = link_to t('.back'), modules_budget_news_index_path

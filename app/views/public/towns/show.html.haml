@@ -1,4 +1,5 @@
 :css
+
   .budget {
     cursor: pointer;
   }
@@ -41,6 +42,15 @@
 
   .bar > li {
     text-transform: uppercase;
+  }
+
+  .view-tenth img {
+    height: 145px;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   @media(min-width: 320px) and (max-width: 767px){
@@ -216,13 +226,16 @@
   }
 
 
-.col-sm-8#towns_profile
-  / tabs left
+-#-if(@town.id == 'test')?portfolio_url = widgets_town_profile_path(@town.id):
+-#  -
+
+= content_for :header do
+  .head
+    = @town.title
+#towns_profile
   .tabbable.tabs-left
-    %ul.nav.nav-tabs.col-sm-3.bar
+    %ul.nav.nav-tabs.bar
       %li
-        %a{:href => "#", :style => 'pointer-events:none;', :class => 'title-town'}
-          =@town.title
         %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;', :class => 'img-town'}
       %li
         %a{"data-toggle" => "tab", :href => "#description"}
@@ -230,8 +243,8 @@
       %li.active
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
-          %span.badge.bsize.count
-            = @town_items.length.to_s
+          %span.badge.bsize.count#town_items_length
+            -#= @town_items.length.to_s
       %li
         %a{"data-toggle" => "tab", :href => "#documents"}
           = t('public.towns.portfolio.documents')
@@ -242,7 +255,15 @@
           = t('public.towns.portfolio.town_links')
           %span.badge.bsize.count
             = @town_br_links.length
-    .tab-content
+      %li
+        %a{"data-toggle" => "tab", :href => "#pub_budget"}
+          = t('public.towns.portfolio.pub_budget')
+
+      %li
+        %a{"data-toggle" => "tab", :href => "#pdf_docs"}
+          PDS doc's
+
+    .tab-content.col-sm-9
       #description.tab-pane.fade
         .col-sm-12.col-md-5.col-lg-6
           - if @town.description && !@town.description.blank?
@@ -255,16 +276,13 @@
             %p
               =@town.links.html_safe
       #portfolio.tab-pane.active.fade.in
-        -#%h3
-        -#  = t('public.towns.portfolio.visuals')
-        .row
-          - %w(budget programs indicators keys calendar sankey repair purchase key_docs).each do |item|
-            = render partial: 'portfolio', :locals => { :item => item }
+        -#= render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
+        -#-#%h3
+        -#-#  = t('public.towns.portfolio.visuals')
+        -#.row
+        -#  = render partial: 'portfolio' , :locals => { :town_items => @town_items }
+
       #documents.tab-pane.fade
-        -#%h3
-        -#  = t('public.towns.portfolio.documents')
-          -#%span.badge.bsize.count
-          -#  = @town.documentation_documents.count()
         = render partial: 'docs'
       #links.tab-pane.fade
 
@@ -291,16 +309,44 @@
                           = link.value
                   %dt
           - counter = counter + 1
+      #pdf_docs.tab-pane.fade
+        .col-xs-7
+          =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
 
-  / /tabs
-.col-sm-4
-  = render partial: 'map_ukraine'
-
+      .col-xs-5.pull-right
+        = render partial: 'map_ukraine'
+.col-sm-12
+  #embed_code_town.embed_code
+    = render partial: 'widgets/visify/embed_code'
 :javascript
 
-  $(document).ready(function() {
 
-    $('.budget[data-id]').on('click', function (e) {
+
+  $(document).ready(function() {
+  //#-------------------------------Embed code init----------------------------------------------------
+
+
+
+  //---------------------------------------------------------------------------------------------------
+    var portfolio_url = "#{widgets_town_profile_path(@town)}"
+    $.ajax({
+      url: portfolio_url,
+      success: function(data){
+      }
+    });
+
+    $('.embed_btn').on('click',function(){
+      var town = "#{@town.id}"
+      //el_id this is dom element selector, where render size form for iframe
+      var embed_code_timeline = aEmbedCode();
+      var src = window.location.origin + "/widgets/town/profile/" + town;
+      embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
+      embed_code_timeline.set_iframe(src);
+      $('#embeded_code_modal_window').find('#embed_src').val(src);
+      $('#embeded_code_modal_window').modal();
+    })
+
+  $('.budget[data-id]').on('click', function (e) {
       $('.budget[data-id]').removeClass('active')
       $(this).addClass('active')
 

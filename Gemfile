@@ -55,7 +55,7 @@ gem 'bootstrap_form'
 gem 'bootstrap-wysihtml5-rails', branch: 'b3', git: 'https://github.com/Nerian/bootstrap-wysihtml5-rails.git'
 
 # https://gorails.com/blog/rails-4-0-with-mongodb-and-mongoid
-gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
+gem 'mongoid', '~> 4.0.0'
 
 # https://github.com/haml/haml/tree/rails_4.1.0.rc1
 gem 'haml-rails'
@@ -78,7 +78,8 @@ gem 'momentjs-rails', '>= 2.5.0'
 gem 'rubyzip'
 
 # https://github.com/argerim/select2-rails
-gem 'select2-rails'
+# https://rubygems.org/gems/select2-rails/versions/4.0.0
+gem 'select2-rails', '~> 3.5'
 
 # https://github.com/infused/dbf
 gem 'dbf'
@@ -86,13 +87,14 @@ gem 'dbf'
 # https://github.com/Empact/roo
 gem 'roo'
 
+gem 'roo-xls'
 
 # Authentication
 # http://www.phase2technology.com/blog/authentication-permissions-and-roles-in-rails-with-devise-cancan-and-role-model/
 gem 'devise'
 
-# https://github.com/ryanb/cancan
-gem 'cancan'
+# https://github.com/CanCanCommunity/cancancan
+gem 'cancancan', '~> 1.10'
 gem 'role_model'
 
 gem 'yaml_db'
@@ -104,6 +106,7 @@ gem 'font-awesome-rails'
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem "mini_magick"
+# gem 'mini_magick', '3.5', :require => 'mini_gmagick'
 
 # https://github.com/JangoSteve/remotipart
 gem 'remotipart', '~> 1.2'
@@ -120,11 +123,12 @@ gem 'kaminari'
 # https://github.com/cyu/rack-cors
 gem 'rack-cors', :require => 'rack/cors'
 
-# https://github.com/mislav/will_paginate
-gem 'will_paginate', '~> 3.0.6'
+# Export to PDF
+# See more at: https://github.com/mileszs/wicked_pdf
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
-# https://github.com/lucasas/will_paginate_mongoid
-gem "will_paginate_mongoid"
+# https://github.com/ifad/data-confirm-modal
+gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'
 
-# https://github.com/bootstrap-ruby/will_paginate-bootstrap
-gem 'will_paginate-bootstrap'
+gem 'simple_form'

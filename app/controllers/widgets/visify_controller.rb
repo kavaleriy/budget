@@ -1,8 +1,6 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   include ControllerCaching
 
-  before_action :set_locale
-
   before_action :set_budget_file
   before_action :set_params, :except => [:get_bubbletree_nodedata]
   before_action :set_amounts, :except => [:get_bubbletree_nodedata]
@@ -84,6 +82,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
         end
 
     filter = ['fond', taxonomy]
+
     tree = @budget_file.get_subtree(taxonomy, key, filter) || {}
 
     render json: get_bubble_tree_item(tree, {  'title' => title, 'color' => 'green', 'icon' => '/assets/icons/open_folder.svg' })
@@ -107,17 +106,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
     render json: { 'attachments' => @taxonomy.taxonomy_attachments }
   end
 
-  # def get_visify_level
-  #   taxonomy = visify_params[:taxonomy]
-  #
-  #   render json: @taxonomy.get_level(taxonomy)
-  # end
-  #
-  private
+  def get_visify_level
+    taxonomy = visify_params[:taxonomy]
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    render json: @taxonomy.get_level(taxonomy)
   end
+
+  private
 
   def get_bubble_tree levels
     tree = @budget_file.get_tree levels
@@ -127,9 +122,9 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubble_tree_item(item, info = nil)
-    while @taxonomy.is_a?(TaxonomyRot) and item['children'] and item['children'].length == 1
-      item = item['children'][0]
-    end
+    # while @taxonomy.is_a?(TaxonomyRot) and item['children'] and item['children'].length == 1
+    #   item = item['children'][0]
+    # end
 
     node = {
       'amount' => item['amount'],
@@ -139,9 +134,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     }
 
     info = ( @taxonomy.explanation[item['taxonomy']][item['key']] rescue {} ) unless info
-    node['label'] = info['title'] unless info['title'].blank?
-    node['icon'] = info['icon'] unless info['icon'].blank?
-    node['color'] = info['color'] unless info['color'].blank?
+
+    if info
+      node['label'] = info['title'] unless info['title'].blank?
+      node['icon'] = info['icon'] unless info['icon'].blank?
+      node['color'] = info['color'] unless info['color'].blank?
+    end
     # node['description'] = info['description'] unless info['description'].nil? or info['description'].empty?
 
     if @taxonomy.recipients and node['taxonomy'] == @taxonomy.recipients_column.to_s
@@ -198,6 +196,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @town = Town.where(title: town_title[0])
     @town = @town.where(area_title: town_title[1].squish) if town_title[1]
     @town = @town.first
+
+    @author = "#{@taxonomy.get_author}, #{@taxonomy.owner}"
   end
 
   def set_params
@@ -230,7 +230,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def build_amounts_list
     amounts = []
 
-    amounts << { title: 'Гривня', amount: 1 }
+    amounts << { title: t('amount_uah'), amount: 1 }
 
     usd_rate = Currency.find_or_create_by!(:short_title => 'USD').rates.where(:year => @sel_year).last
     amounts << { title: t('amount_usd'), amount: usd_rate.rate, recalc_per: true } if usd_rate and usd_rate.rate

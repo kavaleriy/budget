@@ -1,0 +1,223 @@
+:scss
+  .wrapper {
+    display: flex;
+    margin-top: 73px;
+    //padding: 73px 0 0;
+    //height: calc(100vh - 121.39px);
+    //min-height: calc(100vh - 121.39px);
+    //height: 100%;
+    //min-height: calc(100% - 193px);
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    background: transparent;
+    //min-height: calc(100% - 73px);
+    padding-top: 73px;
+  }
+
+  .content {
+    //height: calc(100% - 193px);
+    min-height: calc(100vh - 73px);
+    margin-left: 50px;
+    margin-bottom: 120px;
+    padding: 30px;
+    background: white;
+    z-index: 4;
+    //box-shadow: 0 0 5px rgba(0,0,0,1);
+    transform: translate3d(0,0,0);
+    transition: transform .5s;
+    width: calc(100% - 50px);
+    .content-wrapper {
+      position: relative;
+      display: block;
+      height: 100%;
+      overflow: auto;
+      .breadcrumb {
+        padding: 0 0 30px;
+        margin: 0;
+        background-color: transparent;
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        li {
+          a {
+            color: black;
+            text-decoration: none;
+            &:hover,
+            &:focus {
+              color: #ffd304;
+            }
+          }
+        }
+        .active {
+          a {
+            color: black;
+            text-decoration: none;
+            cursor: text;
+            border-bottom: 2px solid #ffd304;
+            padding-bottom: 2px;
+            &:hover,
+            &:focus {
+              color: black;
+            }
+          }
+        }
+      }
+      .breadcrumb li + li:before {
+        font: 26px fontawesome;
+        content: '\f105';
+        padding: 0 5px;
+        color: black;
+        position: relative;
+        bottom: -3px;
+      }
+      .breadcrumb li:nth-child(1):before {
+        display: none;
+      }
+      iframe {
+        width: 100%;
+        min-height: 400px;
+        height: calc(100vh - 196px);
+        border: none;
+      }
+    }
+  }
+
+  .content.is-open {
+    margin-left: 0;
+    transform: translate3d(220px,0,0);
+    width: calc(100% - 220px);
+  }
+
+  /* Navigation */
+
+
+  .button {
+    cursor: pointer;
+    &:before {
+      font: 40px fontawesome;
+      color: white;
+    }
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  .blason-block {
+    padding: 5% 30%;
+  }
+
+  .sidebar {
+    .sidebar-nav {
+      padding: 0;
+      .button {
+        float: left;
+        padding: 0 15px;
+        transform: rotate(180deg);
+        transition: transform 1s;
+        &:before {
+          content: '\f100';
+        }
+      }
+    }
+  }
+  .is-full {
+    .sidebar-nav {
+      .button {
+        float: right;
+        padding: 0 10px;
+        transform: rotate(0deg);
+        transition: transform 1s;
+        &:before {
+          content: '\f100';
+        }
+      }
+    }
+  }
+
+  .sidebar-nav li a {
+    position: relative;
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 15px 15px 15px 50px;
+    color: #eee;
+  }
+
+  .sidebar-nav li a:before {
+    font: 14px fontawesome;
+    position: absolute;
+    top: 14px;
+    left: 20px;
+  }
+
+  .sidebar-nav li:nth-child(1) a:before { content: '\f129'; }
+  .sidebar-nav li:nth-child(2) a:before { content: '\f200'; }
+  .sidebar-nav li:nth-child(3) a:before { content: '\f0f6'; }
+  .sidebar-nav li:nth-child(4) a:before { content: '\f0c1'; }
+  .sidebar-nav li:nth-child(5) a:before { content: '\f09d'; }
+  .sidebar-nav li:nth-child(6) a:before { content: '\f1c1'; }
+
+  .sidebar-nav li a:hover {
+    background: #807023;
+    text-decoration: none;
+  }
+
+  .sidebar-nav li a.active {
+    //box-shadow: inset 5px 0 0 #ffd304, inset 6px 0 0 #0c2231;
+    background: #ffd304;
+    color: black;
+  }
+
+  /* Description */
+
+  h1 {
+    margin: 25px 0 15px;
+    font-size: 28px;
+    font-weight: 400;
+  }
+
+.wrapper
+  .sidebar
+    .blason-block
+      =image_tag('new_design/blason.svg', class: 'img-responsive')
+    %ul.sidebar-nav
+      %li
+        %a Короткі відомості
+      %li
+        %a.active Візуалізації
+      %li
+        %a Документи
+      %li
+        %a Посилання
+      %li
+        %a Громадський бюджет
+      %li
+        %a PDF DOC'S
+      %a.button
+  .content
+    .content-wrapper
+      %ol.breadcrumb
+        %li
+          =link_to 'Доступні модулі', demo_profile_path
+        %li.active
+          %a{:href => '#'} Карта ремонтів
+      %iframe{:src => repairing_iframe_map_with_zoom_path(6)}
+
+:javascript
+
+  $(document).ready(function() {
+    $('.button').on('click', function() {
+      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+      $('.blocks > .wrapper > .content').toggleClass('is-open');
+    });
+  });

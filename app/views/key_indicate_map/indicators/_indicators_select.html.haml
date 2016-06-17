@@ -1,0 +1,7 @@
+%ul.nav.nav-tabs
+  - i = 0
+  - @indicator_keys.each do |group, value|
+    %li{:class => @group ? (group == @group ? "active" : "") : (i == 0 ? "active" : "")}
+      %a{:href => "#group_" + i.to_s, 'data-toggle' => "tab", :title => group}
+        %i.fa.fa-3x{:class => value['group_icon']}
+    - i = i + 1

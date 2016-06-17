@@ -2,29 +2,42 @@ module Repairing
   class MapsController < ApplicationController
     layout 'visify', only: [:frame]
     after_filter :allow_iframe, only: [:frame]
+    before_filter :set_map_params, only: [:show, :frame]
+    def set_map_params
+      @categories = get_categories
+
+      @zoom = params[:zoom]
+
+      @map_center = [48.5, 31.2] # center of Ukraine
+
+      if params[:town_id] && params[:town_id] != '0'
+        @town = params[:town_id]
+        town = Town.find(@town)
+        @map_center = town['coordinates'] if town.level && town.level > 1 # area
+      else
+        @town = ""
+      end
+
+      @year = params[:year] || ''
+    end
 
     def show
-      @categories = get_categories
+      @current_user_town = Town.get_user_town(current_user)
     end
 
     def frame
-      @categories = get_categories
-      @zoom = params[:zoom]
-
-      if params[:town_id]
-        @town = params[:town_id]
-        @map_center = Town.find(@town)['coordinates']
-      else
-        @town = ""
-        @map_center = [48.5, 31.2] # center of Ukraine
-      end
     end
 
     def geo_json
       @geoJsons = []
-      Repairing::Repair.each { |repair|
-        repair = Repairing::GeojsonBuilder.build_repair(repair)
-        @geoJsons << repair if repair
+      town = params[:town]
+      repairings = Repairing::Repair
+      repairings.each { |repair|
+        unless repair.layer.nil?
+          next unless repair.layer.town_id.to_s == town || town == ''
+          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
+          @geoJsons << repair_json if repair_json
+        end
       }
 
       result = {
@@ -49,6 +62,16 @@ module Repairing
             :x_sendfile=>true
         )
       end
+    end
+
+    def getInfoContentForPopup
+      # this function have url 'repairing/map/getInfoContentForPopup/:repair_id'
+      # format: *.js
+      # get params[:repair_id]
+      # find Repair object by params[:repair_id]
+      # render partial for popup container
+      @repair = Repairing::Repair.find(params[:repair_id])
+      render partial: 'info_popup.html.haml'
     end
 
     private

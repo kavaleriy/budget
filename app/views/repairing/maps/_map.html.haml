@@ -1,4 +1,4 @@
--#http://bost.ocks.org/mike/leaflet/
+-# http://bost.ocks.org/mike/leaflet/
 -# http://geojson.org/geojson-spec.html#examples
 -# http://www.rubydoc.info/gems/rgeo-geojson/frames
 -# https://github.com/alexreisner/geocoder
@@ -7,11 +7,12 @@
 = stylesheet_link_tag 'leaflet/leaflet.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
+= stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
 
-= javascript_include_tag "leaflet/leaflet.js"
-= javascript_include_tag "leaflet/markercluster.js"
-= javascript_include_tag "leaflet/leaflet-routing-machine.js"
-
+= content_for :head do
+  = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
+  = javascript_include_tag "leaflet/markercluster.js"
+  = javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
 :css
   #map {
@@ -34,6 +35,41 @@
   }
   .info.categoryBtns {
     opacity: 1;
+  }
+
+
+:scss
+  .info_panel{
+    min-width: 320px;
+    //border: 1px solid blue;
+    border-radius: 3px;
+    //overflow-wrap: break-word;
+    word-break: break-all;
+    .info_header{
+      min-height: 25px;
+      border-radius: 2px;
+      //background-color: #182A70;
+      color: #182A70;
+      padding-top: 7px;
+      text-align: center;
+
+    }
+    .heroviy{
+      margin: 5px 0 0 0;
+      border-color: #182A70;
+      }
+    .info_text{
+      padding: 10px;
+      .text_title{
+        padding-right: 2px;
+        margin-top: 7px;
+      }
+      .text_desc{
+        margin-top: 7px;
+        //word-break: break-all;
+      }
+
+    }
   }
 
 #map
@@ -78,7 +114,7 @@
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', layerSettings).addTo(map);
 
-      addSvgLayer()
+      addSvgLayer();
       function addSvgLayer() {
         svg = d3.select(map.getPanes().overlayPane).append("svg").style("z-index", options.zIndex || 999),
           g = svg.append("g").attr("class", "leaflet-zoom-hide");
@@ -181,6 +217,16 @@
     }
 
     function addGeoJsonPoints(data, getPoint, options) {
+      // remove all markers
+      if (markers) {
+        map.removeLayer(markers);
+        markers = undefined
+      }
+
+      addGeoJsonPoint(data, getPoint, options)
+    }
+
+    function addGeoJsonPoint(data, getPoint, options) {
       options = options || {};
 
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
@@ -195,7 +241,6 @@
         layerOptions.style = options.style;
       if (options.hoverStyle)
         layerOptions.hoverStyle = options.hoverStyle;
-
       geoJson = L.geoJson(data, layerOptions).addTo(markers);
 
       function coordsToLatLng(coords) {
@@ -213,45 +258,35 @@
       }
 
       function onEachFeature(feature, layer) {
+        layer.on({
+          click: function () {
 
-        //if (options.getPopupContent) layer.bindPopup( options.getPopupContent(feature.properties) );
-
-        if (options.getInfoContent) {
-          layer.bindPopup( options.getInfoContent(feature.properties) )
-        } else if(options.editInfoContent) {
-          layer.on({
-            click: function () {
-              if (options.featureClickCallback)
-                options.featureClickCallback(feature, popup);
+            if (options.featureClickCallback){
+              options.featureClickCallback(feature, layer);
             }
-          })
-        }
+          },
+          mouseover: function (e) {
+            showRoute(e.target.feature)
+          },
+          mouseout: function (e) {
+            hideRoute(e.target.feature)
+          },
+          dragend: function(e) {
+            if (options.dragCallback) {
+              var layer = e.target;
+              var ll = layer.getLatLng();
 
-        //layer.on({
-        //  click: function () {
-        //    if (options.featureClickCallback)
-        //      options.featureClickCallback(feature, popup);
-        //  },
-        //  mouseover: function () {
-        //    //layer.setStyle(options.hoverStyle);
-        //    if (options.getInfoContent)
-        //      info.update(options.getInfoContent(feature.properties));
-        //  },
-        //  mouseout: function () {
-        //    //geoJson.resetStyle(layer)
-        //    info.update();
-        //  },
-        //  dragend: function(e) {
-        //    if (options.dragCallback) {
-        //      var layer = e.target;
-        //      var ll = layer.getLatLng();
-        //
-        //      options.dragCallback(layer, ll)
-        //    }
-        //  }
-        //});
+              options.dragCallback(layer, ll)
+            }
+          }
+        });
       }
     }
+
+    function layerIsRoad(layer){
+      return layer.feature.properties.repair == 'road';
+    };
+
 
     function addControl() {
       info = L.control();
@@ -290,12 +325,12 @@
       var line;
 
       if (self.selectedRoute) {
-        self.selectedRoute.setWaypoints(waypoints)
-        self.selectedRoute.route()
+        self.selectedRoute.setWaypoints(waypoints);
+        self.selectedRoute.route();
       } else {
         self.selectedRoute = L.Routing.control({
-          routeWhileDragging: true,
-          waypoints: waypoints
+          waypoints: waypoints,
+          routeWhileDragging: true
         });
 
         self.selectedRoute.on('routesfound', function(router) {
@@ -308,66 +343,56 @@
       }
     }
 
-    function addCategoryLayer(c){
-      category = c;
+    function hideRoute(feature) {
+      if (feature.selected) {
+        feature.selected = false;
+      }
+      if (feature.selectedRoute) {
+        feature.selectedRoute.spliceWaypoints(0, feature.properties.route.length-1);
+        feature.selectedRoute = null;
+      }
+      if (feature.selectedPath) {
+        map.removeLayer(feature.selectedPath);
+        feature.selectedPath = null;
+      }
+    }
 
-      markers.getLayers()[0].eachLayer(function(layer){
-        map.removeLayer(layer);
-        if((layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && (layer.feature.properties.year == year) && layer.feature.properties.year == year){
-          map.addLayer(layer);
-        }
-      });
+    function showRoute(feature) {
+      feature.selected = true;
 
-      if(category == "all") {
-        $('#subcategories').html('');
-      } else {
-        var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
-        $.each(categories[category], function(i,d){
-          content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
-        });
-        $('#subcategories').html(content);
-        var all_work = $('input[value="all"]');
-        all_work.on("change", function(){
-          var subcategories = $('#subcategories input[type="checkbox"]');
-          if($(this).attr('checked')){
-            subcategories.removeAttr('checked');
-            subcategories.prop('checked', false);
-            markers.getLayers()[0].eachLayer(function(layer){
-              map.removeLayer(layer);
-            });
-          } else {
-            subcategories.attr('checked','checked');
-            subcategories.prop('checked', true);
-            markers.getLayers()[0].eachLayer(function(layer){
-              if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-                map.addLayer(layer);
-              }
-            });
-          }
-        });
-        $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
-          var checked = $('#subcategories input[type="checkbox"]:checked');
-          markers.getLayers()[0].eachLayer(function(layer){
-            if(layer.feature.properties.parent_category_id == category){
-              map.removeLayer(layer);
-              $.each(checked, function(i,d){
-                var sub = $(d).val();
-                if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-                  map.addLayer(layer);
-                }
-              })
+      var route = feature.properties.route
+      if (route){
+        if (route.length == 2) {
+          feature.selectedRoute = L.Routing.control({
+            fitSelectedRoutes: false,
+            waypoints: [ route[0], route[1] ],
+            draggableWaypoints: false,
+            createMarker: function() { return null; },
+            lineOptions : {
+                addWaypoints: false
             }
           });
-          if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
-            all_work.removeAttr('checked');
-            all_work.prop('checked', false);
-          } else {
-            all_work.attr('checked','checked');
-            all_work.prop('checked', true);
-          }
-        })
+          feature.selectedRoute.addTo(map);
+          clearRoadRoute();
+        } else {
+          routePoints = route.map(function(item) {
+            return new L.LatLng(item[0], item[1]);
+          });
+
+          feature.selectedPath = new L.polyline(routePoints, {
+            color: 'red',
+            weight: 6,
+            opacity: 0.5,
+            smoothFactor: 3,
+          });
+
+          feature.selectedPath.addTo(map);
+        }
       }
 
+      function clearRoadRoute(){
+        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+      }
     }
 
     function addTownLayer(t) {
@@ -376,18 +401,18 @@
       if(category == "all") {
         markers.getLayers()[0].eachLayer(function(layer){
           map.removeLayer(layer);
-          if((layer.feature.properties.town_id == town || !town)  && layer.feature.properties.year == year){
+          if((layer.feature.properties.t_id == town || !town)  && layer.feature.properties.year == year){
             map.addLayer(layer);
           }
         });
       } else {
         var checked = $('#subcategories input[type="checkbox"]:checked');
         markers.getLayers()[0].eachLayer(function(layer){
-          if(layer.feature.properties.parent_category_id == category){
+          if(layer.feature.properties.p_c_id == category){
             map.removeLayer(layer);
             $.each(checked, function(i,d){
               var sub = $(d).val();
-              if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+              if(sub == layer.feature.properties.c_id && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year) {
                 map.addLayer(layer);
               }
             })
@@ -399,20 +424,20 @@
     function addYearLayer(y){
       year = y;
       if(category == "all") {
-        markers.getLayers()[0].eachLayer(function(layer){
+        markers.getLayers().each(function(layer){
           map.removeLayer(layer);
-          if((layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
+          if((layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year){
             map.addLayer(layer);
           }
         });
       } else {
         var checked = $('#subcategories input[type="checkbox"]:checked');
-        markers.getLayers()[0].eachLayer(function(layer){
-          if(layer.feature.properties.parent_category_id == category){
+        markers.getLayers().each(function(layer){
+          if(layer.feature.properties.p_c_id == category){
             map.removeLayer(layer);
             $.each(checked, function(i,d){
               var sub = $(d).val();
-              if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
+              if(sub == layer.feature.properties.c_id && (layer.feature.properties.t_id == town || !town) && layer.feature.properties.year == year) {
                 map.addLayer(layer);
               }
             })
@@ -422,22 +447,51 @@
     }
 
     function showAdressMarker(query){
-      var check = 0;
-      markers.getLayers()[0].eachLayer(function(layer){
-        if(new RegExp(query, 'i').test(layer.feature.properties.address) && (layer.feature.properties.category_id == category || layer.feature.properties.parent_category_id == category || category == "all") && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-          var coords = layer.feature.geometry.coordinates;
-          map.setView(new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1])), 14);
-          check++;
-          return true;  // find first result and show on map
+      var check = false;
+      // get all markers
+      markers.eachLayer(function(layer){
+        // check by address
+        if (new RegExp(query, 'i').test(layer.feature.properties.address)){
+          //check by category
+          if((layer.feature.properties.c_id == category || layer.feature.properties.p_c_id == category || category == "all")){
+            //check by town
+            if((layer.feature.properties.t_id == town || !town)){
+              //check by year
+              if(layer.feature.properties.year == year || !year){
+                // get marker coordinates
+                var coords = layer.feature.geometry.coordinates;
+                // show marker by coordinates
+
+                map.setView((new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1]))), 16);
+                // emulate click on marker
+                markers.zoomToShowLayer(layer, function() {
+                  setTimeout(function(){layer.fireEvent('click');},1000)
+                });
+
+                // Yes!!! we find marker
+                check = true;
+                return false;
+              }
+            }
+          }
+        }
+        if(check){
+          return false;
         }
       });
-      if(check == 0) {
+      if(!check) {
         alert("Для заданих параметрів за вказаною адресою робіт немає");
       }
     }
 
     function removeMarker(data){
-      map.removeLayer(layers[data['properties']['id']][0]);
+      var id = data['properties']['id']
+
+      markers.eachLayer(function(layer){
+        if(layer.feature.properties.id == id){
+            map.removeLayer(layer);
+        }
+      });
     }
 
     initMap();
@@ -447,11 +501,13 @@
 
     return {
       map: map,
+      markers: markers,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
+      addGeoJsonPoint: addGeoJsonPoint,
       editRoute: editRoute,
+      showRoute: showRoute,
       addCategoryControl: addCategoryControl,
-      addCategoryLayer: addCategoryLayer,
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,

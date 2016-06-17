@@ -4,14 +4,19 @@ class BudgetFileRot < BudgetFile
 
   def readline row
     amount = row['SUMM'].to_i
+    kod = row['KOD'].to_s.split('.')[0]
+    fond = row['KKFN'].to_s.split('.')[0]
+
     return if amount.nil? || amount == 0
+    # return unless %w(2 12).include? kod
+    return unless %w(1 2 3 7).include? fond
 
     kkd = row['KKD'].to_s
 
     item = {
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
         '_month' => row['MONTH'].to_s.split('.')[0],
-        'fond' => row['KKFN'].to_s.split('.')[0],
+        'fond' => fond,
         'amount' => amount / 100,
     }
 

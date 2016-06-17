@@ -2,10 +2,32 @@ class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
   before_action :set_calendar
 
-  def pie_data
-    starts_at = '2015-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-    ends_at = '2016-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+  def show
+    @calendar = Calendar.find(params[:calendar_id])
+      respond_to do |format|
+        format.html {render 'widgets/calendar/calendar_box'}
+      end
 
+  end
+
+  def pie_cycle
+    @curr_town_event = @calendar.events.where(holder: 1, :starts_at.lte => Date.current).last
+    @curr_people_event = @calendar.events.where(holder: 2, :starts_at.lte => Date.current).last
+  end
+
+  def timeline
+  end
+
+  def pie_data
+    last_event_date = get_last_event_date || Time.now
+    # last_event_date = @calendar.events.desc(:ends_at).limit(1).first.ends_at
+    # @calendar.events.desc(:ends_at).limit(1).first.ends_at.strftime("%Y-1-1")
+
+    starts_at = Date.new(last_event_date.year,01,01)
+    ends_at = Date.new(last_event_date.year+1,01,01)
+    # starts_at_old = '2016-01-01'.to_date #Event.asc(:starts_at).limit(1).first.starts_at.to_date
+    # ends_at_old = '2017-01-01'.to_date #Event.desc(:ends_at).limit(1).first.ends_at.to_date
+    # binding.pry
     events = { e1: [], e2: [] }
 
     events[:e1] = build_pie starts_at, ends_at, @calendar.events.event_timeline(1, starts_at, ends_at)
@@ -16,7 +38,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   def timelinejs_data
     starts_at = Date.current.strftime('%Y,%m,%d') #Event.asc(:starts_at).limit(1).first.starts_at.to_date
-
+    # binding.pry
     timeline = {
         'timeline' => {
             'uniqueid' => "#{@calendar.id}",
@@ -67,6 +89,7 @@ class Widgets::CalendarController < Widgets::WidgetsController
   end
 
 
+
   private
 
   def build_pie starts_at, ends_at, ev
@@ -113,6 +136,12 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
   def set_calendar
     @calendar = Calendar.find(params[:calendar_id])
+  end
+
+  def get_last_event_date
+    unless @calendar.events.empty?
+      @calendar.events.where(:ends_at.ne =>  nil).desc(:ends_at).limit(1).first.ends_at
+    end
   end
 
 end

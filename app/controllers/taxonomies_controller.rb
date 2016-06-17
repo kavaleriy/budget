@@ -1,10 +1,11 @@
 class TaxonomiesController < ApplicationController
+  layout 'application_admin'
 
   before_action :set_taxonomy, only: [:update, :show, :show_modify, :edit, :destroy, :recipients, :recipient_by_code]
   before_action :set_params, only: [:show_modify]
   before_action :set_attachments, only: [:show, :show_modify, :edit]
 
-  before_action :authenticate_user!, except: [:show, :show_modify, :town_profile]
+  before_action :authenticate_user!, except: [:show, :show_modify,:town_profile]
   load_and_authorize_resource
 
   def recipients
@@ -37,8 +38,19 @@ class TaxonomiesController < ApplicationController
     end
   end
 
+  def town_profile
+    if params[:town_id] == 'test'
+      @taxonomy = Taxonomy.where(:owner => '').first
+    else
+      town = Town.find(params[:town_id])
+      @taxonomy = Taxonomy.where(:owner => town.title).first
+    end
+
+    render 'show'
+  end
+
   def index
-    @taxonomies = Taxonomy.visible_to current_user
+    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
   end
 
   def show
@@ -111,16 +123,6 @@ class TaxonomiesController < ApplicationController
     end
   end
 
-  def town_profile
-    if params[:town_id] == 'test'
-      @taxonomy = Taxonomy.where(:owner => '').first
-    else
-      town = Town.find(params[:town_id])
-      @taxonomy = Taxonomy.where(:owner => town.title).first
-    end
-    render 'show'
-  end
-
   private
 
   def set_taxonomy
@@ -157,7 +159,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title, :description, :is_kvk, :attachment_id, :description, :recipient_amount)
+    params.require(params[:controller].singularize).permit(:title, :name, :description, :is_kvk, :attachment_id, :description, :recipient_amount, :kmb)
   end
 
 end

@@ -25,8 +25,9 @@ module BudgetFileUpload
         xls = Roo::Excelx.new(path)
         xls.default_sheet = xls.sheets.first
         read_csv_xls xls
-      when '.DBF'
+      else '.DBF'
         read_dbf DBF::Table.new(path)
+
     end
   end
 
@@ -63,6 +64,11 @@ module BudgetFileUpload
     end
 
     { :rows => rows, :cols => cols }
+  end
+
+  def get_arr_by_table_path(file_arr)
+    file = upload_file(file_arr,file_arr.original_filename)
+    read_table_from_file file[:path]
   end
 
 end

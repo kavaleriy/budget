@@ -1,5 +1,7 @@
 module Repairing
   class RepairsController < ApplicationController
+    layout 'application_admin'
+
     before_filter :update_repairing_coordinates, only: [:update]
 
     before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy]
@@ -25,6 +27,7 @@ module Repairing
 
     # GET /repairing/repairs/1/edit
     def edit
+
       respond_to do |format|
         format.js { render :edit }
       end
@@ -52,6 +55,8 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_repair.update(repairing_repair_params)
+          flash[:notice] = I18n.t('repairing.layers.update.success')
+          format.js {}
           format.json { render :show, status: :ok }
         else
           format.json { render json: @repairing_repair.errors, status: :unprocessable_entity }
@@ -77,14 +82,14 @@ module Repairing
       def update_repairing_coordinates
         par = params[:repairing_repair][:coordinates]
         unless (par.nil? || par.kind_of?(Array))
-          coordinates = par.split(' ').map {|p| p.split(',') }
+          coordinates = par.split(") ").map{|p| p.split(", ")}.map{|p| [p[0].split("LatLng(")[1],p[1]]}
           params[:repairing_repair][:coordinates] = coordinates
         end
       end
 
     # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_repair_params
-        params.require(:repairing_repair).permit! #(:title, :description, :amount, :repair_date, :address, :address_to, :coordinates).tap { |whitelisted|  whitelisted[:coordinates] = params[:repairing_repair][:coordinates] }
+        params.require(:repairing_repair).permit! #(:description, :amount, :repair_date, :address, :address_to, :coordinates).tap { |whitelisted|  whitelisted[:coordinates] = params[:repairing_repair][:coordinates] }
       end
   end
 end

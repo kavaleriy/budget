@@ -1,0 +1,14 @@
+.row
+  = render :partial => 'town_row', :locals => {:town => @town.first, css: 'font-size: 26px'}
+-regions.each do |region|
+  .panel.panel-default.no_overflow
+    #people.panel-heading{:role => "tab",id: region[:koatuu]}
+      %h4.panel-title
+        %a{"aria-controls" => "regionCollapse_#{region[:koatuu]}", "data-url" => child_towns_path(region[:koatuu]),
+             "aria-expanded" => "true", "data-parent" => "#regions_acordion", "data-toggle" => "collapse", :href => "#regionCollapse_#{region[:koatuu]}",
+             :role => "button"}
+          =render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: region}
+
+    #regionCollapse.panel-collapse.collapse{"aria-labelledby" => "peopleOne", :role => "tabpanel",id: region[:koatuu]}
+      .panel-body#city_area
+        #city_acordion.panel{id: region[:koatuu]}

@@ -1,0 +1,12 @@
+:css
+  #year_change {
+    padding-top: 10px;
+    padding-right: 15px;
+  }
+- current_year = @years.max
+
+%h2#year_change
+  = t('key_indicate_map.indicators.indicators_list.keys')
+  .select_tag
+    = select_tag :year, options_for_select((@years.min.to_i..current_year.to_i).to_a.reverse, @selected_year || current_year.to_i )
+  = t('key_indicate_map.indicators.indicators_list.year')

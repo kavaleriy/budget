@@ -1,4 +1,6 @@
 class CalendarActionsController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_calendar_action, only: [:show, :edit, :update, :destroy]
 
   before_action :authenticate_user!, only: [:index, :edit]
@@ -29,7 +31,6 @@ class CalendarActionsController < ApplicationController
   # POST /calendar_actions.json
   def create
     @calendar_action = CalendarAction.new(calendar_action_params)
-
     respond_to do |format|
       if @calendar_action.save
         format.html { redirect_to @calendar_action, notice: t('calendar_action.create') }
@@ -73,6 +74,6 @@ class CalendarActionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_action_params
-      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :text_color, :color)
+      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :text_color, :color, :action_type)
     end
 end

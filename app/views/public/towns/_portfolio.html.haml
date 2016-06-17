@@ -16,23 +16,13 @@
     font-weight: 700;
     opacity: .9;
   }
-
-.col-sm-3
-  .view.view-tenth{:style => @town_items.include?(item) ? '' : 'opacity: 0.3; pointer-events: none;'}
-    %img.img-responsive{:src => "/assets/public/" + item + ".jpg"}
-      .mask
-        -#%h2
-        -#  = t('public.towns.portfolio.' + item)
-        -#%p Lorem ipsum dolor asit amet
-        - if item == 'purchase'
-          %a.info{ :href => t('public.towns.portfolio.' + item + '_path'), :target => 'blank' }
+-town_items.each do |key, value|
+  .col-sm-3
+    .view.view-tenth
+      %img.img-responsive{:src => value['img_src']}
+        .mask
+          %a.info{ :href => value['url'] }
             = t('public.towns.portfolio.detail')
-        - else
-          %a.info{ :href => t('public.towns.portfolio.' + item + '_path')  + '/town_profile/' + @town.id, :target => 'blank' }
-            = t('public.towns.portfolio.detail')
-    - if !@town_items.include?(item)
-      %span.no_data
-        = t('public.towns.portfolio.no_data')
-    %hr.blue-line
-      .portfolio-title
-        = t('public.towns.portfolio.' + item)
+      %hr.blue-line
+        .portfolio-title
+          =value['title']

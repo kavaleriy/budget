@@ -1,15 +1,103 @@
 uk:
+  choose_calendar: "Календар"
+  actions: "Дії"
+  REGION_LEVEL: 'Область'
+  AREA_LEVEL: 'Район'
+  TOWN_LEVEL: 'Місто обласного значення'
+  CITY_LEVEL: 'Місто, адміністративний центр'
+  VILLAGE_LEVEL: 'Місто або селище'
+  invalid_format: "Невірний формат"
+  invalid_length: "Неправильна довжина має бути %{length} знаків"
+  empty_file: "Поле для файлу не може бути пустим"
+  beta_test: "Сайт знаходиться у тестовому режимі"
+  save: "Зберегти"
+  edit: "Редагувати"
+  show: "Переглянути"
+  destroy: "Видалити"
+  back: "Назад"
+  cancel: "Відмінити"
+  confirm_yes: "Так"
+  confirm_no: "Ні"
+  confirm_destroy: "Видалення"
+
+  template:
+    title:
+      title: 'Заголовок для Pdf'
+      city: 'Введіть назву міста'
+    last_page:
+      title: 'Твоє місто, твій бюджет'
+      created_with: 'Створено за допомогою : openbudget.in.ua'
+  xls:
+    done: 'Усі записи були оновленні'
+    not_done: "Не усі записи були записані"
+    error_row_number: "У полі під номером %{row} невірне koatuu : %{koatuu}"
+    edit_header: "Завантажити показники через таблицю"
+    edit_button: "Завантажити показники"
+    add_file: "Додати xls файл"
+    check_row_name: 'Перевірте назви в таблиці'
+  content_manager:
+    page_containers:
+      en_header: "Заголовок англійською"
+      en_content: "Контент англійською"
+      uk_header: "Заголовок українською"
+      uk_content: "Контент українською"
+      parent: "Вибір меню"
+      header: "Заголовок"
+      content: "Контент"
+      main: "Список контенту"
+      edit: "Редагувати"
+      show: "Переглянути"
+      alias: "Асоціювання"
+      edit_header: "Редагування контенту"
+      show_header: "Перегляд контенту"
+      new_header: "Створення контенту"
+      new: "Створити"
+      action: "Адміністрування"
+      title: "Менеджер контенту"
+      confirm: "Ви дійсно хочете видалити сторінку з контентом?"
+      commit: "Так"
+  errors:
+    messages:
+      carrierwave_processing_error: "Cannot resize image."
+      carrierwave_integrity_error: "Not an image."
+      carrierwave_download_error: "Couldn't download image."
+      extension_white_list_error: "Ви вибрали файл з розширенням %{extension}, дозволені розширення: %{allowed_types}"
+      extension_black_list_error: "You are not allowed to upload %{extension} files, prohibited types: %{prohibited_types}"
+  activerecord:
+    attributes:
+      invalid:
+        link: "Введіть будь-ласка валідне посилання"
+        date: "Введіть будь-ласка валідну дату"
   date:
-    formats:
-      default: "%d %B %Y"
+    date:
+      formats:
+        default: "%d %B %Y"
+        short: "%b %d"
+        long: "%B %d, %Y"
+        months: "%B"
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
-
+  towns:
+    index:
+      add_town: 'Додати місто'
+      header: "Список міст"
+      title: "Міста"
+    new_town:
+      level: 'Виберіть рівень'
+      select_level: 'Оберіть рівень'
+      create_city: 'Створити місто'
+      area_title: 'Назва області'
+    edit:
+      head_edit_town: "Редагувати профіль міста"
   layouts:
     application:
       application_title: "Відкритий бюджет"
-    navbar:
+    navbar_admin:
+      sankey: "Взаємозв'язок"
+      news_header: "Новини"
+      all_news: "Всі новини"
+      create_news: "Додати новину"
       budget: "Бюджет"
       budget_files: "Бюджетні файли"
       transaction: "Бюджетні платежі"
@@ -22,6 +110,7 @@ uk:
       user: "Користувач"
       edit_profile: "Редагувати профіль"
       library: "Бібліотека"
+      export: "Експорт"
       logout: "Вийти"
       login: "Вхід"
       module2: "Відкритий бюджет: просто про складне"
@@ -47,12 +136,52 @@ uk:
       module5: "Показники діяльності міста"
       module7: "7. Цільові програми"
       module8: "8. Капітальний ремонт та бюджет розвитку"
-    navbar_public:
+    navbar:
+      edit_profile: "Редагувати"
+      logout: "Вийти"
+      authorization: "Authorization"
       editor: "Модулі"
       home: "Головна"
-      about: "Про нас"
+
+      #Budget-system dropdown. BEGIN
+      bud_sys: "Бюджетна система"
+      bud_sys_ua: "Бюджетна система України"
+      bud_proc: "Бюджетний процес"
+      bud_glos: "Глосарій"
+      #Budget-system dropdown. END
+
+      #Visualisation dropdown. BEGIN
+      visual: "Візуалізації"
+      grom_budget: "Громадський бюджет"
+      compare_budget: "Порівняти бюджети"
+      kpi: "KPI"
+      budget: "Бюджет"
+      budget_cal: "Бюджетний календар"
+      towns_programs: "Місцеві програми"
+      budget_at_map: "Бюджет на мапі"
+      #Visualisation dropdown. END
+
+      #Public control dropdown. BEGIN
+      public_control : "Громадський контроль"
+      library: "Бібліотека"
+      history_success: "Історії успіху"
+      #Public control dropdown. END
+
+      about: "Про проект"
       contacts: "Контакти"
       authorization: "Авторизація"
+    soc_buttons:
+          lang: "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.5"
+          like: "Подобається"
+          share: "Поділитись"
+    nav_admin:
+      admin: "Адмін"
+      users: "Користувачі"
+      town: "Міста"
+      currency: "Валюта"
+      subscribers: "Підписувачі"
+      news_header: "Новини"
+      slider_header: "Слайдер"
   form:
     save: "Зберегти"
     cancel: "Відміна"
@@ -67,6 +196,7 @@ uk:
     upload: "Завантажити"
     add: "Додати"
     file: "Файл"
+    load: "Завантажити"
     title: "Назва"
     value: "Значення"
     new_document: "Новий документ"
@@ -80,6 +210,7 @@ uk:
     detailed: "Докладніше про документ"
     show: "Показати"
     search: "Пошук"
+    description: "Опис"
   subscribers:
     index:
       title: "Підписчики"
@@ -90,6 +221,10 @@ uk:
     show:
       title: "Підписка"
   budget_files:
+    table:
+      empty_rows:
+        amount_not_0: "Таблиця не має рядків з ідентифікатором поля amount який дорівнює 0"
+    empty_table: 'Вибачте, але таблиця пуста'
     editinfo_form:
       name: "Коротка назва"
       description: "Детальний опис"
@@ -106,10 +241,10 @@ uk:
       title: "Документи для візуалізації"
       upload_budget_file: "Завантажити DBF/XLS/CSV"
       upload_revenues: "Завантажити доходи"
-      upload_rot: "Завантажити доходи ROT"
+      upload_rot: "Завантажити доходи план ROT"
       upload_rot_fond: "Завантажити доходи - Фонд"
       upload_expences: "Завантажити видатки"
-      upload_rov: "Завантажити видатки ROV"
+      upload_rov: "Завантажити видатки план ROV"
       upload_rov_fond: "Завантажити видатки - Фонд"
       upload_rov_fact: "Завантажити видатки 53xxx"
       upload_rov_fact_zvit: "Завантажити видатки ZVIT"
@@ -119,8 +254,14 @@ uk:
       upload_lvivobl_rov: "Видатки Львів - обл (план/факт/фонд)"
       upload_lvivobl_rot: "Доходи Львів - обл (план/факт/фонд)"
       upload_vz_file: "Завантажити VZ*.ZIP"
-      upload_ft_file: "Завантажити FT*"
-      upload_vd_file: "Завантажити VD*"
+      upload_ft_file: "Завантажити доходи факт FT*"
+      upload_vd_file: "Завантажити видатки факт VD*"
+      upload_fz_file: "Зміни до плану FZ*"
+      search_town: "місто/район/область"
+      type_select:
+        type: "тип"
+        plan: "план"
+        fact: "факт"
     show:
       title: "Візуалізація файлу"
       editinfo: "Пояснення"
@@ -142,6 +283,13 @@ uk:
       description: "Опис дії"
       text_color: "Текст"
       color: "Фон"
+      radio_header: "Типові дії"
+      radio_folding: "Складання"
+      radio_analysis: "Аналіз і контоль"
+      radio_discussion: "Обговорення і затвердження"
+      radio_execution: "Виконання"
+      radio_other: "Інше"
+      radio_no_indicated: "Не вказано"
     edit:
       title: "Редагування дії"
     index:
@@ -208,14 +356,33 @@ uk:
         title: "Події"
   community:
     community:
+      edit:
+        head: "Редагування територіальних громад"
+        instruction:
+          sentence_click: "Натисніть на громаді, щоб відредагувати дані по ній"
+          sentence_center: "Перетяніть мишкою центр громади, якщо потрібно його змінити"
+          sentence_save: 'Не забудьте натиснути кнопку "Зберегти", щоб зберегти всі зміни по конкретній громаді'
+        form:
+          name: "Назва громади"
+          link: "Посилання"
+          composition: "Склад громади"
+          center: "Центр громади (геокоординати)"
+          boundaries: "Межі громади (геокоординати)"
+          agreed: "Узгоджено"
       index:
         header: "Територіальні громади"
+        map_help: "Наведіть курсор на об’єкт на мапі для відображення деталей або натисніть, щоб переглянути громади у вибраній області"
+        edit_community: "Редагувати громади"
+        load_community: "Завантажити громади"
   documentation:
+    branches:
+      edit_title: "Редагувати тип документів"
     documents:
       index:
         documents: "Документи"
         documents_search: "Пошук документів"
         locked: "Заблоковані"
+        download: "Файл"
         only_locked: "тільки заблоковані"
         file: "Файл"
         category: "Категорія"
@@ -226,6 +393,12 @@ uk:
         locked: "Заблокований"
         unlocked: "доступний"
         locked_s: "заблокувати"
+        documents_list:
+          name: "Вкажіть назву документа..."
+          from: "з..."
+          to: "по..."
+          city: "Вкажіть місто..."
+          type: "Вкажіть тип документу..."
       search:
         town_region: "Вкажіть місто або область"
         doc_type: "Вкажіть тип документу"
@@ -237,9 +410,47 @@ uk:
     categories:
       index:
         header: "Категорії документів"
+        about_category: "Докладніше про категорію..."
     link_categories:
       index:
         header: "Категорії посилань"
+        links_list:
+          name: "Вкажіть назву посилання..."
+          value: "Вкажіть посилання..."
+  export_budgets:
+    town_profile: "Профіль міста"
+    visualisation_list:
+      choose_taxonomy_rot: "Виберіть доходи"
+      choose_taxonomy_rov: "Виберіть видатки"
+      choose_indicate: "Виберіть показники"
+      choose_calendar: "Виберіть календар"
+    new:
+      new: 'Створення нового бюджету'
+    form:
+      really_destroy?: "Ви дійсно хочете видалити цю сторінку?"
+      year: "Рік"
+      new_page: 'Нова сторінка'
+      add_page: 'Додати сторінку'
+      title: "Назва"
+      town_name: "Оберіть місто"
+      save: "Зберегти"
+    page_form:
+      last_page: "Остання сторінка"
+      content_page: "Зміст"
+      title_page: 'Титульна сторінка'
+      public_budget: "Громадський бюджет"
+      city_budget: "Бюджет міста"
+      where_is_my_money: "Куди йдуть мої гроші"
+      my_price: "Витрати на людину"
+      indicates: "Показники"
+      budget_influence: "Громадська участь"
+    edit:
+      header: 'Редагувати бюджет для експорту'
+    modal:
+      save: "Зберегти"
+    show:
+      show: "Перегляд бюджету для експорту"
+      town_profile: "Профіль міста"
   indicate:
     taxonomies:
       index:
@@ -260,6 +471,7 @@ uk:
         icon: "Іконка"
         color: "Колір"
         type: "Тип"
+        saved: "Довідник успішно збережено."
       upload_form:
         header: "Завантаження довідника"
     indicator_files:
@@ -279,6 +491,10 @@ uk:
         compare_towns: "Міста для порівняння: "
         visual_params: "Параметри візуалізації: "
   key_indicate_map:
+    menu_item_admin:
+      indicator_keys: "Довідник ключових показників (карта)"
+      indicator_files: "Завантажити файли з показниками (карта)"
+      indicators: "Порівняння ключових показників (карта)"
     indicator_keys:
       index:
         header: "Довідник ключових показників"
@@ -292,8 +508,16 @@ uk:
         integer: "ціле"
         float: "дійсне"
         add: "Додати показник"
+        x-editable_messages:
+          name: "Вкажіть назву показника..."
+          unit: "Вкажіть одиницю вимірювання..."
+          group: "Вкажіть групу показника..."
+          integer_or_float: "ціле чи дійсне?..."
     indicator_files:
       index:
+        year: "Рік"
+        title: 'Назва'
+        edit_indexes: 'Редагувати показники'
         header: "Завантаження файлів з ключовими показниками"
       edit:
         header: "Редагування ключових показників з файлу "
@@ -301,8 +525,12 @@ uk:
       index:
         header: "Порівняння ключових показників"
       indicators_list:
-        keys: "Ключові показники за "
+        keys: "Показники за "
         year: "рік"
+        explanation: "Пояснення"
+        comparison: "Порівняння"
+        hint1: "додати місто/область у порівняння: клікніть по місту/області на карті"
+        hint2: "видалити місто/область з порівняння: повторно клікніть по місту/області на карті, або клікніть по 'x' у потрібній стрічці"
   programs:
     towns:
       index:
@@ -342,11 +570,11 @@ uk:
       branch_report:
         header: "Звіт по галузям для м. "
       show:
+        # old
         header: "Детальний огляд програми"
         targets: "Основні цілі"
         tasks: "Основні задачі"
         results: "Очікувані результати"
-        responsible: "Відповідальні за виконання програми"
         chief_steward: "Головний розпорядник"
         main_executor: "Відповідальний виконавець"
         participants: "Учасники програми"
@@ -358,6 +586,13 @@ uk:
         phase: "етап"
         years: " рр."
         attachments: "Додатки"
+        tab_gantt: "Проекти"
+        funds_spend: "Кошти, витрачені на реалізацію програми:"
+        #        new
+        group_indicators: 'Групи показників'
+        main_target: 'Основні цілі'
+        responsible: "Відповідальні за виконання програми"
+
       form:
         targets: "Основні цілі програми"
         target_label: "Цілі програми"
@@ -365,6 +600,12 @@ uk:
         term: "Термін виконання програми"
         phase: "етап виконання програми"
         add_phase: "Натисність кнопку +, щоб додати етап виконання програми"
+      program:
+        amounts:
+          done: 'Виконано'
+          remains: 'Залишилось'
+          planned: 'Заплановано'
+
   public:
     timeline:
       city: "Дії влади"
@@ -374,6 +615,18 @@ uk:
     event:
       empty_event: "Виберіть подію для відображення."
     home:
+      index:
+        select_town: "Оберіть місто"
+        map_help: "Наведіть курсор на об’єкт на мапі для відображення деталей"
+        show_town_profile: "Демонстрація типового профіля міста"
+        about:
+          portal: "Портал"
+          open_budget: "Відкритий бюджет"
+          1_sentence: "покликаний створити умови для задоволення потреб громадян в інформації про використання коштів місцевих бюджетів."
+          2_sentence: "Портал містить комплекс програмного забезпечення для створення візуалізацій дохідної та видаткової частини місцевих бюджетів, ключових показників діяльності та бюджету адаптованого для пересічних громадян."
+          3_sentence: "Користуючись програмним забезпечення порталу органи місцевого самоврядування мають можливість створювати візуалізації на основі фінансової та статистичної звітності та розміщувати їх на своїх веб-сайтах."
+          4_sentence: "Журналісти та громадські активісти мають нагоду отримати інформацію про використання бюджетних коштів в доступному вигляді та порівняти відповідну інформацію з іншими регіонами України."
+          5_sentence: "Для отримання детальнішої інформації оберіть на карті свій регіон"
       documents:
         file: "Файл"
         category: "Категорія"
@@ -383,6 +636,9 @@ uk:
         type: "Тип"
         documents: "Документи"
         documents_search: "Пошук документів"
+      news:
+        title: "Новини"
+        no_news: "Вибачте, але на данний час новини відсутні"
     documents:
       index:
         documents: "Документи"
@@ -390,6 +646,7 @@ uk:
         sort_by: "Сортувати за "
         sort_name: "назвою"
         sort_type: "типом"
+        edit_files: "Редагувати файли"
     towns:
       portfolio:
         detail: "Докладніше"
@@ -401,24 +658,43 @@ uk:
         calendar: "Бюджетний календар"
         sankey: "Взаємозв'язок доходів і видатків"
         repair: "Карта ремонтів"
-        purchase: "Перевірити державні закупівлі"
         key_docs: "Ключові документи"
-        budget_path: "/taxonomies"
-        programs_path: "/programs/towns"
-        indicators_path: "/indicate/taxonomies"
-        keys_path: "/key_indicate_map/indicators/get"
-        calendar_path: "/calendars/calendars"
-        sankey_path: "/sankeys"
-        repair_path: "/repairing/map"
-        purchase_path: "https://ips.vdz.ua/ua/purchase_search.htm"
-        key_docs_path: "/public/documents"
+        purchase: "Перевірити державні закупівлі"
+        prozoroo: "Prozorro"
+        edata: "Портал публічних фінансів"
+#        programs_path: "/programs/towns"
+#        indicators_path: "/indicate/taxonomies"
+#        keys_path: "/key_indicate_map/indicators/get"
+#        calendar_path: "/calendars/calendars"
+#        sankey_path: "/sankeys"
+#        repair_path: "/repairing/map"
+#        key_docs_path: "/public/documents"
         no_data: "На жаль, даних немає"
         visuals: "Візуалізації"
         documents: "Документи"
         links: "Корисні посилання"
         sh_description: "Короткі відомості"
         town_links: "Посилання"
+        pub_budget: "Громадський бюджет"
+      budget:
+        tab_rot: "Доходи"
+        tab_rov: "Видатки"
+        tab_sankey: "Взаємозв’язок"
+      pdf_docs:
+        no_data: 'Ще не створено жодного файлу'
+        new_export: "Створити"
+        save_as_pdf: "Зберегти як pdf"
+        year: "Рік"
+        title: "Назва"
+        templ: "Template"
+        view: "View"
+        dload: "Завантажити"
+        drop: "Видалити"
+      map_instruction: "Клікніть по області, щоб перейти на її профіль. Або оберіть місто у випадаючому списку нижче, щоб перейти на профіль міста."
+      towns_select: "Перейти на профіль міста:"
   sankeys:
+    get_sankey: "Взаємозв'язок доходів і видатків"
+    not_found: "Взаємозв'язок не знайдено"
     save: "Зберегти візуалізацію"
     new: "Нова візуалізація"
     create: "Створити візуалізацію"
@@ -459,11 +735,17 @@ uk:
     calendar:
       pie_cycle:
         year: "рік"
-      event:
-        select_event: "Виберіть подію з календаря для відображення"
       calendar_box:
         tab_calendar_year: "Рік"
         tab_calendar_month: "Місяць"
+        select_event: "Виберіть подію з календаря для відображення"
+        tab_calendar_timeline: "Timeline"
+      timeline:
+        city: "Місто"
+        people: "Громада"
+      timeline_pdf:
+        city: "Місто"
+        people: "Громада"
     visify:
       sidebar:
         explanation: "Пояснення"
@@ -478,6 +760,9 @@ uk:
       bubbletree:
         title: "Кулі 1"
         descr: "візуалізація"
+        programmatic: "Програмний"
+        economic: "Екомічний"
+
       sunburst:
         title: "Кругова діаграма 1"
         descr: "візуалізація"
@@ -520,22 +805,113 @@ uk:
       help: "Інструкція по завантаженню файлів"
   taxonomies:
     index:
+      created_at: 'Створено'
       title: "Візуалізації"
       file_title: "Назва"
       description: "Примітка"
     form:
       is_kvk: "відомча класифікація видатків"
+      kmb: "Код місцевого бюджету (kmb)"
     file_upload:
       title: "Прикріпити додаткові файли"
-
+    attachment:
+      name_doument: "Вкажіть назву документа..."
     recipients:
       title: "Отримувачi"
+      not_specified: "не вказано"
+  library:
+    books:
+      index:
+        file: "Файл"
+        cover: "Обкладинка"
+        category: "Категорія"
+        title: "Назва"
+        author: "Автор"
+        year_publication: "Рік видання"
+        description: "Опис"
+        actions: "Дії"
+        w_books: "книги"
+        w_book: "книга"
+        add_book: "Додати книгу"
+        p_back: "Назад"
+        p_next: "Вперед"
+        r_more: "Детальніше"
+        ask: "Ви впевнені?"
+        edit: "Редагувати"
+        delete: "Видалити"
+        errors: "Поля обов'язкові для заповнення"
+      show:
+        book_look: "Перегляд книги"
+        link: "Ресурс"
+        download: "Загрузити"
+        publisher: "Опублікував"
+        books: "Книги"
+      new:
+        download: "Завантаження"
+        name_book: "Назва книги"
+        new_book: "Нова книга"
+        chose_book: "Обрати книгу"
+        save: "Зберегти"
+        select: "Обрати"
+      edit:
+        editing: "Редагування"
+        edit_book: "Редагування книги"
+
+  modules:
+    budget_news:
+      index:
+        choose_date: "Виберіть дату"
+        actual_news: "Актуальні новини"
+        show_all_news: "Переглянути всі новини"
+        header: "Новини"
+        title: "Назва"
+        text: "Текст"
+        image: "Зображення"
+        link: "Посилання"
+        date: "Дата створення"
+        new: "Створити"
+        create: "Додати новину"
+        edit: "Редагувати"
+        destroy: "Видалити"
+        confirm: "Ви впевнені що хочете видалити новину?"
+        sure: "Впевнен"
+        action: "Дії"
+      form:
+        save: "Зберегти"
+      edit:
+        back: "Назад"
+        show: "Переглянути"
+        header: "Редагувати новину"
+      new:
+        header: "Створити новину"
+        back: "Назад"
+      show:
+        showin: "Show :"
+    sliders:
+      index:
+        order: 'Порядковий номер'
+        header: "Cлайдер на головній сторінці"
+        add: "Додати слайдер"
+        text: "Текст на слайдері"
+        img: "Зображення"
+        link: "Посилання"
+      new:
+        header: "Створення слайдеру"
+      crop:
+        header: "Обрізати зображення"
+        area: "Виберіть зону"
+        crop_save: "Зберегти"
+        preview: "Попередній перегляд"
+      edit:
+        header: "Редагувати слайдер"
   budget_file_name: "Назва бюджетного файлу"
   budget_file_title: "Назва"
   budget_file_save: "Зберегти бюджетний файл"
-  file_path: "Шлях до файлу"
+  file_path: "Файли для завантаження"
   owner: "Місто"
+  area: "Область"
   key: "Код"
+  title: "Назва"
   name: "Назва"
   budget: "Назва"
   file: "Файл"
@@ -550,6 +926,8 @@ uk:
   aggregated: "Інше"
   other: "Інше"
   ukraine: "Україна"
+  quick_search: "Швидкий пошук: "
+  town_search_placeholder: "Почніть вводити назву міста/області"
 
   calendar:
     create: "Календар був успішно створений."
@@ -566,6 +944,7 @@ uk:
     load_fail: "Не вдалося завантажити файл. Перевірте чи тип файлу відповідає змісту даних =>"
     save: "Дані збережені успішно."
     delete: "Дані успішно видалені."
+    not_download_file: "Вибачте але файл ще не було завантажено"
 
   taxonomies_controller:
     save_success: "Дані успішно збережені."
@@ -589,6 +968,8 @@ uk:
     select: "Розмір: "
     show_embed_code: "Показати код для вбудови"
     hide_embed_code: "Сховати код для вбудови"
+    link: "Посилання:"
+    title: "Посилання на віджети"
 
   js:
     visify:
@@ -600,15 +981,32 @@ uk:
   select_town: "Вибрати місто"
   town_links_placeholder: "Посилання на сайти органів ОМС територіальної одиниці"
   town_description_placeholder: "Короткі відомості про місто/область"
-
-  ask_admin: "Щоб змінити це поле зверніться до адміністратора"
   data_type: "Показники"
   users:
     form:
       locked: "Заблокований"
+    index:
+      reference_towns: "Довідник міст"
+      last_sign_in_at: "Останній вхід в систему"
+      roles:
+        administrator: "Адміністратор"
+        public_organisation: "Громадська організація"
+        city_authority: "Орган влади"
+        central_authority: "Орган центральної влади"
+      roles_head: "Ролі"
+      role: "Роль"
   taxonomy: "Візуалізація"
+  placeholder_select2: 'Виберіть або створіть нову візуалізацію'
   repairing:
+    category: "Категорії ремонтів"
+    category_edit:
+      name: "Назва"
+      image: "Зображення"
+      image_load: "Завантажити/змінити"
+      need_name_category: "Вкажіть назву категорії..."
     layers:
+      index:
+        no_files: 'Ви не завантажили жодного файлу'
       search:
         search: "вкажіть адресу для пошуку"
         search1: "вкажіть кінцеву адресу для пошуку"
@@ -618,14 +1016,22 @@ uk:
       edit:
         repair: "Вибрано на карті"
         layer: "Параметри прошарку"
+        title: "Вкажіть назву прошарку..."
+        category: "Вкажіть категорію робіт..."
+        town: "Вкажіть місто..."
+        description: "Детальний опис прошарку..."
+      update:
+        success: 'Дані успішно відредаговано'
+        error: 'Вибачте але виникла помилка'
     repairs:
       form:
         title: "Назва"
-        obj_owner: "Балансоутримувач"
+        obj_owner: "Виконавець"
         subject: "Об'єкт"
         work: "Роботи"
         amount: "Сума"
-        repair_date: "Дата ремонту"
+        repair_start_date: "Початок ремонту"
+        repair_end_date: "Закінчення ремонту"
         warranity_date: "Гарантія"
         address: "Адреса 1"
         address_to: "Адреса 2"
@@ -635,6 +1041,55 @@ uk:
         add_category: "Додати категорію"
         edit_category: "Редагувати категорію"
         category: "Категорія"
+
+        coordinates: "Координати"
+    maps:
+      info_popup:
+        info_coordinates: "Кординати"
+        info_adress: "Адреса"
+        info_object: "Об\'єкт"
+        info_works: 'Роботи'
+        info_performer: 'Виконавець'
+        info_spending_units: 'Розпорядник'
+        info_price: 'Вартість'
+        info_currency: 'грн.'
+      map_select:
+        search_adress: "Пошук за адресою ремонту"
+        select_category_work: "Вибрати категорію робіт:"
+        select_town: "Обрати місто"
+        year: "рік"
+      instruction:
+        head_general_information: "Загальні відомості"
+        sentence_1: 'Модуль "Ремонт" призначений для відображення інформації про ремонтні роботи, які проводяться у місті/районі/області. На основі даних із завантажених в систему файлів будується інтерактивна карта ремонтів.'
+        head_reference_works: "Довідник робіт"
+        sentence_2: "містить категорії та підкатегорії (види) робіт."
+        sentence_3: 'Кожен файл з ремонтними роботами відповідає певній категорії робіт. Стовбець файлу "Робота" - відповідає підкатегорії (виду) робіт за довідником.'
+        head_layers: "Слої"
+        sentence_4_1: "В модулі"
+        sentence_4_2: "можна завантажити файли: 1 файл = 1 категорія робіт."
+        sentence_5: "Файл із даними про ремонтні роботи повинен містити наступні стовбці."
+        item_1: "Балансоутримувач"
+        item_2: "Адреса"
+        item_3: "Адреса1 (кінцева адреса: вказується за потреби, якщо це, наприклад, ремонт дороги)"
+        item_4: "Об'єкт (конкретний об'єкт, на якому проводяться роботи)"
+        item_5_1: "Робота (вид робіт з "
+        item_5_2: "Довідника робіт"
+        item_6: "Вартість (в грн.)"
+        item_7: "Дата ремонту"
+        item_8: "Гарантія (дата придатності проведених робіт)"
+        item_9: "Додаткова інформація"
+        sentence_6: 'Адреси можна вказувати як точну геопозицію (наприклад, "49.23363, 28.46146"), так і назву (наприклад, "площа Гагаріна 4/1").'
+        sentence_7_1: "Приклад файлу з ремонтами -"
+        sentence_7_2: "завантажити"
+  footer:
+    about_portal:
+      portal: "Портал"
+      open_budget: "Відкритий бюджет"
+      established: "створено"
+      creators: 'Центром політичних студій та аналітики за участі Представництва Європейського Союзу в Україні, Міжнародного фонду "Відродження" і Програми розвитку ООН в Україні за'
+      license: "ліцензією Creative Commons Із зазначенням авторства - Некомерційна - Розповсюдження на тих самих умовах 4.0 Міжнародна"
+      based_code: "Засновано на коді з"
+      rules: "Права, що виходять за рамки цієї ліцензії доступні за адресою"
   roles: "Ролі"
   record_not_found: "запис не знайдено"
   description: "Примітка"
@@ -648,6 +1103,7 @@ uk:
     new:
       head: "Нова валюта"
   amount_usd: "Долари США"
+  amount_uah: "Гривня"
   amount_citizens: "На одного мешканця"
   amount_house_holdings: "На одне домогосподарство"
   amount_square: "На один кв.км."
@@ -655,4 +1111,13 @@ uk:
   amount_house_holdings_short: "на домогосподарство"
   amount_square_short: "на кв.км"
   cumulative_sum: "наростаючий пiдсумок"
-
+  taxonomy_caption: "Візуалізації"
+  taxonomy_rot: "Доходи"
+  taxonomy_rov: "Видатки"
+  budget_file_rot_fts:
+    new:
+      title: "Завантажити доходи FT"
+  year: "Рік"
+  messages_x-editable:
+    need_name_file: "Потрібно вказати ім'я файла!"
+    need_comment: "Потрібно вказати коментар!"

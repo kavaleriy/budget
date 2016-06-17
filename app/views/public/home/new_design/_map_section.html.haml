@@ -1,0 +1,74 @@
+:scss
+  .map-section, .news-section {
+    width: 100%;
+  }
+
+  .map-section .container .map-title-block, .news-section .container .news-title-block {
+    padding: 40px 0;
+  }
+
+  .map-section .container .map-title-block .map-title, .news-section .container .news-title-block .news-title {
+    padding: 0 140px;
+    text-align: center;
+  }
+
+  .map-section .container .map-title-block .map-title > p, .news-section .container .news-title-block .news-title > p {
+    margin: 0;
+    text-transform: uppercase;
+    font-family: 'Lato', sans-serif;
+    font-size: 32px;
+  }
+
+  .map-section .container .map-title-block .map-title > hr, .news-section .container .news-title-block .news-title > hr {
+    width: 85%;
+    border: 1px solid #ffd304;
+    margin: 15px auto;
+  }
+
+  .map-section .container .map-block {
+    padding: 0 120px;
+  }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          //padding-top: 0;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+  @media (max-width: 767px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+.map-section
+  .container
+    .col-xs-12.map-title-block
+      .map-title
+        %p Органи влади, у яких працює відкритий бюджет
+        %hr
+    .col-xs-12.map-block
+      = image_tag('new_design/Ukraine_map.svg', class: 'img-responsive')

@@ -13,14 +13,13 @@
   }
 
 
-%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => 'Докладніше про категорію...' }
+%a{ href: '#', id: 'description', 'data-type' => 'wysihtml5', 'data-escape' => false, 'data-pk' => "#{@documentation_category.id}", 'data-resource' => 'documentation_category', 'data-url' => "#{documentation_category_path}", 'data-emptytext' => t('documentation.categories.index.about_category') }
 
 :javascript
   $(document).ready(function() {
 
       $('#description').html('#{@documentation_category.description.html_safe() if @documentation_category.description}');
 
-      I18n.locale = window.aHelper.lang();
       var editor_locale;
       if(I18n.locale == "uk") {
         editor_locale = "ua-UA";

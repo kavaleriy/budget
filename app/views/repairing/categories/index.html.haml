@@ -18,7 +18,7 @@
 
 = content_for :header do
   .head.pull-left
-    = t('layouts.navbar.repairing_category')
+    = t('repairing.category')
 
 #flash_message.col-xs-12
 
@@ -41,7 +41,7 @@
 
     $('#repairing_category_tree_view').on("changed.jstree", function(e, data){
       if(data && data.selected && data.selected.length) {
-          $.get('categories/' + data.selected, function (d) {
+          $.get('categories/' + data.selected + '?locale=' + "#{params[:locale]}", function (d) {
           });
       }
       else {

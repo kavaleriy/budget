@@ -1,0 +1,48 @@
+:scss
+  #embeded_code_modal_window a{
+    color: #3276B1;
+    text-decoration: none;
+  }
+
+
+.modal.fade{:role => "dialog", :id => 'embeded_code_modal_window', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title
+          = t('iframe.title')
+      .modal-body
+        .form-horizontal
+          .form-group
+            .input-group
+              %input.form-control{}
+              =link_to 'Copy', "#" , class: 'input-group-addon',id:'embeded_code_copy_iframe'
+          %table
+            %tr
+              %td
+                =t('iframe.select')
+              %td
+                %select.form-control.iframe_size_select
+            %tr
+              %td
+              %td.iframe_other_size
+        %p
+          =t('iframe.link')
+        .input-group
+          %input.form-control#embed_src
+          =link_to 'Copy', "#" , class: 'input-group-addon',id:'embeded_code_copy_link'
+      .modal-footer
+
+:javascript
+
+  $(document).ready(function(){
+
+    $('#embeded_code_modal_window a').on('click',function(){
+        var message = $(this).prev().select();
+        var successful = document.execCommand('copy');
+        return false;
+    });
+
+  });

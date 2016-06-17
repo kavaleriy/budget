@@ -3,27 +3,29 @@ class BudgetFileRotFt < BudgetFile
   protected
 
   def readline row
+    fond = row['GR'].to_s.split('.')[0]
+    return unless %w(1 2).include?(fond)
+
     kkd = row['KOD'].to_s
 
     return unless kkd.length == 8
     return if %w(90010100 90010200 90010300).include?(kkd)
 
-    gr = row['GR'].to_s
-    # return if gr == '4'
 
     kkd_a = kkd.slice(0, 1)
     kkd_b = kkd.slice(0, 2)
     kkd_cc = kkd.slice(0, 4)
     kkd_dd = kkd.slice(0, 6)
 
+
     [
-        { :amount => row['T020'].to_i },
+        { :amount => row['T020'].to_f },
     ].map do |line|
       next if line[:amount].to_i == 0
 
       item = {
           'amount' => line[:amount] / 100,
-          'fond' => gr.to_i,
+          'fond' => fond.to_i,
       }
 
       dt = row['DT'].to_date
@@ -35,7 +37,8 @@ class BudgetFileRotFt < BudgetFile
       }
 
       item
-    end.reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
+    # end.reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
+    end.reject {|c| c.nil?}
   end
 
 end

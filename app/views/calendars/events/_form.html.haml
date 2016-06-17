@@ -25,16 +25,32 @@
         .input-group-addon
           %span.glyphicon.glyphicon-pencil
         = text_field(:event, :title, class: "form-control", placeholder: t('.placeholder_name'))
+    .row
+      .col-md-12
+        =f.select :action_type,
+           [[t('calendar_actions.form.radio_folding'), CalendarAction::ACTION_TYPE_FOLDING],
+            [t('calendar_actions.form.radio_analysis'),CalendarAction::ACTION_TYPE_ANALYSIS],
+            [t('calendar_actions.form.radio_discussion'),CalendarAction::ACTION_TYPE_DISCUSSION],
+            [t('calendar_actions.form.radio_execution'),CalendarAction::ACTION_TYPE_EXECUTION],
+            [t('calendar_actions.form.radio_no_indicated'),CalendarAction::ACTION_TYPE_NO_INDICATED]],
+             { label: t('calendar_actions.form.radio_header') }, { class: "selectpicker" }
+      -#=f.form_group :action_type  do
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_FOLDING, label: t('calendar_actions.form.radio_folding')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_ANALYSIS, label: t('calendar_actions.form.radio_analysis')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_DISCUSSION, label: t('calendar_actions.form.radio_discussion')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_EXECUTION, label: t('calendar_actions.form.radio_execution')
+      -#  = f.radio_button :action_type, CalendarAction::ACTION_TYPE_NO_INDICATED, label: t('calendar_actions.form.radio_no_indicated')
+
 
     .row
       .col-md-4
         = f.static_control label: t('.icon') do
           = f.select_without_bootstrap :icon, options_for_select(fa_icon_list, @event.icon), {label: t('.icon')}, { class: 'fa-select' }
       .col-md-4
-        = f.static_control label: t('.color') do
-          = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list, @event.color), { }, { class: 'color-select' }
+        = f.static_control label: t('calendars.events.form.color') do
+          = f.select_without_bootstrap :color, options_for_select(get_bg_colors_list(@event.action_type), @event.color), { }, { class: 'color-select' }
       .col-md-4
-        = f.static_control label: t('.text_color') do
+        = f.static_control label: t('calendars.events.form.text_color') do
           = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @event.text_color), { }, { class: 'color-select' }
     = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: "Вкажіть детальний опис"
     .row
@@ -47,7 +63,6 @@
 
 
 
-
   .modal-footer
     = f.submit t('form.save'), :class => 'btn btn-primary pull-right  col-sm-3'
 
@@ -55,3 +70,84 @@
     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", :class => "pull-right"}= t('form.close')
 
     = link_to t('form.destroy', :default => t("helpers.links.destroy")), [:calendars, @calendar, @event], remote: true, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger pull-left' if @event.persisted?
+
+:javascript
+
+  $(document).ajaxComplete(function() {
+    $('#event_action_type').on('change',function(){
+      colorArr = getColorByActionType($(this).val());
+      setCollorByActionType(colorArr);
+    });
+
+    formatFaSelect = function(el) {
+      return '<i class=\'fa ' + el.id + '\'/> ' + el.id;
+    };
+    formatColorSelect = function(el) {
+      return '<div style=\'width: 100%; height: 43px; background-color: ' + el.id + '\'/>';
+    };
+    $('.fa-select').select2({
+      allowClear: true,
+      formatResult: formatFaSelect,
+      formatSelection: formatFaSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+    $('.color-select').select2({
+      allowClear: true,
+      formatResult: formatColorSelect,
+      formatSelection: formatColorSelect,
+      escapeMarkup: function(m) {
+        return m;
+      }
+    });
+    editor_locale = void 0;
+    if (I18n.locale === 'uk') {
+      editor_locale = 'ua-UA';
+    } else {
+      editor_locale = '';
+    }
+    $('.wysihtml5').wysihtml5({
+      'font-styles': true,
+      'emphasis': true,
+      'lists': true,
+      'html': false,
+      'link': true,
+      'image': false,
+      'color': false,
+      'size': 'sm',
+      'locale': editor_locale
+    });
+  });
+
+  function getColorByActionType(actionTypeIndex){
+    switch (actionTypeIndex) {
+        case '#{CalendarAction::ACTION_TYPE_FOLDING}' :
+            result = ["#FF0000","#EF827F","#CC5A59","#FC403F","#DC143B","#FE0034","#E0517C"];
+          break;
+        case '#{CalendarAction::ACTION_TYPE_ANALYSIS}' :
+            result = ["#0000FF","#012E4D","#073082","#34489E","#284DB7","#0091B2","#001AD1"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_EXECUTION}' :
+            result = ["#008800","#64FE02","#5E9F32","#34CA21","#00A86B","#167145","#00A900"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_DISCUSSION}' :
+            result = ["#FF5D00","#EA7501","#FF7518","#FF8800","#FFA500","#FFA500","#FF8400"]
+          break;
+        case '#{CalendarAction::ACTION_TYPE_NO_INDICATED}' :
+          result = ["#BBBBBB","#BBBBA7","#BBC5A7","#C9C5A7","#C9C5B6","#C9E2B6","#C9E9B6"]
+          break;
+    }
+
+    return result;
+
+  }
+
+  function setCollorByActionType(colorArr){
+      $('#event_color').empty();
+      $('.select2-chosen > div').css('background-color',colorArr[0]);
+      colorArr.forEach(function(item, i, colorArr) {
+        $('#event_color').append($('<option value="'+item+'">"'+ item +'"</option>'))
+      });
+
+  }

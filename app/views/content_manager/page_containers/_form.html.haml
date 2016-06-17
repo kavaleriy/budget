@@ -1,0 +1,26 @@
+%h3= get_header_by_locale(@page_container)
+= simple_form_for(@page_container) do |f|
+  = f.error_notification
+
+
+  .form-inputs
+    -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
+    = f.input :alias,label: t('content_manager.page_containers.alias')
+    = f.input :p_id, collection:  @menu_list.map { |list| [get_header_by_locale(list), list.id] },selected: 0,
+                          label: t('content_manager.page_containers.parent')
+    = f.simple_fields_for :locale_data do |ff|
+      = ff.simple_fields_for params[:locale] do |fff|
+        = fff.input :header ,:input_html => { :value => get_header_by_locale(@page_container)},
+                                          label: t("content_manager.page_containers.#{get_locale_for_translate}_header")
+        = fff.input :content,:input_html => { :value => get_content_by_locale(@page_container)},
+                                as: :text,label: t("content_manager.page_containers.#{get_locale_for_translate}_content")
+  .form-actions
+    = f.button :submit,t('save'), class: 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function(){
+    $("#content_manager_page_container_locale_data_#{params[:locale]}_content").summernote({
+      minHeight: 200,
+    });
+  });

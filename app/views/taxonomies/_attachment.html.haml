@@ -12,10 +12,10 @@
       = link_to file.attachment.url do
         %i.fa{ class: "#{get_file_type_icon(file.attachment_identifier)}" }
   .col-sm-10
-    %a{ href: '#', id: 'taxonomy_attachment', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "/taxonomies/attachment_update/" + "#{file.id}", 'data-emptytext' => 'Вкажіть назву документа...' }
+    %a{ href: '#', id: 'taxonomy_attachment', 'data-type' => 'documentation_document', 'data-pk' => "#{file.id}", 'data-url' => "/taxonomies/attachment_update/" + "#{file.id}", 'data-emptytext' => t('taxonomies.attachment.name_doument') }
 
   .col-sm-1
-    = link_to 'x', {:controller => 'taxonomies', :action => 'attachment_destroy', :attachment_id => file.id, :id => @taxonomy.id}, { :confirm => 'Are you sure?', :remote => true, :method => :delete, :class => 'btn btn-xs' }
+    = link_to 'x', {:controller => 'taxonomies', :action => 'attachment_destroy', :attachment_id => file.id, :id => @taxonomy.id}, { :confirm => t("helpers.links.confirm"), :remote => true, :method => :delete, :class => 'btn btn-xs' }
 
 :javascript
 
@@ -26,7 +26,7 @@
         description: "#{file.description}"
     },
     validate: function(value) {
-        if (value.title == '') return 'Потрібно вказати ім\'я файла!';
+        if (value.title == '') return "#{t('messages_x-editable.need_name_file')}";
     },
     display: function(value) {
         if(!value) {

@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %meta{charset: 'utf8'}
+    = stylesheet_link_tag    "application", :media => "all"
+    = wicked_pdf_stylesheet_link_tag    'timelines'
+    = wicked_pdf_stylesheet_link_tag    'timelinejs'
+    = wicked_pdf_stylesheet_link_tag    'export_budget/timeline/timeline'
+    -#= wicked_pdf_javascript_include_tag "application"
+    = javascript_include_tag "application"
+
+  %body
+    .container
+      %h1 Generate PDF test
+    = yield

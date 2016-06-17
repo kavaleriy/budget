@@ -1,0 +1,52 @@
+:scss
+  .preview{
+    .img-bg{
+      background: url("/assets/no_data.png") center no-repeat;
+      background-size: contain;
+      width: 100%;
+      min-height: 172px;
+      margin-bottom: 0.5rem;
+      position: relative;
+      img{
+        width: 100%;
+      }
+      .slider_footer{
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 33px;
+
+          background-color: #2E2F30;
+          opacity: 0.8;
+
+          font-size: 11px;
+          //font-weight: bold;
+          color: #0022cc;
+          overflow: hidden;
+          webkit-text-fill-color: #fff; /* цвет текста для webkit */
+          -webkit-text-stroke: 1px #fff;
+          //text-shadow: -1px -1px 10px #fff, 1px -1px 10px #fff, -1px 1px 10px #fff, 1px 1px 10px #fff;
+
+           padding-left: 14px;
+           p{
+            height: 100%;
+           }
+        }
+    }
+  }
+.col-md-12
+  = simple_form_for(@modules_slider) do |f|
+    .row
+      .col-md-4.preview
+        .img-bg
+          = image_tag @modules_slider.img.slider
+          .slider_footer
+            %p= @modules_slider.text
+      .col-md-6
+        .form-inputs
+          -#= f.input :sl_order,label: t('modules.sliders.index.order'),as: :integer
+          = f.input :text,label: t('modules.sliders.index.text')
+          = f.input :link,label: t('modules.sliders.index.link')
+          = f.input :img,as: :file,label: t('modules.sliders.index.img')
+
+          = f.button :submit,t('save')

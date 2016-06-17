@@ -1,5 +1,7 @@
 class TaxonomyRov < Taxonomy
 
+  # scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
+
   def columns
 
     if is_kvk

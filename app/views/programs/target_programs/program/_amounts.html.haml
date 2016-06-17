@@ -1,0 +1,36 @@
+:scss
+  .program {
+    .fact {
+      text-align: right;
+    }
+    .bar {
+      margin-top: 50px;
+      text-align: center;
+      h3 { display: inline; }
+    }
+
+  }
+
+
+
+.program
+  .fact.col-xs-3
+    =t('.done')
+    %h2
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:fact], unit: '')
+
+
+  .bar.col-xs-6
+    -unless program[:years].nil?
+      = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }
+    =t('.remains')
+    %h3
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
+
+  .col-xs-3
+    =t('.planned')
+    %h3
+      -unless program[:years].nil?
+        = number_to_currency(program[:years][year][:plan], unit: '')

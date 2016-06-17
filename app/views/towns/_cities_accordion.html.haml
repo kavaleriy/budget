@@ -1,0 +1,3 @@
+-cities.each do |city|
+  =render partial: 'town_row', locals:{css: "#{ css if defined? css }", town: city}
+  %hr

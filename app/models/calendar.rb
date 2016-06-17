@@ -1,38 +1,47 @@
 class Calendar
   include Mongoid::Document
 
+  scope :get_calendar_by_town, ->(town){ where(:town => town) }
+
   field :author, type: String
-
   field :town, type: String
-
   field :title, type: String
   field :description, type: String
-
   field :countdown_title, type: String
   field :countdown_event, type: Event
   field :import_file, type: String
+  field :is_test, type: Boolean
+  field :locale,type: String,:default => 'uk'
+
   embeds_many :events
   has_and_belongs_to_many :subscribers
 
+
+
+  def self.visible_to user,locale
+    self.get_calendars(user).get_calendars_by_locale(locale)
+  end
+
+
   def import(path)
-    workbook = RubyXL::Parser.parse(path)
+    require 'xls_parser'
+    workbook = XlsParser.get_workbook(path)
     worksheet = workbook[0]
-    table=worksheet.get_table
-    table[:table][0].each do |name, value|
-      if(name != '_id')
-        self[name] = value
-      end
+
+    unless worksheet.nil?
+      table = XlsParser.get_table_hash(worksheet)
+
+      table.first.delete_if{ |key, value| key == '_id'}
+
+      self.update(table.first)
     end
+
     worksheet = workbook['Events']
-    if(!worksheet.nil?)
-      table=worksheet.get_table
-      table[:table].each do |event_import|
-        event = self.events.new
-        event_import.each do |name, value|
-          if(name != '_id')
-            event[name] = value
-          end
-        end
+    unless worksheet.nil?
+      events_table = XlsParser.get_table_hash(worksheet)
+      events_table.each do |new_event|
+        event = self.events.new(new_event)
+        event.save
       end
     end
   end
@@ -52,10 +61,6 @@ class Calendar
       end
       i=i+1
     end
-    # worksheet.add_cell(0, 0, 'Title')
-    # worksheet.add_cell(0, 1, 'Description')
-    # worksheet.add_cell(1, 0, title)
-    # worksheet.add_cell(1, 1, description)
 
     worksheet = workbook.add_worksheet('Events')
     events = this_calendar.events
@@ -81,5 +86,41 @@ class Calendar
     end
     workbook.stream.read
 
-   end
+  end
+  private
+
+  def self.get_calendars_by_locale(locale)
+    # this function return calendars by locale
+    # get one params (locale is web-site locale)
+    # if locale is nil set default locale
+    # if locale is default locale
+    # then return all calendars where locale is default locale or nil
+    # else return all calendars where locale is params(locale)
+    default_locale = 'uk'
+    if locale.nil?
+      locale = default_locale
+    end
+
+    if locale.eql? default_locale
+      where(:locale.in => [locale,nil])
+    else
+      where(:locale => locale)
+    end
+  end
+
+  def self.get_calendars(user)
+    # this function return calendars visible from user
+    # if user nil return calendars with empty author field
+    # else if user is admin return all calendars
+    # else return calendars where author is nil and any of user email or user town
+    calendars = if user.nil?
+                  self.where(:author => nil)
+                elsif user.has_role? :admin
+                  self.all
+                else
+                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town})
+                end
+    calendars || self
+  end
+
 end

@@ -37,7 +37,8 @@ module Calendars
           :ends_at => params[:ends_at],
           :all_day => all_day,
           :text_color => '#ffffff',
-          :color => '#8cc0f1'
+          :color => '#8cc0f1',
+          :action_type => CalendarAction::ACTION_TYPE_NO_INDICATED
       )
 
       respond_to do |format|
@@ -69,7 +70,6 @@ module Calendars
     # PATCH/PUT /events/1
     # PATCH/PUT /events/1.json
     def update
-
       respond_to do |format|
         if @event.update(event_params)
           format.json { render json: @event }
@@ -117,7 +117,7 @@ module Calendars
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color)
+      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
     end
 
   end

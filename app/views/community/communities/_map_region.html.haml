@@ -6,7 +6,7 @@
     background: transparent;
     min-height: 400px;
 
-    height: 100%;
+    height: 100vh;
   }
 
   #custom_map path {
@@ -32,8 +32,6 @@
 :javascript
 
   $(document).ready(function() {
-
-    I18n.locale = window.aHelper.lang();
 
     var feature = JSON.parse('#{@feature.to_json}');
     var editable = feature.properties.edit;
@@ -103,7 +101,7 @@
 
     function onCommunityClick(feature) {
       if(editable) {
-        $.get("/community/edit_table/" + feature.properties.id, function(data){
+        $.get("/community/edit_table/" + feature.properties.id + "?locale=" + "#{params[:locale]}", function(data){
           $("#edit_table").html(data);
         }, "html")
       } else if(feature.properties.link) {

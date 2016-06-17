@@ -4,8 +4,6 @@
 
   $(document).ready(function() {
 
-    I18n.locale = window.aHelper.lang();
-
     $('#town_select').select2({
       initSelection: function(element, callback) {
         callback( [ { id: '#{@town_select[:id]}', text: '#{@town_select[:title]}' } ]);

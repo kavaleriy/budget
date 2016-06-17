@@ -1,27 +1,39 @@
-.col-md-5{:style => 'text-align: right;'}
-  %h3= t('.city')
-.col-md-5.pull-right
-  %h3= t('.people')
-%section.ui-timeline.row
-  .row
-    %hr.col-md-12
+:scss
+  .title-right,
+  .title-left {
+    text-align: center;
+  }
 
-  - @timeline_events.each do |event|
-    %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right', 'event_id' => event[:id] }
-      .tl-body
-        .tl-entry{ :style => 'background-color: rgba(128,128,128, .05);'}
-          .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
-            %i.fa.fa-3{:class => event[:icon] }
-          .tl-time
-            = event[:all_day] == true ? event[:dt].strftime('%d-%m-%Y') : event[:dt].strftime('%d-%m-%Y %H:%M:%S')
-          .tl-content
-            %img.arrow{:src => event[:holder] == 1 ? '/assets/arrow.jpg' : '/assets/arrowL.jpg' }
-            %p.tl-title{ :style => ("color: #{event[:color]}") }
-              = event[:title]
-            = event[:action]
-            %hr
-            .description
-              = event[:description].html_safe
+%hr
+
+.row
+  .col-md-6.title-right
+    %h3= t('.city')
+  .col-md-6.title-left
+    %h3= t('.people')
+
+%hr
+.col-md-12
+  %section.ui-timeline.row
+    - calendar.events.each do |event|
+      %article.tl-item{:class => event[:holder] == 1 ? 'alt' : 'right', 'event_id' => event[:id] }
+        .tl-body
+          .tl-entry{ :style => 'background-color: rgba(128,128,128, .05);'}
+            .tl-icon.round-icon.sm{:style => "background-color: #{event[:color]}" }
+              %i.fa.fa-3{:class => event[:icon] }
+            .tl-time
+              = "#{event[:starts_at].strftime('%d-%m-%Y') }"
+              - if event[:ends_at]
+                %br
+                = event[:ends_at].strftime('%d-%m-%Y')
+            .tl-content
+              %img.arrow{:src => event[:holder] == 1 ? '/assets/arrow.jpg' : '/assets/arrowL.jpg' }
+              %p.tl-title{ :style => ("color: #{event[:color]}") }
+                = event[:title]
+              = event[:action]
+              %hr
+              .description
+                = event[:description].to_s.html_safe
 
 :javascript
 

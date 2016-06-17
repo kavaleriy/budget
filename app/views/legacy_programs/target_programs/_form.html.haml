@@ -1,0 +1,115 @@
+:css
+
+  .datepicker-dropdown.dropdown-menu {
+    background-color: #ffffff;
+  }
+
+= form_for @programs_target_program do |f|
+  - if @programs_target_program.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@programs_target_program.errors.count, "error")} prohibited this programs_target_program from being saved:"
+      %ul
+        - @programs_target_program.errors.full_messages.each do |msg|
+          %li= msg
+
+= bootstrap_form_for @programs_target_program, :html => { 'accept-charset' => "UTF-8", :class => 'form-vertical col-sm-12 col-md-6' } do |f|
+  .form-group
+    = f.text_field :title, :label => t('programs.target_programs.new.name')
+
+  .form-group
+    %label.control-label
+      = t('owner')
+    - if current_user && current_user.has_role?(:admin)
+      = select_tag :town, options_for_select( [nil] + t('budget_files.form.cities').split('|'), current_user.town), class: 'select-town form-control', id: 'select_indicate_town'
+    - else
+      = ": #{current_user.town}"
+
+  .form-group
+    = f.text_area :targets, :rows => '5', :placeholder => t('programs.target_programs.form.targets'), :class => 'form-control', :label => t('programs.target_programs.form.target_label')
+
+  .form-group
+    %label.control-label
+      = t('programs.target_programs.form.term')
+    .input-daterange.input-group
+      %input{name: :term['start'], :type => "text", :class => "year_datepicker form-control date-start", :id => "term_start"}
+      %span.input-group-addon
+        = t('programs.target_programs.form.to')
+      %input{name: :term['end'], :type => "text", :class => "year_datepicker form-control date-end", :id => "term_end"}
+      %span.input-group-btn
+        %button{:type => 'button', :class => 'btn btn-default add-more'}
+          %span{:class => 'glyphicon glyphicon-plus', 'aria-hidden' => 'true'}
+
+  %small
+    = t('programs.target_programs.form.add_phase')
+
+  .program-phases
+
+  .actions
+    = link_to t('form.back'), programs_towns_path, :class => 'btn btn-default'
+    = f.submit t('form.save'), :class => 'btn btn-primary'
+
+:javascript
+
+  $(document).ready(function() {
+
+    add_datepicker('term_start', 'term_end');
+
+    var next = 1;
+    $(".add-more").click(function(e){
+        e.preventDefault();
+        var html = "<div class='form-group phase'>\
+                      <label class='control-label'>\
+                        " + next + " " + I18n.t('programs.target_programs.form.phase') + "\
+                      </label>\
+                      <div class='input-daterange input-group'>\
+                        <input name=phase[" + next + "]['start'], type='text', class='year_datepicker form-control date-start', id='" + next + "start'>\
+                        <span class='input-group-addon'>\
+                          " + I18n.t('programs.target_programs.form.to') + "\
+                        </span>\
+                        <input name=phase[" + next + "]['end'], type='text', class='year_datepicker form-control date-end', id='" + next + "end'>\
+                        <span class='input-group-btn'>\
+                          <button class='btn btn-danger remove-me' type='button' id='" + next + "btn'>\
+                            <span aria-hidden='true' class='glyphicon glyphicon-minus'></span>\
+                          </button>\
+                        </span>\
+                      </div>\
+                    </div>"
+        $('#' + (next - 1) + 'btn').attr('disabled', 'disabled');
+
+        $('.program-phases').append(html);
+
+        add_datepicker(next + 'start', next + 'end');
+
+        $('.remove-me').click(function(e){
+            e.stopImmediatePropagation();
+            var prev_btn = $(this).attr('id').split('btn')[0]-1 + 'btn';
+            $('#' + prev_btn).removeAttr('disabled');
+            $(this).closest('.phase').remove();
+            next--;
+        });
+
+        next++;
+    });
+
+    function add_datepicker(id_start, id_end) {
+      $.fn.datepicker.dates[I18n.locale];
+
+      $(".year_datepicker").datepicker( {
+        format: 'dd.mm.yyyy',
+        startView: 2,
+        multidate: true,
+        language: I18n.locale,
+        autoclose: true,
+        minViewMode: 'years',
+        viewMode: 'years',
+        pickTime: false
+      });
+
+      var currYear = new Date().getFullYear();
+      var startDate = new Date(currYear,0,1);
+      $('#' + id_start).datepicker('setDate', startDate);
+      startDate = new Date(currYear+1,0,1);
+      $('#' + id_end).datepicker('setDate', startDate);
+    }
+
+  })

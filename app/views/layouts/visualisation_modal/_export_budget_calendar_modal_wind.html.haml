@@ -1,0 +1,180 @@
+:scss
+  $copy_block_heigth : 35px;
+  .modal-dialog{
+    width: 90%;
+  }
+  #copy_img{
+    height: $copy_block_heigth;
+    overflow: hidden;
+    width: 100%;
+    resize: none;
+  }
+  //#iframe{
+  //  transform: -0.5;
+  //  width: 2000px;
+  //  height: 1400px;
+  //}
+  .insert{
+    width: 100%;
+    .insert-button{
+      display: none;
+      padding-left: 47%;
+      #visualisation_copy_img{
+        font-size: 20px;
+        width: 100px;
+        height: $copy_block_heigth;
+        text-decoration: none;
+        .fa-clipboard{
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+  #copy_img{
+    display: none;
+  }
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
+.modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4.modal-title
+          = t('iframe.title')
+      .modal-body
+        .insert
+          .insert-button
+            =link_to "#",class: 'dis',id:'visualisation_copy_img' do
+              %i.fa.fa-clipboard{"aria-hidden" => "true"}
+              Insert
+        %iframe{:height => "700px", :src => "", :width => "100%",id: 'iframe'}
+        =text_area 'copy','img',size: "1x2",disabled: 'disabled'
+
+      .modal-footer
+
+:javascript
+  var convert_html_to_canvas = function(panel,input_field){
+     var svgElements = $(panel).find('svg');
+     //replace all svgs with a temp canvas
+
+    svgElements.each(function() {
+      var canvas, xml;
+
+      // canvg doesn't cope very well with em font sizes so find the calculated size in pixels and replace it in the element.
+      $.each($(this).find('[style*=em]'), function(index, el) {
+        $(this).css('font-size', '10px');
+      });
+
+      canvas = document.createElement("canvas");
+      canvas.className = "screenShotTempCanvas";
+      //convert SVG into a XML string
+      xml = (new XMLSerializer()).serializeToString(this);
+
+      // Removing the name space as IE throws an error
+      xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
+
+      //draw the SVG onto a canvas
+      canvg(canvas, xml);
+      $(canvas).insertAfter(this);
+      //hide the SVG element
+      $(this).attr('class', 'tempHide');
+      $(this).hide();
+    });
+
+    //set input dom element
+    var input_dom = $(input_field);
+    //convert image and write to text_area input
+    html2canvas(panel, {
+      //convert element to canvas
+      onrendered: function(canvas) {
+        //convert canvas to base 64
+        canvas.getContext('2d');
+        var base64 = canvas.toDataURL("image/png",1.0);
+        //write base64 to input dom element
+        input_dom.val(base64);
+      }
+    });
+  };
+  var get_active_panel = function(iframe_id,dom_elem){
+    //this function get dom in iframe and print base64 to input in modal window
+    var iframe_dom = $(iframe_id).contents();
+    var active_dom = iframe_dom.find(dom_elem);
+    return active_dom;
+  }
+
+  var push_img_to_summernote = function(input_dom,summernote_dom_id,modal_id){
+    //get value from text_area input
+    var img_base64 = $('#copy_img').val();
+    //insert base64 to summernote editor
+    $summernote = $(summernote_dom_id);
+    $summernote.summernote("insertImage",img_base64,function($image){
+      $image.css('width','100%');
+    });
+    // clear text_area
+    $('#copy_img').val('');
+
+  };
+
+  var unset_style_in_visual_place_div = function(){
+    var div_number = $('#iframe').attr('data-input-selector');
+    if(div_number){
+      $('[data-number='+ div_number +']').attr('style','');
+      $('[data-number='+ div_number +']').html('');
+      $('[data-number='+ div_number +']').removeClass('visual_place');
+      $('[data-number='+ div_number +']').off();
+    }
+  };
+
+  $(document).ready(function(){
+    $('#visualisation_copy_img').click(function(){
+      // set copy button is disabled
+      $('.insert-button').hide('fast');
+      var panel_selector = $('#iframe').attr('data-panel-selector');
+      var active_panel = get_active_panel("#iframe",panel_selector);
+      var summernoote_id = $('#iframe').attr('data-textarea-id');
+      convert_html_to_canvas(active_panel,'#copy_img');
+      setTimeout(function(){
+        unset_style_in_visual_place_div();
+        push_img_to_summernote('#copy_img',summernoote_id,'#export_budget_visualisation_modal_window');
+
+        //close modal window
+        $('#export_budget_visualisation_modal_window').modal('hide');
+      },3000);
+
+      return false;
+    });
+
+
+    $('#export_budget_visualisation_modal_window').on('hidden.bs.modal', function () {
+      $('.insert-button').hide('fast');
+    })
+  });
+
+  $('#iframe').on('load',function(){
+    $.when(
+      $.getScript( "/assets/html2canvas/html2canvas.js" ),
+      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
+      $.Deferred(function( deferred ){
+        $( deferred.resolve );
+      })
+    ).done(function(){
+        if($('#iframe').attr('src')){
+          $('.insert-button').show('slow');
+        }
+        // var active_panel = get_active_panel("#iframe","div.active");
+        // convert_html_to_canvas(active_panel,'#copy_img');
+        // var iframe_dom = $("#iframe").contents();
+        // $(iframe_dom.find('a[data-toggle="tab"]')).on('shown.bs.tab', function (e) {
+        //   alert('change');
+        // e.target // newly activated tab
+        // e.relatedTarget // previous active tab
+        // })
+
+      });
+  });
+
+
+

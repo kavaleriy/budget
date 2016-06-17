@@ -1,4 +1,20 @@
-#sidebar_table
+:scss
+  #sidebar_table {
+    td { vertical-align: middle; }
+
+    .color { float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; }
+
+    .show_onhover,  { display: none; }
+
+    tr:hover {
+      .color { width: 20px; height:20px; }
+      .caption { font-size: 150%; }
+      .amount { display: none; }
+      .show_onhover { display: inline; }
+    }
+  }
+
+#sidebar_table{'data_table_caption' => @table_caption}
 
 :javascript
   function aSidebarTable() {
@@ -38,15 +54,14 @@
         div = '<table class="table table-striped table-hover">\
                  <thead>\
                  <tr>\
-                   <th class="col-sm-5">#{@table_caption}</th>\
-                   <th class="col-sm-2 table-graph">динаміка в роках</th>\
+                   <th class="col-sm-5">' + $('#sidebar_table').attr('data_table_caption') + '</th>\
                    <th class="col-sm-2">сума</th>'
 
         if(fact) {
           div += "<th class='col-sm-2'>факт</th>"
         }
         div += "<td class='col-sm-1'>на отримувача</th>"
-        div += '<td class="col-sm-1">%</th>\
+        div += '<td class="col-sm-1">Питома вага</th>\
                </tr>\
                </thead><tbody>'
 
@@ -59,13 +74,11 @@
           }
 
           div += '<tr class="tr_nodes">'
-            + '<td><div style="float: left; margin-right: 10px; margin-top: 4px; width:10px; height:10px; background-color:' + value.color + '"></div>'
-            + value.label
-          //if (value.key)
-          //  div += ' (' + value.key + ')'
+            + '<td><div class="color" style="background-color:' + value.color + '"></div>'
+            + '<span class="caption">' + value.label + '</span><span class="show_onhover">, Код: ' + value.key + '</span>'
           div += '</td>'
-            + '<td class="table-graph"><div id="table-graph-' + value.id + '"></div></td>'
-            + '<td>' + aVisify.helpers.formatNumber(value.amount) + '</td>'
+            //+ '<td class="table-graph"><div id="table-graph-' + value.id + '"></div></td>'
+            + '<td><span class="amount">' + aVisify.helpers.formatNumber(value.amount) + '</span><span class="show_onhover">' + value.amount.toLocaleString() + '</span></td>'
 
           if(fact) {
             div += '<td>' + aVisify.helpers.formatNumber(value.amount_fact || 0) + ' (' + aVisify.helpers.getPercentageString((value.amount_fact || 0), value.amount)+ ')</td>';

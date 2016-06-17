@@ -5,7 +5,9 @@
     %span.descr
       =@indicate_taxonomy.town
 
-= render partial: 'indicators', :locals => { indicators: @indicators }
+= render partial: '/widgets/town_profile/indicates'
+
+-#= render partial: 'indicators', :locals => { indicators: @indicators }
 
 #embed_code_visify
   = render partial: 'widgets/visify/embed_code'
@@ -16,13 +18,24 @@
 :javascript
   $(document).ready(function() {
 
-    var embed_code = aEmbedCode();
-    var indicator_file = "#{@indicate_taxonomy.id}"
-    var src = window.location.host + "/indicate/taxonomies/indicators/" + indicator_file;
-    embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: src});
+    var getSrc = function(){
+      var indicator_file =  "#{@indicate_taxonomy.id}"
+      return location.origin + "/indicate/taxonomies/indicators/" + indicator_file;
+    }
 
-    $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      embed_code.set_iframe(window.location.host + "/widgets/visify/" + $(this).attr('href').split('#')[1] + "/" + budget_file);
+
+    var embed_code = aEmbedCode();
+    var src = getSrc();
+    embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: src})
+
+    $('#embed_code_visify').click(function(){
+      $('#embeded_code_modal_window').find('#embed_src').val(src);
+      $('#embeded_code_modal_window').modal();
     });
+
+    //$('a[role="tab"]').on('shown.bs.tab', function (e) {
+    //  console.log($(this).attr(href));
+    //  embed_code.set_iframe(location.origin + "/widgets/visify/" + $(this).attr('href').split('#')[1] + "/" + budget_file);
+    //});
 
   })

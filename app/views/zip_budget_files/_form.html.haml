@@ -1,14 +1,10 @@
 = bootstrap_form_for @vz_file, :html => { :class => 'form-vertical' } do |f|
   .form-group
-    = f.text_field :title, label: t('file_name')
+    = render partial: 'budget_files/area_select', :locals => {areas: @areas, current_area_id: @current_area_id }
 
   .form-group
-    %label.control-label
-      = t('owner')
-    - if current_user && current_user.has_role?(:admin)
-      = render partial: 'town_select', :locals => {town: current_user.town}
-    - else
-      = ": #{current_user.town}"
+    = t('year')
+    = select_year Date.today, :start_year => 5.years.ago.year, :end_year => Date.today.year, :prefix => "year", :discard_type => true, class: 'form-control'
 
   = f.file_field :path, label: t('file_path'), class: 'btn btn-default'
 

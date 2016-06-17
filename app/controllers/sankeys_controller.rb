@@ -1,6 +1,9 @@
 class SankeysController < ApplicationController
+  layout 'application_admin'
+
   before_action :set_sankey, only: [:show, :sankey, :edit, :update, :destroy]
   after_action :allow_iframe, only: [:sankey]
+
   layout 'visify', only: [:sankey]
 
   before_action :authenticate_user!, only: [:new, :edit]
@@ -89,7 +92,8 @@ class SankeysController < ApplicationController
   def get_rows
     @budget_file_rot = TaxonomyRot.where(:id => sankey_params[:rot_file_id]).first
     @budget_file_rov = TaxonomyRov.where(:id => sankey_params[:rov_file_id]).first
-    render json: { 'rows_rot' => @budget_file_rot.get_level_with_fonds("kkd_a"), 'rows_rov' => @budget_file_rov.get_level_with_fonds("ktfk_aaa") }
+    type = params[:type]
+    render json: { 'rows_rot' => @budget_file_rot.get_level_with_fonds("kkd_a",type), 'rows_rov' => @budget_file_rov.get_level_with_fonds("ktfk_aaa",type) }
   end
 
   def town_profile

@@ -1,5 +1,6 @@
   class Taxonomy
     include Mongoid::Document
+    include Mongoid::Timestamps
 
     scope :owned_by, lambda { |owner| where(:owner => owner) }
 
@@ -11,28 +12,50 @@
     field :name, type: String
     field :description, type: String
     field :owner, type: String
-
     field :is_kvk, type: Boolean
-
     field :explanation, :type => Hash
+    field :area, :type => String # код області
+    field :kmb, :type => String # код місцевого бюджета
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
 
+    belongs_to :author, class_name: 'User'
     has_many :budget_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
+
+    def self.check_switch_plan_fact(tax_rot_id,tax_rov_id)
+      # this function chheck if we can switch plan fact data
+      # get two params TaxonomyRot id , and TaxonomyRov id
+      # first of all we find these taxonomies
+      # after that we group budget files for these taxonomies
+      # count these group and if these group more than 1
+      # return true
+      # else return false
+
+      tax_rot = TaxonomyRot.find(tax_rot_id)
+      tax_rov = TaxonomyRov.find(tax_rov_id)
+
+      tax_rot.count_budget_files_by_data_type > 1 && tax_rov.count_budget_files_by_data_type > 1
+    end
+
+    def count_budget_files_by_data_type
+      # this function group budget files by data_type and return count of group
+      budget_files.group_by{|f| f.data_type}.count
+    end
+
 
     def self.visible_to user
       files = if user && user.is_locked? == false
                 if user.has_role? :admin
-                  Taxonomy.all
+                  self.all
                 else
-                  Taxonomy.where(:owner => user.town).not{budget_files == nil}
+                  self.where(:owner => user.town,:author.in => [user,nil])
                 end
               else
-                Taxonomy.where(:owner => '').not{budget_files == nil}
-              end.sort_by { |t| t.owner || '' }
+                self.where(:owner => '')
+              end.order_by(:owner.asc)
 
-      files || []
+      files
     end
 
     def explain taxonomy, key
@@ -62,116 +85,124 @@
           expense_kvk_codes[key.split(':')[0]]
         when 'kekv'
           expense_ekv_codes[key]
+        when 'krk'
+          expense_krk_codes[key]
       end
     end
 
-    # def get_level level
-    #
-    #   totals = {}
-    #
-    #   rows = self.get_rows
-    #
-    #   rows[:plan].each do |year, months|
-    #     totals[year] = { } if totals[year].nil?
-    #
-    #     months.each do |month, rows|
-    #       totals[year][month] = 0 if totals[year][month].nil?
-    #
-    #       rows.each do |row|
-    #         totals[year][month] += row[:amount]
-    #       end
-    #     end
-    #   end
-    #
-    #   for i in 0..3
-    #     totals.each do |year, months|
-    #       totals[year]['quarters'] = [] if totals[year]['quarters'].nil?
-    #       totals[year]['quarters'][i+1] = 0 if totals[year]['quarters'][i+1].nil?
-    #       j = i*3 + 1
-    #       while j < i*3 + 4
-    #         totals[year]['quarters'][i+1] += months[j.to_s]
-    #         j = j + 1
-    #       end
-    #     end
-    #   end
-    #
-    #   levels = {}
-    #   explanation = self.explanation[level.to_s]
-    #   rows[:plan].each do |year, months|
-    #     months.each do |month, rows|
-    #       rows.each do |row|
-    #         key = row[level]
-    #
-    #         if levels[key].nil?
-    #           levels[key] = {}
-    #
-    #           levels[key]['label'] = explanation[key]['title'] || key
-    #           %w(icon color).map{|k|
-    #             levels[key][k] = explanation[key][k]
-    #           } unless explanation[key].nil?
-    #         end
-    #
-    #         levels[key][:amount] = {} if levels[key][:amount].nil?
-    #         levels[key][:amount][year] = {} if levels[key][:amount][year].nil?
-    #         levels[key][:amount][year][month] = 0 if levels[key][:amount][year][month].nil?
-    #         levels[key][:amount][year][month] += row[:amount]
-    #       end
-    #     end
-    #   end
-    #
-    #   for i in 0..3
-    #     levels.each do |key, value|
-    #       value['quarters'] = {} if value['quarters'].nil?
-    #       value[:amount].each do |year, months|
-    #         value['quarters'][year] = [] if value['quarters'][year].nil?
-    #         value['quarters'][year][i+1] = 0 if value['quarters'][year][i+1].nil?
-    #         j = i*3 + 1
-    #         while j < i*3 + 4
-    #           value['quarters'][year][i+1] += months[j.to_s]
-    #           j = j + 1
-    #         end
-    #       end
-    #     end
-    #   end
-    #
-    #   { totals: totals, levels: levels }
-    # end
-    #
+    def get_level level
 
-    def get_level_with_fonds level
-      levels = {}
+      totals = {}
 
-      explanation = self.explanation[level.to_s]
-      self.get_plan_fact_rows[:fact].each do |year, months|
+      rows = self.get_rows
 
-        levels[year] = { } if levels[year].nil?
-
-        levels[year][:totals] = {} if levels[year][:totals].nil?
+      rows[:plan].each do |year, months|
+        totals[year] = { } if totals[year].nil?
 
         months.each do |month, rows|
-          if levels[year][month].nil?
-            levels[year][:totals][month] = 0
-            levels[year][month] = { }
-          end
+          totals[year][month] = 0 if totals[year][month].nil?
+
           rows.each do |row|
-            fond = row[:fond]
-            if levels[year][month][fond].nil?
-              levels[year][month][fond] = {}
-            end
-
-            key = row[level]
-            if levels[year][month][fond][key].nil?
-              levels[year][month][fond][key] = { amount: 0 }
-              %w(title icon color).map{|k|
-                levels[year][month][fond][key][k] = explanation[key][k]
-              }
-            end
-
-            levels[year][month][fond][key][:amount] += row[:amount]
-            levels[year][:totals][month] += row[:amount]
+            totals[year][month] += row[:amount]
           end
         end
       end
+
+      for i in 0..3
+        totals.each do |year, months|
+          totals[year]['quarters'] = [] if totals[year]['quarters'].nil?
+          totals[year]['quarters'][i+1] = 0 if totals[year]['quarters'][i+1].nil?
+          j = i*3 + 1
+          while j < i*3 + 4
+            totals[year]['quarters'][i+1] += months[j.to_s]
+            j = j + 1
+          end
+        end
+      end
+
+      levels = {}
+      explanation = self.explanation[level.to_s]
+      rows[:plan].each do |year, months|
+        months.each do |month, rows|
+          rows.each do |row|
+            key = row[level]
+
+            if levels[key].nil?
+              levels[key] = {}
+
+              levels[key]['label'] = explanation[key]['title'] || key
+              %w(icon color).map{|k|
+                levels[key][k] = explanation[key][k]
+              } unless explanation[key].nil?
+            end
+
+            levels[key][:amount] = {} if levels[key][:amount].nil?
+            levels[key][:amount][year] = {} if levels[key][:amount][year].nil?
+            levels[key][:amount][year][month] = 0 if levels[key][:amount][year][month].nil?
+            levels[key][:amount][year][month] += row[:amount]
+          end
+        end
+      end
+
+      for i in 0..3
+        levels.each do |key, value|
+          value['quarters'] = {} if value['quarters'].nil?
+          value[:amount].each do |year, months|
+            value['quarters'][year] = [] if value['quarters'][year].nil?
+            value['quarters'][year][i+1] = 0 if value['quarters'][year][i+1].nil?
+            j = i*3 + 1
+            while j < i*3 + 4
+              value['quarters'][year][i+1] += months[j.to_s]
+              j = j + 1
+            end
+          end
+        end
+      end
+
+      { totals: totals, levels: levels }
+    end
+
+
+    def get_level_with_fonds level,type
+      levels = {}
+
+      explanation = self.explanation[level.to_s]
+
+      test = self.get_plan_fact_rows[type.to_sym]
+
+      unless test.nil?
+        test.each do |year, months|
+
+          levels[year] = { } if levels[year].nil?
+
+          levels[year][:totals] = {} if levels[year][:totals].nil?
+
+          months.each do |month, rows|
+            if levels[year][month].nil?
+              levels[year][:totals][month] = 0
+              levels[year][month] = { }
+            end
+            rows.each do |row|
+              fond = row[:fond]
+              if levels[year][month][fond].nil?
+                levels[year][month][fond] = {}
+              end
+
+              key = row[level]
+              if levels[year][month][fond][key].nil?
+                levels[year][month][fond][key] = { amount: 0 }
+                %w(title icon color).map{|k|
+                  levels[year][month][fond][key][k] = explanation[key][k]
+                }
+              end
+
+              levels[year][month][fond][key][:amount] += row[:amount]
+              levels[year][:totals][month] += row[:amount]
+            end
+          end
+        end
+      end
+
       levels
     end
 
@@ -181,31 +212,29 @@
       create_tree rows, [], levels
     end
 
-    # def get_subtree level, key, filter
-    #   subrows = get_subrows level, key, filter
-    #
-    #   create_tree subrows, filter
-    # end
+    def get_subtree level, key, filter
+      subrows = get_subrows level, key, filter
 
-    # def get_subrows level, key, filter, rows = get_rows
-    #
-    #   subrows = {}
-    #   rows.keys.each { |data_type|
-    #     subrows[data_type] = {} if subrows[data_type].nil?
-    #     rows[data_type].keys.each { |year|
-    #       subrows[data_type][year] = {} if subrows[data_type][year].nil?
-    #       rows[data_type][year].keys.each { |month|
-    #         subrows[data_type][year][month] = [] if subrows[data_type][year][month].nil?
-    #         rows[data_type][year][month].each { |row|
-    #           subrows[data_type][year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
-    #         }
-    #       }
-    #     }
-    #   }
-    #
-    #   subrows
-    # end
-    #
+      create_tree subrows, filter
+    end
+
+    def get_subrows level, key, filter, rows = get_rows
+
+      subrows = {}
+
+      rows.keys.each { |year|
+        subrows[year] = {} if subrows[year].nil?
+        rows[year].keys.each { |month|
+          subrows[year][month] = [] if subrows[year][month].nil?
+          rows[year][month].each { |row|
+            subrows[year][month] << row.reject{|k, v| k == level or filter.include?(k)} if row[level] == key
+          }
+        }
+      }
+
+      subrows
+    end
+
 
     def get_plan_fact_rows
       rows = {}
@@ -280,6 +309,15 @@
       end
 
       node
+    end
+
+    def get_author
+      if self.budget_files.any?
+        email = self.budget_files.last.author
+        User.find_by(email: email).organisation rescue email
+      else
+        '-'
+      end
     end
 
     protected
@@ -362,7 +400,8 @@
           next if months.length == 1
           last_month = months.keys.max_by{|k| k.to_i}
           annual = months[last_month].deep_dup
-          months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
+          Hash[months.sort_by{|k, v| k.to_i}.reverse].each_key{ |month|
+
             prev_month = "#{month.to_i - 1}"
             next if prev_month == '0'
 
@@ -386,7 +425,8 @@
           next if months.length == 1
           last_month = months.keys.max_by{|k| k.to_i}
           annual = months[last_month].deep_dup
-          months.sort_by{|k, v| k.to_i}.reverse.to_h.each_key{ |month|
+
+          Hash[months.sort_by{|k, v| k.to_i}.reverse].each_key{ |month|
             months[month]['total'] = months[month]['total'] / 12
             months[month]['fonds'].each_key{ |fond| months[month]['fonds'][fond] = months[month]['fonds'][fond] / 12 }
 
@@ -437,32 +477,38 @@
 
 
     def revenue_codes
-      @kkd_info = Taxonomy.load_from_csv "db/revenue_codes.#{@locale || 'uk'}.csv" if @kkd_info.nil?
+      @kkd_info = Taxonomy.load_from_csv "db/revenue_codes.#{I18n.locale.to_s || 'uk'}.csv" if @kkd_info.nil?
       @kkd_info
     end
 
     def expense_codes
-      @ktfk_info = Taxonomy.load_from_csv "db/expense_codes.#{@locale || 'uk'}.csv" if @ktfk_info.nil?
+      @ktfk_info = Taxonomy.load_from_csv "db/expense_codes.#{I18n.locale.to_s || 'uk'}.csv" if @ktfk_info.nil?
       @ktfk_info
     end
 
     def self.fond_codes(locale)
-      Taxonomy.load_from_csv "db/revenue_fond_codes.#{locale || @locale}.csv"
+      Taxonomy.load_from_csv "db/revenue_fond_codes.#{locale || I18n.locale.to_s}.csv"
     end
 
     def revenue_fond_codes
-      @fond_info = Taxonomy.load_from_csv "db/revenue_fond_codes.#{@locale || 'uk'}.csv" if @fond_info.nil?
+      @fond_info = Taxonomy.load_from_csv "db/revenue_fond_codes.#{I18n.locale.to_s || 'uk'}.csv" if @fond_info.nil?
       @fond_info
     end
 
     def expense_ekv_codes
-      @kekv_info = Taxonomy.load_from_csv "db/expense_ekv_codes.#{@locale || 'uk'}.csv" if @kekv_info.nil?
+      @kekv_info = Taxonomy.load_from_csv "db/expense_ekv_codes.#{I18n.locale.to_s || 'uk'}.csv" if @kekv_info.nil?
       @kekv_info
     end
 
     def expense_kvk_codes
-      @kvk_info = Taxonomy.load_from_csv "db/expense_kvk_codes.#{@locale || 'uk'}.csv" if @kvk_info.nil?
+      @kvk_info = Taxonomy.load_from_csv "db/expense_kvk_codes.#{I18n.locale.to_s || 'uk'}.csv" if @kvk_info.nil?
       @kvk_info
+    end
+
+    def expense_krk_codes
+      file_name = "db/expense_krk_codes.#{self.area}.#{I18n.locale.to_s || 'uk'}.csv"
+      @krk_info = Taxonomy.load_from_csv file_name if @krk_info.nil?
+      @krk_info
     end
 
     protected
@@ -472,7 +518,10 @@
       CSV.foreach(file_name, {:headers => true, :col_sep => ";"}) do |row|
         items[row[0]] = { title: row[I18n.t('mongoid.taxonomy.short_title')], color: row[I18n.t('mongoid.taxonomy.color')], icon: row[I18n.t('mongoid.taxonomy.icon')], description: row[I18n.t('mongoid.taxonomy.description')] }
       end
+
       items
+    rescue => e
+      {}
     end
 
     private

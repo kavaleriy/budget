@@ -1,0 +1,9 @@
+.col-xs-12
+  .pull-left
+    %h1
+      =t('.header')
+  .pull-right
+    = link_to t('show'), @export_budget,class: 'btn btn-default'
+    = link_to t('export_budgets.town_profile'),public_path(@export_budget.town),class: 'btn btn-default'
+= render 'form'
+

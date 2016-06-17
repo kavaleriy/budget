@@ -1,0 +1,19 @@
+:scss
+  .alwaysbreak { page-break-before: always; }
+  .test{ width: 100% !important;}
+
+!!! 5
+%html
+  %head
+    %meta(charset="utf-8")
+    = stylesheet_link_tag    "application", :media => "all"
+
+    -@export_budget.pages.each do |key,value|
+      .alwaysbreak
+        -if key.eql?('content')
+          -value.each do |content_key,content_value|
+            .panel-body
+              =content_value.html_safe
+        - else
+          .panel-body
+            =value.html_safe

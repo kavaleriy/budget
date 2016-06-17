@@ -1,0 +1,16 @@
+- program_id = program[:id].to_s
+- title = program[:title]
+- amounts = program[:years]
+
+.program_title.col-xs-7
+  %a{'href' => "#{programs_target_program_path(program_id)}"}
+    %i.fa{class: "#{icon || 'fa-circle-o'}"}
+      = title
+
+.program_amount.col-xs-5
+  - unless amounts[year].blank?
+    .progress
+      .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
+        = "#{amounts[year][:perc]}%"
+
+    = number_to_currency(amounts[year][:fact], unit: '')

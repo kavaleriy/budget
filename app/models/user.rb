@@ -37,14 +37,16 @@ class User
   field :last_sign_in_ip
   field :remember_created_at
 
-  has_many :book
+  field :reset_password_token, type: String
+  field :reset_password_sent_at, type: DateTime
+
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask
 
   # declare the valid roles -- do not change the order if you add more
   # roles later, always append them at the end!
-  roles :admin, :guest, :editor, :public_organisation, :city_authority
+  roles :admin, :guest, :editor, :public_organisation, :city_authority,:central_authority
 
   def to_s
     self.email
@@ -56,6 +58,10 @@ class User
 
   def city_authority?
     roles.member? :city_authority
+  end
+
+  def central_authority?
+    roles.member? :central_authority
   end
 
   private

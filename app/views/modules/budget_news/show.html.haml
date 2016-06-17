@@ -1,0 +1,42 @@
+:scss
+  .container_fluid_color{
+    background: #EAEAEA;
+  }
+  .news_text{
+    overflow: hidden;
+    img{
+      width: 100% !important;
+    }
+  }
+  .news_header{
+    font-weight: bold;
+  }
+
+%p#notice= notice
+.col-md-8
+  .ul.list-group
+    %li.list-group-item
+      .text-center.news_header
+        = @budget_news.title
+    %li.list-group-item.news_text
+      = @budget_news.news_text.html_safe
+    -#%li.list-group-item
+    -#  %b
+    -#    = t('modules.budget_news.index.link')+':'
+    -#  = @budget_news.link
+    -#%li.list-group-item
+    -#  %b
+    -#    = t('modules.budget_news.index.image')+':'
+    -#  = image_tag @budget_news.img.thumb
+  -if current_user
+    -if current_user.admin?
+      = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
+      \|
+      = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
+
+= render partial: 'news_list'
+
+:javascript
+  $(document).ready(function(){
+    $('.news_text').parents('.container-fluid').addClass('container_fluid_color');
+  });

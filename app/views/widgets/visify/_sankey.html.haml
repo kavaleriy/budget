@@ -1,0 +1,8 @@
+.panel.panel-info
+  .panel-heading
+    =t('public.towns.portfolio.sankey')
+  .panel-body
+    -unless sankey_url.nil?
+      %iframe{ 'width' => '100%', 'height' => '850', src: sankey_url}
+    -else
+      =t('sankeys.not_found')

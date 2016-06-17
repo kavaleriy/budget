@@ -1,6 +1,4 @@
 class Public::DocumentsController < ApplicationController
-  layout 'application_public'
-
   include ControllerCaching
 
   def index

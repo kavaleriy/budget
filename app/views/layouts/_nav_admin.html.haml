@@ -4,11 +4,20 @@
       %i.fa.fa-users
       = t('.admin')
 
-    %ul.dropdown-menu{'role' => "menu"}
+    %ul.dropdown-menu#right_menu{'role' => "menu"}
+      %li.divider
+      %li= link_to t('.news_header'),  modules_budget_news_index_path
+      %li.divider
+      %li= link_to t('.slider_header'),  modules_sliders_path
+      %li.divider
       %li= link_to t('.users'), users_path
       %li.divider
-      %li= link_to t('town'), towns_path
+      %li= link_to t('.town'), towns_path
       %li.divider
-      %li= link_to t('currency'), currencies_path
+      %li= link_to t('.currency'), currencies_path
       %li.divider
       %li= link_to t('.subscribers'), subscribers_path
+      %li.divider
+      %li= link_to 'CMS', content_manager_page_containers_path
+
+

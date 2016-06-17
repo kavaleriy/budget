@@ -1,26 +1,24 @@
 %tr{'data-id' => "#{key.id}"}
   %td
-    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'name', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'Вкажіть назву показника...' }
+    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'name', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => t('key_indicate_map.indicator_keys.index.x-editable_messages.name')}
       = key.name
   %td
-    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'unit', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'Вкажіть одиницю вимірювання...' }
+    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'unit', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => t('key_indicate_map.indicator_keys.index.x-editable_messages.unit') }
       = key.unit
   %td
-    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'group', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'Вкажіть групу показника...' }
+    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'group', 'data-type' => 'text', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => t('key_indicate_map.indicator_keys.index.x-editable_messages.group') }
       = key.group
   %td
-    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'integer_or_float', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => 'ціле чи дійсне?...' }
+    %a{ href: '#', 'data-resource' => 'key_indicate_map_indicator_key', id: 'integer_or_float', 'data-type' => 'select', 'data-pk' => "#{key.id}", 'data-url' => "#{key_indicate_map_indicator_key_path(key)}", 'data-emptytext' => t('key_indicate_map.indicator_keys.index.x-editable_messages.integer_or_float') }
       - if key.integer_or_float
         = t('key_indicate_map.indicator_keys.index.' + key.integer_or_float)
   %td
-    = link_to key, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => '' do
+    = link_to key, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
 
   $(document).ready(function(){
-    I18n.locale = window.aHelper.lang();
-
     $('tr[data-id="#{key.id}"] #name,tr[data-id="#{key.id}"] #unit,tr[data-id="#{key.id}"] #group').editable();
     $('tr[data-id="#{key.id}"] #integer_or_float').editable({
       value: "#{key.integer_or_float}",

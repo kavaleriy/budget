@@ -26,4 +26,20 @@ class Repairing::Category
   def childrens
     Repairing::Category.where(category_id: id).all
   end
+
+  def self.get_category_icons
+    # this function return json array root categories
+    # where key is category.id and value is category.img
+
+    root_categories = self.tree_root.to_a
+    res = {}
+    root_categories.each do |category|
+      img = ''
+      img = category.img.thumb.url || category.img unless category.img.nil?
+      res.store(category.id,img)
+    end
+
+    res.to_json
+  end
+
 end

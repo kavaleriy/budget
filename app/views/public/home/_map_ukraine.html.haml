@@ -4,7 +4,7 @@
     margin-top: 10px;
     box-shadow: none;
     background: transparent;
-    height: 400px;
+    height: 300px;
     overflow-x: auto;
     min-width: 610px;
   }
@@ -13,7 +13,7 @@
     /*border-bottom: 1px dotted #777;*/
     margin: 10px 0;
     padding: 5px 10px 10px 10px;
-    background: #EEEEEE;
+    /*background: #EEEEEE;*/
   }
 
   @media(min-width: 320px) and (max-width: 767px){
@@ -22,19 +22,16 @@
     }
   }
 
+%h3= t('public.home.index.select_town')+":"
 .map_container.hidden-xs#custom_map
   = render partial: 'widgets/map'
-#select_map.visible-xs
-  %h4Оберіть для відображення деталей:
+#select_map
   = render partial: 'town_select'
 
 :javascript
 
   $(document).ready(function() {
 
-    I18n.locale = window.aHelper.lang();
-
-    var zoom = 5.5;
     //var window_width = $(window).width();
     //if(window_width < 1300) {
     //  zoom = 5.5;
@@ -42,7 +39,7 @@
 
     var aRepairMap = RepairMap({
       scrollWheelZoom: false,
-      zoom: zoom,
+      zoom: 5,
       minZoom: 1,
       maxZoom: 9,
       dragging: false,
@@ -128,8 +125,7 @@
     function getInfoContent(properties) {
       var content = "";
       if(properties != "Ukraine") {
-        content += '<h3>' + properties.title + '</h3>' +
-                   '<p>Документів: ' + properties.documents_count + '</p>';
+        content += '<h3>' + properties.title + '</h3>';
       }
       return content;
     }

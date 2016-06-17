@@ -19,11 +19,10 @@
       show: function(node) {
         if(!node) return;
 
-        I18n.locale = window.aHelper.lang()
         label = node.label || ''
 
 
-        amount_tag = aVisify.helpers.formatNumber(node.amount)
+        amount_tag = aVisify.helpers.formatNumber(node.amount) + ', <small>' + node.amount.toLocaleString() + '</small>'
         if (aTreeChart.divider.amount_pre) {
           amount_tag += ' <small>' + aTreeChart.divider.amount_pre + '</small>'
         }

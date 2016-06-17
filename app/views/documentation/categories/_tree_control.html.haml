@@ -1,12 +1,13 @@
 %button.btn.btn-success.btn-sm{ id: "#{prefix}_create", type: 'button' }
   %i.glyphicon.glyphicon-asterisk
-    Додати
-%button.btn.btn-warning.btn-sm{ id: "#{prefix}_rename", type: 'button' }
-  %i.glyphicon.glyphicon-pencil
-    Редагувати
-%button.btn.btn-danger.btn-sm{ id: "#{prefix}_delete", type: 'button' }
-  %i.glyphicon.glyphicon-remove
-    Видалити
+    = t('form.new')
+-if current_user.is_admin?
+  %button.btn.btn-warning.btn-sm{ id: "#{prefix}_rename", type: 'button' }
+    %i.glyphicon.glyphicon-pencil
+      = t('form.edit')
+  %button.btn.btn-danger.btn-sm{ id: "#{prefix}_delete", type: 'button' }
+    %i.glyphicon.glyphicon-remove
+      = t('form.destroy')
 
 :javascript
 

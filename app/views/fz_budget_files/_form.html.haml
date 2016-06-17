@@ -1,0 +1,19 @@
+= bootstrap_form_for @fz_file, :html => { :class => 'form-vertical' } do |f|
+  .form-group
+  - if @fz_file.new_record?
+    .form-group
+      %label.control-label
+        = t('taxonomy_rot')
+      = render partial: 'select_taxonomy', :locals => {component_name: :budget_file_taxonomy_rot, taxonomies: @taxonomies_rot, id: @current_taxonomy_rot_id}
+    .form-group
+      %label.control-label
+        = t('taxonomy_rov')
+      = render partial: 'select_taxonomy', :locals => {component_name: :budget_file_taxonomy_rov, taxonomies: @taxonomies_rov, id: @current_taxonomy_rov_id}
+
+    %hr
+
+  .form-group
+    = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
+
+  = f.submit nil, :class => 'btn btn-primary'
+  = link_to t('form.cancel', :default => t("helpers.links.cancel")), zip_budget_files_path, :class => 'btn btn-default'

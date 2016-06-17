@@ -4,17 +4,20 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :cancan_hack
-
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => t('application.auth_error') + "#{exception.message}"
-  end
-
+  PAGINATE_PER_PAGE = 25
 
   # dealing with mass assignment
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  before_filter :cancan_hack
 
+  before_action :set_menu
+
+  before_action :set_locale
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => t('application.auth_error') + "#{exception.message}"
+  end
   rescue_from Mongoid::Errors::DocumentNotFound, :with => :record_not_found
 
   def record_not_found
@@ -26,7 +29,7 @@ class ApplicationController < ActionController::Base
       when :user, User
         store_location = session[:return_to]
         clear_stored_location
-        (store_location.nil?) ? "/" : store_location.to_s
+        (store_location.nil?) ? root_path : store_location.to_s
       else
         super
     end
@@ -58,13 +61,17 @@ class ApplicationController < ActionController::Base
     params[resource] &&= send(method) if respond_to?(method, true)
   end
 
-  before_action :set_locale
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    locale = params[:locale] unless params[:locale].blank?
+    I18n.locale = locale || I18n.default_locale
   end
 
   def default_url_options(options={})
     { locale: I18n.locale }.merge options
+  end
+
+  def set_menu
+    @menu = ContentManager::PageContainer.get_all_menu
   end
 
 end

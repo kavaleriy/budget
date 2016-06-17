@@ -8,8 +8,8 @@
   .col-sm-12.col-md-2.form-inline
     .input-group
       %span.input-group-addon
-        %b тип
-      = select_tag :data_type, options_for_select({"" => "", "план" => "plan", "факт" => "fact"}), id: 'data_type', class: 'form-control'
+        %b= t('budget_files.index.type_select.type')
+      = select_tag :data_type, options_for_select({"" => "", "#{t('budget_files.index.type_select.plan')}" => "plan", "#{t('budget_files.index.type_select.fact')}" => "fact"}), id: 'data_type', class: 'form-control'
 
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
@@ -20,8 +20,6 @@
 :javascript
 
   $(document).ready(function() {
-
-    I18n.locale = window.aHelper.lang();
 
     $('#town_select').select2({
       sortResults: function(results, container, query) {
@@ -43,7 +41,7 @@
       multiSelect: true,
       multiple: true,
       minimumInputLength: 2,
-      placeholder: "місто/район/область",
+      placeholder: '#{t('budget_files.index.search_town')}',
       width: '100%',
       ajax: {
         url: '#{search_town_path}',

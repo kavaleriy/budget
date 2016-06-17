@@ -3,6 +3,7 @@ class BudgetFile
 
   field :author, type: String
 
+  belongs_to :author_model,class_name: 'User'
   field :title, type: String
   field :name, type: String
   field :path, type: String
@@ -17,6 +18,7 @@ class BudgetFile
 
   belongs_to :taxonomy, autosave: true
   belongs_to :zip_budget_file, autosave: true
+  belongs_to :fz_budget_file, autosave: true
 
   # calculated tree
   field :tree, :type => Hash
@@ -33,14 +35,16 @@ class BudgetFile
     elsif user.has_role? :admin
       self.all
     else
-      self.where(:author => nil) + BudgetFile.all.reject{|f| user.is_locked? || f.author != user.email}
+      self.where(author: user.email)
+      # self.or({author: nil}, {author: user.email})
     end
 
     files || []
   end
 
   def import table
-    rows = table[:rows].map { |row|
+
+    rows = table.map { |row|
       readline(row)
     }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
 
@@ -78,6 +82,7 @@ class BudgetFile
         end
       end
     end
+
   end
 
 
@@ -111,7 +116,6 @@ class BudgetFile
         }
       }
     }
-
     self.taxonomy.create_tree subrows, filter
   end
 
@@ -130,4 +134,20 @@ class BudgetFile
     range.map { |k,v| {k => v.keys.sort_by { |kk| kk.to_i } } }
   end
 
+  def self.get_budget_file_for_example
+    # this function return model which have valid filename path
+    # first of all take first model_count model
+    # if someone model have valid filename path return him
+    # if no one model don't have valid filename path return first Budget_file
+    model_count = 20
+    res_model = self.first
+
+    models = self.asc(:title).limit(model_count).to_a
+    models.each do |model|
+    if File.exist?(model.path.to_s)
+      res_model = model
+      end
+    end
+    res_model
+  end
 end

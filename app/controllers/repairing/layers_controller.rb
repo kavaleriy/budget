@@ -1,5 +1,7 @@
 module Repairing
   class LayersController < ApplicationController
+    layout 'application_admin'
+
     before_action :authenticate_user!, except: [:geo_json]
     load_and_authorize_resource
 
@@ -11,13 +13,13 @@ module Repairing
 
       respond_to do |format|
         if @location1
-          repair = @repairing_layer.repairs.new( title: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
+          repair = @repairing_layer.repairs.new( subject: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
           # format.js { render :search_street }
         elsif @location
-          repair = repair = @repairing_layer.repairs.new( title: params[:q], coordinates: @location, address: params[:q] )
+          repair = repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
@@ -42,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.all
+      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
     end
 
     # GET /repairing/layers/1
@@ -75,11 +77,19 @@ module Repairing
       respond_to do |format|
         if @repairing_layer.save
 
-          repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+          unless @repairing_layer.repairs_file.path.nil?
+            repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+            import(@repairing_layer, repairs[:rows])
 
-          import(@repairing_layer, repairs[:rows])
+            Thread.new do
+              @repairing_layer.repairs.each do |repair|
+                repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
+                repair.save!
+              end
+            end
+          end
 
-          format.html { redirect_to @repairing_layer, notice: 'Layer was successfully created.' }
+          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count / 2} сек." }
           format.json { render :show, status: :created, location: @repairing_layer }
         else
           format.html { render :new }
@@ -116,32 +126,23 @@ module Repairing
 
     def import layer, repairs
       repairs.each do |repair|
+        repair_hash = build_repair_hash(repair)
 
-        location = Geocoder.coordinates(repair['Адреса']) unless repair['Адреса'].blank?
-        location1 = Geocoder.coordinates(repair['Адреса1']) unless repair['Адреса1'].blank?
+        coordinates = repair['Координати']
+        coordinates1 = repair['Координати1']
 
-        coordinates =
-            if location1
-              [location, location1]
+        repair_hash[:coordinates] =
+          if coordinates1.blank?
+            if coordinates.blank?
+              nil
             else
-              location
+              coordinates.split(',').map(&:to_f)
             end
+          else
+            [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
+          end
 
-        layer_repair = Repairing::Repair.create(
-            title: "#{repair['Адреса']}, #{repair['Робота']}",
-            obj_owner: repair['Балансоутримувач'],
-            subject: repair['Об\'єкт'],
-            work: repair['Робота'],
-            amount: repair['Вартість'],
-            repair_date: repair['Дата ремонту'],
-            warranty_date: repair['Гарантія'],
-            description: repair['Додаткова інформація'],
-
-            address: repair['Адреса'],
-            address_to: repair['Адреса1'],
-
-            coordinates: coordinates
-        )
+        layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
         category = Repairing::Category.where(:title => repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
@@ -154,11 +155,17 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_layer.update(repairing_layer_params)
+          msg = {class_name: 'success', message: I18n.t('repairing.layers.update.success')}
           format.js
-          format.json { head :no_content }
+          format.json do
+            render json: msg
+          end
         else
+          msg = {class_name: 'danger' ,message: I18n.t('repairing.layers.update.error')}
           format.js
-          format.json { head :no_content }
+          format.json do
+            render json: msg
+          end
         end
       end
     end
@@ -182,6 +189,33 @@ module Repairing
     end
 
     private
+      def build_repair_hash(repair)
+        # this function build hash for repair model
+        # get two parameters repair hash and coordinates array
+        # first of all convert repair start and end date to date
+        # after that build and return hash
+
+        start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
+        end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
+
+        {
+            obj_owner: repair['Виконавець'],
+            subject: repair['Об\'єкт'],
+            work: repair['Робота'],
+            amount: repair['Вартість'],
+            warranty_date: repair['Гарантія'],
+            description: repair['Додаткова інформація'],
+
+            repair_start_date: start_repair_date,
+            repair_end_date: end_repair_date,
+            edrpou_artist: repair['ЄДРПОУ виконавця'],
+            spending_units: repair['Розпорядник бюджетних коштів'],
+            edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+
+            address: repair['Адреса'],
+            address_to: repair['Адреса1'],
+        }
+      end
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
         @repairing_layer = Repairing::Layer.find(params[:id])

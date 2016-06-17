@@ -1,0 +1,187 @@
+:css
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: #eee;
+      shape-rendering: crispEdges;
+  }
+
+  .axis text {
+      font-family: sans-serif;
+      font-size: 11px;
+  }
+
+  .loading {
+      font-family: sans-serif;
+      font-size: 15px;
+  }
+
+  .circle {
+      fill: #222;
+  }
+
+= content_for :header do
+  .head.pull-left
+    = t('programs.target_programs.branch_report.header') + @programs_town.name
+
+#punchcard.col-sm-12
+
+#charts_tooltip.hidden
+  %p
+    %span#value
+
+-#= link_to t('form.back'), '/programs/target_programs/list/' + @programs_town.id, :class => 'btn btn-default'
+= link_to t('form.back'), legacy_programs_target_programs_list_path(@programs_town), :class => 'btn btn-default'
+
+:javascript
+
+  $(document).ready(function() {
+
+    var branches = JSON.parse('#{@report.to_json}');
+    var data = [];
+    for(key in branches) {
+      var history = branches[key]['history'];
+      for(var year in history) {
+        var value = history[year];
+        data.push({"kfkv": key, "name": branches[key]["name"], "year": parseInt(year), "count": value['count'], "percent": value['fact']*100/value['plan']});
+      }
+    }
+
+    var yValues = d3.keys(branches);
+
+    var w = $('#punchcard').width(),
+        h = 300,
+        pad = 20,
+        left_pad = 200,
+        Data_url = '/data.json',
+        str_length = 29;
+
+    var svg = d3.select("#punchcard")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+    var start_year = d3.min(data, function(d){return d['year']});
+    var end_year = d3.max(data, function(d){return d['year']});
+
+    var x = d3.scale.linear().domain([start_year, end_year]).range([left_pad, w-pad]),
+        y = d3.scale.linear().domain([0, yValues.length-1]).range([pad, h-pad*2]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom")
+            .ticks(end_year - start_year)
+            .tickFormat(d3.format('d')),
+        yAxis = d3.svg.axis().scale(y).orient("left")
+            .ticks(yValues.length-1)
+            .tickFormat(function (d, i) {
+                return trunc(branches[yValues[d]]['name']);
+            });
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0, "+(h-pad)+")")
+        .call(xAxis);
+
+    var yText = svg.append("g")
+                   .attr("class", "y axis")
+                   .attr("transform", "translate("+(left_pad-pad)+", 0)")
+                   .call(yAxis);
+
+    var rect_width = left_pad - pad;
+    yText.selectAll('g')
+        .append('rect')
+         .attr('x', -rect_width-5)
+         .attr('y', '0.5em')
+         .attr('fill', 'gray')
+         .style("fill-opacity", "0.2")
+         .attr('width', left_pad-pad)
+         .attr('height', '0.8em')
+         .on("mouseover", mouseover)
+         .on("mousemove", mousemove)
+         .on("mouseout", remove_tooltip);
+
+    yText.selectAll('g')
+        .append('rect')
+         .attr('x', -left_pad + pad -5)
+         .attr('y', '0.5em')
+         .attr('fill', function(d){
+                         var branch = branches[yValues[d]];
+                         var percent = branch['fact']*100/branch['plan']
+                         if(percent >= 90) return '#6BC382';
+                         if(percent >= 50) return '#F1FF9F';
+                         return '#FF9F9F';
+                       })
+         .style("fill-opacity", "1.0")
+         .attr('width', function(d){
+                         var branch = branches[yValues[d]];
+                         return rect_width*branch['fact']/branch['plan'];
+                       })
+         .attr('height', '0.8em')
+         .on("mouseover", mouseover)
+         .on("mousemove", mousemove)
+         .on("mouseout", remove_tooltip);
+
+    svg.append("text")
+        .attr("class", "loading")
+        .text("Loading ...")
+        .attr("x", function () { return w/2; })
+        .attr("y", function () { return h/2-5; });
+
+    var r = d3.scale.linear()
+            .domain([0, d3.max(data, function(d){return d['count']})])
+            .range([0, 12]);
+
+    svg.selectAll(".loading").remove();
+
+    svg.selectAll("circle")
+        .data(data)
+       .enter()
+        .append("circle")
+        .attr("class", "circle")
+        .attr("cx", function (d) { return x(d['year']); })
+        .attr("cy", function (d) { return y(yValues.indexOf(d['kfkv'])); })
+        .style("fill-opacity", "0.5")
+        .style("fill", function(d){
+                          if(d['percent'] >= 90) return 'green';
+                          if(d['percent'] >= 50) return 'yellow';
+                          return 'red';
+                        })
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseout", remove_tooltip)
+       .transition()
+        .duration(800)
+        .attr("r", function (d) { return r(d['count']); });
+
+    function trunc(str) {
+      if(str.length > str_length) {
+        return str.substr(0,str_length-2) + "...";
+      }
+      return str;
+    }
+
+    function mouseover(d) {
+      var percent, count;
+      if($.isNumeric(d)) {
+        var branch = branches[yValues[d]];
+        count = branch['count'];
+        percent = branch['fact']*100/branch['plan'];
+      } else {
+        count = d['count'];
+        percent = d['percent'];
+      }
+      var html = "Всього: <br />\
+                  програм - " + count + "<br />\
+                  профінансовано на - " + parseInt(percent) + "%";
+
+      add_tooltip(d3.event, d, html);
+    }
+
+    function mousemove(d) {
+      var tooltipSpan = document.getElementById('charts_tooltip');
+      var evt = d3.event || window.event;
+      var x = evt.pageX,
+          y = evt.pageY;
+      tooltipSpan.style.top = y + 'px';
+      tooltipSpan.style.left = x + 'px';
+    }
+  })
