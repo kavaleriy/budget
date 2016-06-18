@@ -1,4 +1,14 @@
-.row
+.new_info_panel
+  .header.clearfix
+    .amount
+      = "₴"
+      = number_to_human(@repair.amount)
+    .start_date
+      = @repair.repair_start_date
+  .title_repair
+    = @repair.subject.blank? ? @repair.work : @repair.subject
+
+-#.row
   .info_panel
     .info_header
       %strong="#{@repair.subject.blank? ? @repair.work : @repair.subject}"

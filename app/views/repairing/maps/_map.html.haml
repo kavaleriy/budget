@@ -39,12 +39,13 @@
 
 
 :scss
+  //   Old info_panel
   .info_panel{
     min-width: 320px;
     //border: 1px solid blue;
     border-radius: 3px;
     //overflow-wrap: break-word;
-    word-break: break-all;
+    //word-break: break-all;
     .info_header{
       min-height: 25px;
       border-radius: 2px;
@@ -69,6 +70,46 @@
         //word-break: break-all;
       }
 
+    }
+  }
+  //   New info_panel
+  .leaflet-popup-content-wrapper{
+    border-radius: 0;
+    padding: 0;
+  }
+  .leaflet-popup-content{
+    margin: 0;
+  }
+  .leaflet-container a.leaflet-popup-close-button{
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    font-size: 18px;
+    color: #0c2231;
+  }
+  .leaflet-container a.leaflet-popup-close-button:hover{
+    color: #BB0313;
+  }
+  .new_info_panel{
+    min-width: 220px;
+    .header{
+      padding: 3px 5px 0 5px;
+      background: #193345;
+      color: #ffd304;
+      vertical-align: bottom;
+      .amount{
+        float:left;
+        font-size: 18px;
+        text-transform: lowercase; // for pluralize
+      }
+      .start_date{
+        float: right;
+        font-size: 14px;
+      }
+    }
+    .title_repair{
+      padding: 3px 5px 2px 5px;
+      font-size: 14px;
     }
   }
 
