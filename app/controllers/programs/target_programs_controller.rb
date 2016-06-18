@@ -16,11 +16,14 @@ class Programs::TargetProgramsController < ApplicationController
   end
 
   def new
-    @main_programs = Programs::TargetProgram.get_main_programs
+    # @main_programs = Programs::TargetProgram.get_main_programs
     @program = Programs::TargetProgram.new
+    @program.init_default_budget_sum
+    @program.init_default_task
   end
 
   def create
+    binding.pry
     @program = Programs::TargetProgram.new(programs_target_program_params)
     @program.save
     respond_with(@program)
@@ -49,6 +52,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
     def programs_target_program_params
-      params.require(:programs_target_program).permit(:id,:responsible,:title,:p_id,:description,:town)
+      params.require(:programs_target_program).permit!
+      # (:id,:responsible,:title,:p_id,:tasks => [],:budget_sum => [])
     end
 end

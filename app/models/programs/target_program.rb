@@ -18,7 +18,23 @@ class Programs::TargetProgram
 
   scope :get_main_programs,-> {where(p_id: nil)}
 
-  validates :title,:responsible,:description,:town,presence: true
+  validates :title,:responsible,presence: true
 
+  def init_default_budget_sum
+    self.budget_sum = {
+        general_fund: '',
+        special_fund: '',
+        sum: ''
+    }
+  end
+
+  def init_default_task
+    self.tasks = {
+        task1: {general_fund: '',
+                special_fund: '',
+                sum: ''
+        }
+    }
+  end
 
 end
