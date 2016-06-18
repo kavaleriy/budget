@@ -9,6 +9,16 @@ class Programs::TargetProgram
   has_many :sub_programs,class_name: 'Programs::TargetProgram',foreign_key: 'p_id'
   has_many :indicators,class_name: 'Programs::Indicator'
 
+  belongs_to :author,class_name: 'User'
+  belongs_to :town, class_name: 'Town'
+
   scope :get_main_programs,-> {where(p_id: nil)}
-  validates :title,:responsible,:description,presence: true
+
+  validates :title,:responsible,:description,:town,presence: true
+
+
+  def set_author(author)
+    self.author ||= author
+  end
+
 end

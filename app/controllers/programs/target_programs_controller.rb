@@ -22,13 +22,13 @@ class Programs::TargetProgramsController < ApplicationController
 
   def create
     @program = Programs::TargetProgram.new(programs_target_program_params)
+    @program.set_author(current_user)
     @program.save
     respond_with(@program)
   end
 
   def show
     stub_data
-    # @program = Programs::TargetProgram.first
   end
 
   def edit
@@ -38,8 +38,6 @@ class Programs::TargetProgramsController < ApplicationController
     @program.update(programs_target_program_params)
     respond_with(@program)
   end
-
-
 
   private
 
@@ -52,6 +50,6 @@ class Programs::TargetProgramsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
     def programs_target_program_params
-      params.require(:programs_target_program).permit(:id,:responsible,:title,:p_id,:description)
+      params.require(:programs_target_program).permit(:id,:responsible,:title,:p_id,:description,:town)
     end
 end
