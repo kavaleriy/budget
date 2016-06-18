@@ -6,29 +6,124 @@
     padding-right: 10px;
   }
 
-
-:css
   .form-inline .form-control {
     width: 100%;
   }
 
   .search_block, .search_block div {
+    /*old style. begin*/
     padding: 0;
     margin: 0;
     margin-bottom: 10px;
+    /*old style. end*/
   }
 
   .search_block .form-control {
     height: 37px;
   }
 
+
+:scss
+  /* New search style. Begin */
+  .search_block {
+    position: absolute;
+    z-index: 9999;
+    width: calc(100vw - 50px);
+    left: 50px;
+    padding-top: 10px;
+    .search-container {
+      margin: 2px;
+      ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: white;
+      }
+      ::-moz-placeholder { /* Firefox 19+ */
+        color: white;
+      }
+      :-ms-input-placeholder { /* IE 10+ */
+        color: white;
+      }
+      :-moz-placeholder { /* Firefox 18- */
+        color: white;
+      }
+      input:-webkit-autofill,
+      textarea:-webkit-autofill,
+      select:-webkit-autofill {
+        background-color: #7D94A4 !important;
+      }
+
+      .search-box {
+        -webkit-transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+        transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+        width: 50px;
+        height: 50px;
+        border: none;
+        cursor: pointer;
+        background: #7D94A4;
+        + label .search-icon {
+          color: white;
+        }
+        &:hover {
+          color: white;
+          background: #A2B2BE;
+          box-shadow: 0 0 0 2px #7D94A4;
+          + label .search-icon {
+            color: white;
+          }
+        }
+        &:focus {
+          -webkit-transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+          transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+          border: none;
+          outline: none;
+          box-shadow: none;
+          padding-left: 15px;
+          cursor: text;
+          width: 300px;
+          border-radius: auto;
+          background: #7D94A4;
+          color: white;
+          + label .search-icon {
+            color: white;
+          }
+        }
+        &:not(:focus) {
+          text-indent: -5000px;
+        }
+      }
+
+      #search_btn {
+        position: relative;
+        left: -5000px;
+      }
+
+      .search-icon {
+        position: relative;
+        left: -36px;
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+  /* New search style. End */
+
+-# Old search
+-#.search_block.col-xs-12
+-#  .input-group
+-#    = text_field_tag :q, '', :class => 'form-control', :placeholder => t('repairing.maps.map_select.search_adress')
+-#    .input-group-btn
+-#      = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
+-#        = t('form.search')
+-#        %i.fa.fa-search.fa-lg
+
+-# New search
 .search_block.col-xs-12
-  .input-group
-    = text_field_tag :q, '', :class => 'form-control', :placeholder => t('repairing.maps.map_select.search_adress')
-    .input-group-btn
-      = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
-        = t('form.search')
-        %i.fa.fa-search.fa-lg
+  %form.search-container{action: '#'}
+    %input#search-box.search-box{name: 'q', type: 'text', placeholder: t('repairing.maps.map_select.search_adress')}/
+    %label{for: 'search-box'}
+      %span.fa.fa-search.search-icon
+    %input#search_btn{type: 'submit'}
+
+
 
 = render partial: 'map_ukraine'
 
