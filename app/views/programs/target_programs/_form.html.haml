@@ -1,7 +1,11 @@
 =bootstrap_form_for @program do |f|
   =f.text_field :title
-  =f.text_field :town,label: t('.town')
-
+  =f.text_field :kvkv, label: t('.kvkv')
+  =f.text_field :kfkv, label: t('.kfkv')
+  =f.text_field :manager,label: t('.manager')
+  =f.text_field :responsible,label: t('.responsible')
+  =f.text_field :reason,label: t('.reason')
+  =f.text_field :objective,label: t('.objective')
 
   =label_tag 'type_program',t('.new_program')
   =radio_button_tag 'type', 'program'
@@ -9,8 +13,6 @@
   =radio_button_tag 'type', 'subprogram',true
 
   =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
-  =f.text_field :description,as: :text,label: t('.description')
-  =f.text_field :responsible,label: t('.responsible')
   =f.submit t('save')
 :javascript
   $(document).ready(function(){
@@ -43,6 +45,6 @@
         }
       }
     });
-    init_town_select2_with_field_id('#programs_target_program_town',"#{search_for_towns_town_path}")
+    -#init_town_select2_with_field_id('#programs_target_program_town',"#{search_for_towns_town_path}")
 
   });

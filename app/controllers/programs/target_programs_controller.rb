@@ -22,7 +22,6 @@ class Programs::TargetProgramsController < ApplicationController
 
   def create
     @program = Programs::TargetProgram.new(programs_target_program_params)
-    @program.set_author(current_user)
     @program.save
     respond_with(@program)
   end
