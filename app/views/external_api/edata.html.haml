@@ -1,0 +1,25 @@
+.table-responsive
+  %table.table.table-striped
+    %tr
+      %th
+        Платник
+      %th
+        Отримувач
+      %th
+        Сума
+      %th
+        Дата
+      %th
+        Призначення платежу
+    - @payments.each do |payment|
+      %tr
+        %td
+          = payment['payer_name']
+        %td
+          = payment['recipt_name']
+        %td
+          = payment['amount']
+        %td
+          = payment['trans_date'].split('T')[0]
+        %td
+          = payment['payment_details']

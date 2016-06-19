@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :external_api do
+    get 'edata'
+  end
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
