@@ -9,10 +9,17 @@
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
 
+
+-#https://github.com/smeijer/L.GeoSearch/tree/develop/src/js
+= stylesheet_link_tag 'geosearch/l.geosearch.css', :media => 'all'
+
 = content_for :head do
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
   = javascript_include_tag "leaflet/leaflet-routing-machine.js"
+
+  = javascript_include_tag "geosearch/l.control.geosearch.js"
+  = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
 
 :css
   #map {
@@ -179,7 +186,7 @@
       if (options.bounds) map.fitBounds(options.bounds);
 
 
-      L.Icon.Default.imagePath = '/assets/leaflet/images'
+      L.Icon.Default.imagePath = 'leaflet/images'
 
 
       function setBrowserLocation() {
@@ -219,6 +226,16 @@
       }
 
       map.on('click', onMapClick);
+    }
+
+
+    function addGeoSearch() {
+
+       new L.Control.GeoSearch({
+          provider: new L.GeoSearch.Provider.OpenStreetMap(),
+          showMarker: false,
+          retainZoomLevel: false,
+       }).addTo(map);
     }
 
 
@@ -569,6 +586,7 @@
 
     initMap();
     initPopup();
+    addGeoSearch()
     initRouting();
     //addControl();
 
