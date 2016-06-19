@@ -106,6 +106,89 @@
   }
   /* New search style. End */
 
+  /* Search bar. Begin */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 25px;
+    transition: all 0.5s ease-in-out;
+    ul {
+      li {
+        background: #7D94A4;
+        overflow: hidden;
+        transition: all .5s ease-in-out;
+        white-space: nowrap;
+        max-width: 50px;
+        min-width: 50px;
+        &:hover {
+          /*max-width: 100%;*/
+          max-width: 200px;
+        }
+        a {
+          i {
+            width: 50px;
+            height: 50px;
+            box-shadow: 1px 0 #476B84;
+            font-size: 12pt;
+            text-align: center;
+            line-height: 50px;
+          }
+          span {
+            padding: 0 15px;
+            opacity: 0;
+            transform: translateX(15px);
+          }
+        }
+      }
+      > li a {
+        height: 50px;
+        //border-top: 1px solid #476B84;
+        display: block;
+        color: #FFF;
+        line-height: 50px;
+        text-decoration: none;
+      }
+    }
+    &:hover ul li a span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  #sidebar {
+    position: absolute;
+    width: 20%;
+    height: auto;
+    top: 160px;
+    float: left;
+    margin: 0 0 0 10px;
+    z-index: 1;
+  }
+
+  .left-side {
+    ul {
+      padding: 0;
+      margin: 0;
+      li {
+        margin: 0 0 5px 0;
+        a {
+          .e-data {
+            width: 20px;
+            height: 20px;
+            margin: 15px;
+          }
+        }
+      }
+    }
+  }
+
+
+  //.example .var2 {
+  //  position: relative !important;
+  //}
+  /* Search bar. End */
+
 -# Old search
 -#.search_block.col-xs-12
 -#  .input-group
@@ -127,6 +210,22 @@
       %span.fa.fa-search.search-icon
     %input#search_btn{type: 'submit'}
 
+-# Left buttons
+%nav#sidebar.left-side
+  %ul
+    %li
+      %a{:href => "#"}
+        -#%i.fa.fa-user
+        = image_tag('icons/e-data_icon.png', class: 'e-data')
+        %span E-data
+    %li
+      %a{:href => "#"}
+        %i.fa.fa-picture-o
+        %span Фотографії
+    %li
+      %a{:href => "#"}
+        %i.fa.fa-info
+        %span Інформація
 
 
 = render partial: 'map_ukraine'
