@@ -183,17 +183,26 @@
     }
   }
   //Modal window e-data
-  #e-dataModal {
+  #e-dataModal, #more-infoModal {
     .modal-dialog {
       margin: 15px;
       .modal-content {
         width: 95vw;
         height: 93vh;
         border-radius: 0;
-        .header {
+        .modal-header {
           padding: 10px 0;
+          border-bottom: 1px solid #0c2231;
+          .close {
+
+          }
+          &:hover,
+          &:focus {
+            color: #0c2231;
+          }
         }
         .modal-body {
+          padding: 10px;
           .e-data-frame {
             width: 100%;
             height: 70vh;
