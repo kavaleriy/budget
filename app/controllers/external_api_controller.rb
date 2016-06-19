@@ -8,7 +8,7 @@ class ExternalApiController < ApplicationController
   def edata
     def get_params
       data = {
-          'startdate' => '01-01-2016',
+          'startdate' => '01-05-2016',
           # 'enddate' => '30-10-2015',
       }
 
