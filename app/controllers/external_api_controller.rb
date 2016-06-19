@@ -4,7 +4,7 @@ class ExternalApiController < ApplicationController
   # TODO: extract lib
 
   # http://localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json
-  
+
   def edata
     def get_params
       data = {
