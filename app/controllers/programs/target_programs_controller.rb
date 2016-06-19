@@ -40,8 +40,13 @@ class Programs::TargetProgramsController < ApplicationController
   end
 
   def import
-    Programs::TargetProgram.import(params[:import_file].tempfile)
-    binding.pry
+    program = Programs::TargetProgram.import(params[:import_file].tempfile)
+    if program.save
+      redirect_to program_target_program_path(program)
+    else
+      redirect_to :back,alert: 'Вибачте сталася помилка'
+    end
+
   end
 
   private

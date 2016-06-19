@@ -6,7 +6,10 @@ class Programs::Indicator
   EFECTIVE_TYPE = 3
   QUALITY_TYPE = 4
 
+  field :title_program, type: String
   field :title,type: String
-  field :items,type: Array
-  belongs_to :targeted_program,class_name: 'Programs::TargetProgram'
+  field :group,type: String
+  field :measurement_unit,type: String
+  field :value,type: String
+  belongs_to :target_program,class_name: 'Programs::TargetProgram'
 end

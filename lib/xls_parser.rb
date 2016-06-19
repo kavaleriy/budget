@@ -9,7 +9,7 @@ class XlsParser < RubyXL::Parser
         row_res = {}
         row && row.cells.each do |cell|
           val = cell && cell.value
-          field_name = worksheet[0][cell_number].value unless worksheet[0][cell_number].nil?
+          field_name = worksheet[0][cell_number].value.downcase unless worksheet[0][cell_number].nil?
 
           row_res[field_name] = val
           row_res.delete_if {|key, value| key.nil?}
