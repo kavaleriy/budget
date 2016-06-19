@@ -18,7 +18,7 @@ class Programs::TargetProgramsController < ApplicationController
   def new
     @program = Programs::TargetProgram.new
     @program.init_default_budget_sum
-    @program.init_default_task
+    # @program.init_default_task
   end
 
   def create
@@ -37,6 +37,11 @@ class Programs::TargetProgramsController < ApplicationController
   def update
     @program.update(programs_target_program_params)
     respond_with(@program)
+  end
+
+  def import
+    Programs::TargetProgram.import(params[:import_file].tempfile)
+    binding.pry
   end
 
   private

@@ -20,13 +20,13 @@
   =radio_button_tag 'type', 'subprogram',true
   .form-group
     =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
-  #tasks_block
-    =f.simple_fields_for :tasks do |tasks|
-      -@program.tasks.each do |task,value|
-        =tasks.simple_fields_for task do |task_form_builder|
-          =task_form_builder.input task,label: t('.task_title'),class: 'task',value: task
-          -value.each do |key,task_value|
-            =task_form_builder.input key,value: task_value,class: 'task'
+  -##tasks_block
+  -#  =f.simple_fields_for :tasks do |tasks|
+  -#    -@program.tasks.each do |task,value|
+  -#      =tasks.simple_fields_for task do |task_form_builder|
+  -#        =task_form_builder.input task,label: t('.task_title'),class: 'task',value: task
+  -#        -value.each do |key,task_value|
+  -#          =task_form_builder.input key,value: task_value,class: 'task'
 
   .col-xs-12
     =f.submit t('save'),class: 'btn btn-primary'

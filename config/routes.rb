@@ -80,6 +80,10 @@ Rails.application.routes.draw do
 
   namespace :programs do
     resources :target_programs
+    # namespace :target_programs do
+      post 'target_programs/import' => 'target_programs#import', as: 'target_programs_import'
+    # end
+
   end
 
   namespace :legacy_programs do

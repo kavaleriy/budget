@@ -20,11 +20,12 @@ class Programs::TargetProgram
   field :region_target_program,type: Hash
 
   has_many :sub_programs,class_name: 'Programs::TargetProgram',foreign_key: 'p_id'
-  has_many :indicators,class_name: 'Programs::Indicator'
+  embeds_many :indicators,class_name: 'Programs::Indicator'
+  embeds_many :tasks,class_name: 'Program::Task'
 
   scope :get_main_programs,-> {where(p_id: nil)}
 
-  validates :title,:responsible,presence: true
+  validates :title,:responsible,:manager,presence: true
 
   def init_default_budget_sum
     self.budget_sum = {
@@ -34,13 +35,11 @@ class Programs::TargetProgram
     }
   end
 
-  def init_default_task
-    self.tasks = {
-        task1: {general_fund: '',
-                special_fund: '',
-                sum: ''
-        }
-    }
+  def self.import(file_path)
+    workbook = XlsParser.get_workbook(file_path)
+    worksheet = workbook[0]
+    table_in_hash = XlsParser.get_table_hash(worksheet)
+    binding.pry
   end
 
 end
