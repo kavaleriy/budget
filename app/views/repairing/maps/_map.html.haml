@@ -113,6 +113,20 @@
     }
   }
 
+:scss
+  #map {
+    .leaflet-control-container {
+      .leaflet-top {
+        z-index: 1;
+        .leaflet-control-zoom {
+          & > a {
+            border-radius: 0;
+          }
+        }
+      }
+    }
+  }
+
 #map
 
 
@@ -359,7 +373,7 @@
         return this._div;
       };
 
-      categoryBtns.addTo(map);
+      //categoryBtns.addTo(map);
     }
 
     function editRoute(waypoints, routeFoundCallback) {
