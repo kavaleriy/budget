@@ -62,7 +62,7 @@
                       - if !current_user.has_role? :admin
                         %small{:style => 'color: red;'}* заблоковані документи будуть розблоковані після перевірки Адміністратором
                       = render :partial => 'documentation/documents/documents', :locals => { :documents => documents.select{ |doc| doc.town_id == town.id && doc.owner_id == current_user.id } }
-            .modal-footer
+              .modal-footer
               %button.btn.btn-default{'data-dismiss' => 'modal', :type => 'button'}
                 = t('form.close')
 
