@@ -1,12 +1,24 @@
 :scss
   #edata_payments {
+    table {
+      margin-bottom: 250px;
+
+      tr {
+        cursor: pointer;
+        opacity: .7;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
     .info {
       position: fixed;
-      bottom: 10px;
-      left:0;
+      bottom: 0px;
+      left: 0;
       width: 100%;
       background-color: #87cefa;
-      padding: 10px;
+      padding: 15px;
     }
   }
 
@@ -39,13 +51,12 @@
 
 :javascript
   $(document).ready(function() {
-    $('#edata_payments tr[data-edrpou]').on('mouseout', function() {
-      $('#edata_payments .info').html('')
-    }).on('mouseover', function() {
+    $('#edata_payments tr').on('click', function() {
       var edrpou = $(this).attr('data-edrpou')
       $.get('http://edr.data-gov-ua.org/api/companies?where={"edrpou":"' + edrpou + '"}' , function (data) {
         var edr = data[0]
-        var info = 'Відповідальний: ' + edr['mainPerson'] + '<br>Адреса: ' + edr['address']
+        var info = '<b>ЕДРПОУ: </b>' + edrpou + ', Відповідальний: ' + edr['mainPerson'] + '<br>Адреса: ' + edr['address'] +
+          '<br/> далі буде......'
         $('#edata_payments .info').html(info)
       });
 
