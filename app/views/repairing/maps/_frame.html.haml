@@ -183,7 +183,26 @@
       }
     }
   }
-
+  //Modal window e-data
+  #e-dataModal {
+    .modal-dialog {
+      margin: 15px;
+      .modal-content {
+        width: 95vw;
+        height: 93vh;
+        border-radius: 0;
+        .header {
+          padding: 10px 0;
+        }
+        .modal-body {
+          .e-data-frame {
+            width: 100%;
+            height: 70vh;
+          }
+        }
+      }
+    }
+  }
 
   //.example .var2 {
   //  position: relative !important;
@@ -215,7 +234,8 @@
 %nav#sidebar.left-side
   %ul
     %li
-      %a{:href => "#"}
+      -#%a{:href => "#"}
+      = link_to '#', id: 'e-data' do
         -#%i.fa.fa-user
         = image_tag('icons/e-data_icon.png', class: 'e-data')
         %span E-data
@@ -224,9 +244,32 @@
         %i.fa.fa-picture-o
         %span Фотографії
     %li
-      %a{:href => "#"}
+      -#%a{:href => "#"}
+      = link_to '#', id: 'more-info' do
         %i.fa.fa-info
         %span Інформація
+
+.modal.fade{:id => 'e-dataModal',  role: 'dialog', tabindex: '-1'}
+  .modal-dialog{:role => 'document'}
+    .modal-content
+      .modal-header
+        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+          %span{'aria-hidden' => 'true'} &times;
+        .modal-title
+          Інформація з порталу E-data
+      .modal-body
+        %iframe.e-data-frame{src: ''}
+
+.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
+  .modal-dialog{:role => 'document'}
+    .modal-content
+      .modal-header
+        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+          %span{'aria-hidden' => 'true'} &times;
+        .modal-title
+          Додаткова інформація
+      .modal-body
+        Content here
 
 
 = render partial: 'map_ukraine'
@@ -234,6 +277,14 @@
 :javascript
 
   $(document).ready(function() {
+    $('#e-data').click(function(){
+      $('.e-data-frame').attr('src', '/external_api/edata');
+      $('#e-dataModal').modal();
+    });
+
+    $('#more-info').click(function(){
+      $('#more-infoModal').modal();
+    });
 
     var embed_code = aMapEmbedCode();
     var src = 'http://' + window.location.host + "/repairing/maps/frame/6/";

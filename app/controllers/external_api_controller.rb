@@ -4,6 +4,7 @@ class ExternalApiController < ApplicationController
   # TODO: extract lib
 
   # http://localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json
+  
   def edata
     def get_params
       data = {
@@ -11,8 +12,11 @@ class ExternalApiController < ApplicationController
           # 'enddate' => '30-10-2015',
       }
 
-      data['payer_edrpous'] = [params[:payer_edrpous]]
-      data['recipt_edrpous'] = [params[:recipt_edrpous]]
+      # data['payer_edrpous'] = [params[:payer_edrpous]]
+      # data['recipt_edrpous'] = [params[:recipt_edrpous]]
+
+      data['payer_edrpous'] = ['39883094']
+      data['recipt_edrpous'] = ['09334702']
 
       data.delete_if { |key, value| value.blank? }
     end
