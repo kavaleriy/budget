@@ -1,5 +1,11 @@
 class Programs::TargetProgram
   include Mongoid::Document
+
+  PROGRAM_TYPE = 1
+  SUBPROGRAM_TYPE = 2
+  TASK_TYPE = 3
+
+
   field :title, type: String
   field :years, type: Hash
   field :p_id,type: String
