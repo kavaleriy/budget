@@ -16,14 +16,12 @@ class Programs::TargetProgramsController < ApplicationController
   end
 
   def new
-    # @main_programs = Programs::TargetProgram.get_main_programs
     @program = Programs::TargetProgram.new
     @program.init_default_budget_sum
     @program.init_default_task
   end
 
   def create
-    binding.pry
     @program = Programs::TargetProgram.new(programs_target_program_params)
     @program.save
     respond_with(@program)

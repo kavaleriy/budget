@@ -23,7 +23,6 @@
   #tasks_block
     =f.simple_fields_for :tasks do |tasks|
       -@program.tasks.each do |task,value|
-        -binding.pry
         =tasks.simple_fields_for task do |task_form_builder|
           =task_form_builder.input task,label: t('.task_title'),class: 'task',value: task
           -value.each do |key,task_value|
