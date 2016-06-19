@@ -1,4 +1,16 @@
-.table-responsive
+:scss
+  #edata_payments {
+    .info {
+      position: fixed;
+      bottom: 10px;
+      left:0;
+      width: 100%;
+      background-color: #87cefa;
+      padding: 10px;
+    }
+  }
+
+#edata_payments.table-responsive
   %table.table.table-striped
     %tr
       %th
@@ -12,7 +24,7 @@
       %th
         Призначення платежу
     - @payments.each do |payment|
-      %tr
+      %tr{'data-edrpou' => payment['payer_edrpou']}
         %td
           = payment['payer_name']
         %td
@@ -23,3 +35,19 @@
           = payment['trans_date'].split('T')[0]
         %td
           = payment['payment_details']
+  .info
+
+:javascript
+  $(document).ready(function() {
+    $('#edata_payments tr[data-edrpou]').on('mouseout', function() {
+      $('#edata_payments .info').html('')
+    }).on('mouseover', function() {
+      var edrpou = $(this).attr('data-edrpou')
+      $.get('http://edr.data-gov-ua.org/api/companies?where={"edrpou":"' + edrpou + '"}' , function (data) {
+        var edr = data[0]
+        var info = 'Відповідальний: ' + edr['mainPerson'] + '<br>Адреса: ' + edr['address']
+        $('#edata_payments .info').html(info)
+      });
+
+    })
+  })
