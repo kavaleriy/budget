@@ -1,6 +1,8 @@
 = bootstrap_form_for @repairing_repair, url: repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), remote: true do |f|
 
   = f.text_field :subject, :label => t('repairing.repairs.form.title')
+  = f.text_field :edrpou_artist,label: t('.erdpou_artist')
+  = f.text_field :edrpou_spending_units,label: t('.erdpou_spending')
   = f.text_field :obj_owner, :label => t('repairing.repairs.form.obj_owner')
   = f.text_field :subject, :label => t('repairing.repairs.form.subject')
   = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| !p.category || p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { :label => t('repairing.repairs.form.work') }, :class => 'form-control'

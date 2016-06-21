@@ -9,10 +9,17 @@
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
 
+
+-#https://github.com/smeijer/L.GeoSearch/tree/develop/src/js
+= stylesheet_link_tag 'geosearch/l.geosearch.css', :media => 'all'
+
 = content_for :head do
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
   = javascript_include_tag "leaflet/leaflet-routing-machine.js"
+
+  = javascript_include_tag "geosearch/l.control.geosearch.js"
+  = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
 
 :css
   #map {
@@ -39,12 +46,13 @@
 
 
 :scss
+  //   Old info_panel
   .info_panel{
     min-width: 320px;
     //border: 1px solid blue;
     border-radius: 3px;
     //overflow-wrap: break-word;
-    word-break: break-all;
+    //word-break: break-all;
     .info_header{
       min-height: 25px;
       border-radius: 2px;
@@ -69,6 +77,74 @@
         //word-break: break-all;
       }
 
+    }
+  }
+  //   New info_panel
+  .leaflet-popup-content-wrapper{
+    border-radius: 0;
+    padding: 0;
+  }
+  .leaflet-popup-content{
+    margin: 0;
+  }
+  .leaflet-container a.leaflet-popup-close-button{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 0 0 0;
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    color: #ffffff;
+    background: #7D94A4;
+    background-position: 100% 20%;
+    border-radius: 0;
+    border: 1px solid white;
+  }
+  .leaflet-container a.leaflet-popup-close-button:hover{
+    color: #7D94A4;
+    background: #ffffff;
+    border: 1px solid #7D94A4;
+  }
+  .new_info_panel{
+    min-width: 220px;
+    .header{
+      padding: 3px 5px 0 5px;
+      background: #7D94A4;
+      color: #ffffff;
+      vertical-align: bottom;
+      .amount{
+        float:left;
+        //text-align: center;
+        font-size: 1.7rem;
+        font-weight: 600;
+        text-transform: lowercase; // for pluralize
+      }
+      .start_date{
+        float: right;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+    }
+    .title_repair{
+      padding: 1rem 1.2rem;
+      font-size: 1.3rem;
+      line-height: 1.2;
+      color: #0c2231;
+    }
+  }
+
+:scss
+  #map {
+    .leaflet-control-container {
+      .leaflet-top {
+        z-index: 1;
+        .leaflet-control-zoom {
+          & > a {
+            border-radius: 0;
+          }
+        }
+      }
     }
   }
 
@@ -124,7 +200,7 @@
       if (options.bounds) map.fitBounds(options.bounds);
 
 
-      L.Icon.Default.imagePath = '/assets/leaflet/images'
+      L.Icon.Default.imagePath = 'leaflet/images'
 
 
       function setBrowserLocation() {
@@ -151,6 +227,10 @@
       popup = L.popup();
 
       function onMapClick(e) {
+        //Hide left sidebar
+        //$('#sidebar').hide('slow');
+        hideSidebar();
+
         if (options.getMapPopupContent) {
           popup
             .setLatLng(e.latlng)
@@ -160,6 +240,16 @@
       }
 
       map.on('click', onMapClick);
+    }
+
+
+    function addGeoSearch() {
+
+       new L.Control.GeoSearch({
+          provider: new L.GeoSearch.Provider.OpenStreetMap(),
+          showMarker: false,
+          retainZoomLevel: false,
+       }).addTo(map);
     }
 
 
@@ -278,6 +368,12 @@
 
               options.dragCallback(layer, ll)
             }
+          },
+          popupopen: function(e){
+            showSidebar();
+          },
+          popupclose: function(e){
+            hideSidebar();
           }
         });
       }
@@ -318,7 +414,7 @@
         return this._div;
       };
 
-      categoryBtns.addTo(map);
+      //categoryBtns.addTo(map);
     }
 
     function editRoute(waypoints, routeFoundCallback) {
@@ -494,8 +590,17 @@
       });
     }
 
+    function showSidebar() {
+      $('#sidebar').show('slow');
+    }
+
+    function hideSidebar() {
+      $('#sidebar').hide('fast');
+    }
+
     initMap();
     initPopup();
+    addGeoSearch()
     initRouting();
     //addControl();
 
@@ -511,6 +616,8 @@
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
-      showAdressMarker: showAdressMarker
+      showAdressMarker: showAdressMarker,
+      showSidebar: showSidebar,
+      hideSidebar: hideSidebar
     }
   }
