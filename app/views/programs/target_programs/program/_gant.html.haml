@@ -54,52 +54,52 @@
 
 :javascript
 
-  // $(document).ready(function() {
-  //   google.charts.load('current', {'packages':['gantt']});
-  //
-  //   google.charts.setOnLoadCallback(drawChart);
-  //
-  //   function drawChart() {
-  //
-  //     var data = new google.visualization.DataTable();
-  //     data.addColumn('string', 'Task ID');
-  //     data.addColumn('string', 'Task Name');
-  //     data.addColumn('string', 'Resource');
-  //     data.addColumn('date', 'Start Date');
-  //     data.addColumn('date', 'End Date');
-  //     data.addColumn('number', 'Тривалість');
-  //     data.addColumn('number', 'Percent Complete');
-  //     data.addColumn('string', 'Dependencies');
-  //
-  //     data.addRows([
-  //       ['2014Summer', 'Робота 1', 'summer',
-  //        new Date(2015, 5, 21), new Date(2015, 8, 20), null, 100, null],
-  //       ['2014Autumn', 'Робота 2', 'autumn',
-  //        new Date(2016, 8, 21), new Date(2016, 11, 20), null, 100, null],
-  //       ['2014Winter', 'Робота 3', 'winter',
-  //        new Date(2015, 11, 21), new Date(2016, 2, 21), null, 30, null],
-  //       ['2015Spring', 'Робота 4', 'spring',
-  //        new Date(2015, 10, 22), new Date(2016, 5, 20), null, 50, null],
-  //       ['2015Summer', 'Робота 5', 'summer',
-  //        new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
-  //       ['2015Autumn', 'Робота 6', 'autumn',
-  //        new Date(2016, 8, 21), new Date(2016, 11, 20), null, 0, null],
-  //       ['2015Winter', 'Робота 7', 'winter',
-  //        new Date(2016, 7, 21), new Date(2016, 2, 21), null, 0, null],
-  //       ['2015Summer', 'Робота 5', 'summer',
-  //        new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
-  //     ]);
-  //
-  //     var options = {
-  //       height: 300,
-  //       gantt: {
-  //         trackHeight: 30
-  //       }
-  //     };
-  //
-  //     var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
-  //
-  //     chart.draw(data, options);
-  //   }
-  //
-  // })
+  $(document).ready(function() {
+    google.charts.load('current', {'packages':['gantt']});
+
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('string', 'Resource');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Тривалість');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      data.addRows([
+        ['2014Summer', 'Робота 1', 'summer',
+         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 100, null],
+        ['2014Autumn', 'Робота 2', 'autumn',
+         new Date(2016, 8, 21), new Date(2016, 11, 20), null, 100, null],
+        ['2014Winter', 'Робота 3', 'winter',
+         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 30, null],
+        ['2015Spring', 'Робота 4', 'spring',
+         new Date(2015, 10, 22), new Date(2016, 5, 20), null, 50, null],
+        ['2015Summer', 'Робота 5', 'summer',
+         new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
+        ['2015Autumn', 'Робота 6', 'autumn',
+         new Date(2016, 8, 21), new Date(2016, 11, 20), null, 0, null],
+        ['2015Winter', 'Робота 7', 'winter',
+         new Date(2016, 7, 21), new Date(2016, 2, 21), null, 0, null],
+        ['2015Summer', 'Робота 5', 'summer',
+         new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
+      ]);
+
+      var options = {
+        height: 300,
+        gantt: {
+          trackHeight: 30
+        }
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+
+  })
