@@ -48,7 +48,17 @@ class Programs::TargetProgram
   def self.create_program_by_xls(sheet)
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet)
-      self.create(program_hash.first)
+      budget_sum_hash = {}
+      budget_sum_name_array = ["general_fund","special_fund","sum"]
+      budget_sum_name_array.each do |name|
+        budget_sum_hash.store(name,program_hash.first[name])
+        program_hash.first.except!(name)
+      end
+
+      program =  self.new(program_hash.first)
+      program.budget_sum = budget_sum_hash
+      program
+
     end
   end
 
@@ -59,6 +69,7 @@ class Programs::TargetProgram
       tasks_hash.each do |task_hash|
         res_tasks << Programs::Task.create(task_hash)
       end
+
     end
   end
 
