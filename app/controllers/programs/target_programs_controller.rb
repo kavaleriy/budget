@@ -29,6 +29,7 @@ class Programs::TargetProgramsController < ApplicationController
 
   def show
     stub_data
+    @grouped_indicators = Programs::TargetProgram.get_grouped_indicators(@program.indicators)
   end
 
   def edit

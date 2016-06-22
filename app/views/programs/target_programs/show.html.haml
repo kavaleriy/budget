@@ -25,7 +25,7 @@
   .indicators.col-xs-12
     %h2
       = t('.group_indicators')
-    = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year }
+    = render partial: 'programs/target_programs/program/indicators', locals: { program: @program, :year => @year ,indicators_group: @grouped_indicators}
 
   .col-xs-12
     .gantt-header

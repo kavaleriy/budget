@@ -42,7 +42,21 @@ class Programs::TargetProgram
     program.indicators = create_indicators_by_xls(workbook['Indicates'])
     program
   end
+  def self.get_grouped_indicators(indicators)
+    group_indicators = indicators.group_by{|f| f.group}
+    group_indicators.transform_keys{|key|set_indicator_group_name(key)}
+  end
 
+  def self.set_indicator_group_name(key)
+    case key.to_i
+      when Programs::Indicator::EXPENSES_TYPE then 'expense'
+      when Programs::Indicator::PRODUCT_TYPE then 'product'
+      when Programs::Indicator::EFECTIVE_TYPE then 'efective'
+      when Programs::Indicator::QUALITY_TYPE then 'quality'
+      else
+        'other'
+    end
+  end
 
   private
   def self.create_program_by_xls(sheet)
