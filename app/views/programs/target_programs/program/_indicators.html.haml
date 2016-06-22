@@ -12,19 +12,17 @@
 
 .program_indicators
   %ul.nav.nav-tabs{'role' => 'tablist'}
-    -test = get_grouped_indicators(program.indicators)
-    -binding.pry
 
-    -#- program.indicators.each_with_index do |indicator, i|
-    -#  - active = (i == 0 ? 'active' : '')
-    -#  - indicator_id = "tab-#{i}"
-    -#  - indicator_id_contents = "tab-#{i}-contents"
-    -#  %li.dropdown{class: active}
-    -#    %a.dropdown-toggle{id: indicator_id, role: 'tab', 'data-toggle' => 'dropdown', 'aria-controls' => indicator_id_contents}
-    -#      %i.fa.fa-4x.fa-bar-chart
-    -#      %h3
-    -#        = indicator[:title]
-    -#        %span.caret
+    - get_grouped_indicators(program.indicators).each_with_index do |indicator, i|
+      - active = (i == 0 ? 'active' : '')
+      - indicator_id = "tab-#{i}"
+      - indicator_id_contents = "tab-#{i}-contents"
+      %li.dropdown{class: active}
+        %a.dropdown-toggle{id: indicator_id, role: 'tab', 'data-toggle' => 'dropdown', 'aria-controls' => indicator_id_contents}
+          %i.fa.fa-4x.fa-bar-chart
+          %h3
+            = indicator[:title]
+            %span.caret
         -#
         -#%ul.dropdown-menu{id: indicator_id_contents, 'aria-labelledby' => indicator_id}
         -#  - indicator[:items].each_with_index do |item, j|

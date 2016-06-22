@@ -6,7 +6,6 @@ module Programs::TargetProgramsHelper
   def get_grouped_indicators(indicators)
     group_indicators = indicators.group_by{|f| f.group}
     group_indicators.transform_keys{|key|set_indicator_group_name(key)}
-    group_indicators
   end
 
   def set_indicator_group_name(key)
