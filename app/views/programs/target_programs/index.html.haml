@@ -9,9 +9,8 @@
     .btn-group
       = f.file_field :import_file, class: 'btn btn-default', required: true
     .btn-group
-      = f.submit t("helpers.links.calendar_import"), class: 'btn btn-primary'
+      = f.submit t(".import_program"), class: 'btn btn-primary'
 
-=link_to t('.import_program'), programs_target_programs_import_path, class: 'btn btn-default'
 #target_programs.col-xs-12
   = render partial: 'programs/target_programs/programs/bar'
   -unless @programs.empty?
