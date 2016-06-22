@@ -63,11 +63,18 @@ class Programs::TargetProgram
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
-      budget_sum_hash = { program_year => {}}
+      budget_sum_hash = { program_year => {plan: {},
+                                           fact: {
+                                               general_sum: 0,
+                                               special_sum: 0,
+                                               sum: 0
+                                           }
+                                          }
+                        }
       program_hash.except!("year")
       budget_sum_name_array = ["general_fund","special_fund","sum"]
       budget_sum_name_array.each do |name|
-        budget_sum_hash[program_year].store(name,program_hash[name])
+        budget_sum_hash[program_year][:plan].store(name,program_hash[name])
         program_hash.except!(name)
       end
       program =  self.new(program_hash)
