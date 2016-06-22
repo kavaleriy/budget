@@ -5,6 +5,7 @@ module Programs::TargetProgramsHelper
 
   def calc_percentage(plan,fact)
     if fact.eql?(0)
+      -#Test data
       22
     else
       ((fact.to_f/plan.to_f) * 100)
