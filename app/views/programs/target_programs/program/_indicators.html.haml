@@ -7,13 +7,24 @@
     .tab-content {
       padding: 15px 10px;
     }
+    .indicator-dropdown-title{
+      width: 400px;
+
+
+      .indicator-title{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 16px;
+      }
+    }
 
   }
+-indicators_title_index = 0
+-indicators_array_index = 1
 
 .program_indicators
   %ul.nav.nav-tabs{'role' => 'tablist'}
-
-    - get_grouped_indicators(program.indicators).each_with_index do |indicator, i|
+    - indicators_group.each_with_index do |indicator_group, i|
       - active = (i == 0 ? 'active' : '')
       - indicator_id = "tab-#{i}"
       - indicator_id_contents = "tab-#{i}-contents"
@@ -21,17 +32,17 @@
         %a.dropdown-toggle{id: indicator_id, role: 'tab', 'data-toggle' => 'dropdown', 'aria-controls' => indicator_id_contents}
           %i.fa.fa-4x.fa-bar-chart
           %h3
-            = indicator[:title]
+            = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
             %span.caret
-        -#
-        -#%ul.dropdown-menu{id: indicator_id_contents, 'aria-labelledby' => indicator_id}
-        -#  - indicator[:items].each_with_index do |item, j|
-        -#    - item_id = "tab-#{i}-#{j}"
-        -#    - item_id_content = "tab-#{i}-#{j}-content"
-        -#    %li
-        -#      %a{id: item_id, :href => "##{item_id_content}", role: 'tab', 'data-toggle' => 'tab', 'aria-controls' => item_id_content}
-        -#        %h3
-        -#          = item[:title]
+
+        %ul.dropdown-menu{id: indicator_id_contents, 'aria-labelledby' => indicator_id}
+          - indicator_group[indicators_array_index].each_with_index do |item, j|
+            - item_id = "tab-#{i}-#{j}"
+            - item_id_content = "tab-#{i}-#{j}-content"
+            %li.indicator-dropdown-title
+              %a{id: item_id, :href => "##{item_id_content}", role: 'tab', 'data-toggle' => 'tab', 'aria-controls' => item_id_content}
+                .indicator-title
+                  = item.title[0..50]
 
     %li.dropdown
       %a{:href => '#tab_bubble', role: 'tab', 'data-toggle' => 'tab'}
@@ -40,13 +51,13 @@
           Поросюшка
 
   .tab-content
-    - program.indicators.each_with_index do |indicator, i|
-      -#- indicator[:items].each_with_index do |item, j|
-      -#  - tab_id = "tab-#{i}-#{j}"
-      -#  - tab_id_content = "tab-#{i}-#{j}-content"
-      -#  - active = (i == 0 and j == 0 ? 'active in' : '')
-      -#  .tab-pane.fade{id: tab_id_content, class: active, role: 'tabpanel', 'aria-labelledby' => tab_id}
-      -#    = render partial: 'programs/target_programs/program/indicator', locals: { indicator: item }
+    - indicators_group.each_with_index do |indicator, i|
+      - indicator[indicators_array_index].each_with_index do |item, j|
+        - tab_id = "tab-#{i}-#{j}"
+        - tab_id_content = "tab-#{i}-#{j}-content"
+        - active = (i == 0 and j == 0 ? 'active in' : '')
+        .tab-pane.fade{id: tab_id_content, class: active, role: 'tabpanel', 'aria-labelledby' => tab_id}
+          = render partial: 'programs/target_programs/program/indicator', locals: { indicator: item }
 
     #tab_bubble.tab-pane.fade
       Тут будет попросюшка
