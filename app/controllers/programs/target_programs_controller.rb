@@ -42,7 +42,6 @@ class Programs::TargetProgramsController < ApplicationController
 
   def import
     program = Programs::TargetProgram.import(params[:import_file].tempfile)
-    binding.pry
     if program.save
       redirect_to programs_target_program_path(program)
     else

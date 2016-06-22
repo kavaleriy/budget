@@ -1,16 +1,15 @@
-- program_id = program[:id].to_s
-- title = program[:title]
-- amounts = program.budget_sum
+-plan_sum = program.budget_sum[year][:plan][:sum]
+-fact_sum = program.budget_sum[year][:fact][:sum]
 
 .program_title.col-xs-7
-  %a{'href' => "#{programs_target_program_path(program_id)}"}
+  %a{'href' => "#{programs_target_program_path(program)}"}
     %i.fa{class: "#{icon || 'fa-circle-o'}"}
-      = title
+      = program.title
 
 .program_amount.col-xs-5
-  - unless amounts[year].blank?
+  - unless program.budget_sum[year].blank?
     .progress
-      .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{amounts[year][:perc]}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{amounts[year][:perc]}%" }
-        = "#{amounts[year][:perc]}%"
+      .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{calc_percentage(plan_sum,fact_sum)}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{calc_percentage(plan_sum,fact_sum)}%" }
+        = "#{calc_percentage(plan_sum,fact_sum)}%"
 
-    = number_to_currency(amounts[year][:fact], unit: '')
+    = number_to_currency(calc_percentage(plan_sum,fact_sum), unit: '')
