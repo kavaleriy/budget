@@ -4,14 +4,15 @@
 
 =link_to t('.new'),new_programs_target_program_path,class: 'btn btn-default'
 .btn-group
-  = form_for '',url: programs_target_programs_import_path, :authenticity_token => true,method: :post, :html => { :class => 'form-horizontal', :multipart => true } do |f|
+  = form_for '',url: programs_target_programs_import_path, :authenticity_token => true,method: :post,
+            :html => { :class => 'form-horizontal', :multipart => true } do |f|
     .btn-group
       = f.file_field :import_file,:class => 'btn btn-default',required: true
     .btn-group
       = f.submit t("helpers.links.calendar_import"), :class => 'btn btn-primary'
 
--#=link_to t('.import_program'),programs_target_programs_import_path,class: 'btn btn-default'
--##target_programs.col-xs-12
--#  = render partial: 'programs/target_programs/programs/bar'
--#  -unless @programs.empty?
--#    = render partial: 'programs/target_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }
+=link_to t('.import_program'),programs_target_programs_import_path,class: 'btn btn-default'
+#target_programs.col-xs-12
+  = render partial: 'programs/target_programs/programs/bar'
+  -unless @programs.empty?
+    = render partial: 'programs/target_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }
