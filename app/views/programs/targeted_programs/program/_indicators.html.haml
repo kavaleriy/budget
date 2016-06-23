@@ -1,5 +1,6 @@
 :scss
   .program_indicators {
+    height: 300px;
     li {
       //text-align: center;
     }
@@ -17,10 +18,14 @@
         font-size: 16px;
       }
     }
-
-    .indicator-list{
-      width: 100%;
+    .indicate-list{
+      height: 300px;
+      overflow: auto;
+      .indicator-title{
+        width: 100%;
+      }
     }
+
   }
 -indicators_title_index = 0
 -indicators_array_index = 1
@@ -34,7 +39,7 @@
         %ul.nav.nav-pills.nav-stacked
           - indicators_group.each_with_index do |indicator_group, i|
             %li
-              %a{"data-toggle" => "tab", :href => "#tab-#{indicator_group[indicators_title_index]}",role: 'tab'}
+              %a{"data-toggle" => "tab", href: "#tab-#{indicator_group[indicators_title_index]}",role: 'tab'}
                 = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
 
 
@@ -61,7 +66,7 @@
               %h5
                 Поросюшка
 
-      .col-xs-9
+      .col-xs-9.indicate-list
         .tab-content
           -indicators_group.each_with_index do |indicator_group, i|
             .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}"}
@@ -70,7 +75,7 @@
                   - tab_id = "tab-#{i}-#{j}"
                   - tab_id_content = "#tab-#{i}-#{j}-content"
                   - active = (i == 0 and j == 0 ? 'active in' : '')
-                  %li.indicator-list
+                  %li.indicator-title
                     %a{"data-toggle" => "tab", class: active, href: tab_id_content, role: 'tab'}
                       =indicator.title
                     -#= t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
@@ -84,9 +89,8 @@
         - indicators_group.each_with_index do |indicator, i|
         - indicator[indicators_array_index].each_with_index do |item, j|
           -#.tab-pane.fade{id: 'expense', role: 'tabpanel'}
-          - tab_id = "tab-#{i}-#{j}"
+          -#- tab_id = "tab-#{i}-#{j}"
           - tab_id_content = "tab-#{i}-#{j}-content"
-          - active = (i == 0 and j == 0 ? 'active in' : '')
             .tab-pane.fade{id: tab_id_content, role: 'tabpanel'}
               = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
         #tab_bubble.tab-pane.fade

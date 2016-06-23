@@ -17,20 +17,20 @@
   .fact.col-xs-3
     =t('.done')
     %h2
-      -unless program[:years].nil?
-        = number_to_currency(program[:years][year][:fact], unit: '')
+      -unless program[:budget_sum].nil?
+        = number_to_currency(program[:budget_sum][year][:fact][:sum], unit: '')
 
 
   .bar.col-xs-6
-    -unless program[:years].nil?
-      = render partial: 'programs/targeted_programs/program/progress', locals: { perc: program[:years][year][:perc] }
+    -unless program[:budget_sum].nil?
+      = render partial: 'programs/targeted_programs/program/progress', locals: { perc: calc_percentage(program[:budget_sum][year][:plan][:sum], program[:budget_sum][year][:fact][:sum]) }
     =t('.remains')
     %h3
       -unless program[:years].nil?
-        = number_to_currency(program[:years][year][:plan] - program[:years][year][:fact], unit: '')
+        = number_to_currency(program[:budget_sum][year][:plan][:sum] - program[:budget_sum][year][:fact][:sum], unit: '')
 
   .col-xs-3
     =t('.planned')
     %h3
-      -unless program[:years].nil?
-        = number_to_currency(program[:years][year][:plan], unit: '')
+      -unless program[:budget_sum].nil?
+        = number_to_currency(program[:budget_sum][year][:plan][:sum], unit: '')
