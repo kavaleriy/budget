@@ -370,7 +370,7 @@
             }
           },
           popupopen: function(e){
-            showSidebar();
+            showSidebar(feature);
           },
           popupclose: function(e){
             hideSidebar();
@@ -590,11 +590,13 @@
       });
     }
 
-    function showSidebar() {
+    function showSidebar(feature) {
+      $('#sidebar').attr('data-repair-id',feature.properties.id);
       $('#sidebar').show('slow');
     }
 
     function hideSidebar() {
+      $('#sidebar').removeAttr('data-repair-id');
       $('#sidebar').hide('fast');
     }
 

@@ -258,27 +258,27 @@
         %i.fa.fa-info
         %span Інформація
 
-.modal.fade{:id => 'e-dataModal',  role: 'dialog', tabindex: '-1'}
-  .modal-dialog{:role => 'document'}
-    .modal-content
-      .modal-header
-        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-          %span{'aria-hidden' => 'true'} &times;
-        .modal-title
-          Інформація з порталу E-data
-      .modal-body
-        %iframe.e-data-frame{src: ''}
-
 .modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
-  .modal-dialog{:role => 'document'}
+  .modal-dialog
     .modal-content
       .modal-header
         %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
           %span{'aria-hidden' => 'true'} &times;
         .modal-title
-          Додаткова інформація
+          Інформація
       .modal-body
-        Content here
+
+
+-#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
+-#  .modal-dialog{:role => 'document'}
+-#    .modal-content
+-#      .modal-header
+-#        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+-#          %span{'aria-hidden' => 'true'} &times;
+-#        .modal-title
+-#          Додаткова інформація
+-#      .modal-body
+-#        Content here
 
 
 = render partial: 'map_ukraine'
@@ -286,13 +286,30 @@
 :javascript
 
   $(document).ready(function() {
+    var modal_dom = $('#more-infoModal');
+    var modal_title = modal_dom.find('.modal-title');
+    var modal_body = modal_dom.find('.modal-body');
     $('#e-data').click(function(){
-      $('.e-data-frame').attr('src', '/external_api/edata');
-      $('#e-dataModal').modal();
+      modal_title.html('Інформація з порталу E-data');
+      var frame = $('<iframe></iframe>');
+      frame.addClass('e-data-frame');
+      frame.attr('src','/external_api/edata')
+      modal_body.append(frame);
+      modal_dom.modal();
     });
 
     $('#more-info').click(function(){
-      $('#more-infoModal').modal();
+      var repair_id = $('#sidebar').attr('data-repair-id');
+      $.ajax({
+        url: "#{repairing_show_repair_info_path}",
+        data: { id: repair_id },
+        success: function(data){
+          modal_title.html('Додаткова інформація');
+          //modal_dom.find('.modal-content').css('width','50vw');
+          modal_body.html(data);
+          modal_dom.modal();
+        }
+      })
     });
 
     var embed_code = aMapEmbedCode();
