@@ -1,0 +1,17 @@
+= content_for :header do
+  .head.pull-left
+    =t('.header')
+
+=link_to t('.new'),new_programs_targeted_program_path, class: 'btn btn-default'
+.btn-group
+  = form_for '', url: programs_targeted_programs_import_path, :authenticity_token => true, method: :post,
+            :html => { class: 'form-horizontal', :multipart => true } do |f|
+    .btn-group
+      = f.file_field :import_file, class: 'btn btn-default', required: true
+    .btn-group
+      = f.submit t(".import_program"), class: 'btn btn-primary'
+
+#targeted_programs.col-xs-12
+  = render partial: 'programs/targeted_programs/programs/bar'
+  -unless @programs.empty?
+    = render partial: 'programs/targeted_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }

@@ -23,7 +23,7 @@
 
   .bar.col-xs-6
     -unless program[:years].nil?
-      = render partial: 'programs/target_programs/program/progress', locals: { perc: program[:years][year][:perc] }
+      = render partial: 'programs/targeted_programs/program/progress', locals: { perc: program[:years][year][:perc] }
     =t('.remains')
     %h3
       -unless program[:years].nil?

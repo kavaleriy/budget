@@ -1,5 +1,5 @@
 :scss
-  #target_programs {
+  #targeted_programs {
     .panel {
       a.collapse_btn {
         margin: 10px 15px;
@@ -60,7 +60,7 @@
       .panel-heading{ id: "collapseListGroupHeading#{prog_panel_id}", 'role' => 'tab'}
         .panel-title.row
           .col-xs-11.program-item
-            = render partial: 'programs/target_programs/programs/item', locals: { icon: 'fa-sun-o', program: program, :year => @year }
+            = render partial: 'programs/targeted_programs/programs/item', locals: { icon: 'fa-sun-o', program: program, :year => @year }
           .pull-right
             %a.collapse_btn.collapsed{'role' => 'button', 'data-toggle' => 'collapse', 'href' => "#collapseListGroup#{prog_panel_id}", 'aria-expanded' => expanded, 'aria-controls' => "collapseListGroup#{prog_panel_id}"}
 
@@ -70,7 +70,7 @@
             - program[:sub_programs].each do |subprogram|
               %li.list-group-item.row
                 .col-xs-11.program-subitem
-                  = render partial: 'programs/target_programs/programs/item', locals: { icon: nil, program: subprogram, :year => @year }
+                  = render partial: 'programs/targeted_programs/programs/item', locals: { icon: nil, program: subprogram, :year => @year }
 
         .panel-footer.row
           .program_chart.col-xs-12

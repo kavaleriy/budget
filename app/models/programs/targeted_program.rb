@@ -1,4 +1,4 @@
-class Programs::TargetProgram
+class Programs::TargetedProgram
   include Mongoid::Document
 
   PROGRAM_TYPE = 1
@@ -18,7 +18,7 @@ class Programs::TargetProgram
   field :objective, type: String
   field :region_target_program,type: Hash
 
-  has_many :sub_programs,class_name: 'Programs::TargetProgram',foreign_key: 'p_id'
+  has_many :sub_programs,class_name: 'Programs::TargetedProgram',foreign_key: 'p_id'
   embeds_many :indicators,class_name: 'Programs::Indicator'
   embeds_many :tasks,class_name: 'Programs::Task'
 

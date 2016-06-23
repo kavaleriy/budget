@@ -1,4 +1,4 @@
-class Programs::TargetProgramsController < ApplicationController
+class Programs::TargetedProgramsController < ApplicationController
   layout 'application_admin', except: [:index, :show]
   respond_to :html
   before_action :authenticate_user!, only: [:new, :edit]
@@ -12,24 +12,24 @@ class Programs::TargetProgramsController < ApplicationController
 
   def index
     stub_data
-    @programs = Programs::TargetProgram.get_main_programs
+    @programs = Programs::TargetedProgram.get_main_programs
   end
 
   def new
-    @program = Programs::TargetProgram.new
+    @program = Programs::TargetedProgram.new
     @program.init_default_budget_sum
     # @program.init_default_task
   end
 
   def create
-    @program = Programs::TargetProgram.new(programs_target_program_params)
+    @program = Programs::TargetedProgram.new(programs_target_program_params)
     @program.save
     respond_with(@program)
   end
 
   def show
     stub_data
-    @grouped_indicators = Programs::TargetProgram.get_grouped_indicators(@program.indicators)
+    @grouped_indicators = Programs::TargetedProgram.get_grouped_indicators(@program.indicators)
   end
 
   def edit
@@ -41,9 +41,9 @@ class Programs::TargetProgramsController < ApplicationController
   end
 
   def import
-    program = Programs::TargetProgram.import(params[:import_file].tempfile)
+    program = Programs::TargetedProgram.import(params[:import_file].tempfile)
     if program.save
-      redirect_to programs_target_program_path(program)
+      redirect_to programs_targeted_program_path(program)
     else
       redirect_to :back,alert: 'Вибачте сталася помилка'
     end
@@ -53,7 +53,7 @@ class Programs::TargetProgramsController < ApplicationController
   private
 
   def set_target_program
-    @program = Programs::TargetProgram.find(params[:id])
+    @program = Programs::TargetedProgram.find(params[:id])
   end
   def stub_data
     @year = Date.today.year.to_s

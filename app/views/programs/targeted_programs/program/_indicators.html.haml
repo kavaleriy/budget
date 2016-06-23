@@ -57,7 +57,7 @@
         - tab_id_content = "tab-#{i}-#{j}-content"
         - active = (i == 0 and j == 0 ? 'active in' : '')
         .tab-pane.fade{id: tab_id_content, class: active, role: 'tabpanel', 'aria-labelledby' => tab_id}
-          = render partial: 'programs/target_programs/program/indicator', locals: { indicator: item }
+          = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
 
     #tab_bubble.tab-pane.fade
       Тут будет попросюшка

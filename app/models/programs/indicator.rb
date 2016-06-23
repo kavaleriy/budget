@@ -11,5 +11,5 @@ class Programs::Indicator
   field :group,type: String
   field :measurement_unit,type: String
   field :value,type: String
-  belongs_to :target_program,class_name: 'Programs::TargetProgram'
+  belongs_to :targeted_program, class_name: 'Programs::TargetedProgram'
 end

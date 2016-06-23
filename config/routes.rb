@@ -83,9 +83,9 @@ Rails.application.routes.draw do
   get 'editor/index'
 
   namespace :programs do
-    resources :target_programs
+    resources :targeted_programs
     # namespace :target_programs do
-      post 'target_programs/import' => 'target_programs#import', as: 'target_programs_import'
+      post 'targeted_programs/import' => 'targeted_programs#import', as: 'targeted_programs_import'
     # end
 
   end

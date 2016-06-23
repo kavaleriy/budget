@@ -2,13 +2,13 @@
 -fact_sum = program.budget_sum[year][:fact][:sum]
 
 .program_title.col-xs-7
-  %a{'href' => "#{programs_target_program_path(program)}"}
+  %a{'href' => "#{programs_targeted_program_path(program)}"}
     %i.fa{class: "#{icon || 'fa-circle-o'}"}
       = program.title
 
 .program_amount.col-xs-5
   - unless program.budget_sum[year].blank?
-    .progress
+    .progress.progress-r
       .progress-bar{'role' => 'progressbar', 'aria-valuenow' => "#{calc_percentage(plan_sum,fact_sum)}", 'aria-valuemin' => 0, 'aria-valuemax' => 100, 'style' => "width:#{calc_percentage(plan_sum,fact_sum)}%" }
         = "#{calc_percentage(plan_sum,fact_sum)}%"
 

@@ -48,6 +48,6 @@ namespace :create_indicators do
     end
   end
   def get_targeted_programs
-    Programs::TargetProgram.where({title:'Заходи  у сфері траспортного сполучення'}).first
+    Programs::TargetedProgram.where({title:'Заходи  у сфері траспортного сполучення'}).first
   end
 end
