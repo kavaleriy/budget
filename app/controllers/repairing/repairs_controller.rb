@@ -4,7 +4,7 @@ module Repairing
 
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy,:show_repair_info]
 
     # GET /repairing/repairs
     # GET /repairing/repairs.json
@@ -71,6 +71,10 @@ module Repairing
       respond_to do |format|
         format.js
       end
+    end
+
+    def show_repair_info
+      render 'show_repair_info',layout: false
     end
 
     private

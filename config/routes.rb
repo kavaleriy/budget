@@ -173,6 +173,8 @@ Rails.application.routes.draw do
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'
 
+    get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
+
     resources :layers do
       member do
         get 'geo_json'
@@ -181,6 +183,7 @@ Rails.application.routes.draw do
       end
 
       resources :repairs
+
     end
   end
 
