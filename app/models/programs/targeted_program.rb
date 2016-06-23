@@ -38,24 +38,17 @@ class Programs::TargetedProgram
     workbook = XlsParser.get_workbook(file_path)
     worksheet = workbook[0]
     program = create_program_by_xls(worksheet)
-    program.tasks = create_tasks_by_xls(workbook['Tasks'])
-    program.indicators = create_indicators_by_xls(workbook['Indicates'])
+    unless workbook['Tasks'].nil?
+      program.tasks = Programs::Task.create_tasks_by_xls(workbook['Tasks'])
+    end
+    unless workbook['Indicates'].nil?
+      program.indicators = Programs::Indicator.create_indicators_by_xls(workbook['Indicates'])
+    end
     program
   end
   def self.get_grouped_indicators(indicators)
     group_indicators = indicators.group_by{|f| f.group}
-    group_indicators.transform_keys{|key|set_indicator_group_name(key)}
-  end
-
-  def self.set_indicator_group_name(key)
-    case key.to_i
-      when Programs::Indicator::EXPENSES_TYPE then 'expense'
-      when Programs::Indicator::PRODUCT_TYPE then 'product'
-      when Programs::Indicator::EFECTIVE_TYPE then 'efective'
-      when Programs::Indicator::QUALITY_TYPE then 'quality'
-      else
-        'other'
-    end
+    group_indicators.transform_keys{|key|Programs::Indicator::set_indicator_group_name(key)}
   end
 
   private
@@ -81,27 +74,6 @@ class Programs::TargetedProgram
       program.budget_sum = budget_sum_hash
       program
 
-    end
-  end
-
-  def self.create_tasks_by_xls(sheet)
-    unless sheet.nil?
-      res_tasks = []
-      tasks_hash = XlsParser.get_table_hash(sheet)
-      tasks_hash.each do |task_hash|
-        res_tasks << Programs::Task.create(task_hash)
-      end
-
-    end
-  end
-
-  def self.create_indicators_by_xls(sheet)
-    unless sheet.nil?
-      res_indicates = []
-      indicates_hash = XlsParser.get_table_hash(sheet)
-      indicates_hash.each do |indicate_hash|
-        res_indicates << Programs::Indicator.create(indicate_hash)
-      end
     end
   end
 
