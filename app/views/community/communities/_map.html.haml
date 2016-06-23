@@ -8,10 +8,11 @@
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 
--#= javascript_include_tag "leaflet/leaflet.js"
--#= javascript_include_tag "leaflet/markercluster.js"
--#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
--#
+= content_for :head do
+  = javascript_include_tag "leaflet/leaflet.js"
+  = javascript_include_tag "leaflet/markercluster.js"
+  = javascript_include_tag "leaflet/leaflet-routing-machine.js"
+
 #map
 
 :javascript
