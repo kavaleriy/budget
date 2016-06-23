@@ -1,6 +1,6 @@
-module Programs::TargetProgramsHelper
+module Programs::TargetedProgramsHelper
   def get_main_programs
-    Programs::TargetProgram.get_main_programs
+    Programs::TargetedProgram.get_main_programs
   end
 
   def calc_percentage(plan,fact)

@@ -7,7 +7,7 @@ class LegacyPrograms::AttachmentsController < ApplicationController
   def create
 
     @attachments = []
-    @programs_target_program = Programs::TargetProgram.where(:id => params[:programs_attachment][:program_id]).first
+    @programs_target_program = Programs::TargetedProgram.where(:id => params[:programs_attachment][:program_id]).first
 
     params['attachment'].each do |f|
       doc = Programs::Attachment.new

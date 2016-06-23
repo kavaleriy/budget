@@ -13,7 +13,7 @@ class LegacyPrograms::TargetProgramsController < ApplicationController
   # GET /programs/target_programs
   # GET /programs/target_programs.json
   def index
-    @programs_target_programs = Programs::TargetProgram.all
+    @programs_target_programs = Programs::TargetedProgram.all
   end
 
   # GET /programs/target_programs/1
@@ -22,7 +22,7 @@ class LegacyPrograms::TargetProgramsController < ApplicationController
     @subprograms = {}
     if @programs_target_program.kpkv[6] == "0"   # means that it its main program
       key = @programs_target_program.kpkv[0,6]
-      @subprograms = Programs::TargetProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
+      @subprograms = Programs::TargetedProgram.where(:kpkv => /#{key}[1-9]/, :programs_town_id => @programs_target_program.programs_town_id)  # get only subprograms
     end
     @amounts = {}
     @subprograms.each{|program|
@@ -37,7 +37,7 @@ class LegacyPrograms::TargetProgramsController < ApplicationController
 
   # GET /programs/target_programs/new
   def new
-    @programs_target_program = Programs::TargetProgram.new
+    @programs_target_program = Programs::TargetedProgram.new
     @programs_town = Programs::Town.new
     @programs_town.generate_explanation
   end
@@ -217,7 +217,7 @@ class LegacyPrograms::TargetProgramsController < ApplicationController
 
   def import table, town
     table[:rows].each { |row|
-      program = Programs::TargetProgram.new
+      program = Programs::TargetedProgram.new
       program.author = current_user.email
       program.programs_town = town
       program.import row
@@ -229,7 +229,7 @@ class LegacyPrograms::TargetProgramsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_programs_target_program
-      @programs_target_program = Programs::TargetProgram.find(params[:id])
+      @programs_target_program = Programs::TargetedProgram.find(params[:id])
     end
 
     def set_town
