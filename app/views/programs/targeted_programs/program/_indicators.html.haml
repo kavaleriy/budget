@@ -68,6 +68,7 @@
 
       .col-xs-9.indicate-list
         .tab-content
+          -#.tab-pane.fade{id: "tab_bubble"}
           -indicators_group.each_with_index do |indicator_group, i|
             .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}"}
               %ul.nav.nav-pills
@@ -78,6 +79,8 @@
                   %li.indicator-title
                     %a{"data-toggle" => "tab", class: active, href: tab_id_content, role: 'tab'}
                       =indicator.title
+
+
                     -#= t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
                   -#%li
                   -#  %a{"data-toggle" => "tab", :href => "##{indicator_group[indicators_title_index]}1",role: 'tab'}
@@ -93,5 +96,13 @@
           - tab_id_content = "tab-#{i}-#{j}-content"
             .tab-pane.fade{id: tab_id_content, role: 'tabpanel'}
               = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
-        #tab_bubble.tab-pane.fade
+        #tab_bubble.tab-pane.fade{role: 'tabpanel'}
           Тут будет попросюшка
+:javascript
+  $(document).ready(function(){
+
+
+    $("a[href$='#tab_bubble']").click(function(){
+      $('.indicate-list').find('.active').removeClass('active');
+    })
+  })
