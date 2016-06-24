@@ -17,6 +17,24 @@
 
   .col-xs-12
     %h2
+      =t('.main_manager')
+
+    %p
+      =@program.main_manager
+  .col-xs-12
+    %h2
+      =t('.responsible')
+
+    %p
+      =@program.responsible
+  .col-xs-12
+    %h2
+      =t('.reason')
+
+    %p
+      =@program.reason
+  .col-xs-12
+    %h2
       =t('.main_target')
 
     %p
@@ -32,8 +50,6 @@
       .pull-left
         %h2
           Діаграма ганта
-      .pull-right
-        ="#{t('.responsible')} : #{@program.responsible}"
 
     = render partial: 'programs/targeted_programs/program/gant'
 

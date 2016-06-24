@@ -3,7 +3,8 @@
     height: 300px;
     .main-nav-panel{
       padding-bottom: 25px;
-      width: 20%;
+      width: 19.5%;
+      text-align: center;
     }
     .indicate-pane{
       margin-top: 130px;
@@ -43,9 +44,10 @@
   .tabbable.tabs-left
     .col-xs-6
       -#.col-xs-3
-      %ul.nav.nav-pills
+      %ul.nav.nav-pills#main-navs
         - indicators_group.each_with_index do |indicator_group, i|
-          %li.main-nav-panel
+          - active = (i == 0 ? 'active' : '')
+          %li.main-nav-panel{class: active}
             %a{"data-toggle" => "tab", href: "#tab-#{indicator_group[indicators_title_index]}",role: 'tab'}
               %i.fa.fa-4x.fa-bar-chart
               %p
@@ -69,7 +71,7 @@
             -#        .indicator-title
             -#          = item.title[0..50]
 
-        %li
+        %li.main-nav-panel
           %a{:href => '#tab_bubble', role: 'tab', 'data-toggle' => 'tab'}
             %i.fa.fa-4x.fa-bar-chart
             %h5
@@ -80,14 +82,15 @@
         .tab-content
           -#.tab-pane.fade{id: "tab_bubble"}
           -indicators_group.each_with_index do |indicator_group, i|
-            .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}"}
+            -active_panel_class = (i == 0 ? 'active in' : '')
+            .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}",class: active_panel_class}
               %ul.nav.nav-pills
                 - indicator_group[indicators_array_index].each_with_index do |indicator, j|
                   - tab_id = "tab-#{i}-#{j}"
                   - tab_id_content = "#tab-#{i}-#{j}-content"
                   - active = (i == 0 and j == 0 ? 'active in' : '')
-                  %li.indicator-title
-                    %a{"data-toggle" => "tab", class: active, href: tab_id_content, role: 'tab'}
+                  %li.indicator-title{class: active}
+                    %a{"data-toggle" => "tab", href: tab_id_content, role: 'tab'}
                       =indicator.title
 
 
@@ -103,14 +106,32 @@
         - indicator[indicators_array_index].each_with_index do |item, j|
           -#.tab-pane.fade{id: 'expense', role: 'tabpanel'}
           -#- tab_id = "tab-#{i}-#{j}"
+          - active = (i == 0 and j == 0 ? 'active in' : '')
           - tab_id_content = "tab-#{i}-#{j}-content"
-            .tab-pane.fade{id: tab_id_content, role: 'tabpanel'}
+            .tab-pane.fade{id: tab_id_content, role: 'tabpanel',class: "#{indicator[indicators_title_index]} #{active}"}
               = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
         #tab_bubble.tab-pane.fade{role: 'tabpanel'}
           Тут будет попросюшка
 :javascript
   $(document).ready(function(){
+    $('#main-navs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      var nav_href = $(e.target).attr('href');
+      // if we don't choose pig bubble
+      if(nav_href != '#tab_bubble'){
+        // get active panel dom
+        var active_div = $('.indicate-list').find($(e.target).attr('href'));
+        // reset active li
+        active_div.find('ul > li').removeClass('active');
+        // find first li in active dom
+        var first_li = active_div.find('ul > li').first();
+        first_li.addClass('active');
+        // reset indicator pane
+        $('.indicate-pane').find('.active').removeClass('active');
+        // find indicator by id and show him
+        $(first_li.find('a').attr('href')).addClass('active in');
+      }
 
+    })
 
     $("a[href$='#tab_bubble']").click(function(){
       $('.indicate-list').find('.active').removeClass('active');
