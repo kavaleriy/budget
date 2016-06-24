@@ -18,7 +18,7 @@ class Programs::TargetedProgramsController < ApplicationController
   def new
     @program = Programs::TargetedProgram.new
     @program.init_default_budget_sum
-    # @program.init_default_task
+    stub_data
   end
 
   def create
