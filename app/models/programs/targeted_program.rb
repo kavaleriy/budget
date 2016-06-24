@@ -27,10 +27,20 @@ class Programs::TargetedProgram
   validates :title,:responsible,:manager,presence: true
 
   def init_default_budget_sum
+    year = Date.today.year
     self.budget_sum = {
-        general_fund: '',
-        special_fund: '',
-        sum: ''
+        year => {
+            plan: {
+                general_fund: '',
+                special_fund: '',
+                sum: ''
+            },
+            fact: {
+                general_fund: '',
+                special_fund: '',
+                sum: ''
+            }
+        }
     }
   end
 
