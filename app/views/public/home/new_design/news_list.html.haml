@@ -2,31 +2,73 @@
   .news-list {
     position: relative;
     min-height: calc(100vh - (103px + 120px));
-    //height: calc(100vh + 50px);
     height: auto;
     top: 73px;
-    border: 1px solid red;
     margin-bottom: 73px;
     .news-items {
       .title {
-        margin: 0;
+        width: 100%;
+        margin: 0 10px 25px 0;
+        float: right;
         p {
+          float: right;
           text-transform: uppercase;
+          margin: 0;
+          padding: 10px;
+          font-family: 'Lato', sans-serif;
+          font-size: 3rem;
+          background: #ffd304;
+          color: #0c2231;
         }
       }
       .row {
         margin: 0 -60px;
         .news-item {
           padding: 0 60px 20px;
+          a {
+            text-decoration: none;
+            color: black;
+            &:hover,
+            &:focus {
+              .img {
+                content: ' ';
+                -webkit-filter: sepia(1);
+                filter: sepia(1);
+                transition: .4s;
+                background: #ffd304;
+              }
+            }
+            .img {
+              img {
+                width: 100%;
+                padding: 10px;
+              }
+            }
+            .data {
+              margin: 0 0 10px 0;
+              padding: 0 10px;
+              font-family: 'Lato', sans-serif;
+              font-weight: 400;
+              font-size: 1.5rem;
+              i.fa-clock-o {
+                &:before {
+                  padding: 0 5px 0 0;
+                }
+              }
+            }
+            .title {
+              height: 6rem;
+              font-family: 'Lato', sans-serif;
+              font-weight: 400;
+              font-size: 1.3rem;
+              text-transform: uppercase;
+              margin: 0;
+              padding: 0 10px;
+            }
+          }
         }
       }
     }
-  }
-
-  //Fix for footer [sticky to bottom]
-  footer {
-    //position: relative;
-    //bottom: 0;
   }
 
 .container.news-list
@@ -35,65 +77,74 @@
       %p Новини
     .row
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/road.jpg', class: 'img-responsive')
-        .data
-          1 may
-        .title
-          Набір до "Вищої політичної школи-2016"
+        =link_to '#' do
+          .img
+            =image_tag('new_design/road.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 1 may
+          .title
+            Набір до "Вищої політичної школи-2016"
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/docs.jpg', class: 'img-responsive')
-        .data
-          5 may
-        .title
-          План дій з реалізації декларації відкритості парламенту
+        =link_to '#' do
+          .img
+            =image_tag('new_design/docs.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 5 may
+          .title
+            План дій з реалізації декларації відкритості парламенту
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/invest.jpg', class: 'img-responsive')
-        .data
-          10 may
-        .title
-          Результати конкурсу журналістських розслідувань з використанням порталу E-Data
+        =link_to '#' do
+          .img
+            =image_tag('new_design/invest.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 10 may
+          .title
+            Результати конкурсу журналістських розслідувань з використанням порталу E-Data
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/road.jpg', class: 'img-responsive')
-        .data
-          1 may
-        .title
-          Набір до "Вищої політичної школи-2016"
+        =link_to '#' do
+          .img
+            =image_tag('new_design/road.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 1 may
+          .title
+            Набір до "Вищої політичної школи-2016"
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/docs.jpg', class: 'img-responsive')
-        .data
-          5 may
-        .title
-          План дій з реалізації декларації відкритості парламенту
+        =link_to '#' do
+          .img
+            =image_tag('new_design/docs.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 5 may
+          .title
+            План дій з реалізації декларації відкритості парламенту
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/invest.jpg', class: 'img-responsive')
-        .data
-          10 may
-        .title
-          Результати конкурсу журналістських розслідувань з використанням порталу E-Data
+        =link_to '#' do
+          .img
+            =image_tag('new_design/invest.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 10 may
+          .title
+            Результати конкурсу журналістських розслідувань з використанням порталу E-Data
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/road.jpg', class: 'img-responsive')
-        .data
-          1 may
-        .title
-          Набір до "Вищої політичної школи-2016"
+        =link_to '#' do
+          .img
+            =image_tag('new_design/road.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 1 may
+          .title
+            Набір до "Вищої політичної школи-2016"
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/docs.jpg', class: 'img-responsive')
-        .data
-          5 may
-        .title
-          План дій з реалізації декларації відкритості парламенту
+        =link_to '#' do
+          .img
+            =image_tag('new_design/docs.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 5 may
+          .title
+            План дій з реалізації декларації відкритості парламенту
       .col-xs-12.col-sm-6.col-md-4.news-item
-        .img
-          =image_tag('new_design/invest.jpg', class: 'img-responsive')
-        .data
-          10 may
-        .title
-          Результати конкурсу журналістських розслідувань з використанням порталу E-Data
+        =link_to '#' do
+          .img
+            =image_tag('new_design/invest.jpg', class: 'img-responsive')
+          .data
+            %i.fa.fa-clock-o{"aria-hidden" => "true"} 10 may
+          .title
+            Результати конкурсу журналістських розслідувань з використанням порталу E-Data
