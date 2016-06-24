@@ -5,17 +5,18 @@ class Programs::TargetedProgram
   SUBPROGRAM_TYPE = 2
   TASK_TYPE = 3
 
+  field :main_manager, type: String # головний розпорядник
   field :type_title, type: String
   field :title, type: String
-  field :years, type: Hash
+  # field :years, type: Hash
   field :p_id,type: String
   field :responsible,type: String
   field :kpkvk,type: String # program code
   field :kfkvk,type: String # functional code (branch)
-  field :manager,type: String
-  field :reason,type: String
+  field :manager,type: String # розпорядник
+  field :reason,type: String # Підстава
   field :budget_sum, type: Hash
-  field :objective, type: String
+  field :objective, type: String # ціль
   field :region_target_program,type: Hash
 
   has_many :sub_programs,class_name: 'Programs::TargetedProgram',foreign_key: 'p_id'
