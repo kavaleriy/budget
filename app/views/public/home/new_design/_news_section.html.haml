@@ -217,7 +217,8 @@
   .container
     .col-xs-12.news-title-block
       .news-title
-        %p Новини проекту
+        -#%p Новини проекту
+        =link_to 'Новини проекту', demo_news_path, class: 'title-link'
         %hr
     .col-xs-12.news-block
       .container
