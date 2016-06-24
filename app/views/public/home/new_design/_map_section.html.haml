@@ -33,7 +33,13 @@
   }
 
   .map-section .container .map-block {
-    padding: 0 120px;
+    //padding: 0 120px;
+    padding: 0;
+    iframe.map {
+      width: 100%;
+      height: 75vh;
+      max-width: 100%;
+    }
   }
   @media (min-width: 768px) and (max-width: 1199px) {
     .map-section {
@@ -78,4 +84,5 @@
         %p Органи влади, у яких працює відкритий бюджет
         %hr
     .col-xs-12.map-block
-      = image_tag('new_design/Ukraine_map.svg', class: 'img-responsive')
+      -#= image_tag('new_design/Ukraine_map.svg', class: 'img-responsive')
+      %iframe.map{:allowfullscreen => "", :frameborder => "0", :src => "https://widgets.scribblemaps.com/sm/?d=true&z=true&ol=true&l=true&mc=true&lat=49.15339940619287&lng=32.64670410937504&vz=6&type=road&ti=true&s=true&width=550&height=400&id=Po40mY0cQb"}
