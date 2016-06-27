@@ -68,6 +68,31 @@
           }
         }
       }
+      .pagination-bar {
+        ul.pagination {
+          margin: 0;
+          li {
+            &:first-child,
+            &:last-child {
+              & > a {
+                border-radius: 0;
+              }
+            }
+            a {
+              border: none;
+              color: black;
+              font-size: 1.8rem;
+              font-family: 'Lato', sans-serif;
+              font-weight: 600;
+            }
+          }
+          .active {
+            a {
+              background-color: #ffd304;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -148,3 +173,20 @@
             %i.fa.fa-clock-o{"aria-hidden" => "true"} 10 may
           .title
             Результати конкурсу журналістських розслідувань з використанням порталу E-Data
+    .row.text-center
+      %nav.pagination-bar
+        %ul.pagination
+          %li
+            %a{"aria-label" => "Previous", :href => "#"}
+              %i.fa.fa-caret-left{"aria-hidden" => "true"}
+          %li
+            %a{:href => "#"} 1
+          %li.active
+            %a{:href => "#"}
+              2
+              %span.sr-only (current)
+          %li
+            %a{:href => "#"} 3
+          %li
+            %a{"aria-label" => "Next", :href => "#"}
+              %i.fa.fa-caret-right{"aria-hidden" => "true"}
