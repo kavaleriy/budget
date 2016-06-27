@@ -298,7 +298,7 @@
       modal_dom.modal();
     });
 
-    $('#more-info').click(function(){
+    function get_repair_info_modal(){
       var repair_id = $('#sidebar').attr('data-repair-id');
       $.ajax({
         url: "#{repairing_show_repair_info_path}",
@@ -310,6 +310,13 @@
           modal_dom.modal();
         }
       })
+    }
+    $('body').on('click','.more-text',function(){
+      get_repair_info_modal();
+    });
+    $('#more-info').click(function(){
+      get_repair_info_modal();
+
     });
 
     var embed_code = aMapEmbedCode();

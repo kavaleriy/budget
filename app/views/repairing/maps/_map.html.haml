@@ -80,6 +80,10 @@
     }
   }
   //   New info_panel
+  .leaflet-popup{
+    bottom: 0 !important;
+    left: -107px !important;
+  }
   .leaflet-popup-content-wrapper{
     border-radius: 0;
     padding: 0;
@@ -106,33 +110,7 @@
     background: #ffffff;
     border: 1px solid #7D94A4;
   }
-  .new_info_panel{
-    min-width: 220px;
-    .header{
-      padding: 3px 5px 0 5px;
-      background: #7D94A4;
-      color: #ffffff;
-      vertical-align: bottom;
-      .amount{
-        float:left;
-        //text-align: center;
-        font-size: 1.7rem;
-        font-weight: 600;
-        text-transform: lowercase; // for pluralize
-      }
-      .start_date{
-        float: right;
-        font-weight: 600;
-        font-size: 1.7rem;
-      }
-    }
-    .title_repair{
-      padding: 1rem 1.2rem;
-      font-size: 1.3rem;
-      line-height: 1.2;
-      color: #0c2231;
-    }
-  }
+
 
 :scss
   #map {

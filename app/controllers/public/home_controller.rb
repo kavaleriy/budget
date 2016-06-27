@@ -41,6 +41,12 @@ module Public
       # Render news design at layouts/new_design.html.haml
       # render layout: 'new_design'
       render 'public/home/new_design/repair_roads_map', layout: 'town_profile'
+      end
+
+    def demo_news
+      # Render news design at layouts/new_design.html.haml
+      # render layout: 'new_design'
+      render 'public/home/new_design/news_list', layout: 'new_design'
     end
     # ===== End. =========================================== #
     # def budget

@@ -71,7 +71,7 @@ module Repairing
       # find Repair object by params[:repair_id]
       # render partial for popup container
       @repair = Repairing::Repair.find(params[:repair_id])
-      render partial: 'info_popup.html.haml'
+      render partial: 'info_popup'
     end
 
     private
