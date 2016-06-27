@@ -17,26 +17,37 @@
         }
       }
       .footer-logos {
-        padding: 0;
+        padding: 0 0 0 50px;
         margin-top: 15px;
+        color: white;
+        .row {
+          .git {
+            float: left;
+            padding: 0 5px 0 0;
+          }
+          .rules {
+            float: left;
+            padding: 0 5px 0 0;
+          }
+        }
         .logo {
           padding: 10px 0 10px 2.5%;
         }
-        .eidos {
-          width: 33%;
-          //a > img {
-          //  background: white;
-          //}
-        }
-        .europe {
-          width: 18.9%;
-          a > img {
-            border: 2px solid white;
-          }
-        }
-        .renaissance {
-          width: 41%;
-        }
+        //.eidos {
+        //  width: 33%;
+        //  //a > img {
+        //  //  background: white;
+        //  //}
+        //}
+        //.europe {
+        //  width: 18.9%;
+        //  a > img {
+        //    border: 2px solid white;
+        //  }
+        //}
+        //.renaissance {
+        //  width: 41%;
+        //}
       }
     }
   }
@@ -71,12 +82,21 @@
             Програми розвитку ООН в Україні за ліцензією Creative Commons Із зазначенням авторства -
             Некомерційна - Розповсюдження на тих самих умовах 4.0 Міжнародна
         .col-xs-12.col-md-6.footer-logos
-          .col-xs-4.logo.eidos
-            =link_to '#' do
-              = image_tag('new_design/eidos-logo.png', class: 'img-responsive')
-          .col-xs-4.logo.europe
-            =link_to '#' do
-              = image_tag('new_design/Europe-flag-logo.svg', class: 'img-responsive')
-          .col-xs-4.logo.renaissance
-            =link_to '#' do
-              = image_tag('new_design/renaissance-small_logo.png', class: 'img-responsive')
+          .row
+            %p.git Засновано на коді з
+            %a{'xmlns:dct' => 'http://purl.org/dc/terms/', 'href' => 'https://github.com/kavaleriy/budget', 'rel' => 'dct:source'}
+              %i.fa.fa-github
+              https://github.com/kavaleriy/budget
+          .row
+            %p.rules Права, що виходять за рамки цієї ліцензії доступні за адресою
+            %a{'xmlns:cc' => 'http://creativecommons.org/ns#', 'href'=> 'mailto:begemot.valery@gmail.com?subject=openbudget.in.ua%20support', 'rel' => 'cc:morePermissions'}
+              Valeriy Kashpruk
+          -#.col-xs-4.logo.eidos
+          -#  =link_to '#' do
+          -#    = image_tag('new_design/eidos-logo.png', class: 'img-responsive')
+          -#.col-xs-4.logo.europe
+          -#  =link_to '#' do
+          -#    = image_tag('new_design/Europe-flag-logo.svg', class: 'img-responsive')
+          -#.col-xs-4.logo.renaissance
+          -#  =link_to '#' do
+          -#    = image_tag('new_design/renaissance-small_logo.png', class: 'img-responsive')
