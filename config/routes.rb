@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/demo_profile' => 'public/home#demo_profile', as: 'demo_profile' # Delete it route after upgrade new design
   get '/demo_repair_roads_map' => 'public/home#demo_repair_roads_map', as: 'demo_repair_roads_map' # Delete it route after upgrade new design
   get '/demo_news' => 'public/home#demo_news', as: 'demo_news' # Delete it route after upgrade new design
+  get '/demo_news_item' => 'public/home#demo_news_item', as: 'demo_news_item' # Delete it route after upgrade new design
 
   namespace :content_manager do
     resources :page_containers

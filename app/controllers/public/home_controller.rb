@@ -23,7 +23,6 @@ module Public
       @sliders = Modules::Slider.get_slider_by_order
       @budgets_news = Modules::BudgetNews.get_last_news(7)
 
-      # Render news design at layouts/new_design.html.haml
       # render layout: 'new_design'
       render 'public/home/new_design/demo_index', layout: 'new_design'
     end
@@ -31,22 +30,27 @@ module Public
     def demo_profile
       # @test_town = Town.get_test_town.first
 
-      # Render news design at layouts/new_design.html.haml
-      # render layout: 'new_design'
+      # render layout: 'town_profile'
       render 'public/home/new_design/demo_profile', layout: 'town_profile'
     end
 
     def demo_repair_roads_map
       @town = Town.get_test_town.first
-      # Render news design at layouts/new_design.html.haml
-      # render layout: 'new_design'
+
+      # render layout: 'town_profile'
       render 'public/home/new_design/repair_roads_map', layout: 'town_profile'
       end
 
     def demo_news
-      # Render news design at layouts/new_design.html.haml
+
       # render layout: 'new_design'
       render 'public/home/new_design/news_list', layout: 'new_design'
+    end
+
+    def demo_news_item
+
+      # render layout: 'new_design'
+      render 'public/home/new_design/news_list_item', layout: 'new_design'
     end
     # ===== End. =========================================== #
     # def budget
