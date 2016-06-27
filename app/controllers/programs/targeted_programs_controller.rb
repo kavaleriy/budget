@@ -22,7 +22,8 @@ class Programs::TargetedProgramsController < ApplicationController
   end
 
   def create
-    @program = Programs::TargetedProgram.new(programs_target_program_params)
+    binding.pry
+    @program = Programs::TargetedProgram.new(programs_targeted_program_params)
     @program.save
     respond_with(@program)
   end
@@ -36,7 +37,7 @@ class Programs::TargetedProgramsController < ApplicationController
   end
 
   def update
-    @program.update(programs_target_program_params)
+    @program.update(programs_targeted_program_params)
     respond_with(@program)
   end
 
@@ -56,12 +57,12 @@ class Programs::TargetedProgramsController < ApplicationController
     @program = Programs::TargetedProgram.find(params[:id])
   end
   def stub_data
-    @year = Date.today.year.to_s
+    @year = Date.today.year.to_i
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-    def programs_target_program_params
-      params.require(:programs_target_program).permit!
+    def programs_targeted_program_params
+      params.require(:programs_targeted_program).permit!
       # (:id,:responsible,:title,:p_id,:tasks => [],:budget_sum => [])
     end
 end

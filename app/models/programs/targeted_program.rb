@@ -5,6 +5,8 @@ class Programs::TargetedProgram
   SUBPROGRAM_TYPE = 2
   TASK_TYPE = 3
 
+  before_save :calc_budget_sum
+
   field :main_manager, type: String # головний розпорядник
   field :type_title, type: String
   field :title, type: String
@@ -27,19 +29,21 @@ class Programs::TargetedProgram
 
   validates :title,:responsible,:manager,presence: true
 
+
+
   def init_default_budget_sum
     year = Date.today.year
     self.budget_sum = {
         year => {
             plan: {
-                general_fund: '',
-                special_fund: '',
-                sum: ''
+                general_fund: 0,
+                special_fund: 0,
+                sum: 0
             },
             fact: {
-                general_fund: '',
-                special_fund: '',
-                sum: ''
+                general_fund: 0,
+                special_fund: 0,
+                sum: 0
             }
         }
     }
@@ -85,6 +89,24 @@ class Programs::TargetedProgram
       program.budget_sum = budget_sum_hash
       program
 
+    end
+  end
+
+  def calc_budget_sum
+    # function set budget sum by general and special fund
+    year = Date.today.year.to_s
+    budget_sum_by_year = self.budget_sum[year]
+    binding.pry
+    # set budget plan sum
+    general_plan_fund = budget_sum_by_year[:plan][:general_fund]
+    special_plan_fund = budget_sum_by_year[:plan][:special_fund]
+    budget_sum_by_year[:plan][:sum] = general_plan_fund + special_plan_fund
+    binding.pry
+    # set budget fact sum if exist
+    unless budget_sum_by_year[:fact].nil?
+      general_fact_fund = budget_sum_by_year[:fact][:general_fund]
+      special_fact_fund = budget_sum_by_year[:fact][:special_fund]
+      budget_sum_by_year[:fact][:sum] = general_fact_fund + special_fact_fund
     end
   end
 
