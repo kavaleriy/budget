@@ -3,23 +3,29 @@
     //display: none;
   }
 =simple_form_for @program do |f|
-  =f.input :title
-  =f.input :kvkv, label: t('.kvkv')
-  =f.input :kfkv, label: t('.kfkv')
+  =f.input :title,label: t('.title')
+  =f.input :kpkvk,as: :integer, label: t('.kpkvk')
+  =f.input :kfkvk,as: :integer, label: t('.kfkvk')
   =f.input :manager,label: t('.manager')
+  =f.input :main_manager, label: t('.main_manager')
   =f.input :responsible,label: t('.responsible')
   =f.input :reason,label: t('.reason')
   =f.input :objective,label: t('.objective')
-  =f.simple_fields_for :budget_sum do |budget|
-    =budget.input :general_fund ,label: t('.general_fund'),value: @program.budget_sum[:general_fund]
-    =budget.input :special_fund ,label: t('.special_fund'),value: @program.budget_sum[:special_fund]
+  %fieldset
+    %legend
+      = t('.budget_sum',year: @year)
+    =f.simple_fields_for :budget_sum  do |budget|
+      = budget.simple_fields_for @year.to_s do |budget_year|
+        = budget_year.simple_fields_for :plan do |budget_plan|
+          =budget_plan.input :general_fund, as: :float,label: t('.general_fund'),value: @program.budget_sum[@year][:plan][:general_fund]
+          =budget_plan.input :special_fund, as: :float ,label: t('.special_fund'),value: @program.budget_sum[@year][:plan][:special_fund]
 
-  =label_tag 'type_program',t('.new_program')
-  =radio_button_tag 'type', 'program'
-  =label_tag 'type_subprogram',t('.sub_program')
-  =radio_button_tag 'type', 'subprogram',true
-  .form-group
-    =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
+  -#=label_tag 'type_program',t('.new_program')
+  -#=radio_button_tag 'type', 'program'
+  -#=label_tag 'type_subprogram',t('.sub_program')
+  -#=radio_button_tag 'type', 'subprogram',true
+  -#.form-group
+  -#  =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
   -##tasks_block
   -#  =f.simple_fields_for :tasks do |tasks|
   -#    -@program.tasks.each do |task,value|
@@ -39,26 +45,26 @@
     });
 
     $('form').submit(function(){
-      var checked_radio_value = $('input[name=type]:checked').val();
-      var parent_id_input = $('#programs_target_program_p_id');
-      var program_name = 'program';
-
-      var notice_message = $("<div></div>");
-      notice_message.addClass('alert alert-warning');
-      notice_message.attr('role','alert');
-      notice_message.html('Заповніть це поле');
-
-      if(checked_radio_value == program_name){
-        parent_id_input.val('');
-      }else{
-        $('.task').val('');
-        if(!parent_id_input.val()){
-          parent_id_input.after(notice_message);
-          notice_message.fadeOut(5000);
-          parent_id_input.focus();
-          return false;
-        }
-      }
+      // var checked_radio_value = $('input[name=type]:checked').val();
+      // var parent_id_input = $('#programs_target_program_p_id');
+      // var program_name = 'program';
+      //
+      // var notice_message = $("<div></div>");
+      // notice_message.addClass('alert alert-warning');
+      // notice_message.attr('role','alert');
+      // notice_message.html('Заповніть це поле');
+      //
+      // if(checked_radio_value == program_name){
+      //   parent_id_input.val('');
+      // }else{
+      //   $('.task').val('');
+      //   if(!parent_id_input.val()){
+      //     parent_id_input.after(notice_message);
+      //     notice_message.fadeOut(5000);
+      //     parent_id_input.focus();
+      //     return false;
+      //   }
+      // }
     });
 
   });

@@ -18,11 +18,11 @@ class Programs::TargetedProgramsController < ApplicationController
   def new
     @program = Programs::TargetedProgram.new
     @program.init_default_budget_sum
-    # @program.init_default_task
+    stub_data
   end
 
   def create
-    @program = Programs::TargetedProgram.new(programs_target_program_params)
+    @program = Programs::TargetedProgram.new(programs_targeted_program_params)
     @program.save
     respond_with(@program)
   end
@@ -36,7 +36,7 @@ class Programs::TargetedProgramsController < ApplicationController
   end
 
   def update
-    @program.update(programs_target_program_params)
+    @program.update(programs_targeted_program_params)
     respond_with(@program)
   end
 
@@ -60,8 +60,8 @@ class Programs::TargetedProgramsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-    def programs_target_program_params
-      params.require(:programs_target_program).permit!
+    def programs_targeted_program_params
+      params.require(:programs_targeted_program).permit!
       # (:id,:responsible,:title,:p_id,:tasks => [],:budget_sum => [])
     end
 end
