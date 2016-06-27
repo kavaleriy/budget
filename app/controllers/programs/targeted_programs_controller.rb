@@ -22,7 +22,6 @@ class Programs::TargetedProgramsController < ApplicationController
   end
 
   def create
-    binding.pry
     @program = Programs::TargetedProgram.new(programs_targeted_program_params)
     @program.save
     respond_with(@program)
@@ -57,7 +56,7 @@ class Programs::TargetedProgramsController < ApplicationController
     @program = Programs::TargetedProgram.find(params[:id])
   end
   def stub_data
-    @year = Date.today.year.to_i
+    @year = Date.today.year.to_s
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

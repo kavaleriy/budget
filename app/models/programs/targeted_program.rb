@@ -32,19 +32,19 @@ class Programs::TargetedProgram
 
 
   def init_default_budget_sum
-    year = Date.today.year
+    year = Date.today.year.to_s
     self.budget_sum = {
         year => {
             plan: {
                 general_fund: 0,
                 special_fund: 0,
                 sum: 0
-            },
-            fact: {
-                general_fund: 0,
-                special_fund: 0,
-                sum: 0
             }
+            # fact: {
+            #     general_fund: 0,
+            #     special_fund: 0,
+            #     sum: 0
+            # }
         }
     }
   end
@@ -96,18 +96,26 @@ class Programs::TargetedProgram
     # function set budget sum by general and special fund
     year = Date.today.year.to_s
     budget_sum_by_year = self.budget_sum[year]
-    binding.pry
     # set budget plan sum
-    general_plan_fund = budget_sum_by_year[:plan][:general_fund]
-    special_plan_fund = budget_sum_by_year[:plan][:special_fund]
+    general_plan_fund = budget_sum_by_year[:plan][:general_fund].to_f
+    special_plan_fund = budget_sum_by_year[:plan][:special_fund].to_f
     budget_sum_by_year[:plan][:sum] = general_plan_fund + special_plan_fund
-    binding.pry
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact][:general_fund]
-      special_fact_fund = budget_sum_by_year[:fact][:special_fund]
+      general_fact_fund = budget_sum_by_year[:fact][:general_fund].to_f
+      special_fact_fund = budget_sum_by_year[:fact][:special_fund].to_f
       budget_sum_by_year[:fact][:sum] = general_fact_fund + special_fact_fund
+    else
+      init_default_fact_sum(year)
     end
+  end
+
+  def init_default_fact_sum(year)
+    self.budget_sum[year][:fact] = {
+        general_sum: 0,
+        special_sum: 0,
+        sum: 0
+    }
   end
 
 end

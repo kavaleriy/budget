@@ -4,8 +4,8 @@
   }
 =simple_form_for @program do |f|
   =f.input :title,label: t('.title')
-  =f.input :kpkvk, label: t('.kpkvk')
-  =f.input :kfkvk, label: t('.kfkvk')
+  =f.input :kpkvk,as: :integer, label: t('.kpkvk')
+  =f.input :kfkvk,as: :integer, label: t('.kfkvk')
   =f.input :manager,label: t('.manager')
   =f.input :main_manager, label: t('.main_manager')
   =f.input :responsible,label: t('.responsible')
@@ -17,8 +17,8 @@
     =f.simple_fields_for :budget_sum  do |budget|
       = budget.simple_fields_for @year.to_s do |budget_year|
         = budget_year.simple_fields_for :plan do |budget_plan|
-          =budget_plan.input :general_fund ,label: t('.general_fund'),value: @program.budget_sum[@year][:plan][:general_fund]
-          =budget_plan.input :special_fund ,label: t('.special_fund'),value: @program.budget_sum[@year][:plan][:special_fund]
+          =budget_plan.input :general_fund, as: :float,label: t('.general_fund'),value: @program.budget_sum[@year][:plan][:general_fund]
+          =budget_plan.input :special_fund, as: :float ,label: t('.special_fund'),value: @program.budget_sum[@year][:plan][:special_fund]
 
   -#=label_tag 'type_program',t('.new_program')
   -#=radio_button_tag 'type', 'program'
