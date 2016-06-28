@@ -1,3 +1,75 @@
+:scss
+  .demo_index{
+    $panel_color : #D9EDF7;
+    $panel_width: 150px;
+    z-index: 1000;
+    position: fixed;
+    top: 400px;
+    left: 0;
+    .icon{
+      background-color: #63c2de;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 40px;
+      color: #fff;
+      font-size: 18px;
+      position: relative;
+      float: right;
+    }
+    .panel{
+      //transition-property: margin-left;
+      transition-duration: 0.7s;
+      transition-timing-function: linear;
+      float: left;
+      margin-left: -$panel_width;
+      width: $panel_width;
+      padding: 0 15px 15px;
+      .panel-heading{
+        height: 40px;
+        text-align: center;
+        background: transparent;
+        border-bottom: 2px solid #31708f;
+        padding: 10px 0;
+      }
+      .panel-body {
+        border: none;
+        padding: 10px 0;
+        & > a {
+          font-size: 1.5rem;
+          font-weight: 400;
+          color: white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+          }
+          & > li {
+            list-style-type: none;
+            padding: 7px 0;
+            background: #63c2de;
+            text-align: center;
+            &:hover,
+            &:focus {
+              background: #31708f;
+              text-align: center;
+              transition-duration: 0.4s;
+              transition-timing-function: linear;
+            }
+          }
+        }
+      }
+    }
+    .panel_open{
+      //transition-property: margin-left;
+      transition-duration: 0.7s;
+      transition-timing-function: linear;
+      margin-left: 0;
+      border: 1px solid #63c2de;
+      border-radius: 0;
+    }
+  }
+
 -#Render main block [ clouds, town, icons, titles ]
 =render partial: 'public/home/new_design/main_section'
 
@@ -9,3 +81,22 @@
 
 -#Render our partners
 =render partial: 'public/home/new_design/our_partners'
+
+-if current_user && current_user.admin?
+  .demo_index
+    .icon
+      %i.fa.fa-wrench
+    .panel.panel-info#admin_info
+      .panel-heading
+        %h3.panel-title Admin info
+      .panel-body
+        =link_to demo_path do
+          %li.element
+            New design
+
+:javascript
+  $(document).ready(function(){
+    $(".demo_index > div").click(function () {
+      $('#admin_info').toggleClass('panel_open');
+    });
+  });
