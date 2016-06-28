@@ -253,87 +253,100 @@
         %span.icon-bar
       .logo-block
         =link_to root_path, class: 'logo-src' do
-          = image_tag('new_design/ob-logo.svg', class: 'logo')
+          = image_tag('navbar/logo.svg', class: 'logo')
           %p.title Відкритий бюджет - бета
 
     -# Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      -#%ul.nav.navbar-nav
+      -#  %li.active
+      -#    =link_to '#' do
+      -#      Про проект
+      -#  %li.dropdown
+      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+      -#      Бюджетна система
+      -#      %span.caret
+      -#    %ul.dropdown-menu{:role => "menu"}
+      -#      %li
+      -#        %a{:href => "#"} Профіль міста
+      -#  %li.dropdown
+      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+      -#      Візуалізації
+      -#      %span.caret
+      -#    %ul.dropdown-menu{:role => "menu"}
+      -#      %li
+      -#        %a{:href => "#"} Action
+      -#      %li
+      -#        %a{:href => "#"} Another action
+      -#      %li
+      -#        %a{:href => "#"} Something else here
+      -#      %li.divider
+      -#      %li
+      -#        %a{:href => "#"} Separated link
+      -#      %li.divider
+      -#      %li
+      -#        %a{:href => "#"} One more separated link
+      -#  %li.dropdown
+      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+      -#      Громадський контроль
+      -#      %span.caret
+      -#    %ul.dropdown-menu{:role => "menu"}
+      -#      %li
+      -#        %a{:href => "#"} Action
+      -#      %li
+      -#        %a{:href => "#"} Another action
+      -#      %li
+      -#        %a{:href => "#"} Something else here
+      -#      %li.divider
+      -#      %li
+      -#        %a{:href => "#"} Separated link
+      -#      %li.divider
+      -#      %li
+      -#        %a{:href => "#"} One more separated link
+      -#  %li.dropdown
+      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Авторизація
+      -#    %ul#login-dp.dropdown-menu
+      -#      %li
+      -#        .row
+      -#          .col-md-12
+      -#            -#Увійти
+      -#            -#.social-buttons
+      -#            -#  %a.btn.btn-fb{:href => "#"}
+      -#            -#    %i.fa.fa-facebook
+      -#            -#    Facebook
+      -#            -#  %a.btn.btn-tw{:href => "#"}
+      -#            -#    %i.fa.fa-twitter
+      -#            -#    Twitter
+      -#            -#or
+      -#            %form#login-nav.form{"accept-charset" => "UTF-8", :action => "login", :method => "post", :role => "form"}
+      -#              .form-group
+      -#                %label.sr-only{:for => "exampleInputEmail2"} Email адреса
+      -#                %input#exampleInputEmail2.form-control{:placeholder => "Email address", :required => "", :type => "email"}
+      -#              .form-group
+      -#                %label.sr-only{:for => "exampleInputPassword2"} Пароль
+      -#                %input#exampleInputPassword2.form-control{:placeholder => "Password", :required => "", :type => "password"}
+      -#                  .help-block.text-right
+      -#                    %a{:href => ""} Відновити пароль ?
+      -#              .form-group
+      -#                %button.btn.btn-primary.btn-block{:type => "submit"} Увійти
+      -#              .checkbox
+      -#                %label
+      -#                  %input{:type => "checkbox"}
+      -#                    запам'ятати
+      -#          .bottom.text-center
+      -#            Вперше?
+      -#            %a{:href => "#"}
+      -#              %b Зареєструватись
       %ul.nav.navbar-nav
-        %li.active
-          =link_to '#' do
-            Про проект
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-            Бюджетна система
-            %span.caret
-          %ul.dropdown-menu{:role => "menu"}
-            %li
-              %a{:href => "#"} Профіль міста
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-            Візуалізації
-            %span.caret
-          %ul.dropdown-menu{:role => "menu"}
-            %li
-              %a{:href => "#"} Action
-            %li
-              %a{:href => "#"} Another action
-            %li
-              %a{:href => "#"} Something else here
-            %li.divider
-            %li
-              %a{:href => "#"} Separated link
-            %li.divider
-            %li
-              %a{:href => "#"} One more separated link
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-            Громадський контроль
-            %span.caret
-          %ul.dropdown-menu{:role => "menu"}
-            %li
-              %a{:href => "#"} Action
-            %li
-              %a{:href => "#"} Another action
-            %li
-              %a{:href => "#"} Something else here
-            %li.divider
-            %li
-              %a{:href => "#"} Separated link
-            %li.divider
-            %li
-              %a{:href => "#"} One more separated link
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Авторизація
-          %ul#login-dp.dropdown-menu
-            %li
-              .row
-                .col-md-12
-                  -#Увійти
-                  -#.social-buttons
-                  -#  %a.btn.btn-fb{:href => "#"}
-                  -#    %i.fa.fa-facebook
-                  -#    Facebook
-                  -#  %a.btn.btn-tw{:href => "#"}
-                  -#    %i.fa.fa-twitter
-                  -#    Twitter
-                  -#or
-                  %form#login-nav.form{"accept-charset" => "UTF-8", :action => "login", :method => "post", :role => "form"}
-                    .form-group
-                      %label.sr-only{:for => "exampleInputEmail2"} Email адреса
-                      %input#exampleInputEmail2.form-control{:placeholder => "Email address", :required => "", :type => "email"}
-                    .form-group
-                      %label.sr-only{:for => "exampleInputPassword2"} Пароль
-                      %input#exampleInputPassword2.form-control{:placeholder => "Password", :required => "", :type => "password"}
-                        .help-block.text-right
-                          %a{:href => ""} Відновити пароль ?
-                    .form-group
-                      %button.btn.btn-primary.btn-block{:type => "submit"} Увійти
-                    .checkbox
-                      %label
-                        %input{:type => "checkbox"}
-                          запам'ятати
-                .bottom.text-center
-                  Вперше?
-                  %a{:href => "#"}
-                    %b Зареєструватись
+
+        -@menu.each do |key,value|
+          %li.dropdown
+            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+              -#-binding.pry
+              = get_header_by_locale(key)
+              %span.caret
+            %ul.dropdown-menu{'role' => "menu"}
+              -value.each do |list|
+                %li
+                  %a{:href => get_nav_link(list) }
+                    = get_header_by_locale(list)

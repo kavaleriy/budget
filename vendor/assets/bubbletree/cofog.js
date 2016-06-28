@@ -98,7 +98,7 @@ BubbleTree.Styles.Cofog = {
 	'10': { icon: 'styles/icons/helping-others.svg', color: '#935B3B' },
 	'10.1': { icon: 'styles/icons/helping-others.svg' },
 	'10.1.2': { icon: 'styles/icons/helping-others.svg' },
-	'10.2': { icon: 'styles/icons/old-age.svg' },
+	'10.2': { icon: 'styles/icons/old-design-age.svg' },
 	'10.4': { icon: 'styles/icons/family.svg' },
 	'10.7': { icon: 'styles/icons/family2.svg' }
 

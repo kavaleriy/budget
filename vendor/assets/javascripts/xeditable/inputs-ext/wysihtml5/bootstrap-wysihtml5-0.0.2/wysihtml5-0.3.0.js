@@ -4952,7 +4952,7 @@ wysihtml5.dom.parse = (function() {
     // make sure that wysihtml5 temp class doesn't get stripped out
     allowedClasses["_wysihtml5-temp-placeholder"] = 1;
     
-    // add old classes last
+    // add old-design classes last
     oldClasses = oldNode.getAttribute("class");
     if (oldClasses) {
       classes = classes.concat(oldClasses.split(WHITE_SPACE_REG_EXP));
@@ -8216,7 +8216,7 @@ wysihtml5.views.View = Base.extend(
                 style[property] = "";
               }
             }
-            // After resizing IE sometimes forgets to remove the old resize handles
+            // After resizing IE sometimes forgets to remove the old-design resize handles
             wysihtml5.quirks.redraw(element);
           });
         }
