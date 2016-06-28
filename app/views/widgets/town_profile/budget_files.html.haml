@@ -3,13 +3,15 @@
     cursor: pointer;
   }
   .plus-to-compare{
-    width: 42px;
+    width: 30px;
     color: blue;
     cursor: pointer;
     font-size: 30px;
   }
   .town-typeahead{
+    width: 150px;
     float: left;
+    margin: 0 15px;
   }
 
   .city-title{
@@ -17,13 +19,45 @@
   }
   .add-town-to-compare{
     .plus-to-compare{
+      height: 30px;
+      font-size: 30px;
       display: inline-block;
       padding: 0;
       //width: auto;
     }
+    .text-compare{
+      margin-top: 10px;
+      padding-right: 10px;
+      float: left;
+      display: inline-block;
+      width: auto;
+    }
+
+  }
+  .compare-wrapper{
+    margin-right: 15px;
+    padding-top: 10px;
+    max-width: 220px;
+    display: inline-block;
+    .compare-town-title{
+      max-width: 198px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      float: left;
+    }
+    .compare-town-minus{
+      cursor: pointer;
+      font-size: 25px;
+      color: red;
+      margin-top: -7px;
+      width: auto;
+      float: left;
+      margin-left: 10px;
+    }
 
   }
   #compare-list{
+    float: left;
     text-overflow: ellipsis;
     overflow: hidden;
   }
@@ -35,13 +69,17 @@
   .col-md-4.city-title
     %h3
       =@town
-  .col-md-4.add-town-to-compare
-    .col-xs-6
-      Порівняти з ...
-      .plus-to-compare
-        %i.fa.fa-plus{"aria-hidden" => "true"}
-    .col-xs-6.town-typeahead
-  .col-md-4#compare-list
+  .col-md-8.add-town-to-compare
+    .row
+      .col-xs-12.co
+        .text-compare
+          Порівняти з ...
+        #compare-list
+        .town-typeahead
+        .plus-to-compare
+          %i.fa.fa-plus{"aria-hidden" => "true"}
+      -#.col-xs-6.town-typeahead
+    -#.col-md-4#compare-list
 .row-fluid
   %ul.nav.nav-tabs.pull-left{role: 'tablist'}
     - active = 'active'
@@ -58,9 +96,9 @@
 #town-compare-field
   .col-md-6
     .compare-wrapper
-      .col-xs-8.compare-town-title
-      .col-xs-4
-        -
+      .compare-town-title
+      .compare-town-minus
+        %i.fa.fa-minus{"aria-hidden" => "true"}
 -#= link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 -#.col-sm-12
 -#  #embed_code_budget.embed_code
@@ -86,7 +124,10 @@
         // if something choose in select2
         $(town_search).on("select2-selecting", function(e) {
           var compare_dom = $('#town-compare-field').find('.compare-wrapper').clone();
+          // set text by choosen town
           compare_dom.find('.compare-town-title').html(e.object.text);
+          // set id attr by choosen town
+          compare_dom.attr('data-town-id',e.val);
           $('#compare-list').append(compare_dom);
           $('.select2-container').hide('slow');
         });
@@ -96,6 +137,11 @@
       }
 
     })
+
+    $(document).on('click','.compare-town-minus',function(){
+      $(this).parents('.compare-wrapper').remove();
+      compare_town_number--;
+    });
 
     $('#embed_code_budget').on('click',function(){
        $('#embeded_code_modal_window').modal();
