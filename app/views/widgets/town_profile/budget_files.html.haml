@@ -124,7 +124,9 @@
         // if something choose in select2
         $(town_search).on("select2-selecting", function(e) {
           var compare_dom = $('#town-compare-field').find('.compare-wrapper').clone();
+          // set text by choosen town
           compare_dom.find('.compare-town-title').html(e.object.text);
+          // set id attr by choosen town
           compare_dom.attr('data-town-id',e.val);
           $('#compare-list').append(compare_dom);
           $('.select2-container').hide('slow');
