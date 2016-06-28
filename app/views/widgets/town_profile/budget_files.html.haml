@@ -18,7 +18,11 @@
     //width: auto;
   }
   .add-town-to-compare{
+    .compare-nav{
+      height: 40px;
+    }
     .plus-to-compare{
+      float: left;
       height: 30px;
       font-size: 30px;
       display: inline-block;
@@ -32,15 +36,23 @@
       display: inline-block;
       width: auto;
     }
+    .compare-button{
+      cursor: pointer;
+      margin-left: 20px;
+      float: left;
+      width: 30px;
+      font-size: 30px;
+      color: green;
+    }
 
   }
   .compare-wrapper{
     margin-right: 15px;
     padding-top: 10px;
-    max-width: 220px;
+    //max-width: 220px;
     display: inline-block;
     .compare-town-title{
-      max-width: 198px;
+      //max-width: 198px;
       overflow: hidden;
       text-overflow: ellipsis;
       float: left;
@@ -54,6 +66,7 @@
       float: left;
       margin-left: 10px;
     }
+
 
   }
   #compare-list{
@@ -71,13 +84,15 @@
       =@town
   .col-md-8.add-town-to-compare
     .row
-      .col-xs-12.co
+      .col-xs-12.compare-nav
         .text-compare
           Порівняти з ...
         #compare-list
         .town-typeahead
         .plus-to-compare
           %i.fa.fa-plus{"aria-hidden" => "true"}
+        .compare-button
+          %i.fa.fa-th-list{"aria-hidden" => "true"}
       -#.col-xs-6.town-typeahead
     -#.col-md-4#compare-list
 .row-fluid
@@ -129,18 +144,39 @@
           // set id attr by choosen town
           compare_dom.attr('data-town-id',e.val);
           $('#compare-list').append(compare_dom);
-          $('.select2-container').hide('slow');
+          compare_town_number++;
+          check_compare_button_can_active(compare_town_number);
+          $('.select2-container').hide('fast');
         });
-        compare_town_number++;
+
       }else{
         alert('YOU CAN COMPARE ONLY 3 TOWN!!!');
       }
-
     })
+
+    function check_compare_button_can_active(town_numbers){
+      if(town_numbers > 0){
+        $('.compare-button').attr('data-is-active',1);
+      }else{
+        $('.compare-button').attr('data-is-active',0);
+      }
+    }
 
     $(document).on('click','.compare-town-minus',function(){
       $(this).parents('.compare-wrapper').remove();
       compare_town_number--;
+      console.log(compare_town_number);
+      check_compare_button_can_active(compare_town_number);
+
+    });
+
+    $('.compare-button').click(function(){
+      if($(this).attr('data-is-active') != '0'){
+        alert('Compare towns');
+      }else{
+        alert('choose towns to compare');
+      }
+
     });
 
     $('#embed_code_budget').on('click',function(){
