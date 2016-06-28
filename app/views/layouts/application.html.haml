@@ -1,3 +1,10 @@
+:scss
+  .blocks {
+    min-height: 100%;
+    height: auto;
+    margin: 53px auto 0;
+  }
+
 !!! 5
 %html(lang="en")
   %head
@@ -50,8 +57,8 @@
   .blocks
     = yield
 
-    -#Render footer block
-    = render partial: 'layouts/footer/footer'
+  -#Render footer block
+  = render partial: 'layouts/footer/footer'
 
   = render partial: 'layouts/embeded_code_modal_window'
   = render partial: 'layouts/visualisation_modal/export_budget_calendar_modal_wind'

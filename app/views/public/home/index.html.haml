@@ -17,6 +17,9 @@
       font-size: 18px;
       position: relative;
       float: right;
+      i {
+        padding: 11px;
+      }
     }
     .panel{
       //transition-property: margin-left;
@@ -71,16 +74,16 @@
   }
 
 -#Render main block [ clouds, town, icons, titles ]
-=render partial: 'public/home/new_design/main_section'
+=render partial: 'public/home/blocks/main_section'
 
 -#Render map block
-=render partial: 'public/home/new_design/map_section'
+=render partial: 'public/home/blocks/map_section'
 
 -#Render news block
-=render partial: 'public/home/new_design/news_section'
+=render partial: 'public/home/blocks/news_section'
 
 -#Render our partners
-=render partial: 'public/home/new_design/our_partners'
+=render partial: 'public/home/blocks/our_partners'
 
 -if current_user && current_user.admin?
   .demo_index
