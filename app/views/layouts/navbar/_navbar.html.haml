@@ -350,3 +350,20 @@
                 %li
                   %a{:href => get_nav_link(list) }
                     = get_header_by_locale(list)
+
+        %li.dropdown
+          - if current_user
+            %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"}
+              %i.fa.fa-user.fa-fw
+              -#Check current user name for empty(nil? & empty?)
+              - if current_user.name.blank?
+                = current_user.email
+              - else
+                = current_user.name
+
+            %ul.dropdown-menu#right_menu{'role' => "menu"}
+              %li= link_to t('.edit_profile'), edit_user_registration_path
+              %li.divider
+              %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+          - else
+            = link_to t('.authorization'), new_user_session_path, :class=>'item-login'
