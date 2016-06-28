@@ -73,6 +73,35 @@
           }
         }
       }
+      .block-lng {
+        color: #fff;
+        text-transform: uppercase;
+        margin: 0;
+        display: block;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        .lng-item {
+          float: left;
+          //background: rgba(20,80,159,0.5);
+          padding: 3px 7px;
+          /* margin: 35px 5px 5px 5px; */
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          ///* border-radius: 3px; */
+          /* transition: 0.3s; */
+          font-size: 11px;
+          margin: 0 10px;
+          img {
+            width: 20px;
+            height: auto;
+          }
+        }
+        .active {
+          background: #ffd304;
+          opacity: .8;
+        }
+      }
     }
   }
 
@@ -259,51 +288,9 @@
 
     -# Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      -#%ul.nav.navbar-nav
-      -#  %li.active
-      -#    =link_to '#' do
-      -#      Про проект
-      -#  %li.dropdown
-      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-      -#      Бюджетна система
-      -#      %span.caret
-      -#    %ul.dropdown-menu{:role => "menu"}
-      -#      %li
-      -#        %a{:href => "#"} Профіль міста
-      -#  %li.dropdown
-      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-      -#      Візуалізації
-      -#      %span.caret
-      -#    %ul.dropdown-menu{:role => "menu"}
-      -#      %li
-      -#        %a{:href => "#"} Action
-      -#      %li
-      -#        %a{:href => "#"} Another action
-      -#      %li
-      -#        %a{:href => "#"} Something else here
-      -#      %li.divider
-      -#      %li
-      -#        %a{:href => "#"} Separated link
-      -#      %li.divider
-      -#      %li
-      -#        %a{:href => "#"} One more separated link
-      -#  %li.dropdown
-      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-      -#      Громадський контроль
-      -#      %span.caret
-      -#    %ul.dropdown-menu{:role => "menu"}
-      -#      %li
-      -#        %a{:href => "#"} Action
-      -#      %li
-      -#        %a{:href => "#"} Another action
-      -#      %li
-      -#        %a{:href => "#"} Something else here
-      -#      %li.divider
-      -#      %li
-      -#        %a{:href => "#"} Separated link
-      -#      %li.divider
-      -#      %li
-      -#        %a{:href => "#"} One more separated link
+
+      -# Maybe it's better authorize dropdown menu?
+
       -#  %li.dropdown
       -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Авторизація
       -#    %ul#login-dp.dropdown-menu
@@ -360,7 +347,8 @@
               %i.fa.fa-user.fa-fw
               -#Check current user name for empty(nil? & empty?)
               - if current_user.name.blank?
-                = current_user.email
+                -#TODO: Create current user e-mail helper
+                = current_user.email.split('@').first
               - else
                 = current_user.name
               %span.caret
@@ -376,3 +364,7 @@
           %li= link_to t('.editor'), editor_index_path
 
         = render partial: 'layouts/navbar/nav_admin'
+      -#TODO: Insert lang switcher into header menu
+      -# Lang switcher
+      -#.navbar-right.block-lng.clearfix
+      -#  = render partial: 'layouts/navbar/lang'

@@ -1,4 +1,5 @@
 - if current_user && current_user.has_role?(:admin)
+
   %li.dropdown
     %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
       %i.fa.fa-users
@@ -6,7 +7,6 @@
       %span.caret
 
     %ul.dropdown-menu{'role' => 'menu'}
-      -#%li.divider
       %li= link_to t('.news_header'),  modules_budget_news_index_path
       %li.divider
       %li= link_to t('.slider_header'),  modules_sliders_path
