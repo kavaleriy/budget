@@ -2,6 +2,46 @@
   body > div > div > ul > li > a{
     cursor: pointer;
   }
+  .plus-to-compare{
+    width: 42px;
+    color: blue;
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .town-typeahead{
+    float: left;
+  }
+
+  .city-title{
+    //width: auto;
+  }
+  .add-town-to-compare{
+    .plus-to-compare{
+      display: inline-block;
+      padding: 0;
+      //width: auto;
+    }
+
+  }
+  #compare-list{
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .town-search{
+    display: none;
+  }
+
+.row
+  .col-md-4.city-title
+    %h3
+      =@town
+  .col-md-4.add-town-to-compare
+    .col-xs-6
+      Порівняти з ...
+      .plus-to-compare
+        %i.fa.fa-plus{"aria-hidden" => "true"}
+    .col-xs-6.town-typeahead
+  .col-md-4#compare-list
 .row-fluid
   %ul.nav.nav-tabs.pull-left{role: 'tablist'}
     - active = 'active'
@@ -10,11 +50,17 @@
         %a{role: 'tab', 'data-toggle' => 'tab', 'data-url' => tab[:url]}
           = tab[:title]
 
-
 .budget.row-fluid
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }
-
+.town-search
+  =text_field_tag 'city_compare'
+#town-compare-field
+  .col-md-6
+    .compare-wrapper
+      .col-xs-8.compare-town-title
+      .col-xs-4
+        -
 -#= link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 -#.col-sm-12
 -#  #embed_code_budget.embed_code
@@ -22,6 +68,34 @@
 :javascript
 
   $(document).on('ready page:load', function() {
+    var compare_town_number = 0;
+    var compare_town_limit = 2;
+    $('.plus-to-compare').click(function(){
+      // if town compare limit is not exceeded
+      if(compare_town_number < compare_town_limit ){
+        // clone input for select2 town search
+        var town_search = $('#city_compare').clone();
+        town_search.attr('id',town_search.attr('id') + compare_town_number);
+        // clear old select2
+        $('.town-typeahead').html('');
+
+        $('.town-typeahead').append(town_search);
+        town_search.show('slow');
+        // init select by id
+        init_town_select2_with_field_id($(town_search),"#{search_for_towns_town_path}");
+        // if something choose in select2
+        $(town_search).on("select2-selecting", function(e) {
+          var compare_dom = $('#town-compare-field').find('.compare-wrapper').clone();
+          compare_dom.find('.compare-town-title').html(e.object.text);
+          $('#compare-list').append(compare_dom);
+          $('.select2-container').hide('slow');
+        });
+        compare_town_number++;
+      }else{
+        alert('YOU CAN COMPARE ONLY 3 TOWN!!!');
+      }
+
+    })
 
     $('#embed_code_budget').on('click',function(){
        $('#embeded_code_modal_window').modal();
@@ -35,7 +109,6 @@
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
       set_iframe($(this).attr('data-url'));
     });
-
     function set_iframe(url) {
       path = "#{request.base_url}"
       query = "#{URI.parse(request.url).query}"
