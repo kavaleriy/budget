@@ -21,9 +21,7 @@
     /[if lt IE 9]
       -#= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu&subset=latin,cyrillic-ext"
-    = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Lato:400,700,100,100italic,300,300italic,400italic,700italic,900,900italic"
     = stylesheet_link_tag "application", :media => "all"
-
     = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
     = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
     = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
@@ -37,23 +35,24 @@
     = yield :head
 
 %body
-  /[if lt IE 8]
-  <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  -#Render navbar block from view/public/home/new_design/_navbar.html.haml
-  = render partial: 'layouts/navbar/navbar'
+  = render :partial => 'layouts/navbar'
+  -#= yield :top
 
   .bootstrap_flash
     = bootstrap_flash
 
-  -#Render main blocks
-  .blocks
-    = yield
+  .container-fluid
+    .main.row-fluid
+      = yield
 
-    -#Render footer block from view/public/home/new_design/_footer_new.html.haml
-    = render partial: 'public/home/new_design/footer_new'
+  .clear
+
+    -#Render footer block from view/layouts
+  = render :partial => 'layouts/footer'
 
   = render partial: 'layouts/embeded_code_modal_window'
   = render partial: 'layouts/visualisation_modal/export_budget_calendar_modal_wind'
+  = render partial: 'layouts/visualisation_modal/visualisation_list'
   = render partial: 'layouts/xls_edit_modal_window'
 :javascript
   $(document).ready(function() {
@@ -72,28 +71,3 @@
     commit: I18n.t("confirm_yes"),
     cancel: I18n.t("confirm_no")
   });
-
-:javascript
-  // ****** Menu resize on scroll ***** //
-  $(window).scroll(function() {
-
-      if ($(document).scrollTop() > 70) {
-          $('nav').addClass('min').stop().animate({height: '50px'},600);
-          $('ul.nav').stop().animate({padding: '0 auto auto auto'}, 600);
-          $('div.logo-block').stop().animate({margin: '0'},600);
-          $('div.logo-block > img.logo').stop().animate({padding: '5px auto'},600);
-          $('div.logo-block a.logo-src > p.title').stop().animate({opacity: '0'},600);
-      } else {
-          $('nav').removeClass('min', {duration:500}).stop().animate({height: '73px'},600);
-          $('ul.nav').stop().animate({padding: '23px auto auto auto'}, 600);
-          $('div.logo-block').stop().animate({margin: '8px 0'},600);
-          $('div.logo-block > img.logo').stop().animate({padding: 'auto auto 8px auto'},600);
-          $('div.logo-block a.logo-src > p.title').queue(function () {
-              $(this).stop().animate({opacity: '100'},600);
-              $(this).dequeue();
-          });
-      }
-  });
-
-  // ***** Tooltip's init ***** //
-  $('[data-toggle="tooltip"]').tooltip();
