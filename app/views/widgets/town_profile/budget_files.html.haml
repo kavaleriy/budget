@@ -13,24 +13,34 @@
   }
 
   .city-title{
-    width: auto;
+    //width: auto;
   }
   .add-town-to-compare{
-    display: inline-block;
+    .plus-to-compare{
+      display: inline-block;
+      padding: 0;
+      //width: auto;
+    }
+
+  }
+  #compare-list{
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .town-search{
     display: none;
   }
+
 .row
   .col-md-4.city-title
     %h3
       =@town
   .col-md-4.add-town-to-compare
-    .plus-to-compare
-      %i.fa.fa-plus{"aria-hidden" => "true"}
-    Порівняти з ...
-    .row
-      .col-xs-6.town-typeahead
+    .col-xs-6
+      Порівняти з ...
+      .plus-to-compare
+        %i.fa.fa-plus{"aria-hidden" => "true"}
+    .col-xs-6.town-typeahead
   .col-md-4#compare-list
 .row-fluid
   %ul.nav.nav-tabs.pull-left{role: 'tablist'}
@@ -45,8 +55,12 @@
     %iframe{ 'width' => '100%', 'height' => '800' }
 .town-search
   =text_field_tag 'city_compare'
-.town-compare-field
-
+#town-compare-field
+  .col-md-6
+    .compare-wrapper
+      .col-xs-8.compare-town-title
+      .col-xs-4
+        -
 -#= link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 -#.col-sm-12
 -#  #embed_code_budget.embed_code
@@ -71,8 +85,10 @@
         init_town_select2_with_field_id($(town_search),"#{search_for_towns_town_path}");
         // if something choose in select2
         $(town_search).on("select2-selecting", function(e) {
-            $('#compare-list').append(e.object.text);
-            $('.select2-container').hide('slow');
+          var compare_dom = $('#town-compare-field').find('.compare-wrapper').clone();
+          compare_dom.find('.compare-town-title').html(e.object.text);
+          $('#compare-list').append(compare_dom);
+          $('.select2-container').hide('slow');
         });
         compare_town_number++;
       }else{
