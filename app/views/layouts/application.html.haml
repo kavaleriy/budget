@@ -39,7 +39,8 @@
 %body
   /[if lt IE 8]
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  -#Render navbar block from view/public/home/new_design/_navbar.html.haml
+
+  -#Render navbar block
   = render partial: 'layouts/navbar/navbar'
 
   .bootstrap_flash
@@ -49,8 +50,8 @@
   .blocks
     = yield
 
-    -#Render footer block from view/public/home/new_design/_footer_new.html.haml
-    = render partial: 'public/home/new_design/footer_new'
+    -#Render footer block
+    = render partial: 'layouts/footer/footer'
 
   = render partial: 'layouts/embeded_code_modal_window'
   = render partial: 'layouts/visualisation_modal/export_budget_calendar_modal_wind'
