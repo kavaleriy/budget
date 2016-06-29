@@ -662,7 +662,13 @@
       .col-xs-12.text
         %p Допомагаємо громадянам зрозуміти бюджетну інформацію
       .col-xs-12.button
-        =link_to demo_profile_path(@test_town), class: 'try' do
-          %p.button-text Спробувати
-          .icon-block
-            %i.fa.fa-arrow-right{"aria-hidden" => "true"}
+        - if @test_town
+          = link_to public_path(@test_town), class: 'try' do
+            %p.button-text Спробувати
+            .icon-block
+              %i.fa.fa-arrow-right{"aria-hidden" => "true"}
+        - else
+          = link_to '#', class: 'try' do
+            %p.button-text Незабаром
+            .icon-block
+              %i.fa.fa-arrow-right{"aria-hidden" => "true"}
