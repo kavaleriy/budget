@@ -1,3 +1,11 @@
+:scss
+  .container {
+    #new_user button i,
+    #edit_user button i {
+      margin: -2px 0 0 -5px;
+    }
+  }
+
 -#Login form
 .container
   = content_for :header do
@@ -14,5 +22,6 @@
     %p.submit
       = button_tag(type: 'submit', class: "btn btn-primary") do
         %i.fa.fa-arrow-circle-right.fa-2x
+
   .row.text-center
     = render 'devise/shared/links'
