@@ -97,19 +97,20 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     calendar = Calendar.get_calendar_by_town(town).first
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     # programs = Programs::Town.get_town_by_title(town).first
+    programs = Programs::TargetedProgram.first
     # binding.pry
 
     result = []
     result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
-    result << get_calendar_hash(calendar,'calendar')
+    # result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    # result << get_programs_hash('programs',programs)
+    result << get_programs_hash('programs',programs)
     result << get_key_docs_hash('key_docs')
-    result << get_prozorro_hash('prozoroo')
-    result << get_edata_hash('edata')
-    result << get_purchase_hash('purchase')
+    # result << get_prozorro_hash('prozoroo')
+    # result << get_edata_hash('edata')
+    # result << get_purchase_hash('purchase')
     result << get_keys_hash('keys')
 
     result.compact
@@ -156,7 +157,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_programs_hash(name,programs)
-    get_item_hash(img_url(name), title_for_portfolio(name), programs_towns_town_profile_path(@town)) unless programs.nil?
+    get_item_hash(img_url(name), title_for_portfolio(name), programs_targeted_program_path(programs)) unless programs.nil?
   end
 
   def get_item_hash(item_img_src,item_title,item_url)
@@ -179,7 +180,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_prozorro_hash(name)
-    get_item_hash("/assets/public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis')
+    get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis')
   end
   def get_edata_hash(name)
     get_item_hash(img_url(name), title_for_portfolio(name), 'http://www.spending.gov.ua/')
@@ -189,7 +190,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def img_url (item)
-    "/assets/public/" + item + ".jpg"
+    "new_design/icons/" + item + ".svg"
   end
 
   def title_for_portfolio (item)
