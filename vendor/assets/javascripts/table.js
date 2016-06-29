@@ -43,7 +43,7 @@ avb.table = function () {
     var initialize = function ($container, data) {
             var $table = $container;
 
-            // remove old-design rows
+            // remove rows
             $('.tablerow').remove();
 
             if (data instanceof Array) {
@@ -248,7 +248,7 @@ avb.table = function () {
      */
         renderSparkline = function (node, cell) {
 
-            // delete old-design sparklines
+            // delete sparklines
             d3.select(cell).select('svg').remove();
 
             // svg initialization

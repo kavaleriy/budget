@@ -963,7 +963,7 @@
 					fg.removeLayer(c);
 					c._recursivelyAddChildrenToMap(null, newZoomLevel, bounds);
 				} else {
-					//Fade out old-design cluster
+					//Fade out cluster
 					c.setOpacity(0);
 					c._recursivelyAddChildrenToMap(startPos, newZoomLevel, bounds);
 				}
@@ -995,7 +995,7 @@
 				c._recursivelyRestoreChildPositions(newZoomLevel);
 			});
 
-			//Remove the old-design clusters and close the zoom animation
+			//Remove the clusters and close the zoom animation
 			this._enqueue(function () {
 				//update the positions of the just added clusters/markers
 				this._topClusterLevel._recursively(bounds, previousZoomLevel, 0, function (c) {

@@ -1564,7 +1564,7 @@ NodeContainer.prototype.computedStyle = function(type) {
 
 NodeContainer.prototype.cssInt = function(attribute) {
     var value = parseInt(this.css(attribute), 10);
-    return (isNaN(value)) ? 0 : value; // borders in old-design IE are throwing 'medium' for demo.html
+    return (isNaN(value)) ? 0 : value; // borders in IE are throwing 'medium' for demo.html
 };
 
 NodeContainer.prototype.color = function(attribute) {

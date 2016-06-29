@@ -3777,7 +3777,7 @@
 				this.redraw(new_par.id === '#');
 			}
 			else {
-				// clean old-design parent and up
+				// clean parent and up
 				tmp = obj.children_d.concat();
 				tmp.push(obj.id);
 				for(i = 0, j = obj.parents.length; i < j; i++) {

@@ -20,7 +20,7 @@ Dir.chdir APP_ROOT do
   puts "\n== Preparing database =="
   system "bin/rake db:setup"
 
-  puts "\n== Removing old-design logs and tempfiles =="
+  puts "\n== Removing logs and tempfiles =="
   system "rm -f log/*"
   system "rm -rf tmp/cache"
 
