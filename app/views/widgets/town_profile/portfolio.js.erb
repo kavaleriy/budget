@@ -1,2 +1,2 @@
-$('#portfolio').html("<%= escape_javascript(render partial: 'portfolio') %>");
+$('#portfolio').html("<%= escape_javascript(render partial: 'portfolio',layout: false) %>");
 $('#town_items_length').html("<%= escape_javascript(@town_items.length.to_s) %>");
