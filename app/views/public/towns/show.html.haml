@@ -1,242 +1,361 @@
-:css
-
-  .budget {
-    cursor: pointer;
-  }
-  .budget.active {
-    cursor: default;
-    font-weight: bold;
-  }
-
-  .nav-tabs {
-    height: 100vh;
+:scss
+  .wrapper {
+    display: flex;
+    margin-top: 73px;
+    //padding: 73px 0 0;
+    //height: calc(100vh - 121.39px);
+    //min-height: calc(100vh - 121.39px);
+    //height: 100%;
+    //min-height: calc(100% - 193px);
   }
 
-  #towns_profile .tabs-left > .nav-tabs {
-    border-right: 1px solid #0199DA;
-  }
-
-  #towns_profile .tabs-left > .nav-tabs .active > a,
-  #towns_profile .tabs-left > .nav-tabs .active > a:hover,
-  #towns_profile .tabs-left > .nav-tabs .active > a:focus {
-    border-color: #0199DA transparent #0199DA #0199DA;
-  }
-  .title-town {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: rgb(1, 153, 218);
-    line-height: 1em;
-    padding: 0 5px 5px 5px !important;
-    margin: 0;
-  }
-
-  .img-town {
-    padding: 0 0 10px 0;
-  }
-
-  .links, .desc-ons {
-    padding: 0 0 5px 0;
-    border-bottom: 1px solid rgb(1, 153, 218);
-  }
-
-  .bar > li {
-    text-transform: uppercase;
-  }
-
-  .view-tenth img {
-    height: 145px;
-    margin: auto;
+  .sidebar {
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  @media(min-width: 320px) and (max-width: 767px){
-    .thumbnail {
-      width: 75%;
-    }
-  }
-  @media(min-width: 768px) and (max-width: 991px){
-    .thumbnail {
-      width: 95%;
-    }
-  }
-  @media(min-width: 992px) and (max-width: 1199px){
-
-  }
-  @media(min-width: 1200px) and (max-width: 1349px){
-
-  }
-  @media(min-width: 1350px) and (max-width: 1579px){
-    .bar {
-     width: 20%;
-    }
-  }
-  @media(min-width: 1580px) and (max-width: 1920px){
-    .bar {
-     width: 20%;
-    }
-  }
-
-  /*Acordion*/
-
-  .heading-primary {
-    font-size: 2em;
-    padding: 2em;
-    text-align: center;
-  }
-  .accordion dl,
-  .accordion-list {
-    /*border: 1px solid #ddd;*/
-  }
-  .accordion dl:after,
-  .accordion-list:after {
-    content: "";
-    display: block;
-    /*height: 1em;*/
-    width: 100%;
-    background-color: #2ba659;
-  }
-  .accordion dd,
-  .accordion__panel {
-    /*background-color: #eee;*/
-    font-size: 1em;
-    line-height: 1.5em;
-    padding: 10px 0 0 0;
-  }
-  .accordion p {
-    padding: 1em 2em 1em 2em;
-  }
-  .accordion {
-    position: relative;
-    /*background-color: #eee;*/
-  }
-  .container {
-    max-width: 100%;
-    margin: 0 auto;
-    /*padding: 2em 0 2em 0;*/
-  }
-  .accordionTitle,
-  .accordion__Heading {
-    /*background-color: #38cc70; */
-    /*text-align: center;*/
-    font-weight: 700;
-    padding: 1em;
-    display: block;
-    text-decoration: none;
-    color: #000;
-    transition: background-color 0.5s ease-in-out;
-    border-bottom: 1px solid rgb(1, 153, 218);
-  }
-  .accordionTitle:before,
-  .accordion__Heading:before {
-    content: ">";
-    font-size: 1.5em;
-    line-height: 0.5em;
-    float: right;
-    color: rgb(1, 153, 218);
-    transition: transform 0.3s ease-in-out;
-    transform: rotate(-270deg);
-  }
-  .accordionTitle:hover,
-  .accordion__Heading:hover {
-    /*background-color: #2ba659;*/
-  }
-  .accordionTitleActive,
-  .accordionTitle.is-expanded {
-    /*background-color: #2ba659;*/
-    /*color: rgb(1, 153, 218)!important;*/
-    opacity: .8;
-  }
-  .accordionTitleActive:before,
-  .accordionTitle.is-expanded:before {
-    transform: rotate(270deg);
-    color: black;
-  }
-  .accordionItem {
-    height: auto;
+    width: 220px;
+    height: 100%;
+    z-index: 1;
     overflow: hidden;
-    max-height: 50em;
-    transition: max-height 1s;
+    background: transparent;
+    //min-height: calc(100% - 73px);
+    padding-top: 73px;
   }
-  @media screen and (min-width: 48em) {
-    .accordionItem {
-      max-height: 15em;
-      transition: max-height 0.5s;
+
+  .content {
+    //height: 100%;
+    height: calc(100% - 193px);
+    min-height: calc(100vh - 193px);
+    margin-left: 50px;
+    margin-bottom: 120px;
+    padding: 30px;
+    //padding-top: 73px;
+    background: white;
+    z-index: 4;
+    //box-shadow: 0 0 5px rgba(0,0,0,1);
+    transform: translate3d(0,0,0);
+    transition: transform .5s;
+    width: calc(100% - 50px);
+    .content-wrapper {
+      //padding-top: 30px;
+      //position: relative;
+      display: block;
+      height: 100%;
+      overflow: auto;
+      .breadcrumb {
+        padding: 0 0 30px;
+        margin: 0;
+        background-color: transparent;
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        li {
+          a {
+            color: black;
+            text-decoration: none;
+            &:hover,
+            &:focus {
+              color: #ffd304;
+            }
+          }
+        }
+        .active {
+          a {
+            color: black;
+            text-decoration: none;
+            cursor: text;
+            border-bottom: 2px solid #ffd304;
+            padding-bottom: 2px;
+            &:hover,
+            &:focus {
+              color: black;
+            }
+          }
+        }
+      }
+      .breadcrumb li + li:before {
+        font: 26px fontawesome;
+        content: '\f105';
+        padding: 0 5px;
+        color: black;
+        position: relative;
+        bottom: -3px;
+      }
+      .breadcrumb li:nth-child(1):before {
+        display: none;
+      }
+      .modules {
+        //border: 1px solid red;
+        .module {
+          padding: 0 3rem 0 0;
+          margin-bottom: 3rem;
+          a {
+            .town-budget {
+              background: url('/../assets/new_design/money.jpg');
+              background-position: center;
+              background-size: cover;
+              .icon {
+                .icon-border {
+                  .svg {
+                    width: 78%;
+                    margin: 11%;
+                  }
+                }
+              }
+            }
+            .repair-map {
+              background: url('/../assets/new_design/road.jpg');
+              background-position: center;
+              background-size: cover;
+              .icon {
+                .icon-border {
+                  .svg {
+                    width: 68%;
+                    margin: 16%;
+                  }
+                }
+              }
+            }
+            .local-programs {
+              background: url('/../assets/new_design/invest.jpg');
+              background-position: center;
+              background-size: cover;
+              .icon {
+                .icon-border {
+                  .svg {
+                    width: 70%;
+                    margin: 15%;
+                  }
+                }
+              }
+            }
+            .indicators {
+              background: url('/../assets/new_design/indicators.jpg');
+              background-position: center;
+              background-size: cover;
+              .icon {
+                .icon-border {
+                  .svg {
+                    width: 70%;
+                    margin: 12% 15% 18%
+                  }
+                }
+              }
+            }
+            .docs {
+              background: url('/../assets/new_design/docs.jpg');
+              background-position: center;
+              background-size: cover;
+              .icon {
+                .icon-border {
+                  .svg {
+                    width: 70%;
+                    margin: 15%;
+                  }
+                }
+              }
+            }
+            .town-budget,
+            .repair-map,
+            .local-programs,
+            .indicators,
+            .docs {
+              //border: 1px solid transparent;
+              .img {
+                width: calc(100% - 3rem);
+                min-height: 243px;
+                height: 100%;
+                position: absolute;
+                background: #000;
+                opacity: .5;
+                z-index: 1;
+              }
+              .icon {
+                position: relative;
+                z-index: 2;
+                padding: 2rem 0;
+                //top: 0;
+                .icon-border {
+                  width: 88px;
+                  height: 88px;
+                  border-radius: 50%;
+                  border: 1px solid white;
+                  margin: 0 auto;
+                }
+              }
+              .title {
+                position: relative;
+                z-index: 2;
+                font-family: 'Lato', sans-serif;
+                font-size: 18px;
+                font-weight: 600;
+                text-align: center;
+                color: white;
+                text-transform: uppercase;
+                margin: 0;
+                padding: 1rem 0;
+              }
+              .more {
+                width: 100%;
+                min-height: 75px;
+                padding: 1rem 0;
+                .more-btn {
+                display: none;
+                  border: 2px solid white;
+                  border-radius: 4px;
+                  width: 112px;
+                  height: 50px;
+                  margin: 0 auto;
+                  p {
+                    font-family: 'Lato', sans-serif;
+                    font-size: 18px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    color: white;
+                    margin: 10px 20px;
+                  }
+                }
+              }
+            }
+            &:hover,
+            &:focus {
+              text-decoration: none;
+              .town-budget,
+              .repair-map,
+              .local-programs,
+              .indicators,
+              .docs {
+                .img {
+                  background: darkkhaki;
+                }
+                .more {
+                  .more-btn {
+                    display: block;
+                    position: relative;
+                    z-index: 2;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
-  .accordionItem.is-collapsed {
-    max-height: 0;
+
+  .content.is-open {
+    margin-left: 0;
+    transform: translate3d(220px,0,0);
+    width: calc(100% - 220px);
   }
-  .no-js .accordionItem.is-collapsed {
-    max-height: auto;
-  }
-  .animateIn {
-    animation: accordionIn 0.65s normal ease-in-out both 1;
-  }
-  .animateOut {
-    animation: accordionOut 0.75s alternate ease-in-out both 1;
-  }
-  @keyframes accordionIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.9) rotateX(-60deg);
-      transform-origin: 50% 0;
+
+  /* Navigation */
+
+
+  .button {
+    cursor: pointer;
+    &:before {
+      font: 40px fontawesome;
+      color: white;
     }
-    100% {
-      opacity: 1;
-      transform: scale(1);
+    &:hover,
+    &:focus {
+      text-decoration: none;
     }
   }
-  @keyframes accordionOut {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.9) rotateX(-60deg);
+
+  .blason-block {
+    padding: 5% 30%;
+  }
+
+  .sidebar {
+    .sidebar-nav {
+      padding: 0;
+      .button {
+        float: left;
+        padding: 0 15px;
+        transform: rotate(180deg);
+        transition: transform 1s;
+        &:before {
+          content: '\f100';
+        }
+      }
     }
   }
-  .accordion a:hover, a:focus {
-    color: inherit;
+  .is-full {
+    .sidebar-nav {
+      .button {
+        float: right;
+        padding: 0 10px;
+        transform: rotate(0deg);
+        transition: transform 1s;
+        &:before {
+          content: '\f100';
+        }
+      }
+    }
+  }
+
+  .sidebar-nav li a {
+    position: relative;
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 15px 15px 15px 50px;
+    color: #eee;
+  }
+
+  .sidebar-nav li a:before {
+    font: 14px fontawesome;
+    position: absolute;
+    top: 14px;
+    left: 20px;
+  }
+
+  .sidebar-nav li:nth-child(1) a:before { content: '\f129'; }
+  .sidebar-nav li:nth-child(2) a:before { content: '\f200'; }
+  .sidebar-nav li:nth-child(3) a:before { content: '\f0f6'; }
+  .sidebar-nav li:nth-child(4) a:before { content: '\f0c1'; }
+  .sidebar-nav li:nth-child(5) a:before { content: '\f09d'; }
+  .sidebar-nav li:nth-child(6) a:before { content: '\f1c1'; }
+
+  .sidebar-nav li a:hover {
+    background: #807023;
     text-decoration: none;
   }
-  .link-title {
-    float: left;
-  }
-  .link-value {
-    float: right;
-  }
 
-  @-moz-document url-prefix() {
-    .thumbnail {
-      float: right;
-      padding-right: 20px;
-    }
-    #portfolio .row .col-sm-3 {
-      width: 23%;
-    }
-    #portfolio .row div {
-      margin: 0px 0px 10px;
-      padding: 0 3px;
-    }
+  .sidebar-nav li a.active {
+    //box-shadow: inset 5px 0 0 #ffd304, inset 6px 0 0 #0c2231;
+    background: #ffd304;
+    color: #0c2231;
   }
 
+  /* Description */
 
--#-if(@town.id == 'test')?portfolio_url = widgets_town_profile_path(@town.id):
--#  -
+  h1 {
+    margin: 25px 0 15px;
+    font-size: 28px;
+    font-weight: 400;
+  }
 
-= content_for :header do
-  .head
-    = @town.title
-#towns_profile
-  .tabbable.tabs-left
-    %ul.nav.nav-tabs.bar
-      %li
-        %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;', :class => 'img-town'}
+  @media (max-width: 991px) {
+    body {
+      .blocks {
+        .wrapper {
+          .content {
+            margin-bottom: 193px;
+          }
+        }
+      }
+    }
+  }
+
+.wrapper
+  .sidebar
+    .blason-block
+      =image_tag('new_design/blason.svg', class: 'img-responsive')
+    %ul.sidebar-nav
       %li
         %a{"data-toggle" => "tab", :href => "#description"}
           = t('public.towns.portfolio.description')
@@ -244,7 +363,7 @@
         %a{"data-toggle" => "tab", :href => "#portfolio"}
           = t('public.towns.portfolio.visuals')
           %span.badge.bsize.count#town_items_length
-            -#= @town_items.length.to_s
+      -#= @town_items.length.to_s
       %li
         %a{"data-toggle" => "tab", :href => "#documents"}
           = t('public.towns.portfolio.documents')
@@ -262,10 +381,16 @@
       %li
         %a{"data-toggle" => "tab", :href => "#pdf_docs"}
           PDS doc's
-
-    .tab-content.col-sm-9
-      #description.tab-pane.fade
-        .col-sm-12.col-md-5.col-lg-6
+      %a.button
+  .content
+    .content-wrapper
+      %ol.breadcrumb
+        %li.active
+          %a{:href => "#"} Доступні модулі
+        -#%li.active
+        -#  %a{:href => '#'} Активний модуль
+      .tab-content
+        #description.tab-pane.fade
           - if @town.description && !@town.description.blank?
             %h3.desc-ons
               = t('public.towns.portfolio.description')
@@ -275,26 +400,15 @@
               = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
-      #portfolio.tab-pane.active.fade.in
-        -#= render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
-        -#-#%h3
-        -#-#  = t('public.towns.portfolio.visuals')
-        -#.row
-        -#  = render partial: 'portfolio' , :locals => { :town_items => @town_items }
+        #portfolio.tab-pane.active.fade.in
+        #documents.tab-pane.fade
+          = render partial: 'docs'
+        #links.tab-pane.fade
+          - @town_links.each do |key,tl|
 
-      #documents.tab-pane.fade
-        = render partial: 'docs'
-      #links.tab-pane.fade
-
-        - @town_links.each do |key,tl|
-          - counter = 1
-
-          -#- if tl['links'].length > 0
-            -#- tl['links'].each do |link|
-              -#= link.title
-              -#= link.value
-          .col-sm-12.col-md-5.col-lg-6
-            .container
+            - counter = 1
+            .col-sm-12.col-md-5.col-lg-6
+              -#.container
               .accordion
                 %dl
                   %dt
@@ -308,119 +422,104 @@
                         .link-value
                           = link.value
                   %dt
-          - counter = counter + 1
-      #pdf_docs.tab-pane.fade
-        .col-xs-7
-          =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
+            - counter = counter + 1
+        #pdf_docs.tab-pane.fade
 
-      .col-xs-5.pull-right
-        = render partial: 'map_ukraine'
-.col-sm-12
-  #embed_code_town.embed_code
-    = render partial: 'widgets/visify/embed_code'
+          .col-xs-7
+            =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
+      -#.modules
+      -#  .col-xs-12.col-sm-6.col-md-4.module
+      -#    %a{:href => '#'}
+      -#      .town-budget
+      -#        .img
+      -#        .icon
+      -#          .icon-border
+      -#            =image_tag('new_design/icons/!icon1w.svg', class: 'svg')
+      -#        .title
+      -#          Місцевий бюджет
+      -#        .more
+      -#          .more-btn
+      -#            %p Більше
+      -#  .col-xs-12.col-sm-6.col-md-4.module
+      -#    =link_to demo_repair_roads_map_path do
+      -#      .repair-map
+      -#        .img
+      -#        .icon
+      -#          .icon-border
+      -#            =image_tag('new_design/icons/!shovel.svg', class: 'svg')
+      -#        .title
+      -#          Карта ремонтів
+      -#        .more
+      -#          .more-btn
+      -#            %p Більше
+      -#  .col-xs-12.col-sm-6.col-md-4.module
+      -#    %a{:href => '#'}
+      -#      .local-programs
+      -#        .img
+      -#        .icon
+      -#          .icon-border
+      -#            =image_tag('new_design/icons/!office.svg', class: 'svg')
+      -#        .title
+      -#          Місцеві програми
+      -#        .more
+      -#          .more-btn
+      -#            %p Більше
+      -#  .col-xs-12.col-sm-6.col-md-4.module
+      -#    %a{:href => '#'}
+      -#      .indicators
+      -#        .img
+      -#        .icon
+      -#          .icon-border
+      -#            =image_tag('new_design/icons/!bar-chart.svg', class: 'svg')
+      -#        .title
+      -#          Ключові показники
+      -#        .more
+      -#          .more-btn
+      -#            %p Більше
+      -#  .col-xs-12.col-sm-6.col-md-4.module
+      -#    %a{:href => '#'}
+      -#      .docs
+      -#        .img
+      -#        .icon
+      -#          .icon-border
+      -#            =image_tag('new_design/icons/!folders.svg', class: 'svg')
+      -#        .title
+      -#          Ключові документи
+      -#        .more
+      -#          .more-btn
+      -#            %p Більше
+
 :javascript
 
-
-
   $(document).ready(function() {
-  //#-------------------------------Embed code init----------------------------------------------------
-
-
-
-  //---------------------------------------------------------------------------------------------------
-    var portfolio_url = "#{widgets_town_profile_path(@town)}"
-    $.ajax({
-      url: portfolio_url,
-      success: function(data){
-      }
+  //Show full sidebar on desctops [md/lg size]
+    if($(window).width() > 1200){
+      $('.blocks > .wrapper > .sidebar').addClass('is-full');
+      $('.blocks > .wrapper > .content').addClass('is-open');
+     };
+  //Toggle button action [hide/show sidebar]
+    $('.button').on('click', function() {
+      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+      $('.blocks > .wrapper > .content').toggleClass('is-open');
     });
 
-    $('.embed_btn').on('click',function(){
-      var town = "#{@town.id}"
-      //el_id this is dom element selector, where render size form for iframe
-      var embed_code_timeline = aEmbedCode();
-      var src = window.location.origin + "/widgets/town/profile/" + town;
-      embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
-      embed_code_timeline.set_iframe(src);
-      $('#embeded_code_modal_window').find('#embed_src').val(src);
-      $('#embeded_code_modal_window').modal();
-    })
+    //var portfolio_url = "#{widgets_town_profile_path(@town)}"
+    //$.ajax({
+    //  url: portfolio_url,
+    //  success: function(data){
+    //  }
+    //});
+  });
 
-  $('.budget[data-id]').on('click', function (e) {
-      $('.budget[data-id]').removeClass('active')
-      $(this).addClass('active')
+  //Resize window sidebar view
+  $(window).resize(function(){
+    if($(window).width() < 1199){
+      $('.blocks > .wrapper > .sidebar').removeClass('is-full');
+      $('.blocks > .wrapper > .content').removeClass('is-open');
+    } else
+    if($(window).width() > 1200){
+      $('.blocks > .wrapper > .sidebar').addClass('is-full');
+      $('.blocks > .wrapper > .content').addClass('is-open');
+    };
+  });
 
-      var vis = $(this).attr('data-vis')
-      var id = $(this).attr('data-id')
-      set_iframe(vis, id);
-
-    });
-
-    $(".owl-example").owlCarousel({
-      //Count on page
-      items : 3
-      //autoWidth:true
-    });
-
-    //Accordion content
-    //uses classList, setAttribute, and querySelectorAll
-    //if you want this to work in IE8/9 youll need to polyfill these
-    (function(){
-      var d = document,
-      accordionToggles = d.querySelectorAll('.js-accordionTrigger'),
-      setAria,
-      setAccordionAria,
-      switchAccordion,
-        touchSupported = ('ontouchstart' in window),
-        pointerSupported = ('pointerdown' in window);
-
-        skipClickDelay = function(e){
-          e.preventDefault();
-          e.target.click();
-        }
-
-        setAriaAttr = function(el, ariaType, newProperty){
-        el.setAttribute(ariaType, newProperty);
-      };
-      setAccordionAria = function(el1, el2, expanded){
-        switch(expanded) {
-          case "true":
-            setAriaAttr(el1, 'aria-expanded', 'true');
-            setAriaAttr(el2, 'aria-hidden', 'false');
-            break;
-          case "false":
-            setAriaAttr(el1, 'aria-expanded', 'false');
-            setAriaAttr(el2, 'aria-hidden', 'true');
-            break;
-          default:
-          break;
-        }
-      };
-    //function
-    switchAccordion = function(e) {
-      e.preventDefault();
-      var thisAnswer = e.target.parentNode.nextElementSibling;
-      var thisQuestion = e.target;
-      if(thisAnswer.classList.contains('is-collapsed')) {
-        setAccordionAria(thisQuestion, thisAnswer, 'true');
-      } else {
-        setAccordionAria(thisQuestion, thisAnswer, 'false');
-      }
-        thisQuestion.classList.toggle('is-collapsed');
-        thisQuestion.classList.toggle('is-expanded');
-        thisAnswer.classList.toggle('is-collapsed');
-        thisAnswer.classList.toggle('is-expanded');
-
-          thisAnswer.classList.toggle('animateIn');
-      };
-      for (var i=0,len=accordionToggles.length; i<len; i++) {
-        if(touchSupported) {
-          accordionToggles[i].addEventListener('touchstart', skipClickDelay, false);
-          }
-          if(pointerSupported){
-            accordionToggles[i].addEventListener('pointerdown', skipClickDelay, false);
-          }
-          accordionToggles[i].addEventListener('click', switchAccordion, false);
-        }
-    })();
-  })

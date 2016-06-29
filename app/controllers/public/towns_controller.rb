@@ -1,6 +1,6 @@
 class Public::TownsController < ApplicationController
   include ControllerCaching
-
+  layout 'town_profile'
   before_action :set_town, only: [:show, :budget]
 
   before_action :set_documents, only: [:show]
