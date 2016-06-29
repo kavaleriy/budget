@@ -4,7 +4,7 @@
     min-height: calc(100vh - (103px + 120px));
     height: auto;
     top: 31px;
-    margin-bottom: 73px;
+    margin-bottom: 33px;
     .news-items {
       .title {
         width: 100%;
@@ -98,11 +98,19 @@
               font-size: 1.8rem;
               font-family: 'Lato', sans-serif;
               font-weight: 600;
+              i {
+                padding: 4px;
+              }
             }
           }
           .active {
             a {
               background-color: #ffd304;
+            }
+          }
+          .disabled {
+            a {
+              display: none;
             }
           }
         }
@@ -133,5 +141,6 @@
             .title
               -#= news.title
               =truncate(news.title, length: 85)
-  .row.text-center
-    = paginate @budget_news, views_prefix: 'paginator_semantic'
+    .row.text-center
+      %nav.pagination-bar
+        = paginate @budget_news, views_prefix: 'paginator_semantic'
