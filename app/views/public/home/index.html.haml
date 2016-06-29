@@ -1,91 +1,12 @@
-:css
-  .main-pic {
-    width: 500px;
-    height: 250px;
-    clear: right;
-    float: left;
-    margin: 0 15px 0 15px;
-  }
-
-  .main-text {
-    font-size: 1.1em;
-    padding-left: 15px;
-    text-align: justify;
-  }
-  .demo {
-    float: right;
-  }
-  .main-block {
-    padding: 15px 0 0 0;
-  }
-
-  @media(min-width: 320px) and (max-width: 767px){
-    .main-pic {
-      width: 300px;
-      height: 150px;
-    }
-    .main-block {
-      padding: 15px 0 30px 0;
-    }
-    .demo {
-      margin-right: 15px;
-    }
-  }
-  @media(min-width: 768px) and (max-width: 991px){
-    .main-pic {
-      display: none;
-    }
-    .demo {
-      float: none;
-    }
-  }
-  @media(min-width: 992px) and (max-width: 1199px){
-    .main-pic {
-      display: none;
-    }
-  }
-  @media(min-width: 1200px) and (max-width: 1349px){
-    .main-pic {
-      width: 300px;
-      height: 150px;
-    }
-  }
-  @media(min-width: 1350px) and (max-width: 1579px){
-    .main-pic {
-      width: 350px;
-      height: 175px;
-    }
-  }
-  @media(min-width: 1580px) and (max-width: 1920px){
-
-  }
-
 :scss
-
-  .simple {
-    .news_on_main {
-      height: 398px;
-      h1 {
-        text-align: center;
-      }
-      .no-news {
-        position: relative;
-        top: 35%;
-        font-size: 18px;
-        color: gray;
-        text-align: center;
-      }
-    }
-  }
-
-  .demo_index{
+  .demo_index {
     $panel_color : #D9EDF7;
     $panel_width: 150px;
     z-index: 1000;
     position: fixed;
     top: 400px;
     left: 0;
-    .icon{
+    .icon {
       background-color: #63c2de;
       width: 40px;
       height: 40px;
@@ -96,8 +17,11 @@
       font-size: 18px;
       position: relative;
       float: right;
+      i {
+        padding: 11px;
+      }
     }
-    .panel{ 
+    .panel {
       //transition-property: margin-left;
       transition-duration: 0.7s;
       transition-timing-function: linear;
@@ -139,7 +63,7 @@
         }
       }
     }
-    .panel_open{
+    .panel_open {
       //transition-property: margin-left;
       transition-duration: 0.7s;
       transition-timing-function: linear;
@@ -148,39 +72,19 @@
       border-radius: 0;
     }
   }
-.row
-  .col-sm-12.col-lg-6.col-md-5.col-sm-4.main-block
-    .main-pic
-      = image_tag('main-pic.jpg', class:'img-rounded img-responsive')
-    .main-text
-      %p
-        = t('public.home.index.about.portal')
-        %strong
-          "#{t('public.home.index.about.open_budget')}"
-        = t('public.home.index.about.1_sentence')
-      %p
-        = t('public.home.index.about.2_sentence')
-      %p
-        = t('public.home.index.about.3_sentence')
-      %p
-        = t('public.home.index.about.4_sentence')
-      %p
-        = t('public.home.index.about.5_sentence')
 
-      -# TODO не работает на прод
-      = link_to t('public.home.index.show_town_profile'), public_path(@test_town), class: 'btn btn-primary demo' if @test_town
+-#Render main block [ clouds, town, icons, titles ]
+=render partial: 'public/home/blocks/main_section'
 
-  .col-sm-12.col-lg-6.col-md-7.col-sm-8
-    = render partial: 'map_ukraine'
+-#Render map block
+=render partial: 'public/home/blocks/map_section'
 
-.row
-  <p>&nbsp;</p>
+-#Render news block
+=render partial: 'public/home/blocks/news_section'
 
-.row.simple
-  .col-sm-12.col-md-6.hidden-xs.hidden-sm
-    = render partial: 'slider'
-  .col-sm-12.col-md-6.news_on_main
-    = render partial: 'news'
+-#Render our partners
+=render partial: 'public/home/blocks/our_partners'
+
 -if current_user && current_user.admin?
   .demo_index
     .icon
@@ -192,26 +96,10 @@
         =link_to demo_path do
           %li.element
             New design
-    -#=image_tag("icons/info.svg",class: 'img-circle')
 
 :javascript
   $(document).ready(function(){
-
-    //var start = $('#test').offset().left;
     $(".demo_index > div").click(function () {
       $('#admin_info').toggleClass('panel_open');
     });
   });
-
--#- [{towns: @areas, title: 'Області'}, {towns: @towns, title: 'Міста'}].each do |item|
--#  = render partial: 'towns', :locals => { towns: item[:towns], title: item[:title] }
-
--#= render partial: 'tabs'
-
--#%h1
--#  Calendar
--#%iframe{ src:'http://tympanus.net/Development/Calendario/index.html', width: '100%', height: '600px' }
-
--#%h1
--#  News
--#%iframe{ src:'http://tympanus.net/Blueprints/VerticalTimeline/', width: '100%', height: '1000px' }

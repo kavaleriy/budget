@@ -71,22 +71,22 @@
 
     }
   }
-
--@budget_news.each do |news|
-  .col-xs-12.col-md-6
-    = link_to "#{news.get_link}?locale=#{params[:locale]}" do
-      .news_wrapper
-        .col-md-12.col-xs-12
-          .news_time
-            %span.glyphicon.glyphicon-time{"aria-hidden" => "true"}
-            = news.news_date.strftime "%H:%M %m-%d"
-          .news_title
-            = news.title
-          .all_news_text
-            = sanitize(news.news_text)
-%br
-.col-xs-12.text-center
-  = paginate @budget_news
+.container
+  -@budget_news.each do |news|
+    .col-xs-12.col-md-6
+      = link_to "#{news.get_link}?locale=#{params[:locale]}" do
+        .news_wrapper
+          .col-md-12.col-xs-12
+            .news_time
+              %span.glyphicon.glyphicon-time{"aria-hidden" => "true"}
+              = news.news_date.strftime "%H:%M %m-%d"
+            .news_title
+              = news.title
+            .all_news_text
+              = sanitize(news.news_text)
+  %br
+  .col-xs-12.text-center
+    = paginate @budget_news
 
 :javascript
   $(document).ready(function(){
