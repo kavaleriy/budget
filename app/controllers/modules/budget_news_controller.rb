@@ -50,7 +50,7 @@ module Modules
 
 
     def all_news
-      @budget_news = @budget_news.page(params[:page]).per(10).order(news_date: :desc)
+      @budget_news = @budget_news.page(params[:page]).per(9).order(news_date: :desc)
     end
 
     private
