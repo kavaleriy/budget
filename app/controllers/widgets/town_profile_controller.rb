@@ -101,7 +101,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # binding.pry
 
     result = []
-    result << get_indicate_hash(indicate_taxonomy,'indicators')
+    # result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
     # result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
