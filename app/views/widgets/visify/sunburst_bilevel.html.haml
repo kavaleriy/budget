@@ -122,7 +122,6 @@
       center.datum(root);
 
       // When zooming in, arcs enter from the outside and exit to the inside.
-      // Entering outside arcs start from the old layout.
       if (root === p) enterArc = outsideArc, exitArc = insideArc, outsideAngle.range([p.x, p.x + p.dx]);
 
       path = path.data(partition.nodes(root).slice(1), function(d) { return d.key; });

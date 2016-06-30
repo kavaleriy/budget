@@ -1,216 +1,243 @@
-:css
-  .margin_top_class{
-    margin-top: 15px;
-  }
-  .view a.info {
-    background: rgb(1, 153, 218);
-  }
-  .view a.info:hover {
-    background: #000000;
-  }
-
-  .blue-line {
-    border-top: 1px solid rgb(1, 153, 218);
-  }
-
-  .portfolio-title {
-    color: rgb(1, 153, 218);
-    font-weight: 700;
-    opacity: .9;
-  }
-
-  /*////////////////////////*/
-  .view {
-    z-index: 9;
-    cursor: default;
-    overflow: hidden;
-    text-align: center;
-    position: relative;
-    margin-bottom: 30px;
-    box-shadow: 0 0 10px grey;
-    /* height: 400px; */
-    max-width: 600px;
-  }
-  .view .mask, .view .content {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-  }
-  .view-tenth:hover > img {
-    /*-webkit-transform: scale(2) rotate(10deg);*/
-    /*transform: scale(2) rotate(10deg);*/
-    -webkit-transform: scale(2);
-    transform: scale(2);
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    filter: alpha(opacity=30);
-    opacity: 0.3;
-  }
-
-  /*//////////////////////////*/
-  @import url(http://fonts.googleapis.com/css?family=Open+Sans);
-
-  h1, h2, h3, h4, h5 {
-    margin-top: 5px;
-    text-shadow: none;
-    font-weight: normal !important;
-    font-family: 'Open Sans', sans-serif;
-  }
-  .view p {
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-size: 12px;
-    position: relative;
-    color: #fff;
-    padding: 10px 20px 10px;
-    text-align: center;
-  }
-
-  .view-tenth p {
-    color: #333;
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-transition: all 0.5s linear;
-    transition: all 0.5s linear;
-  }
-
-  .view {
-    z-index: 9;
-    cursor: default;
-    overflow: hidden;
-    text-align: center;
-    position: relative;
-    margin-bottom: 30px;
-    box-shadow: 0 0 10px grey;
-    /*height: 400px;*/
-    max-width: 600px;
-  }
-
-  .view .mask, .view .content {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-  }
-
-  .view img {
-    display: block;
-    position: relative;
-  }
-
-  .view .no_data {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    font-size: 2.0em;
-  }
-
-  .view-tenth img {
-    left: 10px;
-    margin-left: -10px;
-    position: relative;
-    -webkit-transition: all 0.6s ease-in-out;
-    transition: all 0.6s ease-in-out;
-  }
-  .view-tenth img {
-    height: 145px;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+:scss
+    .modules {
+      //border: 1px solid red;
+      .module {
+        padding: 0 3rem 0 0;
+        margin-bottom: 3rem;
+        a {
+          div{
+            background-position: center;
+            background-size: cover;
+          }
+          .budget {
+            background: url('/../assets/new_design/money.jpg');
+            .icon {
+              .icon-border {
+                .svg {
+                  width: 78%;
+                  margin: 11%;
+                }
+              }
+            }
+          }
+          .repair {
+            background: url('/../assets/new_design/road.jpg');
+            .icon {
+              .icon-border {
+                .svg {
+                  width: 68%;
+                  margin: 16%;
+                }
+              }
+            }
+          }
+          .programs {
+            background: url('/../assets/new_design/invest.jpg');
+            .icon {
+              .icon-border {
+                .svg {
+                  width: 70%;
+                  margin: 15%;
+                }
+              }
+            }
+          }
+          .keys {
+            background: url('/../assets/new_design/indicators.jpg');
+            .icon {
+              .icon-border {
+                .svg {
+                  width: 70%;
+                  margin: 12% 15% 18%
+                }
+              }
+            }
+          }
+          .key_docs {
+            background: url('/../assets/new_design/docs.jpg');
+            .icon {
+              .icon-border {
+                .svg {
+                  width: 70%;
+                  margin: 15%;
+                }
+              }
+            }
+          }
+          .budget,
+          .repair,
+          .programs,
+          .keys,
+          .key_docs {
+            //border: 1px solid transparent;
+            .img {
+              width: calc(100% - 3rem);
+              min-height: 243px;
+              height: 100%;
+              position: absolute;
+              background: #000;
+              opacity: .5;
+              z-index: 1;
+            }
+            .icon {
+              position: relative;
+              z-index: 2;
+              padding: 2rem 0;
+              //top: 0;
+              .icon-border {
+                width: 88px;
+                height: 88px;
+                border-radius: 50%;
+                border: 1px solid white;
+                margin: 0 auto;
+              }
+            }
+            .title {
+              position: relative;
+              z-index: 2;
+              font-family: 'Lato', sans-serif;
+              font-size: 18px;
+              font-weight: 600;
+              text-align: center;
+              color: white;
+              text-transform: uppercase;
+              margin: 0;
+              padding: 1rem 0;
+            }
+            .more {
+              width: 100%;
+              min-height: 75px;
+              padding: 1rem 0;
+              .more-btn {
+              display: none;
+                border: 2px solid white;
+                border-radius: 4px;
+                width: 112px;
+                height: 50px;
+                margin: 0 auto;
+                p {
+                  font-family: 'Lato', sans-serif;
+                  font-size: 18px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  color: white;
+                  margin: 10px 0px;
+                }
+              }
+            }
+          }
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            .budget,
+            .repair,
+            .programs,
+            .keys,
+            .key_docs {
+              .img {
+                background: darkkhaki;
+              }
+              .more {
+                .more-btn {
+                  text-align: center;
+                  display: block;
+                  position: relative;
+                  z-index: 2;
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  .view-tenth:hover > img {
-    /*-webkit-transform: scale(2) rotate(10deg);*/
-    /*transform: scale(2) rotate(10deg);*/
-    -webkit-transform: scale(2);
-    transform: scale(2);
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    filter: alpha(opacity=30);
-    opacity: 0.3;
-  }
 
-  .view h2 {
-    text-transform: uppercase;
-    color: #fff;
-    text-align: center;
-    position: relative;
-    font-size: 22px;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    margin: 20px 0 0 0;
-    text-shadow: none;
-  }
-
-  .view-tenth h2 {
-    color: #333;
-    margin: 10px 40px 0;
-    background: transparent;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-transition: all 0.5s linear;
-    transition: all 0.5s linear;
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
-    opacity: 0;
-  }
-
-  .view a.info {
-    color: #fff;
-    background: #000;
-    padding: 5px 12px;
-    text-decoration: none;
-    position: relative;
-    top: 35%;
-    display: inline-block;
-    overflow: hidden;
-    text-transform: uppercase;
-  }
-
-  .view a.info:hover {
-    background: #72c02c;
-  }
-
-  .view-tenth a.info {
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    transition: all 0.5s linear;
-  }
-
-  .view-tenth:hover h2,
-  .view-tenth:hover p,
-  .view-tenth:hover a.info {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: alpha(opacity=100);
-    opacity: 1;
-  }
-  /*///////////////////////////////////*/
-%link{href: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel: "stylesheet", integrity: "sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==", crossorigin: "anonymous"}
-.row.margin_top_class
+.modules
   -@town_items.each do |item|
-    .col-md-3.col-xs-6
-      .view.view-tenth
-        %img.img-responsive{:src => item['img_src']}
-          .mask
-            %a.info{ :href => item['url'] }
-              = t('public.towns.portfolio.detail')
-        %hr.blue-line
-          .portfolio-title
+    .col-xs-12.col-sm-6.col-md-4.module
+      %a{ :href => item['url'] }
+        %div{class: item['name']}
+          .img
+          .icon
+            .icon-border
+              -#-binding.pry
+              =image_tag(item['img_src'], class: 'svg')
+          .title
             =item['title']
+          .more
+            .more-btn
+              %p
+                = t('public.towns.portfolio.detail')
+
+
+  -#  .col-xs-12.col-sm-6.col-md-4.module
+  -#    %a{:href => '#'}
+  -#      .town-budget
+  -#        .img
+  -#        .icon
+  -#          .icon-border
+  -#            =image_tag('new_design/icons/!icon1w.svg', class: 'svg')
+  -#        .title
+  -#          Місцевий бюджет
+  -#        .more
+  -#          .more-btn
+  -#            %p Більше
+  -#  .col-xs-12.col-sm-6.col-md-4.module
+  -#    =link_to demo_repair_roads_map_path do
+  -#      .repair
+  -#        .img
+  -#        .icon
+  -#          .icon-border
+  -#            =image_tag('new_design/icons/!shovel.svg', class: 'svg')
+  -#        .title
+  -#          Карта ремонтів
+  -#        .more
+  -#          .more-btn
+  -#            %p Більше
+  -#  .col-xs-12.col-sm-6.col-md-4.module
+  -#    %a{:href => '#'}
+  -#      .programs
+  -#        .img
+  -#        .icon
+  -#          .icon-border
+  -#            =image_tag('new_design/icons/!office.svg', class: 'svg')
+  -#        .title
+  -#          Місцеві програми
+  -#        .more
+  -#          .more-btn
+  -#            %p Більше
+  -#  .col-xs-12.col-sm-6.col-md-4.module
+  -#    %a{:href => '#'}
+  -#      .indicators
+  -#        .img
+  -#        .icon
+  -#          .icon-border
+  -#            =image_tag('new_design/icons/!bar-chart.svg', class: 'svg')
+  -#        .title
+  -#          Ключові показники
+  -#        .more
+  -#          .more-btn
+  -#            %p Більше
+  -#  .col-xs-12.col-sm-6.col-md-4.module
+  -#    %a{:href => '#'}
+  -#      .key_docs
+  -#        .img
+  -#        .icon
+  -#          .icon-border
+  -#            =image_tag('new_design/icons/!folders.svg', class: 'svg')
+  -#        .title
+  -#          Ключові документи
+  -#        .more
+  -#          .more-btn
+  -#            %p Більше
+  -#
+  -#
+  -#-@town_items.each do |item|
+  -#  .col-md-3.col-xs-6
+  -#    .view.view-tenth
+  -#      %img.img-responsive{:src => item['img_src']}
+  -#        .mask
+  -#          %a.info{ :href => item['url'] }
+  -#            = t('public.towns.portfolio.detail')
+  -#      %hr.blue-line
+  -#        .portfolio-title
+  -#          =item['title']
