@@ -258,6 +258,7 @@
                     %p.title
                       = news.title
                     %p.text
+                      -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
                       = strip_tags(news.news_text).html_safe
 
 :javascript
