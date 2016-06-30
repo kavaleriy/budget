@@ -362,3 +362,8 @@
       -# Lang switcher
       -#.navbar-right.block-lng.clearfix
       -#  = render partial: 'layouts/navbar/lang'
+:javascript
+   // ****** Menu resize on scroll ***** //
+  $(window).scroll(function() {
+    resizeNavbar($(document).scrollTop());
+  });

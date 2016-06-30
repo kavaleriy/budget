@@ -79,26 +79,7 @@
   });
 
 :javascript
-  // ****** Menu resize on scroll ***** //
-  $(window).scroll(function() {
 
-      if ($(document).scrollTop() > 70) {
-          $('nav').addClass('min').stop().animate({height: '50px'},600);
-          $('ul.nav').stop().animate({padding: '0 auto auto auto'}, 600);
-          $('div.logo-block').stop().animate({margin: '0'},600);
-          $('div.logo-block > img.logo').stop().animate({padding: '5px auto'},600);
-          $('div.logo-block a.logo-src > p.title').stop().animate({opacity: '0'},600);
-      } else {
-          $('nav').removeClass('min', {duration:500}).stop().animate({height: '73px'},600);
-          $('ul.nav').stop().animate({padding: '23px auto auto auto'}, 600);
-          $('div.logo-block').stop().animate({margin: '8px 0'},600);
-          $('div.logo-block > img.logo').stop().animate({padding: 'auto auto 8px auto'},600);
-          $('div.logo-block a.logo-src > p.title').queue(function () {
-              $(this).stop().animate({opacity: '100'},600);
-              $(this).dequeue();
-          });
-      }
-  });
 
   // ***** Tooltip's init ***** //
   $('[data-toggle="tooltip"]').tooltip();
