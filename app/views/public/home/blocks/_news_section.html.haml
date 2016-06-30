@@ -258,7 +258,7 @@
                     %p.title
                       = news.title
                     %p.text
-                      = news.news_text
+                      = strip_tags(news.news_text).html_safe
 
 :javascript
   $(document).ready(function() {
