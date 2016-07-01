@@ -30,6 +30,23 @@
     -webkit-backface-visibility: hidden;
     /* fix blank or flashing items on carousel */
     a {
+      .no-image {
+        border: 1px solid black;
+        border-radius: 4px;
+        text-align: center;
+        color: black;
+        i {
+          margin: 30px 0 10px 0;
+        }
+        p {
+          margin: 15px 0;
+        }
+      }
+      img {
+        width: 100%;
+        max-height: 165px;
+        object-fit: cover;
+      }
       > p {
         &.title, &.text {
           text-decoration: none;
@@ -224,36 +241,26 @@
       .container
         .carousel-wrap
           .owl-carousel
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title У КРАМАТОРСЬКУ ВІДТЕПЕР ВІДКРИТИЙ БЮДЖЕТ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title САМБІРСЬКА РАЙОННА РАДА ВІДКРИЛА СВІЙ БЮДЖЕТ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title МІСТО БАЛТА ДОЛУЧИЛОСЯ ДО НАШОГО ПРОЕКТУ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title У КРАМАТОРСЬКУ ВІДТЕПЕР ВІДКРИТИЙ БЮДЖЕТ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title САМБІРСЬКА РАЙОННА РАДА ВІДКРИЛА СВІЙ БЮДЖЕТ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-                  %p.title МІСТО БАЛТА ДОЛУЧИЛОСЯ ДО НАШОГО ПРОЕКТУ
-                  %p.text Місто Краматорськ Донецької області доєдналося до програми Відкритий Бюджет.
+            - @news.each do |news|
+              .item
+                = link_to "#{news.get_link}?locale=#{params[:locale]}" do
+                  - if news.img.blank?
+                    .no-image
+                      %i.fa.fa-picture-o.fa-5x
+                      %p Зображення відсутне
+                    %p.title
+                      = news.title
+                    %p.text
+                      -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
+                      = strip_tags(news.news_text).html_safe
+                  - else
+                    =image_tag("#{news.img}", class: 'img-responsive')
+                    %p.title
+                      = news.title
+                    %p.text
+                      -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
+                      = strip_tags(news.news_text).html_safe
+
 :javascript
   $(document).ready(function() {
       // ***** Carousel ***** //
