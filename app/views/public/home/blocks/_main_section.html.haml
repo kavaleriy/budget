@@ -480,7 +480,7 @@
       }
     }
   }
-  @media (max-width: 767px) {
+  @media (min-width: 450px) and (max-width: 767px) {
     .main-section {
       .titles-blocks .titles {
         top: -400px;
@@ -537,6 +537,248 @@
             margin: 0 auto;
             float: none;
             display: table;
+          }
+        }
+      }
+      .row {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .map-section .container .map-title-block,
+    .news-section .container .news-title-block,
+    .map-section .container .map-title-block .map-title,
+    .news-section .container .news-title-block .news-title {
+      padding: 0;
+    }
+    .map-section .container .map-title-block .map-title > p,
+    .news-section .container .news-title-block .news-title > p {
+      font-size: 32px;
+      padding: 0 90px;
+    }
+    .map-section .container .map-title-block .map-title > hr,
+    .news-section .container .news-title-block .news-title > hr {
+      width: 45%;
+    }
+    .map-section {
+      top: -40px;
+      position: relative;
+      .container .map-block {
+        padding: 0;
+      }
+    }
+  }
+  @media (min-width: 321px) and (max-width: 449px) {
+    .main-section {
+      margin-top: -123px;
+      .clouds-block {
+        top: -73px;
+      }
+      .town-block {
+        top: 273px;
+      }
+      .titles-blocks .titles {
+        top: -400px;
+      }
+      .icons-block {
+        display: none;
+      }
+      .titles-blocks {
+        .icons {
+          top: 50px;
+          .people {
+            width: calc(50% - 15px);
+            margin-left: 15px;
+            margin-right: 0;
+            a {
+              .icon {
+                width: 145px;
+                height: 145px;
+                float: left;
+                margin: 0 calc((100% - 145px)/2) 10px;
+              }
+              .title {
+                width: 100%;
+                float: left;
+                padding: 0 15px;
+                p {
+                  padding: 0 15px;
+                }
+              }
+            }
+          }
+          .official {
+            width: calc(50% - 15px);
+            margin-right: 15px;
+            margin-left: 0;
+            a {
+              .icon {
+                width: 145px;
+                height: 145px;
+                float: right;
+                margin: 0 calc((100% - 145px)/2) 10px;
+              }
+              .title {
+                width: 100%;
+                float: right;
+                padding: 0 15px;
+                p {
+                  padding: 0 15px;
+                }
+              }
+            }
+          }
+        }
+        .titles {
+          .main-title {
+            height: auto;
+            padding: 10px 5px;
+            p {
+              font-size:2.4rem;
+            }
+          }
+          .text {
+            margin-top: 3rem;
+            margin-bottom: 35.5rem;
+            > p {
+              text-align: center;
+              font-size: 2rem;
+            }
+          }
+          .button {
+            width: 100%;
+            margin: 0 auto;
+            float: none;
+            display: table;
+            .try {
+              > p {
+                font-size: 3.8rem;
+              }
+            }
+          }
+        }
+      }
+      .row {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .map-section .container .map-title-block,
+    .news-section .container .news-title-block,
+    .map-section .container .map-title-block .map-title,
+    .news-section .container .news-title-block .news-title {
+      padding: 0;
+    }
+    .map-section .container .map-title-block .map-title > p,
+    .news-section .container .news-title-block .news-title > p {
+      font-size: 32px;
+      padding: 0 90px;
+    }
+    .map-section .container .map-title-block .map-title > hr,
+    .news-section .container .news-title-block .news-title > hr {
+      width: 45%;
+    }
+    .map-section {
+      top: -40px;
+      position: relative;
+      .container .map-block {
+        padding: 0;
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .main-section {
+      margin-top: -123px;
+      .clouds-block {
+        top: -73px;
+      }
+      .town-block {
+        top: 253px;
+      }
+      .titles-blocks .titles {
+        top: -400px;
+      }
+      .icons-block {
+        display: none;
+      }
+      .titles-blocks {
+        .icons {
+          top: 30px;
+          .people {
+            width: calc(50% - 15px);
+            margin-left: 15px;
+            margin-right: 0;
+            a {
+              .icon {
+                width: 145px;
+                height: 145px;
+                float: left;
+                margin: 0 calc((100% - 145px)/2) 10px;
+              }
+              .title {
+                width: 100%;
+                float: left;
+                p {
+                  padding: 0 15px;
+                }
+              }
+            }
+          }
+          .official {
+            width: calc(50% - 15px);
+            margin-right: 15px;
+            margin-left: 0;
+            a {
+              .icon {
+                width: 145px;
+                height: 145px;
+                float: right;
+                margin: 0 calc((100% - 145px)/2) 10px;
+              }
+              .title {
+                width: 100%;
+                float: right;
+                p {
+                  padding: 0 15px;
+                }
+              }
+            }
+          }
+        }
+        .titles {
+          .main-title {
+            height: auto;
+            padding: 10px 5px;
+            p {
+              font-size: 2.4rem;
+            }
+          }
+          .text {
+            margin-top: 3rem;
+            margin-bottom: 35.5rem;
+            > p {
+              text-align: center;
+              font-size: 1.8rem;
+            }
+          }
+          .button {
+            width: 100%;
+            margin: 0 auto;
+            float: none;
+            display: table;
+            .try {
+              > p {
+                font-size: 3.1rem;
+                padding: 7px 0;
+                margin: 2px 0 3px 10px;
+              }
+              .icon-block {
+                i {
+                  font-size: 5.5rem;
+                  margin: .43rem .53rem;
+                }
+              }
+            }
           }
         }
       }
@@ -649,13 +891,13 @@
               = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
   .row.titles-blocks
     .col-xs-12.col-sm-6.icons
-      .col-xs-12.official
+      .col-xs-6.col-sm-12.official
         %a{:href => "#"}
           .col-xs-12.icon
             = image_tag('new_design/icons/!governer.png', class: 'img-responsive')
           .col-xs-12.title
             %p Що це дає чиновнику?
-      .col-xs-12.people
+      .col-xs-6.col-sm-12.people
         %a{:href => "#"}
           .col-xs-12.icon
             = image_tag('new_design/icons/!people.png', class: 'img-responsive')
