@@ -71,7 +71,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_menu
-    @menu = ContentManager::PageContainer.get_all_menu
+    request_is_ajax = 0
+    unless request.xhr?.eql?(request_is_ajax)
+      @menu = ContentManager::PageContainer.get_all_menu
+    end
   end
 
 end
