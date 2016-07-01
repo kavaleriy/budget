@@ -63,7 +63,7 @@
       }
     }
   }
-  @media (max-width: 767px) {
+  @media (min-width: 450px) and (max-width: 767px) {
     .map-section {
       .container {
         .map-title-block {
@@ -81,6 +81,54 @@
       }
     }
   }
+  @media (min-width: 321px) and (max-width: 449px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          padding-bottom: 10px;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+            hr {
+              width: 33rem;
+              margin: 10px auto;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          padding-bottom: 10px;
+          .map-title {
+            padding: 0;
+            p {
+              font-size: 3rem;
+              padding: 0;
+            }
+            hr {
+              width: 27rem;
+              margin: 10px auto;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+
 .map-section
   .container
     .col-xs-12.map-title-block
