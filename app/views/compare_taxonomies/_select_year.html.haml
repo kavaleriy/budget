@@ -1,0 +1,16 @@
+.col-xs-12
+  .pull-right.btn-group{'data-toggle' => 'buttons'}
+    - years.each do |year|
+      %label.btn.btn-primary.year_select{'data-year' => "#{year}", :class => "#{is_current_year(year) ? 'active' : nil}"}
+        %input.year_select{'type' => 'radio', 'name' => 'options', 'autocomplete' => 'off', 'checked' => "#{is_current_year(year) ? 'checked' : nil}"}
+          =year
+
+:javascript
+
+  $(document).ready(function() {
+    $('.year_select').on('click', function () {
+      aCompareTaxonomies.selected_year = $(this).attr('data-year')
+      aCompareTaxonomies.create_chart()
+    })
+
+  });

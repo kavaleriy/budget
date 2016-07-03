@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def is_current_year year
+    year == @current_year
+  end
+
  def hexToRgb(color = "#ffffff")
   a = ( color.match /#(..?)(..?)(..?)/ )[1..3]
   a.map!{ |x| x + x } if color.size == 4

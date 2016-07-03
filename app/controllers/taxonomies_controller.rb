@@ -8,6 +8,7 @@ class TaxonomiesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :show_modify,:town_profile]
   load_and_authorize_resource
 
+
   def recipients
     @recipients = []
 

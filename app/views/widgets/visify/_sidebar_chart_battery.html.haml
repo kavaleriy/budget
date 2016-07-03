@@ -37,6 +37,7 @@
               : function(a, b) { return d3.ascending(a.label, b.label); })
               .map(function(d) { return d.key; }))
               .copy();
+
       var transition = svg.transition().duration(150),
           delay = function(d, i) { return i * 10; };
       transition.selectAll(".bar")

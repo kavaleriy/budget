@@ -1,0 +1,44 @@
+:scss
+  .path {
+    font-size: 18px;
+  }
+
+  .path [data-i] {
+    color: darkslateblue;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: 4px #87cefa solid;
+    }
+  }
+
+.path.col-xs-12
+
+:javascript
+  var aCompareTaxonomiesPath = {
+    path: [],
+    last_level: false,
+  }
+
+  aCompareTaxonomiesPath.draw_path = function (){
+    var path = [{label: 'Home'}].concat(this.path)
+    var len = path.length - 1
+
+    var path_tag = $('.path').html('');
+
+    path.forEach(function(el, i) {
+      if (i == len) {
+        path_tag.append( "<span>" + el.label + "</span>" )
+      } else {
+        path_tag.append( "<span data-i=" + i + ">" + el.label + "</span>" )
+        path_tag.append( "<span> > </span>" );
+      }
+    })
+
+    $('.path > [data-i]').click(function(el) {
+      var i = $(this).attr('data-i')
+      aCompareTaxonomiesPath.path = aCompareTaxonomiesPath.path.slice(0, i);
+      aCompareTaxonomies.create_chart()
+    })
+
+  }

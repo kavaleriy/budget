@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+
+
+  namespace :compare_taxonomies do
+    get 'index'
+  end
+
+
   namespace :external_api do
     get 'edata'
     get 'edr'

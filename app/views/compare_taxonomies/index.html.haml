@@ -1,0 +1,111 @@
+:javascript
+  var aCompareTaxonomies = {
+    selected_year: "#{@current_year}",
+    selected_taxonomies: [],
+    taxonomies: {},
+    _data: {}
+  }
+
+%h1
+  = t('.title')
+
+.row
+  = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
+
+.row
+  = render :partial => 'select_year', :locals => { years: @years }
+
+.row
+  = render :partial => 'path'
+
+.row
+  = render :partial => 'chart'
+
+
+:javascript
+
+  aCompareTaxonomies.create_chart = function (){
+    var store = this._data
+
+    aCompareTaxonomiesChart.clear_chart()
+
+    aCompareTaxonomiesPath.draw_path()
+
+    // load data to be compared
+    this.selected_taxonomies.forEach(function(taxonomy, i) {
+      if (store[taxonomy]) return true;
+
+      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/';
+      $.ajax({
+        url: url,
+        async: false
+      }).done(function(data) {
+         store[taxonomy] = data
+      })
+    });
+
+    var data = this.get_data()
+    aCompareTaxonomiesChart.draw_chart(data)
+  }
+
+  aCompareTaxonomies.get_data = function (){
+    var store = this._data
+    var taxonomies = this.taxonomies
+    var selected_taxonomies = this.selected_taxonomies
+    var selected_year = this.selected_year
+    var path = this.path
+
+    var items = {}
+    var amounts = {}
+
+    aCompareTaxonomiesPath.last_level = false
+
+    selected_taxonomies.forEach(function(taxonomy_id) {
+      amounts[taxonomy_id] = {}
+
+      var taxonomy = store[taxonomy_id]
+      // move to selected level in tree
+      aCompareTaxonomiesPath.path.forEach(function(path) {
+        var new_taxonomy;
+        if (taxonomy && taxonomy.children)
+          taxonomy.children.forEach(function(child) {
+            if (child.key == path.key && child.children)
+              new_taxonomy = child
+              return true;
+          })
+
+        taxonomy = new_taxonomy
+      })
+
+      // get level info
+      if (taxonomy && taxonomy.children)
+        taxonomy.children.forEach(function(node) {
+          if (items[node.key] == null) items[node.key] = node.label
+
+          if (node.amount.fact && node.amount.fact[selected_year])
+            amounts[taxonomy_id][node.key] = node.amount.fact[selected_year]['0'].total.toFixed(2)
+
+          aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
+        })
+    })
+
+    var labels = []
+    for (key in items) {
+      labels.push({ key: key, label: items[key] })
+    }
+
+    var series = []
+    selected_taxonomies.forEach(function(taxonomy_id) {
+      var values = []
+      for (key in items) {
+        values.push(amounts[taxonomy_id][key] || 0)
+      }
+
+      series.push({label: taxonomies[taxonomy_id], values: values })
+    })
+
+    return {
+      labels: labels,
+      series: series
+    };
+  }
