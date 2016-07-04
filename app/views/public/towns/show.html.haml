@@ -224,9 +224,9 @@
         %a{"data-toggle" => "tab", :href => "#pub_budget"}
           = t('public.towns.portfolio.pub_budget')
 
-      %li
-        %a{"data-toggle" => "tab", :href => "#pdf_docs"}
-          PDS doc's
+      -#%li
+      -#  %a{"data-toggle" => "tab", :href => "#pdf_docs"}
+      -#    PDS doc's
       %a.button
   .content
     .content-wrapper
@@ -267,10 +267,10 @@
                           = link.value
                   %dt
             - counter = counter + 1
-        #pdf_docs.tab-pane.fade
-
+        #pub_budget.tab-pane.fade
           .col-xs-7
             =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
+
 
 
 :javascript
