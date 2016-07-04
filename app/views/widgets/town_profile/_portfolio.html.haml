@@ -152,6 +152,7 @@
   }
 
 .modules
+  =render partial: 'module_breadcrumbs'
   -@town_items.each do |item|
     .col-xs-12.col-sm-6.col-md-4.module
       %a{ :href => item['url'] }
@@ -167,77 +168,3 @@
             .more-btn
               %p
                 = t('public.towns.portfolio.detail')
-
-
-  -#  .col-xs-12.col-sm-6.col-md-4.module
-  -#    %a{:href => '#'}
-  -#      .town-budget
-  -#        .img
-  -#        .icon
-  -#          .icon-border
-  -#            =image_tag('new_design/icons/!icon1w.svg', class: 'svg')
-  -#        .title
-  -#          Місцевий бюджет
-  -#        .more
-  -#          .more-btn
-  -#            %p Більше
-  -#  .col-xs-12.col-sm-6.col-md-4.module
-  -#    =link_to demo_repair_roads_map_path do
-  -#      .repair
-  -#        .img
-  -#        .icon
-  -#          .icon-border
-  -#            =image_tag('new_design/icons/!shovel.svg', class: 'svg')
-  -#        .title
-  -#          Карта ремонтів
-  -#        .more
-  -#          .more-btn
-  -#            %p Більше
-  -#  .col-xs-12.col-sm-6.col-md-4.module
-  -#    %a{:href => '#'}
-  -#      .programs
-  -#        .img
-  -#        .icon
-  -#          .icon-border
-  -#            =image_tag('new_design/icons/!office.svg', class: 'svg')
-  -#        .title
-  -#          Місцеві програми
-  -#        .more
-  -#          .more-btn
-  -#            %p Більше
-  -#  .col-xs-12.col-sm-6.col-md-4.module
-  -#    %a{:href => '#'}
-  -#      .indicators
-  -#        .img
-  -#        .icon
-  -#          .icon-border
-  -#            =image_tag('new_design/icons/!bar-chart.svg', class: 'svg')
-  -#        .title
-  -#          Ключові показники
-  -#        .more
-  -#          .more-btn
-  -#            %p Більше
-  -#  .col-xs-12.col-sm-6.col-md-4.module
-  -#    %a{:href => '#'}
-  -#      .key_docs
-  -#        .img
-  -#        .icon
-  -#          .icon-border
-  -#            =image_tag('new_design/icons/!folders.svg', class: 'svg')
-  -#        .title
-  -#          Ключові документи
-  -#        .more
-  -#          .more-btn
-  -#            %p Більше
-  -#
-  -#
-  -#-@town_items.each do |item|
-  -#  .col-md-3.col-xs-6
-  -#    .view.view-tenth
-  -#      %img.img-responsive{:src => item['img_src']}
-  -#        .mask
-  -#          %a.info{ :href => item['url'] }
-  -#            = t('public.towns.portfolio.detail')
-  -#      %hr.blue-line
-  -#        .portfolio-title
-  -#          =item['title']
