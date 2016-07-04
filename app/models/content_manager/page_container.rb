@@ -65,7 +65,7 @@ class ContentManager::PageContainer
   end
 
   def self.get_info_pages
-    self.get_page_by_alias(COMMUNITY_INFO_ALIAS) + self.get_page_by_alias(OFFICIAL_INFO_ALIAS)
+    self.get_page_by_alias(OFFICIAL_INFO_ALIAS) + self.get_page_by_alias(COMMUNITY_INFO_ALIAS)
   end
 
 
