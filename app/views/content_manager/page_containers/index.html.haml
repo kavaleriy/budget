@@ -18,62 +18,77 @@
 %h1= t('content_manager.page_containers.title')
 %p
   = link_to t('content_manager.page_containers.new'), new_content_manager_page_container_path, class: 'btn btn-primary'
+%ul.nav.nav-tabs
+  %li.active{:role => "presentation"}
+    %a{"data-toggle" => "tab", href: "#tab-menu",role: 'tab'}
+      =t('.menu')
 
-#content_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
-  -@page_containers.each do |key,value|
-    .panel.panel-default
-      #heading.panel-heading{:role => "tab",id: key.alias}
-        %h4.panel-title
-          %a{"aria-controls" => "collapse_#{key.alias}", "aria-expanded" => "true", "data-parent" => "#content_accordion", "data-toggle" => "collapse", :href => "#collapse_#{key.alias}", :role => "button"}
-            = get_header_by_locale(key)
-      #collapse.panel-collapse.collapse{"aria-labelledby" => "heading_#{key.alias}", :role => "tabpanel",id: key.alias}
-        .panel-body
-          .back
-            .row.content_page_headers
-              .col-xs-2
-                =t('content_manager.page_containers.header')
-              .col-xs-6
-                = t('content_manager.page_containers.content')
-              .col-xs-2
-                = t('content_manager.page_containers.alias')
-              .col-xs-2
-                = t('content_manager.page_containers.action')
-            %hr
-            -value.each do |page_container|
-              -unless check_content_by_locale(page_container)
-                .row.content_page_content
-                  .col-xs-2
-                    = get_header_by_locale(page_container)
-                  .col-xs-6.page_locale_content
-                    = get_content_by_locale(page_container)
-                  .col-xs-2
-                    = page_container.alias
-                  .col-xs-2.crud_icons
-                    = link_to image_tag('icons/loupe.png'), page_container
-                    = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
-                    = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
+  %li{:role => "presentation"}
+    %a{"data-toggle" => "tab", href: "#tab-info",role: 'tab'}
+      =t('.info')
+
+.tab-content
+  #tab-menu.tab-pane.fade.active.in
+    #content_accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    -@page_containers.each do |key,value|
+      .panel.panel-default
+        #heading.panel-heading{:role => "tab",id: key.alias}
+          %h4.panel-title
+            %a{"aria-controls" => "collapse_#{key.alias}", "aria-expanded" => "true", "data-parent" => "#content_accordion", "data-toggle" => "collapse", :href => "#collapse_#{key.alias}", :role => "button"}
+              = get_header_by_locale(key)
+        #collapse.panel-collapse.collapse{"aria-labelledby" => "heading_#{key.alias}", :role => "tabpanel",id: key.alias}
+          .panel-body
+            .back
+              .row.content_page_headers
+                .col-xs-2
+                  =t('content_manager.page_containers.header')
+                .col-xs-6
+                  = t('content_manager.page_containers.content')
+                .col-xs-2
+                  = t('content_manager.page_containers.alias')
+                .col-xs-2
+                  = t('content_manager.page_containers.action')
+              %hr
+              -value.each do |page_container|
+                -unless check_content_by_locale(page_container)
+                  .row.content_page_content
+                    .col-xs-2
+                      = get_header_by_locale(page_container)
+                    .col-xs-6.page_locale_content
+                      = get_content_by_locale(page_container)
+                    .col-xs-2
+                      = page_container.alias
+                    .col-xs-2.crud_icons
+                      = link_to image_tag('icons/loupe.png'), page_container
+                      = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
+                      = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
+                              :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+                  %hr
+  #tab-info.tab-pane.fade
+    .panel-body
+      .row.content_page_headers
+        .col-xs-2
+          =t('content_manager.page_containers.header')
+        .col-xs-6
+          = t('content_manager.page_containers.content')
+        .col-xs-2
+          = t('content_manager.page_containers.alias')
+        .col-xs-2
+          = t('content_manager.page_containers.action')
+        %hr
+      -@info_pages.each do |info_page|
+        .row.content_page_content
+          .col-xs-2
+            = get_header_by_locale(info_page)
+          .col-xs-6.page_locale_content
+            = get_content_by_locale(info_page)
+          .col-xs-2
+            = info_page.alias
+          .col-xs-2.crud_icons
+            = link_to image_tag('icons/loupe.png'), info_page
+            = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(info_page)
+            = link_to image_tag('icons/X_icon.png'), info_page, :method => :delete,
                             :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
-                %hr
-
-          -#%table.table.table-striped
-          -#  %tr
-          -#    %th= t('content_manager.page_containers.header')
-          -#    %th= t('content_manager.page_containers.content')
-          -#    -#%th= "Parent"
-          -#    %th= t('content_manager.page_containers.alias')
-          -#    %th= t('content_manager.page_containers.action')
-          -#  -value.each do |page_container|
-          -#    %tr.crud_icons
-          -#      -unless check_content_by_locale(page_container)
-          -#        %td= get_header_by_locale(page_container)
-          -#        %td.page_index_content= get_content_by_locale(page_container)
-          -#        %td= page_container.alias
-          -#        %td
-          -#          = link_to image_tag('icons/loupe.png'), page_container
-          -#          = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(page_container)
-          -#          = link_to image_tag('icons/X_icon.png'), page_container, :method => :delete,
-          -#                  :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
-
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення контенту',

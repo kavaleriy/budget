@@ -5,6 +5,9 @@ class ContentManager::PageContainer
   VISUALISATION = 2
   PUBLIC_CONTROL = 3
 
+  COMMUNITY_INFO_ALIAS = 'community'
+  OFFICIAL_INFO_ALIAS = 'official'
+
   has_many :subordinates, class_name: "ContentManager::PageContainer",foreign_key: "p_id"
   # has_many :parent, class_name: "ContentManager::PageContainer",foreign_key: "id"
 
@@ -52,18 +55,25 @@ class ContentManager::PageContainer
     result = {}
     const_arr = get_constant_to_h
     const_arr.each do |key, value|
-      obj = ContentManager::PageContainer.get_page_by_alias(value).first
-      arr = get_child_link(obj.id).to_a
-      result.store(obj,arr)
+      if value.is_a? Numeric
+        obj = ContentManager::PageContainer.get_page_by_alias(value).first
+        arr = get_child_link(obj.id).to_a
+        result.store(obj,arr)
+      end
     end
     result
   end
+
+  def self.get_info_pages
+    self.get_page_by_alias(COMMUNITY_INFO_ALIAS) + self.get_page_by_alias(OFFICIAL_INFO_ALIAS)
+  end
+
 
   # validators
 
   def locale_data_has_not_empty
     locale = I18n.locale
-    errors.add(:locale_data, "Header is empty!") if locale_data[locale]['header'].empty?
-    errors.add(:locale_data, "Content is empty!") if locale_data[locale]['content'].empty?
+    errors.add(:locale_data, "Header is empty!") if locale_data[locale][:header].empty?
+    errors.add(:locale_data, "Content is empty!") if locale_data[locale][:content].empty?
   end
 end
