@@ -28,7 +28,7 @@
       }
       .link-icons .icons-wrapper {
         .pig-block, .list-block,
-        .prozorro-block, .money-block,
+        .prozorro-block, .calendar-block,
         .repair-block, .folders-block,
         .edata-block, .sankey-block {
           display: inline-block;
@@ -54,7 +54,7 @@
             cursor: pointer;
           }
         }
-        .money-block {
+        .calendar-block {
           &:hover, &:focus {
             opacity: .9;
             cursor: pointer;
@@ -84,13 +84,13 @@
             cursor: pointer;
           }
         }
-        .pig-block .pig-icon, .list-block .list-icon, .prozorro-block .prozorro-icon, .money-block .money-icon, .repair-block .repair-icon, .folders-block .folders-icon, .edata-block .edata-icon, .sankey-block .sankey-icon {
+        .pig-block .pig-icon, .list-block .list-icon, .prozorro-block .prozorro-icon, .calendar-block .calendar-icon, .repair-block .repair-icon, .folders-block .folders-icon, .edata-block .edata-icon, .sankey-block .sankey-icon {
           width: 88px;
           height: 88px;
           border-radius: 50%;
           border: 1px solid #0c2231;
         }
-        .pig-block .pig-icon .pig, .list-block .list-icon .list, .prozorro-block .prozorro-icon .prozorro, .money-block .money-icon .money, .repair-block .repair-icon .repair, .folders-block .folders-icon .folders, .edata-block .edata-icon .edata, .sankey-block .sankey-icon .sankey {
+        .pig-block .pig-icon .pig, .list-block .list-icon .list, .prozorro-block .prozorro-icon .prozorro, .calendar-block .calendar-icon .calendar, .repair-block .repair-icon .repair, .folders-block .folders-icon .folders, .edata-block .edata-icon .edata, .sankey-block .sankey-icon .sankey {
           width: 78%;
           margin: 11%;
         }
@@ -98,9 +98,13 @@
           width: 86%;
           margin: 7%;
         }
-        .money-block .money-icon .money, .folders-block .folders-icon .folders {
+        .folders-block .folders-icon .folders {
           width: 74%;
           margin: 6% 13% 20%;
+        }
+        .calendar-block .calendar-icon .calendar {
+          width: 78%;
+          margin: 16% 8% 10% 15%;
         }
         .edata-block .edata-icon .edata {
           width: 86%;
@@ -113,7 +117,7 @@
         .list-block {
           top: 19px;
         }
-        .money-block {
+        .calendar-block {
           top: 18px;
         }
         .repair-block {
@@ -125,7 +129,7 @@
         .edata-block {
           top: 37px;
         }
-        .pig-block .pig-icon .vertical-line, .list-block .list-icon .vertical-line, .prozorro-block .prozorro-icon .vertical-line, .money-block .money-icon .vertical-line, .repair-block .repair-icon .vertical-line, .folders-block .folders-icon .vertical-line, .edata-block .edata-icon .vertical-line, .sankey-block .sankey-icon .vertical-line {
+        .pig-block .pig-icon .vertical-line, .list-block .list-icon .vertical-line, .prozorro-block .prozorro-icon .vertical-line, .calendar-block .calendar-icon .vertical-line, .repair-block .repair-icon .vertical-line, .folders-block .folders-icon .vertical-line, .edata-block .edata-icon .vertical-line, .sankey-block .sankey-icon .vertical-line {
           width: 100%;
           height: 250px;
           border-left: 2px solid #0c2231;
@@ -134,10 +138,10 @@
           opacity: .5;
           top: 87px;
         }
-        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .money-block .money-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-arrow {
+        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .calendar-block .calendar-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-arrow, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-arrow {
           display: none;
         }
-        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-inner, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-inner, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-inner, .money-block .money-icon a.icon-tooltip + .tooltip > .tooltip-inner, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-inner, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-inner, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-inner, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-inner {
+        .pig-block .pig-icon a.icon-tooltip + .tooltip > .tooltip-inner, .list-block .list-icon a.icon-tooltip + .tooltip > .tooltip-inner, .prozorro-block .prozorro-icon a.icon-tooltip + .tooltip > .tooltip-inner, .calendar-block .calendar-icon a.icon-tooltip + .tooltip > .tooltip-inner, .repair-block .repair-icon a.icon-tooltip + .tooltip > .tooltip-inner, .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-inner, .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-inner, .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-inner {
           background-color: #ffd304;
           color: #000000;
           text-transform: uppercase;
@@ -319,7 +323,7 @@
         .pig-block .pig-icon .vertical-line,
         .list-block .list-icon .vertical-line,
         .prozorro-block .prozorro-icon .vertical-line,
-        .money-block .money-icon .vertical-line,
+        .calendar-block .calendar-icon .vertical-line,
         .repair-block .repair-icon .vertical-line,
         .folders-block .folders-icon .vertical-line,
         .edata-block .edata-icon .vertical-line,
@@ -560,7 +564,7 @@
       width: 45%;
     }
     .map-section {
-      top: -40px;
+      top: -27px;
       position: relative;
       .container .map-block {
         padding: 0;
@@ -678,7 +682,7 @@
       width: 45%;
     }
     .map-section {
-      top: -40px;
+      top: -27px;
       position: relative;
       .container .map-block {
         padding: 0;
@@ -802,7 +806,7 @@
       width: 45%;
     }
     .map-section {
-      top: -40px;
+      top: -27px;
       position: relative;
       .container .map-block {
         padding: 0;
@@ -828,8 +832,8 @@
           .prozorro-icon
             %a.icon-tooltip{}
             .vertical-line
-        .money-block
-          .money-icon
+        .calendar-block
+          .calendar-icon
             %a.icon-tooltip{}
             .vertical-line
     .col-xs-12.col-sm-5.link-icons.second-row
@@ -856,37 +860,37 @@
       .icons-wrapper
         .pig-block
           .pig-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/budget_files/573c249f67cb7d072000006a", :title => "Візуалізація бюджету"}
               = image_tag('new_design/icons/!icon1.png', class: 'img-responsive pig')
         .list-block
           .list-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/towns/573c249f67cb7d072000006a", :title => "PDF документи"}
               = image_tag('new_design/icons/!icon3.png', class: 'img-responsive list')
         .prozorro-block
           .prozorro-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis", :title => "Prozorro"}
               = image_tag('new_design/icons/!icon5.png', class: 'img-responsive prozorro')
-        .money-block
-          .money-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
-              = image_tag('new_design/icons/!icon7.png', class: 'img-responsive money')
+        .calendar-block
+          .calendar-icon
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Бюджетний календар"}
+              = image_tag('new_design/icons/!calendar.svg', class: 'img-responsive calendar')
     .col-xs-12.col-sm-5.link-icons.second-row
       .icons-wrapper
         .repair-block
           .repair-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/repairing/map", :title => "Карта ремонтів"}
               = image_tag('new_design/icons/!icon2.png', class: 'img-responsive repair')
         .folders-block
           .folders-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/documents/town_profile/573c249f67cb7d072000006a", :title => "Документи"}
               = image_tag('new_design/icons/!icon4.png', class: 'img-responsive folders')
         .edata-block
           .edata-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://spending.gov.ua/", :title => "E-data"}
               = image_tag('new_design/icons/!icon6.png', class: 'img-responsive edata')
         .sankey-block
           .sankey-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => "Карта ремонтів"}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/key_indicate_map/indicators/get/town_profile/573c249f67cb7d072000006a", :title => "Ключові показники"}
               = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
   .row.titles-blocks
     .col-xs-12.col-sm-6.icons
