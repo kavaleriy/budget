@@ -248,6 +248,11 @@
     $.ajax({
       url: portfolio_url,
       success: function(data){
+        $('.module').find('a').attr('data-remote',"true");
+        $('.module').click(function(){
+          $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+          $('.blocks > .wrapper > .content').toggleClass('is-open');
+        })
       }
     });
   });
@@ -263,4 +268,3 @@
       $('.blocks > .wrapper > .content').addClass('is-open');
     };
   });
-

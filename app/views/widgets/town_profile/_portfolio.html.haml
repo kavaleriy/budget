@@ -153,18 +153,19 @@
 
 .modules
   =render partial: 'module_breadcrumbs'
-  -@town_items.each do |item|
-    .col-xs-12.col-sm-6.col-md-4.module
-      %a{ :href => item['url'] }
-        %div{class: item['name']}
-          .img
-          .icon
-            .icon-border
-              -#-binding.pry
-              =image_tag(item['img_src'], class: 'svg')
-          .title
-            =item['title']
-          .more
-            .more-btn
-              %p
-                = t('public.towns.portfolio.detail')
+  .modules-wrapper
+    -@town_items.each do |item|
+      .col-xs-12.col-sm-6.col-md-4.module
+        %a{ :href => item['url'] }
+          %div{class: item['name']}
+            .img
+            .icon
+              .icon-border
+                -#-binding.pry
+                =image_tag(item['img_src'], class: 'svg')
+            .title
+              =item['title']
+            .more
+              .more-btn
+                %p
+                  = t('public.towns.portfolio.detail')

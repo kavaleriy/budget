@@ -23,6 +23,10 @@ module Repairing
 
     def show
       @current_user_town = Town.get_user_town(current_user)
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def frame
