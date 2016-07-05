@@ -9,6 +9,7 @@ module Public
       @sliders = Modules::Slider.get_slider_by_order
       @news = Modules::BudgetNews.get_last_news(10)
       @test_town = Town.get_test_town.first
+      @info_pages = ContentManager::PageContainer.get_info_pages
     end
 
     def about

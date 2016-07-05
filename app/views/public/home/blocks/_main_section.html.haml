@@ -186,7 +186,7 @@
             background: #ffd304;
           }
         }
-        .people .icon {
+        .community .icon {
           border: 2px solid transparent;
           padding: 0;
           width: 155px;
@@ -200,17 +200,17 @@
             border: 2px solid #0c2231;
           }
         }
-        .people {
+        .community {
           &:hover .icon, &:focus .icon {
             border: 2px solid #0c2231;
           }
         }
-        .official .icon > img, .people .icon > img {
+        .official .icon > img, .community .icon > img {
           margin: 10% 14% 18%;
           width: 72%;
           height: 72%;
         }
-        .official .title, .people .title {
+        .official .title, .community .title {
           width: 185px;
           padding: 0;
           color: #000;
@@ -224,7 +224,7 @@
           background: #ffd304;
           margin: 0;
         }
-        .people {
+        .community {
           .title > p {
             font-family: 'Lato', sans-serif;
             font-size: 18px;
@@ -494,7 +494,7 @@
       .titles-blocks {
         .icons {
           top: 90px;
-          .people {
+          .community {
             margin-left: 40px;
             margin-right: 0;
             a {
@@ -589,7 +589,7 @@
       .titles-blocks {
         .icons {
           top: 50px;
-          .people {
+          .community {
             width: calc(50% - 15px);
             margin-left: 15px;
             margin-right: 0;
@@ -707,7 +707,7 @@
       .titles-blocks {
         .icons {
           top: 30px;
-          .people {
+          .community {
             width: calc(50% - 15px);
             margin-left: 15px;
             margin-right: 0;
@@ -894,18 +894,20 @@
               = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
   .row.titles-blocks
     .col-xs-12.col-sm-6.icons
-      .col-xs-6.col-sm-12.official
-        %a{:href => "#"}
-          .col-xs-12.icon
-            = image_tag('new_design/icons/!governer.png', class: 'img-responsive')
-          .col-xs-12.title
-            %p Що це дає чиновнику?
-      .col-xs-6.col-sm-12.people
-        %a{:href => "#"}
-          .col-xs-12.icon
-            = image_tag('new_design/icons/!people.png', class: 'img-responsive')
-          .col-xs-12.title
-            %p Що це дає громаді?
+      -@info_pages.each do |info_page|
+        .col-xs-6.col-sm-12{class: info_page.alias}
+          =link_to get_nav_link(info_page) do
+            .col-xs-12.icon
+              = image_tag(get_image_by_info_alias(info_page.alias), class: 'img-responsive')
+            .col-xs-12.title
+              %p
+                =get_header_by_locale(info_page)
+        -#.col-xs-6.col-sm-12.community
+        -#  %a{:href => "#"}
+        -#    .col-xs-12.icon
+        -#      = image_tag('new_design/icons/!people.png', class: 'img-responsive')
+        -#    .col-xs-12.title
+        -#      %p Що це дає громаді?
     .col-xs-12.col-sm-6.titles
       .col-xs-12.main-title
         %p СИСТЕМА ВІЗУАЛІЗАЦІЇ «ВІДКРИТИЙ БЮДЖЕТ»

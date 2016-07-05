@@ -6,6 +6,7 @@ class ContentManager::PageContainersController < AdminController
 
   def index
     @page_containers = ContentManager::PageContainer.get_all_menu
+    @info_pages = ContentManager::PageContainer.get_info_pages
     respond_with(@page_containers)
   end
 

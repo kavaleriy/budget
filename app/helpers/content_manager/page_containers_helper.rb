@@ -13,8 +13,16 @@ module ContentManager::PageContainersHelper
       end
     end
     res
-
   end
+
+  def get_image_by_info_alias(as)
+    if as.eql? 'official'
+      'new_design/icons/!governer.png'
+    elsif as.eql? 'community'
+      'new_design/icons/!people.png'
+    end
+  end
+
 
   def get_content_by_locale(content)
     return unless content
