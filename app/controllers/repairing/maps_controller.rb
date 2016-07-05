@@ -22,11 +22,8 @@ module Repairing
     end
 
     def show
-
-      # render_layout = params[:layout].nil?
       @current_user_town = Town.get_user_town(current_user)
       respond_to do |format|
-        # format.html{render 'show',layout: render_layout }
         format.html
         format.js
       end
