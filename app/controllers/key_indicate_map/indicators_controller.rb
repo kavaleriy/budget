@@ -23,6 +23,12 @@ class KeyIndicateMap::IndicatorsController < ApplicationController
       @selected_key = params[:key]
       @group = KeyIndicateMap::IndicatorKey.find(@selected_key).group
     end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
   end
 
   # GET /key_indicate_map/indicators/1
