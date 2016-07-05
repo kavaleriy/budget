@@ -21,6 +21,8 @@ class Public::TownsController < ApplicationController
       @town_br_links = Documentation::Link.all.where(:town => @town)
     end
 
+    @wiki_info = get_wiki_town_info(@town.title)
+
     Documentation::LinkCategory.all.each{|br|
       @town_links[br.id.to_s] = {}
       @town_links[br.id.to_s]['title'] = br.title
@@ -109,6 +111,31 @@ class Public::TownsController < ApplicationController
     respond_to do |format|
       format.json { render json: @geo_json }
     end
+  end
+
+  def get_wiki_town_info(title)
+    # API wiki page hash key value if page doesn't exist (-1)
+    wiki_page_empty_result = '-1'
+
+    # Wiki-URL town page
+    # data_url = "https://uk.wikipedia.org/w/api.php?action=parse&prop=text&format=json&page="
+    data_url = "https://uk.wikipedia.org/w/api.php?format=json&action=query&prop=revisions&rvprop=content&rvsection=0&rvparse&titles="
+
+    # encode String to ASCII and concat URL
+    uri = URI(data_url + URI.encode("#{title}"))
+
+    # get ingo from uri
+    response = Net::HTTP.get(uri)
+    # get needed data from hash with template (template for town)
+    result = JSON.parse(response)['query']['pages']
+
+    # data control for existing page in wikipedia
+    if result.first[0].eql?(wiki_page_empty_result)
+      'No info'
+    else
+      result.first[1]['revisions'].first['*']
+    end
+
   end
 
   private
