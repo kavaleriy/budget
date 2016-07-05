@@ -231,7 +231,7 @@
 
 
 :javascript
-
+  var test = 'test';
   $(document).ready(function() {
   //Show full sidebar on desctops [md/lg size]
     if($(window).width() > 1200){
@@ -248,6 +248,11 @@
     $.ajax({
       url: portfolio_url,
       success: function(data){
+        $('.module').find('a').attr('data-remote',"true");
+        $('.module').click(function(){
+          $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+          $('.blocks > .wrapper > .content').toggleClass('is-open');
+        })
       }
     });
   });
@@ -263,4 +268,3 @@
       $('.blocks > .wrapper > .content').addClass('is-open');
     };
   });
-
