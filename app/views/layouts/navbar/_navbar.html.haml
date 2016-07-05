@@ -328,41 +328,40 @@
       %ul.nav.navbar-nav
 
         -#Build items-menu
-        -unless @menu.nil?
-          - @menu.each do |key,value|
-            %li.dropdown
-              %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-                -#-binding.pry
-                = get_header_by_locale(key)
-                %span.caret
-              %ul.dropdown-menu{'role' => 'menu'}
-                -value.each do |list|
-                  %li
-                    %a{:href => get_nav_link(list) }
-                      = get_header_by_locale(list)
-
-          -#Build currnet_user dropdown menu
+        - @menu.each do |key,value|
           %li.dropdown
-            - if current_user
-              %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-                %i.fa.fa-user.fa-fw
-                = show_username_or_emailname(current_user)
-                %span.caret
-              %ul.dropdown-menu{'role' => 'menu'}
-                %li= link_to t('.edit_profile'), edit_user_registration_path
-                %li= link_to t('.logout'), destroy_user_session_path, method: :delete
-            - else
-              = link_to t('.authorization'), new_user_session_path, :class=>'item-login'
+            %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+              -#-binding.pry
+              = get_header_by_locale(key)
+              %span.caret
+            %ul.dropdown-menu{'role' => 'menu'}
+              -value.each do |list|
+                %li
+                  %a{:href => get_nav_link(list) }
+                    = get_header_by_locale(list)
 
-          -#Build link to modules (backend)
-          - if current_user && current_user.is_locked? == false
-            %li= link_to t('.editor'), editor_index_path
+        -#Build currnet_user dropdown menu
+        %li.dropdown
+          - if current_user
+            %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+              %i.fa.fa-user.fa-fw
+              = show_username_or_emailname(current_user)
+              %span.caret
+            %ul.dropdown-menu{'role' => 'menu'}
+              %li= link_to t('.edit_profile'), edit_user_registration_path
+              %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+          - else
+            = link_to t('.authorization'), new_user_session_path, :class=>'item-login'
 
-          = render partial: 'layouts/navbar/nav_admin'
-        -#TODO: Insert lang switcher into header menu
-        -# Lang switcher
-        -#.navbar-right.block-lng.clearfix
-        -#  = render partial: 'layouts/navbar/lang'
+        -#Build link to modules (backend)
+        - if current_user && current_user.is_locked? == false
+          %li= link_to t('.editor'), editor_index_path
+
+        = render partial: 'layouts/navbar/nav_admin'
+      -#TODO: Insert lang switcher into header menu
+      -# Lang switcher
+      -#.navbar-right.block-lng.clearfix
+      -#  = render partial: 'layouts/navbar/lang'
 :javascript
    // ****** Menu resize on scroll ***** //
   $(window).scroll(function() {
