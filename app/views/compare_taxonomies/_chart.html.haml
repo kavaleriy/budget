@@ -82,10 +82,15 @@
     // Create bars
     var bar = chart.selectAll("g")
         .data(zippedData)
-        .enter().append("g")
+        .enter()
+        .append("g")
         .attr("transform", function(d, i) {
           return "translate(" + 0 + "," + (50 + i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
         });
+
+
+    bar = chart.selectAll("g")
+      .data(zippedData)
 
     // Create rectangles of the correct width
     bar.append("rect")
@@ -128,8 +133,8 @@
     var legend = this.legend
     legend.attr("height", chartHeight)
 
-    var legendRectSize = 20,
-        legendSpacing  = 5;
+    var legendRectSize = 40,
+        legendSpacing  = 15;
 
     var items = legend.selectAll('.item')
         .data(data.series)

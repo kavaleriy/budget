@@ -1,9 +1,16 @@
+:scss
+  .pull-left {
+    margin: 0 20px 0 0px;
+  }
+
 :javascript
   var aCompareTaxonomies = {
+    selected_amountype: 'plan',
+    selected_level: '',
     selected_year: "#{@current_year}",
     selected_taxonomies: [],
     taxonomies: {},
-    _data: {}
+    taxonomies_cache: {}
   }
 
 %h1
@@ -12,8 +19,20 @@
 .row
   = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
 
+%hr
+
 .row
-  = render :partial => 'select_year', :locals => { years: @years }
+  .col-xs-12
+    .pull-left
+      = render :partial => 'select_amountype'
+    .pull-left
+      = render :partial => 'select_level'
+    .pull-left
+      = render :partial => 'select_divider', :locals => { amounts: @amounts }
+    .pull-right
+      = render :partial => 'select_year', :locals => { years: @years }
+
+%hr
 
 .row
   = render :partial => 'path'
@@ -25,7 +44,8 @@
 :javascript
 
   aCompareTaxonomies.create_chart = function (){
-    var store = this._data
+    var store = this.taxonomies_cache
+    var selected_level = this.selected_level
 
     aCompareTaxonomiesChart.clear_chart()
 
@@ -35,7 +55,7 @@
     this.selected_taxonomies.forEach(function(taxonomy, i) {
       if (store[taxonomy]) return true;
 
-      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/';
+      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level;
       $.ajax({
         url: url,
         async: false
@@ -48,10 +68,37 @@
     aCompareTaxonomiesChart.draw_chart(data)
   }
 
+
+  aCompareTaxonomies.select_taxonomies = function (ids, added){
+    if (added) aCompareTaxonomies.taxonomies[added.id] = added.text
+    this.selected_taxonomies = ids
+    this.create_chart()
+  }
+
+  aCompareTaxonomies.select_amountype = function (amountype){
+    this.selected_amountype = amountype
+    this.create_chart()
+  }
+
+  aCompareTaxonomies.select_year = function (year){
+    this.selected_year = year
+    this.create_chart()
+  }
+
+  aCompareTaxonomies.select_level = function (level){
+    this.selected_level = level
+    aCompareTaxonomies.taxonomies_cache = {}
+
+    aCompareTaxonomiesPath.path = []
+
+    this.create_chart()
+  }
+
   aCompareTaxonomies.get_data = function (){
-    var store = this._data
+    var store = this.taxonomies_cache
     var taxonomies = this.taxonomies
     var selected_taxonomies = this.selected_taxonomies
+    var selected_amountype = this.selected_amountype
     var selected_year = this.selected_year
     var path = this.path
 
@@ -82,8 +129,8 @@
         taxonomy.children.forEach(function(node) {
           if (items[node.key] == null) items[node.key] = node.label
 
-          if (node.amount.fact && node.amount.fact[selected_year])
-            amounts[taxonomy_id][node.key] = node.amount.fact[selected_year]['0'].total.toFixed(2)
+          if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
+            amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
 
           aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
         })
@@ -109,3 +156,35 @@
       series: series
     };
   }
+
+
+:javascript
+
+  $(document).ready(function() {
+    $('.amountype_select').on('click', function () {
+      aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
+    })
+
+
+    $('.year_select').on('click', function () {
+      aCompareTaxonomies.select_year($(this).attr('data-year'))
+    })
+
+
+    $('.level_select').on("click", function(){
+      var level = $(this).attr('value');
+      aCompareTaxonomies.select_level(level.split(' '));
+    });
+
+    $("#taxonomy_select").select2(
+      {
+        allowClear: true,
+        width: '100%',
+        placeholder: "#{I18n.t('select_placeholder')}",
+        multiSelect: true,
+      }
+    ).on("change", function(data){
+      aCompareTaxonomies.select_taxonomies(data.val, data.added)
+    })
+
+  });

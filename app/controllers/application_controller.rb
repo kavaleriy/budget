@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  PAGINATE_PER_PAGE = 25
-
   # dealing with mass assignment
   before_filter :configure_permitted_parameters, if: :devise_controller?
 

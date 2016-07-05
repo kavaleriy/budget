@@ -1,22 +1,4 @@
-.taxonomy.col-xs-12
+.col-xs-12
   = select_tag :taxonomy_select, options_for_select(taxonomies.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'form-control' }
 
-:javascript
-
-  $(document).ready(function() {
-    $("#taxonomy_select").select2(
-      {
-        allowClear: true,
-        width: '100%',
-        placeholder: "#{I18n.t('select_placeholder')}",
-        multiSelect: true,
-      }
-    ).on("change", function(data){
-      var added = data.added
-      if (added) aCompareTaxonomies.taxonomies[added.id] = added.text
-      aCompareTaxonomies.selected_taxonomies = data.val
-
-      aCompareTaxonomies.create_chart()
-    })
-
-  });
+-# catch click on host page

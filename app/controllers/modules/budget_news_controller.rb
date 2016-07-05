@@ -7,7 +7,7 @@ module Modules
     def index
 
       # @budget_news = Modules::BudgetNews.all
-      @budget_news = @budget_news.page(params[:page]).per(PAGINATE_PER_PAGE).order(news_date: :desc)
+      @budget_news = @budget_news.page(params[:page]).order(news_date: :desc)
 
       respond_with(@budget_news)
     end
