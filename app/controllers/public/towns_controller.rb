@@ -124,7 +124,7 @@ class Public::TownsController < ApplicationController
     # encode String to ASCII and concat URL
     uri = URI(data_url + URI.encode("#{title}"))
 
-    # get ingo from uri
+    # get info from uri
     response = Net::HTTP.get(uri)
     # get needed data from hash with template (template for town)
     result = JSON.parse(response)['query']['pages']
