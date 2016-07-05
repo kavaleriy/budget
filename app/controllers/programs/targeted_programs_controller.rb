@@ -30,6 +30,10 @@ class Programs::TargetedProgramsController < ApplicationController
   def show
     stub_data
     @grouped_indicators = Programs::TargetedProgram.get_grouped_indicators(@program.indicators)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def edit

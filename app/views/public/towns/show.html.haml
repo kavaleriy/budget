@@ -41,7 +41,7 @@
       //position: relative;
       display: block;
       height: auto;
-      overflow: auto;
+      //overflow: auto;
 
     }
   }
@@ -244,14 +244,23 @@
       $('.blocks > .wrapper > .content').toggleClass('is-open');
     });
 
+    // $(document).on('click','.module',function(){
+    //   $(document).ajaxSuccess(function(){
+    //     alert('dasdasd');
+    //   })
+    //
+    // })
+
     var portfolio_url = "#{widgets_town_profile_path(@town)}"
     $.ajax({
       url: portfolio_url,
       success: function(data){
         $('.module').find('a').attr('data-remote',"true");
         $('.module').click(function(){
+          $('.modules-wrapper').hide();
           $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
           $('.blocks > .wrapper > .content').toggleClass('is-open');
+          $(".modules-wrapper").show(1200);
         })
       }
     });
