@@ -7,53 +7,70 @@
     //min-height: calc(100vh - 121.39px);
     //height: 100%;
     //min-height: calc(100% - 193px);
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
-    height: 100%;
-    z-index: 1;
-    overflow: hidden;
-    background: transparent;
-    //min-height: calc(100% - 73px);
-    padding-top: 73px;
-  }
-
-  .content {
-    //height: 100%;
-    height: auto;
-    min-height: calc(100vh - 193px);
-    margin-left: 50px;
-    margin-bottom: 120px;
-    padding: 30px;
-    //padding-top: 73px;
-    background: white;
-    z-index: 4;
-    //box-shadow: 0 0 5px rgba(0,0,0,1);
-    transform: translate3d(0,0,0);
-    transition: transform .5s;
-    width: calc(100% - 50px);
-    .content-wrapper {
-      //padding-top: 30px;
-      //position: relative;
-      display: block;
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      background: transparent;
+      //min-height: calc(100% - 73px);
+      padding-top: 73px;
+    }
+    .content {
+      //height: 100%;
       height: auto;
-      //overflow: auto;
-
+      min-height: calc(100vh - 193px);
+      margin-left: 50px;
+      margin-bottom: 120px;
+      padding: 30px;
+      //padding-top: 73px;
+      background: white;
+      z-index: 4;
+      //box-shadow: 0 0 5px rgba(0,0,0,1);
+      transform: translate3d(0,0,0);
+      transition: transform .5s;
+      width: calc(100% - 50px);
+      .content-wrapper {
+        //padding-top: 30px;
+        //position: relative;
+        display: block;
+        height: auto;
+        //overflow: auto;
+        .tab-content {
+          #description {
+            .infobox {
+              width: 100% !important;
+              background-color: transparent !important;
+              font-size: 100% !important;
+              table-layout: fixed;
+              tr {
+                background-color: transparent !important;
+                td {
+                  background-color: transparent !important;
+                  overflow:hidden;
+                  word-wrap:break-word;
+                  table {
+                    background-color: transparent !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .is-open {
+      margin-left: 0;
+      transform: translate3d(220px,0,0);
+      width: calc(100% - 220px);
     }
   }
 
-  .content.is-open {
-    margin-left: 0;
-    transform: translate3d(220px,0,0);
-    width: calc(100% - 220px);
-  }
 
   /* Navigation */
-
 
   .button {
     cursor: pointer;
