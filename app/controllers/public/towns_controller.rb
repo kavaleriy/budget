@@ -21,7 +21,7 @@ class Public::TownsController < ApplicationController
       @town_br_links = Documentation::Link.all.where(:town => @town)
     end
 
-    @wiki_info = get_wiki_town_info(@town.title)
+    @town.description = get_wiki_town_info(@town.title) || @town.description
 
     Documentation::LinkCategory.all.each{|br|
       @town_links[br.id.to_s] = {}
@@ -131,9 +131,9 @@ class Public::TownsController < ApplicationController
 
     # data control for existing page in wikipedia
     if result.first[0].eql?(wiki_page_empty_result)
-      'No info'
+      false
     else
-      result.first[1]['revisions'].first['*']
+      result.first[1]['revisions'].first['*'].html_safe
     end
 
   end

@@ -191,16 +191,16 @@
     .content-wrapper
       .tab-content
         #description.tab-pane.fade
-          -#- if @town.description && !@town.description.blank?
-          -#  %h3.desc-ons
-          -#    = t('public.towns.portfolio.description')
-          -#  = @town.description
-          -#- if @town.links && !@town.links.blank?
-          -#  %h3.links
-          -#    = t('public.towns.portfolio.links')
-          -#  %p
-          -#    =@town.links.html_safe
-          = @wiki_info.html_safe
+          - if @town.description && !@town.description.blank?
+            %h3.desc-ons
+              = t('public.towns.portfolio.description')
+            = @town.description
+          - if @town.links && !@town.links.blank?
+            %h3.links
+              = t('public.towns.portfolio.links')
+            %p
+              =@town.links.html_safe
+          -#= @wiki_info.html_safe
         #portfolio.tab-pane.active.fade.in
 
         #documents.tab-pane.fade
