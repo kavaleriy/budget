@@ -167,6 +167,24 @@
         .wrapper {
           .content {
             margin-bottom: 193px;
+            .content-wrapper{
+              .tab-content{
+                .modules{
+                  .modules-wrapper{
+                    .module{
+                      padding: 0;
+                      a{
+                        > div{
+                          .img{
+                            width: 100%;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -254,11 +272,11 @@
       $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
       $('.blocks > .wrapper > .content').toggleClass('is-open');
     }
-
+  var middleScreenSize = 1200;
   $(document).ready(function() {
 
   //Show full sidebar on desctops [md/lg size]
-    if($(window).width() > 1200){
+    if($(window).width() > middleScreenSize){
       toggleSidebar();
      };
   //Toggle button action [hide/show sidebar]
@@ -272,7 +290,9 @@
       success: function(data){
         $('.module').find('a').attr('data-remote',"true");
         $('.module').click(function(){
-          toggleSidebar();
+          if($(window).width() > middleScreenSize){
+            toggleSidebar();
+          }
         })
       }
     });
@@ -280,10 +300,10 @@
 
   //Resize window sidebar view
   $(window).resize(function(){
-    if($(window).width() < 1199){
+    if($(window).width() < middleScreenSize){
       toggleSidebar();
     } else
-    if($(window).width() > 1200){
+    if($(window).width() > middleScreenSize){
       toggleSidebar();
     };
   });
