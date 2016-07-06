@@ -208,10 +208,10 @@
     .content-wrapper
       .tab-content
         #description.tab-pane.fade
-          - if @town.description && !@town.description.blank?
-            %h3.desc-ons
-              = t('public.towns.portfolio.description')
-            = @town.description
+          -#- if @town.description && !@town.description.blank?
+          %h3.desc-ons
+            = t('public.towns.portfolio.description')
+          = @town.get_beautiful_description
           - if @town.links && !@town.links.blank?
             %h3.links
               = t('public.towns.portfolio.links')
