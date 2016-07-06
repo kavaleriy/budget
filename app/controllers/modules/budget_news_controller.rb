@@ -1,6 +1,7 @@
 module Modules
   class BudgetNewsController < AdminController
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
+    skip_before_action :check_admin_permission, only: [:show, :all_news]
     # before_action :check_admin_permission, except: [:show, :all_news]
     respond_to :html
 
