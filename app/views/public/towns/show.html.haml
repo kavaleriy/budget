@@ -233,24 +233,21 @@
 
 :javascript
 
+  function toggleSidebar(){
+      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+      $('.blocks > .wrapper > .content').toggleClass('is-open');
+    }
+
   $(document).ready(function() {
+
   //Show full sidebar on desctops [md/lg size]
     if($(window).width() > 1200){
-      $('.blocks > .wrapper > .sidebar').addClass('is-full');
-      $('.blocks > .wrapper > .content').addClass('is-open');
+      toggleSidebar();
      };
   //Toggle button action [hide/show sidebar]
     $('.button').on('click', function() {
-      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
-      $('.blocks > .wrapper > .content').toggleClass('is-open');
+       toggleSidebar();
     });
-
-    // $(document).on('click','.module',function(){
-    //   $(document).ajaxSuccess(function(){
-    //     alert('dasdasd');
-    //   })
-    //
-    // })
 
     var portfolio_url = "#{widgets_town_profile_path(@town)}"
     $.ajax({
@@ -258,10 +255,7 @@
       success: function(data){
         $('.module').find('a').attr('data-remote',"true");
         $('.module').click(function(){
-          $('.modules-wrapper').hide();
-          $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
-          $('.blocks > .wrapper > .content').toggleClass('is-open');
-          $(".modules-wrapper").show(1200);
+          toggleSidebar();
         })
       }
     });
@@ -270,11 +264,16 @@
   //Resize window sidebar view
   $(window).resize(function(){
     if($(window).width() < 1199){
-      $('.blocks > .wrapper > .sidebar').removeClass('is-full');
-      $('.blocks > .wrapper > .content').removeClass('is-open');
+      toggleSidebar();
     } else
     if($(window).width() > 1200){
-      $('.blocks > .wrapper > .sidebar').addClass('is-full');
-      $('.blocks > .wrapper > .content').addClass('is-open');
+      toggleSidebar();
     };
   });
+
+  $(document).bind("ajaxSend", function(){
+    $('.modules-wrapper').fadeOut('slow');
+  }).bind("ajaxComplete", function(){
+    $(".modules-wrapper").fadeIn('slow');
+  });
+
