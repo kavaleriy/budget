@@ -8,6 +8,8 @@ class Documentation::Document
 
   skip_callback :update, :before, :store_previous_model_for_doc_file
 
+  scope :get_documents_by_town,-> (town) {where(town: town)}
+
   belongs_to :branch, class_name: 'Documentation::Branch'
   belongs_to :town
   belongs_to :owner, class_name: 'User'

@@ -2,7 +2,12 @@ class Public::DocumentsController < ApplicationController
   include ControllerCaching
 
   def index
-    @documentation_documents = Documentation::Document.all
+    # @documentation_documents = Documentation::Document.all
+    if params[:town_id].nil?
+      @documentation_documents = Documentation::Document.all
+    else
+      @documentation_documents = Documentation::Document.get_documents_by_town(params[:town_id])
+    end
     @documentation_documents = @documentation_documents.select{ |doc| params["town_select"].split(',').include? doc.town_id.to_s } unless params["town_select"].blank?
     @documentation_documents = @documentation_documents.select{ |doc| doc.branch_id && (params["branch_select"].include? doc.branch_id.to_s) } unless params["branch_select"].blank?
     @documentation_documents = @documentation_documents.select{ |doc| doc.yearFrom && ((doc.yearFrom <= params["year"].to_i && doc.yearTo && doc.yearTo >= params["year"].to_i) || doc.yearFrom == params["year"].to_i) } unless params["year"].blank?
@@ -33,5 +38,11 @@ class Public::DocumentsController < ApplicationController
                    end || { }
 
     @branch_select = params[:branch_select] unless params[:branch_select].blank?
+
+    js_view = params[:town_id].nil? ? 'index' : 'modules'
+    respond_to do |format|
+      format.html
+      format.js{ render js_view }
+    end
   end
 end
