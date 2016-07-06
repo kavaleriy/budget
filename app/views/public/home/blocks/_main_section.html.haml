@@ -8,7 +8,6 @@
       background-repeat: no-repeat;
       height: 733px;
       position: absolute;
-      /*border: 1px solid red;*/
       width: 100%;
     }
     .icons-block {
@@ -17,7 +16,6 @@
       margin: 0 150px;
       .link-icons {
         width: 100%;
-        /*border: 1px solid green;*/
         padding: 5px 15px;
       }
       .first-row {
@@ -35,6 +33,14 @@
           position: relative;
           padding-right: 25px;
           opacity: .5;
+        }
+        .active {
+          opacity: .9;
+          > div {
+            .tooltip {
+              top: 83px !important;
+            }
+          }
         }
         .pig-block,
         .list-block,
@@ -901,3 +907,24 @@
             %p.button-text Незабаром
             .icon-block
               %i.fa.fa-arrow-right{"aria-hidden" => "true"}
+
+:javascript
+  $(document).ready(function(){
+
+    // init active block state first element (.pig-block)
+    $('.pig-block').addClass('active');
+    // call event handler (state 'mouse hover')
+    $('.pig-icon a').mouseenter();
+
+    $('.icons-wrapper > div').hover(function(){
+    // feature for remove class&tooltip if exist
+      if ($('.pig-block').hasClass('active')) {
+        $('.pig-block').removeClass('active');
+        $('.pig-icon a').tooltip('hide');
+      }
+
+      $(this).toggleClass('active');
+      $(this).tooltip('toggle');
+    });
+    
+  });
