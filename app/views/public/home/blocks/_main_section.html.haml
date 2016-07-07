@@ -893,18 +893,22 @@
         -#      %p Що це дає громаді?
     .col-xs-12.col-sm-6.titles
       .col-xs-12.main-title
-        %p СИСТЕМА ВІЗУАЛІЗАЦІЇ «ВІДКРИТИЙ БЮДЖЕТ»
+        %p
+          =t('new_design.home_page.main_title')
       .col-xs-12.text
-        %p Допомагаємо громадянам зрозуміти бюджетну інформацію
+        %p
+          =t('new_design.home_page.text_preamble')
       .col-xs-12.button
         - if @test_town
           = link_to public_path(@test_town), class: 'try' do
-            %p.button-text Спробувати
+            %p.button-text
+              = t('new_design.home_page.button_try')
             .icon-block
               %i.fa.fa-arrow-right{"aria-hidden" => "true"}
         - else
           = link_to '#', class: 'try' do
-            %p.button-text Незабаром
+            %p.button-text
+              = t('new_design.home_page.button_soon')
             .icon-block
               %i.fa.fa-arrow-right{"aria-hidden" => "true"}
 
