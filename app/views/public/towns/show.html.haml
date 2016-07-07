@@ -89,6 +89,23 @@
   }
 
   .sidebar {
+    .town-search{
+      width: 80%;
+      margin-left: 10%;
+      border: 1px solid yellow;
+      display: inline-flex;
+      .search-button{
+        cursor: pointer;
+        padding-left: 1px;
+        i{
+          font-size: 25px;
+          color: white;
+        }
+
+      }
+
+    }
+
     .sidebar-nav {
       padding: 0;
       .button {
@@ -190,9 +207,29 @@
       }
     }
   }
+  .select2-container{
+    //border-radius: 0px;
+    width: 85% !important;
+    height: 30px;
+    //border: solid 1px #F00;
+    .select2-choice{
+      height: 30px;
+      border-radius: 0px;
+      #select2-chosen-1{
+        padding-top: 0px;
+      }
+      .select2-arrow{
+        display: none;
+      }
+    }
+  }
 
 .wrapper
   .sidebar
+    .town-search.input-group
+      = text_field_tag 'active_town_select', '', placeholder: t('.choose_town')
+      .input-group-btn.search-button
+        %i.fa.fa-search{"aria-hidden" => "true"}
     .blason-block
       =image_tag('new_design/blason.svg', class: 'img-responsive')
     %ul.sidebar-nav
@@ -271,9 +308,9 @@
   function addBreadcrumbs(title,link){
     var breadcrumbs_list = $('.breadcrumb');
     breadcrumbs_list.find('li.active').removeClass('active');
-
+    // create new li dom and set active class
     var active_li = $('<li></li>').addClass('active');
-
+    // create new a dom and set html
     var a = $('<a>').html(title);
 
     active_li.append(a);
@@ -283,6 +320,8 @@
   function removeBreadcrumbs() {
     $('.breadcrumb').not(':first').remove();
   }
+
+
 
   function renderVisualisation(portfolio_url){
       $.ajax({
@@ -313,6 +352,8 @@
       $('.blocks > .wrapper > .content').toggleClass('is-open');
     }
   var middleScreenSize = 1200;
+
+
   $(document).ready(function() {
 
   //Show full sidebar on desctops [md/lg size]
@@ -324,11 +365,12 @@
        toggleSidebar();
     });
 
-
+    // if we click on visual icon in sidebar
+    // render visaulisation list
     $("a[href='#portfolio']").click(function(){
       renderVisualisation("#{widgets_town_profile_path(@town)}");
     })
-
+    init_town_select2_with_field_id('#active_town_select',"#{search_for_towns_town_path}")
 
     renderVisualisation("#{widgets_town_profile_path(@town)}");
   });
@@ -342,10 +384,11 @@
       toggleSidebar();
     };
   });
-
-  $(document).bind("ajaxSend", function(){
-    $('.modules-wrapper').fadeOut('slow');
-  }).bind("ajaxComplete", function(){
-    $(".modules-wrapper").fadeIn('slow');
-  });
+  // if ajax was send fade out modules visualisation
+  //$(document).bind("ajaxSend", function(){
+  //  $('.modules-wrapper').fadeOut('slow');
+  // if ajax complete fade in visualisation modules
+  //}).bind("ajaxComplete", function(){
+  //  $(".modules-wrapper").fadeIn('slow');
+  //});
 
