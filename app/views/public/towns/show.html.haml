@@ -280,17 +280,26 @@
 
     breadcrumbs_list.append(active_li);
   }
+  function removeBreadcrumbs() {
+    $('.breadcrumb').not(':first').remove();
+  }
 
   function renderVisualisation(portfolio_url){
       $.ajax({
       url: portfolio_url,
       success: function(data){
+        $('.breadcrumb > li:first-child').click(function() {
+          if(!$(this).hasClass('active')){
+            removeBreadcrumbs();
+            renderVisualisation("#{widgets_town_profile_path(@town)}");
+          }
+        });
         $('.module').find('a').attr('data-remote',"true");
         $('.module').click(function(){
           var breadcrumbs_title = $.trim($(this).find('.title').html());
           var breadcrumbs_link = $(this).find('a').attr('href');
           addBreadcrumbs(breadcrumbs_title,breadcrumbs_link);
-          if($(window).width() > middleScreenSize){
+          if($(window).width() > middleScreenSize && $('.blocks > .wrapper > .sidebar').hasClass('is-full')){
             toggleSidebar();
           }
         })
@@ -314,6 +323,8 @@
     $('.button').on('click', function() {
        toggleSidebar();
     });
+
+
 
     renderVisualisation("#{widgets_town_profile_path(@town)}");
   });
