@@ -16,7 +16,6 @@
           padding: 0;
         }
         .carousel-wrap {
-          /*margin: 0 20px;*/
           padding: 0 6%;
           width: 100%;
           position: relative;
@@ -45,56 +44,44 @@
             }
             .owl-nav {
               > div {
-                margin-top: -26px;
+                margin-top: -60px;
                 position: absolute;
-                top: 50%;
-                color: #cdcbcd;
-              }
-              i {
-                font-size: 45px;
-                position: relative;
-                -webkit-transform: rotate(-45deg);
-                -moz-transform: rotate(-45deg);
-                -ms-transform: rotate(-45deg);
-                -o-transform: rotate(-45deg);
-                transform: rotate(45deg);
-                color: black;
-              }
-              .owl-prev i {
-                top: -7px;
-                left: 11px;
-              }
-              .owl-next i {
-                top: -2px;
-                left: 15px;
+                i {
+                  font-size: 45px;
+                  position: relative;
+                  color: black;
+                  -webkit-transition-duration: .2s;
+                  -o-transition-duration: .2s;
+                  -moz-transition-duration: .2s;
+                  transition-duration: .2s;
+                }
+                &:hover,
+                &:focus {
+                  i {
+                    color: #ffd304;
+                  }
+                }
               }
               .owl-prev {
                 left: -63px;
-                border: 2px solid black;
-                width: 42px;
-                height: 42px;
-                top: 80px;
-                background: yellow;
-                border-radius: 3px;
-                -webkit-transform: rotate(-45deg);
-                -moz-transform: rotate(-45deg);
-                -ms-transform: rotate(-45deg);
-                -o-transform: rotate(-45deg);
-                transform: rotate(-45deg);
+                i {
+                  top: -7px;
+                  left: 11px;
+                }
               }
               .owl-next {
                 right: -63px;
-                border: 2px solid black;
+                i {
+                  top: -2px;
+                  left: 15px;
+                }
+              }
+              .owl-prev,
+              .owl-next {
                 width: 42px;
                 height: 42px;
                 top: 80px;
-                background: yellow;
                 border-radius: 3px;
-                -webkit-transform: rotate(-45deg);
-                -moz-transform: rotate(-45deg);
-                -ms-transform: rotate(-45deg);
-                -o-transform: rotate(-45deg);
-                transform: rotate(-45deg);
               }
             }
           }
