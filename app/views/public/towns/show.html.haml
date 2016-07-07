@@ -325,6 +325,10 @@
     });
 
 
+    $("a[href='#portfolio']").click(function(){
+      renderVisualisation("#{widgets_town_profile_path(@town)}");
+    })
+
 
     renderVisualisation("#{widgets_town_profile_path(@town)}");
   });
