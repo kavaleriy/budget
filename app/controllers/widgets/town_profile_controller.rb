@@ -107,7 +107,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
     result << get_programs_hash('programs',programs)
-    result << get_key_docs_hash('key_docs')
+    # result << get_key_docs_hash('key_docs')
     # result << get_prozorro_hash('prozoroo')
     # result << get_edata_hash('edata')
     # result << get_purchase_hash('purchase')
