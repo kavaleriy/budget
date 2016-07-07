@@ -43,7 +43,7 @@
         color: #000;
       }
       .europe {
-        padding: 0 50px;
+        padding: 0 20px;
       }
       &:hover > img, &:focus > img {
         -webkit-filter: sepia(1);
@@ -301,13 +301,13 @@
           .owl-carousel
             .item
               =link_to '#' do
-                =image_tag('new_design/eidos-logo_.png', class: 'img-responsive')
-            .item
-              =link_to '#' do
                 =image_tag('new_design/Europe-flag-logo.svg', class: 'img-responsive europe')
             .item
               =link_to '#' do
                 =image_tag('new_design/renaissanse-small_logo_black.jpg', class: 'img-responsive')
+            .item
+              =link_to '#' do
+                %img.img-responsive{:src => "http://placehold.it/300x150"}
             .item
               =link_to '#' do
                 %img.img-responsive{:src => "http://placehold.it/300x150"}
@@ -341,7 +341,7 @@
             items: 3
           },
           1000: {
-            items: 3
+            items: 5
           }
         }
     });
