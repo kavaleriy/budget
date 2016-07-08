@@ -63,6 +63,17 @@ class TownsController < ApplicationController
     end
 
   end
+  def search_for_active_towns
+    q = params[:query].mb_chars.capitalize.to_s
+    towns_by_query = Town.get_town_by_part_title(q).order_by(:level => :asc)
+    @towns = []
+    towns_by_query.each do |town|
+      @towns << town unless town.documentation_documents.empty?
+    end
+    respond_to do |format|
+      format.json { render 'search'}
+    end
+  end
 
   # GET /indicator_files
   # GET /indicator_files.json

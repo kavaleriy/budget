@@ -157,6 +157,7 @@ Rails.application.routes.draw do
   get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
   post 'edit_by_xls' => 'towns#edit_by_xls',as: 'edit_by_xls'
   get 'search_town' => 'towns#search'
+  get 'search_for_active_towns' => 'towns#search_for_active_towns'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
