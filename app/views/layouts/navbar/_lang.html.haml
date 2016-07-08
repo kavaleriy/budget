@@ -1,4 +1,28 @@
-%ul.nav.navbar-nav
+:scss
+  .lang-switcher {
+    li {
+      opacity: .8;
+      a {
+        padding: 15px 5px;
+        img {
+          width: 20px;
+        }
+        &:hover,
+        &:focus {
+          padding-bottom: 12px;
+        }
+      }
+      &:hover,
+      &:focus {
+        opacity: 1;
+      }
+    }
+    .active {
+      opacity: 1;
+    }
+  }
+
+%ul.nav.navbar-nav.lang-switcher.right
   - if I18n.locale == I18n.default_locale
     %li.active
       =link_to(image_tag('lang_ua.png'))

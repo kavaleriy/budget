@@ -345,6 +345,10 @@
       -#            Вперше?
       -#            %a{:href => "#"}
       -#              %b Зареєструватись
+
+      -#Render language switcher menu
+      = render partial: 'layouts/navbar/lang'
+
       %ul.nav.navbar-nav
 
         -#Build items-menu
@@ -378,11 +382,7 @@
           %li= link_to t('.editor'), editor_index_path
 
         = render partial: 'layouts/navbar/nav_admin'
-      = render partial: 'layouts/navbar/lang'
-      -#TODO: Insert lang switcher into header menu
-      -# Lang switcher
-      -#.navbar-right.block-lng.clearfix
-      -#  = render partial: 'layouts/navbar/lang'
+
 :javascript
    // ****** Menu resize on scroll ***** //
   $(window).scroll(function() {
