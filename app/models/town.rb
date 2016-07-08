@@ -16,6 +16,7 @@ class Town
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
+  scope :get_town_by_part_title, -> (part) {where(title: Regexp.new("^#{part}.*"))}
   after_update :clear_cache
 
   field :koatuu, type: String
