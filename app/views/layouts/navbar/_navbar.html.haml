@@ -181,7 +181,16 @@
             > li {
               > a {
                 font-size: 13px;
-                padding: 15px 10px;
+                padding: 15px 8px;
+              }
+            }
+          }
+          .lang-block {
+            ul.navbar-nav {
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
               }
             }
           }
@@ -213,6 +222,15 @@
               }
             }
           }
+          .lang-block {
+            ul.navbar-nav {
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -237,7 +255,16 @@
             > li {
               > a {
                 font-size: 11px;
-                padding: 15px 8px;
+                padding: 15px 4px;
+              }
+            }
+          }
+          .lang-block {
+            ul.navbar-nav {
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
               }
             }
           }
@@ -262,7 +289,10 @@
           border: none;
           -webkit-box-shadow: none;
           box-shadow: none;
-          .navbar-nav {
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
             float: none;
             background: $dark-blue;
             > li {
@@ -347,7 +377,8 @@
       -#              %b Зареєструватись
 
       -#Render language switcher menu
-      = render partial: 'layouts/navbar/lang'
+      .lang-block
+        = render partial: 'layouts/navbar/lang'
 
       %ul.nav.navbar-nav
 
@@ -380,7 +411,6 @@
         -#Build link to modules (backend)
         - if current_user && current_user.is_locked? == false
           %li= link_to t('.editor'), editor_index_path
-
         = render partial: 'layouts/navbar/nav_admin'
 
 :javascript
