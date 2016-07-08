@@ -85,26 +85,35 @@
   }
 
   .blason-block {
+    margin-top: 60px;
     padding: 5% 30%;
   }
 
-  .sidebar {
-    .town-search{
-      width: 80%;
-      margin-left: 10%;
-      border: 1px solid yellow;
-      display: inline-flex;
-      .search-button{
-        cursor: pointer;
-        padding-left: 1px;
-        i{
-          font-size: 25px;
-          color: white;
-        }
-
+  .town-search{
+    z-index: 6;
+    position: absolute;
+    margin: 0 10px;
+    //margin-left: 10%;
+    border: 1px solid yellow;
+    display: inline-flex;
+    .search-button{
+      cursor: pointer;
+      padding-left: 1px;
+      i{
+        font-size: 25px;
+        color: white;
+      }
+      i.mobile-search{
+        color:#ffd304;
       }
 
+
+
     }
+
+  }
+  .sidebar {
+
 
     .sidebar-nav {
       padding: 0;
@@ -207,6 +216,7 @@
       }
     }
   }
+
   .select2-container{
     //border-radius: 0px;
     width: 85% !important;
@@ -225,11 +235,12 @@
   }
 
 .wrapper
+  .town-search.input-group
+    = text_field_tag 'active_town_select', '', placeholder: t('.choose_town')
+    .input-group-btn.search-button
+      %i.fa.fa-search{"aria-hidden" => "true"}
   .sidebar
-    .town-search.input-group
-      = text_field_tag 'active_town_select', '', placeholder: t('.choose_town')
-      .input-group-btn.search-button
-        %i.fa.fa-search{"aria-hidden" => "true"}
+
     .blason-block
       =image_tag('new_design/blason.svg', class: 'img-responsive')
     %ul.sidebar-nav
@@ -347,14 +358,40 @@
 
   }
 
-  function toggleSidebar(){
-      $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
-      $('.blocks > .wrapper > .content').toggleClass('is-open');
+  function toggleSearch(){
+    // if sidebar in small version and search visible
+    if(!$('.sidebar').hasClass('is-full') && $('#s2id_active_town_select').is(':visible') ){
+       $('.search-button').find('i').removeClass('mobile-search');
+       $('#s2id_active_town_select').hide('fast');
+    // if sidebar in small version
+    }else if(!$('.sidebar').hasClass('is-full')){
+      $('.search-button').find('i').addClass('mobile-search');
+      $('#s2id_active_town_select').show('fast');
     }
+  }
+
+  function toggleSidebar(){
+    // remove town search class
+    $('.search-button').find('i').removeClass('mobile-search');
+    // if sidebar in small version
+    if (!$('.sidebar').hasClass('is-full')){
+      $('#s2id_active_town_select').show('fast');
+    }else{
+      $('#s2id_active_town_select').hide('fast');
+    }
+    //toggleSearch();
+    $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+    $('.blocks > .wrapper > .content').toggleClass('is-open');
+  }
   var middleScreenSize = 1200;
 
 
   $(document).ready(function() {
+
+  $('.search-button').click(function(){
+    toggleSearch();
+
+  });
 
   //Show full sidebar on desctops [md/lg size]
     if($(window).width() > middleScreenSize){
