@@ -1,8 +1,14 @@
 :scss
+  // init colors
+  $white-color: #ffffff;
+  $yellow-color: #ffd304;
+  $dark-blue-color: #0c2231;
+
+  // main style
   footer {
     width: 100%;
     position: absolute;
-    background: #0c2231;
+    background: $dark-blue-color;
     .footer-wrapper {
       .container {
         .row {
@@ -11,7 +17,7 @@
           .footer-logo {
             padding: 0;
             margin: 15px 0 0 0;
-            color: #ffffff;
+            color: $white-color;
           }
           .footer-text {
             margin: 15px 0;
@@ -19,15 +25,15 @@
             > p {
               margin: 0;
               padding-left: 10px;
-              color: #ffffff;
+              color: $white-color;
               text-align: justify;
               line-height: 1.8rem;
             }
             a {
-              color: #ffffff;
+              color: $white-color;
               &:hover,
               &:focus {
-                color: #ffd304;
+                color: $yellow-color;
                 text-decoration: none;
               }
             }
@@ -37,12 +43,12 @@
             .row {
               a {
                 padding: 0 10px;
-                color: #ffd304;
+                color: $yellow-color;
                 transition: color 250ms linear .2s;
                 &:hover,
                 &:focus {
                   text-decoration: none;
-                  color: #ffffff;
+                  color: $white-color;
                 }
               }
 
@@ -52,6 +58,8 @@
       }
     }
   }
+
+  //Media styles
   @media (max-width: 767px) {
     footer {
       .footer-wrapper {
@@ -75,6 +83,7 @@
       }
     }
   }
+
   @media (min-width: 321px) and (max-width: 449px) {
     footer {
       .footer-wrapper {
@@ -109,6 +118,7 @@
       }
     }
   }
+
   @media (max-width: 320px) {
     footer {
       .footer-wrapper {
