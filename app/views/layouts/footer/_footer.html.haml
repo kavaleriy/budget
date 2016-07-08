@@ -1,78 +1,154 @@
 :scss
+  // init colors
+  $white-color: #ffffff;
+  $yellow-color: #ffd304;
+  $dark-blue-color: #0c2231;
+
+  // main style
   footer {
     width: 100%;
     position: absolute;
-    background: #0c2231;
+    background: $dark-blue-color;
     .footer-wrapper {
-      .without_margin{
-        margin-left: 0;
-        margin-right: 0;
-      }
-      //padding: 0 10%;
-      .footer-text {
-        padding: 0 10px 0 0;
-        margin: 15px 0 25px;
-        //border-left: 2px solid #ffd304;
-        > p {
-          margin: 0;
-
-          padding-left: 10px;
-          color: #ffffff;
-          text-align: justify;
-        }
-      }
-      .footer-logos {
-        padding: 0 0 0 30px;
-        margin-top: 15px;
-        color: white;
+      .container {
         .row {
-          .git {
-            float: left;
-            margin-bottom: 0;
-            padding: 0 5px 0 0;
+          margin-left: 0;
+          margin-right: 0;
+          .footer-logo {
+            padding: 0;
+            margin: 15px 0 0 0;
+            color: $white-color;
           }
-          .rules {
-            float: left;
-            padding: 0 5px 0 0;
+          .footer-text {
+            margin: 15px 0;
+            padding: 0 0 0 15px;
+            > p {
+              margin: 0;
+              padding-left: 10px;
+              color: $white-color;
+              text-align: justify;
+              line-height: 1.8rem;
+            }
+            a {
+              color: $white-color;
+              &:hover,
+              &:focus {
+                color: $yellow-color;
+                text-decoration: none;
+              }
+            }
+          }
+          .social-btns {
+            margin-bottom: 15px;
+            .row {
+              a {
+                padding: 0 10px;
+                color: $yellow-color;
+                transition: color 250ms linear .2s;
+                &:hover,
+                &:focus {
+                  text-decoration: none;
+                  color: $white-color;
+                }
+              }
+
+            }
           }
         }
-        .logo {
-          padding: 10px 0 10px 2.5%;
-        }
-        //.eidos {
-        //  width: 33%;
-        //  //a > img {
-        //  //  background: white;
-        //  //}
-        //}
-        //.europe {
-        //  width: 18.9%;
-        //  a > img {
-        //    border: 2px solid white;
-        //  }
-        //}
-        //.renaissance {
-        //  width: 41%;
-        //}
       }
     }
   }
+
+  //Media styles
   @media (max-width: 767px) {
     footer {
       .footer-wrapper {
-        .footer-logos {
-          //position: relative;
-          //top: -100px;
-          margin-top: 0;
-          padding-bottom: 10px;
-        }
-        .footer-text {
-          //position: relative;
-          //top: 100px;
-          p {
-            margin-bottom: 0;
-            //line-height: 1.2;
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 10px;
+            }
+            .footer-text {
+              p {
+                margin-bottom: 0;
+              }
+            }
+            .social-btns {
+
+            }
           }
+
+        }
+      }
+    }
+  }
+
+  @media (min-width: 321px) and (max-width: 449px) {
+    footer {
+      .footer-wrapper {
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 0;
+              a {
+                img {
+                  padding: 0 20%;
+                  margin: 15px 0;
+                }
+              }
+            }
+            .footer-text {
+              margin: 0;
+              padding: 0 15px;
+              p {
+                font-size: 1.3rem;
+                line-height: 1.5rem;
+                padding: 0;
+                margin-bottom: 0;
+              }
+            }
+            .social-btns {
+              margin-top: 15px;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  @media (max-width: 320px) {
+    footer {
+      .footer-wrapper {
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 0;
+              a {
+                img {
+                  padding: 0 20%;
+                  margin: 15px 0;
+                }
+              }
+            }
+            .footer-text {
+              margin: 0;
+              padding: 0 15px;
+              p {
+                font-size: 1.3rem;
+                line-height: 1.5rem;
+                padding: 0;
+                margin-bottom: 0;
+              }
+            }
+            .social-btns {
+              margin-top: 15px;
+            }
+          }
+
         }
       }
     }
@@ -81,28 +157,25 @@
 %footer
   .footer-wrapper
     .container
-      .row.without_margin
-        .col-xs-12.col-md-6.footer-text
+      .row
+        .col-xs-12.col-sm-4.col-md-2.footer-logo
+          =link_to '#' do
+            = image_tag('new_design/eidos-logo.png', class: 'img-responsive')
+        .col-xs-12.col-sm-8.col-md-10.footer-text
           %p
-            = t('new_design.footer.footer-text')
-        .col-xs-12.col-md-6.footer-logos
-          .row
-            %p.git
-              = t('new_design.footer.based_code')
+            =t('new_design.footer.footer-text')
+          %p
+            =t('new_design.footer.based_code')
             %a{'xmlns:dct' => 'http://purl.org/dc/terms/', 'href' => 'https://github.com/kavaleriy/budget', 'rel' => 'dct:source'}
               %i.fa.fa-github
               https://github.com/kavaleriy/budget
-          .row
-            %p.rules
-              = t('new_design.footer.rules')
-            %a{'xmlns:cc' => 'http://creativecommons.org/ns#', 'href'=> 'mailto:begemot.valery@gmail.com?subject=openbudget.in.ua%20support', 'rel' => 'cc:morePermissions'}
-              Valeriy Kashpruk
-          -#.col-xs-4.logo.eidos
-          -#  =link_to '#' do
-          -#    = image_tag('new_design/eidos-logo.png', class: 'img-responsive')
-          -#.col-xs-4.logo.europe
-          -#  =link_to '#' do
-          -#    = image_tag('new_design/Europe-flag-logo.svg', class: 'img-responsive')
-          -#.col-xs-4.logo.renaissance
-          -#  =link_to '#' do
-          -#    = image_tag('new_design/renaissance-small_logo.png', class: 'img-responsive')
+        .col-xs-12.social-btns
+          .row.text-center
+            =link_to 'https://www.facebook.com/EidosUa/', target: '_blank' do
+              %i.fa.fa-facebook.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://twitter.com/EidosUA', target: '_blank' do
+              %i.fa.fa-twitter.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://www.youtube.com/channel/UCHbrG6ksOXP19PYI91UrC9w', target: '_blank' do
+              %i.fa.fa-youtube.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://www.instagram.com/eidosua/', target: '_blank' do
+              %i.fa.fa-instagram.fa-2x{"aria-hidden" => "true"}
