@@ -1,16 +1,11 @@
-- if I18n.locale == I18n.default_locale
-  .lng-item.active
-    =image_tag('lang_ua.png')
-    %span
-      Укр
-  .lng-item
-    = image_tag('lang_en.png')
-    = link_to "En", :locale=>'en'
-- else
-  .lng-item
-    =image_tag('lang_ua.png')
-    = link_to "Укр", :locale=>'uk'
-  .lng-item.active
-    =image_tag('lang_en.png')
-    %span
-      En
+%ul.nav.navbar-nav
+  - if I18n.locale == I18n.default_locale
+    %li.active
+      =link_to(image_tag('lang_ua.png'))
+    %li
+      =link_to(image_tag('lang_en.png'), :locale=>'en')
+  - else
+    %li.active
+      =link_to(image_tag('lang_en.png'))
+    %li
+      =link_to(image_tag('lang_ua.png'), :locale=>'uk')
