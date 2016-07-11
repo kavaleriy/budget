@@ -6,10 +6,60 @@
       padding-bottom: 5px;
       display: inline-block;
     }
+    .budgets_container{
+      display: flex;
+      margin-top: 15px;
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
+      .budget_for_year{
+        .year{
+          text-align: center;
+          font-size: 25px;
+          padding-bottom: 10px;
+        }
+        .description{
+          //background: tomato;
+          padding: 5px;
+          width: 160px;
+          height: 230px;
+          .page_for_pdf{
+            width: 100% !important;
+            height: 100% !important;
+            .col-xs-12:first-child{
+              padding: 5% 20% 0 20% !important;
+            }
+            .col-xs-12:last-child{
+              padding: 5% 0 5px 0 !important;
+            }
+            #title_page_title {
+              font-size: 15px !important;
+              text-transform: uppercase;
+            }
+            #title_page_city{
+              font-size: 14px !important;
+            }
+            #title_page_year{
+              font-size: 14px !important;
+              padding-top: 0px !important;
+            }
+          }
+        }
+        .download{
+          padding-top: 10px;
+          text-align: center;
+          font-size: 18px;
+          text-transform: uppercase;
+          a{
+            color: #000000;
+          }
+        }
+      }
+    }
   }
 
 
 .row-eq-height
+
   %h3.header Громадський бюджет
   %p
     Закреплённый подвал — это удобно, если он не мешает пользоваться интерфейсом и предсказуемо
@@ -27,6 +77,19 @@
     делиться секретами мастерства.
 
   .budgets_container
+    - @town_export_budgets.order.order(year: :desc).each do |budget|
+      .budget_for_year
+        .year
+          = budget.year
+        .description
+          -#-binding.pry
+          = budget.pages[:title_page].html_safe if budget.pages
+        .download
+          =link_to create_pdf_path(budget,format: :pdf) do
+            %i.fa.fa-download
+            Скачати
+
+  -#.budgets_container
     .budget_for_year
       .year 2016
       .description
@@ -34,7 +97,34 @@
         %span міста Одеси
         %span на 2016 рік
       .download
-
+    .budget_for_year
+      .year 2016
+      .description
+        %span Громадський бюджет
+        %span міста Одеси
+        %span на 2016 рік
+      .download
+    .budget_for_year
+      .year 2016
+      .description
+        %span Громадський бюджет
+        %span міста Одеси
+        %span на 2016 рік
+      .download
+    .budget_for_year
+      .year 2016
+      .description
+        %span Громадський бюджет
+        %span міста Одеси
+        %span на 2016 рік
+      .download
+    .budget_for_year
+      .year 2016
+      .description
+        %span Громадський бюджет
+        %span міста Одеси
+        %span на 2016 рік
+      .download
   -#- @documents.each do |document|
     - if document.doc_file?
       .col-xs-12.col-sm-6.col-md-4.document
