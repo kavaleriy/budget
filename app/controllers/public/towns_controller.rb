@@ -136,13 +136,6 @@ class Public::TownsController < ApplicationController
   end
 
   def set_documents
-    if test_town?
-      @documents = Documentation::Document.all.select{|t| t.town.nil?}
-    else
-      @documents = Documentation::Document.where(locked: false)
-      @documents = @documents.select{ |doc| params[:town_id].include? doc.town_id.to_s }
-
-      @documents.sort_by!{|doc| doc.title ? doc.title : ""  }
-    end
+    @documents = Documentation::Document.get_grouped_documents_for_town(@town)
   end
 end

@@ -9,7 +9,7 @@ class Documentation::Document
   skip_callback :update, :before, :store_previous_model_for_doc_file
 
   scope :get_documents_by_town,-> (town) {where(town: town)}
-
+  scope :unlocked, -> {where({ :locked.in => [false, nil] } )}
   belongs_to :branch, class_name: 'Documentation::Branch'
   belongs_to :town
   belongs_to :owner, class_name: 'User'
@@ -45,6 +45,24 @@ class Documentation::Document
     years << [self.yearFrom] unless self.yearFrom.blank?
     years << self.yearTo unless self.yearFrom == self.yearTo or self.yearTo.blank?
     years.join(' - ')
+  end
+
+  def self.get_grouped_documents_for_town(town)
+    # get documents by town and not locked and sort by title
+    documents = self.get_documents_by_town(town).unlocked.sort_by!{|doc| doc.title ? doc.title : ""  }
+
+    res_hash = {}
+    # group documents by year
+    documents = documents.group_by(&:yearFrom)
+
+    documents.each do |year,documents_by_year|
+
+      year_documents = documents_by_year.group_by(&:branch_id)
+
+      # transform keys for readeble title
+      res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
+    end
+    res_hash
   end
 
   private

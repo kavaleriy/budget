@@ -1,9 +1,10 @@
 .row-eq-height
+  -binding.pry
   - @documents.each do |document|
-    - if document.doc_file?
-      .col-xs-12.col-sm-6.col-md-4.document
-        = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
-          %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-          = document.title.truncate(30)
-          %br
-          = document.category.title unless document.category.nil?
+    -#- if document.doc_file?
+    -#.col-xs-12.col-sm-6.col-md-4.document
+    -#  = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
+    -#    %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
+    -#    = document.title.truncate(30)
+    -#    %br
+    -#    = document.category.title unless document.category.nil?
