@@ -55,7 +55,7 @@
   = bootstrap_flash
 .row-eq-height
   - @documents.each do |year,documents_by_year|
-    .panel-group{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
+    .panel-group.main-panel{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
       .panel.custom-panel
         .panel-heading{id: "heading_#{year}",:role => "tab"}
           %h4.panel-title
@@ -91,6 +91,7 @@
 :javascript
   $(document).ready(function() {
     $('a[data-toggle="collapse"]').click(function(){
+      var active_dom = $(document).find($(this).attr('href'));
       var sign_dom = $(this).find('.toggle-by-key');
       var value = $.trim(sign_dom.html())
       if(value == '+'){
@@ -98,5 +99,11 @@
       }else if(value == '-'){
         sign_dom.html('+');
       }
-    })
+      active_dom.toggleClass('opened');
+    });
+    $('.main-panel').first().find('a[data-toggle="collapse"]').first().trigger('click');
+    $('.opened').find('a[data-toggle="collapse"]').first().trigger('click');
+    // $('.custom-panel').first().find('.in[role="tabpanel"]').first().find('a[data-toggle="collapse"]').first().trigger('click');
+
+
   });
