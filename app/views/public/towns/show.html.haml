@@ -7,23 +7,15 @@
   .wrapper {
     display: flex;
     margin-top: 73px;
-    //padding: 73px 0 0;
-    //height: calc(100vh - 121.39px);
-    //min-height: calc(100vh - 121.39px);
-    //height: 100%;
-    //min-height: calc(100% - 193px);
     .town-search{
       z-index: 6;
       position: absolute;
       margin: 0 10px;
-      //margin-left: 10%;
       border: 1px solid $yellow;
       display: inline-flex;
       .select2-container{
-        //border-radius: 0px;
         width: 85% !important;
         height: 30px;
-        //border: solid 1px #F00;
         .select2-choice{
           height: 30px;
           border-radius: 0px;
@@ -56,7 +48,6 @@
       z-index: 1;
       overflow: hidden;
       background: transparent;
-      //min-height: calc(100% - 73px);
       padding-top: 73px;
       .blason-block {
         margin-top: 60px;
@@ -71,7 +62,7 @@
             font-family: 'Lato', sans-serif;
             font-size: 14px;
             font-weight: 400;
-            padding: 15px 15px 15px 50px;
+            padding: 15px 15px 15px 15px;
             color: #eee;
             &:before {
               font: 14px fontawesome;
@@ -84,49 +75,52 @@
               background: #807023;
               text-decoration: none;
             }
-          }
-          &:nth-child(1) {
-            a {
-              &:before {
-                content: '\f129';
-              }
+            img {
+              width: 20px;
             }
           }
-          &:nth-child(2) {
-            a {
-              &:before {
-                content: '\f200';
-              }
-            }
-          }
-          &:nth-child(3) {
-            a {
-              &:before {
-                content: '\f0f6';
-              }
-            }
-          }
-          &:nth-child(4) {
-            a {
-              &:before {
-                content: '\f0c1';
-              }
-            }
-          }
-          &:nth-child(5) {
-            a {
-              &:before {
-                content: '\f09d';
-              }
-            }
-          }
-          &:nth-child(6) {
-            a {
-              &:before {
-                content: '\f1c1';
-              }
-            }
-          }
+          //&:nth-child(1) {
+          //  a {
+          //    &:before {
+          //      content: '\f201';
+          //    }
+          //  }
+          //}
+          //&:nth-child(2) {
+          //  a {
+          //    &:before {
+          //      content: '\f200';
+          //    }
+          //  }
+          //}
+          //&:nth-child(3) {
+          //  a {
+          //    &:before {
+          //      content: '\f0f6';
+          //    }
+          //  }
+          //}
+          //&:nth-child(4) {
+          //  a {
+          //    &:before {
+          //      content: '\f0c1';
+          //    }
+          //  }
+          //}
+          //&:nth-child(5) {
+          //  a {
+          //    &:before {
+          //      content: '\f09d';
+          //    }
+          //  }
+          //}
+          //&:nth-child(6) {
+          //  a {
+          //    &:before {
+          //      content: '\f1c1';
+          //    }
+          //  }
+          //}
         }
         .active {
           background: $yellow;
@@ -166,16 +160,13 @@
       }
     }
     .content {
-      //height: 100%;
       height: auto;
       min-height: calc(100vh - 193px);
       margin-left: 50px;
       margin-bottom: 120px;
       padding: 30px;
-      //padding-top: 73px;
       background: $white;
       z-index: 4;
-      //box-shadow: 0 0 5px rgba(0,0,0,1);
       transform: translate3d(0,0,0);
       transition: transform .5s;
       width: calc(100% - 50px);
@@ -256,25 +247,26 @@
       =image_tag('new_design/blason.svg', class: 'img-responsive')
     %ul.sidebar-nav
       %li
-        %a{"data-toggle" => "tab", :href => "#description"}
+        =link_to '#description', data: {toggle: "tab"} do
+          = image_tag('icons/town_profile_sidebar/info_white.svg')
           = t('public.towns.portfolio.description')
       %li.active
-        %a{"data-toggle" => "tab", :href => "#portfolio"}
+        =link_to '#portfolio', data: {toggle: "tab"} do
           = t('public.towns.portfolio.visuals')
           %span.badge.bsize.count#town_items_length
       -#= @town_items.length.to_s
       %li
-        %a{"data-toggle" => "tab", :href => "#documents"}
+        =link_to '#documents', data: {toggle: "tab"} do
           = t('public.towns.portfolio.documents')
           %span.badge.bsize.count
             = @documents.length
       %li
-        %a{"data-toggle" => "tab", :href => "#links"}
+        =link_to '#links', data: {toggle: "tab"} do
           = t('public.towns.portfolio.town_links')
           %span.badge.bsize.count
             = @town_br_links.length
       %li
-        %a{"data-toggle" => "tab", :href => "#pub_budget"}
+        =link_to '#pub_budget', data: {toggle: "tab"} do
           = t('public.towns.portfolio.pub_budget')
 
       -#%li
