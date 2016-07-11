@@ -24,10 +24,14 @@ module Budget
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Kyiv'
 
+    config.i18n.enforce_available_locales = false
+    # Require available locales for app
+    # to check locale params before load app
+    # if need - add locale from lib I18n in format: ':locale_name'
+    config.i18n.available_locales = [:en, :uk]
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :uk
-
 
     # Cross-origin resource sharing (CORS)
     config.middleware.insert_before 0, "Rack::Cors" do

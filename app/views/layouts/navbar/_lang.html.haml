@@ -1,16 +1,39 @@
-- if I18n.locale == I18n.default_locale
-  .lng-item.active
-    =image_tag('lang_ua.png')
-    %span
-      Укр
-  .lng-item
-    = image_tag('lang_en.png')
-    = link_to "En", :locale=>'en'
-- else
-  .lng-item
-    =image_tag('lang_ua.png')
-    = link_to "Укр", :locale=>'uk'
-  .lng-item.active
-    =image_tag('lang_en.png')
-    %span
-      En
+:scss
+  .lang-switcher {
+    float: right;
+    padding-top: 37px;
+    li {
+      display: inline-block;
+      opacity: .8;
+      a {
+        padding: 15px 5px;
+        img {
+          width: 20px;
+        }
+        &:hover,
+        &:focus {
+          padding-bottom: 12px;
+        }
+      }
+      &:hover,
+      &:focus {
+        opacity: 1;
+      }
+    }
+    .active {
+      opacity: 1;
+    }
+  }
+
+
+%ul.lang-switcher
+  - if I18n.locale == I18n.default_locale
+    %li.active
+      =link_to(image_tag('icons/langs/flag_of_ukraine.svg'))
+    %li
+      =link_to(image_tag('icons/langs/flag_of_the_united_kingdom.svg'), :locale=>'en')
+  - else
+    %li.active
+      =link_to(image_tag('icons/langs/flag_of_the_united_kingdom.svg'))
+    %li
+      =link_to(image_tag('icons/langs/flag_of_ukraine.svg'), :locale=>'uk')
