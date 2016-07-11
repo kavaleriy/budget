@@ -13,7 +13,8 @@
       .panel-title{
         a{
           text-decoration: none;
-          .toggle-year{
+          .toggle-by-key{
+            font-weight: bold;
             margin-right: 10px;
             text-align: center;
             width: 15px;
@@ -30,9 +31,10 @@
     .panel-collapse{
       .custom-panel-body{
         border: none;
+        padding-bottom: 0px;
       }
       .docs-panel-body{
-        padding: 15px 0;
+        padding: 15px 0 0 0;
         .doc-wrapper{
           margin: 10px 0;
           height: 60px;
@@ -40,21 +42,25 @@
           .doc-img{
 
           }
+          .doc-title{
+            color: blue;
+          }
         }
       }
     }
 
   }
 
-
+.bootstrap_flash
+  = bootstrap_flash
 .row-eq-height
   - @documents.each do |year,documents_by_year|
-    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+    .panel-group{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
       .panel.custom-panel
         .panel-heading{id: "heading_#{year}",:role => "tab"}
           %h4.panel-title
-            %a.collapsed{"aria-controls" => "collapse_#{year}", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapse_#{year}", :role => "button"}
-              .toggle-year
+            %a.collapsed{"aria-controls" => "collapse_#{year}", "aria-expanded" => "false", "data-parent" => "#accordion_#{year}", "data-toggle" => "collapse", :href => "#collapse_#{year}", :role => "button"}
+              .toggle-by-key
                 +
               .doc-info-title
                 = year
@@ -67,17 +73,30 @@
                   #headingOne.panel-heading{:role => "tab"}
                     %h4.panel-title
                       %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion_#{branch_id}", "data-toggle" => "collapse", :href => "#collapse_#{branch_id}_#{year}", :role => "button"}
-                        .toggle-year
+                        .toggle-by-key
                           +
                         .doc-info-title
                           = group_title
                   .panel-collapse.collapse{id: "collapse_#{branch_id}_#{year}","aria-labelledby" => "headingOne", :role => "tabpanel"}
                     .panel-body.custom-panel-body.docs-panel-body
                       -documents_by_group.each do |document|
-                        = link_to document.doc_file.url do
+                        = link_to documentation_document_download_path(document) do
                           .col-md-3.doc-wrapper
                             .doc-img.col-xs-4
                               -#= image_tag ('new_design/icons/file-exel.svg')
                               = image_tag(get_image_path_by_doc_type(document.doc_file))
                             .doc-title.col-xs-8
                               = get_beautiful_doc_title(document.title)
+
+:javascript
+  $(document).ready(function() {
+    $('a[data-toggle="collapse"]').click(function(){
+      var sign_dom = $(this).find('.toggle-by-key');
+      var value = $.trim(sign_dom.html())
+      if(value == '+'){
+        sign_dom.html('-');
+      }else if(value == '-'){
+        sign_dom.html('+');
+      }
+    })
+  });
