@@ -62,7 +62,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = params[:locale] unless params[:locale].blank?
+    # locale = params[:locale] unless params[:locale].blank?
+
     # Check locale from params to equal to available locales
     # from init locales in app
     if I18n.available_locales.include? locale.to_sym
