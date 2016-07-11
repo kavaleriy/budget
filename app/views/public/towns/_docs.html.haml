@@ -80,13 +80,14 @@
                   .panel-collapse.collapse{id: "collapse_#{branch_id}_#{year}","aria-labelledby" => "heading_#{year}_#{branch_id}", :role => "tabpanel"}
                     .panel-body.custom-panel-body.docs-panel-body
                       -documents_by_group.each do |document|
-                        = link_to documentation_document_download_path(document) do
-                          .col-md-3.doc-wrapper
-                            .doc-img.col-xs-4
-                              -#= image_tag ('new_design/icons/file-exel.svg')
-                              = image_tag(get_image_path_by_doc_type(document.doc_file))
-                            .doc-title.col-xs-8
-                              = get_beautiful_doc_title(document.title)
+                        -if document.doc_file?
+                          = link_to documentation_document_download_path(document) do
+                            .col-md-3.doc-wrapper
+                              .doc-img.col-xs-4
+                                -#= image_tag ('new_design/icons/file-exel.svg')
+                                = image_tag(get_image_path_by_doc_type(document.doc_file))
+                              .doc-title.col-xs-8
+                                = get_beautiful_doc_title(document.title)
 
 :javascript
   $(document).ready(function() {
