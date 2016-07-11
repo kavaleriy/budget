@@ -1,9 +1,15 @@
 :scss
+  // init colors
+  $dark-blue: #0c2231;
+  $yellow: #ffd304;
+  $white: #ffffff;
+
+  // Main style
   .navbar {
     margin-bottom: 0;
     border: none;
     border-radius: 0;
-    background: #0c2231;
+    background: $dark-blue;
     .container {
       .navbar-header .logo-block {
         position: relative;
@@ -26,7 +32,7 @@
           font-size: 14px;
           text-decoration: none;
           font-family: 'Lato', sans-serif;
-          color: #ffd304;
+          color: $yellow;
           text-transform: uppercase;
           font-weight: 700;
           letter-spacing: -.5px;
@@ -42,21 +48,21 @@
             font-size: 14px;
             font-weight: 400;
             text-transform: uppercase;
-            color: white;
+            color: $white;
           }
           &.dropdown > a > span.caret {
-            color: #ffd304;
+            color: $yellow;
           }
           > a {
             &:hover, &:focus {
-              border-bottom: 3px solid #ffd304;
+              border-bottom: 3px solid $yellow;
               padding-bottom: 12px;
             }
           }
           &.open > a {
             &:hover, &:focus {
               background-color: transparent;
-              color: #ffd304;
+              color: $yellow;
               border-bottom: transparent;
               margin-bottom: 3px;
             }
@@ -66,14 +72,14 @@
             background-image: none;
             background-repeat: no-repeat;
             background-color: transparent;
-            color: #ffd304;
+            color: $yellow;
             border-bottom: none;
             cursor: text;
           }
         }
       }
       .block-lng {
-        color: #fff;
+        color: $white;
         text-transform: uppercase;
         margin: 0;
         display: block;
@@ -82,13 +88,7 @@
         top: 5px;
         .lng-item {
           float: left;
-          //background: rgba(20,80,159,0.5);
           padding: 3px 7px;
-          /* margin: 35px 5px 5px 5px; */
-          -webkit-border-radius: 3px;
-          -moz-border-radius: 3px;
-          ///* border-radius: 3px; */
-          /* transition: 0.3s; */
           font-size: 11px;
           margin: 0 10px;
           img {
@@ -97,7 +97,7 @@
           }
         }
         .active {
-          background: #ffd304;
+          background: $yellow;
           opacity: .8;
         }
       }
@@ -106,7 +106,7 @@
 
   .dropdown-menu > li > a {
     &:hover, &:focus {
-      color: #ffd304;
+      color: $yellow;
     }
   }
 
@@ -136,136 +136,302 @@
   }
 
   .btn-fb {
-    color: #fff;
+    color: $white;
     background-color: #3b5998;
     &:hover {
-      color: #fff;
+      color: $white;
       background-color: #496ebc;
     }
   }
 
   .btn-tw {
-    color: #fff;
+    color: $white;
     background-color: #55acee;
     &:hover {
-      color: #fff;
+      color: $white;
       background-color: #59b5fa;
     }
   }
 
   /* ===== Media ===== */
-  @media (min-width: 1098px) and (max-width: 1199px) {
-    nav > .container {
-      width: 1100px;
-    }
-  }
-  @media (min-width: 920px) and (max-width: 1099px) {
-    nav > .container {
-      width: 920px;
-    }
-    .navbar .container {
-      .navbar-header .logo-block {
-        .title {
-          font-size: 1rem;
-          top: 25px;
-        }
-        width: 140px;
-      }
-      .navbar-collapse ul.navbar-nav > li > a {
-        font-size: 13px;
-      }
-    }
-    .nav > li > a {
-      padding: 15px 10px;
-    }
-  }
-  @media (min-width: 820px) and (max-width: 919px) {
-    nav > .container {
-      width: 820px;
-    }
-    .navbar .container {
-      .navbar-header .logo-block {
-        .title {
-          font-size: 1rem;
-          top: 25px;
-        }
-        width: 140px;
-      }
-      .navbar-collapse ul.navbar-nav > li > a {
-        font-size: 12px;
-      }
-    }
-    .nav > li > a {
-      padding: 15px 8px;
-    }
-  }
-  @media (min-width: 768px) and (max-width: 819px) {
-    nav > .container {
-      width: 768px;
-    }
-    .navbar .container {
-      .navbar-header .logo-block {
-        .title {
-          font-size: 1rem;
-          top: 27px;
-        }
-        width: 130px;
-      }
-      .navbar-collapse ul.navbar-nav > li > a {
-        font-size: 11px;
-      }
-    }
-    .nav > li > a {
-      padding: 15px 8px;
-    }
-  }
-  @media (max-width: 767px) {
+  @media (min-width: 1200px){
     .navbar {
       .container {
-        padding: 0 20px;
-      }
-    }
-    nav.min .container .navbar-header button.navbar-toggle {
-      margin-top: 8px;
-    }
-    .navbar .container .navbar-header .logo-block {
-      margin-left: 10px;
-    }
-    nav {
-      &.min .container .navbar-header .logo-block {
-        margin-left: 10px;
-      }
-      .container .navbar-header button.navbar-toggle {
-        margin-top: 15px;
-      }
-    }
-    .navbar .container .navbar-collapse {
-      overflow-y: visible;
-      border: none;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      ul.navbar-nav {
-        float: none;
-        background: #0c2231;
-        > li > a {
-          &:hover, &:focus {
-            border: none;
-            padding-bottom: 10px;
+        .navbar-header {
+          .lang-block-mobile {
+            display: none;
           }
         }
       }
     }
-    nav .container .navbar-collapse ul > li {
-      text-align: center;
+  }
+  @media (min-width: 1098px) and (max-width: 1199px) {
+    .navbar {
+      .container {
+        width: 1100px;
+        .navbar-header {
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+      }
     }
   }
-  @media (max-width: 768px) {
-    #login-dp {
-      background-color: inherit;
-      color: #fff;
-      .bottom {
-        background-color: inherit;
-        border-top: 0 none;
+  @media (min-width: 920px) and (max-width: 1099px) {
+    .navbar {
+      .container {
+        width: 920px;
+        .navbar-header {
+          .logo-block {
+            width: 140px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 25px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 13px;
+                padding: 15px 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 820px) and (max-width: 919px) {
+    .navbar {
+      .container {
+        width: 820px;
+        .navbar-header {
+          .logo-block {
+            width: 140px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 25px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 12px;
+                padding: 15px 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 819px) {
+    .navbar {
+      .container {
+        width: 768px;
+        .navbar-header {
+          .logo-block {
+            width: 130px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 23px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 11px;
+                padding: 15px 4px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 321px) and (max-width: 767px) {
+    .navbar {
+      .container {
+        padding: 0;
+        .navbar-header {
+          margin: 0;
+          .navbar-toggle {
+            margin-top: 15px;
+            margin-right: 3px;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+              background-color: #ffffff;
+              height: 3px;
+              top: 10px;
+              left: 40px;
+            }
+          }
+          .logo-block {
+            position: absolute;
+            margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1.2rem;
+                top: 6px;
+                left: 42px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+        }
+        .navbar-collapse {
+          overflow-y: visible;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
+            float: none;
+            margin: 0;
+            background: $dark-blue;
+            > li {
+              text-align: center;
+              a {
+                &:hover,
+                &:focus {
+                  border: none;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .navbar {
+      height: 63px;
+      .container {
+        padding: 0;
+        .navbar-header {
+          margin: 0;
+          .navbar-toggle {
+            margin-right: 0;
+            margin-top: 15px;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+              background-color: #ffffff;
+              height: 3px;
+              top: 10px;
+              left: 40px;
+            }
+          }
+          .logo-block {
+            position: absolute;
+            margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1rem;
+                top: 6px;
+                left: 42px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+        }
+        .navbar-collapse {
+          overflow-y: visible;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
+            float: none;
+            margin: 0;
+            background: $dark-blue;
+            > li {
+              text-align: center;
+              a {
+                &:hover,
+                &:focus {
+                  border: none;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -284,6 +450,9 @@
           = image_tag('navbar/logo.svg', class: 'logo')
           %p.title
             =t('.application_title')
+      -#Render language switcher menu
+      .lang-block-mobile
+        = render partial: 'layouts/navbar/lang'
 
     -# Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
@@ -324,6 +493,11 @@
       -#            Вперше?
       -#            %a{:href => "#"}
       -#              %b Зареєструватись
+
+      -#Render language switcher menu
+      .lang-block
+        = render partial: 'layouts/navbar/lang'
+
       %ul.nav.navbar-nav
 
         -#Build items-menu
@@ -355,12 +529,8 @@
         -#Build link to modules (backend)
         - if current_user && current_user.is_locked? == false
           %li= link_to t('.editor'), editor_index_path
-
         = render partial: 'layouts/navbar/nav_admin'
-      -#TODO: Insert lang switcher into header menu
-      -# Lang switcher
-      -#.navbar-right.block-lng.clearfix
-      -#  = render partial: 'layouts/navbar/lang'
+
 :javascript
    // ****** Menu resize on scroll ***** //
   $(window).scroll(function() {

@@ -1,45 +1,150 @@
+-#:scss
+-#  .budget_actions{
+-#    img{
+-#      width: 18px;
+-#      margin: 0px 5px;
+-#    }
+-#  }
+-#  #pdf_docs{
+-#  .budget_actions > a > i{
+-#    font-size: 1.5em;
+-#  }
+-#  }
+-#-if (user_signed_in?)
+-#  .buttons
+-#    = link_to t('.new_export'),new_export_budget_path,:class => 'btn btn-large btn-primary'
+-#    -#= link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true
+-#    -#= render partial: 'export_budgets/modal'
+-#-unless (export_budgets.blank?)
+-#  .row
+-#    .col-xs-3
+-#      %h4
+-#        =t('.year')
+-#    .col-xs-4
+-#      %h4
+-#        =t('.title')
+-#    .col-xs-5
+-#      %h4
+-#        =t('actions')
+-#    - export_budgets.each do |export_budget|
+-#      .row
+-#        .col-xs-3
+-#          %h5
+-#            = export_budget.year
+-#        .col-xs-4
+-#          %h5
+-#            = export_budget.title
+-#        .col-xs-5.budget_actions
+-#          = link_to image_tag('icons/loupe.png'), export_budget
+-#          = link_to create_pdf_path(export_budget,format: :pdf) do
+-#            %i.fa.fa-file-pdf-o
+-#          -if(export_budget.user_can_edit?(current_user))
+-#            = link_to image_tag('icons/pencil.png'),edit_export_budget_path(export_budget)
+-#            = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
+-#-else
+-#  =t('.no_data')
+
 :scss
-  .budget_actions{
-    img{
-      width: 18px;
-      margin: 0px 5px;
+  .town_budget_documents{
+    .header{
+      border-bottom: 3px solid #ffd304;
+      margin-bottom: 25px;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    .budgets_container{
+      display: flex;
+      margin-top: 15px;
+      -webkit-flex-flow: row wrap;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .budget_document{
+        .year{
+          text-align: center;
+          font-size: 25px;
+          padding-bottom: 5px;
+        }
+        .page_for_pdf{
+          //zoom: 20%;
+        }
+        .first_page_pdf{
+          width: 160px;
+          height: 230px;
+          .page_for_pdf{
+            padding: 5px;
+            width: 100% !important;
+            height: 100% !important;
+            .col-xs-12:first-child{
+              padding: 5% 20% 0 20% !important;
+            }
+            .col-xs-12:last-child{
+              padding: 5% 0 5px 0 !important;
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+            }
+            #title_page_title {
+              height: 60px;
+              overflow-y: auto;
+              font-size: 15px !important;
+              text-transform: uppercase;
+            }
+            #title_page_title::-webkit-scrollbar {
+              width: 5px;
+              height: 5px;
+              border-radius: 3px;
+              background: #E4E4E4;
+            }
+            #title_page_city{
+              font-size: 14px !important;
+              padding-top: 10px !important;
+            }
+            #title_page_year{
+              font-size: 14px !important;
+              padding-top: 0px !important;
+            }
+          }
+        }
+        .download{
+          padding-top: 10px;
+          text-align: center;
+          font-size: 18px;
+          text-transform: uppercase;
+          a{
+            color: #0B365A;
+            text-decoration: none;
+          }
+          a:hover{
+            color: #428bca;
+          }
+        }
+      }
     }
   }
-  #pdf_docs{
-  .budget_actions > a > i{
-    font-size: 1.5em;
-  }
-  }
--if (user_signed_in?)
-  .buttons
-    = link_to t('.new_export'),new_export_budget_path,:class => 'btn btn-large btn-primary'
-    -#= link_to 'All items', '#my-modal', id: 'mWindow', :class => 'btn btn-large btn-primary', :remote => true
-    -#= render partial: 'export_budgets/modal'
--unless (export_budgets.blank?)
-  .row
-    .col-xs-3
-      %h4
-        =t('.year')
-    .col-xs-4
-      %h4
-        =t('.title')
-    .col-xs-5
-      %h4
-        =t('actions')
-    - export_budgets.each do |export_budget|
-      .row
-        .col-xs-3
-          %h5
-            = export_budget.year
-        .col-xs-4
-          %h5
-            = export_budget.title
-        .col-xs-5.budget_actions
-          = link_to image_tag('icons/loupe.png'), export_budget
-          = link_to create_pdf_path(export_budget,format: :pdf) do
-            %i.fa.fa-file-pdf-o
-          -if(export_budget.user_can_edit?(current_user))
-            = link_to image_tag('icons/pencil.png'),edit_export_budget_path(export_budget)
-            = link_to image_tag('icons/X_icon.png'), export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
--else
-  =t('.no_data')
+
+.town_budget_documents
+  %h3.header Громадський бюджет
+  %p
+    Громадський бюджет - це зрозуміла форма презентації основних бюджетних документів та
+    результатів іх впровадження. Він покликаний в доступній формі та доступною мовою дати
+    громадянам розуміння ключових аспектів формування, результатів виконання та контролю
+    за виконанням міського бюджету. Громадський бюджет надає короткий екскурс до ключових
+    документів міста та головних результатів його функціонування з точки зору корисності іх
+    для пересічного громадянина. Показники функціонування міста не обов'язково є безпосереднім
+    результатом діяльності міськради чи її виконавчих органів, проте істотно впливають на життя громадян.
+  %p
+    Громадський бюджет сприяє підвищенню прозорості та доступності основної бюджетної
+    інформації, результатів діяльності органів влади на місцях, коли будь-якому
+    користувачеві стає зрозуміло, яким чином міська влада здійснює акумулювання,
+    розподіл і використання коштів міського бюджету.
+  .budgets_container
+    - @town_export_budgets.order.order(year: :desc).each do |budget|
+      .budget_document
+        .year
+          = budget.year
+        .first_page_pdf
+          = budget.pages[:title_page].html_safe if budget.pages
+        .download
+          =link_to create_pdf_path(budget,format: :pdf) do
+            %i.fa.fa-download
+            Скачати
