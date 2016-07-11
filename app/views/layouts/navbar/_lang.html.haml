@@ -1,6 +1,9 @@
 :scss
   .lang-switcher {
+    float: right;
+    padding-top: 37px;
     li {
+      display: inline-block;
       opacity: .8;
       a {
         padding: 15px 5px;
@@ -23,7 +26,7 @@
   }
 
 
-%ul.nav.navbar-nav.lang-switcher.right
+%ul.lang-switcher
   - if I18n.locale == I18n.default_locale
     %li.active
       =link_to(image_tag('lang_ua.png'))
