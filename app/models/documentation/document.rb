@@ -48,8 +48,8 @@ class Documentation::Document
   end
 
   def self.get_grouped_documents_for_town(town)
-    # get documents by town and not locked and sort by title
-    documents = self.get_documents_by_town(town).unlocked.sort_by!{|doc| doc.title ? doc.title : ""  }
+    # get documents by town and not locked
+    documents = self.get_documents_by_town(town).unlocked.order("yearFrom DESC")
 
     res_hash = {}
     # group documents by year

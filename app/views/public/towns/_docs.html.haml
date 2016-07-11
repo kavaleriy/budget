@@ -1,10 +1,63 @@
+:scss
+  .panel{
+    .panel-heading{
+      .panel-title{
+        a{
+          text-decoration: none;
+          .toggle-year{
+            text-align: center;
+            width: 15px;
+            display: inline-block;
+            background-color: black;
+            color: white;
+          }
+          .year-title{
+            display: inline-block;
+          }
+        }
+      }
+
+
+    }
+
+  }
+
+  .doc-wrapper{
+    margin: 10px 0;
+    height: 60px;
+    overflow: hidden;
+    .doc-img{
+
+    }
+  }
 .row-eq-height
-  -binding.pry
-  - @documents.each do |document|
-    -#- if document.doc_file?
-    -#.col-xs-12.col-sm-6.col-md-4.document
-    -#  = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
-    -#    %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-    -#    = document.title.truncate(30)
-    -#    %br
-    -#    = document.category.title unless document.category.nil?
+  - @documents.each do |year,documents_by_year|
+    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      .panel.panel-default
+        .panel-heading{id: "heading_#{year}",:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapse_#{year}", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapse_#{year}", :role => "button"}
+              .toggle-year
+                +
+              .year-title
+                = year
+        .panel-collapse.collapse{id: "collapse_#{year}","aria-labelledby" => "heading_#{year}", :role => "tabpanel"}
+          .panel-body
+            - documents_by_year.each do |group_title , documents_by_group |
+              -branch_id = documents_by_group.first.branch_id.to_s
+              .panel-group{id: "accordion_#{branch_id}", "aria-multiselectable" => "true", :role => "tablist"}
+                .panel.panel-default
+                  #headingOne.panel-heading{:role => "tab"}
+                    %h4.panel-title
+
+                      %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion_#{branch_id}", "data-toggle" => "collapse", :href => "#collapse_#{branch_id}_#{year}", :role => "button"}
+                        = group_title
+                  .panel-collapse.collapse.in{id: "collapse_#{branch_id}_#{year}","aria-labelledby" => "headingOne", :role => "tabpanel"}
+                    .panel-body
+                      -documents_by_group.each do |document|
+                        .col-md-3.doc-wrapper
+                          .doc-img.col-xs-4
+                            -#= image_tag ('new_design/icons/file-exel.svg')
+                            = image_tag(get_image_path_by_doc_type(document.doc_file))
+                          .doc-title.col-xs-8
+                            = get_beautiful_doc_title(document.title)
