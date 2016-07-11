@@ -75,57 +75,27 @@
               background: #807023;
               text-decoration: none;
             }
-            img {
-              width: 20px;
+            svg {
+              position: relative;
+              margin: -17px -12px;
+              width: 45px;
+              height: 45px;
+              fill: $white;
+            }
+            p {
+              padding-left: 1.7rem;
+              margin: 0;
+              display: inline-block;
             }
           }
-          //&:nth-child(1) {
-          //  a {
-          //    &:before {
-          //      content: '\f201';
-          //    }
-          //  }
-          //}
-          //&:nth-child(2) {
-          //  a {
-          //    &:before {
-          //      content: '\f200';
-          //    }
-          //  }
-          //}
-          //&:nth-child(3) {
-          //  a {
-          //    &:before {
-          //      content: '\f0f6';
-          //    }
-          //  }
-          //}
-          //&:nth-child(4) {
-          //  a {
-          //    &:before {
-          //      content: '\f0c1';
-          //    }
-          //  }
-          //}
-          //&:nth-child(5) {
-          //  a {
-          //    &:before {
-          //      content: '\f09d';
-          //    }
-          //  }
-          //}
-          //&:nth-child(6) {
-          //  a {
-          //    &:before {
-          //      content: '\f1c1';
-          //    }
-          //  }
-          //}
         }
         .active {
           background: $yellow;
           a{
             color: $dark-blue;
+            svg {
+              fill: $dark-blue;
+            }
           }
         }
         .button {
@@ -171,11 +141,8 @@
       transition: transform .5s;
       width: calc(100% - 50px);
       .content-wrapper {
-        //padding-top: 30px;
-        //position: relative;
         display: block;
         height: auto;
-        //overflow: auto;
         .tab-content {
           #description {
             .infobox {
@@ -248,26 +215,35 @@
     %ul.sidebar-nav
       %li
         =link_to '#description', data: {toggle: "tab"} do
-          = image_tag('icons/town_profile_sidebar/info_white.svg')
-          = t('public.towns.portfolio.description')
+          = inline_svg('icons/town_profile_sidebar/info.svg')
+          %p
+            = t('public.towns.portfolio.description')
       %li.active
         =link_to '#portfolio', data: {toggle: "tab"} do
-          = t('public.towns.portfolio.visuals')
-          %span.badge.bsize.count#town_items_length
+          = inline_svg('icons/town_profile_sidebar/chart.svg')
+          %p
+            = t('public.towns.portfolio.visuals')
+            %span.badge.bsize.count#town_items_length
       -#= @town_items.length.to_s
       %li
         =link_to '#documents', data: {toggle: "tab"} do
-          = t('public.towns.portfolio.documents')
-          %span.badge.bsize.count
-            = @documents.length
+          = inline_svg('icons/town_profile_sidebar/docs.svg')
+          %p
+            = t('public.towns.portfolio.documents')
+            %span.badge.bsize.count
+              = @documents.length
       %li
         =link_to '#links', data: {toggle: "tab"} do
-          = t('public.towns.portfolio.town_links')
-          %span.badge.bsize.count
-            = @town_br_links.length
+          = inline_svg('icons/town_profile_sidebar/link.svg')
+          %p
+            = t('public.towns.portfolio.town_links')
+            %span.badge.bsize.count
+              = @town_br_links.length
       %li
         =link_to '#pub_budget', data: {toggle: "tab"} do
-          = t('public.towns.portfolio.pub_budget')
+          = inline_svg('icons/town_profile_sidebar/folder.svg')
+          %p
+            = t('public.towns.portfolio.pub_budget')
 
       -#%li
       -#  %a{"data-toggle" => "tab", :href => "#pdf_docs"}
