@@ -1,5 +1,109 @@
-.row-eq-height
-  - @documents.each do |document|
+:scss
+  .town_budget_documents{
+    .header{
+      border-bottom: 3px solid #ffd304;
+      margin-bottom: 25px;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    .budgets_container{
+      display: flex;
+      margin-top: 15px;
+      -webkit-flex-flow: row wrap;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .budget_document{
+        .year{
+          text-align: center;
+          font-size: 25px;
+          padding-bottom: 5px;
+        }
+        .page_for_pdf{
+          //zoom: 20%;
+        }
+        .first_page_pdf{
+          width: 160px;
+          height: 230px;
+          .page_for_pdf{
+            padding: 5px;
+            width: 100% !important;
+            height: 100% !important;
+            .col-xs-12:first-child{
+              padding: 5% 20% 0 20% !important;
+            }
+            .col-xs-12:last-child{
+              padding: 5% 0 5px 0 !important;
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+            }
+            #title_page_title {
+              height: 60px;
+              overflow-y: auto;
+              font-size: 15px !important;
+              text-transform: uppercase;
+            }
+            #title_page_title::-webkit-scrollbar {
+              width: 5px;
+              height: 5px;
+              border-radius: 3px;
+              background: #E4E4E4;
+            }
+            #title_page_city{
+              font-size: 14px !important;
+              padding-top: 10px !important;
+            }
+            #title_page_year{
+              font-size: 14px !important;
+              padding-top: 0px !important;
+            }
+          }
+        }
+        .download{
+          padding-top: 10px;
+          text-align: center;
+          font-size: 18px;
+          text-transform: uppercase;
+          a{
+            color: #0B365A;
+            text-decoration: none;
+          }
+          a:hover{
+            color: #428bca;
+          }
+        }
+      }
+    }
+  }
+
+.town_budget_documents
+  %h3.header Громадський бюджет
+  %p
+    Громадський бюджет - це зрозуміла форма презентації основних бюджетних документів та
+    результатів іх впровадження. Він покликаний в доступній формі та доступною мовою дати
+    громадянам розуміння ключових аспектів формування, результатів виконання та контролю
+    за виконанням міського бюджету. Громадський бюджет надає короткий екскурс до ключових
+    документів міста та головних результатів його функціонування з точки зору корисності іх
+    для пересічного громадянина. Показники функціонування міста не обов'язково є безпосереднім
+    результатом діяльності міськради чи її виконавчих органів, проте істотно впливають на життя громадян.
+  %p
+    Громадський бюджет сприяє підвищенню прозорості та доступності основної бюджетної
+    інформації, результатів діяльності органів влади на місцях, коли будь-якому
+    користувачеві стає зрозуміло, яким чином міська влада здійснює акумулювання,
+    розподіл і використання коштів міського бюджету.
+  .budgets_container
+    - @town_export_budgets.order.order(year: :desc).each do |budget|
+      .budget_document
+        .year
+          = budget.year
+        .first_page_pdf
+          = budget.pages[:title_page].html_safe if budget.pages
+        .download
+          =link_to create_pdf_path(budget,format: :pdf) do
+            %i.fa.fa-download
+            Скачати
+
+  -#- @documents.each do |document|
     - if document.doc_file?
       .col-xs-12.col-sm-6.col-md-4.document
         = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
