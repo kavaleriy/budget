@@ -29,11 +29,11 @@
 %ul.lang-switcher
   - if I18n.locale == I18n.default_locale
     %li.active
-      =link_to(image_tag('lang_ua.png'))
+      =link_to(image_tag('icons/langs/flag_of_ukraine.svg'))
     %li
-      =link_to(image_tag('lang_en.png'), :locale=>'en')
+      =link_to(image_tag('icons/langs/flag_of_the_united_kingdom.svg'), :locale=>'en')
   - else
     %li.active
-      =link_to(image_tag('lang_en.png'))
+      =link_to(image_tag('icons/langs/flag_of_the_united_kingdom.svg'))
     %li
-      =link_to(image_tag('lang_ua.png'), :locale=>'uk')
+      =link_to(image_tag('icons/langs/flag_of_ukraine.svg'), :locale=>'uk')
