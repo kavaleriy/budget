@@ -1,113 +1,110 @@
 :scss
-  .town_budget_documents{
-    .header{
-      border-bottom: 3px solid #ffd304;
-      margin-bottom: 25px;
-      padding-bottom: 5px;
-      display: inline-block;
+  .panel-group {
+    .panel-heading + .panel-collapse {
+      .panel-body{
+        border-top: none;
+      }
     }
-    .budgets_container{
-      display: flex;
-      margin-top: 15px;
-      -webkit-flex-flow: row wrap;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      .budget_document{
-        .year{
-          text-align: center;
-          font-size: 25px;
-          padding-bottom: 5px;
-        }
-        .page_for_pdf{
-          //zoom: 20%;
-        }
-        .first_page_pdf{
-          width: 160px;
-          height: 230px;
-          .page_for_pdf{
-            padding: 5px;
-            width: 100% !important;
-            height: 100% !important;
-            .col-xs-12:first-child{
-              padding: 5% 20% 0 20% !important;
-            }
-            .col-xs-12:last-child{
-              padding: 5% 0 5px 0 !important;
-              display: flex;
-              flex-direction: column;
-              width: 100%;
-            }
-            #title_page_title {
-              height: 60px;
-              overflow-y: auto;
-              font-size: 15px !important;
-              text-transform: uppercase;
-            }
-            #title_page_title::-webkit-scrollbar {
-              width: 5px;
-              height: 5px;
-              border-radius: 3px;
-              background: #E4E4E4;
-            }
-            #title_page_city{
-              font-size: 14px !important;
-              padding-top: 10px !important;
-            }
-            #title_page_year{
-              font-size: 14px !important;
-              padding-top: 0px !important;
-            }
+  }
+  .custom-panel{
+    /* -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); */
+    box-shadow: none;
+    .panel-heading{
+      .panel-title{
+        a{
+          text-decoration: none;
+          .toggle-by-key{
+            font-weight: bold;
+            margin-right: 10px;
+            text-align: center;
+            width: 15px;
+            display: inline-block;
+            background-color: black;
+            color: white;
           }
-        }
-        .download{
-          padding-top: 10px;
-          text-align: center;
-          font-size: 18px;
-          text-transform: uppercase;
-          a{
-            color: #0B365A;
-            text-decoration: none;
-          }
-          a:hover{
-            color: #428bca;
+          .doc-info-title{
+            display: inline-block;
           }
         }
       }
     }
+    .panel-collapse{
+      .custom-panel-body{
+        border: none;
+        padding-bottom: 0px;
+      }
+      .docs-panel-body{
+        padding: 15px 0 0 0;
+        .doc-wrapper{
+          margin: 10px 0;
+          height: 60px;
+          overflow: hidden;
+          .doc-img{
+
+          }
+          .doc-title{
+            color: blue;
+          }
+        }
+      }
+    }
+
   }
 
-.town_budget_documents
-  %h3.header Громадський бюджет
-  %p
-    Громадський бюджет - це зрозуміла форма презентації основних бюджетних документів та
-    результатів іх впровадження. Він покликаний в доступній формі та доступною мовою дати
-    громадянам розуміння ключових аспектів формування, результатів виконання та контролю
-    за виконанням міського бюджету. Громадський бюджет надає короткий екскурс до ключових
-    документів міста та головних результатів його функціонування з точки зору корисності іх
-    для пересічного громадянина. Показники функціонування міста не обов'язково є безпосереднім
-    результатом діяльності міськради чи її виконавчих органів, проте істотно впливають на життя громадян.
-  %p
-    Громадський бюджет сприяє підвищенню прозорості та доступності основної бюджетної
-    інформації, результатів діяльності органів влади на місцях, коли будь-якому
-    користувачеві стає зрозуміло, яким чином міська влада здійснює акумулювання,
-    розподіл і використання коштів міського бюджету.
-  .budgets_container
-    - @town_export_budgets.order.order(year: :desc).each do |budget|
-      .budget_document
-        .year
-          = budget.year
-        .first_page_pdf
-          = budget.pages[:title_page].html_safe if budget.pages
-        .download
-          =link_to create_pdf_path(budget,format: :pdf) do
-            %i.fa.fa-download
-            Скачати
+.bootstrap_flash
+  = bootstrap_flash
+.row-eq-height
+  - @documents.each do |year,documents_by_year|
+    .panel-group.main-panel{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
+      .panel.custom-panel
+        .panel-heading{id: "heading_#{year}",:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapse_#{year}", "aria-expanded" => "false", "data-parent" => "#accordion_#{year}", "data-toggle" => "collapse", :href => "#collapse_#{year}", :role => "button"}
+              .toggle-by-key
+                +
+              .doc-info-title
+                = year
+        .panel-collapse.collapse{id: "collapse_#{year}","aria-labelledby" => "heading_#{year}", :role => "tabpanel"}
+          .panel-body.custom-panel-body
+            - documents_by_year.each do |group_title , documents_by_group |
+              -branch_id = documents_by_group.first.branch_id.to_s
+              .panel-group{id: "accordion_#{year}_#{branch_id}", "aria-multiselectable" => "true", :role => "tablist"}
+                .panel.custom-panel
+                  .panel-heading{ id: "heading_#{year}_#{branch_id}", :role => "tab"}
+                    %h4.panel-title
+                      %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion_#{year}_#{branch_id}", "data-toggle" => "collapse", :href => "#collapse_#{branch_id}_#{year}", :role => "button"}
+                        .toggle-by-key
+                          +
+                        .doc-info-title
+                          = group_title
+                  .panel-collapse.collapse{id: "collapse_#{branch_id}_#{year}","aria-labelledby" => "heading_#{year}_#{branch_id}", :role => "tabpanel"}
+                    .panel-body.custom-panel-body.docs-panel-body
+                      -documents_by_group.each do |document|
+                        -if document.doc_file?
+                          = link_to documentation_document_download_path(document) do
+                            .col-md-3.doc-wrapper
+                              .doc-img.col-xs-4
+                                -#= image_tag ('new_design/icons/file-exel.svg')
+                                = image_tag(get_image_path_by_doc_type(document.doc_file))
+                              .doc-title.col-xs-8
+                                = get_beautiful_doc_title(document.title)
 
-  -#- @documents.each do |document|
-    - if document.doc_file?
-      .col-xs-12.col-sm-6.col-md-4.document
-        = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
-          %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-          = document.title.truncate(30)
-          %br
-          = document.category.title unless document.category.nil?
+:javascript
+  $(document).ready(function() {
+    $('a[data-toggle="collapse"]').click(function(){
+      var active_dom = $(document).find($(this).attr('href'));
+      var sign_dom = $(this).find('.toggle-by-key');
+      var value = $.trim(sign_dom.html())
+      if(value == '+'){
+        sign_dom.html('-');
+      }else if(value == '-'){
+        sign_dom.html('+');
+      }
+      active_dom.toggleClass('opened');
+    });
+    $('.main-panel').first().find('a[data-toggle="collapse"]').first().trigger('click');
+    $('.opened').find('a[data-toggle="collapse"]').first().trigger('click');
+    // $('.custom-panel').first().find('.in[role="tabpanel"]').first().find('a[data-toggle="collapse"]').first().trigger('click');
+
+
+  });
