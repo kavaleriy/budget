@@ -158,6 +158,11 @@
     .navbar {
       .container {
         width: 1100px;
+        .navbar-header {
+          .lang-block-mobile {
+            display: none;
+          }
+        }
       }
     }
   }
@@ -175,22 +180,26 @@
               }
             }
           }
+          .lang-block-mobile {
+            display: none;
+          }
         }
         .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
           ul.navbar-nav {
             > li {
               > a {
                 font-size: 13px;
                 padding: 15px 8px;
-              }
-            }
-          }
-          .lang-block {
-            ul.navbar-nav {
-              > li {
-                > a {
-                  padding: 15px 2px;
-                }
               }
             }
           }
@@ -212,22 +221,26 @@
               }
             }
           }
+          .lang-block-mobile {
+            display: none;
+          }
         }
         .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
           ul.navbar-nav {
             > li {
               > a {
                 font-size: 12px;
                 padding: 15px 8px;
-              }
-            }
-          }
-          .lang-block {
-            ul.navbar-nav {
-              > li {
-                > a {
-                  padding: 15px 2px;
-                }
               }
             }
           }
@@ -245,12 +258,25 @@
             a {
               .title {
                 font-size: 1rem;
-                top: 27px;
+                top: 23px;
               }
             }
           }
+          .lang-block-mobile {
+            display: none;
+          }
         }
         .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
           ul.navbar-nav {
             > li {
               > a {
@@ -259,20 +285,11 @@
               }
             }
           }
-          .lang-block {
-            ul.navbar-nav {
-              > li {
-                > a {
-                  padding: 15px 2px;
-                }
-              }
-            }
-          }
         }
       }
     }
   }
-  @media (max-width: 767px) {
+  @media (min-width: 321px) and (max-width: 767px) {
     .navbar {
       .container {
         padding: 0;
@@ -280,15 +297,36 @@
           margin: 0;
           .navbar-toggle {
             margin-top: 15px;
+            margin-right: 3px;
             background-color: transparent;
             border: none;
             .icon-bar {
               background-color: #ffffff;
               height: 3px;
+              top: 10px;
+              left: 40px;
             }
           }
           .logo-block {
+            position: absolute;
             margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1.2rem;
+                top: 6px;
+                left: 42px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
           }
         }
         .navbar-collapse {
@@ -301,6 +339,7 @@
           }
           ul.navbar-nav {
             float: none;
+            margin: 0;
             background: $dark-blue;
             > li {
               text-align: center;
@@ -317,21 +356,71 @@
       }
     }
   }
-  @media (max-width: 768px) {
+  @media (max-width: 320px) {
     .navbar {
+      height: 63px;
       .container {
         padding: 0;
         .navbar-header {
           margin: 0;
+          .navbar-toggle {
+            margin-right: 0;
+            margin-top: 15px;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+              background-color: #ffffff;
+              height: 3px;
+              top: 10px;
+              left: 40px;
+            }
+          }
+          .logo-block {
+            position: absolute;
+            margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1rem;
+                top: 6px;
+                left: 42px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
         }
-      }
-    }
-    #login-dp {
-      background-color: inherit;
-      color: #fff;
-      .bottom {
-        background-color: inherit;
-        border-top: 0 none;
+        .navbar-collapse {
+          overflow-y: visible;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
+            float: none;
+            margin: 0;
+            background: $dark-blue;
+            > li {
+              text-align: center;
+              a {
+                &:hover,
+                &:focus {
+                  border: none;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -350,6 +439,9 @@
           = image_tag('navbar/logo.svg', class: 'logo')
           %p.title
             =t('.application_title')
+      -#Render language switcher menu
+      .lang-block-mobile
+        = render partial: 'layouts/navbar/lang'
 
     -# Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
