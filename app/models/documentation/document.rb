@@ -61,7 +61,10 @@ class Documentation::Document
       year_documents = documents_by_year.group_by(&:branch_id)
 
       # transform keys for readeble title
-      res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
+      unless res_hash.empty?
+        res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
+      end
+
     end
     res_hash
   end
