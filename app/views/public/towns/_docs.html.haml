@@ -61,7 +61,7 @@
 
 .bootstrap_flash
   = bootstrap_flash
-.row
+.row.docs-breadcrumbs
   .pull-left
     =render partial: 'widgets/town_profile/module_breadcrumbs',locals: { init_text:  t('public.towns.portfolio.documents') }
   .pull-right
@@ -99,16 +99,17 @@
                     .panel-body.custom-panel-body.docs-panel-body
                       -documents_by_group.each do |document|
                         =render partial: 'public/towns/documents/alone_document', locals: {alone_document: document}
-                        -#-#-if document.doc_file?
-                        -#= link_to documentation_document_download_path(document) do
-                        -#  .col-md-3.doc-wrapper
-                        -#    .doc-img.col-xs-4
-                        -#      -#= image_tag ('new_design/icons/file-exel.svg')
-                        -#      = image_tag(get_image_path_by_doc_type(document.doc_file))
-                        -#    .doc-title.col-xs-8
-                        -#      = get_beautiful_doc_title(document.title)
 
 :javascript
+  function renderDocs(){
+    $.ajax({
+      url: "#{public_towns_render_docs_path}",
+      dataType: 'script',
+      data: {town_id: '#{@town.id}' }
+    })
+  }
+
+
   $(document).ready(function() {
     $('a[data-toggle="collapse"]').click(function(){
       var active_dom = $(document).find($(this).attr('href'));
@@ -133,12 +134,19 @@
         $.ajax({
           url: '/public/documents/find_by_title_part',
           dataType: 'script',
-          data: {query: query, town_id: town_id}
+          data: {query: query, town_id: town_id},
+          success: function(data){
+            addBreadcrumbs(I18n.t('found_docs'),'#');
+          }
         });
       }else{
         alert('Введіть міннімум три символи');
       }
     });
-
+    $('.breadcrumb > li:first-child').click(function() {
+      if(!$(this).hasClass('active')){
+        renderDocs();
+      }
+    });
 
   });
