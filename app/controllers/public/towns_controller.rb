@@ -1,9 +1,9 @@
 class Public::TownsController < ApplicationController
   include ControllerCaching
   layout 'town_profile'
-  before_action :set_town, only: [:show, :budget]
+  before_action :set_town, only: [:show, :budget,:render_docs]
 
-  before_action :set_documents, only: [:show]
+  before_action :set_documents, only: [:show,:render_docs]
 
   def index
     @towns = Town.all
@@ -29,7 +29,11 @@ class Public::TownsController < ApplicationController
 
   end
 
-
+  def render_docs
+    respond_to do |format|
+      format.js {render 'public/towns/documents/render_docs'}
+    end
+  end
   def budget
     # this code for taxonomies dropdown list
     # @taxonomy_rot_list = TaxonomyRot.owned_by(@town.title)

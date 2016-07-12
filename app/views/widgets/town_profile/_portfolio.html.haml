@@ -152,7 +152,7 @@
   }
 
 .modules
-  =render partial: 'module_breadcrumbs'
+  =render partial: 'module_breadcrumbs',locals: {init_text: t('new_design.town_profile.avaliable_modules')}
   .modules-wrapper
     -@town_items.each do |item|
       .col-xs-12.col-sm-6.col-md-4.module
