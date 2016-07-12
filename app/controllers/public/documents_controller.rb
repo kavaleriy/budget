@@ -45,4 +45,11 @@ class Public::DocumentsController < ApplicationController
       format.js{ render js_view }
     end
   end
+
+  def find_by_title_part
+    @documents = Documentation::Document.get_documents_by_town(params[:town_id]).get_by_part_of_title(params[:query]).unlocked
+    respond_to do |format|
+      format.js {render 'public/documents/new_design/search_result'}
+    end
+  end
 end

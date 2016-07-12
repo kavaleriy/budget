@@ -316,6 +316,8 @@ Rails.application.routes.draw do
 
     get 'documents' => 'documents#index'
 
+    get 'documents/find_by_title_part' => 'documents#find_by_title_part',as: 'documents_find_by_title_part'
+
     get 'towns/:town_id' => 'towns#show'
 
     get 'budget_files/:town_id' => 'towns#budget', as: 'budget_files'

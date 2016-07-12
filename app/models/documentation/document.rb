@@ -9,6 +9,7 @@ class Documentation::Document
   skip_callback :update, :before, :store_previous_model_for_doc_file
 
   scope :get_documents_by_town,-> (town) {where(town: town)}
+  scope :get_by_part_of_title, -> (q) { where(:title => Regexp.new(".*#{q}.*")) }
   scope :unlocked, -> {where({ :locked.in => [false, nil] } )}
   belongs_to :branch, class_name: 'Documentation::Branch'
   belongs_to :town
