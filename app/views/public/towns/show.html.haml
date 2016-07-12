@@ -238,7 +238,7 @@
           %p
             = t('public.towns.portfolio.town_links')
             %span.badge.bsize.count
-              = @town_br_links.length
+              = @town_links.length
       %li
         =link_to '#pub_budget', data: {toggle: "tab"} do
           = inline_svg('icons/town_profile_sidebar/folder.svg')
@@ -268,25 +268,8 @@
         #documents.tab-pane.fade
           = render partial: 'docs'
         #links.tab-pane.fade
-          - @town_links.each do |key,tl|
+          =render partial: 'links'
 
-            - counter = 1
-            .col-sm-12.col-md-5.col-lg-6
-              -#.container
-              .accordion
-                %dl
-                  %dt
-                    %a.accordion-title.accordionTitle.js-accordionTrigger{"aria-controls" => "accordion#{counter}", "aria-expanded" => "false", :href => "#accordion#{counter}"}
-                      =tl['title']
-                  %dd#accordion1.accordion-content.accordionItem.is-collapsed{"aria-hidden" => "true"}
-                    - if tl['links'].length > 0
-                      - tl['links'].each do |link|
-                        .link-title
-                          = link.title
-                        .link-value
-                          = link.value
-                  %dt
-            - counter = counter + 1
         #pub_budget.tab-pane.fade
           =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
 

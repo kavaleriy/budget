@@ -14,18 +14,18 @@ class Public::TownsController < ApplicationController
 
     @town_export_budgets = ExportBudget.get_export_budget_by_town(@town)
 
-    @town_links = {}
-    if test_town?
-      @town_br_links = Documentation::Link.all.where(:town => nil)
-    else
-      @town_br_links = Documentation::Link.all.where(:town => @town)
-    end
+    @town_links = Documentation::Link.get_hash_links_by_town(@town)
 
-    Documentation::LinkCategory.all.each{|br|
-      @town_links[br.id.to_s] = {}
-      @town_links[br.id.to_s]['title'] = br.title
-      @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-    }
+    # @town_br_links = Documentation::Link.all.where(:town => @town)
+
+
+    # Documentation::LinkCategory.all.each{|br|
+    #   binding.pry
+    #   @town_links[br.id.to_s] = {}
+    #
+    #   @town_links[br.id.to_s]['title'] = br.title
+    #   @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
+    # }
 
   end
 
