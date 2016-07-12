@@ -4,17 +4,24 @@
     height: 60px;
     overflow: hidden;
     .doc-img{
+      padding: 1px;
+      //width: auto;
+      img{
+        max-height: 60px;
+        margin-top: -10px;
 
+      }
     }
     .doc-title{
+      padding: 0;
+      //margin-left: -10px;
       color: blue;
     }
   }
 -if alone_document.doc_file?
   = link_to documentation_document_download_path(alone_document) do
     .col-md-3.doc-wrapper
-      .doc-img.col-xs-4
-        -#= image_tag ('new_design/icons/file-exel.svg')
+      .doc-img.col-xs-5.col-md-3
         = image_tag(get_image_path_by_doc_type(alone_document.doc_file))
-      .doc-title.col-xs-8
+      .doc-title.col-xs-7.col-md-9
         = get_beautiful_doc_title(alone_document.title)
