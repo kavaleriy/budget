@@ -10,11 +10,11 @@
       color: blue;
     }
   }
--#-if alone_document.doc_file?
-= link_to documentation_document_download_path(alone_document) do
-  .col-md-3.doc-wrapper
-    .doc-img.col-xs-4
-      -#= image_tag ('new_design/icons/file-exel.svg')
-      = image_tag(get_image_path_by_doc_type(alone_document.doc_file))
-    .doc-title.col-xs-8
-      = get_beautiful_doc_title(alone_document.title)
+-if alone_document.doc_file?
+  = link_to documentation_document_download_path(alone_document) do
+    .col-md-3.doc-wrapper
+      .doc-img.col-xs-4
+        -#= image_tag ('new_design/icons/file-exel.svg')
+        = image_tag(get_image_path_by_doc_type(alone_document.doc_file))
+      .doc-title.col-xs-8
+        = get_beautiful_doc_title(alone_document.title)
