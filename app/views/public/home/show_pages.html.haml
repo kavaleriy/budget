@@ -13,12 +13,12 @@
     }
   }
 
-.container
-  %h1= get_header_by_locale(@page)
-  %hr
-  -if check_admin && @page
-    .pull-right#edit_link
-      = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
-  -if @page
-    .static_content
-      = get_content_by_locale(@page)
+-#.container
+%h1= get_header_by_locale(@page)
+%hr
+-if check_admin && @page
+  .pull-right#edit_link
+    = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(@page.id)
+-if @page
+  .static_content
+    = get_content_by_locale(@page)
