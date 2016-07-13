@@ -15,12 +15,14 @@
         %strong= get_address_title(@repairing_repair)
       .text_desc.col-xs-8
         =@repairing_repair.address
+
     - unless @repairing_repair.subject.blank?
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.info_works')} :"
         .text_desc.col-xs-8
           = @repairing_repair.work
+
     - unless @repairing_repair.spending_units.blank?
       .row
         .text_title.col-xs-4
@@ -34,36 +36,43 @@
           %strong="#{t('repairing.maps.info_popup.info_performer')} :"
         .text_desc.col-xs-8
           =@repairing_repair.obj_owner
-    - unless @repairing_repair.repair_start_date.blank?
+
+    - if date_valid?(@repairing_repair.repair_start_date)
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.start_date')} :"
         .text_desc.col-xs-8
           =@repairing_repair.repair_start_date
-    - unless @repairing_repair.repair_end_date.blank?
+
+    - if date_valid?(@repairing_repair.repair_end_date)
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.end_date')} :"
         .text_desc.col-xs-8
           =@repairing_repair.repair_end_date
-    - unless @repairing_repair.warranty_date.blank?
+
+    - if date_valid?(@repairing_repair.warranty_date)
+      -#-if date_valid?(@repairing_repair.warranty_date)
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.warranty_date')} :"
         .text_desc.col-xs-8
           =@repairing_repair.warranty_date
+
     - unless @repairing_repair.repairing_category.blank?
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.repairing_category')} :"
         .text_desc.col-xs-8
           =@repairing_repair.repairing_category.title
+
     - unless @repairing_repair.description.blank?
       .row
         .text_title.col-xs-4
           %strong="#{t('repairing.maps.info_popup.description')} :"
         .text_desc.col-xs-8
           =@repairing_repair.description
+
     .row
       .text_title.col-xs-4
         %strong="#{t('repairing.maps.info_popup.info_price')} :"
