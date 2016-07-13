@@ -178,7 +178,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @budget_file = BudgetFile.where(:id => visify_params[:file_id]).first
     @taxonomy = Taxonomy.where(:id => visify_params[:file_id]).first || @budget_file.taxonomy
 
-    @table_caption = (@taxonomy.is_a? TaxonomyRot) ? 'Види доходів' : 'Напрямок видатків'
+    @table_caption = (@taxonomy.is_a? TaxonomyRot) ? t('widgets.visify.sidebar_table.items_income') : t('widgets.visify.sidebar_table.destination_charges')
 
     if @budget_file.nil?
       @budget_file = @taxonomy
