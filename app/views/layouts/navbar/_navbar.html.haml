@@ -509,11 +509,12 @@
               %span.caret
             %ul.dropdown-menu{'role' => 'menu'}
               -value.each do |list|
-                %li
-                  %a{:href => get_nav_link(list) }
-                    = get_header_by_locale(list)
+                -# check if menu have content for current locale
+                - unless check_content_by_locale(list)
+                  %li
+                    = link_to get_header_by_locale(list) , get_nav_link(list)
 
-        -#Build currnet_user dropdown menu
+        -#Build current_user dropdown menu
         %li.dropdown
           - if current_user
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
