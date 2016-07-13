@@ -55,13 +55,13 @@
                  <thead>\
                  <tr>\
                    <th class="col-sm-5">' + $('#sidebar_table').attr('data_table_caption') + '</th>\
-                   <th class="col-sm-2">сума</th>'
+                   <th class="col-sm-2">#{t('widgets.visify.sidebar_table.sum')}</th>'
 
         if(fact) {
-          div += "<th class='col-sm-2'>факт</th>"
+          div += "<th class='col-sm-2'>#{t('widgets.visify.sidebar_table.fact')}</th>"
         }
-        div += "<td class='col-sm-1'>на отримувача</th>"
-        div += '<td class="col-sm-1">Питома вага</th>\
+        div += "<td class='col-sm-1'>#{t('widgets.visify.sidebar_table.to_recipient')}</th>"
+        div += '<td class="col-sm-1">#{t('widgets.visify.sidebar_table.specific_weight')}</th>\
                </tr>\
                </thead><tbody>'
 
