@@ -231,7 +231,8 @@
           %p
             = t('public.towns.portfolio.documents')
             %span.badge.bsize.count
-              = @documents.length
+              -# in last element of hash we have documents count
+              = @documents[@documents.keys.last]
       %li
         =link_to '#links', data: {toggle: "tab"} do
           = inline_svg('icons/town_profile_sidebar/link.svg')

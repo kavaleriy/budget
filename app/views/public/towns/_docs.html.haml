@@ -72,7 +72,8 @@
           %i.fa.fa-search{"aria-hidden" => "true"}
 
 .row-eq-height
-  - @documents.each do |year,documents_by_year|
+  -# each all docs without last keys,because in last element of hash documents count
+  - @documents.except!(@documents.keys.last).each do |year,documents_by_year|
     .panel-group.main-panel{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
       .panel.custom-panel
         .panel-heading{id: "heading_#{year}",:role => "tab"}

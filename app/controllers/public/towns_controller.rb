@@ -16,17 +16,6 @@ class Public::TownsController < ApplicationController
 
     @town_links = Documentation::Link.get_hash_links_by_town(@town)
 
-    # @town_br_links = Documentation::Link.all.where(:town => @town)
-
-
-    # Documentation::LinkCategory.all.each{|br|
-    #   binding.pry
-    #   @town_links[br.id.to_s] = {}
-    #
-    #   @town_links[br.id.to_s]['title'] = br.title
-    #   @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-    # }
-
   end
 
   def render_docs
@@ -120,23 +109,15 @@ class Public::TownsController < ApplicationController
 
   def test_town?
     @town.is_test?
-    # params[:town_id] == "test"
   end
 
   def set_town
-    # if test_town?
-    #   @town = Town.new(:id => 'test',
-    #                    :title => 'Демонстрація типового профілю міста',
-    #                    :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-    #                    :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
-    # else
       @town = Town.find(params[:town_id])
       if @town.level == 1 #area
         @towns = Town.all.where(:area_title => @town.title)
       else
         @towns = Town.all.where(:area_title => @town.area_title)
       end
-    # end
   end
 
   def set_documents
