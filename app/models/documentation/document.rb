@@ -51,7 +51,7 @@ class Documentation::Document
   def self.get_grouped_documents_for_town(town)
     # get documents by town and not locked
     documents = self.get_documents_by_town(town).unlocked.order("yearFrom DESC")
-
+    doc_size = documents.size
     res_hash = {}
     # group documents by year
     documents = documents.group_by(&:yearFrom)
@@ -61,8 +61,16 @@ class Documentation::Document
       year_documents = documents_by_year.group_by(&:branch_id)
 
       # transform keys for readeble title
-      res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
+      unless year_documents.empty?
+        if year_documents.keys.first.nil?
+          year_documents.transform_keys{|key| I18n.t ('Інші документи') }
+        else
+          res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
+        end
+      end
+
     end
+    res_hash.store(:docs_count, doc_size)
     res_hash
   end
 
