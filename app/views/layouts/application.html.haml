@@ -3,6 +3,10 @@
     min-height: calc(100vh - 213px);
     height: auto;
     margin: 73px 0 0;
+    .style_container{
+      margin: 90px 0 10px 0;
+      //padding: 90px 0 10px 0;
+    }
   }
 
 !!! 5
@@ -50,9 +54,14 @@
   .bootstrap_flash
     = bootstrap_flash
 
-  -#Render main blocks
   .blocks
-    = yield
+    -#Render main page
+    = yield :home
+
+    -#Render other pages
+    - unless content_for?(:home)
+      .container-fluid.style_container
+        = yield
 
   -#Render footer block
   = render partial: 'layouts/footer/footer'
