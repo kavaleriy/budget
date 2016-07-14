@@ -534,15 +534,19 @@
               = show_username_or_emailname(current_user)
               %span.caret
             %ul.dropdown-menu{'role' => 'menu'}
+              -#Build link to modules (backend)
+              = render partial: 'layouts/navbar/nav_admin'
+
+              - unless current_user.is_locked?
+                %li= link_to t('.editor'), editor_index_path
+                %li.divider{role: 'separator'}
+
               %li= link_to t('.edit_profile'), edit_user_registration_path
               %li= link_to t('.logout'), destroy_user_session_path, method: :delete
           - else
             = link_to t('.authorization'), new_user_session_path, :class=>'item-login'
 
-        -#Build link to modules (backend)
-        - if current_user && current_user.is_locked? == false
-          %li= link_to t('.editor'), editor_index_path
-        = render partial: 'layouts/navbar/nav_admin'
+
 
 :javascript
    // ****** Menu resize on scroll ***** //

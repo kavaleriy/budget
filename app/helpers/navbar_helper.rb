@@ -14,11 +14,9 @@ module NavbarHelper
 
   def show_username_or_emailname(user)
     # Check current user name for empty(nil? & empty?)
-    if get_username_name(user).blank?
-      get_username_from_email(user)
-    else
-      get_username_name(user)
-    end
+    name = get_username_name(user).blank? ? get_username_from_email(user) : get_username_name(user)
+    # Check current user name length
+    (name.length > 10) ? (name[0,9] + "&hellip;").html_safe : name
   end
 
 end
