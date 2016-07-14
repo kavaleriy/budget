@@ -17,6 +17,8 @@ module NavbarHelper
     if get_username_name(user).blank?
       if get_username_from_email(user).length > 10
         (get_username_from_email(user)[0,9] + "&hellip;").html_safe
+      else
+        get_username_from_email(user)
       end
     else
       if get_username_name(user).length > 10
