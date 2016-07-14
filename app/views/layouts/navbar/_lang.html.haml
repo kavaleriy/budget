@@ -1,7 +1,8 @@
 :scss
   .lang-switcher {
     float: right;
-    padding-top: 37px;
+    padding: 32px 0 0 0;
+    margin: 0;
     li {
       display: inline-block;
       opacity: .8;
@@ -24,7 +25,21 @@
       opacity: 1;
     }
   }
-
+  @media (min-width: 920px) and (max-width: 1099px) {
+    .lang-switcher {
+      padding: 34px 20px 0 0;
+    }
+  }
+  @media (min-width: 820px) and (max-width: 919px) {
+    .lang-switcher {
+      padding: 32px 20px 0 0;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 819px) {
+    .lang-switcher {
+      padding: 33px 14px 0 0;
+    }
+  }
 
 %ul.lang-switcher
   - if I18n.locale == I18n.default_locale
@@ -37,3 +52,5 @@
       =link_to(image_tag('icons/langs/flag_of_the_united_kingdom.svg'))
     %li
       =link_to(image_tag('icons/langs/flag_of_ukraine.svg'), :locale=>'uk')
+
+  = render partial: 'layouts/navbar/search'

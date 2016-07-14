@@ -1,0 +1,23 @@
+:scss
+  // init colors
+  $white: #ffffff;
+
+  .slash {
+    color: $white;
+    font-size: 1.8rem;
+    bottom: -2px;
+    position: relative;
+    //padding: 0 5px 0 0;
+  }
+  .fa-search {
+    color: $white;
+    font-size: 1.6rem;
+    position: relative;
+    bottom: -2px;
+  }
+
+
+%i.slash
+  = '/'
+= link_to '#', class: 'search-action' do
+  %i.fa.fa-search{"aria-hidden" => "true"}
