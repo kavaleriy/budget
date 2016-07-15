@@ -11,9 +11,9 @@
       min-height: calc(100vh - 213px);
       height: auto;
       margin: 73px 0 0;
-      .style-container {
-        margin: 90px 0 10px 0;
-      }
+      //.style-container {
+      //  margin: 90px 0 10px 0;
+      //}
     }
   }
 
@@ -68,7 +68,8 @@
 
     -#Render other pages
     - unless content_for?(:home)
-      .container-fluid.style-container
+      -#.container-fluid.style-container
+      .container
         = yield
 
   -#Render footer block
