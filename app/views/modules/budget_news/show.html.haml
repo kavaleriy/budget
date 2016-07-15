@@ -3,11 +3,12 @@
     position: relative;
     min-height: calc(100vh - (103px + 120px));
     height: auto;
-    top: 73px;
+    //top: 73px;
     margin-bottom: 73px;
     .row{
       .news-item-article {
         //border: 1px solid red;
+        padding: 0;
         .article-title {
           font-family: 'Lato', sans-serif;
           font-weight: 600;
@@ -135,6 +136,7 @@
         }
       }
       .baners-blocks {
+        padding: 0;
         //border: 1px solid red;
         img {
           margin-bottom: 15px;
@@ -142,10 +144,21 @@
       }
     }
   }
+
+  @media (min-width: 768px) {
+    .news-list-item {
+      .row {
+        .baners-blocks {
+          padding: 0 15px;
+        }
+      }
+    }
+  }
+
 %p#notice= notice
 .container.news-list-item
   .row
-    .col-xs-8.news-item-article
+    .col-xs-12.col-sm-8.news-item-article
       .article-title
         = @budget_news.title
       .article-data
@@ -166,6 +179,6 @@
           = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
           \|
           = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
-    .col-xs-4.baners-blocks
-      %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
-      %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
+    .col-xs-12.col-sm-4.baners-blocks
+      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}
+      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}
