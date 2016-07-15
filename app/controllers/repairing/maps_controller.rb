@@ -78,6 +78,38 @@ module Repairing
       render partial: 'info_popup'
     end
 
+    def get_heapmap_geo_json
+      repairings = Repairing::Repair.where(:coordinates.ne => nil ).entries
+      geo_json = []
+      repairings.each do |repair|
+        geo_json << {
+            type: "Feature",
+            geometry: {
+                type: 'Point',
+                coordinates: repair[:coordinates]
+            },
+            properties: {
+                id: repair[:id],
+                repair: "house",
+                amount: repair[:amount]
+            }
+        } unless repair[:coordinates].nil? || repair[:coordinates][0].nil? || repair[:coordinates][1].nil?
+
+      end
+      result = {
+          "type" => "FeatureCollection",
+          "features" => geo_json
+      }
+
+      respond_to do |format|
+        format.json { render json: result }
+      end
+    end
+
+    def heapmap
+
+    end
+
     private
 
     def allow_iframe

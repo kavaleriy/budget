@@ -178,6 +178,9 @@ Rails.application.routes.draw do
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
 
+
+    get 'heapmap_json' => 'maps#get_heapmap_geo_json'
+    get 'heapmap' => 'maps#heapmap'
     resources :layers do
       member do
         get 'geo_json'
