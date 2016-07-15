@@ -103,7 +103,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result = []
     # result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
-    # result << get_calendar_hash(calendar,'calendar')
+    result << get_calendar_hash(calendar,'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
     result << get_programs_hash('programs',programs)
