@@ -50,11 +50,12 @@
       background: transparent;
       padding-top: 73px;
       .blason-block {
+        display: none;
         margin-top: 60px;
         padding: 5% 30%;
       }
       .sidebar-nav {
-        padding: 0;
+        padding: 40px 0 0 0;
         li {
           a {
             position: relative;
@@ -117,7 +118,11 @@
       }
     }
     .is-full {
+      .blason-block {
+        display: block;
+      }
       .sidebar-nav {
+        padding: 0;
         .button {
           float: right;
           padding: 0 10px;
@@ -352,7 +357,6 @@
 
     $('.search-button').click(function(){
       toggleSearch();
-
     });
 
     // if we click on visual icon in sidebar
