@@ -64,11 +64,24 @@
             }
           }
         }
+       .calendar {
+          background: url('/../assets/new_design/docs.jpg');
+          .icon {
+            .icon-border {
+              .svg {
+                width: 70%;
+                padding-top: 4px;
+                margin: 18%;
+              }
+            }
+          }
+        }
         .budget,
         .repair,
         .programs,
         .keys,
-        .key_docs {
+        .key_docs,
+        .calendar {
           //border: 1px solid transparent;
           .img {
             width: calc(100% - 3rem);
@@ -133,7 +146,8 @@
           .repair,
           .programs,
           .keys,
-          .key_docs {
+          .key_docs,
+          .calendar {
             .img {
               background: darkkhaki;
             }
@@ -156,12 +170,11 @@
   .modules-wrapper
     -@town_items.each do |item|
       .col-xs-12.col-sm-6.col-md-4.module
-        %a{ :href => item['url'] }
+        = link_to item['url'] do
           %div{class: item['name']}
             .img
             .icon
               .icon-border
-                -#-binding.pry
                 =image_tag(item['img_src'], class: 'svg')
             .title
               =item['title']
