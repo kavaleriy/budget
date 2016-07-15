@@ -53,6 +53,9 @@
               padding: 7px 0;
               background: #63c2de;
               text-align: center;
+              &:nth-child(1){
+                margin-bottom: 7px;
+              }
               &:hover,
               &:focus {
                 background: #31708f;
@@ -98,7 +101,9 @@
           =link_to demo_path do
             %li.element
               New design
-
+          =link_to repairing_heapmap_path do
+            %li.element
+              heapmap
   :javascript
     $(document).ready(function(){
       $(".demo_index > div").click(function () {

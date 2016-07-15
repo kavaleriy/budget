@@ -50,7 +50,7 @@ class Repairing::GeojsonBuilder
   private
 
   def self.extract_props repair
-    category = Repairing::Category.find(repair.layer[:repairing_category_id]) if repair.layer && repair.layer[:repairing_category_id]
+    # category = Repairing::Category.find(repair.layer[:repairing_category_id]) if repair.layer && repair.layer[:repairing_category_id]
 
     year = repair[:repair_date] ? repair[:repair_date].year : Date.current.year
 
