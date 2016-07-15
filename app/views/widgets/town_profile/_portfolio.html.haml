@@ -9,6 +9,11 @@
           background-position: center;
           background-size: cover;
         }
+        svg{
+          fill: white;
+          width: 60px;
+          height: 60px;
+        }
         .budget {
           background: url('/../assets/new_design/money.jpg');
           .icon {
@@ -72,6 +77,7 @@
                 width: 70%;
                 padding-top: 4px;
                 margin: 18%;
+
               }
             }
           }
@@ -175,7 +181,9 @@
             .img
             .icon
               .icon-border
-                =image_tag(item['img_src'], class: 'svg')
+                .svg
+                  =inline_svg(item['img_src'])
+                -#=image_tag(item['img_src'], class: 'svg')
             .title
               =item['title']
             .more
