@@ -1,3 +1,7 @@
+:scss
+  #embed_code_visify{
+    width: 40px;
+  }
 = content_for :header do
   .head
     %i.fa.fa-money
@@ -7,12 +11,12 @@
 
 = render partial: '/widgets/town_profile/indicates'
 
--#= render partial: 'indicators', :locals => { indicators: @indicators }
-
-#embed_code_visify
-  = render partial: 'widgets/visify/embed_code'
-= link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
-= link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
+.pull-right
+  #embed_code_visify
+    = render partial: 'widgets/visify/embed_code'
+-if current_user.is_admin?
+  = link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
+  = link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
 
 
 :javascript

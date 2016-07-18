@@ -86,16 +86,16 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def town_profile
-    if params[:town_id] == 'test'
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => nil).first
-    else
-      town = Town.find(params[:town_id])
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => town).first
-    end
+    @indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(params[:town_id]).first
+
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
-    @current_user = current_user || User.new(:town => 'test')
-    render 'show'
+    @current_user = current_user || User.new(:town => Town.get_test_town.first)
+    respond_to do |format|
+      format.html {render 'show'}
+      format.js { render 'show'}
+    end
+
   end
 
   private
