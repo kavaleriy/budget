@@ -3,7 +3,7 @@
 = content_for :header do
   .head
     = @town.title
-
+-#-binding.pry
 .budget.row-fluid
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '850',src: widgets_budget_files_url(@town),id: 'budget_iframe' }
@@ -14,11 +14,11 @@
     = render partial: 'widgets/visify/embed_code'
 :javascript
 
-  $(document).on('ready page:load', function() {
+  $(document).ajaxComplete(function() {
     var embed_code = aEmbedCode();
     var iframe_url = $('#budget_iframe').attr('src');
 
-    $('#embed_code_budget').on('click',function(){
+    $('.btn_embed').on('click',function(){
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})
       $('#embeded_code_modal_window').find('#embed_src').val(iframe_url);
        $('#embeded_code_modal_window').modal();
