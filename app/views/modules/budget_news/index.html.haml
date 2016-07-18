@@ -1,6 +1,7 @@
 :scss
   .news_action_button{
     display: flex;
+    //flex-direction: column;
     a{
       text-decoration: none;
       background: transparent;
@@ -11,7 +12,93 @@
       padding: 0 3px;
     }
   }
-.col-md-12
+  .paddings_reset{
+    padding-left: 0;
+  }
+  .right_paddings_reset{
+    padding-right: 0;
+  }
+  .bordered_bottom{
+    border-bottom: solid grey 1px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: 991px) {
+    .item_title{
+      background: cornsilk;
+      font-size: small;
+      font-weight: bold;
+      //padding: 0;
+    }
+    .item_text{
+      //border-bottom: solid grey 1px;
+      font-size: small;
+      //padding: 0;
+    }
+    .hide_in_small{
+      display: none;
+    }
+    .padding_in_small{
+      padding: 0;
+    }
+    .margin_in_small{
+      margin-top: 5px;
+    }
+
+  }
+
+.container-fluid
+  %h1
+    = t('.header')
+
+  = link_to t('.create'),new_modules_budget_news_path
+  %br
+  %br
+  -if(!@budget_news.blank?)
+    .row.hide_in_small.title.bordered_bottom
+      .col-sm-7
+        .col-xs-5.paddings_reset
+          = t('.title')
+        .col-xs-7.paddings_reset
+          = t('.text')
+      .col-sm-5
+        .col-xs-3.paddings_reset
+          = t('.link')
+        .col-xs-3.paddings_reset
+          = t('.date')
+        .col-xs-3.paddings_reset
+          = t('.image')
+        .col-xs-3.paddings_reset.right_paddings_reset
+          = t('.action')
+
+    - @budget_news.each do |budget_news|
+      .row.bordered_bottom
+        .col-md-7.padding_in_small
+          .col-md-5.item_title.paddings_reset.margin_in_small
+            = budget_news.title
+            -#= truncate(budget_news.title, :length => 30, :separator => ' ')
+          .col-md-7.item_text.paddings_reset.text-justify.margin_in_small
+            = strip_tags(sanitize(budget_news.news_text)).truncate(150).gsub("&nbsp;", '')
+            -#= sanitize(budget_news.news_text)
+        .col-md-5.margin_in_small
+          .col-xs-4.col-md-3.paddings_reset
+            = link_to t('.view'), budget_news, class: 'btn btn-default'
+            -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
+          .col-xs-4.col-md-3.paddings_reset
+            = budget_news.get_date
+          .col-md-3.hide_in_small.paddings_reset
+            = image_tag budget_news.img.thumb, class: 'img-responsive'
+          .col-xs-4.col-md-3.news_action_button.paddings_reset.right_paddings_reset
+            = link_to image_tag('icons/loupe.png'), budget_news
+            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+
+  -else
+    = t('public.home.news.no_news')
+  %br
+    = paginate @budget_news
+
+-#.col-md-12
   %h1
     = t('.header')
 
@@ -50,6 +137,7 @@
     = t('public.home.news.no_news')
   %br
     = paginate @budget_news
+
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення новини',
