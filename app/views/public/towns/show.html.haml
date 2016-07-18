@@ -56,8 +56,17 @@
       padding-top: 73px;
       .blason-block {
         display: none;
-        margin-top: 60px;
+        margin-top: 50px;
         padding: 5% 30%;
+      }
+      .town-title {
+        color: $white;
+        text-align: center;
+        padding: 10px;
+        font-weight: 700;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.6rem;
+        line-height: 1.25;
       }
       .sidebar-nav {
         padding: 40px 0 0 0;
@@ -222,6 +231,8 @@
 
     .blason-block
       =image_tag('new_design/blason.svg', class: 'img-responsive')
+    .town-title
+      = @town.title
     %ul.sidebar-nav
       %li
         =link_to '#description', data: {toggle: "tab"} do
