@@ -1,6 +1,6 @@
 :css
   .dropdown > a:after {
-    content: ""
+    content: " "
   }
 
 .width-container.clearfix
@@ -12,7 +12,7 @@
             = @town.title
         .col-md-6.fix-pad
           = link_to content_tag(:i, nil, class: 'fa fa-times'), towns_path, :class => 'btn btn-default pull-right'
-          = button_tag(:class => 'btn btn-primary pull-right') do
+          = button_tag(class: 'btn btn-primary pull-right') do
             %i.fa.fa-floppy-o
       .row
         .col-md-5
@@ -21,16 +21,16 @@
               =image_tag @town.img.thumb.url
             -else
               =image_tag "no_image.png"
-          = f.file_field :img, :class => 'btn btn-default'
+          = f.file_field :img, class: 'btn btn-default'
           %a.btn.btn-default.button-toggle
             %i.fa.fa-cog
           .toggle-element{"data-state" => "closed"}
             .col-md-6.r-pad
-              = f.text_field :koatuu, :readonly => true, :class => 'control-label'
+              = f.text_field :koatuu, :readonly => true, class: 'control-label'
             .col-md-6
-              = f.text_field :level, :readonly => true, :class => 'control-label'
-            = f.text_area :coordinates, :class => 'control-label'
-            = f.text_field :geometry_type, :class => 'control-label', label: t('mongoid.attributes.town.geographical_type')
+              = f.text_field :level, :readonly => true, class: 'control-label'
+            = f.text_area :coordinates, class: 'control-label'
+            = f.text_field :geometry_type, class: 'control-label', label: t('mongoid.attributes.town.geographical_type')
 
         .col-md-7
           = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
@@ -42,8 +42,8 @@
 
       .row.buttom-user-menu
         .col-md-12.fix-pad
-          = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, :class => 'btn btn-default pull-right'
-          = f.submit nil, :class => 'btn btn-primary pull-right'
+          = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, class: 'btn btn-default pull-right'
+          = f.submit nil, class: 'btn btn-primary pull-right'
 
 
 :javascript
