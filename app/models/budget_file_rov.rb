@@ -16,7 +16,6 @@ class BudgetFileRov < BudgetFile
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
     kekv = row['KEKV'].to_s.split('.')[0]
-
     return if is_grouped_kekv kekv
 
 
