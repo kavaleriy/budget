@@ -1,5 +1,5 @@
 class Widgets::UserWidgetsController < Widgets::WidgetsController
-  layout false
+  # layout false
   def visualisation_list
 
     @presenter = ExportBudget::FormPresenter.new(params[:user_id],params[:locale])
