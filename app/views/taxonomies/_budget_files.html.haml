@@ -1,0 +1,6 @@
+%h3
+  Бюджетні файли
+
+.list-group
+  - @taxonomy.budget_files.each do |budget_file|
+    = link_to budget_file.title, budget_file_path(budget_file), :class => 'list-group-item'
