@@ -1,0 +1,48 @@
+:scss
+  .path {
+    font-size: 18px;
+  }
+
+.path.col-xs-12
+
+:javascript
+  var aCompareTaxonomiesPath = {
+    path: [],
+    last_level: false,
+  }
+
+  aCompareTaxonomiesPath.draw_path = function (){
+    var path = [{label: 'Home'}].concat(this.path)
+    var len = path.length - 1
+
+    var els = d3.select(".path").selectAll('g')
+      .data(path)
+      .enter()
+      .append('g')
+
+    els.append('a')
+    els.append('span')
+
+
+    els = d3.select(".path").selectAll('g')
+      .data(path)
+
+    els.select('a')
+      .attr('href', '#')
+      .text(function(d, i){ return i == len ? null : d.label })
+      .on("click", function(d, i){
+        aCompareTaxonomiesPath.path = aCompareTaxonomiesPath.path.slice(0, i);
+        aCompareTaxonomies.create_chart()
+      })
+
+    els.select('span')
+      .text(function(d, i){
+        return i == len ? d.label : ' > '
+      })
+
+
+    d3.select(".path").selectAll('g')
+      .data(path)
+      .exit().remove()
+
+  }

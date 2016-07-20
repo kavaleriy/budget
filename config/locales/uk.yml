@@ -1,5 +1,4 @@
 uk:
-  found_docs: 'Результат'
   choose_calendar: "Календар"
   actions: "Дії"
   REGION_LEVEL: 'Область'
@@ -20,7 +19,6 @@ uk:
   confirm_yes: "Так"
   confirm_no: "Ні"
   confirm_destroy: "Видалення"
-  no_town_description_info: "Нажаль, інформація відсутня"
 
   template:
     title:
@@ -39,9 +37,6 @@ uk:
     check_row_name: 'Перевірте назви в таблиці'
   content_manager:
     page_containers:
-      index:
-        menu: 'Меню'
-        info: 'Що це дає'
       en_header: "Заголовок англійською"
       en_content: "Контент англійською"
       uk_header: "Заголовок українською"
@@ -135,6 +130,7 @@ uk:
       repairing_layers: "Слої"
       repairing_category: "Довідник робіт"
       repairing_maps_instruction: "Інструкція по роботі з картою"
+      compare: "Порівняння бюджетів"
     navbar_vtarnay:
       module3: "3. Куди йдуть мої кошти"
       module4: "4. Скільки витрачають на мене"
@@ -142,21 +138,11 @@ uk:
       module7: "7. Цільові програми"
       module8: "8. Капітальний ремонт та бюджет розвитку"
     navbar:
-      navbar:
-        application_title: "Відкритий бюджет - бета"
-        edit_profile: "Редагувати"
-        logout: "Вийти"
-        authorization: "Авторизація"
-        editor: "Модулі"
-        home: "Головна"
-      nav_admin:
-        admin: "Адмін"
-        users: "Користувачі"
-        town: "Міста"
-        currency: "Валюта"
-        subscribers: "Підписувачі"
-        news_header: "Новини"
-        slider_header: "Слайдер"
+      edit_profile: "Редагувати"
+      logout: "Вийти"
+      authorization: "Authorization"
+      editor: "Модулі"
+      home: "Головна"
 
       #Budget-system dropdown. BEGIN
       bud_sys: "Бюджетна система"
@@ -168,7 +154,6 @@ uk:
       #Visualisation dropdown. BEGIN
       visual: "Візуалізації"
       grom_budget: "Громадський бюджет"
-      compare_budget: "Порівняти бюджети"
       kpi: "KPI"
       budget: "Бюджет"
       budget_cal: "Бюджетний календар"
@@ -185,12 +170,18 @@ uk:
       about: "Про проект"
       contacts: "Контакти"
       authorization: "Авторизація"
-
     soc_buttons:
-      lang: "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.5"
-      like: "Подобається"
-      share: "Поділитись"
-
+          lang: "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.5"
+          like: "Подобається"
+          share: "Поділитись"
+    nav_admin:
+      admin: "Адмін"
+      users: "Користувачі"
+      town: "Міста"
+      currency: "Валюта"
+      subscribers: "Підписувачі"
+      news_header: "Новини"
+      slider_header: "Слайдер"
   form:
     save: "Зберегти"
     cancel: "Відміна"
@@ -580,6 +571,7 @@ uk:
       branch_report:
         header: "Звіт по галузям для м. "
       show:
+        # old
         header: "Детальний огляд програми"
         targets: "Основні цілі"
         tasks: "Основні задачі"
@@ -681,24 +673,14 @@ uk:
         sort_name: "назвою"
         sort_type: "типом"
         edit_files: "Редагувати файли"
-      preambule:
-        preambule_first_part: "Тут ви можете зручно знайти та завантажити основні визначальні документи для розвитку міст та регіонів за 2012 -"
-        preambule_seccond_part: "роки, а саме звіти про виконання бюджетів, пояснювальні записки, програми
-                                 соціального та економічного розвитку, довгострокові стратегії розвитку та звіти про їх виконання.
-                                 Документи отримано через офіційні запити, а також з офіційних вебсайтів міських та обласних рад і ОДА.
-                                 У випадку, якщо ви не знайшли те, що шукали, або маєте побажання щодо вдосконалення чи доповнення бази –
-                                 просимо написати на адресу"
-        preambule_mark: "з поміткою «OpenBudget - Документи»."
     towns:
-      show:
-        choose_town: 'Знайти місто'
       portfolio:
-        detail: "Більше"
+        detail: "Докладніше"
         description: "Короткі відомості"
         budget: "Місцевий бюджет"
         programs: "Місцеві програми"
-        indicators: "Ключові показники"
-        keys: "Ключові показники"
+        indicators: "Ключові показники діяльності"
+        keys: "Порівняти ключові показники"
         calendar: "Бюджетний календар"
         sankey: "Взаємозв'язок доходів і видатків"
         repair: "Карта ремонтів"
@@ -799,20 +781,13 @@ uk:
         table: "Таблиця"
         attachments: "Прикріплені файли"
         description: "Пояснення"
-      sidebar_table:
-        items_income: 'Види доходів'
-        destination_charges: 'Напрямок видатків'
-        sum: 'сума'
-        fact: 'факт'
-        to_recipient: 'на отримувача'
-        specific_weight: 'Питома вага'
       slider:
         by_month: "з розбивкою по місяцям"
       bubbletree:
         title: "Кулі 1"
         descr: "візуалізація"
         programmatic: "Програмний"
-        economic: "Екомічний"
+        economic: "Економічний"
 
       sunburst:
         title: "Кругова діаграма 1"
@@ -925,8 +900,9 @@ uk:
         edit: "Редагувати"
         destroy: "Видалити"
         confirm: "Ви впевнені що хочете видалити новину?"
-        sure: "Впевнен"
+        sure: "Впевнені"
         action: "Дії"
+        view: "Перейти"
       form:
         save: "Зберегти"
       edit:
@@ -1140,10 +1116,6 @@ uk:
         sentence_6: 'Адреси можна вказувати як точну геопозицію (наприклад, "49.23363, 28.46146"), так і назву (наприклад, "площа Гагаріна 4/1").'
         sentence_7_1: "Приклад файлу з ремонтами -"
         sentence_7_2: "завантажити"
-      sitebar:
-        e_data: "E-data"
-        prozzoro: "ProZorro"
-        information: "Інформація"
   footer:
     about_portal:
       portal: "Портал"
@@ -1184,31 +1156,7 @@ uk:
   messages_x-editable:
     need_name_file: "Потрібно вказати ім'я файла!"
     need_comment: "Потрібно вказати коментар!"
-  new_design:
-    home_page:
-      tooltips_title:
-        visualisation_budget: "Візуалізація бюджету"
-        repairs_map: "Карта ремонтів"
-        pdf_documents: "PDF документи"
-        documents: "Документи"
-        prozorro: "ProZorro"
-        e_data: "E-data"
-        budget_calendar: "Бюджетний календар"
-        key_figures: "Ключові показники"
-      main_title: "СИСТЕМА ВІЗУАЛІЗАЦІЇ «ВІДКРИТИЙ БЮДЖЕТ»"
-      text_preamble: "Допомагаємо громадянам зрозуміти бюджетну інформацію"
-      button_try: "СПРОБУВАТИ"
-      button_soon: "НЕЗАБАРОМ"
-      map_title: "Органи влади, у яких працює відкритий бюджет"
-      project_news: "Новини проекту"
-      our_partners: "Наші партнери"
-    footer:
-      footer-text: 'Портал Відкритий бюджет створено Центром політичних студій та аналітики за участі
-                    Представництва Європейського Союзу в Україні, Міжнародного фонду "Відродження" і
-                    Програми розвитку ООН в Україні за ліцензією Creative Commons Із зазначенням авторства -
-                    Некомерційна - Розповсюдження на тих самих умовах 4.0 Міжнародна'
-      based_code: "Засновано на коді з"
-      rules: "Права, що виходять за рамки цієї ліцензії доступні за адресою"
-    town_profile:
-      visualization: "Візуалізації"
-      based_code: "Засновано на коді з "
+  compare_taxonomies:
+    index:
+      title: "Порівняння бюджетів"
+  select_placeholder: "Виберість візуалізації для порівняння"
