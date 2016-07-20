@@ -1,0 +1,7 @@
+.btn-group{'data-toggle' => 'buttons'}
+  - years.each do |year|
+    %label.btn.btn-default.year_select{'data-year' => "#{year}", :class => "#{is_current_year(year) ? 'active' : nil}"}
+      %input{'type' => 'radio', 'name' => 'options', 'autocomplete' => 'off', 'checked' => "#{is_current_year(year) ? 'checked' : nil}"}
+        =year
+
+-# catch click on host page

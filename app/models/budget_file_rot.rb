@@ -4,7 +4,6 @@ class BudgetFileRot < BudgetFile
 
   def readline row
     amount = row['SUMM'].to_i
-    kod = row['KOD'].to_s.split('.')[0]
     fond = row['KKFN'].to_s.split('.')[0]
 
     return if amount.nil? || amount == 0

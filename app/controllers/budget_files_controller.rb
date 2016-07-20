@@ -21,7 +21,7 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page])
 
     case sort_column
       when "title"
@@ -144,19 +144,6 @@ class BudgetFilesController < ApplicationController
   # PATCH/PUT /revenues/1
   # PATCH/PUT /revenues/1.json
   def update
-    taxonomy = @budget_file.taxonomy
-    explanation = taxonomy.explanation.deep_dup
-    params[:taxonomy].each do |key, value|
-      value.each { |val_key, val_val|
-        val_val.keys.each { |val_key_key|
-          explanation[CGI.unescape key][CGI.unescape val_key][CGI.unescape val_key_key] = val_val[CGI.unescape val_key_key]
-        }
-      }
-    end unless params[:taxonomy].nil?
-
-    @budget_file.taxonomy.explanation = explanation
-    @budget_file.save
-
     respond_to do |format|
       if @budget_file.update(budget_file_params)
       #if @revenue.update(revenue_params.merge({:tree_info => tree_info, :rows => rows}))

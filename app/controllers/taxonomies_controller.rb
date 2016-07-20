@@ -8,6 +8,7 @@ class TaxonomiesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :show_modify,:town_profile]
   load_and_authorize_resource
 
+
   def recipients
     @recipients = []
 
@@ -50,7 +51,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def index
-    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page]).per(PAGINATE_PER_PAGE)
+    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page])
   end
 
   def show
@@ -60,6 +61,23 @@ class TaxonomiesController < ApplicationController
   end
 
   def update
+    unless params[:taxonomy].nil?
+      explanation = @taxonomy.explanation.deep_dup
+      params[:taxonomy].each do |key, value|
+        value.each { |val_key, val_val|
+          val_val.keys.each { |val_key_key|
+            explanation[CGI.unescape key][CGI.unescape val_key][CGI.unescape val_key_key] = val_val[CGI.unescape val_key_key]
+          }
+        }
+      end
+      @taxonomy.explanation = explanation
+      @taxonomy.save
+    end
+
+
+    # @taxonomy.explanation = explanation
+    # @taxonomy.save
+
     respond_to do |format|
       if @taxonomy.update(taxonomy_params)
         format.html { redirect_to @taxonomy, notice: t('taxonomies_controller.save_success') }
