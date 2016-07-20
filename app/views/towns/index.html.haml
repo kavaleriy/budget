@@ -35,7 +35,7 @@
     border-radius: 0 !important;
     line-height: 20px !important;
   }
-  #towns_btn_group{
+  #towns-btn-group{
     padding-top: 7px;
   }
 
@@ -47,7 +47,7 @@
 - flash[:notice]
 - flash[:alert]
 
-.row#towns_btn_group
+.row#towns-btn-group
   -if current_user && current_user.admin?
     .pull-left
       =link_to t('.add_town'),town_new_town_path, class: 'btn btn-primary'

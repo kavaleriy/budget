@@ -9,11 +9,11 @@
       font-size: xx-small;
     }
   }
-  @media (max-width: 991px){
+  @media (max-width: 991.9px){
     .small{
       font-size: small;
     }
-    .hide_in_small{
+    .hide-in-small{
       display: none;
     }
   }
@@ -61,19 +61,19 @@
     %tr
       %th
         =t('devise.form.name')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('devise.form.organization')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('devise.form.phone')
       %th
         =t('email')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('users.index.last_sign_in_at')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('users.index.reference_towns')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('users.index.roles_head')
-      %th.hide_in_small
+      %th.hide-in-small
         =t('users.form.locked')
       %th
         =t 'form.actions', :default => t("helpers.actions")
@@ -81,13 +81,13 @@
     - @users.each do |user|
       %tr
         %td= user.name
-        %td.hide_in_small= user.organisation
-        %td.hide_in_small= user.phone
+        %td.hide-in-small= user.organisation
+        %td.hide-in-small= user.phone
         %td= user.email
-        %td.hide_in_small= user.last_sign_in_at
-        %td.hide_in_small= user.town
-        %td.hide_in_small= render partial: 'roles', :locals => { roles: user.roles }
-        %td.text-center.hide_in_small= render partial: 'locked', :locals => { locked: user.is_locked? }
+        %td.hide-in-small= user.last_sign_in_at
+        %td.hide-in-small= user.town
+        %td.hide-in-small= render partial: 'roles', :locals => { roles: user.roles }
+        %td.text-center.hide-in-small= render partial: 'locked', :locals => { locked: user.is_locked? }
 
         %td
           =link_to t('form.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
