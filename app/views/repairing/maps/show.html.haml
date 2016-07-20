@@ -6,11 +6,12 @@
     border: none;
   }
 
-%iframe{src: "maps/frame/6?locale=#{params[:locale]}"}
+%iframe{src: "/repairing/maps/frame/6?locale=#{params[:locale]}"}
 
 .col-xs-12
   #embed_code.pull-right
     = render partial: 'embed_code'
+
 :javascript
 
   $(document).ready(function() {

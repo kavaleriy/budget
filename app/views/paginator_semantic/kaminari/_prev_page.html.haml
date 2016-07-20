@@ -1,0 +1,8 @@
+- if current_page.first?
+  %li.disabled
+    = content_tag :a do
+      %i.fa.fa-caret-left{"aria-hidden" => "true"}
+- else
+  %li
+    = link_to url, :rel => 'prev', :remote => remote do
+      %i.fa.fa-caret-left{"aria-hidden" => "true"}

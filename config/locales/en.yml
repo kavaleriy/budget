@@ -20,7 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-
+  found_docs: 'Found docs'
   choose_calendar: "Calendar"
   actions: "Actions"
   REGION_LEVEL: 'Region'
@@ -41,6 +41,8 @@ en:
   confirm_yes: "Yes"
   confirm_no: "No"
   confirm_destroy: "Extraction"
+  no_town_description_info: "Unfortunately, no information"
+
   template:
     title:
       title: 'Pdf title'
@@ -58,6 +60,9 @@ en:
     check_row_name: 'Check title in table'
   content_manager:
     page_containers:
+      index:
+        menu: 'Menu'
+        info: 'Info pages'
       en_header: "English header"
       en_content: "English content"
       uk_header: "Ukraine header"
@@ -142,14 +147,24 @@ en:
       repairing_layers: "Layers"
       repairing_category: "Reference works"
     navbar:
-      edit_profile: "Edit profile"
-      logout: "Logout"
-      authorization: "Authorization"
-      editor: "Editor"
-      home: "Main"
-      about: "About us"
-      contacts: "Contacts"
-      authorization: "Authorization"
+      navbar:
+        application_title: "Municipal budget - beta"
+        edit_profile: "Edit profile"
+        logout: "Logout"
+        authorization: "Authorization"
+        editor: "Editor"
+        home: "Main"
+        about: "About us"
+        contacts: "Contacts"
+        authorization: "Authorization"
+      nav_admin:
+        admin: "Admin"
+        users: "Users"
+        town: "Town"
+        currency: "Currency"
+        subscribers: "Subscribers"
+        news_header: "News"
+        slider_header: "Sliders"
 
       #Budget-system dropdown. BEGIN
       bud_sys: "Budget system"
@@ -179,14 +194,6 @@ en:
       lang: "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5"
       like: "Like"
       share: "Share"
-    nav_admin:
-      admin: "Admin"
-      users: "Users"
-      town: "Town"
-      currency: "Currency"
-      subscribers: "Subscribers"
-      news_header: "News"
-      slider_header: "Sliders"
   form:
     save: "Save"
     cancel: "Cancel"
@@ -576,7 +583,6 @@ en:
       branch_report:
         header: "Branch report for "
       show:
-        #        old
         header: "Detailed view of a program"
         targets: "Main targets"
         tasks: "Main tasks"
@@ -672,21 +678,30 @@ en:
         title: "News"
         no_news: "Sorry, but no news yet"
     documents:
-        index:
-          documents: "Documents"
-          documents_search: "Documents search"
-          sort_by: "Sort by "
-          sort_name: "name"
-          sort_type: "type"
-          edit_files: "Edit files"
+      index:
+        documents: "Documents"
+        documents_search: "Documents search"
+        sort_by: "Sort by "
+        sort_name: "name"
+        sort_type: "type"
+        edit_files: "Edit files"
+      preambule:
+        preambule_first_part: "You can easily find and download key documents determining the development of cities and regions in 2012 - "
+        preambule_seccond_part: "years, namely budget execution reports, explanatory notes, programs of social and economic development,
+                                long-term development strategies and reports on their performance. Documents obtained through official
+                                requests, as well as the official websites of the city and regional councils and RSA. In case you do not
+                                find what you were looking for, or have suggestions for improvements or additions base - please write to the address"
+        preambule_mark: "marked «OpenBudget - Documents»."
     towns:
+      show:
+        choose_town: 'Find town'
       portfolio:
-        detail: "Read more"
+        detail: "more"
         description: "Description"
         budget: "City budget"
         programs: "City programs"
-        indicators: "Key activity indicators"
-        keys: "Compare key indicators"
+        indicators: "Key activity"
+        keys: "Key indicators"
         calendar: "Budget calendar"
         sankey: "Revenues and expences correlation"
         repair: "Repairing map"
@@ -705,6 +720,7 @@ en:
         no_data: "No data"
         visuals: "Visualizations"
         documents: "Documents"
+        links: "Useful links"
         town_links: "Links"
         pub_budget: "Public budget"
       map_instruction: "Click on the region to go to her profile. Or select a city in the dropdown list below to get to the profile of the city."
@@ -778,6 +794,13 @@ en:
         table: "Table"
         attachments: "Attachments"
         description: "Description"
+      sidebar_table:
+        items_income: 'Items income'
+        destination_charges: 'Destination charges'
+        sum: 'sum'
+        fact: 'fact'
+        to_recipient: 'to recipient'
+        specific_weight: 'Specific weight'
       slider:
         by_month: "by month"
       bubbletree:
@@ -1070,6 +1093,10 @@ en:
         sentence_6: 'Addresses can be specified as an exact geolocation (eg "49.23363, 28.46146") and name (eg "Gagarin Square 4/1").'
         sentence_7_1: "Example file with repairs -"
         sentence_7_2: "download"
+      sitebar:
+        e_data: "E-data"
+        prozzoro: "ProZorro"
+        information: "Information"
   footer: "UNDP and Internews Network in Ukraine"
   footer:
     about_portal:
@@ -1142,3 +1169,32 @@ en:
   messages_x-editable:
     need_name_file: "You must specify the file name!"
     need_comment: "You must provide a comment!"
+
+  new_design:
+    home_page:
+      tooltips_title:
+        visualisation_budget: "Budget visualisation"
+        repairs_map: "Repairs_map"
+        pdf_documents: "PDF documents"
+        documents: "Documents"
+        prozorro: "ProZorro"
+        e_data: "E-data"
+        budget_calendar: "Budget calendar"
+        key_figures: "Key figures"
+      main_title: "VISUALISATION SYSTEM «MUNICIPAL BUDGET»"
+      text_preamble: "Helping citizens understand budget information"
+      button_try: "TRY IT NOW"
+      button_soon: "SOON"
+      map_title: "Municipal budget works in these authorities"
+      project_news: "Project news"
+      our_partners: "Our partners"
+    footer:
+      footer-text: 'Portal Municipal Budget established in the Center for Political Studies and Analysis
+                    with participation of the EU Delegation to Ukraine, the International Fund "Renaissance",
+                    and UNDP in Ukraine under license from Creative Commons With attribution - Non-profit -
+                    Dissemination under the same conditions 4.0 International'
+      based_code: "Based on the code of"
+      rules: "The rights extending beyond this license are available at"
+  town_profile:
+    visualization: "Visualization"
+    based_code: "Based on the code of "

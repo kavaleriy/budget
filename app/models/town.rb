@@ -16,6 +16,7 @@ class Town
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
+  scope :get_town_by_part_title, -> (part) {where(title: Regexp.new("^#{part}.*"))}
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -48,6 +49,22 @@ class Town
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },
             numericality: { only_integer: true }
+
+  def get_beautiful_description
+    # this function get town description
+    # from wikipedia.org
+    # use lib/wiki_parser
+    # ===================
+    ## return description
+    ## if data exist in wikipedia.org
+    ## return data from WikiParser
+    ## or
+    ## return field 'description' from class Town
+    # ===================
+    # Work ONLY if Town belongs to area or town
+    # TODO: check Town belongs to village
+    WikiParser.get_wiki_town_info(self.title) || self.description || I18n.t('no_town_description_info')
+  end
 
   def is_test?
     # this function check if town is test

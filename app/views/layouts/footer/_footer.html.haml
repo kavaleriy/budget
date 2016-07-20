@@ -1,0 +1,190 @@
+:scss
+  // init colors
+  $white-color: #ffffff;
+  $yellow-color: #ffd304;
+  $dark-blue-color: #0c2231;
+
+  // main style
+  footer {
+    width: 100%;
+    position: absolute;
+    background: $dark-blue-color;
+    .footer-wrapper {
+      .container {
+        .row {
+          margin-left: 0;
+          margin-right: 0;
+          .footer-logo {
+            padding: 0;
+            margin: 15px 0 0 0;
+            color: $white-color;
+          }
+          .footer-text {
+            margin: 15px 0;
+            padding: 0 0 0 15px;
+            > p {
+              font-family: 'Lato', sans-serif;
+              margin: 0;
+              padding-left: 10px;
+              color: $white-color;
+              text-align: justify;
+              line-height: 1.8rem;
+            }
+            a {
+              color: $white-color;
+              &:hover,
+              &:focus {
+                color: $yellow-color;
+                text-decoration: none;
+              }
+            }
+          }
+          .social-btns {
+            margin-bottom: 15px;
+            .row {
+              a {
+                padding: 0 10px;
+                color: $yellow-color;
+                transition: color 250ms linear .2s;
+                &:hover,
+                &:focus {
+                  text-decoration: none;
+                  color: $white-color;
+                }
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //Media styles
+  @media (max-width: 767px) {
+    footer {
+      .footer-wrapper {
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 0;
+              a {
+                img {
+                  padding: 0 20%;
+                  margin: 15px 0;
+                }
+              }
+            }
+            .footer-text {
+              padding: 0;
+              p {
+                margin-bottom: 0;
+                padding: 0;
+              }
+            }
+            .social-btns {
+
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  @media (min-width: 321px) and (max-width: 449px) {
+    footer {
+      .footer-wrapper {
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 0;
+              a {
+                img {
+                  padding: 0 20%;
+                  margin: 15px 0;
+                }
+              }
+            }
+            .footer-text {
+              margin: 0;
+              padding: 0;
+              p {
+                font-size: 1.3rem;
+                line-height: 1.5rem;
+                padding: 0;
+                margin-bottom: 0;
+              }
+            }
+            .social-btns {
+              margin-top: 15px;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  @media (max-width: 320px) {
+    footer {
+      .footer-wrapper {
+        .container {
+          .row {
+            .footer-logo {
+              margin-top: 0;
+              padding-bottom: 0;
+              a {
+                img {
+                  padding: 0 20%;
+                  margin: 15px 0;
+                }
+              }
+            }
+            .footer-text {
+              margin: 0;
+              padding: 0;
+              p {
+                font-size: 1.3rem;
+                line-height: 1.5rem;
+                padding: 0;
+                margin-bottom: 0;
+              }
+            }
+            .social-btns {
+              margin-top: 15px;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+%footer
+  .footer-wrapper
+    .container
+      .row
+        .col-xs-12.col-sm-4.col-md-2.footer-logo
+          =link_to '#' do
+            = image_tag('new_design/eidos-logo.png', class: 'img-responsive')
+        .col-xs-12.col-sm-8.col-md-10.footer-text
+          %p
+            =t('new_design.footer.footer-text')
+          %p
+            =t('new_design.footer.based_code')
+            %a{'xmlns:dct' => 'http://purl.org/dc/terms/', 'href' => 'https://github.com/kavaleriy/budget', 'rel' => 'dct:source'}
+              %i.fa.fa-github
+              https://github.com/kavaleriy/budget
+        .col-xs-12.social-btns
+          .row.text-center
+            =link_to 'https://www.facebook.com/EidosUa/', target: '_blank' do
+              %i.fa.fa-facebook.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://twitter.com/EidosUA', target: '_blank' do
+              %i.fa.fa-twitter.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://www.youtube.com/channel/UCHbrG6ksOXP19PYI91UrC9w', target: '_blank' do
+              %i.fa.fa-youtube.fa-2x{"aria-hidden" => "true"}
+            =link_to 'https://www.instagram.com/eidosua/', target: '_blank' do
+              %i.fa.fa-instagram.fa-2x{"aria-hidden" => "true"}

@@ -1,426 +1,425 @@
-:css
+:scss
+  // init colors
+  $yellow: #ffd304;
+  $white: #ffffff;
+  $dark-blue: #0c2231;
 
-  .budget {
-    cursor: pointer;
-  }
-  .budget.active {
-    cursor: default;
-    font-weight: bold;
-  }
-
-  .nav-tabs {
-    height: 100vh;
-  }
-
-  #towns_profile .tabs-left > .nav-tabs {
-    border-right: 1px solid #0199DA;
-  }
-
-  #towns_profile .tabs-left > .nav-tabs .active > a,
-  #towns_profile .tabs-left > .nav-tabs .active > a:hover,
-  #towns_profile .tabs-left > .nav-tabs .active > a:focus {
-    border-color: #0199DA transparent #0199DA #0199DA;
-  }
-  .title-town {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: rgb(1, 153, 218);
-    line-height: 1em;
-    padding: 0 5px 5px 5px !important;
-    margin: 0;
-  }
-
-  .img-town {
-    padding: 0 0 10px 0;
-  }
-
-  .links, .desc-ons {
-    padding: 0 0 5px 0;
-    border-bottom: 1px solid rgb(1, 153, 218);
-  }
-
-  .bar > li {
-    text-transform: uppercase;
-  }
-
-  .view-tenth img {
-    height: 145px;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  @media(min-width: 320px) and (max-width: 767px){
-    .thumbnail {
-      width: 75%;
+  .wrapper {
+    display: flex;
+    margin-top: 73px;
+    .town-search{
+      z-index: 6;
+      position: fixed;
+      margin: 0 10px;
+      border: 1px solid $yellow;
+      display: inline-flex;
+      .select2-container {
+        width: 85% !important;
+        height: 30px;
+        .select2-choice {
+          width: 168px;
+          height: 30px;
+          border-radius: 0;
+          #select2-chosen-1 {
+            padding-top: 0;
+          }
+          .select2-arrow{
+            display: none;
+          }
+        }
+      }
+      .search-button {
+        cursor: pointer;
+        padding-left: 1px;
+        width: 30px;
+        height: 30px;
+        background-color: $dark-blue;
+        i {
+          font-size: 21px;
+          color: $white;
+          bottom: 0;
+          padding: 4px 5px;
+        }
+        i.mobile-search {
+          color: $yellow;
+        }
+      }
     }
-  }
-  @media(min-width: 768px) and (max-width: 991px){
-    .thumbnail {
-      width: 95%;
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      background: transparent;
+      padding-top: 73px;
+      .blason-block {
+        display: none;
+        margin-top: 50px;
+        padding: 5% 30%;
+      }
+      .town-title {
+        display: none;
+        color: $white;
+        text-align: center;
+        padding: 10px;
+        font-weight: 700;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.6rem;
+        line-height: 1.25;
+      }
+      .sidebar-nav {
+        padding: 40px 0 0 0;
+        li {
+          a {
+            position: relative;
+            display: block;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            padding: 15px;
+            color: #eee;
+            &:before {
+              font: 14px fontawesome;
+              position: absolute;
+              top: 14px;
+              left: 20px;
+            }
+            &:hover,
+            &:focus {
+              background: #807023;
+              text-decoration: none;
+            }
+            svg {
+              position: relative;
+              margin: -17px -12px;
+              width: 45px;
+              height: 45px;
+              fill: $white;
+            }
+            p {
+              padding-left: 1.7rem;
+              margin: 0;
+              display: inline-block;
+            }
+          }
+        }
+        .active {
+          background: $yellow;
+          a{
+            color: $dark-blue;
+            svg {
+              fill: $dark-blue;
+            }
+          }
+        }
+        .button {
+          float: left;
+          padding: 0 15px;
+          transform: rotate(180deg);
+          transition: transform 1s;
+          cursor: pointer;
+          &:before {
+            content: '\f100';
+            font: 40px fontawesome;
+            color: $white;
+          }
+          &:hover,
+          &:focus {
+            text-decoration: none;
+          }
+        }
+      }
     }
-  }
-  @media(min-width: 992px) and (max-width: 1199px){
+    .is-full {
+      .blason-block,
+      .town-title {
+        display: block;
+      }
 
-  }
-  @media(min-width: 1200px) and (max-width: 1349px){
-
-  }
-  @media(min-width: 1350px) and (max-width: 1579px){
-    .bar {
-     width: 20%;
+      .sidebar-nav {
+        padding: 0;
+        .button {
+          float: right;
+          padding: 0 10px;
+          transform: rotate(0deg);
+          transition: transform 1s;
+          &:before {
+            content: '\f100';
+          }
+        }
+      }
     }
-  }
-  @media(min-width: 1580px) and (max-width: 1920px){
-    .bar {
-     width: 20%;
+    .content {
+      height: auto;
+      min-height: calc(100vh - 193px);
+      margin-left: 50px;
+      margin-bottom: 120px;
+      padding: 30px;
+      background: $white;
+      z-index: 4;
+      transform: translate3d(0,0,0);
+      transition: transform .5s;
+      width: calc(100% - 50px);
+      .content-wrapper {
+        display: block;
+        height: auto;
+        .tab-content {
+          #description {
+            .infobox {
+              width: 100% !important;
+              background-color: transparent !important;
+              font-size: 100% !important;
+              table-layout: fixed;
+              tr {
+                background-color: transparent !important;
+                td {
+                  background-color: transparent !important;
+                  overflow:hidden;
+                  word-wrap:break-word;
+                  table {
+                    background-color: transparent !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  }
-
-  /*Acordion*/
-
-  .heading-primary {
-    font-size: 2em;
-    padding: 2em;
-    text-align: center;
-  }
-  .accordion dl,
-  .accordion-list {
-    /*border: 1px solid #ddd;*/
-  }
-  .accordion dl:after,
-  .accordion-list:after {
-    content: "";
-    display: block;
-    /*height: 1em;*/
-    width: 100%;
-    background-color: #2ba659;
-  }
-  .accordion dd,
-  .accordion__panel {
-    /*background-color: #eee;*/
-    font-size: 1em;
-    line-height: 1.5em;
-    padding: 10px 0 0 0;
-  }
-  .accordion p {
-    padding: 1em 2em 1em 2em;
-  }
-  .accordion {
-    position: relative;
-    /*background-color: #eee;*/
-  }
-  .container {
-    max-width: 100%;
-    margin: 0 auto;
-    /*padding: 2em 0 2em 0;*/
-  }
-  .accordionTitle,
-  .accordion__Heading {
-    /*background-color: #38cc70; */
-    /*text-align: center;*/
-    font-weight: 700;
-    padding: 1em;
-    display: block;
-    text-decoration: none;
-    color: #000;
-    transition: background-color 0.5s ease-in-out;
-    border-bottom: 1px solid rgb(1, 153, 218);
-  }
-  .accordionTitle:before,
-  .accordion__Heading:before {
-    content: ">";
-    font-size: 1.5em;
-    line-height: 0.5em;
-    float: right;
-    color: rgb(1, 153, 218);
-    transition: transform 0.3s ease-in-out;
-    transform: rotate(-270deg);
-  }
-  .accordionTitle:hover,
-  .accordion__Heading:hover {
-    /*background-color: #2ba659;*/
-  }
-  .accordionTitleActive,
-  .accordionTitle.is-expanded {
-    /*background-color: #2ba659;*/
-    /*color: rgb(1, 153, 218)!important;*/
-    opacity: .8;
-  }
-  .accordionTitleActive:before,
-  .accordionTitle.is-expanded:before {
-    transform: rotate(270deg);
-    color: black;
-  }
-  .accordionItem {
-    height: auto;
-    overflow: hidden;
-    max-height: 50em;
-    transition: max-height 1s;
-  }
-  @media screen and (min-width: 48em) {
-    .accordionItem {
-      max-height: 15em;
-      transition: max-height 0.5s;
-    }
-  }
-  .accordionItem.is-collapsed {
-    max-height: 0;
-  }
-  .no-js .accordionItem.is-collapsed {
-    max-height: auto;
-  }
-  .animateIn {
-    animation: accordionIn 0.65s normal ease-in-out both 1;
-  }
-  .animateOut {
-    animation: accordionOut 0.75s alternate ease-in-out both 1;
-  }
-  @keyframes accordionIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.9) rotateX(-60deg);
-      transform-origin: 50% 0;
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  @keyframes accordionOut {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.9) rotateX(-60deg);
-    }
-  }
-  .accordion a:hover, a:focus {
-    color: inherit;
-    text-decoration: none;
-  }
-  .link-title {
-    float: left;
-  }
-  .link-value {
-    float: right;
-  }
-
-  @-moz-document url-prefix() {
-    .thumbnail {
-      float: right;
-      padding-right: 20px;
-    }
-    #portfolio .row .col-sm-3 {
-      width: 23%;
-    }
-    #portfolio .row div {
-      margin: 0px 0px 10px;
-      padding: 0 3px;
+    .is-open {
+      margin-left: 0;
+      transform: translate3d(220px,0,0);
+      width: calc(100% - 220px);
     }
   }
 
+  @media (max-width: 991px) {
+    body {
+      .blocks {
+        .wrapper {
+          .content {
+            //margin-bottom: 193px;
+            .content-wrapper{
+              .tab-content{
+                .modules{
+                  .modules-wrapper{
+                    .module{
+                      padding: 0;
+                      a{
+                        > div{
+                          .img{
+                            width: 100%;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
--#-if(@town.id == 'test')?portfolio_url = widgets_town_profile_path(@town.id):
--#  -
+.wrapper
+  .town-search.input-group
+    = text_field_tag 'active_town_select', '', placeholder: t('.choose_town')
+    .input-group-btn.search-button
+      %i.fa.fa-search{"aria-hidden" => "true"}
+  .sidebar
 
-= content_for :header do
-  .head
-    = @town.title
-#towns_profile
-  .tabbable.tabs-left
-    %ul.nav.nav-tabs.bar
+    .blason-block
+      = show_town_blazon(@town)
+    .town-title
+      = @town.title
+    %ul.sidebar-nav
       %li
-        %img{src: @town.id == 'test' ? '/assets/public/blazon.jpg' : @town.img.thumb.url, :style => 'display:block; margin:auto;', :class => 'img-town'}
-      %li
-        %a{"data-toggle" => "tab", :href => "#description"}
-          = t('public.towns.portfolio.description')
+        =link_to '#description', data: {toggle: "tab"} do
+          = inline_svg('icons/town_profile_sidebar/info.svg')
+          %p
+            = t('public.towns.portfolio.description')
       %li.active
-        %a{"data-toggle" => "tab", :href => "#portfolio"}
-          = t('public.towns.portfolio.visuals')
-          %span.badge.bsize.count#town_items_length
-            -#= @town_items.length.to_s
+        =link_to '#portfolio', data: {toggle: "tab"} do
+          = inline_svg('icons/town_profile_sidebar/chart.svg')
+          %p
+            = t('public.towns.portfolio.visuals')
+            %span.badge.bsize.count#town_items_length
+      -#= @town_items.length.to_s
       %li
-        %a{"data-toggle" => "tab", :href => "#documents"}
-          = t('public.towns.portfolio.documents')
-          %span.badge.bsize.count
-            = @documents.length
+        =link_to '#documents', data: {toggle: "tab"} do
+          = inline_svg('icons/town_profile_sidebar/docs.svg')
+          %p
+            = t('public.towns.portfolio.documents')
+            %span.badge.bsize.count
+              -# in last element of hash we have documents count
+              = @documents[@documents.keys.last]
       %li
-        %a{"data-toggle" => "tab", :href => "#links"}
-          = t('public.towns.portfolio.town_links')
-          %span.badge.bsize.count
-            = @town_br_links.length
+        =link_to '#links', data: {toggle: "tab"} do
+          = inline_svg('icons/town_profile_sidebar/link.svg')
+          %p
+            = t('public.towns.portfolio.town_links')
+            %span.badge.bsize.count
+              = @town_links.length
       %li
-        %a{"data-toggle" => "tab", :href => "#pub_budget"}
-          = t('public.towns.portfolio.pub_budget')
+        =link_to '#pub_budget', data: {toggle: "tab"} do
+          = inline_svg('icons/town_profile_sidebar/folder.svg')
+          %p
+            = t('public.towns.portfolio.pub_budget')
 
-      %li
-        %a{"data-toggle" => "tab", :href => "#pdf_docs"}
-          PDS doc's
-
-    .tab-content.col-sm-9
-      #description.tab-pane.fade
-        .col-sm-12.col-md-5.col-lg-6
-          - if @town.description && !@town.description.blank?
-            %h3.desc-ons
-              = t('public.towns.portfolio.description')
-            = @town.description
+      -#%li
+      -#  %a{"data-toggle" => "tab", :href => "#pdf_docs"}
+      -#    PDS doc's
+      %a.button
+  .content
+    .content-wrapper
+      .tab-content
+        #description.tab-pane.fade
+          -#- if @town.description && !@town.description.blank?
+          %h3.desc-ons
+            = t('public.towns.portfolio.description')
+          = @town.get_beautiful_description
           - if @town.links && !@town.links.blank?
             %h3.links
               = t('public.towns.portfolio.links')
             %p
               =@town.links.html_safe
-      #portfolio.tab-pane.active.fade.in
-        -#= render partial: 'widgets/town_profile/portfolio' , :locals => { :town_items => @town_items }
-        -#-#%h3
-        -#-#  = t('public.towns.portfolio.visuals')
-        -#.row
-        -#  = render partial: 'portfolio' , :locals => { :town_items => @town_items }
+          -#= @wiki_info.html_safe
+        #portfolio.tab-pane.active.fade.in
 
-      #documents.tab-pane.fade
-        = render partial: 'docs'
-      #links.tab-pane.fade
+        #documents.tab-pane.fade
+          = render partial: 'docs'
+        #links.tab-pane.fade
+          =render partial: 'links'
 
-        - @town_links.each do |key,tl|
-          - counter = 1
-
-          -#- if tl['links'].length > 0
-            -#- tl['links'].each do |link|
-              -#= link.title
-              -#= link.value
-          .col-sm-12.col-md-5.col-lg-6
-            .container
-              .accordion
-                %dl
-                  %dt
-                    %a.accordion-title.accordionTitle.js-accordionTrigger{"aria-controls" => "accordion#{counter}", "aria-expanded" => "false", :href => "#accordion#{counter}"}
-                      =tl['title']
-                  %dd#accordion1.accordion-content.accordionItem.is-collapsed{"aria-hidden" => "true"}
-                    - if tl['links'].length > 0
-                      - tl['links'].each do |link|
-                        .link-title
-                          = link.title
-                        .link-value
-                          = link.value
-                  %dt
-          - counter = counter + 1
-      #pdf_docs.tab-pane.fade
-        .col-xs-7
+        #pub_budget.tab-pane.fade
           =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
 
-      .col-xs-5.pull-right
-        = render partial: 'map_ukraine'
-.col-sm-12
-  #embed_code_town.embed_code
-    = render partial: 'widgets/visify/embed_code'
+
+
 :javascript
 
+  function addBreadcrumbs(title,link){
+    var breadcrumbs_list = $('.breadcrumb');
+    breadcrumbs_list.find('li.active').removeClass('active');
+    // create new li dom and set active class
+    var active_li = $('<li></li>').addClass('active');
+    // create new a dom and set html
+    var a = $('<a>').html(title);
+
+    active_li.append(a);
+
+    breadcrumbs_list.append(active_li);
+  }
+  function removeBreadcrumbs() {
+    $('.breadcrumb').not(':first').remove();
+  }
+
+
+
+  function renderVisualisation(portfolio_url){
+      $.ajax({
+      url: portfolio_url,
+      success: function(data){
+        $('.breadcrumb > li:first-child').click(function() {
+          if(!$(this).hasClass('active')){
+            removeBreadcrumbs();
+            renderVisualisation("#{widgets_town_profile_path(@town)}");
+          }
+        });
+        $('.module').find('a').attr('data-remote',"true");
+        $('.module').click(function(){
+          var breadcrumbs_title = $.trim($(this).find('.title').html());
+          var breadcrumbs_link = $(this).find('a').attr('href');
+          addBreadcrumbs(breadcrumbs_title,breadcrumbs_link);
+          if($(window).width() > middleScreenSize && $('.blocks > .wrapper > .sidebar').hasClass('is-full')){
+            toggleSidebar();
+          }
+        })
+      }
+    });
+
+  }
+
+  function toggleSearch(){
+    // if sidebar in small version and search visible
+    if(!$('.sidebar').hasClass('is-full') && $('#s2id_active_town_select').is(':visible') ){
+       $('.search-button').find('i').removeClass('mobile-search');
+       $('#s2id_active_town_select').hide('fast');
+    // if sidebar in small version
+    }else if(!$('.sidebar').hasClass('is-full')){
+      $('.search-button').find('i').addClass('mobile-search');
+      $('#s2id_active_town_select').show('fast');
+    }
+  }
+
+  function toggleSidebar(){
+    // remove town search class
+    $('.search-button').find('i').removeClass('mobile-search');
+    // if sidebar in small version
+    if (!$('.sidebar').hasClass('is-full')){
+      $('#s2id_active_town_select').show('fast');
+    }else{
+      $('#s2id_active_town_select').hide('fast');
+    }
+    //toggleSearch();
+    $('.blocks > .wrapper > .sidebar').toggleClass('is-full');
+    $('.blocks > .wrapper > .content').toggleClass('is-open');
+    $('body > footer').toggleClass('is-full');
+  }
+  var middleScreenSize = 1200;
 
 
   $(document).ready(function() {
-  //#-------------------------------Embed code init----------------------------------------------------
 
-
-
-  //---------------------------------------------------------------------------------------------------
-    var portfolio_url = "#{widgets_town_profile_path(@town)}"
-    $.ajax({
-      url: portfolio_url,
-      success: function(data){
-      }
+    $('.search-button').click(function(){
+      toggleSearch();
     });
 
-    $('.embed_btn').on('click',function(){
-      var town = "#{@town.id}"
-      //el_id this is dom element selector, where render size form for iframe
-      var embed_code_timeline = aEmbedCode();
-      var src = window.location.origin + "/widgets/town/profile/" + town;
-      embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
-      embed_code_timeline.set_iframe(src);
-      $('#embeded_code_modal_window').find('#embed_src').val(src);
-      $('#embeded_code_modal_window').modal();
+    // if we click on visual icon in sidebar
+    // render visaulisation list
+    $("a[href='#portfolio']").click(function(){
+      renderVisualisation("#{widgets_town_profile_path(@town)}");
     })
 
-  $('.budget[data-id]').on('click', function (e) {
-      $('.budget[data-id]').removeClass('active')
-      $(this).addClass('active')
-
-      var vis = $(this).attr('data-vis')
-      var id = $(this).attr('data-id')
-      set_iframe(vis, id);
-
+    init_town_select2_with_field_id('#active_town_select',"#{search_for_active_towns_path}")
+    $('#s2id_active_town_select').hide('fast');
+    $('#active_town_select').on('change',function(){
+      window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
+    renderVisualisation("#{widgets_town_profile_path(@town)}");
 
-    $(".owl-example").owlCarousel({
-      //Count on page
-      items : 3
-      //autoWidth:true
+    //Show full sidebar on desctops [md/lg size]
+    if($(window).width() > middleScreenSize){
+      toggleSidebar();
+      $('#s2id_active_town_select').show('fast');
+     };
+
+    //Toggle button action [hide/show sidebar]
+    $('.button').on('click', function() {
+       toggleSidebar();
     });
+  });
 
-    //Accordion content
-    //uses classList, setAttribute, and querySelectorAll
-    //if you want this to work in IE8/9 youll need to polyfill these
-    (function(){
-      var d = document,
-      accordionToggles = d.querySelectorAll('.js-accordionTrigger'),
-      setAria,
-      setAccordionAria,
-      switchAccordion,
-        touchSupported = ('ontouchstart' in window),
-        pointerSupported = ('pointerdown' in window);
+  //Resize window sidebar view
+  $(window).resize(function(){
+    //if($(window).width() < middleScreenSize){
 
-        skipClickDelay = function(e){
-          e.preventDefault();
-          e.target.click();
-        }
+      //toggleSidebar();
+    //} else
+    //if($(window).width() > middleScreenSize){
+      toggleSidebar();
+    //};
+  });
+  // if ajax was send fade out modules visualisation
+  //$(document).bind("ajaxSend", function(){
+  //  $('.modules-wrapper').fadeOut('slow');
+  // if ajax complete fade in visualisation modules
+  //}).bind("ajaxComplete", function(){
+  //  $(".modules-wrapper").fadeIn('slow');
+  //});
 
-        setAriaAttr = function(el, ariaType, newProperty){
-        el.setAttribute(ariaType, newProperty);
-      };
-      setAccordionAria = function(el1, el2, expanded){
-        switch(expanded) {
-          case "true":
-            setAriaAttr(el1, 'aria-expanded', 'true');
-            setAriaAttr(el2, 'aria-hidden', 'false');
-            break;
-          case "false":
-            setAriaAttr(el1, 'aria-expanded', 'false');
-            setAriaAttr(el2, 'aria-hidden', 'true');
-            break;
-          default:
-          break;
-        }
-      };
-    //function
-    switchAccordion = function(e) {
-      e.preventDefault();
-      var thisAnswer = e.target.parentNode.nextElementSibling;
-      var thisQuestion = e.target;
-      if(thisAnswer.classList.contains('is-collapsed')) {
-        setAccordionAria(thisQuestion, thisAnswer, 'true');
-      } else {
-        setAccordionAria(thisQuestion, thisAnswer, 'false');
-      }
-        thisQuestion.classList.toggle('is-collapsed');
-        thisQuestion.classList.toggle('is-expanded');
-        thisAnswer.classList.toggle('is-collapsed');
-        thisAnswer.classList.toggle('is-expanded');
-
-          thisAnswer.classList.toggle('animateIn');
-      };
-      for (var i=0,len=accordionToggles.length; i<len; i++) {
-        if(touchSupported) {
-          accordionToggles[i].addEventListener('touchstart', skipClickDelay, false);
-          }
-          if(pointerSupported){
-            accordionToggles[i].addEventListener('pointerdown', skipClickDelay, false);
-          }
-          accordionToggles[i].addEventListener('click', switchAccordion, false);
-        }
-    })();
-  })

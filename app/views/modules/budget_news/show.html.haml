@@ -1,42 +1,188 @@
 :scss
-  .container_fluid_color{
-    background: #EAEAEA;
-  }
-  .news_text{
-    overflow: hidden;
-    img{
-      width: 100% !important;
+  .news-list-item {
+    position: relative;
+    min-height: calc(100vh - (103px + 120px));
+    height: auto;
+    //top: 73px;
+    margin-bottom: 73px;
+    .row{
+      .news-item-article {
+        //border: 1px solid red;
+        padding: 0;
+        .article-title {
+          font-family: 'Lato', sans-serif;
+          font-weight: 600;
+          font-size: 2.4rem;
+          line-height: 1.25;
+        }
+        .article-data {
+          margin: 10px 0;
+          padding: 0 10px;
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 1.2rem;
+          i.fa-clock-o {
+            &:before {
+              padding: 0 5px 0 0;
+            }
+          }
+
+        }
+        .artcile-content {
+          p {
+            text-align: left;
+            font-family: 'Lato', sans-serif;
+            span {
+              font-family: 'Lato', sans-serif !important;
+            }
+            img {
+              width: 100% !important;
+              //fix for summernote image width
+              margin-bottom: 15px;
+            }
+          }
+          //img {
+          //  width: 100% !important;
+          //  margin-bottom: 15px;
+          //}
+        }
+        //.article-social-btns {
+        //  margin-bottom: 20px;
+        //  .social-buttons {
+        //    height: 40px;
+        //    margin: auto;
+        //    font-size: 0;
+        //    text-align: center;
+        //    //position: relative;
+        //    //top: 0;
+        //    //bottom: 0;
+        //    //left: 0;
+        //    //right: 0;
+        //  }
+        //
+        //  .social-button {
+        //    display: inline-block;
+        //    background-color: #e0e0e0;
+        //    width: 40px;
+        //    height: 40px;
+        //    line-height: 40px;
+        //    margin: 0 10px;
+        //    text-align: center;
+        //    position: relative;
+        //    overflow: hidden;
+        //    opacity: .99;
+        //    border-radius: 28%;
+        //    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.05);
+        //    transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+        //  }
+        //  .social-button i {
+        //    padding: 11px;
+        //  }
+        //  .social-button:before {
+        //    content: '';
+        //    background-color: #000;
+        //    width: 120%;
+        //    height: 120%;
+        //    position: absolute;
+        //    top: 90%;
+        //    left: -110%;
+        //    transform: rotate(45deg);
+        //    transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+        //  }
+        //  .social-button .fa {
+        //    font-size: 19px;
+        //    vertical-align: middle;
+        //    transform: scale(0.8);
+        //    transition: all 0.35s cubic-bezier(0.31, -0.105, 0.43, 1.59);
+        //  }
+        //  .social-button.facebook:before {
+        //    background-color: #3B5998;
+        //  }
+        //  .social-button.facebook .fa {
+        //    color: #3B5998;
+        //  }
+        //  .social-button.twitter:before {
+        //    background-color: #3CF;
+        //  }
+        //  .social-button.twitter .fa {
+        //    color: #3CF;
+        //  }
+        //  .social-button.google:before {
+        //    background-color: #DC4A38;
+        //  }
+        //  .social-button.google .fa {
+        //    color: #DC4A38;
+        //  }
+        //  .social-button.dribbble:before {
+        //    background-color: #F26798;
+        //  }
+        //  .social-button.dribbble .fa {
+        //    color: #F26798;
+        //  }
+        //  .social-button.skype:before {
+        //    background-color: #00AFF0;
+        //  }
+        //  .social-button.skype .fa {
+        //    color: #00AFF0;
+        //  }
+        //  .social-button:hover:before {
+        //    top: -10%;
+        //    left: -10%;
+        //  }
+        //  .social-button:hover .fa {
+        //    color: #fff;
+        //    transform: scale(1);
+        //  }
+        //  .social-button:focus {
+        //    opacity: .85;
+        //  }
+        //
+        //}
+      }
+      .baners-blocks {
+        padding: 0;
+        //border: 1px solid red;
+        img {
+          margin-bottom: 15px;
+        }
+      }
     }
   }
-  .news_header{
-    font-weight: bold;
+
+  @media (min-width: 768px) {
+    .news-list-item {
+      .row {
+        .baners-blocks {
+          padding: 0 15px;
+        }
+      }
+    }
   }
 
 %p#notice= notice
-.col-md-8
-  .ul.list-group
-    %li.list-group-item
-      .text-center.news_header
+.container.news-list-item
+  .row
+    .col-xs-12.col-sm-8.news-item-article
+      .article-title
         = @budget_news.title
-    %li.list-group-item.news_text
-      = @budget_news.news_text.html_safe
-    -#%li.list-group-item
-    -#  %b
-    -#    = t('modules.budget_news.index.link')+':'
-    -#  = @budget_news.link
-    -#%li.list-group-item
-    -#  %b
-    -#    = t('modules.budget_news.index.image')+':'
-    -#  = image_tag @budget_news.img.thumb
-  -if current_user
-    -if current_user.admin?
-      = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
-      \|
-      = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
-
-= render partial: 'news_list'
-
-:javascript
-  $(document).ready(function(){
-    $('.news_text').parents('.container-fluid').addClass('container_fluid_color');
-  });
+      .article-data
+        %i.fa.fa-clock-o{"aria-hidden" => "true"}
+        = @budget_news.news_date.strftime '%d.%m.%Y'
+      .artcile-content
+        = @budget_news.news_text.html_safe
+      -#.article-social-btns
+      -#  .social-buttons
+      -#    %a.social-button.facebook{:href => "#"}
+      -#      %i.fa.fa-facebook
+      -#    %a.social-button.twitter{:href => "#"}
+      -#      %i.fa.fa-twitter
+      -#    %a.social-button.google{:href => "#"}
+      -#      %i.fa.fa-google
+      -if current_user
+        -if current_user.admin?
+          = link_to t('modules.budget_news.index.edit'), edit_modules_budget_news_path(@budget_news)
+          \|
+          = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
+    .col-xs-12.col-sm-4.baners-blocks
+      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}
+      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}

@@ -11,11 +11,9 @@
   }
 
   .search_block, .search_block div {
-    /*old style. begin*/
     padding: 0;
     margin: 0;
     margin-bottom: 10px;
-    /*old style. end*/
   }
 
   .search_block .form-control {
@@ -246,17 +244,20 @@
       = link_to '#', id: 'e-data' do
         -#%i.fa.fa-user
         = image_tag('icons/e-data_icon.png', class: 'e-data')
-        %span E-data
+        %span
+          = t('repairing.maps.sitebar.e_data')
     %li
       %a{:href => "#"}
         -#%i.fa.fa-picture-o
         = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
-        %span ProZorro
+        %span
+          = t('repairing.maps.sitebar.prozzoro')
     %li
       -#%a{:href => "#"}
       = link_to '#', id: 'more-info' do
         %i.fa.fa-info
-        %span Інформація
+        %span
+          = t('repairing.maps.sitebar.information')
 
 .modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
   .modal-dialog
@@ -265,7 +266,7 @@
         %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
           %span{'aria-hidden' => 'true'} &times;
         .modal-title
-          Інформація
+          = t('repairing.maps.sitebar.information')
       .modal-body
 
 
@@ -304,7 +305,7 @@
         url: "#{repairing_show_repair_info_path}",
         data: { id: repair_id },
         success: function(data){
-          modal_title.html('Додаткова інформація');
+          modal_title.html("#{t('repairing.maps.instruction.item_9')}");
           //modal_dom.find('.modal-content').css('width','50vw');
           modal_body.html(data);
           modal_dom.modal();

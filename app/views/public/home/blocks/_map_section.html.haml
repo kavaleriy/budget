@@ -1,0 +1,135 @@
+:scss
+  .map-section {
+    width: 100%;
+    top: -30px;
+    position: relative;
+    .container {
+      .map-title-block {
+        padding: 0 0 40px 0;
+        .map-title {
+          padding: 0 140px;
+          text-align: center;
+          p {
+            margin: 0;
+            text-transform: uppercase;
+            font-family: 'Lato', sans-serif;
+            font-size: 32px;
+            color: black;
+            &:hover,
+            &:focus {
+              text-decoration: none;
+            }
+          }
+          hr {
+            width: 85%;
+            border: 1px solid #ffd304;
+            margin: 15px auto;
+          }
+        }
+      }
+      .map-block {
+        padding: 0;
+        iframe.map {
+          width: 100%;
+          height: 75vh;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1310px) {
+    .map-section {
+      top: -70px;
+      .container {
+        .map-title-block {
+          //padding-top: 0;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+  @media (min-width: 450px) and (max-width: 767px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+  @media (min-width: 321px) and (max-width: 449px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          padding-bottom: 10px;
+          .map-title {
+            padding: 0;
+            p {
+              padding: 0;
+            }
+            hr {
+              width: 33rem;
+              margin: 10px auto;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .map-section {
+      .container {
+        .map-title-block {
+          padding-top: 0;
+          padding-bottom: 10px;
+          .map-title {
+            padding: 0;
+            p {
+              font-size: 3rem;
+              padding: 0;
+            }
+            hr {
+              width: 27rem;
+              margin: 10px auto;
+            }
+          }
+        }
+        .map-block {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+.map-section
+  .container
+    .col-xs-12.map-title-block
+      .map-title
+        %p
+          =t('new_design.home_page.map_title')
+        %hr
+    .col-xs-12.map-block
+      -#= image_tag('new_design/Ukraine_map.svg', class: 'img-responsive')
+      %iframe.map{:allowfullscreen => "", :frameborder => "0", :src => "https://widgets.scribblemaps.com/sm/?d=true&z=true&ol=true&l=true&mc=true&lat=49.15339940619287&lng=32.64670410937504&vz=6&type=road&ti=true&s=true&width=550&height=400&id=Po40mY0cQb"}

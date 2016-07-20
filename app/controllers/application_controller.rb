@@ -60,8 +60,19 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = params[:locale] unless params[:locale].blank?
-    I18n.locale = locale || I18n.default_locale
+    locale = params[:locale] || I18n.default_locale
+
+    # Check locale from params to equal to available locales
+    # from init locales in app
+    if I18n.available_locales.include? locale.to_sym
+      # set locale if exist as element of array (SYMBOL)
+      I18n.locale = locale.to_sym
+    else
+      # set default locale from options app
+      I18n.locale = I18n.default_locale
+      # set default locale into locals params
+      params[:locale] = I18n.default_locale
+    end
   end
 
   def default_url_options(options={})
@@ -69,7 +80,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_menu
-    @menu = ContentManager::PageContainer.get_all_menu
+    request_is_ajax = 0
+    unless request.xhr?.eql?(request_is_ajax)
+      @menu = ContentManager::PageContainer.get_all_menu
+    end
   end
 
 end

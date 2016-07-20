@@ -1,0 +1,40 @@
+-#:javascript
+-#  // see more at http://www.addthis.com/academy/smart-layers-api/
+-#
+-#  $(document).ready(function() {
+-#      // Enter your ra-KEY for use backend of addthis
+-#      var script="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-577129a4b274e628";
+-#
+-#      // Hack for tutbolinks
+-#      if (window.addthis){
+-#          window.addthis = null;
+-#          window._adr = null;
+-#          window._atc = null;
+-#          window._atd = null;
+-#          window._ate = null;
+-#          window._atr = null;
+-#          window._atw = null;
+-#      }
+-#      // Promise script settings
+-#      $.getScript(script, function(){
+-#          addthis.layers({
+-#              'theme' : 'transparent',
+-#              //'domain' : 'www.openbudget.in.ua',
+-#              'responsive' : {
+-#                'maxWidth' : '979px',
+-#                'minWidth' : '0px'
+-#              },
+-#              'share' : {
+-#                'position' : 'right',
+-#                'services' : 'facebook,twitter,google_plusone_share,linkedin,email',
+-#                'desktop' : true,
+-#                'mobile' : true,
+-#                //'numPreferredServices' : 5
+-#                'theme' : 'transparent'
+-#              }
+-#          });
+-#      });
+-#  });
+
+// Go to www.addthis.com/dashboard to customize your tools
+%script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-577129a4b274e628", :type => "text/javascript"}

@@ -1,9 +1,9 @@
 class Public::TownsController < ApplicationController
   include ControllerCaching
+  layout 'town_profile'
+  before_action :set_town, only: [:show, :budget,:render_docs]
 
-  before_action :set_town, only: [:show, :budget]
-
-  before_action :set_documents, only: [:show]
+  before_action :set_documents, only: [:show,:render_docs]
 
   def index
     @towns = Town.all
@@ -14,22 +14,15 @@ class Public::TownsController < ApplicationController
 
     @town_export_budgets = ExportBudget.get_export_budget_by_town(@town)
 
-    @town_links = {}
-    if test_town?
-      @town_br_links = Documentation::Link.all.where(:town => nil)
-    else
-      @town_br_links = Documentation::Link.all.where(:town => @town)
-    end
-
-    Documentation::LinkCategory.all.each{|br|
-      @town_links[br.id.to_s] = {}
-      @town_links[br.id.to_s]['title'] = br.title
-      @town_links[br.id.to_s]['links'] = @town_br_links.select{|t| t.link_category == br}
-    }
+    @town_links = Documentation::Link.get_hash_links_by_town(@town)
 
   end
 
-
+  def render_docs
+    respond_to do |format|
+      format.js {render 'public/towns/documents/render_docs'}
+    end
+  end
   def budget
     # this code for taxonomies dropdown list
     # @taxonomy_rot_list = TaxonomyRot.owned_by(@town.title)
@@ -116,33 +109,18 @@ class Public::TownsController < ApplicationController
 
   def test_town?
     @town.is_test?
-    # params[:town_id] == "test"
   end
 
   def set_town
-    # if test_town?
-    #   @town = Town.new(:id => 'test',
-    #                    :title => 'Демонстрація типового профілю міста',
-    #                    :description => 'Розділ містить короткі відомості про місто, особливості бюджету і т.п...',
-    #                    :links => '<a href="http://www.openbudget.in.ua" target="_blank" rel="nofollow">http://www.openbudget.in.ua/</a>')
-    # else
       @town = Town.find(params[:town_id])
       if @town.level == 1 #area
         @towns = Town.all.where(:area_title => @town.title)
       else
         @towns = Town.all.where(:area_title => @town.area_title)
       end
-    # end
   end
 
   def set_documents
-    if test_town?
-      @documents = Documentation::Document.all.select{|t| t.town.nil?}
-    else
-      @documents = Documentation::Document.where(locked: false)
-      @documents = @documents.select{ |doc| params[:town_id].include? doc.town_id.to_s }
-
-      @documents.sort_by!{|doc| doc.title ? doc.title : ""  }
-    end
+    @documents = Documentation::Document.get_grouped_documents_for_town(@town)
   end
 end

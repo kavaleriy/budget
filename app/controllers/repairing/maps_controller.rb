@@ -23,6 +23,10 @@ module Repairing
 
     def show
       @current_user_town = Town.get_user_town(current_user)
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def frame
@@ -72,6 +76,38 @@ module Repairing
       # render partial for popup container
       @repair = Repairing::Repair.find(params[:repair_id])
       render partial: 'info_popup'
+    end
+
+    def get_heapmap_geo_json
+      repairings = Repairing::Repair.where(:coordinates.ne => nil ).entries
+      geo_json = []
+      repairings.each do |repair|
+        geo_json << {
+            type: "Feature",
+            geometry: {
+                type: 'Point',
+                coordinates: repair[:coordinates]
+            },
+            properties: {
+                id: repair[:id],
+                repair: "house",
+                amount: repair[:amount]
+            }
+        } unless repair[:coordinates].nil? || repair[:coordinates][0].nil? || repair[:coordinates][1].nil?
+
+      end
+      result = {
+          "type" => "FeatureCollection",
+          "features" => geo_json
+      }
+
+      respond_to do |format|
+        format.json { render json: result }
+      end
+    end
+
+    def heapmap
+
     end
 
     private
