@@ -33,9 +33,7 @@
   #copy_img{
     display: none;
   }
--#<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
--#<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
--#<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
+
 .modal.fade{:role => "dialog", :id => 'export_budget_visualisation_modal_window', :tabindex => "-1"}
   .modal-dialog
     .modal-content
@@ -54,35 +52,15 @@
         =text_area 'copy','img',size: "1x2",disabled: 'disabled'
 
       .modal-footer
-
+-# include js for redraw svg for export
+= javascript_include_tag "http://gabelerner.github.io/canvg/rgbcolor.js"
+= javascript_include_tag "http://gabelerner.github.io/canvg/StackBlur.js"
+= javascript_include_tag "http://gabelerner.github.io/canvg/canvg.js"
+= javascript_include_tag 'redrawSvg'
+-# end include
 :javascript
   var convert_html_to_canvas = function(panel,input_field){
-     var svgElements = $(panel).find('svg');
-     //replace all svgs with a temp canvas
-
-    svgElements.each(function() {
-      var canvas, xml;
-
-      // canvg doesn't cope very well with em font sizes so find the calculated size in pixels and replace it in the element.
-      $.each($(this).find('[style*=em]'), function(index, el) {
-        $(this).css('font-size', '10px');
-      });
-
-      canvas = document.createElement("canvas");
-      canvas.className = "screenShotTempCanvas";
-      //convert SVG into a XML string
-      xml = (new XMLSerializer()).serializeToString(this);
-
-      // Removing the name space as IE throws an error
-      xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
-
-      //draw the SVG onto a canvas
-      canvg(canvas, xml);
-      $(canvas).insertAfter(this);
-      //hide the SVG element
-      $(this).attr('class', 'tempHide');
-      $(this).hide();
-    });
+    redrawSvg(panel);
 
     //set input dom element
     var input_dom = $(input_field);

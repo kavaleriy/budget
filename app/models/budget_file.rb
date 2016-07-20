@@ -10,6 +10,10 @@ class BudgetFile
 
   # plan, fact etc
   field :data_type
+  before_save :symbolize_data_type
+  def symbolize_data_type
+    self.data_type = self.data_type.to_sym
+  end
 
   field :cumulative_sum, :type => Boolean
 
@@ -24,6 +28,7 @@ class BudgetFile
   field :tree, :type => Hash
 
   field :meta_data, :type => Hash
+
 
   def is_grouped_kekv kekv
     %w(2000 2100 2110 2200 2270 2280 2400 2600 2700 3000 3100 3120 3130 3140 3200 4100 4110 4200 9102).include?(kekv)

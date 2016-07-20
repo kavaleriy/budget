@@ -1,3 +1,4 @@
+Rails.application.config.assets.precompile += %w( redrawSvg.js )
 Rails.application.config.assets.precompile += %w( d3.geom.js jquery.history.js raphael.js vis4.js Tween.js bubbletree.js cofog.js )
 Rails.application.config.assets.precompile += %w( biPartite.js sankey.js )
 Rails.application.config.assets.precompile += %w( d3pie.js )
@@ -25,7 +26,7 @@ Rails.application.config.assets.precompile += %w( bootstrap_flash.js )
 Rails.application.config.assets.precompile += %w( navbar_hide.js )
 
 Rails.application.config.assets.precompile += %w( leaflet/leaflet-heat.js )
-
+Rails.application.config.assets.precompile += %w( redrawSvg.js )
 
 Rails.application.config.assets.precompile += %w( revolution_slider/jquery.themepunch.plugins.min.js revolution_slider/jquery.themepunch.revolution.min.js revolution_slider/rs-style.css revolution_slider/settings.css )
 Rails.application.config.assets.precompile += %w(*.jpg, *.png)
