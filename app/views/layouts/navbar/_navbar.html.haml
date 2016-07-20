@@ -1,0 +1,555 @@
+:scss
+  // init colors
+  $dark-blue: #0c2231;
+  $yellow: #ffd304;
+  $white: #ffffff;
+
+  // Main style
+  .navbar {
+    margin-bottom: 0;
+    border: none;
+    border-radius: 0;
+    background: $dark-blue;
+    .container {
+      .navbar-header .logo-block {
+        position: relative;
+        width: 230px;
+        height: 50px;
+        margin: 8px 0;
+        .logo {
+          position: absolute;
+          width: auto;
+          height: 100%;
+          padding-bottom: 8px;
+          top: 0;
+          left: 0;
+        }
+        .title {
+          position: absolute;
+          margin: 0;
+          top: 25px;
+          bottom: 0;
+          right: 0;
+          font-size: 14px;
+          text-decoration: none;
+          font-family: 'Lato', sans-serif;
+          color: $yellow;
+          text-transform: uppercase;
+          font-weight: 700;
+          letter-spacing: -.5px;
+
+        }
+      }
+      .navbar-collapse ul.navbar-nav {
+        padding-top: 23px;
+        float: right;
+        > li {
+          > a {
+            background-color: transparent;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            padding: 15px 10px;
+            text-transform: uppercase;
+            color: $white;
+          }
+          &.dropdown > a > span.caret {
+            color: $yellow;
+          }
+          > a {
+            &:hover, &:focus {
+              border-bottom: 3px solid $yellow;
+              padding-bottom: 12px;
+            }
+          }
+          &.open > a {
+            &:hover, &:focus {
+              background-color: transparent;
+              color: $yellow;
+              border-bottom: transparent;
+              margin-bottom: 3px;
+            }
+          }
+          &.active > a {
+            box-shadow: none;
+            background-image: none;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            color: $yellow;
+            border-bottom: none;
+            cursor: text;
+          }
+        }
+      }
+      .block-lng {
+        color: $white;
+        text-transform: uppercase;
+        margin: 0;
+        display: block;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        .lng-item {
+          float: left;
+          padding: 3px 7px;
+          font-size: 11px;
+          margin: 0 10px;
+          img {
+            width: 20px;
+            height: auto;
+          }
+        }
+        .active {
+          background: $yellow;
+          opacity: .8;
+        }
+      }
+    }
+  }
+
+  .dropdown-menu > li > a {
+    &:hover, &:focus {
+      color: $yellow;
+    }
+  }
+
+  #login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+    .help-block {
+      font-size: 12px;
+    }
+    .bottom {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-top: 1px solid #ddd;
+      clear: both;
+      padding: 14px;
+    }
+    .social-buttons {
+      margin: 12px 0;
+      a {
+        width: 49%;
+      }
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+  }
+
+  .btn-fb {
+    color: $white;
+    background-color: #3b5998;
+    &:hover {
+      color: $white;
+      background-color: #496ebc;
+    }
+  }
+
+  .btn-tw {
+    color: $white;
+    background-color: #55acee;
+    &:hover {
+      color: $white;
+      background-color: #59b5fa;
+    }
+  }
+
+  /* ===== Media ===== */
+  @media (min-width: 1200px){
+    .navbar {
+      .container {
+        .navbar-header {
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 1098px) and (max-width: 1199px) {
+    .navbar {
+      .container {
+        width: 1100px;
+        .navbar-header {
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 920px) and (max-width: 1099px) {
+    .navbar {
+      .container {
+        width: 920px;
+        padding: 0;
+        .navbar-header {
+          .logo-block {
+            width: 140px;
+            margin-left: 5px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 45px;
+                left: 0;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 13px;
+                padding: 15px 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 820px) and (max-width: 919px) {
+    .navbar {
+      .container {
+        width: 820px;
+        padding: 0;
+        .navbar-header {
+          .logo-block {
+            width: 140px;
+            margin-left: 5px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 45px;
+                left: 0;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 1rem;
+                padding: 15px 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 819px) {
+    .navbar {
+      .container {
+        width: 768px;
+        padding: 0;
+        .navbar-header {
+          .logo-block {
+            width: 130px;
+            margin-left: 5px;
+            a {
+              .title {
+                font-size: 1rem;
+                top: 45px;
+                left: 0;
+              }
+            }
+          }
+          .lang-block-mobile {
+            display: none;
+          }
+        }
+        .navbar-collapse {
+          .lang-block {
+            .lang-switcher {
+              padding-left: 0;
+              > li {
+                > a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+          ul.navbar-nav {
+            > li {
+              > a {
+                font-size: 11px;
+                padding: 15px 4px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 321px) and (max-width: 767px) {
+    .navbar {
+      .container {
+        padding: 0;
+        .navbar-header {
+          margin: 0;
+          .navbar-toggle {
+            margin-top: 15px;
+            margin-right: 3px;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+              background-color: #ffffff;
+              height: 3px;
+              top: 10px;
+              left: 40px;
+            }
+          }
+          .logo-block {
+            position: absolute;
+            margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1.2rem;
+                left: 42px;
+                top: 28px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+        }
+        .navbar-collapse {
+          overflow-y: visible;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
+            float: none;
+            margin: 0;
+            background: $dark-blue;
+            > li {
+              text-align: center;
+              a {
+                &:hover,
+                &:focus {
+                  border: none;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 320px) {
+    .navbar {
+      height: 63px;
+      .container {
+        padding: 0;
+        .navbar-header {
+          margin: 0;
+          .navbar-toggle {
+            margin-right: 0;
+            margin-top: 15px;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+              background-color: #ffffff;
+              height: 3px;
+              top: 10px;
+              left: 40px;
+            }
+          }
+          .logo-block {
+            position: absolute;
+            margin-left: 10px;
+            .logo-src {
+              .title {
+                font-size: 1rem;
+                top: 28px;
+                left: 42px;
+              }
+            }
+          }
+          .lang-block-mobile {
+            .lang-switcher {
+              padding-top: 22px;
+              li {
+                a {
+                  padding: 15px 2px;
+                }
+              }
+            }
+          }
+        }
+        .navbar-collapse {
+          overflow-y: visible;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          .lang-block {
+            display: none;
+          }
+          ul.navbar-nav {
+            float: none;
+            margin: 0;
+            background: $dark-blue;
+            > li {
+              text-align: center;
+              a {
+                &:hover,
+                &:focus {
+                  border: none;
+                  padding-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+%nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+  .container
+    -# Brand and toggle get grouped for better mobile display
+    .navbar-header
+      %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      .logo-block
+        =link_to root_path, class: 'logo-src' do
+          = image_tag('navbar/logo.svg', class: 'logo')
+          %p.title
+            =t('.application_title')
+      -#Render language switcher menu
+      .lang-block-mobile
+        = render partial: 'layouts/navbar/lang'
+
+    -# Collect the nav links, forms, and other content for toggling
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+
+      -# Maybe it's better authorize dropdown menu?
+
+      -#  %li.dropdown
+      -#    %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"} Авторизація
+      -#    %ul#login-dp.dropdown-menu
+      -#      %li
+      -#        .row
+      -#          .col-md-12
+      -#            -#Увійти
+      -#            -#.social-buttons
+      -#            -#  %a.btn.btn-fb{:href => "#"}
+      -#            -#    %i.fa.fa-facebook
+      -#            -#    Facebook
+      -#            -#  %a.btn.btn-tw{:href => "#"}
+      -#            -#    %i.fa.fa-twitter
+      -#            -#    Twitter
+      -#            -#or
+      -#            %form#login-nav.form{"accept-charset" => "UTF-8", :action => "login", :method => "post", :role => "form"}
+      -#              .form-group
+      -#                %label.sr-only{:for => "exampleInputEmail2"} Email адреса
+      -#                %input#exampleInputEmail2.form-control{:placeholder => "Email address", :required => "", :type => "email"}
+      -#              .form-group
+      -#                %label.sr-only{:for => "exampleInputPassword2"} Пароль
+      -#                %input#exampleInputPassword2.form-control{:placeholder => "Password", :required => "", :type => "password"}
+      -#                  .help-block.text-right
+      -#                    %a{:href => ""} Відновити пароль ?
+      -#              .form-group
+      -#                %button.btn.btn-primary.btn-block{:type => "submit"} Увійти
+      -#              .checkbox
+      -#                %label
+      -#                  %input{:type => "checkbox"}
+      -#                    запам'ятати
+      -#          .bottom.text-center
+      -#            Вперше?
+      -#            %a{:href => "#"}
+      -#              %b Зареєструватись
+
+      -#Render language switcher menu
+      .lang-block
+        = render partial: 'layouts/navbar/lang'
+
+      %ul.nav.navbar-nav
+
+        -#Build items-menu
+        - @menu.each do |key,value|
+          %li.dropdown
+            %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+              -#-binding.pry
+              = get_header_by_locale(key)
+              %span.caret
+            %ul.dropdown-menu{'role' => 'menu'}
+              -value.each do |list|
+                -# check if menu have content for current locale
+                - unless check_content_by_locale(list)
+                  %li
+                    = link_to get_header_by_locale(list) , get_nav_link(list)
+
+        -#Build current_user dropdown menu
+        %li.dropdown
+          - if current_user
+            %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+              %i.fa.fa-user.fa-fw
+              = show_username_or_emailname(current_user)
+              %span.caret
+            %ul.dropdown-menu{'role' => 'menu'}
+              -#Build link to modules (backend)
+              = render partial: 'layouts/navbar/nav_admin'
+
+              - unless current_user.is_locked?
+                %li= link_to t('.editor'), editor_index_path
+                %li.divider{role: 'separator'}
+
+              %li= link_to t('.edit_profile'), edit_user_registration_path
+              %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+          - else
+            = link_to t('.authorization'), new_user_session_path, :class=>'item-login'
+
+
+
+:javascript
+   // ****** Menu resize on scroll ***** //
+  $(window).scroll(function() {
+    resizeNavbar($(document).scrollTop());
+  });

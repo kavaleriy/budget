@@ -1,0 +1,6 @@
+- if page.current?
+  %li.active
+    = content_tag :a, page
+- else
+  %li
+    = link_to page, url, :rel => 'next', :remote => remote

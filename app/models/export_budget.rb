@@ -13,7 +13,7 @@ class ExportBudget
   # field :title_page,type: String
   # field :last_page,type: String
 
-  scope :get_export_budget_by_town, ->(town){where(town:town).order(title: :desc)}
+  scope :get_export_budget_by_town, ->(town){where(town:town).order(year: :desc)}
 
   # after_initialize :set_default_pages, :if => :new_record?
 

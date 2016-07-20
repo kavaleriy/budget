@@ -2,17 +2,22 @@
   %i.fa.fa-file-image-o
   -#= t('export')
 
+-# include js for redraw svg for export
+= javascript_include_tag "http://gabelerner.github.io/canvg/rgbcolor.js"
+= javascript_include_tag "http://gabelerner.github.io/canvg/StackBlur.js"
+= javascript_include_tag "http://gabelerner.github.io/canvg/canvg.js"
+= javascript_include_tag "html2canvas/html2canvas.js"
+= javascript_include_tag "html2canvas/html2canvas.svg.js"
+= javascript_include_tag 'redrawSvg'
+-# end include
+
 :javascript
 
   $(document).ready(function() {
-    $.when(
-      $.getScript( "/assets/html2canvas/html2canvas.js" ),
-      $.getScript( "/assets/html2canvas/html2canvas.svg.js" ),
-      $.Deferred(function( deferred ){
-          $( deferred.resolve );
-      })
-    ).done(function(){
+
       $('#export').on('click', function() {
+        redrawSvg("#{container}");
+
         html2canvas($("#{container}"), {
           //logging: true,
           background :'#FFFFFF',
@@ -28,6 +33,7 @@
             a.dispatchEvent(theEvent);
           }
         });
+        showOriginalSvg();
       })
-    })
+
   });

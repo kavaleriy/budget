@@ -11,45 +11,46 @@
       padding: 0 3px;
     }
   }
-.col-md-12
-  %h1
-    = t('.header')
+.container-fluid
+  .col-md-12
+    %h1
+      = t('.header')
 
-  = link_to t('.create'),new_modules_budget_news_path
-  %br
-  %br
-  -if(!@budget_news.blank?)
-    %table.table
-      %tr
-        %th
-          = t('.title')
-        %th
-          = t('.text')
-        %th
-          = t('.link')
-        %th
-          = t('.date')
-        %th
-          = t('.image')
-        %th
-          = t('.action')
-
-      - @budget_news.each do |budget_news|
+    = link_to t('.create'),new_modules_budget_news_path
+    %br
+    %br
+    -if(!@budget_news.blank?)
+      %table.table
         %tr
-          %td= budget_news.title
-          %td.news_text= sanitize(budget_news.news_text)
-          %td
-            %a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
-          %td= budget_news.get_date
-          %td= image_tag budget_news.img.thumb
-          %td.news_action_button
-            = link_to image_tag('icons/loupe.png'), budget_news
-            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
-            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
-  -else
-    = t('public.home.news.no_news')
-  %br
-    = paginate @budget_news
+          %th
+            = t('.title')
+          %th
+            = t('.text')
+          %th
+            = t('.link')
+          %th
+            = t('.date')
+          %th
+            = t('.image')
+          %th
+            = t('.action')
+
+        - @budget_news.each do |budget_news|
+          %tr
+            %td= budget_news.title
+            %td.news_text= sanitize(budget_news.news_text)
+            %td
+              %a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
+            %td= budget_news.get_date
+            %td= image_tag budget_news.img.thumb
+            %td.news_action_button
+              = link_to image_tag('icons/loupe.png'), budget_news
+              = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+              = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+    -else
+      = t('public.home.news.no_news')
+    %br
+      = paginate @budget_news
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення новини',

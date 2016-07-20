@@ -421,7 +421,7 @@ L.Mixin.Events = {
 					for (j = listeners.length - 1; j >= 0; j--) {
 						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
 							removed = listeners.splice(j, 1);
-							// set the old action to a no-op, because it is possible
+							// set the action to a no-op, because it is possible
 							// that the listener is being iterated over as part of a dispatch
 							removed[0].action = L.Util.falseFn;
 						}
@@ -3551,7 +3551,7 @@ L.Marker = L.Class.extend({
 		var icon = options.icon.createIcon(this._icon),
 			addIcon = false;
 
-		// if we're not reusing the icon, remove the old one and init new one
+		// if we're not reusing the icon, remove the one and init new one
 		if (icon !== this._icon) {
 			if (this._icon) {
 				this._removeIcon();
@@ -8852,7 +8852,7 @@ L.Map.mergeOptions({
 if (L.DomUtil.TRANSITION) {
 
 	L.Map.addInitHook(function () {
-		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
+		// don't animate on browsers without hardware-accelerated transitions or Android/Opera
 		this._zoomAnimated = this.options.zoomAnimation && L.DomUtil.TRANSITION &&
 				L.Browser.any3d && !L.Browser.android23 && !L.Browser.mobileOpera;
 

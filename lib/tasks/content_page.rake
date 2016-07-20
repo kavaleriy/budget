@@ -71,6 +71,13 @@ namespace :content_page do
     end
   end
 
+  desc "Create what it gives pages"
+  task create_info_pages: :environment do
+    community_as = ContentManager::PageContainer::COMMUNITY_INFO_ALIAS
+    official_as = ContentManager::PageContainer::OFFICIAL_INFO_ALIAS
+    create_page_cont('What it gives the community?','Що це дає громаді?','What it gives the community description','що це дає громаді опис' ,community_as,'')
+    create_page_cont('What it gives the official?','Що це дає чиновнику?','What it gives the official description','що це дає чиновнику опис' ,official_as,'')
+  end
 
 
   def get_title(head)

@@ -10,6 +10,8 @@ class User
 
   include RoleModel
 
+  scope :find_by_email, -> (email) {where(email: email)}
+
   before_create :lock_user
 
   # Setup accessible (or protected) attributes for your model

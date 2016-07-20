@@ -3777,7 +3777,7 @@
 				this.redraw(new_par.id === '#');
 			}
 			else {
-				// clean old parent and up
+				// clean parent and up
 				tmp = obj.children_d.concat();
 				tmp.push(obj.id);
 				for(i = 0, j = obj.parents.length; i < j; i++) {
@@ -6440,7 +6440,7 @@
 		 */
 		case_sensitive : false,
 		/**
-		 * Indicates if the tree should be filtered (by default) to show only matching nodes (keep in mind this can be a heavy on large trees in old browsers). 
+		 * Indicates if the tree should be filtered (by default) to show only matching nodes (keep in mind this can be a heavy on large trees in old-design browsers).
 		 * This setting can be changed at runtime when calling the search method. Default is `false`.
 		 * @name $.jstree.defaults.search.show_only_matches
 		 * @plugin search
@@ -6531,7 +6531,7 @@
 		 * @name search(str [, skip_async])
 		 * @param {String} str the search string
 		 * @param {Boolean} skip_async if set to true server will not be queried even if configured
-		 * @param {Boolean} show_only_matches if set to true only matching nodes will be shown (keep in mind this can be very slow on large trees or old browsers)
+		 * @param {Boolean} show_only_matches if set to true only matching nodes will be shown (keep in mind this can be very slow on large trees or old-design browsers)
 		 * @param {mixed} inside an optional node to whose children to limit the search
 		 * @param {Boolean} append if set to true the results of this search are appended to the previous search
 		 * @plugin search
@@ -7305,7 +7305,7 @@
 /**
  * ### Wholerow plugin
  *
- * Makes each node appear block level. Making selection easier. May cause slow down for large trees in old browsers.
+ * Makes each node appear block level. Making selection easier. May cause slow down for large trees in old-design browsers.
  */
 
 	var div = document.createElement('DIV');

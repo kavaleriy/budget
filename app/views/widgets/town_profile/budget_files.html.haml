@@ -15,6 +15,7 @@
   }
 
   .city-title{
+    margin-right: 70px;
     //width: auto;
   }
   .add-town-to-compare{
@@ -74,27 +75,26 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  #town-compare-field,
   .town-search{
     display: none;
   }
 
-.row
-  .col-md-4.city-title
-    %h3
-      =@town
-  .col-md-8.add-town-to-compare
-    .row
-      .col-xs-12.compare-nav
-        .text-compare
-          Порівняти з ...
-        #compare-list
-        .town-typeahead
-        .plus-to-compare
-          %i.fa.fa-plus{"aria-hidden" => "true"}
-        .compare-button
-          %i.fa.fa-th-list{"aria-hidden" => "true"}
-      -#.col-xs-6.town-typeahead
-    -#.col-md-4#compare-list
+-#.row
+-#  .col-md-4.city-title
+-#    %h3
+-#      =@town
+  -#.col-md-8.add-town-to-compare
+  -#  .row
+  -#    .col-xs-12.compare-nav
+  -#      .text-compare
+  -#        Порівняти з ...
+  -#      #compare-list
+  -#      .town-typeahead
+  -#      .plus-to-compare
+  -#        %i.fa.fa-plus{"aria-hidden" => "true"}
+  -#      .compare-button
+  -#        %i.fa.fa-th-list{"aria-hidden" => "true"}
 .row-fluid
   %ul.nav.nav-tabs.pull-left{role: 'tablist'}
     - active = 'active'
@@ -102,7 +102,10 @@
       %li{ class: tab[:cname]}
         %a{role: 'tab', 'data-toggle' => 'tab', 'data-url' => tab[:url]}
           = tab[:title]
-
+  .pull-right
+    .city-title
+      %h3
+        =@town
 .budget.row-fluid
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '800' }

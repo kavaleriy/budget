@@ -1,9 +1,153 @@
+:scss
+  .panel-group {
+    .panel-heading + .panel-collapse {
+      .panel-body{
+        border-top: none;
+      }
+    }
+  }
+  .custom-panel{
+    /* -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); */
+    box-shadow: none;
+    .panel-heading{
+      .panel-title{
+        a{
+          text-decoration: none;
+          .toggle-by-key{
+            font-weight: bold;
+            margin-right: 10px;
+            text-align: center;
+            width: 15px;
+            display: inline-block;
+            background-color: black;
+            color: white;
+          }
+          .doc-info-title{
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .panel-collapse{
+      .custom-panel-body{
+        border: none;
+        padding-bottom: 0px;
+      }
+      .docs-panel-body{
+        padding: 15px 0 0 0;
+
+      }
+    }
+
+  }
+  .row{
+    .pull-right{
+      .doc-search{
+        #find_by_doc_name{
+          border-color: black;
+        }
+        .doc-search-button{
+            border: black;
+            background-color: black;
+            color: white;
+            border-radius: 0;
+            font-size: 19px;
+            cursor: pointer;
+            padding: 3px;
+        }
+      }
+    }
+  }
+
+.bootstrap_flash
+  = bootstrap_flash
+.row.docs-breadcrumbs
+  .pull-left
+    =render partial: 'widgets/town_profile/module_breadcrumbs',locals: { init_text:  t('public.towns.portfolio.documents') }
+  .pull-right
+    .doc-search.input-group
+      .input-group
+        = text_field_tag :find_by_doc_name, '',{"aria-describedby" => "basic-addon1", :placeholder => "#{t('documentation.documents.search.doc_search')}", :type => "text"}
+        #basic-addon1.input-group-addon.doc-search-button{'data-town-id' => @town.id}
+          %i.fa.fa-search{"aria-hidden" => "true"}
+
 .row-eq-height
-  - @documents.each do |document|
-    - if document.doc_file?
-      .col-xs-12.col-sm-6.col-md-4.document
-        = link_to document.doc_file.url, {class: 'thumbnail', style: (document.branch && !document.branch.color.blank?) ? 'background-color: rgba(' + hexToRgb(document.branch.color) + ', 0.1);' : 'background-color: white;'} do
-          %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-          = document.title.truncate(30)
-          %br
-          = document.category.title unless document.category.nil?
+  -# each all docs without last keys,because in last element of hash documents count
+  - @documents.except!(@documents.keys.last).each do |year,documents_by_year|
+    .panel-group.main-panel{id: "accordion_#{year}","aria-multiselectable" => "true", :role => "tablist"}
+      .panel.custom-panel
+        .panel-heading{id: "heading_#{year}",:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapse_#{year}", "aria-expanded" => "false", "data-parent" => "#accordion_#{year}", "data-toggle" => "collapse", :href => "#collapse_#{year}", :role => "button"}
+              .toggle-by-key
+                +
+              .doc-info-title
+                = year
+        .panel-collapse.collapse{id: "collapse_#{year}","aria-labelledby" => "heading_#{year}", :role => "tabpanel"}
+          .panel-body.custom-panel-body
+            - documents_by_year.each do |group_title , documents_by_group |
+              -branch_id = documents_by_group.first.branch_id.to_s
+              .panel-group{id: "accordion_#{year}_#{branch_id}", "aria-multiselectable" => "true", :role => "tablist"}
+                .panel.custom-panel
+                  .panel-heading{ id: "heading_#{year}_#{branch_id}", :role => "tab"}
+                    %h4.panel-title
+                      %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion_#{year}_#{branch_id}", "data-toggle" => "collapse", :href => "#collapse_#{branch_id}_#{year}", :role => "button"}
+                        .toggle-by-key
+                          +
+                        .doc-info-title
+                          = group_title
+                  .panel-collapse.collapse{id: "collapse_#{branch_id}_#{year}","aria-labelledby" => "heading_#{year}_#{branch_id}", :role => "tabpanel"}
+                    .panel-body.custom-panel-body.docs-panel-body
+                      -documents_by_group.each do |document|
+                        =render partial: 'public/towns/documents/alone_document', locals: {alone_document: document}
+
+:javascript
+  function renderDocs(){
+    $.ajax({
+      url: "#{public_towns_render_docs_path}",
+      dataType: 'script',
+      data: {town_id: '#{@town.id}' }
+    })
+  }
+
+
+  $(document).ready(function() {
+    $('a[data-toggle="collapse"]').click(function(){
+      var active_dom = $(document).find($(this).attr('href'));
+      var sign_dom = $(this).find('.toggle-by-key');
+      var value = $.trim(sign_dom.html())
+      if(value == '+'){
+        sign_dom.html('-');
+      }else if(value == '-'){
+        sign_dom.html('+');
+      }
+      active_dom.toggleClass('opened');
+    });
+    $('.main-panel').first().find('a[data-toggle="collapse"]').first().trigger('click');
+    $('.opened').find('a[data-toggle="collapse"]').first().trigger('click');
+    // $('.custom-panel').first().find('.in[role="tabpanel"]').first().find('a[data-toggle="collapse"]').first().trigger('click');
+
+    $('.doc-search-button').click(function(){
+      var minimum_query_length = 3;
+      var query = $(this).siblings('input').val();
+      if (query.length >= minimum_query_length){
+      var town_id = $(this).attr('data-town-id');
+        $.ajax({
+          url: '/public/documents/find_by_title_part',
+          dataType: 'script',
+          data: {query: query, town_id: town_id},
+          success: function(data){
+            addBreadcrumbs(I18n.t('found_docs'),'#');
+          }
+        });
+      }else{
+        alert('Введіть міннімум три символи');
+      }
+    });
+    $('.breadcrumb > li:first-child').click(function() {
+      if(!$(this).hasClass('active')){
+        renderDocs();
+      }
+    });
+
+  });

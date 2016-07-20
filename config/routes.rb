@@ -164,6 +164,7 @@ Rails.application.routes.draw do
   get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
   post 'edit_by_xls' => 'towns#edit_by_xls',as: 'edit_by_xls'
   get 'search_town' => 'towns#search'
+  get 'search_for_active_towns' => 'towns#search_for_active_towns'
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
@@ -184,6 +185,9 @@ Rails.application.routes.draw do
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
 
+
+    get 'heapmap_json' => 'maps#get_heapmap_geo_json'
+    get 'heapmap' => 'maps#heapmap'
     resources :layers do
       member do
         get 'geo_json'
@@ -322,6 +326,8 @@ Rails.application.routes.draw do
 
     get 'documents' => 'documents#index'
 
+    get 'documents/find_by_title_part' => 'documents#find_by_title_part',as: 'documents_find_by_title_part'
+    get 'towns/render_docs' => 'towns#render_docs', as: 'towns_render_docs'
     get 'towns/:town_id' => 'towns#show'
 
     get 'budget_files/:town_id' => 'towns#budget', as: 'budget_files'

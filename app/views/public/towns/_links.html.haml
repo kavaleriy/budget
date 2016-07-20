@@ -1,0 +1,72 @@
+:scss
+  // init colors
+  $yellow: #ffd304;
+
+  .link-wrapper{
+    padding: 0;
+    padding-top: 25px;
+    .icon-wrapper{
+      padding: 0px;
+      .link-icon{
+        padding: 0;
+        background-color: $yellow;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        float: right;
+        svg{
+          height: 40px;
+          width: 40px;
+
+          }
+        }
+    }
+
+    .link-text{
+      padding: 0;
+      padding-left: 10px;
+      .link-title{
+        display: inline-block;
+        font-weight: bold;
+        font-style: italic;
+        color: black;
+      }
+      .link-description{
+        
+      }
+    }
+
+  }
+.row.link-breadcrumbs
+  .pull-left
+    =render partial: 'widgets/town_profile/module_breadcrumbs',locals: { init_text: t('public.towns.portfolio.town_links') }
+- @town_links.each do |link|
+  .col-md-6.link-wrapper
+    .col-xs-3.col-sm-1.icon-wrapper
+      .link-icon
+        = inline_svg('icons/town_profile_sidebar/link.svg')
+    .col-xs-9.col-sm-11.link-text
+      = link_to link[:href], target: "_blank" do
+        .link-title
+          %p
+            =link[:category_title]
+      .link-description
+        %p
+          =link[:description]
+  -#- counter = 1
+  -#.col-sm-12.col-md-5.col-lg-6
+  -#  -#.container
+  -#  .accordion
+  -#    %dl
+  -#      %dt
+  -#        %a.accordion-title.accordionTitle.js-accordionTrigger{"aria-controls" => "accordion#{counter}", "aria-expanded" => "false", :href => "#accordion#{counter}"}
+  -#          =tl['title']
+  -#      %dd#accordion1.accordion-content.accordionItem.is-collapsed{"aria-hidden" => "true"}
+  -#        - if tl['links'].length > 0
+  -#          - tl['links'].each do |link|
+  -#            .link-title
+  -#              = link.title
+  -#            .link-value
+  -#              = link.value
+  -#      %dt
+  -#- counter = counter + 1
