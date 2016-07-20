@@ -35,6 +35,9 @@
     border-radius: 0 !important;
     line-height: 20px !important;
   }
+  #towns-btn-group{
+    padding-top: 7px;
+  }
 
 - model_class = Town
 = content_for :header do
@@ -44,7 +47,7 @@
 - flash[:notice]
 - flash[:alert]
 
-.row
+.row#towns-btn-group
   -if current_user && current_user.admin?
     .pull-left
       =link_to t('.add_town'),town_new_town_path, class: 'btn btn-primary'

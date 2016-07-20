@@ -1,6 +1,7 @@
 :scss
-  .news_action_button{
+  .news-action-button{
     display: flex;
+    //flex-direction: column;
     a{
       text-decoration: none;
       background: transparent;
@@ -11,46 +12,132 @@
       padding: 0 3px;
     }
   }
+  .paddings-reset{
+    padding-left: 0;
+  }
+  .right-paddings-reset{
+    padding-right: 0;
+  }
+  .bordered-bottom{
+    border-bottom: solid grey 1px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: 991px) {
+    .item-title{
+      background: cornsilk;
+      font-size: small;
+      font-weight: bold;
+      //padding: 0;
+    }
+    .item-text{
+      //border-bottom: solid grey 1px;
+      font-size: small;
+      //padding: 0;
+    }
+    .hide-in-small{
+      display: none;
+    }
+    .padding-in-small{
+      padding: 0;
+    }
+    .margin-in-small{
+      margin-top: 5px;
+    }
+
+  }
+
 .container-fluid
-  .col-md-12
-    %h1
-      = t('.header')
+  %h1
+    = t('.header')
 
-    = link_to t('.create'),new_modules_budget_news_path
-    %br
-    %br
-    -if(!@budget_news.blank?)
-      %table.table
+  = link_to t('.create'),new_modules_budget_news_path
+  %br
+  %br
+  -if(!@budget_news.blank?)
+    .row.hide-in-small.title.bordered-bottom
+      .col-sm-7
+        .col-xs-5.paddings-reset
+          = t('.title')
+        .col-xs-7.paddings-reset
+          = t('.text')
+      .col-sm-5
+        .col-xs-3.paddings-reset
+          = t('.link')
+        .col-xs-3.paddings-reset
+          = t('.date')
+        .col-xs-3.paddings-reset
+          = t('.image')
+        .col-xs-3.paddings-reset.right-paddings-reset
+          = t('.action')
+
+    - @budget_news.each do |budget_news|
+      .row.bordered-bottom
+        .col-md-7.padding-in-small
+          .col-md-5.item-title.paddings-reset.margin-in-small
+            = budget_news.title
+            -#= truncate(budget_news.title, :length => 30, :separator => ' ')
+          .col-md-7.item-text.paddings-reset.text-justify.margin-in-small
+            = strip_tags(sanitize(budget_news.news_text)).truncate(150).gsub("&nbsp;", '')
+            -#= sanitize(budget_news.news_text)
+        .col-md-5.margin-in-small
+          .col-xs-4.col-md-3.paddings-reset
+            = link_to t('.view'), budget_news, class: 'btn btn-default'
+            -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
+          .col-xs-4.col-md-3.paddings-reset
+            = budget_news.get_date
+          .col-md-3.hide-in-small.paddings-reset
+            = image_tag budget_news.img.thumb, class: 'img-responsive'
+          .col-xs-4.col-md-3.news-action-button.paddings-reset.right-paddings-reset
+            = link_to image_tag('icons/loupe.png'), budget_news
+            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+
+  -else
+    = t('public.home.news.no_news')
+  %br
+    = paginate @budget_news
+
+-#.col-md-12
+  %h1
+    = t('.header')
+
+  = link_to t('.create'),new_modules_budget_news_path
+  %br
+  %br
+  -if(!@budget_news.blank?)
+    %table.table
+      %tr
+        %th
+          = t('.title')
+        %th
+          = t('.text')
+        %th
+          = t('.link')
+        %th
+          = t('.date')
+        %th
+          = t('.image')
+        %th
+          = t('.action')
+
+      - @budget_news.each do |budget_news|
         %tr
-          %th
-            = t('.title')
-          %th
-            = t('.text')
-          %th
-            = t('.link')
-          %th
-            = t('.date')
-          %th
-            = t('.image')
-          %th
-            = t('.action')
+          %td= budget_news.title
+          %td.news_text= sanitize(budget_news.news_text)
+          %td
+            %a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
+          %td= budget_news.get_date
+          %td= image_tag budget_news.img.thumb
+          %td.news_action_button
+            = link_to image_tag('icons/loupe.png'), budget_news
+            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+  -else
+    = t('public.home.news.no_news')
+  %br
+    = paginate @budget_news
 
-        - @budget_news.each do |budget_news|
-          %tr
-            %td= budget_news.title
-            %td.news_text= sanitize(budget_news.news_text)
-            %td
-              %a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
-            %td= budget_news.get_date
-            %td= image_tag budget_news.img.thumb
-            %td.news_action_button
-              = link_to image_tag('icons/loupe.png'), budget_news
-              = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
-              = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
-    -else
-      = t('public.home.news.no_news')
-    %br
-      = paginate @budget_news
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення новини',
