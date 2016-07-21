@@ -10,6 +10,7 @@ class BudgetFileRotPlanfact < BudgetFile
     return if kkd.to_i == 0
 
     fond = row['Фонд'].to_s.split('.')[0]
+    return unless is_allowed_fond(fond)
 
     [
         { :amount => amount_plan, :amount_type => :plan },

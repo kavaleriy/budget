@@ -8,10 +8,14 @@ class BudgetFileRotFact < BudgetFile
 
     kkd = row['KKD'].to_s
 
+    fond = row['KKFN'].to_s
+    return unless is_allowed_fond(fond)
+
+
     item = {
         '_year' => row['DATA'].to_date.year.to_s,
         '_month' => row['MONTH'].to_s.split('.')[0],
-        'fond' => row['KKFN'].to_s,
+        'fond' => fond,
         'amount' => amount / 100,
     }
 
