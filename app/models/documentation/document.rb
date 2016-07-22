@@ -37,7 +37,7 @@ class Documentation::Document
     # return true if user admin
     # return true if user created this document
     # else return false
-    user.is_admin? || self.owner.equal?(user)
+    user.is_admin? || self.owner.eql?(user)
 
   end
 
@@ -77,7 +77,7 @@ class Documentation::Document
   private
 
   def generate_title
-    self.title = self.doc_file_identifier unless self.title?
+    self.title = self.doc_file.filename unless self.title?
   end
 
   private
