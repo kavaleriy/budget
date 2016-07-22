@@ -37,7 +37,7 @@ class Documentation::Document
     # return true if user admin
     # return true if user created this document
     # else return false
-    user.is_admin? || self.owner.equal?(user)
+    user.is_admin? || self.owner.eql?(user)
 
   end
 

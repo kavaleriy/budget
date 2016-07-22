@@ -1,6 +1,24 @@
-:css
+:scss
   .documents_search {
     margin-top: 20px;
+  }
+  .table-title{
+    font-weight: bold;
+    margin: 10px 0;
+    border-bottom: solid lightgrey 1px;
+  }
+  .row-separator{
+    border-bottom: solid lightgrey 1px;
+    margin: 5px 0;
+  }
+  @media (max-width: 991.5px){
+    .table-title > div {
+      display: none;
+    }
+    .lowres-row-separator {
+      border-top: dotted lightgrey 1px;
+      margin: 5px 0;
+    }
   }
 
 = content_for :header do
@@ -13,7 +31,35 @@
 .col-xs-12.documents_search
   = render partial: 'search'
 
-.documentation.col-xs-12.table-responsive
+.documentation.col-xs-12.table-title
+  .col-sm-1
+    = t('.file')
+  .col-sm-11
+    .col-md-6
+      .col-md-3
+        = sortable "category_id", t('.category')
+      .col-md-6
+        = sortable "title", t('.title')
+
+      -#todo --> in source code was this column. Functionality was replace to first column. Should be deleted after relize
+      -#.col-xs-1
+      -#  = t('.download')
+
+      .col-md-3
+        = sortable "yearFrom", t('.years')
+    .col-md-6
+      .col-md-3
+        = sortable "town_id", t('.town')
+      .col-md-6
+        = sortable "branch_id", t('.type')
+      .col-md-3
+        = sortable "locked", t('.locked')
+.col-xs-12#results
+  = render partial: 'search_results', :locals => { documents: @documentation_documents }
+
+
+-#todo --> dellete this block if layouts structure will apply
+-#.documentation.col-xs-12.table-responsive
   %table.table.table-striped
     %thead
       %tr
