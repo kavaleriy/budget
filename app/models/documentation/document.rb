@@ -77,7 +77,7 @@ class Documentation::Document
   private
 
   def generate_title
-    self.title = self.doc_file_identifier unless self.title?
+    self.title = self.doc_file.filename unless self.title?
   end
 
   private
