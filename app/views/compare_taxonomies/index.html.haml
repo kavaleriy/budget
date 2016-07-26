@@ -1,7 +1,30 @@
 :scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
   .row {
     .town-select {
-      padding: 0;
+      .select2-container {
+        border-color: $no-color;
+        .select2-choices {
+          border-color: $dark-blue;
+          &:before {
+            content: '\f067';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ACA99F;
+            width: 32px;
+            height: 32px;
+            background: $dark-blue;
+            color: $white;
+            padding: 3px 0 2px 9px;
+          }
+        }
+      }
     }
   }
   .pull-left {
