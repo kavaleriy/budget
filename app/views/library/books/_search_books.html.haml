@@ -1,35 +1,19 @@
-:scss
-
-
 - @library_books.each do |book|
   .one-book.row
     .img.col-md-2.col-sm-3.col-xs-4
-      - if book.book_file?
-        - if book.book_img?
-          = link_to image_tag(book.book_img.thumb), book.book_file.url
-        - else
-          = link_to image_tag("book_off.png"), book.book_file.url
-      - elsif book.book_url?
-        - if book.book_img?
-          = link_to image_tag(book.book_img.thumb), book.book_url
-        - else
-          = link_to image_tag("book_off.png"), book.book_url
+      =link_to get_url book do
+        = get_img book
     .information.col-md-10.col-sm-9.col-xs-8
       %p
-        - unless current_user.nil?
-          - if current_user.id == book.owner_id || current_user.has_role?(:admin)
-            .buttons
-              = link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-default'
-              = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
-                                method: :delete,
-                                data: { confirm: t('library.books.index.ask') }
+        - if access_user book
+          .buttons
+            = link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-default'
+            = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
+                              method: :delete,
+                              data: { confirm: t('library.books.index.ask') }
         %h3
-          - if book.book_file?
-            = link_to book.book_file.url do
-              = book.title
-          - elsif book.book_url?
-            = link_to book.book_url do
-              = book.title
+          = link_to get_url book do
+            = book.title
       %p
         %span= book.author
       %p

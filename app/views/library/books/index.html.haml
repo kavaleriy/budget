@@ -6,8 +6,10 @@
     margin-top: $margin_to_menu;
     margin-bottom: 10px;
     padding-top: 10px;
-    .add-book{
-      float: right;
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
     }
     .one-book{
       .img{
@@ -54,7 +56,7 @@
             text-align: center;
             float:none;
             .btn{
-              padding: 5px 10px;
+              padding: 2px 10px;
             }
           }
         }
@@ -70,11 +72,12 @@
         = t('.w_books')
 .books.clearfix
   .documentation.col-xs-12
-    .add-book
-      - if current_user
-        %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
-    %h2
-      = t('layouts.navbar.library')
+    .header
+      %h2
+        = t('layouts.navbar.library')
+      .add-book
+        - if current_user
+          %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
     = render partial: "categories"
     #results.books-list
       = render partial: "search_books", :locals => { books: @library_books }
