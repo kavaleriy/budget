@@ -47,7 +47,6 @@
 
   aCompareTaxonomiesChart.draw_chart = function (data){
     this.clear_chart()
-
     var chart = this.chart
 
     var doc_width = $('.chart').width()
@@ -98,7 +97,6 @@
         .attr("class", "bar")
         .attr("width", x)
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
-
     // Add text label in bar
     bar.append("text")
         .attr("class", "value")
@@ -128,13 +126,12 @@
           }
         })
 
-
     // Draw legend
     var legend = this.legend
     legend.attr("height", chartHeight)
 
-    var legendRectSize = 40,
-        legendSpacing  = 15;
+    var legendRectSize = 20,
+        legendSpacing  = 5;
 
     var items = legend.selectAll('.item')
         .data(data.series)
@@ -159,5 +156,4 @@
         .attr('x', legendRectSize + legendSpacing)
         .attr('y', legendRectSize - legendSpacing)
         .text(function (d) { return d.label; });
-
   };
