@@ -1,4 +1,3 @@
-.col-xs-12
-  = select_tag :taxonomy_select, options_for_select(taxonomies.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'form-control' }
+= select_tag :taxonomy_select, options_for_select(taxonomies.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'form-control' }
 
 -# catch click on host page
