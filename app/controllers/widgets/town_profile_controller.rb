@@ -68,9 +68,9 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     end
   end
 
-  def budget_compare
-    binding.pry
-  end
+  # def budget_compare
+  #   binding.pry
+  # end
 
   private
 
@@ -124,7 +124,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
 
   def get_budget_compare_hash(name)
-    get_item_hash(img_url(name),title_for_portfolio(name),widgets_town_profile_budget_compare_path(@town),name)
+    get_item_hash(img_url(name),title_for_portfolio(name),compare_taxonomies_compare_budget_path(@town),name)
   end
 
   def get_taxonomy_rot_hash(taxonomy_rot,name)
