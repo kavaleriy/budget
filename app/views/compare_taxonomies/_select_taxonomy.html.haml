@@ -21,14 +21,19 @@
         multiSelect: true
       }
     ).on("change", function(data){
+      // send ajax request with town name
       $.ajax({
         url: '/get_taxonomies_rov_by_town',
         data: {town_name: data.added.text},
         dataType: 'JSON',
         success: function(response_data) {
+          // clear taxonomy from select
+          $("#taxonomy_select").children("option:not(:selected)").remove();
+          // add options to taxonomy select
           response_data.map(function(currentValue){
             $("#taxonomy_select").append($('<option>', {value: currentValue.id, text: currentValue.text}));
           });
+          // init taxonomy select2
           $("#taxonomy_select").select2(
             {
               maximumSelectionSize: 3,
