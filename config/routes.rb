@@ -267,6 +267,9 @@ Rails.application.routes.draw do
   resources :taxonomy_frees
   resources :taxonomy_rots
   resources :taxonomy_rovs
+  get 'get_taxonomies_rov_by_town' => 'taxonomy_rovs#get_taxonomies_by_town',as:'taxonomies_rov_get_taxonomies_by_town'
+
+
 
   resources :budget_files do
     get 'download' => 'budget_files#download'
