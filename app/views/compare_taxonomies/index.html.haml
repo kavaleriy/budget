@@ -1,4 +1,32 @@
 :scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
+  .row {
+    .town-select {
+      .select2-container {
+        border-color: $no-color;
+        .select2-choices {
+          border-color: $dark-blue;
+          &:before {
+            content: '\f067';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ACA99F;
+            width: 32px;
+            height: 32px;
+            background: $dark-blue;
+            color: $white;
+            padding: 3px 0 2px 9px;
+          }
+        }
+      }
+    }
+  }
   .pull-left {
     margin: 0 20px 0 0px;
   }
@@ -17,7 +45,8 @@
   = t('.title')
 
 .row
-  = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
+  .col-xs-5.town-select
+    = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
 
 %hr
 
@@ -176,15 +205,7 @@
       aCompareTaxonomies.select_level(level.split(' '));
     });
 
-    $("#taxonomy_select").select2(
-      {
-        allowClear: true,
-        width: '100%',
-        placeholder: "#{I18n.t('select_placeholder')}",
-        multiSelect: true,
-      }
-    ).on("change", function(data){
+    $("#taxonomy_select").select2().on("change", function(data){
       aCompareTaxonomies.select_taxonomies(data.val, data.added)
-    })
-
+    });
   });

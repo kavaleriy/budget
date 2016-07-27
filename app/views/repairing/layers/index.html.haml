@@ -1,3 +1,45 @@
+:scss
+  .table-title{
+    font-weight: bold;
+    border-bottom: solid lightgrey 2px;
+    padding: 5px 0;
+  }
+  .table-body{
+    border-bottom: solid lightgrey 1px;
+    padding: 5px 0;
+  }
+  .hide-overflow{
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal; /* for IE */
+    text-overflow: ellipsis;
+    min-height: 2.75rem;
+
+    &:hover{
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
+      font-size: smaller;
+    }
+  }
+  .reset-padding{
+    padding: 0;
+  }
+  @media (max-width: 767.5px) {
+    .hide-overflow{
+      text-align: center;
+      border-bottom: solid lightcyan 1px;
+    }
+    .hide-in-small{
+      display: none;
+    }
+  }
+  @media (max-width: 384px) {
+    .hide-overflow{
+      font-size: small;
+    }
+  }
+
 - model_class = Repairing::Layer
 = content_for :header do
   .head.pull-left
@@ -5,7 +47,52 @@
 - if current_user && current_user.has_any_role?(:admin, :city_authority,:public_organisation)
   = link_to t('.new', :default => t("helpers.links.new")), new_repairing_layer_path, :class => 'btn btn-primary'
 -unless @repairing_layers.empty?
-  %table.table.table-striped
+  .container-fluid
+    .row.table-title.hide-in-small
+      .col-sm-11.reset-padding
+        .col-sm-4.reset-padding
+          .col-xs-6
+            =t('key')
+          .col-xs-6
+            =t('repairing.repairs.form.title')
+        .col-sm-5.reset-padding
+          .col-xs-6
+            =t('file')
+          .col-xs-6
+            =t('repairing.repairs.form.category')
+        .col-sm-3.reset-padding
+          .col-xs-6
+            =t('repairing.repairs.form.town')
+          .col-xs-6
+            =t('author')
+      .col-sm-1.reset-padding.text-center
+        =t 'form.actions', :default => t("helpers.actions")
+    - @repairing_layers.each do |layer|
+      .row.table-body
+        .col-sm-11.reset-padding
+          .col-sm-4.reset-padding
+            .col-sm-6.hide-overflow
+              = link_to layer.id, repairing_layer_path(layer)
+            .col-sm-6.hide-overflow
+              = layer.title
+          .col-sm-5.reset-padding
+            .col-sm-6.hide-overflow
+              = link_to layer.repairs_file.url, :class => '' do
+                %i.fa.fa-download.fa.fa-border
+                = layer.repairs_file_identifier
+            .col-sm-6.hide-overflow
+              = layer.repairing_category.title unless layer.repairing_category.nil?
+          .col-sm-3.reset-padding
+            .col-sm-6.hide-overflow
+              = "#{layer.town.title unless layer.town.blank?} "
+            .col-sm-6.hide-overflow
+              = layer.owner.email
+        .col-sm-1.reset-padding.text-center
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_repairing_layer_path(layer), :class => 'btn btn-default btn-xs'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), repairing_layer_path(layer), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger', :style => 'min-width: 78px'
+
+  -#todo --> dellete this block after applying layout
+  -#%table.table.table-striped
     %thead
       %tr
         %th=t('key')
@@ -31,6 +118,7 @@
           %td
             = link_to t('.edit', :default => t("helpers.links.edit")), edit_repairing_layer_path(layer), :class => 'btn btn-default btn-xs'
             = link_to t('.destroy', :default => t("helpers.links.destroy")), repairing_layer_path(layer), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+
 -else
   =t ('.no_files')
 = paginate @repairing_layers
