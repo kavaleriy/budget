@@ -68,6 +68,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     end
   end
 
+  def budget_compare
+    binding.pry
+  end
+
   private
 
   def fill_budget_files_tabs(tax_rot,tax_rov,sankey)
@@ -101,6 +105,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # binding.pry
 
     result = []
+    result << get_budget_compare_hash('budget_compare')
     # binding.pry
     result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
@@ -115,6 +120,11 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # result << get_keys_hash('keys')
 
     result.compact
+  end
+
+
+  def get_budget_compare_hash(name)
+    get_item_hash(img_url(name),title_for_portfolio(name),widgets_town_profile_budget_compare_path(@town),name)
   end
 
   def get_taxonomy_rot_hash(taxonomy_rot,name)
