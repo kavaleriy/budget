@@ -42,7 +42,8 @@ class BudgetFileRotFz < BudgetFile
       next if amount == 0
 
       generate_item.call(amount, i)
-    end.reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
+    end.reject {|c| c.nil?}
+    # end.reject {|c| c.nil? || (c['kkd_dd'] =~ /00$/) != nil}
 
     annual_amount = items.map {|s| s['amount']}.sum
     items << generate_item.call(annual_amount, 0)

@@ -45,7 +45,8 @@ class BudgetFileRovFz < BudgetFile
       next if amount == 0
 
       generate_item.call(amount, i)
-    end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
+    end.reject {|c| c.nil?}
+    # end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
 
 
     items
