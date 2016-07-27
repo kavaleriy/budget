@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   namespace :compare_taxonomies do
     get 'index'
   end
+  get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
+
 
 
   namespace :external_api do
@@ -249,6 +251,8 @@ Rails.application.routes.draw do
     get 'town_profile/budget_files_by_taxonomies/:tax_rot/:tax_rov' => 'town_profile#budget_files_by_taxonomies', as: 'budget_files_by_taxonomies'
     get 'town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov' =>'town_profile#sankey_by_taxonomies', as:'sankey_by_taxonomies'
     get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
+    # get 'town_profile/compare_budget/:town_id' => 'town_profile#budget_compare',as: 'town_profile_budget_compare'
+
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'

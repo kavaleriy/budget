@@ -16,6 +16,8 @@ class BudgetFileRotFond < BudgetFileRot
       next if line[:amount].to_i == 0
 
       fond = line[:fond]
+      next unless is_allowed_fond(fond)
+
       amount = line[:amount]
 
       item = {

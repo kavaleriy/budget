@@ -1,6 +1,9 @@
+:scss
+
+
 - @library_books.each do |book|
-  %tr
-    %td.book_image{ align: 'center' }
+  .one-book.row
+    .img.col-md-2.col-sm-3.col-xs-4
       - if book.book_file?
         - if book.book_img?
           = link_to image_tag(book.book_img.thumb), book.book_file.url
@@ -11,11 +14,11 @@
           = link_to image_tag(book.book_img.thumb), book.book_url
         - else
           = link_to image_tag("book_off.png"), book.book_url
-    %td.lead
+    .information.col-md-10.col-sm-9.col-xs-8
       %p
         - unless current_user.nil?
           - if current_user.id == book.owner_id || current_user.has_role?(:admin)
-            .buttom
+            .buttons
               = link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-default'
               = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
                                 method: :delete,
@@ -33,4 +36,3 @@
         %span= book.year_publication
       %p
         %span= book.description if book.description
-      -#%p= "#{truncate(strip_tags(book.description),length: 300) if book.description}"
