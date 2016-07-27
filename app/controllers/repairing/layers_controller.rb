@@ -128,14 +128,15 @@ module Repairing
     def read_csv_xls(xls)
       cols = []
       xls.first_column.upto(xls.last_column) { |col|
-        cols << xls.cell(1, col).to_s
+        cols << xls.cell(1, col).to_s.strip
       }
 
       rows = []
       2.upto(xls.last_row) do |line|
         row = {}
         xls.first_column.upto(xls.last_column ) do |col|
-          row[xls.cell(1, col)] = xls.cell(line,col).to_s
+          row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
+          row.transform_keys! { |key| key.strip }
         end
         rows << row
       end
