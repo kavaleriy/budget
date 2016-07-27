@@ -16,6 +16,7 @@
     {
         maximumSelectionSize: 3,
         allowClear: true,
+        placeholder: "#{I18n.t('compare_taxonomies.select_taxonomy.choose_town')}",
         width: '100%',
         multiSelect: true
       }
@@ -26,13 +27,19 @@
         dataType: 'JSON',
         success: function(response_data) {
           response_data.map(function(currentValue){
-            // var option = new Option(currentValue.id, currentValue.text);
             $("#taxonomy_select").append($('<option>', {value: currentValue.id, text: currentValue.text}));
           });
-          $("#taxonomy_select").select2();
+          $("#taxonomy_select").select2(
+            {
+              maximumSelectionSize: 3,
+              allowClear: true,
+              width: '100%',
+              placeholder: "#{I18n.t('.select_compare_taxonomies_placeholder')}",
+              multiSelect: true
+            }
+          );
         }
       })
-
     });
 
    })

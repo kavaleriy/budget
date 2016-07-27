@@ -205,15 +205,7 @@
       aCompareTaxonomies.select_level(level.split(' '));
     });
 
-    $("#taxonomy_select").select2(
-      {
-        maximumSelectionSize: 3,
-        allowClear: true,
-        width: '100%',
-        placeholder: "#{I18n.t('.select_compare_taxonomies_placeholder')}",
-        multiSelect: true
-      }
-    ).on("change", function(data){
+    $("#taxonomy_select").select2().on("change", function(data){
       aCompareTaxonomies.select_taxonomies(data.val, data.added)
     });
   });
