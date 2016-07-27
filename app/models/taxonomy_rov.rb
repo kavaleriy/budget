@@ -1,6 +1,11 @@
 class TaxonomyRov < Taxonomy
 
-  # scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
+  scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
+  def self.get_towns_with_taxonomies_rov
+    # this function grouped taxonomies by town
+    #  and return town title
+    self.all.group_by{|f| f.owner}.keys
+  end
 
   def columns
 
