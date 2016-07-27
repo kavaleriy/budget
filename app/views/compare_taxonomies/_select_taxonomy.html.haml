@@ -1,3 +1,38 @@
-= select_tag :taxonomy_select, options_for_select(taxonomies.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'form-control' }
+:scss
+  #s2id_taxonomy_select{
+    display: none;
+  }
+
+= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.collect { |t| [t, t] } ), { multiple: true, class: 'form-control' }
+
+= select_tag :taxonomy_select, options_for_select(''), {multiple: true,class: 'form-control' }
+
+
 
 -# catch click on host page
+:javascript
+  $(document).ready(function() {
+    $('#town_for_compare_select').select2(
+    {
+        maximumSelectionSize: 3,
+        allowClear: true,
+        width: '100%',
+        multiSelect: true
+      }
+    ).on("change", function(data){
+      $.ajax({
+        url: '/get_taxonomies_rov_by_town',
+        data: {town_name: data.added.text},
+        dataType: 'JSON',
+        success: function(response_data) {
+          response_data.map(function(currentValue){
+            // var option = new Option(currentValue.id, currentValue.text);
+            $("#taxonomy_select").append($('<option>', {value: currentValue.id, text: currentValue.text}));
+          });
+          $("#taxonomy_select").select2();
+        }
+      })
+
+    });
+
+   })
