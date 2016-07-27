@@ -3,12 +3,15 @@
   $dark-blue: #0c2231;
   $white: #ffffff;
   $no-color: transparent;
+  
   .row {
     .town-select {
       .select2-container {
         border-color: $no-color;
         .select2-choices {
           border-color: $dark-blue;
+          padding-right: 32px;
+          margin-right: -2px;
           &:before {
             content: '\f067';
             font-family: FontAwesome;
@@ -17,14 +20,30 @@
             cursor: pointer;
             font-size: 20px;
             color: #ACA99F;
-            width: 32px;
-            height: 32px;
+            width: 33px;
+            height: 33px;
             background: $dark-blue;
             color: $white;
             padding: 3px 0 2px 9px;
           }
+          .select2-search-choice {
+            padding: 6px 18px 6px 3px;
+            margin: 3px 0 3px 3px;
+            .select2-search-choice-close {
+              right: 3px;
+              left: inherit;
+            }
+          }
         }
       }
+    }
+  }
+  .select2-drop-active {
+    border-color: $dark-blue;
+    margin-left: 1px;
+    .select2-results {
+      padding: 0;
+      margin: 4px 0;
     }
   }
   .pull-left {
