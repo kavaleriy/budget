@@ -27,7 +27,7 @@
         data: {town_name: data.added.text},
         dataType: 'JSON',
         success: function(response_data) {
-          // clear taxonomy from select
+          // clear taxonomy from taxonomies select
           $("#taxonomy_select").children("option:not(:selected)").remove();
           // add options to taxonomy select
           response_data.map(function(currentValue){
