@@ -20,11 +20,13 @@ class BudgetFileRotVz < BudgetFile
         { :amount => row['N5'].to_i, :fond => 7, :amount_type => :fact },
     ].map do |line|
       next if line[:amount].to_i == 0
+      fond = line[:fond]
+      next unless is_allowed_fond(fond)
 
       item = {
           '_amount_type' => line[:amount_type],
           'amount' => line[:amount],
-          'fond' => line[:fond],
+          'fond' => fond,
       }
 
       %w(_year _month).each{ |key|

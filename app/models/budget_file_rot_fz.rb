@@ -8,8 +8,9 @@ class BudgetFileRotFz < BudgetFile
     return unless row['kmb'].to_s == self.taxonomy.kmb
 
     kkd = row['fcode'].to_s
+
     fond = row['cf'].to_s
-    return unless %w(1 2 3 7).include? fond
+    return unless is_allowed_fond(fond)
 
     return if %w(90010100 90010200 90010300).include?(kkd)
 

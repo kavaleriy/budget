@@ -4,7 +4,7 @@ class BudgetFileRotFt < BudgetFile
 
   def readline row
     fond = row['GR'].to_s.split('.')[0]
-    return unless %w(1 2).include?(fond)
+    return unless is_allowed_fond(fond)
 
     kkd = row['KOD'].to_s
 
