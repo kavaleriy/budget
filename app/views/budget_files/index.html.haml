@@ -1,4 +1,9 @@
 :scss
+  //init colors
+  $blue: blue;
+  $green: green;
+  $orange: orange;
+
   .documents_search {
     margin: 15px;
     border-radius: 5px;
@@ -20,6 +25,14 @@
       min-height: 22px;
     }
   }
+  .files-action-button{
+    display: flex;
+    a{
+      text-decoration: none;
+      background: transparent;
+      padding: 0 5px;
+    }
+  }
   .reset-padding{
     padding: 0;
     & > .reset-padding{
@@ -31,10 +44,31 @@
       }
     }
   }
+  .fact-icon,
+  .plan-icon,
+  .pf-icon{
+    display: block;
+    height: 2.5rem;
+    width: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 25%;
+    text-align: center;
+    border:  0.125rem solid;
+  }
+  .fact-icon{
+    border-color: $blue;
+  }
+  .plan-icon{
+    border-color: $green;
+  }
+  .pf-icon{
+    border-color: $orange;
+  }
   @media (min-width: 992px) {
     .reset-padding{
       & > .reset-padding{
-        & div:hover{
+        & > div:hover{
           overflow: visible;
           white-space: normal;
           word-wrap: break-word;
@@ -49,6 +83,16 @@
         border-bottom: solid lightcyan 1px;
       }
     }
+    .files-action-button{
+      flex-direction: column;
+    }
+    .fact-icon,
+    .plan-icon,
+    .pf-icon{
+      height: 2rem;
+      width: 2rem;
+      font-size: 1.3rem;
+    }
   }
   @media (max-width: 384px) {
     .reset-padding{
@@ -59,7 +103,6 @@
       }
     }
   }
-
 
 - model_class = BudgetFile
 = content_for :header do
