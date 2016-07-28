@@ -1,4 +1,25 @@
-%table.table.table-striped
+.container-fluid
+  .row.table-title.text-center.visible-md.visible-lg
+    .col-md-11.reset-padding
+      .col-sm-2
+        =t('key')
+      .col-sm-2
+        = sortable "title", t('budget')
+      .col-sm-3
+        =t('file')
+      .col-sm-1
+        = sortable "data_type", t('data_type')
+      .col-sm-2
+        = sortable "taxonomy.owner", t('owner')
+      .col-sm-2
+        = sortable "author", t('author')
+    .col-md-1.reset-padding
+      =t 'form.actions', :default => t("helpers.actions")
+  #search_results
+    = render partial: 'search_results', :locals => {budget_files: budget_files}
+
+-#todo --> delete this block if layouts will apply
+-#%table.table.table-striped
   %thead
     %tr
       %th
@@ -17,5 +38,6 @@
         =t 'form.actions', :default => t("helpers.actions")
   %tbody#search_results
     = render partial: 'search_results', :locals => {budget_files: budget_files}
+
 .paginator
   = paginate budget_files
