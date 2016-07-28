@@ -159,8 +159,8 @@
 
     function getAmountData(amount){
       result = {
-        plan: 0,
-        fact: 0
+        plan: '0',
+        fact: '0'
       }
       if(amount['plan'] && amount['plan'][selected_year]){
         result.plan = amount['plan'][selected_year]['0'].total.toFixed(2)

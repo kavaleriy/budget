@@ -8,11 +8,19 @@
   }
 
   .chart {
-    .value {
-      fill: white;
-      font-size: 14px;
-      text-anchor: end;
+    g{
+      text{
+        fill: white;
+        font-size: 14px;
+      }
+      .plan {
+        text-anchor: end;
+      }
+      .fact{
+        text-anchor: start;
+      }
     }
+
 
     .label {
       fill: black;
@@ -90,37 +98,51 @@
 
     bar = chart.selectAll("g")
       .data(zippedData)
-
-    // Create rectangles of the correct width
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Draw plan fact rectangles
+    // Create plan rectangles of the correct width
     bar.append("rect")
+        .attr('data-type','plan')
         .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].plan })
         .attr("class", "bar")
-        .attr("width", x)
+        .attr("width", function(d){ return x(d.plan) } )
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
-    // Add text label in bar
-    bar.append("text")
-        .attr("class", "value")
-        .attr("x", function(d) { return x(d) - 5; })
-        .attr("y", barHeight / 2)
-        .attr("fill", "red")
-        .attr("dy", ".35em")
-        .text(function(d) { return d == 0 ? "" : aHelper.short_label(d); });
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // Create rectangles of the correct width
+    // Create fact rectangles of the correct width
     bar.append("rect")
+        .attr('data-type','fact')
         .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].fact })
         .attr("class", "bar")
-        .attr("width", x)
+        .attr("width", function(d) {
+          var fact_x = d3.scale.linear()
+          .domain([1, d.plan])
+          .range([1, x(d.plan)]);
+          return fact_x(d.fact); })
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
-    // Add text label in bar
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Draw plan fact text
+    // Add plan text label in bar
     bar.append("text")
-        .attr("class", "value")
-        .attr("x", function(d) { return x(d) - 5; })
+        .attr("class", "plan")
+        .attr("x", function(d) { return x(d.plan) - 5; })
         .attr("y", barHeight / 2)
-        .attr("fill", "red")
+        // .attr("fill", "red")
         .attr("dy", ".35em")
-        .text(function(d) { return d == 0 ? "" : aHelper.short_label(d); });
+        .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.plan); });
+
+    // Add fact text label in bar
+    bar.append("text")
+        .attr("class", "fact")
+        .attr('x',0)
+        // .attr("x", function(d) {
+        //   var fact_x = d3.scale.linear()
+        //   .domain([1, d.plan])
+        //   .range([1, x(d.plan)]);
+        //   return fact_x(d.fact) + 30; })
+        .attr("y", barHeight / 2)
+        // .attr("fill", "red")
+        .attr("dy", ".35em")
+        .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.fact); });
     //////////////////////////////////////////////////////////////////////////////////////
     // Draw labels
     bar.append("text")
