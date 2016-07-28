@@ -56,6 +56,11 @@
     selected_level: '',
     selected_year: "#{@current_year}",
     selected_taxonomies: [],
+    color: [
+    {fact: '#0d3c55', plan: '#0f5b78'},
+    {fact: '#a2b86c', plan: 'b6d370'},
+    {fact: '#dc8aa8', plan: '#d9aebe'}
+    ],
     taxonomies: {},
     taxonomies_cache: {}
   }
@@ -212,11 +217,14 @@
       aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
     })
 
-
-    $('.year_select').on('click', function () {
-      aCompareTaxonomies.select_year($(this).attr('data-year'))
-    })
-
+    $("#year_select").select2(
+      {
+        placeholder: "рік |",
+        allowClear: true
+      }
+    ).on("change", function(data){
+      aCompareTaxonomies.select_year(data.val, data.added)
+    });
 
     $('.level_select').on("click", function(){
       var level = $(this).attr('value');
