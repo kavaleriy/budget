@@ -6,6 +6,7 @@
 
   .row {
     .town-select {
+      padding-right: 0;
       .select2-container {
         border-color: $no-color;
         .select2-choices {
@@ -37,8 +38,11 @@
         }
       }
     }
+    .filters {
+      padding-right: 0;
+    }
   }
-  .select2-drop-active {
+  .select2-drop-multi {
     border-color: $dark-blue;
     margin-left: 1px;
     .select2-results {
@@ -71,20 +75,14 @@
 .row
   .col-xs-5.town-select
     = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-
-%hr
-.row
-  .col-xs-12
-    .pull-left
-      = render :partial => 'select_amountype'
-    .pull-left
-      = render :partial => 'select_level'
-    .pull-left
-      = render :partial => 'select_divider', :locals => { amounts: @amounts }
-    .pull-right
+  .col-xs-7.filters
+    .col-xs-2
       = render :partial => 'select_year', :locals => { years: @years }
-
-%hr
+      -#= render :partial => 'select_amountype'
+    .col-xs-5
+      = render :partial => 'select_level'
+    .col-xs-5
+      = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
   = render :partial => 'path'
