@@ -65,7 +65,7 @@
       }
     }
     // Color scale
-    var color = d3.scale.category20();
+    //var color = d3.scale.category10();
     var chartHeight = 50 + barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
     var x = d3.scale.log()
@@ -93,7 +93,7 @@
 
     // Create rectangles of the correct width
     bar.append("rect")
-        .attr("fill", function(d,i) { return color(i % data.series.length); })
+        .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].fact })
         .attr("class", "bar")
         .attr("width", x)
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
@@ -148,9 +148,8 @@
     items.append('rect')
         .attr('width', legendRectSize)
         .attr('height', legendRectSize)
-        .style('fill', function (d, i) { return color(i); })
-        .style('stroke', function (d, i) { return color(i); });
-
+        .style('fill', function (d, i) { return aCompareTaxonomies.color[i].fact; })
+        .style('stroke', function (d, i) { return aCompareTaxonomies.color[i].fact; });
     items.append('text')
         .attr('class', 'legend')
         .attr('x', legendRectSize + legendSpacing)
