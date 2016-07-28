@@ -8,6 +8,58 @@
       text-align: center;
     }
   }
+  .table-title{
+    font-weight: bold;
+    border-bottom: solid lightgrey 2px;
+    padding: 5px 0;
+  }
+  .table-body{
+    border-bottom: solid lightgrey 1px;
+    padding: 5px 0;
+    & div{
+      min-height: 22px;
+    }
+  }
+  .reset-padding{
+    padding: 0;
+    & > .reset-padding{
+      & div{
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal; /* for IE */
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  @media (min-width: 992px) {
+    .reset-padding{
+      & > .reset-padding{
+        & div:hover{
+          overflow: visible;
+          white-space: normal;
+          word-wrap: break-word;
+          font-size: smaller;
+        }
+      }
+    }
+  }
+  @media (max-width: 991.9px) {
+    .reset-padding{
+      & div{
+        border-bottom: solid lightcyan 1px;
+      }
+    }
+  }
+  @media (max-width: 384px) {
+    .reset-padding{
+      & > .reset-padding{
+        & div{
+          font-size: small;
+        }
+      }
+    }
+  }
+
 
 - model_class = BudgetFile
 = content_for :header do
