@@ -48,7 +48,7 @@
   aCompareTaxonomiesChart.draw_chart = function (data){
     this.clear_chart()
     var chart = this.chart
-
+    console.log(data)
     var doc_width = $('.chart').width()
     var chartWidth       = doc_width * .6,
         barHeight        = 30,
@@ -69,7 +69,7 @@
     var chartHeight = 50 + barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
     var x = d3.scale.log()
-      .domain([1, d3.max(zippedData)])
+      .domain([1, d3.max(zippedData,function(d){ return d.plan || d.fact})])
       .range([1, chartWidth])
 
     var y = d3.scale.linear()
@@ -93,7 +93,7 @@
 
     // Create rectangles of the correct width
     bar.append("rect")
-        .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].fact })
+        .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].plan })
         .attr("class", "bar")
         .attr("width", x)
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
@@ -106,6 +106,22 @@
         .attr("dy", ".35em")
         .text(function(d) { return d == 0 ? "" : aHelper.short_label(d); });
 
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Create rectangles of the correct width
+    bar.append("rect")
+        .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].fact })
+        .attr("class", "bar")
+        .attr("width", x)
+        .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
+    // Add text label in bar
+    bar.append("text")
+        .attr("class", "value")
+        .attr("x", function(d) { return x(d) - 5; })
+        .attr("y", barHeight / 2)
+        .attr("fill", "red")
+        .attr("dy", ".35em")
+        .text(function(d) { return d == 0 ? "" : aHelper.short_label(d); });
+    //////////////////////////////////////////////////////////////////////////////////////
     // Draw labels
     bar.append("text")
         .attr("class", "label")

@@ -157,6 +157,22 @@
     var items = {}
     var amounts = {}
 
+    function getAmountData(amount){
+      result = {
+        plan: 0,
+        fact: 0
+      }
+      if(amount['plan'] && amount['plan'][selected_year]){
+        result.plan = amount['plan'][selected_year]['0'].total.toFixed(2)
+      }
+      if(amount['fact'] && amount['fact'][selected_year]){
+        result.fact = amount['fact'][selected_year]['0'].total.toFixed(2)
+      }
+
+      return result;
+    }
+
+
     aCompareTaxonomiesPath.last_level = false
 
     selected_taxonomies.forEach(function(taxonomy_id) {
@@ -180,9 +196,10 @@
       if (taxonomy && taxonomy.children)
         taxonomy.children.forEach(function(node) {
           if (items[node.key] == null) items[node.key] = node.label
+          amounts[taxonomy_id][node.key] = getAmountData(node.amount);
 
-          if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
-            amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
+          // if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
+          //   amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
 
           aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
         })
