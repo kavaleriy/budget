@@ -194,11 +194,14 @@
       aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
     })
 
-
-    $('.year_select').on('click', function () {
-      aCompareTaxonomies.select_year($(this).attr('data-year'))
-    })
-
+    $("#year_select").select2(
+      {
+        placeholder: "рік |",
+        allowClear: true
+      }
+    ).on("change", function(data){
+      aCompareTaxonomies.select_year(data.val, data.added)
+    });
 
     $('.level_select').on("click", function(){
       var level = $(this).attr('value');
