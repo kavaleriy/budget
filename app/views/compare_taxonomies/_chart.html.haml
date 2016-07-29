@@ -38,8 +38,8 @@
     }
   }
 
-%svg.chart.col-xs-12
--#%svg.legend.col-xs-5
+%svg.col-xs-7.chart
+%svg.col-xs-5.legend
 
 :javascript
 
@@ -50,13 +50,12 @@
 
   aCompareTaxonomiesChart.clear_chart = function (){
     this.chart.attr("height", 0).selectAll("g").remove()
-    this.legend.selectAll("g").remove()
+    this.legend.attr("height", 0).selectAll("g").remove()
   }
 
   aCompareTaxonomiesChart.draw_chart = function (data){
     this.clear_chart()
     var chart = this.chart
-    console.log(data)
     var doc_width = $('.chart').width()
     var chartWidth       = doc_width * .6,
         barHeight        = 30,
@@ -162,29 +161,39 @@
     var legend = this.legend
     legend.attr("height", chartHeight)
 
-    var legendRectSize = 20,
-        legendSpacing  = 5;
+    var it = $("#town_for_compare_select").select2("val").length - 1;
+    var legendXPos = 0,
+        legendYPos  = 90;
 
-    var items = legend.selectAll('.item')
-        .data(data.series)
+    var planY = legendYPos;
+    var factX = legendYPos * 2;
+
+    var items = legend.selectAll('g')
+        .data(zippedData)
         .enter()
         .append('g')
         .attr('transform', function (d, i) {
-            var height = legendRectSize + legendSpacing;
+            var height = legendXPos + legendYPos;
             var offset = -gapBetweenGroups/2;
-            var horz = 50;
-            var vert = i * height - offset;
-            return 'translate(' + horz + ',' + vert + ')';
+
+            var horz = legendXPos + 20;
+            var vert = 15 + i + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length));
+
+            return "translate(" + 0 + "," + vert + ")";
         });
 
-    items.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', function (d, i) { return aCompareTaxonomies.color[i].fact; })
-        .style('stroke', function (d, i) { return aCompareTaxonomies.color[i].fact; });
     items.append('text')
-        .attr('class', 'legend')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
-        .text(function (d) { return d.label; });
+        .attr('class', 'plan')
+        .attr('x', legendXPos)
+        .attr('y', planY)
+        .text(function (d,i) {
+          return d == 0 ? "" : aHelper.short_label(d.plan);
+        });
+    items.append('text')
+        .attr('class', 'fact')
+        .attr('x', factX)
+        .attr('y', legendYPos)
+        .text(function (d,i) {
+          return d == 0 ? "" : aHelper.short_label(d.fact);
+        });
   };
