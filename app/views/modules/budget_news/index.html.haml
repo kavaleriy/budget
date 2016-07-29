@@ -1,50 +1,55 @@
 :scss
+  // init colors
+  $lightcyan: lightcyan;
+  $lightgrey: lightgrey;
+
   .news-action-button{
     display: flex;
     //flex-direction: column;
     a{
       text-decoration: none;
       background: transparent;
-    }
-    img{
-      width: 2em;
-      height: 2em;
-      padding: 0 3px;
+      padding: 0 5px;
     }
   }
-  .paddings-reset{
-    padding-left: 0;
+  .reset-padding{
+    padding: 0;
+    & > div{
+      padding: 0 5px;
+    }
   }
-  .right-paddings-reset{
-    padding-right: 0;
+  .table-title{
+    font-weight: bold;
+    border-bottom: 2px solid $lightgrey;
+    padding: 5px 0;
   }
-  .bordered-bottom{
-    border-bottom: solid grey 1px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+  .table-body{
+    border-bottom: 1px solid $lightgrey;
+    padding: 5px 0;
+    & div{
+      min-height: 22px;
+    }
   }
-  @media screen and (max-width: 991px) {
-    .item-title{
-      background: cornsilk;
-      font-size: small;
-      font-weight: bold;
-      //padding: 0;
+  @media screen and (max-width: 991.9px) {
+    .news-action-button{
+      flex-direction: column;
     }
-    .item-text{
-      //border-bottom: solid grey 1px;
-      font-size: small;
-      //padding: 0;
+    .row > .text-center{
+      max-width: 35px;
     }
-    .hide-in-small{
-      display: none;
+  }
+  @media screen and (max-width: 767.9px) {
+    .reset-padding{
+      & > div{
+        padding: 5px 5px;
+      }
+      & > .col-xs-7{
+        border-bottom: 1px solid $lightcyan;
+      }
+      & > .visible-xs{
+        font-weight: bold;
+      }
     }
-    .padding-in-small{
-      padding: 0;
-    }
-    .margin-in-small{
-      margin-top: 5px;
-    }
-
   }
 
 .container-fluid
@@ -55,49 +60,64 @@
   %br
   %br
   -if(!@budget_news.blank?)
-    .row.hide-in-small.title.bordered-bottom
-      .col-sm-7
-        .col-xs-5.paddings-reset
+    .row.table-title.hidden-xs
+      .col-sm-11.reset-padding
+        .col-sm-3.col-md-3.text-center
           = t('.title')
-        .col-xs-7.paddings-reset
+        .col-sm-4.col-md-4.text-center
           = t('.text')
-      .col-sm-5
-        .col-xs-3.paddings-reset
-          = t('.link')
-        .col-xs-3.paddings-reset
-          = t('.date')
-        .col-xs-3.paddings-reset
+        .col-sm-5.col-md-3.reset-padding
+          .col-sm-6
+            = t('.link')
+          .col-sm-6.text-center
+            = t('.date')
+        .col-md-2.visible-md.visible-lg
           = t('.image')
-        .col-xs-3.paddings-reset.right-paddings-reset
-          = t('.action')
+      .col-sm-1.reset-padding.text-center
+        -#.col-xs-3
+        = t('.action')
 
     - @budget_news.each do |budget_news|
-      .row.bordered-bottom
-        .col-md-7.padding-in-small
-          .col-md-5.item-title.paddings-reset.margin-in-small
+      .row.table-body
+        .col-xs-11.reset-padding
+          .col-xs-3.visible-xs
+            = t('.title')
+          .col-xs-7.col-sm-3.col-md-3.text-justify
             = budget_news.title
             -#= truncate(budget_news.title, :length => 30, :separator => ' ')
-          .col-md-7.item-text.paddings-reset.text-justify.margin-in-small
+          .col-xs-3.visible-xs
+            = t('.text')
+          .col-xs-7.col-sm-4.col-md-4.text-justify
             = strip_tags(sanitize(budget_news.news_text)).truncate(150).gsub("&nbsp;", '')
             -#= sanitize(budget_news.news_text)
-        .col-md-5.margin-in-small
-          .col-xs-4.col-md-3.paddings-reset
-            = link_to t('.view'), budget_news, class: 'btn btn-default'
-            -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
-          .col-xs-4.col-md-3.paddings-reset
-            = budget_news.get_date
-          .col-md-3.hide-in-small.paddings-reset
+          .col-xs-3.visible-xs
+            = t('.date')
+          .col-xs-7.col-sm-5.col-md-3.reset-padding
+            .col-xs-6.col-sm-push-6.text-center
+              = budget_news.get_date
+            .col-xs-6.col-sm-pull-6
+              = link_to t('.view'), budget_news, class: 'btn btn-default'
+              -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
+          .col-md-2.visible-md.visible-lg
             = image_tag budget_news.img.thumb, class: 'img-responsive'
-          .col-xs-4.col-md-3.news-action-button.paddings-reset.right-paddings-reset
-            = link_to image_tag('icons/loupe.png'), budget_news
-            = link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
-            = link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
+        .col-xs-1.news-action-button.reset-padding
+          = link_to budget_news do
+            %i.fa.fa-eye.fa-2x
+          = link_to edit_modules_budget_news_path(budget_news) do
+            %i.fa.fa-pencil.fa-2x
+          = link_to budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')} do
+            %i.fa.fa-trash-o.fa-2x
+
+            -#= link_to image_tag('icons/loupe.png'), budget_news
+            -#= link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+            -#= link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
 
   -else
     = t('public.home.news.no_news')
   %br
     = paginate @budget_news
 
+-#todo --> delete this block if layouts will apply
 -#.col-md-12
   %h1
     = t('.header')
