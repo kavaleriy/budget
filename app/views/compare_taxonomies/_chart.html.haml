@@ -38,8 +38,8 @@
     }
   }
 
-%svg.chart.col-xs-12
--#%svg.legend.col-xs-5
+%svg.col-xs-7.chart
+%svg.col-xs-5.legend
 
 :javascript
 
@@ -56,7 +56,6 @@
   aCompareTaxonomiesChart.draw_chart = function (data){
     this.clear_chart()
     var chart = this.chart
-    console.log(data)
     var doc_width = $('.chart').width()
     var chartWidth       = doc_width * .6,
         barHeight        = 30,
@@ -162,11 +161,16 @@
     var legend = this.legend
     legend.attr("height", chartHeight)
 
+    var it = $("#town_for_compare_select").select2("val").length - 1;
     var legendRectSize = 20,
         legendSpacing  = 5;
 
+    console.log(data.series);
+    console.log(data.series[(data.series.length)-1].values);
+
+
     var items = legend.selectAll('.item')
-        .data(data.series)
+        .data(data.series[(data.series.length)-1].values)
         .enter()
         .append('g')
         .attr('transform', function (d, i) {
@@ -177,14 +181,26 @@
             return 'translate(' + horz + ',' + vert + ')';
         });
 
-    items.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', function (d, i) { return aCompareTaxonomies.color[i].fact; })
-        .style('stroke', function (d, i) { return aCompareTaxonomies.color[i].fact; });
+    //items.append('rect')
+    //    .attr('width', legendRectSize)
+    //    .attr('height', legendRectSize)
+    //    .style('fill', function (d, i) { return aCompareTaxonomies.color[i].fact; })
+    //    .style('stroke', function (d, i) { return aCompareTaxonomies.color[i].fact; });
     items.append('text')
-        .attr('class', 'legend')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
-        .text(function (d) { return d.label; });
+        .attr('class', 'plan')
+        .attr('x', 0)
+        .attr('y', 70)
+        .attr('dy', '1rem')
+        .text(function (d,i) {
+          //console.log(d);
+          return d == 0 ? "" : aHelper.short_label(d.plan);
+        });
+    items.append('text')
+        .attr('class', 'fact')
+        .attr('x', 100)
+        .attr('y', 70)
+        .attr('dy', '1rem')
+        .text(function (d,i) {
+          return d == 0 ? "" : aHelper.short_label(d.fact);
+        });
   };

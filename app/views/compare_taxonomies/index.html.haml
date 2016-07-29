@@ -73,15 +73,15 @@
   = t('.title')
 
 .row
-  .col-xs-5.town-select
+  .col-xs-12.col-sm-5.town-select
     = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-  .col-xs-7.filters
-    .col-xs-2
+  .col-xs-12.col-sm-7.filters
+    .col-xs-4.col-sm-2
       = render :partial => 'select_year', :locals => { years: @years }
       -#= render :partial => 'select_amountype'
-    .col-xs-5
+    .col-xs-4.col-sm-5
       = render :partial => 'select_level'
-    .col-xs-5
+    .col-xs-4.col-sm-5
       = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
