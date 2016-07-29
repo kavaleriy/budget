@@ -1,23 +1,56 @@
 :scss
+  // init colors
+  $lightcyan: lightcyan;
+  $lightgrey: lightgrey;
+
   .documents_search {
     margin-top: 20px;
   }
+  .reset-padding{
+    padding: 5px 0;
+    & div:not(.row){
+      padding: 0;
+    }
+  }
   .table-title{
     font-weight: bold;
-    margin: 10px 0;
-    border-bottom: solid lightgrey 1px;
+    border-bottom: 2px solid $lightgrey;
   }
-  .row-separator{
-    border-bottom: solid lightgrey 1px;
-    margin: 5px 0;
-  }
-  @media (max-width: 991.5px){
-    .table-title > div {
-      display: none;
+  .table-body{
+    border-bottom: 1px solid $lightgrey;
+    padding: 5px 0;
+    & div{
+      min-height: 22px;
+      word-wrap: break-word;
     }
-    .lowres-row-separator {
-      border-top: dotted lightgrey 1px;
-      margin: 5px 0;
+  }
+  @media (min-width: 768px) and (max-width: 991.9px) {
+    .table-title,
+    .table-body{
+      font-size: small;
+    }
+  }
+  @media (max-width: 767.9px) {
+    .reset-padding{
+      & > div > div{
+        min-height: 25px;
+        //border-bottom: 1px solid $lightcyan;
+      }
+      & .visible-xs{
+        font-weight: bold;
+      }
+      & .visible-xs ~ .text-center{
+        text-align: left;
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    .reset-padding{
+      & .visible-xs,
+      & .visible-xs ~ div{
+        font-weight: normal;
+        font-size: small;
+      }
     }
   }
 
@@ -31,30 +64,32 @@
 .col-xs-12.documents_search
   = render partial: 'search'
 
-.documentation.col-xs-12.table-title
-  .col-sm-1
-    = t('.file')
-  .col-sm-11
-    .col-md-6
-      .col-md-3
+.documentation.row.table-title
+  .col-sm-1.reset-padding.hidden-xs
+    .col-sm-12
+      .col-sm-12
+        = t('.file')
+  .col-sm-11.reset-padding.hidden-xs
+    .col-sm-7
+      .col-sm-3
         = sortable "category_id", t('.category')
-      .col-md-6
+      .col-sm-5.text-center
         = sortable "title", t('.title')
 
       -#todo --> in source code was this column. Functionality was replace to first column. Should be deleted after relize
       -#.col-xs-1
       -#  = t('.download')
 
-      .col-md-3
+      .col-sm-4.text-center
         = sortable "yearFrom", t('.years')
-    .col-md-6
-      .col-md-3
+    .col-sm-5
+      .col-sm-3
         = sortable "town_id", t('.town')
-      .col-md-6
+      .col-sm-5
         = sortable "branch_id", t('.type')
-      .col-md-3
+      .col-sm-4.text-right
         = sortable "locked", t('.locked')
-.col-xs-12#results
+.col-xs-12.reset-padding#results
   = render partial: 'search_results', :locals => { documents: @documentation_documents }
 
 
