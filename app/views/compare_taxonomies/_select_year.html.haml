@@ -2,6 +2,7 @@
   $dark-blue: #0c2231;
   $white: #ffffff;
   $no-color: transparent;
+  $gray: #999;
   .select2-drop-active {
     border: 1px solid #0c2231;
     border-top: 0;
@@ -10,10 +11,11 @@
       display: none;
     }
   }
-  .select-year{
+  .select-year {
     .select2-container {
-      .select2-choice{
-        height: 32px;
+      width: 92px;
+      .select2-choice {
+        height: 34px;
         border-radius: 0;
         border-color: $dark-blue;
         background-color: $no-color;
@@ -21,16 +23,15 @@
         abbr{
           right: 32px;
         }
-        .select2-chosen{
-          margin-top: 3px;
-          margin-right: 46px;
+        .select2-chosen {
+          margin: 3px 46px 3px auto;
           font-size: 16px;
-          color: #999;
+          color: $gray;
         }
         .select2-arrow{
           border-left: 0;
           border-radius: 0;
-          background: blue;
+          background: $dark-blue;
           &:before {
             content: '\f04b';
             transform: rotate(90deg);
@@ -39,13 +40,16 @@
             right: 0;
             cursor: pointer;
             font-size: 20px;
-            color: #ACA99F;
             width: 32px;
             height: 32px;
             background: $dark-blue;
             color: $white;
             padding: 3px 0 2px 9px;
           }
+        }
+        &:hover,
+        &:focus {
+          outline-color: inherit;
         }
       }
     }

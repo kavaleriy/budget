@@ -4,4 +4,7 @@ module TownsHelper
     return File.read(file_path).html_safe if File.exists?(file_path)
     '(not found)'
   end
+  def get_town_blazon(town)
+    town.img.file ? town.img : 'default_image.png'
+  end
 end

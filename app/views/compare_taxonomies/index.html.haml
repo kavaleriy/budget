@@ -6,6 +6,7 @@
 
   .row {
     .town-select {
+      padding-right: 0;
       .select2-container {
         border-color: $no-color;
         .select2-choices {
@@ -37,8 +38,11 @@
         }
       }
     }
+    .filters {
+      padding-right: 0;
+    }
   }
-  .select2-drop-active {
+  .select2-drop-multi {
     border-color: $dark-blue;
     margin-left: 1px;
     .select2-results {
@@ -58,9 +62,10 @@
     selected_taxonomies: [],
     color: [
     {fact: '#0d3c55', plan: '#0f5b78'},
-    {fact: '#a2b86c', plan: 'b6d370'},
+    {fact: '#a2b86c', plan: '#b6d370'},
     {fact: '#dc8aa8', plan: '#d9aebe'}
     ],
+    towns_blazon:[],
     taxonomies: {},
     taxonomies_cache: {}
   }
@@ -69,22 +74,16 @@
   = t('.title')
 
 .row
-  .col-xs-5.town-select
+  .col-xs-12.col-sm-5.town-select
     = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-
-%hr
-.row
-  .col-xs-12
-    .pull-left
-      = render :partial => 'select_amountype'
-    .pull-left
-      = render :partial => 'select_level'
-    .pull-left
-      = render :partial => 'select_divider', :locals => { amounts: @amounts }
-    .pull-right
+  .col-xs-12.col-sm-7.filters
+    .col-xs-4.col-sm-2
       = render :partial => 'select_year', :locals => { years: @years }
-
-%hr
+      -#= render :partial => 'select_amountype'
+    .col-xs-4.col-sm-5
+      = render :partial => 'select_level'
+    .col-xs-4.col-sm-5
+      = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
   = render :partial => 'path'
@@ -157,6 +156,22 @@
     var items = {}
     var amounts = {}
 
+    function getAmountData(amount){
+      result = {
+        plan: '0',
+        fact: '0'
+      }
+      if(amount['plan'] && amount['plan'][selected_year]){
+        result.plan = amount['plan'][selected_year]['0'].total.toFixed(2)
+      }
+      if(amount['fact'] && amount['fact'][selected_year]){
+        result.fact = amount['fact'][selected_year]['0'].total.toFixed(2)
+      }
+
+      return result;
+    }
+
+
     aCompareTaxonomiesPath.last_level = false
 
     selected_taxonomies.forEach(function(taxonomy_id) {
@@ -180,9 +195,10 @@
       if (taxonomy && taxonomy.children)
         taxonomy.children.forEach(function(node) {
           if (items[node.key] == null) items[node.key] = node.label
+          amounts[taxonomy_id][node.key] = getAmountData(node.amount);
 
-          if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
-            amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
+          // if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
+          //   amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
 
           aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
         })
@@ -213,9 +229,9 @@
 :javascript
 
   $(document).ready(function() {
-    $('.amountype_select').on('click', function () {
-      aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
-    })
+    // $('.amountype_select').on('click', function () {
+    //   aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
+    // })
 
     $("#year_select").select2(
       {
