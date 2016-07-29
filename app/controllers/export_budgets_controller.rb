@@ -2,7 +2,7 @@ class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
   # skip_before_action :verify_authenticity_token,only: [:create_pdf]
 
-  before_action :user_has_town?, except: :create_pdf
+  before_action :access_user?, except: :create_pdf
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :set_export_budget_presenter, only: [:edit,:new]
@@ -108,9 +108,9 @@ class ExportBudgetsController < ApplicationController
       "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
     end
 
-    def user_has_town?
-      unless current_user.town?
-        redirect_to root_url, alert: "У Вас немає доступу, зверніться до адміністрартора."
+    def access_user?
+      unless current_user.is_admin? || current_user.public_organisation? || current_user.city_authority? || current_user.central_authority?
+        redirect_to root_url, alert: t('export_budgets.notice_access')
       end
     end
 

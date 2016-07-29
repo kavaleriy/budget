@@ -17,11 +17,8 @@ class ExportBudget
 
   def self.get_export_budgets_by_user user
     if user
-      if user.is_admin?
-        all.order(year: :desc)
-      else
-        where(author:user).order(year: :desc)
-      end
+      res = user.is_admin? ? all : where(author:user)
+      res.order(year: :desc)
     end
   end
 
