@@ -25,13 +25,11 @@
           %ul.dropdown-menu
             %li= link_to t('.taxonomies'), taxonomies_path
             %li= link_to t('.budget_files'), budget_files_path
-
-            -#%li.divider
+            %li= link_to t('.pdf_budgets'), export_budgets_path
+            %li.divider
             -#%li= link_to t('.sankey'), "/sankeys"
 
-            %li.divider
             %li= link_to t('.compare'), compare_taxonomies_index_path
-
             %li.divider
 
             %li
