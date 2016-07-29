@@ -55,13 +55,15 @@
     }
   }
 
-= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.collect { |t| [t, t] } ), { multiple: true, class: 'form-control' }
+= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.collect { |town| [town.title, town.title, {'data-img'=> get_town_blazon(town)}]}),
+  { multiple: true, class: 'form-control' }
 
 = select_tag :taxonomy_select, options_for_select(''), {multiple: true,class: 'form-control' }
 
 
 
 -# catch click on host page
+
 :javascript
   $(document).ready(function() {
     function setTownColor (data) {
@@ -87,7 +89,13 @@
       multiSelect: true
     }
     ).on("change", function(data){
-      // send ajax request with town name
+      //add blazon for show when we render chart
+      aCompareTaxonomies.towns_blazon.push(
+        { img : $(data.added.element).data('img'),
+          name: data.added.text
+        }
+      );
+       // send ajax request with town name
       $.ajax({
         url: '/get_taxonomies_rov_by_town',
         data: {town_name: data.added.text},

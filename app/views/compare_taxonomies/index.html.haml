@@ -65,6 +65,7 @@
     {fact: '#a2b86c', plan: '#b6d370'},
     {fact: '#dc8aa8', plan: '#d9aebe'}
     ],
+    towns_blazon:[],
     taxonomies: {},
     taxonomies_cache: {}
   }
@@ -228,9 +229,9 @@
 :javascript
 
   $(document).ready(function() {
-    $('.amountype_select').on('click', function () {
-      aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
-    })
+    // $('.amountype_select').on('click', function () {
+    //   aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
+    // })
 
     $("#year_select").select2(
       {
