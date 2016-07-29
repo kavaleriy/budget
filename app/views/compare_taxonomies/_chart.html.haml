@@ -201,7 +201,7 @@
             var offset = -gapBetweenGroups/2;
 
             var horz = legendXPos + 20;
-            var vert = 15 + i + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length));
+            var vert = (i * ((blazon_circle_radius*2) +10) + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) + (- 20));
 
             return "translate(" + 0 + "," + vert + ")";
         });
