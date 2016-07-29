@@ -58,13 +58,16 @@
     var chart = this.chart
     console.log(data)
     var doc_width = $('.chart').width()
-    var chartWidth       = doc_width * .6,
-        barHeight        = 30,
-        groupHeight      = barHeight * data.series.length,
-        gapBetweenGroups = 60,
-        spaceForLabels   = 0,
-        spaceForLegend   = doc_width - chartWidth ;
-
+    var chartWidth            = doc_width * .6,
+        barHeight             = 30,
+        groupHeight           = barHeight * data.series.length,
+        gapBetweenGroups      = 60,
+        spaceForLabels        = 0,
+        spaceForLegend        = doc_width - chartWidth,
+        blazon_width          = 40,
+        blazon_heigth         = 40,
+        blazon_circle_radius  = (blazon_heigth / 2) + 10,
+        chart_start_x         = blazon_circle_radius / 2;
     // Zip the series data together (first values, second values, etc.)
     var zippedData = [];
     for (var i=0; i<data.labels.length; i++) {
@@ -101,7 +104,9 @@
     //////////////////////////////////////////////////////////////////////////////////////
     // Draw plan & fact rectangles
     // Create plan rectangles of the correct width
+
     bar.append("rect")
+        .attr('x',chart_start_x)
         .attr('data-type','plan')
         .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].plan })
         .attr("class", "bar")
@@ -110,6 +115,7 @@
 
     // Create fact rectangles of the correct width
     bar.append("rect")
+        .attr('x',chart_start_x)
         .attr('data-type','fact')
         .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].fact })
         .attr("class", "bar")
@@ -120,20 +126,37 @@
           return fact_x(d.fact); })
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
     //////////////////////////////////////////////////////////////////////////////////////
+    //draw town blazon
+    bar.append('circle')
+      .style("stroke", "gray")
+      .style("fill", "white")
+      .attr("r", blazon_circle_radius)
+      .attr("cx", chart_start_x)
+      .attr("cy", function(d){ return ((blazon_heigth - blazon_circle_radius) + 5 )});
+
+    bar.append("svg:image")
+      .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
+      .attr("width", blazon_width)
+      .attr("height", blazon_heigth)
+      .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
+      .attr("y", function(d){ return (barHeight - blazon_heigth) / 2 });
+
+    //////////////////////////////////////////////////////////////////////////////////////
+
+
     // Draw plan fact text
     // Add plan text label in bar
     bar.append("text")
         .attr("class", "plan")
         .attr("x", function(d) { return x(d.plan) - 5; })
         .attr("y", barHeight / 2)
-        // .attr("fill", "red")
         .attr("dy", ".35em")
         .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.plan); });
 
     // Add fact text label in bar
     bar.append("text")
         .attr("class", "fact")
-        .attr('x',0)
+        .attr('x',chart_start_x + blazon_circle_radius + 5)
         .attr("y", barHeight / 2)
         .attr("dy", ".35em")
         .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.fact); });
