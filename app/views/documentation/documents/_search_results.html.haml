@@ -1,36 +1,51 @@
 - documents.each do |document|
-  .row.row-separator
-    .col-xs-2.col-sm-1
+  .row.table-body
+    .col-xs-11.col-sm-push-1.reset-padding
+      .col-sm-7.col-md-7
+        .col-sm-3
+          .col-xs-4.visible-xs
+            = sortable "category_id", t('documentation.documents.index.category')
+          .col-xs-8.col-sm-12
+            = "#{document.category.title if document.category}"
+        .col-sm-6
+          .col-xs-4.visible-xs
+            = sortable "title", t('documentation.documents.index.title')
+          .col-xs-8.col-sm-12
+            -#= truncate_title(document.title)
+            = document.title
+
+          -#todo --> in source code this column used for downloading file. Functionality was replace to first column. Should be deleted after relize
+          -#.col-xs-1
+          -#  = link_to documentation_document_download_path(document) do
+          -#    %i.fa.fa-download.fa.fa-border
+
+        .col-sm-3
+          .col-xs-4.visible-xs
+            = sortable "yearFrom", t('documentation.documents.index.years')
+          .col-xs-8.col-sm-12.text-center
+            = years(document.yearFrom, document.yearTo)
+      .col-sm-5.col-md-5
+        .col-sm-3
+          .col-xs-4.visible-xs
+            = sortable "town_id", t('documentation.documents.index.town')
+          .col-xs-8.col-sm-12
+            = "#{document.town.title if document.town}"
+        .col-sm-8
+          .col-xs-4.visible-xs
+            = sortable "branch_id", t('documentation.documents.index.type')
+          .col-xs-8.col-sm-12
+            = "#{document.branch.title if document.branch}"
+        .col-sm-1
+          .col-xs-4.visible-xs
+            = sortable "locked", t('documentation.documents.index.locked')
+          .col-xs-8.col-sm-12
+            - if !current_user.nil? && document.check_access(current_user)
+              %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
+    .col-xs-1.col-sm-pull-11.reset-padding
       - if !document.doc_file.url.empty?
         -#= link_to document.doc_file.url do
         = link_to documentation_document_download_path(document) do
           %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-    .col-xs-10.col-sm-11
-      .col-md-6
-        .col-sm-3.col-md-3
-          = "#{document.category.title if document.category}"
-        .col-sm-8.col-md-6
-          = truncate_title(document.title)
-          -#= document.title
-
-        -#todo --> in source code this column used for downloading file. Functionality was replace to first column. Should be deleted after relize
-        -#.col-xs-1
-        -#  = link_to documentation_document_download_path(document) do
-        -#    %i.fa.fa-download.fa.fa-border
-
-        .col-sm-1.col-md-3
-          = years(document.yearFrom, document.yearTo)
-
-      .col-md-6
-        .col-sm-3.col-md-3.lowres-row-separator
-          = "#{document.town.title if document.town}"
-        .col-sm-8.col-md-6.lowres-row-separator
-          = "#{document.branch.title if document.branch}"
-        .col-sm-1.col-md-3.lowres-row-separator
-
-          - if !current_user.nil? && document.check_access(current_user)
-
-            %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
 
   -#todo --> delete this block if layouts structure will apply
   -#%tr

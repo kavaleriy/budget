@@ -44,7 +44,8 @@ module Documentation::DocumentsHelper
     default_path.concat(image_path)
   end
 
-  def truncate_title(string, length = 25)
-    string.size > length ? [string[0,15], string[-3,3]].join('....') : string unless string.nil?
-  end
+  # todo --> delete after relize
+  # def truncate_title(string, length = 25)
+  #   string.size > length ? [string[0,15], string[-3,3]].join('....') : string unless string.nil?
+  # end
 end

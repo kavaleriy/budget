@@ -3,6 +3,8 @@
   $blue: blue;
   $green: green;
   $orange: orange;
+  $lightcyan: lightcyan;
+  $lightgrey: lightgrey;
 
   .documents_search {
     margin: 15px;
@@ -15,11 +17,11 @@
   }
   .table-title{
     font-weight: bold;
-    border-bottom: solid lightgrey 2px;
+    border-bottom: 2px solid $lightgrey;
     padding: 5px 0;
   }
   .table-body{
-    border-bottom: solid lightgrey 1px;
+    border-bottom: 1px solid $lightgrey;
     padding: 5px 0;
     & div{
       min-height: 22px;
@@ -80,7 +82,7 @@
   @media (max-width: 991.9px) {
     .reset-padding{
       & div{
-        border-bottom: solid lightcyan 1px;
+        border-bottom: 1px solid $lightcyan;
       }
     }
     .files-action-button{
