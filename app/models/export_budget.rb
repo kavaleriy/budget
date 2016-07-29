@@ -15,6 +15,13 @@ class ExportBudget
 
   scope :get_export_budget_by_town, ->(town){where(town:town).order(year: :desc)}
 
+  def self.get_export_budgets_by_user user
+    if user
+      res = user.is_admin? ? all : where(author:user)
+      res.order(year: :desc)
+    end
+  end
+
   # after_initialize :set_default_pages, :if => :new_record?
 
   def user_can_edit?(user)
