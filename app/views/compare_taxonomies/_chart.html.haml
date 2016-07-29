@@ -63,9 +63,9 @@
         gapBetweenGroups      = 60,
         spaceForLabels        = 0,
         spaceForLegend        = doc_width - chartWidth,
-        blazon_width          = 40,
-        blazon_heigth         = 40,
-        blazon_circle_radius  = (blazon_heigth / 2) + 10,
+        blazon_width          = 35,
+        blazon_heigth         = 35,
+        blazon_circle_radius  = (blazon_heigth / 2) + 5,
         chart_start_x         = blazon_circle_radius / 2;
     // Zip the series data together (first values, second values, etc.)
     var zippedData = [];
@@ -132,7 +132,7 @@
       .style("fill", "white")
       .attr("r", blazon_circle_radius)
       .attr("cx", chart_start_x)
-      .attr("cy", function(d){ return ((blazon_heigth - blazon_circle_radius) + 5 )});
+      .attr("cy", function(d){ return ((blazon_heigth - blazon_circle_radius) + 2 )});
 
     bar.append("svg:image")
       .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
