@@ -19,6 +19,16 @@
       .fact{
         text-anchor: start;
       }
+      .fact,.plan{
+        opacity: 0;
+        transition: opacity 0.3s linear;
+      }
+      &:hover,&:focus{
+        .fact,.plan{
+          opacity: 1;
+          transition: opacity 0.3s linear;
+        }
+      }
     }
 
 
