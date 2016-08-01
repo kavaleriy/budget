@@ -235,15 +235,24 @@
 
     $("#year_select").select2(
       {
-        placeholder: "рік |",
-        allowClear: true
+        placeholder: "#{t('compare_taxonomies.index.select-year-placeholder')}" + " |"
       }
     ).on("change", function(data){
       aCompareTaxonomies.select_year(data.val, data.added)
     });
 
-    $('.level_select').on("click", function(){
-      var level = $(this).attr('value');
+    //$('.level_select').on("click", function(){
+    //  var level = $(this).attr('value');
+    //
+    //  aCompareTaxonomies.select_level(level.split(' '));
+    //});
+
+    $("#select-level").select2(
+      {
+        placeholder: "#{t('compare_taxonomies.index.select-levels-placeholder')}" + " |"
+      }
+    ).on("change", function(){
+      var level = $(this).val();
       aCompareTaxonomies.select_level(level.split(' '));
     });
 
