@@ -1,10 +1,10 @@
 .row.table-title.text-center.visible-md.visible-lg
   .col-md-11.reset-padding
-    .col-sm-3
+    .col-sm-1
       =t('export_budgets.index.year')
-    .col-sm-3
+    .col-sm-4
       =t('export_budgets.index.title')
-    .col-sm-3
+    .col-sm-4
       =t('export_budgets.index.town')
     .col-sm-3
       =t('export_budgets.index.author')
@@ -14,17 +14,17 @@
   - @export_budgets.each do |export_budget|
     .row.table-body{'data-id' => export_budget.id}
       .col-xs-11.reset-padding
-        .col-md-3.reset-padding
+        .col-md-1.reset-padding
           .col-xs-4.visible-sm.visible-xs
             =t('export_budgets.index.year')
           .col-xs-8.col-md-12
             = export_budget.year
-        .col-md-3.reset-padding
+        .col-md-4.reset-padding
           .col-xs-4.visible-sm.visible-xs
             =t('export_budgets.index.title')
           .col-xs-8.col-md-12
             = export_budget.title
-        .col-md-3.reset-padding
+        .col-md-4.reset-padding
           .col-xs-4.visible-sm.visible-xs
             =t('export_budgets.index.town')
           .col-xs-8.col-md-12
