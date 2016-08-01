@@ -195,22 +195,17 @@
     var legend = this.legend
     legend.attr("height", chartHeight)
 
-    var it = $("#town_for_compare_select").select2("val").length - 1;
-    var legendXPos = 0,
-        legendYPos  = 90;
+    var legendYPos  = 90;
 
-    var planY = legendYPos;
-    var factX = legendYPos * 2;
+    var legend_x_scale = d3.scale.linear()
+                                    .domain([0,2])
+                                    .range([0,spaceForLegend]);
 
     var items = legend.selectAll('g')
         .data(zippedData)
         .enter()
         .append('g')
         .attr('transform', function (d, i) {
-            var height = legendXPos + legendYPos;
-            var offset = -gapBetweenGroups/2;
-
-            var horz = legendXPos + 20;
             var vert = (i * ((blazon_circle_radius*2) +10) + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) + (- 20));
 
             return "translate(" + 0 + "," + vert + ")";
@@ -218,16 +213,23 @@
 
     items.append('text')
         .attr('class', 'plan')
-        .attr('x', legendXPos)
-        .attr('y', planY)
+        .attr('x', function(d,i){ return legend_x_scale(0) })
+        .attr('y', legendYPos)
         .text(function (d,i) {
           return d == 0 ? "" : aHelper.short_label(d.plan);
         });
     items.append('text')
         .attr('class', 'fact')
-        .attr('x', factX)
+        .attr('x', function(d,i){ return legend_x_scale(1) })
         .attr('y', legendYPos)
         .text(function (d,i) {
           return d == 0 ? "" : aHelper.short_label(d.fact);
+        });
+    items.append('text')
+        .attr('class', 'fact')
+        .attr('x', function(d,i){ return legend_x_scale(2) })
+        .attr('y', legendYPos)
+        .text(function (d,i) {
+          return Math.round(d.fact * 100 / d.plan) + '%';
         });
   };
