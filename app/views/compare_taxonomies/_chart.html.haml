@@ -211,6 +211,12 @@
             return "translate(" + 0 + "," + vert + ")";
         });
 
+    var colors=d3.scale.linear()
+        .domain([0,100]);
+
+    colors.range(["green","yellow","red"].reverse());
+
+
     items.append('text')
         .attr('class', 'plan')
         .attr('x', function(d,i){ return legend_x_scale(0) })
@@ -225,6 +231,15 @@
         .text(function (d,i) {
           return d == 0 ? "" : aHelper.short_label(d.fact);
         });
+    items.append('rect')
+        .attr('class','percent_rect')
+        .attr('x', function(d,i){ return legend_x_scale(2) })
+        .attr('y', legendYPos - 16 )
+        .attr("fill", function(d,i) { return colors(Math.round(d.fact * 100 / d.plan)) })
+        // .attr('opacity', '.8')
+        .attr("width", '30')
+        .attr("height", '16');
+
     items.append('text')
         .attr('class', 'fact')
         .attr('x', function(d,i){ return legend_x_scale(2) })
