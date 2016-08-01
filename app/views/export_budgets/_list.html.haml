@@ -1,21 +1,46 @@
-%table
-  %tr
-    %th Year
-    %th Title
-    -#%th Template
-    %th
-    %th
-    %th
-
-  - if @export_budgets
-    - @export_budgets.each do |export_budget|
-      %tr
-        %td= export_budget.year
-        %td= export_budget.title
-        -#%td= export_budget.template
-        %td= link_to 'Show', export_budget
+.row.table-title.text-center.visible-md.visible-lg
+  .col-md-11.reset-padding
+    .col-sm-3
+      Year
+    .col-sm-3
+      Title
+    .col-sm-3
+      Town
+    .col-sm-3
+      Author
+  .col-md-1.reset-padding
+    =t 'form.actions', :default => t("helpers.actions")
+- if @export_budgets
+  - @export_budgets.each do |export_budget|
+    .row.table-body{'data-id' => export_budget.id}
+      .col-xs-11.reset-padding
+        .col-md-3.reset-padding
+          .col-xs-4.visible-sm.visible-xs
+            Year
+          .col-xs-8.col-md-12
+            = export_budget.year
+        .col-md-3.reset-padding
+          .col-xs-4.visible-sm.visible-xs
+            Title
+          .col-xs-8.col-md-12
+            = export_budget.title
+        .col-md-3.reset-padding
+          .col-xs-4.visible-sm.visible-xs
+            Town
+          .col-xs-8.col-md-12
+            = export_budget.town
+        .col-md-3.reset-padding
+          .col-xs-4.visible-sm.visible-xs
+            Author
+          .col-xs-8.col-md-12
+            = export_budget.author
+      .col-xs-1.text-center.reset-padding.files-action-button
+        = link_to export_budget do
+          %i.fa.fa-eye.fa-2x
         -if(export_budget.user_can_edit?(current_user))
-          %td= link_to 'Edit', edit_export_budget_path(export_budget)
-          %td= link_to 'Destroy', export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
+          = link_to edit_export_budget_path(export_budget) do
+            %i.fa.fa-pencil.fa-2x
+          = link_to export_budget, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash-o.fa-2x
+.paginator
+  = paginate @export_budgets

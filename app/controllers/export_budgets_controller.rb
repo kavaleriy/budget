@@ -1,7 +1,7 @@
 class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
   # skip_before_action :verify_authenticity_token,only: [:create_pdf]
-
+  layout 'application_admin'
   before_action :access_user?, except: :create_pdf
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
@@ -10,6 +10,7 @@ class ExportBudgetsController < ApplicationController
   # GET /export_budgets.json
   def index
     @export_budgets = ExportBudget.get_export_budgets_by_user current_user
+    @export_budgets = @export_budgets.page(params[:page]).per(25)
   end
 
   # GET /export_budgets/1
