@@ -843,11 +843,11 @@
       .icons-wrapper
         .pig-block
           .pig-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/budget_files/573c249f67cb7d072000006a", :title => t('new_design.home_page.tooltips_title.visualisation_budget')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("Budget"), :title => t('new_design.home_page.tooltips_title.visualisation_budget')}
               = image_tag('new_design/icons/!icon1.png', class: 'img-responsive pig')
         .list-block
           .list-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/towns/573c249f67cb7d072000006a", :title => t('public.towns.portfolio.pub_budget')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/towns/573c249f67cb7d072000006a?locale=" + params[:locale], :title => t('public.towns.portfolio.pub_budget')}
               = image_tag('new_design/icons/!icon3.png', class: 'img-responsive list')
         .prozorro-block
           .prozorro-icon
@@ -855,17 +855,17 @@
               = image_tag('new_design/icons/!icon5.png', class: 'img-responsive prozorro')
         .calendar-block
           .calendar-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => t('new_design.home_page.tooltips_title.budget_calendar')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("budget_cal"), :title => t('new_design.home_page.tooltips_title.budget_calendar')}
               = image_tag('new_design/icons/!calendar.svg', class: 'img-responsive calendar')
     .col-xs-12.col-sm-5.link-icons.second-row
       .icons-wrapper
         .repair-block
           .repair-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/repairing/map", :title => t('new_design.home_page.tooltips_title.repairs_map')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("budget_at_map"), :title => t('new_design.home_page.tooltips_title.repairs_map')}
               = image_tag('new_design/icons/!icon2.png', class: 'img-responsive repair')
         .folders-block
           .folders-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/documents/town_profile/573c249f67cb7d072000006a", :title => t('new_design.home_page.tooltips_title.documents')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/documents/town_profile/573c249f67cb7d072000006a?locale=" + params[:locale], :title => t('new_design.home_page.tooltips_title.documents')}
               = image_tag('new_design/icons/!icon4.png', class: 'img-responsive folders')
         .edata-block
           .edata-icon
@@ -873,7 +873,7 @@
               = image_tag('new_design/icons/!icon6.png', class: 'img-responsive edata')
         .sankey-block
           .sankey-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/key_indicate_map/indicators/get/town_profile/573c249f67cb7d072000006a", :title => t('new_design.home_page.tooltips_title.key_figures')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("kpi"), :title => t('new_design.home_page.tooltips_title.key_figures')}
               = image_tag('new_design/icons/!icon8.png', class: 'img-responsive sankey')
   .row.titles-blocks
     .col-xs-12.col-sm-6.icons
