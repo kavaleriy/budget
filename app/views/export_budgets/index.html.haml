@@ -96,11 +96,10 @@
     }
   }
 
-
 .container.export-budgets
   .header
-    %h2 Громадські бюджети
+    %h2= t('layouts.navbar_admin.pdf_budgets')
     .new-budget-btn
-      %h2= link_to 'Новий бюджет', new_export_budget_path, :class => 'btn btn-info'
+      %h2= link_to t('export_budgets.index.new_btn'), new_export_budget_path, :class => 'btn btn-info'
 
   =render partial: 'list'

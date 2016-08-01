@@ -1,13 +1,13 @@
 .row.table-title.text-center.visible-md.visible-lg
   .col-md-11.reset-padding
     .col-sm-3
-      Year
+      =t('export_budgets.index.year')
     .col-sm-3
-      Title
+      =t('export_budgets.index.title')
     .col-sm-3
-      Town
+      =t('export_budgets.index.town')
     .col-sm-3
-      Author
+      =t('export_budgets.index.author')
   .col-md-1.reset-padding
     =t 'form.actions', :default => t("helpers.actions")
 - if @export_budgets
@@ -16,22 +16,22 @@
       .col-xs-11.reset-padding
         .col-md-3.reset-padding
           .col-xs-4.visible-sm.visible-xs
-            Year
+            =t('export_budgets.index.year')
           .col-xs-8.col-md-12
             = export_budget.year
         .col-md-3.reset-padding
           .col-xs-4.visible-sm.visible-xs
-            Title
+            =t('export_budgets.index.title')
           .col-xs-8.col-md-12
             = export_budget.title
         .col-md-3.reset-padding
           .col-xs-4.visible-sm.visible-xs
-            Town
+            =t('export_budgets.index.town')
           .col-xs-8.col-md-12
             = export_budget.town
         .col-md-3.reset-padding
           .col-xs-4.visible-sm.visible-xs
-            Author
+            =t('export_budgets.index.author')
           .col-xs-8.col-md-12
             = export_budget.author
       .col-xs-1.text-center.reset-padding.files-action-button
