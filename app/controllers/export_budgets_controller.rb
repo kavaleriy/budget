@@ -1,8 +1,8 @@
 class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
   # skip_before_action :verify_authenticity_token,only: [:create_pdf]
-  layout 'application_admin'
-  before_action :access_user?, except: :create_pdf
+  layout 'application_admin', except: :show
+  before_action :access_user?, except: [:show, :create_pdf]
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :set_export_budget_presenter, only: [:edit,:new]
