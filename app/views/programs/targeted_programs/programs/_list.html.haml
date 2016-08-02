@@ -1,52 +1,57 @@
 :scss
   #targeted_programs {
-    .panel {
-      a.collapse_btn {
-        margin: 10px 15px;
-
-        text-decoration: none;
-        font-family: FontAwesome;
-        font-size: 30px;
-
-        &:before {
-          content: "\f106";
-        }
-
-        &.collapsed:before {
-          content: "\f107";
-        }
-      }
+    .title {
+      padding: 0;
     }
+    .panel-group {
+      padding: 0;
+      .panel {
+        a.collapse_btn {
+          margin: 10px 15px;
 
+          text-decoration: none;
+          font-family: FontAwesome;
+          font-size: 30px;
 
-    .program-item {
-      .program_title {
-        font-size: 130%;
+          &:before {
+            content: "\f106";
+          }
+
+          &.collapsed:before {
+            content: "\f107";
+          }
+        }
       }
-    }
-
-    .program-item, .program-subitem {
-      .program_amount {
-        font-size: 120%;
+      .program-item {
+        .program_title {
+          font-size: 130%;
+        }
       }
 
-      .program_amount {
-        & > * {
-          display: inline-block;
+      .program-item,
+      .program-subitem {
+        .program_amount {
+          font-size: 120%;
         }
 
-        .progress {
-          width: 50%;
-          margin-bottom: -4px;
+        .program_amount {
+          & > * {
+            display: inline-block;
+          }
 
-          opacity: .6;
-          &:hover { opacity: 1; }
+          .progress {
+            width: 50%;
+            margin-bottom: -4px;
+
+            opacity: .6;
+            &:hover { opacity: 1; }
+          }
         }
       }
     }
   }
 
-.col-xs-12
+.col-xs-12.title
   .col-xs-offset-7.col-xs-5
     = "Виконано в #{year}"
 
