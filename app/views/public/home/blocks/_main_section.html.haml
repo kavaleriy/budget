@@ -847,7 +847,7 @@
               = image_tag('new_design/icons/!icon1.png', class: 'img-responsive pig')
         .list-block
           .list-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/towns/573c249f67cb7d072000006a?locale=" + params[:locale], :title => t('public.towns.portfolio.pub_budget')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("bud_proc"), :title => t('public.towns.portfolio.pub_budget')}
               = image_tag('new_design/icons/!icon3.png', class: 'img-responsive list')
         .prozorro-block
           .prozorro-icon
@@ -865,7 +865,7 @@
               = image_tag('new_design/icons/!icon2.png', class: 'img-responsive repair')
         .folders-block
           .folders-icon
-            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "http://openbudget.in.ua/public/documents/town_profile/573c249f67cb7d072000006a?locale=" + params[:locale], :title => t('new_design.home_page.tooltips_title.documents')}
+            %a.icon-tooltip{"data-html" => "true", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => show_pages_path("bud_sys_ua"), :title => t('new_design.home_page.tooltips_title.documents')}
               = image_tag('new_design/icons/!icon4.png', class: 'img-responsive folders')
         .edata-block
           .edata-icon
