@@ -200,6 +200,23 @@
     var legend_x_scale = d3.scale.linear()
                                     .domain([0,2])
                                     .range([0,spaceForLegend]);
+    // TODO add locales when we move this code to js file
+    var legend_title_arr = ['План','Факт','Виконання']
+    var legend_title = legend.selectAll('legend_title_g')
+        .data(legend_title_arr)
+        .enter()
+        // .append('g')
+
+    legend_title.append('text')
+        .attr('class','chart_sort')
+        .attr('font-family','FontAwesome')
+        .attr('font-size','16')
+        .attr('x', function(d,i){ return legend_x_scale(i) })
+        .attr('y', '20')
+        .attr('data-value',function(d){ return d; })
+        // .append('tspan').text(function(d){ return d; });
+        .text(function(d){ return d;})
+
 
     var items = legend.selectAll('g')
         .data(zippedData)
@@ -249,7 +266,14 @@
         .attr('class', 'fact')
         .attr('x', function(d,i){ return legend_x_scale(2) })
         .attr('y', legendYPos)
+        .attr('textLength','30')
         .text(function (d,i) {
           return Math.round(d.fact * 100 / d.plan) + '%';
         });
   };
+  $(document).ready(function(){
+    $('.chart_sort').click(function(){
+      console.log($(this));
+    });
+
+  });
