@@ -3,10 +3,12 @@
   $dark-blue: #0c2231;
   $white: #ffffff;
   $no-color: transparent;
+  $gray: #999;
 
   .row {
     .town-select {
       padding-right: 0;
+      padding-bottom: 10px;
       .select2-container {
         border-color: $no-color;
         .select2-choices {
@@ -21,8 +23,8 @@
             cursor: pointer;
             font-size: 20px;
             color: #ACA99F;
-            width: 33px;
-            height: 33px;
+            width: 32px;
+            height: 32px;
             background: $dark-blue;
             color: $white;
             padding: 3px 0 2px 9px;
@@ -39,14 +41,55 @@
       }
     }
     .filters {
-      padding-right: 0;
-      .row {
-        margin: 0;
-        .select-year,
-        .select-level,
-        .select-amount {
-          padding-left: 15px;
-          display: inline-block;
+      padding: 0;
+      .select-year,
+      .select-level,
+      .select-amount {
+        padding: 0 0 10px 15px;
+        //display: inline-block;
+        .select2-container {
+          width: 100%;
+          .select2-choice {
+            height: 34px;
+            border-radius: 0;
+            border-color: $dark-blue;
+            background-color: $no-color;
+            background-image: none;
+            abbr{
+              right: 32px;
+            }
+            .select2-chosen {
+              text-align: right;
+              margin: 3px 46px 3px auto;
+              font-size: 16px;
+              color: $gray;
+              text-transform: lowercase;
+              float: right;
+            }
+            .select2-arrow{
+              border-left: 0;
+              border-radius: 0;
+              background: $dark-blue;
+              &:before {
+                content: '\f04b';
+                transform: rotate(90deg);
+                font-family: FontAwesome;
+                position: absolute;
+                right: 0;
+                cursor: pointer;
+                font-size: 20px;
+                width: 32px;
+                height: 32px;
+                background: $dark-blue;
+                color: $white;
+                padding: 3px 0 2px 9px;
+              }
+            }
+            &:hover,
+            &:focus {
+              outline-color: inherit;
+            }
+          }
         }
       }
     }
@@ -59,52 +102,27 @@
       margin: 4px 0;
     }
   }
-  .pull-left {
-    margin: 0 20px 0 0px;
+  .select2-drop-active {
+    border: 1px solid #0c2231;
+    border-top: 0;
+    border-radius: 0;
+    .select2-search{
+      display: none;
+    }
   }
 
   //Media
-  @media (max-width: 350px) {
+  @media (min-width: 992px) and (max-width: 1023px) {
     .row {
-      .town-select {
-        padding: 0 0 5px 0;
-      }
       .filters {
-        padding: 0;
-        .row {
-          .select-year {
-            padding: 0 0 5px 0;
-            width: 100%;
-            .select2-container {
-              width: 100%;
-              .select2-choice {
-                .select2-chosen {
-                  float: right;
-                }
-              }
-            }
-          }
-          .select-level {
-            padding: 0 0 5px 0;
-            width: 100%;
-            .select2-container {
-              width: 100%;
-              .select2-choice {
-                .select2-chosen {
-                  float: right;
-                }
-              }
-            }
-          }
-          .select-amount {
-            padding: 0 0 5px 0;
-            width: 100%;
-            .select2-container {
-              width: 100%;
-              .select2-choice {
-                .select2-chosen {
-                  float: right;
-                }
+        .select-year,
+        .select-level,
+        .select-amount {
+          .select2-container {
+            .select2-choice {
+              .select2-chosen {
+                font-size: 13px;
+                margin-right: 38px;
               }
             }
           }
@@ -112,6 +130,25 @@
       }
     }
   }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .row {
+      .filters {
+        .select-year,
+        .select-level,
+        .select-amount {
+          .select2-container {
+            .select2-choice {
+              .select2-chosen {
+                font-size: 11px;
+                margin-right: 35px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 :javascript
   var aCompareTaxonomies = {
     selected_amountype: 'plan',
@@ -132,17 +169,13 @@
   = t('.title')
 
 .row
-  .col-xs-12.col-sm-8.town-select
+  .col-sm-5.town-select
     = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-  .col-xs-12.col-sm-4.filters
-    .row
-      -#.col-xs-4.col-sm-2
-      = render :partial => 'select_year', :locals => { years: @years }
-      -#= render :partial => 'select_amountype'
-      -#.col-xs-4.col-sm-5
-      = render :partial => 'select_level'
-      -#.col-xs-4.col-sm-5
-      = render :partial => 'select_divider', :locals => { amounts: @amounts }
+  .col-sm-7.filters
+    = render :partial => 'select_year', :locals => { years: @years }
+    -#= render :partial => 'select_amountype'
+    = render :partial => 'select_level'
+    = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
   = render :partial => 'path'
