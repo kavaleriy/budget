@@ -233,12 +233,17 @@
         });
     items.append('rect')
         .attr('class','percent_rect')
-        .attr('x', function(d,i){ return legend_x_scale(2) })
+        .attr('x', function(d,i){ return legend_x_scale(2) - 3 })
         .attr('y', legendYPos - 16 )
+        //set color
         .attr("fill", function(d,i) { return colors(Math.round(d.fact * 100 / d.plan)) })
-        // .attr('opacity', '.8')
-        .attr("width", '30')
-        .attr("height", '16');
+        .attr('opacity', '.7')
+        // set border-radius
+        .attr('rx',2)
+        .attr('ry',2)
+        .attr('width','36')
+        // .attr("width", function(d) { return  (12 * Math.round(d.fact * 100 / d.plan).toString().length) + 12 ; })
+        .attr("height", '22');
 
     items.append('text')
         .attr('class', 'fact')
