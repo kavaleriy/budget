@@ -1,0 +1,12 @@
+= simple_form_for(@modules_partner) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :order_logo, collection: 1..20, prompt: "Select order logo"
+    = f.input :logo, as: :file, label: "Logo", :input_html => { :class => 'form-control' }
+    = f.label :publish_on, 'Публікувати? ', :class => ' control-label'
+    = f.check_box :publish_on,  :class => 'form-control input-responsive'
+
+  .form-actions
+    = f.button :submit

@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @modules_partner.name
+%p
+  %b Order logo:
+  = @modules_partner.order_logo
+%p
+  %b Publish on:
+  = @modules_partner.publish_on
+
+= link_to 'Edit', edit_modules_partner_path(@modules_partner)
+\|
+= link_to 'Back', modules_partners_path

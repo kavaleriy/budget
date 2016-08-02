@@ -1,0 +1,28 @@
+%h1 Listing modules_partners
+
+%table
+  %thead
+    %tr
+      %th Logo
+      %th Name
+      %th Order logo
+      %th Publish on
+      %th
+      %th
+      %th
+
+  %tbody
+    - @modules_partners.each do |modules_partner|
+      %tr
+        %td
+          =image_tag modules_partner.logo.thumb
+        %td= modules_partner.name
+        %td= modules_partner.order_logo
+        %td= modules_partner.publish_on
+        %td= link_to 'Show', modules_partner
+        %td= link_to 'Edit', edit_modules_partner_path(modules_partner)
+        %td= link_to 'Destroy', modules_partner, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Partner', new_modules_partner_path
