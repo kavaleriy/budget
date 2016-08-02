@@ -1,10 +1,71 @@
-.btn-group{'data-toggle' => 'buttons'}
-  %label.btn.btn-default.active.level_select{:value => "ktfk_aaa ktfk kekv"}
-    %input{:name => "level", :type => "radio"}
-    = t('widgets.visify.bubbletree.programmatic')
-
-  %label.btn.btn-default.level_select{:value => "kekv ktfk_aaa ktfk"}
-    %input{:name => "level", :type => "radio"}
-    = t('widgets.visify.bubbletree.economic')
+-#.btn-group{'data-toggle' => 'buttons'}
+-#  %label.btn.btn-default.active.level_select{:value => "ktfk_aaa ktfk kekv"}
+-#    %input{:name => "level", :type => "radio"}
+-#    = t('widgets.visify.bubbletree.programmatic')
+-#
+-#  %label.btn.btn-default.level_select{:value => "kekv ktfk_aaa ktfk"}
+-#    %input{:name => "level", :type => "radio"}
+-#    = t('widgets.visify.bubbletree.economic')
 
 -# catch click on host page
+
+
+:scss
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
+  $gray: #999;
+
+  .select2-drop-active {
+    border: 1px solid #0c2231;
+    border-top: 0;
+    border-radius: 0;
+    .select2-search{
+      display: none;
+    }
+  }
+  .select-level {
+    .select2-container {
+    .select2-choice {
+      height: 34px;
+      border-radius: 0;
+      border-color: $dark-blue;
+      background-color: $no-color;
+      background-image: none;
+      abbr{
+        right: 32px;
+      }
+      .select2-chosen {
+        margin: 3px 46px 3px auto;
+        font-size: 16px;
+        color: $gray;
+        text-transform: lowercase;
+      }
+      .select2-arrow{
+        border-left: 0;
+        border-radius: 0;
+        background: $dark-blue;
+        &:before {
+          content: '\f04b';
+          transform: rotate(90deg);
+          font-family: FontAwesome;
+          position: absolute;
+          right: 0;
+          cursor: pointer;
+          font-size: 20px;
+          width: 32px;
+          height: 32px;
+          background: $dark-blue;
+          color: $white;
+          padding: 3px 0 2px 9px;
+        }
+      }
+      &:hover,
+      &:focus {
+        outline-color: inherit;
+      }
+  }
+    }
+  }
+.select-level
+  =select_tag "select-level", options_for_select([["#{t('widgets.visify.bubbletree.programmatic')}", "ktfk_aaa ktfk kekv"],["#{t('widgets.visify.bubbletree.economic')}","kekv ktfk_aaa ktfk"]]), {include_blank: true}

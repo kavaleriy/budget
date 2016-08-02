@@ -1,15 +1,64 @@
-= select_tag :amount_select, options_for_select(amounts.collect { |t| [ t[:title], t[:id] ] } ), { class: 'form-control' }
+:scss
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
+  $gray: #999;
 
-:javascript
+  .select2-drop-active {
+    border: 1px solid #0c2231;
+    border-top: 0;
+    border-radius: 0;
+    .select2-search{
+      display: none;
+    }
+    .select2-results {
 
-  $(document).ready(function() {
-    // radio buttons to switch level
-    $('#amount_select').on("change", function(){
-      selected = $(this).find(":selected")
-      aTreeChart.divider.amount = selected.attr('amount') || 1
-      aTreeChart.divider.amount_pre = selected.attr('amount_pre')
-      aTreeChart.divider.recalc_per = (selected.attr('recalc_per') == 'true')
-
-      aTreeChart.refresh()
-    });
-  })
+    }
+  }
+  .select-amount {
+    .select2-container {
+      width: 165px;
+      .select2-choice {
+        height: 34px;
+        border-radius: 0;
+        border-color: $dark-blue;
+        background-color: $no-color;
+        background-image: none;
+        abbr{
+          right: 32px;
+        }
+        .select2-chosen {
+          margin: 3px 46px 3px auto;
+          font-size: 16px;
+          color: $gray;
+          text-transform: lowercase;
+          float: right;
+        }
+        .select2-arrow{
+          border-left: 0;
+          border-radius: 0;
+          background: $dark-blue;
+          &:before {
+            content: '\f04b';
+            transform: rotate(90deg);
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            background: $dark-blue;
+            color: $white;
+            padding: 3px 0 2px 9px;
+          }
+        }
+        &:hover,
+        &:focus {
+          outline-color: inherit;
+        }
+      }
+    }
+  }
+.select-amount
+  = select_tag :amount_select, options_for_select(amounts.collect { |t| [ t[:title], t[:id] ] } ), {include_blank: true}

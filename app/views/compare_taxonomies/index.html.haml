@@ -40,6 +40,15 @@
     }
     .filters {
       padding-right: 0;
+      .row {
+        margin: 0;
+        .select-year,
+        .select-level,
+        .select-amount {
+          padding-left: 15px;
+          display: inline-block;
+        }
+      }
     }
   }
   .select2-drop-multi {
@@ -54,6 +63,55 @@
     margin: 0 20px 0 0px;
   }
 
+  //Media
+  @media (max-width: 350px) {
+    .row {
+      .town-select {
+        padding: 0 0 5px 0;
+      }
+      .filters {
+        padding: 0;
+        .row {
+          .select-year {
+            padding: 0 0 5px 0;
+            width: 100%;
+            .select2-container {
+              width: 100%;
+              .select2-choice {
+                .select2-chosen {
+                  float: right;
+                }
+              }
+            }
+          }
+          .select-level {
+            padding: 0 0 5px 0;
+            width: 100%;
+            .select2-container {
+              width: 100%;
+              .select2-choice {
+                .select2-chosen {
+                  float: right;
+                }
+              }
+            }
+          }
+          .select-amount {
+            padding: 0 0 5px 0;
+            width: 100%;
+            .select2-container {
+              width: 100%;
+              .select2-choice {
+                .select2-chosen {
+                  float: right;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 :javascript
   var aCompareTaxonomies = {
     selected_amountype: 'plan',
@@ -74,15 +132,16 @@
   = t('.title')
 
 .row
-  .col-xs-12.col-sm-5.town-select
+  .col-xs-12.col-sm-8.town-select
     = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-  .col-xs-12.col-sm-7.filters
-    .col-xs-4.col-sm-2
+  .col-xs-12.col-sm-4.filters
+    .row
+      -#.col-xs-4.col-sm-2
       = render :partial => 'select_year', :locals => { years: @years }
       -#= render :partial => 'select_amountype'
-    .col-xs-4.col-sm-5
+      -#.col-xs-4.col-sm-5
       = render :partial => 'select_level'
-    .col-xs-4.col-sm-5
+      -#.col-xs-4.col-sm-5
       = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
@@ -235,16 +294,38 @@
 
     $("#year_select").select2(
       {
-        placeholder: "рік |",
-        allowClear: true
+        placeholder: "#{t('compare_taxonomies.index.select-year-placeholder')}" + " |"
       }
     ).on("change", function(data){
       aCompareTaxonomies.select_year(data.val, data.added)
     });
 
-    $('.level_select').on("click", function(){
-      var level = $(this).attr('value');
+    //$('.level_select').on("click", function(){
+    //  var level = $(this).attr('value');
+    //
+    //  aCompareTaxonomies.select_level(level.split(' '));
+    //});
+
+    $("#select-level").select2(
+      {
+        placeholder: "#{t('compare_taxonomies.index.select-levels-placeholder')}" + " |"
+      }
+    ).on("change", function(){
+      var level = $(this).val();
       aCompareTaxonomies.select_level(level.split(' '));
+    });
+
+    // radio buttons to switch level
+    $('#amount_select').select2(
+      {
+        placeholder: "#{t('compare_taxonomies.index.select-divider-placeholder')}" + " |"
+      }
+    ).on("change", function(){
+      selected = $(this).find(":selected")
+      aTreeChart.divider.amount = selected.attr('amount') || 1
+      aTreeChart.divider.amount_pre = selected.attr('amount_pre')
+      aTreeChart.divider.recalc_per = (selected.attr('recalc_per') == 'true')
+      aTreeChart.refresh()
     });
 
     $("#taxonomy_select").select2().on("change", function(data){
