@@ -386,7 +386,7 @@
       renderVisualisation("#{widgets_town_profile_path(@town)}");
     })
 
-    init_town_select2_with_field_id('#active_town_select',"#{search_for_active_towns_path}")
+    init_town_select2_with_field_id('#active_town_select',"#{search_for_towns_town_path}")
     $('#s2id_active_town_select').hide('fast');
     $('#active_town_select').on('change',function(){
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
