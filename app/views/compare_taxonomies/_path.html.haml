@@ -30,7 +30,7 @@
 
     els.select('a')
       .attr('href', '#')
-      .text(function(d, i){ return i == len ? null : d.label })
+      .text(function(d, i){ return i == len ? null : d.label.title })
       .on("click", function(d, i){
         aCompareTaxonomiesPath.path = aCompareTaxonomiesPath.path.slice(0, i);
         aCompareTaxonomies.create_chart()
@@ -38,7 +38,7 @@
 
     els.select('span')
       .text(function(d, i){
-        return i == len ? d.label : ' > '
+        return i == len ? d.label.title : ' > '
       })
 
 
