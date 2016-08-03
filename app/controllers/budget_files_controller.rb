@@ -80,6 +80,7 @@ class BudgetFilesController < ApplicationController
   def create
 
     @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
+    @town = Town.get_town_by_title(@town_title).first
 
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
@@ -222,8 +223,10 @@ class BudgetFilesController < ApplicationController
 
   def set_taxonomy_by_budget_file(taxonomy_id)
     taxonomy = Taxonomy.where(id: taxonomy_id).first
+    binding.pry
     if taxonomy.nil?
       taxonomy = create_taxonomy
+      taxonomy.town = @town
     end
     taxonomy
     # taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)
