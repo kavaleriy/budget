@@ -223,7 +223,6 @@ class BudgetFilesController < ApplicationController
 
   def set_taxonomy_by_budget_file(taxonomy_id)
     taxonomy = Taxonomy.where(id: taxonomy_id).first
-    binding.pry
     if taxonomy.nil?
       taxonomy = create_taxonomy
       taxonomy.town = @town
