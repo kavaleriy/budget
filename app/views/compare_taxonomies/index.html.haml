@@ -322,13 +322,14 @@
       // get level info
       if (taxonomy && taxonomy.children)
         taxonomy.children.forEach(function(node) {
-          if (items[node.key] == null) items[node.key] = node.label
+          if (items[node.key] == null) items[node.key] = {title: node.label, type: node.taxonomy}
+          // items[node.key]['type'] = node.taxonomy
           amounts[taxonomy_id][node.key] = getAmountData(node.amount);
 
           // if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
           //   amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
 
-          aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
+          aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined;
         })
     })
 
