@@ -10,6 +10,7 @@ module Public
       @news = Modules::BudgetNews.get_last_news(3)
       @test_town = Town.get_test_town.first
       @info_pages = ContentManager::PageContainer.get_info_pages
+      @partners = Modules::Partner.get_publish_partners
     end
 
     def about

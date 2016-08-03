@@ -8,4 +8,8 @@ class Modules::Partner
 
 
   mount_uploader :logo, PartnerLogoUploader
+
+  def self.get_publish_partners
+    where(publish_on: true).order(order_logo: :asc)
+  end
 end
