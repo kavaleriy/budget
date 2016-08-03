@@ -1,5 +1,6 @@
-class Modules::PartnersController < ApplicationController
+class Modules::PartnersController < AdminController
   layout 'application_admin'
+  before_action :check_admin_permission
   before_action :set_modules_partner, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -28,7 +29,12 @@ class Modules::PartnersController < ApplicationController
   end
 
   def update
-    @modules_partner.update(partner_params)
+    unless params[:modules_partner][:name].blank?
+      unless params[:modules_partner][:logo].blank?
+        @modules_partner.remove_logo!
+      end
+    end
+    @modules_partner.update(modules_partner_params)
     respond_with(@modules_partner)
   end
 
