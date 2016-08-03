@@ -43,6 +43,7 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
+  has_many :taxonomy, class_name: 'Taxonomy'
 
   validates :title ,presence: true
   # validates :koatuu, :is_area_level
