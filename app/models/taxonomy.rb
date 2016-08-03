@@ -22,6 +22,7 @@
     belongs_to :author, class_name: 'User'
     has_many :budget_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
+    belongs_to :town, class_name: 'Town'
 
     def self.check_switch_plan_fact(tax_rot_id,tax_rov_id)
       # this function chheck if we can switch plan fact data
