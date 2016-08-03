@@ -5,7 +5,8 @@ class CompareTaxonomiesController < ApplicationController
   end
 
   def get_amounts_list
-    [ t('amount_uah'), t('amount_usd'), t('amount_citizens'), t('amount_house_holdings'), t('amount_square') ].map.with_index{ |title, i|
+    # [ t('amount_uah'), t('amount_usd'), t('amount_citizens'), t('amount_house_holdings'), t('amount_square') ]
+    [ t('amount_uah'), t('amount_usd'), t('amount_citizens'), t('amount_square') ].map.with_index{ |title, i|
       {id: i, title: title}
     }
   end
