@@ -3,7 +3,7 @@
 = content_for :header do
   .head
     = @town.title
--#-binding.pry
+
 .budget.row-fluid
   .tab-content
     %iframe{ 'width' => '100%', 'height' => '850',src: widgets_budget_files_url(@town),id: 'budget_iframe' }
