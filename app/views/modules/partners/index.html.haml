@@ -1,28 +1,141 @@
-%h1 Listing modules_partners
+:scss
+  //init colors
+  $blue: blue;
+  $green: green;
+  $orange: orange;
 
-%table
-  %thead
-    %tr
-      %th Logo
-      %th Name
-      %th Order logo
-      %th Publish on
-      %th
-      %th
-      %th
+  .partners{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .new-budget-btn{
+        margin-right: -15px;
+      }
+    }
+    .paginator {
+      text-align: center;
+    }
+    .table-title{
+      font-weight: bold;
+      border-bottom: solid lightgrey 2px;
+      padding: 5px 0;
+      text-align: left;
+      & > div:last-child{
+        text-align: center;
+      }
+    }
+    .table-body{
+      border-bottom: solid lightgrey 1px;
+      padding: 5px 0;
+      & div{
+        min-height: 22px;
+      }
+    }
+    .files-action-button{
+      display: flex;
+      justify-content: center;
+      a{
+        text-decoration: none;
+        background: transparent;
+        padding: 0 5px;
+      }
+    }
+    .reset-padding{
+      padding: 0;
+      & > .reset-padding{
+        & div{
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    @media (min-width: 544px) {
+      .reset-padding{
+        & > .reset-padding{
+          & > div:hover{
+            overflow: visible;
+            white-space: normal;
+            word-wrap: break-word;
+            font-size: smaller;
+          }
+        }
+      }
+    }
+    @media (max-width: 767px) {
+      .reset-padding{
+        & div{
+          border-bottom: solid lightcyan 1px;
+        }
+      }
+      .logo-partner{
+        max-height: 100px;
+      }
+      .files-action-button{
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 384px) {
+      .reset-padding{
+        & > .reset-padding{
+          & div{
+            font-size: small;
+          }
+        }
+      }
+    }
+  }
 
-  %tbody
-    - @modules_partners.each do |modules_partner|
-      %tr
-        %td
-          =image_tag modules_partner.logo
-        %td= modules_partner.name
-        %td= modules_partner.order_logo
-        %td= modules_partner.publish_on
-        %td= link_to 'Show', modules_partner
-        %td= link_to 'Edit', edit_modules_partner_path(modules_partner)
-        %td= link_to 'Destroy', modules_partner, :method => :delete, :data => { :confirm => 'Are you sure?' }
+.container.partners
+  .header
+    %h2= 'List partners'
+    .new-budget-btn
+      %h2= link_to 'Add partner', new_modules_partner_path, :class => 'btn btn-info'
 
-%br
-
-= link_to 'New Partner', new_modules_partner_path
+  .row.table-title.text-center.visible-sm.visible-md.visible-lg
+    .col-sm-11.col-md-11.reset-padding
+      .col-sm-2
+        Лого
+      .col-sm-4
+        Назва
+      .col-sm-3
+        Порядок
+      .col-sm-3
+        Показувати?
+    .col-sm-1.col-md-1.reset-padding
+      =t 'form.actions', :default => t("helpers.actions")
+  - if @modules_partners
+    -  @modules_partners.each do |partner|
+      .row.table-body{'data-id' => partner.id}
+        .col-xs-4.col-xs-offset-4.visible-xs
+          =image_tag partner.logo, class: 'logo-partner img-responsive'
+        .col-xs-11.reset-padding
+          .hidden-xs.col-sm-2.col-md-2.reset-padding
+            -#.col-xs-4.visible-xs
+              Лого
+            .col-xs-8.col-sm-12.col-md-12
+              =image_tag partner.logo, class: 'logo-partner img-responsive'
+          .col-sm-4.col-md-4.reset-padding
+            .col-xs-4.visible-xs
+              Назва
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.name
+          .col-sm-3.col-md-3.reset-padding
+            .col-xs-4.visible-xs
+              Порядок
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.order_logo
+          .col-sm-3.col-md-3.reset-padding
+            .col-xs-4.visible-xs
+              Показувати?
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.publish_on
+        .col-xs-1.text-center.reset-padding.files-action-button
+          -#= link_to partner do
+            %i.fa.fa-eye.fa-2x
+          = link_to edit_modules_partner_path(partner) do
+            %i.fa.fa-pencil.fa-2x
+          = link_to partner, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash-o.fa-2x
