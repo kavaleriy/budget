@@ -183,6 +183,7 @@
     bar.append("text")
         .attr("class", "label")
         .attr("data-selectable", function(d) { return aCompareTaxonomiesPath.last_level ? "" : "selectable"; })
+        .attr("x", icon_width)
         .attr("y", -20)
         .attr("dy", ".35em")
         .text(function(d,i) {
@@ -202,38 +203,34 @@
           }
         })
     var get_icon = function(type, key) {
-      path = "/files/icons"
+
+      path = '/assets/icons/';
+      filename = 'no-image.svg'
+      fullPath = path + filename;
+
+      (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
 
       if (type == "ktfk_aaa") {
-        // console.log(path);
+
         if (key.toString().length == 2) {
-          filename = "0" + key + "000.svg"
-          return path + "/" + type.substring(0,4) + "/" + filename;
+          filename = "0" + key + "000.svg";
         }
 
         if (key.toString().length == 3) {
-          filename = key + "000.svg"
-          console.log(path + "/" + type.substring(0,4) + "/" + filename);
+          filename = key + "000.svg";
         }
+        fullPath = path + type.substring(0,4) + '/' + filename;
       }
-      if (type == "ktfk") {
-        console.log(2)
-      }
-      if (type == "kekv") {
-        console.log(3)
-      }
-      if (type == "kkd") {
-        console.log(4)
-      }
+
+      return fullPath;
     }
     // Add icon
-    bar.append("svg:image")
-      .attr("xlink:href", function(d,i){
-          return d == 0 ? "" : get_icon(data.labels[i].label.type, data.labels[i].key) })
+    bar.append("image")
+      .attr("xlink:href", function(d,i){ return d == 0 ? "" : get_icon(data.labels[i].label.type, data.labels[i].key) })
       .attr("width", icon_width)
       .attr("height", icon_heigth)
-      .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
-      .attr("y", function(d){ return (barHeight - blazon_heigth) / 2 });
+      .attr("x", function(d){ return  -((icon_width / 2) - 21) })
+      .attr("y", function(d){ return -(icon_heigth + 6) });
     //////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////
