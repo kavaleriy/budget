@@ -25,10 +25,8 @@
     els.append('a')
     els.append('span')
 
-
     els = d3.select(".path").selectAll('g')
       .data(path)
-
 
     els.select('span')
       .text(function(d, i){
@@ -44,7 +42,6 @@
         aCompareTaxonomiesPath.path = aCompareTaxonomiesPath.path.slice(0, i);
         aCompareTaxonomies.create_chart()
       })
-
 
     d3.select(".path").selectAll('g')
       .data(path)

@@ -201,26 +201,28 @@
             aCompareTaxonomies.create_chart()
           }
         })
+    // TODO: Move it's function to js global helper (aHelper)
     var get_icon = function(type, key) {
-
+      // path to icons folder
       path = '/assets/icons/';
+      // default filename
       filename = 'no-image.svg'
+      // default path to file
       fullPath = path + filename;
 
-      (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
+        // create path for type [ ktfk, kekv, kkd ]
+        // path = PATHtofolder/foldername(TYPE)/filename.svg(KEY)
+        (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
 
-      if (type == "ktfk_aaa") {
+        // create path for type [ ktfk_aaa ]
+        // cond 1: key consist 2 digits - filename = 0[KEY]000.svg
+        // cond 2: key consist 3 digits - filename = [KEY]000.svg
+        if (type == "ktfk_aaa") {
 
-        if (key.toString().length == 2) {
-          filename = "0" + key + "000.svg";
+          (key.toString().length) == 2 ? filename = "0" + key + "000.svg" : ((key.toString().length) == 3 ? filename = key + "000.svg" : filename)
+
+          fullPath = path + type.substring(0,4) + '/' + filename;
         }
-
-        if (key.toString().length == 3) {
-          filename = key + "000.svg";
-        }
-        fullPath = path + type.substring(0,4) + '/' + filename;
-      }
-
       return fullPath;
     }
     // Add icon
