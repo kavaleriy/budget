@@ -90,22 +90,22 @@
 
 .container.partners
   .header
-    %h2= 'List partners'
+    %h2= t('.header')
     .new-budget-btn
-      %h2= link_to 'Add partner', new_modules_partner_path, :class => 'btn btn-info'
+      %h2= link_to t('.new_btn_name'), new_modules_partner_path, :class => 'btn btn-info'
 
   .row.table-title.text-center.visible-sm.visible-md.visible-lg
     .col-sm-11.col-md-11.reset-padding
       .col-sm-2
-        Лого
+        = t('.logo')
       .col-sm-4
-        Назва
+        = t('.name')
       .col-sm-3
-        Порядок
+        = t('.order')
       .col-sm-3
-        Показувати?
+        = t('.show')
     .col-sm-1.col-md-1.reset-padding
-      =t 'form.actions', :default => t("helpers.actions")
+      =t 'form.actions', :default => t('helpers.actions')
   - if @modules_partners
     -  @modules_partners.each do |partner|
       .row.table-body{'data-id' => partner.id}
@@ -119,23 +119,23 @@
               =image_tag partner.logo, class: 'logo-partner img-responsive'
           .col-sm-4.col-md-4.reset-padding
             .col-xs-4.visible-xs
-              Назва
+              = t('.name')
             .col-xs-8.col-sm-12.col-md-12
               = partner.name
           .col-sm-3.col-md-3.reset-padding
             .col-xs-4.visible-xs
-              Порядок
+              = t('.order')
             .col-xs-8.col-sm-12.col-md-12
               = partner.order_logo
           .col-sm-3.col-md-3.reset-padding
             .col-xs-4.visible-xs
-              Показувати?
+              = t('.show')
             .col-xs-8.col-sm-12.col-md-12
-              = partner.publish_on
+              = partner.publish_on ? t('confirm_yes') : t('confirm_no')
         .col-xs-1.text-center.reset-padding.files-action-button
           -#= link_to partner do
             %i.fa.fa-eye.fa-2x
-          = link_to edit_modules_partner_path(partner) do
+          = link_to edit_modules_partner_path(partner), title: t('edit') do
             %i.fa.fa-pencil.fa-2x
-          = link_to partner, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+          = link_to partner, :method => :delete, title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
             %i.fa.fa-trash-o.fa-2x

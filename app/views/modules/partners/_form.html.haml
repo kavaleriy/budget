@@ -6,6 +6,11 @@
       .form-actions{
         margin-top: 15px;
       }
+      label{
+        abbr[title], abbr[data-original-title]{
+          color: coral;
+        }
+      }
       .radio label, .checkbox label{
         font-weight: bold;
       }
@@ -16,16 +21,10 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name
-    = f.input :order_logo, collection: 1..20, prompt: "Select order logo"
-    = f.input :logo, as: :file, label: "Logo", :input_html => { :class => 'form-control', accept: 'image/*' }
-
-    -#= f.label :publish_on, 'Публікувати?', :class => 'col-sm-2 control-label'
-    -#= f.check_box :publish_on,  :class => 'form-control input-responsive'
-    = f.input :publish_on, as: :boolean, label: 'Публікувати?'
-    -#.form-group
-    -#  = f.input :publish_on, as: :boolean, label: false, :input_html => { :class => 'col-sm-2 publish_on form-control' }
-
+    = f.input :name, label: t('modules.partners.index.logo')
+    = f.input :order_logo, collection: 1..20, prompt: t('modules.partners.form.order_prompt'), label: t('modules.partners.index.order')
+    = f.input :logo, as: :file, label: t('modules.partners.index.logo'), :input_html => { :class => 'form-control', accept: 'image/*' }
+    = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
   .form-actions
-    = f.button :button, class: 'btn-primary'
+    = f.button :button, t('save'), class: 'btn-primary'
 

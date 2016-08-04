@@ -1,7 +1,19 @@
+:scss
+  .partners-form{
+    > p{
+      color: #0d0b5e;
+      background: cornsilk;
+      padding: 5px 10px;
+      display: inline-block;
+      border-radius: 5px;
+    }
+  }
+
 .container.partners-form
-  %h1 New modules_partner
+  %h2
+    = t('modules.partners.form.new_header')
   %p
-    Щоб логотипи партнерів ідеально виглядали на головній сторінці їх розміри повинні бути 166х100px або з відповідним співвідношенням сторін.
+    = t('modules.partners.form.message_for_admin')
 
   = render 'form'
 

@@ -1,15 +1,65 @@
-%p#notice= notice
+:scss
+  .show-partner{
+    .header-table{
+      font-weight: bold;
+      overflow: hidden;
+      white-space: nowrap;
+      word-wrap: normal; /* for IE */
+      text-overflow: ellipsis;
+    }
+    .action-buttons{
+      .header-table{
+        text-align: center;
+      }
+      .partner-action-buttons{
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        a{
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
 
-%p
-  %b Name:
-  = @modules_partner.name
-%p
-  %b Order logo:
-  = @modules_partner.order_logo
-%p
-  %b Publish on:
-  = @modules_partner.publish_on
-
-= link_to 'Edit', edit_modules_partner_path(@modules_partner)
-\|
-= link_to 'Back', modules_partners_path
+.container.show-partner
+  %h2
+    %i= @modules_partner.name
+  .row
+    .col-xs-4.col-xs-offset-4.visible-xs
+      =image_tag @modules_partner.logo, class: 'logo-partner img-responsive'
+    .col-xs-10
+      .row
+        .hidden-xs.col-sm-3.col-md-3
+          .row
+            .col-xs-12.header-table
+              = t('modules.partners.index.logo')
+            .col-sm-12.col-md-12
+              =image_tag @modules_partner.logo, class: 'logo-partner img-responsive'
+        .col-xs-12.col-sm-4.col-md-4
+          .row
+            .col-xs-4.col-sm-12.col-md-12.header-table
+              = t('modules.partners.index.name')
+            .col-xs-8.col-sm-12.col-md-12
+              = @modules_partner.name
+        .col-xs-12.col-sm-2.col-md-2
+          .row
+            .col-xs-4.col-sm-12.col-md-12.header-table
+              = t('modules.partners.index.order')
+            .col-xs-8.col-sm-12.col-md-12
+              = @modules_partner.order_logo
+        .col-xs-12.col-sm-3.col-md-3
+          .row
+            .col-xs-4.col-sm-12.col-md-12.header-table
+              = t('modules.partners.index.show')
+            .col-xs-8.col-sm-12.col-md-12
+              = @modules_partner.publish_on ? t('confirm_yes') : t('confirm_no')
+    .col-xs-2.action-buttons
+      .row
+        .hidden-xs.col-sm-12.col-md-12.header-table
+          = t('actions')
+        .col-xs-12.col-sm-12.col-md-12.partner-action-buttons
+          = link_to edit_modules_partner_path(@modules_partner), title: t('edit') do
+            %i.fa.fa-pencil.fa-2x
+          = link_to @modules_partner, :method => :delete, title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
+            %i.fa.fa-trash-o.fa-2x
