@@ -20,6 +20,8 @@
 = link_to t('taxonomies.recipients.title'), recipients_taxonomy_path(@taxonomy), :class => 'btn btn-info'
 = link_to t('form.back', :default => t("helpers.links.back")), taxonomies_path, :class => 'btn btn-default'
 = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(@taxonomy), :class => 'btn btn-primary'
+- if @taxonomy.active
+  .btn.btn-success.disabled= t('taxonomies.index.active')
 
 #embed_code_visify.embed_code
   = render partial: 'widgets/visify/embed_code'
