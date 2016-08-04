@@ -75,6 +75,8 @@
         spaceForLegend        = doc_width - chartWidth,
         blazon_width          = 35,
         blazon_heigth         = 35,
+        icon_width            = 64,
+        icon_heigth           = 64,
         blazon_circle_radius  = (blazon_heigth / 2) + 5,
         chart_start_x         = blazon_circle_radius / 2;
     // Zip the series data together (first values, second values, etc.)
@@ -115,6 +117,7 @@
     // Draw plan & fact rectangles
     // Create plan rectangles of the correct width
 
+    // Create rect for plan
     bar.append("rect")
         .attr('x',chart_start_x)
         .attr('data-type','plan')
@@ -123,7 +126,7 @@
         .attr("width", function(d){ return x(d.plan) || '0' } )
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
 
-    // Create fact rectangles of the correct width
+    // Create rect for fact
     bar.append("rect")
         .attr('x',chart_start_x)
         .attr('data-type','fact')
@@ -136,7 +139,10 @@
           return fact_x(d.fact) || '0' })
         .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
     //////////////////////////////////////////////////////////////////////////////////////
-    //draw town blazon
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Draw town blazon
+    // Create circle
     bar.append('circle')
       .style("stroke", "gray")
       .style("fill", "white")
@@ -144,18 +150,18 @@
       .attr("cx", chart_start_x)
       .attr("cy", function(d){ return ((blazon_heigth - blazon_circle_radius) + 2 )});
 
+    // Add img to circle
     bar.append("svg:image")
       .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
       .attr("width", blazon_width)
       .attr("height", blazon_heigth)
       .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
       .attr("y", function(d){ return (barHeight - blazon_heigth) / 2 });
-
     //////////////////////////////////////////////////////////////////////////////////////
 
-
-    // Draw plan fact text
-    // Add plan text label in bar
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Draw plan&fact text
+    // Add plan text label into rect
     bar.append("text")
         .attr("class", "plan")
         .attr("x", function(d) { return x(d.plan) - 5 || '0' })
@@ -163,7 +169,7 @@
         .attr("dy", ".35em")
         .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.plan); });
 
-    // Add fact text label in bar
+    // Add fact text label into rect
     bar.append("text")
         .attr("class", "fact")
         .attr('x',chart_start_x + blazon_circle_radius + 5)
@@ -171,17 +177,22 @@
         .attr("dy", ".35em")
         .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.fact); });
     //////////////////////////////////////////////////////////////////////////////////////
-    // Draw labels
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    // Draw labels path
     bar.append("text")
         .attr("class", "label")
         .attr("data-selectable", function(d) { return aCompareTaxonomiesPath.last_level ? "" : "selectable"; })
+        .attr("x", icon_width)
         .attr("y", -20)
         .attr("dy", ".35em")
         .text(function(d,i) {
-          if (i % data.series.length === 0)
-            return data.labels[Math.floor(i/data.series.length)].label;
-          else
-            return ""})
+          var title = ''
+          if (i % data.series.length === 0){
+            title = data.labels[Math.floor(i/data.series.length)].label.title;
+          }
+          return title;
+        })
         .on("click", function(d, i){
           item = data.labels[Math.floor(i/data.series.length)]
 
@@ -190,7 +201,40 @@
             aCompareTaxonomies.create_chart()
           }
         })
+    // TODO: Move it's function to js global helper (aHelper)
+    var get_icon = function(type, key) {
+      // path to icons folder
+      path = '/assets/icons/';
+      // default filename
+      filename = 'no-image.svg'
+      // default path to file
+      fullPath = path + filename;
 
+        // create path for type [ ktfk, kekv, kkd ]
+        // path = PATHtofolder/foldername(TYPE)/filename.svg(KEY)
+        (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
+
+        // create path for type [ ktfk_aaa ]
+        // cond 1: key consist 2 digits - filename = 0[KEY]000.svg
+        // cond 2: key consist 3 digits - filename = [KEY]000.svg
+        if (type == "ktfk_aaa") {
+
+          (key.toString().length) == 2 ? filename = "0" + key + "000.svg" : ((key.toString().length) == 3 ? filename = key + "000.svg" : filename)
+
+          fullPath = path + type.substring(0,4) + '/' + filename;
+        }
+      return fullPath;
+    }
+    // Add icon
+    bar.append("image")
+      .attr("xlink:href", function(d,i){ return d == 0 ? "" : get_icon(data.labels[i].label.type, data.labels[i].key) })
+      .attr("width", icon_width)
+      .attr("height", icon_heigth)
+      .attr("x", function(d){ return  -((icon_width / 2) - 21) })
+      .attr("y", function(d){ return -(icon_heigth + 11) });
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////
     // Draw legend
     var legend = this.legend
     legend.attr("height", chartHeight)
