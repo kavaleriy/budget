@@ -191,7 +191,6 @@
           if (i % data.series.length === 0){
             title = data.labels[Math.floor(i/data.series.length)].label.title;
           }
-
           return title;
         })
         .on("click", function(d, i){
@@ -230,7 +229,7 @@
       .attr("width", icon_width)
       .attr("height", icon_heigth)
       .attr("x", function(d){ return  -((icon_width / 2) - 21) })
-      .attr("y", function(d){ return -(icon_heigth + 6) });
+      .attr("y", function(d){ return -(icon_heigth + 11) });
     //////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////
