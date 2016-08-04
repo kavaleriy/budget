@@ -192,10 +192,12 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
 
-    town_title = @taxonomy.owner.split(',')
-    @town = Town.where(title: town_title[0])
-    @town = @town.where(area_title: town_title[1].squish) if town_title[1]
-    @town = @town.first
+    unless @taxonomy.owner.nil?
+      town_title = @taxonomy.owner.split(',')
+      @town = Town.where(title: town_title[0])
+      @town = @town.where(area_title: town_title[1].squish) if town_title[1]
+      @town = @town.first
+    end
 
     @author = "#{@taxonomy.get_author}, #{@taxonomy.owner}"
   end
