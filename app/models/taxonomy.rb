@@ -3,6 +3,7 @@
     include Mongoid::Timestamps
 
     scope :owned_by, lambda { |owner| where(:owner => owner) }
+    scope :get_active, -> { where(active: true ) }
 
     before_save :generate_title
 
@@ -44,7 +45,6 @@
       # this function group budget files by data_type and return count of group
       budget_files.group_by{|f| f.data_type}.count
     end
-
 
     def self.visible_to user
       files = if user && user.is_locked? == false

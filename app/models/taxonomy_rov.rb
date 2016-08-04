@@ -4,9 +4,14 @@ class TaxonomyRov < Taxonomy
   def self.get_towns_with_taxonomies_rov
     # this function grouped taxonomies by town
     #  and return towns models
-    towns_titles = self.all.group_by{|f| f.owner}.keys
-    Town.get_towns_by_titles(towns_titles)
+    # binding.pry
+    taxonomies_group_by_town = self.all.group_by{|f| f.owner}.keys
+    Town.get_towns_by_titles(taxonomies_group_by_town)
   end
+
+  # def self.get_active_taxonomies
+  #   active = self.get_towns_with_taxonomies_rov
+  # end
 
   def columns
 

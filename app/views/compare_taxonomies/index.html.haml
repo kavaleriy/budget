@@ -206,7 +206,7 @@
 -#test
 .row
   .col-sm-5.town-select
-    = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
+    = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov}
   .col-sm-7.filters
     = render :partial => 'select_year', :locals => { years: @years }
     -#= render :partial => 'select_amountype'
