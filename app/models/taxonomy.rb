@@ -16,6 +16,7 @@
     field :explanation, :type => Hash
     field :area, :type => String # код області
     field :kmb, :type => String # код місцевого бюджета
+    field :active, type: Boolean
 
     embeds_many :recipients, class_name: 'TaxonomyRecipient'
 
