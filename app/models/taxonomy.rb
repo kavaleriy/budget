@@ -2,7 +2,9 @@
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    scope :owned_by, lambda { |owner| where(:owner => owner) }
+    # select taxonomies belongs to town
+    scope :owned_by, lambda { |town| where(:owner => town) }
+    # select all active taxonomies
     scope :get_active, -> { where(active: true ) }
 
     before_save :generate_title
@@ -25,6 +27,12 @@
     has_many :budget_files, autosave: true, :dependent => :destroy
     has_many :taxonomy_attachments, :class_name => 'TaxonomyAttachment', autosave: true, :dependent => :destroy
     belongs_to :town, class_name: 'Town'
+
+
+    def self.get_active_by_town(town)
+      # get active taxonomies belongs to town
+      self.owned_by(town).get_active
+    end
 
     def self.check_switch_plan_fact(tax_rot_id,tax_rov_id)
       # this function chheck if we can switch plan fact data

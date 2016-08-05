@@ -1,6 +1,6 @@
 :scss
   #s2id_taxonomy_select{
-    display: none;
+    //display: none;
   }
   #s2id_town_for_compare_select {
     ul.select2-choices {
@@ -55,10 +55,10 @@
     }
   }
 
-= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.collect { |town| [town.title, town.title, {'data-img'=> get_town_blazon(town)}]}),
-  { multiple: true, class: 'form-control' }
+-#= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.to_a.collect { |town| [town.title, town.title]}),
+-#  { multiple: true, class: 'form-control' }
 
-= select_tag :taxonomy_select, options_for_select(''), {multiple: true,class: 'form-control' }
+= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |town| ["#{town.owner} - #{town.title}", town.id.to_s]}), {multiple: true,class: 'form-control' }
 
 
 
@@ -68,7 +68,7 @@
   $(document).ready(function() {
     function setTownColor (data) {
       //init iterator for get color from aCompareTaxonomies
-      var i = $("#town_for_compare_select").select2("val").length;
+      var i = $("#taxonomy_select").select2("val").length;
       //truncate town title for first comma and first space
       var town = $.trim(data.text).split(',')[0].split(' ')[0];
 
@@ -76,10 +76,11 @@
         '<div class="town-color" style="background:'+ aCompareTaxonomies.color[i].fact +';"></div>' +
         '<div class="town-title">'+town+'</div>'
       );
+      console.log($color);
       return $color;
     };
 
-    $('#town_for_compare_select').select2(
+    $('#taxonomy_select').select2(
     {
       formatSelection: setTownColor,
       maximumSelectionSize: 3,
@@ -89,36 +90,6 @@
       multiSelect: true
     }
     ).on("change", function(data){
-      //add blazon for show when we render chart
-      aCompareTaxonomies.towns_blazon.push(
-        { img : $(data.added.element).data('img'),
-          name: data.added.text
-        }
-      );
-       // send ajax request with town name
-      $.ajax({
-        url: '/get_taxonomies_rov_by_town',
-        data: {town_name: data.added.text},
-        dataType: 'JSON',
-        success: function(response_data) {
-          // clear taxonomy from taxonomies select
-          $("#taxonomy_select").children("option:not(:selected)").remove();
-          // add options to taxonomy select
-          response_data.map(function(currentValue){
-            $("#taxonomy_select").append($('<option>', {value: currentValue.id, text: currentValue.text}));
-          });
-          // init taxonomy select2
-          $("#taxonomy_select").select2(
-            {
-              maximumSelectionSize: 3,
-              allowClear: true,
-              width: '100%',
-              placeholder: "#{I18n.t('.select_compare_taxonomies_placeholder')}",
-              multiSelect: true
-            }
-          );
-        }
-      })
+      aCompareTaxonomies.select_taxonomies(data.val, data.added)
     });
-
    })
