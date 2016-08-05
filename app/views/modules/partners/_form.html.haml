@@ -1,0 +1,30 @@
+:scss
+  .partners-form{
+    padding: 0px;
+    form{
+      margin: 15px 0;
+      .form-actions{
+        margin-top: 15px;
+      }
+      label{
+        abbr[title], abbr[data-original-title]{
+          color: coral;
+        }
+      }
+      .radio label, .checkbox label{
+        font-weight: bold;
+      }
+    }
+  }
+
+= simple_form_for(@modules_partner) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, label: t('modules.partners.index.logo')
+    = f.input :order_logo, collection: 1..20, prompt: t('modules.partners.form.order_prompt'), label: t('modules.partners.index.order')
+    = f.input :logo, as: :file, label: t('modules.partners.index.logo'), :input_html => { :class => 'form-control', accept: 'image/*' }
+    = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
+  .form-actions
+    = f.button :button, t('save'), class: 'btn-primary'
+

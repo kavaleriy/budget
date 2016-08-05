@@ -48,8 +48,10 @@
                   text-decoration: none;
                   color: #000;
                 }
-                .europe {
-                  padding: 0 20px;
+                img{
+                  width: auto;
+                  max-height: 100px;
+                  margin: auto;
                 }
                 &:hover > img, &:focus > img {
                   -webkit-filter: sepia(1);
@@ -320,24 +322,10 @@
       .container
         .carousel-wrap
           .owl-carousel
-            .item
-              =link_to '#' do
-                =image_tag('new_design/Europe-flag-logo.svg', class: 'img-responsive europe')
-            .item
-              =link_to '#' do
-                =image_tag('new_design/renaissanse-small_logo_black.jpg', class: 'img-responsive')
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
-            .item
-              =link_to '#' do
-                %img.img-responsive{:src => "http://placehold.it/300x150"}
+            - @partners.each do |partners_logo|
+              .item
+                =link_to '#' do
+                  =image_tag( partners_logo.logo, class: 'img-responsive')
 
 :javascript
   $(document).ready(function() {

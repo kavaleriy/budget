@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
 
+  namespace :modules do
+    resources :partners
+  end
+
   namespace :compare_taxonomies do
     get 'index'
   end

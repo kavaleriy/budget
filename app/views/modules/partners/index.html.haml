@@ -1,0 +1,141 @@
+:scss
+  //init colors
+  $blue: blue;
+  $green: green;
+  $orange: orange;
+
+  .partners{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .new-budget-btn{
+        margin-right: -15px;
+      }
+    }
+    .paginator {
+      text-align: center;
+    }
+    .table-title{
+      font-weight: bold;
+      border-bottom: solid lightgrey 2px;
+      padding: 5px 0;
+      text-align: left;
+      & > div:last-child{
+        text-align: center;
+      }
+    }
+    .table-body{
+      border-bottom: solid lightgrey 1px;
+      padding: 5px 0;
+      & div{
+        min-height: 22px;
+      }
+    }
+    .files-action-button{
+      display: flex;
+      justify-content: center;
+      a{
+        text-decoration: none;
+        background: transparent;
+        padding: 0 5px;
+      }
+    }
+    .reset-padding{
+      padding: 0;
+      & > .reset-padding{
+        & div{
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    @media (min-width: 544px) {
+      .reset-padding{
+        & > .reset-padding{
+          & > div:hover{
+            overflow: visible;
+            white-space: normal;
+            word-wrap: break-word;
+            font-size: smaller;
+          }
+        }
+      }
+    }
+    @media (max-width: 767px) {
+      .reset-padding{
+        & div{
+          border-bottom: solid lightcyan 1px;
+        }
+      }
+      .logo-partner{
+        max-height: 100px;
+      }
+      .files-action-button{
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 384px) {
+      .reset-padding{
+        & > .reset-padding{
+          & div{
+            font-size: small;
+          }
+        }
+      }
+    }
+  }
+
+.container.partners
+  .header
+    %h2= t('.header')
+    .new-budget-btn
+      %h2= link_to t('.new_btn_name'), new_modules_partner_path, :class => 'btn btn-info'
+
+  .row.table-title.text-center.visible-sm.visible-md.visible-lg
+    .col-sm-11.col-md-11.reset-padding
+      .col-sm-2
+        = t('.logo')
+      .col-sm-4
+        = t('.name')
+      .col-sm-3
+        = t('.order')
+      .col-sm-3
+        = t('.show')
+    .col-sm-1.col-md-1.reset-padding
+      =t 'form.actions', :default => t('helpers.actions')
+  - if @modules_partners
+    -  @modules_partners.each do |partner|
+      .row.table-body{'data-id' => partner.id}
+        .col-xs-4.col-xs-offset-4.visible-xs
+          =image_tag partner.logo, class: 'logo-partner img-responsive'
+        .col-xs-11.reset-padding
+          .hidden-xs.col-sm-2.col-md-2.reset-padding
+            -#.col-xs-4.visible-xs
+              Лого
+            .col-xs-8.col-sm-12.col-md-12
+              =image_tag partner.logo, class: 'logo-partner img-responsive'
+          .col-sm-4.col-md-4.reset-padding
+            .col-xs-4.visible-xs
+              = t('.name')
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.name
+          .col-sm-3.col-md-3.reset-padding
+            .col-xs-4.visible-xs
+              = t('.order')
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.order_logo
+          .col-sm-3.col-md-3.reset-padding
+            .col-xs-4.visible-xs
+              = t('.show')
+            .col-xs-8.col-sm-12.col-md-12
+              = partner.publish_on ? t('confirm_yes') : t('confirm_no')
+        .col-xs-1.text-center.reset-padding.files-action-button
+          -#= link_to partner do
+            %i.fa.fa-eye.fa-2x
+          = link_to edit_modules_partner_path(partner), title: t('edit') do
+            %i.fa.fa-pencil.fa-2x
+          = link_to partner, :method => :delete, title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
+            %i.fa.fa-trash-o.fa-2x
