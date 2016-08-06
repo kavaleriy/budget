@@ -57,14 +57,15 @@
 
 -#= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.to_a.collect { |town| [town.title, town.title]}),
 -#  { multiple: true, class: 'form-control' }
--binding.pry
-= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |tax|[tax[:title], tax[:id]]}), {multiple: true,class: 'form-control' }
+-#-binding.pry
+= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |tax|[tax[:title], tax[:id], {'data-img'=> get_town_blazon(tax[:img])}]}), {multiple: true,class: 'form-control' }
 
 
 
 -# catch click on host page
 
 :javascript
+  var test = ''
   $(document).ready(function() {
     function setTownColor (data) {
       //init iterator for get color from aCompareTaxonomies
@@ -90,6 +91,9 @@
       multiSelect: true
     }
     ).on("change", function(data){
+      test = data;
+      // console.log()
+      aCompareTaxonomies.town_blazon.push()
       aCompareTaxonomies.select_taxonomies(data.val, data.added)
     });
    })

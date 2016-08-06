@@ -151,12 +151,12 @@
       .attr("cy", function(d){ return ((blazon_heigth - blazon_circle_radius) + 2 )});
 
     // Add img to circle
-    // bar.append("svg:image")
-    //   .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
-    //   .attr("width", blazon_width)
-    //   .attr("height", blazon_heigth)
-    //   .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
-    //   .attr("y", function(d){ return (barHeight - blazon_heigth) / 2 });
+    bar.append("svg:image")
+      .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
+      .attr("width", blazon_width)
+      .attr("height", blazon_heigth)
+      .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
+      .attr("y", function(d){ return (barHeight - blazon_heigth) / 2 });
     //////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////
