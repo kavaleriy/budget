@@ -12,9 +12,11 @@ class CompareTaxonomiesController < ApplicationController
   end
 
   def stub_data
-    @towns_with_tax_rov = TaxonomyRov.get_towns_with_taxonomies_rov.only(:id,:title,:img)
+    # @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns.only(:id,:title,:img)
+    @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns
 
-    # @taxonomies = TaxonomyRov.all
+    # @town_active_taxonomies = TaxonomyRov.owned_by(current_user.town).get_active
+    @town_active_taxonomies = TaxonomyRov.get_active_or_first(current_user.town)
 
     @current_year = Date.current.year
     @years = (@current_year - 3) .. @current_year
