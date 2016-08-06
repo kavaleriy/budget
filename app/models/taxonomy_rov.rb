@@ -17,7 +17,14 @@ class TaxonomyRov < Taxonomy
 
     result = []
     taxonomies_group_by_town.each do |t|
-      result << self.get_active_or_first(t)
+      town = Town.get_town_by_title(t).first
+      taxonomy = self.get_active_or_first(t)
+      town_blazon = town.img.url unless town.nil? || town.img.nil?
+      result << {
+          id: taxonomy.id.to_s,
+          title: taxonomy.title,
+          img: town_blazon
+      }
     end
 
     # and return towns models

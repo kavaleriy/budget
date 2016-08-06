@@ -57,8 +57,8 @@
 
 -#= select_tag :town_for_compare_select, options_for_select(@towns_with_tax_rov.to_a.collect { |town| [town.title, town.title]}),
 -#  { multiple: true, class: 'form-control' }
-
-= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |town| ["#{town.owner} - #{town.title}", town.id.to_s]}), {multiple: true,class: 'form-control' }
+-binding.pry
+= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |tax|[tax[:title], tax[:id]]}), {multiple: true,class: 'form-control' }
 
 
 

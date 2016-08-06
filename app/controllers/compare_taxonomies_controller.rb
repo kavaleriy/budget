@@ -14,7 +14,6 @@ class CompareTaxonomiesController < ApplicationController
   def stub_data
     # @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns.only(:id,:title,:img)
     @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns
-
     # @town_active_taxonomies = TaxonomyRov.owned_by(current_user.town).get_active
     @town_active_taxonomies = TaxonomyRov.get_active_or_first(current_user.town)
 
