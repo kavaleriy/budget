@@ -6,7 +6,7 @@ class Modules::PartnersController < AdminController
   respond_to :html
 
   def index
-    @modules_partners = Modules::Partner.all
+    @modules_partners = Modules::Partner.all.order(order_logo: :asc)
     respond_with(@modules_partners)
   end
 
@@ -25,7 +25,7 @@ class Modules::PartnersController < AdminController
   def create
     @modules_partner = Modules::Partner.new(modules_partner_params)
     @modules_partner.save
-    respond_with(@modules_partner)
+    redirect_to modules_partners_path
   end
 
   def update
@@ -35,7 +35,7 @@ class Modules::PartnersController < AdminController
       end
     end
     @modules_partner.update(modules_partner_params)
-    respond_with(@modules_partner)
+    redirect_to modules_partners_path
   end
 
   def destroy
