@@ -5,6 +5,6 @@ module TownsHelper
     '(not found)'
   end
   def get_town_blazon(img)
-    img.nil? ? 'default_image.png' : img
+    img.nil? ? '' : img
   end
 end
