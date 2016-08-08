@@ -402,39 +402,4 @@
       aTreeChart.refresh()
     });
 
-   function setTownColor (data) {
-      //init iterator for get color from aCompareTaxonomies
-      var i = $("#taxonomy_select").select2("val").length;
-      //truncate town title for first comma and first space
-      var town = $.trim(data.text).split(',')[0].split(' ')[0];
-
-      var $color = $(
-        '<div class="town-color" style="background:'+ aCompareTaxonomies.color[i].fact +';"></div>' +
-        '<div class="town-title">'+town+'</div>'
-      );
-      console.log($color);
-      return $color;
-    };
-
-    $('#taxonomy_select').select2(
-    {
-      formatSelection: setTownColor,
-      maximumSelectionSize: 3,
-      allowClear: true,
-      placeholder: "#{I18n.t('compare_taxonomies.select_taxonomy.choose_town')}",
-      width: '100%',
-      multiSelect: true
-    }
-    ).on("change", function(data){
-      // set default town blazon path
-      var townBlazon = ''
-      // if we add to select2 some data
-      if(data.added){
-        // set town blazon img path
-        townBlazon = $(data.added.element).data('img');
-      }
-      aCompareTaxonomies.select_taxonomies(data.val, data.added,townBlazon)
-    });
-
-
   });
