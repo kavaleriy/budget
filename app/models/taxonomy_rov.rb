@@ -1,11 +1,14 @@
 class TaxonomyRov < Taxonomy
 
   scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
-  def self.get_towns_with_taxonomies_rov
-    # this function grouped taxonomies by town
-    #  and return towns models
-    towns_titles = self.all.group_by{|f| f.owner}.keys
-    Town.get_towns_by_titles(towns_titles)
+
+
+  def self.get_active_or_first(town)
+    result = self.get_active_by_town(town).first
+    # check for active
+    # case 1: return first
+    # case 2: return active
+    (result.nil?) ? self.owned_by(town).first : result
   end
 
   def columns

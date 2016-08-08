@@ -152,7 +152,9 @@
 
     // Add img to circle
     bar.append("svg:image")
-      .attr("xlink:href",function(d,i){return aCompareTaxonomies.towns_blazon[(i % data.series.length)].img } )
+      .attr("xlink:href",function(d,i){
+        return data.series[(i % data.series.length)].label.img;
+        })
       .attr("width", blazon_width)
       .attr("height", blazon_heigth)
       .attr("x", function(d){ return  -((blazon_width / 2) - chart_start_x) })
@@ -226,12 +228,12 @@
       return fullPath;
     }
     // Add icon
-    bar.append("image")
-      .attr("xlink:href", function(d,i){ return d == 0 ? "" : get_icon(data.labels[i].label.type, data.labels[i].key) })
-      .attr("width", icon_width)
-      .attr("height", icon_heigth)
-      .attr("x", function(d){ return  -((icon_width / 2) - 21) })
-      .attr("y", function(d){ return -(icon_heigth + 11) });
+    // bar.append("image")
+    //   .attr("xlink:href", function(d,i){ return d == 0 ? "" : get_icon(data.labels[i].label.type, data.labels[i].key) })
+    //   .attr("width", icon_width)
+    //   .attr("height", icon_heigth)
+    //   .attr("x", function(d){ return  -((icon_width / 2) - 21) })
+    //   .attr("y", function(d){ return -(icon_heigth + 11) });
     //////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -312,7 +314,11 @@
         .attr('y', legendYPos)
         .attr('textLength','30')
         .text(function (d,i) {
-          return Math.round(d.fact * 100 / d.plan) + '%';
+          var res = Math.round(d.fact * 100 / d.plan);
+          if(!isFinite(res)){
+            res = 0;
+          }
+          return res + '%';
         });
   };
   $(document).ready(function(){
