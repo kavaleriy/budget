@@ -1,5 +1,10 @@
 :scss
   .show-partner{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
     .header-table{
       font-weight: bold;
       overflow: hidden;
@@ -23,8 +28,11 @@
   }
 
 .container.show-partner
-  %h2
-    %i= @modules_partner.name
+  .header
+    %h2
+      %i= @modules_partner.name
+    .partners-btn
+      %h2= link_to t('modules.partners.index.header'), modules_partners_path, :class => 'btn btn-primary'
   .row
     .col-xs-4.col-xs-offset-4.visible-xs
       =image_tag @modules_partner.logo, class: 'logo-partner img-responsive'
