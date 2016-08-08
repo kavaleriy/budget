@@ -31,11 +31,12 @@ class BudgetFile
 
 
   def is_allowed_fond fond
-    %w(1 2 7).include? fond
+    fond.nil? or %w(1 2 7).include? fond
   end
 
   def is_grouped_kekv kekv
-    %w(2000 2100 2110 2200 2270 2280 2400 2600 2700 3000 3100 3120 3130 3140 3200 4100 4110 4200 9102).include?(kekv)
+    # https://e.mail.ru/message/14485687760000000480/?fromsearch=search&tab-time=1469948026&q_query=2270&withattachs=Y&from_suggest=0&from_search=0&offset=6
+    kekv.nil? or %w(2000 2100 2110 2200 2270 2280 2400 2600 2700 3000 3100 3120 3130 3140 3200 4100 4110 4200 9102).include?(kekv)
   end
 
   def self.visible_to user

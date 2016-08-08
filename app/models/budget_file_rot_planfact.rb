@@ -3,8 +3,8 @@ class BudgetFileRotPlanfact < BudgetFile
   protected
 
   def readline row
-    amount_plan = row['План'].to_i
-    amount_fact = row['Факт'].to_i
+    amount_plan = row['План'].to_f
+    amount_fact = row['Факт'].to_f
 
     kkd = row['Код'].to_s.gsub(/\s+/, "").split('.')[0]
     return if kkd.to_i == 0
@@ -16,7 +16,7 @@ class BudgetFileRotPlanfact < BudgetFile
         { :amount => amount_plan, :amount_type => :plan },
         { :amount => amount_fact, :amount_type => :fact },
     ].map { |line|
-      next if line[:amount].to_i == 0
+      next if line[:amount].to_f == 0
 
       item = {
           'amount' => line[:amount],
