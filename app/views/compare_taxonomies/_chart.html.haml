@@ -251,7 +251,7 @@
     var legend_title = legend.selectAll('legend_title_g')
         .data(legend_title_arr)
         .enter()
-        // .append('g')
+        .append('g')
 
     legend_title.append('text')
         .attr('class','chart_sort')
@@ -264,7 +264,7 @@
         .text(function(d){ return d;})
 
 
-    var items = legend.selectAll('g')
+    var items = legend.selectAll('legend_indexes')
         .data(zippedData)
         .enter()
         .append('g')
