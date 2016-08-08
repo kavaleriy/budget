@@ -11,35 +11,6 @@ class TaxonomyRov < Taxonomy
     (result.nil?) ? self.owned_by(town).first : result
   end
 
-  def self.get_active_for_all_towns
-    # this function grouped taxonomies by town
-    taxonomies_group_by_town = self.all.group_by{|f| f.owner}.keys
-
-    result = []
-    taxonomies_group_by_town.each do |t|
-      town = Town.get_town_by_title(t).first
-      taxonomy = self.get_active_or_first(t)
-      town_blazon = town.img.url unless town.nil? || town.img.nil?
-      result << {
-          id: taxonomy.id.to_s,
-          title: taxonomy.title,
-          img: town_blazon
-      }
-    end
-
-    # and return towns models
-    # Town.get_towns_by_titles(taxonomies_group_by_town)
-
-    # and return cases:
-    # case 1: active taxonom[y][ies] if exist
-    # case 2: first upload taxonomy
-    result
-  end
-
-  # def self.get_active_taxonomies
-  #   active = self.get_towns_with_taxonomies_rov
-  # end
-
   def columns
 
     if is_kvk

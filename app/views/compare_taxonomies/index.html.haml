@@ -248,11 +248,15 @@
   }
 
 
-  aCompareTaxonomies.select_taxonomies = function (ids, added){
-    if (added) aCompareTaxonomies.taxonomies[added.id] = added.text
+  aCompareTaxonomies.select_taxonomies = function (ids, added,townBlazon){
+    if (added) aCompareTaxonomies.taxonomies[added.id] = {
+        text: added.text,
+        img: townBlazon
+        }
     this.selected_taxonomies = ids
     this.create_chart()
   }
+
 
   aCompareTaxonomies.select_amountype = function (amountype){
     this.selected_amountype = amountype
