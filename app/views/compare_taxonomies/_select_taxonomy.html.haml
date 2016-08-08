@@ -61,7 +61,7 @@
 
 :javascript
   $(document).ready(function() {
-    function setTownColor (data) {
+   function setTownColor (data) {
       //init iterator for get color from aCompareTaxonomies
       var i = $("#taxonomy_select").select2("val").length;
       //truncate town title for first comma and first space
@@ -85,6 +85,13 @@
       multiSelect: true
     }
     ).on("change", function(data){
-      aCompareTaxonomies.select_taxonomies(data.val, data.added,$(data.added.element).data('img'))
+      // set default town blazon path
+      var townBlazon = ''
+      // if we add to select2 some data
+      if(data.added){
+        // set town blazon img path
+        townBlazon = $(data.added.element).data('img');
+      }
+      aCompareTaxonomies.select_taxonomies(data.val, data.added,townBlazon)
     });
    })
