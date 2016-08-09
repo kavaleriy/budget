@@ -33,6 +33,11 @@ module Budget
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :uk
 
+    # Use this setup block to configure all options available in AddThis
+    # homepage, sidebar, left
+    config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-579f198770513078"
+
+
     # Cross-origin resource sharing (CORS)
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
