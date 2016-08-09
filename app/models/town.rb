@@ -68,6 +68,17 @@ class Town
     WikiParser.get_wiki_town_info(self.title) || self.description || I18n.t('no_town_description_info')
   end
 
+  def self.get_central_authority_towns(query)
+    # first of all get users with authority roles mask
+    city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
+                                                         User.mask_for(:central_authority)])
+    # second we find all they towns and last add regular expression to all they towns
+    Town.where(:title.in => city_authority_users.map{|user|
+      town = Town.get_user_town(user)
+      town.title unless town.nil?
+    }).and(title: Regexp.new("^#{query}.*"))
+  end
+
   def is_test?
     # this function check if town is test
     # test town should have TEST_TOWN_KOATUU
