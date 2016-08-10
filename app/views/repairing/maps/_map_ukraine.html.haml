@@ -1,10 +1,19 @@
 :css
   .map_container {
     min-height: 300px;
-    height: calc(100vh - 72px);
+    height: calc(100vh - 101px);
+  }
+
+  /*hide sidebar for share*/
+  .at4-share-outer {
+    display: none;
+  }
+
+  .social-btns {
+    padding: 5px 0 0 0;
   }
 
 .map_container
   = render partial: 'map'
-
-
+.col-xs-12.social-btns
+  =render partial: 'layouts/addthis_hor_share'
