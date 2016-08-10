@@ -1,10 +1,14 @@
-.btn-group{'data-toggle' => 'buttons'}
-  %label.btn.btn-default.active.level_select{:value => "ktfk_aaa ktfk kekv"}
-    %input{:name => "level", :type => "radio"}
-    = t('widgets.visify.bubbletree.programmatic')
-
-  %label.btn.btn-default.level_select{:value => "kekv ktfk_aaa ktfk"}
-    %input{:name => "level", :type => "radio"}
-    = t('widgets.visify.bubbletree.economic')
+-#.btn-group{'data-toggle' => 'buttons'}
+-#  %label.btn.btn-default.active.level_select{:value => "ktfk_aaa ktfk kekv"}
+-#    %input{:name => "level", :type => "radio"}
+-#    = t('widgets.visify.bubbletree.programmatic')
+-#
+-#  %label.btn.btn-default.level_select{:value => "kekv ktfk_aaa ktfk"}
+-#    %input{:name => "level", :type => "radio"}
+-#    = t('widgets.visify.bubbletree.economic')
 
 -# catch click on host page
+
+
+.col-sm-4.select-level
+  =select_tag "select-level", options_for_select([["#{t('widgets.visify.bubbletree.programmatic')}", "ktfk_aaa ktfk kekv"],["#{t('widgets.visify.bubbletree.economic')}","kekv ktfk_aaa ktfk"]]), {include_blank: true}

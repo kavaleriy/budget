@@ -76,7 +76,6 @@ module Repairing
 
       respond_to do |format|
         if @repairing_layer.save
-
           unless @repairing_layer.repairs_file.path.nil?
             repairs = read_table_from_file(@repairing_layer.repairs_file.path)
             import(@repairing_layer, repairs[:rows])
@@ -95,7 +94,21 @@ module Repairing
           format.html { render :new }
           format.json { render json: @repairing_layer.errors, status: :unprocessable_entity }
         end
+
       end
+
+    rescue Roo::Base::TypeError
+      message = [t('invalid_format')]
+      message << 'Якщо це xlsx формат переконайтесь у тому що він не xls'
+      respond_with_error_message(message)
+    rescue DBF::Column::NameError
+      message = [t('invalid_format')]
+      message << 'Допустимі формати .xslx, .xlsm'
+      respond_with_error_message(message)
+    rescue => e
+      message = "Не вдалося створити прошарок : #{e}"
+      respond_with_error_message(message)
+
     end
 
     def read_table_from_file path
@@ -106,17 +119,24 @@ module Repairing
       read_csv_xls xls
     end
 
+    def respond_with_error_message(message)
+      respond_to do |format|
+        format.html { redirect_to :back, alert:  message }
+      end
+    end
+
     def read_csv_xls(xls)
       cols = []
       xls.first_column.upto(xls.last_column) { |col|
-        cols << xls.cell(1, col).to_s
+        cols << xls.cell(1, col).to_s.strip
       }
 
       rows = []
       2.upto(xls.last_row) do |line|
         row = {}
         xls.first_column.upto(xls.last_column ) do |col|
-          row[xls.cell(1, col)] = xls.cell(line,col).to_s
+          row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
+          row.transform_keys! { |key| key.strip }
         end
         rows << row
       end

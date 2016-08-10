@@ -1,14 +1,16 @@
 class ExportBudgetsController < ApplicationController
   # layout 'visify', only: [:show]
   # skip_before_action :verify_authenticity_token,only: [:create_pdf]
-
+  layout 'application_admin', except: :show
+  before_action :access_user?, except: [:show, :create_pdf]
   before_action :set_export_budget, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :get_town_calendar, only: [:show, :edit, :update, :destroy, :create_pdf]
   before_action :set_export_budget_presenter, only: [:edit,:new]
   # GET /export_budgets
   # GET /export_budgets.json
   def index
-    @export_budgets = ExportBudget.all
+    @export_budgets = ExportBudget.get_export_budgets_by_user current_user
+    @export_budgets = @export_budgets.page(params[:page]).per(25)
   end
 
   # GET /export_budgets/1
@@ -107,6 +109,11 @@ class ExportBudgetsController < ApplicationController
       "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
     end
 
+    def access_user?
+      unless current_user.is_admin? || current_user.public_organisation? || current_user.city_authority? || current_user.central_authority?
+        redirect_to root_url, alert: t('export_budgets.notice_access')
+      end
+    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_export_budget

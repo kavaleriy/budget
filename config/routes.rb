@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
 
 
+  namespace :modules do
+    resources :partners
+  end
+
   namespace :compare_taxonomies do
     get 'index'
   end
+  get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
+
 
 
   namespace :external_api do
@@ -13,7 +19,7 @@ Rails.application.routes.draw do
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
-  get '/:alias/show' => 'public/home#show_pages',as: 'show_pages'
+  get '/info/:alias/show' => 'public/home#show_pages',as: 'show_pages'
   get '/demo_index/' => 'public/home#demo_index',as: 'demo' # Delete it route after upgrade new design
   get '/demo_profile' => 'public/home#demo_profile', as: 'demo_profile' # Delete it route after upgrade new design
   get '/demo_repair_roads_map' => 'public/home#demo_repair_roads_map', as: 'demo_repair_roads_map' # Delete it route after upgrade new design
@@ -249,6 +255,8 @@ Rails.application.routes.draw do
     get 'town_profile/budget_files_by_taxonomies/:tax_rot/:tax_rov' => 'town_profile#budget_files_by_taxonomies', as: 'budget_files_by_taxonomies'
     get 'town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov' =>'town_profile#sankey_by_taxonomies', as:'sankey_by_taxonomies'
     get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
+    # get 'town_profile/compare_budget/:town_id' => 'town_profile#budget_compare',as: 'town_profile_budget_compare'
+
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'
@@ -263,6 +271,9 @@ Rails.application.routes.draw do
   resources :taxonomy_frees
   resources :taxonomy_rots
   resources :taxonomy_rovs
+  get 'get_taxonomies_rov_by_town' => 'taxonomy_rovs#get_taxonomies_by_town',as:'taxonomies_rov_get_taxonomies_by_town'
+
+
 
   resources :budget_files do
     get 'download' => 'budget_files#download'

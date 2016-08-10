@@ -1,5 +1,51 @@
 - budget_files.each do |budget_file|
-  %tr{'data-id' => budget_file.id}
+  .row.table-body{'data-id' => budget_file.id}
+    .col-xs-11.reset-padding
+      .col-md-2.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = t('key')
+        .col-xs-8.col-md-12
+          = link_to budget_file.id, budget_file
+      .col-md-2.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = sortable "title", t('budget')
+        .col-xs-8.col-md-12
+          = link_to budget_file.title, budget_file
+          -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
+      .col-md-3.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = t('file')
+        .col-xs-8.col-md-12
+          = link_to budget_file_download_path(budget_file), :class => '' do
+            %i.fa.fa-download.fa.fa-border
+            = budget_file.name
+      .col-md-1.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = sortable "data_type", t('data_type')
+        .col-xs-8.col-md-12
+          = icons(budget_file.data_type).html_safe
+          -#= budget_file.data_type
+      .col-md-2.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = sortable "taxonomy.owner", t('owner')
+        .col-xs-8.col-md-12
+          = (@file_owners[budget_file.taxonomy_id] || ' - ') if budget_file.taxonomy_id
+      .col-md-2.reset-padding
+        .col-xs-4.visible-sm.visible-xs
+          = sortable "author", t('author')
+        .col-xs-8.col-md-12
+          = budget_file.author
+    .col-xs-1.text-center.reset-padding.files-action-button
+      = link_to edit_budget_file_path(budget_file) do
+        %i.fa.fa-pencil.fa-2x
+      = link_to polymorphic_path(budget_file), :method => :delete, :remote => true, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } do
+        %i.fa.fa-trash-o.fa-2x
+
+      -#= link_to image_tag('icons/pencil.png'), edit_budget_file_path(budget_file)
+      -#= link_to image_tag('icons/X_icon.png'), polymorphic_path(budget_file), :method => :delete, :remote => true, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+
+  -#todo --> delete this block if layouts will apply
+  -#%tr{'data-id' => budget_file.id}
     %td=link_to budget_file.id, budget_file
     %td
       =link_to budget_file.title, budget_file

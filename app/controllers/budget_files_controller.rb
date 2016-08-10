@@ -23,17 +23,19 @@ class BudgetFilesController < ApplicationController
   def index
     @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page])
 
-    case sort_column
-      when "title"
-        @budget_files.sort_by{|b| b.title || '' }
-      when "taxonomy.owner"
-        @budget_files.sort_by{|b| b.taxonomy.owner }
-      when "data_type"
-        @budget_files.sort_by{|b| b.data_type.to_s }
-      when "author"
-        @budget_files.sort_by{|b| b.author }
-    end
-    @budget_files.reverse! if sort_direction == "desc"
+    @budget_files = case sort_column
+                      when "title"
+                        @budget_files.order_by(title: sort_direction)
+                      when "taxonomy.owner"
+                        # TODO order budget files by town
+                        @budget_files.order_by(taxonomy:'owner ASC')
+                      when "data_type"
+                        @budget_files.order_by(data_type: sort_direction)
+                      when "author"
+                        @budget_files.order_by(author: sort_direction)
+                    end
+
+    # @budget_files.reverse! if sort_direction == "desc"
 
     @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
     unless params["q"].blank?
@@ -54,7 +56,7 @@ class BudgetFilesController < ApplicationController
 
     @file_owners = file_owners.pluck(:id, :owner).to_h
 
-    # binding.pry()
+
 
     respond_to do |format|
       format.js
@@ -78,6 +80,7 @@ class BudgetFilesController < ApplicationController
   def create
 
     @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
+    @town = Town.get_town_by_title(@town_title).first
 
     budget_file_params[:path].each do |uploaded|
       @file_name = uploaded.original_filename
@@ -222,6 +225,7 @@ class BudgetFilesController < ApplicationController
     taxonomy = Taxonomy.where(id: taxonomy_id).first
     if taxonomy.nil?
       taxonomy = create_taxonomy
+      taxonomy.town = @town
     end
     taxonomy
     # taxonomy_id.blank? ? create_taxonomy : Taxonomy.find(taxonomy_id)

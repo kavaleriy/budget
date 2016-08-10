@@ -39,9 +39,35 @@
       %i.fa.fa-upload
         = t('form.load')
 
+  %br
+  .alert.alert-warning.collapse#alert
+    = t('invalid_format')
+
 :javascript
 
   $(document).ready(function() {
+
+    $('#indicate_file_').on('change', function() {
+      // this function checks for valid file type by extension during adding before uploading
+      // function shows alert message but doesn't deny uploading incorrect file
+      // [allowedFiles] include valid file extensions list
+      // file without extension is valid by default
+      var allowedFiles = [".xls", ".xlsx", ".dbf", ".csv"];
+      var filesArr = $(this).get(0).files;
+      var log = [];
+      for (var i = 0; i < filesArr.length; i++){
+        if (filesArr[i].name == filesArr[i].name.split('.').pop()){
+          // using for allow files without extension
+          continue;
+        }
+        if (jQuery.inArray('.' + filesArr[i].name.split('.').pop(), allowedFiles) == -1){
+          log.push (I18n.t('invalid_format') + ': ' + filesArr[i].name + '<br />');
+        }
+      }
+      if (log.length){
+        $('#alert').html(log).slideDown('fast').delay(5000).slideUp('slow');
+      }
+    });
 
     var town_select = $(".town_select");
 

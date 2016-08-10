@@ -1,9 +1,68 @@
 :scss
-  //.book_image {
-  //  img{
-  //    box-shadow: 2px 2px 10px #428bca;
-  //  }
-  //}
+
+  $margin_to_menu: 10;
+  .books{
+    box-shadow: 2px 2px 10px #428bca;
+    margin-top: $margin_to_menu;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .one-book{
+      .img{
+        img{
+          margin: 10px 0;
+          width: 100%;
+          box-shadow: 2px 2px 10px #428bca;
+        }
+      }
+      .information{
+        .buttons{
+          float:right;
+          .btn{
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+    .one-book:nth-of-type(2n+1){
+      background: #F7F7F7;
+    }
+  }
+  @media (max-width: 449px) {
+    .books{
+      .one-book{
+        .img{
+          width: 100%;
+          a{
+            display: block;
+            text-align: center;
+            img{
+              margin: 10px auto 0;
+              width: auto;
+              text-align: center;
+            }
+          }
+        }
+        .information{
+          width: 100%;
+          h3{
+            font-size: 20px;
+          }
+          .buttons{
+            text-align: center;
+            float:none;
+            .btn{
+              padding: 2px 10px;
+            }
+          }
+        }
+      }
+    }
+  }
 
 = content_for :header do
   .head.pull-left
@@ -11,20 +70,17 @@
       = t('layouts.navbar.library')
       %small
         = t('.w_books')
-.book-index.clearfix
-  .documentation.col-xs-12.table-responsive
+.books.clearfix
+  .documentation.col-xs-12
+    .header
+      %h2
+        = t('layouts.navbar.library')
+      .add-book
+        - if current_user
+          %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
     = render partial: "categories"
-    - if current_user
-      %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
-    %table.table.table-striped
-      %thead.headt
-        %tr
-          %th{ align: 'center' }
-            = t('.cover')
-          %th
-            = t('.description')
-      %tbody#results
-        = render partial: "search_books", :locals => { books: @library_books }
-    -#= will_paginate @library_books, renderer: BootstrapPagination::Rails, :previous_label => t('.p_back'), :next_label => t('.p_next')
+    #results.books-list
+      = render partial: "search_books", :locals => { books: @library_books }
+
     #books-paginator
       = paginate @library_books, :remote => true

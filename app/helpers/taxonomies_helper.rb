@@ -6,4 +6,10 @@ module TaxonomiesHelper
       '-'
     end
   end
+
+  def get_active_icon(active_fild)
+    icon = "<i class='fa fa-square-o fa-lg'>"
+    icon = "<i class='fa fa-check-square-o fa-lg'>" if active_fild
+    icon.html_safe
+  end
 end

@@ -2,6 +2,11 @@
   .vis_controls div {
     padding-right: 10px;
   }
+  /*hide sidebar for share*/
+  .at4-share-outer {
+    display: none;
+  }
+
 .visify
   .col-xs-12
     = render partial: 'sequence', :locals => { budget_file_id: budget_file_id }
@@ -56,6 +61,8 @@
   .col-xs-12
     %p
       = t('author') + ": #{@author}"
+  .col-xs-12
+    =render partial: 'layouts/addthis_hor_share'
 
   = render partial: 'helpers'
 

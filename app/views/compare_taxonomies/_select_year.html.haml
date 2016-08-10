@@ -1,7 +1,2 @@
-.btn-group{'data-toggle' => 'buttons'}
-  - years.each do |year|
-    %label.btn.btn-default.year_select{'data-year' => "#{year}", :class => "#{is_current_year(year) ? 'active' : nil}"}
-      %input{'type' => 'radio', 'name' => 'options', 'autocomplete' => 'off', 'checked' => "#{is_current_year(year) ? 'checked' : nil}"}
-        =year
-
--# catch click on host page
+.col-sm-4.select-year
+  = select_tag :year_select, options_for_select(years.to_a.reverse), {include_blank: true}

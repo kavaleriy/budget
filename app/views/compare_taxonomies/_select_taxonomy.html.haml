@@ -1,4 +1,97 @@
-.col-xs-12
-  = select_tag :taxonomy_select, options_for_select(taxonomies.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'form-control' }
+:scss
+
+  #s2id_taxonomy_select {
+    ul.select2-choices {
+      li.select2-search-choice {
+        max-width: 33%;
+        padding: 7px 2px 6px 2px;
+        margin: 0 2px 0 0;
+        border-color: transparent;
+        background-color: transparent;
+        background-image: none;
+        div {
+          .town-color {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+          }
+          .town-title {
+            width: 100%;
+            position: relative;
+            top: -3px;
+            left: 2px;
+            display: inline;
+
+          }
+        }
+        .select2-search-choice-close {
+          right: inherit;
+          left: 0;
+          background: none;
+          cursor: text;
+          &:before {
+            content: '\f00d';
+            font-family: FontAwesome;
+            color: white;
+            position: absolute;
+            cursor: text;
+            font-size: 14px;
+            top: 4px;
+            left: 4px;
+            display: none;
+          }
+        }
+        &:hover {
+          .select2-search-choice-close {
+            &:before {
+              display: block;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+
+= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |tax|[tax[:title], tax[:id], {'data-img'=> get_town_blazon(tax[:img])}]}), {multiple: true,class: 'form-control' }
+
+
 
 -# catch click on host page
+
+:javascript
+  $(document).ready(function() {
+   function setTownColor (data) {
+      //init iterator for get color from aCompareTaxonomies
+      var i = $("#taxonomy_select").select2("val").length;
+      //truncate town title for first comma and first space
+      var town = $.trim(data.text).split(',')[0].split(' ')[0];
+
+      var $color = $(
+        '<div class="town-color" style="background:'+ aCompareTaxonomies.color[i].fact +';"></div>' +
+        '<div class="town-title">'+town+'</div>'
+      );
+      console.log($color);
+      return $color;
+    };
+
+    $('#taxonomy_select').select2(
+    {
+      formatSelection: setTownColor,
+      maximumSelectionSize: 3,
+      allowClear: true,
+      placeholder: "#{I18n.t('compare_taxonomies.select_taxonomy.choose_town')}",
+      width: '100%',
+      multiSelect: true
+    }
+    ).on("change", function(data){
+      // set default town blazon path
+      var townBlazon = ''
+      // if we add to select2 some data
+      if(data.added){
+        // set town blazon img path
+        townBlazon = $(data.added.element).data('img');
+      }
+      aCompareTaxonomies.select_taxonomies(data.val, data.added,townBlazon)
+    });
+   })

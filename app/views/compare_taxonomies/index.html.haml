@@ -1,6 +1,188 @@
 :scss
-  .pull-left {
-    margin: 0 20px 0 0px;
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
+  $gray: #999;
+
+  .row {
+    .town-select {
+      padding-right: 0;
+      padding-bottom: 10px;
+      .select2-container {
+        border-color: $no-color;
+        .select2-choices {
+          border-color: $dark-blue;
+          padding-right: 32px;
+          margin-right: -2px;
+          &:before {
+            content: '\f067';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ACA99F;
+            width: 32px;
+            height: 32px;
+            background: $dark-blue;
+            color: $white;
+            padding: 3px 0 2px 9px;
+          }
+          .select2-search-choice {
+            padding: 6px 18px 6px 3px;
+            margin: 3px 0 3px 3px;
+            .select2-search-choice-close {
+              right: 3px;
+              left: inherit;
+            }
+          }
+        }
+      }
+    }
+    .filters {
+      padding: 0;
+      .select-year,
+      .select-level,
+      .select-amount {
+        padding: 0 0 10px 15px;
+        //display: inline-block;
+        .select2-container {
+          width: 100%;
+          .select2-choice {
+            height: 34px;
+            border-radius: 0;
+            border-color: $dark-blue;
+            background-color: $no-color;
+            background-image: none;
+            abbr{
+              right: 32px;
+            }
+            .select2-chosen {
+              text-align: right;
+              margin: 3px 46px 3px auto;
+              font-size: 16px;
+              color: $gray;
+              text-transform: lowercase;
+              float: right;
+            }
+            .select2-arrow{
+              border-left: 0;
+              border-radius: 0;
+              background: $dark-blue;
+              &:before {
+                content: '\f04b';
+                transform: rotate(90deg);
+                font-family: FontAwesome;
+                position: absolute;
+                right: 0;
+                cursor: pointer;
+                font-size: 20px;
+                width: 32px;
+                height: 32px;
+                background: $dark-blue;
+                color: $white;
+                padding: 3px 0 2px 9px;
+              }
+            }
+            &:hover,
+            &:focus {
+              outline-color: inherit;
+            }
+          }
+        }
+      }
+    }
+  }
+  .select2-drop-multi {
+    border-color: $dark-blue;
+    margin-left: 1px;
+    .select2-results {
+      padding: 0;
+      margin: 4px 0;
+    }
+  }
+  .select2-drop-active {
+    border: 1px solid #0c2231;
+    border-top: 0;
+    border-radius: 0;
+    //.select2-search{
+    //  display: none;
+    //}
+  }
+
+  //Media
+  @media (min-width: 992px) and (max-width: 1023px) {
+    .row {
+      .filters {
+        .select-year,
+        .select-level,
+        .select-amount {
+          .select2-container {
+            .select2-choice {
+              .select2-chosen {
+                font-size: 13px;
+                margin-right: 38px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .row {
+      .town-select {
+        .select2-container {
+          .select2-choices {
+            .select2-search-choice {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+      .filters {
+        .select-year,
+        .select-level,
+        .select-amount {
+          .select2-container {
+            .select2-choice {
+              .select2-chosen {
+                font-size: 11px;
+                margin-right: 35px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    .row {
+      .town-select {
+        .select2-container {
+          .select2-choices {
+            .select2-search-choice {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+      .filters {
+        .select-year,
+        .select-level,
+        .select-amount {
+          .select2-container {
+            .select2-choice {
+              .select2-chosen {
+                font-size: 11px;
+                margin-right: 35px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
 :javascript
@@ -9,30 +191,27 @@
     selected_level: '',
     selected_year: "#{@current_year}",
     selected_taxonomies: [],
+    color: [
+    {fact: '#0d3c55', plan: '#0f5b78'},
+    {fact: '#a2b86c', plan: '#b6d370'},
+    {fact: '#dc8aa8', plan: '#d9aebe'}
+    ],
+    towns_blazon:[],
     taxonomies: {},
     taxonomies_cache: {}
   }
 
 %h1
   = t('.title')
-
+-#test
 .row
-  = render :partial => 'select_taxonomy', :locals => { taxonomies: @taxonomies }
-
-%hr
-
-.row
-  .col-xs-12
-    .pull-left
-      = render :partial => 'select_amountype'
-    .pull-left
-      = render :partial => 'select_level'
-    .pull-left
-      = render :partial => 'select_divider', :locals => { amounts: @amounts }
-    .pull-right
-      = render :partial => 'select_year', :locals => { years: @years }
-
-%hr
+  .col-sm-5.town-select
+    = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov}
+  .col-sm-7.filters
+    = render :partial => 'select_year', :locals => { years: @years }
+    -#= render :partial => 'select_amountype'
+    = render :partial => 'select_level'
+    = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
 .row
   = render :partial => 'path'
@@ -69,11 +248,15 @@
   }
 
 
-  aCompareTaxonomies.select_taxonomies = function (ids, added){
-    if (added) aCompareTaxonomies.taxonomies[added.id] = added.text
+  aCompareTaxonomies.select_taxonomies = function (ids, added,townBlazon){
+    if (added) aCompareTaxonomies.taxonomies[added.id] = {
+        text: added.text,
+        img: townBlazon
+        }
     this.selected_taxonomies = ids
     this.create_chart()
   }
+
 
   aCompareTaxonomies.select_amountype = function (amountype){
     this.selected_amountype = amountype
@@ -105,6 +288,22 @@
     var items = {}
     var amounts = {}
 
+    function getAmountData(amount){
+      result = {
+        plan: '0',
+        fact: '0'
+      }
+      if(amount['plan'] && amount['plan'][selected_year]){
+        result.plan = amount['plan'][selected_year]['0'].total.toFixed(2)
+      }
+      if(amount['fact'] && amount['fact'][selected_year]){
+        result.fact = amount['fact'][selected_year]['0'].total.toFixed(2)
+      }
+
+      return result;
+    }
+
+
     aCompareTaxonomiesPath.last_level = false
 
     selected_taxonomies.forEach(function(taxonomy_id) {
@@ -127,12 +326,14 @@
       // get level info
       if (taxonomy && taxonomy.children)
         taxonomy.children.forEach(function(node) {
-          if (items[node.key] == null) items[node.key] = node.label
+          if (items[node.key] == null) items[node.key] = {title: node.label, type: node.taxonomy}
+          // items[node.key]['type'] = node.taxonomy
+          amounts[taxonomy_id][node.key] = getAmountData(node.amount);
 
-          if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
-            amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
+          // if (node.amount[selected_amountype] && node.amount[selected_amountype][selected_year])
+          //   amounts[taxonomy_id][node.key] = node.amount[selected_amountype][selected_year]['0'].total.toFixed(2)
 
-          aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined
+          aCompareTaxonomiesPath.last_level = aCompareTaxonomiesPath.last_level || node.children == undefined;
         })
     })
 
@@ -161,30 +362,44 @@
 :javascript
 
   $(document).ready(function() {
-    $('.amountype_select').on('click', function () {
-      aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
-    })
+    // $('.amountype_select').on('click', function () {
+    //   aCompareTaxonomies.select_amountype($(this).attr('data-amountype'))
+    // })
 
+    $("#year_select").select2(
+      {
+        placeholder: "#{t('compare_taxonomies.index.select-year-placeholder')}" + " |"
+      }
+    ).on("change", function(data){
+      aCompareTaxonomies.select_year(data.val, data.added)
+    });
 
-    $('.year_select').on('click', function () {
-      aCompareTaxonomies.select_year($(this).attr('data-year'))
-    })
+    //$('.level_select').on("click", function(){
+    //  var level = $(this).attr('value');
+    //
+    //  aCompareTaxonomies.select_level(level.split(' '));
+    //});
 
-
-    $('.level_select').on("click", function(){
-      var level = $(this).attr('value');
+    $("#select-level").select2(
+      {
+        placeholder: "#{t('compare_taxonomies.index.select-levels-placeholder')}" + " |"
+      }
+    ).on("change", function(){
+      var level = $(this).val();
       aCompareTaxonomies.select_level(level.split(' '));
     });
 
-    $("#taxonomy_select").select2(
+    // radio buttons to switch level
+    $('#amount_select').select2(
       {
-        allowClear: true,
-        width: '100%',
-        placeholder: "#{I18n.t('select_placeholder')}",
-        multiSelect: true,
+        placeholder: "#{t('compare_taxonomies.index.select-divider-placeholder')}" + " |"
       }
-    ).on("change", function(data){
-      aCompareTaxonomies.select_taxonomies(data.val, data.added)
-    })
+    ).on("change", function(){
+      selected = $(this).find(":selected")
+      aTreeChart.divider.amount = selected.attr('amount') || 1
+      aTreeChart.divider.amount_pre = selected.attr('amount_pre')
+      aTreeChart.divider.recalc_per = (selected.attr('recalc_per') == 'true')
+      aTreeChart.refresh()
+    });
 
   });

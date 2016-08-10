@@ -3,12 +3,13 @@ module Modules
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
     skip_before_action :check_admin_permission, only: [:show, :all_news]
     # before_action :check_admin_permission, except: [:show, :all_news]
+    before_action :get_all_budget_news, only: [:index, :all_news]
     respond_to :html
 
     def index
 
       # @budget_news = Modules::BudgetNews.all
-      @budget_news = @budget_news.page(params[:page]).order(news_date: :desc)
+      @budget_news = @all_budget_news.page(params[:page]).order(news_date: :desc)
 
       respond_with(@budget_news)
     end
@@ -49,9 +50,12 @@ module Modules
       respond_with(@budget_news)
     end
 
+    def get_all_budget_news
+      @all_budget_news = Modules::BudgetNews.all
+    end
 
     def all_news
-      @budget_news = @budget_news.page(params[:page]).per(9).order(news_date: :desc)
+      @budget_news = @all_budget_news.page(params[:page]).per(9).order(news_date: :desc)
     end
 
     private

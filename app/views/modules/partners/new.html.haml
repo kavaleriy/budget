@@ -1,0 +1,18 @@
+:scss
+  .partners-form{
+    > p{
+      color: #0d0b5e;
+      background: cornsilk;
+      padding: 5px 10px;
+      display: inline-block;
+      border-radius: 5px;
+    }
+  }
+
+.container.partners-form
+  %h2
+    = t('modules.partners.form.new_header')
+  %p
+    = t('modules.partners.form.message_for_admin')
+
+  = render 'form'

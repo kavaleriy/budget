@@ -1,4 +1,11 @@
 :scss
+  //init colors
+  $blue: blue;
+  $green: green;
+  $orange: orange;
+  $lightcyan: lightcyan;
+  $lightgrey: lightgrey;
+
   .documents_search {
     margin: 15px;
     border-radius: 5px;
@@ -6,6 +13,96 @@
   .content-result {
     .paginator {
       text-align: center;
+    }
+  }
+  .table-title{
+    font-weight: bold;
+    border-bottom: 2px solid $lightgrey;
+    padding: 5px 0;
+  }
+  .table-body{
+    border-bottom: 1px solid $lightgrey;
+    padding: 5px 0;
+    & div{
+      min-height: 22px;
+    }
+  }
+  .files-action-button{
+    display: flex;
+    a{
+      text-decoration: none;
+      background: transparent;
+      padding: 0 5px;
+    }
+  }
+  .reset-padding{
+    padding: 0;
+    & > .reset-padding{
+      & div{
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal; /* for IE */
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .fact-icon,
+  .plan-icon,
+  .pf-icon{
+    display: block;
+    height: 2.5rem;
+    width: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 25%;
+    text-align: center;
+    border:  0.125rem solid;
+  }
+  .fact-icon{
+    border-color: $blue;
+  }
+  .plan-icon{
+    border-color: $green;
+  }
+  .pf-icon{
+    border-color: $orange;
+  }
+  @media (min-width: 992px) {
+    .reset-padding{
+      & > .reset-padding{
+        & > div:hover{
+          overflow: visible;
+          white-space: normal;
+          word-wrap: break-word;
+          font-size: smaller;
+        }
+      }
+    }
+  }
+  @media (max-width: 991.9px) {
+    .reset-padding{
+      & div{
+        border-bottom: 1px solid $lightcyan;
+      }
+    }
+    .files-action-button{
+      flex-direction: column;
+    }
+    .fact-icon,
+    .plan-icon,
+    .pf-icon{
+      height: 2rem;
+      width: 2rem;
+      font-size: 1.3rem;
+    }
+  }
+  @media (max-width: 384px) {
+    .reset-padding{
+      & > .reset-padding{
+        & div{
+          font-size: small;
+        }
+      }
     }
   }
 

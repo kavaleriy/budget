@@ -1,15 +1,2 @@
-= select_tag :amount_select, options_for_select(amounts.collect { |t| [ t[:title], t[:id] ] } ), { class: 'form-control' }
-
-:javascript
-
-  $(document).ready(function() {
-    // radio buttons to switch level
-    $('#amount_select').on("change", function(){
-      selected = $(this).find(":selected")
-      aTreeChart.divider.amount = selected.attr('amount') || 1
-      aTreeChart.divider.amount_pre = selected.attr('amount_pre')
-      aTreeChart.divider.recalc_per = (selected.attr('recalc_per') == 'true')
-
-      aTreeChart.refresh()
-    });
-  })
+.col-sm-4.select-amount
+  = select_tag :amount_select, options_for_select(amounts.collect { |t| [ t[:title], t[:id] ] } ), {include_blank: true}

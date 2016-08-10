@@ -23,6 +23,8 @@
       %th
         = t('.created_at')
       %th
+        = t('.active')
+      %th
         =t 'form.actions', :default => t("helpers.actions")
   %tbody#taxonomies_list
     - @taxonomies.each do |taxonomy|
@@ -34,6 +36,9 @@
         %td= taxonomy.get_author
         %td= taxonomy.owner
         %td= get_created_at(taxonomy.created_at)
+        %td
+          = get_active_icon(taxonomy.active)
+          -#= check_box_tag(:active, taxonomy.id, taxonomy.active || !taxonomy.active.nil? ? true : false, disabled: true)
         %td
           = link_to t('recipients'), recipients_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
           = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'

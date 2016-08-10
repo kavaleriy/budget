@@ -1,6 +1,57 @@
-:css
+:scss
+  // init colors
+  $lightcyan: lightcyan;
+  $lightgrey: lightgrey;
+
   .documents_search {
     margin-top: 20px;
+  }
+  .reset-padding{
+    padding: 5px 0;
+    & div:not(.row){
+      padding: 0;
+    }
+  }
+  .table-title{
+    font-weight: bold;
+    border-bottom: 2px solid $lightgrey;
+  }
+  .table-body{
+    border-bottom: 1px solid $lightgrey;
+    padding: 5px 0;
+    & div{
+      min-height: 22px;
+      word-wrap: break-word;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.9px) {
+    .table-title,
+    .table-body{
+      font-size: small;
+    }
+  }
+  @media (max-width: 767.9px) {
+    .reset-padding{
+      & > div > div{
+        min-height: 25px;
+        //border-bottom: 1px solid $lightcyan;
+      }
+      & .visible-xs{
+        font-weight: bold;
+      }
+      & .visible-xs ~ .text-center{
+        text-align: left;
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    .reset-padding{
+      & .visible-xs,
+      & .visible-xs ~ div{
+        font-weight: normal;
+        font-size: small;
+      }
+    }
   }
 
 = content_for :header do
@@ -13,7 +64,37 @@
 .col-xs-12.documents_search
   = render partial: 'search'
 
-.documentation.col-xs-12.table-responsive
+.documentation.row.table-title
+  .col-sm-1.reset-padding.hidden-xs
+    .col-sm-12
+      .col-sm-12
+        = t('.file')
+  .col-sm-11.reset-padding.hidden-xs
+    .col-sm-7
+      .col-sm-3
+        = sortable "category_id", t('.category')
+      .col-sm-5.text-center
+        = sortable "title", t('.title')
+
+      -#todo --> in source code was this column. Functionality was replace to first column. Should be deleted after relize
+      -#.col-xs-1
+      -#  = t('.download')
+
+      .col-sm-4.text-center
+        = sortable "yearFrom", t('.years')
+    .col-sm-5
+      .col-sm-3
+        = sortable "town_id", t('.town')
+      .col-sm-5
+        = sortable "branch_id", t('.type')
+      .col-sm-4.text-right
+        = sortable "locked", t('.locked')
+.col-xs-12.reset-padding#results
+  = render partial: 'search_results', :locals => { documents: @documentation_documents }
+
+
+-#todo --> dellete this block if layouts structure will apply
+-#.documentation.col-xs-12.table-responsive
   %table.table.table-striped
     %thead
       %tr

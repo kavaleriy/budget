@@ -17,6 +17,7 @@ class Town
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
   scope :get_town_by_part_title, -> (part) {where(title: Regexp.new("^#{part}.*"))}
+  scope :get_towns_by_titles, -> (titles) {where(:title.in => titles)}
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -42,6 +43,7 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
+  has_many :taxonomy, class_name: 'Taxonomy'
 
   validates :title ,presence: true
   # validates :koatuu, :is_area_level
@@ -64,6 +66,17 @@ class Town
     # Work ONLY if Town belongs to area or town
     # TODO: check Town belongs to village
     WikiParser.get_wiki_town_info(self.title) || self.description || I18n.t('no_town_description_info')
+  end
+
+  def self.get_central_authority_towns(query)
+    # first of all get users with authority roles mask
+    city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
+                                                         User.mask_for(:central_authority)])
+    # second we find all they towns and last add regular expression to all they towns
+    Town.where(:title.in => city_authority_users.map{|user|
+      town = Town.get_user_town(user)
+      town.title unless town.nil?
+    }).and(title: Regexp.new("^#{query}.*"))
   end
 
   def is_test?
