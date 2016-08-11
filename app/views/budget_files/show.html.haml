@@ -24,6 +24,9 @@
   = t('.editinfo')
 = link_to t('form.destroy', :default => t("helpers.links.destroy")), budget_file_path(@budget_file), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
+= link_to budget_file_download_path(@budget_file), :class => '' do
+  %i.fa.fa-download.fa.fa-border.fa-2x
+
 
 #embed_code_visify.embed_code
   = render partial: 'widgets/visify/embed_code'

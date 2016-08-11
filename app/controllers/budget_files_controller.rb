@@ -23,20 +23,6 @@ class BudgetFilesController < ApplicationController
   def index
     @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page])
 
-    @budget_files = case sort_column
-                      when "title"
-                        @budget_files.order_by(title: sort_direction)
-                      when "taxonomy.owner"
-                        # TODO order budget files by town
-                        @budget_files.order_by(taxonomy:'owner ASC')
-                      when "data_type"
-                        @budget_files.order_by(data_type: sort_direction)
-                      when "author"
-                        @budget_files.order_by(author: sort_direction)
-                    end
-
-    # @budget_files.reverse! if sort_direction == "desc"
-
     @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
     unless params["q"].blank?
       @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
@@ -45,6 +31,20 @@ class BudgetFilesController < ApplicationController
 
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
     file_owners = Taxonomy.where(:id.in => taxonomy_ids)
+
+    # @budget_files = case sort_column
+    #                   when "title"
+    #                     @budget_files.order_by(title: sort_direction)
+    #                   when "taxonomy.owner"
+    #                     # TODO order budget files by town
+    #                     @budget_files.order_by(taxonomy:'owner ASC')
+    #                   when "data_type"
+    #                     @budget_files.order_by(data_type: sort_direction)
+    #                   when "author"
+    #                     @budget_files.order_by(author: sort_direction)
+    #                 end
+    #
+    # @budget_files.reverse! if sort_direction == "desc"
 
     unless params["town_select"].blank?
       towns = []

@@ -3,4 +3,8 @@
 
 .list-group
   - @taxonomy.budget_files.each do |budget_file|
-    = link_to budget_file.title, budget_file_path(budget_file), :class => 'list-group-item'
+    .list-group-item
+      = link_to budget_file.title, budget_file_path(budget_file), :class => ''
+
+      = link_to budget_file_download_path(budget_file), :class => '' do
+        %i.fa.fa-download.fa.fa-border.fa-2x
