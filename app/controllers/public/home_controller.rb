@@ -20,41 +20,6 @@ module Public
       @page = ContentManager::PageContainer.get_page_by_alias(params[:alias]).first
     end
 
-    # ===== Delete it method after upgrade new design ====== #
-    def demo_index
-      @sliders = Modules::Slider.get_slider_by_order
-      @budgets_news = Modules::BudgetNews.get_last_news(7)
-
-      # render layout: 'new_design'
-      render 'public/home/new_design/demo_index', layout: 'new_design'
-    end
-
-    def demo_profile
-      # @test_town = Town.get_test_town.first
-
-      # render layout: 'town_profile'
-      render 'public/home/new_design/demo_profile', layout: 'town_profile'
-    end
-
-    def demo_repair_roads_map
-      @town = Town.get_test_town.first
-
-      # render layout: 'town_profile'
-      render 'public/home/new_design/repair_roads_map', layout: 'town_profile'
-      end
-
-    def demo_news
-
-      # render layout: 'new_design'
-      render 'public/home/new_design/news_list', layout: 'new_design'
-    end
-
-    def demo_news_item
-
-      # render layout: 'new_design'
-      render 'public/home/new_design/news_list_item', layout: 'new_design'
-    end
-    # ===== End. =========================================== #
     # def budget
     #   @budgets = Taxonomy.all
     # end
