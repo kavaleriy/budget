@@ -136,7 +136,8 @@
             .data
               %i.fa.fa-clock-o{"aria-hidden" => "true"}
                 -#Localize data
-                = l(news.created_at, format: '%d %B')
+                -#= l(news.created_at, format: '%d %B')
+                = news.get_date('short')
             .title
               -#= news.title
               =truncate(news.title, length: 85)

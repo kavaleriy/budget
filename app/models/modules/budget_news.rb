@@ -5,6 +5,7 @@ class Modules::BudgetNews
   require 'carrierwave/mongoid'
 
   scope :get_last_news, ->(count) {order("news_date DESC").limit(count)}
+  scope :published_news, -> { where published: true }
 
   # before_save :set_date
   before_save :publish_news
@@ -12,6 +13,7 @@ class Modules::BudgetNews
   validates :title,:news_text, presence: true
   validates :link, format: { with: /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/,
                              message: I18n.t('activerecord.attributes.invalid.link') }, allow_blank: true
+  validates :news_date, presence: true
 
   mount_uploader :img, BudgetNewsImageUploader
   field :title, type: String
@@ -35,13 +37,19 @@ class Modules::BudgetNews
     self.link
   end
 
-  def get_date
+  def get_date(format)
+    self.created_at, self.news_date = Time.current if self.created_at.nil? && self.news_date.nil?
     # rewrite time created_at by news_date if created_at nil
     self.created_at = self.news_date if self.created_at.nil?
     # rewrite time news_date by created_at if news_date nil
     self.news_date = self.created_at if self.news_date.nil?
 
-    self.news_date.strftime "%Y-%m-%d %H:%M:%S"
+    formatedDate = self.news_date.strftime "%d-%m-%Y %H:%M:%S"  if format == 'full'
+    formatedDate = self.news_date.strftime "%d-%m-%Y %H:%M"     if format == 'long'
+    formatedDate = self.news_date.strftime "%d-%m-%Y"           if format == 'medium'
+    formatedDate = I18n.l(self.news_date, format: '%d %B')      if format == 'short'
+
+    return formatedDate
   end
 
   private

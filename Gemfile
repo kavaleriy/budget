@@ -61,7 +61,7 @@ gem 'mongoid', '~> 4.0.0'
 gem 'haml-rails'
 
 # https://github.com/derekprior/momentjs-rails
-gem 'momentjs-rails', '>= 2.5.0'
+# gem 'momentjs-rails', '>= 2.5.0'
 
 # https://github.com/bokmann/fullcalendar-rails
 # gem 'fullcalendar-rails'
@@ -132,3 +132,6 @@ gem 'wkhtmltopdf-binary'
 gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'
 
 gem 'simple_form'
+
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
