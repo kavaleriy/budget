@@ -1,29 +1,136 @@
-%h1 Listing modules_banners
+:scss
 
-%table
-  %thead
-    %tr
-      %th Title
-      %th Order banner
-      %th Publish on
-      %th Banner
-      %th
-      %th
-      %th
+  .banners{
+    font-size: 0;
+    .reset-padding{
+      padding: 0;
+    }
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .banner{
+        background: linear-gradient(to right, transparent, silver, transparent);
+        display: inline-block;
+        width: 19%;
+        margin-right: 1.25%;
+        margin-bottom: 10px;
+        text-align: center;
+      .banner-img{
+        border-bottom: 2px solid orange;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        .banner-img-center{
+          height: 100px;
+          margin: 0 auto;
+        }
+      }
+      .data-actions{
+        font-size: 14px;
+        p{
+          paddingleft: 3px;
+          text-align: left;
+          overflow: hidden;
+          margin-bottom: 5px;
+          white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+        }
+        .info-show-banner {
+          text-align: left;
+          color: #2CC185;
+        }
+        .banner-actions{
+          text-align: right;
+          color: #0a6aa1;
+        }
+        .fa{
+          margin: 3px 4px 0 4px;
+        }
+      }
+    }
+    .banner:nth-child(5n){
+      margin-right: 0%;
+    }
+    @media (min-width: 500px) and (max-width: 768px) {
+      .banner{
+        width: 33%;
+        margin-right: 0.5%;
+        .banner-img{
+        }
+      }
+      .banner:nth-child(5n){
+        margin-right: 0.5%;
+      }
+      .banner:nth-child(3n){
+        margin-right: 0;
+      }
+    }
+    @media (max-width: 500px){
+      .banner{
+        width: 100%;
+        .banner-img{
+        }
+      }
+    }
+  }
 
-  %tbody
-    - @modules_banners.each do |modules_banner|
-      %tr
-        %td= modules_banner.title
-        %td= modules_banner.order_banner
-        %td= modules_banner.publish_on
-        %td
-          - if modules_banner.banner_img.thumb
-            =image_tag modules_banner.banner_img.thumb, class: 'logo-partner img-responsive'
-        %td= link_to 'Show', modules_banner
-        %td= link_to 'Edit', edit_modules_banner_path(modules_banner)
-        %td= link_to 'Destroy', modules_banner, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%br
+.col-md-10.col-md-offset-1.banners
+  .header
+    %h2= 'Banners'
+    .new-banner-btn
+      %h2= link_to 'New banner', new_modules_banner_path, :class => 'btn btn-info'
+  .list-banners
+    - if @modules_banners
+      -  @modules_banners.each do |banner|
+        .banner{'data-id' => banner.id}
+          .data-actions
+            .row
+              .col-xs-5.info-show-banner
+                -if banner.publish_on
+                  %i.fa.fa-eye.fa-2x{style: "color: #2CC185;"}
+                -else
+                  %i.fa.fa-eye-slash.fa-2x{style: "color: coral"}
+              .col-xs-7.banner-actions
+                = link_to edit_modules_banner_path(banner), title: t('edit') do
+                  %i.fa.fa-pencil.fa-2x
+                = link_to banner, :method => :delete, title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
+                  %i.fa.fa-trash-o.fa-2x
+          .banner-img
+            =image_tag banner.banner_img.thumb, class: 'banner-img-center img-responsive'
+          .data-actions
+            %p
+              = banner.title
 
-= link_to 'New Banner', new_modules_banner_path
+
+-#%h1 Listing modules_banners
+-#
+-#%table
+-#  %thead
+-#    %tr
+-#      %th Title
+-#      %th Order banner
+-#      %th Publish on
+-#      %th Banner
+-#      %th
+-#      %th
+-#      %th
+-#
+-#  %tbody
+-#    - @modules_banners.each do |modules_banner|
+-#      %tr
+-#        %td= modules_banner.title
+-#        %td= modules_banner.order_banner
+-#        %td= modules_banner.publish_on
+-#        %td
+-#          - if modules_banner.banner_img.thumb
+-#            =image_tag modules_banner.banner_img.thumb, class: 'logo-partner img-responsive'
+-#        %td= link_to 'Show', modules_banner
+-#        %td= link_to 'Edit', edit_modules_banner_path(modules_banner)
+-#        %td= link_to 'Destroy', modules_banner, :method => :delete, :data => { :confirm => 'Are you sure?' }
+-#
+-#%br
+-#
+-#= link_to 'New Banner', new_modules_banner_path

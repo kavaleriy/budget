@@ -1,5 +1,18 @@
-%h1 New modules_banner
+:scss
+  .banners-form{
+    > p{
+      color: #0d0b5e;
+      background: cornsilk;
+      padding: 5px 10px;
+      display: inline-block;
+      border-radius: 5px;
+    }
+  }
 
-= render 'form'
+.col-md-6.col-md-offset-3.banners-form
+  %h2
+    New banner
+  %p
+    Для кращого відображення банер повинен бути 360*200px або з відповідним співвідношенням сторін.
 
-= link_to 'Back', modules_banners_path
+  = render 'form'

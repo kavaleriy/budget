@@ -1,3 +1,23 @@
+:scss
+
+  .banners-form{
+    padding: 0px;
+    form{
+      margin: 15px 0;
+      .form-actions{
+        margin-top: 15px;
+      }
+      label{
+        abbr[title], abbr[data-original-title]{
+          color: coral;
+        }
+      }
+      .radio label, .checkbox label{
+        font-weight: bold;
+      }
+    }
+  }
+
 = simple_form_for(@modules_banner) do |f|
   = f.error_notification
 
@@ -11,3 +31,4 @@
 
   .form-actions
     = f.button :submit
+    = link_to 'Banners', modules_banners_path, :class => 'btn btn-info'
