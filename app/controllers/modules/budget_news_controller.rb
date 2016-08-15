@@ -16,6 +16,7 @@ module Modules
 
     def show
       @budgets_news = BudgetNews.get_last_news(10)
+      @banners = Modules::Banner.get_publish_banners
       respond_with(@budget_news)
     end
 

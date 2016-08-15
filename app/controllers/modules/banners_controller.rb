@@ -6,7 +6,7 @@ class Modules::BannersController < AdminController
   respond_to :html
 
   def index
-    @modules_banners = Modules::Banner.all
+    @modules_banners = Modules::Banner.all.order(order_banner: :desc)
     respond_with(@modules_banners)
   end
 
@@ -29,8 +29,10 @@ class Modules::BannersController < AdminController
   end
 
   def update
-    unless params[:modules_banner][:banner_img].blank?
-      @modules_banner.remove_banner_img!
+    unless params[:modules_banner][:title].blank?
+      unless params[:modules_banner][:banner_img].blank?
+        @modules_banner.remove_banner_img!
+      end
     end
     @modules_banner.update(modules_banner_params)
     redirect_to modules_banners_path

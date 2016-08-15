@@ -16,6 +16,10 @@ class Modules::Banner
   mount_uploader :banner_img, BannerImageUploader
   skip_callback :update, :store_previous_model_for_banner_img
 
+  def self.get_publish_banners
+    where(publish_on: true).order(order_banner: :desc)
+  end
+
   def set_order_banner
     count = Modules::Banner.count
     self.order_banner = count + 1
