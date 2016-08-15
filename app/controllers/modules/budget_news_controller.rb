@@ -9,6 +9,7 @@ module Modules
     def index
 
       # @budget_news = Modules::BudgetNews.all
+
       @budget_news = @all_budget_news.page(params[:page]).order(news_date: :desc)
 
       respond_with(@budget_news)
@@ -65,9 +66,8 @@ module Modules
       end
 
       def modules_budget_news_params
-        params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date)
+        params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date, :published)
       end
-
 
   end
 end
