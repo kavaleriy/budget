@@ -6,6 +6,7 @@
       %th Title
       %th Order banner
       %th Publish on
+      %th Banner
       %th
       %th
       %th
@@ -16,6 +17,9 @@
         %td= modules_banner.title
         %td= modules_banner.order_banner
         %td= modules_banner.publish_on
+        %td
+          - if modules_banner.banner_img.thumb
+            =image_tag modules_banner.banner_img.thumb, class: 'logo-partner img-responsive'
         %td= link_to 'Show', modules_banner
         %td= link_to 'Edit', edit_modules_banner_path(modules_banner)
         %td= link_to 'Destroy', modules_banner, :method => :delete, :data => { :confirm => 'Are you sure?' }

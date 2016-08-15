@@ -29,6 +29,9 @@ class Modules::BannersController < AdminController
   end
 
   def update
+    unless params[:modules_banner][:banner_img].blank?
+      @modules_banner.remove_banner_img!
+    end
     @modules_banner.update(modules_banner_params)
     respond_with(@modules_banner)
   end
@@ -44,6 +47,6 @@ class Modules::BannersController < AdminController
     end
 
     def modules_banner_params
-      params.require(:modules_banner).permit(:title, :order_banner, :publish_on)
+      params.require(:modules_banner).permit(:title, :order_banner, :publish_on, :banner_img, :banner_url)
     end
 end

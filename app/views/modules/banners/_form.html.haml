@@ -3,8 +3,11 @@
 
   .form-inputs
     = f.input :title
-    = f.input :order_bannerx
-    = f.input :publish_on
+    -if params[:action] == 'edit'
+      = f.input :order_banner, collection: 1..Modules::Partner.count, label: t('modules.partners.index.order')
+    = f.input :banner_img, as: :file, label: 'Banner image', :input_html => { :class => 'form-control', accept: 'image/*' }
+    = f.input :banner_url, as: :url, label: 'Banner url', :input_html => { :class => 'form-control'}
+    = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
 
   .form-actions
     = f.button :submit
