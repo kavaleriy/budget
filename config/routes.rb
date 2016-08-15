@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
 
   namespace :modules do
+    resources :banners
+  end
+
+  namespace :modules do
     resources :partners
   end
 

@@ -1,0 +1,25 @@
+%h1 Listing modules_banners
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Order banner
+      %th Publish on
+      %th
+      %th
+      %th
+
+  %tbody
+    - @modules_banners.each do |modules_banner|
+      %tr
+        %td= modules_banner.title
+        %td= modules_banner.order_banner
+        %td= modules_banner.publish_on
+        %td= link_to 'Show', modules_banner
+        %td= link_to 'Edit', edit_modules_banner_path(modules_banner)
+        %td= link_to 'Destroy', modules_banner, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Banner', new_modules_banner_path
