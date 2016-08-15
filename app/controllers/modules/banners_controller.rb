@@ -25,7 +25,7 @@ class Modules::BannersController < AdminController
   def create
     @modules_banner = Modules::Banner.new(modules_banner_params)
     @modules_banner.save
-    respond_with(@modules_banner)
+    redirect_to modules_banners_path
   end
 
   def update
@@ -33,7 +33,7 @@ class Modules::BannersController < AdminController
       @modules_banner.remove_banner_img!
     end
     @modules_banner.update(modules_banner_params)
-    respond_with(@modules_banner)
+    redirect_to modules_banners_path
   end
 
   def destroy

@@ -76,12 +76,11 @@
     }
   }
 
-
 .col-md-10.col-md-offset-1.banners
   .header
-    %h2= 'Banners'
+    %h2= t('.header')
     .new-banner-btn
-      %h2= link_to 'New banner', new_modules_banner_path, :class => 'btn btn-info'
+      %h2= link_to t('.new_btn_name'), new_modules_banner_path, :class => 'btn btn-info'
   .list-banners
     - if @modules_banners
       -  @modules_banners.each do |banner|
@@ -103,34 +102,3 @@
           .data-actions
             %p
               = banner.title
-
-
--#%h1 Listing modules_banners
--#
--#%table
--#  %thead
--#    %tr
--#      %th Title
--#      %th Order banner
--#      %th Publish on
--#      %th Banner
--#      %th
--#      %th
--#      %th
--#
--#  %tbody
--#    - @modules_banners.each do |modules_banner|
--#      %tr
--#        %td= modules_banner.title
--#        %td= modules_banner.order_banner
--#        %td= modules_banner.publish_on
--#        %td
--#          - if modules_banner.banner_img.thumb
--#            =image_tag modules_banner.banner_img.thumb, class: 'logo-partner img-responsive'
--#        %td= link_to 'Show', modules_banner
--#        %td= link_to 'Edit', edit_modules_banner_path(modules_banner)
--#        %td= link_to 'Destroy', modules_banner, :method => :delete, :data => { :confirm => 'Are you sure?' }
--#
--#%br
--#
--#= link_to 'New Banner', new_modules_banner_path
