@@ -2,11 +2,12 @@ class Modules::BannersController < AdminController
   layout 'application_admin'
   before_action :check_admin_permission
   before_action :set_modules_banner, only: [:show, :edit, :update, :destroy]
+  before_action :get_modules_banners, only: [:index, :change_order]
 
   respond_to :html
 
   def index
-    @modules_banners = Modules::Banner.order(order_banner: :desc)
+    get_modules_banners
     respond_with(@modules_banners)
   end
 
@@ -46,6 +47,20 @@ class Modules::BannersController < AdminController
     end
   end
 
+  def change_order
+    banner_up = Modules::Banner.find(params[:banner_up])
+    banner_down = Modules::Banner.find(params[:banner_down])
+    banner_up_order = banner_up.order_banner
+    banner_down_order = banner_down.order_banner
+    banner_up.update_attribute(:order_banner, banner_down_order)
+    banner_down.update_attribute(:order_banner, banner_up_order)
+
+    respond_to do |format|
+      format.js
+      format.html{redirect_to modules_banners_path}
+    end
+  end
+
   def destroy
     @modules_banner.destroy
     flash[:success] = t('modules.banners.action_messages.destroy.success')
@@ -53,6 +68,10 @@ class Modules::BannersController < AdminController
   end
 
   private
+    def get_modules_banners
+      @modules_banners = Modules::Banner.order(order_banner: :desc)
+    end
+
     def set_modules_banner
       @modules_banner = Modules::Banner.find(params[:id])
     end

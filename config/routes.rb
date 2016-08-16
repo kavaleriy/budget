@@ -25,8 +25,9 @@ Rails.application.routes.draw do
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
-    resources :banners
     resources :partners
+    resources :banners
+    post 'change_order', to: 'banners#change_order', as: :change_order
   end
 
   resources :export_budgets
