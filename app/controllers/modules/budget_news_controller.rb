@@ -62,7 +62,7 @@ module Modules
     end
 
     def all_news
-      @budget_news = @published_budget_news.page(params[:page]).per(9).order(news_date: :desc) if !@published_budget_news.nil?
+      @budget_news = @published_budget_news.page(params[:page]).per(9).order(news_date: :desc) unless @published_budget_news.nil?
     end
 
     private
