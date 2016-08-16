@@ -2,34 +2,109 @@
   // init colors
   $lightcyan: lightcyan;
   $lightgrey: lightgrey;
+  $yellow: #ffd304;
+  $yellow-transperent: rgba(255, 211, 4, .65);
+  $darkblue: #0c2231;
+  $black: black;
+  $white: white;
 
-  .news-action-button{
-    display: flex;
-    //flex-direction: column;
-    a{
-      text-decoration: none;
-      background: transparent;
-      padding: 0 5px;
+  .title-block {
+    border-bottom: 2px solid $darkblue;
+    margin-bottom: 10px;
+    .title {
+      margin: 15px 0;
+      p {
+        float: right;
+        text-transform: uppercase;
+        margin: 0;
+        padding: 10px;
+        font-family: 'Lato', sans-serif;
+        font-size: 3rem;
+        background: $yellow;
+        color: $darkblue;
+      }
+    }
+    .btn-create {
+      margin: 25px 0;
+      .add-new {
+        text-transform: uppercase;
+        margin: 0;
+        padding: 10px 0;
+        font-family: 'Lato', sans-serif;
+        font-size: 3rem;
+        background: $yellow;
+        color: $darkblue;
+        i {
+          padding: 15px;
+        }
+      }
+      .tooltip {
+        .tooltip-arrow {
+          border-bottom-color: $yellow;
+        }
+        .tooltip-inner {
+          background-color: $yellow;
+          color: $black;
+        }
+      }
     }
   }
-  .reset-padding{
-    padding: 0;
-    & > div{
-      padding: 0 5px;
-    }
-  }
-  .table-title{
-    font-weight: bold;
+
+  .table-title,
+  .table-body {
+    padding: 5px 0;
     border-bottom: 2px solid $lightgrey;
-    padding: 5px 0;
+    .reset-padding {
+      padding: 0;
+      & > div {
+        padding: 0 5px;
+      }
+    }
   }
-  .table-body{
-    border-bottom: 1px solid $lightgrey;
-    padding: 5px 0;
-    & div{
+
+  .table-title {
+    font-weight: bold;
+  }
+
+  .table-body {
+    & div {
       min-height: 22px;
     }
+    .news-action-button {
+      display: flex;
+      a {
+        text-decoration: none;
+        background: transparent;
+        padding: 0 5px;
+        color: $darkblue;
+        &:hover,
+        &:focus {
+          background: $yellow;
+          i {
+            opacity: .6;
+          }
+        }
+      }
+    }
   }
+
+  .active-news {
+    background: $yellow-transperent;
+    .news-action-button {
+      a {
+        &:hover,
+        &:focus {
+          background: $black;
+          padding: 5px;
+          i {
+            color: $white;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  //Media block
   @media screen and (max-width: 991.9px) {
     .news-action-button{
       flex-direction: column;
@@ -52,70 +127,73 @@
     }
   }
 
-.container-fluid
-  %h1
-    = t('.header')
+.row.title-block
+  .title.pull-left
+    %p
+      = t('.header')
+  .btn-create.pull-right
+    = link_to new_modules_budget_news_path, class: 'add-new', title: t('modules.budget_news.index.hint_add_new'), 'data-toggle' => 'tooltip', 'data-placement' => 'bottom' do
+      %i.fa.fa-plus
+    -#t('.create'),
 
-  = link_to t('.create'),new_modules_budget_news_path
-  %br
-  %br
-  -if(!@budget_news.blank?)
-    .row.table-title.hidden-xs
-      .col-sm-11.reset-padding
-        .col-sm-3.col-md-3.text-center
-          = t('.title')
-        .col-sm-4.col-md-4.text-center
-          = t('.text')
-        .col-sm-5.col-md-3.reset-padding
-          .col-sm-6
-            = t('.link')
-          .col-sm-6.text-center
-            = t('.date')
+-if(!@budget_news.blank?)
+  .row.table-title.hidden-xs
+    .col-sm-11.reset-padding
+      .col-sm-3.col-md-3.text-center
+        = t('modules.budget_news.form.title')
+      .col-sm-4.col-md-4.text-center
+        = t('modules.budget_news.form.text')
+      .col-sm-5.col-md-3.reset-padding
+        .col-sm-6
+          = t('modules.budget_news.form.link')
+        .col-sm-6.text-center
+          = t('.date')
+      .col-md-2.visible-md.visible-lg
+        = t('modules.budget_news.form.image')
+    .col-sm-1.reset-padding.text-center
+      -#.col-xs-3
+      = t('.action')
+
+  - @budget_news.each do |budget_news|
+    .row.table-body{:class => ('active-news' if budget_news.published?)}
+      .col-xs-11.reset-padding
+        .col-xs-3.visible-xs
+          = t('modules.budget_news.form.title')
+        .col-xs-7.col-sm-3.col-md-3.text-justify
+          = budget_news.title
+          -#= truncate(budget_news.title, :length => 30, :separator => ' ')
+        .col-xs-3.visible-xs
+          = t('modules.budget_news.form.text')
+        .col-xs-7.col-sm-4.col-md-4.text-justify
+          = strip_tags(sanitize(budget_news.news_text)).truncate(150).gsub("&nbsp;", '')
+          -#= sanitize(budget_news.news_text)
+        .col-xs-3.visible-xs
+          = t('.date')
+        .col-xs-7.col-sm-5.col-md-3.reset-padding
+          .col-xs-6.col-sm-push-6.text-center
+            = budget_news.get_date('long')
+            -#-binding.pry
+          .col-xs-6.col-sm-pull-6
+            = link_to t('.view'), budget_news, class: 'btn btn-default'
+            -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
         .col-md-2.visible-md.visible-lg
-          = t('.image')
-      .col-sm-1.reset-padding.text-center
-        -#.col-xs-3
-        = t('.action')
+          = image_tag budget_news.img.thumb, class: 'img-responsive'
+      .col-xs-1.news-action-button.reset-padding
+        = link_to budget_news do
+          %i.fa.fa-eye.fa-2x
+        = link_to edit_modules_budget_news_path(budget_news) do
+          %i.fa.fa-pencil.fa-2x
+        = link_to budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')} do
+          %i.fa.fa-trash-o.fa-2x
 
-    - @budget_news.each do |budget_news|
-      .row.table-body
-        .col-xs-11.reset-padding
-          .col-xs-3.visible-xs
-            = t('.title')
-          .col-xs-7.col-sm-3.col-md-3.text-justify
-            = budget_news.title
-            -#= truncate(budget_news.title, :length => 30, :separator => ' ')
-          .col-xs-3.visible-xs
-            = t('.text')
-          .col-xs-7.col-sm-4.col-md-4.text-justify
-            = strip_tags(sanitize(budget_news.news_text)).truncate(150).gsub("&nbsp;", '')
-            -#= sanitize(budget_news.news_text)
-          .col-xs-3.visible-xs
-            = t('.date')
-          .col-xs-7.col-sm-5.col-md-3.reset-padding
-            .col-xs-6.col-sm-push-6.text-center
-              = budget_news.get_date
-            .col-xs-6.col-sm-pull-6
-              = link_to t('.view'), budget_news, class: 'btn btn-default'
-              -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title
-          .col-md-2.visible-md.visible-lg
-            = image_tag budget_news.img.thumb, class: 'img-responsive'
-        .col-xs-1.news-action-button.reset-padding
-          = link_to budget_news do
-            %i.fa.fa-eye.fa-2x
-          = link_to edit_modules_budget_news_path(budget_news) do
-            %i.fa.fa-pencil.fa-2x
-          = link_to budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')} do
-            %i.fa.fa-trash-o.fa-2x
+          -#= link_to image_tag('icons/loupe.png'), budget_news
+          -#= link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
+          -#= link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
 
-            -#= link_to image_tag('icons/loupe.png'), budget_news
-            -#= link_to image_tag('icons/pencil.png'), edit_modules_budget_news_path(budget_news)
-            -#= link_to image_tag('icons/X_icon.png'), budget_news, :method => :delete, data: {confirm: t('.confirm') , commit: t('.sure')}
-
-  -else
-    = t('public.home.news.no_news')
-  %br
-    = paginate @budget_news
+-else
+  = t('public.home.news.no_news')
+%br
+  = paginate @budget_news
 
 -#todo --> delete this block if layouts will apply
 -#.col-md-12
@@ -159,7 +237,13 @@
     = paginate @budget_news
 
 :javascript
-  dataConfirmModal.setDefaults({
-    title:  'Видалення новини',
-    cancel: 'Відмінити'
+  $(document).ready(function() {
+    $('.add-new').tooltip({
+      trigger: 'hover'
+    });
+
+    dataConfirmModal.setDefaults({
+      title:  'Видалення новини',
+      cancel: 'Відмінити'
+    });
   });
