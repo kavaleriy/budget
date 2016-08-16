@@ -29,14 +29,12 @@ module Modules
 
     def create
       @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
-
       if @budget_news.save
         flash[:success] = t('budget_news.create.success')
         redirect_to @budget_news
       else
         render :new
       end
-      # respond_with(@budget_news)
     end
 
     def update
@@ -51,8 +49,6 @@ module Modules
       else
         render :edit
       end
-
-      # respond_with(@budget_news)
     end
 
     def destroy
@@ -67,7 +63,6 @@ module Modules
 
     def all_news
       @budget_news = @published_budget_news.page(params[:page]).per(9).order(news_date: :desc) if !@published_budget_news.nil?
-      @budget_news = Modules::BudgetNews.first if @published_budget_news.nil?
     end
 
     private

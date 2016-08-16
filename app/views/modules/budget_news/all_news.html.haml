@@ -1,4 +1,12 @@
 :scss
+  //init colors
+
+  $ligthred: lightcoral;
+  $white: white;
+  $black: black;
+  $yellow: #ffd304;
+  $darkblue: #0c2231;
+
   .news-list {
     position: relative;
     min-height: calc(100vh - (103px + 120px));
@@ -17,17 +25,27 @@
           padding: 10px;
           font-family: 'Lato', sans-serif;
           font-size: 3rem;
-          background: #ffd304;
-          color: #0c2231;
+          background: $yellow;
+          color: $darkblue;
         }
       }
       .row {
         margin: 0 -60px;
+        .no-items {
+          text-align: center;
+          padding: 5px 2px;
+          background: $ligthred;
+          border-radius: 5px;
+          width: 90%;
+          margin: 0 5%;
+          color: $white;
+          font-weight: bold;
+        }
         .news-item {
           padding: 0 60px 20px;
           a {
             text-decoration: none;
-            color: black;
+            color: $black;
             &:hover,
             &:focus {
               .img {
@@ -35,7 +53,7 @@
                 -webkit-filter: sepia(1);
                 filter: sepia(1);
                 transition: .4s;
-                background: #ffd304;
+                background: $yellow;
               }
             }
             .img {
@@ -48,7 +66,7 @@
               .no-image {
                 height: 21rem;
                 text-align: center;
-                border: 1px solid #ffd304;
+                border: 1px solid $yellow;
                 border-radius: 4px;
                 margin-bottom: 10px;
                 i {
@@ -94,7 +112,7 @@
             }
             a {
               border: none;
-              color: black;
+              color: $black;
               font-size: 1.8rem;
               font-family: 'Lato', sans-serif;
               font-weight: 600;
@@ -105,7 +123,7 @@
           }
           .active {
             a {
-              background-color: #ffd304;
+              background-color: $yellow;
             }
           }
           .disabled {
@@ -123,6 +141,9 @@
     .title
       %p Новини
     .row
+      -if @budget_news.empty?
+        .col-xs-12.no-items
+          = t('modules.budget_news.all_news.no-item')
       -@budget_news.each do |news|
         .col-xs-12.col-sm-6.col-md-4.news-item
           = link_to "#{news.get_link}?locale=#{params[:locale]}" do
