@@ -6,7 +6,7 @@ class Modules::BannersController < AdminController
   respond_to :html
 
   def index
-    @modules_banners = Modules::Banner.all.order(order_banner: :desc)
+    @modules_banners = Modules::Banner.order(order_banner: :desc)
     respond_with(@modules_banners)
   end
 

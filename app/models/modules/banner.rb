@@ -1,11 +1,13 @@
 class Modules::Banner
   include Mongoid::Document
-
   include Mongoid::Timestamps
+
   field :title, type: String
   field :order_banner, type: Integer
   field :publish_on, type: Boolean
   field :banner_url, type: String
+
+  scope :get_publish_banners, -> {where(publish_on: true)}
 
   before_create :set_order_banner
 
@@ -15,10 +17,6 @@ class Modules::Banner
 
   mount_uploader :banner_img, BannerImageUploader
   skip_callback :update, :store_previous_model_for_banner_img
-
-  def self.get_publish_banners
-    where(publish_on: true).order(order_banner: :desc)
-  end
 
   def set_order_banner
     count = Modules::Banner.count
