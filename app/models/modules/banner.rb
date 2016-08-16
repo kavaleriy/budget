@@ -4,14 +4,14 @@ class Modules::Banner
   include Mongoid::Timestamps
   field :title, type: String
   field :order_banner, type: Integer
-  field :publish_on, type: Mongoid::Boolean
+  field :publish_on, type: Boolean
   field :banner_url, type: String
 
   before_create :set_order_banner
 
-  validates :title, :presence => true
-  validates :banner_img, :presence => true, if: "banner_url.blank?"
-  validates :banner_url, :presence => true, if: "banner_img.blank?"
+  validates_presence_of  :title
+  validates_presence_of  :banner_img, unless: :banner_url?
+  validates_presence_of  :banner_url, unless: :banner_img?
 
   mount_uploader :banner_img, BannerImageUploader
   skip_callback :update, :store_previous_model_for_banner_img

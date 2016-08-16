@@ -24,8 +24,12 @@ class Modules::BannersController < AdminController
 
   def create
     @modules_banner = Modules::Banner.new(modules_banner_params)
-    @modules_banner.save
-    redirect_to modules_banners_path
+    if @modules_banner.save
+      flash[:success] = t('modules.banners.action_messages.create.success')
+      redirect_to modules_banners_path
+    else
+      render :new
+    end
   end
 
   def update
@@ -34,12 +38,17 @@ class Modules::BannersController < AdminController
         @modules_banner.remove_banner_img!
       end
     end
-    @modules_banner.update(modules_banner_params)
-    redirect_to modules_banners_path
+    if @modules_banner.update(modules_banner_params)
+      flash[:success] = t('modules.banners.action_messages.update.success')
+      redirect_to modules_banners_path
+    else
+      render :edit
+    end
   end
 
   def destroy
     @modules_banner.destroy
+    flash[:success] = t('modules.banners.action_messages.destroy.success')
     respond_with(@modules_banner)
   end
 
