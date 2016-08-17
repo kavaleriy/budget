@@ -8,9 +8,9 @@
           -else
             %i.fa.fa-eye-slash.fa-2x{style: "color: coral"}
         .col-xs-10.banner-actions
-          = link_to modules_change_order_path(banner_down: banner.id, banner_up: get_banner_id(@modules_banners, i, 'left')), title: t('modules.banners.index.drag_left'), method: :post, remote: true do
+          = link_to modules_change_banner_order_path(banner_down: banner.id, banner_up: get_banner_id(@modules_banners, i, 'left')), title: t('modules.drag.drag_left'), method: :post, remote: true do
             %i.fa.fa-long-arrow-left.fa-2x.change-order
-          = link_to modules_change_order_path(:banner_up => banner.id, :banner_down => get_banner_id(@modules_banners, i, 'right')), title: t('modules.banners.index.drag_right'), method: :post, remote: true do
+          = link_to modules_change_banner_order_path(banner_up: banner.id, banner_down: get_banner_id(@modules_banners, i, 'right')), title: t('modules.drag.drag_right'), method: :post, remote: true do
             %i.fa.fa-long-arrow-right.fa-2x.change-order
           = link_to edit_modules_banner_path(banner), title: t('edit') do
             %i.fa.fa-pencil.fa-2x

@@ -1,12 +1,11 @@
 class Modules::PartnersController < AdminController
   layout 'application_admin'
-  before_action :check_admin_permission
   before_action :set_modules_partner, only: [:show, :edit, :update, :destroy]
+  before_action :get_modules_partners, only: [:index, :change_order]
 
   respond_to :html
 
   def index
-    @modules_partners = Modules::Partner.order(order_logo: :asc)
     respond_with(@modules_partners)
   end
 
@@ -24,8 +23,12 @@ class Modules::PartnersController < AdminController
 
   def create
     @modules_partner = Modules::Partner.new(modules_partner_params)
-    @modules_partner.save
-    redirect_to modules_partners_path
+    if @modules_partner.save
+      flash[:success] = t('modules.partners.action_messages.create.success')
+      redirect_to modules_partners_path
+    else
+      render :new
+    end
   end
 
   def update
@@ -34,21 +37,55 @@ class Modules::PartnersController < AdminController
         @modules_partner.remove_logo!
       end
     end
-    @modules_partner.update(modules_partner_params)
-    redirect_to modules_partners_path
+    if @modules_partner.update(modules_banner_params)
+      flash[:success] = t('modules.partners.action_messages.update.success')
+      redirect_to modules_partners_path
+    else
+      render :edit
+    end
+  end
+
+  def change_order
+    partner_up = Modules::Partner.find(params[:partner_up])
+    partner_down = Modules::Partner.find(params[:partner_down])
+    partner_up_order = partner_up.order_logo
+    partner_down_order = partner_down.order_logo
+    partner_up.update_attribute(:order_logo, partner_down_order)
+    partner_down.update_attribute(:order_logo, partner_up_order)
+
+    respond_to do |format|
+      format.js
+      format.html{redirect_to modules_partners_path}
+    end
   end
 
   def destroy
-    @modules_partner.destroy
+    if @modules_partner.destroy
+      reorder_partners(@modules_partner.order_logo)
+    end
+    flash[:success] = t('modules.partners.action_messages.destroy.success')
     respond_with(@modules_partner)
   end
 
   private
+    def reorder_partners(order_partner)
+      modules_partners = Modules::Partner.where(:order_logo.gt => order_partner).order(order_logo: :asc)
+      i = order_partner
+      modules_partners.each do |partner|
+        partner.update_attribute(:order_logo, i)
+        i+=1
+      end
+    end
+
+    def get_modules_partners
+      @modules_partners = Modules::Partner.order(order_logo: :asc)
+    end
+
     def set_modules_partner
       @modules_partner = Modules::Partner.find(params[:id])
     end
 
     def modules_partner_params
-      params.require(:modules_partner).permit(:name, :order_logo, :publish_on, :logo)
+      params.require(:modules_partner).permit(:name, :publish_on, :logo)
     end
 end
