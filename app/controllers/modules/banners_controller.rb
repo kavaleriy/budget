@@ -1,6 +1,5 @@
 class Modules::BannersController < AdminController
   layout 'application_admin'
-  before_action :check_admin_permission
   before_action :set_modules_banner, only: [:show, :edit, :update, :destroy]
   before_action :get_modules_banners, only: [:index, :change_order]
 
