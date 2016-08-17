@@ -6,7 +6,7 @@ class Modules::PartnersController < AdminController
   respond_to :html
 
   def index
-    @modules_partners = Modules::Partner.all.order(order_logo: :asc)
+    @modules_partners = Modules::Partner.order(order_logo: :asc)
     respond_with(@modules_partners)
   end
 

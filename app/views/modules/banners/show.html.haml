@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @modules_banner.title
+%p
+  %b Order banner:
+  = @modules_banner.order_banner
+%p
+  %b Publish on:
+  = @modules_banner.publish_on
+
+= link_to 'Edit', edit_modules_banner_path(@modules_banner)
+\|
+= link_to 'Back', modules_banners_path

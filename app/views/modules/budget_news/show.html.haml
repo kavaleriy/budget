@@ -9,6 +9,7 @@
       .news-item-article {
         //border: 1px solid red;
         padding: 0;
+        margin-bottom: 10px;
         .article-title {
           font-family: 'Lato', sans-serif;
           font-weight: 600;
@@ -143,7 +144,8 @@
         padding: 0;
         //border: 1px solid red;
         img {
-          margin-bottom: 15px;
+          margin: 0 auto 15px;
+          //max-width: 360px;
         }
       }
     }
@@ -158,6 +160,17 @@
       }
     }
   }
+  @media (min-width: 390px) and (max-width: 768px)  {
+    .news-list-item {
+      .row {
+        .baners-blocks {
+          img.img-responsive {
+            max-width: 360px;
+          }
+        }
+      }
+    }
+  }
 
 %p#notice= notice
 .container.news-list-item
@@ -167,7 +180,7 @@
         = @budget_news.title
       .article-data
         %i.fa.fa-clock-o{"aria-hidden" => "true"}
-        = @budget_news.news_date.strftime '%d.%m.%Y'
+        = @budget_news.get_date('medium')
       .artcile-content
         = @budget_news.news_text.html_safe
       -#.article-social-btns
@@ -184,5 +197,5 @@
           \|
           = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
     .col-xs-12.col-sm-4.baners-blocks
-      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}
-      %img.img-responsive{:src => "http://placehold.it/360x200/ffd304/ffffff"}
+      - @banners.each do |banner|
+        %img.img-responsive{:src => get_img(banner)}
