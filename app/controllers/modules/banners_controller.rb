@@ -7,7 +7,6 @@ class Modules::BannersController < AdminController
   respond_to :html
 
   def index
-    get_modules_banners
     respond_with(@modules_banners)
   end
 
@@ -62,12 +61,23 @@ class Modules::BannersController < AdminController
   end
 
   def destroy
-    @modules_banner.destroy
+    if @modules_banner.destroy
+      reorder_banners(@modules_banner.order_banner)
+    end
     flash[:success] = t('modules.banners.action_messages.destroy.success')
     respond_with(@modules_banner)
   end
 
   private
+    def reorder_banners(order_banner)
+      modules_banners = Modules::Banner.where(:order_banner.gt => order_banner).order(order_banner: :asc)
+      i = order_banner
+      modules_banners.each do |banner|
+        banner.update_attribute(:order_banner, i)
+        i+=1
+      end
+    end
+
     def get_modules_banners
       @modules_banners = Modules::Banner.order(order_banner: :desc)
     end
@@ -77,6 +87,6 @@ class Modules::BannersController < AdminController
     end
 
     def modules_banner_params
-      params.require(:modules_banner).permit(:title, :order_banner, :publish_on, :banner_img, :banner_url)
+      params.require(:modules_banner).permit(:title, :publish_on, :banner_img, :banner_url)
     end
 end
