@@ -197,5 +197,9 @@
           \|
           = link_to t('modules.budget_news.new.back'), modules_budget_news_index_path
     .col-xs-12.col-sm-4.baners-blocks
+      - unless @banners.any?
+        %h2
+          = t('.banner_place')
+        %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
       - @banners.each do |banner|
         %img.img-responsive{:src => get_img(banner)}
