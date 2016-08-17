@@ -180,7 +180,7 @@
         = @budget_news.title
       .article-data
         %i.fa.fa-clock-o{"aria-hidden" => "true"}
-        = @budget_news.news_date.strftime '%d.%m.%Y'
+        = @budget_news.get_date('medium')
       .artcile-content
         = @budget_news.news_text.html_safe
       -#.article-social-btns

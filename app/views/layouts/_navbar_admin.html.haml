@@ -1,7 +1,19 @@
-:css
-  .navbar.navbar-default{
-    min-height: 100px;
+:scss
+  .navbar.navbar-default {
+    //min-height: 100px;
+    .container-fluid {
+      .navbar-collapse {
+        .navbar-nav {
+          .lang.pull-right {
+            .lang-switcher {
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
   }
+
 
 .navbar.navbar-default.navbar-static-top
   .container-fluid
@@ -12,8 +24,6 @@
       %span.icon-bar
     -#.navbar-brand
       -#= t('.brand')
-
-
     .navbar-collapse.collapse.navbar-responsive-collapse
       %ul.nav.navbar-nav.navbar-left
         %li= link_to 'Home', root_path
@@ -153,18 +163,20 @@
               = current_user.name
 
             %ul.dropdown-menu{'role' => "menu"}
+              = render partial: 'layouts/navbar/nav_admin'
               %li= link_to t('.edit_profile'), edit_user_registration_path
               %li.divider
               %li= link_to t('.logout'), destroy_user_session_path, method: :delete
+
           - else
             = link_to new_user_session_path do
               %i.fa.fa-key
               = t('.login')
 
+
+
         .lang.pull-right
           = render partial: 'layouts/navbar/lang'
-
-        = render partial: 'layouts/navbar/nav_admin'
 
 
         -#%li.todo
