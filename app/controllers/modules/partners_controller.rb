@@ -37,7 +37,7 @@ class Modules::PartnersController < AdminController
         @modules_partner.remove_logo!
       end
     end
-    if @modules_partner.update(modules_banner_params)
+    if @modules_partner.update(modules_partner_params)
       flash[:success] = t('modules.partners.action_messages.update.success')
       redirect_to modules_partners_path
     else
