@@ -1,0 +1,32 @@
+:scss
+
+  .banners-form{
+    padding: 0px;
+    form{
+      margin: 15px 0;
+      .form-actions{
+        margin-top: 15px;
+      }
+      label{
+        abbr[title], abbr[data-original-title]{
+          color: coral;
+        }
+      }
+      .radio label, .checkbox label{
+        font-weight: bold;
+      }
+    }
+  }
+
+= simple_form_for(@modules_banner) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title, label: t('.title')
+    = f.input :banner_img, as: :file, label: t('.upload_img'), :input_html => { :class => 'form-control', accept: 'image/*' }
+    = f.input :banner_url, as: :url, label: t('.url_img'), :input_html => { :class => 'form-control'}
+    = f.input :publish_on, as: :boolean, label: t('.show')
+
+  .form-actions
+    = f.button :submit, t('save'), class: 'btn-primary'
+    = link_to t('modules.banners.index.header'), modules_banners_path, :class => 'btn btn-info'
