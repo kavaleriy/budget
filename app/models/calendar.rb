@@ -1,7 +1,8 @@
 class Calendar
   include Mongoid::Document
 
-  scope :get_calendar_by_town, ->(town){ where(:town => town) }
+  # scope :get_calendar_by_town, ->(town){ where(:town => town, :is_active => true) }
+  # before_save :change_active_status
 
   field :author, type: String
   field :town, type: String
@@ -12,11 +13,32 @@ class Calendar
   field :import_file, type: String
   field :is_test, type: Boolean
   field :locale,type: String,:default => 'uk'
+  field :is_active, type: Boolean
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
+  #
+  # def change_active_status
+  #   town = self.town.to_s
+  #   binding.pry
+  #   active_calendar = Calendar.where(:town => town, :is_active => true).first
+  #   unless active_calendar.nil?
+  #     active_calendar.update_attribute(:is_active, :false)
+  #     binding.pry
+  #   end
+  # end
 
+  def get_active_calendar
+    where(:town => town, :is_active => true).first
+  end
 
+  def self.get_calendar_by_town(town)
+    calendar = where(:town => town, :is_active => true)
+    if calendar.first.nil?
+      calendar = where(:town => town)
+    end
+    calendar
+  end
 
   def self.visible_to user,locale
     self.get_calendars(user).get_calendars_by_locale(locale)
