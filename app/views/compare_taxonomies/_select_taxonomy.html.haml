@@ -1,4 +1,6 @@
 :scss
+  //init colors
+  $white: white;
 
   #s2id_taxonomy_select {
     ul.select2-choices {
@@ -32,7 +34,7 @@
           &:before {
             content: '\f00d';
             font-family: FontAwesome;
-            color: white;
+            color: $white;
             position: absolute;
             cursor: text;
             font-size: 14px;
@@ -53,7 +55,7 @@
     }
   }
 
-= select_tag :taxonomy_select, options_for_select(@towns_with_tax_rov.collect { |tax|[tax[:title], tax[:id], {'data-img'=> get_town_blazon(tax[:img])}]}), {multiple: true,class: 'form-control' }
+= select_tag :taxonomy_select, options_for_select(taxonomies.collect { |tax|[tax[:title], tax[:id], { 'data-img'=> get_town_blazon(tax[:img]) } ] }), { multiple: true, class: 'form-control', id: id }
 
 
 
@@ -61,21 +63,24 @@
 
 :javascript
   $(document).ready(function() {
+
    function setTownColor (data) {
       //init iterator for get color from aCompareTaxonomies
-      var i = $("#taxonomy_select").select2("val").length;
+      var i = $("#rov, #rot").select2("val").length;
       //truncate town title for first comma and first space
       var town = $.trim(data.text).split(',')[0].split(' ')[0];
 
       var $color = $(
         '<div class="town-color" style="background:'+ aCompareTaxonomies.color[i].fact +';"></div>' +
-        '<div class="town-title">'+town+'</div>'
+        '<div class="town-title">'+ town +'</div>'
       );
-      console.log($color);
+      // console.log($color);
       return $color;
+
     };
 
-    $('#taxonomy_select').select2(
+    // $('.select-tax').select2(
+    $("#rov, #rot").select2(
     {
       formatSelection: setTownColor,
       maximumSelectionSize: 3,
@@ -92,6 +97,6 @@
         // set town blazon img path
         townBlazon = $(data.added.element).data('img');
       }
-      aCompareTaxonomies.select_taxonomies(data.val, data.added,townBlazon)
+      aCompareTaxonomies.select_taxonomies(data.val, data.added, townBlazon)
     });
    })

@@ -13,6 +13,8 @@ class CompareTaxonomiesController < ApplicationController
 
   def stub_data
     @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns
+    binding.pry
+    @towns_with_tax_rot = TaxonomyRot.get_active_for_all_towns
 
     @current_year = Date.current.year
     @years = (@current_year - 3) .. @current_year

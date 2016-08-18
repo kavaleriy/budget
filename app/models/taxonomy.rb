@@ -33,26 +33,34 @@
       # get active taxonomies belongs to town
       self.owned_by(town).get_active
     end
-
+    # TODO: Find towns with nil
     def self.get_active_for_all_towns
       # this function grouped taxonomies by town
       # and return array of hashes active or first taxonomies from town
       taxonomies_group_by_town = self.all.group_by{|f| f.owner}.keys
 
       result = []
+
       taxonomies_group_by_town.each do |town_title|
         taxonomy = self.get_active_or_first(town_title)
+
         # get town by taxonomy
         town = taxonomy.town
+
         # if town not exist get town by town title
         if town.nil?
           town = Town.get_town_by_title(town_title).first
+          # TODO here
+          binding.pry
         end
+        # binding.pry
         # get town blazon if town exist and town have img
         town_blazon = town.img.url unless town.nil? || town.img.nil?
+
         # push taxonomy with blazon
         result << {
             id: taxonomy.id.to_s,
+            town: town.title,
             title: taxonomy.title,
             img: town_blazon
         }
