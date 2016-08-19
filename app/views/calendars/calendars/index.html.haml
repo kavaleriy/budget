@@ -12,15 +12,17 @@
     %tr
       %th= t('.name')
       %th= t('.author')
-      %th= 'Town'
-      %th= 'Active'
+      -if current_user.is_admin?
+        %th= t('.town')
+      %th= t('.active')
       %th= t('form.actions')
   %tbody
     - @calendars.each do |calendar|
       %tr
         %td= link_to calendar.title, calendars_calendar_path(calendar)
         %td= link_to calendar.author
-        %td= link_to calendar.town
+        -if current_user.is_admin?
+          %td= link_to calendar.town
         %td
           = get_active_icon(calendar.is_active?)
         %td
