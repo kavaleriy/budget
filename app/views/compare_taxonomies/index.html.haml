@@ -241,12 +241,12 @@
     selected_level: '',
     selected_year: "#{@current_year}",
     selected_taxonomies: [],
+    selected_towns: [],
     color: [
     {fact: '#0d3c55', plan: '#0f5b78'},
     {fact: '#a2b86c', plan: '#b6d370'},
     {fact: '#dc8aa8', plan: '#d9aebe'}
     ],
-    towns_blazon:[],
     taxonomies: {},
     taxonomies_cache: {}
   }
@@ -284,6 +284,7 @@
 :javascript
 
   aCompareTaxonomies.create_chart = function (){
+  console.log
     var store = this.taxonomies_cache
     var selected_level = this.selected_level
 
@@ -293,6 +294,7 @@
 
     // load data to be compared
     this.selected_taxonomies.forEach(function(taxonomy, i) {
+
       if (store[taxonomy]) return true;
 
       var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level;
@@ -309,13 +311,15 @@
   }
 
 
-  aCompareTaxonomies.select_taxonomies = function (ids, added, townBlazon){
+  aCompareTaxonomies.select_taxonomies = function (ids, added, townBlazon, townName){
     if (added) aCompareTaxonomies.taxonomies[added.id] = {
+        // town: town,
         text: added.text,
+        town: townName,
         img: townBlazon
         }
-    this.selected_taxonomies = ids
-    this.create_chart()
+    this.selected_taxonomies = ids;
+    this.create_chart();
   }
 
 
@@ -463,4 +467,13 @@
       aTreeChart.refresh()
     });
 
+    // clear charts & select2
+    $('.nav-pills li').on('click', function() {
+      if(!$(this).hasClass('active')) {
+        // clear chart
+        aCompareTaxonomiesChart.clear_chart();
+        // clear select2 input value
+        $('#rov, #rot').select2('data', null);
+      };
+    })
   });
