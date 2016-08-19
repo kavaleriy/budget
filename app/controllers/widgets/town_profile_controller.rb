@@ -98,8 +98,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
     # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
-
-    calendar = Calendar.get_calendar_by_town(town).first
+    calendar = Calendar.get_calendar_by_town(town)
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     # programs = Programs::Town.get_town_by_title(town).first
     programs = Programs::TargetedProgram.first
