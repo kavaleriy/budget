@@ -128,7 +128,7 @@ module Calendars
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def calendar_params
-        params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event, :import_file,:locale)
+        params.require(:calendar).permit(:title, :description, :countdown_title, :countdown_date, :countdown_event, :import_file,:locale, :is_active)
       end
   end
 end

@@ -47,9 +47,8 @@ class PublicController < ApplicationController
   end
 
   def town_profile
-
     town = Town.find(params[:town_id])
-    @calendar = Calendar.where(:town => town.title).first
+    @calendar = Calendar.get_calendar_by_town(town)
 
     @subscriber = @calendar.subscribers.where(:email => cookies['subscriber']).first unless cookies['subscriber'].nil?
     respond_to do |format|
