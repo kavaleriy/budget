@@ -154,7 +154,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_calendar_hash(calendar,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
       unless calendar.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendars_calendars_town_path(@town),'name' => name}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendar_town_profile_path(calendar),'name' => name}
       end
     end
   end
