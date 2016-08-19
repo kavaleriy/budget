@@ -19,7 +19,17 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
+
 en:
+#Begin. [ Controllers ]
+  budget_news:
+    create:
+      success: "The item has been successfully created!"
+    update:
+      success: "Item has been successfully updated!"
+    destroy:
+      success: "Item has been deleted!"
+#End. [ Controllers ]
   found_docs: 'Found docs'
   choose_calendar: "Calendar"
   actions: "Actions"
@@ -168,6 +178,8 @@ en:
         subscribers: "Subscribers"
         news_header: "News"
         slider_header: "Sliders"
+        partners: "Partners"
+        banners: "Banners"
 
       #Budget-system dropdown. BEGIN
       bud_sys: "Budget system"
@@ -334,6 +346,9 @@ en:
       index:
         title: "Calendars"
         name: "Name"
+        author: 'Author'
+        town: 'Town'
+        active: 'Active'
       new:
         title: "New calendar"
       show:
@@ -925,10 +940,6 @@ en:
           actual_news: "Actual news"
           show_all_news: "Show all news"
           header: "News"
-          title: "Title"
-          text: "Text"
-          link: "Link"
-          image: "Image"
           date: "Create date"
           new: "New"
           create: "Create news"
@@ -938,7 +949,16 @@ en:
           sure: "Sure"
           action: "Action"
           view: "View"
+          hint_add_new: "Add news"
         form:
+          title: "Title"
+          text: "Text"
+          link: "Link"
+          image: "Image"
+          select_date: "Select date"
+          show_publish_date: "Publish date"
+          publish_date: "Publish date"
+          publish: "Publish?"
           save: "Save"
         edit:
           back: "Back"
@@ -949,6 +969,9 @@ en:
           back: "Back"
         show:
           showin: "Show :"
+          banner_place: 'Place for a banner'
+        all_news:
+          no-item: "No published news yet!"
     sliders:
         index:
           order: "Order"
@@ -966,7 +989,17 @@ en:
           preview: "Preview"
         edit:
           header: "Edit slider"
+    drag:
+      drag_left: 'Drag left'
+      drag_right: 'Drag right'
     partners:
+      action_messages:
+        create:
+          success: "The item has been successfully created!"
+        update:
+          success: "Item has been successfully updated!"
+        destroy:
+          success: "Item has been deleted!"
       index:
         header: 'Our partners'
         new_btn_name: 'Add partner'
@@ -979,6 +1012,27 @@ en:
         edit_header: 'Edit partner'
         message_for_admin: 'To look perfect partner logos on the front page of their size should be 166 * 100px or with the appropriate ratio.'
         order_prompt: 'Select order logo'
+    banners:
+      action_messages:
+        create:
+          success: "The item has been successfully created!"
+        update:
+          success: "Item has been successfully updated!"
+        destroy:
+          success: "Item has been deleted!"
+      index:
+        header: 'Banners'
+        new_btn_name: 'Add banner'
+      form:
+        new_header: 'New banner'
+        edit_header: 'Editing banner'
+        message_for_admin: 'To better display the banner should be 360 * 200px or with the appropriate ratio.'
+        title: 'Title'
+        upload_img: 'Upload picture'
+        url_img: 'Link to picture'
+        order: 'Order'
+        order_prompt: 'Specify the display order'
+        show: 'Show?'
   calendar:
     create: "Calendar was successfully created."
     update: "Calendar was successfully updated."

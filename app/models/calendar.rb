@@ -1,7 +1,7 @@
 class Calendar
   include Mongoid::Document
 
-  scope :get_calendar_by_town, ->(town){ where(:town => town) }
+  before_save :change_active_status
 
   field :author, type: String
   field :town, type: String
@@ -12,16 +12,30 @@ class Calendar
   field :import_file, type: String
   field :is_test, type: Boolean
   field :locale,type: String,:default => 'uk'
+  field :is_active, type: Boolean
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
 
+  # active status only for one calendar
+  def change_active_status
+    if is_active_changed? && is_active
+      Calendar.where(:id.ne => self.id, town: self.town, is_active: true).update_all(is_active: false)
+    end
+  end
 
+  # get active calendar if it is, otherwise any first
+  def self.get_calendar_by_town(town)
+    calendar = where(:town => town, :is_active => true)
+    if calendar.first.nil?
+      calendar = where(:town => town)
+    end
+    calendar.first
+  end
 
   def self.visible_to user,locale
     self.get_calendars(user).get_calendars_by_locale(locale)
   end
-
 
   def import(path)
     require 'xls_parser'

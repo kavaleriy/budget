@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
 
-
-  namespace :modules do
-    resources :partners
-  end
-
   namespace :compare_taxonomies do
     get 'index'
   end
@@ -30,6 +25,10 @@ Rails.application.routes.draw do
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
+    resources :partners
+    post 'change_partner_order', to: 'partners#change_order', as: :change_partner_order
+    resources :banners
+    post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
   end
 
   resources :export_budgets

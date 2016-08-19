@@ -16,12 +16,19 @@
     .span4.well
       -#= abort @budget_news.inspect
       = simple_form_for @budget_news do |f|
-        = f.input :title, label: t('modules.budget_news.index.title')
-        = f.input :news_text, as: :text, label: t('modules.budget_news.index.text'), input_html: { class: 'text_area' }
-        = f.input :link , label: t('modules.budget_news.index.link')
-        = f.input :img , as: :file, label: t('modules.budget_news.index.image')
-        = f.button :submit,t('.save'), class: 'btn btn-primary'
+        = f.error_notification
+        = f.input :title, label: t('modules.budget_news.form.title')
+        = f.input :news_text, as: :text, label: t('modules.budget_news.form.text'), input_html: { class: 'text_area' }
+        = f.input :link , label: t('modules.budget_news.form.link')
+        .row
+          .col-xs-6
+            = f.input :img , as: :file, label: t('modules.budget_news.form.image')
+          .col-xs-6
+            = f.input :news_date, as: :string, required: false, placeholder: t('modules.budget_news.form.select_date'), label: t('modules.budget_news.form.show_publish_date'), input_html: { class: 'form-control datepicker' }
+        = f.input :published, as: :boolean, checked_value: true, unchecked_value: false, label: t('modules.budget_news.form.publish')
 
+        = f.button :submit, t('.save'), class: 'btn btn-primary'
+        -#-binding.pry
 :javascript
 
   $(document).ready(function(){
@@ -30,5 +37,11 @@
       maximumImageFileSize: 1000000,
       minHeight: 200,
         //url: $("form").prop("action"),
+    });
+
+    // Use Bootstrap/JQ/UI DateTimePicker
+    $("input.datepicker").datetimepicker({
+      locale: '#{I18n.locale}',
+      format: 'YYYY-MM-DD HH:mm'
     });
   });
