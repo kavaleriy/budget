@@ -5,7 +5,7 @@ class Modules::BudgetNews
   require 'carrierwave/mongoid'
 
   scope :get_last_news, ->(count) {order("news_date DESC").limit(count)}
-  scope :published_news, -> { where published: true }
+  scope :published_news, -> { where(published: true) }
 
   # before_save :set_date
   before_save :publish_news
@@ -19,7 +19,7 @@ class Modules::BudgetNews
   field :title, type: String
   field :news_text, type: String
   field :link, type: String
-  field :published, type: Boolean
+  field :published, type: Boolean, default: false
   field :news_date, type: Time
 
   def delete_image_file!
