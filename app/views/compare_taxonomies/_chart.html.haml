@@ -79,6 +79,7 @@
         icon_heigth           = 64,
         blazon_circle_radius  = (blazon_heigth / 2) + 5,
         chart_start_x         = blazon_circle_radius / 2;
+
     // Zip the series data together (first values, second values, etc.)
     var zippedData = [];
     for (var i=0; i<data.labels.length; i++) {
@@ -86,6 +87,7 @@
         zippedData.push(data.series[j].values[i]);
       }
     }
+
     // Color scale
     //var color = d3.scale.category10();
     var chartHeight = 50 + ((blazon_circle_radius*2) +10) * zippedData.length + gapBetweenGroups * data.labels.length;
@@ -110,7 +112,6 @@
           return "translate(" + 0 + "," + y_translate + ")";
         });
 
-
     bar = chart.selectAll("g")
       .data(zippedData)
     //////////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +120,7 @@
 
     // Create rect for plan
     bar.append("rect")
-        .attr('x',chart_start_x)
+        .attr('x', chart_start_x)
         .attr('data-type','plan')
         .attr("fill", function(d,i) { return aCompareTaxonomies.color[(i % data.series.length)].plan })
         .attr("class", "bar")
@@ -323,7 +324,6 @@
   };
   $(document).ready(function(){
     $('.chart_sort').click(function(){
-      // console.log($(this));
     });
 
   });

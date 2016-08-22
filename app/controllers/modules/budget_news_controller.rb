@@ -37,16 +37,18 @@ module Modules
     end
 
     def update
+      binding.pry()
       unless modules_budget_news_params[:img].blank?
          if BudgetNews.new(modules_budget_news_params).valid?
            @budget_news.delete_image_file!
          end
       end
+      binding.pry()
       if @budget_news.update(modules_budget_news_params)
         flash[:success] = t('budget_news.update.success')
         redirect_to @budget_news
       else
-        render :edit
+        redirect_to(:back)
       end
     end
 
