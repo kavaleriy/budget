@@ -23,7 +23,7 @@ class Documentation::Document
   mount_uploader :doc_file, DocumentationUploader
   skip_callback :update, :before, :store_previous_model_for_doc_file
 
-  validates_presence_of :doc_file, message: 'Потрібно вибрати Файл'
+  validates_presence_of :doc_file, message: I18n.t('documentation.documents.model_messages.select_file')
   validates :doc_file,
             :presence => true,
             :file_size => {
