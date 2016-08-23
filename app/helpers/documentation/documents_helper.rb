@@ -34,9 +34,9 @@ module Documentation::DocumentsHelper
                     'file-pdf.svg'
                    when 'xls' || 'xlsx'
                     'file-exel.svg'
-                   when 'doc'
+                   when 'doc' || 'docx'
                     'file-word.svg'
-                   when 'rar'
+                   when 'rar' || 'zip' || '7z'
                      'file-rar.svg'
                    else
                      'no-image.svg'
