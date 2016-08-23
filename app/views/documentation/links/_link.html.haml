@@ -15,11 +15,14 @@
     %a{ href: '#', 'data-resource' => 'documentation_link', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
       = link.town.to_s if link.town
   %td
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'description', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
+      = link.town.to_s if link.description
+  %td
     = link_to link, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
-  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
+  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #description, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
   $('.link[data-id="#{link.id}"] #town').editable({
     source: '#{search_town_path}',
     select2: {

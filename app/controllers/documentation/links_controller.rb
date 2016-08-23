@@ -75,7 +75,7 @@ module Documentation
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def documentation_link_params
-        params.require(:documentation_link).permit(:link_category_id, :title, :value, :yearFrom, :yearTo, :town)
+        params.require(:documentation_link).permit(:link_category_id, :title, :value, :description, :yearFrom, :yearTo, :town)
       end
   end
 end

@@ -7,6 +7,7 @@ class Documentation::Link
   belongs_to :town, class_name: '::Town'
   field :title, type: String
   field :value, type: String
+  field :description, type: String
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
 
