@@ -28,7 +28,9 @@ module Documentation::DocumentsHelper
   end
 
   def get_image_path_by_doc_type(doc_file)
+    # set default path to folder icons
     default_path = 'new_design/icons/'
+    # set icon to file by extension
     image_path = case doc_file.file.extension
                    when 'pdf'
                     'file-pdf.svg'
