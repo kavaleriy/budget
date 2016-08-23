@@ -6,8 +6,6 @@ class Documentation::Document
 
   before_save :generate_title
 
-  skip_callback :update, :before, :store_previous_model_for_doc_file
-
   scope :get_documents_by_town,-> (town) {where(town: town)}
   scope :get_by_part_of_title, -> (q) { where(:title => Regexp.new(".*#{q}.*")) }
   scope :unlocked, -> {where({ :locked.in => [false, nil] } )}
@@ -23,6 +21,7 @@ class Documentation::Document
   field :locked, type: Boolean
 
   mount_uploader :doc_file, DocumentationUploader
+  skip_callback :update, :before, :store_previous_model_for_doc_file
 
   validates_presence_of :doc_file, message: 'Потрібно вибрати Файл'
   validates :doc_file,
