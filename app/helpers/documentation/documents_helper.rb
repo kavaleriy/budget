@@ -24,7 +24,7 @@ module Documentation::DocumentsHelper
 
   def get_beautiful_doc_title(title)
     # cut extension in title and replace underline to space
-    title.split('.').first.gsub!('_', ' ')
+    title.split('.').first.gsub('_', ' ')
   end
 
   def get_image_path_by_doc_type(doc_file)
