@@ -146,6 +146,7 @@
     // TODO: Check D3 scale, for build bar's
     var x = d3.scale.sqrt().exponent(.5)
       .domain([ getValuesFromData(zippedData, 'min'), getValuesFromData(zippedData, 'max') ])
+      // WARN! 145 it's default finding minimal value of rang from data
       .range([ 145, doc_width ])
       // .range([ 1, chartWidth ])
 
