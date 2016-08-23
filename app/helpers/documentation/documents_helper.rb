@@ -39,7 +39,7 @@ module Documentation::DocumentsHelper
                    when 'rar'
                      'file-rar.svg'
                    else
-                     'no_image.svg'
+                     'no-image.svg'
     end
     default_path.concat(image_path)
   end
