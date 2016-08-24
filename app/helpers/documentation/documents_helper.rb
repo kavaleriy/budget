@@ -31,23 +31,21 @@ module Documentation::DocumentsHelper
     # set default path to folder icons
     default_path = 'new_design/icons/'
     # set icon to file by extension
-    image_path = case doc_file.file.extension
+    image_path = case doc_file.file.extension.downcase
+    # check file extensions (ext)
+                   # portable document format
                    when 'pdf'
                     'file-pdf.svg'
-                   when 'xls'
+                   # MS spreadsheet
+                   when 'xls', 'xlsx', 'xlsm', 'xlsb'
                     'file-exel.svg'
-                   when 'xlsx'
-                    'file-exel.svg'
-                   when 'doc'
+                   # MS word processing documents
+                   when 'doc', 'docx'
                     'file-word.svg'
-                   when 'docx'
-                    'file-word.svg'
-                   when 'rar'
+                   # famous arhive formats
+                   when 'rar', 'zip', '7z', 'tar', 'gz', 'par'
                      'file-rar.svg'
-                   when 'zip'
-                     'file-rar.svg'
-                   when '7z'
-                     'file-rar.svg'
+                   # all another formats
                    else
                      'no-image.svg'
     end
