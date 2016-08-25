@@ -1,10 +1,32 @@
+:scss
+  .editable-pre-wrapped {
+    /*fix show text_area field for x-editable*/
+    white-space: pre-line;
+  }
+  td:nth-child(2){
+    .short-link{
+       max-width: 150px;
+       overflow: hidden;
+       white-space: nowrap;
+       word-wrap: normal; /* for IE */
+       text-overflow: ellipsis;
+     }
+     .short-link:hover{
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
+      font-size: smaller;
+    }
+  }
+
 %tr.link{'data-id' => "#{link.id}"}
   %td
     %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.name') }
       =link.title
   %td
-    %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.value') }
-      =link.value
+    .short-link
+      %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.value') }
+        =link.value
   %td
     %a{ href: '#', 'data-resource' => 'documentation_link', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.from') }
       = link.yearFrom
@@ -15,10 +37,10 @@
     %a{ href: '#', 'data-resource' => 'documentation_link', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
       = link.town.to_s if link.town
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'description', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
-      = link.town.to_s if link.description
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.description') }
+      = link.description
   %td
-    = link_to link, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
+    = link_to link, :remote => true, :method => :delete, title: t('form.destroy'), :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript

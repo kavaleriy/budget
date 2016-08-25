@@ -1,11 +1,17 @@
 %table.table.table-striped
   %thead
     %tr
-
       %th
         =t('form.title')
       %th
         =t('form.value')
+      %th
+        =t('form.period')
+      %th
+        =t('form.town')
+      %th
+        =t('form.description')
+      %th
   %tbody
     - links.each do |link|
       = render :partial => 'documentation/links/link', :locals => { :link => link }
