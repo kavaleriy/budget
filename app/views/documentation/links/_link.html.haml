@@ -3,8 +3,9 @@
     %a{ href: '#', id: 'title', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.name') }
       =link.title
   %td
-    %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.value') }
-      =link.value
+    .short-link
+      %a{ href: '#', id: 'value', 'data-type' => 'text', 'data-resource' => 'documentation_link', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.link_categories.index.links_list.value') }
+        =link.value
   %td
     %a{ href: '#', 'data-resource' => 'documentation_link', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.from') }
       = link.yearFrom
@@ -15,11 +16,14 @@
     %a{ href: '#', 'data-resource' => 'documentation_link', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
       = link.town.to_s if link.town
   %td
-    = link_to link, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
+    %a{ href: '#', 'data-resource' => 'documentation_link', id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{link.id}", 'data-url' => "#{documentation_link_path(link)}", 'data-emptytext' => t('documentation.documents.index.documents_list.description') }
+      = link.description
+  %td
+    = link_to link, :remote => true, :method => :delete, title: t('form.destroy'), :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
       %i.fa.fa-times.pull-right
 
 :javascript
-  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
+  $('.link[data-id="#{link.id}"] #title, .link[data-id="#{link.id}"] #value, .link[data-id="#{link.id}"] #description, .link[data-id="#{link.id}"] #yearFrom, .link[data-id="#{link.id}"] #yearTo').editable();
   $('.link[data-id="#{link.id}"] #town').editable({
     source: '#{search_town_path}',
     select2: {

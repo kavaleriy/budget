@@ -1,11 +1,38 @@
+:scss
+  .editable-pre-wrapped {
+    /*fix show text_area field for x-editable*/
+    white-space: pre-line;
+  }
+  td:nth-child(2){
+    .short-link{
+       max-width: 150px;
+       overflow: hidden;
+       white-space: nowrap;
+       word-wrap: normal; /* for IE */
+       text-overflow: ellipsis;
+     }
+     .short-link:hover{
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
+      font-size: smaller;
+    }
+  }
+
 %table.table.table-striped
   %thead
     %tr
-
       %th
         =t('form.title')
       %th
         =t('form.value')
+      %th
+        =t('form.period')
+      %th
+        =t('form.town')
+      %th
+        =t('form.description')
+      %th
   %tbody
     - links.each do |link|
       = render :partial => 'documentation/links/link', :locals => { :link => link }
