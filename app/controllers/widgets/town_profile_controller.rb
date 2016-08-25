@@ -69,7 +69,6 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   # def budget_compare
-  #   binding.pry
   # end
 
   private
@@ -102,11 +101,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     # programs = Programs::Town.get_town_by_title(town).first
     programs = Programs::TargetedProgram.first
-    # binding.pry
-
     result = []
     result << get_budget_compare_hash('budget_compare')
-    # binding.pry
     result << get_indicate_hash(indicate_taxonomy,'indicators')
     result << get_taxonomy_rot_hash(taxonomy,'budget')
     result << get_calendar_hash(calendar,'calendar')

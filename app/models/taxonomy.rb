@@ -51,12 +51,11 @@
         if town.nil?
           town = Town.get_town_by_title(town_title).first
         end
-        # binding.pry
+
         # get town blazon if town exist and town have img
         town_blazon = town.img.url unless town.nil? || town.img.nil?
 
         town_name = town.title.gsub(/,.*/, '') unless town.nil? || town.blank?
-        # binding.pry
 
         # push taxonomy with blazon
         result << {
