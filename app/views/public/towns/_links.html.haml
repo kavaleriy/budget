@@ -2,57 +2,60 @@
   // init colors
   $yellow: #ffd304;
 
-  .link-wrapper{
-    padding: 0;
-    padding-top: 25px;
-    .icon-wrapper{
-      padding: 0px;
-      .link-icon{
-        padding: 0;
-        background-color: $yellow;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        float: right;
-        svg{
-          height: 40px;
+  .links-list{
+    .link-wrapper{
+      padding: 0;
+      padding-top: 15px;
+      .icon-wrapper{
+        padding: 0px;
+        .link-icon{
+          padding: 0;
+          background-color: $yellow;
+          border-radius: 50%;
           width: 40px;
-
+          height: 40px;
+          float: right;
+          svg{
+            height: 40px;
+            width: 40px;
           }
         }
-    }
-
-    .link-text{
-      padding: 0;
-      padding-left: 10px;
-      .link-title{
-        display: inline-block;
-        font-weight: bold;
-        font-style: italic;
-        color: black;
       }
-      .link-description{
-        
+      .link-text{
+        padding: 0;
+        padding-left: 10px;
+        .link-title{
+          display: inline-block;
+          font-weight: bold;
+          font-style: italic;
+          color: black;
+        }
       }
     }
-
   }
+
 .row.link-breadcrumbs
   .pull-left
     =render partial: 'widgets/town_profile/module_breadcrumbs',locals: { init_text: t('public.towns.portfolio.town_links') }
-- @town_links.each do |link|
-  .col-md-6.link-wrapper
-    .col-xs-3.col-sm-1.icon-wrapper
-      .link-icon
-        = inline_svg('icons/town_profile_sidebar/link.svg')
-    .col-xs-9.col-sm-11.link-text
-      = link_to link[:href], target: "_blank" do
-        .link-title
-          %p
-            =link[:category_title]
-      .link-description
-        %p
-          =link[:description]
+.links-list
+  -# output links on the two pieces in a row
+  - @town_links.in_groups_of(2).each do |group|
+    .row
+      - group.each do |link|
+        - if link
+          .col-md-6.link-wrapper
+            .col-xs-3.col-sm-1.icon-wrapper
+              .link-icon
+                = inline_svg('icons/town_profile_sidebar/link.svg')
+            .col-xs-9.col-sm-11.link-text
+              = link_to link[:href], target: "_blank" do
+                .link-title
+                  %p
+                    =link[:title]
+              .link-description
+                %p
+                  =link[:description]
+
   -#- counter = 1
   -#.col-sm-12.col-md-5.col-lg-6
   -#  -#.container

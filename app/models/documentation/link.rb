@@ -15,11 +15,14 @@ class Documentation::Link
     links = self.get_links_by_town(town)
     res = []
     links.each do |link|
-      cat_title = link.link_category.title unless link.link_category.nil?
+      # TODO: maybe change links query
+      # today category_title not show on site
+      # cat_title = link.link_category.title unless link.link_category.nil?
       tmp_hash = {
-        category_title: cat_title,
+        # category_title: cat_title,
         href: link.value,
-        description: link.title
+        title: link.title,
+        description: link.description
       }
       res << tmp_hash
     end
