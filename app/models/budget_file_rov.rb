@@ -25,7 +25,7 @@ class BudgetFileRov < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
     
-    [0, month].map { |_month|
+    ['0', month].map { |_month|
       {
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
         '_month' => _month,
