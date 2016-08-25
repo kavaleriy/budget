@@ -1,4 +1,6 @@
 class ContentManager::PageContainersController < AdminController
+  require 'cyrillizer'
+
   before_action :set_content_manager_page_container, only: [:show, :edit, :update, :destroy]
   before_action :set_locale_content, only: [:create, :update]
   before_action :get_menu_list,only: [:new, :edit,:create,:update]
@@ -23,9 +25,15 @@ class ContentManager::PageContainersController < AdminController
   end
 
   def create
-    # here problem
     @page_container = ContentManager::PageContainer.new(content_manager_page_container_params)
-    @page_container.save
+    # set alias from header of locale data
+    # transliterate alias to latin
+    @page_container.alias = content_manager_page_container_params[:locale_data][I18n.locale][:header].to_lat
+
+    if @page_container.save
+      flash[:notice] = t('page_containers.create.success')
+    end
+
     respond_with(@page_container)
   end
 
