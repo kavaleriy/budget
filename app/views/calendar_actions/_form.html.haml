@@ -98,7 +98,6 @@
           = f.radio_button :action_type, CalendarAction::ACTION_TYPE_ANALYSIS, label: t('.radio_analysis')
           = f.radio_button :action_type, CalendarAction::ACTION_TYPE_DISCUSSION, label: t('.radio_discussion')
           = f.radio_button :action_type, CalendarAction::ACTION_TYPE_EXECUTION, label: t('.radio_execution')
-          = f.radio_button :action_type, CalendarAction::ACTION_TYPE_NO_INDICATED, label: t('.radio_no_indicated')
       -#.pull-left
       -#  = f.static_control label: t('.text_color') do
       -#    = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @calendar_action.text_color), {}, { class: 'color-select' }

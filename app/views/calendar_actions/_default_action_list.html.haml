@@ -36,17 +36,12 @@
   #execution{
     background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
   }
-  #other{
-    background: #{CalendarAction::ACTION_TYPE_NO_INDICATED_COLOR};
-  }
-.default_action
+.row.default_action
   .col-md-2#folding
     %p=t('calendar_actions.form.radio_folding')
-  .col-md-2#analysis
+  .col-md-4#analysis
     %p=t('calendar_actions.form.radio_analysis')
-  .col-md-3#discussion
+  .col-md-4#discussion
     %p=t('calendar_actions.form.radio_discussion')
   .col-md-2#execution
     %p=t('calendar_actions.form.radio_execution')
-  .col-md-2#other
-    %p=t('calendar_actions.form.radio_no_indicated')
