@@ -17,6 +17,15 @@ class TaxonomyRot < Taxonomy
     :kkd
   end
 
+  def self.get_active_or_first(town)
+
+    result = self.get_active_by_town(town).first
+    # check for active
+    # case 1: return first
+    # case 2: return active
+    (result.nil?) ? self.owned_by(town).first : result
+  end
+
   # def add_leaf tree, row
   #   kkd_a = row['kkd_a']
   #   kkd_b = row['kkd_b']

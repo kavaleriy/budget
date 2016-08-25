@@ -60,6 +60,9 @@
                 }
               }
             }
+            .owl-stage{
+              margin: 0 auto;
+            }
             .owl-nav {
               > div {
                 margin-top: -60px;
@@ -330,10 +333,16 @@
 :javascript
   $(document).ready(function() {
       // ***** Carousel ***** //
+
+    // true or false for 'loop'
+    var owl = $('.owl-carousel');
+    owlSlides = owl.children('.item');
+    owlLoop = owlSlides.length >= 5;
+
     $('.owl-carousel').owlCarousel({
         items: 3,
         lazyLoad: true,
-        loop: true,
+        loop: owlLoop,
         margin: 50,
         nav: true,
         navText: [

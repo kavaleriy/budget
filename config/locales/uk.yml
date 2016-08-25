@@ -1,4 +1,16 @@
 uk:
+#Begin. [ Controllers ]
+  budget_news:
+    create:
+      success: "Новину успішно створено!"
+    update:
+      success: "Новину успішно оновлено!"
+    destroy:
+      success: "Новину було видалено!"
+  page_containers:
+    create:
+      success: "Сторінку успішно створено!"
+#End. [ Controllers ]
   found_docs: 'Результат'
   choose_calendar: "Календар"
   actions: "Дії"
@@ -160,6 +172,8 @@ uk:
         subscribers: "Підписувачі"
         news_header: "Новини"
         slider_header: "Слайдер"
+        partners: "Партнери"
+        banners: "Банери"
 
       #Budget-system dropdown. BEGIN
       bud_sys: "Бюджетна система"
@@ -324,11 +338,15 @@ uk:
         date: "Дата закінчення"
         countdown_event: "Дія"
         select_event: "Будь-ласка оберіть подію"
+        show_in_town_profile: "Показати в профілі міста?"
       edit:
         title: "Редагування календаря"
       index:
         title: "Календарі"
         name: "Назва"
+        author: 'Автор'
+        town: 'Місто'
+        active: 'Активний'
       new:
         title: "Новий календар"
       show:
@@ -930,10 +948,6 @@ uk:
         actual_news: "Актуальні новини"
         show_all_news: "Переглянути всі новини"
         header: "Новини"
-        title: "Назва"
-        text: "Текст"
-        image: "Зображення"
-        link: "Посилання"
         date: "Дата створення"
         new: "Створити"
         create: "Додати новину"
@@ -943,7 +957,16 @@ uk:
         sure: "Впевнені"
         action: "Дії"
         view: "Перейти"
+        hint_add_new: "Додати новину"
       form:
+        title: "Назва"
+        text: "Текст"
+        image: "Зображення"
+        link: "Посилання"
+        select_date: "Оберіть дату"
+        show_publish_date: "Дата публікації"
+        publish_date: "Дата публікації"
+        publish: "Опублікувати?"
         save: "Зберегти"
       edit:
         back: "Назад"
@@ -954,6 +977,9 @@ uk:
         back: "Назад"
       show:
         showin: "Показати :"
+        banner_place: 'Місце для банера'
+      all_news:
+        no-item: "Відстуні опубліковані новини!"
     sliders:
       index:
         order: 'Порядковий номер'
@@ -971,19 +997,50 @@ uk:
         preview: "Попередній перегляд"
       edit:
         header: "Редагувати слайдер"
+    drag:
+      drag_left: 'Перемістити ліворуч'
+      drag_right: 'Перемістити праворуч'
     partners:
+      action_messages:
+        create:
+          success: "Партнер успішно створений!"
+        update:
+          success: "Партнер успішно оновлений!"
+        destroy:
+          success: "Партнер видалений!"
       index:
         header: 'Наші партнери'
         new_btn_name: 'Додати партнера'
         logo: 'Лого'
         name: 'Назва'
         order: 'Порядок'
-        show: 'Покказувати?'
+        show: 'Показати?'
       form:
         new_header: 'Новий партнер'
         edit_header: 'Редагування партнера'
         message_for_admin: 'Щоб логотипи партнерів ідеально виглядали на головній сторінці їх розміри повинні бути 166*100px або з відповідним співвідношенням сторін.'
         order_prompt: 'Оберіть порядок лого'
+    banners:
+      action_messages:
+        create:
+          success: "Банер успішно створений!"
+        update:
+          success: "Банер успішно оновлений!"
+        destroy:
+          success: "Банер було видалено!"
+      index:
+        header: 'Банери'
+        new_btn_name: 'Додати банер'
+      form:
+        new_header: 'Новий банер'
+        edit_header: 'Редагування банера'
+        message_for_admin: 'Для кращого відображення банер повинен бути 360*200px або з відповідним співвідношенням сторін.'
+        title: 'Назва'
+        upload_img: 'Завантажити картинку'
+        url_img: 'Посилання на картинку'
+        order: 'Порядок'
+        order_prompt: 'Вкажіть порядок відображення'
+        show: 'Показати?'
   budget_file_name: "Назва бюджетного файлу"
   budget_file_title: "Назва"
   budget_file_save: "Зберегти бюджетний файл"
@@ -1216,6 +1273,8 @@ uk:
   compare_taxonomies:
     index:
       title: "Порівняння бюджетів"
+      rov: "Видатки"
+      rot: "Доходи"
       select-year-placeholder: "рік"
       select-levels-placeholder: "класифікація"
       select-divider-placeholder: "в розрізі"

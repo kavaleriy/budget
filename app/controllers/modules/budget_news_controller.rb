@@ -3,19 +3,18 @@ module Modules
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
     skip_before_action :check_admin_permission, only: [:show, :all_news]
     # before_action :check_admin_permission, except: [:show, :all_news]
-    before_action :get_all_budget_news, only: [:index, :all_news]
+    before_action :get_published_news, only: [:all_news]
     respond_to :html
 
     def index
-
-      # @budget_news = Modules::BudgetNews.all
-      @budget_news = @all_budget_news.page(params[:page]).order(news_date: :desc)
+      @budget_news = Modules::BudgetNews.all.page(params[:page]).order(news_date: :desc)
 
       respond_with(@budget_news)
     end
 
     def show
       @budgets_news = BudgetNews.get_last_news(10)
+      @banners = Modules::Banner.get_publish_banners.order(order_banner: :desc)
       respond_with(@budget_news)
     end
 
@@ -29,9 +28,12 @@ module Modules
 
     def create
       @budget_news = Modules::BudgetNews.new(modules_budget_news_params)
-
-      @budget_news.save
-      respond_with(@budget_news)
+      if @budget_news.save
+        flash[:success] = t('budget_news.create.success')
+        redirect_to @budget_news
+      else
+        render :new
+      end
     end
 
     def update
@@ -40,22 +42,26 @@ module Modules
            @budget_news.delete_image_file!
          end
       end
-      @budget_news.update(modules_budget_news_params)
-
-      respond_with(@budget_news)
+      if @budget_news.update(modules_budget_news_params)
+        flash[:success] = t('budget_news.update.success')
+        redirect_to @budget_news
+      else
+        redirect_to(:back)
+      end
     end
 
     def destroy
       @budget_news.destroy
+      flash[:success] = t('budget_news.destroy.success')
       respond_with(@budget_news)
     end
 
-    def get_all_budget_news
-      @all_budget_news = Modules::BudgetNews.all
+    def get_published_news
+      @published_budget_news = Modules::BudgetNews.published_news
     end
 
     def all_news
-      @budget_news = @all_budget_news.page(params[:page]).per(9).order(news_date: :desc)
+      @budget_news = @published_budget_news.page(params[:page]).per(9).order(news_date: :desc) unless @published_budget_news.nil?
     end
 
     private
@@ -65,9 +71,8 @@ module Modules
       end
 
       def modules_budget_news_params
-        params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date)
+        params.require(:modules_budget_news).permit(:title, :news_text, :link, :img, :news_date, :published)
       end
-
 
   end
 end

@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
 
-
-  namespace :modules do
-    resources :partners
-  end
-
   namespace :compare_taxonomies do
     get 'index'
   end
@@ -30,6 +25,10 @@ Rails.application.routes.draw do
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
+    resources :partners
+    post 'change_partner_order', to: 'partners#change_order', as: :change_partner_order
+    resources :banners
+    post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
   end
 
   resources :export_budgets
@@ -169,8 +168,13 @@ Rails.application.routes.draw do
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
+
+  # check url, maybe it's not use
   get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
+
+  # check url, maybe it's not use
   get 'search_for_areas_town' => 'towns#search_for_areas'
+
   post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
   post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
@@ -353,7 +357,7 @@ Rails.application.routes.draw do
   # get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
   get 'indicate/taxonomies/town_profile/:town_id' => 'indicate/taxonomies#town_profile',as: 'indicate_taxonomies_town_profile'
   get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
-  get 'calendars/calendars/town_profile/:town_id' => 'public#town_profile', as: 'calendars_calendars_town'
+  get 'calendars/calendars/town_profile/:calendar_id' => 'public#calendar_town_profile', as: 'calendar_town_profile'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
   get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
   get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'

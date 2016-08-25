@@ -3,7 +3,7 @@ module Documentation
     helper_method :sort_column, :sort_direction
 
     before_action :authenticate_user!, except: [:index]
-    load_and_authorize_resource
+    # load_and_authorize_resource  #user can`t create, update document
 
     before_action :set_documentation_document, only: [:show, :edit, :lock, :update, :destroy,:download]
 
@@ -74,7 +74,7 @@ module Documentation
     # PATCH/PUT /documentation/documents/1.json
     def update
       respond_to do |format|
-        if @documentation_document.update!(documentation_document_params)
+        if @documentation_document.update(documentation_document_params)
           format.js
           format.json { render :show, status: :ok, location: @documentation_document }
         else

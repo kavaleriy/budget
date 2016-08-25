@@ -112,6 +112,7 @@
     width: 846px;
   }
 .export-budget-form-container
+-unless @export_budget.pages.nil?
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')

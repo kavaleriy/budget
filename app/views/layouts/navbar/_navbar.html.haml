@@ -516,7 +516,6 @@
         - @menu.each do |key,value|
           %li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-              -#-binding.pry
               = get_header_by_locale(key)
               %span.caret
             %ul.dropdown-menu{'role' => 'menu'}

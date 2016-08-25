@@ -23,8 +23,6 @@
 
   .form-inputs
     = f.input :name, label: t('modules.partners.index.name')
-    -if params[:action] == 'edit'
-      = f.input :order_logo, collection: 1..Modules::Partner.count, label: t('modules.partners.index.order')
     = f.input :logo, as: :file, label: t('modules.partners.index.logo'), :input_html => { :class => 'form-control', accept: 'image/*' }
     = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
   .form-actions

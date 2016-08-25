@@ -40,20 +40,28 @@
       taxonomies_group_by_town = self.all.group_by{|f| f.owner}.keys
 
       result = []
+
       taxonomies_group_by_town.each do |town_title|
         taxonomy = self.get_active_or_first(town_title)
+
         # get town by taxonomy
         town = taxonomy.town
+
         # if town not exist get town by town title
         if town.nil?
           town = Town.get_town_by_title(town_title).first
         end
+
         # get town blazon if town exist and town have img
         town_blazon = town.img.url unless town.nil? || town.img.nil?
+
+        town_name = town.title.gsub(/,.*/, '') unless town.nil? || town.blank?
+
         # push taxonomy with blazon
         result << {
             id: taxonomy.id.to_s,
             title: taxonomy.title,
+            town_name: town_name,
             img: town_blazon
         }
       end

@@ -82,7 +82,7 @@
   //   New info_panel
   .leaflet-popup{
     bottom: 0 !important;
-    left: -107px !important;
+    //left: -107px !important;
   }
   .leaflet-popup-content-wrapper{
     border-radius: 0;
@@ -110,7 +110,10 @@
     background: #ffffff;
     border: 1px solid #7D94A4;
   }
-
+  .leaflet-popup-tip-container{
+    // 20px it is half of .leaflet-popup-tip-container
+    margin-left: calc(50% - 20px);
+  }
 
 :scss
   #map {
