@@ -172,7 +172,6 @@
         .col-xs-7.col-sm-5.col-md-3.reset-padding
           .col-xs-6.col-sm-push-6.text-center
             = budget_news.get_date('long')
-            -#-binding.pry
           .col-xs-6.col-sm-pull-6
             = link_to t('.view'), budget_news, class: 'btn btn-default'
             -#%a{:href => "#{budget_news.get_link}?locale=#{params[:locale]}"}= budget_news.title

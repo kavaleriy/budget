@@ -168,8 +168,13 @@ Rails.application.routes.draw do
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
+
+  # check url, maybe it's not use
   get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
+
+  # check url, maybe it's not use
   get 'search_for_areas_town' => 'towns#search_for_areas'
+
   post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
   post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
