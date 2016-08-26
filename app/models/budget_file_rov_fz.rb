@@ -4,7 +4,9 @@ class BudgetFileRovFz < BudgetFile
 
   def readline row
     return unless row['type_rozd'].to_s == '1'
+
     return if row['tf'].to_s == '3'
+
     return unless row['kmb'].to_s == self.taxonomy.kmb
 
     ktfk = row['fcode'].to_s
@@ -13,10 +15,13 @@ class BudgetFileRovFz < BudgetFile
 
     kekv = row['ecode'].to_s
     return unless kekv.length == 4
-    return if is_grouped_kekv kekv
+    # return if is_grouped_kekv kekv
 
     fond = row['cf'].to_s
-    return unless %w(1 2 3 7).include? fond
+    # return unless is_allowed_fond(fond)
+
+    kod =  row['KOD'].to_s.split('.')[0]
+    return if fond != '1' and kod == '1'
 
     kvk = row['kvk'].to_s
 
@@ -34,6 +39,7 @@ class BudgetFileRovFz < BudgetFile
           'ktfk_aaa' => ktfk_aaa,
           'kvk' => kvk,
           'kekv' => kekv,
+          'krk' => row['KRK'].to_s.split('.')[0],
           '_month' => month.to_s
       }
       return item
