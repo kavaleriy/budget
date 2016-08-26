@@ -4,11 +4,60 @@
   $white: #ffffff;
   $no-color: transparent;
   $gray: #999;
+  $light-grey: #ACA99F;
+  $yellow: #ffd304;
+
+  .nav-pills {
+    padding: 0;
+    margin-bottom: -1px;
+    > li + li {
+      margin: 0;
+      a {
+        border-bottom-color: $white;
+      }
+    }
+    li {
+      border: 1px solid transparent;
+      border-bottom-color: $yellow;
+      a {
+        color: $dark-blue;
+        border-radius: 0;
+        &:hover,
+        &:focus {
+          background-color: transparent;
+        }
+      }
+      &.active {
+        border: 1px solid $yellow;
+        a {
+          border-bottom: none;
+          background-color: $yellow;
+          color: $dark-blue;
+          &:hover,
+          &:focus {
+            background-color: $yellow;
+            color: $dark-blue;
+          }
+        }
+        &:hover,
+        &:focus {
+          //border-color: $white;
+          background-color: $yellow;
+          color: $dark-blue;
+        }
+      }
+    }
+  }
+
+  .tab-content.compare {
+    border-top: 1px solid $yellow;
+    padding-top: 5px;
+  }
 
   .row {
+    margin: 0;
     .town-select {
-      padding-right: 0;
-      padding-bottom: 10px;
+      padding: 0 0 10px 0;
       .select2-container {
         border-color: $no-color;
         .select2-choices {
@@ -22,7 +71,7 @@
             right: 0;
             cursor: pointer;
             font-size: 20px;
-            color: #ACA99F;
+            color: $light-grey;
             width: 32px;
             height: 32px;
             background: $dark-blue;
@@ -70,6 +119,7 @@
               border-left: 0;
               border-radius: 0;
               background: $dark-blue;
+              width: 32px;
               &:before {
                 content: '\f04b';
                 transform: rotate(90deg);
@@ -103,7 +153,7 @@
     }
   }
   .select2-drop-active {
-    border: 1px solid #0c2231;
+    border: 1px solid $dark-blue;
     border-top: 0;
     border-radius: 0;
     //.select2-search{
@@ -196,17 +246,27 @@
     {fact: '#a2b86c', plan: '#b6d370'},
     {fact: '#dc8aa8', plan: '#d9aebe'}
     ],
-    towns_blazon:[],
     taxonomies: {},
     taxonomies_cache: {}
   }
 
 %h1
   = t('.title')
--#test
-.row
-  .col-sm-5.town-select
-    = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov}
+%ul.nav.nav-pills
+  %li.active
+    %a{"data-toggle" => "tab", :href => "#rov-tab"}
+      =t('.rov')
+  %li
+    %a{"data-toggle" => "tab", :href => "#rot-tab"}
+      =t('.rot')
+
+.row.tab-content.compare
+  #rov-tab.tab-pane.active
+    .col-sm-5.town-select
+      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov, id: "rov" }
+  #rot-tab.tab-pane
+    .col-sm-5.town-select
+      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rot, id: "rot" }
   .col-sm-7.filters
     = render :partial => 'select_year', :locals => { years: @years }
     -#= render :partial => 'select_amountype'
@@ -232,6 +292,7 @@
 
     // load data to be compared
     this.selected_taxonomies.forEach(function(taxonomy, i) {
+
       if (store[taxonomy]) return true;
 
       var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level;
@@ -248,13 +309,15 @@
   }
 
 
-  aCompareTaxonomies.select_taxonomies = function (ids, added,townBlazon){
+  aCompareTaxonomies.select_taxonomies = function (ids, added, townBlazon, townName){
     if (added) aCompareTaxonomies.taxonomies[added.id] = {
+        // town: town,
         text: added.text,
+        town: townName,
         img: townBlazon
         }
-    this.selected_taxonomies = ids
-    this.create_chart()
+    this.selected_taxonomies = ids;
+    this.create_chart();
   }
 
 
@@ -402,4 +465,13 @@
       aTreeChart.refresh()
     });
 
+    // clear charts & select2
+    $('.nav-pills li').on('click', function() {
+      if(!$(this).hasClass('active')) {
+        // clear chart
+        aCompareTaxonomiesChart.clear_chart();
+        // clear select2 input value
+        $('#rov, #rot').select2('data', null);
+      };
+    })
   });

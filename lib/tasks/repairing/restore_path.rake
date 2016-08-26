@@ -1,4 +1,4 @@
-namespace :repairing_layers do
+namespace :repairing_restore_path do
 
   desc "restore url to files into repairing layers"
 

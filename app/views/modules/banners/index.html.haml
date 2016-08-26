@@ -1,0 +1,88 @@
+:scss
+
+  .banners{
+    font-size: 0;
+    .reset-padding{
+      padding: 0;
+    }
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .banner{
+        background: linear-gradient(to right, transparent, silver, transparent);
+        display: inline-block;
+        width: 19%;
+        margin-right: 1.25%;
+        margin-bottom: 10px;
+        text-align: center;
+      .banner-img{
+        border-bottom: 2px solid orange;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        .banner-img-center{
+          height: 100px;
+          margin: 0 auto;
+        }
+      }
+      .data-actions{
+        font-size: 14px;
+        p{
+          padding-left: 3px;
+          text-align: left;
+          overflow: hidden;
+          margin-bottom: 5px;
+          white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+        }
+        .info-show-banner {
+          text-align: left;
+          color: #2CC185;
+        }
+        .banner-actions{
+          text-align: right;
+          color: #0a6aa1;
+          .change-order{
+            color: #17B2E8;
+          }
+        }
+        .fa{
+          margin: 3px 4px 0 4px;
+        }
+      }
+    }
+    .banner:nth-child(5n){
+      margin-right: 0%;
+    }
+    @media (min-width: 500px) and (max-width: 768px) {
+      .banner{
+        width: 33%;
+        margin-right: 0.5%;
+        .banner-img{
+        }
+      }
+      .banner:nth-child(5n){
+        margin-right: 0.5%;
+      }
+      .banner:nth-child(3n){
+        margin-right: 0;
+      }
+    }
+    @media (max-width: 500px){
+      .banner{
+        width: 100%;
+        .banner-img{
+        }
+      }
+    }
+  }
+
+.col-md-10.col-md-offset-1.banners
+  .header
+    %h2= t('.header')
+    .new-banner-btn
+      %h2= link_to t('.new_btn_name'), new_modules_banner_path, :class => 'btn btn-info'
+  .list-banners
+    = render 'list_banners'

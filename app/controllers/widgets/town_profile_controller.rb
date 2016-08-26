@@ -98,7 +98,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
     # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
     taxonomy = Taxonomy.owned_by(town_object.to_s).first
-    calendar = Calendar.get_calendar_by_town(town).first
+    calendar = Calendar.get_calendar_by_town(town)
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     # programs = Programs::Town.get_town_by_title(town).first
     programs = Programs::TargetedProgram.first
@@ -154,7 +154,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_calendar_hash(calendar,name)
     get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
       unless calendar.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendars_calendars_town_path(@town),'name' => name}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendar_town_profile_path(calendar),'name' => name}
       end
     end
   end

@@ -16,6 +16,7 @@
 #sidebar_chart
 
 :javascript
+
   function aSidebarChartBattery(aContainer) {
     var margin = {top: 20, right: 100, bottom: 30, left: 110},
         width, height;
@@ -76,7 +77,7 @@
         width = $("#chart").width() - margin.left - margin.right,
         x = d3.scale.pow().exponent(.2)   // reduce exponent() argument to make less curve
           .range([0, width]);
-        y = d3.scale.ordinal()
+        y = d3.scale.ordinal();
         xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom")

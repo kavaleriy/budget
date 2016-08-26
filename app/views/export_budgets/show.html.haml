@@ -13,6 +13,7 @@
   .row.without_margin.margin-bottom
     %h2
       =t('.show')
+  -unless @export_budget.town.nil?
     = link_to t('export_budgets.town_profile'),public_path(@export_budget.town),class: 'btn btn-default'
     = link_to create_pdf_path(@export_budget,format: :pdf) do
       %i.fa.fa-file-pdf-o
@@ -24,6 +25,7 @@
       .panel-heading
         %h3.panel-title
           = "#{t('export_budgets.form.year')} : #{ @export_budget.year }"
+    -unless @export_budget.pages.nil?
       -@export_budget.pages.each do |key,value|
         -if key.eql?('content')
           -value.each do |content_key,content_value|

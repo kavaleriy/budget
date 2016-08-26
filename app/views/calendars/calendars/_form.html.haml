@@ -7,6 +7,9 @@
     = f.label :description, t('.description'), :class => 'control-label'
     .controls
       = f.text_field :description, :class => 'form-control'
+  .form-group
+    = f.check_box :is_active
+    = f.label :is_active, t('.show_in_town_profile')
   %hr
   %h3= t('.countdown')
   .form-group
