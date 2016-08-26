@@ -21,7 +21,12 @@
       %label
         %i.glyphicon.glyphicon-link
           = t('form.value')
-      = text_field :documentation_link, :value, :class => 'form-control can_be_disable'
+      = url_field :documentation_link, :value, :class => 'form-control can_be_disable'
+    .col-md-12
+      %label
+        %i.glyphicon.glyphicon-pencil
+          = t('form.description')
+      = text_area :documentation_link, :description, :class => 'form-control can_be_disable'
   .actions
     = f.button :class => 'btn btn-default can_be_disable' do
       %i.glyphicon.glyphicon-plus
