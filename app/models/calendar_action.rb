@@ -45,7 +45,6 @@ class CalendarAction
          when ACTION_TYPE_ANALYSIS then set_color(ACTION_TYPE_ANALYSIS_COLOR)
          when ACTION_TYPE_EXECUTION then set_color(ACTION_TYPE_EXECUTION_COLOR)
          when ACTION_TYPE_DISCUSSION then set_color(ACTION_TYPE_DISCUSSION_COLOR)
-         when ACTION_TYPE_NO_INDICATED then set_color(ACTION_TYPE_NO_INDICATED_COLOR)
          else raise "undefined type"
        end
     end
