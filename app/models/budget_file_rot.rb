@@ -3,15 +3,17 @@ class BudgetFileRot < BudgetFile
   protected
 
   def readline row
+    kkd = row['KKD'].to_s
+
     amount = row['SUMM'].to_i
-    fond = row['KKFN'].to_s.split('.')[0]
-
     return if amount.nil? || amount == 0
-    # return unless %w(2 12).include? kod
 
+    fond = row['KKFN'].to_s.split('.')[0]
     return unless is_allowed_fond(fond)
 
-    kkd = row['KKD'].to_s
+    kod =  row['KOD'].to_s.split('.')[0]
+    return if kkd.slice(0, 3) == '250' and kod == '2'
+
 
     item = {
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
@@ -29,6 +31,6 @@ class BudgetFileRot < BudgetFile
       item[v[:t]] = v[:key]
     }
 
-    item unless item.nil? or item['amount'] == 0
+    item unless item.nil?
   end
 end

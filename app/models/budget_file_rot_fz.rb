@@ -3,14 +3,17 @@ class BudgetFileRotFz < BudgetFile
   protected
 
   def readline row
+    kkd = row['fcode'].to_s
+
     return unless row['type_rozd'].to_s == '2'
     return if row['tf'].to_s == '3'
     return unless row['kmb'].to_s == self.taxonomy.kmb
 
-    kkd = row['fcode'].to_s
-
     fond = row['cf'].to_s
     return unless is_allowed_fond(fond)
+
+    kod =  row['KOD'].to_s.split('.')[0]
+    return if kkd.slice(0, 3) == '250' and kod == '2'
 
     return if %w(90010100 90010200 90010300).include?(kkd)
 
