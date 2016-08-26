@@ -1,9 +1,9 @@
 :scss
   .default_action{
-    margin-left: 2px;
+    margin: 0;
     div{
       border-radius: 2px;
-      margin: 0 2px;
+      border: 1px solid white;
       padding: 0px;
     }
     p{
@@ -12,9 +12,15 @@
       text-align: center;
     }
   }
+  @media (min-width: 768px) and (max-width: 1024px){
+    .default_action{
+      p{
+        font-size: 13px;
+      }
+    }
+  }
   #folding{
-
-  background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
+    background: #{CalendarAction::ACTION_TYPE_FOLDING_COLOR};
   }
   #analysis{
     background: #{CalendarAction::ACTION_TYPE_ANALYSIS_COLOR};
@@ -25,7 +31,7 @@
     }
   }
   #discussion{
-    width: 30%;
+    //width: 30%;
     background: #{CalendarAction::ACTION_TYPE_DISCUSSION_COLOR};
     p{
       white-space: nowrap;
@@ -37,11 +43,11 @@
     background: #{CalendarAction::ACTION_TYPE_EXECUTION_COLOR};
   }
 .row.default_action
-  .col-md-2#folding
+  .col-sm-5.col-md-2#folding
     %p=t('calendar_actions.form.radio_folding')
-  .col-md-4#analysis
+  .col-sm-7.col-md-3#analysis
     %p=t('calendar_actions.form.radio_analysis')
-  .col-md-4#discussion
+  .col-sm-9.col-md-5#discussion
     %p=t('calendar_actions.form.radio_discussion')
-  .col-md-2#execution
+  .col-sm-3.col-md-2#execution
     %p=t('calendar_actions.form.radio_execution')
