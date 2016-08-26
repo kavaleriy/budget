@@ -31,7 +31,7 @@ class BudgetFile
 
 
   def is_allowed_fond fond
-    fond.nil? or %w(1 2 7).include? fond
+    fond.nil? or %w(1 2 3 7).include? fond
   end
 
   def is_grouped_kekv kekv
