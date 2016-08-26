@@ -61,6 +61,11 @@
   .col-xs-12
     %p
       = t('author') + ": #{@author}"
+  -#TODO: Make helper, add class to block
+  .col-xs-12
+    %p
+      - updated_time = @taxonomy.updated_at.nil? ? '-' : (@taxonomy.updated_at).strftime("%d.%m.%Y") + 'р.'
+      = t('last_update') + updated_time
   .col-xs-12
     =render partial: 'layouts/addthis_hor_share'
 
