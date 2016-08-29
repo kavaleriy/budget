@@ -39,17 +39,18 @@ class FzBudgetFilesController < ApplicationController
       remove_old_fz(current_user.email, file[:name])
 
 
-      remove_annual_rows = ->(rows) do
-        rows.each do |row|
-          row['m0'] = (1..12).map { |i| row["m#{i}"].to_f }.sum
-        end
+#      remove_annual_rows = ->(rows) do
+#        rows.each do |row|
+#          row['m0'] = (1..12).map { |i| row["m#{i}"].to_f }.sum
+#        end
 
-        return rows.reject do |row|
-          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['cf'] == 7 and f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
-        end
-      end
+#        return rows.reject do |row|
+#          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['cf'] == 7 and f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
+#        end
+#      end
 
-      rows = remove_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
+#      rows = remove_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
+      rows = read_table_from_file(fz_file.path)[:rows]
 
       fz_file.rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
       fz_file.rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
