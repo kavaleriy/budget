@@ -20,7 +20,6 @@ class WikiParser
     result = JSON.parse(response)['query']['pages']
 
     # data control for existing page in wikipedia
-    # binding.pry
     if result.first[0].eql?(wiki_page_empty_result)
       false
     else

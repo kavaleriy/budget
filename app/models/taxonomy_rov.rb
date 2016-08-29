@@ -4,7 +4,7 @@ class TaxonomyRov < Taxonomy
 
 
   def self.get_active_or_first(town)
-    # binding.pry
+
     result = self.get_active_by_town(town).first
     # check for active
     # case 1: return first

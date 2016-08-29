@@ -24,6 +24,9 @@ class TownsController < ApplicationController
     end
   end
 
+  # Method doesn't use
+  # see at routes search_for_areas_town
+  # WARN! maybe use it in ajax
   def search_for_towns_and_areas
     @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.level != 13 && town.level != 1 }
@@ -51,6 +54,9 @@ class TownsController < ApplicationController
 
   end
 
+  # Method doesn't use
+  # see at routes search_for_areas_town
+  # WARN! maybe use it in ajax
   def search_for_areas
     @towns = use_cache get_controller_action_key do
       Town.all.reject{|town| town.level != 1 }
@@ -63,6 +69,8 @@ class TownsController < ApplicationController
     end
 
   end
+
+  # Method for find towns at town profile
   def search_for_active_towns
     q = params[:query].mb_chars.capitalize.to_s
     @towns  = Town.get_central_authority_towns(q).order_by(:level => :asc)

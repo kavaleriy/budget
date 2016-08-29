@@ -107,8 +107,6 @@ module ApplicationHelper
         then colors += %w(#008800 #64FE02 #5E9F32 #34CA21 #00A86B #167145 #00A900)
       when CalendarAction::ACTION_TYPE_DISCUSSION
         then colors += %w(#FF5D00 #EA7501 #FF7518 #FF8800 #FFA500 #FFA500 #FF8400)
-      when CalendarAction::ACTION_TYPE_NO_INDICATED
-        then colors += %w(#BBBBBB #BBBBA7 #BBC5A7 #C9C5A7 #C9C5B6 #C9E2B6 #C9E9B6)
     end
 
     # if holder.nil? or holder == 1
