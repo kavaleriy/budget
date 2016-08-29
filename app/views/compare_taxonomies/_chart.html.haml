@@ -17,6 +17,9 @@
       .plan {
         text-anchor: end;
       }
+      .black {
+        fill: black;
+      }
       .fact{
         text-anchor: start;
       }
@@ -211,6 +214,7 @@
       .attr("height", function(d) { return d == 0 ? 0 : barHeight - 1; });
 
     // Create rect for fact
+    // TODO: create func to check data for min value from zippedData
     bar.append("rect")
       .attr('x', barHeight)
       .attr('data-type','fact')
@@ -252,16 +256,29 @@
     //////////////////////////////////////////////////////////////////////////////////////
     // Draw plan&fact text
     // Add plan text label into rect
+    // TODO: create func to check data for min value from zippedData
     bar.append("text")
-      .attr("class", "plan")
-      .attr("x", function(d) { return x(d.plan)  || '0' })
+      .attr("class", function(d) {
+        res = "";
+        d.plan > ((getValuesFromData(zippedData, 'max')/100)*5) ? res = "plan" : res = "plan black";
+        return res; })
+      .attr("x", function(d) {
+        res = 0;
+        d.plan > (getValuesFromData(zippedData, 'max')/100) ? res = d.plan : res = (getValuesFromData(zippedData, 'max')/100);
+      console.log(x(res))
+      xPos = x(res) < 155 ? x(res) + 309 : x(res)
+      return xPos  || 0 })
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
       .text(function(d) { return d == 0 ? "" : aHelper.short_label(d.plan); });
 
     // Add fact text label into rect
+    // TODO: create func to check data for min value from zippedData
     bar.append("text")
-      .attr("class", "fact")
+      .attr("class", function(d) {
+        res = "";
+        d.plan > (getValuesFromData(zippedData, 'max')/100) ? res = "fact" : res = "fact black";
+        return res; })
       .attr('x', chart_start_x + blazon_circle_radius + 2)
       .attr("y", barHeight / 2)
       .attr("dy", ".35em")
