@@ -58,12 +58,14 @@
         town_name = town.title.gsub(/,.*/, '') unless town.nil? || town.blank?
 
         # push taxonomy with blazon
-        result << {
-            id: taxonomy.id.to_s,
-            title: taxonomy.title,
-            town_name: town_name,
-            img: town_blazon
-        }
+        unless town_name.blank?
+          result << {
+              id: taxonomy.id.to_s,
+              title: taxonomy.title,
+              town_name: town_name,
+              img: town_blazon
+          }
+        end
       end
       result
     end

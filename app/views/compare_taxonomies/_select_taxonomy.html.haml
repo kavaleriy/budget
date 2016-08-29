@@ -55,7 +55,7 @@
       }
     }
   }
-= select_tag :taxonomy_select, options_for_select(taxonomies.collect { |tax|[ tax[:title], tax[:id], { 'data-img'=> get_town_blazon(tax[:img]), 'data-town-name' => tax[:town_name] } ] }), { multiple: true, class: 'form-control', id: id }
+= select_tag :taxonomy_select, options_for_select(taxonomies.collect { |tax|[ tax[:town_name], tax[:id], { 'data-img'=> get_town_blazon(tax[:img]), 'data-town-name' => tax[:town_name] } ] }), { multiple: true, class: 'form-control', id: id }
 
 
 
