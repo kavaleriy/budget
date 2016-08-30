@@ -200,4 +200,5 @@
           = t('.banner_place')
         %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
       - @banners.each do |banner|
-        =link_to image_tag(banner.banner_img.thumb, :title => banner.title, class: 'img-responsive'), banner.banner_url, target: '_blank'
+        = get_banner banner
+
