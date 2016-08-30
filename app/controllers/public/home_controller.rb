@@ -7,7 +7,7 @@ module Public
 
     def index
       @sliders = Modules::Slider.get_slider_by_order
-      @news = Modules::BudgetNews.get_last_news(3)
+      @news = Modules::BudgetNews.published_news.get_last_news(3)
       @test_town = Town.get_test_town.first
       @info_pages = ContentManager::PageContainer.get_info_pages
       @partners = Modules::Partner.get_publish_partners.order(order_logo: :asc)
