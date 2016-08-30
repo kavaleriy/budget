@@ -1,23 +1,11 @@
 :scss
   .row {
-    padding: 0;
-    .head {
-      font-size: large;
-      color: black;
-      font-weight: bold;
-    }
-  }
-
-  .row {
     padding-top: 15px;
     margin: 0;
     .btn-group {
-      padding: 0;
+      padding-right: 15px;
       form {
         margin: 0;
-      }
-      .btn-group {
-        padding: 0;
       }
     }
   }
@@ -25,13 +13,12 @@
     padding: 0;
   }
 
-.row
+= content_for :header do
   .head.pull-left
     =t('.header')
-
 .row
-  =link_to t('.new'), new_programs_targeted_program_path, class: 'btn btn-default'
-  .btn-group.pull-right
+  =link_to t('.new'),new_programs_targeted_program_path, class: 'btn btn-default'
+  .btn-group
     = form_for '', url: programs_targeted_programs_import_path, :authenticity_token => true, method: :post,
               :html => { class: 'form-horizontal', :multipart => true } do |f|
       .btn-group
@@ -40,6 +27,6 @@
         = f.submit t(".import_program"), class: 'btn btn-primary'
 
 .col-xs-12#targeted_programs
-  -#= render partial: 'programs/targeted_programs/programs/bar'
+  = render partial: 'programs/targeted_programs/programs/bar'
   -unless @programs.empty?
     = render partial: 'programs/targeted_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }

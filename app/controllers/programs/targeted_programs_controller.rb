@@ -1,5 +1,5 @@
 class Programs::TargetedProgramsController < ApplicationController
-  layout 'application_admin', except: [:index, :show]
+  layout 'application_admin', except: [:show]
   respond_to :html
   before_action :authenticate_user!, only: [:new, :edit]
   before_action :set_target_program,only: [:edit,:show,:update]
@@ -60,6 +60,7 @@ class Programs::TargetedProgramsController < ApplicationController
   def set_target_program
     @program = Programs::TargetedProgram.find(params[:id])
   end
+
   def stub_data
     @year = Date.today.year.to_s
   end
