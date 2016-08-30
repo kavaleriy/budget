@@ -5,7 +5,7 @@ class Modules::Banner
   field :title, type: String
   field :order_banner, type: Integer
   field :publish_on, type: Boolean
-  field :banner_url, type: String
+  field :url, type: String
 
   scope :get_publish_banners, -> {where(publish_on: true)}
 

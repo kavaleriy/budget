@@ -2,6 +2,7 @@ class Modules::Partner
   include Mongoid::Document
 
   field :name, type: String
+  field :url, type: String
   field :order_logo, type: Integer
   field :publish_on, type: Mongoid::Boolean
 
@@ -9,8 +10,8 @@ class Modules::Partner
 
   before_create :set_order_logo
 
-  validates :name, :presence => true
-  validates :logo, :presence => true, :on => :create
+  validates_presence_of :name
+  validates_presence_of :logo, on: :create
 
   mount_uploader :logo, PartnerLogoUploader
   skip_callback :update, :store_previous_model_for_logo

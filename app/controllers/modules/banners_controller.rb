@@ -86,6 +86,6 @@ class Modules::BannersController < AdminController
     end
 
     def modules_banner_params
-      params.require(:modules_banner).permit(:title, :publish_on, :banner_img, :banner_url)
+      params.require(:modules_banner).permit(:title, :publish_on, :banner_img, :url)
     end
 end

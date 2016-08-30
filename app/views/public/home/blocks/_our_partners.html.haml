@@ -325,10 +325,9 @@
       .container
         .carousel-wrap
           .owl-carousel
-            - @partners.each do |partners_logo|
+            - @partners.each do |partner|
               .item
-                =link_to '#' do
-                  =image_tag( partners_logo.logo, class: 'img-responsive')
+                = get_item(partner, 'partner')
 
 :javascript
   $(document).ready(function() {

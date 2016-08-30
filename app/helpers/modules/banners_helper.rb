@@ -8,15 +8,24 @@ module Modules::BannersHelper
     end
   end
 
-  def get_banner_img(banner)
-    image_tag(banner.banner_img.thumb, :title => banner.title, class: 'img-responsive')
+  def get_img(img, title)
+    image_tag(img, :title => title, class: 'img-responsive')
   end
 
-  def get_banner(banner)
-    if banner.banner_url?
-      link_to get_banner_img(banner), banner.banner_url, target: '_blank'
-    else
-      get_banner_img(banner)
+  def get_item(item, type)
+    case type
+    when 'banner'
+      if item.url?
+        link_to get_img(item.banner_img, item.title), item.url, target: '_blank'
+      else
+        get_img(item.banner_img, item.title)
+      end
+    when 'partner'
+      if item.url?
+        link_to get_img(item.logo, item.name), item.url, target: '_blank'
+      else
+        get_img(item.logo, item.name)
+      end
     end
   end
 end
