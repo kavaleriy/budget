@@ -21,13 +21,14 @@ class Programs::TargetedProgram
   field :objective, type: String # ціль
   field :region_target_program,type: Hash
 
-  has_many :sub_programs,class_name: 'Programs::TargetedProgram',foreign_key: 'p_id'
-  embeds_many :indicators,class_name: 'Programs::Indicator'
-  embeds_many :tasks,class_name: 'Programs::Task'
+  has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
+  embeds_many :indicators, class_name: 'Programs::Indicator'
+  embeds_many :tasks, class_name: 'Programs::Task'
+  belongs_to :town, class_name: 'Town'
 
   scope :get_main_programs,-> {where(p_id: nil)}
 
-  validates :title,:responsible,:manager,presence: true
+  validates :title, :responsible, :manager, :town, presence: true
 
 
 
@@ -87,7 +88,9 @@ class Programs::TargetedProgram
       end
       program =  self.new(program_hash)
       program.budget_sum = budget_sum_hash
+      program.town = Town.get_user_town(current_user)
       program
+
 
     end
   end
