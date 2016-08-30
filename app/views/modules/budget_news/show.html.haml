@@ -142,10 +142,8 @@
       }
       .baners-blocks {
         padding: 0;
-        //border: 1px solid red;
         img {
           margin: 0 auto 15px;
-          //max-width: 360px;
         }
       }
     }
@@ -202,4 +200,4 @@
           = t('.banner_place')
         %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
       - @banners.each do |banner|
-        %img.img-responsive{:src => get_img(banner)}
+        =link_to image_tag(banner.banner_img.thumb, :title => banner.title, class: 'img-responsive'), banner.banner_url, target: '_blank'
