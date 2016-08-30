@@ -11,9 +11,8 @@ class Modules::Banner
 
   before_create :set_order_banner
 
-  validates_presence_of  :title
-  validates_presence_of  :banner_img, unless: :banner_url?
-  validates_presence_of  :banner_url, unless: :banner_img?
+  validates_presence_of :title
+  validates_presence_of :banner_img, on: :create
 
   mount_uploader :banner_img, BannerImageUploader
   skip_callback :update, :store_previous_model_for_banner_img
