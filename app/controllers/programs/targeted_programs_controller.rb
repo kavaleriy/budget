@@ -46,10 +46,11 @@ class Programs::TargetedProgramsController < ApplicationController
 
   def import
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
+    program.town = Town.get_user_town(current_user)
     if program.save
       redirect_to programs_targeted_program_path(program)
     else
-      redirect_to :back,alert: 'Вибачте сталася помилка'
+      redirect_to :back, alert: 'Вибачте сталася помилка'
     end
 
   end

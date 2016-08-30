@@ -26,11 +26,11 @@ class Programs::TargetedProgram
   embeds_many :tasks, class_name: 'Programs::Task'
   belongs_to :town, class_name: 'Town'
 
-  scope :get_main_programs,-> {where(p_id: nil)}
+  scope :get_main_programs,-> { where(p_id: nil) }
+  # Get programs by town
+  scope :by_town, -> (town) { where(town: town) }
 
   validates :title, :responsible, :manager, :town, presence: true
-
-
 
   def init_default_budget_sum
     year = Date.today.year.to_s
@@ -88,7 +88,6 @@ class Programs::TargetedProgram
       end
       program =  self.new(program_hash)
       program.budget_sum = budget_sum_hash
-      program.town = Town.get_user_town(current_user)
       program
 
 
