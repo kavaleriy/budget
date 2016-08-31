@@ -11,25 +11,26 @@ class Programs::TargetedProgram
   field :type_title, type: String
   field :title, type: String
   # field :years, type: Hash
-  field :p_id,type: String
-  field :responsible,type: String
-  field :kpkvk,type: String # program code
-  field :kfkvk,type: String # functional code (branch)
-  field :manager,type: String # розпорядник
-  field :reason,type: String # Підстава
+  field :p_id, type: String
+  field :responsible, type: String
+  field :kpkvk, type: String # program code
+  field :kfkvk, type: String # functional code (branch)
+  field :manager, type: String # розпорядник
+  field :reason, type: String # Підстава
   field :budget_sum, type: Hash
   field :objective, type: String # ціль
-  field :region_target_program,type: Hash
+  field :region_target_program, type: Hash
 
-  has_many :sub_programs,class_name: 'Programs::TargetedProgram',foreign_key: 'p_id'
-  embeds_many :indicators,class_name: 'Programs::Indicator'
-  embeds_many :tasks,class_name: 'Programs::Task'
+  has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
+  embeds_many :indicators, class_name: 'Programs::Indicator'
+  embeds_many :tasks, class_name: 'Programs::Task'
+  belongs_to :town, class_name: 'Town'
 
-  scope :get_main_programs,-> {where(p_id: nil)}
+  scope :get_main_programs,-> { where(p_id: nil) }
+  # Get programs by town
+  scope :by_town, -> (town) { where(town: town) }
 
-  validates :title,:responsible,:manager,presence: true
-
-
+  validates :title, :responsible, :manager, :town, presence: true
 
   def init_default_budget_sum
     year = Date.today.year.to_s
@@ -88,6 +89,7 @@ class Programs::TargetedProgram
       program =  self.new(program_hash)
       program.budget_sum = budget_sum_hash
       program
+
 
     end
   end
