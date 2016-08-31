@@ -13,6 +13,8 @@ module Modules::BannersHelper
   end
 
   def get_item(item, type)
+    # use 'case' for banners and partners because they have different names fields in DB
+    # TODO: in feature improve this method
     case type
     when 'banner'
       if item.url?
