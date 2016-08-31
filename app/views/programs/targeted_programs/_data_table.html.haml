@@ -1,1 +1,104 @@
-= 'table here'
+:scss
+  .data-table {
+    .row {
+      margin: 0;
+      #no-more-tables {
+        table {
+          thead,
+          tbody {
+            tr {
+              .centred {
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media only screen and (max-width: 800px) {
+    /* Force table to not be like tables anymore */
+    #no-more-tables {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        border: 1px solid #ccc;
+      }
+      td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        &:before {
+          /* Now like a table header */
+          position: absolute;
+          /* Top/left values mimic padding */
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          text-align: left;
+          font-weight: bold;
+          content: attr(data-title);
+        }
+      }
+      .table-bordered {
+        padding: 0;
+      }
+    }
+  }
+-#TODO: 1. Localize header 2. Make table easy - divide for partials
+.col-xs-12.data-table
+  .row
+    #no-more-tables
+      %table.col-md-12.table-bordered.table-striped.table-condensed
+        %thead
+          %tr
+            %th.centred Назва
+            %th.centred Файл
+            %th.numeric.centred План
+            %th.numeric.centred Факт
+            %th.numeric.centred Дата оновлення
+            %th.numeric.centred Місто
+            %th.numeric.centred Автор
+            %th.numeric.centred Статус
+            %th.numeric.centred Дії
+        %tbody
+          -programs.each do |program|
+            -#-binding.pry
+            %tr
+              %td{"data-title" => "Title"}
+                = program.title
+              %td.centred{"data-title" => "File"} File
+              %td.numeric.centred{"data-title" => "Plan"}
+                = number_to_human(program.budget_sum.values.first['plan']['sum'])
+              %td.numeric.centred{"data-title" => "Fact"}
+                = number_to_human(program.budget_sum.values.first['fact']['sum'])
+              %td.numeric.centred{"data-title" => "Date"}
+                = program.updated_at.strftime('%d.%m.%Y')
+              %td.centred{"data-title" => "Town"}
+                = program.town.title
+              %td.centred{"data-title" => "Author"}
+                = program.author.name
+              -#TODO: Make it's editable for user & admin
+              %td.centred{"data-title" => "Status"}
+                - if program.active
+                  = fa_icon "check-square-o"
+                - else
+                  = fa_icon "square-o"
+              -#TODO: Add Ajax for delete
+              %td.centred{"data-title" => "Actions"}
+                = link_to edit_programs_targeted_program_path(program), class: 'btn-edit' do
+                  = fa_icon 'pencil'
+                = link_to program, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete' do
+                  = fa_icon 'trash'

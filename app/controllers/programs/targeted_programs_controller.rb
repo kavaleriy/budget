@@ -2,7 +2,7 @@ class Programs::TargetedProgramsController < ApplicationController
   layout 'application_admin', except: [:show]
   respond_to :html
   before_action :authenticate_user!, only: [:new, :edit]
-  before_action :set_target_program,only: [:edit,:show,:update]
+  before_action :set_target_program, only: [:edit, :show, :update, :destroy]
   # load_and_authorize_resource
 
   # GET /programs/target_programs
@@ -43,16 +43,37 @@ class Programs::TargetedProgramsController < ApplicationController
     @program.update(programs_targeted_program_params)
     respond_with(@program)
   end
-
+  #TODO: Add localize flash message
   def import
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
     program.town = Town.get_user_town(current_user)
-    if program.save
-      redirect_to programs_targeted_program_path(program)
-    else
-      redirect_to :back, alert: 'Вибачте сталася помилка'
-    end
+    program.author = current_user
 
+    respond_with(program) do |format|
+      if program.save
+        flash[:success] = "Data has been save!"
+        format.html { redirect_to action: 'index' }
+      else
+        flash[:error] = "Error!"
+        format.html { redirect_to :back }
+      end
+    end
+    # if program.save
+    #   redirect_to programs_targeted_program_path(program)
+    # else
+    #   redirect_to :back, alert: 'Вибачте сталася помилка'
+    # end
+
+  end
+
+  def destroy
+    @program.destroy
+    flash[:success] = "Data has been deleted!"
+    respond_to do |format|
+      format.html { redirect_to action: 'index' }
+      format.js
+      format.json { render json: @program.errors, status: :unprocessable_entity }
+    end
   end
 
   private
