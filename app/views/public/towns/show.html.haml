@@ -271,7 +271,7 @@
     .blason-block
       = show_town_blazon(@town)
     .town-title
-      = @town.title
+      = town_english_title(@town.title)
     %ul.sidebar-nav
       %li
         =link_to '#description', data: {toggle: "tab"} do
