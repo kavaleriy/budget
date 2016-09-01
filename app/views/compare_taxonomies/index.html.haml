@@ -296,7 +296,7 @@
 
       if (store[taxonomy]) return true;
 
-      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level;
+      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level + '?locale=' + I18n.locale;
       $.ajax({
         url: url,
         async: false

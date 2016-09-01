@@ -126,6 +126,7 @@
   $(document).on('ready page:load', function() {
     var compare_town_number = 0;
     var compare_town_limit = 2;
+
     $('.plus-to-compare').click(function(){
       // if town compare limit is not exceeded
       if(compare_town_number < compare_town_limit ){
@@ -197,9 +198,8 @@
     function set_iframe(url) {
       path = "#{request.base_url}"
       query = "#{URI.parse(request.url).query}"
-      frame_url = path + '/' + url
+      frame_url = path + '/' + url + "?locale=" + I18n.locale
       $('.tab-content iframe').attr('src', frame_url)
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
     }
-
   })
