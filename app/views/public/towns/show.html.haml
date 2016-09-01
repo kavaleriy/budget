@@ -271,7 +271,12 @@
     .blason-block
       = show_town_blazon(@town)
     .town-title
-      = @town.title
+      -#TODO: rewrite
+      -#WARN! It's ad hoc, maybe deleted after town translation
+      - if I18n.locale == :en && @town.title == 'Демонстрація типового профілю міста'
+        = 'Demonstration of a typical city profile'
+      - else
+        = @town.title
     %ul.sidebar-nav
       %li
         =link_to '#description', data: {toggle: "tab"} do
