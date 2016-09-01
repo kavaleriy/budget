@@ -5,9 +5,13 @@
   %tr
     %td{ "data-title" => "#{t('.title')}" }
       = program.title
-    -#TODO: Add file upload
     %td.centred{ "data-title" => "#{t('.file')}" }
-      = fa_stacked_icon 'download', base: 'ban'
+      -unless program.targeted_program_file.url.empty?
+        -if (File.exist? File.expand_path(program.targeted_program_file.path))
+          = link_to program.targeted_program_file_url do
+            = fa_stacked_icon 'download', base: 'square', class: 'fa-lg'
+        -else
+          = fa_stacked_icon 'download', base: 'ban'
     %td.numeric.centred{ "data-title" => "#{t('.plan')}" }
       = number_to_human(program.budget_sum.values.first['plan']['sum'])
     %td.numeric.centred{ "data-title" => "#{t('.fact')}" }

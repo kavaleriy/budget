@@ -35,6 +35,8 @@ class Programs::TargetedProgram
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 
+  mount_uploader :targeted_program_file, TargetedProgramUploader
+
   def init_default_budget_sum
     year = Date.today.year.to_s
     self.budget_sum = {

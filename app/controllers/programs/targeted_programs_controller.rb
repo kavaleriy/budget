@@ -48,6 +48,7 @@ class Programs::TargetedProgramsController < ApplicationController
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
     program.town = Town.get_user_town(current_user)
     program.author = current_user
+    program.targeted_program_file = params[:import_file]
 
     respond_with(program) do |format|
       if program.save
