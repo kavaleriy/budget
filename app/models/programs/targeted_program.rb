@@ -1,5 +1,6 @@
 class Programs::TargetedProgram
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   PROGRAM_TYPE = 1
   SUBPROGRAM_TYPE = 2
@@ -20,17 +21,19 @@ class Programs::TargetedProgram
   field :budget_sum, type: Hash
   field :objective, type: String # ціль
   field :region_target_program, type: Hash
+  field :active, type: Boolean, default: true
 
   has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
   embeds_many :indicators, class_name: 'Programs::Indicator'
   embeds_many :tasks, class_name: 'Programs::Task'
   belongs_to :town, class_name: 'Town'
+  belongs_to :author, class_name: 'User'
 
   scope :get_main_programs,-> { where(p_id: nil) }
   # Get programs by town
   scope :by_town, -> (town) { where(town: town) }
 
-  validates :title, :responsible, :manager, :town, presence: true
+  validates :title, :responsible, :manager, :town, :author, presence: true
 
   def init_default_budget_sum
     year = Date.today.year.to_s
@@ -99,14 +102,14 @@ class Programs::TargetedProgram
     year = Date.today.year.to_s
     budget_sum_by_year = self.budget_sum[year]
     # set budget plan sum
-    general_plan_fund = budget_sum_by_year[:plan][:general_fund].to_f
-    special_plan_fund = budget_sum_by_year[:plan][:special_fund].to_f
-    budget_sum_by_year[:plan][:sum] = general_plan_fund + special_plan_fund
+    general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
+    special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
+    budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact][:general_fund].to_f
-      special_fact_fund = budget_sum_by_year[:fact][:special_fund].to_f
-      budget_sum_by_year[:fact][:sum] = general_fact_fund + special_fact_fund
+      general_fact_fund = budget_sum_by_year[:fact]['general_fund'].to_f
+      special_fact_fund = budget_sum_by_year[:fact]['special_fund'].to_f
+      budget_sum_by_year[:fact]['sum'] = general_fact_fund + special_fact_fund
     else
       init_default_fact_sum(year)
     end

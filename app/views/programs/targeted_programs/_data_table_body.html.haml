@@ -1,0 +1,32 @@
+/partial: data_table_body
+/from: programs/targeted_programs
+
+-programs.each do |program|
+  %tr
+    %td{ "data-title" => "#{t('.title')}" }
+      = program.title
+    -#TODO: Add file upload
+    %td.centred{ "data-title" => "#{t('.file')}" }
+      = fa_stacked_icon 'download', base: 'ban'
+    %td.numeric.centred{ "data-title" => "#{t('.plan')}" }
+      = number_to_human(program.budget_sum.values.first['plan']['sum'])
+    %td.numeric.centred{ "data-title" => "#{t('.fact')}" }
+      = number_to_human(program.budget_sum.values.first['fact']['sum'])
+    %td.numeric.centred{ "data-title" => "#{t('.date-updated')}" }
+      = program.updated_at.strftime('%d.%m.%Y')
+    %td.centred{ "data-title" => "#{t('.town-title')}" }
+      = program.town.title
+    %td.centred{ "data-title" => "#{t('.author')}" }
+      = program.author.name
+    -#TODO: Make it's editable for user & admin
+    %td.centred{ "data-title" => "#{t('.active')}" }
+      - if program.active
+        = fa_icon "check-square-o"
+      - else
+        = fa_icon "square-o"
+    -#TODO: Add Ajax for delete
+    %td.centred{ "data-title" => "#{t('.actions')}" }
+      = link_to edit_programs_targeted_program_path(program), class: 'btn-edit' do
+        = fa_stacked_icon 'pencil', base: 'square', class: 'fa-lg'
+      = link_to program, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete' do
+        = fa_stacked_icon 'trash', base: 'square', class: 'fa-lg'

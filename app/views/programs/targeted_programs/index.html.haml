@@ -11,7 +11,7 @@
   }
 
   .btns-add {
-    padding-top: 15px;
+    padding: 15px 0;
     margin: 0;
   }
 
@@ -26,7 +26,8 @@
 .row.btns-add
   =render partial: 'programs/targeted_programs/new_import_btns'
 
-.col-xs-12#targeted_programs
-  -#= render partial: 'programs/targeted_programs/programs/bar'
-  -unless @programs.empty?
-    = render partial: 'programs/targeted_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }
+.row.data-table
+  -if @programs.empty?
+    =render partial: 'layouts/no_data_yet'
+  -else
+    =render partial: 'data_table'
