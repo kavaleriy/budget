@@ -43,7 +43,7 @@ class Programs::TargetedProgramsController < ApplicationController
     @program.update(programs_targeted_program_params)
     respond_with(@program)
   end
-  #TODO: Add localize flash message
+
   def import
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
     program.town = Town.get_user_town(current_user)
@@ -51,10 +51,10 @@ class Programs::TargetedProgramsController < ApplicationController
 
     respond_with(program) do |format|
       if program.save
-        flash[:success] = "Data has been save!"
+        flash[:success] = t('targeted_programs.import.success')
         format.html { redirect_to action: 'index' }
       else
-        flash[:error] = "Error!"
+        flash[:error] = t('targeted_programs.import.error')
         format.html { redirect_to :back }
       end
     end
@@ -68,7 +68,7 @@ class Programs::TargetedProgramsController < ApplicationController
 
   def destroy
     @program.destroy
-    flash[:success] = "Data has been deleted!"
+    flash[:success] = t('targeted_programs.destroy.success')
     respond_to do |format|
       format.html { redirect_to action: 'index' }
       format.js
