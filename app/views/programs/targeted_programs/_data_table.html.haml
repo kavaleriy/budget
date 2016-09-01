@@ -1,4 +1,10 @@
 :scss
+  //init colors
+  $lightgray: #eee;
+  $red: red;
+  $yellow: #ffd304;
+  $darkblue: #0c2231;
+
   .data-table {
     .row {
       margin: 0;
@@ -9,6 +15,48 @@
             tr {
               .centred {
                 text-align: center;
+                span {
+                  .fa-ban {
+                    color: $red;
+                  }
+                }
+                a {
+                  span {
+                    .fa-square {
+                      //color: $darkblue;
+                      color: $yellow;
+                      -webkit-transition-duration: 0.7s;
+                      -o-transition-duration: 0.7s;
+                      -moz-transition-duration: 0.7s;
+                      transition-duration: 0.7s;
+                    }
+                    .fa-pencil,
+                    .fa-trash {
+                      //color: $yellow;
+                      color: $darkblue;
+                      -webkit-transition-duration: 0.7s;
+                      -o-transition-duration: 0.7s;
+                      -moz-transition-duration: 0.7s;
+                      transition-duration: 0.7s;
+                    }
+                  }
+                  &:hover,
+                  &:focus {
+                    text-decoration: none;
+                    transition: 3s;
+                    span {
+                      .fa-square {
+                        color: $darkblue;
+                        //color: $yellow;
+                      }
+                      .fa-pencil,
+                      .fa-trash {
+                        color: $yellow;
+                        //color: $darkblue;
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -33,7 +81,7 @@
       td {
         /* Behave  like a "row" */
         border: none;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $lightgray;
         position: relative;
         padding-left: 50%;
         white-space: normal;
@@ -58,6 +106,8 @@
     }
   }
 -#TODO: 1. Localize header 2. Make table easy - divide for partials
+/partial: data_table
+/from: programs/targeted_programs
 .col-xs-12.data-table
   .row
     #no-more-tables
@@ -75,11 +125,12 @@
             %th.numeric.centred Дії
         %tbody
           -programs.each do |program|
-            -#-binding.pry
             %tr
               %td{"data-title" => "Title"}
                 = program.title
-              %td.centred{"data-title" => "File"} File
+              -#TODO: Add file upload
+              %td.centred{"data-title" => "File"}
+                = fa_stacked_icon 'download', base: 'ban'
               %td.numeric.centred{"data-title" => "Plan"}
                 = number_to_human(program.budget_sum.values.first['plan']['sum'])
               %td.numeric.centred{"data-title" => "Fact"}
@@ -99,6 +150,6 @@
               -#TODO: Add Ajax for delete
               %td.centred{"data-title" => "Actions"}
                 = link_to edit_programs_targeted_program_path(program), class: 'btn-edit' do
-                  = fa_icon 'pencil'
+                  = fa_stacked_icon 'pencil', base: 'square', class: 'fa-lg'
                 = link_to program, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete' do
-                  = fa_icon 'trash'
+                  = fa_stacked_icon 'trash', base: 'square', class: 'fa-lg'
