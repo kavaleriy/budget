@@ -35,6 +35,9 @@ class Programs::TargetedProgram
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 
+  mount_uploader :targeted_program_file, TargetedProgramUploader
+  skip_callback :update, :before, :store_previous_model_for_targeted_program_file
+
   def init_default_budget_sum
     year = Date.today.year.to_s
     self.budget_sum = {
@@ -65,9 +68,19 @@ class Programs::TargetedProgram
     end
     program
   end
+
   def self.get_grouped_indicators(indicators)
     group_indicators = indicators.group_by{|f| f.group}
     group_indicators.transform_keys{|key|Programs::Indicator::set_indicator_group_name(key)}
+  end
+
+  def check_access(user)
+    # this function check access to update or destroy document
+    # get one parameter user model
+    # return true if user admin
+    # return true if user created this document
+    # else return false
+    user.is_admin? || self.owner.eql?(user)
   end
 
   private

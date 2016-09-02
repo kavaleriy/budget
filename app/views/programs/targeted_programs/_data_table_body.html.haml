@@ -5,9 +5,12 @@
   %tr
     %td{ "data-title" => "#{t('.title')}" }
       = program.title
-    -#TODO: Add file upload
     %td.centred{ "data-title" => "#{t('.file')}" }
-      = fa_stacked_icon 'download', base: 'ban'
+      -if program.targeted_program_file?
+        = link_to program.targeted_program_file_url do
+          = fa_stacked_icon 'download', base: 'square', class: 'fa-lg'
+      -else
+        = fa_stacked_icon 'download', base: 'ban'
     %td.numeric.centred{ "data-title" => "#{t('.plan')}" }
       = number_to_human(program.budget_sum.values.first['plan']['sum'])
     %td.numeric.centred{ "data-title" => "#{t('.fact')}" }
@@ -20,13 +23,23 @@
       = program.author.name
     -#TODO: Make it's editable for user & admin
     %td.centred{ "data-title" => "#{t('.active')}" }
-      - if program.active
-        = fa_icon "check-square-o"
-      - else
-        = fa_icon "square-o"
-    -#TODO: Add Ajax for delete
+      -#-binding.pry
+      = check_box_tag 'active', program.id, program.active, class: 'activated', data: { confirm: "#{t('.sure_dialog')}", remote: true, url: url_for(action: :lock, id: program.id), method: "PATCH" }
+      -#- if program.active
+      -#  = fa_icon "check-square-o"
+      -#- else
+      -#  = fa_icon "square-o"
     %td.centred{ "data-title" => "#{t('.actions')}" }
       = link_to edit_programs_targeted_program_path(program), class: 'btn-edit' do
         = fa_stacked_icon 'pencil', base: 'square', class: 'fa-lg'
-      = link_to program, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete' do
+      = link_to program, method: :delete, data: { confirm: "#{t('.sure_dialog')}" }, remote: true, class: 'btn-delete' do
         = fa_stacked_icon 'trash', base: 'square', class: 'fa-lg'
+
+:javascript
+  // Ad hoc for checkbox. On 'Cancel' action
+  $('.activated').on('confirm:complete', function(e, response) {
+    if(!response) {
+      var res = $(this).is(':checked');
+      $(this).prop('checked', !res);
+    }
+  });

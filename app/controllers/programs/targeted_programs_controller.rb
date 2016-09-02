@@ -2,7 +2,7 @@ class Programs::TargetedProgramsController < ApplicationController
   layout 'application_admin', except: [:show]
   respond_to :html
   before_action :authenticate_user!, only: [:new, :edit]
-  before_action :set_target_program, only: [:edit, :show, :update, :destroy]
+  before_action :set_target_program, only: [:edit, :show, :update, :lock, :destroy]
   # load_and_authorize_resource
 
   # GET /programs/target_programs
@@ -46,8 +46,12 @@ class Programs::TargetedProgramsController < ApplicationController
 
   def import
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
+    # set town
     program.town = Town.get_user_town(current_user)
+    # set autor
     program.author = current_user
+    # attach upload file
+    program.targeted_program_file = params[:import_file]
 
     respond_with(program) do |format|
       if program.save
@@ -71,8 +75,24 @@ class Programs::TargetedProgramsController < ApplicationController
     flash[:success] = t('targeted_programs.destroy.success')
     respond_to do |format|
       format.html { redirect_to action: 'index' }
-      format.js
+      format.js   { render layout: false }
       format.json { render json: @program.errors, status: :unprocessable_entity }
+    end
+  end
+
+  def lock
+    if params[:action]
+      @program.active = @program.active ? false : true
+    end
+    @program.save
+    respond_with(@program) do |format|
+      if @program.save
+        flash[:success] = 'Updated!'
+        format.js   { render layout: false }
+      else
+        flash[:error] = 'Error!'
+        format.js
+      end
     end
   end
 
