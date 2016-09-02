@@ -72,7 +72,7 @@ class Programs::TargetedProgramsController < ApplicationController
     flash[:success] = t('targeted_programs.destroy.success')
     respond_to do |format|
       format.html { redirect_to action: 'index' }
-      format.js
+      format.js   { render layout: false }
       format.json { render json: @program.errors, status: :unprocessable_entity }
     end
   end
