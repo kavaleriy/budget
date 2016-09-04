@@ -1,3 +1,17 @@
-%h2
-  =t('.header')
-=render partial: 'form'
+:scss
+  .container {
+    .form-title {
+      padding: 15px 0;
+      h3 {
+        margin: 0;
+      }
+    }
+    form {
+      margin: 0;
+    }
+  }
+.container
+  .form-title
+    %h3
+      =t('.header')
+  =render partial: 'form'

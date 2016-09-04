@@ -1,32 +1,36 @@
 :scss
-  .row {
-    padding-top: 15px;
+  //init colors
+  $black: black;
+
+  .page-head {
+    padding: 0;
     margin: 0;
-    .btn-group {
-      padding-right: 15px;
-      form {
-        margin: 0;
-      }
+    .page-title {
+      font-size: large;
+      color: $black;
+      font-weight: bold;
     }
+
   }
+
+  .btns-add {
+    padding: 15px 0;
+    margin: 0;
+  }
+
   #targeted_programs {
     padding: 0;
   }
 
-= content_for :header do
-  .head.pull-left
+.row.page-head
+  .page-title.pull-left
     =t('.header')
-.row
-  =link_to t('.new'),new_programs_targeted_program_path, class: 'btn btn-default'
-  .btn-group
-    = form_for '', url: programs_targeted_programs_import_path, :authenticity_token => true, method: :post,
-              :html => { class: 'form-horizontal', :multipart => true } do |f|
-      .btn-group
-        = f.file_field :import_file, class: 'btn btn-default', required: true
-      .btn-group
-        = f.submit t(".import_program"), class: 'btn btn-primary'
 
-.col-xs-12#targeted_programs
-  = render partial: 'programs/targeted_programs/programs/bar'
-  -unless @programs.empty?
-    = render partial: 'programs/targeted_programs/programs/list', locals: { programs: @programs, :years => @years, :year => @year }
+.row.btns-add
+  =render partial: 'programs/targeted_programs/new_import_btns'
+
+.row.data-table
+  -if @programs.empty?
+    =render partial: 'layouts/no_data_yet'
+  -else
+    =render partial: 'data_table'

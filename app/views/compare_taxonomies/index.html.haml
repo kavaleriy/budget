@@ -252,6 +252,7 @@
 
 %h1
   = t('.title')
+  = select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
 %ul.nav.nav-pills
   %li.active
     %a{"data-toggle" => "tab", :href => "#rov-tab"}
@@ -295,7 +296,7 @@
 
       if (store[taxonomy]) return true;
 
-      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level;
+      var url = '/widgets/visify/get_bubbletree_data/' + taxonomy + '/' + selected_level + '?locale=' + I18n.locale;
       $.ajax({
         url: url,
         async: false
@@ -305,6 +306,7 @@
     });
 
     var data = this.get_data()
+
     aCompareTaxonomiesChart.draw_chart(data)
   }
 
