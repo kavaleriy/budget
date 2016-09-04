@@ -16,11 +16,12 @@
     %td.numeric.centred{ "data-title" => "#{t('.fact')}" }
       = number_to_human(program.budget_sum.values.first['fact']['sum'])
     %td.numeric.centred{ "data-title" => "#{t('.date-updated')}" }
-      = program.updated_at.strftime('%d.%m.%Y')
+      -#-binding.pry
+      = program.updated_at.strftime('%d.%m.%Y') unless program.updated_at.blank?
     %td.centred{ "data-title" => "#{t('.town-title')}" }
-      = program.town.title
+      = program.town.title unless program.town.blank?
     %td.centred{ "data-title" => "#{t('.author')}" }
-      = program.author.name
+      = program.author.name unless program.author.blank?
     -#TODO: Make it's editable for user & admin
     %td.centred{ "data-title" => "#{t('.active')}" }
       -#-binding.pry
