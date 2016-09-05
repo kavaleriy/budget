@@ -1,1 +1,27 @@
-town_programs
+:scss
+  .row {
+    margin: 0;
+  }
+
+-years = []
+-@programs.each do |p|
+  -p.budget_sum.keys.each do |y|
+    -years.include?(y) ? next : years << y
+-years
+
+.row
+  =render partial: 'programs/targeted_programs/town_programs/selects', locals: { years: years }
+.row
+  .page-title.pull-left
+    = 'Розподіл програм'
+  .program-bar
+    = render partial: 'programs/targeted_programs/town_programs/bar'
+.row
+  .programs-list
+    .title-list
+      = 'Перелік програм'
+    =render partial: 'programs/targeted_programs/town_programs/program_list'
+
+.col-xs-12#targeted_programs
+  -unless @programs.empty?
+    = render partial: 'programs/targeted_programs/programs/list', locals: { programs: @programs, :year => @year }
