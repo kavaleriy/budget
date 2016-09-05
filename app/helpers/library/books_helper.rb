@@ -1,5 +1,5 @@
 module Library::BooksHelper
-  def get_img book
+  def get_book_img book
     if book.book_img?
       image_tag(book.book_img.thumb)
     else

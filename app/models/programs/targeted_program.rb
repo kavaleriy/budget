@@ -1,5 +1,6 @@
 class Programs::TargetedProgram
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   PROGRAM_TYPE = 1
   SUBPROGRAM_TYPE = 2
@@ -11,25 +12,31 @@ class Programs::TargetedProgram
   field :type_title, type: String
   field :title, type: String
   # field :years, type: Hash
-  field :p_id,type: String
-  field :responsible,type: String
-  field :kpkvk,type: String # program code
-  field :kfkvk,type: String # functional code (branch)
-  field :manager,type: String # розпорядник
-  field :reason,type: String # Підстава
+  field :p_id, type: String
+  field :responsible, type: String
+  field :kpkvk, type: String # program code
+  field :kfkvk, type: String # functional code (branch)
+  field :manager, type: String # розпорядник
+  field :reason, type: String # Підстава
   field :budget_sum, type: Hash
   field :objective, type: String # ціль
-  field :region_target_program,type: Hash
+  field :region_target_program, type: Hash
+  field :active, type: Boolean, default: true
 
-  has_many :sub_programs,class_name: 'Programs::TargetedProgram',foreign_key: 'p_id'
-  embeds_many :indicators,class_name: 'Programs::Indicator'
-  embeds_many :tasks,class_name: 'Programs::Task'
+  has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
+  embeds_many :indicators, class_name: 'Programs::Indicator'
+  embeds_many :tasks, class_name: 'Programs::Task'
+  belongs_to :town, class_name: 'Town'
+  belongs_to :author, class_name: 'User'
 
-  scope :get_main_programs,-> {where(p_id: nil)}
+  scope :get_main_programs,-> { where(p_id: nil) }
+  # Get programs by town
+  scope :by_town, -> (town) { where(town: town) }
 
-  validates :title,:responsible,:manager,presence: true
+  validates :title, :responsible, :manager, :town, :author, presence: true
 
-
+  mount_uploader :targeted_program_file, TargetedProgramUploader
+  skip_callback :update, :before, :store_previous_model_for_targeted_program_file
 
   def init_default_budget_sum
     year = Date.today.year.to_s
@@ -61,9 +68,19 @@ class Programs::TargetedProgram
     end
     program
   end
+
   def self.get_grouped_indicators(indicators)
     group_indicators = indicators.group_by{|f| f.group}
     group_indicators.transform_keys{|key|Programs::Indicator::set_indicator_group_name(key)}
+  end
+
+  def check_access(user)
+    # this function check access to update or destroy document
+    # get one parameter user model
+    # return true if user admin
+    # return true if user created this document
+    # else return false
+    user.is_admin? || self.owner.eql?(user)
   end
 
   private
@@ -89,6 +106,7 @@ class Programs::TargetedProgram
       program.budget_sum = budget_sum_hash
       program
 
+
     end
   end
 
@@ -97,14 +115,14 @@ class Programs::TargetedProgram
     year = Date.today.year.to_s
     budget_sum_by_year = self.budget_sum[year]
     # set budget plan sum
-    general_plan_fund = budget_sum_by_year[:plan][:general_fund].to_f
-    special_plan_fund = budget_sum_by_year[:plan][:special_fund].to_f
-    budget_sum_by_year[:plan][:sum] = general_plan_fund + special_plan_fund
+    general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
+    special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
+    budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact][:general_fund].to_f
-      special_fact_fund = budget_sum_by_year[:fact][:special_fund].to_f
-      budget_sum_by_year[:fact][:sum] = general_fact_fund + special_fact_fund
+      general_fact_fund = budget_sum_by_year[:fact]['general_fund'].to_f
+      special_fact_fund = budget_sum_by_year[:fact]['special_fund'].to_f
+      budget_sum_by_year[:fact]['sum'] = general_fact_fund + special_fact_fund
     else
       init_default_fact_sum(year)
     end

@@ -100,15 +100,16 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     calendar = Calendar.get_calendar_by_town(town)
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
     # programs = Programs::Town.get_town_by_title(town).first
-    programs = Programs::TargetedProgram.first
+    # programs = Programs::TargetedProgram.first
+    programs = Programs::TargetedProgram.by_town(@town).first
     result = []
     result << get_budget_compare_hash('budget_compare')
-    result << get_indicate_hash(indicate_taxonomy,'indicators')
-    result << get_taxonomy_rot_hash(taxonomy,'budget')
-    result << get_calendar_hash(calendar,'calendar')
+    result << get_indicate_hash(indicate_taxonomy, 'indicators')
+    result << get_taxonomy_rot_hash(taxonomy, 'budget')
+    result << get_calendar_hash(calendar, 'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    result << get_programs_hash('programs',programs)
+    result << get_programs_hash('programs', programs)
     # result << get_key_docs_hash('key_docs')
     # result << get_prozorro_hash('prozoroo')
     # result << get_edata_hash('edata')

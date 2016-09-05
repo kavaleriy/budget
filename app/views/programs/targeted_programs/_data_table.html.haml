@@ -1,0 +1,123 @@
+:scss
+  // init colors
+  $lightgray: #eee;
+  $red: red;
+  $yellow: #ffd304;
+  $darkblue: #0c2231;
+
+  .data-table {
+    .row {
+      margin: 0;
+      #no-more-tables {
+        table {
+          thead,
+          tbody {
+            tr {
+              .centred {
+                text-align: center;
+                span {
+                  .fa-ban {
+                    color: $red;
+                  }
+                }
+                a {
+                  span {
+                    .fa-square {
+                      //color: $darkblue;
+                      color: $yellow;
+                      -webkit-transition-duration: 0.7s;
+                      -o-transition-duration: 0.7s;
+                      -moz-transition-duration: 0.7s;
+                      transition-duration: 0.7s;
+                    }
+                    .fa-pencil,
+                    .fa-trash,
+                    .fa-download {
+                      //color: $yellow;
+                      color: $darkblue;
+                      -webkit-transition-duration: 0.7s;
+                      -o-transition-duration: 0.7s;
+                      -moz-transition-duration: 0.7s;
+                      transition-duration: 0.7s;
+                    }
+                  }
+                  &:hover,
+                  &:focus {
+                    text-decoration: none;
+                    transition: 3s;
+                    span {
+                      .fa-square {
+                        color: $darkblue;
+                        //color: $yellow;
+                      }
+                      .fa-pencil,
+                      .fa-trash,
+                      .fa-download {
+                        color: $yellow;
+                        //color: $darkblue;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Media block
+  @media only screen and (max-width: 800px) {
+    /* Force table to not be like tables anymore */
+    #no-more-tables {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        border: 1px solid #ccc;
+      }
+      td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid $lightgray;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        &:before {
+          /* Now like a table header */
+          position: absolute;
+          /* Top/left values mimic padding */
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          text-align: left;
+          font-weight: bold;
+          content: attr(data-title);
+        }
+      }
+      .table-bordered {
+        padding: 0;
+      }
+    }
+  }
+
+/partial: data_table
+/from: programs/targeted_programs
+
+.col-xs-12.data-table
+  .row
+    #no-more-tables
+      %table.col-md-12.table-bordered.table-striped.table-condensed
+        %thead
+          =render partial: 'data_table_header'
+        %tbody
+          =render partial: 'data_table_body', locals: { programs: @programs }

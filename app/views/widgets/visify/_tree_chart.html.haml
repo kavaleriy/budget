@@ -64,7 +64,7 @@
   -#TODO: Make helper, add class to block
   .col-xs-12
     %p
-      - updated_time = @taxonomy.updated_at.nil? ? '-' : (@taxonomy.updated_at).strftime("%d.%m.%Y") + 'р.'
+      - updated_time = @taxonomy.updated_at.nil? ? '-' : (@taxonomy.updated_at).strftime("%d.%m.%Y") + t('lower_year')
       = t('last_update') + updated_time
   .col-xs-12
     =render partial: 'layouts/addthis_hor_share'
@@ -82,7 +82,6 @@
         sidebar.redraw()
       }
     });
-
 
     var year = "#{@sel_year}",
         month = "#{@sel_month}",
@@ -123,7 +122,7 @@
     get_data(init_levels);
 
     function get_data(levels) {
-      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels + '?locale=' + I18n.locale, function(data) {
         _data = data;
 
         if (data.amount[aTreeChart.data_type] == undefined) {
@@ -282,7 +281,7 @@
 
     function ItemDrop(levels, node) {
       last_node = node;
-      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels, function(data) {
+      d3.json("/widgets/visify/get_bubbletree_data/#{@budget_file.id}/" + levels + '?locale=' + I18n.locale, function(data) {
         _data = data
         centerNode = null;
         current_data = buildData(_data)

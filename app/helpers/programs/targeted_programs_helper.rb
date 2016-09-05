@@ -3,7 +3,7 @@ module Programs::TargetedProgramsHelper
     Programs::TargetedProgram.get_main_programs
   end
 
-  def calc_percentage(plan,fact)
+  def calc_percentage(plan, fact)
     if fact.eql?(0)
       #Test some data
       22
@@ -12,6 +12,5 @@ module Programs::TargetedProgramsHelper
     end
 
   end
-
 
 end

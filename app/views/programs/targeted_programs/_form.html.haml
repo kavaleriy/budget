@@ -1,24 +1,148 @@
 :scss
-  #tasks_block{
-    //display: none;
+  // init colors
+  $lightgray: #eee;
+
+  .data-table {
+    padding: 0;
+    .row {
+      margin: 0;
+      #no-more-tables {
+      .data-table-title {
+        padding: 0 0 15px 0;
+        font-weight: bold;
+      }
+        table {
+          thead,
+          tbody {
+            tr {
+              .centred {
+                text-align: center;
+                .form-group {
+                  margin: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
+  .btn-save {
+    padding: 15px 0;
+  }
+  // Media block
+  @media only screen and (max-width: 800px) {
+    /* Force table to not be like tables anymore */
+    #no-more-tables {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        border: 1px solid #ccc;
+      }
+      td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid $lightgray;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        &:before {
+          /* Now like a table header */
+          position: absolute;
+          /* Top/left values mimic padding */
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          text-align: left;
+          font-weight: bold;
+          content: attr(data-title);
+        }
+      }
+      .table-bordered {
+        padding: 0;
+      }
+    }
+  }
+
 =simple_form_for @program do |f|
-  =f.input :title,label: t('.title')
-  =f.input :kpkvk,as: :integer, label: t('.kpkvk')
-  =f.input :kfkvk,as: :integer, label: t('.kfkvk')
-  =f.input :manager,label: t('.manager')
-  =f.input :main_manager, label: t('.main_manager')
-  =f.input :responsible,label: t('.responsible')
-  =f.input :reason,label: t('.reason')
-  =f.input :objective,label: t('.objective')
-  %fieldset
-    %legend
-      = t('.budget_sum',year: @year)
-    =f.simple_fields_for :budget_sum  do |budget|
-      = budget.simple_fields_for @year.to_s do |budget_year|
-        = budget_year.simple_fields_for :plan do |budget_plan|
-          =budget_plan.input :general_fund, as: :float,label: t('.general_fund'),value: @program.budget_sum[@year][:plan][:general_fund]
-          =budget_plan.input :special_fund, as: :float ,label: t('.special_fund'),value: @program.budget_sum[@year][:plan][:special_fund]
+  =f.input :title, label: t('.title')
+  .row
+    .col-xs-12.col-sm-6
+      =f.input :kpkvk, as: :integer, label: t('.kpkvk')
+    .col-xs-12.col-sm-6
+      =f.input :kfkvk, as: :integer, label: t('.kfkvk')
+  .row
+    .col-xs-12.col-sm-6
+      =f.input :manager, label: t('.manager')
+    .col-xs-12.col-sm-6
+      =f.input :main_manager, label: t('.main_manager')
+  =f.input :responsible, label: t('.responsible')
+  =f.input :reason, label: t('.reason')
+  =f.input :objective, label: t('.objective')
+  -#TODO: Try make it easy
+  .col-xs-12.data-table
+    .row
+      #no-more-tables
+        .col-xs-12.data-table-title
+          = t('.budget_prog')
+        %table.col-md-12.table-bordered.table-striped.table-condensed
+          %thead
+            %tr
+              %th.centred
+                -#= t('.year')
+                = t('.type')
+              %th.numeric.centred
+                = t('.general_fund')
+              %th.numeric.centred
+                = t('.special_fund')
+          %tbody
+          -f.object.budget_sum.each do |year|
+            %tr
+              %td.numeric.centred{ "colspan" => "3", "data-title" => "#{t('.year')}" }
+                = year.first + ' ' + t('.year')
+            %tr
+              %td{ "data-title" => "#{t('.indicate')}" }
+                = t('.plan')
+              =f.simple_fields_for :budget_sum do |budget|
+                = budget.simple_fields_for year.first do |budget_year|
+                  = budget_year.simple_fields_for :plan do |budget_plan|
+                    -val_p_g_f = (f.object.budget_sum[year.first][:plan][:general_fund].kind_of? String) ? f.object.budget_sum[year.first][:plan][:general_fund].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:plan][:general_fund].to_f
+                    -val_p_s_f = (f.object.budget_sum[year.first][:plan][:general_fund].kind_of? String) ? f.object.budget_sum[year.first][:plan][:special_fund].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:plan][:special_fund].to_f
+                    %td.numeric.centred{ "data-title" => "#{t('.general_fund')}" }
+                      =budget_plan.input :general_fund, as: :float, label: false, input_html: { value: val_p_g_f }
+                    %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+                      =budget_plan.input :special_fund, as: :float, label: false, input_html: { value: val_p_s_f }
+            %tr
+              %td{ "data-title" => "#{t('.indicate')}" }
+                = t('.fact')
+              =f.simple_fields_for :budget_sum do |budget|
+                = budget.simple_fields_for year.first do |budget_year|
+                  = budget_year.simple_fields_for :fact do |budget_fact|
+                    -val_f_g_s = (f.object.budget_sum[year.first][:fact][:general_sum].kind_of? String) ? f.object.budget_sum[year.first][:fact][:general_sum].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:fact][:general_sum].to_f
+                    -val_f_s_s = (f.object.budget_sum[year.first][:fact][:general_sum].kind_of? String) ? f.object.budget_sum[year.first][:fact][:special_sum].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:fact][:special_sum].to_f
+                    %td.numeric.centred{ "data-title" => "#{t('.general_fund')}" }
+                      =budget_fact.input :general_sum, as: :float, label: false, input_html: { value: val_f_g_s }
+                    %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+                      =budget_fact.input :special_sum, as: :float, label: false, input_html: { value: val_f_s_s }
+  -#TODO: Clear it, if it's doesn't use
+  -#%fieldset
+  -#  %legend
+  -#    -#= t('.budget_sum',year: @year)
+  -#    -#-binding.pry
+  -#  =f.simple_fields_for :budget_sum  do |budget|
+  -#    = budget.simple_fields_for 2016.to_s do |budget_year|
+  -#      = budget_year.simple_fields_for :plan do |budget_plan|
+  -#        =budget_plan.input :general_fund, as: :float,label: t('.general_fund'),value: @program.budget_sum['2016'][:plan][:general_fund]
+  -#        =budget_plan.input :special_fund, as: :float ,label: t('.special_fund'),value: @program.budget_sum['2016'][:plan][:special_fund]
 
   -#=label_tag 'type_program',t('.new_program')
   -#=radio_button_tag 'type', 'program'
@@ -34,8 +158,9 @@
   -#        -value.each do |key,task_value|
   -#          =task_form_builder.input key,value: task_value,class: 'task'
 
-  .col-xs-12
-    =f.submit t('save'),class: 'btn btn-primary'
+  .col-xs-12.btn-save
+    =f.submit t('save'), class: 'btn btn-primary'
+-#TODO: Clear it, if it's doesn't use
 :javascript
   $(document).ready(function(){
     $('#programs_target_program_p_id').addClass('form-control');

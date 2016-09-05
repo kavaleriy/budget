@@ -1,0 +1,46 @@
+/partial: data_table_body
+/from: programs/targeted_programs
+
+-programs.each do |program|
+  %tr
+    %td{ "data-title" => "#{t('.title')}" }
+      = program.title
+    %td.centred{ "data-title" => "#{t('.file')}" }
+      -if program.targeted_program_file?
+        = link_to program.targeted_program_file_url do
+          = fa_stacked_icon 'download', base: 'square', class: 'fa-lg'
+      -else
+        = fa_stacked_icon 'download', base: 'ban'
+    %td.numeric.centred{ "data-title" => "#{t('.plan')}" }
+      = number_to_human(program.budget_sum.values.first['plan']['sum'])
+    %td.numeric.centred{ "data-title" => "#{t('.fact')}" }
+      = number_to_human(program.budget_sum.values.first['fact']['sum'])
+    %td.numeric.centred{ "data-title" => "#{t('.date-updated')}" }
+      -#-binding.pry
+      = program.updated_at.strftime('%d.%m.%Y') unless program.updated_at.blank?
+    %td.centred{ "data-title" => "#{t('.town-title')}" }
+      = program.town.title unless program.town.blank?
+    %td.centred{ "data-title" => "#{t('.author')}" }
+      = program.author.name unless program.author.blank?
+    -#TODO: Make it's editable for user & admin
+    %td.centred{ "data-title" => "#{t('.active')}" }
+      -#-binding.pry
+      = check_box_tag 'active', program.id, program.active, class: 'activated', data: { confirm: "#{t('.sure_dialog')}", remote: true, url: url_for(action: :lock, id: program.id), method: "PATCH" }
+      -#- if program.active
+      -#  = fa_icon "check-square-o"
+      -#- else
+      -#  = fa_icon "square-o"
+    %td.centred{ "data-title" => "#{t('.actions')}" }
+      = link_to edit_programs_targeted_program_path(program), class: 'btn-edit' do
+        = fa_stacked_icon 'pencil', base: 'square', class: 'fa-lg'
+      = link_to program, method: :delete, data: { confirm: "#{t('.sure_dialog')}" }, remote: true, class: 'btn-delete' do
+        = fa_stacked_icon 'trash', base: 'square', class: 'fa-lg'
+
+:javascript
+  // Ad hoc for checkbox. On 'Cancel' action
+  $('.activated').on('confirm:complete', function(e, response) {
+    if(!response) {
+      var res = $(this).is(':checked');
+      $(this).prop('checked', !res);
+    }
+  });
