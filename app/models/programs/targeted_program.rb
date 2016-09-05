@@ -29,9 +29,11 @@ class Programs::TargetedProgram
   belongs_to :town, class_name: 'Town'
   belongs_to :author, class_name: 'User'
 
-  scope :get_main_programs,-> { where(p_id: nil) }
+  scope :get_main_programs, -> { where(p_id: nil) }
   # Get programs by town
   scope :by_town, -> (town) { where(town: town) }
+  # Get active programs
+  scope :by_active, -> { where(active: true) }
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 

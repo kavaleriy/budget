@@ -8,8 +8,6 @@ class Programs::TargetedProgramsController < ApplicationController
   # GET /programs/target_programs
   # GET /programs/target_programs.json
 
-
-
   def index
     stub_data
     @programs = Programs::TargetedProgram.get_main_programs
@@ -93,6 +91,14 @@ class Programs::TargetedProgramsController < ApplicationController
         flash[:error] = 'Error!'
         format.js
       end
+    end
+  end
+
+
+  def town_programs
+    @programs = Programs::TargetedProgram.by_town(params[:town])
+    respond_with(@programs) do |format|
+      format.js   { render layout: false }
     end
   end
 
