@@ -54,12 +54,6 @@
       set_taxonomies_in_select();
       set_sankey_button_status();
 
-
-
-      // $('#visualisation_list').on('change','#user_calendar',function(){
-      //   alert('dasdsadsa');
-      // })
-
       $('#user_calendar').change(function(){
         var calendar_id = $(this).val();
         if (calendar_id){
@@ -108,10 +102,16 @@
         if (panel_selector == undefined){
           panel_selector = 'div.active'
         }
+
+        // set iframe url
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('src',iframe_url + "?locale=#{params[:locale]}");
+        // set div what we should copy
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-panel-selector',panel_selector);
+        // set place where we should place img
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-input-selector',"#{params[:data_number]}");
+        // set textarea where we push visualisation btn
         $('#export_budget_visualisation_modal_window').find('#iframe').attr('data-textarea-id',"#{params[:page_id]}");
+        // hide this modal
         $('#visualisation_list').modal('hide');
         $('#export_budget_visualisation_modal_window').modal();
         };
