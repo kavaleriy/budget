@@ -86,6 +86,7 @@ class Programs::TargetedProgram
   end
 
   private
+
   def self.create_program_by_xls(sheet)
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
@@ -136,6 +137,20 @@ class Programs::TargetedProgram
         special_sum: 0,
         sum: 0
     }
+  end
+
+  # Get array of years from town programs
+  # return array of string, example: [ "2016" ]
+  # or
+  # empty array if town programs does not has year
+  def self.programs_years_by_town(town)
+    years = []
+    self.by_town(town).each { |p|
+      p.budget_sum.keys.each { |y|
+        years.include?(y) ? next : years << y
+      }
+    }
+    years
   end
 
 end

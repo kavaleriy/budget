@@ -1,1 +1,46 @@
-List of programs
+:scss
+  .list-wrapper {
+    padding: 0;
+    .row {
+      margin: 0;
+      > div {
+        padding-left: 0;
+      }
+    }
+    .table-titles,
+    .program-data {
+      > div {
+        text-align: center;
+        font-weight: normal;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.4rem;
+        text-transform: none;
+      }
+    }
+    .program-data {
+      .program-title {
+        text-align: left;
+        font-size: 1.6rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+.col-xs-12.list-wrapper
+  .row.table-titles
+    .col-xs-3.col-xs-offset-6
+      = t('.done')
+    .col-xs-2
+      = t('.plan')
+    .col-xs-1
+      = t('.more')
+  -programs.each do |p|
+    .row.program-data
+      .col-xs-6.program-title
+        = p.title
+      .col-xs-3
+        = '58%'
+      .col-xs-2
+        = '9698700'
+      .col-xs-1
+        = 'ico'
