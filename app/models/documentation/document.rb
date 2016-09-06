@@ -69,7 +69,7 @@ class Documentation::Document
           unless key.nil?
             Documentation::Branch.find(key).title
           else
-            I18n.t ('Інші документи')
+            'Інші документи'
           end
         })
       end
@@ -84,7 +84,5 @@ class Documentation::Document
   def generate_title
     self.title = self.doc_file.filename unless self.title?
   end
-
-  private
 
 end
