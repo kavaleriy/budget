@@ -29,9 +29,11 @@ class Programs::TargetedProgram
   belongs_to :town, class_name: 'Town'
   belongs_to :author, class_name: 'User'
 
-  scope :get_main_programs,-> { where(p_id: nil) }
+  scope :get_main_programs, -> { where(p_id: nil) }
   # Get programs by town
   scope :by_town, -> (town) { where(town: town) }
+  # Get active programs
+  scope :by_active, -> { where(active: true) }
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 
@@ -84,6 +86,7 @@ class Programs::TargetedProgram
   end
 
   private
+
   def self.create_program_by_xls(sheet)
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
@@ -134,6 +137,20 @@ class Programs::TargetedProgram
         special_sum: 0,
         sum: 0
     }
+  end
+
+  # Get array of years from programs
+  # return array of string, example: [ "2016", "2015" ]
+  # or
+  # empty array if town programs does not has year
+  def self.programs_years(programs)
+    years = []
+    programs.each { |p|
+      p.budget_sum.keys.each { |y|
+        years.include?(y) ? next : years << y
+      }
+    }
+    years
   end
 
 end
