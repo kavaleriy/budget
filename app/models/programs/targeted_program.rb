@@ -140,7 +140,7 @@ class Programs::TargetedProgram
   end
 
   # Get array of years from town programs
-  # return array of string, example: [ "2016" ]
+  # return array of string, example: [ "2016", "2015" ]
   # or
   # empty array if town programs does not has year
   def self.programs_years_by_town(town)
