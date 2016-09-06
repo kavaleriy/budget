@@ -1,4 +1,7 @@
 :scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
   .list-wrapper {
     padding: 0;
     .row {
@@ -23,6 +26,20 @@
         font-size: 1.6rem;
         font-weight: 500;
       }
+      .program-description {
+        text-align: left;
+      }
+      .btn-more {
+        a {
+          color: $dark-blue;
+          span {
+            i:nth-child(2) {
+              color: $white;
+              font-size: 24px;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -34,13 +51,23 @@
       = t('.plan')
     .col-xs-1
       = t('.more')
+  -#-binding.pry
   -programs.each do |p|
     .row.program-data
       .col-xs-6.program-title
-        = p.title
+        = p.title unless p.title.nil?
       .col-xs-3
-        = '58%'
+        = "#{calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i}%"
       .col-xs-2
-        = '9698700'
-      .col-xs-1
-        = 'ico'
+        = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
+      .col-xs-1.btn-more
+        = link_to fa_stacked_icon('caret-down', base: 'square', class: 'lg'), '#', class: 'more'
+      .col-xs-12.program-description
+        = p.objective unless p.objective.nil?
+      .col-xs-12.btn-show
+        = link_to 'Go', "#"
+:javascript
+  $('.more').on('click', function() {
+    console.log($('.more').children('i:nth-child(2)'))
+    $('.more').children('i:nth-child(2)').css("transform", "rotate(180deg)");
+  });

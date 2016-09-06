@@ -65,11 +65,13 @@ class Documentation::Document
 
       # transform keys for readeble title
       unless year_documents.empty?
-        if year_documents.keys.first.nil?
-          year_documents.transform_keys{|key| I18n.t ('Інші документи') }
-        else
-          res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
-        end
+        res_hash.store(year,year_documents.transform_keys{|key|
+          unless key.nil?
+            Documentation::Branch.find(key).title
+          else
+            I18n.t ('Інші документи')
+          end
+        })
       end
 
     end
