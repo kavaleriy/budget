@@ -96,8 +96,8 @@ class Programs::TargetedProgramsController < ApplicationController
 
 
   def town_programs
-    @years = Programs::TargetedProgram.programs_years_by_town(params[:town])
     @programs = Programs::TargetedProgram.by_town(params[:town])
+    @years = Programs::TargetedProgram.programs_years(@programs)
     respond_with(@programs) do |format|
       format.js   { render layout: false }
     end

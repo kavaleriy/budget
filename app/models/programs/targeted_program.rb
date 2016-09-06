@@ -139,13 +139,13 @@ class Programs::TargetedProgram
     }
   end
 
-  # Get array of years from town programs
+  # Get array of years from programs
   # return array of string, example: [ "2016", "2015" ]
   # or
   # empty array if town programs does not has year
-  def self.programs_years_by_town(town)
+  def self.programs_years(programs)
     years = []
-    self.by_town(town).each { |p|
+    programs.each { |p|
       p.budget_sum.keys.each { |y|
         years.include?(y) ? next : years << y
       }
