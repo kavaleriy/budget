@@ -421,7 +421,7 @@ module ApplicationHelper
     if menu_list.link.nil? || menu_list.link.empty?
       show_pages_path(menu_list.alias)
     else
-      menu_list.link
+      menu_list.link + "?locale=" + I18n.locale.to_s
     end
   end
 
