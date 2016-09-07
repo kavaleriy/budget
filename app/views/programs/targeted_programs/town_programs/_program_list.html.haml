@@ -21,6 +21,9 @@
       }
     }
     .program-data {
+      padding-left: 15px;
+      margin-bottom: 15px;
+      border-left: 3px solid blue;
       .program-title {
         text-align: left;
         font-size: 1.6rem;
@@ -30,7 +33,7 @@
         text-align: left;
       }
       .btn-more {
-        a {
+        .more {
           color: $dark-blue;
           span {
             i:nth-child(2) {
@@ -39,6 +42,31 @@
             }
           }
         }
+      }
+      .program-description {
+        display: none;
+        text-align: left;
+      }
+      .btn-show {
+        display: none;
+      }
+    }
+    .active {
+      .btn-more {
+        .more{
+          span {
+            i:nth-child(2) {
+              transform: rotate(180deg);
+              transition: .5s;
+            }
+          }
+        }
+      }
+      .program-description {
+        display: block;
+      }
+      .btn-show {
+        display: block;
       }
     }
   }
@@ -51,23 +79,25 @@
       = t('.plan')
     .col-xs-1
       = t('.more')
-  -#-binding.pry
   -programs.each do |p|
     .row.program-data
-      .col-xs-6.program-title
-        = p.title unless p.title.nil?
-      .col-xs-3
-        = "#{calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i}%"
-      .col-xs-2
-        = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
-      .col-xs-1.btn-more
-        = link_to fa_stacked_icon('caret-down', base: 'square', class: 'lg'), '#', class: 'more'
+      .row
+        .col-xs-6.program-title
+          = p.title unless p.title.nil?
+        .col-xs-3
+          = "#{calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i}%"
+        .col-xs-2
+          = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
+        .col-xs-1.btn-more
+          = link_to fa_stacked_icon('caret-down', base: 'square', class: 'lg'), '#', class: 'more'
       .col-xs-12.program-description
         = p.objective unless p.objective.nil?
       .col-xs-12.btn-show
         = link_to 'Go', "#"
 :javascript
-  $('.more').on('click', function() {
-    console.log($('.more').children('i:nth-child(2)'))
-    $('.more').children('i:nth-child(2)').css("transform", "rotate(180deg)");
+  $(document).ready(function() {
+    $('.program-data').first().addClass('active');
+    $('.more').on('click', function() {
+      $('.program-data').toggleClass('active');
+    });
   });

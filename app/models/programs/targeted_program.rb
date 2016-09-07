@@ -45,9 +45,9 @@ class Programs::TargetedProgram
     self.budget_sum = {
         year => {
             plan: {
-                general_fund: 0,
-                special_fund: 0,
-                sum: 0
+                general_fund: 0.0,
+                special_fund: 0.0,
+                sum: 0.0
             }
             # fact: {
             #     general_fund: 0,
@@ -93,9 +93,9 @@ class Programs::TargetedProgram
       program_year = program_hash["year"].to_s
       budget_sum_hash = { program_year => {plan: {},
                                            fact: {
-                                               general_sum: 0,
-                                               special_sum: 0,
-                                               sum: 0
+                                               general_sum: 0.0,
+                                               special_sum: 0.0,
+                                               sum: 0.0
                                            }
                                           }
                         }
@@ -123,9 +123,9 @@ class Programs::TargetedProgram
     budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact]['general_fund'].to_f
-      special_fact_fund = budget_sum_by_year[:fact]['special_fund'].to_f
-      budget_sum_by_year[:fact]['sum'] = general_fact_fund + special_fact_fund
+      general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
+      special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
+      budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
     else
       init_default_fact_sum(year)
     end
@@ -133,9 +133,9 @@ class Programs::TargetedProgram
 
   def init_default_fact_sum(year)
     self.budget_sum[year][:fact] = {
-        general_sum: 0,
-        special_sum: 0,
-        sum: 0
+        general_sum: 0.0,
+        special_sum: 0.0,
+        sum: 0.0
     }
   end
 
