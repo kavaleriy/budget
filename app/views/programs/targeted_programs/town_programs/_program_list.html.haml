@@ -2,6 +2,8 @@
   //init colors
   $dark-blue: #0c2231;
   $white: #ffffff;
+  $dark-yellow: #ffd304;
+
   .list-wrapper {
     padding: 0;
     .row {
@@ -20,44 +22,92 @@
         text-transform: none;
       }
     }
+    .table-titles {
+      padding: 15px 0 40px 0;
+      .more {
+        text-align: right;
+      }
+    }
     .program-data {
-      padding-left: 15px;
-      margin-bottom: 15px;
-      border-left: 3px solid blue;
-      .program-title {
-        text-align: left;
-        font-size: 1.6rem;
-        font-weight: 500;
-      }
-      .program-description {
-        text-align: left;
-      }
-      .btn-more {
-        .more {
-          color: $dark-blue;
-          span {
-            i:nth-child(2) {
-              color: $white;
-              font-size: 24px;
+      padding-bottom: 15px;
+      .main-indicators {
+        padding-left: 15px;
+        border-left: 3px solid $dark-blue;
+        .program-title {
+          text-align: left;
+          font-size: 1.8rem;
+          font-weight: 500;
+          line-height: 1;
+        }
+        .fact {
+          .progress {
+            margin: 0;
+            border: 1px solid $dark-blue;
+            border-radius: 2px;
+            height: 22px;
+            .progress-bar {
+              background-color: $dark-blue;
+              p {
+                margin: 0;
+              }
+              .bar-left {
+                color: $white;
+              }
+              .bar-center {
+                position: absolute;
+                /* font size 22 px */
+                left: calc(50% - 11px);
+                color: $dark-blue;
+                font-weight: bold;
+              }
+
+            }
+          }
+        }
+        .btn-more {
+          .more {
+            color: $dark-blue;
+            float: right;
+            span {
+              i:nth-child(2) {
+                color: $white;
+                font-size: 24px;
+              }
             }
           }
         }
       }
       .program-description {
-        display: none;
+        padding: 25px 15px 0 15px;
+        border-left: 3px solid $dark-blue;
         text-align: left;
+        display: none;
       }
       .btn-show {
         display: none;
+        .show {
+          text-transform: lowercase;
+          background: $dark-blue;
+          padding: 5px 0;
+          color: $white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            box-shadow: 0 0 10px 2px $dark-yellow;
+            transition: .3s;
+          }
+        }
       }
     }
     .active {
-      .btn-more {
-        .more{
-          span {
-            i:nth-child(2) {
-              transform: rotate(180deg);
-              transition: .5s;
+      .main-indicators {
+        .btn-more {
+          .more{
+            span {
+              i:nth-child(2) {
+                transform: rotate(180deg);
+                transition: .5s;
+              }
             }
           }
         }
@@ -68,32 +118,49 @@
       .btn-show {
         display: block;
       }
+    }
+    .gray {
+      margin: 0 15px 20px 20px;
+      border-color: $dark-blue;
+      opacity: .3;
     }
   }
 
 .col-xs-12.list-wrapper
   .row.table-titles
-    .col-xs-3.col-xs-offset-6
+    .col-xs-2.col-xs-offset-7
       = t('.done')
-    .col-xs-2
+    .col-xs-2.plan
       = t('.plan')
-    .col-xs-1
+    .col-xs-1.more
       = t('.more')
   -programs.each do |p|
+
+    -#calculate value of plan done
+    -val = calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i
+    -#fix titles color
+    -bar_class = (val < 15) ? 'bar-center' : 'bar-left'
+
     .row.program-data
-      .row
-        .col-xs-6.program-title
+      .row.main-indicators
+        .col-xs-7.program-title
           = p.title unless p.title.nil?
-        .col-xs-3
-          = "#{calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i}%"
-        .col-xs-2
+        .col-xs-2.fact
+          .progress
+            .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "#{val}", :role => "progressbar", :style => "width: " + "#{val}%" +";"}
+              %p{"class" => "#{bar_class}"}
+                = "#{val}%"
+        .col-xs-2.plan
           = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
         .col-xs-1.btn-more
           = link_to fa_stacked_icon('caret-down', base: 'square', class: 'lg'), '#', class: 'more'
       .col-xs-12.program-description
         = p.objective unless p.objective.nil?
       .col-xs-12.btn-show
-        = link_to 'Go', "#"
+        = link_to t('.show'), programs_targeted_program_path(p), class: 'show col-xs-2 col-xs-offset-10'
+    %hr.gray
+.test
+
 :javascript
   $(document).ready(function() {
     $('.program-data').first().addClass('active');

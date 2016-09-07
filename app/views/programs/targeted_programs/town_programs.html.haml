@@ -1,4 +1,9 @@
 :scss
+  //fix for no-data-yet block
+  .no-data {
+    padding: 0;
+  }
+
   .row {
     margin: 0;
     .page-title,
@@ -7,7 +12,6 @@
       font-weight: normal;
       font-family: 'Lato', sans-serif;
       font-size: 1.6rem;
-      //line-height: 1.25;
       text-transform: uppercase;
       padding: 15px 0;
     }
@@ -16,20 +20,23 @@
       text-align: center;
     }
   }
-.row
-  =render partial: 'programs/targeted_programs/town_programs/selects', locals: { years: @years }
+-if @programs.empty?
 
-.row
-  .col-xs-12.page-title.pull-left
-    = t('.division')
-  .col-xs-12.program-bar
-    = render partial: 'programs/targeted_programs/town_programs/bar'
+  = render partial: 'layouts/no_data_yet'
 
-.row
-  .programs-list
-    .col-xs-12.title-list.pull-left
-      = t('.list')
-      -if @programs.empty?
-        =render partial: 'layouts/no_data_yet'
-      -else
-        =render partial: 'programs/targeted_programs/town_programs/program_list', locals: { programs: @programs, years: @years }
+-else
+
+  .row
+    = render partial: 'programs/targeted_programs/town_programs/selects', locals: { years: @years }
+
+  .row
+    .col-xs-12.page-title.pull-left
+      = t('.division')
+    .col-xs-12.program-bar
+      = render partial: 'programs/targeted_programs/town_programs/bar'
+
+  .row
+    .programs-list
+      .col-xs-12.title-list.pull-left
+        = t('.list')
+        = render partial: 'programs/targeted_programs/town_programs/program_list', locals: { programs: @programs, years: @years }
