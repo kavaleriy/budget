@@ -45,3 +45,10 @@
     commit: I18n.t("confirm_yes"),
     cancel: I18n.t("confirm_no")
   });
+
+:javascript
+  //New style and locale for file_field in form
+  $(":file").filestyle({
+    input: false,
+    buttonText: I18n.t('form.select_file')
+  })
