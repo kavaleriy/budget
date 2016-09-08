@@ -157,7 +157,7 @@
       .col-xs-12.program-description
         = p.objective unless p.objective.nil?
       .col-xs-12.btn-show
-        = link_to t('.show'), programs_targeted_program_path(p), class: 'show col-xs-2 col-xs-offset-10'
+        = link_to t('.show'), programs_targeted_program_path(p), class: 'show col-xs-2 col-xs-offset-10', remote: true, data: { title: p.title }
     %hr.gray
 
 :javascript
@@ -165,5 +165,38 @@
     $('.program-data').first().addClass('active');
     $('.more').on('click', function() {
       $('.program-data').toggleClass('active');
+    });
+
+    $('.show').on('click', function() {
+      // get program title from data atrebutes
+      var program_title = $(this).data('title');
+      // path parent action 'town_programs'
+      var parent_href = "#{programs_town_targeted_programs_path}";
+      // get DOM element
+      var breadcrumbs_list = $('.breadcrumb');
+      // get active element and use it as parant <li>
+      var parent_el = breadcrumbs_list.find('li.active');
+      // add href to action 'town_programs'
+      // and
+      // attribute to link 'remote: true' to use ajax
+      parent_el.children().attr('href', parent_href).attr('data-remote', "true");;
+      // remove class 'active'
+      parent_el.removeClass('active');
+      // create new DOM element
+      // and
+      // set class 'active'
+      var active_li = $('<li></li>').addClass('active');
+      // create new a dom and set html
+      var a_value = $('<a>').html(program_title);
+      // add tag <a> into tag <li>
+      active_li.append(a_value);
+      // add DOM element <li> to 'breadcrumbs'
+      breadcrumbs_list.append(active_li);
+      // Handheld action 'back'
+      parent_el.children().click(function() {
+        // remove previous <li>
+        parent_el.next().remove();
+        parent_el.addClass('active');
+      })
     });
   });
