@@ -1,19 +1,16 @@
 :scss
-  .program {
-    & > div {
-      margin-top: 30px;
+  .program-wrapper {
+    .program-title {
+      margin: 0;
     }
   }
-.row
-  .col-xs-12
-    =link_to t('programs.targeted_programs.index.header'),programs_targeted_programs_path,class: 'btn btn-info'
-.program.row
 
-  .col-xs-12
-    %h1
-      %i.fa.fa-sun-o
-        = "#{@program[:title]}, #{@year} #{t('year')}"
+.program-wrapper
 
+  .row.program-title
+    = "#{@program[:title]}, #{@year} #{t('.year')}"
+  -#-binding.pry
+  .row.program-bar
     = render partial: 'programs/targeted_programs/program/amounts', locals: { program: @program, :year => @year }
 
   .col-xs-12
