@@ -1,7 +1,36 @@
 :scss
   .program-wrapper {
     .program-title {
+      font-weight: normal;
+      font-family: 'Lato', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
       margin: 0;
+      padding: 20px 0;
+    }
+    .program-bar {
+      padding-bottom: 20px;
+    }
+    .program-data {
+      .manager,
+      .responsible,
+      .reason,
+      .target {
+        margin-bottom: 15px;
+        .title,
+        .value {
+          font-family: 'Lato', sans-serif;
+        }
+        .title {
+          margin-top: 0;
+          font-size: 1.6rem;
+          font-weight: bold;
+        }
+        .value {
+          font-size: 1.4rem;
+          font-weight: normal;
+        }
+      }
     }
   }
 
@@ -9,48 +38,48 @@
 
   .row.program-title
     = "#{@program[:title]}, #{@year} #{t('.year')}"
-  -#-binding.pry
+
   .row.program-bar
     = render partial: 'programs/targeted_programs/program/amounts', locals: { program: @program, :year => @year }
 
-  .col-xs-12
-    %h2
-      =t('.main_manager')
+  .row.program-data
+    .col-xs-12.manager
+      %p.title
+        =t('.main_manager')
+      %p.value
+        =@program.main_manager
 
-    %p
-      =@program.main_manager
-  .col-xs-12
-    %h2
-      =t('.responsible')
+    .col-xs-12.responsible
+      %p.title
+        =t('.responsible')
+      %p.value
+        =@program.responsible
 
-    %p
-      =@program.responsible
-  .col-xs-12
-    %h2
-      =t('.reason')
+    .col-xs-12.reason
+      %p.title
+        =t('.reason')
+      %p.value
+        =@program.reason
 
-    %p
-      =@program.reason
-  .col-xs-12
-    %h2
-      =t('.main_target')
+    .col-xs-12.target
+      %p.title
+        =t('.main_target')
+      %p.value
+        =@program.objective
 
-    %p
-      =@program.objective
+    .col-xs-12.indicators
+      %h2
+        = t('.group_indicators')
+      = render partial: 'programs/targeted_programs/program/indicators', locals: { program: @program, :year => @year ,indicators_group: @grouped_indicators}
 
-  .indicators.col-xs-12
-    %h2
-      = t('.group_indicators')
-    = render partial: 'programs/targeted_programs/program/indicators', locals: { program: @program, :year => @year ,indicators_group: @grouped_indicators}
+    .col-xs-12
+      .gantt-header
+        .pull-left
+          %h2
+            Діаграма ганта
 
-  .col-xs-12
-    .gantt-header
-      .pull-left
-        %h2
-          Діаграма ганта
+      = render partial: 'programs/targeted_programs/program/gant'
 
-    = render partial: 'programs/targeted_programs/program/gant'
-
-  -#.col-xs-12
-  -#  %h2
-  -#    Відповідальні за виконання програми
+    -#.col-xs-12
+    -#  %h2
+    -#    Відповідальні за виконання програми
