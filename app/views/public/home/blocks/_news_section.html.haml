@@ -88,7 +88,7 @@
                         font-size: 18px;
                         text-transform: uppercase;
                         //height: 54px;
-                        margin: 40px 0 20px;
+                        margin: 20px 0 35px;
                       }
                       &.text {
                         font-size: 14px;
@@ -263,13 +263,7 @@
                         %p Зображення відсутне
                       %p.title
                         = news.title
-                      %p.text
-                        -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
-                        = strip_tags(news.news_text).html_safe
                     - else
                       =image_tag("#{news.img}", class: 'img-responsive')
                       %p.title
                         = news.title
-                      %p.text
-                        -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
-                        = strip_tags(news.news_text).html_safe
