@@ -69,7 +69,7 @@ class Documentation::Document
           unless key.nil?
             Documentation::Branch.find(key).title
           else
-            I18n.t ('Інші документи')
+            'Інші документи'
           end
         })
       end
