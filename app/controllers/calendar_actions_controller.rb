@@ -74,6 +74,6 @@ class CalendarActionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_action_params
-      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :text_color, :color, :action_type)
+      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color, :action_type)
     end
 end

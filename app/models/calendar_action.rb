@@ -26,6 +26,9 @@ class CalendarAction
   field :title, type: String
   field :icon, type: String
   field :description, type: String
+  field :starts_at, type: DateTime
+  field :ends_at, type: DateTime
+  field :all_day, type: Boolean
   field :text_color, type: String
   field :color, type: String
   field :action_type, type: Integer

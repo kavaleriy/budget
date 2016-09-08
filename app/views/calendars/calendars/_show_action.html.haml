@@ -1,9 +1,13 @@
 - actions.each do |calendar_action|
+  -#-binding.pry
   .external-event.ui-draggable{:style => "color: #{calendar_action.text_color}; background-color: #{calendar_action.color}; position: relative;",
                                 "data-holder" => calendar_action.holder,
                                 "data-title" => calendar_action.title.html_safe,
                                 "data-icon" => calendar_action.icon.html_safe,
                                 "data-description" => calendar_action.description.html_safe,
+                                "data-starts_at" => calendar_action.starts_at,
+                                "data-ends_at" => calendar_action.ends_at,
+                                "data-all_day" => calendar_action.all_day,
                                 "data-color" => calendar_action.color,
                                 "data-action_type" => calendar_action.action_type,
                                 "data-text_color" => calendar_action.text_color}
