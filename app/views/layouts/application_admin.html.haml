@@ -39,16 +39,12 @@
   = render partial: 'layouts/visualisation_modal/visualisation_list'
   -#Render footer block from view/layouts
   -#= render :partial => 'layouts/footer'
+
+  = render partial: 'layouts/file_upload_script'
+
 :javascript
   dataConfirmModal.setDefaults({
     title: I18n.t("confirm_destroy"),
     commit: I18n.t("confirm_yes"),
     cancel: I18n.t("confirm_no")
   });
-
-:javascript
-  //New style and locale for file_field in form
-  $(":file").filestyle({
-    input: false,
-    buttonText: I18n.t('form.select_file')
-  })

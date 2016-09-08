@@ -84,6 +84,8 @@
   -#Go to www.addthis.com/dashboard to customize your tools
   = render partial: 'layouts/addthis'
 
+  = render partial: 'layouts/file_upload_script'
+
 :javascript
   $(document).ready(function() {
     // Google analytics
@@ -105,10 +107,3 @@
 :javascript
   // ***** Tooltip's init ***** //
   $('[data-toggle="tooltip"]').tooltip();
-
-:javascript
-  //New style and locale for file_field in form
-  $(":file").filestyle({
-    input: false,
-    buttonText: I18n.t('form.select_file')
-  })
