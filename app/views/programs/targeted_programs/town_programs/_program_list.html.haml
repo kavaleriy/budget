@@ -134,6 +134,7 @@
       = t('.plan')
     .col-xs-1.more
       = t('.more')
+
   -programs.each do |p|
 
     -#calculate value of plan done
@@ -143,21 +144,40 @@
 
     .row.program-data
       .row.main-indicators
+
         .col-xs-7.program-title
           = p.title unless p.title.nil?
+
         .col-xs-2.fact
           .progress
-            .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "#{val}", :role => "progressbar", :style => "width: " + "#{val}%" +";"}
-              %p{"class" => "#{bar_class}"}
+            .progress-bar{ 'aria-valuemax' => '100',
+                           'aria-valuemin' => '0',
+                           'aria-valuenow' => "#{val}",
+                           role: 'progressbar',
+                           style: 'width: ' + "#{val}%" + ';' }
+              %p{ class: "#{bar_class}" }
                 = "#{val}%"
+
         .col-xs-2.plan
           = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
+
         .col-xs-1.btn-more
-          = link_to fa_stacked_icon('caret-down', base: 'square', class: 'lg'), '#', class: 'more'
+          = link_to fa_stacked_icon('caret-down',
+                                    base: 'square',
+                                    class: 'lg'),
+                    '#',
+                    class: 'more'
+
       .col-xs-12.program-description
         = p.objective unless p.objective.nil?
+
       .col-xs-12.btn-show
-        = link_to t('.show'), programs_targeted_program_path(p), class: 'show col-xs-2 col-xs-offset-10', remote: true, data: { title: p.title }
+        = link_to t('.show'),
+                  programs_targeted_program_path(p),
+                  data: { title: p.title },
+                  remote: true,
+                  class: 'show col-xs-2 col-xs-offset-10'
+
     %hr.gray
 
 :javascript

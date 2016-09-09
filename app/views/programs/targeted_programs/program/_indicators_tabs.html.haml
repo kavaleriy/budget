@@ -1,0 +1,98 @@
+:scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: white;
+  $dark-yellow: #ffd304;
+
+  .tabs {
+    padding: 0;
+    #main-navs {
+      .tabs-wrapper {
+        padding: 0;
+        > li + li {
+          margin-left: 0;
+        }
+        li {
+          padding: 15px;
+          &:hover,
+          &:focus {
+            background-color: lightgrey;
+          }
+          a {
+          border-radius: 0;
+          &:hover,
+          &:focus {
+            border-radius: 0;
+          }
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
+      .btn-block-visuals {
+        margin-left: 15px;
+        .visuals {
+        position: absolute;
+        font-family: 'Lato', sans-serif;
+        font-weight: normal;
+        background: $dark-blue;
+        padding: 7px 25px 7px 7px;
+        margin: 15px 0;
+        color: $white;
+        &:hover,
+        &:focus {
+          text-decoration: none;
+          box-shadow: 0 0 10px 2px $dark-yellow;
+          transition: .3s;
+        }
+        .lg {
+          position: absolute;
+          font-size: 2.2rem;
+          right: 10px;
+        }
+      }
+      }
+    }
+  }
+
+-#TODO: Check logic with indicators
+-indicators_title_index = 0
+-indicators_array_index = 1
+
+.col-xs-12.tabs
+
+  %ul.nav.nav-pills#main-navs
+    .row.col-xs-12.col-md-10.tabs-wrapper
+      - indicators.each_with_index do |indicator_group, i|
+        -#set class 'active' into variable
+        -#TODO: if use selects class 'active' not need
+        - active = (i.zero? ? 'active' : '')
+        %li{ class: 'col-xs-12 col-md-3 ' + "#{active}" }
+          %a{ href: "#tab-#{indicator_group.first}",
+                  'aria-controls' => "#{indicator_group.first}",
+                  role: 'tab',
+                  'data-toggle' => 'tab' }
+            = render partial: 'programs/targeted_programs/program/indicators_select',
+            locals: { category: indicator_group.first, data: indicator_group.last }
+    .col-md-2.btn-block-visuals
+      = link_to fa_icon('caret-right',
+                        class: 'lg',
+                        text: t('.visuals')),
+                '#',
+                class: 'visuals'
+
+  -#TODO: Check it logic
+  .indicate-list
+    .tab-content
+      -indicators.each_with_index do |indicator_group, i|
+        -active_panel_class = (i.zero? ? 'active in' : '')
+        .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}",class: active_panel_class}
+          %ul.nav.nav-pills
+            - indicator_group[indicators_array_index].each_with_index do |indicator, j|
+              - tab_id = "tab-#{i}-#{j}"
+              - tab_id_content = "#tab-#{i}-#{j}-content"
+              - active = (i.zero? and j.zero? ? 'active in' : '')
+              %li.indicator-title{class: active}
+                %a{"data-toggle" => "tab", href: tab_id_content, role: 'tab'}
+                  =indicator.title

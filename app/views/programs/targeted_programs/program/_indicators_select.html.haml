@@ -10,10 +10,8 @@
       display: none;
     }
   }
-  .select-year {
-    padding: 0 0 0 15px;
-    //display: inline-block;
-    .select2-container {
+
+  .select2-container {
       width: 100%;
       .select2-choice {
         height: 34px;
@@ -29,8 +27,9 @@
           margin: 3px 46px 3px auto;
           font-size: 16px;
           color: $gray;
-          text-transform: lowercase;
+          //text-transform: lowercase;
           float: right;
+          padding-top: 0 !important;
         }
         .select2-arrow{
           border-left: 0;
@@ -57,7 +56,6 @@
           outline-color: inherit;
         }
       }
-    }
   }
   .select2-drop-multi {
     border-color: $dark-blue;
@@ -73,10 +71,9 @@
     border-radius: 0;
   }
 
-.col-xs-6.col-sm-2.select-year.pull-right
-  = select_tag :year_select, options_for_select(years.reverse), { include_blank: true }
+= select_tag "#{category}", options_from_collection_for_select(data, 'id', 'title'), { include_blank: true }
 
 :javascript
-  $("#year_select").select2({
-    placeholder: "#{t('programs.targeted_programs.town_programs.selects.year-placeholder')}" + " |"
+  $("##{category}").select2({
+    placeholder: "#{t(".#{category}")}" + " |"
   });
