@@ -21,14 +21,15 @@
     }
   }
 
--if @programs.empty?
+-if @programs.blank?
 
   = render partial: 'layouts/no_data_yet'
 
 -else
 
   .row
-    = render partial: 'programs/targeted_programs/town_programs/selects', locals: { years: @years }
+    = render partial: 'programs/targeted_programs/town_programs/selects',
+    locals: { years: @years }
 
   .row
     .col-xs-12.page-title.pull-left
@@ -40,4 +41,5 @@
     .programs-list
       .col-xs-12.title-list.pull-left
         = t('.list')
-        = render partial: 'programs/targeted_programs/town_programs/program_list', locals: { programs: @programs, years: @years }
+        = render partial: 'programs/targeted_programs/town_programs/program_list',
+        locals: { programs: @programs, years: @years }

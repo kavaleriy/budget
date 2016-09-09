@@ -7,19 +7,38 @@
   .tabs {
     padding: 0;
     #main-navs {
-      li {
-        a {
-          p {
-            margin: 0;
+      .tabs-wrapper {
+        padding: 0;
+        > li + li {
+          margin-left: 0;
+        }
+        li {
+          padding: 15px;
+          &:hover,
+          &:focus {
+            background-color: lightgrey;
+          }
+          a {
+          border-radius: 0;
+          &:hover,
+          &:focus {
+            border-radius: 0;
+          }
+            p {
+              margin: 0;
+            }
           }
         }
       }
-      .visuals {
+      .btn-block-visuals {
+        margin-left: 15px;
+        .visuals {
         position: absolute;
         font-family: 'Lato', sans-serif;
         font-weight: normal;
         background: $dark-blue;
-        padding: 10px 25px 10px 10px;
+        padding: 7px 25px 7px 7px;
+        margin: 15px 0;
         color: $white;
         &:hover,
         &:focus {
@@ -33,6 +52,7 @@
           right: 10px;
         }
       }
+      }
     }
   }
 
@@ -43,23 +63,24 @@
 .col-xs-12.tabs
 
   %ul.nav.nav-pills#main-navs
-    - indicators.each_with_index do |indicator_group, i|
-      -#set class 'active' into variable
-      -#TODO: if use selects class 'active' not need
-      - active = (i.zero? ? 'active' : '')
-      %li{ class: active }
-        %a{ href: "#tab-#{indicator_group.first}",
-                'aria-controls' => "#{indicator_group.first}",
-                role: 'tab',
-                'data-toggle' => 'tab' }
-          %p
-            = t("programs.indicator.group_name.#{indicator_group.first}")
-
-    = link_to fa_icon('caret-right',
-                    class: 'lg',
-                    text: t('.visuals')),
-                  '#',
-                  class: 'visuals'
+    .row.col-xs-12.col-md-10.tabs-wrapper
+      - indicators.each_with_index do |indicator_group, i|
+        -#set class 'active' into variable
+        -#TODO: if use selects class 'active' not need
+        - active = (i.zero? ? 'active' : '')
+        %li{ class: 'col-xs-12 col-md-3 ' + "#{active}" }
+          %a{ href: "#tab-#{indicator_group.first}",
+                  'aria-controls' => "#{indicator_group.first}",
+                  role: 'tab',
+                  'data-toggle' => 'tab' }
+            = render partial: 'programs/targeted_programs/program/indicators_select',
+            locals: { category: indicator_group.first, data: indicator_group.last }
+    .col-md-2.btn-block-visuals
+      = link_to fa_icon('caret-right',
+                        class: 'lg',
+                        text: t('.visuals')),
+                '#',
+                class: 'visuals'
 
   -#TODO: Check it logic
   .indicate-list
