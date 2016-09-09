@@ -11,6 +11,7 @@ class BudgetFileRovVd < BudgetFile
     return if (ktfk =~ /000$/) != nil
     return if (ktfk =~ /^900$/) != nil
     return unless kekv.length == 4
+    return if is_grouped_kekv kekv
 
     ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
     ktfk_aaa = '80' if ktfk_aaa == '81'

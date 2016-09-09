@@ -85,6 +85,4 @@ class Documentation::Document
     self.title = self.doc_file.filename unless self.title?
   end
 
-  private
-
 end

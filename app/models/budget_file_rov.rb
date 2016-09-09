@@ -12,7 +12,7 @@ class BudgetFileRov < BudgetFile
     # return unless is_allowed_fond(fond)
 
     kekv = row['KEKV'].to_s.split('.')[0]
-    # return if is_grouped_kekv kekv
+    return if is_grouped_kekv kekv
 
     kod =  row['KOD'].to_s.split('.')[0]
     return if fond != '1' and kod == '1'
