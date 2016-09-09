@@ -1,4 +1,17 @@
--#http://bl.ocks.org/dk8996/5449641
+-#Gantt Chart D3.js
+-#See more at: http://bl.ocks.org/dk8996/5449641
+:scss
+  .gantt-diagram {
+    .title {
+      font-weight: normal;
+      font-family: 'Lato', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 20px 0;
+    }
+  }
+
 :css
   .chart {
   	font-family: 'Lato', sans-serif;
@@ -49,7 +62,10 @@
   	text-decoration: none;
   }
 
-.col-xs-12
+.col-xs-12.gantt-diagram
+  .title
+    = t('.main-title')
+
   #chart_div
 
 :javascript

@@ -1,117 +1,122 @@
 :scss
-  .program_indicators {
-    height: 300px;
-    .main-nav-panel{
-      padding-bottom: 25px;
-      width: 19.5%;
-      text-align: center;
+  .indicators {
+    .title {
+      font-weight: normal;
+      font-family: 'Lato', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 20px 0;
     }
-    .indicate-pane{
-      margin-top: 130px;
-    }
-    li {
-      //text-align: center;
-    }
-
-    .tab-content {
-      padding: 15px 10px;
-    }
-    .indicator-dropdown-title{
-      width: 400px;
-
-
-      .indicator-title{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 16px;
-      }
-    }
-    .indicate-list{
+    .program_indicators {
       height: 300px;
-      overflow: auto;
-      .indicator-title{
-        width: 100%;
+      .main-nav-panel {
+        padding-bottom: 25px;
+        width: 19.5%;
+        text-align: center;
+      }
+      .indicate-pane {
+        margin-top: 130px;
+      }
+      .tab-content {
+        padding: 15px 10px;
+      }
+      .indicator-dropdown-title {
+        width: 400px;
+        .indicator-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 16px;
+        }
+      }
+      .indicate-list {
+        height: 300px;
+        overflow: auto;
+        .indicator-title {
+          width: 100%;
+        }
       }
     }
-
   }
+
 -indicators_title_index = 0
 -indicators_array_index = 1
--#%li
--#  %a{"data-toggle" => "tab", :href => "#description"}
--#    = t('public.towns.portfolio.description')
-.program_indicators
-  .tabbable.tabs-left
-    .col-xs-6
-      -#.col-xs-3
-      %ul.nav.nav-pills#main-navs
-        - indicators_group.each_with_index do |indicator_group, i|
-          - active = (i == 0 ? 'active' : '')
-          %li.main-nav-panel{class: active}
-            %a{"data-toggle" => "tab", href: "#tab-#{indicator_group[indicators_title_index]}",role: 'tab'}
+
+.col-xs-12.indicators
+  .title
+    = t('.group_indicators')
+  .program_indicators
+    .tabbable.tabs-left
+      .col-xs-6
+        %ul.nav.nav-pills#main-navs
+          - indicators.each_with_index do |indicator_group, i|
+            - active = (i == 0 ? 'active' : '')
+            %li.main-nav-panel{class: active}
+              %a{"data-toggle" => "tab", href: "#tab-#{indicator_group[indicators_title_index]}",role: 'tab'}
+                %i.fa.fa-4x.fa-bar-chart
+                %p
+                  = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
+
+
+              -#%li.dropdown{class: active}
+              -#  %a.dropdown-toggle{id: indicator_id, role: 'tab', 'data-toggle' => 'dropdown', 'aria-controls' => indicator_id_contents}
+              -#    -#%i.fa.fa-4x.fa-bar-chart
+              -#    %h4
+              -#      = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
+              -#      %span.caret
+
+
+              -#%ul.dropdown-menu{id: indicator_id_contents, 'aria-labelledby' => indicator_id}
+              -#  - indicator_group[indicators_array_index].each_with_index do |item, j|
+              -#    - item_id = "tab-#{i}-#{j}"
+              -#    - item_id_content = "tab-#{i}-#{j}-content"
+              -#    %li.indicator-dropdown-title
+              -#      %a{id: item_id, :href => "##{item_id_content}", role: 'tab', 'data-toggle' => 'tab', 'aria-controls' => item_id_content}
+              -#        .indicator-title
+              -#          = item.title[0..50]
+
+          %li.main-nav-panel
+            %a{:href => '#tab_bubble', role: 'tab', 'data-toggle' => 'tab'}
               %i.fa.fa-4x.fa-bar-chart
-              %p
-                = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
+              %h5
+                Поросюшка
+
+        -#.col-xs-9
+        .indicate-list
+          .tab-content
+            -#.tab-pane.fade{id: "tab_bubble"}
+            -indicators.each_with_index do |indicator_group, i|
+              -active_panel_class = (i == 0 ? 'active in' : '')
+              .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}",class: active_panel_class}
+                %ul.nav.nav-pills
+                  - indicator_group[indicators_array_index].each_with_index do |indicator, j|
+                    - tab_id = "tab-#{i}-#{j}"
+                    - tab_id_content = "#tab-#{i}-#{j}-content"
+                    - active = (i == 0 and j == 0 ? 'active in' : '')
+                    %li.indicator-title{class: active}
+                      %a{"data-toggle" => "tab", href: tab_id_content, role: 'tab'}
+                        =indicator.title
 
 
-            -#%li.dropdown{class: active}
-            -#  %a.dropdown-toggle{id: indicator_id, role: 'tab', 'data-toggle' => 'dropdown', 'aria-controls' => indicator_id_contents}
-            -#    -#%i.fa.fa-4x.fa-bar-chart
-            -#    %h4
-            -#      = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
-            -#      %span.caret
+                      -#= t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
+                    -#%li
+                    -#  %a{"data-toggle" => "tab", :href => "##{indicator_group[indicators_title_index]}1",role: 'tab'}
+                    -#    = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
 
 
-            -#%ul.dropdown-menu{id: indicator_id_contents, 'aria-labelledby' => indicator_id}
-            -#  - indicator_group[indicators_array_index].each_with_index do |item, j|
-            -#    - item_id = "tab-#{i}-#{j}"
-            -#    - item_id_content = "tab-#{i}-#{j}-content"
-            -#    %li.indicator-dropdown-title
-            -#      %a{id: item_id, :href => "##{item_id_content}", role: 'tab', 'data-toggle' => 'tab', 'aria-controls' => item_id_content}
-            -#        .indicator-title
-            -#          = item.title[0..50]
+      .col-xs-6
+        .tab-content.indicate-pane
+          - indicators.each_with_index do |indicator, i|
+          - indicator[indicators_array_index].each_with_index do |item, j|
+            -#.tab-pane.fade{id: 'expense', role: 'tabpanel'}
+            -#- tab_id = "tab-#{i}-#{j}"
+            - active = (i == 0 and j == 0 ? 'active in' : '')
+            - tab_id_content = "tab-#{i}-#{j}-content"
+              .tab-pane.fade{id: tab_id_content, role: 'tabpanel',class: "#{indicator[indicators_title_index]} #{active}"}
+                = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
+          #tab_bubble.tab-pane.fade{role: 'tabpanel'}
+            Тут будет попросюшка
 
-        %li.main-nav-panel
-          %a{:href => '#tab_bubble', role: 'tab', 'data-toggle' => 'tab'}
-            %i.fa.fa-4x.fa-bar-chart
-            %h5
-              Поросюшка
-
-      -#.col-xs-9
-      .indicate-list
-        .tab-content
-          -#.tab-pane.fade{id: "tab_bubble"}
-          -indicators_group.each_with_index do |indicator_group, i|
-            -active_panel_class = (i == 0 ? 'active in' : '')
-            .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}",class: active_panel_class}
-              %ul.nav.nav-pills
-                - indicator_group[indicators_array_index].each_with_index do |indicator, j|
-                  - tab_id = "tab-#{i}-#{j}"
-                  - tab_id_content = "#tab-#{i}-#{j}-content"
-                  - active = (i == 0 and j == 0 ? 'active in' : '')
-                  %li.indicator-title{class: active}
-                    %a{"data-toggle" => "tab", href: tab_id_content, role: 'tab'}
-                      =indicator.title
-
-
-                    -#= t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
-                  -#%li
-                  -#  %a{"data-toggle" => "tab", :href => "##{indicator_group[indicators_title_index]}1",role: 'tab'}
-                  -#    = t("programs.indicator.group_name.#{indicator_group[indicators_title_index]}")
-
-
-    .col-xs-6
-      .tab-content.indicate-pane
-        - indicators_group.each_with_index do |indicator, i|
-        - indicator[indicators_array_index].each_with_index do |item, j|
-          -#.tab-pane.fade{id: 'expense', role: 'tabpanel'}
-          -#- tab_id = "tab-#{i}-#{j}"
-          - active = (i == 0 and j == 0 ? 'active in' : '')
-          - tab_id_content = "tab-#{i}-#{j}-content"
-            .tab-pane.fade{id: tab_id_content, role: 'tabpanel',class: "#{indicator[indicators_title_index]} #{active}"}
-              = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
-        #tab_bubble.tab-pane.fade{role: 'tabpanel'}
-          Тут будет попросюшка
 :javascript
   $(document).ready(function(){
     $('#main-navs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
