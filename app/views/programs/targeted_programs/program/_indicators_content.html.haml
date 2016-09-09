@@ -1,0 +1,38 @@
+-#TODO: check styles
+:scss
+  /*old styles*/
+  .indicate-pane {
+    margin-top: 130px;
+  }
+  .tab-content {
+    padding: 15px 10px;
+  }
+  .indicator-dropdown-title {
+    width: 400px;
+    .indicator-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+    }
+  }
+  .indicate-list {
+    height: 300px;
+    overflow: auto;
+    .indicator-title {
+      width: 100%;
+    }
+  }
+  /*old styles*/
+
+-#TODO: Check logic with indicators
+-indicators_title_index = 0
+-indicators_array_index = 1
+
+.col-xs-6
+  .tab-content.indicate-pane
+    - indicators.each_with_index do |indicator, i|
+    - indicator[indicators_array_index].each_with_index do |item, j|
+      - active = (i.zero? and j.zero? ? 'active in' : '')
+      - tab_id_content = "tab-#{i}-#{j}-content"
+        .tab-pane.fade{id: tab_id_content, role: 'tabpanel',class: "#{indicator[indicators_title_index]} #{active}"}
+          = render partial: 'programs/targeted_programs/program/indicator', locals: { indicator: item }
