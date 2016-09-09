@@ -56,7 +56,7 @@
       .col-md-4
         = f.static_control label: t('calendars.events.form.text_color') do
           = f.select_without_bootstrap :text_color, options_for_select(text_colors_list, @event.text_color), { }, { class: 'color-select' }
-    = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: "Вкажіть детальний опис"
+    = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: t('.description')
     .row
       .col-md-4
         = f.text_field :starts_at, :value => date_dmY(@event.starts_at), label: t('.starts_at')
