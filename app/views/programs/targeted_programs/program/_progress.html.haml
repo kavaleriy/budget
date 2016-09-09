@@ -12,24 +12,21 @@
         font-size: 16px;
         font-weight: bold;
         text-anchor: middle;
+        stroke-width: .07rem;
       }
     }
   }
 
 .progress_bar
-
-  -x = 50
-  -color = 'white'
-
-  -if perc.to_i < 50
-    -x = 51
-    -color = '#0c2231'
-  -x = 49 if perc.to_i == 50
+  - color = '#0c2231';
+  - stroke = 'white'
+  - color = 'white' unless perc.to_i < 50
+  - stroke = '#0c2231' unless perc.to_i < 50
 
   %svg{ 'width' => "100%", 'height' => "40"}
-    %rect.bckg{'x' => "0", 'y' => "0", 'width' => "100%", 'height' => '40'}
-    %rect.perc{'x' => "0", 'y' => "0", 'width' => "#{perc}%", 'height' => '40'}
-    %text{'x' => "#{x}%", 'y' => "26", 'fill' => "#{color}" }
+    %rect.bckg{ 'x' => "0", 'y' => "0", 'width' => "100%", 'height' => '40' }
+    %rect.perc{ 'x' => "0", 'y' => "0", 'width' => "#{perc}%", 'height' => '40' }
+    %text{ 'x' => "49%", 'y' => "26", 'fill' => "#{color}", 'stroke' => "#{stroke}" }
       = "#{perc}%"
 
 -#:javascript
