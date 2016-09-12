@@ -17,6 +17,21 @@
           &:hover,
           &:focus {
             background-color: lightgrey;
+            a {
+              background-color: $white;
+              .select2-container {
+                a {
+                  .select2-chosen {
+                    color: $dark-blue;
+                  }
+                  .select2-arrow {
+                    &::before {
+                      color: $dark-yellow;
+                    }
+                  }
+                }
+              }
+            }
           }
           a {
           border-radius: 0;
@@ -29,29 +44,47 @@
             }
           }
         }
+        .active {
+          background-color: lightgrey;
+          a {
+            background-color: $white;
+            .select2-container {
+              a {
+                .select2-chosen {
+                  color: $dark-blue;
+                }
+                .select2-arrow {
+                  &::before {
+                    color: $dark-yellow;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
       .btn-block-visuals {
         margin-left: 15px;
         .visuals {
-        position: absolute;
-        font-family: 'Lato', sans-serif;
-        font-weight: normal;
-        background: $dark-blue;
-        padding: 7px 25px 7px 7px;
-        margin: 15px 0;
-        color: $white;
-        &:hover,
-        &:focus {
-          text-decoration: none;
-          box-shadow: 0 0 10px 2px $dark-yellow;
-          transition: .3s;
-        }
-        .lg {
           position: absolute;
-          font-size: 2.2rem;
-          right: 10px;
+          font-family: 'Lato', sans-serif;
+          font-weight: normal;
+          background: $dark-blue;
+          padding: 7px 25px 7px 7px;
+          margin: 15px 0;
+          color: $white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            box-shadow: 0 0 10px 2px $dark-yellow;
+            transition: .3s;
+          }
+          .lg {
+            position: absolute;
+            font-size: 2.2rem;
+            right: 10px;
+          }
         }
-      }
       }
     }
   }
@@ -63,19 +96,19 @@
 .col-xs-12.tabs
 
   %ul.nav.nav-pills#main-navs
+
     .row.col-xs-12.col-md-10.tabs-wrapper
-      - indicators.each_with_index do |indicator_group, i|
-        -#set class 'active' into variable
-        -#TODO: if use selects class 'active' not need
-        - active = (i.zero? ? 'active' : '')
-        %li{ class: 'col-xs-12 col-md-3 ' + "#{active}" }
+      - indicators.each do |indicator_group|
+
+        %li.col-xs-12.col-md-3.select
           %a{ href: "#tab-#{indicator_group.first}",
                   'aria-controls' => "#{indicator_group.first}",
                   role: 'tab',
                   'data-toggle' => 'tab' }
             = render partial: 'programs/targeted_programs/program/indicators_select',
             locals: { category: indicator_group.first, data: indicator_group.last }
-    .col-md-2.btn-block-visuals
+
+    .col-xs-12.col-md-2.btn-block-visuals
       = link_to fa_icon('caret-right',
                         class: 'lg',
                         text: t('.visuals')),

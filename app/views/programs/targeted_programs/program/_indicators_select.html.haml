@@ -70,10 +70,27 @@
     border-top: 0;
     border-radius: 0;
   }
-
-= select_tag "#{category}", options_from_collection_for_select(data, 'id', 'title'), { include_blank: true }
+-#= select_tag "#{category}", options_from_collection_for_select(data, 'id', 'title'), include_blank: true
+= select_tag "#{category}",
+              options_for_select(data.collect { |d| [ d[:title],
+                                                      d[:id],
+                                                      { 'data-value' => d[:value],
+                                                        'data-measurement' => d[:measurement_unit] } ] }),
+              include_blank: true
 
 :javascript
   $("##{category}").select2({
     placeholder: "#{t(".#{category}")}" + " |"
+  }).on("select2-open", function() {
+    // check for active class into tabs
+    $(".tabs-wrapper li").each(function() {
+      if ($(this).hasClass('active')) {
+        $(this).removeClass('active')
+      }
+    });
+    // add class 'active' to select2 into changed tabs
+    $(this).closest("li").addClass('active');
+    //console.log($("##{category}").select2().on('change', function(data) { alert(data) }));
+  }).on('change', function(data) {
+    console.log(data);
   });
