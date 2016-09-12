@@ -42,7 +42,7 @@
             - if !current_user.nil? && document.check_access(current_user)
               %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
     .col-xs-1.col-sm-pull-11.reset-padding
-      - if !document.doc_file.url.empty?
+      - unless document.doc_file.url.blank?
         -#= link_to document.doc_file.url do
         = link_to documentation_document_download_path(document) do
           %i.fa.fa-2x{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }

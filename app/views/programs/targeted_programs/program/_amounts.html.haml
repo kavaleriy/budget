@@ -1,36 +1,44 @@
 :scss
-  .program {
+  .titles {
+    .fact,
+    .plan {
+      p {
+        display: inline-block;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.4rem;
+      }
+      .title {
+        font-weight: bold;
+      }
+      .count {
+        font-weight: normal;
+      }
+    }
     .fact {
-      text-align: right;
+      float: left;
     }
-    .bar {
-      margin-top: 50px;
-      text-align: center;
-      h3 { display: inline; }
+    .plan {
+      float: right;
     }
-
   }
 
 
-
-.program
-  .fact.col-xs-3
-    =t('.done')
-    %h2
+.col-xs-12.titles
+  .fact
+    %p.title
+      =t('.done')
+    %p.count
       -unless program[:budget_sum].nil?
-        = number_to_currency(program[:budget_sum][year][:fact][:sum], unit: '')
+        = number_to_currency(program[:budget_sum][year][:fact][:sum], locale: :uk, precision: 0)
 
-
-  .bar.col-xs-6
-    -unless program[:budget_sum].nil?
-      = render partial: 'programs/targeted_programs/program/progress', locals: { perc: calc_percentage(program[:budget_sum][year][:plan][:sum], program[:budget_sum][year][:fact][:sum]) }
-    =t('.remains')
-    %h3
-      -unless program[:years].nil?
-        = number_to_currency(program[:budget_sum][year][:plan][:sum] - program[:budget_sum][year][:fact][:sum], unit: '')
-
-  .col-xs-3
-    =t('.planned')
-    %h3
+  .plan
+    %p.title
+      =t('.planned')
+    %p.count
       -unless program[:budget_sum].nil?
-        = number_to_currency(program[:budget_sum][year][:plan][:sum], unit: '')
+        = number_to_currency(program[:budget_sum][year][:plan][:sum], locale: :uk, precision: 0)
+
+
+.col-xs-12.bar
+  -unless program[:budget_sum].nil?
+    = render partial: 'programs/targeted_programs/program/progress', locals: { perc: number_with_precision(calc_percentage(program[:budget_sum][year][:plan][:sum], program[:budget_sum][year][:fact][:sum]), precision: 1) }

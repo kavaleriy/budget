@@ -1,23 +1,47 @@
 :scss
+  // init colors
+  $dark-blue: #0c2231;
+  $white: white;
 
   .progress_bar {
-    text {
-      font-size: 16px;
-      font-weight: bold;
-      text-anchor: middle;
-      fill: white;
+    svg {
+      border: 2px solid $dark-blue;
+      .bckg { fill: $white; }
+      .perc { fill: $dark-blue; }
+      text {
+        font-size: 16px;
+        font-weight: bold;
+        text-anchor: middle;
+        stroke-width: .07rem;
+      }
     }
-
-    .bckg {fill: lightblue;}
-    .perc {fill: №f5f5f5;}
   }
 
 .progress_bar
 
-  %svg{ 'width' => "100%", 'height' => "40"}
-    %rect.bckg{'x' => "0", 'y' => "0", 'width' => "100%", 'height' => '40'}
-    %rect.perc{'x' => "0", 'y' => "0", 'width' => "#{perc}%", 'height' => '40'}
-    %text{'x' => "49%", 'y' => "26", }
+  - color = '#0c2231';
+  - stroke = 'white'
+  - color = 'white' unless perc.to_i < 50
+  - stroke = '#0c2231' unless perc.to_i < 50
+
+  %svg{ 'width' => '100%',
+        'height' => '40' }
+
+    %rect.bckg{ 'x' => '0',
+                'y' => '0',
+                'width' => '100%',
+                'height' => '40' }
+
+    %rect.perc{ 'x' => '0',
+                'y' => '0',
+                'width' => "#{perc.to_i}%",
+                'height' => '40' }
+
+    %text{ 'x' => '49%',
+           'y' => '26',
+           'fill' => "#{color}",
+           'stroke' => "#{stroke}" }
+
       = "#{perc}%"
 
 -#:javascript

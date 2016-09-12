@@ -145,17 +145,21 @@
 
   $(document).ready(function() {
 
-    $('#add_page').change(function() { alert('dasdsad'); });
     var set_town_in_title_page = function(town){
       $('#title_page_city').html(town);
     };
+
     var set_title_in_title_page = function(title){
       $('#title_page_title').html(title);
     };
+
     var set_year_in_title_page = function(year){
       $('#title_page_year').html(year);
     };
+
+
     var add_page_number = 0;
+
     var get_new_page = function(path,button){
       var new_page = $('#add_page').find('.page_dom').clone();
       var textarea = new_page.find('textarea');
