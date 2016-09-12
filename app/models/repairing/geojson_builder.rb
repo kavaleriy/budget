@@ -40,7 +40,8 @@ class Repairing::GeojsonBuilder
             id: "#{repair[:id]}",
             repair: "road",
             route: reduceCoordinatesCount(repair[:coordinates])
-          }
+            # TODO: views/repairing/maps/_map.html.haml, 324 line
+          }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
         },
         ]
     }
