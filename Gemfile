@@ -45,6 +45,7 @@ gem 'unicorn'
 group :development do
   gem 'pry-rails'
   gem 'better_errors'
+  gem 'stack_rescue'
 end
 
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
@@ -136,5 +137,8 @@ gem 'simple_form'
 gem 'momentjs-rails', '>= 2.9.0'
 
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+
+# https://github.com/mauriciopasquier/bootstrap-filestyle-rails
+gem 'bootstrap-filestyle-rails'
 
 gem 'cyrillizer'

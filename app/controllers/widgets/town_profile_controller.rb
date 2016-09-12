@@ -109,7 +109,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_calendar_hash(calendar, 'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    result << get_programs_hash('programs', programs)
+    result << get_programs_hash('programs')
     # result << get_key_docs_hash('key_docs')
     # result << get_prozorro_hash('prozoroo')
     # result << get_edata_hash('edata')
@@ -121,80 +121,80 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
 
   def get_budget_compare_hash(name)
-    get_item_hash(img_url(name),title_for_portfolio(name),compare_taxonomies_compare_budget_path(@town),name)
+    get_item_hash(img_url(name), title_for_portfolio(name), compare_taxonomies_compare_budget_path(@town), name)
   end
 
-  def get_taxonomy_rot_hash(taxonomy_rot,name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
+  def get_taxonomy_rot_hash(taxonomy_rot, name)
+    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
       unless taxonomy_rot.nil?
-        return {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> public_budget_files_path(@town),'name' => name}
+        return { 'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> public_budget_files_path(@town), 'name' => name }
       end
     end
   end
 
-  def get_indicate_hash(indicate,name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
+  def get_indicate_hash(indicate, name)
+    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
       unless indicate.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> indicate_taxonomies_town_profile_path(@town),'name' => name}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> indicate_taxonomies_town_profile_path(@town), 'name' => name}
       end
     end
   end
 
-  def get_taxonomy_rov_hash(taxonomy_rov,name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
+  def get_taxonomy_rov_hash(taxonomy_rov, name)
+    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
       unless taxonomy_rov.nil?
         {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomies_town_profile_path(@town),'name' => name}
       end
     end
   end
 
-  def get_calendar_hash(calendar,name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
+  def get_calendar_hash(calendar, name)
+    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
       unless calendar.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendar_town_profile_path(calendar),'name' => name}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendar_town_profile_path(calendar), 'name' => name}
       end
     end
   end
 
   def get_keys_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#',name) do
+    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
       if @town.key_indicate_map_indicators
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> key_indicate_map_indicators_get_town_profile_path(@town),'name' => name}
+        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> key_indicate_map_indicators_get_town_profile_path(@town), 'name' => name}
       end
     end
   end
 
-  def get_programs_hash(name,programs)
-    get_item_hash(img_url(name), title_for_portfolio(name), programs_targeted_program_path(programs),name) unless programs.nil?
+  def get_programs_hash(name)
+    get_item_hash(img_url(name), title_for_portfolio(name), programs_town_targeted_programs_path(@town), name) unless @town.nil?
   end
 
-  def get_item_hash(item_img_src,item_title,item_url,name)
+  def get_item_hash(item_img_src, item_title, item_url, name)
     result = yield if block_given?
     unless result.nil?
       return result
     end
     unless item_url == "#"
-      {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url,'name' => name}
+      {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url, 'name' => name}
     end
 
   end
 
   def get_repair_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_path,name) #(6, @town))
+    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_path, name) #(6, @town))
   end
 
   def get_key_docs_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), public_documents_town_profile_path(@town),name)
+    get_item_hash(img_url(name), title_for_portfolio(name), public_documents_town_profile_path(@town), name)
   end
 
   def get_prozorro_hash(name)
-    get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis',name)
+    get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', name)
   end
   def get_edata_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), 'http://www.spending.gov.ua/',name)
+    get_item_hash(img_url(name), title_for_portfolio(name), 'http://www.spending.gov.ua/', name)
   end
   def get_purchase_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), 'https://ips.vdz.ua/ua/purchase_search.htm',name)
+    get_item_hash(img_url(name), title_for_portfolio(name), 'https://ips.vdz.ua/ua/purchase_search.htm', name)
   end
 
   def img_url (item)

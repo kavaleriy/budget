@@ -1,0 +1,82 @@
+:scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $no-color: transparent;
+  $gray: #999;
+
+  #select2-drop {
+    .select2-search {
+      display: none;
+    }
+  }
+  .select-year {
+    padding: 0 0 0 15px;
+    //display: inline-block;
+    .select2-container {
+      width: 100%;
+      .select2-choice {
+        height: 34px;
+        border-radius: 0;
+        border-color: $dark-blue;
+        background-color: $no-color;
+        background-image: none;
+        abbr{
+          right: 32px;
+        }
+        .select2-chosen {
+          text-align: right;
+          margin: 3px 46px 3px auto;
+          font-size: 16px;
+          color: $gray;
+          text-transform: lowercase;
+          float: right;
+        }
+        .select2-arrow{
+          border-left: 0;
+          border-radius: 0;
+          background: $dark-blue;
+          width: 32px;
+          &:before {
+            content: '\f04b';
+            transform: rotate(90deg);
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            background: $dark-blue;
+            color: $white;
+            padding: 3px 0 2px 9px;
+          }
+        }
+        &:hover,
+        &:focus {
+          outline-color: inherit;
+        }
+      }
+    }
+  }
+  .select2-drop-multi {
+    border-color: $dark-blue;
+    margin-left: 1px;
+    .select2-results {
+      padding: 0;
+      margin: 4px 0;
+    }
+  }
+  .select2-drop-active {
+    border: 1px solid $dark-blue;
+    border-top: 0;
+    border-radius: 0;
+  }
+
+.col-xs-6.col-sm-2.select-year.pull-right
+  = select_tag :year_select, options_for_select(years.reverse), { include_blank: true }
+
+:javascript
+  $("#year_select").select2({
+    placeholder: "#{t('programs.targeted_programs.town_programs.selects.year-placeholder')}" + " |"
+  });

@@ -6,7 +6,7 @@ module PublicHelper
 
   def eidos_logo
     #TODO: to else put english logo version path
-    logo_path = I18n.locale == :uk ? 'new_design/eidos-logo.png' : 'new_design/eidos-logo.png'
+    logo_path = I18n.locale == :uk ? 'new_design/eidos-logo.png' : 'new_design/eidos-logo-en.png'
     image_tag(logo_path, class: 'img-responsive')
   end
 end
