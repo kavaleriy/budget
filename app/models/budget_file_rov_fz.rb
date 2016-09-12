@@ -15,7 +15,7 @@ class BudgetFileRovFz < BudgetFile
 
     kekv = row['ecode'].to_s
     return unless kekv.length == 4
-    # return if is_grouped_kekv kekv
+    return if is_grouped_kekv kekv
 
     fond = row['cf'].to_s
     # return unless is_allowed_fond(fond)
