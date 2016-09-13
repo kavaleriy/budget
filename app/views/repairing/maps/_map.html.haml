@@ -181,7 +181,7 @@
       if (options.bounds) map.fitBounds(options.bounds);
 
 
-      L.Icon.Default.imagePath = 'leaflet/images'
+      L.Icon.Default.imagePath = '/assets/leaflet/images'
 
 
       function setBrowserLocation() {
@@ -319,6 +319,8 @@
       }
 
       function getPointToLayer(feature, latlng) {
+        //  TODO: feature.properties get not valid data for road
+        // Need Ad hoc for show road icon on repairing map (models/repairing/geojson_builder, 43 line)
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
