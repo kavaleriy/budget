@@ -92,5 +92,8 @@
     $(this).closest("li").addClass('active');
     //console.log($("##{category}").select2().on('change', function(data) { alert(data) }));
   }).on('change', function(data) {
-    console.log(data);
+    var value = $(data.added.element).data('value');
+    var measurement = $(data.added.element).data('measurement');
+    console.log('v', value);
+    console.log('m', measurement);
   });

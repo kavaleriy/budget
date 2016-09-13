@@ -8,26 +8,26 @@ class Programs::TargetedProgram
 
   before_save :calc_budget_sum
 
-  field :main_manager, type: String # головний розпорядник
-  field :type_title, type: String
-  field :title, type: String
-  # field :years, type: Hash
-  field :p_id, type: String
-  field :responsible, type: String
-  field :kpkvk, type: String # program code
-  field :kfkvk, type: String # functional code (branch)
-  field :manager, type: String # розпорядник
-  field :reason, type: String # Підстава
-  field :budget_sum, type: Hash
-  field :objective, type: String # ціль
-  field :region_target_program, type: Hash
-  field :active, type: Boolean, default: true
+  field :main_manager,            type: String # головний розпорядник
+  field :type_title,              type: String
+  field :title,                   type: String
+  field :p_id,                    type: String
+  field :responsible,             type: String
+  field :kpkvk,                   type: String # program code
+  field :kfkvk,                   type: String # functional code (branch)
+  field :manager,                 type: String # розпорядник
+  field :reason,                  type: String # Підстава
+  field :budget_sum,              type: Hash
+  field :objective,               type: String # ціль
+  field :region_target_program,   type: Hash
+  field :active,                  type: Boolean, default: true
 
-  has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
-  embeds_many :indicators, class_name: 'Programs::Indicator'
-  embeds_many :tasks, class_name: 'Programs::Task'
-  belongs_to :town, class_name: 'Town'
-  belongs_to :author, class_name: 'User'
+  has_many :sub_programs, class_name: 'Programs::TargetedProgram',  foreign_key: 'p_id'
+  has_many :indicators,   class_name: 'Programs::Indicator'
+  has_many :tasks,        class_name: 'Programs::Task'
+
+  belongs_to :town,       class_name: 'Town', index: true
+  belongs_to :author,     class_name: 'User', index: true
 
   scope :get_main_programs, -> { where(p_id: nil) }
   # Get programs by town
@@ -62,13 +62,18 @@ class Programs::TargetedProgram
     workbook = XlsParser.get_workbook(file_path)
     worksheet = workbook[0]
     program = create_program_by_xls(worksheet)
+
     unless workbook['Tasks'].nil?
-      program.tasks = Programs::Task.create_tasks_by_xls(workbook['Tasks'])
+      Programs::Task.create_tasks_by_xls(workbook['Tasks'], program)
     end
+
     unless workbook['Indicates'].nil?
-      program.indicators = Programs::Indicator.create_indicators_by_xls(workbook['Indicates'])
+      year = program.budget_sum.keys.first
+      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], year, program)
     end
+
     program
+
   end
 
   def self.get_grouped_indicators(indicators)
