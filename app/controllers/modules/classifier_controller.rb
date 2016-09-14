@@ -5,6 +5,7 @@ module Modules
       unless params[:file_name].nil?
         data = File.open(params[:file_name].tempfile)
         widgets = DBF::Table.new(data, nil, 'cp866')
+        #TODO: Do refactor in future
         i = 0
         widgets.each do |widget|
           #binding.pry
