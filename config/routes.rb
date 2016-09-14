@@ -97,11 +97,9 @@ Rails.application.routes.draw do
 
   namespace :programs do
     resources :targeted_programs
-    # namespace :target_programs do
-      post 'targeted_programs/import' => 'targeted_programs#import', as: 'targeted_programs_import'
-      patch 'targeted_programs/lock/:id' => 'targeted_programs#lock', as: 'check_active'
-    # end
-
+    post 'targeted_programs/import' => 'targeted_programs#import', as: 'targeted_programs_import'
+    get 'targeted_programs/town_programs/:town' => 'targeted_programs#town_programs', as: 'town_targeted_programs'
+    patch 'targeted_programs/lock/:id' => 'targeted_programs#lock', as: 'check_active'
   end
 
   namespace :legacy_programs do

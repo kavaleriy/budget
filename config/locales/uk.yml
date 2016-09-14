@@ -248,6 +248,7 @@ uk:
     show: "Показати"
     search: "Пошук"
     description: "Опис"
+    choose_file: "Оберіть файл"
   subscribers:
     index:
       title: "Підписчики"
@@ -640,12 +641,7 @@ uk:
         attachments: "Додатки"
         tab_gantt: "Проекти"
         funds_spend: "Кошти, витрачені на реалізацію програми:"
-        #        new
-        group_indicators: 'Групи показників'
-        main_target: 'Основні цілі'
-        responsible: "Відповідальні за виконання програми"
-        main_manager: 'Головний розпорядник'
-        reason: 'Підстави'
+        year: 'рік'
       form:
         year: 'рік'
         type: 'Тип показника'
@@ -678,9 +674,25 @@ uk:
         main_manager: 'Головний розпорядник'
       program:
         amounts:
-          done: 'Виконано'
+          done: 'Виконано: '
           remains: 'Залишилось'
-          planned: 'Заплановано'
+          planned: 'Заплановано: '
+        description:
+          main_manager: 'Головний розпорядник'
+          responsible: "Відповідальні за виконання програми"
+          reason: 'Підстави'
+          main_target: 'Основні цілі'
+        indicators:
+          group_indicators: 'Групи показників'
+        indicators_tabs:
+          visuals: 'Візуалізація програми'
+        indicators_select:
+          expense: 'Витрати'
+          product: 'Продукт'
+          efective: 'Ефективність'
+          quality: 'Якість'
+        gantt:
+          main-title: 'Діаграма ганта'
       data_table_header:
         title: 'Назва'
         file: 'Файл'
@@ -702,6 +714,16 @@ uk:
         active: 'Статус'
         actions: 'Дії'
         sure_dialog: 'Ви впевненні?'
+      town_programs:
+        list: 'Перелік програм'
+        division: 'Розподіл програм'
+        selects:
+          year-placeholder: 'рік'
+        program_list:
+          done: 'Виконання'
+          plan: 'План'
+          more: 'Більше'
+          show: 'Переглянути'
     indicator:
       group_name:
         expense: 'Витрати'
@@ -1109,6 +1131,11 @@ uk:
   drag_file: "Перетягніть файли"
   select_from_list: "або виберіть зі списку"
   embed: "Код для вбудови"
+  select2:
+    formatNoMatches: "Нічого не знайдено"
+    formatInputTooShort_input: "Будь ласка, введіть більше "
+    formatInputTooShort_characters: " символів"
+    formatSearching: "Пошук..."
   footer: "ПРООН в Україні та Інтерньюз Нетворк"
   export: "Експорт"
   aggregated: "Інше"
@@ -1233,6 +1260,7 @@ uk:
         edit_category: "Редагувати категорію"
         category: "Категорія"
         coordinates: "Координати"
+        date_placeholder: "РРРР.ММ.ДД"
     maps:
       info_popup:
         more: 'Детальніше'

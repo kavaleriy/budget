@@ -84,18 +84,19 @@
                         overflow: hidden;
                       }
                       &.title {
-
                         font-size: 18px;
                         text-transform: uppercase;
                         //height: 54px;
                         margin: 40px 0 20px;
                       }
-                      &.text {
-                        font-size: 14px;
-                        text-align: justify;
-                        height: 60px;
-                        margin: 0 0 30px;
-                      }
+                      //gh-issue#418_#1133 hide news description
+
+                      //&.text {
+                      //  font-size: 14px;
+                      //  text-align: justify;
+                      //  height: 60px;
+                      //  margin: 0 0 30px;
+                      //}
                     }
                   }
                 }
@@ -133,9 +134,9 @@
                           height: 50px;
                           margin: 20px 0 0;
                         }
-                        &.text {
-                          margin: 0;
-                        }
+                        //&.text {
+                        //  margin: 0;
+                        //}
                       }
                     }
                   }
@@ -178,9 +179,9 @@
                           height: 50px;
                           margin: 20px 0 0;
                         }
-                        &.text {
-                          margin: 0;
-                        }
+                        //&.text {
+                        //  margin: 0;
+                        //}
                       }
                     }
                   }
@@ -216,30 +217,30 @@
       }
     }
     .news-block {
-          padding-bottom: 15px;
-          .container {
-            .news-wrap {
-              .news-tape {
-                .row {
-                  .item {
-                    padding-bottom: 15px;
-                    a {
-                      > p {
-                        &.title {
-                          height: 50px;
-                          margin: 20px 0 0;
-                        }
-                        &.text {
-                          margin: 0;
-                        }
-                      }
+      padding-bottom: 15px;
+      .container {
+        .news-wrap {
+          .news-tape {
+            .row {
+              .item {
+                padding-bottom: 15px;
+                a {
+                  > p {
+                    &.title {
+                      height: 50px;
+                      margin: 20px 0 0;
                     }
+                    //&.text {
+                    //  margin: 0;
+                    //}
                   }
                 }
               }
             }
           }
         }
+      }
+    }
   }
 
 .news-section
@@ -263,13 +264,13 @@
                         %p Зображення відсутне
                       %p.title
                         = news.title
-                      %p.text
+                      -#%p.text
                         -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
                         = strip_tags(news.news_text).html_safe
                     - else
                       =image_tag("#{news.img}", class: 'img-responsive')
                       %p.title
                         = news.title
-                      %p.text
+                      -#%p.text
                         -#Remove tags(strip_tags) & remove &bnsp; (html_safe)
                         = strip_tags(news.news_text).html_safe

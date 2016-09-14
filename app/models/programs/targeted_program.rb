@@ -29,9 +29,11 @@ class Programs::TargetedProgram
   belongs_to :town, class_name: 'Town'
   belongs_to :author, class_name: 'User'
 
-  scope :get_main_programs,-> { where(p_id: nil) }
+  scope :get_main_programs, -> { where(p_id: nil) }
   # Get programs by town
   scope :by_town, -> (town) { where(town: town) }
+  # Get active programs
+  scope :by_active, -> { where(active: true) }
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 
@@ -43,9 +45,9 @@ class Programs::TargetedProgram
     self.budget_sum = {
         year => {
             plan: {
-                general_fund: 0,
-                special_fund: 0,
-                sum: 0
+                general_fund: 0.0,
+                special_fund: 0.0,
+                sum: 0.0
             }
             # fact: {
             #     general_fund: 0,
@@ -84,15 +86,16 @@ class Programs::TargetedProgram
   end
 
   private
+
   def self.create_program_by_xls(sheet)
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
       budget_sum_hash = { program_year => {plan: {},
                                            fact: {
-                                               general_sum: 0,
-                                               special_sum: 0,
-                                               sum: 0
+                                               general_sum: 0.0,
+                                               special_sum: 0.0,
+                                               sum: 0.0
                                            }
                                           }
                         }
@@ -120,9 +123,9 @@ class Programs::TargetedProgram
     budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact]['general_fund'].to_f
-      special_fact_fund = budget_sum_by_year[:fact]['special_fund'].to_f
-      budget_sum_by_year[:fact]['sum'] = general_fact_fund + special_fact_fund
+      general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
+      special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
+      budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
     else
       init_default_fact_sum(year)
     end
@@ -130,10 +133,24 @@ class Programs::TargetedProgram
 
   def init_default_fact_sum(year)
     self.budget_sum[year][:fact] = {
-        general_sum: 0,
-        special_sum: 0,
-        sum: 0
+        general_sum: 0.0,
+        special_sum: 0.0,
+        sum: 0.0
     }
+  end
+
+  # Get array of years from programs
+  # return array of string, example: [ "2016", "2015" ]
+  # or
+  # empty array if town programs does not has year
+  def self.programs_years(programs)
+    years = []
+    programs.each { |p|
+      p.budget_sum.keys.each { |y|
+        years.include?(y) ? next : years << y
+      }
+    }
+    years
   end
 
 end

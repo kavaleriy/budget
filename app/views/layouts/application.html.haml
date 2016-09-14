@@ -1,19 +1,19 @@
 :scss
-  body {
-    .bootstrap_flash {
-      margin-top: 73px;
-      > div {
-        margin: 0 0 -73px 0;
-      }
-    }
-    .blocks {
-      //this style(> .container) for first container on home page
-      > .container {
-        margin-top: 73px;
-        min-height: calc(100vh - 219px);
-      }
-    }
-  }
+  //body {
+  //  .bootstrap_flash {
+  //    margin-top: 73px;
+  //    > div {
+  //      margin: 0 0 -73px 0;
+  //    }
+  //  }
+  //  .blocks {
+  //    //this style(> .container) for first container on home page
+  //    > .container {
+  //      margin-top: 73px;
+  //      min-height: calc(100vh - 219px);
+  //    }
+  //  }
+  //}
 
 !!! 5
 %html(lang="en")
@@ -83,6 +83,8 @@
 
   -#Go to www.addthis.com/dashboard to customize your tools
   = render partial: 'layouts/addthis'
+
+  = render partial: 'layouts/file_upload_script'
 
 :javascript
   $(document).ready(function() {

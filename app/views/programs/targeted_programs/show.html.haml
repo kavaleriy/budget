@@ -1,59 +1,72 @@
 :scss
-  .program {
-    & > div {
-      margin-top: 30px;
+  .program-wrapper {
+    .program-title {
+      font-weight: normal;
+      font-family: 'Lato', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 20px 0;
+    }
+    .program-bar {
+      padding-bottom: 20px;
+    }
+    .program-data {
+      .manager,
+      .responsible,
+      .reason,
+      .target {
+        margin-bottom: 15px;
+        .title-plus-icon > .title,
+        .value {
+          font-family: 'Lato', sans-serif;
+        }
+        .title-plus-icon > .title {
+          margin-top: 0;
+          font-size: 1.6rem;
+          font-weight: bold;
+        }
+        .value {
+          font-size: 1.4rem;
+          font-weight: normal;
+        }
+        .title-plus-icon {
+          i,
+          .title {
+            display: inline-block;
+          }
+          i {
+            position: absolute;
+            font-size: 2.2rem;
+          }
+          .title {
+            padding-left: 15px;
+          }
+        }
+      }
     }
   }
-.row
-  .col-xs-12
-    =link_to t('programs.targeted_programs.index.header'),programs_targeted_programs_path,class: 'btn btn-info'
-.program.row
 
-  .col-xs-12
-    %h1
-      %i.fa.fa-sun-o
-        = "#{@program[:title]}, #{@year} #{t('year')}"
+.program-wrapper
 
-    = render partial: 'programs/targeted_programs/program/amounts', locals: { program: @program, :year => @year }
+  .row.program-title
+    = "#{ @program[:title]}, #{@year} #{t('.year') }"
 
-  .col-xs-12
-    %h2
-      =t('.main_manager')
+  .row.program-bar
 
-    %p
-      =@program.main_manager
-  .col-xs-12
-    %h2
-      =t('.responsible')
+    -#Bar block
+    = render partial: 'programs/targeted_programs/program/amounts',
+    locals: { program: @program, year: @year }
 
-    %p
-      =@program.responsible
-  .col-xs-12
-    %h2
-      =t('.reason')
+  .row.program-data
 
-    %p
-      =@program.reason
-  .col-xs-12
-    %h2
-      =t('.main_target')
+    -#Description block
+    = render partial: 'programs/targeted_programs/program/description',
+    locals: { program: @program }
 
-    %p
-      =@program.objective
+    -#Indicators block
+    = render partial: 'programs/targeted_programs/program/indicators',
+    locals: { program: @program, year: @year, indicators: @grouped_indicators }
 
-  .indicators.col-xs-12
-    %h2
-      = t('.group_indicators')
-    = render partial: 'programs/targeted_programs/program/indicators', locals: { program: @program, :year => @year ,indicators_group: @grouped_indicators}
-
-  .col-xs-12
-    .gantt-header
-      .pull-left
-        %h2
-          Діаграма ганта
-
-    = render partial: 'programs/targeted_programs/program/gant'
-
-  -#.col-xs-12
-  -#  %h2
-  -#    Відповідальні за виконання програми
+    -#Gantt block
+    = render partial: 'programs/targeted_programs/program/gantt'
