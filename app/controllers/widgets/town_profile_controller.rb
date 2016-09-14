@@ -111,7 +111,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
     result << get_e_data_hash('e_data',e_data) unless e_data.nil?
-    result << get_programs_hash('programs', programs)
+    #result << get_programs_hash('programs', programs)
     result << get_programs_hash('programs')
 
     # result << get_key_docs_hash('key_docs')
