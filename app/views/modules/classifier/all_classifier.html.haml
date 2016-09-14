@@ -1,0 +1,14 @@
+:css
+  .table-striped{
+    font-size: 12px;
+  }
+%table.table.table-striped
+  - @towns.each do |town,classf|
+    %tr
+      %td
+        = "#{town.second} | #{town.third}"
+      %td
+        = classf.size
+      %td
+        = select_tag :param_name, options_for_select(classf.map{|classd| ["#{classd.pnaz} | #{classd.k_form} | #{classd.k_ter} | #{classd.sk_ter}", classd.id]})
+
