@@ -14,6 +14,7 @@ class Event
   field :title, type: String
   field :icon, type: String
   field :description, type: String
+  field :responsible, type: String
   field :starts_at, type: DateTime
   field :ends_at, type: DateTime
   field :all_day, type: Boolean

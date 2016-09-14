@@ -11,6 +11,7 @@ $(document).on 'ready page:change', ->
       title: $.trim($(this).attr("data-title"))
       icon: $.trim($(this).attr("data-icon"))
       description: $(this).attr("data-description")
+      responsible: $(this).attr("data-responsible")
       text_color: $(this).attr("data-text_color")
       color: $(this).attr("data-color")
       action_type: $(this).attr("data-action_type")

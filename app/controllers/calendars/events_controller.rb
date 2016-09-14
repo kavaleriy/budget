@@ -48,6 +48,7 @@ module Calendars
 
     # GET /events/1/edit
     def edit
+      @responsible = CalendarAction.pluck(:responsible).uniq.compact.sort
       respond_to do |format|
         format.js
       end
@@ -117,7 +118,7 @@ module Calendars
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
+      params.require(:event).permit(:holder, :title, :icon, :description, :responsible, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
     end
 
   end
