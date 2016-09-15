@@ -16,6 +16,6 @@
           = item.title
         .row
           .col-xs-12.col-sm-7.chart
-            = render partial: 'programs/targeted_programs/program/indicator_chart', locals: { id: "#{indicator.first}-#{j}" }
+            = render partial: 'programs/targeted_programs/program/indicator_line_chart', locals: { id: "#{indicator.first}-#{j}" }
           .col-xs-12.col-sm-5.indicator-description
-            = render partial: 'programs/targeted_programs/program/indicator_desc'
+            = render partial: 'programs/targeted_programs/program/indicator_desc', locals: { id: "#{indicator.first}-#{j}" }
