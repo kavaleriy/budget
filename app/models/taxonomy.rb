@@ -55,7 +55,7 @@
         # get town blazon if town exist and town have img
         town_blazon = town.img.url unless town.nil? || town.img.nil?
 
-        town_name = town.title.gsub(/,.*/, '') unless town.nil? || town.blank?
+        town_name = town.title.gsub(/,.*/, '') unless town.blank?
 
         # push taxonomy with blazon
         unless town_name.blank?
