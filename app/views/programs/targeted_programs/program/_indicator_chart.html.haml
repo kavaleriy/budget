@@ -1,0 +1,129 @@
+:scss
+  .line-chart {
+    background: lightblue;
+    padding: 25px 15px 15px 10px;
+  }
+
+.col-xs-12.line-chart
+  %canvas{  id: id + 'c',
+            height: '300',
+            width: '600' }
+
+:javascript
+
+  var c = document.getElementById("#{id}c");
+  var ctx = c.getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["2011", "2012", "2013", "2014", "2015", "2016"],
+      datasets: [
+        {
+          label: "Dataset",
+
+          lineTension: 0.5,
+
+          // fill: false,
+          backgroundColor: "rgba(75,192,192,0.4)",
+
+          borderColor: "#fff",
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.1,
+          borderJoinStyle: 'miter',
+
+          pointRadius: 5,
+          pointBorderWidth: 2,
+          pointHitRadius: 4,
+          pointBackgroundColor: "#0c2231",
+          pointBorderColor: "#fff",
+
+          pointHoverRadius: 5,
+          pointHoverBorderWidth: 2,
+          pointHoverHitRadius: 4,
+          pointHoverBackgroundColor: "#ffd304",
+          pointHoverBorderColor: "#fff",
+
+          data: [170, 220, 375, 261, 311, 350],
+
+          spanGaps: false
+        },
+        {
+          label: "Dataset 1",
+
+          lineTension: 0.5,
+
+          // fill: false,
+          backgroundColor: "rgba(240, 177, 80, 0.9)",
+
+          borderColor: "#fff",
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.1,
+          borderJoinStyle: 'miter',
+
+          pointRadius: 5,
+          pointBorderWidth: 2,
+          pointHitRadius: 4,
+          pointBackgroundColor: "#0c2231",
+          pointBorderColor: "#fff",
+
+          pointHoverRadius: 5,
+          pointHoverBorderWidth: 2,
+          pointHoverHitRadius: 4,
+          pointHoverBackgroundColor: "#ffd304",
+          pointHoverBorderColor: "#fff",
+
+          data: [300, 280, 175, 361, 211, 600],
+
+          spanGaps: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      scaleStartValue : 0,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              display: false,
+              color: '#fff',
+              // lineWidth: 1,
+              zeroLineWidth: 3,
+              zeroLineColor: '#fff'
+            },
+            ticks: {
+              fontColor: '#fff',
+            }
+          }
+        ],
+        yAxes: [
+          {
+            id: 'y-axis-0',
+            gridLines: {
+              // display: true,
+              color: '#fff',
+              // lineWidth: 1,
+              zeroLineWidth: 3,
+              zeroLineColor: '#fff'
+            },
+            scaleLabel: {
+              fontColor: '#fff'
+            },
+            ticks: {
+              fontColor: '#fff',
+              padding: 20,
+              min: 100,
+              maxTicksLimit: 6,
+              stepSize: 50
+            }
+          }
+        ]
+      }
+    }
+  });

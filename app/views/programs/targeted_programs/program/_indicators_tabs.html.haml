@@ -6,6 +6,7 @@
 
   .tabs {
     padding: 0;
+    margin-bottom: 15px;
     #main-navs {
       .tabs-wrapper {
         padding: 0;
@@ -89,10 +90,6 @@
     }
   }
 
--#TODO: Check logic with indicators
--indicators_title_index = 0
--indicators_array_index = 1
-
 .col-xs-12.tabs
 
   %ul.nav.nav-pills#main-navs
@@ -114,18 +111,3 @@
                         text: t('.visuals')),
                 '#',
                 class: 'visuals'
-
-  -#TODO: Check it logic
-  .indicate-list
-    .tab-content
-      -indicators.each_with_index do |indicator_group, i|
-        -active_panel_class = (i.zero? ? 'active in' : '')
-        .tab-pane.fade{id: "tab-#{indicator_group[indicators_title_index]}",class: active_panel_class}
-          %ul.nav.nav-pills
-            - indicator_group[indicators_array_index].each_with_index do |indicator, j|
-              - tab_id = "tab-#{i}-#{j}"
-              - tab_id_content = "#tab-#{i}-#{j}-content"
-              - active = (i.zero? and j.zero? ? 'active in' : '')
-              %li.indicator-title{class: active}
-                %a{"data-toggle" => "tab", href: tab_id_content, role: 'tab'}
-                  =indicator.title

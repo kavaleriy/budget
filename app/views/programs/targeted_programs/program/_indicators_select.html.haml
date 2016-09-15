@@ -79,21 +79,48 @@
               include_blank: true
 
 :javascript
+
   $("##{category}").select2({
     placeholder: "#{t(".#{category}")}" + " |"
   }).on("select2-open", function() {
+    checkActiveTabs($(this));
+  }).on('change', function(data) {
+    selectedIndex = $(this).prop('selectedIndex');
+    //TODO: Make it easy - refactor to func
+    $(".indicators .tab-pane").each(function() {
+      if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+      }
+      $("##{category}-" + (selectedIndex-1)).addClass('active');
+    });
+
+    getValuesFromSelect(data);
+
+
+
+  });
+
+  //// FUNCTION'S ////
+  // get object, default: $(this)
+  // WARN! Use $(this) to find DOM element <li>
+  // check for existing class 'active' into <li>'s
+  // return <li> with active class
+  function checkActiveTabs(obj) {
     // check for active class into tabs
     $(".tabs-wrapper li").each(function() {
       if ($(this).hasClass('active')) {
-        $(this).removeClass('active')
+        $(this).removeClass('active');
       }
     });
     // add class 'active' to select2 into changed tabs
-    $(this).closest("li").addClass('active');
-    //console.log($("##{category}").select2().on('change', function(data) { alert(data) }));
-  }).on('change', function(data) {
-    var value = $(data.added.element).data('value');
-    var measurement = $(data.added.element).data('measurement');
-    console.log('v', value);
-    console.log('m', measurement);
-  });
+    obj.closest("li").addClass('active');
+  }
+  // get data, default: data from select tag
+  // WARN! Get data that you pass to select tag
+  // return value(number), measurement(string)
+  function getValuesFromSelect(selectData) {
+    value = $(selectData.added.element).data('value');
+    measurement = $(selectData.added.element).data('measurement');
+    // console.log('value:', value);
+    // console.log('measurement:', measurement);
+  }
