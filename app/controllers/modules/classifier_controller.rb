@@ -44,12 +44,14 @@ module Modules
     end
 
     def all_classifier
-      @towns  = Modules::Classifier.all.group_by{|classf| classf.town_id}.transform_keys do |key|
-        town = Town.where(id: key).first
-        town_name = town.title unless town.nil?
-        town_koatuu = town.koatuu unless town.nil?
-        #binding.pry
-        [key,town_name, town_koatuu]
+      @towns = Rails.cache.fetch("all_classifier", expiries: 1.month) do
+        Modules::Classifier.all.group_by{|classf| classf.town_id}.transform_keys do |key|
+          town = Town.where(id: key).first
+          town_name = town.title unless town.nil?
+          town_koatuu = town.koatuu unless town.nil?
+          #binding.pry
+          [key,town_name, town_koatuu]
+        end
       end
       #binding.pry
       #classf= Modules::Classifier.find("57d9120da0fb4a525a003a1c")
