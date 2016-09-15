@@ -146,5 +146,3 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 gem 'bootstrap-filestyle-rails'
 
 gem 'cyrillizer'
-
-gem 'chartkick'
