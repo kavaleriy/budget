@@ -37,7 +37,9 @@ class CalendarAction
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }
 
-
+  def self.get_uniq_responsible
+    pluck(:responsible).uniq.compact.sort
+  end
 
   def set_default_color
     if self.color.nil? || self.color.empty?

@@ -70,7 +70,7 @@ class CalendarActionsController < ApplicationController
   private
 
     def get_responsible
-      @responsible = CalendarAction.pluck(:responsible).uniq.compact.sort
+      @responsible = CalendarAction.get_uniq_responsible
     end
 
     # Use callbacks to share common setup or constraints between actions.

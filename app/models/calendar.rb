@@ -2,6 +2,7 @@ class Calendar
   include Mongoid::Document
 
   before_save :change_active_status
+  before_update :search_e
 
   field :author, type: String
   field :town, type: String
@@ -16,6 +17,10 @@ class Calendar
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
+
+  def search_e
+    binding.pry
+  end
 
   # active status only for one calendar
   def change_active_status

@@ -139,6 +139,7 @@ $(document).on 'ready page:change', ->
           icon: event.icon
           title: event.title
           description: event.description
+          responsible: event.responsible
           text_color: event.text_color
           color: event.color
           starts_at: dt_start
