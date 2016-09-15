@@ -1,0 +1,65 @@
+:scss
+  .on-year,
+  .on-month {
+    margin-bottom: 10px;
+    .title-plus-icon > .title,
+    .value {
+      font-family: 'Lato', sans-serif;
+    }
+    .title-plus-icon > .title {
+      margin-top: 0;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .value {
+      margin-top: 10px;
+      margin-bottom: 0;
+      font-size: 3.2rem;
+      font-weight: 400;
+    }
+    .title-plus-icon {
+      i,
+      .title {
+        display: inline-block;
+      }
+      i {
+        position: absolute;
+        font-size: 2.2rem;
+      }
+      .title {
+        padding: 0 0 0 15px;
+        font-weight: normal;
+        text-transform: none;
+      }
+    }
+  }
+
+-#Init demo values
+-years = [ 2011, 2012, 2013, 2014, 2015, 2016 ]
+-total = rand(100000..400000)
+-total_for_month = total / 12
+
+.row
+  .col-xs-12.on-year
+    .title-plus-icon
+      = fa_icon 'caret-right'
+      %p.title
+        = "У #{years.sample(1).first} році"
+    %p.value
+      = number_to_currency(total, precision: 0, locale: :uk)
+.row
+  .col-xs-12.on-month
+    .title-plus-icon
+      = fa_icon 'caret-right'
+      %p.title
+        В середньому на місяць
+    %p.value
+      = number_to_currency(total_for_month, precision: 0, locale: :uk)
+.row
+  .col-xs-12.on-month
+    .title-plus-icon
+      = fa_icon 'caret-right'
+      %p.title
+        В місячному розрізі
+    %p.value
+      =render partial: 'programs/targeted_programs/program/indicaor_bar_chart', locals: { id: id }
