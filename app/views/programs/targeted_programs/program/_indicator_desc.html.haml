@@ -40,15 +40,14 @@
 -total_for_month = total / 12
 
 .row
-  .col-xs-12.on-year
+  .col-xs-6.col-md-12.on-year
     .title-plus-icon
       = fa_icon 'caret-right'
       %p.title
         = "У #{years.sample(1).first} році"
     %p.value
       = number_to_currency(total, precision: 0, locale: :uk)
-.row
-  .col-xs-12.on-month
+  .col-xs-6.col-md-12.on-month
     .title-plus-icon
       = fa_icon 'caret-right'
       %p.title
