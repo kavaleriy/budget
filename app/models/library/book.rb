@@ -6,6 +6,7 @@ class Library::Book
 
 
   include Mongoid::Timestamps
+  field :locale, type: String, :default => 'uk'
   field :category, type: String
   field :title, type: String
   field :author, type: String

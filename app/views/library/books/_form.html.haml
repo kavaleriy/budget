@@ -11,6 +11,7 @@
         - @library_book.errors.full_messages.each do |msg|
           %li= msg
 
+  =f.hidden_field :locale, value: params[:locale]
   .form-group
     .field.col-md-12
       = f.label :category, t('library.books.index.category')
