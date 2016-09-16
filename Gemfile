@@ -110,7 +110,7 @@ gem 'font-awesome-rails'
 # https://github.com/carrierwaveuploader/carrierwave
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
-gem "mini_magick"
+gem 'mini_magick'
 # gem 'mini_magick', '3.5', :require => 'mini_gmagick'
 
 # https://github.com/JangoSteve/remotipart
