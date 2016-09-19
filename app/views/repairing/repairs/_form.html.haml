@@ -16,8 +16,6 @@
     .col-xs-6
       = f.text_field :repair_end_date, placeholder: t('.date_placeholder'), class: 'datepicker', :label => t('repairing.repairs.form.repair_end_date')
 
-  -#
-
   = f.text_field :address, :label => t('repairing.repairs.form.address')
   = f.text_field :address_to, :label => t('repairing.repairs.form.address_to')
 
@@ -40,6 +38,6 @@
     // Use Bootstrap/JQ/UI DateTimePicker
     $(".datepicker").datetimepicker({
       locale: '#{I18n.locale}',
-      format: 'DD.MM.YYYY'
+      format: 'YYYY-MM-DD'
     });
   })
