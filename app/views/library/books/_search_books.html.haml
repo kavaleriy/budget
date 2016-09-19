@@ -15,8 +15,10 @@
           = link_to get_url book do
             = book.title
       %p
+        %i.fa.fa-user
         %span= book.author
-      %p
-        %span= book.year_publication
+        %span.year
+          %i.fa.fa-clock-o
+          %span= book.year_publication
       %p
         %span= book.description if book.description
