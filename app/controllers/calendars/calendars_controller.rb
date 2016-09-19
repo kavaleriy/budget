@@ -60,7 +60,7 @@ module Calendars
 
       unless current_user.nil?
         @calendar.author = current_user.email
-        @calendar.town = current_user.town
+        @calendar.town = current_user.town.gsub(/,.*/, '')
       end
 
       respond_to do |format|
