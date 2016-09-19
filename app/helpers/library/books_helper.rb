@@ -21,17 +21,22 @@ module Library::BooksHelper
    end
   end
 
-  def book_filters
+  # Generate list filters for books
+  def book_filters(locale)
     book_filters = []
-    # all books
-    book_filters.push({title: "Усі книги", url: library_books_path})
-    # books without category
-    categories_nil = Library::Book.pluck(category: nil).uniq
-    categories = Library::Book.pluck(:category).uniq.compact.sort   # .compact - delete all nil elements
+    title_all_books = t('library.books.index.all_books')
+    title_without_category = t('library.books.index.without_category')
+
+    # filter all books
+    book_filters.push({title: title_all_books, url: library_books_path})
+    # filter books without category
+    books_by_locale = Library::Book.get_books_by_locale(locale)
+    categories_nil = books_by_locale.pluck(category: nil).uniq
+    categories = books_by_locale.pluck(:category).uniq.compact.sort   # .compact - delete all nil elements
     if categories[0] == '' || categories_nil[0] == nil
-      book_filters.push({title: "Без категорії", url: library_books_path(category_empty: "empty")})
+      book_filters.push({title: title_without_category, url: library_books_path(category_empty: "empty")})
     end
-    # books with category
+    # filters books with category
     categories.each do |category|
       if category != ''
         book_filters.push({title: category, url: library_books_path(category: category)})
