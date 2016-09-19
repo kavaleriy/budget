@@ -1,0 +1,28 @@
+%h1
+  = t ('.header')
+
+= simple_form_for '' do |f|
+  Содержимое формы
+  .row
+    .col-md-4
+      = f.input :item,:collection => @items.map{|classd| [classd.pnaz, classd.id]}
+    .col-md-4
+      = f.input :edrpou
+    .col-md-4
+      = f.button :submit, t('.save'), class: 'btn btn-primary', id: 'search'
+  .results
+:javascript
+  $('document').on('ready', function(){
+    $('#search').on('click', function(){
+      $.ajax({
+        type: 'POST',
+        url: '/modules/classifier/e_data',
+        data: 'item='+$('_item').val() + 'edrpou=' + $('_edrpou').val(),
+        success: function(data){
+          $('.results').html(data);
+        }
+      });
+      return false;
+    });
+  });
+

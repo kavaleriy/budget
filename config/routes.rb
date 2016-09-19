@@ -22,6 +22,10 @@ Rails.application.routes.draw do
 
   namespace :modules do
     get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
+    get 'classifier/import_dbf' => 'classifier#import_dbf',as: 'classifier_import_dbf'
+    get 'classifier/all_classifier' => 'classifier#all_classifier',as: 'classifier_all_classifier'
+    post 'classifier/import_dbf' => 'classifier#import_dbf',as: 'import_dbf_save'
+    get 'classifier/search_data/:town_id' => 'classifier#search_data', as: 'classifier_search_data'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

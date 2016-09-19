@@ -81,7 +81,8 @@ module Calendars
       unless current_user.nil?
         if @calendar.is_test.nil?
           new_params[:author] = current_user.email
-          new_params[:town] = current_user.town
+          # Ad hoc: Get town name without name area
+          new_params[:town] = current_user.town.gsub(/,.*/, '')
         end
       end
 
