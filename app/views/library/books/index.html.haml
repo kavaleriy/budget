@@ -1,49 +1,168 @@
 :scss
 
   $margin_to_menu: 10;
+  $yellow: #ffd304;
+  $darkblue: #0c2231;
+  $greyblue: #2f383e;
+  $black: black;
+
   .books{
-    //box-shadow: 2px 2px 10px #428bca;
     margin-top: $margin_to_menu;
     margin-bottom: 10px;
-    padding-top: 10px;
+    padding-top: 30px;
     .header{
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       h2{
+        padding-bottom: 10px;
         border-bottom: 3px solid #ffd304;
+      }
+      .btn-create{
+        .add-new{
+          text-transform: uppercase;
+          margin: 0;
+          font-family: 'Lato', sans-serif;
+          font-size: 3rem;
+          background: $yellow;
+          color: $darkblue;
+          i{
+            padding: 10px;
+          }
+        }
+        .tooltip{
+          .tooltip-arrow{
+            border-bottom-color: $yellow;
+          }
+          .tooltip-inner{
+            background-color: $yellow;
+            color: $black;
+          }
+        }
       }
     }
     .one-book{
       margin-top: 20px;
-      border-bottom: 1px solid grey;
+      &:nth-last-of-type(1){
+        hr.button-line{
+          display: none;
+        }
+      }
       .img{
         img{
-          margin: 10px 0;
           width: 100%;
-          //box-shadow: 2px 2px 10px #428bca;
         }
       }
       .information{
+        color: $greyblue;
         .buttons{
           float:right;
           .btn{
-            padding: 5px 10px;
+            padding: 3px 7px;
+          }
+          a{
+            text-decoration: none;
+            background: transparent;
+            border: 0px;
+            border-radius: 0px;
+            padding: 0 5px;
+            color: $darkblue;
+            &:hover,
+            &:focus{
+              background: $yellow;
+              i {
+                opacity: .6;
+              }
+            }
           }
         }
-        .year{
-          white-space: nowrap;
-          .fa-clock-o{
-            margin-left: 20px;
+        .title{
+          margin-top: 0px;
+          a{
+            color: $greyblue;
+            text-decoration: none;
+          }
+        }
+        .author-year{
+          margin-bottom: 20px;
+          .fa{
+            margin-right: 5px;
+            font-size: 18px;
+          }
+          .author{
+            display: inline-block;
+            margin-right: 30px;
+          }
+          .year{
+            display: inline-block;
+            white-space: nowrap;
+          }
+        }
+        .description{
+          text-align: justify;
+        }
+      }
+      .download{
+        a{
+          display: inline-block;
+          float: right;
+          padding: 5px;
+          color: $greyblue;
+          text-decoration: none;
+          text-transform: uppercase;
+          &:hover,
+          &:focus {
+            background: $yellow;
+            i {
+              opacity: .6;
+            }
+          }
+        }
+      }
+      hr.button-line{
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 0.5em;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-color: #cbcdcf;
+      }
+    }
+    .pagination-bar{
+      ul.pagination{
+        margin: 0;
+        li {
+          &:first-child,
+          &:last-child{
+            & > a{
+              border-radius: 0;
+            }
+          }
+          a{
+            border: none;
+            color: $black;
+            font-size: 1.8rem;
+            font-family: 'Lato', sans-serif;
+            font-weight: 600;
+            i {
+              padding: 4px;
+            }
+          }
+        }
+        .active{
+          a {
+            background-color: $yellow;
+          }
+        }
+        .disabled{
+          a{
+            display: none;
           }
         }
       }
     }
-    //.one-book:nth-of-type(2n+1){
-    //  background: #F7F7F7;
-    //}
   }
-  @media (max-width: 449px) {
+  @media (max-width: 449px){
     .books{
       .one-book{
         .img{
@@ -52,7 +171,7 @@
             display: block;
             text-align: center;
             img{
-              margin: 10px auto 0;
+              margin: 10px auto 5px;
               width: auto;
               text-align: center;
             }
@@ -82,16 +201,23 @@
       %small
         = t('.w_books')
 .books.clearfix
-  .documentation
-    .header
-      %h2
-        = t('layouts.navbar.library')
-      .add-book
-        - if current_user
-          %h1= link_to t('.add_book'), new_library_book_path, :class => 'btn btn-success'
-    = render partial: "categories"
-    #results.books-list
-      = render partial: "search_books", :locals => { books: @library_books }
+  .header
+    %h2
+      = t('layouts.navbar.library')
+    - if current_user
+      .btn-create.pull-right
+        = link_to new_library_book_path, class: 'add-new', title: t('.add_book'), 'data-toggle' => 'tooltip', 'data-placement' => 'bottom' do
+          %i.fa.fa-plus
+  = render partial: "categories"
+  #results.books-list
+    = render partial: "search_books", :locals => { books: @library_books }
 
-    #books-paginator
-      = paginate @library_books, :remote => true
+  #books-paginator.text-center.pagination-bar
+    = paginate @library_books, views_prefix: 'paginator_semantic', :remote => true
+
+:javascript
+  $(document).ready(function() {
+    $('.add-new').tooltip({
+      trigger: 'hover'
+    });
+  });

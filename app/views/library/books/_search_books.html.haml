@@ -1,24 +1,35 @@
 - @library_books.each do |book|
   .one-book.row
     .img.col-md-2.col-sm-3.col-xs-4
-      =link_to get_url book do
-        = get_book_img book
+      -#=link_to get_url book do
+      = get_book_img book
     .information.col-md-10.col-sm-9.col-xs-8
-      %p
-        - if access_user book
-          .buttons
-            = link_to t('library.books.index.edit'), edit_library_book_path(book), :class => 'btn btn-default'
-            = link_to t('library.books.index.delete'), library_book_path(book), :class => 'btn btn-danger',
-                              method: :delete,
-                              data: { confirm: t('library.books.index.ask') }
-        %h3
-          = link_to get_url book do
-            = book.title
-      %p
-        %i.fa.fa-user
-        %span= book.author
-        %span.year
-          %i.fa.fa-clock-o
-          %span= book.year_publication
-      %p
+      - if access_user book
+        .buttons
+          = link_to edit_library_book_path(book), title: t('edit'), class: 'btn' do
+            %i.fa.fa-pencil.fa-2x
+          = link_to library_book_path(book),
+                            title: t('destroy'),
+                            class: 'btn',
+                            method: :delete,
+                            data: { confirm: t('library.books.index.ask') } do
+            %i.fa.fa-trash-o.fa-2x
+      %h3.title
+        -#= link_to get_url book do
+        = book.title
+      .author-year
+        .author
+          %i.fa.fa-user
+          %span= book.author
+        .year
+          %span
+            %i.fa.fa-clock-o
+            %span= book.year_publication
+      %p.description
         %span= book.description if book.description
+    .col-md-12.download
+      = link_to get_url book do
+        %i.fa.fa-download
+        =t('library.books.index.download')
+    .col-md-12.col-sm-12.col-xs-12
+      %hr.button-line
