@@ -213,6 +213,74 @@
       transform: translate3d(220px,0,0);
       width: calc(100% - 220px);
     }
+    .embedded-block {
+      padding: 0;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      #embedded-profile {
+        position: absolute;
+        background-color: $dark-blue;
+        bottom: 30px;
+        right: 30px;
+        float: right;
+        i {
+          color: $white;
+          font-size: 1.6rem;
+          font-weight: bold;
+        }
+      }
+      [data-tooltip] {
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
+        &:before,
+        &:after {
+          visibility: hidden;
+          opacity: 0;
+          pointer-events: none;
+        }
+        &:before {
+          position: absolute;
+          bottom: 150%;
+          left: 50%;
+          margin-bottom: -48px;
+          margin-left: -220px;
+          padding: 7px;
+          width: 190px;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          background-color: #000;
+          background-color: hsla(0, 0%, 20%, 0.9);
+          color: #fff;
+          content: attr(data-tooltip);
+          text-align: center;
+          font-size: 14px;
+          line-height: 1.2;
+        }
+        &:after {
+          position: absolute;
+          bottom: 30%;
+          left: 50%;
+          margin-left: -30px;
+          width: 0;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 5px solid hsla(0, 0%, 20%, 0.9);
+          border-left: 5px solid #000;
+          content: " ";
+          font-size: 0;
+          line-height: 0;
+        }
+        &:hover {
+          &:before, &:after {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+      }
+    }
   }
 
   @media (min-width: 768px ) and (max-width: 991px) {
@@ -293,19 +361,19 @@
       = town_english_title(@town.title)
     %ul.sidebar-nav
       %li
-        =link_to '#description', data: {toggle: "tab"} do
+        =link_to '#description', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/info.svg')
           %p
             = t('public.towns.portfolio.description')
       %li.active
-        =link_to '#portfolio', data: {toggle: "tab"} do
+        =link_to '#portfolio_ajax', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/chart.svg')
           %p
             = t('public.towns.portfolio.visuals')
             %span.badge.bsize.count#town_items_length
       -#= @town_items.length.to_s
       %li
-        =link_to '#documents', data: {toggle: "tab"} do
+        =link_to '#documents', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/docs.svg')
           %p
             = t('public.towns.portfolio.documents')
@@ -313,14 +381,14 @@
               -# in last element of hash we have documents count
               = @documents[@documents.keys.last]
       %li
-        =link_to '#links', data: {toggle: "tab"} do
+        =link_to '#links', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/link.svg')
           %p
             = t('public.towns.portfolio.town_links')
             %span.badge.bsize.count
               = @town_links.length
       %li
-        =link_to '#pub_budget', data: {toggle: "tab"} do
+        =link_to '#pub_budget', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/folder.svg')
           %p
             = t('public.towns.portfolio.pub_budget')
@@ -352,7 +420,9 @@
 
         #pub_budget.tab-pane.fade
           =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
-
+    .col-xs-12.embedded-block
+      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_path(@town)), 'tooltip' => "#{t('.click')}" } }
+        = fa_icon 'code 1x'
 
 
 :javascript
@@ -384,11 +454,11 @@
             renderVisualisation("#{widgets_town_profile_path(@town)}");
           }
         });
-        $('.module').find('a').attr('data-remote',"true");
+        $('.module').find('a').attr('data-remote', 'true');
         $('.module').click(function(){
           var breadcrumbs_title = $.trim($(this).find('.title').html());
           var breadcrumbs_link = $(this).find('a').attr('href');
-          addBreadcrumbs(breadcrumbs_title,breadcrumbs_link);
+          addBreadcrumbs(breadcrumbs_title, breadcrumbs_link);
           if($(window).width() > middleScreenSize && $('.blocks > .wrapper > .sidebar').hasClass('is-full')){
             toggleSidebar();
           }
@@ -465,10 +535,42 @@
 
   }
 
+  function initClipboard(selector, tooltipPos, delay) {
+    // init tooltip
+    $(selector).tooltip({
+      trigger: 'click',
+      placement: tooltipPos
+    });
+
+    function setTooltip(btn, message) {
+      $(btn).tooltip('hide')
+        .attr('data-original-title', message)
+        .tooltip('show');
+    }
+
+    function hideTooltip(btn) {
+      setTimeout(function() {
+        $(btn).tooltip('hide');
+      }, delay);
+    }
+
+    // init clipboard
+    var clipboard = new Clipboard(selector);
+
+    clipboard.on('success', function(e) {
+      setTooltip(e.trigger, "#{t('.copied')}");
+      hideTooltip(e.trigger);
+    });
+
+    clipboard.on('error', function(e) {
+      setTooltip(e.trigger, "#{t('.failed')}");
+      hideTooltip(e.trigger);
+    });
+  }
+
   $(document).ready(function() {
 
     initSidebar();
-
     $('.search-button').click(function(){
       if (!$('.sidebar').hasClass('is-full')) {
         toggleSearch();
@@ -493,6 +595,8 @@
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
     renderVisualisation("#{widgets_town_profile_path(@town)}");
+
+    initClipboard('#embedded-profile', 'top', 1200);
 
     //Show full sidebar on desctops [md/lg size]
     // if($(window).width() > middleScreenSize){
