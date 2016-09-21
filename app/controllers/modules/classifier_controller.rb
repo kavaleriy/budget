@@ -38,9 +38,9 @@ module Modules
 
     def search_data
       @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz).to_a
-
-
-      #binding.pry
+      respond_to do |format|
+        format.js
+      end
     end
 
     def get_data item
