@@ -54,7 +54,7 @@
   .form-group
     .field.col-md-12
       = f.label :book_img, t('library.books.index.cover')
-      = f.file_field :book_img, class: 'form-control can_be_disable'
+      = f.file_field :book_img, accept: 'image/*', class: 'form-control can_be_disable'
   .actions
     = f.submit t('library.books.new.save'), class: 'btn btn-primary can_be_disable'
     = link_to t('library.books.index.p_back'), library_books_path, class: 'btn btn-info can_be_disable'
