@@ -19,4 +19,5 @@ module TownsHelper
       title
     end
   end
+
 end
