@@ -1,8 +1,8 @@
-%h1
+-#%h1
   = t ('.header')
 
 = simple_form_for '', :remote => true do |f|
-  Содержимое формы
+  -#Содержимое формы
   .row
     .col-md-4
       = f.input :item,:collection => @items.map{|classd| [classd.pnaz, classd.id]}
@@ -11,6 +11,7 @@
     .col-md-4
       = f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
   .results
+
 :javascript
   //$('document').on('ready', function(){
   //  $('#search').on('click', function(){
