@@ -3,6 +3,8 @@
   $yellow: #ffd304;
   $white: #ffffff;
   $dark-blue: #0c2231;
+  $black: black;
+
   body > .bootstrap_flash {
     margin: 0;
   }
@@ -251,9 +253,9 @@
           -webkit-border-radius: 3px;
           -moz-border-radius: 3px;
           border-radius: 3px;
-          background-color: #000;
+          background-color: $black;
           background-color: hsla(0, 0%, 20%, 0.9);
-          color: #fff;
+          color: $white;
           content: attr(data-tooltip);
           text-align: center;
           font-size: 14px;
@@ -268,7 +270,7 @@
           border-top: 5px solid transparent;
           border-bottom: 5px solid transparent;
           border-left: 5px solid hsla(0, 0%, 20%, 0.9);
-          border-left: 5px solid #000;
+          border-left: 5px solid $black;
           content: " ";
           font-size: 0;
           line-height: 0;
@@ -366,7 +368,7 @@
           %p
             = t('public.towns.portfolio.description')
       %li.active
-        =link_to '#portfolio_ajax', data: { toggle: 'tab' } do
+        =link_to '#portfolio', data: { toggle: 'tab' } do
           = inline_svg('icons/town_profile_sidebar/chart.svg')
           %p
             = t('public.towns.portfolio.visuals')
@@ -419,33 +421,32 @@
           =render partial: 'links'
 
         #pub_budget.tab-pane.fade
-          =render partial: 'pdf_docs',locals: {export_budgets: @town_export_budgets}
+          =render partial: 'pdf_docs', locals: { export_budgets: @town_export_budgets }
     .col-xs-12.embedded-block
-      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_path(@town)), 'tooltip' => "#{t('.click')}" } }
+      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_url(@town)), 'tooltip' => "#{t('.click')}" } }
         = fa_icon 'code 1x'
-
 
 :javascript
 
-  function addBreadcrumbs(title,link){
-    var breadcrumbs_list = $('.breadcrumb');
-    breadcrumbs_list.find('li.active').removeClass('active');
-    // create new li dom and set active class
-    var active_li = $('<li></li>').addClass('active');
-    // create new a dom and set html
-    var a = $('<a>').html(title);
-
-    active_li.append(a);
-
-    breadcrumbs_list.append(active_li);
-  }
+  // function addBreadcrumbs(title,link){
+  //   var breadcrumbs_list = $('.breadcrumb');
+  //   breadcrumbs_list.find('li.active').removeClass('active');
+  //   // create new li dom and set active class
+  //   var active_li = $('<li></li>').addClass('active');
+  //   // create new a dom and set html
+  //   var a = $('<a>').html(title);
+  //
+  //   active_li.append(a);
+  //
+  //   breadcrumbs_list.append(active_li);
+  // }
 
   function removeBreadcrumbs() {
     $('.breadcrumb').not(':first').remove();
   }
 
   function renderVisualisation(portfolio_url){
-      $.ajax({
+    $.ajax({
       url: portfolio_url,
       success: function(data){
         $('.breadcrumb > li:first-child').click(function() {
@@ -454,15 +455,14 @@
             renderVisualisation("#{widgets_town_profile_path(@town)}");
           }
         });
-        $('.module').find('a').attr('data-remote', 'true');
-        $('.module').click(function(){
-          var breadcrumbs_title = $.trim($(this).find('.title').html());
-          var breadcrumbs_link = $(this).find('a').attr('href');
-          addBreadcrumbs(breadcrumbs_title, breadcrumbs_link);
-          if($(window).width() > middleScreenSize && $('.blocks > .wrapper > .sidebar').hasClass('is-full')){
-            toggleSidebar();
-          }
-        })
+        // $('.module').click(function(){
+        //   var breadcrumbs_title = $.trim($(this).find('.title').html());
+        //   var breadcrumbs_link = $(this).find('a').attr('href');
+        //   addBreadcrumbs(breadcrumbs_title, breadcrumbs_link);
+        //   // if($(window).width() > middleScreenSize && $('.blocks > .wrapper > .sidebar').hasClass('is-full')){
+        //   //   toggleSidebar();
+        //   // }
+        // })
       }
     });
   }
@@ -506,7 +506,7 @@
     $('body > footer').toggleClass('is-full');
   }
 
-  // var middleScreenSize = 1200;
+  var middleScreenSize = 1200;
   function checkForMobileBrowser() {
 
     //initiate as false
