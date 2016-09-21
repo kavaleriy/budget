@@ -1,30 +1,32 @@
 :scss
-  #xls_error{
-    color: red;
-    min-height: 20px;
-  }
-  .panel-body{
-    border: 1px solid grey;
+  .modal{
+    #xls_error{
+      color: red;
+      min-height: 20px;
+    }
+    .panel-body{
+      border: 1px solid grey;
+    }
   }
 
-.modal.fade{:role => "dialog", :tabindex => "-1",id:'xls_modal'}
+.modal.fade{role: "dialog", tabindex: "-1", id:'xls_modal'}
   .modal-dialog
     .modal-content
       .modal-header
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} &times;
+        %button.close{"aria-label": "Close", "data-dismiss": "modal", type: "button"}
+          %span{"aria-hidden": "true"} &times;
         %h4.modal-title= t('xls.edit_header')
       .modal-body
         .panel-default
           .panel-body
-            = form_tag(edit_by_xls_path,method: 'post',multipart: true,id: 'xls_edit_form') do
+            = form_tag(edit_by_xls_path, method: 'post', multipart: true, id: 'xls_edit_form') do
               .form-group
-                = label_tag(:xls,t('xls.add_file'),class: 'form-control')
+                = label_tag(:xls, t('xls.add_file'), class: 'form-control')
                 = file_field_tag(:xls)
                 #xls_error
-                = submit_tag(t('xls.edit_button'),class: 'btn btn-primary')
+                = submit_tag(t('xls.edit_button'), class: 'btn btn-primary')
       .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-default{"data-dismiss": "modal", type: "button"} Close
 
 :javascript
   $(document).ready(function(){

@@ -7,7 +7,7 @@
 
 .container
   .show-library-book
-    .col-md-10.col-md-offset-1
+    .col-md-offset-1.col-md-10
       .panel.panel-default
         .panel-heading
           %b
@@ -15,11 +15,11 @@
             = @library_book.title   #t('form.new_link')
 
           - if @library_book.book_url?
-            = link_to @library_book.book_url, target: "_blank", :class => 'link' do
+            = link_to @library_book.book_url, target: "_blank", class: 'link' do
               = t('.link')
               %i.fa.fa-share.fa-2x
           - if @library_book.book_file?
-            = link_to @library_book.book_file.url, target: "_blank", :class => 'link' do
+            = link_to @library_book.book_file.url, target: "_blank", class: 'link' do
               = t('.download')
               %i.fa.fa-2x{ class: "#{get_file_type_icon(@library_book.book_file_identifier)}" }
         .new_link.panel-body
@@ -45,10 +45,10 @@
                   = t('.publisher')+  ": "
                 = @library_book.owner.name
 
-          = link_to t('library.books.show.books'), library_books_path, :class => 'btn btn-info can_be_disable'
+          = link_to t('library.books.show.books'), library_books_path, class: 'btn btn-info can_be_disable'
           - unless current_user.nil?
             - if current_user.id == @library_book.owner_id || current_user.has_role?(:admin)
-              %td= link_to t('library.books.index.edit'), edit_library_book_path(@library_book), :class => 'btn btn-warning'
-              %td= link_to t('library.books.index.delete'), library_book_path(@library_book), :class => 'btn btn-danger',
+              %td= link_to t('library.books.index.edit'), edit_library_book_path(@library_book), class: 'btn btn-warning'
+              %td= link_to t('library.books.index.delete'), library_book_path(@library_book), class: 'btn btn-danger',
                             method: :delete,
                             data: { confirm: t('library.books.index.ask') }
