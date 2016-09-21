@@ -4,10 +4,10 @@ class Library::Book
   include Mongoid::Document
   require 'carrierwave/mongoid'
 
-  scope :get_books_by_locale, -> (locale){ where(:locale => locale) }
+  scope :get_books_by_locale, -> (locale){ where(locale: locale) }
 
   include Mongoid::Timestamps
-  field :locale, type: String, :default => 'uk'
+  field :locale, type: String, default: 'uk'
   field :category, type: String
   field :title, type: String
   field :author, type: String
@@ -17,16 +17,16 @@ class Library::Book
 
   belongs_to :owner, class_name: 'User'
 
-  validates :title, :presence => true
-  validates :book_url, :presence => true, if: "book_file.blank?"
+  validates :title, presence: true
+  validates :book_url, presence: true, if: "book_file.blank?"
   validates :book_file,
-            :presence => true, if: "book_url.blank?",
-            :file_size => {
-                :maximum => 50.megabytes.to_i, message: 'Максимально-можливий розмір файлу - 50 мб.'
+            presence: true, if: "book_url.blank?",
+            file_size: {
+                maximum: 50.megabytes.to_i, message: 'Максимально-можливий розмір файлу - 50 мб.'
             }
   validates :book_img,
-            :file_size => {
-                :maximum => 1.megabytes.to_i, message: 'Максимально-можливий розмір картнки - 1 мб.'
+            file_size: {
+                maximum: 1.megabytes.to_i, message: 'Максимально-можливий розмір картнки - 1 мб.'
             }
   # set_callback(:create, :before) do |document|
   #   # Message sending code here.

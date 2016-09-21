@@ -6,9 +6,9 @@ module Library
 
     def index
       @library_books = Library::Book.get_books_by_locale(params[:locale]).order(sort_column + " " + sort_direction)
-      @library_books = @library_books.where(:category => params[:category]) unless params[:category].blank?
+      @library_books = @library_books.where(category: params[:category]) unless params[:category].blank?
       # Query for Mongod:
-      @library_books = @library_books.any_of({:category => ""}, {:category => nil}) unless params[:category_empty].blank?
+      @library_books = @library_books.any_of({category: ""}, {category: nil}) unless params[:category_empty].blank?
       @library_books = @library_books.page(params[:page]).per(10)
 
       respond_to do |format|
