@@ -1,0 +1,130 @@
+:scss
+  .auth-title {
+    margin: 0;
+    padding: 0 15px;
+    color: white;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-weight: 100;
+    font-size: 2.5rem;
+  }
+  .login_user {
+    width: 100%;
+    background: transparent;
+    box-shadow: transparent;
+    padding: 0 15px;
+    .email,
+    .password {
+      position: relative;
+      padding-bottom: 10px;
+      input[type=email],
+      input[type=password]  {
+        margin: 0;
+        font-family: 'Lato', Calibri, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        text-shadow: none;
+        width: 100%;
+        padding: 9px 9px 9px 40px;
+        border: 1px solid white;
+        box-shadow: none;
+        border-radius: 0;
+        background: rgba(255,255,255,.001);
+        color: white;
+        -webkit-text-fill-color: white;
+        -webkit-transition: color 0.3s ease-out;
+        -moz-transition: color 0.3s ease-out;
+        -ms-transition: color 0.3s ease-out;
+        -o-transition: color 0.3s ease-out;
+        transition: color 0.3s ease-out;
+        &:focus {
+          outline: none;
+        }
+      }
+      input:-webkit-autofill,
+      textarea:-webkit-autofill,
+      select:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,.001) inset !important;
+        -webkit-text-fill-color: white;
+        -webkit-background-image: none !important;
+        background-color: rgba(255,255,255,.001) !important;
+        color: white;
+      }
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      i {
+        /* Size and position */
+        left: 0;
+        top: 0;
+        position: absolute;
+        height: 40px;
+        width: 40px;
+
+        /* Styles */
+        color: white;
+        text-align: center;
+        line-height: 40px;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+        pointer-events: none;
+        &:hover,
+        &:focus {
+          color: white
+        }
+      }
+    }
+    .remember {
+      padding: 6px 0 2px 0;
+      input[type=checkbox]{
+        width: 15px;
+        height: 15px;
+        margin: 0;
+      }
+      .remember-inline {
+        position: absolute;
+        margin: -3px 0 0 0;
+        padding-left: 10px;
+        font-family: 'Lato', Calibri, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: white;
+      }
+    }
+    .submit {
+      padding: 10px 0 0 0;
+    }
+  }
+
+.auth-title Авторизація
+
+= form_for( resource, as: resource_name,
+                url: session_path(resource_name),
+                html: { class: 'login_user new_user',
+                autocomplete: 'off',
+                autofocus: 'off' } ) do |f|
+  .email
+    = f.email_field :email,
+                        autofocus: 'off',
+                        placeholder: t('.email')
+    = fa_icon 'envelope-o'
+
+  .password
+    = f.password_field :password,
+                        autocomplete: 'off',
+                        placeholder: t('.password')
+    = fa_icon 'lock'
+  .remember
+    = f.check_box :remember_me, type: 'checkbox', value: '1', checked: 'checked'
+    = f.label :remember_me, t('.remember'), { class: 'remember-inline' }
+
+  .submit
+    = button_tag( type: 'submit',
+                  class: 'btn btn-primary' ) do
+      Увійти
+      -#%i.fa.fa-arrow-circle-right.fa-2x
