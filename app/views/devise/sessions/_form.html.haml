@@ -1,8 +1,14 @@
 :scss
+  //init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGlass: rgba(255, 255, 255, .001);
+  $rGray: rgba(0, 0, 0, 0.3);
+
   .auth-title {
     margin: 0;
     padding: 0 15px;
-    color: white;
+    color: $white;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-weight: 100;
     font-size: 2.5rem;
@@ -10,8 +16,9 @@
   .login_user {
     width: 100%;
     background: transparent;
-    box-shadow: transparent;
+    box-shadow: none;
     padding: 0 15px;
+    margin: 15px auto;
     .email,
     .password {
       position: relative;
@@ -44,10 +51,10 @@
       textarea:-webkit-autofill,
       select:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,.001) inset !important;
-        -webkit-text-fill-color: white;
+        -webkit-text-fill-color: $white;
         -webkit-background-image: none !important;
-        background-color: rgba(255,255,255,.001) !important;
-        color: white;
+        background-color: $rGlass !important;
+        color: $white;
       }
       input:-webkit-autofill,
       input:-webkit-autofill:hover,
@@ -78,6 +85,23 @@
           color: white
         }
       }
+      .forgot {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px 12px;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        color: $white;
+        &:hover,
+        &:focus,
+        &:active {
+        color: $blue;
+          box-shadow: none;
+          outline: none;
+        }
+      }
     }
     .remember {
       padding: 6px 0 2px 0;
@@ -93,25 +117,57 @@
         font-family: 'Lato', Calibri, Arial, sans-serif;
         font-size: 14px;
         font-weight: 400;
-        color: white;
+        color: $white;
       }
     }
     .submit {
       padding: 10px 0 0 0;
+        button {
+          width: 100%;
+          font-size: 2rem;
+          line-height: 2.6rem;
+          color: $blue;
+          text-transform: uppercase;
+          border: 1px solid $white;
+          border-radius: 0;
+          background: transparent;
+          cursor: pointer;
+          &:hover,
+          &:focus,
+          &:active {
+            background: $blue;
+            outline: none;
+          }
+          &:hover,
+          &:focus {
+            color: $white;
+            -webkit-transition: all 0.3s ease-out;
+            -moz-transition: all 0.3s ease-out;
+            -ms-transition: all 0.3s ease-out;
+            -o-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+          }
+          &:active {
+            box-shadow: inset 0 0 5px $rGray,
+            inset 0 3px 4px $rGray;
+          }
+        }
     }
   }
 
-.auth-title Авторизація
+.auth-title
+  = t('.title')
 
-= form_for( resource, as: resource_name,
-                url: session_path(resource_name),
-                html: { class: 'login_user new_user',
-                autocomplete: 'off',
-                autofocus: 'off' } ) do |f|
+= form_for( resource,
+            as: resource_name,
+            url: session_path(resource_name),
+            html: { class: 'login_user new_user',
+            autocomplete: 'off',
+            autofocus: 'off' } ) do |f|
   .email
     = f.email_field :email,
-                        autofocus: 'off',
-                        placeholder: t('.email')
+                    autofocus: 'off',
+                    placeholder: t('.email')
     = fa_icon 'envelope-o'
 
   .password
@@ -119,12 +175,43 @@
                         autocomplete: 'off',
                         placeholder: t('.password')
     = fa_icon 'lock'
+
+    = render partial: 'devise/btns/forgot',
+             locals: { btn_label: t('.forgot') }
+
   .remember
-    = f.check_box :remember_me, type: 'checkbox', value: '1', checked: 'checked'
-    = f.label :remember_me, t('.remember'), { class: 'remember-inline' }
+    -#TODO: change check box to styled check box
+    = f.check_box :remember_me,
+                  type: 'checkbox',
+                  value: '1',
+                  checked: 'checked'
+    = f.label :remember_me,
+              t('.remember'),
+              { class: 'remember-inline' }
 
   .submit
     = button_tag( type: 'submit',
                   class: 'btn btn-primary' ) do
-      Увійти
-      -#%i.fa.fa-arrow-circle-right.fa-2x
+      = t('.log_in')
+
+:javascript
+
+  // show/hide btn
+  // on focus/focus out
+  // get  2 selector's (string): <input> & nearest <a> or <button>
+  // set  css style to DOM element with btnSelector
+  function toggleForgotBtn(inputSelector, btnSelector) {
+    $(inputSelector).on('focus', function() {
+      $(btnSelector).css({ display: 'none' });
+      $(this).css({ paddingRight: '9px' })
+    });
+    $(inputSelector).on('blur', function() {
+      $(btnSelector).css({ display: 'block' });
+      $(this).css({ paddingRight: '76px' })
+    });
+  }
+
+  $(document).ready(function() {
+    // init function
+    toggleForgotBtn('#user_password', '.forgot')
+  })

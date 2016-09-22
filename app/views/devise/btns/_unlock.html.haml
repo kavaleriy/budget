@@ -1,0 +1,2 @@
+- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+  = link_to t('devise.links.not_receive_unlock'), new_unlock_path(resource_name), :class => 'btn btn-default'

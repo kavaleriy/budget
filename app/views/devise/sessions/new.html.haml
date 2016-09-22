@@ -1,4 +1,10 @@
 :scss
+  //init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGrayGlass: rgba(12, 34, 49, 0.2);
+  $rGray: rgba(0, 0, 0, 0.3);
+
   .blocks {
     background: url('/../assets/login/login_bg.jpg');
     .container {
@@ -19,27 +25,86 @@
             left: calc(50vw - 250px);
             width: 500px;
             height: 270px;
-            background: rgba(12, 34, 49, 0.2);
+            background: $rGrayGlass;
             filter: blur(1px);
             backdrop-filter: grayscale(1) contrast(3) blur(1px);
             -webkit-backdrop-filter: grayscale(1) contrast(3) blur(1px);
         }
-        #new_user button i,
-        #edit_user button i {
-          margin: -2px 0 0 -5px;
+      }
+      .row {
+        .form {
+          padding: 0 5px;
+        }
+        .register {
+          padding-right: 20px;
+          .reg-title {
+            margin: 0;
+            padding: 0;
+            color: $white;
+            font-family: 'Lato', Calibri, Arial, sans-serif;
+            font-weight: 100;
+            font-size: 2.5rem;
+          }
+          .reg-wrapper {
+            margin: 15px auto;
+            .legend {
+              color: $white;
+              margin-bottom: 24px;
+            }
+            .reg-btn {
+            width: 100%;
+              .register {
+                width: 100%;
+                height: 55px;
+                padding: 5px;
+                font-size: 2rem;
+                line-height: 2.1rem;
+                color: $blue;
+                text-transform: uppercase;
+                border: 1px solid $white;
+                border-radius: 0;
+                background: transparent;
+                cursor: pointer;
+                overflow: hidden;
+                white-space: normal;
+                &:hover,
+                &:focus,
+                &:active {
+                  background: $blue;
+                  outline: none;
+                }
+                &:hover,
+                &:focus {
+                  color: $white;
+                  -webkit-transition: all 0.3s ease-out;
+                  -moz-transition: all 0.3s ease-out;
+                  -ms-transition: all 0.3s ease-out;
+                  -o-transition: all 0.3s ease-out;
+                  transition: all 0.3s ease-out;
+                }
+                &:active {
+                  box-shadow: inset 0 0 5px $rGray,
+                  inset 0 3px 4px $rGray;
+                }
+              }
+            }
+          }
         }
       }
-
     }
   }
 
 -#Login form
 .login-wrapper
-  -#= content_for :header do
-  -#  .head.pull-left
-  -#    = t('devise.sessions.sign_in')
   .row
-    .col-xs-7
-      =render partial: 'form'
-    .col-xs-5
-      = render 'devise/shared/links'
+    .col-xs-12.col-sm-7.form
+      = render partial: 'form'
+    .col-xs-12.col-sm-5.register
+      .reg-title
+        = t('.title')
+      .reg-wrapper
+        %p.legend
+          = t('.legend')
+        .reg-btn
+          = render partial: 'devise/btns/register',
+                   locals: { btn_label: t('.register') }
