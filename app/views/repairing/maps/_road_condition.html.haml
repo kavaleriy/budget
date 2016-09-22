@@ -1,0 +1,38 @@
+:scss
+  $road_color: #ffd304;
+  .road-condition-select{
+    .road-cond-select{
+      .btn{
+        color: $road_color;
+        font-weight: bold;
+        background-color: black;
+        border-radius: 0;
+        svg{
+          //color: yellow;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    .open{
+      .dropdown-toggle{
+        color: $road_color;
+        font-weight: bold;
+        background-color: black;
+        border-radius: 0;
+      }
+    }
+
+  }
+
+
+.dropdown.road-cond-select
+  %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+    = inline_svg('icons/location-on-road.svg')
+    %span.road-text якість доріг
+    %span.caret
+  %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1"}
+    %li
+      = link_to 'navizor','#navizor'
+    %li
+      = link_to 'uaRoads', '#uaRoads'

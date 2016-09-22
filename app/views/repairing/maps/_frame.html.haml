@@ -454,6 +454,26 @@
 
         addMarkers()
       })
+      $('.road-cond-select a[href="#uaRoads"]').click(function(){
+        var uaRoadsTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{uaRoads: true});
+        var test = '';
+        var $this = $(this);
+        $this.toggleClass('active');
+        if($this.hasClass('active')){
+           aRepairMap.map.addLayer(uaRoadsTilelayer)
+        }else {
+          aRepairMap.map.eachLayer(function(layer) {
+              if( layer instanceof L.TileLayer ) {
+                if(layer.options.uaRoads){
+                  aRepairMap.map.removeLayer(layer)
+                }
+              }
+          });
+        }
+
+
+        return false;
+      })
 
       $("#year_select").on("change", function(){
         selected_year = $(this).val()
