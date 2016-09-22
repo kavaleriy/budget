@@ -2,37 +2,59 @@
   $road_color: #ffd304;
   .road-condition-select{
     .road-cond-select{
-      .btn{
+      #road-menu{
+        border-color: black;
+        padding-left: 41px;
+        height: 40px;
         color: $road_color;
         font-weight: bold;
         background-color: black;
         border-radius: 0;
         svg{
-          //color: yellow;
-          width: 20px;
-          height: 20px;
+          position: absolute;
+          enable-background: new 0 0 502.436 502.436;
+          left: 0;
+          top: 5px;
+          width: 40px;
+          height: 30px;
+        }
+        .road-text{
+          padding: 0 6px;
         }
       }
+      .road-menu-list{
+        li{
+          img{
+            height: 20px;
+          }
+        }
+      }
+
     }
     .open{
-      .dropdown-toggle{
-        color: $road_color;
+      #road-menu{
+        color: white;
         font-weight: bold;
         background-color: black;
         border-radius: 0;
       }
+      .road-menu-list{
+        margin: 0;
+        border-radius: 0;
+        border-color: black;
+      }
     }
-
   }
 
 
 .dropdown.road-cond-select
-  %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+  %button#road-menu.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true",
+  "data-toggle" => "dropdown", :type => "button"}
     = inline_svg('icons/location-on-road.svg')
     %span.road-text якість доріг
     %span.caret
-  %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1"}
+  %ul.dropdown-menu.road-menu-list{"aria-labelledby" => "road-menu"}
     %li
-      = link_to 'navizor','#navizor'
+      = link_to image_tag('repairing/navizor.png'),'#navizor'
     %li
-      = link_to 'uaRoads', '#uaRoads'
+      = link_to image_tag('repairing/uaRoads.png'), '#uaRoads'
