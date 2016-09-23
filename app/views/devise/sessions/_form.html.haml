@@ -104,20 +104,41 @@
       }
     }
     .remember {
-      padding: 6px 0 2px 0;
+      padding: 4px 0 2px 0;
+      height: 20px;
       input[type=checkbox]{
         width: 15px;
         height: 15px;
         margin: 0;
+        display: none;
       }
       .remember-inline {
         position: absolute;
-        margin: -3px 0 0 0;
+        cursor: pointer;
+        margin: -3px 0 0 15px;
         padding-left: 10px;
         font-family: 'Lato', Calibri, Arial, sans-serif;
         font-size: 14px;
         font-weight: 400;
         color: $white;
+        &:before {
+          content: '';
+          width: 20px;
+          height: 20px;
+          border: 1px solid white;
+          position: absolute;
+          left: -15px;
+        }
+      }
+      .active {
+        &:before {
+          font-family: FontAwesome;
+          content: '\f00c';
+          background: $blue;
+          font-size: 1.5rem;
+          text-align: center;
+          line-height: 1.7rem;
+        }
       }
     }
     .submit {
@@ -180,14 +201,13 @@
              locals: { btn_label: t('.forgot') }
 
   .remember
-    -#TODO: change check box to styled check box
     = f.check_box :remember_me,
                   type: 'checkbox',
                   value: '1',
                   checked: 'checked'
     = f.label :remember_me,
               t('.remember'),
-              { class: 'remember-inline' }
+              { class: 'remember-inline active' }
 
   .submit
     = button_tag( type: 'submit',
@@ -210,8 +230,15 @@
       $(this).css({ paddingRight: '76px' })
     });
   }
+  // at hoc for styled check box
+  function toggleCheckBox() {
+    $('.remember > label').on('click', function() {
+      $(this).toggleClass('active');
+    })
+  }
 
   $(document).ready(function() {
     // init function
-    toggleForgotBtn('#user_password', '.forgot')
+    toggleForgotBtn('#user_password', '.forgot');
+    toggleCheckBox();
   })
