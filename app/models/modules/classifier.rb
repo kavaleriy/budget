@@ -28,6 +28,7 @@ class Modules::Classifier
   before_save :encode_fields, :find_town
   belongs_to :town, class_name: 'Town',index: true
   scope :by_town, -> (town) { where(town: town) }
+  scope :by_koatuu, -> (koatuu, symbol_quantity=5) { where(k_ter: /^#{(koatuu.to_s.strip)[0..symbol_quantity-1]}/i) }
   def encode_fields
     attr_array = [pnaz, knaz, n_form, naz_v, adp]
     attr_array.each do |attr|
