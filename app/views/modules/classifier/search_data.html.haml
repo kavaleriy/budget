@@ -1,47 +1,80 @@
--#%h1
-  = t ('.header')
+:scss
+  // init colors
+  $button-background: #0c2231;
+  $button-border: #0c2231;
+  $button-line: #ffd304;
+  $button-text: white;
+  $search-background: white;
+  $search-border: #0c2231;
 
--#.row#search-container
-  .col-md-6
-    -#= form_tag modules_classifier_search_data_url, remoute: true do
-    -#= select_tag 'search-org', options_from_collection_for_select(@items, 'id', 'pnaz')
-    = hidden_field_tag 'search-org'
-  .col-md-6
+  #search-data {
+    .form-group {
+      float: left;
+      width: calc( 100% - 33px);
+      .select2-container {
+        border: none;
+        .select2-choice {
+          height: 33px;
+          line-height: 33px;
+          background: $search-background;
+          border: 1px solid $search-border;
+          border-radius: 0;
+          .select2-arrow {
+            display: none;
+          }
+        }
+      }
+    }
+    .btn-switch-role {
+      background: $button-background;
+      border: 1px solid $button-border;
+      color: $button-text;
+      font-weight: bold;
+      width: 110px;
+      border-radius: 0;
+    }
+    input:checked + .btn-switch-role {
+      background: $button-text;
+      color: $button-background;
+      text-decoration: underline $button-line;
+    }
+    .search-button {
+      background: $button-background;
+      color: $button-text;
+      text-align: center;
+      height: 33px;
+      width: 33px;
+      .fa-search {
+        bottom: 0;
+      }
+    }
+  }
+
+#search-data
+  -#%h1
+    = t ('.header')
+
+  = simple_form_for '', :remote => true do |f|
     .row
-      .col-xs-8
-      .col-xs-4
-
-
--#.row#select_scenario
-  .col-xs-1 1.
-  .col-xs-11
-    -#-binding.pry
-    = form_tag modules_classifier_choice_scenario_url(params[:scenario]), remoute: true do
-      = select_tag 'scenario', options_for_select(@scenario_collection.collect { |s| [ s[:value], s[:id] ] } ),
-        town_id: @scenario_collection.first[:town_id] ,class: 'form-control', prompt: 'Select something', :onchange => 'this.form.submit();'
-      -#-binding.pry
-
--#.row#select_filters
--#= select_tag 'scenario', options_for_select(@scenario_collection.collect { |s| [s[:value], s[:id]] }),
-  class: 'form-control', prompt: 'Select something', :onchange => 'this.form.submit();'
-
-
-= simple_form_for '', :remote => true do |f|
-  -#Содержимое формы
-  .row
-    .col-md-6
-      = f.input :item, type: 'hidden', :collection => @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] }, :input_html => {'data-town-id' => params['town_id']}
-    .col-md-4
-      = f.collection_radio_buttons :role, [['payer', 'payer'] ,['recipt', 'recipt']], :first, :last, {checked: 'payer'}
-    -#.col-md-4
-      = f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
-  .results
+      .col-md-7
+        = f.input(:item, type: 'hidden', :collection => @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] },
+        :input_html => {'data-town-id' => params['town_id']}, label: false)
+        .input-group-btn.search-button
+          %i.fa.fa-search
+      .col-md-5
+        .row
+          .col-xs-8.btn-group
+            = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
+              = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
+          .col-xs-4
+            -#= f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
+    .results
 
 :javascript
   $(document).ready(function() {
     $('#_item').select2({
-      placeholder: "Choose something",
-      allowClear: true,
+      // placeholder: "Choose something",
+      allowClear: true
     });
     $('#_item').on('change', function(data) { get_data(data.val); });
     $('[name="[role]"]').on('change', function() {
