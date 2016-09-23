@@ -49,7 +49,8 @@ module Modules
     end
 
 
-    def get_data item
+    def get_data(item)
+      # read convention!
       # binding.pry
       data = {
           'startdate' => Time.now.months_since(-1).strftime("%d-%m-%Y"),
