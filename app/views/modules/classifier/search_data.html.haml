@@ -10,7 +10,7 @@
   #search-data {
     .form-group {
       float: left;
-      width: calc( 100% - 33px);
+      width: calc(100% - 33px);
       .select2-container {
         border: none;
         .select2-choice {
@@ -54,11 +54,11 @@
   -#%h1
     = t ('.header')
 
-  = simple_form_for '', :remote => true do |f|
+  = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
-        = f.input(:item, type: 'hidden', :collection => @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] },
-        :input_html => {'data-town-id' => params['town_id']}, label: false)
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] },
+        input_html: {'data-town-id' => params['town_id']}, label: false)
         .input-group-btn.search-button
           %i.fa.fa-search
       .col-md-5
