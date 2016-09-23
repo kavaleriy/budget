@@ -66,7 +66,8 @@ module Modules
       data
     end
 
-    def get_payments data
+    def get_payments(data)
+      # read conventions!
       # binding.pry
       uri = URI.parse('http://api.e-data.gov.ua:8080/api/rest/1.0/transactions')
       http = Net::HTTP.new(uri.host, uri.port)
