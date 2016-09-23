@@ -1,6 +1,10 @@
 :scss
+  //init colors
+  $black: black;
+  $white: white;
+  $dHaki: darkkhaki;
+
   .modules {
-    //border: 1px solid red;
     .module {
       padding: 0 3rem 0 0;
       margin-bottom: 3rem;
@@ -10,7 +14,7 @@
           background-size: cover;
         }
         svg{
-          fill: white;
+          fill: $white;
           width: 60px;
           height: 60px;
         }
@@ -125,7 +129,7 @@
             min-height: 243px;
             height: 100%;
             position: absolute;
-            background: #000;
+            background: $black;
             opacity: .5;
             z-index: 1;
           }
@@ -138,7 +142,7 @@
               width: 88px;
               height: 88px;
               border-radius: 50%;
-              border: 1px solid white;
+              border: 1px solid $white;
               margin: 0 auto;
             }
           }
@@ -149,7 +153,7 @@
             font-size: 18px;
             font-weight: 600;
             text-align: center;
-            color: white;
+            color: $white;
             text-transform: uppercase;
             margin: 0;
             padding: 1rem 0;
@@ -160,7 +164,7 @@
             padding: 1rem 0;
             .more-btn {
             display: none;
-              border: 2px solid white;
+              border: 2px solid $white;
               border-radius: 4px;
               width: 112px;
               height: 50px;
@@ -170,7 +174,7 @@
                 font-size: 18px;
                 font-weight: 600;
                 text-transform: uppercase;
-                color: white;
+                color: $white;
                 margin: 10px 0px;
               }
             }
@@ -189,7 +193,7 @@
           //.calendar {
           & {
             .img {
-              background: darkkhaki;
+              background: $dHaki;
             }
             .more {
               .more-btn {
@@ -206,12 +210,12 @@
   }
 
 .modules
-  =render partial: 'module_breadcrumbs', locals: {init_text: t('new_design.town_profile.visualization')}
+  =render partial: 'module_breadcrumbs', locals: { init_text: t('new_design.town_profile.visualization') }
   .modules-wrapper
     -@town_items.each do |item|
       .col-xs-12.col-sm-6.col-md-4.module
-        = link_to item['url'] do
-          %div{class: item['name']}
+        = link_to item['url'], remote: true do
+          %div{ class: item['name'] }
             .img
             .icon
               .icon-border
@@ -225,3 +229,25 @@
               .more-btn
                 %p
                   = t('public.towns.portfolio.detail')
+
+:javascript
+  $(document).ready(function() {
+    function addBreadcrumbs(title, link){
+      var breadcrumbs_list = $('.breadcrumb');
+      breadcrumbs_list.find('li.active').removeClass('active');
+      // create new li dom and set active class
+      var active_li = $('<li></li>').addClass('active');
+      // create new a dom and set html
+      var a = $('<a>').html(title);
+
+      active_li.append(a);
+
+      breadcrumbs_list.append(active_li);
+    }
+
+    $('.module').click(function(){
+      var breadcrumbs_title = $.trim($(this).find('.title').html());
+      var breadcrumbs_link = $(this).find('a').attr('href');
+      addBreadcrumbs(breadcrumbs_title, breadcrumbs_link);
+    });
+  })
