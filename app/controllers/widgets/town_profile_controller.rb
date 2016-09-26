@@ -1,6 +1,11 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
-  before_action :set_town,:except => [:budget_files_by_taxonomies, :sankey_by_taxonomies,:show_indicates]
+  after_filter :allow_iframe, only: [:portfolio]
+
+  before_action :set_town,
+                :except => [ :budget_files_by_taxonomies,
+                                       :sankey_by_taxonomies,
+                                       :show_indicates ]
 
   def budget_files
     # this action return hash for navigation panel
@@ -63,8 +68,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # @town = Town.find(params[:town_id])
     @town_items = get_town_items_hash(@town)
     respond_to do |format|
-      format.js {}
-      format.html{render :partial => 'portfolio'}
+      format.js
+      format.html
     end
   end
 
@@ -72,6 +77,12 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   # end
 
   private
+
+  def allow_iframe
+    response.headers['x-frame-options'] = 'ALLOWALL'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  end
 
   def fill_budget_files_tabs(tax_rot,tax_rov,sankey)
     tabs = []

@@ -26,6 +26,7 @@ class CompareTaxonomiesController < ApplicationController
     stub_data
     respond_to do |format|
       format.js
+      format.html { render file: 'compare_taxonomies/index', layout: 'visify'}
     end
   end
 

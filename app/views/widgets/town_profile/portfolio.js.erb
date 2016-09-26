@@ -1,2 +1,2 @@
-$('#portfolio').html("<%= escape_javascript(render partial: 'portfolio',layout: false) %>");
+$('#portfolio').html("<%= escape_javascript(render file: 'widgets/town_profile/portfolio', formats: [:html]) %>");
 $('#town_items_length').html("<%= escape_javascript(@town_items.length.to_s) %>");

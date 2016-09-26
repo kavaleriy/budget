@@ -5,6 +5,7 @@ class Modules::Classifier
   K_FORM_LOCAL_GOVERNMENT = 420
   K_FORM_STATE_ORGANIZATION = 425
   K_FORM_COMMUNAL_ORGANIZATION = 430
+  K_FORM_COMMUNAL_ORGANIZATION = 440
 
   field :sk_ter, type: Integer
   field :kvk, type: Integer
@@ -27,6 +28,7 @@ class Modules::Classifier
   before_save :encode_fields, :find_town
   belongs_to :town, class_name: 'Town',index: true
   scope :by_town, -> (town) { where(town: town) }
+  scope :by_koatuu, -> (koatuu, symbol_quantity=5) { where(k_ter: /^#{(koatuu.to_s.strip)[0..symbol_quantity-1]}/i) }
   def encode_fields
     attr_array = [pnaz, knaz, n_form, naz_v, adp]
     attr_array.each do |attr|
@@ -35,6 +37,48 @@ class Modules::Classifier
     end
 
   end
+
+  def self.to_xls(payments)
+    require 'rubyXL'
+    this_calendar = Calendar.find(id)
+    workbook = RubyXL::Workbook.new
+    worksheet = workbook[0]
+    worksheet.sheet_name = 'Calendar'
+    i=0
+    this_calendar.attributes.each do |attr_name, attr_value|
+      if(attr_name != 'events')
+        worksheet.add_cell(0, i, attr_name)
+        worksheet.add_cell(1, i, attr_value)
+      end
+      i=i+1
+    end
+
+    worksheet = workbook.add_worksheet('Events')
+    events = this_calendar.events
+    # j=0
+    event_attributes = ["_id", "holder", "title", "icon", "description",  "starts_at", "ends_at", "all_day", "text_color", "color"]
+    # event_attributes.each do |attribute_name|
+    #   worksheet.add_cell(0, j, attribute_name)
+    #   j=j+1
+    # end
+    i = 0
+    # event_attributes = ["title"]
+    events.each do |event|
+      j=0
+      event_attributes.each do |attribute_name|
+        if(i==0)
+          worksheet.add_cell(i, j, attribute_name)
+        else
+          worksheet.add_cell(i, j, event.send(attribute_name))
+        end
+        j=j+1
+      end
+      i=i+1
+    end
+    workbook.stream.read
+
+  end
+
 
   def find_town
     k_ter_tmp = k_ter
@@ -45,7 +89,6 @@ class Modules::Classifier
       str = k_ter[5..10]
 
       if(str != "00000")
-        #binding.pry
         k_ter_tmp = k_ter.gsub str, "00000"
         #binding.pry
       end
@@ -63,6 +106,18 @@ class Modules::Classifier
     text.gsub! "∙", "ї"
   end
 
+
+  def self.to_csv
+    attributes = %w{edrpou pnaz k_ter}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |classf|
+        csv << attributes.map{ |attr| classf.send(attr) }
+      end
+    end
+  end
 
   def fill_params attributes
 
