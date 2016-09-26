@@ -1,0 +1,223 @@
+:scss
+  //init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGrayGlass: rgba(12, 34, 49, 0.2);
+  $rGray: rgba(0, 0, 0, 0.3);
+  $rGlass: rgba(255, 255, 255, .001);
+
+  .blocks {
+    background: url('/../assets/login/login_bg.jpg');
+    .container {
+      .register-wrapper {
+        position: absolute;
+        //half from 270h(form) + 73h(nav)
+        //top: calc(50vh - 173px);
+        top: 100px;
+        left: calc(50vw - 350px);
+        width: 700px;
+        height: 370px;
+        margin: 0 auto;
+        padding: 15px;
+        &:before {
+            content: '';
+            position: fixed;
+            //half from 270h(form) + 73h(nav)
+            top: 100px;
+            //top: calc(50vh - 173px);
+            left: calc(50vw - 350px);
+            width: 700px;
+            height: 370px;
+            background: $rGrayGlass;
+            filter: blur(1px);
+            backdrop-filter: grayscale(1) contrast(3) blur(1px);
+            -webkit-backdrop-filter: grayscale(1) contrast(3) blur(1px);
+        }
+        .row {
+          //padding: 0 25px;
+          .form-warn-title {
+            text-align: center;
+            padding-bottom: 25px;
+            .warn,
+            .title {
+              margin: 0;
+              padding: 0;
+              color: $white;
+              font-family: 'Lato', Calibri, Arial, sans-serif;
+              font-weight: 100;
+            }
+            .warn {
+              font-size: 2.5rem;
+            }
+            .title {
+              font-size: 1.6rem;
+            }
+          }
+          .form {
+            form {
+              width: 100%;
+              background: transparent;
+              box-shadow: none;
+              padding: 0 15px;
+              margin: 15px auto;
+              .row {
+                padding-bottom: 20px;
+                .name,
+                .organization,
+                .email,
+                .phone,
+                .password,
+                .pass-conf {
+                  position: relative;
+                  padding-bottom: 10px;
+                  input[type=text],
+                  input[type=email],
+                  input[type=password] {
+                    margin: 0;
+                    font-family: 'Lato', Calibri, Arial, sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                    text-shadow: none;
+                    width: 100%;
+                    padding: 9px 15px;
+                    border: 1px solid white;
+                    box-shadow: none;
+                    border-radius: 0;
+                    background: rgba(255,255,255,.001);
+                    color: white;
+                    -webkit-text-fill-color: white;
+                    -webkit-transition: color 0.3s ease-out;
+                    -moz-transition: color 0.3s ease-out;
+                    -ms-transition: color 0.3s ease-out;
+                    -o-transition: color 0.3s ease-out;
+                    transition: color 0.3s ease-out;
+                    &:focus {
+                      outline: none;
+                    }
+                  }
+                  input:-webkit-autofill,
+                  textarea:-webkit-autofill,
+                  select:-webkit-autofill {
+                    -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,.001) inset !important;
+                    -webkit-text-fill-color: $white;
+                    -webkit-background-image: none !important;
+                    background-color: $rGlass !important;
+                    color: $white;
+                  }
+                  input:-webkit-autofill,
+                  input:-webkit-autofill:hover,
+                  input:-webkit-autofill:focus,
+                  input:-webkit-autofill:active {
+                    transition: background-color 5000s ease-in-out 0s;
+                  }
+                }
+                .btn-submit {
+                    input[type=submit] {
+                      width: 100%;
+                      font-size: 2rem;
+                      line-height: 2.6rem;
+                      color: $blue;
+                      text-transform: uppercase;
+                      border: 1px solid $white;
+                      // TODO: must be rewrite to normal
+                      // dependence from documents.css
+                      border-radius: 0 !important;
+                      background: transparent;
+                      cursor: pointer;
+                      &:hover,
+                      &:focus,
+                      &:active {
+                        background: $blue;
+                        outline: none;
+                      }
+                      &:hover,
+                      &:focus {
+                        color: $white;
+                        -webkit-transition: all 0.3s ease-out;
+                        -moz-transition: all 0.3s ease-out;
+                        -ms-transition: all 0.3s ease-out;
+                        -o-transition: all 0.3s ease-out;
+                        transition: all 0.3s ease-out;
+                      }
+                      &:active {
+                        box-shadow: inset 0 0 5px $rGray,
+                        inset 0 3px 4px $rGray;
+                      }
+                    }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+= javascript_include_tag "town_typeahead.js"
+
+.register-wrapper
+  .row
+    .col-xs-12.form-warn-title
+      .warn
+        = t('.warn')
+      .title
+        = t('.title')
+
+    .col-xs-12.form
+      = form_for( resource,
+                  as: resource_name,
+                  url: registration_path(resource_name),
+                  html: { class: 'edit_user new_user' } ) do |f|
+
+        = devise_error_messages!
+
+        .row
+          .col-xs-12.col-sm-6.name
+            = f.text_field :name,
+                           autofocus: true,
+                           label: false,
+                           placeholder: t('.name')
+
+          .col-xs-12.col-sm-6.organization
+            = f.text_field :organisation,
+                           label: false,
+                           placeholder: t('.org')
+
+        .row
+          .col-xs-12.col-sm-4.email
+            = f.email_field :email,
+                            label: false,
+                            placeholder: t('.email')
+
+          .col-xs-12.col-sm-4.phone
+            = f.text_field :phone,
+                            label: false,
+                            placeholder: t('.phone')
+
+          .col-xs-12.col-sm-4.town
+            = f.text_field :town,
+                           placeholder: t('devise.form.message_marginally'),
+                           label: t('devise.form.city'),
+                           class:'typeahead'
+
+        .row
+          .col-xs-12.col-sm-4.password
+            = f.password_field :password,
+                               autocomplete: 'off',
+                               label: false,
+                               placeholder: t('.pass')
+
+          .col-xs-12.col-sm-4.pass-conf
+            = f.password_field :password_confirmation,
+                               autocomplete: 'off',
+                               label: false,
+                               placeholder: t('.pass')
+
+          .col-xs-12.col-sm-4.btn-submit
+            = f.submit t('devise.sessions.sign_up'),
+                       class: 'btn btn-primary'
+
+:javascript
+  $(document).ready(function() {
+    init_town_select2("#{search_for_towns_town_path}");
+  });

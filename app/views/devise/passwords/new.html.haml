@@ -94,6 +94,105 @@
     }
   }
 
+  @media (max-width: 768px) and (min-width: 520px) {
+    .blocks {
+      .container {
+        .forgot-wrapper {
+          top: 73px;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            top: 70px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            .form {
+              .forgot-title {
+                text-align: center;
+              }
+              .forgot-form {
+                .submit {
+                  width: 60%;
+                  margin: 0 20%;
+                }
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .buttons {
+              margin-top: 10px;
+              .sign-btn,
+              .reg-btn {
+                width: 50%;
+                margin: 0 25%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 519px) and (min-width: 320px) {
+    .blocks {
+      .container {
+        .forgot-wrapper {
+          top: 73px;
+          width: auto;
+          position: inherit;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            width: calc(100% - 20px);
+            top: 70px;
+            left: 0;
+            margin: 0 10px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            .form {
+              .forgot-title {
+                text-align: center;
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .buttons {
+              margin-top: 10px;
+              .sign-btn,
+              .reg-btn {
+                width: 50%;
+                margin: 0 25%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 475px) {
+    .blocks {
+      .container {
+        .login-wrapper {
+          .row {
+            .register {
+              .reg-wrapper {
+                .reg-btn {
+                  .register {
+                    height: 60px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 -#Forgot form
 .forgot-wrapper
   .row
