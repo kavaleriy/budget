@@ -93,6 +93,7 @@ class Programs::TargetedProgramsController < ApplicationController
     @years = Programs::TargetedProgram.programs_years(@programs)
     respond_with(@programs) do |format|
       format.js { render layout: false }
+      format.html { render file: 'programs/targeted_programs/town_programs', layout: 'visify'}
     end
   end
 

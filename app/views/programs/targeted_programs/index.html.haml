@@ -30,7 +30,7 @@
   =render partial: 'programs/targeted_programs/new_import_btns'
 
 .row.data-table
-  -if @programs.empty?
+  -if @programs.blank?
     =render partial: 'layouts/no_data_yet'
   -else
     =render partial: 'data_table'
