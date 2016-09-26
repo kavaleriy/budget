@@ -35,6 +35,14 @@
         .form {
           padding: 0 5px;
         }
+        .vertical {
+          background-color: white;
+          -webkit-transform: rotate(90deg);
+          position: absolute;
+          left: 199px;
+          width: 180px;
+          top: 115px;
+        }
         .register {
           padding-right: 20px;
           .reg-title {
@@ -52,7 +60,7 @@
               margin-bottom: 24px;
             }
             .reg-btn {
-            width: 100%;
+              width: 100%;
               .register {
                 width: 100%;
                 height: 55px;
@@ -123,6 +131,9 @@
                 }
               }
             }
+            .vertical {
+              display: none;
+            }
             .register {
               .reg-wrapper {
                 .legend {
@@ -178,6 +189,9 @@
                 }
               }
             }
+            .vertical {
+              display: none;
+            }
             .register {
               .reg-wrapper {
                 .legend {
@@ -223,6 +237,7 @@
   .row
     .col-xs-12.col-sm-7.form
       = render partial: 'form'
+    %hr.vertical
     .col-xs-12.col-sm-5.register
       .reg-title
         = t('.title')
