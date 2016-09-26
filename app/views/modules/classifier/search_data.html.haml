@@ -27,7 +27,7 @@
     }
     .btn-switch-role {
       background: $button-background;
-      border: 1px solid $button-border;
+      border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
       width: 110px;
@@ -36,7 +36,13 @@
     input:checked + .btn-switch-role {
       background: $button-text;
       color: $button-background;
-      text-decoration: underline $button-line;
+      border: 1px solid $button-border;
+      //text-decoration: underline $button-line;
+      &:after {
+        content: '';
+        display: block;
+        border: 1px solid $button-line;
+      }
     }
     .search-button {
       background: $button-background;
@@ -73,7 +79,6 @@
 :javascript
   $(document).ready(function() {
     $('#_item').select2({
-      // placeholder: "Choose something",
       allowClear: true
     });
     $('#_item').on('change', function(data) { get_data(data.val); });
@@ -81,19 +86,42 @@
       var item = $('#_item').val();
       get_data(item);
     });
+    $(document).on('click', '#edata_payments th', function() {
+      $('#edata_payments th').not($(this)).removeClass('active');
+      var item = $('#_item').val();
+      var url = "#{modules_classifier_sort_e_data_url}"
+      var sortCol = $(this).attr('data-column');
+      var sortDir = $(this).attr('data-sort-direction');
+      get_data(item, url, sortCol, sortDir);
+      $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
+    });
   });
 
-  function get_data(d) {
+  function get_data(d, _url, _sortCol, _sortDir) {
+    if (_url == null) {
+      _url = "#{modules_classifier_search_e_data_url}"
+    }
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
     $.ajax({
       type: 'post',
-      url: "#{modules_classifier_search_e_data_url}",
+      url: _url,
       dataType: 'script',
       data: {
         town_id: town_id,
         item: d,
-        role: role
+        role: role,
+        sortCol: _sortCol,
+        sortDir: _sortDir
       }
     });
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
   }

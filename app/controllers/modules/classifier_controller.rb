@@ -45,13 +45,9 @@ module Modules
     end
 
     def select
-
     end
 
-
     def get_data(item)
-      # read convention!
-      # binding.pry
       data = {
           'startdate' => Time.now.months_since(-1).strftime("%d-%m-%Y"),
           'enddate' => Time.now.strftime("%d-%m-%Y")
@@ -60,37 +56,46 @@ module Modules
       }
       role = params['role'].eql?('payer') ? 'payers_edrpous' : 'recipt_edrpous'
       data[role] = item.edrpou
-      data['regions'] = item.sk_ter
-
-      #data['recipt_edrpous'] = ["38054707"]
-      # data['recipt_edrpous'] = params["edrpou"]
+      # data['regions'] = item.sk_ter
       data
     end
 
     def get_payments(data)
-      # read conventions!
-      # binding.pry
       uri = URI.parse('http://api.e-data.gov.ua:8080/api/rest/1.0/transactions')
       http = Net::HTTP.new(uri.host, uri.port)
-
       request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
       request.body = data.to_json
-      #binding.pry
       JSON.parse(http.request(request).body)['response']['transactions'] rescue {}
     end
 
-
     def search_e_data
-      # binding.pry
       item = Modules::Classifier::find(params["item"])
-
-      data = get_data item
-      @payments = get_payments(data).take(20)
+      data = get_data(item)
+      # @payments = get_payments(data).take(20)
+      @payments = get_payments(data)
+      # @payments.sort_by! { |hash| hash['trans_date'] }
       respond_to do |format|
         format.js
         format.json { render json: @payments }
         format.xls { send_data Modules::Classifier.to_xls(@payments) }
       end
+    end
+
+    def sort_e_data
+      # binding.pry
+      item = Modules::Classifier::find(params["item"])
+      data = get_data(item)
+      sortCol = params['sortCol']
+      @payments = get_payments(data)
+      @payments.sort_by! do |hash|
+        if sortCol.eql?('amount')
+          hash[sortCol.to_s].to_f
+        else
+          hash[sortCol.to_s]
+        end
+      end
+      @payments.reverse! unless params['sortDir'].eql?('asc')
+      respond_with(@payments)
     end
 
     def all_classifier
