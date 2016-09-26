@@ -16,5 +16,5 @@
   }
 
 .book_filters
-  - book_filters.each do |book_filter|
+  - book_filters(params[:locale]).each do |book_filter|
     = button_to "#{book_filter[:title]}", book_filter[:url], remote: true, :method => :get

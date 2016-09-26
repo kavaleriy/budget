@@ -5,7 +5,7 @@ module Library
     helper_method :sort_column, :sort_direction
 
     def index
-      @library_books = Library::Book.order(sort_column + " " + sort_direction)
+      @library_books = Library::Book.get_books_by_locale(params[:locale]).order(sort_column + " " + sort_direction)
       @library_books = @library_books.where(:category => params[:category]) unless params[:category].blank?
       # Query for Mongod:
       @library_books = @library_books.any_of({:category => ""}, {:category => nil}) unless params[:category_empty].blank?
@@ -76,7 +76,6 @@ module Library
       end
     end
 
-
     def destroy
       @library_book = Library::Book.find(params[:id])
       @library_book.destroy
@@ -90,7 +89,7 @@ module Library
     end
 
     def get_categories
-      Library::Book.pluck(:category).uniq.compact.sort
+      Library::Book.get_books_by_locale(params[:locale]).pluck(:category).uniq.compact.sort
     end
 
     def sort_column
@@ -102,7 +101,7 @@ module Library
     end
 
     def library_book_params
-      params.require(:library_book).permit(:category, :title, :author, :year_publication, :description, :book_url, :book_file, :book_img )
+      params.require(:library_book).permit(:category, :locale, :title, :author, :year_publication, :description, :book_url, :book_file, :book_img )
     end
   end
 end

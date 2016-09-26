@@ -4,8 +4,10 @@ class Library::Book
   include Mongoid::Document
   require 'carrierwave/mongoid'
 
+  scope :get_books_by_locale, -> (locale){ where(:locale => locale) }
 
   include Mongoid::Timestamps
+  field :locale, type: String, :default => 'uk'
   field :category, type: String
   field :title, type: String
   field :author, type: String
@@ -35,7 +37,6 @@ class Library::Book
 
     mount_uploader :book_file, BookUploader
     skip_callback :update, :before, :store_previous_model_for_book_file
-
 
     def check_valid_image_size
       if self.valid?
