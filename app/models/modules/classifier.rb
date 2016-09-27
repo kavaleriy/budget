@@ -145,8 +145,8 @@ class Modules::Classifier
       else false
       end
 
-  end
-
+  end 
+  # Тут будет все красиво (Марина)
   def types
     [K_FORM_STATE_POWER, K_FORM_LOCAL_GOVERNMENT, K_FORM_STATE_ORGANIZATION, K_FORM_COMMUNAL_ORGANIZATION,  K_FORM_COMMUNAL_ORGANIZATION];
   end
