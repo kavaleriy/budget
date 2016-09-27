@@ -2,6 +2,7 @@
   //init colors
   $white: white;
   $blue: #52cfeb;
+  $red: red;
   $rGrayGlass: rgba(12, 34, 49, 0.2);
   $rGray: rgba(0, 0, 0, 0.3);
   $rGlass: rgba(255, 255, 255, .001);
@@ -171,6 +172,25 @@
                         inset 0 3px 4px $rGray;
                       }
                     }
+                }
+              }
+              #error_explanation {
+                border: 2px solid $white;
+                border-radius: 0;
+                position: absolute;
+                top: -235px;
+                width: 100%;
+                left: 0;
+                h2 {
+                  color: $white;
+                  font-family: 'Lato', Calibri, Arial, sans-serif;
+                  font-weight: 100;
+                  font-size: 2rem;
+                  text-shadow: 1px 1px 2px $blue, 0 0 1em $blue;
+                }
+                ul {
+                  color: $white;
+                  text-shadow: 1px 1px 2px $red, 0 0 .5rem $blue;
                 }
               }
             }
