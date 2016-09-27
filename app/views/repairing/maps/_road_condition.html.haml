@@ -24,8 +24,20 @@
       }
       .road-menu-list{
         li{
-          img{
-            height: 20px;
+          a{
+            padding-right: 0px;
+            margin-right: 0px;
+            img{
+              height: 20px;
+            }
+          }
+          .active{
+            &:after{
+              content: '\f00c';
+              float: right;
+              margin-right: 5px;
+              font-family: FontAwesome;
+            }
           }
         }
       }
