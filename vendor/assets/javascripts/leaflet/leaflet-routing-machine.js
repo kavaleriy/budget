@@ -2018,7 +2018,9 @@ if (typeof module !== undefined) module.exports = polyline;
 
 	L.Routing.OSRM = L.Class.extend({
 		options: {
-			serviceUrl: 'https://router.project-osrm.org/viaroute',
+			//WARN: 'The OSRM Demo server has moved to API Version 5.'
+			// serviceUrl: 'https://router.project-osrm.org/viaroute',
+			serviceUrl: 'http://router.project-osrm.org/route/v1/driving/',
 			timeout: 30 * 1000,
 			routingOptions: {},
 			polylinePrecision: 6
@@ -2196,7 +2198,7 @@ if (typeof module !== undefined) module.exports = polyline;
 			for (var i = 0; i < waypoints.length; i++) {
 				wp = waypoints[i];
 				locationKey = this._locationKey(wp.latLng);
-				locs.push('loc=' + locationKey);
+				locs.push(locationKey);
 
 				hint = this._hints.locations[locationKey];
 				if (hint) {
@@ -2208,17 +2210,24 @@ if (typeof module !== undefined) module.exports = polyline;
 				}
 			}
 
-			computeAlternative = computeInstructions =
-				!(options && options.geometryOnly);
 
-			return this.options.serviceUrl + '?' +
-				'instructions=' + computeInstructions.toString() + '&' +
-				'alt=' + computeAlternative.toString() + '&' +
-				(options.z ? 'z=' + options.z + '&' : '') +
-				locs.join('&') +
-				(this._hints.checksum !== undefined ? '&checksum=' + this._hints.checksum : '') +
-				(options.fileformat ? '&output=' + options.fileformat : '') +
-				(options.allowUTurns ? '&uturns=' + options.allowUTurns : '');
+			//WARN: 'The OSRM Demo server has moved to API Version 5.'
+			// computeAlternative = computeInstructions =
+			// 	!(options && options.geometryOnly);
+
+			// return this.options.serviceUrl + '?' +
+			// 	'instructions=' + computeInstructions.toString() + '&' +
+			// 	'alt=' + computeAlternative.toString() + '&' +
+			// 	(options.z ? 'z=' + options.z + '&' : '') +
+			// 	locs.join('&') +
+			// 	(this._hints.checksum !== undefined ? '&checksum=' + this._hints.checksum : '') +
+			// 	(options.fileformat ? '&output=' + options.fileformat : '') +
+			// 	(options.allowUTurns ? '&uturns=' + options.allowUTurns : '');
+
+			return this.options.serviceUrl +
+				locs.join(';') + '?' +
+				'geometries=geojson';
+
 		},
 
 		_locationKey: function(location) {
