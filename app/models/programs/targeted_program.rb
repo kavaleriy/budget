@@ -1,4 +1,5 @@
 class Programs::TargetedProgram
+  extend ProgramBudgetSum
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -6,7 +7,7 @@ class Programs::TargetedProgram
   SUBPROGRAM_TYPE = 2
   TASK_TYPE = 3
 
-  before_save :calc_budget_sum
+  # before_save :calc_budget_sum
 
   field :main_manager,            type: String # головний розпорядник
   field :type_title,              type: String
@@ -71,7 +72,7 @@ class Programs::TargetedProgram
 
     unless workbook['Indicates'].nil?
       year = program.budget_sum.keys.first
-      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], year, program)
+      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], program)
     end
 
     program
@@ -98,41 +99,15 @@ class Programs::TargetedProgram
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
-      budget_sum_hash = { program_year => {
-                                            plan: {
-                                              general_fund: 0.0,
-                                              special_fund: 0.0,
-                                              sum: 0.0,
-                                            },
-                                             fact: {
-                                                 general_fund: 0.0,
-                                                 special_fund: 0.0,
-                                                 sum: 0.0,
-
-                                             },
-                                             differences: {
-                                                 general_fund: 0.0,
-                                                 special_fund: 0.0,
-                                                 sum: 0.0
-                                             }
-                                          }
-                        }
       program_hash.except!("year")
 
-      budget_plan_sum_name_arr = %w(general_fund_plan special_fund_plan sum_plan general_fund_fact special_fund_fact sum_fact)
-      budget_diff_name_arr = %w( differences_general_fund differences_special_fund differences_sum)
+      binding.pry
+      tmp = ProgramBudgetSum::ProgramBudgetSumHash.new
 
-      budget_plan_sum_name_arr.each do |name|
-        category = name.last(4)
-        budget_sum_hash[program_year][category.to_sym].store(name.gsub("_#{category}",'').to_sym,program_hash[name].to_f)
-        program_hash.except!(name)
-      end
-      budget_diff_name_arr.each do |diff|
-        category = diff.split('_').first
-        budget_sum_hash[program_year][category.to_sym].store(name.gsub("#{category}",'').to_sym,program_hash[name].to_f)
-        program_hash.except!(diff)
-      end
+      tmp.sum_hash = program_hash
+      binding.pry
 
+      budget_sum_hash = { program_year => tmp.sum_hash }
       program = self.new(program_hash)
       program.budget_sum = budget_sum_hash
       program
@@ -140,31 +115,31 @@ class Programs::TargetedProgram
     end
   end
 
-  def calc_budget_sum
-    # function set budget sum by general and special fund
-    year = Date.today.year.to_s
-    budget_sum_by_year = self.budget_sum[year]
-    # set budget plan sum
-    general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
-    special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
-    budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
-    # set budget fact sum if exist
-    unless budget_sum_by_year[:fact].nil?
-      general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
-      special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
-      budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
-    else
-      init_default_fact_sum(year)
-    end
-  end
-
-  def init_default_fact_sum(year)
-    self.budget_sum[year][:fact] = {
-        general_sum: 0.0,
-        special_sum: 0.0,
-        sum: 0.0
-    }
-  end
+  # def calc_budget_sum
+  #   # function set budget sum by general and special fund
+  #   year = Date.today.year.to_s
+  #   budget_sum_by_year = self.budget_sum[year]
+  #   # set budget plan sum
+  #   general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
+  #   special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
+  #   budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
+  #   # set budget fact sum if exist
+  #   unless budget_sum_by_year[:fact].nil?
+  #     general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
+  #     special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
+  #     budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
+  #   else
+  #     init_default_fact_sum(year)
+  #   end
+  # end
+  #
+  # def init_default_fact_sum(year)
+  #   self.budget_sum[year][:fact] = {
+  #       general_sum: 0.0,
+  #       special_sum: 0.0,
+  #       sum: 0.0
+  #   }
+  # end
 
   # Get array of years from programs
   # return array of string, example: [ "2016", "2015" ]
