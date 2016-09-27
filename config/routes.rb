@@ -27,8 +27,8 @@ Rails.application.routes.draw do
     get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
     post 'classifier/import_dbf' => 'classifier#import_dbf',as: 'import_dbf_save'
     get 'classifier/search_data/:town_id' => 'classifier#search_data', as: 'classifier_search_data'
-    post 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
-    post 'classifier/sort_e_data' => 'classifier#sort_e_data', as: 'classifier_sort_e_data'
+    get 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
+    get 'classifier/sort_e_data' => 'classifier#sort_e_data', as: 'classifier_sort_e_data'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

@@ -4,13 +4,16 @@
 
   #edata_payments {
     table {
-      margin-bottom: 250px;
+      //margin-bottom: 250px;
       thead {
         th {
           cursor: pointer;
           opacity: .7;
           &:hover {
             opacity: 1;
+          }
+          &:first-child {
+            white-space: nowrap;
           }
           span {
             &:before {
@@ -69,11 +72,13 @@
         %th{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
           %span
             = t('.purpose')
-        %th{'data-column' => 'trans_date', 'data-sort-direction' => 'asc'}
+        %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'desc'}
           %span
             = t('.date')
 
       = render partial: 'search_e_data_results'
+
+    = paginate @payments, remote: true, params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
     -#.info
 
 -#:javascript

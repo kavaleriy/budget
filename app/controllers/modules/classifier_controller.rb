@@ -68,34 +68,43 @@ module Modules
       JSON.parse(http.request(request).body)['response']['transactions'] rescue {}
     end
 
-    def search_e_data
-      item = Modules::Classifier::find(params["item"])
-      data = get_data(item)
-      # @payments = get_payments(data).take(20)
-      @payments = get_payments(data)
-      # @payments.sort_by! { |hash| hash['trans_date'] }
-      respond_to do |format|
-        format.js
-        format.json { render json: @payments }
-        format.xls { send_data Modules::Classifier.to_xls(@payments) }
-      end
-    end
-
     def sort_e_data
-      # binding.pry
+      # Data
       item = Modules::Classifier::find(params["item"])
       data = get_data(item)
-      sortCol = params['sortCol']
-      @payments = get_payments(data)
-      @payments.sort_by! do |hash|
-        if sortCol.eql?('amount')
-          hash[sortCol.to_s].to_f
+      payments_data = get_payments(data)
+
+      #Sort data
+      sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
+      payments_data.sort_by! do |hash|
+        if sort_col.eql?('amount')
+          hash[sort_col.to_s].to_f
         else
-          hash[sortCol.to_s]
+          hash[sort_col.to_s]
         end
       end
-      @payments.reverse! unless params['sortDir'].eql?('asc')
-      respond_with(@payments)
+
+      payments_data.reverse! unless params['sort_dir'].eql?('asc')
+      payments_data
+    end
+
+    def search_e_data
+      data = sort_e_data
+      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
+
+      if params['sort_col'].blank?
+        respond_to do |format|
+          format.js
+          format.json { render json: @payments }
+          format.xls { send_data Modules::Classifier.to_xls(@payments) }
+        end
+
+      else
+        respond_to do |format|
+        format.js { render 'modules/classifier/sort_e_data' }
+        end
+
+      end
     end
 
     def all_classifier

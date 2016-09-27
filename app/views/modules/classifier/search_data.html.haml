@@ -87,32 +87,28 @@
       get_data(item);
     });
     $(document).on('click', '#edata_payments th', function() {
-      $('#edata_payments th').not($(this)).removeClass('active');
+      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
       var item = $('#_item').val();
-      var url = "#{modules_classifier_sort_e_data_url}"
       var sortCol = $(this).attr('data-column');
       var sortDir = $(this).attr('data-sort-direction');
-      get_data(item, url, sortCol, sortDir);
+      get_data(item, sortCol, sortDir);
       $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
     });
   });
 
-  function get_data(d, _url, _sortCol, _sortDir) {
-    if (_url == null) {
-      _url = "#{modules_classifier_search_e_data_url}"
-    }
+  function get_data(d, _sortCol, _sortDir) {
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
     $.ajax({
-      type: 'post',
-      url: _url,
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
       dataType: 'script',
       data: {
         town_id: town_id,
         item: d,
         role: role,
-        sortCol: _sortCol,
-        sortDir: _sortDir
+        sort_col: _sortCol,
+        sort_dir: _sortDir
       }
     });
   }

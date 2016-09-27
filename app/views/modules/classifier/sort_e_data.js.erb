@@ -1,1 +1,2 @@
 $('#edata_payments tbody').html("<%= escape_javascript(render partial: 'search_e_data_results') %>");
+$('.pagination').html("<%= escape_javascript(paginate(@payments, remote: true, params: { 'sort_col' => params['sort_col'], 'sort_dir' => params['sort_dir'] })) %>");
