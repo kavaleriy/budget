@@ -1,5 +1,7 @@
 module Modules
   class ClassifierController < ApplicationController
+    respond_to :html, :js, :json
+
     def import_dbf
       #binding.pry
       unless params[:file_name].nil?
@@ -37,34 +39,37 @@ module Modules
     end
 
     def search_data
-      @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz).to_a
-
-
-      #binding.pry
+      # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
+      @items = Modules::Classifier.by_koatuu(Town.find(params["town_id"]).koatuu).only(:id, :pnaz, :knaz, :edrpou).to_a
+      respond_with(@items)
     end
 
-    def get_data item
-      #binding.pry
+    def select
+
+    end
+
+
+    def get_data(item)
+      # read convention!
+      # binding.pry
       data = {
-          'startdate' => '30-09-2015',
-          'enddate' => '30-09-2015',
+          'startdate' => Time.now.months_since(-1).strftime("%d-%m-%Y"),
+          'enddate' => Time.now.strftime("%d-%m-%Y")
+          # 'startdate' => '30-09-2015',
+          # 'enddate' => '30-09-2015',
       }
+      role = params['role'].eql?('payer') ? 'payers_edrpous' : 'recipt_edrpous'
+      data[role] = item.edrpou
+      data['regions'] = item.sk_ter
 
-      data['payers_edrpous'] = [item.edrpou]
-      data['regions'] = [item.sk_ter]
       #data['recipt_edrpous'] = ["38054707"]
-
-
-      data['recipt_edrpous'] =params["edrpou"]
-
-
+      # data['recipt_edrpous'] = params["edrpou"]
       data
-        #binding.pry
-      # data.delete_if { |key, value| value.blank? }
-
     end
 
-    def get_payments data
+    def get_payments(data)
+      # read conventions!
+      # binding.pry
       uri = URI.parse('http://api.e-data.gov.ua:8080/api/rest/1.0/transactions')
       http = Net::HTTP.new(uri.host, uri.port)
 
@@ -76,13 +81,11 @@ module Modules
 
 
     def search_e_data
-      #binding.pry
+      # binding.pry
       item = Modules::Classifier::find(params["item"])
 
       data = get_data item
-      #binding.pry
-      @payments = (get_payments data).take(20)
-      #binding.pry
+      @payments = get_payments(data).take(20)
       respond_to do |format|
         format.js
         format.json { render json: @payments }
@@ -100,19 +103,12 @@ module Modules
       #     [key,town_name, town_koatuu]
       #   end
       # end
-      #binding.pry
       @classf= Modules::Classifier.where(town:nil).all
       respond_to do |format|
         format.html { send_data @classf.to_csv, filename: "users-#{Date.today}.csv" }
         format.csv { send_data @classf.to_csv, filename: "users-#{Date.today}.csv" }
       end
-      binding.pry
       # classf.save
-
-
-      #binding.pry
-
-
     end
 
 
@@ -120,19 +116,12 @@ module Modules
       @regions = Rails.cache.fetch("all_classifier_region", expiries: 1.month) do
         Modules::Classifier.all.group_by{|classf| classf.sk_ter}
       end
-      binding.pry
       # @classf= Modules::Classifier.where(town:nil).all
       # respond_to do |format|
       #   format.html { send_data @classf.to_csv, filename: "users-#{Date.today}.csv" }
       #   format.csv { send_data @classf.to_csv, filename: "users-#{Date.today}.csv" }
       # end
-      binding.pry
       # classf.save
-
-
-      #binding.pry
-
-
     end
 
   end

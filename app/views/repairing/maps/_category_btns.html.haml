@@ -304,7 +304,7 @@
   }
 
 .row.map-header
-  .col-xs-12.col-sm-9.select-categories
+  .col-xs-12.col-sm-8.select-categories
     -#.col-xs-4.title
     -#  #category_description
     -#    %span
@@ -317,7 +317,9 @@
         .btn.btn-default.tooltip-bottom{'data-tooltip' => category.title, 'data-id' => category.id}
           = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
       -##subcategories
-  .col-xs-12.col-sm-3.year-select
+  .col-xs-12.col-sm-2.road-condition-select
+    =render partial: 'road_condition'
+  .col-xs-12.col-sm-2.year-select
     -#- if @town.blank?
     -#  .form-group
     -#    = text_field_tag 'map_town', ''
