@@ -1,6 +1,7 @@
 :scss
   // init colors
   $active: #ffd304;
+  $text: #0c2231;
 
   #edata_payments {
     table {
@@ -44,6 +45,26 @@
       }
     }
 
+    #pagination {
+      .pagination {
+        li {
+          a {
+            border: none;
+            border-radius: 0;
+            color: $text;
+            padding: 2px 7px;
+            font-weight: bold;
+          }
+        }
+        .active {
+          a {
+            background-color: $active;
+            color: $text;
+          }
+        }
+      }
+    }
+
     //.info {
     //  position: fixed;
     //  bottom: 0px;
@@ -78,7 +99,8 @@
 
       = render partial: 'search_e_data_results'
 
-    = paginate @payments, remote: true, params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+    #pagination.text-center
+      = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
     -#.info
 
 -#:javascript

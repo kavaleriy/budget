@@ -74,7 +74,7 @@ module Modules
       data = get_data(item)
       payments_data = get_payments(data)
 
-      #Sort data
+      # Sort data
       sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
       payments_data.sort_by! do |hash|
         if sort_col.eql?('amount')
@@ -83,8 +83,9 @@ module Modules
           hash[sort_col.to_s]
         end
       end
-
       payments_data.reverse! unless params['sort_dir'].eql?('asc')
+
+      # Results
       payments_data
     end
 
