@@ -100,13 +100,8 @@ class Programs::TargetedProgram
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
       program_hash.except!("year")
-
-      binding.pry
       tmp = ProgramBudgetSum::ProgramBudgetSumHash.new
-
       tmp.sum_hash = program_hash
-      binding.pry
-
       budget_sum_hash = { program_year => tmp.sum_hash }
       program = self.new(program_hash)
       program.budget_sum = budget_sum_hash
