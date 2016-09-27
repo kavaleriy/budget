@@ -583,6 +583,35 @@
       $('#sidebar').hide('fast');
     }
 
+    function addAdditionalLayer(tileName){
+      var additionalTilelayer;
+
+      switch(tileName){
+        case 'uaRoads':
+         additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
+        break;
+        case 'navizor':
+          additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
+        break;
+        default: throw ('Unexpected tile name')
+      }
+      map.addLayer(additionalTilelayer)
+    }
+
+    function removeAdditionalLayer(tileName){
+      // loop all layers
+      map.eachLayer(function(layer) {
+        // if layer is Tile Layer
+        if( layer instanceof L.TileLayer ) {
+          // if tile layer have option by tile name
+          if(layer.options[tileName]){
+            // remove this layer from map
+            map.removeLayer(layer)
+          }
+        }
+      });
+    }
+
     initMap();
     initPopup();
     addGeoSearch()
@@ -603,6 +632,8 @@
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
       showSidebar: showSidebar,
-      hideSidebar: hideSidebar
+      hideSidebar: hideSidebar,
+      addAdditionalLayer: addAdditionalLayer,
+      removeAdditionalLayer: removeAdditionalLayer
     }
   }

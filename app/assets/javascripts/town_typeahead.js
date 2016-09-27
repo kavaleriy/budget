@@ -8,11 +8,11 @@ function init_town_typeahead(url){
         source: function (query, process) {
             return $.get(url, { query: $('#user_town').val() }, function (json) {
                 var data = [];
-                $.each(json,function(i,name){
+                $.each(json,function(i, name){
                     data.push(name.text);
                 });
                 return process(data)
-            },'json');
+            }, 'json');
         }, highlighter: function(item) {
             return item;
         }
@@ -66,7 +66,7 @@ function init_town_select2(url){
     })
 }
 
-function init_town_select2_with_field_id(field_id,url){
+function init_town_select2_with_field_id(field_id, url){
 
     $(field_id).select2({
         sortResults: function(results, container, query) {
@@ -100,7 +100,7 @@ function init_town_select2_with_field_id(field_id,url){
             },
             results: function (data, page) {
                 var resArr = [];
-                for(var i = 0; i < data.length;i++) {
+                for(var i = 0; i < data.length; i++) {
                     var arr = {};
                     arr['id'] = data[i].id;
                     arr['text'] = data[i].text;
@@ -110,5 +110,5 @@ function init_town_select2_with_field_id(field_id,url){
             },
             cache: true
         },
-    })
+    });
 }
