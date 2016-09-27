@@ -7,11 +7,14 @@
     %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
     -#Test FB
-
-    %meta{:content => "http://www.youtube.com/v/1F7DKyFt5pY&fs=1", :property => "og:video"}/
-    %meta{:content => "560", :property => "og:video:width"}/
-    %meta{:content => "340", :property => "og:video:height"}/
-    %meta{:content => "application/x-shockwave-flash", :property => "og:video:type"}/
+    %meta{ content: 'http://www.youtube.com/v/1F7DKyFt5pY&fs=1',
+           property: 'og:video' }
+    %meta{ content: '560',
+           property: 'og:video:width' }
+    %meta{ content: '340',
+           property: 'og:video:height' }
+    %meta{ content: 'application/x-shockwave-flash',
+           property: 'og:video:type' }
     -# Faceboot Open Graph tags
     %meta(property="fb:admins"      content="1381405023")
     %meta(property="og:title"       content="Відкритий бюджет")
@@ -19,7 +22,9 @@
     %meta(property="og:site_name"   content="Візуалізація бюджету")
     %meta(property="og:type"        content="website")
     %meta(property="og:url"         content="http://openbudget.in.ua")
-    = tag :meta, property: 'og:image', content: image_url('fb-share-img.jpg')
+    = tag :meta,
+          property: 'og:image',
+          content: image_url('fb-share-img.jpg')
     -#%meta(property="og:image"       content="http://openbudget.in.ua/assets/fb-share-img.jpg")
     %meta(property="og:image:type"  content="image/jpeg")
     %meta(property="og:image:type"  content="image/jpg")
@@ -27,8 +32,6 @@
     %meta(property="article:author" content="https://www.facebook.com/EidosUa")
     %meta(property="article:publisher" content="https://www.facebook.com/vladimir.tarnay")
     -#%meta(property="article:author" content="https://www.facebook.com/begemot.lery")
-
-    -#= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js'
 
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
@@ -40,12 +43,24 @@
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic"
     = stylesheet_link_tag "application", :media => "all"
 
-    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
-    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
-    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
-    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '144x144'
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '114x114'
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '72x72'
+    = favicon_link_tag 'apple-touch-icon-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png'
 
-    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
+    = favicon_link_tag 'favicon.ico',
+                        rel: 'shortcut icon'
 
     = javascript_include_tag 'application'
 
