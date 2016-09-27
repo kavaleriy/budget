@@ -56,6 +56,8 @@
       var role = $(this).data('role');
       var name = role==1 ? '#_item_payer' : '#_item_recipt';
       $(name).val($(this).data('edrpou') + ' ' + $(this).data('name'));
+      $('#_item_payer_edrpou').val($(this).data('edrpou'));
+
       $("#items-list").hide();
     })
   })
