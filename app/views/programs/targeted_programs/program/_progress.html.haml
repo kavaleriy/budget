@@ -16,7 +16,7 @@
       }
     }
   }
-
+-#TODO: Add < 0.1%
 .progress_bar
 
   - color = '#0c2231';
@@ -43,31 +43,3 @@
            'stroke' => "#{stroke}" }
 
       = "#{perc}%"
-
--#:javascript
-  var perc = '#{perc}%'
-  var height = 40
-  var svgContainer = d3.select(".chart").append("svg").attr("width", '100%').attr("height", height);
-
-  svgContainer.append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", '100%')
-    .attr("height", height)
-    .attr("fill", 'silver')
-
-  svgContainer.append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", perc)
-    .attr("height", height)
-    .attr("fill", 'lightblue')
-    .attr('color', 'red')
-
-  svgContainer.append("text")
-    .attr("x", '49%')
-    .attr("y", height * 2 / 3)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "14px")
-    .attr('color', 'red')
-    .text(function(d) { return perc; });

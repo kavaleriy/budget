@@ -20,10 +20,14 @@ gem 'jquery-rails'
 # https://github.com/joliss/jquery-ui-rails
 gem 'jquery-ui-rails', '4.1.2'
 
+# gem 'jquery-turbolinks'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
+
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
@@ -106,7 +110,7 @@ gem 'font-awesome-rails'
 # https://github.com/carrierwaveuploader/carrierwave
 gem 'carrierwave', github:'carrierwaveuploader/carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
-gem "mini_magick"
+gem 'mini_magick'
 # gem 'mini_magick', '3.5', :require => 'mini_gmagick'
 
 # https://github.com/JangoSteve/remotipart

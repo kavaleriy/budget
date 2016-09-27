@@ -1,6 +1,11 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
-  before_action :set_town,:except => [:budget_files_by_taxonomies, :sankey_by_taxonomies,:show_indicates]
+  after_filter :allow_iframe, only: [:portfolio]
+
+  before_action :set_town,
+                :except => [ :budget_files_by_taxonomies,
+                                       :sankey_by_taxonomies,
+                                       :show_indicates ]
 
   def budget_files
     # this action return hash for navigation panel
@@ -63,8 +68,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # @town = Town.find(params[:town_id])
     @town_items = get_town_items_hash(@town)
     respond_to do |format|
-      format.js {}
-      format.html{render :partial => 'portfolio'}
+      format.js
+      format.html
     end
   end
 
@@ -72,6 +77,12 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   # end
 
   private
+
+  def allow_iframe
+    response.headers['x-frame-options'] = 'ALLOWALL'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  end
 
   def fill_budget_files_tabs(tax_rot,tax_rov,sankey)
     tabs = []
@@ -102,6 +113,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # programs = Programs::Town.get_town_by_title(town).first
     # programs = Programs::TargetedProgram.first
     programs = Programs::TargetedProgram.by_town(@town).first
+    e_data = Modules::Classifier.by_town(@town).first
     result = []
     result << get_budget_compare_hash('budget_compare')
     result << get_indicate_hash(indicate_taxonomy, 'indicators')
@@ -109,7 +121,10 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_calendar_hash(calendar, 'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
+    result << get_e_data_hash('e_data',e_data) unless e_data.nil?
+    #result << get_programs_hash('programs', programs)
     result << get_programs_hash('programs')
+
     # result << get_key_docs_hash('key_docs')
     # result << get_prozorro_hash('prozoroo')
     # result << get_edata_hash('edata')
@@ -190,9 +205,11 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   def get_prozorro_hash(name)
     get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', name)
   end
-  def get_edata_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), 'http://www.spending.gov.ua/', name)
+
+  def get_e_data_hash(name,e_data)
+    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_path(@town),name)
   end
+
   def get_purchase_hash(name)
     get_item_hash(img_url(name), title_for_portfolio(name), 'https://ips.vdz.ua/ua/purchase_search.htm', name)
   end

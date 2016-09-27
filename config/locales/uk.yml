@@ -101,6 +101,39 @@ uk:
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
+  devise:
+    sessions:
+      new:
+        title: "Реєстрація"
+        legend: "Працюєте в місцеві раді і хочете створити інтерактивну візуалізацію бюджету для свого міста, району чи області?"
+        register: "Перейти до реєстрації"
+      form:
+        title: "Авторизація"
+        email: "Email"
+        password: "Пароль"
+        remember: "пам'ятати мене"
+        forgot: "забули?"
+        log_in: "Увійти"
+    passwords:
+      new:
+        sign: "Вхід"
+        register: "Реєстрація"
+      form:
+        title: "Забули пароль?"
+        email: "Email"
+        instructions: "Отримати інструкції"
+    registrations:
+      new:
+        warn: "Увага!"
+        title: "Обліковий запис дозволяє тільки перегляд інформації. Для отримання повного доступу, обліковий запис має бути активовано, для цього зверніться до адміністратора системи"
+        name: "Прізвище, ім'я, по-батькові"
+        org: "Організація / установа"
+        email: "Email"
+        phone: "Телефон"
+        pass: "Пароль"
+        pass_conf: "Підтвердження паролю"
+        town: "Місто"
+        reg: "Реєстрація"
   towns:
     index:
       add_town: 'Додати місто'
@@ -328,6 +361,7 @@ uk:
       radio_execution: "Виконання"
       radio_other: "Інше"
       radio_no_indicated: "Не вказано"
+      responsible: "Відповідальний"
     edit:
       title: "Редагування дії"
     index:
@@ -783,6 +817,9 @@ uk:
     towns:
       show:
         choose_town: 'Знайти місто'
+        click: 'Натисніть, щоб скопіювати'
+        copied: 'Скопійовано!'
+        failed: 'Помилка!'
       portfolio:
         budget_compare: 'Порівняти бюджети'
         detail: "Більше"
@@ -797,7 +834,7 @@ uk:
         key_docs: "Ключові документи"
         purchase: "Перевірити державні закупівлі"
         prozoroo: "Prozorro"
-        edata: "Портал публічних фінансів"
+        e_data: "Портал публічних фінансів"
 #        programs_path: "/programs/towns"
 #        indicators_path: "/indicate/taxonomies"
 #        keys_path: "/key_indicate_map/indicators/get"
@@ -996,6 +1033,9 @@ uk:
         edit: "Редагувати"
         delete: "Видалити"
         errors: "Поля обов'язкові для заповнення"
+        all_books: "Усі книги"
+        without_category: "Без категорії"
+        download: "Скачати"
       show:
         book_look: "Перегляд книги"
         link: "Ресурс"
@@ -1014,6 +1054,10 @@ uk:
         edit_book: "Редагування книги"
 
   modules:
+    classifier:
+      search_data:
+          payer: "Платник"
+          recipt: "Отримувач"
     budget_news:
       index:
         choose_date: "Виберіть дату"
@@ -1260,7 +1304,7 @@ uk:
         edit_category: "Редагувати категорію"
         category: "Категорія"
         coordinates: "Координати"
-        date_placeholder: "ДД.ММ.РРРР"
+        date_placeholder: "РРРР.ММ.ДД"
     maps:
       info_popup:
         more: 'Детальніше'

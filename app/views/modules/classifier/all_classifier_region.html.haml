@@ -1,0 +1,16 @@
+:css
+  .table-striped{
+    font-size: 12px;
+  }
+-count = 0
+%table.table.table-striped
+  - @regions.each do |region, classf|
+    %tr
+      %td
+        = region
+      %td
+        = classf.size
+        -count = count+classf.size
+      %td
+        = select_tag :param_name, options_for_select(classf.map{|classd| ["#{classd.pnaz} | #{classd.k_form} | #{classd.k_ter} | #{classd.naz_v}", classd.id]})
+=count

@@ -2,6 +2,7 @@ class CalendarActionsController < ApplicationController
   layout 'application_admin'
 
   before_action :set_calendar_action, only: [:show, :edit, :update, :destroy]
+  before_action :get_responsible, only: [:new, :edit]
 
   before_action :authenticate_user!, only: [:index, :edit]
   load_and_authorize_resource
@@ -67,6 +68,11 @@ class CalendarActionsController < ApplicationController
   end
 
   private
+
+    def get_responsible
+      @responsible = CalendarAction.get_uniq_responsible
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_calendar_action
       @calendar_action = CalendarAction.find(params[:id])
@@ -74,6 +80,6 @@ class CalendarActionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_action_params
-      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :text_color, :color, :action_type)
+      params.require(:calendar_action).permit(:holder, :title, :icon, :description, :responsible, :text_color, :color, :action_type)
     end
 end
