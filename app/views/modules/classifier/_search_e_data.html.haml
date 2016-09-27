@@ -103,7 +103,7 @@
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
     -#.info
 
-:javascript
+-#:javascript
   $(document).ready(function() {
     $(document).on('click', '#edata_payments th', function() {
       $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');

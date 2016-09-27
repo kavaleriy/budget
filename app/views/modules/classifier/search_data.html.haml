@@ -2,7 +2,7 @@
   // init colors
   $button-background: #0c2231;
   $button-border: #0c2231;
-  $button-line: #ffd304;
+  $button-active: #ffd304;
   $button-text: white;
   $search-background: white;
   $search-border: #0c2231;
@@ -25,23 +25,44 @@
         }
       }
     }
+    .advanced_search_button,
     .btn-switch-role {
       background: $button-background;
       border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
-      width: 110px;
+      min-width: 125px;
       border-radius: 0;
+      padding: 4px 10px;
+    }
+    .btn-switch-role[for="_role_payer"] {
+      &:before {
+        content: '\f111';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role[for="_role_recipt"] {
+      &:before {
+        content: '\f0c8';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role:before {
+      color: $button-text;
     }
     input:checked + .btn-switch-role {
       background: $button-text;
       color: $button-background;
       border: 1px solid $button-border;
-      //text-decoration: underline $button-line;
       &:after {
         content: '';
         display: block;
-        border: 1px solid $button-line;
+        border: 1px solid $button-active;
+      }
+      &:before {
+        color: $button-active;
       }
     }
     .search-button {
@@ -53,14 +74,6 @@
       .fa-search {
         bottom: 0;
       }
-    }
-    .advanced_search_button{
-      background: $button-background;
-      color: $button-text;
-      text-align: center;
-      height: 33px;
-      width: 165px;
-      float: right;
     }
   }
 
@@ -77,10 +90,13 @@
           %i.fa.fa-search
       .col-md-5
         .row
-          .col-xs-8.btn-group
+          .col-lg-7
             = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-            = link_to t('.advanced_search'),modules_classifier_advanced_search_path(@town), :class => 'btn btn-primary advanced_search_button', 'data-remote'=>true
+          .col-lg-5
+            = link_to modules_classifier_advanced_search_path(@town), class: 'btn btn-primary advanced_search_button', remote: true do
+              %i.fa.fa-cogs
+              = t('.advanced_search')
 
     .results
 
@@ -94,7 +110,14 @@
       var item = $('#_item').val();
       get_data(item);
     });
-
+    $(document).on('click', '#edata_payments th', function() {
+      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
+      var item = $('#_item').val();
+      var sortCol = $(this).attr('data-column');
+      var sortDir = $(this).attr('data-sort-direction');
+      get_data(item, sortCol, sortDir);
+      $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
+    });
   });
 
   function get_data(d, _sortCol, _sortDir) {
