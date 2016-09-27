@@ -119,9 +119,10 @@
       -#  = f.color_field :bg_color, label: t('.bg_color')
       -#
 
+  -#= f.text_area :description, :rows => "15", label: t('.description')
+  = f.text_area :description, :rows => "3", label: t('.description'), class: "wysihtml5", placeholder: t('calendars.events.form.description')
 
-  = f.text_area :description, :rows => "15", label: t('.description')
-
+  = f.text_field :responsible, label: t('.responsible'), class: "select2 form-control can_be_disable", id: "responsible"
 
   = f.submit t('form.save', :default => t("helpers.links.save")), :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), calendar_actions_path, :class => 'btn btn-default'
@@ -150,6 +151,32 @@
       escapeMarkup: function(m) {
         return m;
       }
+    });
+    editor_locale = void 0;
+    if (I18n.locale === 'uk') {
+      editor_locale = 'ua-UA';
+    } else {
+      editor_locale = '';
+    }
+    $('.wysihtml5').wysihtml5({
+      'font-styles': true,
+      'emphasis': true,
+      'lists': true,
+      'html': false,
+      'link': true,
+      'image': false,
+      'color': false,
+      'size': 'sm',
+      'locale': editor_locale
+    });
+  });
+
+:javascript
+  var js_array = #{raw @responsible.to_json};
+  $(document).ready(function() {
+    $('.select2').select2({
+      tags: js_array,
+      maximumSelectionSize: 1
     });
   });
 

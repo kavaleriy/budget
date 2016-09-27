@@ -10,13 +10,11 @@
     .col-xs-6
       = f.text_field :amount, :label => t('repairing.repairs.form.amount')
     .col-xs-6
-      = f.date_field :warranty_date, :label => t('repairing.repairs.form.warranity_date')
+      = f.text_field :warranty_date, placeholder: t('.date_placeholder'), class: 'datepicker', :label => t('repairing.repairs.form.warranity_date')
     .col-xs-6
-      = f.date_field :repair_start_date, :label => t('repairing.repairs.form.repair_start_date')
+      = f.text_field :repair_start_date, placeholder: t('.date_placeholder'), class: 'datepicker', :label => t('repairing.repairs.form.repair_start_date')
     .col-xs-6
-      = f.date_field :repair_end_date, :label => t('repairing.repairs.form.repair_end_date')
-
-  -#
+      = f.text_field :repair_end_date, placeholder: t('.date_placeholder'), class: 'datepicker', :label => t('repairing.repairs.form.repair_end_date')
 
   = f.text_field :address, :label => t('repairing.repairs.form.address')
   = f.text_field :address_to, :label => t('repairing.repairs.form.address_to')
@@ -35,5 +33,11 @@
   $(document).ready(function(){
     $('.edit_repairing_repair').on('ajax:success',function(){
         // alert('Дані успішно збережені');
+    });
+
+    // Use Bootstrap/JQ/UI DateTimePicker
+    $(".datepicker").datetimepicker({
+      locale: '#{I18n.locale}',
+      format: 'YYYY-MM-DD'
     });
   })

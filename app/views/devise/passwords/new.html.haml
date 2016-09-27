@@ -1,22 +1,208 @@
 :scss
-  .container {
-    form {
-      .email-field {
-        padding: 10px 25px;
-      }
-      .instruction-btn {
-        padding: 10px 25px 30px;
+  //init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGrayGlass: rgba(12, 34, 49, 0.2);
+  $rGray: rgba(0, 0, 0, 0.3);
+
+  .blocks {
+    background: url('/../assets/login/login_bg.jpg');
+    .container {
+      .forgot-wrapper {
+        position: absolute;
+        //half from 270h(form) + 73h(nav)
+        top: calc(50vh - 173px);
+        left: calc(50vw - 250px);
+        width: 500px;
+        height: 225px;
+        margin: 0 auto;
+        padding: 15px;
+        &:before {
+          content: '';
+          position: fixed;
+          //half from 270h(form) + 73h(nav)
+          top: calc(50vh - 173px);
+          left: calc(50vw - 250px);
+          width: 500px;
+          height: 200px;
+          background: $rGrayGlass;
+          filter: blur(1px);
+          backdrop-filter: grayscale(1) contrast(3) blur(1px);
+          -webkit-backdrop-filter: grayscale(1) contrast(3) blur(1px);
+        }
+        .form {
+          padding: 0 5px;
+        }
+        .vertical {
+          background-color: $white;
+          -webkit-transform: rotate(90deg);
+          position: absolute;
+          left: 220px;
+          width: 140px;
+          top: 76px;
+        }
+        .buttons {
+          padding-right: 20px;
+          margin-top: 50px;
+          .reg-btn,
+          .sign-btn {
+            width: 100%;
+            .register,
+            .sign-in {
+              width: 100%;
+              height: 40px;
+              padding: 6px;
+              font-size: 2rem;
+              line-height: 2.6rem;
+              color: $blue;
+              text-transform: uppercase;
+              border: 1px solid $white;
+              border-radius: 0;
+              background: transparent;
+              cursor: pointer;
+              overflow: hidden;
+              white-space: normal;
+              &:hover,
+              &:focus,
+              &:active {
+                background: $blue;
+                outline: none;
+              }
+              &:hover,
+              &:focus {
+                color: $white;
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                -ms-transition: all 0.3s ease-out;
+                -o-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
+              }
+              &:active {
+                box-shadow: inset 0 0 5px $rGray,
+                inset 0 3px 4px $rGray;
+              }
+            }
+          }
+          .reg-btn {
+            padding-top: 10px;
+          }
+          .sign-btn {
+            padding-bottom: 10px;
+          }
+        }
       }
     }
   }
-.container
-  %h2= t('devise.passwords.forgot_your_password')
-  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-    = devise_error_messages!
-    %div.email-field
-      = f.label :email
-      %br/
-      = f.email_field :email, autofocus: true
-    %div.instruction-btn
-      = f.submit t('devise.passwords.send_me_instructions')
-  = render 'devise/shared/links'
+
+  @media (max-width: 768px) and (min-width: 520px) {
+    .blocks {
+      .container {
+        .forgot-wrapper {
+          top: 73px;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            top: 70px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            .form {
+              .forgot-title {
+                text-align: center;
+              }
+              .forgot-form {
+                .submit {
+                  width: 60%;
+                  margin: 0 20%;
+                }
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .buttons {
+              margin-top: 10px;
+              .sign-btn,
+              .reg-btn {
+                width: 50%;
+                margin: 0 25%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 519px) and (min-width: 320px) {
+    .blocks {
+      .container {
+        .forgot-wrapper {
+          top: 73px;
+          width: auto;
+          position: inherit;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            width: calc(100% - 20px);
+            top: 70px;
+            left: 0;
+            margin: 0 10px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            .form {
+              .forgot-title {
+                text-align: center;
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .buttons {
+              margin-top: 10px;
+              .sign-btn,
+              .reg-btn {
+                width: 50%;
+                margin: 0 25%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 475px) {
+    .blocks {
+      .container {
+        .login-wrapper {
+          .row {
+            .register {
+              .reg-wrapper {
+                .reg-btn {
+                  .register {
+                    height: 60px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+-#Forgot form
+.forgot-wrapper
+  .row
+    .col-xs-12.col-sm-7.form
+      = render partial: 'devise/passwords/form'
+    %hr.vertical
+    .col-xs-12.col-sm-5.buttons
+      .sign-btn
+        =render partial: 'devise/btns/sign_in',
+                  locals: { btn_label: t('.sign') }
+      .reg-btn
+        = render partial: 'devise/btns/register',
+                 locals: { btn_label: t('.register') }

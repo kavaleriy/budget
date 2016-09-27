@@ -47,6 +47,11 @@
       multiSelect: false,
       multiple: false,
       minimumInputLength: 2,
+      //WARN: two locales for select2 not settings
+      //TODO: setting locale for select2 in project
+      formatNoMatches:     function () { return I18n.t('select2.formatNoMatches'); },
+      formatInputTooShort: function (input, min) { return I18n.t('select2.formatInputTooShort_input') + min + I18n.t('select2.formatInputTooShort_characters'); },
+      formatSearching:     function () { return I18n.t('select2.formatSearching'); },
       //placeholder: I18n.t('repairing.maps.map_select.select_town'),
       width: '100%',
       ajax: {

@@ -118,6 +118,39 @@ en:
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
+  devise:
+    sessions:
+      new:
+        title: "Registration"
+        legend: "Works in the local council and want to create an interactive visualization of the budget of the city, district or region?"
+        register: "Back to register"
+      form:
+        title: "Log in"
+        email: "Email"
+        password: "Password"
+        remember: "Remember me"
+        forgot: "forgot?"
+        log_in: "Log in"
+    passwords:
+      new:
+        sign: "Enter"
+        register: "Registration"
+      form:
+        title: "Forgot password?"
+        email: "Email"
+        instructions: "Get instructions"
+    registrations:
+      new:
+        warn: "Warning!"
+        text: "Account only allows viewing of information. For full access, your account must be activated for this contact administrator"
+        name: "Full Name"
+        org: "Company / Institution"
+        email: "Email"
+        phone: "Phone"
+        pass: "Password"
+        pass_conf: "Confirm password"
+        town: "Town"
+        reg: "Registration"
   towns:
     index:
       add_town: 'Add town'
@@ -156,7 +189,7 @@ en:
       logout: "Logout"
       login: "Login"
       subscribers: "E-mail subscription"
-      taxonomies: "Visuals"
+      taxonomies: "Visualizations"
       keytownmarks: "Compare key town indicators"
       townmarksdictionary: "Town indicators dictionary"
       documentation_links: "Useful links"
@@ -252,6 +285,7 @@ en:
     show: "Show"
     search: "Search"
     description: "Description"
+    choose_file: "Choose file"
   subscribers:
     index:
       title: "Subscribers"
@@ -261,6 +295,7 @@ en:
       title: "New subscriber"
     show:
       title: "Subscription"
+  taxonomy: "Visualization"
   placeholder_select2: "Choose or create new visualization"
   budget_files:
 
@@ -299,7 +334,7 @@ en:
       upload_vz_file: "Download VZ*.ZIP"
       upload_ft_file: "Download revenue fact FT*"
       upload_vd_file: "Download expenditures fact VD*"
-      upload_fz_file: "Changes to plan FZ*"
+      upload_fz_file: "Changes to plan FZ/RZ*"
       search_town: "town/district/region"
       type_select:
               type: "type"
@@ -333,6 +368,7 @@ en:
       radio_execution: "Execution"
       radio_other: "Other"
       radio_no_indicated: "No indicated"
+      responsible: "Responsible"
     edit:
       title: "Edit actions"
     index:
@@ -645,11 +681,7 @@ en:
         attachments: "Attachments"
         tab_gantt: "Projects"
         funds_spend: "Funds spent on the program:"
-        group_indicators: 'Group of indicates'
-        main_target: 'Main target'
-        responsible: "Responsible for execution"
-        main_manager: 'Main manager'
-        reason: 'Reason'
+        year: 'year'
       form:
         year: 'year'
         type: 'Type'
@@ -682,9 +714,25 @@ en:
         main_manager: 'Main manager'
       program:
         amounts:
-          done: 'Done'
+          done: 'Done: '
           remains: 'Remains'
-          planned: 'Planned'
+          planned: 'Planned: '
+        description:
+          main_manager: 'Main manager'
+          responsible: "Responsible for execution"
+          reason: 'Reason'
+          main_target: 'Main target'
+        indicators:
+          group_indicators: 'Group of indicates'
+        indicators_tabs:
+          visuals: 'Visualization program'
+        indicators_select:
+          expense: 'Costs'
+          product: 'Product'
+          efective: 'Efficiency'
+          quality: 'Quality'
+        gantt:
+          main-title: 'Gantt Chart'
       data_table_header:
         title: 'Title'
         file: 'File'
@@ -706,6 +754,16 @@ en:
         active: 'Status'
         actions: 'Actions'
         sure_dialog: 'Are you sure?'
+      town_programs:
+        list: 'The list of programs'
+        division: 'Distribution programs'
+        selects:
+          year-placeholder: 'year'
+        program_list:
+          done: 'Implementation'
+          plan: 'Plan'
+          more: 'More'
+          show: 'Show'
     indicator:
       group_name:
         expense: 'Expense'
@@ -763,6 +821,9 @@ en:
     towns:
       show:
         choose_town: 'Find town'
+        click: 'Click to copy'
+        copied: 'Copied!'
+        failed: 'Failed!'
       portfolio:
         budget_compare: 'Budget comparison'
         detail: "more"
@@ -777,7 +838,7 @@ en:
         key_docs: "Key documents"
         purchase: "Check state procurements"
         prozoroo: "Prozorro"
-        edata: "Portal of public finances"
+        e_data: "Portal of public finances"
 #        programs_path: "/programs/towns"
 #        indicators_path: "/indicate/taxonomies"
 #        keys_path: "/key_indicate_map/indicators/get"
@@ -967,6 +1028,9 @@ en:
           edit: "Edit"
           delete: "Delete"
           errors: "Required fields"
+          all_books: "All books"
+          without_category: "Without category"
+          download: "Download"
         show:
           book_look: "Show book"
           link: "Link"
@@ -985,6 +1049,22 @@ en:
           edit_book: "Editing book"
 
   modules:
+    classifier:
+        search_data:
+          payer: "Payer"
+          recipt: "Recipient"
+          advanced_search: "Advanced search"
+        edrpou: "EDRPOU"
+        org_name: "Organization name"
+        org_name_v: "Major manager"
+        address: "Address"
+        search_e_data:
+          no-data: "No data found"
+          payer: "Payer"
+          recipt: "Recipient"
+          sum: "Total"
+          date: "Date"
+          purpose: "Purpose of payment"
     budget_news:
         index:
           choose_date: "Chose the date"
@@ -1187,6 +1267,7 @@ en:
         edit_category: "Edit category"
         category: "Category"
         coordinates: "Coordinates"
+        date_placeholder: "YYYY.MM.DD"
     maps:
       info_popup:
         more: 'More'
@@ -1285,6 +1366,11 @@ en:
   drag_file: "Drop files"
   select_from_list: "or pick from a list"
   embed: "Embed code"
+  select2:
+    formatNoMatches: "No matches found"
+    formatInputTooShort_input: "Please enter more than "
+    formatInputTooShort_characters: " characters"
+    formatSearching: "Search..."
   name: "Name"
   export: "Export"
   aggregated: "Aggregated"
@@ -1341,7 +1427,7 @@ en:
       project_news: "Project news"
       our_partners: "Our partners"
     footer:
-      footer-text: 'Portal Municipal Budget established in the Center for Political Studies and Analysis
+      footer-text: 'Portal Open Budget established in the Center for Political Studies and Analysis
                     with participation of the EU Delegation to Ukraine, the International Fund "Renaissance",
                     and UNDP in Ukraine under license from Creative Commons With attribution - Non-profit -
                     Dissemination under the same conditions 4.0 International'

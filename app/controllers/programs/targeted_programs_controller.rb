@@ -8,8 +8,6 @@ class Programs::TargetedProgramsController < ApplicationController
   # GET /programs/target_programs
   # GET /programs/target_programs.json
 
-
-
   def index
     stub_data
     @programs = Programs::TargetedProgram.get_main_programs
@@ -30,9 +28,8 @@ class Programs::TargetedProgramsController < ApplicationController
   def show
     stub_data
     @grouped_indicators = Programs::TargetedProgram.get_grouped_indicators(@program.indicators)
-    respond_to do |format|
-      format.html
-      format.js
+    respond_with(@grouped_indicators) do |format|
+      format.js   { render layout: false }
     end
   end
 
@@ -62,12 +59,6 @@ class Programs::TargetedProgramsController < ApplicationController
         format.html { redirect_to :back }
       end
     end
-    # if program.save
-    #   redirect_to programs_targeted_program_path(program)
-    # else
-    #   redirect_to :back, alert: 'Вибачте сталася помилка'
-    # end
-
   end
 
   def destroy
@@ -88,11 +79,21 @@ class Programs::TargetedProgramsController < ApplicationController
     respond_with(@program) do |format|
       if @program.save
         flash[:success] = 'Updated!'
-        format.js   { render layout: false }
+        format.js { render layout: false }
       else
         flash[:error] = 'Error!'
         format.js
       end
+    end
+  end
+
+
+  def town_programs
+    @programs = Programs::TargetedProgram.by_town(params[:town])
+    @years = Programs::TargetedProgram.programs_years(@programs)
+    respond_with(@programs) do |format|
+      format.js { render layout: false }
+      format.html { render file: 'programs/targeted_programs/town_programs', layout: 'visify'}
     end
   end
 

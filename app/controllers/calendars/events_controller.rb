@@ -6,6 +6,7 @@ module Calendars
     before_action :set_calendar
     before_action :set_event, only: [:show, :edit, :update, :destroy]
     before_action :set_attachments, only: [:show]
+    before_action :get_responsible, only: [:new, :edit]
 
     load_and_authorize_resource :calendar
     load_and_authorize_resource :event, :through => :calendar
@@ -107,6 +108,9 @@ module Calendars
       @events = @calendar.events.all.where( :holder => @event.holder, :starts_at => @event.starts_at, :ends_at => @event.ends_at )
     end
 
+    def get_responsible
+      @responsible = CalendarAction.get_uniq_responsible
+    end
 
     def set_attachments
       # @attachments = @event.event_attachments
@@ -117,7 +121,7 @@ module Calendars
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:holder, :title, :icon, :description, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
+      params.require(:event).permit(:holder, :title, :icon, :description, :responsible, :starts_at, :ends_at, :all_day, :text_color, :color,:action_type)
     end
 
   end

@@ -21,7 +21,7 @@
  *= require bootstrap-colorpicker-master/dist/css/bootstrap-colorpicker
  *= require font-awesome
 
-*= require bootstrap-datetimepicker
+ *= require bootstrap-datetimepicker
 
  *= require rails_bootstrap_forms
  *= require select2
@@ -38,3 +38,15 @@
 
 
  */
+
+/*WARN: Testing, because sometime footer don`t stick to the bottom*/
+body > .bootstrap_flash {
+    margin-top: 73px;
+}
+body > .bootstrap_flash > div {
+    margin: 0 0 -73px 0;
+}
+body > .blocks > .container {
+   margin-top: 73px;
+   min-height: calc(100vh - 219px);
+}

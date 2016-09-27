@@ -1,0 +1,33 @@
+:scss
+  .indicators {
+    .tab-pane {
+      .title {
+        padding: 10px 0 15px 0;
+        text-align: center;
+      }
+    }
+  }
+
+  @media (min-width: 250px) and (max-width: 991px) {
+    .indicators {
+      .tab-pane {
+        .row {
+          .indicator-description {
+            padding-top: 15px;
+          }
+        }
+      }
+    }
+  }
+
+.tab-content.indicators
+  - indicators.each do |indicator|
+    - indicator.last.each_with_index do |item, j|
+      .tab-pane.fade{ role: 'tabpanel', class: "tab-pane fade in", id: "#{indicator.first}-#{j}" }
+        .col-xs-12.title
+          = item.title
+        .row
+          .col-xs-12.col-md-7.chart
+            = render partial: 'programs/targeted_programs/program/indicator_line_chart', locals: { id: "#{indicator.first}-#{j}" }
+          .col-xs-12.col-md-5.indicator-description
+            = render partial: 'programs/targeted_programs/program/indicator_desc', locals: { id: "#{indicator.first}-#{j}" }

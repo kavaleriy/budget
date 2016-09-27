@@ -1,27 +1,249 @@
 :scss
-  .container {
-    #new_user button i,
-    #edit_user button i {
-      margin: -2px 0 0 -5px;
+  //init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGrayGlass: rgba(12, 34, 49, 0.2);
+  $rGray: rgba(0, 0, 0, 0.3);
+
+  .blocks {
+    background: url('/../assets/login/login_bg.jpg');
+    .container {
+      .login-wrapper {
+        position: absolute;
+        //half from 270h(form) + 73h(nav)
+        top: calc(50vh - 173px);
+        left: calc(50vw - 250px);
+        width: 500px;
+        height: 270px;
+        margin: 0 auto;
+        padding: 15px;
+        &:before {
+            content: '';
+            position: fixed;
+            //half from 270h(form) + 73h(nav)
+            top: calc(50vh - 173px);
+            left: calc(50vw - 250px);
+            width: 500px;
+            height: 270px;
+            background: $rGrayGlass;
+            filter: blur(1px);
+            backdrop-filter: grayscale(1) contrast(3) blur(1px);
+            -webkit-backdrop-filter: grayscale(1) contrast(3) blur(1px);
+        }
+      }
+      .row {
+        .form {
+          padding: 0 5px;
+        }
+        .vertical {
+          background-color: white;
+          -webkit-transform: rotate(90deg);
+          position: absolute;
+          left: 199px;
+          width: 180px;
+          top: 115px;
+        }
+        .register {
+          padding-right: 20px;
+          .reg-title {
+            margin: 0;
+            padding: 0;
+            color: $white;
+            font-family: 'Lato', Calibri, Arial, sans-serif;
+            font-weight: 100;
+            font-size: 2.5rem;
+          }
+          .reg-wrapper {
+            margin: 15px auto;
+            .legend {
+              color: $white;
+              margin-bottom: 24px;
+            }
+            .reg-btn {
+              width: 100%;
+              .register {
+                width: 100%;
+                height: 55px;
+                padding: 5px;
+                font-size: 2rem;
+                line-height: 2.1rem;
+                color: $blue;
+                text-transform: uppercase;
+                border: 1px solid $white;
+                border-radius: 0;
+                background: transparent;
+                cursor: pointer;
+                overflow: hidden;
+                white-space: normal;
+                &:hover,
+                &:focus,
+                &:active {
+                  background: $blue;
+                  outline: none;
+                }
+                &:hover,
+                &:focus {
+                  color: $white;
+                  -webkit-transition: all 0.3s ease-out;
+                  -moz-transition: all 0.3s ease-out;
+                  -ms-transition: all 0.3s ease-out;
+                  -o-transition: all 0.3s ease-out;
+                  transition: all 0.3s ease-out;
+                }
+                &:active {
+                  box-shadow: inset 0 0 5px $rGray,
+                  inset 0 3px 4px $rGray;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) and (min-width: 520px) {
+    .blocks {
+      .container {
+        .login-wrapper {
+          top: 73px;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            top: 70px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            .form,
+            .register  {
+              .auth-title,
+              .reg-title,
+              .reg-wrapper > .legend {
+                text-align: center;
+              }
+            }
+            .form {
+              .submit {
+                button {
+                  width: 50%;
+                  margin: 0 25%;
+                }
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .register {
+              .reg-wrapper {
+                .legend {
+                  margin-bottom: 10px;
+                }
+                .reg-btn {
+                  .register {
+                    height: 40px;
+                    line-height: 2.6rem;
+                    width: 70%;
+                    margin: 0 15%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 519px) and (min-width: 320px) {
+    .blocks {
+      .container {
+        .login-wrapper {
+          width: auto;
+          position: inherit;
+          top: 73px;
+          height: auto;
+          padding-top: 10px;
+          margin-top: calc(((100vh - 219px) - 430px)/2);
+          &:before{
+            width: calc(100% - 20px);
+            top: 70px;
+            left: 0;
+            margin: 0 10px;
+            min-height: calc(100vh - 219px);
+          }
+          .row {
+            margin: 0;
+            .form,
+            .register  {
+              .auth-title,
+              .reg-title,
+              .reg-wrapper > .legend {
+                text-align: center;
+              }
+            }
+            .form {
+              .submit {
+                button {
+                  width: 50%;
+                  margin: 0 25%;
+                }
+              }
+            }
+            .vertical {
+              display: none;
+            }
+            .register {
+              .reg-wrapper {
+                .legend {
+                  margin-bottom: 10px;
+                }
+                .reg-btn {
+                  .register {
+                    height: 40px;
+                    line-height: 2.6rem;
+                    width: 70%;
+                    margin: 0 15%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 475px) {
+    .blocks {
+      .container {
+        .login-wrapper {
+          .row {
+            .register {
+              .reg-wrapper {
+                .reg-btn {
+                  .register {
+                    height: 60px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 
 -#Login form
-.container
-  = content_for :header do
-    .head.pull-left
-      = t('devise.sessions.sign_in')
-
-  = form_for(resource, as: resource_name, url: session_path(resource_name), html: {:class=>'login_user new_user'}) do |f|
-    %p.field
-      = f.email_field :email, autofocus: true, placeholder: "Username or email"
-      %i.fa.fa-user.fa-2x
-    %p.field
-      = f.password_field :password, autocomplete: "off", placeholder: "Password"
-      %i.fa.fa-lock.fa-2x
-    %p.submit
-      = button_tag(type: 'submit', class: "btn btn-primary") do
-        %i.fa.fa-arrow-circle-right.fa-2x
-
-  .row.text-center
-    = render 'devise/shared/links'
+.login-wrapper
+  .row
+    .col-xs-12.col-sm-7.form
+      = render partial: 'form'
+    %hr.vertical
+    .col-xs-12.col-sm-5.register
+      .reg-title
+        = t('.title')
+      .reg-wrapper
+        %p.legend
+          = t('.legend')
+        .reg-btn
+          = render partial: 'devise/btns/register',
+                   locals: { btn_label: t('.register') }

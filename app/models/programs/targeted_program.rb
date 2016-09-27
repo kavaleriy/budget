@@ -8,30 +8,32 @@ class Programs::TargetedProgram
 
   before_save :calc_budget_sum
 
-  field :main_manager, type: String # головний розпорядник
-  field :type_title, type: String
-  field :title, type: String
-  # field :years, type: Hash
-  field :p_id, type: String
-  field :responsible, type: String
-  field :kpkvk, type: String # program code
-  field :kfkvk, type: String # functional code (branch)
-  field :manager, type: String # розпорядник
-  field :reason, type: String # Підстава
-  field :budget_sum, type: Hash
-  field :objective, type: String # ціль
-  field :region_target_program, type: Hash
-  field :active, type: Boolean, default: true
+  field :main_manager,            type: String # головний розпорядник
+  field :type_title,              type: String
+  field :title,                   type: String
+  field :p_id,                    type: String
+  field :responsible,             type: String
+  field :kpkvk,                   type: String # program code
+  field :kfkvk,                   type: String # functional code (branch)
+  field :manager,                 type: String # розпорядник
+  field :reason,                  type: String # Підстава
+  field :budget_sum,              type: Hash
+  field :objective,               type: String # ціль
+  field :region_target_program,   type: Hash
+  field :active,                  type: Boolean, default: true
 
-  has_many :sub_programs, class_name: 'Programs::TargetedProgram', foreign_key: 'p_id'
-  embeds_many :indicators, class_name: 'Programs::Indicator'
-  embeds_many :tasks, class_name: 'Programs::Task'
-  belongs_to :town, class_name: 'Town'
-  belongs_to :author, class_name: 'User'
+  has_many :sub_programs, class_name: 'Programs::TargetedProgram',  foreign_key: 'p_id'
+  has_many :indicators,   class_name: 'Programs::Indicator'
+  has_many :tasks,        class_name: 'Programs::Task'
 
-  scope :get_main_programs,-> { where(p_id: nil) }
+  belongs_to :town,       class_name: 'Town', index: true
+  belongs_to :author,     class_name: 'User', index: true
+
+  scope :get_main_programs, -> { where(p_id: nil) }
   # Get programs by town
   scope :by_town, -> (town) { where(town: town) }
+  # Get active programs
+  scope :by_active, -> { where(active: true) }
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 
@@ -43,9 +45,9 @@ class Programs::TargetedProgram
     self.budget_sum = {
         year => {
             plan: {
-                general_fund: 0,
-                special_fund: 0,
-                sum: 0
+                general_fund: 0.0,
+                special_fund: 0.0,
+                sum: 0.0
             }
             # fact: {
             #     general_fund: 0,
@@ -60,13 +62,18 @@ class Programs::TargetedProgram
     workbook = XlsParser.get_workbook(file_path)
     worksheet = workbook[0]
     program = create_program_by_xls(worksheet)
+
     unless workbook['Tasks'].nil?
-      program.tasks = Programs::Task.create_tasks_by_xls(workbook['Tasks'])
+      Programs::Task.create_tasks_by_xls(workbook['Tasks'], program)
     end
+
     unless workbook['Indicates'].nil?
-      program.indicators = Programs::Indicator.create_indicators_by_xls(workbook['Indicates'])
+      year = program.budget_sum.keys.first
+      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], year, program)
     end
+
     program
+
   end
 
   def self.get_grouped_indicators(indicators)
@@ -84,15 +91,16 @@ class Programs::TargetedProgram
   end
 
   private
+
   def self.create_program_by_xls(sheet)
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
       budget_sum_hash = { program_year => {plan: {},
                                            fact: {
-                                               general_sum: 0,
-                                               special_sum: 0,
-                                               sum: 0
+                                               general_sum: 0.0,
+                                               special_sum: 0.0,
+                                               sum: 0.0
                                            }
                                           }
                         }
@@ -120,9 +128,9 @@ class Programs::TargetedProgram
     budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
     # set budget fact sum if exist
     unless budget_sum_by_year[:fact].nil?
-      general_fact_fund = budget_sum_by_year[:fact]['general_fund'].to_f
-      special_fact_fund = budget_sum_by_year[:fact]['special_fund'].to_f
-      budget_sum_by_year[:fact]['sum'] = general_fact_fund + special_fact_fund
+      general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
+      special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
+      budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
     else
       init_default_fact_sum(year)
     end
@@ -130,10 +138,24 @@ class Programs::TargetedProgram
 
   def init_default_fact_sum(year)
     self.budget_sum[year][:fact] = {
-        general_sum: 0,
-        special_sum: 0,
-        sum: 0
+        general_sum: 0.0,
+        special_sum: 0.0,
+        sum: 0.0
     }
+  end
+
+  # Get array of years from programs
+  # return array of string, example: [ "2016", "2015" ]
+  # or
+  # empty array if town programs does not has year
+  def self.programs_years(programs)
+    years = []
+    programs.each { |p|
+      p.budget_sum.keys.each { |y|
+        years.include?(y) ? next : years << y
+      }
+    }
+    years
   end
 
 end

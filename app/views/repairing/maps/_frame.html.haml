@@ -454,6 +454,16 @@
 
         addMarkers()
       })
+      $('.road-cond-select a').click(function(){
+        var $this = $(this);
+        var tileName = $this.attr('href').substring(1);
+        $this.toggleClass('active');
+        if($this.hasClass('active')){
+          aRepairMap.addAdditionalLayer(tileName)
+        }else{
+          aRepairMap.removeAdditionalLayer(tileName);
+        }
+      })
 
       $("#year_select").on("change", function(){
         selected_year = $(this).val()

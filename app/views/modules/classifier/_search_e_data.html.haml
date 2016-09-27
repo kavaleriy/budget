@@ -1,0 +1,117 @@
+:scss
+  // init colors
+  $active: #ffd304;
+  $text: #0c2231;
+
+  #edata_payments {
+    table {
+      //margin-bottom: 250px;
+      thead {
+        th {
+          cursor: pointer;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+          &:first-child {
+            white-space: nowrap;
+          }
+          span {
+            &:before {
+              content: '\f0ec';
+              font-family: FontAwesome;
+              font-size: 12px;
+              -ms-transform: rotate(90deg); /* IE 9 */
+              -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+              transform: rotate(90deg);
+              float: left;
+            }
+          }
+        }
+        .active {
+          background: none;
+          span {
+            border-bottom: 2px solid $active;
+          }
+        }
+      }
+      tbody {
+        tr {
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    #pagination {
+      .pagination {
+        li {
+          a {
+            border: none;
+            border-radius: 0;
+            color: $text;
+            padding: 2px 7px;
+            font-weight: bold;
+          }
+        }
+        .active {
+          a {
+            background-color: $active;
+            color: $text;
+          }
+        }
+      }
+    }
+
+    //.info {
+    //  position: fixed;
+    //  bottom: 0px;
+    //  left: 0;
+    //  width: 100%;
+    //  background-color: #87cefa;
+    //  padding: 15px;
+    //}
+  }
+
+-if @payments.blank?
+  = t('.no-data')
+-else
+  #edata_payments.table-responsive
+    %table.table.table-striped
+      %thead
+        %th{'data-column' => 'amount', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.sum')
+        %th{'data-column' => 'payer_name', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.payer')
+        %th{'data-column' => 'recipt_name', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.recipt')
+        %th{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.purpose')
+        %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'desc'}
+          %span
+            = t('.date')
+
+      = render partial: 'search_e_data_results'
+
+    #pagination.text-center
+      = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+    -#.info
+
+:javascript
+  $(document).ready(function() {
+    $(document).on('click', '#edata_payments th', function() {
+      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
+      var item = $('#_item').val();
+      var sortCol = $(this).attr('data-column');
+      var sortDir = $(this).attr('data-sort-direction');
+      get_data(item, sortCol, sortDir);
+      $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
+    });
+  });
+

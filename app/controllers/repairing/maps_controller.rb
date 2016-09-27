@@ -3,6 +3,7 @@ module Repairing
     layout 'visify', only: [:frame]
     after_filter :allow_iframe, only: [:frame]
     before_filter :set_map_params, only: [:show, :frame]
+
     def set_map_params
       @categories = get_categories
 

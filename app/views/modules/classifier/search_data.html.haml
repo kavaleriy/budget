@@ -1,0 +1,125 @@
+:scss
+  // init colors
+  $button-background: #0c2231;
+  $button-border: #0c2231;
+  $button-line: #ffd304;
+  $button-text: white;
+  $search-background: white;
+  $search-border: #0c2231;
+
+  #search-data {
+    .form-group {
+      float: left;
+      width: calc(100% - 33px);
+      .select2-container {
+        border: none;
+        .select2-choice {
+          height: 33px;
+          line-height: 33px;
+          background: $search-background;
+          border: 1px solid $search-border;
+          border-radius: 0;
+          .select2-arrow {
+            display: none;
+          }
+        }
+      }
+    }
+    .btn-switch-role {
+      background: $button-background;
+      border: 2px solid $button-border;
+      color: $button-text;
+      font-weight: bold;
+      width: 110px;
+      border-radius: 0;
+    }
+    input:checked + .btn-switch-role {
+      background: $button-text;
+      color: $button-background;
+      border: 1px solid $button-border;
+      //text-decoration: underline $button-line;
+      &:after {
+        content: '';
+        display: block;
+        border: 1px solid $button-line;
+      }
+    }
+    .search-button {
+      background: $button-background;
+      color: $button-text;
+      text-align: center;
+      height: 33px;
+      width: 33px;
+      .fa-search {
+        bottom: 0;
+      }
+    }
+    .advanced_search_button{
+      background: $button-background;
+      color: $button-text;
+      text-align: center;
+      height: 33px;
+      width: 165px;
+      float: right;
+    }
+  }
+
+#search-data
+  -#%h1
+    = t ('.header')
+
+  = simple_form_for '', remote: true do |f|
+    .row
+      .col-md-7
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id] },
+        input_html: {'data-town-id' => params['town_id']}, label: false)
+        .input-group-btn.search-button
+          %i.fa.fa-search
+      .col-md-5
+        .row
+          .col-xs-8.btn-group
+            = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
+              = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
+            = link_to t('.advanced_search'),modules_classifier_advanced_search_path(@town), :class => 'btn btn-primary advanced_search_button', 'data-remote'=>true
+
+    .results
+
+:javascript
+  $(document).ready(function() {
+    $('#_item').select2({
+      allowClear: true
+    });
+    $('#_item').on('change', function(data) { get_data(data.val); });
+    $('[name="[role]"]').on('change', function() {
+      var item = $('#_item').val();
+      get_data(item);
+    });
+
+  });
+
+  function get_data(d, _sortCol, _sortDir) {
+    var town_id = $('#_item').data('town-id');
+    var role = $('[name="[role]"]:checked').val();
+
+    $.ajax({
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
+      dataType: 'script',
+      data: {
+        town_id: town_id,
+        item: d,
+        role: role,
+        sort_col: _sortCol,
+        sort_dir: _sortDir
+      }
+    });
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
+  }

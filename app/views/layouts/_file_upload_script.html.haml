@@ -1,0 +1,15 @@
+:scss
+
+  .bootstrap-filestyle{
+    .icon-span-filestyle{
+      padding-right: 5px;
+    }
+  }
+
+:javascript
+  //New style and locale for file_field in form
+  $(":file").filestyle({
+    input: false,
+    buttonText: I18n.t('form.choose_file'),
+    iconName: "fa fa-folder-open"
+  })

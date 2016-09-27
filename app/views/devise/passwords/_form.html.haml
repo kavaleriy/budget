@@ -1,0 +1,141 @@
+:scss
+  // init colors
+  $white: white;
+  $blue: #52cfeb;
+  $rGlass: rgba(255, 255, 255, .001);
+  $rGray: rgba(0, 0, 0, 0.3);
+
+  .forgot-title {
+    margin: 0;
+    padding: 0 15px;
+    color: $white;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-weight: 100;
+    font-size: 2.5rem;
+  }
+  .forgot-form {
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
+    padding: 0 15px;
+    margin: 15px auto;
+    .email {
+      position: relative;
+      padding-bottom: 10px;
+      input[type=email] {
+        margin: 0;
+        font-family: 'Lato', Calibri, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        text-shadow: none;
+        width: 100%;
+        padding: 9px 9px 9px 40px;
+        border: 1px solid $white;
+        box-shadow: none;
+        border-radius: 0;
+        background: rgba(255, 255, 255, .001);
+        color: $white;
+        -webkit-text-fill-color: $white;
+        -webkit-transition: color 0.3s ease-out;
+        -moz-transition: color 0.3s ease-out;
+        -ms-transition: color 0.3s ease-out;
+        -o-transition: color 0.3s ease-out;
+        transition: color 0.3s ease-out;
+        &:focus {
+          outline: none;
+        }
+      }
+      input:-webkit-autofill,
+      textarea:-webkit-autofill,
+      select:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,.001) inset !important;
+        -webkit-text-fill-color: $white;
+        -webkit-background-image: none !important;
+        background-color: $rGlass !important;
+        color: $white;
+      }
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      i {
+        /* Size and position */
+        left: 0;
+        top: 0;
+        position: absolute;
+        height: 40px;
+        width: 40px;
+
+        /* Styles */
+        color: $white;
+        text-align: center;
+        line-height: 40px;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+        pointer-events: none;
+        &:hover,
+        &:focus {
+          color: $white
+        }
+      }
+    }
+    .submit {
+      padding: 10px 0 0 0;
+      button {
+        width: 100%;
+        font-size: 2rem;
+        line-height: 2.6rem;
+        color: $blue;
+        text-transform: uppercase;
+        border: 1px solid $white;
+        border-radius: 0;
+        background: transparent;
+        cursor: pointer;
+        &:hover,
+        &:focus,
+        &:active {
+          background: $blue;
+          outline: none;
+        }
+        &:hover,
+        &:focus {
+          color: $white;
+          -webkit-transition: all 0.3s ease-out;
+          -moz-transition: all 0.3s ease-out;
+          -ms-transition: all 0.3s ease-out;
+          -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+        }
+        &:active {
+          box-shadow: inset 0 0 5px $rGray,
+          inset 0 3px 4px $rGray;
+        }
+      }
+    }
+  }
+
+.forgot-title
+  = t('.title')
+= form_for( resource,
+            as: resource_name,
+            url: password_path(resource_name),
+            html: { method: :post,
+                    class: 'forgot-form' } ) do |f|
+
+  = devise_error_messages!
+
+  .email
+    = f.email_field :email,
+                    autofocus: true,
+                    placeholder: t('.email')
+    = fa_icon 'envelope-o'
+
+  .submit
+    = button_tag( type: 'submit',
+                  class: 'btn btn-primary' ) do
+      = t('.instructions')
