@@ -40,8 +40,9 @@ module Modules
 
     def search_data
       # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
-      @items = Modules::Classifier.by_koatuu(Town.find(params["town_id"]).koatuu).only(:id, :pnaz, :knaz, :edrpou).to_a
-      respond_with(@items)
+      @town = Town.find(params["town_id"])
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:id, :pnaz, :knaz, :edrpou).to_a
+      respond_with(@items, @town)
     end
 
     def select
@@ -124,5 +125,22 @@ module Modules
       # classf.save
     end
 
+
+    def advanced_search
+      # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
+      @types = Modules::ClassifierType.all
+      @town =  Town.find(params["town_id"])
+      #binding.pry
+
+      respond_with(@types, @town)
+    end
+
+    def by_type
+      @town = Town.find(params["town_id"])
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).where(k_form: params["type"]).to_a
+      @role = params["role"]
+      respond_with(@items)
+      #binding.pry
+    end
   end
 end

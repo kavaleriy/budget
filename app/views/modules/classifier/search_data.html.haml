@@ -48,6 +48,14 @@
         bottom: 0;
       }
     }
+    .advanced_search_button{
+      background: $button-background;
+      color: $button-text;
+      text-align: center;
+      height: 33px;
+      width: 165px;
+      float: right;
+    }
   }
 
 #search-data
@@ -66,8 +74,8 @@
           .col-xs-8.btn-group
             = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-xs-4
-            -#= f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
+            = link_to t('.advanced_search'),modules_classifier_advanced_search_path(@town), :class => 'btn btn-primary advanced_search_button', 'data-remote'=>true
+
     .results
 
 :javascript
