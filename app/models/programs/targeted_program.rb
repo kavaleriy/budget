@@ -18,6 +18,8 @@ class Programs::TargetedProgram
   field :manager,                 type: String # розпорядник
   field :reason,                  type: String # Підстава
   field :budget_sum,              type: Hash
+  # TODO validate this field
+  field :quoter,                  type: Integer #Тривалість
   field :objective,               type: String # ціль
   field :region_target_program,   type: Hash
   field :active,                  type: Boolean, default: true
@@ -96,24 +98,44 @@ class Programs::TargetedProgram
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
-      budget_sum_hash = { program_year => {plan: {},
-                                           fact: {
-                                               general_sum: 0.0,
-                                               special_sum: 0.0,
-                                               sum: 0.0
-                                           }
+      budget_sum_hash = { program_year => {
+                                            plan: {
+                                              general_fund: 0.0,
+                                              special_fund: 0.0,
+                                              sum: 0.0,
+                                            },
+                                             fact: {
+                                                 general_fund: 0.0,
+                                                 special_fund: 0.0,
+                                                 sum: 0.0,
+
+                                             },
+                                             differences: {
+                                                 general_fund: 0.0,
+                                                 special_fund: 0.0,
+                                                 sum: 0.0
+                                             }
                                           }
                         }
       program_hash.except!("year")
-      budget_sum_name_array = ["general_fund","special_fund","sum"]
-      budget_sum_name_array.each do |name|
-        budget_sum_hash[program_year][:plan].store(name,program_hash[name])
+
+      budget_plan_sum_name_arr = %w(general_fund_plan special_fund_plan sum_plan general_fund_fact special_fund_fact sum_fact)
+      budget_diff_name_arr = %w( differences_general_fund differences_special_fund differences_sum)
+
+      budget_plan_sum_name_arr.each do |name|
+        category = name.last(4)
+        budget_sum_hash[program_year][category.to_sym].store(name.gsub("_#{category}",'').to_sym,program_hash[name].to_f)
         program_hash.except!(name)
       end
-      program =  self.new(program_hash)
+      budget_diff_name_arr.each do |diff|
+        category = diff.split('_').first
+        budget_sum_hash[program_year][category.to_sym].store(name.gsub("#{category}",'').to_sym,program_hash[name].to_f)
+        program_hash.except!(diff)
+      end
+
+      program = self.new(program_hash)
       program.budget_sum = budget_sum_hash
       program
-
 
     end
   end
