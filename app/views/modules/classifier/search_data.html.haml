@@ -27,7 +27,7 @@
     }
     .btn-switch-role {
       background: $button-background;
-      border: 1px solid $button-border;
+      border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
       width: 110px;
@@ -36,7 +36,13 @@
     input:checked + .btn-switch-role {
       background: $button-text;
       color: $button-background;
-      text-decoration: underline $button-line;
+      border: 1px solid $button-border;
+      //text-decoration: underline $button-line;
+      &:after {
+        content: '';
+        display: block;
+        border: 1px solid $button-line;
+      }
     }
     .search-button {
       background: $button-background;
@@ -48,6 +54,14 @@
         bottom: 0;
       }
     }
+    .advanced_search_button{
+      background: $button-background;
+      color: $button-text;
+      text-align: center;
+      height: 33px;
+      width: 165px;
+      float: right;
+    }
   }
 
 #search-data
@@ -57,7 +71,7 @@
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
-        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] },
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id] },
         input_html: {'data-town-id' => params['town_id']}, label: false)
         .input-group-btn.search-button
           %i.fa.fa-search
@@ -66,14 +80,13 @@
           .col-xs-8.btn-group
             = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-xs-4
-            -#= f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
+            = link_to t('.advanced_search'),modules_classifier_advanced_search_path(@town), :class => 'btn btn-primary advanced_search_button', 'data-remote'=>true
+
     .results
 
 :javascript
   $(document).ready(function() {
     $('#_item').select2({
-      // placeholder: "Choose something",
       allowClear: true
     });
     $('#_item').on('change', function(data) { get_data(data.val); });
@@ -81,19 +94,32 @@
       var item = $('#_item').val();
       get_data(item);
     });
+
   });
 
-  function get_data(d) {
+  function get_data(d, _sortCol, _sortDir) {
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
+
     $.ajax({
-      type: 'post',
+      type: 'get',
       url: "#{modules_classifier_search_e_data_url}",
       dataType: 'script',
       data: {
         town_id: town_id,
         item: d,
-        role: role
+        role: role,
+        sort_col: _sortCol,
+        sort_dir: _sortDir
       }
     });
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
   }
