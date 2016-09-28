@@ -97,7 +97,7 @@
           %span
             = t('.date')
 
-      = render partial: 'search_e_data_results'
+      = render partial: 'modules/classifier/search_e_data_results'
 
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}

@@ -197,7 +197,7 @@ Rails.application.routes.draw do
     get 'download' => 'maps#download'
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
-
+    get 'repairs/e_data' => 'repairs#e_data',as: 'e_data'
 
     get 'heapmap_json' => 'maps#get_heapmap_geo_json'
     get 'heapmap' => 'maps#heapmap'
