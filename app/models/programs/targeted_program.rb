@@ -7,7 +7,7 @@ class Programs::TargetedProgram
   SUBPROGRAM_TYPE = 2
   TASK_TYPE = 3
 
-  # before_save :calc_budget_sum
+  before_save :calc_budget_sum
 
   field :main_manager,            type: String # головний розпорядник
   field :type_title,              type: String
@@ -110,23 +110,31 @@ class Programs::TargetedProgram
     end
   end
 
-  # def calc_budget_sum
-  #   # function set budget sum by general and special fund
-  #   year = Date.today.year.to_s
-  #   budget_sum_by_year = self.budget_sum[year]
-  #   # set budget plan sum
-  #   general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
-  #   special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
-  #   budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
-  #   # set budget fact sum if exist
-  #   unless budget_sum_by_year[:fact].nil?
-  #     general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
-  #     special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
-  #     budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
-  #   else
-  #     init_default_fact_sum(year)
-  #   end
-  # end
+  def calc_budget_sum
+    # function set budget sum by general and special fund
+    # year = Date.today.year.to_s
+    self.budget_sum.each do |key,year|
+      general_plan_fund = year[:plan][:general_fund].to_f
+      special_plan_fund = year[:plan][:special_fund].to_f
+      year[:plan][:sum] = general_plan_fund + special_plan_fund
+
+      # set budget fact sum if exist
+      # unless budget_sum_by_year[:fact].nil?
+      general_fact_sum = year[:fact][:general_fund].to_f
+      special_fact_sum = year[:fact][:special_fund].to_f
+      year[:fact][:sum] = general_fact_sum + special_fact_sum
+
+      year[:differences][:general_fund] = general_fact_sum - general_plan_fund
+      year[:differences][:special_fund] = special_fact_sum - special_plan_fund
+      year[:differences][:sum] = year[:fact][:sum] - year[:plan][:sum]
+    end
+
+    # budget_sum_by_year = self.budget_sum[year]
+    # set budget plan sum
+    # else
+    #   init_default_fact_sum(year)
+    # end
+  end
   #
   # def init_default_fact_sum(year)
   #   self.budget_sum[year][:fact] = {
