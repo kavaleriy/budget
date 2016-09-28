@@ -2019,6 +2019,7 @@ if (typeof module !== undefined) module.exports = polyline;
 	L.Routing.OSRM = L.Class.extend({
 		options: {
 			//WARN: 'The OSRM Demo server has moved to API Version 5.'
+			//TODO: need fix show road line
 			// serviceUrl: 'http://router.project-osrm.org/route/v1/driving/',
 			serviceUrl: 'https://router.project-osrm.org/viaroute',
 			timeout: 30 * 1000,
@@ -2198,7 +2199,10 @@ if (typeof module !== undefined) module.exports = polyline;
 			for (var i = 0; i < waypoints.length; i++) {
 				wp = waypoints[i];
 				locationKey = this._locationKey(wp.latLng);
-				locs.push(locationKey);
+				//WARN: 'The OSRM Demo server has moved to API Version 5.'
+				//TODO: need fix show road line
+				// locs.push(locationKey);
+				locs.push('loc=' + locationKey);
 
 				hint = this._hints.locations[locationKey];
 				if (hint) {
