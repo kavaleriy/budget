@@ -1,5 +1,6 @@
 module Modules
   class ClassifierController < ApplicationController
+    before_action :town, only: [:search_data, :advanced_search, :by_type]
     respond_to :html, :js, :json
 
     def import_dbf
@@ -40,30 +41,26 @@ module Modules
 
     def search_data
       # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
-      @town = Town.find(params["town_id"])
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:id, :pnaz, :knaz, :edrpou).to_a
+      # @town = Town.find(params["town_id"])
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:id, :pnaz, :edrpou).to_a
       respond_with(@items, @town)
     end
 
-    def select
-    end
+    def prepare_data
+      data = {}
+      data['startdate'] = params['startdate'].blank? ? Time.now.months_since(-1).strftime("%d-%m-%Y") : params['startdate']
+      data['enddate'] = Time.now.strftime("%d-%m-%Y")
+      data['payers_edrpous'] = params['item_payer']
+      data['recipt_edrpous'] = params['item_recipt']
 
-    def get_data(item)
-      data = {
-          'startdate' => Time.now.months_since(-1).strftime("%d-%m-%Y"),
-          'enddate' => Time.now.strftime("%d-%m-%Y")
-          # 'startdate' => '30-09-2015',
-          # 'enddate' => '30-09-2015',
-      }
-      if(params['role'].blank?)
-        data["payers_edrpous"] = params["item_payer"]
-        data["recipt_edrpous"] = params["item_recipt"]
-      else
-        role = params['role'].eql?('payer') ? 'payers_edrpous' : 'recipt_edrpous'
-        data[role] = item.edrpou
-      end
+      data["#{params['role']}_edrpous"] = params['item'] unless params['role'].blank?
+      # if params['role'].blank?
+      #   data['payers_edrpous'] = params['item_payer']
+      #   data['recipt_edrpous'] = params['item_recipt']
+      # else
+      #   data["#{params['role']}_edrpous"] = params['item']
+      # end
       data.delete_if { |key, value| value.blank? }
-      # data['regions'] = item.sk_ter
       data
     end
 
@@ -77,26 +74,21 @@ module Modules
 
     def sort_e_data
       # Data
-      if(params['item'].blank?)
-        data = get_data(0)
-      else
-
-        item = Modules::Classifier::find(params["item"])
-        data = get_data(item)
-      end
-      #binding.pry
+      data = prepare_data
       payments_data = get_payments(data)
-      #binding.pry
+
       # Sort data
       sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
-      payments_data.sort_by! do |hash|
-        if sort_col.eql?('amount')
-          hash[sort_col.to_s].to_f
-        else
-          hash[sort_col.to_s]
+      unless payments_data.nil?
+        payments_data.sort_by! do |hash|
+          if sort_col.eql?('amount')
+            hash[sort_col.to_s].to_f
+          else
+            hash[sort_col.to_s]
+          end
         end
+        payments_data.reverse! unless params['sort_dir'].eql?('asc')
       end
-      payments_data.reverse! unless params['sort_dir'].eql?('asc')
 
       # Results
       payments_data
@@ -154,20 +146,25 @@ module Modules
 
 
     def advanced_search
-      # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
       @types = Modules::ClassifierType.all
-      @town =  Town.find(params["town_id"])
-      #binding.pry
+      # @town =  Town.find(params["town_id"])
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
 
-      respond_with(@types, @town)
+      respond_with(@types, @items)
     end
 
     def by_type
-      @town = Town.find(params["town_id"])
+      # @town = Town.find(params["town_id"])
       @items = Modules::Classifier.by_koatuu(@town.koatuu).where(k_form: params["type"]).to_a
       @role = params["role"]
+
       respond_with(@items)
-      #binding.pry
+    end
+
+    private
+
+    def town
+      @town = Town.find(params["town_id"])
     end
   end
 end

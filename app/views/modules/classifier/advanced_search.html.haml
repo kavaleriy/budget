@@ -7,20 +7,108 @@
   $search-background: white;
   $search-border: #0c2231;
 
-  #search-data {
-    .form-group {
-      float: left;
-      width: calc(100% - 33px);
-      .select2-container {
-        border: none;
-        .select2-choice {
-          height: 33px;
-          line-height: 33px;
-          background: $search-background;
-          border: 1px solid $search-border;
-          border-radius: 0;
-          .select2-arrow {
-            display: none;
+  #advanced-search {
+    .simple_form {
+      .form-group {
+        border-radius: 0;
+        &._enddate,
+        &._startdate {
+          &:after,
+          &:before {
+            position: absolute;
+            font-family: FontAwesome;
+            cursor: pointer;
+            font-size: 20px;
+            width: 33px;
+            height: 33px;
+            text-align: center;
+          }
+          &:before {
+            content: '\f073';
+            color: $search-background;
+            background: $search-border;
+            border: 1px solid $search-border;
+          }
+          &:after {
+            content: '\f0d7';
+            color: $search-border;
+            background: transparent;
+            right: 15px;
+          }
+          .form-control {
+            height: 33px;
+            width: calc(100% - 33px);
+            border-radius: 0;
+            border-color: $search-border;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 33px;
+          }
+        }
+      }
+      ._item_payers,
+      ._item_recipt,
+      ._item_type_payers,
+      ._item_type_recipt {
+        .select2-container {
+          border: none;
+          width: 100%;
+          .select2-choice {
+            height: 33px;
+            line-height: 33px;
+            background: $search-background;
+            border: 1px solid $search-border;
+            border-radius: 0;
+            &:after,
+            &:before {
+              font-family: FontAwesome;
+              position: absolute;
+              cursor: pointer;
+              font-size: 20px;
+              width: 33px;
+              text-align: center;
+              margin: -2px auto;
+            }
+            &:before {
+              left: 0;
+              color: $search-background;
+              background: $search-border;
+            }
+            &:after {
+              content: '\f0d7';
+              right: 0;
+              top: 0;
+              color: $search-border;
+              background: $search-background;
+            }
+            .select2-chosen {
+              margin-left: 33px;
+              margin-right: 55px;
+            }
+            .select2-search-choice-close {
+              right: 35px;
+            }
+            .select2-arrow {
+              display: none;
+            }
+          }
+        }
+      }
+      ._item_type_payers {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f155';
+            }
+          }
+        }
+      }
+      ._item_type_recipt {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f007';
+            }
           }
         }
       }
@@ -49,93 +137,121 @@
       }
     }
   }
-   #items-list{
-    border: 1px solid black;
+  #items-list{
+    border: 1px solid $search-border;
     height: 600px;
     overflow: auto;
     display: none;
-   }
+  }
 
 
-
-#search-data
-  -#%h1
-    = t ('.header')
-
+#advanced-search
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-3
-        = f.input :item_type_payer,:collection => @types.map{|type| [type.name, type.code]}, input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payer'}, label: false, class: 'type'
-      .col-md-4
-        = f.input :item_payer, label: false, class: 'item'
-        = f.input :item_payer_edrpou, :as => :hidden
-      .col-xs-4
-        = f.button :submit, t('form.search'), class: 'btn btn-primary', id: 'search'
-    .row
+        = f.input(:startdate, input_html: {'data-provide' => 'datepicker'}, label: false, placeholder: t('.startdate'))
+        = f.input(:enddate, label: false, placeholder: Time.now.strftime("%d-%m-%Y"), disabled: true)
       .col-md-3
-        = f.input :item_type_recipt,:collection => @types.map{|type| [type.name, type.code]}, input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false, class: 'item'
-      .col-md-4
-        = f.input :item_recipt, label: false
-        = f.input :item_recipt_edrpou, :as => :hidden
-      .col-xs-4
-        = link_to t('form.search'), modules_classifier_search_data_path(@town), :class => 'btn btn-primary', 'data-remote'=>true, class: 'type'
+        = f.input(:item_type_payers, collection: @types.map{|type| [type.name, type.code]},
+        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payers'}, label: false, class: 'type')
+        = f.input(:item_type_recipt, collection: @types.map{|type| [type.name, type.code]},
+        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false, class: 'item')
+      .col-md-5
+        = f.input(:item_payers, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payers'}, label: false)
+        -#= f.input(:item_payer_edrpou, as: :hidden)
+        = f.input(:item_recipt, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false)
+        -#= f.input(:item_recipt_edrpou, as: :hidden)
+      .col-md-1
+        = f.button :submit, t('form.search'), class: 'btn btn-primary', id: 'search'
+        %br
+        %br
+        = link_to 'back', modules_classifier_search_data_path(@town), :class => 'btn btn-primary', 'data-remote'=>true, class: 'btn btn-default'
 
+    #items-list
     .results
 
-#items-list
 
 :javascript
   $(document).ready(function() {
-    console.log(1);
-     $('#_item_type_payer').select2({
-      // placeholder: "Choose something",
-      allowClear: true
+    // datepicker options
+    var d = new Date();
+    var maxDate = new Date();
+    var minDate = new Date(d.setMonth(d.getMonth() - 3));
+    $.fn.datepicker.defaults.endDate = maxDate;
+    $.fn.datepicker.defaults.startDate = minDate;
+    $.fn.datepicker.defaults.format = "dd-mm-yyyy";
+    $.fn.datepicker.defaults.autoclose = true;
+    $.fn.datepicker.defaults.todayHighlight = true;
+    $.fn.datepicker.defaults.weekStart = 1  ;
+
+    $('#_item_type_payers').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.payer_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
     });
+
     $('#_item_type_recipt').select2({
-      // placeholder: "Choose something",
+      placeholder: I18n.t('modules.classifier.advanced_search.recipt_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
+    });
+
+    $('#_item_payers').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.payer_form_placeholder'),
       allowClear: true
     });
-    $('#_item_type_payer, #_item_type_recipt').on('change', function(data) {
-      console.log(1);
-      get_items($(this).val(), $(this).data('role'));
-      $(this).parent().find('#_item').val("");
+
+    $('#_item_recipt').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.recipt_form_placeholder'),
+      allowClear: true
+    });
+
+    $('#_item_type_payers, #_item_type_recipt').on('change', function(data) {
+      var type = $(this).val();
+      var role = $(this).data('role');
+      get_items(type, role);
     });
 
     $('#search').on('click', function(){
-      get_data($('#_item_payer_edrpou').val(), $('#_item_recipt_edrpou').val());
+      var payer = $('#_item_payers').val();
+      var recipt = $('#_item_recipt').val();
+      var start_date = $('#_startdate').val();
+      // _sortCol, _sortDir
+      get_data(payer, recipt, start_date);
+      // get_data($('#_item_payer_edrpou').val(), $('#_item_recipt_edrpou').val());
       return false;
     });
+  });
 
-    function get_data(payer, recipt, _sortCol, _sortDir) {
-      console.log(1);
-      var town_id = $('#_item_payer').data('town-id');
-      $.ajax({
-        type: 'get',
-        url: "#{modules_classifier_search_e_data_url}",
-        dataType: 'script',
-        data: {
-          town_id: town_id,
-          item_payer: payer,
-          item_recipt: recipt,
-          sort_col: _sortCol,
-          sort_dir: _sortDir
-        }
-      });
-    }
+  function get_data(payer_edrpou, recipt_edrpou, _start_date, _sortCol, _sortDir) {
+    var town_id = $('#_item_payers').data('town-id');
+    $.ajax({
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
+      dataType: 'script',
+      data: {
+        town_id: town_id,
+        item_payer: payer_edrpou,
+        item_recipt: recipt_edrpou,
+        startdate: _start_date,
+        sort_col: _sortCol,
+        sort_dir: _sortDir
+      }
+    });
+  }
 
-    function get_items(d, role) {
-    var town_id = $('#_item_type_payer').data('town-id');
-    var role = role == 'payer' ? 1 : 0;
-      console.log(d);
-      $.ajax({
+  function get_items(type, role) {
+    var town_id = $('#_item_type_payers').data('town-id');
+    $.ajax({
       type: 'post',
       url: "#{modules_classifier_by_type_url}",
       dataType: 'script',
       data: {
         town_id: town_id,
-        type: d,
+        type: type,
         role: role
       }
     });
-    }
-  });
+  }

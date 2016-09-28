@@ -102,16 +102,3 @@
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
     -#.info
-
--#:javascript
-  $(document).ready(function() {
-    $(document).on('click', '#edata_payments th', function() {
-      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
-      var item = $('#_item').val();
-      var sortCol = $(this).attr('data-column');
-      var sortDir = $(this).attr('data-sort-direction');
-      get_data(item, sortCol, sortDir);
-      $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
-    });
-  });
-

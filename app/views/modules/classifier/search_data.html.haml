@@ -10,7 +10,7 @@
   #search-data {
     .form-group {
       float: left;
-      width: calc(100% - 33px);
+      width: 100%;
       .select2-container {
         border: none;
         .select2-choice {
@@ -19,6 +19,25 @@
           background: $search-background;
           border: 1px solid $search-border;
           border-radius: 0;
+          &:before {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: $search-background;
+            width: 33px;
+            background: $search-border;
+            text-align: center;
+            margin: -2px auto;
+          }
+          .select2-chosen {
+            margin-right: 55px;
+          }
+          .select2-search-choice-close {
+            right: 40px;
+          }
           .select2-arrow {
             display: none;
           }
@@ -35,7 +54,7 @@
       border-radius: 0;
       padding: 4px 10px;
     }
-    .btn-switch-role[for="_role_payer"] {
+    .btn-switch-role[for="_role_payers"] {
       &:before {
         content: '\f111';
         font-family: FontAwesome;
@@ -78,39 +97,39 @@
   }
 
 #search-data
-  -#%h1
-    = t ('.header')
-
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
-        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id] },
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] },
         input_html: {'data-town-id' => params['town_id']}, label: false)
-        .input-group-btn.search-button
-          %i.fa.fa-search
       .col-md-5
         .row
           .col-lg-7
-            = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
+            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
           .col-lg-5
-            = link_to modules_classifier_advanced_search_path(@town), class: 'btn btn-primary advanced_search_button', remote: true do
+            = link_to modules_classifier_advanced_search_url(@town), class: 'btn btn-primary advanced_search_button', remote: true do
               %i.fa.fa-cogs
-              = t('.advanced_search')
+              = t('.advanced_button')
 
     .results
 
 :javascript
   $(document).ready(function() {
+
     $('#_item').select2({
+      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
+    }).on('change', function(data) {
+      get_data(data.val);
     });
-    $('#_item').on('change', function(data) { get_data(data.val); });
+
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
       get_data(item);
     });
-    $(document).on('click', '#edata_payments th', function() {
+
+    $('.results').on('click', '#edata_payments th', function() {
       $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
       var item = $('#_item').val();
       var sortCol = $(this).attr('data-column');
@@ -120,7 +139,7 @@
     });
   });
 
-  function get_data(d, _sortCol, _sortDir) {
+  function get_data(edrpou, _sortCol, _sortDir) {
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
 
@@ -130,7 +149,7 @@
       dataType: 'script',
       data: {
         town_id: town_id,
-        item: d,
+        item: edrpou,
         role: role,
         sort_col: _sortCol,
         sort_dir: _sortDir
