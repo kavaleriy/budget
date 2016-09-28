@@ -2019,8 +2019,8 @@ if (typeof module !== undefined) module.exports = polyline;
 	L.Routing.OSRM = L.Class.extend({
 		options: {
 			//WARN: 'The OSRM Demo server has moved to API Version 5.'
-			// serviceUrl: 'https://router.project-osrm.org/viaroute',
-			serviceUrl: 'http://router.project-osrm.org/route/v1/driving/',
+			// serviceUrl: 'http://router.project-osrm.org/route/v1/driving/',
+			serviceUrl: 'https://router.project-osrm.org/viaroute',
 			timeout: 30 * 1000,
 			routingOptions: {},
 			polylinePrecision: 6
@@ -2212,22 +2212,23 @@ if (typeof module !== undefined) module.exports = polyline;
 
 
 			//WARN: 'The OSRM Demo server has moved to API Version 5.'
-			// computeAlternative = computeInstructions =
-			// 	!(options && options.geometryOnly);
+			//TODO: need fix show road line
+			// return this.options.serviceUrl +
+			// 	locs.join(';') + '?' +
+			// 	'geometries=geojson';
+			
+			computeAlternative = computeInstructions =
+				!(options && options.geometryOnly);
 
-			// return this.options.serviceUrl + '?' +
-			// 	'instructions=' + computeInstructions.toString() + '&' +
-			// 	'alt=' + computeAlternative.toString() + '&' +
-			// 	(options.z ? 'z=' + options.z + '&' : '') +
-			// 	locs.join('&') +
-			// 	(this._hints.checksum !== undefined ? '&checksum=' + this._hints.checksum : '') +
-			// 	(options.fileformat ? '&output=' + options.fileformat : '') +
-			// 	(options.allowUTurns ? '&uturns=' + options.allowUTurns : '');
-
-			return this.options.serviceUrl +
-				locs.join(';') + '?' +
-				'geometries=geojson';
-
+			return this.options.serviceUrl + '?' +
+				'instructions=' + computeInstructions.toString() + '&' +
+				'alt=' + computeAlternative.toString() + '&' +
+				(options.z ? 'z=' + options.z + '&' : '') +
+				locs.join('&') +
+				(this._hints.checksum !== undefined ? '&checksum=' + this._hints.checksum : '') +
+				(options.fileformat ? '&output=' + options.fileformat : '') +
+				(options.allowUTurns ? '&uturns=' + options.allowUTurns : '');
+			
 		},
 
 		_locationKey: function(location) {
