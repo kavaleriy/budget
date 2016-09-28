@@ -674,11 +674,11 @@ function get_sankey(data, year, percent, rot_file_id, rov_file_id) {
     function get_fond(f) {
         var fond;
         switch (f) {
-            case "1": fond = "Загальний фонд";
+            case "1": fond = I18n.t('sankeys.general_fund');
                 break;
-            case "2": fond = "Власні надходження";
+            case "2": fond = I18n.t('sankeys.own_earnings');
                 break;
-            case "7": fond = "Спеціальний фонд";
+            case "7": fond = I18n.t('sankeys.special_fund');
                 break;
             default:fond = f;
                 break;
