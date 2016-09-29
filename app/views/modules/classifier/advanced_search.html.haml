@@ -150,9 +150,6 @@
         input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false)
       .col-md-1
         = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
-        %br
-        %br
-        = link_to 'back', modules_classifier_search_data_path(@town), :class => 'btn btn-primary', 'data-remote'=>true, class: 'btn btn-default'
 
     #items-list
     .results
