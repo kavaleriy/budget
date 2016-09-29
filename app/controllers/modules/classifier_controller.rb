@@ -95,6 +95,7 @@ module Modules
     end
 
     def search_e_data
+      binding.pry
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
 

@@ -142,18 +142,28 @@
   function get_data(edrpou, _sortCol, _sortDir) {
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
-
-    $.ajax({
-      type: 'get',
-      url: "#{modules_classifier_search_e_data_url}",
-      dataType: 'script',
-      data: {
+    var data = {
         town_id: town_id,
         item: edrpou,
         role: role,
         sort_col: _sortCol,
         sort_dir: _sortDir
-      }
+    };
+    var test = role + '_edrpou';
+    data[test] = edrpou;
+
+    $.ajax({
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
+      dataType: 'script',
+      data: data
+      // data: {
+      //   town_id: town_id,
+      //   item: edrpou,
+      //   role: role,
+      //   sort_col: _sortCol,
+      //   sort_dir: _sortDir
+      // }
     });
   }
 
