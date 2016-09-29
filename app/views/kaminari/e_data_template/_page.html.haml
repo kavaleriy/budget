@@ -1,6 +1,11 @@
+- relation = case
+  - when page.next? then 'next'
+  - when page.prev? then 'prev'
+  - else nil
+
 - if page.current?
   %li.active
-    = content_tag :a, page, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil))
+    = content_tag :a, page, remote: true, rel: relation
 - else
   %li
-    = link_to page, url, remote: remote, rel: (page.next? ? 'next' : (page.prev? ? 'prev' : nil))
+    = link_to page, url, remote: true, rel: relation

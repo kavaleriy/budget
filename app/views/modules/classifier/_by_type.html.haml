@@ -1,0 +1,45 @@
+:scss
+  #edata_items {
+    table {
+      tr {
+        cursor: pointer;
+        opacity: .7;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+-if @items.blank?
+  = t('.no-data')
+-else
+  #edata_items.table-responsive
+    %table.table.table-striped
+      %thead
+        %th
+          =t('.edrpou')
+        %th
+          =t('.org_name')
+        %th
+          =t('.org_name_v')
+        %th
+          =t('.address')
+
+      - @items.each do |item|
+        %tr{'data-edrpou' => item['edrpou'], 'data-name'=>item['pnaz'], 'data-role' => @role}
+          %td= item['edrpou']
+          %td= item['pnaz']
+          %td= item['naz_v']
+          %td= item['adp']
+
+:javascript
+  $(document).ready(function() {
+    $("#items-list").show();
+    $('#edata_items tr').on('click', function() {
+      var role = $(this).data('role');
+      var name = '#_item_' + role;
+      $(name).val($(this).data('edrpou')).trigger('change');
+      $("#items-list").hide();
+    });
+  })

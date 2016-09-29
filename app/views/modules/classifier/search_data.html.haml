@@ -2,7 +2,7 @@
   // init colors
   $button-background: #0c2231;
   $button-border: #0c2231;
-  $button-line: #ffd304;
+  $button-active: #ffd304;
   $button-text: white;
   $search-background: white;
   $search-border: #0c2231;
@@ -10,7 +10,7 @@
   #search-data {
     .form-group {
       float: left;
-      width: calc(100% - 33px);
+      width: 100%;
       .select2-container {
         border: none;
         .select2-choice {
@@ -19,29 +19,69 @@
           background: $search-background;
           border: 1px solid $search-border;
           border-radius: 0;
+          &:before {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: $search-background;
+            width: 33px;
+            background: $search-border;
+            text-align: center;
+            margin: -2px auto;
+          }
+          .select2-chosen {
+            margin-right: 55px;
+          }
+          .select2-search-choice-close {
+            right: 40px;
+          }
           .select2-arrow {
             display: none;
           }
         }
       }
     }
+    .advanced_search_button,
     .btn-switch-role {
       background: $button-background;
       border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
-      width: 110px;
+      min-width: 125px;
       border-radius: 0;
+      padding: 4px 10px;
+    }
+    .btn-switch-role[for="_role_payers"] {
+      &:before {
+        content: '\f111';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role[for="_role_recipt"] {
+      &:before {
+        content: '\f0c8';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role:before {
+      color: $button-text;
     }
     input:checked + .btn-switch-role {
       background: $button-text;
       color: $button-background;
       border: 1px solid $button-border;
-      //text-decoration: underline $button-line;
       &:after {
         content: '';
         display: block;
-        border: 1px solid $button-line;
+        border: 1px solid $button-active;
+      }
+      &:before {
+        color: $button-active;
       }
     }
     .search-button {
@@ -54,65 +94,78 @@
         bottom: 0;
       }
     }
-    .advanced_search_button{
-      background: $button-background;
-      color: $button-text;
-      text-align: center;
-      height: 33px;
-      width: 165px;
-      float: right;
-    }
   }
 
 #search-data
-  -#%h1
-    = t ('.header')
-
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
-        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id] },
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] },
         input_html: {'data-town-id' => params['town_id']}, label: false)
-        .input-group-btn.search-button
-          %i.fa.fa-search
       .col-md-5
         .row
-          .col-xs-8.btn-group
-            = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
+          .col-lg-7
+            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-            = link_to t('.advanced_search'),modules_classifier_advanced_search_path(@town), :class => 'btn btn-primary advanced_search_button', 'data-remote'=>true
+          .col-lg-5
+            = link_to modules_classifier_advanced_search_url(@town), class: 'btn btn-primary advanced_search_button', remote: true do
+              %i.fa.fa-cogs
+              = t('.advanced_button')
 
     .results
+    = render partial: 'layouts/spinner'
 
 :javascript
   $(document).ready(function() {
+
     $('#_item').select2({
+      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
+    }).on('change', function(data) {
+      if(data.val != '') {
+        get_data(data.val);
+      }
     });
-    $('#_item').on('change', function(data) { get_data(data.val); });
+
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
-      get_data(item);
+      if(item != '') {
+        get_data(item);
+      }
     });
 
+    $('.results').on('click', '#edata_payments th', function() {
+      var _this = $(this);
+      $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var item = $('#_item').val();
+      var sort_conf = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_data(item, sort_conf);
+      _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
+    });
   });
 
-  function get_data(d, _sortCol, _sortDir) {
+  function get_data(edrpou, _sort_conf) {
+    $('#spinner-container').show();
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
+    var data = {
+        town_id: town_id,
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+    };
+    data[role + '_edrpous'] = edrpou;
 
     $.ajax({
       type: 'get',
       url: "#{modules_classifier_search_e_data_url}",
+      async: false,
       dataType: 'script',
-      data: {
-        town_id: town_id,
-        item: d,
-        role: role,
-        sort_col: _sortCol,
-        sort_dir: _sortDir
-      }
+      data: data
     });
+    $('#spinner-container').hide();
   }
 
   function sort_direction(attr) {
