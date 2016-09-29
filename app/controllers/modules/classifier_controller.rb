@@ -3,6 +3,39 @@ module Modules
     before_action :town, only: [:search_data, :advanced_search, :by_type]
     respond_to :html, :js, :json
 
+    def search_data
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
+      respond_with(@items, @town)
+    end
+
+    def search_e_data
+      data = sort_e_data
+      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
+      if params['sort_col'].blank?
+        respond_to do |format|
+          format.js { render 'modules/classifier/search_e_data' }
+          format.json { render json: @payments }
+          format.xls { send_data Modules::Classifier.to_xls(@payments) }
+        end
+      else
+        respond_to do |format|
+        format.js { render 'modules/classifier/sort_e_data' }
+        end
+      end
+    end
+
+    def advanced_search
+      @types = Modules::ClassifierType.all
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
+      respond_with(@types, @items)
+    end
+
+    def by_type
+      @items = Modules::Classifier.by_koatuu(@town.koatuu).where(k_form: params["type"]).to_a
+      @role = params["role"]
+      respond_with(@items)
+    end
+
     def import_dbf
       #binding.pry
       unless params[:file_name].nil?
@@ -39,73 +72,6 @@ module Modules
       end
     end
 
-    def search_data
-      # @items = Modules::Classifier.by_town(params["town_id"]).only(:id,:pnaz, :k_form).to_a
-      # @town = Town.find(params["town_id"])
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:id, :pnaz, :edrpou).to_a
-      respond_with(@items, @town)
-    end
-
-    def prepare_data
-      data = {}
-      data['startdate'] = params['startdate'].blank? ? Time.now.months_since(-1).strftime("%d-%m-%Y") : params['startdate']
-      data['enddate'] = Time.now.strftime("%d-%m-%Y")
-      data['payers_edrpous'] = params['payers_edrpous']
-      data['recipt_edrpous'] = params['recipt_edrpous']
-
-      data.delete_if { |key, value| value.blank? }
-      data
-    end
-
-    def get_payments(data)
-      uri = URI.parse('http://api.e-data.gov.ua:8080/api/rest/1.0/transactions')
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
-      request.body = data.to_json
-      JSON.parse(http.request(request).body)['response']['transactions'] rescue {}
-    end
-
-    def sort_e_data
-      # Data
-      data = prepare_data
-      payments_data = get_payments(data)
-
-      # Sort data
-      sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
-      unless payments_data.nil?
-        payments_data.sort_by! do |hash|
-          if sort_col.eql?('amount')
-            hash[sort_col.to_s].to_f
-          else
-            hash[sort_col.to_s]
-          end
-        end
-        payments_data.reverse! unless params['sort_dir'].eql?('asc')
-      end
-
-      # Results
-      payments_data
-    end
-
-    def search_e_data
-      data = sort_e_data
-      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
-
-      if params['sort_col'].blank?
-        respond_to do |format|
-          format.js
-          format.json { render json: @payments }
-          format.xls { send_data Modules::Classifier.to_xls(@payments) }
-        end
-
-      else
-        respond_to do |format|
-        format.js { render 'modules/classifier/sort_e_data' }
-        end
-
-      end
-    end
-
     def all_classifier
       # @towns = Rails.cache.fetch("all_classifier", expiries: 1.month) do
       #   Modules::Classifier.all.group_by{|classf| classf.town_id}.transform_keys do |key|
@@ -137,24 +103,28 @@ module Modules
       # classf.save
     end
 
-
-    def advanced_search
-      @types = Modules::ClassifierType.all
-      # @town =  Town.find(params["town_id"])
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
-
-      respond_with(@types, @items)
-    end
-
-    def by_type
-      # @town = Town.find(params["town_id"])
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).where(k_form: params["type"]).to_a
-      @role = params["role"]
-
-      respond_with(@items)
-    end
-
     private
+
+    def sort_e_data
+      # Data
+      payments_data = ExternalApi::e_data_payments(params['payers_edrpous'], params['recipt_edrpous'], params['startdate'])
+
+      # Sort data
+      sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
+      unless payments_data.nil?
+        payments_data.sort_by! do |hash|
+          if sort_col.eql?('amount')
+            hash[sort_col.to_s].to_f
+          else
+            hash[sort_col.to_s]
+          end
+        end
+        payments_data.reverse! unless params['sort_dir'].eql?('asc')
+      end
+
+      # Results
+      payments_data
+    end
 
     def town
       @town = Town.find(params["town_id"])

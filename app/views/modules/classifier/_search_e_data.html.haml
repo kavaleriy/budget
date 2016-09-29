@@ -8,6 +8,7 @@
       //margin-bottom: 250px;
       thead {
         th {
+        min-width: 90px;
           cursor: pointer;
           opacity: .7;
           &:hover {
@@ -25,6 +26,7 @@
               -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
               transform: rotate(90deg);
               float: left;
+              margin-right: 5px;
             }
           }
         }
@@ -64,15 +66,6 @@
         }
       }
     }
-
-    //.info {
-    //  position: fixed;
-    //  bottom: 0px;
-    //  left: 0;
-    //  width: 100%;
-    //  background-color: #87cefa;
-    //  padding: 15px;
-    //}
   }
 
 -if @payments.blank?
@@ -101,4 +94,3 @@
 
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
-    -#.info

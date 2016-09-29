@@ -130,23 +130,25 @@
     });
 
     $('.results').on('click', '#edata_payments th', function() {
-      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
+      var _this = $(this);
+      $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
       var item = $('#_item').val();
-      var sortCol = $(this).attr('data-column');
-      var sortDir = $(this).attr('data-sort-direction');
-      get_data(item, sortCol, sortDir);
-      $(this).attr('data-sort-direction', sort_direction(sortDir)).addClass('active');
+      var sort_conf = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_data(item, sort_conf);
+      _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
   });
 
-  function get_data(edrpou, _sortCol, _sortDir) {
+  function get_data(edrpou, _sort_conf) {
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
     var data = {
         town_id: town_id,
-        role: role,
-        sort_col: _sortCol,
-        sort_dir: _sortDir
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
     };
     data[role + '_edrpous'] = edrpou;
 

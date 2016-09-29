@@ -112,34 +112,21 @@
           }
         }
       }
-    }
-    .btn-switch-role {
-      background: $button-background;
-      border: 1px solid $button-border;
-      color: $button-text;
-      font-weight: bold;
-      width: 110px;
-      border-radius: 0;
-    }
-    input:checked + .btn-switch-role {
-      background: $button-text;
-      color: $button-background;
-      text-decoration: underline $button-line;
-    }
-    .search-button {
-      background: $button-background;
-      color: $button-text;
-      text-align: center;
-      height: 33px;
-      width: 33px;
-      .fa-search {
-        bottom: 0;
+      .search-button {
+        background: $button-background;
+        color: $button-text;
+        font-weight: bold;
+        border-radius: 0 !important;
+        height: 33px;
       }
     }
   }
   #items-list{
+    margin-bottom: 40px;
+    margin-top: 20px;
     border: 1px solid $search-border;
-    height: 600px;
+    min-height: 50px;
+    max-height: 500px;
     overflow: auto;
     display: none;
   }
@@ -149,7 +136,7 @@
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-3
-        = f.input(:startdate, input_html: {'data-provide' => 'datepicker'}, label: false, placeholder: t('.startdate'))
+        = f.input(:startdate, label: false, placeholder: t('.startdate'))
         = f.input(:enddate, label: false, placeholder: Time.now.strftime("%d-%m-%Y"), disabled: true)
       .col-md-3
         = f.input(:item_type_payers, collection: @types.map{|type| [type.name, type.code]},
@@ -159,12 +146,10 @@
       .col-md-5
         = f.input(:item_payers, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
         input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payers'}, label: false)
-        -#= f.input(:item_payer_edrpou, as: :hidden)
         = f.input(:item_recipt, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
         input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false)
-        -#= f.input(:item_recipt_edrpou, as: :hidden)
       .col-md-1
-        = f.button :submit, t('form.search'), class: 'btn btn-primary', id: 'search'
+        = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
         %br
         %br
         = link_to 'back', modules_classifier_search_data_path(@town), :class => 'btn btn-primary', 'data-remote'=>true, class: 'btn btn-default'
@@ -172,19 +157,16 @@
     #items-list
     .results
 
-
 :javascript
   $(document).ready(function() {
-    // datepicker options
-    var d = new Date();
-    var maxDate = new Date();
-    var minDate = new Date(d.setMonth(d.getMonth() - 3));
-    $.fn.datepicker.defaults.endDate = maxDate;
-    $.fn.datepicker.defaults.startDate = minDate;
-    $.fn.datepicker.defaults.format = "dd-mm-yyyy";
-    $.fn.datepicker.defaults.autoclose = true;
-    $.fn.datepicker.defaults.todayHighlight = true;
-    $.fn.datepicker.defaults.weekStart = 1  ;
+    $('#_startdate').datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+      startDate: '-3m',
+      endDate: 'today',
+      language: '#{I18n.locale}'
+    });
 
     $('#_item_type_payers').select2({
       placeholder: I18n.t('modules.classifier.advanced_search.payer_type_placeholder'),
@@ -209,23 +191,41 @@
     });
 
     $('#_item_type_payers, #_item_type_recipt').on('change', function(data) {
+      $('#_item_' + $(this).data('role')).val('').trigger('change');
       var type = $(this).val();
       var role = $(this).data('role');
       get_items(type, role);
     });
 
     $('#search').on('click', function(){
-      var payer = $('#_item_payers').val();
-      var recipt = $('#_item_recipt').val();
+      var edrpous = {
+        payer: $('#_item_payers').val(),
+        recipt: $('#_item_recipt').val()
+      };
       var start_date = $('#_startdate').val();
-      // _sortCol, _sortDir
-      get_data(payer, recipt, start_date);
-      // get_data($('#_item_payer_edrpou').val(), $('#_item_recipt_edrpou').val());
+      get_data(edrpous, start_date);
+      $("#items-list").fadeOut();
       return false;
+    });
+
+    $('.results').on('click', '#edata_payments th', function() {
+      var _this = $(this);
+      $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var edrpous = {
+        payer: $('#_item_payers').val(),
+        recipt: $('#_item_recipt').val()
+      };
+      var start_date = $('#_startdate').val();
+      var sort_conf = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_data(edrpous, start_date, sort_conf);
+      _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
   });
 
-  function get_data(payer_edrpou, recipt_edrpou, _start_date, _sortCol, _sortDir) {
+  function get_data(edrpous, start_date, _sort_conf) {
     var town_id = $('#_item_payers').data('town-id');
     $.ajax({
       type: 'get',
@@ -233,11 +233,11 @@
       dataType: 'script',
       data: {
         town_id: town_id,
-        payers_edrpous: payer_edrpou,
-        recipt_edrpous: recipt_edrpou,
-        startdate: _start_date,
-        sort_col: _sortCol,
-        sort_dir: _sortDir
+        payers_edrpous: edrpous.payer,
+        recipt_edrpous: edrpous.recipt,
+        startdate: start_date,
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
       }
     });
   }
@@ -254,4 +254,13 @@
         role: role
       }
     });
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
   }
