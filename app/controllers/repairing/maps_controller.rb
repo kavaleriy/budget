@@ -34,22 +34,20 @@ module Repairing
     end
 
     def geo_json
-      @geoJsons = []
-      town = params[:town]
-      repairings = Repairing::Repair
+      repairings = Repairing::Repair.valid_repairs
+      geo_jsons = []
+      # if params[:town] not empty filter array by town
+      repairings.select!{|rep| rep['layer']['town_id'].to_s.eql?(params[:town]) } unless params[:town].blank?
       repairings.each { |repair|
-        unless repair.layer.nil?
-          next unless repair.layer.town_id.to_s == town || town == ''
+        unless repair['layer_id'].nil?
           repair_json = Repairing::GeojsonBuilder.build_repair(repair)
-          @geoJsons << repair_json if repair_json
+          geo_jsons << repair_json if repair_json
         end
       }
-
       result = {
                 "type" => "FeatureCollection",
-                "features" => @geoJsons
+                "features" => geo_jsons
                }
-
       respond_to do |format|
         format.json { render json: result }
       end
