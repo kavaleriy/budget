@@ -37,5 +37,44 @@ module Repairing
       end
     end
 
+    def self.valid_repairs
+      Repairing::Repair.collection.aggregate([
+        {
+            '$lookup'=> {
+                from: 'repairing_layers',
+                localField: 'layer_id',
+                foreignField: '_id',
+                as: 'layer'
+            }
+        },
+        {
+            '$match' =>{
+                '$and' =>
+                    [
+                        {
+                            # check if repair have layer
+                            layer_id: {'$ne' => nil },
+                            # check repair coordinates
+                            coordinates: {'$ne' => nil},
+                        }
+                    ]
+            }
+        },
+        {
+            '$unwind'=> '$layer'
+        },
+        {
+            '$project' => {
+                'coordinates' => 1,
+                'layer_id' => 1,
+                'layer.repairing_category_id' => 1,
+                'layer.town_id' => 1,
+                'repair_date' => 1,
+
+            }
+        }
+    ])
+    end
+
   end
 end
