@@ -92,11 +92,9 @@ class Repairing::Layer
                                                                              'repair_date' => 1,
                                                                          }
                                                                      }
-
-                                                                 ])
+                                                                 # group repairs by layer
+                                                                 ]).group_by{ |rep| rep['layer_id'] }
     # transform repairs key to layer hash and remove layer hash from layers array
-    # group repairs by layer
-    layers_with_repairs..group_by{ |rep| rep['layer_id'] }
     layers_with_repairs.transform_keys!{ |key| (layers.dup - layers.delete_if{ |layer| layer['_id'] == key}).first }
   end
 
