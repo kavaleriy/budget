@@ -199,7 +199,6 @@
       path = "#{request.base_url}"
       query = "#{URI.parse(request.url).query}"
       frame_url = path + '/' + url
-      console.log(frame_url);
       $('.tab-content iframe').attr('src', frame_url)
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
     }
