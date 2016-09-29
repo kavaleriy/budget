@@ -186,7 +186,7 @@
       margin: 15px;
       .modal-content {
         width: 95vw;
-        height: 93vh;
+        //height: 93vh;
         border-radius: 0;
         .modal-header {
           padding: 10px 0;
@@ -291,12 +291,23 @@
     var modal_title = modal_dom.find('.modal-title');
     var modal_body = modal_dom.find('.modal-body');
     $('#e-data').click(function(){
-      modal_title.html('Інформація з порталу E-data');
-      var frame = $('<iframe></iframe>');
-      frame.addClass('e-data-frame');
-      frame.attr('src','/external_api/edata')
-      modal_body.append(frame);
-      modal_dom.modal();
+      var repairId = $(this).parents('#sidebar').data('repair-id');
+
+      $.ajax({
+        url: "#{repairing_e_data_path}",
+        data: { id: repairId },
+        success: function(data){
+          modal_title.html("#{t('repairing.maps.frame.e_data')}");
+          modal_body.html(data);
+          modal_dom.modal();
+        }
+      })
+      // modal_title.html('Інформація з порталу E-data');
+      // var frame = $('<iframe></iframe>');
+      // frame.addClass('e-data-frame');
+      // frame.attr('src','/external_api/edata')
+      // modal_body.append(frame);
+      // modal_dom.modal();
     });
 
     function get_repair_info_modal(){
@@ -472,7 +483,7 @@
       });
 
       $('#q').keypress(function (e) {
-        console.log('#q');
+        // console.log('#q');
         if (e.which == 13) {
           $('#search_btn').trigger("click");
           return false;

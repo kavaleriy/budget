@@ -27,6 +27,9 @@
       }
     }
   }
+  #programs_targeted_program_reason{
+    min-height: 180px;
+  }
   .btn-save {
     padding: 15px 0;
   }
@@ -86,7 +89,7 @@
     .col-xs-12.col-sm-6
       =f.input :main_manager, label: t('.main_manager')
   =f.input :responsible, label: t('.responsible')
-  =f.input :reason, label: t('.reason')
+  =f.input :reason,as: :text, label: t('.reason')
   =f.input :objective, label: t('.objective')
   -#TODO: Try make it easy
   .col-xs-12.data-table
@@ -104,10 +107,12 @@
                 = t('.general_fund')
               %th.numeric.centred
                 = t('.special_fund')
+              %th.numeric.centred
+                = t('.sum')
           %tbody
           -f.object.budget_sum.each do |year|
             %tr
-              %td.numeric.centred{ "colspan" => "3", "data-title" => "#{t('.year')}" }
+              %td.numeric.centred{ "colspan" => "5", "data-title" => "#{t('.year')}" }
                 = year.first + ' ' + t('.year')
             %tr
               %td{ "data-title" => "#{t('.indicate')}" }
@@ -115,48 +120,36 @@
               =f.simple_fields_for :budget_sum do |budget|
                 = budget.simple_fields_for year.first do |budget_year|
                   = budget_year.simple_fields_for :plan do |budget_plan|
-                    -val_p_g_f = (f.object.budget_sum[year.first][:plan][:general_fund].kind_of? String) ? f.object.budget_sum[year.first][:plan][:general_fund].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:plan][:general_fund].to_f
-                    -val_p_s_f = (f.object.budget_sum[year.first][:plan][:general_fund].kind_of? String) ? f.object.budget_sum[year.first][:plan][:special_fund].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:plan][:special_fund].to_f
                     %td.numeric.centred{ "data-title" => "#{t('.general_fund')}" }
-                      =budget_plan.input :general_fund, as: :float, label: false, input_html: { value: val_p_g_f }
+                      =budget_plan.input :general_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:plan,:general_fund) }
                     %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
-                      =budget_plan.input :special_fund, as: :float, label: false, input_html: { value: val_p_s_f }
+                      =budget_plan.input :special_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:plan,:special_fund) }
+                    %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+                      =budget_plan.input :sum, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:plan,:special_fund) }
             %tr
               %td{ "data-title" => "#{t('.indicate')}" }
                 = t('.fact')
               =f.simple_fields_for :budget_sum do |budget|
                 = budget.simple_fields_for year.first do |budget_year|
                   = budget_year.simple_fields_for :fact do |budget_fact|
-                    -val_f_g_s = (f.object.budget_sum[year.first][:fact][:general_sum].kind_of? String) ? f.object.budget_sum[year.first][:fact][:general_sum].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:fact][:general_sum].to_f
-                    -val_f_s_s = (f.object.budget_sum[year.first][:fact][:general_sum].kind_of? String) ? f.object.budget_sum[year.first][:fact][:special_sum].gsub(/[^\d^\.]/, '').to_f : f.object.budget_sum[year.first][:fact][:special_sum].to_f
                     %td.numeric.centred{ "data-title" => "#{t('.general_fund')}" }
-                      =budget_fact.input :general_sum, as: :float, label: false, input_html: { value: val_f_g_s }
+                      =budget_fact.input :general_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:fact,:general_fund) }
                     %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
-                      =budget_fact.input :special_sum, as: :float, label: false, input_html: { value: val_f_s_s }
-  -#TODO: Clear it, if it's doesn't use
-  -#%fieldset
-  -#  %legend
-  -#    -#= t('.budget_sum',year: @year)
-  -#    -#-binding.pry
-  -#  =f.simple_fields_for :budget_sum  do |budget|
-  -#    = budget.simple_fields_for 2016.to_s do |budget_year|
-  -#      = budget_year.simple_fields_for :plan do |budget_plan|
-  -#        =budget_plan.input :general_fund, as: :float,label: t('.general_fund'),value: @program.budget_sum['2016'][:plan][:general_fund]
-  -#        =budget_plan.input :special_fund, as: :float ,label: t('.special_fund'),value: @program.budget_sum['2016'][:plan][:special_fund]
-
-  -#=label_tag 'type_program',t('.new_program')
-  -#=radio_button_tag 'type', 'program'
-  -#=label_tag 'type_subprogram',t('.sub_program')
-  -#=radio_button_tag 'type', 'subprogram',true
-  -#.form-group
-  -#  =f.select :p_id,get_main_programs.map{|m_programs| [m_programs.title,m_programs.id]},label: t('.parent_id'),prompt: t('.choose_p_id')
-  -##tasks_block
-  -#  =f.simple_fields_for :tasks do |tasks|
-  -#    -@program.tasks.each do |task,value|
-  -#      =tasks.simple_fields_for task do |task_form_builder|
-  -#        =task_form_builder.input task,label: t('.task_title'),class: 'task',value: task
-  -#        -value.each do |key,task_value|
-  -#          =task_form_builder.input key,value: task_value,class: 'task'
+                      =budget_fact.input :special_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:fact,:special_fund) }
+                    %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+                      =budget_fact.input :sum, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:fact,:sum) }
+            -#%tr
+            -#  %td{ "data-title" => "#{t('.indicate')}" }
+            -#    Різниця
+            -#  =f.simple_fields_for :budget_sum do |budget|
+            -#    = budget.simple_fields_for year.first do |budget_year|
+            -#      = budget_year.simple_fields_for :differences do |budget_fact|
+            -#        %td.numeric.centred{ "data-title" => "#{t('.general_fund')}" }
+            -#          =budget_fact.input :general_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:differences,:general_fund) }
+            -#        %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+            -#          =budget_fact.input :special_fund, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:differences,:special_fund) }
+            -#        %td.numeric.centred{ "data-title" => "#{t('.special_fund')}" }
+            -#          =budget_fact.input :sum, as: :float, label: false, input_html: { value: correct_budget_sum(f.object.budget_sum, year.first,:differences,:sum) }
 
   .col-xs-12.btn-save
     =f.submit t('save'), class: 'btn btn-primary'
