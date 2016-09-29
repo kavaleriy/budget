@@ -108,7 +108,7 @@
             = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
           .col-lg-5
-            = link_to modules_classifier_advanced_search_url(@town), class: 'btn btn-primary advanced_search_button', remote: true do
+            = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
               %i.fa.fa-cogs
               = t('.advanced_button')
 
@@ -132,6 +132,11 @@
       if(item != '') {
         get_data(item);
       }
+    });
+
+    $('#advanced_search_button').click(function(){
+        var breadcrumbs_title = $.trim($(this).text());
+        addBreadcrumbs(breadcrumbs_title);
     });
 
     $('.results').on('click', '#edata_payments th', function() {
@@ -175,4 +180,21 @@
     else {
       return 'asc';
     }
+  }
+
+  function addBreadcrumbs(title) {
+    var breadcrumbs_list = $('.breadcrumb');
+    var parent_el = breadcrumbs_list.find('li.active');
+    parent_el.children().attr('href', "#{modules_classifier_search_data_path(@town)}").attr('data-remote', "true");
+    parent_el.removeClass('active');
+    var active_li = $('<li></li>').addClass('active');
+    var a_value = $('<a>').html(title);
+    active_li.append(a_value);
+    breadcrumbs_list.append(active_li);
+    // Handheld action 'back'
+    parent_el.children().click(function() {
+      // remove previous <li>
+      parent_el.next().remove();
+      parent_el.addClass('active');
+    });
   }
