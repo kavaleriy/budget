@@ -54,7 +54,12 @@ class Repairing::GeojsonBuilder
     # category = Repairing::Category.find(repair.layer[:repairing_category_id]) if repair.layer && repair.layer[:repairing_category_id]
 
     year = repair['repair_date'] ? repair['repair_date'].year : Date.current.year
-
+    # from maps controller we get BSON::Document in layer
+    # from other place we get BSON::Object
+    # if layer is object than set this layer as repair layer
+    if repair['layer'].class.eql?( BSON::ObjectId )
+      repair['layer'] = repair.layer
+    end
     {
         id: "#{repair['_id']}",
         p_c_id: "#{repair['layer']['repairing_category_id'] if repair['layer_id']}", #parent_category_id
