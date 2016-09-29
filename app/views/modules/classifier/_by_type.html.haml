@@ -35,12 +35,11 @@
 
 :javascript
   $(document).ready(function() {
-
     $("#items-list").show();
     $('#edata_items tr').on('click', function() {
       var role = $(this).data('role');
       var name = '#_item_' + role;
       $(name).val($(this).data('edrpou')).trigger('change');
       $("#items-list").hide();
-    })
+    });
   })

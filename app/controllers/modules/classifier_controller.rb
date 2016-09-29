@@ -37,7 +37,6 @@ module Modules
     end
 
     def import_dbf
-      #binding.pry
       unless params[:file_name].nil?
         data = File.open(params[:file_name].tempfile)
         widgets = DBF::Table.new(data, nil, 'cp866')
@@ -53,7 +52,6 @@ module Modules
             end
           end
         end
-        #binding.pry
         # Zip::File.open('foo.zip') do |zip_file|
         #   # Handle entries one by one
         #   zip_file.each do |entry|
