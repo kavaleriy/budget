@@ -19,8 +19,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     taxonomy_rov = TaxonomyRov.owned_by(@town.to_s).first
     sankey_url = widgets_sankey_by_taxonomies_path(taxonomy_rot.id,taxonomy_rov.id) unless taxonomy_rov.nil? || taxonomy_rot.nil?
 
-    @tabs << { title: t('public.towns.budget.tab_rot'), url: "/widgets/visify/bubbletree/#{taxonomy_rot.id}"} if taxonomy_rot
-    @tabs << { title: t('public.towns.budget.tab_rov'), url: "/widgets/visify/bubbletree/#{taxonomy_rov.id}"} if taxonomy_rov
+    @tabs << { title: t('public.towns.budget.tab_rot'), url: widgets_bubbletree_path(taxonomy_rot.id)} if taxonomy_rot
+    @tabs << { title: t('public.towns.budget.tab_rov'), url: widgets_bubbletree_path(taxonomy_rov.id)} if taxonomy_rov
     @tabs << { title: t('public.towns.budget.tab_sankey'), url: sankey_url } if sankey_url
 
     @tabs.first[:cname] = 'active'
