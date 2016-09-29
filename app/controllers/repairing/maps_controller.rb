@@ -35,7 +35,6 @@ module Repairing
 
     def geo_json
       repairings = Repairing::Repair.valid_repairs
-      binding.pry
       geo_jsons = []
       # if params[:town] not empty filter array by town
       repairings.select!{|rep| rep['layer']['town_id'].to_s.eql?(params[:town]) } unless params[:town].blank?
