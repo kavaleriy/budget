@@ -1,0 +1,127 @@
+:scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: white;
+  $dark-yellow: #ffd304;
+
+  .tabs {
+    padding: 0;
+    margin-bottom: 15px;
+    #main-navs {
+      .tabs-wrapper {
+        padding: 0;
+        > li + li {
+          margin-left: 0;
+        }
+        li {
+          padding: 15px;
+          &:hover,
+          &:focus {
+            background-color: lightgrey;
+            a {
+              background-color: $white;
+              .select2-container {
+                a {
+                  .select2-chosen {
+                    color: $dark-blue;
+                  }
+                  .select2-arrow {
+                    &::before {
+                      color: $dark-yellow;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          a {
+          border-radius: 0;
+          &:hover,
+          &:focus {
+            border-radius: 0;
+          }
+            p {
+              margin: 0;
+            }
+          }
+        }
+        .active {
+          background-color: lightgrey;
+          a {
+            background-color: $white;
+            .select2-container {
+              a {
+                .select2-chosen {
+                  color: $dark-blue;
+                }
+                .select2-arrow {
+                  &::before {
+                    color: $dark-yellow;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .btn-block-visuals {
+        margin-left: 15px;
+        .visuals {
+          position: absolute;
+          font-family: 'Lato', sans-serif;
+          font-weight: normal;
+          background: $dark-blue;
+          padding: 7px 25px 7px 7px;
+          margin: 15px 0;
+          color: $white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            box-shadow: 0 0 10px 2px $dark-yellow;
+            transition: .3s;
+          }
+          .lg {
+            position: absolute;
+            font-size: 2.2rem;
+            right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: 250px) and (max-width: 991px) {
+    .tabs{
+      #main-navs {
+        .btn-block-visuals {
+          margin: 0;
+          padding: 15px 0 0 0;
+          .visuals {
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+
+.col-xs-12.tabs
+
+  %ul.nav.nav-pills#main-navs
+
+    .row.col-xs-12.col-md-10.tabs-wrapper
+      - indicators.each do |indicator_group|
+
+        %li.col-xs-12.col-md-3.select
+          %a{ href: "#tab-#{indicator_group.first}",
+                  'aria-controls' => "#{indicator_group.first}",
+                  role: 'tab',
+                  'data-toggle' => 'tab' }
+            = render partial: 'programs/targeted_programs/program/indicators_select',
+            locals: { category: indicator_group.first, data: indicator_group.last }
+
+    .col-xs-12.col-md-2.btn-block-visuals
+      = link_to fa_icon('caret-right',
+                        class: 'lg',
+                        text: t('.visuals')),
+                '#',
+                class: 'visuals'

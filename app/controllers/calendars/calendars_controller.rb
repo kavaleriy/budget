@@ -4,7 +4,6 @@ module Calendars
 
     layout 'application_admin'
 
-    before_action :set_action_type_if_empty # callback for initialize all no indicated action_type in calendar_action
     before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
     before_action :authenticate_user!, only: [:show, :edit]
@@ -26,14 +25,12 @@ module Calendars
       @city_action.store('analysis',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_city.to_a)
       @city_action.store('discussion',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_city.to_a)
       @city_action.store('execution',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_city.to_a)
-      @city_action.store('other',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_city.to_a)
 
       @people_action = {}
       @people_action.store('folding',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_FOLDING).action_people.to_a)
       @people_action.store('analysis',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_ANALYSIS).action_people.to_a)
       @people_action.store('discussion',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_DISCUSSION).action_people.to_a)
       @people_action.store('execution',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_EXECUTION).action_people.to_a)
-      @people_action.store('other',CalendarAction.action_by_type(CalendarAction::ACTION_TYPE_NO_INDICATED).action_people.to_a)
 
       respond_to do |format|
         format.html{}
@@ -63,7 +60,7 @@ module Calendars
 
       unless current_user.nil?
         @calendar.author = current_user.email
-        @calendar.town = current_user.town
+        @calendar.town = current_user.town.gsub(/,.*/, '')
       end
 
       respond_to do |format|
@@ -84,7 +81,8 @@ module Calendars
       unless current_user.nil?
         if @calendar.is_test.nil?
           new_params[:author] = current_user.email
-          new_params[:town] = current_user.town
+          # Ad hoc: Get town name without name area
+          new_params[:town] = current_user.town.gsub(/,.*/, '')
         end
       end
 
@@ -110,15 +108,6 @@ module Calendars
     end
 
     private
-
-      def set_action_type_if_empty
-        no_indicate_type = CalendarAction.action_by_type(nil).to_a
-        no_indicate_type.each do |indicate|
-          indicate.action_type = CalendarAction::ACTION_TYPE_NO_INDICATED
-          indicate.set_default_color
-          indicate.save
-        end
-      end
       # Use callbacks to share common setup or constraints between actions.
       def set_calendar
         @calendar = Calendar.find(params[:id])

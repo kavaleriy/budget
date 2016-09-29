@@ -82,7 +82,7 @@
   //   New info_panel
   .leaflet-popup{
     bottom: 0 !important;
-    left: -107px !important;
+    //left: -107px !important;
   }
   .leaflet-popup-content-wrapper{
     border-radius: 0;
@@ -110,7 +110,10 @@
     background: #ffffff;
     border: 1px solid #7D94A4;
   }
-
+  .leaflet-popup-tip-container{
+    // 20px it is half of .leaflet-popup-tip-container
+    margin-left: calc(50% - 20px);
+  }
 
 :scss
   #map {
@@ -178,7 +181,7 @@
       if (options.bounds) map.fitBounds(options.bounds);
 
 
-      L.Icon.Default.imagePath = 'leaflet/images'
+      L.Icon.Default.imagePath = '/assets/leaflet/images'
 
 
       function setBrowserLocation() {
@@ -316,6 +319,8 @@
       }
 
       function getPointToLayer(feature, latlng) {
+        //  TODO: feature.properties get not valid data for road
+        // Need Ad hoc for show road icon on repairing map (models/repairing/geojson_builder, 43 line)
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -578,6 +583,35 @@
       $('#sidebar').hide('fast');
     }
 
+    function addAdditionalLayer(tileName){
+      var additionalTilelayer;
+
+      switch(tileName){
+        case 'uaRoads':
+         additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
+        break;
+        case 'navizor':
+          additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
+        break;
+        default: throw ('Unexpected tile name')
+      }
+      map.addLayer(additionalTilelayer)
+    }
+
+    function removeAdditionalLayer(tileName){
+      // loop all layers
+      map.eachLayer(function(layer) {
+        // if layer is Tile Layer
+        if( layer instanceof L.TileLayer ) {
+          // if tile layer have option by tile name
+          if(layer.options[tileName]){
+            // remove this layer from map
+            map.removeLayer(layer)
+          }
+        }
+      });
+    }
+
     initMap();
     initPopup();
     addGeoSearch()
@@ -598,6 +632,8 @@
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
       showSidebar: showSidebar,
-      hideSidebar: hideSidebar
+      hideSidebar: hideSidebar,
+      addAdditionalLayer: addAdditionalLayer,
+      removeAdditionalLayer: removeAdditionalLayer
     }
   }

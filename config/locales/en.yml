@@ -19,7 +19,6 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-
 en:
 #Begin. [ Controllers ]
   budget_news:
@@ -32,6 +31,12 @@ en:
   page_containers:
     create:
       success: "Page was successfully created!"
+  targeted_programs:
+    import:
+      success: 'File successfully downloaded!'
+      error: 'Error loading file. Check file'
+    destroy:
+      success: 'File deleted successfully!'
 #End. [ Controllers ]
   found_docs: 'Found docs'
   choose_calendar: "Calendar"
@@ -113,6 +118,39 @@ en:
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
+  devise:
+    sessions:
+      new:
+        title: "Registration"
+        legend: "Works in the local council and want to create an interactive visualization of the budget of the city, district or region?"
+        register: "Back to register"
+      form:
+        title: "Log in"
+        email: "Email"
+        password: "Password"
+        remember: "Remember me"
+        forgot: "forgot?"
+        log_in: "Log in"
+    passwords:
+      new:
+        sign: "Enter"
+        register: "Registration"
+      form:
+        title: "Forgot password?"
+        email: "Email"
+        instructions: "Get instructions"
+    registrations:
+      new:
+        warn: "Warning!"
+        text: "Account only allows viewing of information. For full access, your account must be activated for this contact administrator"
+        name: "Full Name"
+        org: "Company / Institution"
+        email: "Email"
+        phone: "Phone"
+        pass: "Password"
+        pass_conf: "Confirm password"
+        town: "Town"
+        reg: "Registration"
   towns:
     index:
       add_town: 'Add town'
@@ -151,7 +189,7 @@ en:
       logout: "Logout"
       login: "Login"
       subscribers: "E-mail subscription"
-      taxonomies: "Visuals"
+      taxonomies: "Visualizations"
       keytownmarks: "Compare key town indicators"
       townmarksdictionary: "Town indicators dictionary"
       documentation_links: "Useful links"
@@ -164,7 +202,7 @@ en:
       pdf_budgets: "Public budgets"
     navbar:
       navbar:
-        application_title: "Municipal budget - beta"
+        application_title: "Open budget - beta"
         edit_profile: "Edit profile"
         logout: "Logout"
         authorization: "Authorization"
@@ -212,6 +250,11 @@ en:
       lang: "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5"
       like: "Like"
       share: "Share"
+
+    no_data_yet:
+      sorry: "Content not available!"
+      no_content: "Data continues filling content. Please try again later..."
+
   form:
     save: "Save"
     cancel: "Cancel"
@@ -229,6 +272,8 @@ en:
     load: "Load"
     title: "Title"
     value: "Value"
+    period: "Period"
+    town: "Town"
     new_document: "New document"
     new_link: "New link"
     uploaded_documents: "Uploaded documents"
@@ -240,6 +285,7 @@ en:
     show: "Show"
     search: "Search"
     description: "Description"
+    choose_file: "Choose file"
   subscribers:
     index:
       title: "Subscribers"
@@ -249,6 +295,7 @@ en:
       title: "New subscriber"
     show:
       title: "Subscription"
+  taxonomy: "Visualization"
   placeholder_select2: "Choose or create new visualization"
   budget_files:
 
@@ -287,7 +334,7 @@ en:
       upload_vz_file: "Download VZ*.ZIP"
       upload_ft_file: "Download revenue fact FT*"
       upload_vd_file: "Download expenditures fact VD*"
-      upload_fz_file: "Changes to plan FZ*"
+      upload_fz_file: "Changes to plan FZ/RZ*"
       search_town: "town/district/region"
       type_select:
               type: "type"
@@ -321,6 +368,7 @@ en:
       radio_execution: "Execution"
       radio_other: "Other"
       radio_no_indicated: "No indicated"
+      responsible: "Responsible"
     edit:
       title: "Edit actions"
     index:
@@ -474,6 +522,7 @@ en:
           to: "to..."
           city: "Enter the city..."
           type: "Enter the type of the document..."
+          description: "Enter a description..."
       search_results:
         from: "from"
         to: "on"
@@ -632,15 +681,13 @@ en:
         attachments: "Attachments"
         tab_gantt: "Projects"
         funds_spend: "Funds spent on the program:"
-
-        #        new
-
-        group_indicators: 'Group of indicates'
-        main_target: 'Main target'
-        responsible: "Responsible for execution"
-        main_manager: 'Main manager'
-        reason: 'Reason'
+        year: 'year'
       form:
+        year: 'year'
+        type: 'Type'
+        plan: 'Plan'
+        fact: 'Fact'
+        indicate: 'Indicate'
         general_fund: 'General fund'
         special_fund: 'Special fund'
         title: 'Title'
@@ -663,13 +710,60 @@ en:
         term: "Period of program execution"
         phase: "phase of program execution"
         add_phase: "Press + button to add a phase of program execution"
-        budget_sum: "The planned budget for the program: %{year} year"
+        budget_prog: "Budget for the program:"
         main_manager: 'Main manager'
       program:
         amounts:
-          done: 'Done'
+          done: 'Done: '
           remains: 'Remains'
-          planned: 'Planned'
+          planned: 'Planned: '
+        description:
+          main_manager: 'Main manager'
+          responsible: "Responsible for execution"
+          reason: 'Reason'
+          main_target: 'Main target'
+        indicators:
+          group_indicators: 'Group of indicates'
+        indicators_tabs:
+          visuals: 'Visualization program'
+        indicators_select:
+          expense: 'Costs'
+          product: 'Product'
+          efective: 'Efficiency'
+          quality: 'Quality'
+        gantt:
+          main-title: 'Gantt Chart'
+      data_table_header:
+        title: 'Title'
+        file: 'File'
+        plan: 'Plan'
+        fact: 'Fact'
+        date-updated: 'Updated at'
+        town-title: 'Town'
+        author: 'Author'
+        active: 'Status'
+        actions: 'Actions'
+      data_table_body:
+        title: 'Title'
+        file: 'File'
+        plan: 'Plan'
+        fact: 'Fact'
+        date-updated: 'Updated at'
+        town-title: 'Town'
+        author: 'Author'
+        active: 'Status'
+        actions: 'Actions'
+        sure_dialog: 'Are you sure?'
+      town_programs:
+        list: 'The list of programs'
+        division: 'Distribution programs'
+        selects:
+          year-placeholder: 'year'
+        program_list:
+          done: 'Implementation'
+          plan: 'Plan'
+          more: 'More'
+          show: 'Show'
     indicator:
       group_name:
         expense: 'Expense'
@@ -727,21 +821,24 @@ en:
     towns:
       show:
         choose_town: 'Find town'
+        click: 'Click to copy'
+        copied: 'Copied!'
+        failed: 'Failed!'
       portfolio:
-        budget_compare: 'Budget compare'
+        budget_compare: 'Budget comparison'
         detail: "more"
         description: "Description"
-        budget: "City budget"
-        programs: "City programs"
-        indicators: "Key activity"
+        budget: "Municipal Budget"
+        programs: "Budget Programs"
+        indicators: "Key Performance Indicators"
         keys: "Key indicators"
         calendar: "Budget calendar"
         sankey: "Revenues and expences correlation"
-        repair: "Repairing map"
+        repair: "Maintenance Map"
         key_docs: "Key documents"
         purchase: "Check state procurements"
         prozoroo: "Prozorro"
-        edata: "Portal of public finances"
+        e_data: "Portal of public finances"
 #        programs_path: "/programs/towns"
 #        indicators_path: "/indicate/taxonomies"
 #        keys_path: "/key_indicate_map/indicators/get"
@@ -755,7 +852,7 @@ en:
         documents: "Documents"
         links: "Useful links"
         town_links: "Links"
-        pub_budget: "Public budget"
+        pub_budget: "Citizens budget"
       map_instruction: "Click on the region to go to her profile. Or select a city in the dropdown list below to get to the profile of the city."
       towns_select: "Go to the profile of the city:"
       budget:
@@ -772,6 +869,17 @@ en:
         view: "View"
         dload: "Download"
         drop: "Delete"
+        preambule:
+          first_paragraph_about_open_budget: "Public budget - a clear form of presentation of budget documents and the main results
+                                              of their implementation. He called in an accessible form and accessible language give
+                                              citizens an understanding of the key aspects of the formation, performance results and
+                                              monitoring of municipal budget. Public budget provides a brief overview of the key documents
+                                              of the city and the main results of its operations in terms of their usefulness for the average
+                                              citizen. Performance of the city is not necessarily a direct result of the city council or its
+                                              executive bodies, but significantly affect the lives of citizens."
+          second_paragraph_about_open_budget: "Public budget contributes to the transparency and accessibility of basic budget information,
+                                               the performance of local authorities when anyone becomes clear how the municipality provides
+                                               the accumulation, distribution and use of the municipal budget."
   sankeys:
     get_sankey: "Get sankey"
     not_found: "Sankeys not found"
@@ -920,6 +1028,9 @@ en:
           edit: "Edit"
           delete: "Delete"
           errors: "Required fields"
+          all_books: "All books"
+          without_category: "Without category"
+          download: "Download"
         show:
           book_look: "Show book"
           link: "Link"
@@ -938,6 +1049,10 @@ en:
           edit_book: "Editing book"
 
   modules:
+    classifier:
+        search_data:
+          payer: "Payer"
+          recipt: "Recipient"
     budget_news:
         index:
           choose_date: "Chose the date"
@@ -1016,6 +1131,7 @@ en:
         edit_header: 'Edit partner'
         message_for_admin: 'To look perfect partner logos on the front page of their size should be 166 * 100px or with the appropriate ratio.'
         order_prompt: 'Select order logo'
+        url: "Link for logo"
     banners:
       action_messages:
         create:
@@ -1033,7 +1149,7 @@ en:
         message_for_admin: 'To better display the banner should be 360 * 200px or with the appropriate ratio.'
         title: 'Title'
         upload_img: 'Upload picture'
-        url_img: 'Link to picture'
+        url_img: 'Link to banner'
         order: 'Order'
         order_prompt: 'Specify the display order'
         show: 'Show?'
@@ -1114,6 +1230,7 @@ en:
         category: "Enter category of work..."
         town: "Enter town..."
         description: "Detailed description layer..."
+        calculate_coordinates: "Calculate coordinates roads"
       update:
         success: 'Data was updated'
         error: 'Sorry, something went wrong'
@@ -1137,6 +1254,8 @@ en:
         add_category: "Add category"
         edit_category: "Edit category"
         category: "Category"
+        coordinates: "Coordinates"
+        date_placeholder: "YYYY.MM.DD"
     maps:
       info_popup:
         more: 'More'
@@ -1185,6 +1304,8 @@ en:
         e_data: "E-data"
         prozzoro: "ProZorro"
         information: "Information"
+      embed_code:
+        scale: "Scale"
   footer: "UNDP and Internews Network in Ukraine"
   footer:
     about_portal:
@@ -1201,6 +1322,7 @@ en:
       plan: "plan"
       fact: "fact"
   description: "Description"
+  last_update: "Last update: "
   currencies:
       index:
         head: "Reference currencies"
@@ -1232,6 +1354,11 @@ en:
   drag_file: "Drop files"
   select_from_list: "or pick from a list"
   embed: "Embed code"
+  select2:
+    formatNoMatches: "No matches found"
+    formatInputTooShort_input: "Please enter more than "
+    formatInputTooShort_characters: " characters"
+    formatSearching: "Search..."
   name: "Name"
   export: "Export"
   aggregated: "Aggregated"
@@ -1254,6 +1381,7 @@ en:
     new:
       title: "Download revenue FT"
   year: "Year"
+  lower_year: "year"
   messages_x-editable:
     need_name_file: "You must specify the file name!"
     need_comment: "You must provide a comment!"
@@ -1279,7 +1407,7 @@ en:
         e_data: "E-data"
         budget_calendar: "Budget calendar"
         key_figures: "Key figures"
-      main_title: "VISUALISATION SYSTEM «MUNICIPAL BUDGET»"
+      main_title: "VISUALISATION SYSTEM «OPEN BUDGET»"
       text_preamble: "Helping citizens understand budget information"
       button_try: "TRY IT NOW"
       button_soon: "SOON"
@@ -1287,12 +1415,12 @@ en:
       project_news: "Project news"
       our_partners: "Our partners"
     footer:
-      footer-text: 'Portal Municipal Budget established in the Center for Political Studies and Analysis
+      footer-text: 'Portal Open Budget established in the Center for Political Studies and Analysis
                     with participation of the EU Delegation to Ukraine, the International Fund "Renaissance",
                     and UNDP in Ukraine under license from Creative Commons With attribution - Non-profit -
                     Dissemination under the same conditions 4.0 International'
       based_code: "Based on the code of"
       rules: "The rights extending beyond this license are available at"
-  town_profile:
-    visualization: "Visualization"
-    based_code: "Based on the code of "
+    town_profile:
+      visualization: "Visualization"
+      based_code: "Based on the code of "

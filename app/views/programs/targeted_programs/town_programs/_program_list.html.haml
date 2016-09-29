@@ -1,0 +1,222 @@
+:scss
+  //init colors
+  $dark-blue: #0c2231;
+  $white: #ffffff;
+  $dark-yellow: #ffd304;
+
+  .list-wrapper {
+    padding: 0;
+    .row {
+      margin: 0;
+      > div {
+        padding-left: 0;
+      }
+    }
+    .table-titles,
+    .program-data {
+      > div {
+        text-align: center;
+        font-weight: normal;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.4rem;
+        text-transform: none;
+      }
+    }
+    .table-titles {
+      padding: 15px 0 40px 0;
+      .more {
+        text-align: right;
+      }
+    }
+    .program-data {
+      padding-bottom: 15px;
+      .main-indicators {
+        padding-left: 15px;
+        border-left: 3px solid $dark-blue;
+        .program-title {
+          text-align: left;
+          font-size: 1.8rem;
+          font-weight: 500;
+          line-height: 1;
+        }
+        .fact {
+          .progress {
+            margin: 0;
+            border: 1px solid $dark-blue;
+            border-radius: 2px;
+            height: 22px;
+            .progress-bar {
+              background-color: $dark-blue;
+              p {
+                margin: 0;
+              }
+              .bar-left {
+                color: $white;
+              }
+              .bar-center {
+                position: absolute;
+                /* font size 22 px */
+                left: calc(50% - 11px);
+                color: $dark-blue;
+                font-weight: bold;
+              }
+
+            }
+          }
+        }
+        .btn-more {
+          .more {
+            color: $dark-blue;
+            float: right;
+            span {
+              i:nth-child(2) {
+                color: $white;
+                font-size: 24px;
+              }
+            }
+          }
+        }
+      }
+      .program-description {
+        padding: 25px 15px 0 15px;
+        border-left: 3px solid $dark-blue;
+        text-align: left;
+        display: none;
+      }
+      .btn-show {
+        display: none;
+        .show {
+          text-transform: lowercase;
+          background: $dark-blue;
+          padding: 5px 0;
+          color: $white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            box-shadow: 0 0 10px 2px $dark-yellow;
+            transition: .3s;
+          }
+        }
+      }
+    }
+    .active {
+      .main-indicators {
+        .btn-more {
+          .more{
+            span {
+              i:nth-child(2) {
+                transform: rotate(180deg);
+                transition: .5s;
+              }
+            }
+          }
+        }
+      }
+      .program-description {
+        display: block;
+      }
+      .btn-show {
+        display: block;
+      }
+    }
+    .gray {
+      margin: 0 15px 20px 20px;
+      border-color: $dark-blue;
+      opacity: .3;
+    }
+  }
+
+.col-xs-12.list-wrapper
+  .row.table-titles
+    .col-xs-2.col-xs-offset-7
+      = t('.done')
+    .col-xs-2.plan
+      = t('.plan')
+    .col-xs-1.more
+      = t('.more')
+
+  -programs.each do |p|
+
+    -#calculate value of plan done
+    -val = calc_percentage(p.budget_sum.values.first['plan']['sum'], p.budget_sum.values.first['fact']['sum']).to_i
+    -#fix titles color
+    -bar_class = (val < 15) ? 'bar-center' : 'bar-left'
+
+    .row.program-data
+      .row.main-indicators
+
+        .col-xs-7.program-title
+          = p.title unless p.title.nil?
+
+        .col-xs-2.fact
+          .progress
+            .progress-bar{ 'aria-valuemax' => '100',
+                           'aria-valuemin' => '0',
+                           'aria-valuenow' => "#{val}",
+                           role: 'progressbar',
+                           style: 'width: ' + "#{val}%" + ';' }
+              %p{ class: "#{bar_class}" }
+                = "#{val}%"
+
+        .col-xs-2.plan
+          = p.budget_sum.values.first['plan']['sum'].to_i unless p.budget_sum.values.nil?
+
+        .col-xs-1.btn-more
+          = link_to fa_stacked_icon('caret-down',
+                                    base: 'square',
+                                    class: 'lg'),
+                    '#',
+                    class: 'more'
+
+      .col-xs-12.program-description
+        = p.objective unless p.objective.nil?
+
+      .col-xs-12.btn-show
+        = link_to t('.show'),
+                  programs_targeted_program_path(p),
+                  data: { title: p.title },
+                  remote: true,
+                  class: 'show col-xs-2 col-xs-offset-10'
+
+    %hr.gray
+
+:javascript
+  $(document).ready(function() {
+    $('.program-data').first().addClass('active');
+    $('.more').on('click', function() {
+      $('.program-data').toggleClass('active');
+    });
+
+    $('.show').on('click', function() {
+      // get program title from data atrebutes
+      var program_title = $(this).data('title');
+      // path parent action 'town_programs'
+      var parent_href = "#{programs_town_targeted_programs_path}";
+      // get DOM element
+      var breadcrumbs_list = $('.breadcrumb');
+      // get active element and use it as parant <li>
+      var parent_el = breadcrumbs_list.find('li.active');
+      // add href to action 'town_programs'
+      // and
+      // attribute to link 'remote: true' to use ajax
+      parent_el.children().attr('href', parent_href).attr('data-remote', "true");;
+      // remove class 'active'
+      parent_el.removeClass('active');
+      // create new DOM element
+      // and
+      // set class 'active'
+      var active_li = $('<li></li>').addClass('active');
+      // create new a dom and set html
+      var a_value = $('<a>').html(program_title);
+      // add tag <a> into tag <li>
+      active_li.append(a_value);
+      // add DOM element <li> to 'breadcrumbs'
+      breadcrumbs_list.append(active_li);
+      // Handheld action 'back'
+      parent_el.children().click(function() {
+        // remove previous <li>
+        parent_el.next().remove();
+        parent_el.addClass('active');
+      })
+    });
+  });

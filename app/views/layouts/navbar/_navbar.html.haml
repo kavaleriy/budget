@@ -29,7 +29,7 @@
           margin: 0;
           top: 25px;
           bottom: 0;
-          right: 0;
+          left: 45px;
           font-size: 14px;
           text-decoration: none;
           font-family: 'Lato', sans-serif;
@@ -516,7 +516,6 @@
         - @menu.each do |key,value|
           %li.dropdown
             %a.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-              -#-binding.pry
               = get_header_by_locale(key)
               %span.caret
             %ul.dropdown-menu{'role' => 'menu'}

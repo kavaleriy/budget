@@ -13,7 +13,7 @@ class CompareTaxonomiesController < ApplicationController
 
   def stub_data
     @towns_with_tax_rov = TaxonomyRov.get_active_for_all_towns
-    # binding.pry
+
     @towns_with_tax_rot = TaxonomyRot.get_active_for_all_towns
 
     @current_year = Date.current.year
@@ -26,6 +26,7 @@ class CompareTaxonomiesController < ApplicationController
     stub_data
     respond_to do |format|
       format.js
+      format.html { render file: 'compare_taxonomies/index', layout: 'visify'}
     end
   end
 

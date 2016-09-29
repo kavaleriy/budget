@@ -10,6 +10,12 @@ uk:
   page_containers:
     create:
       success: "Сторінку успішно створено!"
+  targeted_programs:
+    import:
+      success: 'Файл успішно завантажено!'
+      error: 'Помилка завантаження файлу. Перевірте файл'
+    destroy:
+      success: 'Файл успішно видалено!'
 #End. [ Controllers ]
   found_docs: 'Результат'
   choose_calendar: "Календар"
@@ -95,6 +101,39 @@ uk:
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
+  devise:
+    sessions:
+      new:
+        title: "Реєстрація"
+        legend: "Працюєте в місцеві раді і хочете створити інтерактивну візуалізацію бюджету для свого міста, району чи області?"
+        register: "Перейти до реєстрації"
+      form:
+        title: "Авторизація"
+        email: "Email"
+        password: "Пароль"
+        remember: "пам'ятати мене"
+        forgot: "забули?"
+        log_in: "Увійти"
+    passwords:
+      new:
+        sign: "Вхід"
+        register: "Реєстрація"
+      form:
+        title: "Забули пароль?"
+        email: "Email"
+        instructions: "Отримати інструкції"
+    registrations:
+      new:
+        warn: "Увага!"
+        title: "Обліковий запис дозволяє тільки перегляд інформації. Для отримання повного доступу, обліковий запис має бути активовано, для цього зверніться до адміністратора системи"
+        name: "Прізвище, ім'я, по-батькові"
+        org: "Організація / установа"
+        email: "Email"
+        phone: "Телефон"
+        pass: "Пароль"
+        pass_conf: "Підтвердження паролю"
+        town: "Місто"
+        reg: "Реєстрація"
   towns:
     index:
       add_town: 'Додати місто'
@@ -207,6 +246,10 @@ uk:
       like: "Подобається"
       share: "Поділитись"
 
+    no_data_yet:
+      sorry: "Контент відсутній!"
+      no_content: "Вибачте, триває наповнення контентом. Спробуйте пізніше..."
+
   form:
     save: "Зберегти"
     cancel: "Відміна"
@@ -224,6 +267,8 @@ uk:
     load: "Завантажити"
     title: "Назва"
     value: "Значення"
+    period: "Період"
+    town: "Місто"
     new_document: "Новий документ"
     new_link: "Нове посилання"
     uploaded_documents: "Завантажені документи"
@@ -236,6 +281,7 @@ uk:
     show: "Показати"
     search: "Пошук"
     description: "Опис"
+    choose_file: "Оберіть файл"
   subscribers:
     index:
       title: "Підписчики"
@@ -281,7 +327,7 @@ uk:
       upload_vz_file: "Завантажити VZ*.ZIP"
       upload_ft_file: "Завантажити доходи факт FT*"
       upload_vd_file: "Завантажити видатки факт VD*"
-      upload_fz_file: "Зміни до плану FZ*"
+      upload_fz_file: "Зміни до плану FZ/RZ*"
       search_town: "місто/район/область"
       type_select:
         type: "тип"
@@ -315,6 +361,7 @@ uk:
       radio_execution: "Виконання"
       radio_other: "Інше"
       radio_no_indicated: "Не вказано"
+      responsible: "Відповідальний"
     edit:
       title: "Редагування дії"
     index:
@@ -428,6 +475,7 @@ uk:
           to: "по..."
           city: "Вкажіть місто..."
           type: "Вкажіть тип документу..."
+          description: "Заповніть опис..."
       search_results:
         from: "від"
         to: "по"
@@ -627,13 +675,13 @@ uk:
         attachments: "Додатки"
         tab_gantt: "Проекти"
         funds_spend: "Кошти, витрачені на реалізацію програми:"
-        #        new
-        group_indicators: 'Групи показників'
-        main_target: 'Основні цілі'
-        responsible: "Відповідальні за виконання програми"
-        main_manager: 'Головний розпорядник'
-        reason: 'Підстави'
+        year: 'рік'
       form:
+        year: 'рік'
+        type: 'Тип показника'
+        plan: 'Плановий'
+        fact: 'Фактичний'
+        indicate: 'Показник'
         general_fund: 'Генеральний фонд'
         special_fund: 'Спеціальний фонд'
         title: 'Назва'
@@ -656,13 +704,60 @@ uk:
         term: "Термін виконання програми"
         phase: "етап виконання програми"
         add_phase: "Натисність кнопку +, щоб додати етап виконання програми"
-        budget_sum: "Запланований бюджет програми на : %{year} рік"
+        budget_prog: "Бюджет програми:"
         main_manager: 'Головний розпорядник'
       program:
         amounts:
-          done: 'Виконано'
+          done: 'Виконано: '
           remains: 'Залишилось'
-          planned: 'Заплановано'
+          planned: 'Заплановано: '
+        description:
+          main_manager: 'Головний розпорядник'
+          responsible: "Відповідальні за виконання програми"
+          reason: 'Підстави'
+          main_target: 'Основні цілі'
+        indicators:
+          group_indicators: 'Групи показників'
+        indicators_tabs:
+          visuals: 'Візуалізація програми'
+        indicators_select:
+          expense: 'Витрати'
+          product: 'Продукт'
+          efective: 'Ефективність'
+          quality: 'Якість'
+        gantt:
+          main-title: 'Діаграма ганта'
+      data_table_header:
+        title: 'Назва'
+        file: 'Файл'
+        plan: 'План'
+        fact: 'Факт'
+        date-updated: 'Оновлено'
+        town-title: 'Місто'
+        author: 'Автор'
+        active: 'Статус'
+        actions: 'Дії'
+      data_table_body:
+        title: 'Назва'
+        file: 'Файл'
+        plan: 'План'
+        fact: 'Факт'
+        date-updated: 'Оновлено'
+        town-title: 'Місто'
+        author: 'Автор'
+        active: 'Статус'
+        actions: 'Дії'
+        sure_dialog: 'Ви впевненні?'
+      town_programs:
+        list: 'Перелік програм'
+        division: 'Розподіл програм'
+        selects:
+          year-placeholder: 'рік'
+        program_list:
+          done: 'Виконання'
+          plan: 'План'
+          more: 'Більше'
+          show: 'Переглянути'
     indicator:
       group_name:
         expense: 'Витрати'
@@ -722,6 +817,9 @@ uk:
     towns:
       show:
         choose_town: 'Знайти місто'
+        click: 'Натисніть, щоб скопіювати'
+        copied: 'Скопійовано!'
+        failed: 'Помилка!'
       portfolio:
         budget_compare: 'Порівняти бюджети'
         detail: "Більше"
@@ -736,7 +834,7 @@ uk:
         key_docs: "Ключові документи"
         purchase: "Перевірити державні закупівлі"
         prozoroo: "Prozorro"
-        edata: "Портал публічних фінансів"
+        e_data: "Портал публічних фінансів"
 #        programs_path: "/programs/towns"
 #        indicators_path: "/indicate/taxonomies"
 #        keys_path: "/key_indicate_map/indicators/get"
@@ -765,6 +863,17 @@ uk:
         view: "View"
         dload: "Завантажити"
         drop: "Видалити"
+        preambule:
+          first_paragraph_about_open_budget: "Громадський бюджет - це зрозуміла форма презентації основних бюджетних документів
+                                              та результатів їх впровадження. Він покликаний в доступній формі та доступною мовою
+                                              дати громадянам розуміння ключових аспектів формування, результатів виконання та контролю
+                                              за виконанням міського бюджету. Громадський бюджет надає короткий екскурс до ключових документів
+                                              міста та головних результатів його функціонування з точки зору корисності їх для пересічного громадянина.
+                                              Показники функціонування міста не обов'язково є безпосереднім результатом діяльності міськради чи її
+                                              виконавчих органів, проте істотно впливають на життя громадян."
+          second_paragraph_about_open_budget: "Громадський бюджет сприяє підвищенню прозорості та доступності основної бюджетної інформації,
+                                               результатів діяльності органів влади на місцях, коли будь-якому користувачеві стає зрозуміло,
+                                               яким чином міська влада здійснює акумулювання, розподіл і використання коштів міського бюджету."
       map_instruction: "Клікніть по області, щоб перейти на її профіль. Або оберіть місто у випадаючому списку нижче, щоб перейти на профіль міста."
       towns_select: "Перейти на профіль міста:"
   sankeys:
@@ -924,6 +1033,9 @@ uk:
         edit: "Редагувати"
         delete: "Видалити"
         errors: "Поля обов'язкові для заповнення"
+        all_books: "Усі книги"
+        without_category: "Без категорії"
+        download: "Скачати"
       show:
         book_look: "Перегляд книги"
         link: "Ресурс"
@@ -942,6 +1054,10 @@ uk:
         edit_book: "Редагування книги"
 
   modules:
+    classifier:
+      search_data:
+          payer: "Платник"
+          recipt: "Отримувач"
     budget_news:
       index:
         choose_date: "Виберіть дату"
@@ -1020,6 +1136,7 @@ uk:
         edit_header: 'Редагування партнера'
         message_for_admin: 'Щоб логотипи партнерів ідеально виглядали на головній сторінці їх розміри повинні бути 166*100px або з відповідним співвідношенням сторін.'
         order_prompt: 'Оберіть порядок лого'
+        url: "Посилання для лого"
     banners:
       action_messages:
         create:
@@ -1037,7 +1154,7 @@ uk:
         message_for_admin: 'Для кращого відображення банер повинен бути 360*200px або з відповідним співвідношенням сторін.'
         title: 'Назва'
         upload_img: 'Завантажити картинку'
-        url_img: 'Посилання на картинку'
+        url_img: 'Посилання на банер'
         order: 'Порядок'
         order_prompt: 'Вкажіть порядок відображення'
         show: 'Показати?'
@@ -1058,6 +1175,11 @@ uk:
   drag_file: "Перетягніть файли"
   select_from_list: "або виберіть зі списку"
   embed: "Код для вбудови"
+  select2:
+    formatNoMatches: "Нічого не знайдено"
+    formatInputTooShort_input: "Будь ласка, введіть більше "
+    formatInputTooShort_characters: " символів"
+    formatSearching: "Пошук..."
   footer: "ПРООН в Україні та Інтерньюз Нетворк"
   export: "Експорт"
   aggregated: "Інше"
@@ -1157,6 +1279,7 @@ uk:
         category: "Вкажіть категорію робіт..."
         town: "Вкажіть місто..."
         description: "Детальний опис прошарку..."
+        calculate_coordinates: "Розрахувати координати доріг"
       update:
         success: 'Дані успішно відредаговано'
         error: 'Вибачте але виникла помилка'
@@ -1180,8 +1303,8 @@ uk:
         add_category: "Додати категорію"
         edit_category: "Редагувати категорію"
         category: "Категорія"
-
         coordinates: "Координати"
+        date_placeholder: "РРРР.ММ.ДД"
     maps:
       info_popup:
         more: 'Детальніше'
@@ -1230,6 +1353,8 @@ uk:
         e_data: "E-data"
         prozzoro: "ProZorro"
         information: "Інформація"
+      embed_code:
+        scale: "Масштаб"
   footer:
     about_portal:
       portal: "Портал"
@@ -1242,6 +1367,7 @@ uk:
   roles: "Ролі"
   record_not_found: "запис не знайдено"
   description: "Примітка"
+  last_update: "Останнє оновлення візуалізації: "
   currencies:
     index:
       head: "Довiдник валют"
@@ -1267,6 +1393,7 @@ uk:
     new:
       title: "Завантажити доходи FT"
   year: "Рік"
+  lower_year: "рік"
   messages_x-editable:
     need_name_file: "Потрібно вказати ім'я файла!"
     need_comment: "Потрібно вказати коментар!"

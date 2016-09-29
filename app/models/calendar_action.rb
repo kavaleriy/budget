@@ -26,6 +26,7 @@ class CalendarAction
   field :title, type: String
   field :icon, type: String
   field :description, type: String
+  field :responsible, type: String
   field :text_color, type: String
   field :color, type: String
   field :action_type, type: Integer
@@ -36,7 +37,9 @@ class CalendarAction
   scope :city_actions, lambda { where(holder: 1) }
   scope :people_actions, lambda { where(holder: 2) }
 
-
+  def self.get_uniq_responsible
+    pluck(:responsible).uniq.compact.sort
+  end
 
   def set_default_color
     if self.color.nil? || self.color.empty?
@@ -45,7 +48,6 @@ class CalendarAction
          when ACTION_TYPE_ANALYSIS then set_color(ACTION_TYPE_ANALYSIS_COLOR)
          when ACTION_TYPE_EXECUTION then set_color(ACTION_TYPE_EXECUTION_COLOR)
          when ACTION_TYPE_DISCUSSION then set_color(ACTION_TYPE_DISCUSSION_COLOR)
-         when ACTION_TYPE_NO_INDICATED then set_color(ACTION_TYPE_NO_INDICATED_COLOR)
          else raise "undefined type"
        end
     end

@@ -17,7 +17,7 @@
           = link_to banner, :method => :delete, title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
             %i.fa.fa-trash-o.fa-2x
     .banner-img
-      =image_tag get_img(banner), class: 'banner-img-center img-responsive'
+      =image_tag banner.banner_img.thumb, class: 'banner-img-center img-responsive'
     .data-actions
       %p
         = banner.title

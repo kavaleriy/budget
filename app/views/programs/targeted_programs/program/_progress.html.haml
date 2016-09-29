@@ -1,49 +1,45 @@
 :scss
+  // init colors
+  $dark-blue: #0c2231;
+  $white: white;
 
   .progress_bar {
-    text {
-      font-size: 16px;
-      font-weight: bold;
-      text-anchor: middle;
-      fill: white;
+    svg {
+      border: 2px solid $dark-blue;
+      .bckg { fill: $white; }
+      .perc { fill: $dark-blue; }
+      text {
+        font-size: 16px;
+        font-weight: bold;
+        text-anchor: middle;
+        stroke-width: .07rem;
+      }
     }
-
-    .bckg {fill: lightblue;}
-    .perc {fill: №f5f5f5;}
   }
-
+-#TODO: Add < 0.1%
 .progress_bar
 
-  %svg{ 'width' => "100%", 'height' => "40"}
-    %rect.bckg{'x' => "0", 'y' => "0", 'width' => "100%", 'height' => '40'}
-    %rect.perc{'x' => "0", 'y' => "0", 'width' => "#{perc}%", 'height' => '40'}
-    %text{'x' => "49%", 'y' => "26", }
+  - color = '#0c2231';
+  - stroke = 'white'
+  - color = 'white' unless perc.to_i < 50
+  - stroke = '#0c2231' unless perc.to_i < 50
+
+  %svg{ 'width' => '100%',
+        'height' => '40' }
+
+    %rect.bckg{ 'x' => '0',
+                'y' => '0',
+                'width' => '100%',
+                'height' => '40' }
+
+    %rect.perc{ 'x' => '0',
+                'y' => '0',
+                'width' => "#{perc.to_i}%",
+                'height' => '40' }
+
+    %text{ 'x' => '49%',
+           'y' => '26',
+           'fill' => "#{color}",
+           'stroke' => "#{stroke}" }
+
       = "#{perc}%"
-
--#:javascript
-  var perc = '#{perc}%'
-  var height = 40
-  var svgContainer = d3.select(".chart").append("svg").attr("width", '100%').attr("height", height);
-
-  svgContainer.append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", '100%')
-    .attr("height", height)
-    .attr("fill", 'silver')
-
-  svgContainer.append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", perc)
-    .attr("height", height)
-    .attr("fill", 'lightblue')
-    .attr('color', 'red')
-
-  svgContainer.append("text")
-    .attr("x", '49%')
-    .attr("y", height * 2 / 3)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "14px")
-    .attr('color', 'red')
-    .text(function(d) { return perc; });

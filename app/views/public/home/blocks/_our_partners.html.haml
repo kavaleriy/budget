@@ -43,15 +43,15 @@
               /* fix blank or flashing items on carousel */
               -webkit-backface-visibility: hidden;
               /* fix blank or flashing items on carousel */
+              img{
+                width: auto;
+                max-height: 100px;
+                margin: auto;
+              }
               a {
                 &:hover, &:focus {
                   text-decoration: none;
                   color: #000;
-                }
-                img{
-                  width: auto;
-                  max-height: 100px;
-                  margin: auto;
                 }
                 &:hover > img, &:focus > img {
                   -webkit-filter: sepia(1);
@@ -325,10 +325,9 @@
       .container
         .carousel-wrap
           .owl-carousel
-            - @partners.each do |partners_logo|
+            - @partners.each do |partner|
               .item
-                =link_to '#' do
-                  =image_tag( partners_logo.logo, class: 'img-responsive')
+                = get_item(partner, 'partner')
 
 :javascript
   $(document).ready(function() {

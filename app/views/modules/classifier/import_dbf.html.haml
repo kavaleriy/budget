@@ -1,0 +1,8 @@
+%h1
+  = t ('.header')
+
+= simple_form_for '' do |f|
+  Содержимое формы
+
+  = f.input :file_name, as: :file
+  = f.button :submit, t('.save'), class: 'btn btn-primary'

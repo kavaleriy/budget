@@ -24,22 +24,30 @@ module Documentation::DocumentsHelper
 
   def get_beautiful_doc_title(title)
     # cut extension in title and replace underline to space
-    title.split('.').first.gsub!('_', ' ')
+    title.split('.').first.gsub('_', ' ') unless title.nil?
   end
 
   def get_image_path_by_doc_type(doc_file)
+    # set default path to folder icons
     default_path = 'new_design/icons/'
-    image_path = case doc_file.file.extension
+    # set icon to file by extension
+    image_path = case doc_file.file.extension.downcase
+    # check file extensions (ext)
+                   # portable document format
                    when 'pdf'
                     'file-pdf.svg'
-                   when 'xls' || 'xlsx'
+                   # MS spreadsheet
+                   when 'xls', 'xlsx', 'xlsm', 'xlsb'
                     'file-exel.svg'
-                   when 'doc'
+                   # MS word processing documents
+                   when 'doc', 'docx'
                     'file-word.svg'
-                   when 'rar'
+                   # famous arhive formats
+                   when 'rar', 'zip', '7z', 'tar', 'gz', 'par'
                      'file-rar.svg'
+                   # all another formats
                    else
-                     'no_image.svg'
+                     'no-image.svg'
     end
     default_path.concat(image_path)
   end

@@ -38,7 +38,12 @@ class ContentManager::PageContainersController < AdminController
   end
 
   def update
-    @page_container.update(content_manager_page_container_params)
+    except_locale_data = content_manager_page_container_params.except!(:locale_data)
+
+    @page_container.write_attributes(except_locale_data)
+    @page_container.locale_data.merge!(content_manager_page_container_params[:locale_data])
+    @page_container.save
+
     respond_with(@page_container)
   end
 

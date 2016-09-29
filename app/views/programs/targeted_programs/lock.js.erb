@@ -1,0 +1,4 @@
+$('.activated').bind('ajax:success', function() {
+  // bild msg
+  $(".bootstrap_flash").append($("<div class='alert fade in alert-success alert-dismissable'>").html("<%= flash[:success].html_safe %>"));
+});

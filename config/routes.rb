@@ -22,6 +22,12 @@ Rails.application.routes.draw do
 
   namespace :modules do
     get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
+    get 'classifier/import_dbf' => 'classifier#import_dbf',as: 'classifier_import_dbf'
+    get 'classifier/all_classifier' => 'classifier#all_classifier',as: 'classifier_all_classifier'
+    get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
+    post 'classifier/import_dbf' => 'classifier#import_dbf',as: 'import_dbf_save'
+    get 'classifier/search_data/:town_id' => 'classifier#search_data', as: 'classifier_search_data'
+    post 'classifier/search_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
@@ -93,10 +99,9 @@ Rails.application.routes.draw do
 
   namespace :programs do
     resources :targeted_programs
-    # namespace :target_programs do
-      post 'targeted_programs/import' => 'targeted_programs#import', as: 'targeted_programs_import'
-    # end
-
+    post 'targeted_programs/import' => 'targeted_programs#import', as: 'targeted_programs_import'
+    get 'targeted_programs/town_programs/:town' => 'targeted_programs#town_programs', as: 'town_targeted_programs'
+    patch 'targeted_programs/lock/:id' => 'targeted_programs#lock', as: 'check_active'
   end
 
   namespace :legacy_programs do
@@ -168,8 +173,13 @@ Rails.application.routes.draw do
   get 'search_indicator_key' => 'key_indicate_map/indicator_keys#search'
   get 'search_for_documents_town' => 'towns#search_for_documents'
   get 'search_for_towns_town' => 'towns#search_for_towns'
+
+  # check url, maybe it's not use
   get 'search_for_towns_and_areas' => 'towns#search_for_towns_and_areas'
+
+  # check url, maybe it's not use
   get 'search_for_areas_town' => 'towns#search_for_areas'
+
   post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
   post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns

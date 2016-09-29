@@ -24,7 +24,7 @@
   .form-inputs
     = f.input :title, label: t('.title')
     = f.input :banner_img, as: :file, label: t('.upload_img'), :input_html => { :class => 'form-control', accept: 'image/*' }
-    = f.input :banner_url, as: :url, label: t('.url_img'), :input_html => { :class => 'form-control'}
+    = f.input :url, as: :url, label: t('.url_img'), :input_html => { :class => 'form-control'}
     = f.input :publish_on, as: :boolean, label: t('.show')
 
   .form-actions

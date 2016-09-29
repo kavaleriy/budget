@@ -1,0 +1,19 @@
+:scss
+  .btn-group {
+    padding: 0;
+    form {
+      margin: 0;
+    }
+    .btn-group {
+      padding: 0;
+    }
+  }
+
+=link_to t('programs.targeted_programs.index.new'), new_programs_targeted_program_path, class: 'btn btn-default'
+.btn-group.pull-right
+  = form_for '', url: programs_targeted_programs_import_path, :authenticity_token => true, method: :post,
+          :html => { class: 'form-horizontal', :multipart => true } do |f|
+    .btn-group
+      = f.file_field :import_file, class: 'btn btn-default', required: true
+    .btn-group
+      = f.submit t('programs.targeted_programs.index.import_program'), class: 'btn btn-primary'

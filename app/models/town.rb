@@ -44,6 +44,7 @@ class Town
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
   has_many :taxonomy, class_name: 'Taxonomy'
+  has_many :programs, class_name: 'Programs::TargetedProgram'
 
   validates :title ,presence: true
   # validates :koatuu, :is_area_level
@@ -72,6 +73,7 @@ class Town
     # first of all get users with authority roles mask
     city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
                                                          User.mask_for(:central_authority)])
+
     # second we find all they towns and last add regular expression to all they towns
     Town.where(:title.in => city_authority_users.map{|user|
       town = Town.get_user_town(user)

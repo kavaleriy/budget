@@ -1,38 +1,38 @@
-:scss
-  body {
-    .bootstrap_flash {
-      margin-top: 73px;
-      > div {
-        margin: 0 0 -73px 0;
-      }
-    }
-    .blocks {
-      > .container {
-        margin-top: 73px;
-        min-height: calc(100vh - 219px);
-      }
-    }
-  }
-
 !!! 5
-%html(lang="en")
+%html
   %head
+    %title= content_for?(:title) ? yield(:title) : t('layouts.application.application_title')
+    = csrf_meta_tags
     %meta(charset="utf-8")
     %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
-
+    -#Test FB
+    %meta{ content: 'http://www.youtube.com/v/1F7DKyFt5pY&fs=1',
+           property: 'og:video' }
+    %meta{ content: '560',
+           property: 'og:video:width' }
+    %meta{ content: '340',
+           property: 'og:video:height' }
+    %meta{ content: 'application/x-shockwave-flash',
+           property: 'og:video:type' }
     -# Faceboot Open Graph tags
-    %meta(property="fb:admins" content="1381405023")
-    %meta(property="og:title" content="Відкритий бюджет")
-    %meta(property="og:site_name" content="Візуалізація бюджету")
-    %meta(property="og:url" content="http://openbudget.in.ua")
+    %meta(property="fb:admins"      content="1381405023")
+    %meta(property="og:title"       content="Відкритий бюджет")
     %meta(property="og:description" content="Візуалізація доходів і видатків місцевих бюджетів, бюджетного процесу і показників діяльності міст України")
-    %meta(property="article:author" content="https://www.facebook.com/begemot.lery")
+    %meta(property="og:site_name"   content="Візуалізація бюджету")
+    %meta(property="og:type"        content="website")
+    %meta(property="og:url"         content="http://openbudget.in.ua")
+    = tag :meta,
+          property: 'og:image',
+          content: image_url('fb-share-img.jpg')
+    -#%meta(property="og:image"       content="http://openbudget.in.ua/assets/fb-share-img.jpg")
+    %meta(property="og:image:type"  content="image/jpeg")
+    %meta(property="og:image:type"  content="image/jpg")
+    %meta(property="og:image:type"  content="image/png")
+    %meta(property="article:author" content="https://www.facebook.com/EidosUa")
     %meta(property="article:publisher" content="https://www.facebook.com/vladimir.tarnay")
-    %meta(property="og:image" content="assets/og-image.png")
+    -#%meta(property="article:author" content="https://www.facebook.com/begemot.lery")
 
-    %title= content_for?(:title) ? yield(:title) : t('layouts.application.application_title')
-    = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
       -#= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"
@@ -43,15 +43,29 @@
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic"
     = stylesheet_link_tag "application", :media => "all"
 
-    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
-    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
-    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
-    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '144x144'
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '114x114'
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png',
+                        sizes: '72x72'
+    = favicon_link_tag 'apple-touch-icon-precomposed.png',
+                        rel: 'apple-touch-icon-precomposed',
+                        type: 'image/png'
 
-    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
-    = javascript_include_tag "application"
+    = favicon_link_tag 'favicon.ico',
+                        rel: 'shortcut icon'
+
+    = javascript_include_tag 'application'
 
     = javascript_include_tag 'https://www.gstatic.com/charts/loader.js'
+
 
     = yield :head
 
@@ -82,6 +96,10 @@
 
   -#Go to www.addthis.com/dashboard to customize your tools
   = render partial: 'layouts/addthis'
+
+  = render partial: 'layouts/file_upload_script'
+
+  -#= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js'
 
 :javascript
   $(document).ready(function() {

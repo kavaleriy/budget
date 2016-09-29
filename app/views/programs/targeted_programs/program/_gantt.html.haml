@@ -1,0 +1,125 @@
+-#Gantt Chart D3.js
+-#See more at: http://bl.ocks.org/dk8996/5449641
+:scss
+  .gantt-diagram {
+    .title {
+      font-weight: normal;
+      font-family: 'Lato', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 20px 0;
+    }
+  }
+
+:css
+  .chart {
+  	font-family: 'Lato', sans-serif;
+  	font-size: 12px;
+  }
+
+  .axis path,.axis line {
+  	fill: none;
+  	stroke: #000;
+  	shape-rendering: crispEdges;
+  }
+
+  .bar {
+  	fill: #33b5e5;
+  }
+
+  .bar-failed {
+  	fill: #CC0000;
+  }
+
+  .bar-running {
+  	fill: #669900;
+  }
+
+  .bar-succeeded {
+  	fill: #33b5e5;
+  }
+
+  .bar-killed {
+  	fill: #ffbb33;
+  }
+
+  #forkme_banner {
+  	display: block;
+  	position: absolute;
+  	top: 0;
+  	right: 10px;
+  	z-index: 10;
+  	padding: 10px 50px 10px 10px;
+  	color: #fff;
+  	background:
+  		url('http://dk8996.github.io/Gantt-Chart/images/blacktocat.png')
+  		#0090ff no-repeat 95% 50%;
+  	font-weight: 700;
+  	box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+  	border-bottom-left-radius: 2px;
+  	border-bottom-right-radius: 2px;
+  	text-decoration: none;
+  }
+
+.col-xs-12.gantt-diagram
+  .title
+    = t('.main-title')
+
+  #chart_div
+
+:javascript
+
+  $(document).ready(function() {
+    setTimeout(function(){
+      google.charts.load('current', {'packages':['gantt']});
+
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Task ID');
+        data.addColumn('string', 'Task Name');
+        data.addColumn('string', 'Resource');
+        data.addColumn('date', 'Start Date');
+        data.addColumn('date', 'End Date');
+        data.addColumn('number', 'Тривалість');
+        data.addColumn('number', 'Percent Complete');
+        data.addColumn('string', 'Dependencies');
+
+        data.addRows([
+          ['2014Summer', 'Робота 1', 'summer',
+           new Date(2015, 5, 21), new Date(2015, 8, 20), null, 100, null],
+          ['2014Autumn', 'Робота 2', 'autumn',
+           new Date(2016, 8, 21), new Date(2016, 11, 20), null, 100, null],
+          ['2014Winter', 'Робота 3', 'winter',
+           new Date(2015, 11, 21), new Date(2016, 2, 21), null, 30, null],
+          ['2015Spring', 'Робота 4', 'spring',
+           new Date(2015, 10, 22), new Date(2016, 5, 20), null, 50, null],
+          ['2015Summer', 'Робота 5', 'summer',
+           new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
+          ['2015Autumn', 'Робота 6', 'autumn',
+           new Date(2016, 8, 21), new Date(2016, 11, 20), null, 0, null],
+          ['2015Winter', 'Робота 7', 'winter',
+           new Date(2016, 7, 21), new Date(2016, 2, 21), null, 0, null],
+          ['2015Summer', 'Робота 5', 'summer',
+           new Date(2016, 5, 21), new Date(2016, 8, 20), null, 20, null],
+        ]);
+
+        var options = {
+          height: 300,
+          gantt: {
+            trackHeight: 30
+          }
+        };
+
+        var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+
+    },1000)
+
+
+  })

@@ -6,8 +6,6 @@ class Documentation::Document
 
   before_save :generate_title
 
-  skip_callback :update, :before, :store_previous_model_for_doc_file
-
   scope :get_documents_by_town,-> (town) {where(town: town)}
   scope :get_by_part_of_title, -> (q) { where(:title => Regexp.new(".*#{q}.*")) }
   scope :unlocked, -> {where({ :locked.in => [false, nil] } )}
@@ -23,13 +21,18 @@ class Documentation::Document
   field :locked, type: Boolean
 
   mount_uploader :doc_file, DocumentationUploader
+  skip_callback :update, :before, :store_previous_model_for_doc_file
 
-  validates_presence_of :doc_file, message: 'Потрібно вибрати Файл'
+  validates_presence_of :doc_file, message: :select_file
   validates :doc_file,
             :presence => true,
             :file_size => {
                 :maximum => 11.megabytes.to_i
             }
+
+  def select_file_message
+    I18n.t('documentation.documents.model_messages.select_file')
+  end
 
   def check_access(user)
     # this function check access to update or destroy document
@@ -62,11 +65,13 @@ class Documentation::Document
 
       # transform keys for readeble title
       unless year_documents.empty?
-        if year_documents.keys.first.nil?
-          year_documents.transform_keys{|key| I18n.t ('Інші документи') }
-        else
-          res_hash.store(year,year_documents.transform_keys{|key| Documentation::Branch.find(key).title })
-        end
+        res_hash.store(year,year_documents.transform_keys{|key|
+          unless key.nil?
+            Documentation::Branch.find(key).title
+          else
+            'Інші документи'
+          end
+        })
       end
 
     end
@@ -79,7 +84,5 @@ class Documentation::Document
   def generate_title
     self.title = self.doc_file.filename unless self.title?
   end
-
-  private
 
 end
