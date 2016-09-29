@@ -39,7 +39,21 @@ module Repairing
 
     def self.valid_repairs
       Repairing::Repair.collection.aggregate([
-        {
+        # this function return BSON::Document
+        # example
+        # {
+        #   "_id"=>BSON::ObjectId('56fe442467cb7d0724000004'),
+        #   "repair_date"=>2015-01-01 00:00:00 UTC,
+        #   "coordinates"=>[49.8571335, 24.0187616],
+        #   "layer_id"=>BSON::ObjectId('56fe442467cb7d0724000003'),
+        #   "layer"=>{
+        #     "repairing_category_id"=>BSON::ObjectId('560ce9576b61730991140000'),
+        #     "town_id"=>BSON::ObjectId('55a818d06b617309df652500')
+        #   }
+        # }
+
+      {
+            # join layer and repair
             '$lookup'=> {
                 from: 'repairing_layers',
                 localField: 'layer_id',
@@ -48,6 +62,7 @@ module Repairing
             }
         },
         {
+            # filter documents
             '$match' =>{
                 '$and' =>
                     [
@@ -61,16 +76,17 @@ module Repairing
             }
         },
         {
+            # to uncover layer array
             '$unwind'=> '$layer'
         },
         {
+            # show this fields
             '$project' => {
                 'coordinates' => 1,
                 'layer_id' => 1,
                 'layer.repairing_category_id' => 1,
                 'layer.town_id' => 1,
                 'repair_date' => 1,
-
             }
         }
     ])
