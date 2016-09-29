@@ -36,6 +36,7 @@ module Modules
       respond_with(@items)
     end
 
+    # TODO: Do refactor in future
     def import_dbf
       unless params[:file_name].nil?
         data = File.open(params[:file_name].tempfile)
@@ -70,6 +71,7 @@ module Modules
       end
     end
 
+    # TODO: Do refactor in future
     def all_classifier
       # @towns = Rails.cache.fetch("all_classifier", expiries: 1.month) do
       #   Modules::Classifier.all.group_by{|classf| classf.town_id}.transform_keys do |key|
@@ -89,6 +91,7 @@ module Modules
     end
 
 
+    # TODO: Do refactor in future
     def all_classifier_region
       @regions = Rails.cache.fetch("all_classifier_region", expiries: 1.month) do
         Modules::Classifier.all.group_by{|classf| classf.sk_ter}
