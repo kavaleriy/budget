@@ -19,49 +19,105 @@ class FzBudgetFilesController < ApplicationController
     @taxonomies_rov, @current_taxonomy_rov_id = get_taxonomies_list(TaxonomyRov)
   end
 
+
+
   def create
     taxonomy_rot = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rot])
     taxonomy_rov = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rov])
 
-    raise 'Не вказано код місцевого бюджету. Необхідно налаштувати параметри візуалізації' if taxonomy_rot.kmb.blank? || taxonomy_rov.kmb.blank?
+    # raise 'Не вказано код місцевого бюджету. Необхідно налаштувати параметри візуалізації' if taxonomy_rot.kmb.blank? || taxonomy_rov.kmb.blank?
 
     fzbudgetfile_params[:path].each do |uploaded|
       file = upload_file uploaded, uploaded.original_filename
 
-      fz_file = FzBudgetFile.new
-      fz_file.title = file[:name]
-      fz_file.path = file[:path].to_s
+      upload_rzt = ->() do
+        path = file[:path].to_s
+        name = file[:name].gsub(/rzt(?<NUM>\d\d\d\d\d).(?<TERRA>\d\d\d).*/i, 'RZT\k<NUM>.\k<TERRA>')
 
-      def remove_old_fz user_name, file_name
-        BudgetFile.where(:author => user_name, :name => file_name).destroy_all
-      end
+        fz_name = file[:name].gsub(/rzt\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
+        fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
 
-      remove_old_fz(current_user.email, file[:name])
+        budget_file = BudgetFileRotRzt.find_or_create_by(name: name, taxonomy: taxonomy_rot, :data_type => :plan)
+        budget_file.title = name + ' - Доходи'
+        budget_file.path = path
+        budget_file.make_empty
+        budget_file.author = current_user.email
 
-
-      calc_annual_rows = ->(rows) do
-        rows.each do |row|
-          row['m0'] = (1..12).map { |i| row["m#{i}"].to_f }.sum
+        calc_annual_rows = ->(rows) do
+          rows
         end
 
-#        return rows.reject do |row|
-#          row['m0'] != 0 and row['m0'] == row['m1'] and rows.detect {|f| f['cf'] == 7 and f['m0'] != f['m1'] and row['fcode'] == f['fcode'] and row['ecode'] == f['ecode'] and row['kvk'] == f['kvk']}
-#        end
-      end
-
-      rows = calc_annual_rows.call(read_table_from_file(fz_file.path)[:rows]) 
-
-      fz_file.rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
-      fz_file.rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
-
-      [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
-        budget_file.data_type = :plan
-        budget_file.author = current_user.email
-        budget_file.name = file[:name]
+        rows = calc_annual_rows.call(read_table_from_file(path)[:rows])
         budget_file.import rows
+
+        fz_file.rot_file << budget_file
+        fz_file.save!
       end
 
-      fz_file.save!
+      upload_rzv = ->() do
+        path = file[:path].to_s
+        name = file[:name].gsub(/rzv(?<NUM>\d\d\d\d\d).(?<TERRA>\d\d\d).*/i, 'RZV\k<NUM>.\k<TERRA>')
+
+        fz_name = file[:name].gsub(/rzv\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
+        fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
+
+        budget_file = BudgetFileRovRzv.find_or_create_by(name: name, taxonomy: taxonomy_rov, :data_type => :plan)
+        budget_file.title = name + ' - Видатки'
+        budget_file.path = path
+        budget_file.make_empty
+        budget_file.author = current_user.email
+
+        calc_annual_rows = ->(rows) do
+          rows
+        end
+
+        rows = calc_annual_rows.call(read_table_from_file(path)[:rows])
+        budget_file.import rows
+
+        fz_file.rov_file << budget_file
+        fz_file.save!
+      end
+
+      upload_fz = ->() do
+        fz_file = FzBudgetFile.new
+        fz_file.title = file[:name]
+        fz_file.path = file[:path].to_s
+
+        def remove_old_fz user_name, file_name
+          BudgetFile.where(:author => user_name, :name => file_name).destroy_all
+        end
+
+        remove_old_fz(current_user.email, file[:name])
+
+        calc_annual_rows = ->(rows) do
+          rows.each do |row|
+            row['m0'] = (1..12).map { |i| row["m#{i}"].to_f }.sum
+          end
+        end
+
+        rows = calc_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
+
+        fz_file.rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
+        fz_file.rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
+
+        [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
+          budget_file.data_type = :plan
+          budget_file.author = current_user.email
+          budget_file.name = file[:name]
+          budget_file.import rows
+        end
+
+        fz_file.save!
+      end
+
+
+      if file[:name] =~ /^rzt/i # rot oda
+        upload_rzt.call
+      elsif file[:name] =~ /^rzv/i # rov oda
+        upload_rzv.call
+      elsif file[:name] =~ /^fz/i # rot/v city
+        upload_fz.call
+      end
     end
 
     respond_to do |format|
