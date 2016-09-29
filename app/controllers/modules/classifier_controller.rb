@@ -50,16 +50,9 @@ module Modules
       data = {}
       data['startdate'] = params['startdate'].blank? ? Time.now.months_since(-1).strftime("%d-%m-%Y") : params['startdate']
       data['enddate'] = Time.now.strftime("%d-%m-%Y")
-      data['payers_edrpous'] = params['item_payer']
-      data['recipt_edrpous'] = params['item_recipt']
+      data['payers_edrpous'] = params['payers_edrpous']
+      data['recipt_edrpous'] = params['recipt_edrpous']
 
-      data["#{params['role']}_edrpous"] = params['item'] unless params['role'].blank?
-      # if params['role'].blank?
-      #   data['payers_edrpous'] = params['item_payer']
-      #   data['recipt_edrpous'] = params['item_recipt']
-      # else
-      #   data["#{params['role']}_edrpous"] = params['item']
-      # end
       data.delete_if { |key, value| value.blank? }
       data
     end
@@ -95,7 +88,6 @@ module Modules
     end
 
     def search_e_data
-      binding.pry
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
 
