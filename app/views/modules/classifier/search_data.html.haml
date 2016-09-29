@@ -113,6 +113,8 @@
               = t('.advanced_button')
 
     .results
+    #spinner-container
+      = render partial: 'spinner'
 
 :javascript
   $(document).ready(function() {
@@ -121,12 +123,16 @@
       placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
     }).on('change', function(data) {
-      get_data(data.val);
+      if(data.val != '') {
+        get_data(data.val);
+      }
     });
 
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
-      get_data(item);
+      if(item != '') {
+        get_data(item);
+      }
     });
 
     $('.results').on('click', '#edata_payments th', function() {
@@ -143,6 +149,7 @@
   });
 
   function get_data(edrpou, _sort_conf) {
+    $('#spinner-container').show();
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
     var data = {
@@ -155,9 +162,11 @@
     $.ajax({
       type: 'get',
       url: "#{modules_classifier_search_e_data_url}",
+      async: false,
       dataType: 'script',
       data: data
     });
+    $('#spinner-container').hide();
   }
 
   function sort_direction(attr) {
