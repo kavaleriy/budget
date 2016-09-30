@@ -34,3 +34,4 @@ Rails.application.config.assets.precompile += %w( chart.bundle.min.js )
 Rails.application.config.assets.precompile += %w( revolution_slider/jquery.themepunch.plugins.min.js revolution_slider/jquery.themepunch.revolution.min.js revolution_slider/rs-style.css revolution_slider/settings.css )
 Rails.application.config.assets.precompile += %w(*.jpg, *.png)
 
+Rails.application.config.assets.precompile += %w( modules/classifier/daterangepicker-bs3.css )
