@@ -30,6 +30,16 @@ module Repairing
       end
     end
 
+    # TODO: delete this method, his views and use method frame for show layers by town in town profile
+    # WARN: script in _frame.html.haml don`t use geo_json method
+    def show_town
+      @current_user_town = Town.get_user_town(current_user)
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
+
     def frame
     end
 

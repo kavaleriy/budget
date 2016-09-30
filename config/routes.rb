@@ -189,9 +189,10 @@ Rails.application.routes.draw do
 
   namespace :repairing do
     get 'map' => 'maps#show'
+    get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
     get 'geo_json' => 'maps#geo_json'
     get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
-    get 'maps/frame/:zoom/:town_id' => 'maps#frame'
+    get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'

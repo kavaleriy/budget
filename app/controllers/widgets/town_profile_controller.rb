@@ -195,7 +195,9 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_repair_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_path, name) #(6, @town))
+    # TODO: get url with repairing_frame_with_town_path(zoom: 9,town_id: params[:town_id]) and setting logic for this url
+    # WARN: script in _frame.html.haml don`t use maps#geo_json
+    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_show_town_path(params[:town_id]), name) #(6, @town))
   end
 
   def get_key_docs_hash(name)
