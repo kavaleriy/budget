@@ -4,7 +4,7 @@ module Modules
     respond_to :html, :js, :json
 
     def search_data
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
+      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
       respond_with(@items, @town)
     end
 
@@ -26,12 +26,12 @@ module Modules
 
     def advanced_search
       @types = Modules::ClassifierType.all
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).only(:pnaz, :edrpou).to_a
+      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a.sort_by! { |hash| hash.pnaz }
       respond_with(@types, @items)
     end
 
     def by_type
-      @items = Modules::Classifier.by_koatuu(@town.koatuu).where(k_form: params["type"]).to_a
+      @items = (params["type"].blank? ? items_by_koatuu : items_by_koatuu.where(k_form: params["type"])).to_a.sort_by! { |hash| hash.pnaz }
       @role = params["role"]
       respond_with(@items)
     end
@@ -111,8 +111,8 @@ module Modules
       payments_data = ExternalApi::e_data_payments(
           params['payers_edrpous'],
           params['recipt_edrpous'],
-          params['startdate'].split('/').first,
-          params['startdate'].split('/').last
+          (params['startdate'].split('/').first unless params['startdate'].blank?),
+          (params['startdate'].split('/').last unless params['startdate'].blank?)
       )
 
       # Sort data
@@ -130,6 +130,10 @@ module Modules
 
       # Results
       payments_data
+    end
+
+    def items_by_koatuu
+      Modules::Classifier.by_koatuu(town.koatuu)
     end
 
     def town

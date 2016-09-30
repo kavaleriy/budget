@@ -139,18 +139,18 @@
     .row
       .col-md-3
         = f.input :startdate, input_html: { class: 'daterange' }, label: false
-        -#= f.input(:startdate, label: false, placeholder: t('.startdate'))
-        -#= f.input(:enddate, label: false, placeholder: Time.now.strftime("%d-%m-%Y"), disabled: true)
       .col-md-3
         = f.input(:item_type_payers, collection: @types.map { |type| [type.name, type.code] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
         = f.input(:item_type_recipt, collection: @types.map { |type| [type.name, type.code] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
       .col-md-5
-        = f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
-        = f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+        = f.input(:item_payers, as: :select, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, as: :select,input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+        -#= f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        -#= f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
       .col-md-1
         = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
 
@@ -160,6 +160,7 @@
 
 :javascript
   $(document).ready(function() {
+
     // use for changing datepicker locale
     moment.locale("#{I18n.locale}");
     $('#_startdate').daterangepicker({
@@ -177,7 +178,7 @@
     });
 
     $('#_item_type_payers').select2({
-      placeholder: I18n.t('modules.classifier.advanced_search.payer_type_placeholder'),
+      placeholder: I18n.t('modules.classifier.advanced_search.payers_type_placeholder'),
       allowClear: true,
       minimumResultsForSearch: -1
     });
@@ -188,23 +189,16 @@
       minimumResultsForSearch: -1
     });
 
-    $('#_item_payers').select2({
-      placeholder: I18n.t('modules.classifier.advanced_search.payer_form_placeholder'),
-      allowClear: true
+    init_item_select($('#_item_payers'));
+    init_item_select($('#_item_recipt'));
+
+    $('#_item_payers, #_item_recipt').on('change', function() {
+      $("#items-list").hide().empty();
     });
 
-    $('#_item_recipt').select2({
-      placeholder: I18n.t('modules.classifier.advanced_search.recipt_form_placeholder'),
-      allowClear: true
-    });
-
-    $('#_item_type_payers, #_item_type_recipt').on('change', function(data) {
-      $('#_item_' + $(this).data('role')).val('').trigger('change');
-      if($(this).val() != '') {
-        var type = $(this).val();
-        var role = $(this).data('role');
-        get_items(type, role);
-      }
+    $('#_item_type_payers, #_item_type_recipt').on('change', function() {
+      init_item_select($(this));
+      $("#items-list").show();
     });
 
     $('#search').on('click', function(){
@@ -214,7 +208,7 @@
       };
       var start_date = $('#_startdate').val();
       get_data(edrpous, start_date);
-      $("#items-list").fadeOut();
+      $("#items-list").hide().empty();
       return false;
     });
 
@@ -260,6 +254,7 @@
     $.ajax({
       type: 'post',
       url: "#{modules_classifier_by_type_url}",
+      // async: false,
       dataType: 'script',
       data: {
         town_id: town_id,
@@ -292,4 +287,11 @@
     ranges[last_3_months] = [moment().subtract(2, 'month'), moment()];
 
     return ranges;
+  }
+
+  function init_item_select(selector) {
+    $('#_item_' + selector.data('role')).val('').trigger('change');
+    var type = selector.val();
+    var role = selector.data('role');
+    get_items(type, role);
   }
