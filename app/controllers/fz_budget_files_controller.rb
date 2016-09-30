@@ -97,15 +97,18 @@ class FzBudgetFilesController < ApplicationController
 
         rows = calc_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
 
-        fz_file.rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
-        fz_file.rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
+        rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
+        rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
 
-        [fz_file.rot_file, fz_file.rov_file].compact.each do |budget_file|
+        [rot_file, rov_file].compact.each do |budget_file|
           budget_file.data_type = :plan
           budget_file.author = current_user.email
           budget_file.name = file[:name]
           budget_file.import rows
         end
+
+        fz_file.rot_file << rot_file
+        fz_file.rov_file << rov_file
 
         fz_file.save!
       end
