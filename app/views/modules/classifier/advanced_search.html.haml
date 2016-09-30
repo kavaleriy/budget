@@ -1,4 +1,5 @@
 :scss
+
   // init colors
   $button-background: #0c2231;
   $button-border: #0c2231;
@@ -131,23 +132,25 @@
     display: none;
   }
 
+= stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
 
 #advanced-search
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-3
-        = f.input(:startdate, label: false, placeholder: t('.startdate'))
-        = f.input(:enddate, label: false, placeholder: Time.now.strftime("%d-%m-%Y"), disabled: true)
+        = f.input :startdate, input_html: { class: 'daterange' }, label: false
+        -#= f.input(:startdate, label: false, placeholder: t('.startdate'))
+        -#= f.input(:enddate, label: false, placeholder: Time.now.strftime("%d-%m-%Y"), disabled: true)
       .col-md-3
-        = f.input(:item_type_payers, collection: @types.map{|type| [type.name, type.code]},
-        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payers'}, label: false, class: 'type')
-        = f.input(:item_type_recipt, collection: @types.map{|type| [type.name, type.code]},
-        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false, class: 'item')
+        = f.input(:item_type_payers, collection: @types.map { |type| [type.name, type.code] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
+        = f.input(:item_type_recipt, collection: @types.map { |type| [type.name, type.code] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
       .col-md-5
-        = f.input(:item_payers, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'payers'}, label: false)
-        = f.input(:item_recipt, collection: @items.map{ |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        input_html: {'data-town-id' => params['town_id'], 'data-role' => 'recipt'}, label: false)
+        = f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
       .col-md-1
         = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
 
@@ -157,13 +160,20 @@
 
 :javascript
   $(document).ready(function() {
-    $('#_startdate').datepicker({
-      format: 'dd-mm-yyyy',
-      autoclose: true,
-      todayHighlight: true,
-      startDate: '-3m',
-      endDate: 'today',
-      language: '#{I18n.locale}'
+    // use for changing datepicker locale
+    moment.locale("#{I18n.locale}");
+    $('#_startdate').daterangepicker({
+      ranges: dp_ranges_config(),
+      locale: {
+        format: 'DD-MM-YYYY',
+        separator: ' / ',
+        applyLabel: I18n.t('modules.classifier.advanced_search.dateranges.apply'),
+        cancelLabel: I18n.t('modules.classifier.advanced_search.dateranges.cancel'),
+        customRangeLabel: I18n.t('modules.classifier.advanced_search.dateranges.custom_range'),
+      },
+      // set default range as 'yesterday'
+      startDate: moment().subtract(1, 'days'),
+      endDate: moment().subtract(1, 'days')
     });
 
     $('#_item_type_payers').select2({
@@ -266,4 +276,20 @@
     else {
       return 'asc';
     }
+  }
+
+  function dp_ranges_config() {
+    // need for internationalization range labels
+    var yesterday = I18n.t('modules.classifier.advanced_search.dateranges.yesterday');
+    var last_7_days = I18n.t('modules.classifier.advanced_search.dateranges.last_7_days');
+    var last_30_days = I18n.t('modules.classifier.advanced_search.dateranges.last_30_days');
+    var last_3_months = I18n.t('modules.classifier.advanced_search.dateranges.last_3_months');
+
+    var ranges = {};
+    ranges[yesterday] = [moment().subtract(1, 'days'), moment().subtract(1, 'days')];
+    ranges[last_7_days] = [moment().subtract(6, 'days'), moment()];
+    ranges[last_30_days] = [moment().subtract(29, 'days'), moment()];
+    ranges[last_3_months] = [moment().subtract(2, 'month'), moment()];
+
+    return ranges;
   }

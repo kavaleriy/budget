@@ -108,7 +108,12 @@ module Modules
 
     def sort_e_data
       # Data
-      payments_data = ExternalApi::e_data_payments(params['payers_edrpous'], params['recipt_edrpous'], params['startdate'])
+      payments_data = ExternalApi::e_data_payments(
+          params['payers_edrpous'],
+          params['recipt_edrpous'],
+          params['startdate'].split('/').first,
+          params['startdate'].split('/').last
+      )
 
       # Sort data
       sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
