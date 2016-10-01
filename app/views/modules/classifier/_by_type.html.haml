@@ -1,4 +1,6 @@
 :scss
+  $search-border: #0c2231;
+
   #edata_items {
     table {
       tr {
@@ -9,7 +11,9 @@
         }
       }
     }
+    //border: 1px solid $search-border;
   }
+
 
 -if @items.blank?
   = t('.no-data')
@@ -35,11 +39,11 @@
 
 :javascript
   $(document).ready(function() {
-    $("#items-list").show();
+    // $("#items-list").show();
     $('#edata_items tr').on('click', function() {
       var role = $(this).data('role');
       var name = '#_item_' + role;
       $(name).val($(this).data('edrpou')).trigger('change');
-      $("#items-list").hide();
+      $("#items-list").fadeOut();
     });
   })
