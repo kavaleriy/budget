@@ -44,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page])
+      @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user).page(params[:page])
     end
 
     # GET /repairing/layers/1
@@ -243,7 +243,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale)
       end
   end
 end
