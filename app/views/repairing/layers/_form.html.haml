@@ -5,7 +5,7 @@
   - else
     = t('repairing.repairs.form.town') + ": " + current_user.town
   = f.text_field :title, :label => t('repairing.repairs.form.title'), :class => 'form-control'
-  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.select{|p| p.category.nil?}.collect {|p| [ p.title, p.id ] }, nil), { :label => t('repairing.repairs.form.category') }, :class => 'form-control'
+  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.by_locale.select{|p| p.category.nil?}.collect {|p| [ p.title, p.id ] }, nil), { :label => t('repairing.repairs.form.category') }, :class => 'form-control'
   = f.text_area :description, :label => t('repairing.repairs.form.description'), :rows => "8"
 
   = f.file_field :repairs_file, :label => t('repairing.repairs.form.repairs_file')
