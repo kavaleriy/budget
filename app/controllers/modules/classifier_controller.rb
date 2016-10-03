@@ -31,9 +31,22 @@ module Modules
     end
 
     def by_type
-      @items = (params["type"].blank? ? items_by_koatuu : items_by_koatuu.where(k_form: params["type"])).to_a.sort_by! { |hash| hash.pnaz }
+      @items = (params["type"].blank? ? items_by_koatuu : items_by_koatuu.where(k_form: params["type"])).to_a.sort_by! do |hash|
+        if params['sort_column'].blank?
+          hash.pnaz
+        else
+          hash[params['sort_column']]
+        end
+      end
+      @items.reverse! unless params['sort_column'].blank? || params['sort_direction'].eql?('asc')
       @role = params["role"]
-      respond_with(@items)
+      if params['sort_column'].blank?
+        respond_with(@items)
+      else
+        respond_to do |format|
+          format.js { render 'modules/classifier/by_type_results' }
+        end
+      end
     end
 
     # TODO: Do refactor in future
@@ -111,8 +124,8 @@ module Modules
       payments_data = ExternalApi::e_data_payments(
           params['payers_edrpous'],
           params['recipt_edrpous'],
-          (params['startdate'].split('/').first unless params['startdate'].blank?),
-          (params['startdate'].split('/').last unless params['startdate'].blank?)
+          (params['period'].split('/').first unless params['period'].blank?),
+          (params['period'].split('/').last unless params['period'].blank?)
       )
 
       # Sort data

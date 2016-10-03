@@ -142,12 +142,11 @@
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
-      var item = $('#_item').val();
       var sort_conf = {
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_data(item, sort_conf);
+      get_data($('#_item').val(), sort_conf);
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
   });

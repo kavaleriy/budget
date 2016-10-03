@@ -12,7 +12,6 @@
     .simple_form {
       .form-group {
         border-radius: 0;
-        &._enddate,
         &._startdate {
           &:after,
           &:before {
@@ -194,7 +193,12 @@
     init_item_select($('#_item_recipt'));
 
     $('#_item_payers, #_item_recipt').on('change', function() {
-      $("#items-list").hide().empty();
+      $('.results').empty();
+      if($(this).val()) {
+        $("#items-list").hide();
+      } else {
+        $("#items-list").show();
+      }
     });
 
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
@@ -202,15 +206,16 @@
       $("#items-list").show();
     });
 
-    $('#search').on('click', function(){
+    $('#search').on('click', function(e){
       var edrpous = {
         payer: $('#_item_payers').val(),
         recipt: $('#_item_recipt').val()
       };
       var start_date = $('#_startdate').val();
       get_data(edrpous, start_date);
-      $("#items-list").hide().empty();
-      return false;
+      $("#items-list").hide();
+      e.preventDefault();
+      // return false;
     });
 
     $('.results').on('click', '#edata_payments th', function() {
@@ -228,9 +233,23 @@
       get_data(edrpous, start_date, sort_conf);
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
+
+    $('#items-list').on('click', '#edata_items th', function() {
+      var _this = $(this);
+      var type = $('#_item_type_' + _this.data('role')).val();
+      $('#edata_items th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var sort_param = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_items(type, _this.data('role'), sort_param);
+      _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
+      console.log(_this);
+    });
   });
 
-  function get_data(edrpous, start_date, _sort_conf) {
+  // this function return search results and using for sort them
+  function get_data(edrpous, period, _sort_conf) {
     $('#spinner-container').show();
     var town_id = $('#_item_payers').data('town-id');
     $.ajax({
@@ -242,7 +261,7 @@
         town_id: town_id,
         payers_edrpous: edrpous.payer,
         recipt_edrpous: edrpous.recipt,
-        startdate: start_date,
+        period: period,
         sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
         sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
       }
@@ -250,19 +269,25 @@
     $('#spinner-container').hide();
   }
 
-  function get_items(type, role) {
+  function get_items(type, role, _sort_param) {
+    $('#spinner-container').show();
     var town_id = $('#_item_type_payers').data('town-id');
     $.ajax({
       type: 'post',
       url: "#{modules_classifier_by_type_url}",
-      // async: false,
+      async: false,
       dataType: 'script',
       data: {
         town_id: town_id,
         type: type,
-        role: role
+        role: role,
+        sort_column: (_sort_param != null ? _sort_param.sort_col : null),
+        sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
+        // sort_column: _sort_param.sort_col,
+        // sort_direction: _sort_param.sort_dir
       }
     });
+    $('#spinner-container').hide();
   }
 
   function sort_direction(attr) {
@@ -292,7 +317,8 @@
 
   function init_item_select(selector) {
     $('#_item_' + selector.data('role')).val('').trigger('change');
-    var type = selector.val();
-    var role = selector.data('role');
-    get_items(type, role);
+    // var type = selector.val();
+    // var role = selector.data('role');
+    // get_items(type, role);
+    get_items(selector.val(), selector.data('role'));
   }
