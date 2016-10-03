@@ -118,27 +118,33 @@
 :javascript
   $(document).ready(function() {
 
+    // init select2 and add event -> search if change value (if select not empty)
     $('#_item').select2({
       placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
     }).on('change', function(data) {
-      if(data.val != '') {
+      // check for empty value, if empty -> do nothing
+      if(data.val) {
         get_data(data.val);
       }
     });
 
+    // add event -> search if change value (if select not empty)
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
-      if(item != '') {
+      // check for empty value, if empty -> do nothing
+      if(item) {
         get_data(item);
       }
     });
 
+  // add breadcrumbs element
     $('#advanced_search_button').click(function(){
         var breadcrumbs_title = $.trim($(this).text());
         addBreadcrumbs(breadcrumbs_title);
     });
 
+    // add event for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
@@ -151,6 +157,8 @@
     });
   });
 
+  // this function return search results and using for sort them
+  // sorting params may be empty
   function get_data(edrpou, _sort_conf) {
     $('#spinner-container').show();
     var town_id = $('#_item').data('town-id');
@@ -172,6 +180,7 @@
     $('#spinner-container').hide();
   }
 
+  // switch sort direction
   function sort_direction(attr) {
     if (attr == 'asc') {
       return 'desc';
@@ -181,6 +190,7 @@
     }
   }
 
+  // add breadcrumbs element and create event-listener for handheld remove it
   function addBreadcrumbs(title) {
     var breadcrumbs_list = $('.breadcrumb');
     var parent_el = breadcrumbs_list.find('li.active');

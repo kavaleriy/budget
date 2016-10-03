@@ -163,6 +163,7 @@
 
     // use for changing datepicker locale
     moment.locale("#{I18n.locale}");
+    // init and setup datepicker
     $('#_startdate').daterangepicker({
       ranges: dp_ranges_config(),
       locale: {
@@ -192,8 +193,10 @@
     init_item_select($('#_item_payers'));
     init_item_select($('#_item_recipt'));
 
+    // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
       $('.results').empty();
+      // check for empty value
       if($(this).val()) {
         $("#items-list").hide();
       } else {
@@ -201,11 +204,13 @@
       }
     });
 
+    // add event: if change type -> clear value of item select and change select options
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
       init_item_select($(this));
       $("#items-list").show();
     });
 
+    // add action for search button
     $('#search').on('click', function(e){
       var edrpous = {
         payer: $('#_item_payers').val(),
@@ -215,9 +220,9 @@
       get_data(edrpous, start_date);
       $("#items-list").hide();
       e.preventDefault();
-      // return false;
     });
 
+    // add event for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
@@ -234,6 +239,7 @@
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
 
+    // add event for sorting items list
     $('#items-list').on('click', '#edata_items th', function() {
       var _this = $(this);
       var type = $('#_item_type_' + _this.data('role')).val();
@@ -244,11 +250,12 @@
       };
       get_items(type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
-      console.log(_this);
     });
+
   });
 
   // this function return search results and using for sort them
+  // sorting params may be empty
   function get_data(edrpous, period, _sort_conf) {
     $('#spinner-container').show();
     var town_id = $('#_item_payers').data('town-id');
@@ -269,6 +276,10 @@
     $('#spinner-container').hide();
   }
 
+  // this function return items by type and using for sort them
+  // function change items list and items select options depend on type value
+  // sorting params may be empty
+  // sorting apply for items list only (manage by controller)
   function get_items(type, role, _sort_param) {
     $('#spinner-container').show();
     var town_id = $('#_item_type_payers').data('town-id');
@@ -283,13 +294,12 @@
         role: role,
         sort_column: (_sort_param != null ? _sort_param.sort_col : null),
         sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
-        // sort_column: _sort_param.sort_col,
-        // sort_direction: _sort_param.sort_dir
       }
     });
     $('#spinner-container').hide();
   }
 
+  // switch sort direction
   function sort_direction(attr) {
     if (attr == 'asc') {
       return 'desc';
@@ -315,10 +325,10 @@
     return ranges;
   }
 
+  // This function change selected value to empty in item select
+  // and reinit select2 after changing select options.
+  // This actions define in '*.js.erb'
   function init_item_select(selector) {
     $('#_item_' + selector.data('role')).val('').trigger('change');
-    // var type = selector.val();
-    // var role = selector.data('role');
-    // get_items(type, role);
     get_items(selector.val(), selector.data('role'));
   }

@@ -11,6 +11,7 @@ module Modules
     def search_e_data
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
+      # switch between '*.js.erb' depend on sorting params
       if params['sort_col'].blank?
         respond_to do |format|
           format.js { render 'modules/classifier/search_e_data' }
@@ -31,8 +32,10 @@ module Modules
     end
 
     def by_type
+      # add 'where' filter if type was select
       @items = (params["type"].blank? ? items_by_koatuu : items_by_koatuu.where(k_form: params["type"])).to_a.sort_by! do |hash|
         if params['sort_column'].blank?
+          # use default sorting if sorting params empty
           hash.pnaz
         else
           hash[params['sort_column']]
@@ -40,6 +43,7 @@ module Modules
       end
       @items.reverse! unless params['sort_column'].blank? || params['sort_direction'].eql?('asc')
       @role = params["role"]
+      # switch between '*.js.erb' depend on sorting params
       if params['sort_column'].blank?
         respond_with(@items)
       else
@@ -127,7 +131,6 @@ module Modules
           (params['period'].split('/').first unless params['period'].blank?),
           (params['period'].split('/').last unless params['period'].blank?)
       )
-
       # Sort data
       sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
       unless payments_data.nil?
@@ -140,7 +143,6 @@ module Modules
         end
         payments_data.reverse! unless params['sort_dir'].eql?('asc')
       end
-
       # Results
       payments_data
     end

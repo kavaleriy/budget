@@ -7,6 +7,7 @@
 
 :javascript
   $(document).ready(function() {
+    // add event for change item select value by mouse click and hide items list
     $('#edata_items tbody tr').on('click', function() {
       $('#_item_' + $(this).data('role')).val($(this).data('edrpou')).trigger('change');
       $("#items-list").fadeOut();
