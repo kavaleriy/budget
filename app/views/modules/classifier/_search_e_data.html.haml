@@ -5,17 +5,14 @@
 
   #edata_payments {
     table {
-      //margin-bottom: 250px;
       thead {
         th {
-        min-width: 90px;
+          white-space: nowrap;
+          min-width: 90px;
           cursor: pointer;
           opacity: .7;
           &:hover {
             opacity: 1;
-          }
-          &:first-child {
-            white-space: nowrap;
           }
           span {
             &:before {
@@ -29,6 +26,9 @@
               margin-right: 5px;
             }
           }
+        }
+        .payment_details {
+          width: 800px;
         }
         .active {
           background: none;
@@ -83,10 +83,10 @@
         %th{'data-column' => 'recipt_name', 'data-sort-direction' => 'asc'}
           %span
             = t('.recipt')
-        %th{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
+        %th.payment_details{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
           %span
             = t('.purpose')
-        %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'desc'}
+        %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'asc'}
           %span
             = t('.date')
 
