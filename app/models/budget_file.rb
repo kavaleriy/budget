@@ -52,6 +52,12 @@ class BudgetFile
     files || []
   end
 
+  def make_empty
+    self.rows = {}
+    self.tree = {}
+    self.meta_data = {}
+  end
+
   def import table
 
     rows = table.map { |row|
