@@ -201,7 +201,7 @@ module Repairing
     end
 
     def get_categories
-      categories = Repairing::Category.all.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
+      categories = Repairing::Category.by_locale.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
 
       respond_to do |format|
         format.json { render json: categories}

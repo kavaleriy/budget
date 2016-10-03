@@ -26,8 +26,8 @@
 
   .panel.panel-default.col-xs-12.col-md-5
     .panel-body
-      = render :partial => 'tree_control', :locals => { prefix: 'repairing_category' }
-      = render :partial => 'tree_view', :locals => { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+      = render partial: 'tree_control', locals: { prefix: 'repairing_category' }
+      = render partial: 'tree_view', locals: { prefix: 'repairing_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
   .col-xs-12.col-md-7
     .panel.panel-default
@@ -68,7 +68,8 @@
               repairing_category: {
                   category_id: data.node.parent,
                   title: data.node.text,
-                  position: data.position
+                  position: data.position,
+                  locale: I18n.locale
               }
           }
       })

@@ -1,19 +1,65 @@
 :scss
+  // init colors
+  $active: #ffd304;
+  $text: #0c2231;
   $search-border: #0c2231;
+  $search-background: white;
+
 
   #edata_items {
+    padding: 20px;
     table {
-      tr {
-        cursor: pointer;
-        opacity: .7;
-        &:hover {
-          opacity: 1;
+      thead {
+        th {
+          white-space: nowrap;
+          min-width: 90px;
+          cursor: pointer;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+          span {
+            &:before {
+              content: '\f0ec';
+              font-family: FontAwesome;
+              font-size: 12px;
+              -ms-transform: rotate(90deg); /* IE 9 */
+              -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+              transform: rotate(90deg);
+              float: left;
+              margin-right: 5px;
+            }
+          }
+        }
+        .active {
+          background: none;
+          span {
+            border-bottom: 2px solid $active;
+          }
+        }
+      }
+      tbody {
+        tr {
+          cursor: pointer;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
         }
       }
     }
-    //border: 1px solid $search-border;
+  }
+  #close-btn {
+    background: $search-border;
+    color: $search-background;
+    cursor: pointer;
+    height: 22px;
+    width: 22px;
+    text-align: center;
   }
 
+#close-btn.pull-right
+  %i.fa.fa-times.fa-lg
 
 -if @items.blank?
   = t('.no-data')
@@ -21,29 +67,24 @@
   #edata_items.table-responsive
     %table.table.table-striped
       %thead
-        %th
-          =t('.edrpou')
-        %th
-          =t('.org_name')
-        %th
-          =t('.org_name_v')
-        %th
-          =t('.address')
+        %th{'data-column' => 'edrpou', 'data-sort-direction' => 'asc', 'data-role' => @role}
+          %span
+            =t('.edrpou')
+        %th.active{'data-column' => 'pnaz', 'data-sort-direction' => 'asc', 'data-role' => @role}
+          %span
+            =t('.org_name')
+        %th{'data-column' => 'naz_v', 'data-sort-direction' => 'asc', 'data-role' => @role}
+          %span
+            =t('.org_name_v')
+        %th{'data-column' => 'adp', 'data-sort-direction' => 'asc', 'data-role' => @role}
+          %span
+            =t('.address')
 
-      - @items.each do |item|
-        %tr{'data-edrpou' => item['edrpou'], 'data-name'=>item['pnaz'], 'data-role' => @role}
-          %td= item['edrpou']
-          %td= item['pnaz']
-          %td= item['naz_v']
-          %td= item['adp']
+      = render partial: 'by_type_results'
 
 :javascript
   $(document).ready(function() {
-    // $("#items-list").show();
-    $('#edata_items tr').on('click', function() {
-      var role = $(this).data('role');
-      var name = '#_item_' + role;
-      $(name).val($(this).data('edrpou')).trigger('change');
+    $('#close-btn').click(function() {
       $("#items-list").fadeOut();
     });
-  })
+  });

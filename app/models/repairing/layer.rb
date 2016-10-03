@@ -59,7 +59,8 @@ class Repairing::Layer
     layers = Repairing::Layer.collection.aggregate([
                                                        {
                                                            '$match' => {
-                                                               'town_id' => {'$ne' => nil}
+                                                               'town_id' => {'$ne' => nil},
+                                                               'locale' => I18n.locale
                                                            }
                                                        },
                                                        {
