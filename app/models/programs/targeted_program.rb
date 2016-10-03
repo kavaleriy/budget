@@ -1,4 +1,5 @@
 class Programs::TargetedProgram
+  extend ProgramBudgetSum
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -18,6 +19,8 @@ class Programs::TargetedProgram
   field :manager,                 type: String # розпорядник
   field :reason,                  type: String # Підстава
   field :budget_sum,              type: Hash
+  # TODO validate this field
+  field :quoter,                  type: Integer #Тривалість
   field :objective,               type: String # ціль
   field :region_target_program,   type: Hash
   field :active,                  type: Boolean, default: true
@@ -69,7 +72,7 @@ class Programs::TargetedProgram
 
     unless workbook['Indicates'].nil?
       year = program.budget_sum.keys.first
-      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], year, program)
+      Programs::Indicator.create_indicators_by_xls(workbook['Indicates'], program)
     end
 
     program
@@ -96,53 +99,50 @@ class Programs::TargetedProgram
     unless sheet.nil?
       program_hash = XlsParser.get_table_hash(sheet).first
       program_year = program_hash["year"].to_s
-      budget_sum_hash = { program_year => {plan: {},
-                                           fact: {
-                                               general_sum: 0.0,
-                                               special_sum: 0.0,
-                                               sum: 0.0
-                                           }
-                                          }
-                        }
       program_hash.except!("year")
-      budget_sum_name_array = ["general_fund","special_fund","sum"]
-      budget_sum_name_array.each do |name|
-        budget_sum_hash[program_year][:plan].store(name,program_hash[name])
-        program_hash.except!(name)
-      end
-      program =  self.new(program_hash)
+      tmp = ProgramBudgetSum::ProgramBudgetSumHash.new
+      tmp.sum_hash = program_hash
+      budget_sum_hash = { program_year => tmp.sum_hash }
+      program = self.new(program_hash)
       program.budget_sum = budget_sum_hash
       program
-
 
     end
   end
 
   def calc_budget_sum
     # function set budget sum by general and special fund
-    year = Date.today.year.to_s
-    budget_sum_by_year = self.budget_sum[year]
-    # set budget plan sum
-    general_plan_fund = budget_sum_by_year[:plan]['general_fund'].to_f
-    special_plan_fund = budget_sum_by_year[:plan]['special_fund'].to_f
-    budget_sum_by_year[:plan]['sum'] = general_plan_fund + special_plan_fund
-    # set budget fact sum if exist
-    unless budget_sum_by_year[:fact].nil?
-      general_fact_sum = budget_sum_by_year[:fact]['general_sum'].to_f
-      special_fact_sum = budget_sum_by_year[:fact]['special_sum'].to_f
-      budget_sum_by_year[:fact]['sum'] = general_fact_sum + special_fact_sum
-    else
-      init_default_fact_sum(year)
-    end
-  end
+    # year = Date.today.year.to_s
+    self.budget_sum.each do |key,year|
+      general_plan_fund = year[:plan][:general_fund].to_f
+      special_plan_fund = year[:plan][:special_fund].to_f
+      year[:plan][:sum] = general_plan_fund + special_plan_fund
 
-  def init_default_fact_sum(year)
-    self.budget_sum[year][:fact] = {
-        general_sum: 0.0,
-        special_sum: 0.0,
-        sum: 0.0
-    }
+      # set budget fact sum if exist
+      # unless budget_sum_by_year[:fact].nil?
+      general_fact_sum = year[:fact][:general_fund].to_f
+      special_fact_sum = year[:fact][:special_fund].to_f
+      year[:fact][:sum] = general_fact_sum + special_fact_sum
+
+      year[:differences][:general_fund] = general_fact_sum - general_plan_fund
+      year[:differences][:special_fund] = special_fact_sum - special_plan_fund
+      year[:differences][:sum] = year[:fact][:sum] - year[:plan][:sum]
+    end
+
+    # budget_sum_by_year = self.budget_sum[year]
+    # set budget plan sum
+    # else
+    #   init_default_fact_sum(year)
+    # end
   end
+  #
+  # def init_default_fact_sum(year)
+  #   self.budget_sum[year][:fact] = {
+  #       general_sum: 0.0,
+  #       special_sum: 0.0,
+  #       sum: 0.0
+  #   }
+  # end
 
   # Get array of years from programs
   # return array of string, example: [ "2016", "2015" ]

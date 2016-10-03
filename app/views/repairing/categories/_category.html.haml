@@ -1,4 +1,21 @@
-%table.table
+:scss
+  .category-form{
+    margin-bottom: 0px;
+    form {
+      margin: 0px;
+      .form-group{
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .btn.btn-upload{
+        position: relative;
+        top: 10px;
+      }
+    }
+  }
+
+
+%table.table.category-form
   %thead
     %th
       = t('repairing.category_edit.name')
@@ -7,18 +24,21 @@
   %tbody
     %tr
       %td
-        %a.editable{:href => '#', :id => 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
+        %a.editable{href: '#', id: 'title', 'data-resource' => 'repairing_category', 'data-type' => 'text', 'data-pk' => @repairing_category.id, 'data-url' => repairing_category_path(@repairing_category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
           = @repairing_category.title
       %td
         = bootstrap_form_for @repairing_category, html: {class: 'form-inline'}, remote: true do |f|
-          .upload_img{:style => 'float:left;margin-right:10px;'}
+          .upload_img{style: 'float:left;margin-right:10px;'}
             -if @repairing_category.img?
               =image_tag @repairing_category.img.thumb.url
             -else
               =image_tag "no_image.png"
-          = f.file_field :img, :label => t('repairing.category_edit.image_load'), :multiple => false
-          = f.button :class => 'btn btn-primary' do
+          = f.file_field :img, label: t('repairing.category_edit.image_load'), accept: 'image/*', multiple: false
+          = f.button class: 'btn btn-primary btn-upload' do
             %i.fa.fa-upload
+
+-# This script for stylize file field
+= render partial: 'layouts/file_upload_script'
 
 :javascript
 

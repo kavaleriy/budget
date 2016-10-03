@@ -1,0 +1,298 @@
+:scss
+
+  // init colors
+  $button-background: #0c2231;
+  $button-border: #0c2231;
+  $button-line: #ffd304;
+  $button-text: white;
+  $search-background: white;
+  $search-border: #0c2231;
+
+  #advanced-search {
+    .simple_form {
+      .form-group {
+        border-radius: 0;
+        &._enddate,
+        &._startdate {
+          &:after,
+          &:before {
+            position: absolute;
+            font-family: FontAwesome;
+            cursor: pointer;
+            font-size: 20px;
+            width: 33px;
+            height: 33px;
+            text-align: center;
+          }
+          &:before {
+            content: '\f073';
+            color: $search-background;
+            background: $search-border;
+            border: 1px solid $search-border;
+          }
+          &:after {
+            content: '\f0d7';
+            color: $search-border;
+            background: transparent;
+            right: 15px;
+          }
+          .form-control {
+            height: 33px;
+            width: calc(100% - 33px);
+            border-radius: 0;
+            border-color: $search-border;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 33px;
+          }
+        }
+      }
+      ._item_payers,
+      ._item_recipt,
+      ._item_type_payers,
+      ._item_type_recipt {
+        .select2-container {
+          border: none;
+          width: 100%;
+          .select2-choice {
+            height: 33px;
+            line-height: 33px;
+            background: $search-background;
+            border: 1px solid $search-border;
+            border-radius: 0;
+            &:after,
+            &:before {
+              font-family: FontAwesome;
+              position: absolute;
+              cursor: pointer;
+              font-size: 20px;
+              width: 33px;
+              text-align: center;
+              margin: -2px auto;
+            }
+            &:before {
+              left: 0;
+              color: $search-background;
+              background: $search-border;
+            }
+            &:after {
+              content: '\f0d7';
+              right: 0;
+              top: 0;
+              color: $search-border;
+              background: $search-background;
+            }
+            .select2-chosen {
+              margin-left: 33px;
+              margin-right: 55px;
+            }
+            .select2-search-choice-close {
+              right: 35px;
+            }
+            .select2-arrow {
+              display: none;
+            }
+          }
+        }
+      }
+      ._item_type_payers {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f155';
+            }
+          }
+        }
+      }
+      ._item_type_recipt {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f007';
+            }
+          }
+        }
+      }
+      .search-button {
+        background: $button-background;
+        color: $button-text;
+        font-weight: bold;
+        border-radius: 0 !important;
+        height: 33px;
+      }
+    }
+  }
+  #items-list{
+    margin-bottom: 40px;
+    margin-top: 20px;
+    border: 1px solid $search-border;
+    //min-height: 50px;
+    //max-height: 500px;
+    height: 500px;
+    overflow: auto;
+    display: none;
+  }
+
+= stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
+
+#advanced-search
+  = simple_form_for '', remote: true do |f|
+    .row
+      .col-md-3
+        = f.input :startdate, input_html: { class: 'daterange' }, label: false
+      .col-md-3
+        = f.input(:item_type_payers, collection: @types.map { |type| [type.name, type.code] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
+        = f.input(:item_type_recipt, collection: @types.map { |type| [type.name, type.code] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
+      .col-md-5
+        = f.input(:item_payers, as: :select, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, as: :select,input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+        -#= f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        -#= f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
+        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+      .col-md-1
+        = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
+
+    #items-list
+    .results
+    = render partial: 'layouts/spinner'
+
+:javascript
+  $(document).ready(function() {
+
+    // use for changing datepicker locale
+    moment.locale("#{I18n.locale}");
+    $('#_startdate').daterangepicker({
+      ranges: dp_ranges_config(),
+      locale: {
+        format: 'DD-MM-YYYY',
+        separator: ' / ',
+        applyLabel: I18n.t('modules.classifier.advanced_search.dateranges.apply'),
+        cancelLabel: I18n.t('modules.classifier.advanced_search.dateranges.cancel'),
+        customRangeLabel: I18n.t('modules.classifier.advanced_search.dateranges.custom_range'),
+      },
+      // set default range as 'yesterday'
+      startDate: moment().subtract(1, 'days'),
+      endDate: moment().subtract(1, 'days')
+    });
+
+    $('#_item_type_payers').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.payers_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
+    });
+
+    $('#_item_type_recipt').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.recipt_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
+    });
+
+    init_item_select($('#_item_payers'));
+    init_item_select($('#_item_recipt'));
+
+    $('#_item_payers, #_item_recipt').on('change', function() {
+      $("#items-list").hide().empty();
+    });
+
+    $('#_item_type_payers, #_item_type_recipt').on('change', function() {
+      init_item_select($(this));
+      $("#items-list").show();
+    });
+
+    $('#search').on('click', function(){
+      var edrpous = {
+        payer: $('#_item_payers').val(),
+        recipt: $('#_item_recipt').val()
+      };
+      var start_date = $('#_startdate').val();
+      get_data(edrpous, start_date);
+      $("#items-list").hide().empty();
+      return false;
+    });
+
+    $('.results').on('click', '#edata_payments th', function() {
+      var _this = $(this);
+      $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var edrpous = {
+        payer: $('#_item_payers').val(),
+        recipt: $('#_item_recipt').val()
+      };
+      var start_date = $('#_startdate').val();
+      var sort_conf = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_data(edrpous, start_date, sort_conf);
+      _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
+    });
+  });
+
+  function get_data(edrpous, start_date, _sort_conf) {
+    $('#spinner-container').show();
+    var town_id = $('#_item_payers').data('town-id');
+    $.ajax({
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
+      async: false,
+      dataType: 'script',
+      data: {
+        town_id: town_id,
+        payers_edrpous: edrpous.payer,
+        recipt_edrpous: edrpous.recipt,
+        startdate: start_date,
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+      }
+    });
+    $('#spinner-container').hide();
+  }
+
+  function get_items(type, role) {
+    var town_id = $('#_item_type_payers').data('town-id');
+    $.ajax({
+      type: 'post',
+      url: "#{modules_classifier_by_type_url}",
+      // async: false,
+      dataType: 'script',
+      data: {
+        town_id: town_id,
+        type: type,
+        role: role
+      }
+    });
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
+  }
+
+  function dp_ranges_config() {
+    // need for internationalization range labels
+    var yesterday = I18n.t('modules.classifier.advanced_search.dateranges.yesterday');
+    var last_7_days = I18n.t('modules.classifier.advanced_search.dateranges.last_7_days');
+    var last_30_days = I18n.t('modules.classifier.advanced_search.dateranges.last_30_days');
+    var last_3_months = I18n.t('modules.classifier.advanced_search.dateranges.last_3_months');
+
+    var ranges = {};
+    ranges[yesterday] = [moment().subtract(1, 'days'), moment().subtract(1, 'days')];
+    ranges[last_7_days] = [moment().subtract(6, 'days'), moment()];
+    ranges[last_30_days] = [moment().subtract(29, 'days'), moment()];
+    ranges[last_3_months] = [moment().subtract(2, 'month'), moment()];
+
+    return ranges;
+  }
+
+  function init_item_select(selector) {
+    $('#_item_' + selector.data('role')).val('').trigger('change');
+    var type = selector.val();
+    var role = selector.data('role');
+    get_items(type, role);
+  }
