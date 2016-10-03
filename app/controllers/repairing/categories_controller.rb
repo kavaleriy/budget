@@ -109,6 +109,6 @@ class Repairing::CategoriesController < AdminController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_category_params
-      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position, :img)
+      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position, :img, :locale)
     end
 end

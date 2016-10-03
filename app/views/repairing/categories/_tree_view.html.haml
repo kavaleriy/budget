@@ -20,6 +20,7 @@
     function draw_tree(tree_view_id, tree_root_url, tree_url) {
       $.getScript("/assets/jstree/jstree.js")
         .done(function() {
+          locale = '?locale=' + I18n.locale
           $(tree_view_id).jstree({
             "core" : {
               "animation" : 0,
@@ -27,7 +28,7 @@
               "themes" : { "stripes" : true },
               'data' : {
                 'url' : function (node) {
-                  return node.id === '#' ? tree_root_url : tree_url
+                  return node.id === '#' ? tree_root_url + locale : tree_url + locale
                 },
                 'data' : function (node) {
                   return { 'id' : node.id };
