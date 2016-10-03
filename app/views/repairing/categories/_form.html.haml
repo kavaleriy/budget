@@ -1,7 +1,7 @@
-= bootstrap_form_for new_category, :remote => true, :authenticity_token => true, method: 'POST', :html => { :class => 'form-horizontal', :multipart => true} do |f|
+= bootstrap_form_for new_category, remote: true, authenticity_token: true, method: 'POST', html: { class: 'form-horizontal', multipart: true} do |f|
 
-  = f.text_field :title, :label => t('repairing.repairs.form.title')
+  = f.text_field :title, label: t('repairing.repairs.form.title')
 
   .actions
-    = f.submit t('form.add'), :class => 'btn btn-primary'
+    = f.submit t('form.add'), class: 'btn btn-primary'
 

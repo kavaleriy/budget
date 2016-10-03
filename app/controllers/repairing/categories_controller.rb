@@ -13,7 +13,7 @@ class Repairing::CategoriesController < AdminController
   # GET /repairing/categories/1
   # GET /repairing/categories/1.json
   def show
-    @repairing_categories = Repairing::Category.where( :category_id => @repairing_category.id)
+    @repairing_categories = repairing_categories(@repairing_category.id)
     respond_to do |format|
       format.js
     end
@@ -79,7 +79,7 @@ class Repairing::CategoriesController < AdminController
   # DELETE /repairing/categories/1
   # DELETE /repairing/categories/1.json
   def destroy
-    Repairing::Category.where(:category_id => @repairing_category.id).each{|category|
+    repairing_categories(@repairing_category.id).each{|category|
       category.destroy
     }
     @repairing_category.destroy
@@ -93,10 +93,10 @@ class Repairing::CategoriesController < AdminController
 
     def recalc_positions(category_id, id, new_position = -1)
       position = 0
-      Repairing::Category.where(:category_id => category_id).each{ |category|
+      repairing_categories(category_id).each{ |category|
         next if category.id.to_s == id
         position = new_position + 1 if position == new_position
-        category.update(:position => position)
+        category.update(position: position)
         puts "#{category.position} - #{category.title}"
         position += 1
       }
@@ -107,8 +107,12 @@ class Repairing::CategoriesController < AdminController
       @repairing_category = Repairing::Category.find(params[:id])
     end
 
+    def repairing_categories(category_id)
+      @repairing_categories = Repairing::Category.where(category_id: category_id)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def repairing_category_params
-      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position, :img)
+      params.require(:repairing_category).permit(:category_id, :title, :icon, :color, :position, :img, :locale)
     end
 end
