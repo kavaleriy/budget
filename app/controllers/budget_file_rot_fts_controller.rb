@@ -19,7 +19,8 @@ class BudgetFileRotFtsController < BudgetFileRotsController
 
   def create_taxonomy
     area_id = params[:area]
-    name = @file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FT\k<BUDGET>xxxx.\k<TERRA>.' + area_id)
+    name = @file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FTxxxxxx.\k<TERRA>.' + area_id)
+    # name = @file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FT\k<BUDGET>xxxx.\k<TERRA>.' + area_id)
     taxonomy = TaxonomyRot.find_or_create_by!(owner: @town_title, name: name)
     taxonomy.title = get_title
     taxonomy.area = params[:area]
