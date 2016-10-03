@@ -1,0 +1,11 @@
+- @payments.each do |payment|
+  %tr{'data-edrpou' => payment['payer_edrpou']}
+    %td= payment['amount']
+    %td= payment['payer_name']
+    %td
+      = payment['recipt_name']
+      %br
+        -# TODO: create translate if require
+        = "Код: #{payment['recipt_edrpou']}"
+    %td= payment['payment_details']
+    %td= payment['trans_date'].split('T')[0]

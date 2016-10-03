@@ -4,7 +4,7 @@ module Repairing
 
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy,:show_repair_info]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy,:show_repair_info, :e_data]
 
     # GET /repairing/repairs
     # GET /repairing/repairs.json
@@ -75,6 +75,22 @@ module Repairing
 
     def show_repair_info
       render 'show_repair_info',layout: false
+    end
+
+    def e_data
+      require 'external_api'
+      # payer_edrpous = '37836770'
+      # recipt_edrpous = '37755173'
+      e_data_payments = ExternalApi.e_data_payments(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units) || []
+      # e_data_payments = ExternalApi.e_data_payments(payer_edrpous, recipt_edrpous)
+
+      @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
+
+      respond_to do |format|
+        format.html {render partial: 'modules/classifier/search_e_data',layout: false}
+        format.js {  }
+      end
+
     end
 
     private

@@ -2,7 +2,7 @@
   // init colors
   $button-background: #0c2231;
   $button-border: #0c2231;
-  $button-line: #ffd304;
+  $button-active: #ffd304;
   $button-text: white;
   $search-background: white;
   $search-border: #0c2231;
@@ -10,7 +10,7 @@
   #search-data {
     .form-group {
       float: left;
-      width: calc(100% - 33px);
+      width: 100%;
       .select2-container {
         border: none;
         .select2-choice {
@@ -19,24 +19,70 @@
           background: $search-background;
           border: 1px solid $search-border;
           border-radius: 0;
+          &:before {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: $search-background;
+            width: 33px;
+            background: $search-border;
+            text-align: center;
+            margin: -2px auto;
+          }
+          .select2-chosen {
+            margin-right: 55px;
+          }
+          .select2-search-choice-close {
+            right: 40px;
+          }
           .select2-arrow {
             display: none;
           }
         }
       }
     }
+    .advanced_search_button,
     .btn-switch-role {
       background: $button-background;
-      border: 1px solid $button-border;
+      border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
-      width: 110px;
+      min-width: 125px;
       border-radius: 0;
+      padding: 4px 10px;
+    }
+    .btn-switch-role[for="_role_payers"] {
+      &:before {
+        content: '\f111';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role[for="_role_recipt"] {
+      &:before {
+        content: '\f0c8';
+        font-family: FontAwesome;
+        padding-right: 5px;
+      }
+    }
+    .btn-switch-role:before {
+      color: $button-text;
     }
     input:checked + .btn-switch-role {
       background: $button-text;
       color: $button-background;
-      text-decoration: underline $button-line;
+      border: 1px solid $button-border;
+      &:after {
+        content: '';
+        display: block;
+        border: 1px solid $button-active;
+      }
+      &:before {
+        color: $button-active;
+      }
     }
     .search-button {
       background: $button-background;
@@ -51,49 +97,104 @@
   }
 
 #search-data
-  -#%h1
-    = t ('.header')
-
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
-        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.id, 'data-knaz' => classd.knaz] },
+        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] },
         input_html: {'data-town-id' => params['town_id']}, label: false)
-        .input-group-btn.search-button
-          %i.fa.fa-search
       .col-md-5
         .row
-          .col-xs-8.btn-group
-            = f.collection_radio_buttons :role, [['payer', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payer'} do |b|
+          .col-lg-7
+            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-xs-4
-            -#= f.button :submit, t('.saerch'), class: 'btn btn-primary', id: 'search'
+          .col-lg-5
+            = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
+              %i.fa.fa-cogs
+              = t('.advanced_button')
+
     .results
+    = render partial: 'layouts/spinner'
 
 :javascript
   $(document).ready(function() {
+
     $('#_item').select2({
-      // placeholder: "Choose something",
+      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
+    }).on('change', function(data) {
+      if(data.val != '') {
+        get_data(data.val);
+      }
     });
-    $('#_item').on('change', function(data) { get_data(data.val); });
+
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
-      get_data(item);
+      if(item != '') {
+        get_data(item);
+      }
+    });
+
+    $('#advanced_search_button').click(function(){
+        var breadcrumbs_title = $.trim($(this).text());
+        addBreadcrumbs(breadcrumbs_title);
+    });
+
+    $('.results').on('click', '#edata_payments th', function() {
+      var _this = $(this);
+      $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var item = $('#_item').val();
+      var sort_conf = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_data(item, sort_conf);
+      _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
   });
 
-  function get_data(d) {
+  function get_data(edrpou, _sort_conf) {
+    $('#spinner-container').show();
     var town_id = $('#_item').data('town-id');
     var role = $('[name="[role]"]:checked').val();
-    $.ajax({
-      type: 'post',
-      url: "#{modules_classifier_search_e_data_url}",
-      dataType: 'script',
-      data: {
+    var data = {
         town_id: town_id,
-        item: d,
-        role: role
-      }
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+    };
+    data[role + '_edrpous'] = edrpou;
+
+    $.ajax({
+      type: 'get',
+      url: "#{modules_classifier_search_e_data_url}",
+      async: false,
+      dataType: 'script',
+      data: data
+    });
+    $('#spinner-container').hide();
+  }
+
+  function sort_direction(attr) {
+    if (attr == 'asc') {
+      return 'desc';
+    }
+    else {
+      return 'asc';
+    }
+  }
+
+  function addBreadcrumbs(title) {
+    var breadcrumbs_list = $('.breadcrumb');
+    var parent_el = breadcrumbs_list.find('li.active');
+    parent_el.children().attr('href', "#{modules_classifier_search_data_path(@town)}").attr('data-remote', "true");
+    parent_el.removeClass('active');
+    var active_li = $('<li></li>').addClass('active');
+    var a_value = $('<a>').html(title);
+    active_li.append(a_value);
+    breadcrumbs_list.append(active_li);
+    // Handheld action 'back'
+    parent_el.children().click(function() {
+      // remove previous <li>
+      parent_el.next().remove();
+      parent_el.addClass('active');
     });
   }

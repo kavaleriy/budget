@@ -318,7 +318,7 @@
           = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
       -##subcategories
   .col-xs-12.col-sm-2.road-condition-select
-    =render partial: 'road_condition'
+    =render partial: 'repairing/maps/road_condition'
   .col-xs-12.col-sm-2.year-select
     -#- if @town.blank?
     -#  .form-group

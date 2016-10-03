@@ -198,7 +198,7 @@
     function set_iframe(url) {
       path = "#{request.base_url}"
       query = "#{URI.parse(request.url).query}"
-      frame_url = path + '/' + url + "?locale=" + I18n.locale
+      frame_url = path + '/' + url
       $('.tab-content iframe').attr('src', frame_url)
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
     }
