@@ -1,0 +1,14 @@
+$('#items-list').html('<%= escape_javascript( render partial: 'by_type', formats: [:html]) %>');
+
+var empty_el = $('<option></option>').val('');
+$('#_item_<%= @role %>').empty().append(empty_el);
+
+<%- @items.map do |item| %>
+  var option = $('<option></option>').val('<%= item.edrpou %>').html("<%= item.pnaz %> <%= item.edrpou %>");
+  $('#_item_<%= @role %>').append(option);
+<% end %>
+
+$('#_item_<%= @role %>').select2({
+  placeholder: I18n.t('modules.classifier.advanced_search.<%= @role %>_form_placeholder'),
+  allowClear: true
+});

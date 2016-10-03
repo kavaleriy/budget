@@ -1,70 +1,96 @@
 :scss
+  // init colors
+  $active: #ffd304;
+  $text: #0c2231;
+
   #edata_payments {
     table {
-      margin-bottom: 250px;
-
-      tr {
-        cursor: pointer;
-        opacity: .7;
-        &:hover {
-          opacity: 1;
+      //margin-bottom: 250px;
+      thead {
+        th {
+        min-width: 90px;
+          cursor: pointer;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+          &:first-child {
+            white-space: nowrap;
+          }
+          span {
+            &:before {
+              content: '\f0ec';
+              font-family: FontAwesome;
+              font-size: 12px;
+              -ms-transform: rotate(90deg); /* IE 9 */
+              -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+              transform: rotate(90deg);
+              float: left;
+              margin-right: 5px;
+            }
+          }
+        }
+        .active {
+          background: none;
+          span {
+            border-bottom: 2px solid $active;
+          }
+        }
+      }
+      tbody {
+        tr {
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
         }
       }
     }
 
-    .info {
-      position: fixed;
-      bottom: 0px;
-      left: 0;
-      width: 100%;
-      background-color: #87cefa;
-      padding: 15px;
+    #pagination {
+      .pagination {
+        li {
+          a {
+            border: none;
+            border-radius: 0;
+            color: $text;
+            padding: 2px 7px;
+            font-weight: bold;
+          }
+        }
+        .active {
+          a {
+            background-color: $active;
+            color: $text;
+          }
+        }
+      }
     }
   }
--unless @payments.blank?
+
+-if @payments.blank?
+  = t('.no-data')
+-else
   #edata_payments.table-responsive
     %table.table.table-striped
-      %tr
-        %th
-          Платник
-          -#TODO: Translate words!!!
-          -#= sortable "payment['payer_name']", 'Платник'
-        %th
-          Отримувач
-        %th
-          Сума
-        %th
-          Дата
-        %th
-          Призначення платежу
-      - @payments.each do |payment|
+      %thead
+        %th{'data-column' => 'amount', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.sum')
+        %th{'data-column' => 'payer_name', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.payer')
+        %th{'data-column' => 'recipt_name', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.recipt')
+        %th{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
+          %span
+            = t('.purpose')
+        %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'desc'}
+          %span
+            = t('.date')
 
-        %tr{'data-edrpou' => payment['payer_edrpou']}
-          %td
-            = payment['payer_name']
-          %td
-            = payment['recipt_name']
-            %br Код:
-            =payment['recipt_edrpou']
-          %td
-            = payment['amount']
-          %td
-            = payment['trans_date'].split('T')[0]
-          %td
-            = payment['payment_details']
-    .info
--else
-  Дані не знайдено
-:javascript
-  $(document).ready(function() {
-    $('#edata_payments tr').on('click', function() {
-      var edrpou = $(this).attr('data-edrpou')
-      $.get('http://edr.data-gov-ua.org/api/companies?where={"edrpou":"' + edrpou + '"}' , function (data) {
-        var edr = data[0]
-        var info = '<b>ЕДРПОУ: </b>' + edrpou + ', Відповідальний: ' + edr['mainPerson'] + '<br>Адреса: ' + edr['address'] +
-          '<br/> далі буде......'
-        $('#edata_payments .info').html(info)
-      });
+      = render partial: 'modules/classifier/search_e_data_results'
 
-    })
-  })
+    #pagination.text-center
+      = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}

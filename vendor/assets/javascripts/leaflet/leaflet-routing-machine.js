@@ -2018,6 +2018,9 @@ if (typeof module !== undefined) module.exports = polyline;
 
 	L.Routing.OSRM = L.Class.extend({
 		options: {
+			//WARN: 'The OSRM Demo server has moved to API Version 5.'
+			//TODO: need fix show road line
+			// serviceUrl: 'http://router.project-osrm.org/route/v1/driving/',
 			serviceUrl: 'https://router.project-osrm.org/viaroute',
 			timeout: 30 * 1000,
 			routingOptions: {},
@@ -2196,6 +2199,9 @@ if (typeof module !== undefined) module.exports = polyline;
 			for (var i = 0; i < waypoints.length; i++) {
 				wp = waypoints[i];
 				locationKey = this._locationKey(wp.latLng);
+				//WARN: 'The OSRM Demo server has moved to API Version 5.'
+				//TODO: need fix show road line
+				// locs.push(locationKey);
 				locs.push('loc=' + locationKey);
 
 				hint = this._hints.locations[locationKey];
@@ -2208,6 +2214,13 @@ if (typeof module !== undefined) module.exports = polyline;
 				}
 			}
 
+
+			//WARN: 'The OSRM Demo server has moved to API Version 5.'
+			//TODO: need fix show road line
+			// return this.options.serviceUrl +
+			// 	locs.join(';') + '?' +
+			// 	'geometries=geojson';
+			
 			computeAlternative = computeInstructions =
 				!(options && options.geometryOnly);
 
@@ -2219,6 +2232,7 @@ if (typeof module !== undefined) module.exports = polyline;
 				(this._hints.checksum !== undefined ? '&checksum=' + this._hints.checksum : '') +
 				(options.fileformat ? '&output=' + options.fileformat : '') +
 				(options.allowUTurns ? '&uturns=' + options.allowUTurns : '');
+			
 		},
 
 		_locationKey: function(location) {

@@ -27,7 +27,10 @@ Rails.application.routes.draw do
     get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
     post 'classifier/import_dbf' => 'classifier#import_dbf',as: 'import_dbf_save'
     get 'classifier/search_data/:town_id' => 'classifier#search_data', as: 'classifier_search_data'
-    post 'classifier/search_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
+    post 'classifier/by_type' => 'classifier#by_type', as: 'classifier_by_type'
+    get 'classifier/advanced_search/:town_id' => 'classifier#advanced_search', as: 'classifier_advanced_search'
+    get 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
+    # get 'classifier/sort_e_data' => 'classifier#sort_e_data', as: 'classifier_sort_e_data'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
@@ -186,15 +189,16 @@ Rails.application.routes.draw do
 
   namespace :repairing do
     get 'map' => 'maps#show'
+    get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
     get 'geo_json' => 'maps#geo_json'
     get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
-    get 'maps/frame/:zoom/:town_id' => 'maps#frame'
+    get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
-
+    get 'repairs/e_data' => 'repairs#e_data',as: 'e_data'
 
     get 'heapmap_json' => 'maps#get_heapmap_geo_json'
     get 'heapmap' => 'maps#heapmap'

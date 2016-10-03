@@ -203,7 +203,7 @@
       = t('layouts.navbar.library')
     - if current_user
       .btn-create.pull-right
-        = link_to new_library_book_path, class: 'add-new', title: t('.add_book'), 'data-toggle': 'tooltip', 'data-placement': 'bottom' do
+        = link_to new_library_book_path, class: 'add-new', title: t('.add_book'), 'data-toggle' => 'tooltip', 'data-placement' => 'bottom' do
           %i.fa.fa-plus
   = render partial: "categories"
   #results.books-list
