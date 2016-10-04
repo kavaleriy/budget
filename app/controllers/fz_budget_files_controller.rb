@@ -22,8 +22,8 @@ class FzBudgetFilesController < ApplicationController
 
 
   def create
-    taxonomy_rot = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rot])
-    taxonomy_rov = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rov])
+    taxonomy_rot = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rot]) rescue nil
+    taxonomy_rov = Taxonomy.find_by(:id => params[:budget_file_taxonomy_rov]) rescue nil
 
     # raise 'Не вказано код місцевого бюджету. Необхідно налаштувати параметри візуалізації' if taxonomy_rot.kmb.blank? || taxonomy_rov.kmb.blank?
 
@@ -43,11 +43,7 @@ class FzBudgetFilesController < ApplicationController
         budget_file.make_empty
         budget_file.author = current_user.email
 
-        calc_annual_rows = ->(rows) do
-          rows
-        end
-
-        rows = calc_annual_rows.call(read_table_from_file(path)[:rows])
+        rows = read_table_from_file(path)[:rows]
         budget_file.import rows
 
         fz_file.rot_file << budget_file
@@ -67,11 +63,7 @@ class FzBudgetFilesController < ApplicationController
         budget_file.make_empty
         budget_file.author = current_user.email
 
-        calc_annual_rows = ->(rows) do
-          rows
-        end
-
-        rows = calc_annual_rows.call(read_table_from_file(path)[:rows])
+        rows = read_table_from_file(path)[:rows]
         budget_file.import rows
 
         fz_file.rov_file << budget_file
