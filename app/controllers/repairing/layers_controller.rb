@@ -32,8 +32,8 @@ module Repairing
 
     def geo_json
       result = {
-          "type" => "FeatureCollection",
-          "features" => @repairing_layer.to_geo_json
+          type: "FeatureCollection",
+          features: @repairing_layer.to_geo_json
       }
 
       respond_to do |format|
@@ -164,7 +164,7 @@ module Repairing
 
         layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
-        category = Repairing::Category.where(:title => repair['Робота']).first
+        category = Repairing::Category.where(title: repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
         layer_repair.save!
       end
