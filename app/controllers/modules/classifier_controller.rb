@@ -11,13 +11,16 @@ module Modules
     def search_e_data
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
+      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+
       # switch between '*.js.erb' depend on sorting params
       if params['sort_col'].blank?
-        respond_to do |format|
-          format.js { render 'modules/classifier/search_e_data' }
-          format.json { render json: @payments }
-          format.xls { send_data Modules::Classifier.to_xls(@payments) }
-        end
+        respond_with(@payments, @receivers)
+        # respond_to do |format|
+        #   format.js { render 'modules/classifier/search_e_data' }
+        #   format.json { render json: @payments }
+        #   format.xls { send_data Modules::Classifier.to_xls(@payments) }
+        # end
       else
         respond_to do |format|
         format.js { render 'modules/classifier/sort_e_data' }

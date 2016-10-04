@@ -94,6 +94,12 @@
         bottom: 0;
       }
     }
+    #most-received {
+      #barChart {
+        height: 100px;
+        width: 800px;
+      }
+    }
   }
 
 #search-data
@@ -112,8 +118,10 @@
               %i.fa.fa-cogs
               = t('.advanced_button')
 
-    .results
-    = render partial: 'layouts/spinner'
+  .results
+  #most-received
+    %canvas#barChart
+  = render partial: 'layouts/spinner'
 
 :javascript
   $(document).ready(function() {
@@ -138,7 +146,7 @@
       }
     });
 
-  // add breadcrumbs element
+    // add breadcrumbs element
     $('#advanced_search_button').click(function(){
         var breadcrumbs_title = $.trim($(this).text());
         addBreadcrumbs(breadcrumbs_title);
