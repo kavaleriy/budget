@@ -108,7 +108,7 @@ class Repairing::CategoriesController < AdminController
     end
 
     def repairing_categories(category_id)
-      @repairing_categories = Repairing::Category.where(category_id: category_id)
+      Repairing::Category.where(category_id: category_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

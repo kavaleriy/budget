@@ -1,10 +1,10 @@
 .search_map
-  = form_tag create_repair_by_addr_repairing_layer_path(layer), :method => :post, :remote => true, :html => { :class => 'form-vertical' } do |f|
+  = form_tag create_repair_by_addr_repairing_layer_path(layer), method: :post, remote: true, html: { class: 'form-vertical' } do |f|
     .input-group.input-group-sm
       .col-sm-6
-        = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('repairing.repairs.form.address')}"
+        = text_field_tag :q, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address')}"
       .col-sm-6
-        = text_field_tag :q1, '', :class => 'form-control', :placeholder => "#{t('repairing.repairs.form.address_to')}"
+        = text_field_tag :q1, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address_to')}"
       %span.input-group-btn
-        = submit_tag t('form.add'), :class => 'btn btn-primary' do
+        = submit_tag t('form.add'), class: 'btn btn-primary' do
           %i.fa.fa-search.fa-lg
