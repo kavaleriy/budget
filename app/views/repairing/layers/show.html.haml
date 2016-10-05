@@ -23,9 +23,11 @@
 
 = link_to t('.back', default: t('helpers.links.back')), repairing_layers_path, class: 'btn btn-default'
 = link_to t('.edit', default: t('helpers.links.edit')), edit_repairing_layer_path(@layer), class: 'btn btn-default'
-= link_to t('.destroy', default: t('helpers.links.destroy')), repairing_layer_path(@layer), class: 'btn btn-danger',
-          method: 'delete', data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) },
-
+= link_to t('.destroy', default: t('helpers.links.destroy')),
+          repairing_layer_path(@layer),
+          class: 'btn btn-danger',
+          method: 'delete',
+          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
 
 :javascript
 
@@ -39,7 +41,7 @@
       bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
       getMapPopupContent: getMapPopupContent,
       scrollWheelZoom: true
-      });
+    });
     var categories_icons = #{Repairing::Category.get_category_icons}
 
     // add markers
