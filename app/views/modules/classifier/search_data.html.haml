@@ -95,12 +95,30 @@
       }
     }
     #most-received {
-      #barChart {
-        height: 100px;
-        width: 800px;
+      height: 400px;
+      .subtitle {
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        display: none;
       }
     }
   }
+  @media screen and (max-width: 1024px) {
+    #search-data {
+      #most-received {
+        height: 300px;
+      }
+    }
+  }
+  @media screen and (max-width: 992px) {
+    #search-data {
+      #most-received {
+        height: 200px;
+      }
+    }
+  }
+
 
 #search-data
   = simple_form_for '', remote: true do |f|
@@ -120,6 +138,8 @@
 
   .results
   #most-received
+    .subtitle
+      = t('.most_received')
     %canvas#barChart
   = render partial: 'layouts/spinner'
 
