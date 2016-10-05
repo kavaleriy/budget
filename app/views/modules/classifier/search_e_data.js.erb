@@ -1,1 +1,131 @@
 $(".results").html("<%= escape_javascript(render partial: 'search_e_data') %>");
+
+if (barChart) {
+  barChart.destroy();
+  $('#most-received').hide();
+}
+
+<%- unless params['payers_edrpous'].blank? %>
+  $('#most-received').show();
+
+  var label = [];
+  var data_set = [];
+  <%- @receivers.each do |payment| %>
+    label.push(split_label('<%= payment[:name].html_safe %>'));
+    data_set.push(<%= '%.2f' % payment[:val] %>);
+  <%- end %>
+
+  // This function receive string and split it by specific params; return array of strings.
+  // It necessary because chart.js doesn't support multiline labels by default
+  // and there is only one way to do that via passing array of strings as label instead of simple string.
+  // Params of splitting:
+  // - by default string splitting by whitespaces, but there is limit for minimum and maximum chars in each new string
+  // - if new string less then min -> current whitespace skip and function try to find next whitespace
+  // - if new string longer then max -> function cut string by max length regardless of whitespaces
+  function split_label(str) {
+    var min_length = 2;
+    var max_length = 10;
+    var arr = [];
+    for (var i = 0, start = 0, end = 0; i < str.length; i++) {
+      if (str.indexOf(' ', i) != -1) {
+        end = str.indexOf(' ', i);
+        if (end - start > min_length) {
+          if (end - start > max_length) {
+            end = start + max_length;
+          }
+          arr.push(str.substring(start, end));
+          i = start = end;
+        } else {
+          i++;
+        }
+      } else {
+        if (str.substring(start).length > max_length) {
+          end = start + max_length;
+          arr.push(str.substring(start, end));
+          i = start = end;
+        } else {
+          arr.push(str.substring(start));
+          break;
+        }
+      }
+    }
+    return arr;
+  }
+
+  // prepare chart options and datasets
+  var data = {
+    labels: label,
+    datasets: [
+      {
+        label: I18n.t('modules.classifier.search_data.total'),
+        backgroundColor: 'rgba(98, 141, 182, 1)',
+        hoverBackgroundColor: 'rgba(255, 211, 4, 1)',
+        data: data_set
+      }
+    ]
+  };
+  var ctx = $('#barChart').get(0);
+  var options = {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: 'rgba(12, 34, 49, 1)'
+    },
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },
+        barPercentage: 0.3,
+        ticks: {
+          fontSize: $(window).width() >= 1024 ? 12 : 8,
+          autoSkip: false,
+          maxRotation: 0
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          drawBorder: false,
+          display: false,
+          tickMarkLength: 0
+        },
+        ticks: {
+          display: false,
+          padding:0
+        }
+      }]
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeInOutSine',
+      onProgress: function () {
+        // render the value of the chart above the bar
+        var ctx = this.chart.ctx;
+        ctx.font = Chart.helpers.fontString(
+            $(window).width() >= 1024 ? Chart.defaults.global.defaultFontSize : Chart.defaults.global.defaultFontSize-4,
+            'normal',
+            Chart.defaults.global.defaultFontFamily
+        );
+        ctx.fillStyle = this.chart.config.options.defaultFontColor;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        this.data.datasets.forEach(function (dataset) {
+          for (var i = 0; i < dataset.data.length; i++) {
+            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+//            ctx.fillText(dataset.data[i], model.x, model.y - 5);
+            ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис.', model.x, model.y - 5);
+          }
+        });
+      }
+    }
+  };
+  // create and draw the chart
+  var barChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options
+  });
+
+<%- end %>
