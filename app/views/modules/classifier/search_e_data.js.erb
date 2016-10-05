@@ -23,8 +23,8 @@ if (barChart) {
   // - if new string less then min -> current whitespace skip and function try to find next whitespace
   // - if new string longer then max -> function cut string by max length regardless of whitespaces
   function split_label(str) {
-    var min_length = 3;
-    var max_length = 12;
+    var min_length = 2;
+    var max_length = 10;
     var arr = [];
     for (var i = 0, start = 0, end = 0; i < str.length; i++) {
       if (str.indexOf(' ', i) != -1) {
@@ -78,8 +78,9 @@ if (barChart) {
         gridLines: {
           display: false
         },
-        categoryPercentage: 0.3,
+        barPercentage: 0.3,
         ticks: {
+          fontSize: $(window).width() >= 1024 ? 12 : 8,
           autoSkip: false,
           maxRotation: 0
         }
@@ -87,10 +88,12 @@ if (barChart) {
       yAxes: [{
         gridLines: {
           drawBorder: false,
-          display: false
+          display: false,
+          tickMarkLength: 0
         },
         ticks: {
-          display: false
+          display: false,
+          padding:0
         }
       }]
     },
@@ -100,14 +103,19 @@ if (barChart) {
       onProgress: function () {
         // render the value of the chart above the bar
         var ctx = this.chart.ctx;
-        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+        ctx.font = Chart.helpers.fontString(
+            $(window).width() >= 1024 ? Chart.defaults.global.defaultFontSize : Chart.defaults.global.defaultFontSize-4,
+            'normal',
+            Chart.defaults.global.defaultFontFamily
+        );
         ctx.fillStyle = this.chart.config.options.defaultFontColor;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         this.data.datasets.forEach(function (dataset) {
           for (var i = 0; i < dataset.data.length; i++) {
             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-            ctx.fillText(dataset.data[i], model.x, model.y - 5);
+//            ctx.fillText(dataset.data[i], model.x, model.y - 5);
+            ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис.', model.x, model.y - 5);
           }
         });
       }
