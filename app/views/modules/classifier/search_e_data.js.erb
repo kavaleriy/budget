@@ -11,46 +11,9 @@ if (barChart) {
   var label = [];
   var data_set = [];
   <%- @receivers.each do |payment| %>
-    label.push(split_label('<%= payment[:name].html_safe %>'));
+    label.push('<%= payment[:name].html_safe %>');
     data_set.push(<%= '%.2f' % payment[:val] %>);
   <%- end %>
-
-  // This function receive string and split it by specific params; return array of strings.
-  // It necessary because chart.js doesn't support multiline labels by default
-  // and there is only one way to do that via passing array of strings as label instead of simple string.
-  // Params of splitting:
-  // - by default string splitting by whitespaces, but there is limit for minimum and maximum chars in each new string
-  // - if new string less then min -> current whitespace skip and function try to find next whitespace
-  // - if new string longer then max -> function cut string by max length regardless of whitespaces
-  function split_label(str) {
-    var min_length = 2;
-    var max_length = 10;
-    var arr = [];
-    for (var i = 0, start = 0, end = 0; i < str.length; i++) {
-      if (str.indexOf(' ', i) != -1) {
-        end = str.indexOf(' ', i);
-        if (end - start > min_length) {
-          if (end - start > max_length) {
-            end = start + max_length;
-          }
-          arr.push(str.substring(start, end));
-          i = start = end;
-        } else {
-          i++;
-        }
-      } else {
-        if (str.substring(start).length > max_length) {
-          end = start + max_length;
-          arr.push(str.substring(start, end));
-          i = start = end;
-        } else {
-          arr.push(str.substring(start));
-          break;
-        }
-      }
-    }
-    return arr;
-  }
 
   // prepare chart options and datasets
   var data = {
@@ -74,26 +37,28 @@ if (barChart) {
       display: false
     },
     scales: {
-      xAxes: [{
+      yAxes: [{
         gridLines: {
           display: false
         },
-        barPercentage: 0.3,
+        barPercentage: 0.7,
         ticks: {
           fontSize: $(window).width() >= 1024 ? 12 : 8,
           autoSkip: false,
           maxRotation: 0
         }
       }],
-      yAxes: [{
+      xAxes: [{
+        type: 'logarithmic',
+        position: 'bottom',
         gridLines: {
           drawBorder: false,
           display: false,
-          tickMarkLength: 0
         },
         ticks: {
-          display: false,
-          padding:0
+          min: data_set[data_set.length-1] / 2,
+          max: data_set[0] * 2,
+          display: false
         }
       }]
     },
@@ -109,21 +74,21 @@ if (barChart) {
             Chart.defaults.global.defaultFontFamily
         );
         ctx.fillStyle = this.chart.config.options.defaultFontColor;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
         this.data.datasets.forEach(function (dataset) {
           for (var i = 0; i < dataset.data.length; i++) {
             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-//            ctx.fillText(dataset.data[i], model.x, model.y - 5);
-            ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис.', model.x, model.y - 5);
+            ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис. грн.', model.x + 5, model.y - 5);
           }
         });
       }
     }
   };
+
   // create and draw the chart
   var barChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: data,
     options: options
   });
