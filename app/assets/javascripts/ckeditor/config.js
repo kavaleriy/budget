@@ -26,8 +26,6 @@ CKEDITOR.editorConfig = function( config )
     // The location of a script that handles file uploads.
     config.filebrowserUploadUrl = "/ckeditor/attachment_files";
 
-    config.attachment_file_types = ["7z", "doc", "docx", "xls", "xlsx", "odt", "ods", "pdf", "rar", "zip", "tar", "tar.gz", "txt", "swf"], "txt", "vsd", "tgz", "rtf", "ppt", "pptx", "pxd", "qt", "gz", "gzip"
-
     config.allowedContent = true;
 
     // Toolbar groups configuration.
