@@ -1,0 +1,108 @@
+/**
+ * Created by dmytro on 10/7/16.
+ */
+
+// this function return search results and using for sort them
+// sorting params may be empty
+function simple_search(url, edrpou, _sort_conf) {
+    $('#spinner-container').show();
+    var town_id = $('#_item').data('town-id');
+    var role = $('[name="[role]"]:checked').val();
+    var data = {
+        town_id: town_id,
+        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+    };
+    data[role + '_edrpous'] = edrpou;
+
+    $.ajax({
+        type: 'get',
+        url: url,
+        async: false,
+        dataType: 'script',
+        data: data,
+        complete: function() {
+            console.log(this.url);
+            share_buttons_set_url($('.addthis_inline_share_toolbox'), this.url);
+        }
+    });
+    $('#spinner-container').hide();
+}
+
+function share_buttons_set_url(selector, url, _title) {
+    selector.attr('data-url', url).attr('data-title', _title);
+}
+
+// switch sort direction
+function sort_direction(attr) {
+    if (attr == 'asc') {
+        return 'desc';
+    }
+    else {
+        return 'asc';
+    }
+}
+
+// add breadcrumbs element and create event-listener for handheld remove it
+function addBreadcrumbs(title, url) {
+    var breadcrumbs_list = $('.breadcrumb');
+    var parent_el = breadcrumbs_list.find('li.active');
+    parent_el.children().attr('href', url).attr('data-remote', "true");
+    parent_el.removeClass('active');
+    var active_li = $('<li></li>').addClass('active');
+    var a_value = $('<a>').html(title);
+    active_li.append(a_value);
+    breadcrumbs_list.append(active_li);
+    // Handheld action 'back'
+    parent_el.children().click(function() {
+        // remove previous <li>
+        parent_el.next().remove();
+        parent_el.addClass('active');
+    });
+}
+
+
+// this function return search results and using for sort them
+// sorting params may be empty
+function advanced_search(url, edrpous, period, _sort_conf) {
+  $('#spinner-container').show();
+  var town_id = $('#_item_payers').data('town-id');
+  $.ajax({
+    type: 'get',
+    url: url,
+    async: false,
+    dataType: 'script',
+    data: {
+      town_id: town_id,
+      payers_edrpous: edrpous.payer,
+      recipt_edrpous: edrpous.recipt,
+      period: period,
+      sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+      sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+    }
+  });
+  $('#spinner-container').hide();
+}
+
+// this function return items by type and using for sort them
+// function change items list and items select options depend on type value
+// sorting params may be empty
+// sorting apply for items list only (manage by controller)
+function get_items(url, type, role, _sort_param) {
+  $('#spinner-container').show();
+  var town_id = $('#_item_type_payers').data('town-id');
+  $.ajax({
+    type: 'get',
+    url: url,
+    async: false,
+    dataType: 'script',
+    data: {
+      town_id: town_id,
+      type: type,
+      role: role,
+      sort_column: (_sort_param != null ? _sort_param.sort_col : null),
+      sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
+    }
+  });
+  $('#spinner-container').hide();
+}

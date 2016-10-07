@@ -1,4 +1,5 @@
-$(".results").html("<%= escape_javascript(render partial: 'search_e_data') %>");
+$('.results').html("<%= escape_javascript(render partial: 'search_e_data') %>");
+$('.social-btns').html("<%= escape_javascript(render partial: 'share_toolbox') %>");
 
 if (barChart) {
   barChart.destroy();

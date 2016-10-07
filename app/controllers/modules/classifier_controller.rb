@@ -1,16 +1,17 @@
 module Modules
   class ClassifierController < ApplicationController
-    before_action :town, only: [:search_data, :advanced_search, :by_type]
+    before_action :town, only: [:e_data, :search_data, :advanced_search, :by_type]
     respond_to :html, :js, :json
+    layout 'visify'
 
     def search_data
       @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
-      respond_with(@items, @town)
+      respond_with(@items)
     end
 
     def search_e_data
       data = sort_e_data
-      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10)
+      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.nil?
       # this variable are using for chart
       @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
 
@@ -18,6 +19,8 @@ module Modules
       if params['sort_col'].blank?
         # respond_with(@payments, @receivers)
         respond_to do |format|
+          # TODO should be rewrite using as :template
+          format.html {render 'modules/classifier/_search_e_data', layout: 'visify'}
           format.js { render 'modules/classifier/search_e_data' }
           format.json { render json: @payments }
           format.xls { send_data Modules::Classifier.to_xls(@payments) }
@@ -156,7 +159,7 @@ module Modules
     end
 
     def town
-      @town = Town.find(params["town_id"])
+      @town = Town.find(params[:town_id])
     end
   end
 end

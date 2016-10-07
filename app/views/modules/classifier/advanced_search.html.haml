@@ -217,7 +217,7 @@
         recipt: $('#_item_recipt').val()
       };
       var start_date = $('#_startdate').val();
-      get_data(edrpous, start_date);
+      advanced_search("#{modules_classifier_search_e_data_url}", edrpous, start_date);
       $("#items-list").hide();
       e.preventDefault();
     });
@@ -235,7 +235,7 @@
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_data(edrpous, start_date, sort_conf);
+      advanced_search("#{modules_classifier_search_e_data_url}", edrpous, start_date, sort_conf);
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
 
@@ -248,66 +248,23 @@
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_items(type, _this.data('role'), sort_param);
+      get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
     });
 
   });
 
-  // this function return search results and using for sort them
-  // sorting params may be empty
-  function get_data(edrpous, period, _sort_conf) {
-    $('#spinner-container').show();
-    var town_id = $('#_item_payers').data('town-id');
-    $.ajax({
-      type: 'get',
-      url: "#{modules_classifier_search_e_data_url}",
-      async: false,
-      dataType: 'script',
-      data: {
-        town_id: town_id,
-        payers_edrpous: edrpous.payer,
-        recipt_edrpous: edrpous.recipt,
-        period: period,
-        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
-        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
-      }
-    });
-    $('#spinner-container').hide();
-  }
 
-  // this function return items by type and using for sort them
-  // function change items list and items select options depend on type value
-  // sorting params may be empty
-  // sorting apply for items list only (manage by controller)
-  function get_items(type, role, _sort_param) {
-    $('#spinner-container').show();
-    var town_id = $('#_item_type_payers').data('town-id');
-    $.ajax({
-      type: 'post',
-      url: "#{modules_classifier_by_type_url}",
-      async: false,
-      dataType: 'script',
-      data: {
-        town_id: town_id,
-        type: type,
-        role: role,
-        sort_column: (_sort_param != null ? _sort_param.sort_col : null),
-        sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
-      }
-    });
-    $('#spinner-container').hide();
-  }
 
-  // switch sort direction
-  function sort_direction(attr) {
-    if (attr == 'asc') {
-      return 'desc';
-    }
-    else {
-      return 'asc';
-    }
-  }
+  // // switch sort direction
+  // function sort_direction(attr) {
+  //   if (attr == 'asc') {
+  //     return 'desc';
+  //   }
+  //   else {
+  //     return 'asc';
+  //   }
+  // }
 
   function dp_ranges_config() {
     // need for internationalization range labels
@@ -330,5 +287,5 @@
   // This actions define in '*.js.erb'
   function init_item_select(selector) {
     $('#_item_' + selector.data('role')).val('').trigger('change');
-    get_items(selector.val(), selector.data('role'));
+    get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
   }

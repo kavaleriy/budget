@@ -121,7 +121,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     result << get_calendar_hash(calendar, 'calendar')
     # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
     result << get_repair_hash('repair')
-    result << get_e_data_hash('e_data',e_data) unless e_data.nil?
+    result << get_e_data_hash('e_data') unless e_data.nil?
     #result << get_programs_hash('programs', programs)
     result << get_programs_hash('programs')
 
@@ -208,8 +208,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', name)
   end
 
-  def get_e_data_hash(name,e_data)
-    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_path(@town),name)
+  def get_e_data_hash(name)
+    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_url(@town),name)
   end
 
   def get_purchase_hash(name)

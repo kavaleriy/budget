@@ -8,9 +8,9 @@
   $search-border: #0c2231;
 
   #search-data {
-      & .row > div {
-        min-height: 30px;
-      }
+    & .row > div {
+      min-height: 30px;
+    }
     .form-group {
       float: left;
       width: 100%;
@@ -36,6 +36,7 @@
             margin: -2px auto;
           }
           .select2-chosen {
+            padding-top: 0;
             margin-right: 55px;
           }
           .select2-search-choice-close {
@@ -128,7 +129,6 @@
     }
   }
 
-
 #search-data
   = simple_form_for '', remote: true do |f|
     .row
@@ -144,6 +144,7 @@
             = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
               %i.fa.fa-cogs
               = t('.advanced_button')
+
 
   .results
   #most-received
@@ -162,7 +163,7 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
-        get_data(data.val);
+        simple_search("#{modules_classifier_search_e_data_url}", data.val);
       }
     });
 
@@ -171,17 +172,11 @@
       var item = $('#_item').val();
       // check for empty value, if empty -> do nothing
       if(item) {
-        get_data(item);
+        simple_search("#{modules_classifier_search_e_data_url}", item);
       }
     });
 
-    // add breadcrumbs element
-    $('#advanced_search_button').click(function(){
-        var breadcrumbs_title = $.trim($(this).text());
-        addBreadcrumbs(breadcrumbs_title);
-    });
-
-    // add event for sorting search results
+    // add new event and clear previous events for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
@@ -189,58 +184,13 @@
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_data($('#_item').val(), sort_conf);
+      simple_search("#{modules_classifier_search_e_data_url}", $('#_item').val(), sort_conf);
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
+
+    // add breadcrumbs element
+    $('#advanced_search_button').click(function(){
+        var breadcrumbs_title = $.trim($(this).text());
+        addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
+    });
   });
-
-  // this function return search results and using for sort them
-  // sorting params may be empty
-  function get_data(edrpou, _sort_conf) {
-    $('#spinner-container').show();
-    var town_id = $('#_item').data('town-id');
-    var role = $('[name="[role]"]:checked').val();
-    var data = {
-        town_id: town_id,
-        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
-        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
-    };
-    data[role + '_edrpous'] = edrpou;
-
-    $.ajax({
-      type: 'get',
-      url: "#{modules_classifier_search_e_data_url}",
-      async: false,
-      dataType: 'script',
-      data: data
-    });
-    $('#spinner-container').hide();
-  }
-
-  // switch sort direction
-  function sort_direction(attr) {
-    if (attr == 'asc') {
-      return 'desc';
-    }
-    else {
-      return 'asc';
-    }
-  }
-
-  // add breadcrumbs element and create event-listener for handheld remove it
-  function addBreadcrumbs(title) {
-    var breadcrumbs_list = $('.breadcrumb');
-    var parent_el = breadcrumbs_list.find('li.active');
-    parent_el.children().attr('href', "#{modules_classifier_search_data_path(@town)}").attr('data-remote', "true");
-    parent_el.removeClass('active');
-    var active_li = $('<li></li>').addClass('active');
-    var a_value = $('<a>').html(title);
-    active_li.append(a_value);
-    breadcrumbs_list.append(active_li);
-    // Handheld action 'back'
-    parent_el.children().click(function() {
-      // remove previous <li>
-      parent_el.next().remove();
-      parent_el.addClass('active');
-    });
-  }
