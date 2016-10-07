@@ -1,3 +1,10 @@
+:scss
+  .form-content-manager{
+    .btn{
+      margin: 5px 2px 5px 0;
+    }
+  }
+
 %h3= get_header_by_locale(@page_container)
 = simple_form_for(@page_container) do |f|
   = f.error_notification
@@ -6,7 +13,7 @@
   .form-inputs
     -#= f.input :header,disabled: true,as: :text,label: t('content_manager.page_containers.header'),value: t(@page_container.header)
     = f.input :alias, disabled: true, label: t('content_manager.page_containers.alias')
-    = f.input :p_id, collection:  @menu_list.map { |list| [get_header_by_locale(list), list.id] },selected: 0,
+    = f.input :p_id, collection:  @menu_list.map { |list| [get_header_by_locale(list), list.id] },
                           label: t('content_manager.page_containers.parent')
     = f.simple_fields_for :locale_data do |ff|
       = ff.simple_fields_for params[:locale] do |fff|
