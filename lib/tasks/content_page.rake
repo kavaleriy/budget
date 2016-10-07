@@ -79,6 +79,11 @@ namespace :content_page do
     create_page_cont('What it gives the official?','Що це дає чиновнику?','What it gives the official description','що це дає чиновнику опис' ,official_as,'')
   end
 
+  desc "Create Instructions page"
+  task create_instructions_page: :environment do
+    instructions_as = ContentManager::PageContainer::INSTRUCTIONS_ALIAS
+    create_page_cont('Instructions',' Інструкції','Instructions pages','Сторінки інструкцій' ,instructions_as,'')
+  end
 
   def get_title(head)
     "layouts.navbar.#{head}"

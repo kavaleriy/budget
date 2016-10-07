@@ -24,7 +24,7 @@ class ContentManager::PageContainer
   field :p_id, type: String
   field :link, type: String
 
-  validates :alias, presence: true
+  validates :alias, presence: true, uniqueness: true
   validates :alias, uniqueness: true
   validate :locale_data_has_not_empty
 
