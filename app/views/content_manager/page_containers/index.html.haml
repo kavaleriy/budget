@@ -1,5 +1,11 @@
 :scss
-  .crud_icons{
+  .tab-content{
+    hr.bottom-line{
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+  }
+    .crud_icons{
     img{
       width: 30px;
     }
@@ -117,7 +123,8 @@
             = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(info_page)
             = link_to image_tag('icons/X_icon.png'), info_page, :method => :delete,
                             :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
-        %hr
+        %hr.bottom-line
+
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення контенту',

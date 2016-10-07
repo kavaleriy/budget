@@ -85,6 +85,20 @@ namespace :content_page do
     create_page_cont('Instructions',' Інструкції','Instructions pages','Сторінки інструкцій' ,instructions_as,'')
   end
 
+  desc "Create Instruction pages"
+  task create_instruction_pages: :environment do
+    parent_page = ContentManager::PageContainer.get_page_by_alias(ContentManager::PageContainer::INSTRUCTIONS_ALIAS).first
+    create_page_cont('Budget file help','Інструкція завантаження бюджетних файлів',
+                     'Budget file help description', 'Інструкція завантаження бюджетних файлів опис',
+                     'budget_file_help', parent_page.id, '')
+    create_page_cont('Key indicator file help', 'Інструкція завантаження файлів ключових показників',
+                     'Key indicator file help description', 'Інструкція завантаження файлів ключових показників опис',
+                     'key_indicator_file_help', parent_page.id, '')
+    create_page_cont('Repairing maps help', 'Інструкція до Карти ремонтів',
+                     'Repairing maps help description', 'Інструкція до Карти ремонтів опис',
+                     'repairing_maps_help', parent_page.id, '')
+  end
+
   def get_title(head)
     "layouts.navbar.#{head}"
   end

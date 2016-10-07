@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   end
   get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
 
-
-
   namespace :external_api do
     get 'edata'
     get 'edr'
@@ -16,6 +14,7 @@ Rails.application.routes.draw do
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
   get '/info/:alias/show' => 'public/home#show_pages',as: 'show_pages'
+  get '/instructions/:alias' => 'public/home#show_pages', as: 'show_instruction'
 
   namespace :content_manager do
     resources :page_containers
