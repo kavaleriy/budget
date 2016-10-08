@@ -1,6 +1,6 @@
 class Widgets::TownProfileController < Widgets::WidgetsController
 
-  after_filter :allow_iframe, only: [:portfolio]
+  # after_filter :allow_iframe, only: [:portfolio]
 
   before_action :set_town,
                 :except => [ :budget_files_by_taxonomies,
