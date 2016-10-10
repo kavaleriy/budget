@@ -4,7 +4,7 @@ class Modules::BudgetNews
   include Rails.application.routes.url_helpers
   require 'carrierwave/mongoid'
 
-  scope :get_last_news, ->(count) {order("news_date DESC").limit(count)}
+  scope :get_last_news, ->(count) { order("news_date DESC").limit(count)}
   scope :published_news, -> { where(published: true) }
 
   # before_save :set_date

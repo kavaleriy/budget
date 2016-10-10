@@ -15,6 +15,19 @@ class ExternalApi
     JSON.parse(http.request(request).body)['response']['transactions'] rescue {}
   end
 
+  def self.most_received(payer_erdpou, recipt_edrpou, start_date = Time.now.months_since(-3).strftime("%d-%m-%Y"), end_date = Time.now.strftime("%d-%m-%Y"))
+    most_received = []
+    data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
+
+    data.group_by{ |hash| hash['recipt_edrpou'] }.each do |recipt_edrpou, payment|
+      most_received << {
+          name: payment.first['recipt_name'],
+          val: payment.inject(0) { |sum, item| sum += item['amount'].to_f }
+      }
+    end
+
+    most_received.sort_by! { |hash| hash[:val] }.reverse!
+  end
 
   private
   def self.params(payer_erdpou, recipt_edrpou, start_date, end_date)

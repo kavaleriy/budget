@@ -313,7 +313,7 @@
     -#  #category_content
     -#    #category_title
     #category_btns.btn-group
-      - Repairing::Category.all.select{|p| p.category.nil? }.each do |category|
+      - Repairing::Category.by_locale.select{|p| p.category.nil? }.each do |category|
         .btn.btn-default.tooltip-bottom{'data-tooltip' => category.title, 'data-id' => category.id}
           = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
       -##subcategories

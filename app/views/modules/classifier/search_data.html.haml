@@ -8,6 +8,9 @@
   $search-border: #0c2231;
 
   #search-data {
+      & .row > div {
+        min-height: 30px;
+      }
     .form-group {
       float: left;
       width: 100%;
@@ -94,7 +97,37 @@
         bottom: 0;
       }
     }
+    #most-received {
+      height: 400px;
+      display: none;
+      margin-bottom: 30px;
+      .subtitle {
+        height: 30px;
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+      }
+      canvas {
+        height: 100%;
+        width: 100%;
+      }
+    }
   }
+  @media screen and (max-width: 1024px) {
+    #search-data {
+      #most-received {
+        height: 300px;
+      }
+    }
+  }
+  @media screen and (max-width: 992px) {
+    #search-data {
+      #most-received {
+        height: 200px;
+      }
+    }
+  }
+
 
 #search-data
   = simple_form_for '', remote: true do |f|
@@ -112,46 +145,57 @@
               %i.fa.fa-cogs
               = t('.advanced_button')
 
-    .results
-    = render partial: 'layouts/spinner'
+  .results
+  #most-received
+    .subtitle
+      = t('.most_received')
+    %canvas#barChart
+  = render partial: 'layouts/spinner'
 
 :javascript
   $(document).ready(function() {
 
+    // init select2 and add event -> search if change value (if select not empty)
     $('#_item').select2({
       placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
     }).on('change', function(data) {
-      if(data.val != '') {
+      // check for empty value, if empty -> do nothing
+      if(data.val) {
         get_data(data.val);
       }
     });
 
+    // add event -> search if change value (if select not empty)
     $('[name="[role]"]').on('change', function() {
       var item = $('#_item').val();
-      if(item != '') {
+      // check for empty value, if empty -> do nothing
+      if(item) {
         get_data(item);
       }
     });
 
+    // add breadcrumbs element
     $('#advanced_search_button').click(function(){
         var breadcrumbs_title = $.trim($(this).text());
         addBreadcrumbs(breadcrumbs_title);
     });
 
+    // add event for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
-      var item = $('#_item').val();
       var sort_conf = {
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_data(item, sort_conf);
+      get_data($('#_item').val(), sort_conf);
       _this.attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
   });
 
+  // this function return search results and using for sort them
+  // sorting params may be empty
   function get_data(edrpou, _sort_conf) {
     $('#spinner-container').show();
     var town_id = $('#_item').data('town-id');
@@ -173,6 +217,7 @@
     $('#spinner-container').hide();
   }
 
+  // switch sort direction
   function sort_direction(attr) {
     if (attr == 'asc') {
       return 'desc';
@@ -182,6 +227,7 @@
     }
   }
 
+  // add breadcrumbs element and create event-listener for handheld remove it
   function addBreadcrumbs(title) {
     var breadcrumbs_list = $('.breadcrumb');
     var parent_el = breadcrumbs_list.find('li.active');

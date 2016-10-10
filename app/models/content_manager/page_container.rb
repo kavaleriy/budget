@@ -8,6 +8,8 @@ class ContentManager::PageContainer
   COMMUNITY_INFO_ALIAS = 'community'
   OFFICIAL_INFO_ALIAS = 'official'
 
+  INSTRUCTIONS_ALIAS = 'instructions'
+
   has_many :subordinates, class_name: "ContentManager::PageContainer",foreign_key: "p_id"
   # has_many :parent, class_name: "ContentManager::PageContainer",foreign_key: "id"
 
@@ -22,7 +24,7 @@ class ContentManager::PageContainer
   field :p_id, type: String
   field :link, type: String
 
-  validates :alias, presence: true
+  validates :alias, presence: true, uniqueness: true
   validates :alias, uniqueness: true
   validate :locale_data_has_not_empty
 
@@ -66,6 +68,11 @@ class ContentManager::PageContainer
 
   def self.get_info_pages
     self.get_page_by_alias(OFFICIAL_INFO_ALIAS) + self.get_page_by_alias(COMMUNITY_INFO_ALIAS)
+  end
+
+  def self.get_instruction_pages
+    instruction_pages_category = self.get_page_by_alias(INSTRUCTIONS_ALIAS).first
+    instruction_pages = self.get_child_link(instruction_pages_category.id)
   end
 
 

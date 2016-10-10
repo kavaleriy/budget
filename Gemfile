@@ -149,3 +149,6 @@ gem 'bootstrap-daterangepicker-rails'
 gem 'bootstrap-filestyle-rails'
 
 gem 'cyrillizer'
+
+# https://github.com/galetahub/ckeditor
+gem 'ckeditor', github: 'galetahub/ckeditor'

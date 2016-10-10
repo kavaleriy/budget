@@ -32,8 +32,8 @@ module Repairing
 
     def geo_json
       result = {
-          "type" => "FeatureCollection",
-          "features" => @repairing_layer.to_geo_json
+          type: "FeatureCollection",
+          features: @repairing_layer.to_geo_json
       }
 
       respond_to do |format|
@@ -44,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page])
+      @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user).page(params[:page])
     end
 
     # GET /repairing/layers/1
@@ -164,7 +164,7 @@ module Repairing
 
         layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
-        category = Repairing::Category.where(:title => repair['Робота']).first
+        category = Repairing::Category.where(title: repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
         layer_repair.save!
       end
@@ -201,7 +201,7 @@ module Repairing
     end
 
     def get_categories
-      categories = Repairing::Category.all.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
+      categories = Repairing::Category.by_locale.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
 
       respond_to do |format|
         format.json { render json: categories}
@@ -243,7 +243,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale)
       end
   end
 end
