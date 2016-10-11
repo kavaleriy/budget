@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     get 'classifier/by_type' => 'classifier#by_type', as: 'classifier_by_type'
     get 'classifier/advanced_search/:town_id' => 'classifier#advanced_search', as: 'classifier_advanced_search'
     get 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
-    # get 'classifier/sort_e_data' => 'classifier#sort_e_data', as: 'classifier_sort_e_data'
+    get 'classifier/draw_chart' => 'classifier#draw_chart', as: 'classifier_draw_chart'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

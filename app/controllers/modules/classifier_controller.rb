@@ -9,6 +9,22 @@ module Modules
       respond_with(@items)
     end
 
+    def draw_chart
+      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+      respond_to do |format|
+        format.html { render 'modules/classifier/_chart', layout: 'visify', locals: {labels: @receivers.keys, dataset: @receivers.values, params: params['payers_edrpous']} }
+        format.js { render 'modules/classifier/chart' }
+        # format.json { render json: @receivers }
+      end
+    end
+
+    def chart_request
+      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+      respond_to do |format|
+        format.js { render 'modules/classifier/chart' }
+      end
+    end
+
     def search_e_data
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.nil?
@@ -163,3 +179,99 @@ module Modules
     end
   end
 end
+#
+# if (barChart) {
+#     barChart.destroy();
+# $('#most-received').hide();
+# }
+#
+# <%- unless params['payers_edrpous'].blank? || @receivers.size < 5 %>
+#   $('#most-received').show();
+#
+#   var label = [];
+#   var data_set = [];
+#   <%- @receivers.each do |payment| %>
+#     label.push('<%= payment[:name].html_safe %>');
+#     data_set.push(<%= '%.2f' % payment[:val] %>);
+# <%- end %>
+#
+#   // prepare chart options and datasets
+#   var data = {
+#     labels: label,
+#     datasets: [
+#       {
+#         label: I18n.t('modules.classifier.chart.total'),
+#         backgroundColor: 'rgba(98, 141, 182, 1)',
+#         hoverBackgroundColor: 'rgba(255, 211, 4, 1)',
+#         data: data_set
+#       }
+#     ]
+#   };
+#   var ctx = $('#barChart').get(0);
+# //  var ctx = $('#barChart');
+#   var options = {
+#     maintainAspectRatio: false,
+#     tooltips: {
+#       backgroundColor: 'rgba(12, 34, 49, 1)'
+#     },
+#     legend: {
+#       display: false
+#     },
+#     scales: {
+#       yAxes: [{
+#         gridLines: {
+#           display: false
+#         },
+#         barPercentage: 0.7,
+#         ticks: {
+#           fontSize: $(window).width() >= 1024 ? 12 : 8,
+#           autoSkip: false,
+#           maxRotation: 0
+#         }
+#       }],
+#       xAxes: [{
+#         type: 'logarithmic',
+#         position: 'bottom',
+#         gridLines: {
+#           drawBorder: false,
+#           display: false
+#         },
+#         ticks: {
+#           min: data_set[data_set.length-1] / 2,
+#     max: data_set[0] * 2,
+#     display: false
+# }
+# }]
+# },
+#     animation: {
+#         duration: 2000,
+#         easing: 'easeInOutSine',
+#         onProgress: function () {
+#           // render the value of the chart above the bar
+#           var ctx = this.chart.ctx;
+#           ctx.font = Chart.helpers.fontString(
+#           $(window).width() >= 1024 ? Chart.defaults.global.defaultFontSize : Chart.defaults.global.defaultFontSize-4,
+#               'normal',
+#               Chart.defaults.global.defaultFontFamily
+#           );
+#           ctx.fillStyle = this.chart.config.options.defaultFontColor;
+#           ctx.textAlign = 'left';
+#           ctx.textBaseline = 'top';
+#           this.data.datasets.forEach(function (dataset) {
+#             for (var i = 0; i < dataset.data.length; i++) {
+#                 var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+#             ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис. грн.', model.x + 5, model.y - 5);
+#             }
+#             });
+#             }
+#             }
+#             };
+#
+#             // create and draw the chart
+#             var barChart = new Chart(ctx, {
+#                 type: 'horizontalBar',
+#                 data: data,
+#                 options: options
+#             });
+#
+#             <%- end %>

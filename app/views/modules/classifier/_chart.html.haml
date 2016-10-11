@@ -1,0 +1,13 @@
+.subtitle
+  = t('.most_received')
+%canvas#barChart
+
+:javascript
+  $(document).ready(function() {
+    console.log('#{ labels }');
+    console.log('#{ dataset }');
+    console.log( #{dataset} );
+    console.log('#{ params }');
+    // var label = [], dataset = [];
+    draw_chart(#{labels}, #{dataset}, #{params});
+  });

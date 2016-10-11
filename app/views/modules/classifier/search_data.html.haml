@@ -128,6 +128,13 @@
       }
     }
   }
+  .social-btns {
+    margin: 0 0 10px 0;
+  }
+   // hide sidebar for share
+  .at4-share-outer {
+    display: none;
+  }
 
 #search-data
   = simple_form_for '', remote: true do |f|
@@ -145,12 +152,22 @@
               %i.fa.fa-cogs
               = t('.advanced_button')
 
-
   .results
+
+  .social-btns#share_results
+    -# TODO: development solution, comment this in production
+    .addthis_inline_share_toolbox
+    -# TODO: uncomment this in production ('prod' and 'dev' use different version 'addthis')
+    -#.addthis_sharing_toolbox
+
   #most-received
-    .subtitle
-      = t('.most_received')
-    %canvas#barChart
+    -#= render partial: 'chart'
+    .social-btns#share_chart
+      -# TODO: development solution, comment this in production
+      .addthis_inline_share_toolbox
+      -# TODO: uncomment this in production ('prod' and 'dev' use different version 'addthis')
+      -#.addthis_sharing_toolbox
+
   = render partial: 'layouts/spinner'
 
 :javascript
@@ -163,7 +180,8 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
-        simple_search("#{modules_classifier_search_e_data_url}", data.val);
+        classifier_search("#{modules_classifier_search_e_data_url}", prepare_search_data(), $('#share_results > .addthis_inline_share_toolbox'));
+        classifier_search("#{modules_classifier_draw_chart_url}", prepare_search_data(), $('#share_chart > .addthis_inline_share_toolbox'));
       }
     });
 
@@ -194,3 +212,13 @@
         addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
     });
   });
+
+  function prepare_search_data(sort_col, sort_dir) {
+    var data = {
+      town_id: $('#_item').data('town-id'),
+      sort_col: sort_col,
+      sort_dir: sort_dir
+    }
+    data[$('[name="[role]"]:checked').val() + '_edrpous'] = $('#_item').val();
+    return data;
+  }

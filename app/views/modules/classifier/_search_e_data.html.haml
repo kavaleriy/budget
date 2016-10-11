@@ -67,13 +67,6 @@
       }
     }
   }
-  .social-btns {
-    padding: 0 0 10px 0;
-  }
-   // hide sidebar for share
-  .at4-share-outer {
-    display: none;
-  }
 
 -if @payments.blank?
   = render partial: 'layouts/no_data_yet'
@@ -103,5 +96,5 @@
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
 
-    .social-btns
+    -#.social-btns#share_results
 
