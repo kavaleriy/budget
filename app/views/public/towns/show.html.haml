@@ -423,7 +423,7 @@
         #pub_budget.tab-pane.fade
           =render partial: 'pdf_docs', locals: { export_budgets: @town_export_budgets }
     .col-xs-12.embedded-block
-      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_url(@town)), 'tooltip' => "#{t('.click')}" } }
+      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_path(@town)), 'tooltip' => "#{t('.click')}" } }
         = fa_icon 'code 1x'
 
 :javascript
@@ -585,7 +585,14 @@
 
     // if we click on visual icon in sidebar
     // render visaulisation list
+
+
+    //TODO: need simple code for show/hide this btn
+    $("a[data-toggle='tab']").click(function(){
+      $('#embedded-profile').hide();
+    })
     $("a[href='#portfolio']").click(function(){
+      $('#embedded-profile').show();
       renderVisualisation("#{widgets_town_profile_path(@town)}");
     })
 
