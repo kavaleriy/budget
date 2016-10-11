@@ -8,8 +8,9 @@ module Repairing
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
 
     def create_repair_by_addr
-      @location = Geocoder.coordinates(params[:q])
-      @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
+      user_town = current_user.town
+      @location = Geocoder.coordinates(user_town + ' ' + params[:q])
+      @location1 = Geocoder.coordinates(user_town + ' ' + params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
       respond_to do |format|
         if @location1
