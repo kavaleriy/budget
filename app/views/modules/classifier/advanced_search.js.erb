@@ -1,4 +1,4 @@
 $("#items-list").show();
 $('.modules-wrapper').html('<%= escape_javascript( render file: 'modules/classifier/advanced_search', formats: [:html]) %>');
 $('#share_results').html('<%= escape_javascript(render partial: 'share_toolbox') %>');
-$('.embeded-btn').html('<%= escape_javascript(render partial: 'embeded_btn') %>');
+$('.embeded-btn').html('<%= escape_javascript(render partial: 'embeded_btn', locals: {url: modules_classifier_advanced_search_path(@town)}) %>');

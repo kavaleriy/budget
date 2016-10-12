@@ -6,23 +6,26 @@ module Modules
 
     def search_data
       @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
-      respond_with(@items)
-    end
-
-    def iframe
-      # access from iframe
-      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
-      respond_to do |format|
-        format.html { render 'modules/classifier/search_data' }
-      end
+      respond_with(@items, layout: 'visify' )
     end
 
     def direct_link
-      # access from direct link
+      # access from direct link (socials networks)
       @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
       respond_to do |format|
         format.html { render 'modules/classifier/share_search' }
       end
+
+      # if params['period'].blank?
+      #   respond_to do |format|
+      #     format.html { render 'modules/classifier/share_search' }
+      #   end
+      # else
+      #   respond_to do |format|
+      #     format.html { render '/modules/classifier/_search_e_data' }
+      #   end
+      # end
+
     end
 
     def search_e_data
@@ -51,7 +54,7 @@ module Modules
     def advanced_search
       @types = Modules::ClassifierType.all
       @items = items_by_koatuu.only(:pnaz, :edrpou).to_a.sort_by! { |hash| hash.pnaz }
-      respond_with(@types, @items)
+      respond_with(@types, @items, layout: 'visify')
     end
 
     def by_type

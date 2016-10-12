@@ -152,13 +152,9 @@
         input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
       .col-md-5
         .row
-          .col-lg-7
-            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
+          .pull-right
+            = f.collection_radio_buttons :role, [['payers', t('modules.classifier.search_data.payer')] ,['recipt', t('modules.classifier.search_data.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-lg-5
-            = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
-              %i.fa.fa-cogs
-              = t('.advanced_button')
 
   .results
 
@@ -198,12 +194,6 @@
           sort_dir = _this.attr('data-sort-direction');
       classifier_search("#{modules_classifier_search_e_data_url}", init_search_params(sort_col, sort_dir));
       _this.attr('data-sort-direction', sort_direction(sort_dir)).addClass('active');
-    });
-
-    // add breadcrumbs element
-    $('#advanced_search_button').click(function(){
-        var breadcrumbs_title = $.trim($(this).text());
-        addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
     });
 
     classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
