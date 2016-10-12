@@ -1,4 +1,4 @@
-$(".results").html("<%= escape_javascript(render partial: 'search_e_data') %>");
+$('.results').html('<%= escape_javascript(render partial: 'search_e_data') %>');
 
 if (barChart) {
   barChart.destroy();
@@ -20,7 +20,7 @@ if (barChart) {
     labels: label,
     datasets: [
       {
-        label: I18n.t('modules.classifier.search_data.total'),
+        label: I18n.t('modules.classifier.chart.total'),
         backgroundColor: 'rgba(98, 141, 182, 1)',
         hoverBackgroundColor: 'rgba(255, 211, 4, 1)',
         data: data_set
