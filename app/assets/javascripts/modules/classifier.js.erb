@@ -2,7 +2,10 @@
  * Created by dmytro on 10/7/16.
  */
 
-function classifier_search(url, params, share_selector) {
+// this function return search results and using for sort them
+// url receive route to action, params receive data for searching and sorting data
+// params prepare in views
+function classifier_search(url, params) {
   // $('#spinner-container').show();
   $.ajax({
     type: 'get',
@@ -11,7 +14,7 @@ function classifier_search(url, params, share_selector) {
     dataType: 'script',
     data: params,
     complete: function() {
-      share_buttons_set_url(share_selector, this.url);
+      share_buttons_set_url(this.url);
     }
   });
   // $('#spinner-container').hide();
@@ -19,30 +22,30 @@ function classifier_search(url, params, share_selector) {
 
 // this function return search results and using for sort them
 // sorting params may be empty
-function simple_search(url, edrpou, _sort_conf) {
-    $('#spinner-container').show();
-    var town_id = $('#_item').data('town-id');
-    var role = $('[name="[role]"]:checked').val();
-    var data = {
-        town_id: town_id,
-        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
-        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
-    };
-    data[role + '_edrpous'] = edrpou;
-
-    $.ajax({
-        type: 'get',
-        url: url,
-        async: false,
-        dataType: 'script',
-        data: data,
-        complete: function() {
-//            console.log(this.url);
-            share_buttons_set_url($('#share_results .addthis_inline_share_toolbox'), this.url);
-        }
-    });
-    $('#spinner-container').hide();
-}
+//function simple_search(url, edrpou, _sort_conf) {
+//    $('#spinner-container').show();
+//    var town_id = $('#_item').data('town-id');
+//    var role = $('[name="[role]"]:checked').val();
+//    var data = {
+//        town_id: town_id,
+//        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
+//        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+//    };
+//    data[role + '_edrpous'] = edrpou;
+//
+//    $.ajax({
+//        type: 'get',
+//        url: url,
+//        async: false,
+//        dataType: 'script',
+//        data: data,
+//        complete: function() {
+////            console.log(this.url);
+//            share_buttons_set_url($('#share_results .addthis_inline_share_toolbox'), this.url);
+//        }
+//    });
+//    $('#spinner-container').hide();
+//}
 
 // this function return search results and using for sort them
 // sorting params may be empty
@@ -89,8 +92,9 @@ function get_items(url, type, role, _sort_param) {
   $('#spinner-container').hide();
 }
 
-function share_buttons_set_url(selector, url) {
-  selector.attr('data-url', url);
+function share_buttons_set_url(url) {
+  addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
+  console.log(url.replace('search_e_data', 'direct_link'));
 }
 
 // switch sort direction
@@ -119,105 +123,4 @@ function addBreadcrumbs(title, url) {
         parent_el.next().remove();
         parent_el.addClass('active');
     });
-}
-
-function draw_chart(labels, dataset, params) {
-  console.log(labels);
-  console.log(dataset);
-  console.log(params);
-
-//  if (barChart) {
-//    barChart.destroy();
-//    $('#most-received').hide();
-//  }
-
-  var data_set = dataset.map(function (data) {
-    return parseFloat(data);
-  });
-  console.log(data_set);
-
-  if(typeof params !== 'undefined' || data_set.size > 5) {
-    $('#most-received').show();
-
-
-    // prepare chart options and datasets
-    var data = {
-      labels: labels,
-      datasets: [
-        {
-          label: I18n.t('modules.classifier.chart.total'),
-          backgroundColor: 'rgba(98, 141, 182, 1)',
-          hoverBackgroundColor: 'rgba(255, 211, 4, 1)',
-          data: data_set
-        }
-      ]
-    };
-    var ctx = $('#barChart').get(0);
-    //  var ctx = $('#barChart');
-    var options = {
-      maintainAspectRatio: false,
-      tooltips: {
-        backgroundColor: 'rgba(12, 34, 49, 1)'
-      },
-      legend: {
-        display: false
-      },
-      scales: {
-        yAxes: [{
-          gridLines: {
-            display: false
-          },
-          barPercentage: 0.7,
-          ticks: {
-            fontSize: $(window).width() >= 1024 ? 12 : 8,
-            autoSkip: false,
-            maxRotation: 0
-          }
-        }],
-        xAxes: [{
-          type: 'logarithmic',
-          position: 'bottom',
-          gridLines: {
-            drawBorder: false,
-            display: false
-          },
-          ticks: {
-            min: data_set[data_set.length-1] / 2,
-            max: data_set[0] * 2,
-            display: false
-          }
-        }]
-      },
-      animation: {
-        duration: 2000,
-        easing: 'easeInOutSine',
-        onProgress: function () {
-          // render the value of the chart above the bar
-          var ctx = this.chart.ctx;
-          ctx.font = Chart.helpers.fontString(
-              $(window).width() >= 1024 ? Chart.defaults.global.defaultFontSize : Chart.defaults.global.defaultFontSize-4,
-              'normal',
-              Chart.defaults.global.defaultFontFamily
-          );
-          ctx.fillStyle = this.chart.config.options.defaultFontColor;
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          this.data.datasets.forEach(function (dataset) {
-            for (var i = 0; i < dataset.data.length; i++) {
-              var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-              ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис. грн.', model.x + 5, model.y - 5);
-            }
-          });
-        }
-      }
-    };
-
-    // create and draw the chart
-    var barChart = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: data,
-      options: options
-    });
-
-  }
 }

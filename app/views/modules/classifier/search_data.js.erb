@@ -1,1 +1,3 @@
 $('.modules-wrapper').html('<%= escape_javascript( render file: 'modules/classifier/search_data', formats: [:html]) %>');
+$('#share_results').html('<%= escape_javascript(render partial: 'share_toolbox') %>');
+$('.embeded-btn').html('<%= escape_javascript(render partial: 'embeded_btn') %>');

@@ -2,26 +2,26 @@ module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:e_data, :search_data, :advanced_search, :by_type]
     respond_to :html, :js, :json
-    layout 'visify'
+    # layout 'visify'
 
     def search_data
       @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
       respond_with(@items)
     end
 
-    def draw_chart
-      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+    def iframe
+      # access from iframe
+      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
       respond_to do |format|
-        format.html { render 'modules/classifier/_chart', layout: 'visify', locals: {labels: @receivers.keys, dataset: @receivers.values, params: params['payers_edrpous']} }
-        format.js { render 'modules/classifier/chart' }
-        # format.json { render json: @receivers }
+        format.html { render 'modules/classifier/search_data' }
       end
     end
 
-    def chart_request
-      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+    def direct_link
+      # access from direct link
+      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
       respond_to do |format|
-        format.js { render 'modules/classifier/chart' }
+        format.html { render 'modules/classifier/share_search' }
       end
     end
 

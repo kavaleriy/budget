@@ -1,5 +1,0 @@
-$('#most-received').html('<%= escape_javascript(render partial: 'chart', locals: { labels: @receivers.map { |hash| hash[:name] },
-dataset: @receivers.map { |hash| '%.2f' % hash[:val] },
-params: params['payers_edrpous'] }) %>');
-$('#share_results > .addthis_inline_share_toolbox').html("<%= escape_javascript(render partial: 'share_toolbox') %>");
-
