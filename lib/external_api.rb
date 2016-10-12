@@ -29,6 +29,18 @@ class ExternalApi
     most_received.sort_by! { |hash| hash[:val] }.reverse!
   end
 
+  def self.prozzoro_data(id)
+
+    uri = URI("https://lb.api.openprocurement.org/api/0/tenders/#{id}")
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
+    http.use_ssl = (uri.scheme == "https")
+    response = http.request request # Net::HTTPResponse object
+    binding.pry
+    # end
+  end
+
   private
   def self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
     data = {

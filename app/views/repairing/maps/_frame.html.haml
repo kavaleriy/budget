@@ -247,7 +247,7 @@
         %span
           = t('repairing.maps.sitebar.e_data')
     %li
-      %a{:href => "#"}
+      =link_to '#', id: 'prozzoro' do
         -#%i.fa.fa-picture-o
         = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
         %span
@@ -289,25 +289,40 @@
   $(document).ready(function() {
     var modal_dom = $('#more-infoModal');
     var modal_title = modal_dom.find('.modal-title');
-    var modal_body = modal_dom.find('.modal-body');
-    $('#e-data').click(function(){
-      var repairId = $(this).parents('#sidebar').data('repair-id');
 
+    function setModalInfo(url,data,title){
       $.ajax({
-        url: "#{repairing_e_data_path}",
-        data: { id: repairId },
+        url: url,
+        data: data,
+        dataType: 'script',
         success: function(data){
-          modal_title.html("#{t('repairing.maps.frame.e_data')}");
-          modal_body.html(data);
+          modal_title.html(title);
+          // modal_body.html(data);
           modal_dom.modal();
         }
       })
+    }
+    function getRepairId(){
+      return $('#sidebar').data('repair-id');
+    }
+
+    $('#e-data').click(function(){
+      var data = {
+        id: getRepairId()
+      };
+      setModalInfo("#{repairing_e_data_path}",data,"#{t('repairing.maps.frame.e_data')}");
+
       // modal_title.html('Інформація з порталу E-data');
       // var frame = $('<iframe></iframe>');
       // frame.addClass('e-data-frame');
       // frame.attr('src','/external_api/edata')
       // modal_body.append(frame);
       // modal_dom.modal();
+    });
+
+    $('#prozzoro').click(function(){
+      var data = { id: getRepairId() }
+      setModalInfo("#{repairing_prozzoro_path}",data,"#{t('repairing.maps.frame.prozzoro')}");
     });
 
     function get_repair_info_modal(){
@@ -571,22 +586,6 @@
       var content = e.latlng.toString()
       return content
     }
-
-    // old function for render info popup
-    // was commented on 18.04.2016
-    /*function getInfoContent(properties) {
-      var content = "";
-      if (properties != "Ukraine") {
-        content += '<div class="popup"><table>'
-        if (properties.subject != '') content += '<tr><td>Об\'єкт: </td>' + '<td><b>' + properties.subject + '</b></td>' + '</tr>'
-        if (properties.address != '') content += '<tr><td>Адреса: </td>' + '<td><b>' + properties.address + '</b></td>' + '</tr>'
-        if (properties.category != '') content += '<tr><td>Роботи: </td>' + '<td><b>' + properties.category + '</b></td>' + '</tr>'
-        if (properties.obj_owner != '') content += '<tr><td>Виконавець: </td>' + '<td><b>' + properties.obj_owner + '</b></td>' + '</tr>'
-        content += '<tr class="separator"><td>Вартість: </td>' + '<td><b>' + (properties.amount > 0 ? window.aHelper.short_label(properties.amount) + ' грн.' : 'не вказано') + '</b></td>' + '</tr>'
-        content += '</table></div>';
-      }
-      return content;
-    }*/
 
 
   })
