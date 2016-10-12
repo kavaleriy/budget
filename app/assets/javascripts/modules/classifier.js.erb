@@ -6,64 +6,15 @@
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
 function classifier_search(url, params) {
-  // $('#spinner-container').show();
-  $.ajax({
-    type: 'get',
-    url: url,
-//    async: false,
-    dataType: 'script',
-    data: params,
-    complete: function() {
-      share_buttons_set_url(this.url);
-    }
-  });
-  // $('#spinner-container').hide();
-}
-
-// this function return search results and using for sort them
-// sorting params may be empty
-//function simple_search(url, edrpou, _sort_conf) {
-//    $('#spinner-container').show();
-//    var town_id = $('#_item').data('town-id');
-//    var role = $('[name="[role]"]:checked').val();
-//    var data = {
-//        town_id: town_id,
-//        sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
-//        sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
-//    };
-//    data[role + '_edrpous'] = edrpou;
-//
-//    $.ajax({
-//        type: 'get',
-//        url: url,
-//        async: false,
-//        dataType: 'script',
-//        data: data,
-//        complete: function() {
-////            console.log(this.url);
-//            share_buttons_set_url($('#share_results .addthis_inline_share_toolbox'), this.url);
-//        }
-//    });
-//    $('#spinner-container').hide();
-//}
-
-// this function return search results and using for sort them
-// sorting params may be empty
-function advanced_search(url, edrpous, period, _sort_conf) {
   $('#spinner-container').show();
-  var town_id = $('#_item_payers').data('town-id');
   $.ajax({
     type: 'get',
     url: url,
     async: false,
     dataType: 'script',
-    data: {
-      town_id: town_id,
-      payers_edrpous: edrpous.payer,
-      recipt_edrpous: edrpous.recipt,
-      period: period,
-      sort_col: (_sort_conf != null ? _sort_conf.sort_col : null),
-      sort_dir: (_sort_conf != null ? _sort_conf.sort_dir : null)
+    data: params,
+    complete: function() {
+      share_buttons_set_url(this.url);
     }
   });
   $('#spinner-container').hide();

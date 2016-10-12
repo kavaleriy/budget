@@ -219,6 +219,7 @@
   }
   .sharing {
     display: none;
+    padding-bottom: 30px;
   }
 
 #search-data
@@ -260,7 +261,7 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
-        classifier_search("#{modules_classifier_search_e_data_url}", prepare_search_data());
+        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
       }
     });
 
@@ -269,7 +270,7 @@
       var item = $('#_item').val();
       // check for empty value, if empty -> do nothing
       if(item) {
-        classifier_search("#{modules_classifier_search_e_data_url}", prepare_search_data());
+        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
       }
     });
 
@@ -279,7 +280,7 @@
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
       var sort_col = _this.attr('data-column'),
           sort_dir = _this.attr('data-sort-direction');
-      classifier_search("#{modules_classifier_search_e_data_url}", prepare_search_data(sort_col, sort_dir));
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params(sort_col, sort_dir));
       _this.attr('data-sort-direction', sort_direction(sort_dir)).addClass('active');
     });
 
@@ -290,7 +291,7 @@
     });
   });
 
-  function prepare_search_data(sort_col, sort_dir) {
+  function init_search_params(sort_col, sort_dir) {
     var data = {
       town_id: $('#_item').data('town-id'),
       sort_col: sort_col,
