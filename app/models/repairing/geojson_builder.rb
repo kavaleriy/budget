@@ -1,8 +1,6 @@
 class Repairing::GeojsonBuilder
 
   def self.build_repair(repair)
-    require 'ext/string'
-    # coord1 =
     return if repair['coordinates'].blank? ||
         repair['coordinates'][0].nil? ||
         repair['coordinates'][1].nil?
