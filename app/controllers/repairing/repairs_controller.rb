@@ -100,9 +100,8 @@ module Repairing
 
     def prozzoro_info
       require 'external_api'
-      # @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repair.prozzoro_id)
+      @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repair.prozzoro_id)
       respond_to do |format|
-        format.html {}
         format.js {
           render file: 'repairing/repairs/api_info',
                  locals: {

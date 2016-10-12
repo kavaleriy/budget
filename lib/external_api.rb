@@ -30,15 +30,15 @@ class ExternalApi
   end
 
   def self.prozzoro_data(id)
+    unless id.nil?
+      uri = URI("https://lb.api.openprocurement.org/api/0/tenders/#{id}")
 
-    uri = URI("https://lb.api.openprocurement.org/api/0/tenders/#{id}")
-    http = Net::HTTP.new(uri.host, uri.port)
+      http = Net::HTTP.new(uri.host, uri.port)
 
-    request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
-    http.use_ssl = (uri.scheme == "https")
-    response = http.request request # Net::HTTPResponse object
-    binding.pry
-    # end
+      request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
+      http.use_ssl = (uri.scheme == "https")
+      JSON.parse(http.request(request).body)
+    end
   end
 
   private

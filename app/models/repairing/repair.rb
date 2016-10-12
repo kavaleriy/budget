@@ -18,8 +18,9 @@ module Repairing
     field :edrpou_artist, type: String
     field :spending_units, type: String
     field :edrpou_spending_units, type: String
+    field :prozzoro_id, type: String
 
-    field :warranty_date, type: Date
+    field :warranty_date, type: String
     field :description, type: String
 
     field :address, type: String

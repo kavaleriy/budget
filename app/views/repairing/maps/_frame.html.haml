@@ -259,7 +259,7 @@
         %span
           = t('repairing.maps.sitebar.information')
 
-.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
+.modal.fade{:id => 'more-infoModal', role: 'dialog', tabindex: '-1'}
   .modal-dialog
     .modal-content
       .modal-header
@@ -303,7 +303,7 @@
       })
     }
     function getRepairId(){
-      return $('#sidebar').data('repair-id');
+      return $('#sidebar').attr('data-repair-id');
     }
 
     $('#e-data').click(function(){
@@ -326,7 +326,7 @@
     });
 
     function get_repair_info_modal(){
-      var repair_id = $('#sidebar').attr('data-repair-id');
+      var repair_id = getRepairId();
       $.ajax({
         url: "#{repairing_show_repair_info_path}",
         data: { id: repair_id },
