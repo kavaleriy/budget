@@ -37,9 +37,9 @@ module Budget
     # homepage, sidebar, left
     # horizontal, sharing
     # Karelin sharing link
-    # config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-579f198770513078"
+    config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-579f198770513078"
     # Dev sharing link
-    config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f7636836f4b813"
+    # config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f7636836f4b813"
 
     # Cross-origin resource sharing (CORS)
     config.middleware.insert_before 0, "Rack::Cors" do
