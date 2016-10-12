@@ -1,12 +1,16 @@
 class Repairing::GeojsonBuilder
 
   def self.build_repair(repair)
-    return if repair['coordinates'].blank? || repair['coordinates'][0].nil? || repair['coordinates'][1].nil?
+    return if repair['coordinates'].blank? ||
+        repair['coordinates'][0].nil? ||
+        repair['coordinates'][1].nil?
 
     if repair['coordinates'][0].is_a?(Array)
       build_repair_path(repair)
     else
-      build_repair_point(repair)
+      if repair['coordinates'][0].is_a?(Float) && repair['coordinates'][1].is_a?(Float)
+        build_repair_point(repair)
+      end
     end
   end
 
