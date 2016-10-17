@@ -232,7 +232,7 @@ module Repairing
             prozzoro_id: repair['ID закупівлі'],
             edrpou_artist: repair['ЄДРПОУ виконавця'],
             spending_units: repair['Розпорядник бюджетних коштів'],
-            edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+            edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
 
             address: repair['Адреса'],
             address_to: repair['Адреса1'],
