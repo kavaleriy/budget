@@ -43,7 +43,8 @@
             %li.divider
 
             %li
-              = link_to static_budget_file_help_path do
+              -#= link_to static_budget_file_help_path do
+              = link_to show_instruction_path('budget_file_help') do
                 %i.fa.fa-info-circle
                   =t('static.budget_file_help.help')
 
@@ -80,7 +81,8 @@
             %li= link_to t('.keytownmarks'), key_indicate_indicator_files_path
             %li= link_to t('key_indicate.indicator_files.index.upload_files'), new_key_indicate_indicator_file_path
             %li
-              = link_to static_key_indicator_file_help_path do
+              -#= link_to static_key_indicator_file_help_path do
+              = link_to show_instruction_path('key_indicator_file_help') do
                 %i.fa.fa-info-circle
                   =t('static.budget_file_help.help')
             %li.divider
@@ -135,7 +137,8 @@
                 %li= link_to t('.repairing_category'), repairing_categories_path
               %li.divider
               %li
-                = link_to repairing_maps_instruction_path do
+                -#= link_to repairing_maps_instruction_path do
+                = link_to show_instruction_path('repairing_maps_help') do
                   %i.fa.fa-info-circle
                     = t('layouts.navbar_admin.repairing_maps_instruction')
         %li

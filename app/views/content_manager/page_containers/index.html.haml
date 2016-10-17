@@ -1,5 +1,11 @@
 :scss
-  .crud_icons{
+  .tab-content{
+    hr.bottom-line{
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+  }
+    .crud_icons{
     img{
       width: 30px;
     }
@@ -26,6 +32,9 @@
   %li{:role => "presentation"}
     %a{"data-toggle" => "tab", href: "#tab-info",role: 'tab'}
       =t('.info')
+  %li{:role => "presentation"}
+    %a{"data-toggle" => "tab", href: "#tab-instructions",role: 'tab'}
+      =t('.instructions')
 
 .tab-content
   #tab-menu.tab-pane.fade.active.in
@@ -89,6 +98,33 @@
             = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(info_page)
             = link_to image_tag('icons/X_icon.png'), info_page, :method => :delete,
                             :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+  #tab-instructions.tab-pane.fade
+    .panel-body
+      .row.content_page_headers
+        .col-xs-2
+          =t('content_manager.page_containers.header')
+        .col-xs-6
+          = t('content_manager.page_containers.content')
+        .col-xs-2
+          = t('content_manager.page_containers.alias')
+        .col-xs-2
+          = t('content_manager.page_containers.action')
+        %hr
+      -@instruction_pages.each do |info_page|
+        .row.content_page_content
+          .col-xs-2
+            = get_header_by_locale(info_page)
+          .col-xs-6.page_locale_content
+            = get_content_by_locale(info_page)
+          .col-xs-2
+            = info_page.alias
+          .col-xs-2.crud_icons
+            = link_to image_tag('icons/loupe.png'), info_page
+            = link_to image_tag('icons/pencil.png'), edit_content_manager_page_container_path(info_page)
+            = link_to image_tag('icons/X_icon.png'), info_page, :method => :delete,
+                            :data => { :confirm => t('content_manager.page_containers.confirm'),:commit => t('content_manager.page_containers.commit') }
+        %hr.bottom-line
+
 :javascript
   dataConfirmModal.setDefaults({
     title:  'Видалення контенту',

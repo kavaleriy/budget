@@ -14,7 +14,14 @@ module Repairing
       if params[:town_id] && params[:town_id] != '0'
         @town = params[:town_id]
         town = Town.find(@town)
-        @map_center = town['coordinates'] if town.level && town.level > 1 # area
+
+        # Add this 'if' for 'Demonstration of a typical city profile' because this town has not coordinates
+        if !town['coordinates'].nil?
+          @map_center = town['coordinates'] if town.level && town.level > 1 # area
+        else
+          @zoom = '6' # view map Ukraine
+        end
+
       else
         @town = ""
       end

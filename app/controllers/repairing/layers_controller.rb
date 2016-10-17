@@ -8,8 +8,8 @@ module Repairing
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
 
     def create_repair_by_addr
-      @location = Geocoder.coordinates(params[:q])
-      @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
+      @location = coordinate(params[:q])
+      @location1 = coordinate(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
       respond_to do |format|
         if @location1
@@ -32,8 +32,8 @@ module Repairing
 
     def geo_json
       result = {
-          "type" => "FeatureCollection",
-          "features" => @repairing_layer.to_geo_json
+          type: "FeatureCollection",
+          features: @repairing_layer.to_geo_json
       }
 
       respond_to do |format|
@@ -44,7 +44,7 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.visible_to(current_user).page(params[:page])
+      @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user).page(params[:page])
     end
 
     # GET /repairing/layers/1
@@ -164,7 +164,7 @@ module Repairing
 
         layer_repair = Repairing::Repair.create(repair_hash)
         layer_repair.layer = layer
-        category = Repairing::Category.where(:title => repair['Робота']).first
+        category = Repairing::Category.where(title: repair['Робота']).first
         layer_repair.repairing_category = category unless category.nil?
         layer_repair.save!
       end
@@ -201,7 +201,7 @@ module Repairing
     end
 
     def get_categories
-      categories = Repairing::Category.all.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
+      categories = Repairing::Category.by_locale.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
 
       respond_to do |format|
         format.json { render json: categories}
@@ -209,6 +209,15 @@ module Repairing
     end
 
     private
+      def coordinate(coordinates)
+        if ( coordinates =~ /^\d{1,2}[.]\d*/ )
+          Geocoder.coordinates(coordinates)
+        else
+          user_town = current_user.town
+          Geocoder.coordinates(user_town + ' ' + coordinates)
+        end
+      end
+
       def build_repair_hash(repair)
         # this function build hash for repair model
         # get two parameters repair hash and coordinates array
@@ -228,9 +237,10 @@ module Repairing
 
             repair_start_date: start_repair_date,
             repair_end_date: end_repair_date,
+            prozzoro_id: repair['ID закупівлі'],
             edrpou_artist: repair['ЄДРПОУ виконавця'],
             spending_units: repair['Розпорядник бюджетних коштів'],
-            edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+            edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
 
             address: repair['Адреса'],
             address_to: repair['Адреса1'],
@@ -243,7 +253,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale)
       end
   end
 end

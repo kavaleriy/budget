@@ -35,4 +35,9 @@ namespace :repairing_categories do
     }
   end
 
+  desc "Add locale field with 'uk' value"
+  task add_locale_field: :environment do
+    Repairing::Category.where(locale: nil).update_all(locale: 'uk')
+  end
+
 end

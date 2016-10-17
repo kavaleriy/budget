@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
 
+  mount Ckeditor::Engine => '/ckeditor'
   namespace :compare_taxonomies do
     get 'index'
   end
   get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
-
-
 
   namespace :external_api do
     get 'edata'
@@ -15,6 +14,7 @@ Rails.application.routes.draw do
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
   get '/info/:alias/show' => 'public/home#show_pages',as: 'show_pages'
+  get '/instructions/:alias' => 'public/home#show_pages', as: 'show_instruction'
 
   namespace :content_manager do
     resources :page_containers
@@ -26,11 +26,13 @@ Rails.application.routes.draw do
     get 'classifier/all_classifier' => 'classifier#all_classifier',as: 'classifier_all_classifier'
     get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
     post 'classifier/import_dbf' => 'classifier#import_dbf',as: 'import_dbf_save'
+    get 'classifier/e_data/:town_id' => 'classifier#e_data', as: 'classifier_e_data'
     get 'classifier/search_data/:town_id' => 'classifier#search_data', as: 'classifier_search_data'
-    post 'classifier/by_type' => 'classifier#by_type', as: 'classifier_by_type'
+    get 'classifier/by_type' => 'classifier#by_type', as: 'classifier_by_type'
     get 'classifier/advanced_search/:town_id' => 'classifier#advanced_search', as: 'classifier_advanced_search'
     get 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
-    # get 'classifier/sort_e_data' => 'classifier#sort_e_data', as: 'classifier_sort_e_data'
+    get 'classifier/iframe/:town_id' => 'classifier#iframe', as: 'classifier_iframe'
+    get 'classifier/direct_link' => 'classifier#direct_link', as: 'classifier_direct_link'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'
@@ -199,6 +201,7 @@ Rails.application.routes.draw do
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
     get 'repairs/e_data' => 'repairs#e_data',as: 'e_data'
+    get 'repairs/prozzoro' => 'repairs#prozzoro_info',as: 'prozzoro'
 
     get 'heapmap_json' => 'maps#get_heapmap_geo_json'
     get 'heapmap' => 'maps#heapmap'
