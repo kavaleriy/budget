@@ -82,12 +82,15 @@ module Repairing
     end
 
     def download
-      file_path = Rails.public_path.to_s + '/files/files_for_instructions/repairing_map.xlsx'
+
+      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer.xlsx'
       if File.exist?(file_path)
         send_file(
             "#{file_path}",
             :x_sendfile=>true
         )
+      else
+        redirect_to :back, notice: t('budget_files_controller.not_download_file')
       end
     end
 

@@ -22,3 +22,6 @@
 -if @page
   .static_content
     = get_content_by_locale(@page)
+- unless download_instruction(@page.alias).nil?
+  = link_to t('file_example'), download_instruction(@page.alias)
+
