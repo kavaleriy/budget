@@ -28,7 +28,7 @@
           }
         }
         .payment_details {
-          width: 800px;
+          width: 50%;
         }
         .active {
           background: none;
@@ -67,9 +67,20 @@
       }
     }
   }
+   // hide sidebar for share
+  .at4-share-outer {
+    display: none;
+  }
 
 -if @payments.blank?
-  = t('.no-data')
+  = render partial: 'layouts/no_data_yet'
+  -#= t('.no-data')
+
+  :javascript
+    $(document).ready(function() {
+      $('.sharing').hide();
+    });
+
 -else
   #edata_payments.table-responsive
     %table.table.table-striped
@@ -94,3 +105,8 @@
 
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+
+  :javascript
+    $(document).ready(function() {
+      $('.sharing').show();
+    });

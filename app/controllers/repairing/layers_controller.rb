@@ -8,8 +8,8 @@ module Repairing
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
 
     def create_repair_by_addr
-      @location = Geocoder.coordinates(params[:q])
-      @location1 = Geocoder.coordinates(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
+      @location = coordinate(params[:q])
+      @location1 = coordinate(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
       respond_to do |format|
         if @location1
@@ -209,6 +209,15 @@ module Repairing
     end
 
     private
+      def coordinate(coordinates)
+        if ( coordinates =~ /^\d{1,2}[.]\d*/ )
+          Geocoder.coordinates(coordinates)
+        else
+          user_town = current_user.town
+          Geocoder.coordinates(user_town + ' ' + coordinates)
+        end
+      end
+
       def build_repair_hash(repair)
         # this function build hash for repair model
         # get two parameters repair hash and coordinates array
@@ -228,9 +237,10 @@ module Repairing
 
             repair_start_date: start_repair_date,
             repair_end_date: end_repair_date,
+            prozzoro_id: repair['ID закупівлі'],
             edrpou_artist: repair['ЄДРПОУ виконавця'],
             spending_units: repair['Розпорядник бюджетних коштів'],
-            edrpou_spending_units: repair['ЄДРПОУ Розпорядника бюджетних коштів'],
+            edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
 
             address: repair['Адреса'],
             address_to: repair['Адреса1'],

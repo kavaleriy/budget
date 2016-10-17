@@ -246,6 +246,9 @@
     }
 
     $('.module').click(function(){
+      //TODO: need simple code for show/hide this btn
+      $('#embedded-profile').hide();
+
       var breadcrumbs_title = $.trim($(this).find('.title').html());
       var breadcrumbs_link = $(this).find('a').attr('href');
       addBreadcrumbs(breadcrumbs_title, breadcrumbs_link);
