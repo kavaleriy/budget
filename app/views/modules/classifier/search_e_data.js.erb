@@ -5,7 +5,7 @@ if (barChart) {
   $('#most-received').hide();
 }
 
-<%- unless params['payers_edrpous'].blank? || @receivers.size < 5 %>
+<%- unless params[:payers_edrpous].blank? || @receivers.size < 5 %>
   $('#most-received').show();
 
   var label = [];

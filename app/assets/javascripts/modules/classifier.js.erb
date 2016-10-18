@@ -89,6 +89,7 @@ function get_items(url, type, role, _sort_param) {
       town_id: town_id,
       type: type,
       role: role,
+      region: $('[name="[apply_region]"]:checked').val(),
       sort_column: (_sort_param != null ? _sort_param.sort_col : null),
       sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
     }

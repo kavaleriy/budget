@@ -19,22 +19,20 @@ module Modules
     def search_e_data
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.nil?
-      # this variable are using for chart
-      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous]).first(10)
 
-      # switch between '*.js.erb' depend on sorting params
-      if params[:sort_col].blank?
-        # respond_with(@payments, @receivers)
-        respond_to do |format|
-          # TODO should be rewrite using as :template
-          format.html {render 'modules/classifier/_search_e_data', layout: 'visify'}
+      # this variable are using for chart
+      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?)).first(10)
+
+      respond_to do |format|
+        # TODO should be rewrite using as :template
+        format.html {render 'modules/classifier/_search_e_data', layout: 'visify'}
+        format.json { render json: @payments }
+        format.csv { send_data Modules::Classifier.to_csv(data) }
+        # switch between '*.js.erb' depend on sorting params
+        if params[:sort_col].blank?
           format.js { render 'modules/classifier/search_e_data' }
-          format.json { render json: @payments }
-          format.csv { send_data Modules::Classifier.to_csv(data) }
-        end
-      else
-        respond_to do |format|
-        format.js { render 'modules/classifier/sort_e_data' }
+        else
+          format.js { render 'modules/classifier/sort_e_data' }
         end
       end
     end
@@ -59,7 +57,10 @@ module Modules
 
     def by_type
       # add 'where' filter if type was select
-      @items = (params[:type].blank? ? items_by_koatuu : items_by_koatuu.where(:k_form.in=> Modules::ClassifierType.find(params[:type])[:code])).to_a.sort_by! do |hash|
+      @items = Modules::Classifier.all
+      @items = items_by_koatuu unless params[:region].blank? and params[:role] != 'payers'
+      @items = @items.where(:k_form.in=> Modules::ClassifierType.find(params[:type])[:code]) unless params[:type].blank?
+      @items.to_a.sort_by! do |hash|
         if params[:sort_column].blank?
           # use default sorting if sorting params empty
           hash.pnaz
@@ -141,12 +142,7 @@ module Modules
 
     def sort_e_data
       # Data
-      payments_data = ExternalApi::e_data_payments(
-          params[:payers_edrpous],
-          params[:recipt_edrpous],
-          (params[:period].split('/').first unless params[:period].blank?),
-          (params[:period].split('/').last unless params[:period].blank?)
-      )
+      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?))
       # Sort data
       sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
       unless payments_data.nil?
