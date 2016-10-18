@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     get 'classifier/search_e_data' => 'classifier#search_e_data', as: 'classifier_search_e_data'
     get 'classifier/iframe/:town_id' => 'classifier#iframe', as: 'classifier_iframe'
     get 'classifier/direct_link' => 'classifier#direct_link', as: 'classifier_direct_link'
+    get 'classifier/select_collection' => 'classifier#select_collection', as: 'classifier_select_collection'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

@@ -20,6 +20,64 @@ function classifier_search(url, params) {
   $('#spinner-container').hide();
 }
 
+function init_items_select2_with_field_id(field_id, parent_field_id, url, placeholder){
+  $(field_id).select2({
+//    sortResults: function(results, container, query) {
+//      if (query.term) {
+//        // use the built in javascript sort function
+//        return results.sort(function(a, b) {
+//          if (a.text.length > b.text.length) {
+//            return 1;
+//          } else if (a.text.length < b.text.length) {
+//            return -1;
+//          } else {
+//            return 0;
+//          }
+//        });
+//      }
+//      return results;
+//    },
+    allowClear: true,
+    multiSelect: false,
+    multiple: false,
+    placeholder: placeholder,
+    minimumInputLength: 2,
+    width: '100%',
+    ajax: {
+      url: url,
+      dataType: 'json',
+      quietMillis: 250,
+      data: function (term, page) {
+        return {
+          type: $(parent_field_id).val(),
+          role: $(field_id).data('role'),
+          region: $('[name="[apply_region]"]:checked').val(),
+          query: term, // search term
+        };
+      },
+      results: function (data, page) {
+        var resArr = [];
+        for(var i = 0; i < data.length; i++) {
+          var arr = {};
+          arr['id'] = data[i].id;
+          arr['text'] = data[i].text;
+          resArr.push(arr);
+        }
+        return { results: resArr };
+      },
+      cache: true
+    },
+//    initSelection: function (element, callback) {
+//      var id = $(element).val();
+//      if (id !== "") {
+//        $.ajax(url + "" + id, {
+//          dataType: "json"
+//        }).done(function(data) { callback(data); });
+//      }
+//    }
+  });
+}
+
 // this function return items by type and using for sort them
 // function change items list and items select options depend on type value
 // sorting params may be empty

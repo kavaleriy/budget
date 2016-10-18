@@ -48,6 +48,25 @@
         }
       }
     }
+    #pagination {
+      .pagination {
+        li {
+          a {
+            border: none;
+            border-radius: 0;
+            color: $text;
+            padding: 2px 7px;
+            font-weight: bold;
+          }
+        }
+        .active {
+          a {
+            background-color: $active;
+            color: $text;
+          }
+        }
+      }
+    }
   }
   #close-btn {
     background: $search-border;
@@ -81,7 +100,8 @@
             =t('.address')
 
       = render partial: 'by_type_results'
-
+    #pagination.text-center
+      = paginate @items, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc', "method" => 'post'}
 :javascript
   $(document).ready(function() {
     $('#close-btn').click(function() {

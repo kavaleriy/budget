@@ -105,8 +105,21 @@
 
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+    %a.btn.btn-success.btn-xs.pull-right{'id'=>'export_classifier', 'style'=>'margin-bottom: 50px'}
+      =t("helpers.links.export")
 
-  :javascript
+:javascript
+  $(document).ready(function() {
     $(document).ready(function() {
       $('.sharing').show();
     });
+    $('#export_classifier').on('click', function(e){
+      var town_id = $('#_item_payers').data('town-id');
+      var start_date = $('#_startdate').val();
+      var params = "&town_id="+town_id + "&payers_edrpous="
+        + $('#_item_payers').val() + "&recipt_edrpous=" + $('#_item_recipt').val() + "&period=" + start_date ;
+      var href = "#{modules_classifier_search_e_data_url(:format => :csv)}" + params ;
+      $(this).attr('href', href);
+    });
+  });
+

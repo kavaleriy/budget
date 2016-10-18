@@ -230,14 +230,15 @@
     .row
       .col-md-3
         = f.input :startdate, input_html: { class: 'daterange' }, label: false
+        = f.input :apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: 'region'
       .col-md-3
-        = f.input(:item_type_payers, collection: @types.map { |type| [type.name, type.code] },
+        = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
-        = f.input(:item_type_recipt, collection: @types.map { |type| [type.name, type.code] },
+        = f.input(:item_type_recipt, collection: @types_receipt.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
       .col-md-5
-        = f.input(:item_payers, as: :select, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
-        = f.input(:item_recipt, as: :select,input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+        = f.input(:item_payers, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
         -#= f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
         -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
         -#= f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
@@ -256,6 +257,8 @@
     = render partial: 'layouts/spinner'
 
 :javascript
+
+
   $(document).ready(function() {
 
     // use for changing datepicker locale
@@ -287,8 +290,24 @@
       minimumResultsForSearch: -1
     });
 
-    init_item_select($('#_item_payers'));
-    init_item_select($('#_item_recipt'));
+    // init_item_select($('#_item_payers'));
+    init_items_select2_with_field_id(
+      '#_item_payers',
+      '#_item_type_payers',
+      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
+    );
+
+    // init_item_select($('#_item_recipt'));
+    init_items_select2_with_field_id(
+      '#_item_recipt',
+      '#_item_type_recipt',
+      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
+    );
+
+
+
 
     // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
@@ -303,7 +322,7 @@
 
     // add event: if change type -> clear value of item select and change select options
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
-      init_item_select($(this));
+      // init_item_select($(this));
       $("#items-list").show();
     });
 
@@ -366,6 +385,7 @@
       payers_edrpous: $('#_item_payers').val(),
       recipt_edrpous: $('#_item_recipt').val(),
       period: $('#_startdate').val(),
+      region: $('[name="[apply_region]"]:checked').val(),
       sort_col: sort_col,
       sort_dir: sort_dir
     }
