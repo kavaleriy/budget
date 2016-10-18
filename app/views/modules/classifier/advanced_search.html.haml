@@ -319,6 +319,7 @@
 
     // add event: if change type -> clear value of item select and change select options
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
+      $('.results').empty();
       init_item_select($(this));
       $("#items-list").show();
     });
