@@ -230,7 +230,7 @@
     .row
       .col-md-3
         = f.input(:startdate, input_html: { class: 'daterange' }, label: false)
-        = f.input(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: 'region',
+        = f.input(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: t('.region'),
         boolean_style: :inline, input_html: { checked: true })
       .col-md-3
         = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
@@ -240,10 +240,6 @@
       .col-md-5
         = f.input(:item_payers, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
         = f.input(:item_recipt, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
-        -#= f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
-        -#= f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
       .col-md-1
         = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
 
