@@ -1,6 +1,6 @@
 module Modules
   class ClassifierController < ApplicationController
-    before_action :town, only: [:e_data, :search_data, :advanced_search, :by_type]
+    before_action :town, only: [:search_data, :advanced_search, :by_type]
     respond_to :html, :js, :json
 
     def search_data
@@ -17,14 +17,13 @@ module Modules
     end
 
     def search_e_data
-      binding.pry
       data = sort_e_data
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.nil?
       # this variable are using for chart
-      @receivers = ExternalApi::most_received(params['payers_edrpous'], params['recipt_edrpous']).first(10)
+      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous]).first(10)
 
       # switch between '*.js.erb' depend on sorting params
-      if params['sort_col'].blank?
+      if params[:sort_col].blank?
         # respond_with(@payments, @receivers)
         respond_to do |format|
           # TODO should be rewrite using as :template
@@ -48,7 +47,6 @@ module Modules
     end
 
     def select_collection
-      # binding.pry
       @items = Modules::Classifier.search_part_title(params[:query])
       @items = @items.by_koatuu(town.koatuu) unless params[:region].blank? and params[:role] != 'payers'
       @items = @items.where(:k_form.in => Modules::ClassifierType.find(params[:type])[:code]) unless params[:type].blank?
@@ -60,22 +58,21 @@ module Modules
     end
 
     def by_type
-      # binding.pry
       # add 'where' filter if type was select
-      @items = (params["type"].blank? ? items_by_koatuu : items_by_koatuu.where(:k_form.in=> Modules::ClassifierType.find(params[:type])[:code])).to_a.sort_by! do |hash|
-        if params['sort_column'].blank?
+      @items = (params[:type].blank? ? items_by_koatuu : items_by_koatuu.where(:k_form.in=> Modules::ClassifierType.find(params[:type])[:code])).to_a.sort_by! do |hash|
+        if params[:sort_column].blank?
           # use default sorting if sorting params empty
           hash.pnaz
         else
-          hash[params['sort_column']]
+          hash[params[:sort_column]]
         end
       end
-      @items.reverse! unless params['sort_column'].blank? || params['sort_direction'].eql?('asc')
+      @items.reverse! unless params[:sort_column].blank? || params[:sort_direction].eql?('asc')
       @items = Kaminari.paginate_array(@items).page(params[:page]).per(10)
-      @role = params["role"]
+      @role = params[:role]
       # switch between '*.js.erb' depend on sorting params
       respond_to do |format|
-        if params['sort_column'].blank?
+        if params[:sort_column].blank?
           format.js
         else
           format.js { render 'modules/classifier/by_type_results' }
@@ -145,13 +142,13 @@ module Modules
     def sort_e_data
       # Data
       payments_data = ExternalApi::e_data_payments(
-          params['payers_edrpous'],
-          params['recipt_edrpous'],
-          (params['period'].split('/').first unless params['period'].blank?),
-          (params['period'].split('/').last unless params['period'].blank?)
+          params[:payers_edrpous],
+          params[:recipt_edrpous],
+          (params[:period].split('/').first unless params[:period].blank?),
+          (params[:period].split('/').last unless params[:period].blank?)
       )
       # Sort data
-      sort_col = params['sort_col'].blank? ? 'trans_date' : params['sort_col']
+      sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
       unless payments_data.nil?
         payments_data.sort_by! do |hash|
           if sort_col.eql?('amount')
@@ -160,15 +157,13 @@ module Modules
             hash[sort_col.to_s]
           end
         end
-        payments_data.reverse! unless params['sort_dir'].eql?('asc')
+        payments_data.reverse! unless params[:sort_dir].eql?('asc')
       end
       # Results
       payments_data
     end
 
     def items_by_koatuu
-      #binding.pry
-      # Modules::Classifier.by_koatuu(town.koatuu, town.koatuu[2..10].eql?('00000000') ? 2 : 5)
       Modules::Classifier.by_koatuu(town.koatuu)
     end
 

@@ -229,8 +229,9 @@
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-3
-        = f.input :startdate, input_html: { class: 'daterange' }, label: false
-        = f.input :apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: 'region'
+        = f.input(:startdate, input_html: { class: 'daterange' }, label: false)
+        = f.input(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: 'region',
+        boolean_style: :inline, input_html: { checked: true })
       .col-md-3
         = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
@@ -322,7 +323,7 @@
 
     // add event: if change type -> clear value of item select and change select options
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
-      // init_item_select($(this));
+      init_item_select($(this));
       $("#items-list").show();
     });
 
@@ -375,7 +376,7 @@
   // and reinit select2 after changing select options.
   // This actions define in '*.js.erb'
   function init_item_select(selector) {
-    $('#_item_' + selector.data('role')).val('').trigger('change');
+    $('#_item_' + selector.data('role')).select2('val', '');
     get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
   }
 

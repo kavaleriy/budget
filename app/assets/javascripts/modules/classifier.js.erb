@@ -52,7 +52,7 @@ function init_items_select2_with_field_id(field_id, parent_field_id, url, placeh
           type: $(parent_field_id).val(),
           role: $(field_id).data('role'),
           region: $('[name="[apply_region]"]:checked').val(),
-          query: term, // search term
+          query: term // search term
         };
       },
       results: function (data, page) {
@@ -67,14 +67,9 @@ function init_items_select2_with_field_id(field_id, parent_field_id, url, placeh
       },
       cache: true
     },
-//    initSelection: function (element, callback) {
-//      var id = $(element).val();
-//      if (id !== "") {
-//        $.ajax(url + "" + id, {
-//          dataType: "json"
-//        }).done(function(data) { callback(data); });
-//      }
-//    }
+    formatResult: function(element){
+      return element.text + ' (' + element.id + ')';
+    }
   });
 }
 
@@ -101,9 +96,9 @@ function get_items(url, type, role, _sort_param) {
   $('#spinner-container').hide();
 }
 
+// TODO: refactor in future
 function share_buttons_set_url(url) {
   addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
-  console.log(url.replace('search_e_data', 'direct_link'));
 }
 
 // switch sort direction
@@ -118,18 +113,18 @@ function sort_direction(attr) {
 
 // add breadcrumbs element and create event-listener for handheld remove it
 function addBreadcrumbs(title, url) {
-    var breadcrumbs_list = $('.breadcrumb');
-    var parent_el = breadcrumbs_list.find('li.active');
-    parent_el.children().attr('href', url).attr('data-remote', "true");
-    parent_el.removeClass('active');
-    var active_li = $('<li></li>').addClass('active');
-    var a_value = $('<a>').html(title);
-    active_li.append(a_value);
-    breadcrumbs_list.append(active_li);
-    // Handheld action 'back'
-    parent_el.children().click(function() {
-        // remove previous <li>
-        parent_el.next().remove();
-        parent_el.addClass('active');
-    });
+  var breadcrumbs_list = $('.breadcrumb');
+  var parent_el = breadcrumbs_list.find('li.active');
+  parent_el.children().attr('href', url).attr('data-remote', "true");
+  parent_el.removeClass('active');
+  var active_li = $('<li></li>').addClass('active');
+  var a_value = $('<a>').html(title);
+  active_li.append(a_value);
+  breadcrumbs_list.append(active_li);
+  // Handheld action 'back'
+  parent_el.children().click(function() {
+    // remove previous <li>
+    parent_el.next().remove();
+    parent_el.addClass('active');
+  });
 }
