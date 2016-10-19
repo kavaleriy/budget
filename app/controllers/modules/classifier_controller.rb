@@ -1,11 +1,13 @@
 module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:search_data, :advanced_search, :by_type]
-    respond_to :html, :js, :json
 
     def search_data
       @items = items_by_koatuu.only(:pnaz, :edrpou)
-      respond_with(@items, layout: 'visify' )
+      respond_to do |format|
+        format.html { render file: 'modules/classifier/search_data', layout: 'visify'}
+        format.js
+      end
     end
 
     def direct_link
@@ -48,7 +50,10 @@ module Modules
     def advanced_search
       @types_payer = Modules::ClassifierType.where(payer: true).all
       @types_receipt = Modules::ClassifierType.where(receipt: true).all
-      respond_with(layout: 'visify')
+      respond_to do |format|
+        format.html { render file: 'modules/classifier/advanced_search', layout: 'visify'}
+        format.js
+      end
     end
 
     def select_collection
