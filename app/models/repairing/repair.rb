@@ -18,14 +18,19 @@ module Repairing
     field :edrpou_artist, type: String
     field :spending_units, type: String
     field :edrpou_spending_units, type: String
+    field :prozzoro_id, type: String
 
-    field :warranty_date, type: Date
+    field :warranty_date, type: String
     field :description, type: String
 
     field :address, type: String
     field :address_to, type: String
     field :coordinates, type: Array
 
+    validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
+    validate :validate_coords
+
+    before_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? and !obj.coordinates.present?}
     before_save :set_end_date
 
     def set_end_date
@@ -37,7 +42,25 @@ module Repairing
       end
     end
 
+    def validate_coords
+      if coordinates[0].kind_of?(Array)
+        coordinates.each do |coords|
+          check_coords_array(coords)
+        end
+      else
+        check_coords_array(coordinates)
+      end
+    end
 
+    def geocode
+      self.coordinates =  Geocoder.coordinates(address)
+    end
 
+    private
+
+    def check_coords_array(coords)
+      errors.add(I18n.t('repairing.repairs.coords.wrong_length')) unless coords.size.eql?(2)
+      errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].kind_of?(Float) || coords[1].kind_of?(Float)
+    end
   end
 end

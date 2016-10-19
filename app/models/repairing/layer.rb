@@ -17,6 +17,8 @@ class Repairing::Layer
 
   has_many :repairs, class_name: 'Repairing::Repair', autosave: true, dependent: :destroy
 
+  validates :town, :owner, :title, presence: true
+
   def self.visible_to user
     files = if user.nil?
       self.where(owner: nil)
