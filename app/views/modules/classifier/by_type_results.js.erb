@@ -1,1 +1,2 @@
 $('#edata_items tbody').html('<%= escape_javascript( render partial: 'by_type_results', formats: [:html]) %>');
+$('#pagination .pagination').html("<%= escape_javascript(paginate(@items, remote: true, theme: 'e_data_template', params: { 'sort_col' => params['sort_col'], 'sort_dir' => params['sort_dir'] })) %>");

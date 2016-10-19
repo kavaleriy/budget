@@ -115,7 +115,7 @@
     #most-received {
       height: 400px;
       display: none;
-      margin-bottom: 30px;
+      margin-bottom: 70px;
       .subtitle {
         height: 30px;
         font-family: 'Lato', sans-serif;
@@ -150,11 +150,13 @@
     display: none;
   }
   .embeded-btn {
+    #export_classifier,
     #embedded-profile {
       background-color: $button-background;
-      padding: 0 10px;
+      margin-left: 10px;
+      padding: 2px 10px;
       height: 26px;
-      //width: 28px;
+      min-width: 150px;
       border-radius: 0;
       float: right;
       color: $button-text;
@@ -219,6 +221,14 @@
     display: none;
     padding-bottom: 30px;
   }
+  .copyright_info {
+    font-size: 75%;
+    position: absolute;
+    bottom: 5px;
+    p {
+      margin: 0;
+    }
+  }
 
 #search-data
   = simple_form_for '', remote: true do |f|
@@ -238,6 +248,9 @@
 
   .results
 
+  - if request.format.html?
+    = render partial: 'tell_more'
+
   .row.sharing
     .col-xs-6
       .social-btns#share_results
@@ -248,6 +261,9 @@
     = render partial: 'chart'
 
   = render partial: 'layouts/spinner'
+
+  .copyright_info
+    = render partial: 'copyright_info'
 
 :javascript
   $(document).ready(function() {

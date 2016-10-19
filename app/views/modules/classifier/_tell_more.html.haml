@@ -1,0 +1,98 @@
+:scss
+  .demo_index {
+    $panel_color: #D9EDF7;
+    $panel_width: 200px;
+    z-index: 1000;
+    position: fixed;
+    top: 140px;
+    left: 0;
+    .icon {
+      background-color: #0c2231;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 30px;
+      color: #fff;
+      font-size: 16px;
+      position: relative;
+      float: right;
+      &:hover {
+        background: #63c2de;
+        transition-duration: 0.4s;
+        transition-timing-function: linear;
+      }
+    }
+    .panel {
+      transition-duration: 0.7s;
+      transition-timing-function: linear;
+      float: left;
+      margin-left: -$panel_width;
+      width: $panel_width;
+      padding: 0 15px 15px;
+      .panel-heading{
+        height: 40px;
+        text-align: center;
+        background: transparent;
+        border-bottom: 2px solid #31708f;
+        padding: 10px 0;
+      }
+      .panel-body {
+        border: none;
+        padding: 10px 0;
+        & > a {
+          font-size: 1.3rem;
+          font-weight: 400;
+          color: white;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+          }
+          & > li {
+            list-style-type: none;
+            padding: 7px 10px;
+            background: #0c2231;
+            & img {
+              width: 60px;
+            }
+            & .budget {
+              margin: -11px 0 0 27px;
+            }
+            &:hover,
+            &:focus {
+              background: #63c2de;
+              transition-duration: 0.4s;
+              transition-timing-function: linear;
+            }
+          }
+        }
+      }
+    }
+    .panel_open {
+      transition-duration: 0.7s;
+      transition-timing-function: linear;
+      margin-left: 2px;
+      border: 1px solid #0c2231;
+      border-radius: 0;
+    }
+  }
+
+.demo_index
+  .icon
+    %i.fa.fa-info
+  .panel.panel-info#admin_info
+    .panel-heading
+      %h3.panel-title= t('modules.classifier.get_more')
+    .panel-body
+      =link_to root_url do
+        %li.element
+          = image_tag 'navbar/logo.svg'
+          %p.budget
+            = t('footer.about_portal.open_budget')
+
+:javascript
+  $(document).ready(function(){
+    $(".demo_index > div").click(function () {
+      $('#admin_info').toggleClass('panel_open');
+    });
+  });

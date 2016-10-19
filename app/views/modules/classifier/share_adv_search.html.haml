@@ -1,0 +1,423 @@
+:scss
+
+  // init colors
+  $button-background: #0c2231;
+  $button-border: #0c2231;
+  $button-line: #ffd304;
+  $button-text: white;
+  $search-background: white;
+  $search-border: #0c2231;
+  $black: black;
+  $white: white;
+
+  // allow different style in app and in iframe
+  // set margin in iframe
+  #advanced-search {
+    margin-top: 20px;
+  }
+  // set margin in app
+  .modules-wrapper {
+    #advanced-search {
+      margin-top: 0;
+    }
+  }
+
+  #advanced-search {
+    .simple_form {
+      .form-group {
+        border-radius: 0;
+        &._startdate {
+          &:after,
+          &:before {
+            position: absolute;
+            font-family: FontAwesome;
+            cursor: pointer;
+            font-size: 20px;
+            width: 33px;
+            height: 33px;
+            text-align: center;
+          }
+          &:before {
+            content: '\f073';
+            color: $search-background;
+            background: $search-border;
+            border: 1px solid $search-border;
+          }
+          &:after {
+            content: '\f0d7';
+            color: $search-border;
+            background: transparent;
+            right: 15px;
+          }
+          .form-control {
+            height: 33px;
+            width: calc(100% - 33px);
+            border-radius: 0;
+            border-color: $search-border;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 33px;
+          }
+        }
+      }
+      .squaredTwo {
+        width: 33px;
+        height: 33px;
+        background: #fcfff4;
+
+        background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+        float: left;
+
+        -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        position: relative;
+        input[type=checkbox] {
+          visibility: hidden;
+          &:checked + label:after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+            filter: alpha(opacity=100);
+            opacity: 1;
+          }
+        }
+        label {
+          cursor: pointer;
+          position: absolute;
+          width: 25px;
+          height: 25px;
+          left: 4px;
+          top: 4px;
+
+          -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+          -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+          box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+
+          background: -webkit-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -moz-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -o-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -ms-linear-gradient(top, #222 0%, #45484d 100%);
+          background: linear-gradient(top, #222 0%, #45484d 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#222', endColorstr='#45484d',GradientType=0 );
+
+          &:after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            opacity: 0;
+            content: '';
+            position: absolute;
+            width: 13px;
+            height: 8px;
+            background: transparent;
+            top: 6px;
+            left: 6px;
+            border: 3px solid #fcfff4;
+            border-top: none;
+            border-right: none;
+
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+          &:hover::after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+            filter: alpha(opacity=30);
+            opacity: 0.3;
+          }
+        }
+      }
+      .lab {
+        width: calc(100% - 33px);
+        padding-left: 48px;
+        height: 33px;
+        line-height: 33px;
+      }
+      ._item_payers,
+      ._item_recipt,
+      ._item_type_payers,
+      ._item_type_recipt {
+        .select2-container {
+          border: none;
+          width: 100%;
+          .select2-choice {
+            height: 33px;
+            line-height: 33px;
+            background: $search-background;
+            border: 1px solid $search-border;
+            border-radius: 0;
+            &:after,
+            &:before {
+              font-family: FontAwesome;
+              position: absolute;
+              cursor: pointer;
+              font-size: 20px;
+              width: 33px;
+              text-align: center;
+              margin: -2px auto;
+            }
+            &:before {
+              left: 0;
+              color: $search-background;
+              background: $search-border;
+            }
+            &:after {
+              content: '\f0d7';
+              right: 0;
+              top: 0;
+              color: $search-border;
+              background: $search-background;
+            }
+            .select2-chosen {
+              margin-left: 33px;
+              margin-right: 55px;
+              padding: 0;
+            }
+            .select2-search-choice-close {
+              right: 35px;
+            }
+            .select2-arrow {
+              display: none;
+            }
+          }
+        }
+      }
+      ._item_type_payers {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f155';
+            }
+          }
+        }
+      }
+      ._item_type_recipt {
+        .select2-container {
+          .select2-choice {
+            &:before {
+              content: '\f007';
+            }
+          }
+        }
+      }
+      .search-button {
+        background: $button-background;
+        color: $button-text;
+        font-weight: bold;
+        border-radius: 0 !important;
+        height: 33px;
+      }
+    }
+  }
+  #items-list{
+    margin-bottom: 40px;
+    margin-top: 20px;
+    border: 1px solid $search-border;
+    //min-height: 50px;
+    //max-height: 500px;
+    height: 500px;
+    overflow: auto;
+    display: none;
+  }
+  #most-received {
+    height: 400px;
+    display: none;
+    margin-bottom: 30px;
+    .subtitle {
+      height: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    canvas {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    #search-data {
+      #most-received {
+        height: 300px;
+      }
+    }
+  }
+  @media screen and (max-width: 992px) {
+    #search-data {
+      #most-received {
+        height: 200px;
+      }
+    }
+  }
+
+= stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
+
+#advanced-search
+  = simple_form_for '', remote: true do |f|
+    .row
+      .col-md-3
+        = f.input(:startdate, input_html: { class: 'daterange' }, label: false)
+        .squaredTwo
+          = f.input_field(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, checked: params[:region].blank? ? false : true, boolean_style: :inline, class: 'squaredTwo')
+          %label{'for' => '_apply_region'}
+        .lab= t('modules.classifier.advanced_search.region')
+      .col-md-3
+        = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
+        = f.input(:item_type_recipt, collection: @types_receipt.map { |type| [type.name, type.id] },
+        input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
+      .col-md-5
+        = f.input(:item_payers, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+      .col-md-1
+        = f.button :submit, t('modules.classifier.advanced_search.search'), class: 'btn btn-primary search-button', id: 'search'
+
+    #items-list
+    .results
+
+    #most-received
+      = render partial: 'chart'
+
+    = render partial: 'layouts/spinner'
+
+:javascript
+  $(document).ready(function() {
+
+    // use for changing datepicker locale
+    moment.locale("#{I18n.locale}");
+    // init and setup datepicker
+    $('#_startdate').daterangepicker({
+      ranges: dp_ranges_config(),
+      locale: {
+        format: 'DD-MM-YYYY',
+        separator: ' / ',
+        applyLabel: I18n.t('modules.classifier.advanced_search.dateranges.apply'),
+        cancelLabel: I18n.t('modules.classifier.advanced_search.dateranges.cancel'),
+        customRangeLabel: I18n.t('modules.classifier.advanced_search.dateranges.custom_range'),
+      },
+      // set default range as 'yesterday'
+      startDate: $.trim('#{params[:period].split('/').first}'),
+      endDate: $.trim('#{params[:period].split('/').last}')
+    });
+
+    $('#_item_type_payers').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.payers_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
+    });
+
+    $('#_item_type_recipt').select2({
+      placeholder: I18n.t('modules.classifier.advanced_search.recipt_type_placeholder'),
+      allowClear: true,
+      minimumResultsForSearch: -1
+    });
+
+    init_items_select2_with_field_id(
+      '#_item_payers',
+      '#_item_type_payers',
+      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
+    );
+
+    init_items_select2_with_field_id(
+      '#_item_recipt',
+      '#_item_type_recipt',
+      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
+    );
+
+    $('#_item_payers').select2('data', { id: '#{ payer.edrpou unless payer.blank? }', text: '#{ payer.pnaz unless payer.blank? }' });
+    $('#_item_recipt').select2('data', { id: '#{ recipt.edrpou unless recipt.blank? }', text: '#{ recipt.pnaz unless recipt.blank? }' });
+
+    // add event: if select/unselect item -> clear results and toggle items list
+    $('#_item_payers, #_item_recipt').on('change', function() {
+      $('.results').empty();
+      if (barChart) {
+        barChart.destroy();
+        $('#most-received').hide();
+      }
+      // check for empty value
+      if($(this).val()) {
+        $("#items-list").hide();
+      } else {
+        $("#items-list").show();
+      }
+    });
+
+    // add event: if change type -> clear value of item select and change select options
+    $('#_item_type_payers, #_item_type_recipt').on('change', function() {
+      $('.results').empty();
+      init_item_select($(this));
+      $("#items-list").show();
+    });
+
+    // add action for search button
+    $('#search').on('click', function(e){
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
+      $("#items-list").hide();
+      e.preventDefault();
+    });
+
+    // add event for sorting search results
+    $('.results').on('click', '#edata_payments th', function() {
+      $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params($(this).attr('data-column'), $(this).attr('data-sort-direction')))
+      $(this).attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
+    });
+
+    // add event for sorting items list
+    $('#items-list').on('click', '#edata_items th', function() {
+      var _this = $(this);
+      var type = $('#_item_type_' + _this.data('role')).val();
+      $('#edata_items th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
+      var sort_param = {
+        sort_col: _this.attr('data-column'),
+        sort_dir: _this.attr('data-sort-direction')
+      };
+      get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
+      _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
+    });
+
+    classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
+  });
+
+  function dp_ranges_config() {
+    // need for internationalization range labels
+    var yesterday = I18n.t('modules.classifier.advanced_search.dateranges.yesterday');
+    var last_7_days = I18n.t('modules.classifier.advanced_search.dateranges.last_7_days');
+    var last_30_days = I18n.t('modules.classifier.advanced_search.dateranges.last_30_days');
+    var last_3_months = I18n.t('modules.classifier.advanced_search.dateranges.last_3_months');
+
+    var ranges = {};
+    ranges[yesterday] = [moment().subtract(1, 'days'), moment().subtract(1, 'days')];
+    ranges[last_7_days] = [moment().subtract(6, 'days'), moment()];
+    ranges[last_30_days] = [moment().subtract(29, 'days'), moment()];
+    ranges[last_3_months] = [moment().subtract(2, 'month'), moment()];
+
+    return ranges;
+  }
+
+  // This function change selected value to empty in item select
+  // and reinit select2 after changing select options.
+  // This actions define in '*.js.erb'
+  function init_item_select(selector) {
+    $('#_item_' + selector.data('role')).select2('val', '');
+    get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
+  }
+
+  function init_search_params(sort_col, sort_dir) {
+    var data = {
+      town_id: $('#_item_payers').data('town-id'),
+      payers_edrpous: $('#_item_payers').val(),
+      recipt_edrpous: $('#_item_recipt').val(),
+      period: $('#_startdate').val(),
+      region: $('[name="[apply_region]"]:checked').val(),
+      sort_col: sort_col,
+      sort_dir: sort_dir
+    }
+    return data;
+  }
