@@ -13,13 +13,21 @@ module Repairing
 
       respond_to do |format|
         if @location1
-          repair = @repairing_layer.repairs.new( subject: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
+          repair = @repairing_layer.repairs.new(
+              subject: "#{params[:q]} - #{params[:q1]}",
+              coordinates: [@location, @location1],
+              address: params[:q],
+              edrpou_spending_units: 00000000,
+              spending_units: 'Unknown',
+              amount: 1.00,
+              address_to: params[:q1]
+          )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
           # format.js { render :search_street }
         elsif @location
-          repair = repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
+          repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }

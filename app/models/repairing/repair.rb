@@ -1,3 +1,4 @@
+require 'ext/string'
 module Repairing
   class Repair
     include Mongoid::Document
@@ -60,7 +61,7 @@ module Repairing
 
     def check_coords_array(coords)
       errors.add(I18n.t('repairing.repairs.coords.wrong_length')) unless coords.size.eql?(2)
-      errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].kind_of?(Float) || coords[1].kind_of?(Float)
+      errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].valid_by_float? || coords[1].valid_by_float?
     end
   end
 end
