@@ -17,10 +17,10 @@ module Repairing
 
         # Add this 'if' for 'Demonstration of a typical city profile' because this town has not coordinates
         if !town['coordinates'].nil?
-          if town.level && town.level.eql?(1) # area
-            regional_center = Town.where(area_title: town.title, level: 13).first
-            @map_center = regional_center['coordinates']
-          elsif town.level
+          if town.level && town.level.eql?(1)  # area
+            regional_center = Town.where(area_title: town.title, level: 13).first  # level: 13 - regional_center(town) of area
+            @map_center = regional_center['coordinates'] unless regional_center.nil?
+          elsif town.level  # town or region
             @map_center = town['coordinates']
           end
         else
