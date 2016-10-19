@@ -17,7 +17,12 @@ module Repairing
 
         # Add this 'if' for 'Demonstration of a typical city profile' because this town has not coordinates
         if !town['coordinates'].nil?
-          @map_center = town['coordinates'] if town.level && town.level > 1 # area
+          if town.level && town.level.eql?(1) # area
+            regional_center = Town.where(area_title: town.title, level: 13).first
+            @map_center = regional_center['coordinates']
+          elsif town.level
+            @map_center = town['coordinates']
+          end
         else
           @zoom = '6' # view map Ukraine
         end
