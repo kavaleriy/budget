@@ -115,7 +115,7 @@
     #most-received {
       height: 400px;
       display: none;
-      margin-bottom: 30px;
+      margin-bottom: 70px;
       .subtitle {
         height: 30px;
         font-family: 'Lato', sans-serif;
@@ -221,6 +221,14 @@
     display: none;
     padding-bottom: 30px;
   }
+  .copyright_info {
+    font-size: 75%;
+    position: absolute;
+    bottom: 5px;
+    p {
+      margin: 0;
+    }
+  }
 
 #search-data
   = simple_form_for '', remote: true do |f|
@@ -240,6 +248,9 @@
 
   .results
 
+  - if request.format.html?
+    = render partial: 'tell_more'
+
   .row.sharing
     .col-xs-6
       .social-btns#share_results
@@ -250,6 +261,9 @@
     = render partial: 'chart'
 
   = render partial: 'layouts/spinner'
+
+  .copyright_info
+    = render partial: 'copyright_info'
 
 :javascript
   $(document).ready(function() {
