@@ -176,6 +176,7 @@
             .select2-chosen {
               margin-left: 33px;
               margin-right: 55px;
+              padding: 0;
             }
             .select2-search-choice-close {
               right: 35px;
@@ -252,85 +253,6 @@
       }
     }
   }
-  .social-btns {
-    margin: 0 0 10px 0;
-  }
-   // hide sidebar for share
-  .at4-share-outer {
-    display: none;
-  }
-  .embeded-btn {
-    #export_classifier,
-    #embedded-profile {
-      background-color: $button-background;
-      margin-left: 10px;
-      padding: 2px 10px;
-      height: 26px;
-      min-width: 150px;
-      border-radius: 0;
-      float: right;
-      color: $button-text;
-      font-weight: bold;
-      i {
-        padding-right: 5px;
-        color: $button-text;
-        font-size: 1.6rem;
-        font-weight: bold;
-      }
-    }
-    [data-tooltip] {
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
-      &:before,
-      &:after {
-        visibility: hidden;
-        opacity: 0;
-        pointer-events: none;
-      }
-      &:before {
-        position: absolute;
-        bottom: 150%;
-        left: 6%;
-        margin-bottom: -48px;
-        margin-left: -220px;
-        padding: 7px;
-        width: 204px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        background-color: hsla(0, 0%, 20%, 0.9);
-        color: $white;
-        content: attr(data-tooltip);
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.2;
-      }
-      &:after {
-        position: absolute;
-        bottom: 30%;
-        left: 15%;
-        margin-left: -30px;
-        width: 0;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid hsla(0, 0%, 20%, 0.9);
-        content: " ";
-        font-size: 0;
-        line-height: 0;
-      }
-      &:hover {
-        &:before, &:after {
-          visibility: visible;
-          opacity: 1;
-        }
-      }
-    }
-  }
-  .sharing {
-    display: none;
-    padding-bottom: 30px;
-  }
 
 = stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
 
@@ -340,11 +262,9 @@
       .col-md-3
         = f.input(:startdate, input_html: { class: 'daterange' }, label: false)
         .squaredTwo
-          = f.input_field(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, checked: true, boolean_style: :inline, class: 'squaredTwo')
+          = f.input_field(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, checked: params[:region].blank? ? false : true, boolean_style: :inline, class: 'squaredTwo')
           %label{'for' => '_apply_region'}
-        .lab= t('.region')
-        -#= f.input(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: t('.region'),
-        -#boolean_style: :inline, input_html: { checked: true, class: 'squaredTwo' })
+        .lab= t('modules.classifier.advanced_search.region')
       .col-md-3
         = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
@@ -354,15 +274,10 @@
         = f.input(:item_payers, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
         = f.input(:item_recipt, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
       .col-md-1
-        = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
+        = f.button :submit, t('modules.classifier.advanced_search.search'), class: 'btn btn-primary search-button', id: 'search'
 
     #items-list
     .results
-    .row.sharing
-      .col-xs-6
-        .social-btns#share_results
-      .col-xs-6.text-right
-        .embeded-btn
 
     #most-received
       = render partial: 'chart'
@@ -385,8 +300,8 @@
         customRangeLabel: I18n.t('modules.classifier.advanced_search.dateranges.custom_range'),
       },
       // set default range as 'yesterday'
-      startDate: moment().subtract(1, 'days'),
-      endDate: moment().subtract(1, 'days')
+      startDate: $.trim('#{params[:period].split('/').first}'),
+      endDate: $.trim('#{params[:period].split('/').last}')
     });
 
     $('#_item_type_payers').select2({
@@ -414,6 +329,9 @@
       "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
     );
+
+    $('#_item_payers').select2('data', { id: '#{ payer.edrpou unless payer.blank? }', text: '#{ payer.pnaz unless payer.blank? }' });
+    $('#_item_recipt').select2('data', { id: '#{ recipt.edrpou unless recipt.blank? }', text: '#{ recipt.pnaz unless recipt.blank? }' });
 
     // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
@@ -463,6 +381,8 @@
       get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
     });
+
+    classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
   });
 
   function dp_ranges_config() {

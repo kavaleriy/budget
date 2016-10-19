@@ -25,7 +25,7 @@ class Modules::Classifier
   belongs_to :town, class_name: 'Town',index: true
   scope :by_town, -> (town) { where(town: town) }
   scope :by_koatuu, -> (koatuu, symbol_quantity = koatuu[2..10].eql?('00000000') ? 2 : 5) { where(k_ter: /^#{(koatuu.to_s.strip)[0..symbol_quantity-1]}/i) }
-  scope :search_part_title, -> (part) {any_of({pnaz: Regexp.new("#{part}")}, {edrpou: Regexp.new("^#{part}")})}
+  scope :search_part_title, -> (part) {any_of({pnaz: /#{part}/i}, {edrpou: /^#{part}/i})}
 
 
   def encode_fields

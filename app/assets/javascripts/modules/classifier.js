@@ -100,6 +100,7 @@ function get_items(url, type, role, _sort_param) {
 // TODO: refactor in future
 function share_buttons_set_url(url) {
   addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
+  console.log(url.replace('search_e_data', 'direct_link'));
 }
 
 // switch sort direction

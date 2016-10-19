@@ -4,15 +4,23 @@ module Modules
     respond_to :html, :js, :json
 
     def search_data
-      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
+      @items = items_by_koatuu.only(:pnaz, :edrpou)
       respond_with(@items, layout: 'visify' )
     end
 
     def direct_link
       # access from direct link (socials networks)
-      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a
+      @items = items_by_koatuu.only(:pnaz, :edrpou)
+      @types_payer = Modules::ClassifierType.where(payer: true).all
+      @types_receipt = Modules::ClassifierType.where(receipt: true).all
+      payer = @items.where(edrpou: params[:payers_edrpous]).first if params[:payers_edrpous].present?
+      recipt = @items.where(edrpou: params[:recipt_edrpous]).first if params[:recipt_edrpous].present?
       respond_to do |format|
-        format.html { render 'modules/classifier/share_search' }
+        if params[:period].blank?
+          format.html { render 'modules/classifier/share_search' }
+        else
+          format.html { render 'modules/classifier/share_adv_search', locals: { payer: payer ||= '', recipt: recipt ||= '' } }
+        end
       end
     end
 
@@ -40,8 +48,7 @@ module Modules
     def advanced_search
       @types_payer = Modules::ClassifierType.where(payer: true).all
       @types_receipt = Modules::ClassifierType.where(receipt: true).all
-      @items = items_by_koatuu.only(:pnaz, :edrpou).to_a.sort_by! { |hash| hash.pnaz }
-      respond_with(@types, @items, layout: 'visify')
+      respond_with(layout: 'visify')
     end
 
     def select_collection
@@ -59,17 +66,12 @@ module Modules
       # add 'where' filter if type was select
       @items = Modules::Classifier.all
       @items = items_by_koatuu unless params[:region].blank? and params[:role] != 'payers'
-      @items = @items.where(:k_form.in=> Modules::ClassifierType.find(params[:type])[:code]) unless params[:type].blank?
-      @items.to_a.sort_by! do |hash|
-        if params[:sort_column].blank?
-          # use default sorting if sorting params empty
-          hash.pnaz
-        else
-          hash[params[:sort_column]]
-        end
-      end
-      @items.reverse! unless params[:sort_column].blank? || params[:sort_direction].eql?('asc')
-      @items = Kaminari.paginate_array(@items).page(params[:page]).per(10)
+      @items = @items.where(:k_form.in => Modules::ClassifierType.find(params[:type])[:code]) unless params[:type].blank?
+
+      direction = params[:sort_column].blank? || params[:sort_direction].eql?('asc') ? 1 : -1
+      sort_col = params[:sort_column].present? ? params[:sort_column] : :pnaz
+      @items = @items.order(sort_col => direction).page(params[:page]).per(10)
+
       @role = params[:role]
       # switch between '*.js.erb' depend on sorting params
       respond_to do |format|
