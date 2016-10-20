@@ -9,10 +9,11 @@ module PublicHelper
     image_tag(logo_path, class: 'img-responsive')
   end
 
-  def embedFullUrl(url_path)
-    path = "#{request.base_url}"
+  def embedFullUrl(url_path, protocol='https://')
+    # path = "#{request.base_url}"
+    path = "#{protocol}#{request.env['HTTP_HOST']}"
     full_URL = path + url_path
-    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', :frameborder => 0, :width => '100%', :height => '611px')
+    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;')
   end
 
   def download_instruction(page_alias)
