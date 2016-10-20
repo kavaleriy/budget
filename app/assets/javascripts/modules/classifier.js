@@ -101,7 +101,7 @@ function get_items(url, type, role, _sort_param) {
 function share_buttons_set_url(url) {
     if (!$('.demo_index')) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
-        console.log(url.replace('search_e_data', 'direct_link'));
+        // console.log(url.replace('search_e_data', 'direct_link'));
     }
 }
 
