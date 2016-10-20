@@ -313,7 +313,6 @@
         $.each(route, function(key,val) {
           coordinates += val + ' '
         })
-        console.log(route);
         $.ajax({
           method: 'PUT',
           url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", feature.properties.id),
