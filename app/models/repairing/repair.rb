@@ -1,7 +1,8 @@
+require 'ext/string'
 module Repairing
   class Repair
     include Mongoid::Document
-
+    extend RepairingLayerUpload
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
@@ -60,7 +61,76 @@ module Repairing
 
     def check_coords_array(coords)
       errors.add(I18n.t('repairing.repairs.coords.wrong_length')) unless coords.size.eql?(2)
-      errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].kind_of?(Float) || coords[1].kind_of?(Float)
+      if coords[0].kind_of?(String) && coords[1].kind_of?(String)
+        errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].valid_by_float? || coords[1].valid_by_float?
+      else
+        errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].kind_of?(Float) || coords[1].kind_of?(Float)
+      end
+
     end
+
+    def self.import(layer, filepath)
+      repairs_arr = read_table_from_file(filepath)[:rows]
+
+      repairs_arr.each do |repair|
+        repair_hash = build_repair_hash(repair)
+
+        coordinates = repair['Координати']
+        coordinates1 = repair['Координати1']
+
+        repair_hash[:coordinates] =
+            if coordinates1.blank?
+              if coordinates.blank?
+                nil
+              else
+                coordinates.split(',').map(&:to_f)
+              end
+            else
+              [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
+            end
+
+        layer_repair = self.create(repair_hash)
+        layer_repair.layer = layer
+
+        layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
+
+        layer_repair.save!
+      end
+    end
+
+    def self.build_repair_hash(repair)
+      # this function build hash for repair model
+      # get two parameters repair hash and coordinates array
+      # first of all convert repair start and end date to date
+      # after that build and return hash
+
+      start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
+      end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
+
+      {
+          spending_units: repair['Розпорядник бюджетних коштів'],
+          edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
+
+          subject: repair['Назва об\'єкту'],
+
+          address: repair['Адреса'],
+          address_to: repair['Адреса1'],
+
+          work: repair['Опис робіт'],
+          amount: repair['Вартість'],
+
+          repair_start_date: start_repair_date,
+          repair_end_date: end_repair_date,
+          warranty_date: repair['Гарантія'],
+
+          prozzoro_id: repair['ID закупівлі'],
+
+          obj_owner: repair['Виконавець'],
+          edrpou_artist: repair['ЄДРПОУ виконавця'],
+
+          description: repair['Додаткова інформація'],
+      }
+    end
+
   end
 end

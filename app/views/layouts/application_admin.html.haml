@@ -1,3 +1,4 @@
+
 !!! 5
 %html(lang="en")
   %head
@@ -20,15 +21,23 @@
     = javascript_include_tag "application"
 
     = yield :head
+:scss
+  .container-fluid{
+    #admin-flash{
+      margin-top: 0;
+    }
+  }
+
+
 
 %body
+
   = render :partial => 'layouts/navbar_admin'
   = yield :top
 
-  .bootstrap_flash
-    = bootstrap_flash
-
   .container-fluid
+    .bootstrap_flash#admin-flash
+      = bootstrap_flash
     .main.row-fluid
       = yield
 
