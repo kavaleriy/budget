@@ -152,30 +152,8 @@ module Repairing
       { :rows => rows, :cols => cols }
     end
 
-    def import layer, repairs
-      repairs.each do |repair|
-        repair_hash = build_repair_hash(repair)
-
-        coordinates = repair['Координати']
-        coordinates1 = repair['Координати1']
-
-        repair_hash[:coordinates] =
-          if coordinates1.blank?
-            if coordinates.blank?
-              nil
-            else
-              coordinates.split(',').map(&:to_f)
-            end
-          else
-            [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
-          end
-
-        layer_repair = Repairing::Repair.create(repair_hash)
-        layer_repair.layer = layer
-        category = Repairing::Category.where(title: repair['Робота']).first
-        layer_repair.repairing_category = category unless category.nil?
-        layer_repair.save!
-      end
+    def import(layer, repairs)
+      Repairing::Repair.import(layer, repairs)
     end
 
     # PATCH/PUT /repairing/layers/1
@@ -226,39 +204,7 @@ module Repairing
         end
       end
 
-      def build_repair_hash(repair)
-        # this function build hash for repair model
-        # get two parameters repair hash and coordinates array
-        # first of all convert repair start and end date to date
-        # after that build and return hash
 
-        start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
-        end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
-
-        {
-            spending_units: repair['Розпорядник бюджетних коштів'],
-            edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
-
-            subject: repair['Назва об\'єкту'],
-
-            address: repair['Адреса'],
-            address_to: repair['Адреса1'],
-
-            work: repair['Опис робіт'],
-            amount: repair['Вартість'],
-
-            repair_start_date: start_repair_date,
-            repair_end_date: end_repair_date,
-            warranty_date: repair['Гарантія'],
-
-            prozzoro_id: repair['ID закупівлі'],
-
-            obj_owner: repair['Виконавець'],
-            edrpou_artist: repair['ЄДРПОУ виконавця'],
-
-            description: repair['Додаткова інформація'],
-        }
-      end
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
         @repairing_layer = Repairing::Layer.find(params[:id])
