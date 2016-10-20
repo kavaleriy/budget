@@ -281,8 +281,9 @@
       var coordinates  = feature.properties.route
 
       var waypoints = []
-      waypoints.push({ latLng: L.latLng(coordinates[0]) });
-      waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
+      $.each(coordinates,function(coordKey, coordVal){
+        waypoints.push({ latLng: L.latLng(coordVal) });
+      })
 
       aRepairMap.editRoute(waypoints, routeFoundCallback)
 
@@ -298,6 +299,7 @@
       function update_feature_coords() {
         feature.properties.route = []
         $.each(route, function(key,val) {
+
           feature.properties.route.push([val['lat'], val['lng']])
         })
       }
@@ -307,7 +309,7 @@
         $.each(route, function(key,val) {
           coordinates += val + ' '
         })
-
+        console.log(route);
         $.ajax({
           method: 'PUT',
           url: '#{repairing_layer_repair_path(@repairing_layer.id, "%id%")}'.replace("%id%", feature.properties.id),
