@@ -1,5 +1,7 @@
+
 module Repairing
   class LayersController < ApplicationController
+
     layout 'application_admin'
 
     before_action :authenticate_user!, except: [:geo_json]
@@ -85,9 +87,8 @@ module Repairing
       respond_to do |format|
         if @repairing_layer.save
           unless @repairing_layer.repairs_file.path.nil?
-            repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-            import(@repairing_layer, repairs[:rows])
-
+            # repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+            Repairing::Repair.import(@repairing_layer, @repairing_layer.repairs_file.path)
             Thread.new do
               @repairing_layer.repairs.each do |repair|
                 repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
@@ -96,7 +97,9 @@ module Repairing
             end
           end
 
-          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count / 2} сек." }
+          format.html { redirect_to @repairing_layer,
+                        notice: t('repairing.layers.import_file_success', time: (@repairing_layer.repairs.count / 2))
+                      }
           format.json { render :show, status: :created, location: @repairing_layer }
         else
           format.html { render :new }
@@ -107,24 +110,16 @@ module Repairing
 
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
-      message << 'Якщо це xlsx формат переконайтесь у тому що він не xls'
+      message << t('repairing.layers.check_xlsx_format')
       respond_with_error_message(message)
     rescue DBF::Column::NameError
       message = [t('invalid_format')]
-      message << 'Допустимі формати .xslx, .xlsm'
+      message << t('repairing.layers.correct_formats')
       respond_with_error_message(message)
     rescue => e
-      message = "Не вдалося створити прошарок : #{e}"
+      message = "#{t('repairing.layers.update.error')}"
       respond_with_error_message(message)
 
-    end
-
-    def read_table_from_file path
-      require 'roo'
-
-      xls = Roo::Excelx.new(path)
-      xls.default_sheet = xls.sheets.first
-      read_csv_xls xls
     end
 
     def respond_with_error_message(message)
@@ -133,28 +128,24 @@ module Repairing
       end
     end
 
-    def read_csv_xls(xls)
-      cols = []
-      xls.first_column.upto(xls.last_column) { |col|
-        cols << xls.cell(1, col).to_s.strip
-      }
-
-      rows = []
-      2.upto(xls.last_row) do |line|
-        row = {}
-        xls.first_column.upto(xls.last_column ) do |col|
-          row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
-          row.transform_keys! { |key| key.strip }
-        end
-        rows << row
-      end
-
-      { :rows => rows, :cols => cols }
-    end
-
-    def import(layer, repairs)
-      Repairing::Repair.import(layer, repairs)
-    end
+    # def read_csv_xls(xls)
+    #   cols = []
+    #   xls.first_column.upto(xls.last_column) { |col|
+    #     cols << xls.cell(1, col).to_s.strip
+    #   }
+    #
+    #   rows = []
+    #   2.upto(xls.last_row) do |line|
+    #     row = {}
+    #     xls.first_column.upto(xls.last_column ) do |col|
+    #       row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
+    #       row.transform_keys! { |key| key.strip }
+    #     end
+    #     rows << row
+    #   end
+    #
+    #   { :rows => rows, :cols => cols }
+    # end
 
     # PATCH/PUT /repairing/layers/1
     # PATCH/PUT /repairing/layers/1.json

@@ -2,7 +2,7 @@ require 'ext/string'
 module Repairing
   class Repair
     include Mongoid::Document
-
+    extend RepairingLayerUpload
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
@@ -69,7 +69,9 @@ module Repairing
 
     end
 
-    def self.import(layer, repairs_arr)
+    def self.import(layer, filepath)
+      repairs_arr = read_table_from_file(filepath)[:rows]
+
       repairs_arr.each do |repair|
         repair_hash = build_repair_hash(repair)
 
@@ -89,14 +91,12 @@ module Repairing
 
         layer_repair = self.create(repair_hash)
         layer_repair.layer = layer
-        category = Repairing::Category.where(title: repair['Опис робіт']).first
-        layer_repair.repairing_category = category unless category.nil?
+
+        layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
+
         layer_repair.save!
       end
     end
-
-    private
-
 
     def self.build_repair_hash(repair)
       # this function build hash for repair model
