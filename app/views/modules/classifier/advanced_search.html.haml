@@ -435,7 +435,7 @@
     // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
       $('.results').empty();
-      if (barChart) {
+      if (barChart.chart) {
         barChart.destroy();
         $('#most-received').hide();
       }
