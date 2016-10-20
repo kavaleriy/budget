@@ -188,11 +188,31 @@
         width: 95vw;
         //height: 93vh;
         border-radius: 0;
+        border: 1px solid #0c2231;
+        button.close{
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin-top: -4px;
+          padding: 0 0px 0 0;
+          font-weight: normal;
+          color: white;
+          text-shadow: none;
+          opacity: 1;
+        }
+        .fond-for-close{
+          width: 14px;
+          height: 14px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: #0c2231;
+        }
         .modal-header {
           padding: 10px 0;
-          border-bottom: 1px solid #0c2231;
-          .close {
-
+          border-bottom: 2px solid #0c2231;
+          .modal-title {
+            font-size: 18px;
           }
           &:hover,
           &:focus {
@@ -200,7 +220,45 @@
           }
         }
         .modal-body {
-          padding: 10px;
+          padding: 10px 0 0 0;
+          .row {
+            margin-bottom: 3px;
+            .title-key {
+              font-weight: bold;
+              .fa {
+                margin-right: 7px;
+                margin-left: -5px;
+                width: 25px;
+                text-align: center;
+              }
+            }
+          }
+          .row:nth-last-of-type(2) .value {
+            font-weight: bold;
+          }
+          h4{
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: bold !important;
+          }
+          .more-data{
+            margin-top: 15px;
+            a{
+              display: block;
+              margin-bottom: 5px;
+              text-decoration: none;
+              color: #0c2231;
+              font-size: 18px;
+              .button{
+                font-size: 25px;
+                margin-right: 10px;
+              }
+              .icon{
+                width: 25px;
+                text-align: center;
+              }
+            }
+          }
           .e-data-frame {
             width: 100%;
             height: 70vh;
@@ -262,12 +320,80 @@
 .modal.fade{:id => 'more-infoModal', role: 'dialog', tabindex: '-1'}
   .modal-dialog
     .modal-content
+      .fond-for-close
+      %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+        %span{'aria-hidden' => 'true'} &times;
       .modal-header
-        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-          %span{'aria-hidden' => 'true'} &times;
         .modal-title
-          = t('repairing.maps.sitebar.information')
+          %i.fa.fa-graduation-cap
+          = "Реконструкція площі Двірцевої, у т. ч. виготовлення проектно-кошторисної документації"
       .modal-body
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-map-marker
+            = 'Адреса:'
+          .col-xs-8.value
+            = "м. Львів, вул. Ділова 22б"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-gears
+            = 'Роботи:'
+          .col-xs-8
+            = "Реставрація фасадів даху та будинку"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-university
+            = 'Розпорядник:'
+          .col-xs-8.value
+            = "Центр 'Ейдос'"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-user-secret
+            = 'Підрядник:'
+          .col-xs-8.value
+            = "Transparency International"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-calendar
+            = 'Час ремонту:'
+          .col-xs-8
+            = "23.05.2016 - 31.05.2017"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-certificate
+            = 'Гарантія:'
+          .col-xs-8.value
+            = "5 років"
+        .row
+          .col-xs-4.title-key
+            %i.fa.fa-money
+            = 'Вартість:'
+          .col-xs-8.value
+            = "500 990 000 грн."
+        %h4
+          = 'ОПИС РОБІТ'
+        %p
+          Define the base css code from our catalog. The dotted lines on the right and on the left - a block boundary, for which columns should be aligned edges.
+          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
+        %h4
+          = 'ДОДАТКОВА ІНФОРМАЦІЯ'
+        %p
+          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
+          Define the base css code from our catalog. The dotted lines on the right and on the left - a block boundary, for which columns should be aligned edges.
+          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
+        .more-data
+          = link_to '' do
+            %i.fa.fa-plus-square-o.button
+            %i.fa.fa-gears.icon
+            = 'Транзакції на Є-data'
+          = link_to '' do
+            %i.fa.fa-plus-square-o.button
+            %i.fa.fa-university.icon
+            = 'Закупівлі на Prozorro'
+          = link_to '' do
+            %i.fa.fa-plus-square-o.button
+            %i.fa.fa-money.icon
+            = 'Судовий реєстр'
 
 
 -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
@@ -331,9 +457,9 @@
         url: "#{repairing_show_repair_info_path}",
         data: { id: repair_id },
         success: function(data){
-          modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
           //modal_dom.find('.modal-content').css('width','50vw');
-          modal_body.html(data);
+          // modal_body.html(data);
           modal_dom.modal();
         }
       })
