@@ -1,24 +1,32 @@
 :scss
+  $background: #0c2231;
+  $hover: #ffd304;
+  $white: white;
+  $panel_color: #D9EDF7;
+  $panel_width: 200px;
+
   .demo_index {
-    $panel_color: #D9EDF7;
-    $panel_width: 200px;
     z-index: 1000;
     position: fixed;
     top: 140px;
     left: 0;
     .icon {
-      background-color: #0c2231;
+      background-color: $background;
       width: 30px;
       height: 30px;
       cursor: pointer;
       text-align: center;
       line-height: 30px;
-      color: #fff;
+      color: $white;
       font-size: 16px;
       position: relative;
       float: right;
+      border: 1px solid transparent;
+      border-left: none;
       &:hover {
-        background: #63c2de;
+        background: $hover;
+        color: $background;
+        border-color: $background;
         transition-duration: 0.4s;
         transition-timing-function: linear;
       }
@@ -34,7 +42,8 @@
         height: 40px;
         text-align: center;
         background: transparent;
-        border-bottom: 2px solid #31708f;
+        border-bottom: 2px solid $background;
+        color: $background;
         padding: 10px 0;
       }
       .panel-body {
@@ -43,7 +52,7 @@
         & > a {
           font-size: 1.3rem;
           font-weight: 400;
-          color: white;
+          color: $white;
           &:hover,
           &:focus {
             text-decoration: none;
@@ -51,7 +60,8 @@
           & > li {
             list-style-type: none;
             padding: 7px 10px;
-            background: #0c2231;
+            background: $background;
+            border: 1px solid;
             & img {
               width: 60px;
             }
@@ -60,7 +70,9 @@
             }
             &:hover,
             &:focus {
-              background: #63c2de;
+              background: $hover;
+              color: $background;
+              border-color: $background;
               transition-duration: 0.4s;
               transition-timing-function: linear;
             }
@@ -72,7 +84,7 @@
       transition-duration: 0.7s;
       transition-timing-function: linear;
       margin-left: 2px;
-      border: 1px solid #0c2231;
+      border: 1px solid $background;
       border-radius: 0;
     }
   }
@@ -84,7 +96,7 @@
     .panel-heading
       %h3.panel-title= t('modules.classifier.get_more')
     .panel-body
-      =link_to root_url do
+      =link_to root_url, target: 'blank' do
         %li.element
           = image_tag 'navbar/logo.svg'
           %p.budget
