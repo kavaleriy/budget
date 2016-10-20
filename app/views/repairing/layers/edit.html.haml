@@ -281,9 +281,13 @@
       var coordinates  = feature.properties.route
 
       var waypoints = []
+      // if we need all waypoints on the road
       $.each(coordinates,function(coordKey, coordVal){
         waypoints.push({ latLng: L.latLng(coordVal) });
       })
+      // if we need only first and last point on the road
+      // waypoints.push({ latLng: L.latLng(coordinates[0]) });
+      // waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
 
       aRepairMap.editRoute(waypoints, routeFoundCallback)
 

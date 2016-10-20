@@ -236,22 +236,27 @@ module Repairing
         end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
 
         {
-            obj_owner: repair['Виконавець'],
-            subject: repair['Об\'єкт'],
-            work: repair['Робота'],
-            amount: repair['Вартість'],
-            warranty_date: repair['Гарантія'],
-            description: repair['Додаткова інформація'],
-
-            repair_start_date: start_repair_date,
-            repair_end_date: end_repair_date,
-            prozzoro_id: repair['ID закупівлі'],
-            edrpou_artist: repair['ЄДРПОУ виконавця'],
             spending_units: repair['Розпорядник бюджетних коштів'],
             edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
 
+            subject: repair['Назва об\'єкту'],
+
             address: repair['Адреса'],
             address_to: repair['Адреса1'],
+
+            work: repair['Опис робіт'],
+            amount: repair['Вартість'],
+
+            repair_start_date: start_repair_date,
+            repair_end_date: end_repair_date,
+            warranty_date: repair['Гарантія'],
+
+            prozzoro_id: repair['ID закупівлі'],
+
+            obj_owner: repair['Виконавець'],
+            edrpou_artist: repair['ЄДРПОУ виконавця'],
+
+            description: repair['Додаткова інформація'],
         }
       end
       # Use callbacks to share common setup or constraints between actions.
