@@ -10,10 +10,10 @@ module PublicHelper
     image_tag(logo_path, class: 'img-responsive')
   end
 
-  def embedFullUrl(url)
+  def embedFullUrl(url_path)
     path = "#{request.base_url}"
-    fullUrl = path + url
-    content_tag(:iframe, nil, src: fullUrl, class: 'embed-responsive-item', :frameborder => 0, :width => '100%', :height => '611px')
+    full_URL = path + url_path
+    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', :frameborder => 0, :width => '100%', :height => '611px')
   end
 
 end

@@ -142,107 +142,21 @@
       }
     }
   }
-  .social-btns {
-    margin: 0 0 10px 0;
-  }
-   // hide sidebar for share
-  .at4-share-outer {
-    display: none;
-  }
-  .embeded-btn {
-    #embedded-profile {
-      background-color: $button-background;
-      padding: 0 10px;
-      height: 26px;
-      //width: 28px;
-      border-radius: 0;
-      float: right;
-      color: $button-text;
-      font-weight: bold;
-      i {
-        padding-right: 5px;
-        color: $button-text;
-        font-size: 1.6rem;
-        font-weight: bold;
-      }
-    }
-    [data-tooltip] {
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
-      &:before,
-      &:after {
-        visibility: hidden;
-        opacity: 0;
-        pointer-events: none;
-      }
-      &:before {
-        position: absolute;
-        bottom: 150%;
-        left: 6%;
-        margin-bottom: -48px;
-        margin-left: -220px;
-        padding: 7px;
-        width: 204px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        background-color: hsla(0, 0%, 20%, 0.9);
-        color: $white;
-        content: attr(data-tooltip);
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.2;
-      }
-      &:after {
-        position: absolute;
-        bottom: 30%;
-        left: 15%;
-        margin-left: -30px;
-        width: 0;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid hsla(0, 0%, 20%, 0.9);
-        content: " ";
-        font-size: 0;
-        line-height: 0;
-      }
-      &:hover {
-        &:before, &:after {
-          visibility: visible;
-          opacity: 1;
-        }
-      }
-    }
-  }
-  .sharing {
-    display: none;
-    padding-bottom: 30px;
-  }
+
 
 #search-data
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-7
         = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] },
-        input_html: {'data-town-id' => params['town_id']}, label: false)
+        input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
       .col-md-5
         .row
-          .col-lg-7
-            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
+          .pull-right
+            = f.collection_radio_buttons :role, [['payers', t('modules.classifier.search_data.payer')] ,['recipt', t('modules.classifier.search_data.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
               = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-lg-5
-            = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
-              %i.fa.fa-cogs
-              = t('.advanced_button')
 
   .results
-
-  .row.sharing
-    .col-xs-6
-      .social-btns#share_results
-    .col-xs-6.text-right
-      .embeded-btn
 
   #most-received
     = render partial: 'chart'
@@ -256,7 +170,7 @@
     $('#_item').select2({
       placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
-    }).on('change', function(data) {
+    }).on('change load', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
         classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
@@ -282,11 +196,7 @@
       _this.attr('data-sort-direction', sort_direction(sort_dir)).addClass('active');
     });
 
-    // add breadcrumbs element
-    $('#advanced_search_button').click(function(){
-        var breadcrumbs_title = $.trim($(this).text());
-        addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
-    });
+    classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
   });
 
   function init_search_params(sort_col, sort_dir) {
