@@ -4,8 +4,7 @@ module Repairing
 
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :e_data,
-                                                :prozzoro_info]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info]
 
     # GET /repairing/repairs
     # GET /repairing/repairs.json
@@ -76,9 +75,6 @@ module Repairing
 
     def show_repair_info
     end
-
-
-
 
     private
       # Use callbacks to share common setup or constraints between actions.
