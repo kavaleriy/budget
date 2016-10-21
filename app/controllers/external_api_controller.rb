@@ -1,5 +1,6 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
+  require 'external_api'
 
   # TODO: extract lib
 
@@ -55,7 +56,6 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
-    require 'external_api'
     e_data_payments = ExternalApi.e_data_payments(params[:edrpou_artist], params[:edrpou_spending_units]) || []
 
     @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
