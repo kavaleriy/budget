@@ -79,10 +79,7 @@ module Repairing
 
     def e_data
       require 'external_api'
-      # payer_edrpous = '37836770'
-      # recipt_edrpous = '37755173'
       e_data_payments = ExternalApi.e_data_payments(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units) || []
-      # e_data_payments = ExternalApi.e_data_payments(payer_edrpous, recipt_edrpous)
 
       @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
 
@@ -91,6 +88,7 @@ module Repairing
         format.js {
           render file: 'repairing/repairs/api_info',
                  locals: {
+                     selector: '#e-data',
                      partial_name: 'modules/classifier/search_e_data'
                  }
         }
@@ -101,11 +99,13 @@ module Repairing
     def prozzoro_info
       require 'external_api'
       @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repair.prozzoro_id)
+      binding.pry
       respond_to do |format|
         format.js {
           render file: 'repairing/repairs/api_info',
                  locals: {
-                     partial_name: 'repairing/repairs/prozzoro_info'
+                    selector: '#prozzoro',
+                    partial_name: 'repairing/repairs/prozzoro_info'
                  }
         }
       end

@@ -128,7 +128,8 @@
       %i.fa.fa-calendar
       = "#{ t('.repair_time') } :"
     .col-xs-8
-      = "23.05.2016 - 31.05.2017"
+      -#= "23.05.2016 - 31.05.2017"
+      = "#{@repairing_repair.repair_start_date} - #{@repairing_repair.repair_end_date}"
   .row
     .col-xs-4.title-key
       %i.fa.fa-certificate
@@ -151,30 +152,20 @@
   %p
     = @repairing_repair.description
   .more-data
-    = link_to '' do
+    = link_to repairing_e_data_path(@repairing_repair), remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-gears.icon
-      = 'Транзакції на Є-data'
-    = link_to '' do
+      = t('.e_data')
+    #e-data
+    = link_to repairing_prozzoro_path(@repairing_repair), remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-university.icon
-      = 'Закупівлі на Prozorro'
-    = link_to '' do
+      = t('.prozzoro')
+    #prozzoro
+    = link_to '', remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-money.icon
-      = 'Судовий реєстр'
+      = t('.court_register')
+    #court-register
 
 
-:javascript
-
-    $('#e-data').click(function(){
-      var data = {
-        id: getRepairId()
-      };
-      setModalInfo("#{repairing_e_data_path}",data,"#{t('repairing.maps.frame.e_data')}");
-
-    });
-    $('#prozzoro').click(function(){
-      var data = { id: getRepairId() }
-      setModalInfo("#{repairing_prozzoro_path}",data,"#{t('repairing.maps.frame.prozzoro')}");
-    });

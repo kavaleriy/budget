@@ -60,7 +60,7 @@ class ExternalApi
 
       request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
       http.use_ssl = (uri.scheme == "https")
-      JSON.parse(http.request(request).body)
+      JSON.parse(http.request(request).body)['data'] rescue nil
     end
   end
 
