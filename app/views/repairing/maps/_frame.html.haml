@@ -10,268 +10,178 @@
     width: 100%;
   }
 
-  .search_block, .search_block div {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 10px;
-  }
+  /*.search_block, .search_block div {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+    /*margin-bottom: 10px;*/
+  /*}*/
 
-  .search_block .form-control {
-    height: 37px;
-  }
+  /*.search_block .form-control {*/
+    /*height: 37px;*/
+  /*}*/
 
 
 :scss
   /* New search style. Begin */
-  .search_block {
-    position: absolute;
-    z-index: 1;
-    width: calc(100vw - 50px);
-    left: 50px;
-    padding-top: 10px;
-    .search-container {
-      margin: 2px;
-      ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        color: white;
-      }
-      ::-moz-placeholder { /* Firefox 19+ */
-        color: white;
-      }
-      :-ms-input-placeholder { /* IE 10+ */
-        color: white;
-      }
-      :-moz-placeholder { /* Firefox 18- */
-        color: white;
-      }
-      input:-webkit-autofill,
-      textarea:-webkit-autofill,
-      select:-webkit-autofill {
-        background-color: #7D94A4 !important;
-      }
-
-      .search-box {
-        -webkit-transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
-        transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
-        width: 50px;
-        height: 50px;
-        border: none;
-        cursor: pointer;
-        background: #7D94A4;
-        + label .search-icon {
-          color: white;
-        }
-        &:hover {
-          color: white;
-          background: #A2B2BE;
-          box-shadow: 0 0 0 2px #7D94A4;
-          + label .search-icon {
-            color: white;
-          }
-        }
-        &:focus {
-          -webkit-transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
-          transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
-          border: none;
-          outline: none;
-          box-shadow: none;
-          padding-left: 15px;
-          cursor: text;
-          width: 300px;
-          border-radius: auto;
-          background: #7D94A4;
-          color: white;
-          + label .search-icon {
-            color: white;
-          }
-        }
-        &:not(:focus) {
-          text-indent: -5000px;
-        }
-      }
-
-      #search_btn {
-        position: relative;
-        left: -5000px;
-      }
-
-      .search-icon {
-        position: relative;
-        left: -36px;
-        color: white;
-        cursor: pointer;
-      }
-    }
-  }
+  //.search_block {
+  //  position: absolute;
+  //  z-index: 1;
+  //  width: calc(100vw - 50px);
+  //  left: 50px;
+  //  padding-top: 10px;
+  //  .search-container {
+  //    margin: 2px;
+  //    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  //      color: white;
+  //    }
+  //    ::-moz-placeholder { /* Firefox 19+ */
+  //      color: white;
+  //    }
+  //    :-ms-input-placeholder { /* IE 10+ */
+  //      color: white;
+  //    }
+  //    :-moz-placeholder { /* Firefox 18- */
+  //      color: white;
+  //    }
+  //    input:-webkit-autofill,
+  //    textarea:-webkit-autofill,
+  //    select:-webkit-autofill {
+  //      background-color: #7D94A4 !important;
+  //    }
+  //
+  //    .search-box {
+  //      -webkit-transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+  //      transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+  //      width: 50px;
+  //      height: 50px;
+  //      border: none;
+  //      cursor: pointer;
+  //      background: #7D94A4;
+  //      + label .search-icon {
+  //        color: white;
+  //      }
+  //      &:hover {
+  //        color: white;
+  //        background: #A2B2BE;
+  //        box-shadow: 0 0 0 2px #7D94A4;
+  //        + label .search-icon {
+  //          color: white;
+  //        }
+  //      }
+  //      &:focus {
+  //        -webkit-transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+  //        transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+  //        border: none;
+  //        outline: none;
+  //        box-shadow: none;
+  //        padding-left: 15px;
+  //        cursor: text;
+  //        width: 300px;
+  //        border-radius: auto;
+  //        background: #7D94A4;
+  //        color: white;
+  //        + label .search-icon {
+  //          color: white;
+  //        }
+  //      }
+  //      &:not(:focus) {
+  //        text-indent: -5000px;
+  //      }
+  //    }
+  //
+  //    #search_btn {
+  //      position: relative;
+  //      left: -5000px;
+  //    }
+  //
+  //    .search-icon {
+  //      position: relative;
+  //      left: -36px;
+  //      color: white;
+  //      cursor: pointer;
+  //    }
+  //  }
+  //}
   /* New search style. End */
 
   /* Search bar. Begin */
-  #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin: 25px;
-    transition: all 0.5s ease-in-out;
-    ul {
-      li {
-        background: #7D94A4;
-        overflow: hidden;
-        transition: all .5s ease-in-out;
-        white-space: nowrap;
-        max-width: 50px;
-        min-width: 50px;
-        &:hover {
-          max-width: 200px;
-        }
-        a {
-          i {
-            width: 50px;
-            height: 50px;
-            //box-shadow: 1px 0 #476B84;
-            font-size: 12pt;
-            text-align: center;
-            line-height: 50px;
-          }
-          span {
-            padding: 0 15px;
-            opacity: 0;
-            transform: translateX(15px);
-          }
-        }
-      }
-      > li a {
-        height: 50px;
-        //border-top: 1px solid #476B84;
-        display: block;
-        color: #FFF;
-        line-height: 50px;
-        text-decoration: none;
-      }
-    }
-    &:hover ul li a span {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  #sidebar {
-    position: absolute;
-    width: 20%;
-    height: auto;
-    top: 190px;
-    float: left;
-    margin: 0 0 0 10px;
-    z-index: 1;
-    display: none;
-  }
-
-  .left-side {
-    ul {
-      padding: 0;
-      margin: 0;
-      li {
-        margin: 0 0 5px 0;
-        a {
-          .e-data, .prozzorro {
-            width: 20px;
-            height: 20px;
-            margin: 15px;
-          }
-        }
-      }
-    }
-  }
-  //Modal window e-data
-  #e-dataModal, #more-infoModal {
-    .modal-dialog {
-      margin: 15px;
-      .modal-content {
-        width: 95vw;
-        //height: 93vh;
-        border-radius: 0;
-        border: 1px solid #0c2231;
-        button.close{
-          position: absolute;
-          top: 0;
-          right: 0;
-          margin-top: -4px;
-          padding: 0 0px 0 0;
-          font-weight: normal;
-          color: white;
-          text-shadow: none;
-          opacity: 1;
-        }
-        .fond-for-close{
-          width: 14px;
-          height: 14px;
-          position: absolute;
-          top: 0;
-          right: 0;
-          background: #0c2231;
-        }
-        .modal-header {
-          padding: 10px 0;
-          border-bottom: 2px solid #0c2231;
-          .modal-title {
-            font-size: 18px;
-          }
-          &:hover,
-          &:focus {
-            color: #0c2231;
-          }
-        }
-        .modal-body {
-          padding: 10px 0 0 0;
-          .row {
-            margin-bottom: 3px;
-            .title-key {
-              font-weight: bold;
-              .fa {
-                margin-right: 7px;
-                margin-left: -5px;
-                width: 25px;
-                text-align: center;
-              }
-            }
-          }
-          .row:nth-last-of-type(2) .value {
-            font-weight: bold;
-          }
-          h4{
-            margin-top: 18px;
-            font-size: 14px;
-            font-weight: bold !important;
-          }
-          .more-data{
-            margin-top: 15px;
-            a{
-              display: block;
-              margin-bottom: 5px;
-              text-decoration: none;
-              color: #0c2231;
-              font-size: 18px;
-              .button{
-                font-size: 25px;
-                margin-right: 10px;
-              }
-              .icon{
-                width: 25px;
-                text-align: center;
-              }
-            }
-          }
-          .e-data-frame {
-            width: 100%;
-            height: 70vh;
-          }
-        }
-      }
-    }
-  }
-
-  //.example .var2 {
-  //  position: relative !important;
+  //#sidebar {
+  //  position: fixed;
+  //  top: 0;
+  //  left: 0;
+  //  margin: 25px;
+  //  transition: all 0.5s ease-in-out;
+  //  ul {
+  //    li {
+  //      background: #7D94A4;
+  //      overflow: hidden;
+  //      transition: all .5s ease-in-out;
+  //      white-space: nowrap;
+  //      max-width: 50px;
+  //      min-width: 50px;
+  //      &:hover {
+  //        max-width: 200px;
+  //      }
+  //      a {
+  //        i {
+  //          width: 50px;
+  //          height: 50px;
+  //          //box-shadow: 1px 0 #476B84;
+  //          font-size: 12pt;
+  //          text-align: center;
+  //          line-height: 50px;
+  //        }
+  //        span {
+  //          padding: 0 15px;
+  //          opacity: 0;
+  //          transform: translateX(15px);
+  //        }
+  //      }
+  //    }
+  //    > li a {
+  //      height: 50px;
+  //      //border-top: 1px solid #476B84;
+  //      display: block;
+  //      color: #FFF;
+  //      line-height: 50px;
+  //      text-decoration: none;
+  //    }
+  //  }
+  //  &:hover ul li a span {
+  //    opacity: 1;
+  //    transform: translateX(0);
+  //  }
   //}
-  /* Search bar. End */
+
+  //#sidebar {
+  //  position: absolute;
+  //  width: 20%;
+  //  height: auto;
+  //  top: 190px;
+  //  float: left;
+  //  margin: 0 0 0 10px;
+  //  z-index: 1;
+  //  display: none;
+  //}
+  //
+  //.left-side {
+  //  ul {
+  //    padding: 0;
+  //    margin: 0;
+  //    li {
+  //      margin: 0 0 5px 0;
+  //      a {
+  //        .e-data, .prozzorro {
+  //          width: 20px;
+  //          height: 20px;
+  //          margin: 15px;
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+
+
 
 -# Old search
 -#.search_block.col-xs-12
@@ -295,105 +205,31 @@
 -#    %input#search_btn{type: 'submit'}
 
 -# Left buttons
-%nav#sidebar.left-side
-  %ul
-    %li
-      -#%a{:href => "#"}
-      = link_to '#', id: 'e-data' do
-        -#%i.fa.fa-user
-        = image_tag('icons/e-data_icon.png', class: 'e-data')
-        %span
-          = t('repairing.maps.sitebar.e_data')
-    %li
-      =link_to '#', id: 'prozzoro' do
-        -#%i.fa.fa-picture-o
-        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
-        %span
-          = t('repairing.maps.sitebar.prozzoro')
-    %li
-      -#%a{:href => "#"}
-      = link_to '#', id: 'more-info' do
-        %i.fa.fa-info
-        %span
-          = t('repairing.maps.sitebar.information')
+-#%nav#sidebar.left-side
+-#  %ul
+-#    %li
+-#      -#%a{:href => "#"}
+-#      = link_to '#', id: 'e-data' do
+-#        -#%i.fa.fa-user
+-#        = image_tag('icons/e-data_icon.png', class: 'e-data')
+-#        %span
+-#          = t('repairing.maps.sitebar.e_data')
+-#    %li
+-#      =link_to '#', id: 'prozzoro' do
+-#        -#%i.fa.fa-picture-o
+-#        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
+-#        %span
+-#          = t('repairing.maps.sitebar.prozzoro')
+-#    %li
+-#      -#%a{:href => "#"}
+-#      = link_to '#', id: 'more-info' do
+-#        %i.fa.fa-info
+-#        %span
+-#          = t('repairing.maps.sitebar.information')
 
-.modal.fade{:id => 'more-infoModal', role: 'dialog', tabindex: '-1'}
+.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1'}
   .modal-dialog
     .modal-content
-      .fond-for-close
-      %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-        %span{'aria-hidden' => 'true'} &times;
-      .modal-header
-        .modal-title
-          %i.fa.fa-graduation-cap
-          = "Реконструкція площі Двірцевої, у т. ч. виготовлення проектно-кошторисної документації"
-      .modal-body
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-map-marker
-            = 'Адреса:'
-          .col-xs-8.value
-            = "м. Львів, вул. Ділова 22б"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-gears
-            = 'Роботи:'
-          .col-xs-8
-            = "Реставрація фасадів даху та будинку"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-university
-            = 'Розпорядник:'
-          .col-xs-8.value
-            = "Центр 'Ейдос'"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-user-secret
-            = 'Підрядник:'
-          .col-xs-8.value
-            = "Transparency International"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-calendar
-            = 'Час ремонту:'
-          .col-xs-8
-            = "23.05.2016 - 31.05.2017"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-certificate
-            = 'Гарантія:'
-          .col-xs-8.value
-            = "5 років"
-        .row
-          .col-xs-4.title-key
-            %i.fa.fa-money
-            = 'Вартість:'
-          .col-xs-8.value
-            = "500 990 000 грн."
-        %h4
-          = 'ОПИС РОБІТ'
-        %p
-          Define the base css code from our catalog. The dotted lines on the right and on the left - a block boundary, for which columns should be aligned edges.
-          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
-        %h4
-          = 'ДОДАТКОВА ІНФОРМАЦІЯ'
-        %p
-          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
-          Define the base css code from our catalog. The dotted lines on the right and on the left - a block boundary, for which columns should be aligned edges.
-          We need to create dvuhkolonchatuyu grid in which the width of each column is 45% of the width of the parent unit. The right column is pressed to the right and the left to the left. Let us proceed.
-        .more-data
-          = link_to '' do
-            %i.fa.fa-plus-square-o.button
-            %i.fa.fa-gears.icon
-            = 'Транзакції на Є-data'
-          = link_to '' do
-            %i.fa.fa-plus-square-o.button
-            %i.fa.fa-university.icon
-            = 'Закупівлі на Prozorro'
-          = link_to '' do
-            %i.fa.fa-plus-square-o.button
-            %i.fa.fa-money.icon
-            = 'Судовий реєстр'
 
 
 -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
@@ -413,8 +249,8 @@
 :javascript
 
   $(document).ready(function() {
-    var modal_dom = $('#more-infoModal');
-    var modal_title = modal_dom.find('.modal-title');
+    // var modal_dom = $('#more-infoModal');
+    // var modal_title = modal_dom.find('.modal-title');
 
     function setModalInfo(url,data,title){
       $.ajax({
@@ -429,49 +265,27 @@
       })
     }
     function getRepairId(){
-      return $('#sidebar').attr('data-repair-id');
+      return $('.new_info_panel').attr('data-repair-id');
     }
-
-    $('#e-data').click(function(){
-      var data = {
-        id: getRepairId()
-      };
-      setModalInfo("#{repairing_e_data_path}",data,"#{t('repairing.maps.frame.e_data')}");
-
-      // modal_title.html('Інформація з порталу E-data');
-      // var frame = $('<iframe></iframe>');
-      // frame.addClass('e-data-frame');
-      // frame.attr('src','/external_api/edata')
-      // modal_body.append(frame);
-      // modal_dom.modal();
-    });
-
-    $('#prozzoro').click(function(){
-      var data = { id: getRepairId() }
-      setModalInfo("#{repairing_prozzoro_path}",data,"#{t('repairing.maps.frame.prozzoro')}");
-    });
 
     function get_repair_info_modal(){
       var repair_id = getRepairId();
       $.ajax({
         url: "#{repairing_show_repair_info_path}",
+        dataType: 'script',
         data: { id: repair_id },
         success: function(data){
           // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
           //modal_dom.find('.modal-content').css('width','50vw');
           // modal_body.html(data);
-          modal_dom.modal();
+          // modal_dom.modal();
         }
       })
     }
+
     $('body').on('click','.more-text',function(){
       get_repair_info_modal();
     });
-    $('#more-info').click(function(){
-      get_repair_info_modal();
-
-    });
-
     var embed_code = aMapEmbedCode();
     var src = 'http://' + window.location.host + "/repairing/maps/frame/6/";
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code", src: src});
@@ -631,9 +445,9 @@
         }
       });
 
-      $("#search_btn").on("click", function(){
-        aRepairMap.showAdressMarker($("#q").val());
-      })
+      // $("#search_btn").on("click", function(){
+      //   aRepairMap.showAdressMarker($("#q").val());
+      // })
 
       $('#map_town').select2({
         sortResults: function(results, container, query) {
