@@ -1,5 +1,6 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
+  require 'external_api'
 
   # TODO: extract lib
 
@@ -40,4 +41,47 @@ class ExternalApiController < ApplicationController
     end
   end
 
+  def prozzoro_info
+    require 'external_api'
+    @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
+    respond_to do |format|
+      format.js {
+        render file: 'external_api/api_info',
+               locals: {
+                   selector: '#prozzoro',
+                   partial_name: 'external_api/prozzoro_info'
+               }
+      }
+    end
+  end
+
+  def e_data
+    e_data_payments = ExternalApi.e_data_payments(params[:edrpou_artist], params[:edrpou_spending_units]) || []
+
+    @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
+
+    respond_to do |format|
+      format.html {render partial: 'modules/classifier/search_e_data',layout: false}
+      format.js {
+        render file: 'external_api/api_info',
+               locals: {
+                   selector: '#e-data',
+                   partial_name: 'modules/classifier/search_e_data'
+               }
+      }
+    end
+  end
+  def edr_info
+    @edr_data = ExternalApi.edr_data(params[:edrpou]).first
+
+    respond_to do |format|
+      format.js {
+        render file: 'external_api/api_info',
+               locals: {
+                   selector: '#edr',
+                   partial_name: 'external_api/edr_info'
+               }
+      }
+    end
+  end
 end

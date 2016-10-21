@@ -35,19 +35,12 @@ class ExternalApi
   def self.edr_data(company_edrpou)
     # TODO need refactor url path
     unless company_edrpou.nil?
-      uri = URI('http://edr.data-gov-ua.org/api/companies?where={"edrpou":{"contains":"company_edrpou"}}'.sub! 'company_edrpou', company_edrpou)
-      # data = {
-      #     'where' => {
-      #         'officialName' => {
-      #             'contains' => company_name
-      #         }
-      #     }
-      # }
-      # data = "where={'edrpou':{'contains':'#{company_edrpou}'}}"
+      uri = URI('http://edr.data-gov-ua.org/api/companies?where={"edrpou": "company_edrpou"}'.sub! 'company_edrpou', company_edrpou)
+
       http = Net::HTTP.new(uri.host, uri.port)
 
       request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
-      # request.body = data.to_json
+
       JSON.parse(http.request(request).body)
     end
   end
@@ -60,7 +53,7 @@ class ExternalApi
 
       request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
       http.use_ssl = (uri.scheme == "https")
-      JSON.parse(http.request(request).body)
+      JSON.parse(http.request(request).body)['data'] rescue nil
     end
   end
 
