@@ -40,7 +40,6 @@ class ExternalApiController < ApplicationController
   # end
 
   def prozzoro_info
-    require 'external_api'
     @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
     respond_to do |format|
       format.js {
