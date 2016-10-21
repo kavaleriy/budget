@@ -1,3 +1,11 @@
+:scss
+  iframe {
+    width: 100%;
+    min-height: 400px;
+    height: calc(100vh - 162px);
+    border: none;
+  }
+
 %iframe{src: "/repairing/maps/frame/10/#{params[:town_id]}?locale=#{params[:locale]}"}
 
-= render partial: 'show_map'
+-#= render partial: 'show_map'
