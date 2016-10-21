@@ -41,6 +41,7 @@ class ExternalApiController < ApplicationController
 
   def prozzoro_info
     @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
+
     respond_to do |format|
       format.js {
         render file: 'external_api/api_info',
@@ -53,7 +54,7 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
-    e_data_payments = ExternalApi.e_data_payments(params[:edrpou_artist], params[:edrpou_spending_units]) || []
+    e_data_payments = ExternalApi.e_data_payments(params[:edrpou_spending_units], params[:edrpou_artist])
 
     @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
 
