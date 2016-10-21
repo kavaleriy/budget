@@ -6,10 +6,11 @@ Rails.application.routes.draw do
   end
   get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
 
-  namespace :external_api do
-    get 'edata'
-    get 'edr'
-  end
+    get 'external_api/e_data/:edrpou_artist/:edrpou_spending_units' => 'external_api#e_data',as: 'external_api_e_data'
+    get 'external_api/prozzoro/:prozzoro_id' => 'external_api#prozzoro_info',as: 'external_api_prozzoro'
+    get 'external_api/edr/:edrpou' => 'external_api#edr_info',as: 'external_api_edr'
+    # get 'edata'
+    # get 'edr'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
@@ -189,7 +190,11 @@ Rails.application.routes.draw do
   post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
   post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
-
+  # namespace :external_api do
+  #   get 'e_data/:id' => '#e_data',as: 'e_data'
+  #   get 'prozzoro/:prozzoro_id' => '#prozzoro_info',as: 'prozzoro'
+  #   get 'edr/:id' => '#edr_info',as: 'edr'
+  # end
   namespace :repairing do
     get 'map' => 'maps#show'
     get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
@@ -201,8 +206,9 @@ Rails.application.routes.draw do
     get 'download' => 'maps#download'
 
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
-    get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
-    get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
+    # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
+    # get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
+    # get 'repairs/edr/:id' => 'repairs#edr_info',as: 'prozzoro'
 
     get 'heapmap_json' => 'maps#get_heapmap_geo_json'
     get 'heapmap' => 'maps#heapmap'

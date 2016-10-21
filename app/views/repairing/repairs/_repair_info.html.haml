@@ -152,20 +152,26 @@
   %p
     = @repairing_repair.description
   .more-data
-    = link_to repairing_e_data_path(@repairing_repair), remote: true do
+    = link_to external_api_e_data_path(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units),
+    remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-gears.icon
       = t('.e_data')
     #e-data
-    = link_to repairing_prozzoro_path(@repairing_repair), remote: true do
+    = link_to external_api_prozzoro_path(@repairing_repair.prozzoro_id), remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-university.icon
       = t('.prozzoro')
     #prozzoro
-    = link_to '', remote: true do
+    -#= link_to external_api_edr_path(@repairing_repair), remote: true do
+    -#  %i.fa.fa-plus-square-o.button
+    -#  %i.fa.fa-money.icon
+    -#  = t('.court_register')
+    -##court-register
+    = link_to external_api_edr_path(@repairing_repair.edrpou_artist), remote: true do
       %i.fa.fa-plus-square-o.button
       %i.fa.fa-money.icon
-      = t('.court_register')
-    #court-register
+      = t('.edr_data')
+    #edr
 
 

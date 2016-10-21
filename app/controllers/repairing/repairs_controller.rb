@@ -77,39 +77,9 @@ module Repairing
     def show_repair_info
     end
 
-    def e_data
-      require 'external_api'
-      e_data_payments = ExternalApi.e_data_payments(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units) || []
 
-      @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
 
-      respond_to do |format|
-        format.html {render partial: 'modules/classifier/search_e_data',layout: false}
-        format.js {
-          render file: 'repairing/repairs/api_info',
-                 locals: {
-                     selector: '#e-data',
-                     partial_name: 'modules/classifier/search_e_data'
-                 }
-        }
-      end
 
-    end
-
-    def prozzoro_info
-      require 'external_api'
-      @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repair.prozzoro_id)
-      binding.pry
-      respond_to do |format|
-        format.js {
-          render file: 'repairing/repairs/api_info',
-                 locals: {
-                    selector: '#prozzoro',
-                    partial_name: 'repairing/repairs/prozzoro_info'
-                 }
-        }
-      end
-    end
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_repair
