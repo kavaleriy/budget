@@ -17,7 +17,9 @@
 
   $(document).ajaxComplete(function() {
     var embed_code = aEmbedCode();
-    var iframe_url = $('#budget_iframe').attr('src');
+
+    // TODO need refactor in future. Also need to check controller for 'allowing cross-origin access'
+    var iframe_url = $('#budget_iframe').attr('src').replace('http:', 'https:');
 
     $('.btn_embed').on('click',function(){
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: iframe_url})

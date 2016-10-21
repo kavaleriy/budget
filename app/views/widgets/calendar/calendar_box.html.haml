@@ -92,15 +92,15 @@
     var calendar = "#{@calendar.id}"
 
     var embed_code_timeline = aEmbedCode();
-    var src = window.location.origin + "/widgets/calendar/timelinejs/" + calendar;
+    var src = "https://" + window.location.host + "/widgets/calendar/timelinejs/" + calendar;
     embed_code_timeline.initialize({width: '100%', height: 150, el_id: "#embed_code_timeline", src: src});
 
     var embed_code_calendar = aEmbedCode();
-    src = window.location.origin + "/widgets/calendar/pie_cycle/" + calendar;
+    src = "https://" + window.location.host + "/widgets/calendar/pie_cycle/" + calendar;
     embed_code_calendar.initialize({width: 700, height: 700, el_id: "#embed_code_calendar", src: src});
 
     $('a[role="tab"]').on('shown.bs.tab', function (e) {
-      src = window.location.origin + "/widgets/calendar/" + $(this).attr('data-content') + "/" + calendar;
+      src = "https://" + window.location.host + "/widgets/calendar/" + $(this).attr('data-content') + "/" + calendar;
       embed_code_calendar.set_iframe(src);
     });
 

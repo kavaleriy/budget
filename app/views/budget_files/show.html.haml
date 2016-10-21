@@ -44,10 +44,16 @@
 
     function set_iframe(visualizator) {
       path = "#{request.base_url}"
+      outer_path = "https://#{request.env['HTTP_HOST']}"
       query = "#{URI.parse(request.url).query}"
+      // TODO need refactor
+      // ** WARN ** for cross-domain access need 'https' protocol which doesn't support by local server when uses iframe.
+      // That is why there are 2 variables for inside access and creating button 'code for paste' which allow to access from outside.
       frame_url = path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
+      outer_frame = outer_path + "/widgets/visify/"+ visualizator + "/#{@budget_file.id}" + '/?' + query
+
       $('.tab-content iframe').attr('src', frame_url)
-      embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: frame_url})
+      embed_code.initialize({width: 1200, height: 900, el_id: "#embed_code_visify", src: outer_frame})
     }
 
   })
