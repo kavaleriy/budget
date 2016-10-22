@@ -5,7 +5,7 @@ preload_app false
 
 # Listen on unix socket
 pid "tmp/pids/unicorn-openbudget.pid"
-listen "/tmp/unicorn.openbudget.sock"
+listen "/run/unicorn.openbudget.sock"
 
 
 

@@ -9,7 +9,7 @@ development:
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - localhost:27017
+        - 127.0.0.1:27017
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -72,7 +72,7 @@ production:
     default:
       database: budget_production
       hosts:
-        - localhost:27017
+        - 127.0.0.1:27017
       options:
         read: primary
         # In the test environment we lower the retries and retry interval to
