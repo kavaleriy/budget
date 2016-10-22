@@ -24,7 +24,7 @@ function aMapEmbedCode() {
 
             $(el_id + ' .embed_btn').find('[data-toggle="popover"]').popover({
                 html: true,
-                placement : 'left',
+                placement : 'top',
                 title: I18n.t('embed'),
                 content: function() {
                     var content = "";

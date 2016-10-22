@@ -7,4 +7,10 @@ module Repairing::MapsHelper
       "#{t('repairing.maps.info_popup.info_adress')} :"
     end
   end
+
+  def has_own_referer?
+    # return true if iframe in our site. For show or hide buttons under map.
+    referer = URI(request.referer).host if request.referer
+    referer == request.host
+  end
 end
