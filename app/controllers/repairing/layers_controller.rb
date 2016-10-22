@@ -1,5 +1,7 @@
+
 module Repairing
   class LayersController < ApplicationController
+
     layout 'application_admin'
 
     before_action :authenticate_user!, except: [:geo_json]
@@ -13,13 +15,21 @@ module Repairing
 
       respond_to do |format|
         if @location1
-          repair = @repairing_layer.repairs.new( subject: "#{params[:q]} - #{params[:q1]}", coordinates: [@location, @location1], address: params[:q], address_to: params[:q1] )
+          repair = @repairing_layer.repairs.new(
+              subject: "#{params[:q]} - #{params[:q1]}",
+              coordinates: [@location, @location1],
+              address: params[:q],
+              edrpou_spending_units: 00000000,
+              spending_units: 'Unknown',
+              amount: 1.00,
+              address_to: params[:q1]
+          )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
           # format.js { render :search_street }
         elsif @location
-          repair = repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
+          repair = @repairing_layer.repairs.new( subject: params[:q], coordinates: @location, address: params[:q] )
           repair.save!
 
           format.json { render json: Repairing::GeojsonBuilder.build_repair(repair) }
@@ -77,9 +87,8 @@ module Repairing
       respond_to do |format|
         if @repairing_layer.save
           unless @repairing_layer.repairs_file.path.nil?
-            repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-            import(@repairing_layer, repairs[:rows])
-
+            # repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+            Repairing::Repair.import(@repairing_layer, @repairing_layer.repairs_file.path)
             Thread.new do
               @repairing_layer.repairs.each do |repair|
                 repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
@@ -88,7 +97,9 @@ module Repairing
             end
           end
 
-          format.html { redirect_to @repairing_layer, notice: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через #{@repairing_layer.repairs.count / 2} сек." }
+          format.html { redirect_to @repairing_layer,
+                        notice: t('repairing.layers.import_file_success', time: (@repairing_layer.repairs.count / 2))
+                      }
           format.json { render :show, status: :created, location: @repairing_layer }
         else
           format.html { render :new }
@@ -99,24 +110,16 @@ module Repairing
 
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
-      message << 'Якщо це xlsx формат переконайтесь у тому що він не xls'
+      message << t('repairing.layers.check_xlsx_format')
       respond_with_error_message(message)
     rescue DBF::Column::NameError
       message = [t('invalid_format')]
-      message << 'Допустимі формати .xslx, .xlsm'
+      message << t('repairing.layers.correct_formats')
       respond_with_error_message(message)
     rescue => e
-      message = "Не вдалося створити прошарок : #{e}"
+      message = "#{t('repairing.layers.update.error')}"
       respond_with_error_message(message)
 
-    end
-
-    def read_table_from_file path
-      require 'roo'
-
-      xls = Roo::Excelx.new(path)
-      xls.default_sheet = xls.sheets.first
-      read_csv_xls xls
     end
 
     def respond_with_error_message(message)
@@ -125,50 +128,24 @@ module Repairing
       end
     end
 
-    def read_csv_xls(xls)
-      cols = []
-      xls.first_column.upto(xls.last_column) { |col|
-        cols << xls.cell(1, col).to_s.strip
-      }
-
-      rows = []
-      2.upto(xls.last_row) do |line|
-        row = {}
-        xls.first_column.upto(xls.last_column ) do |col|
-          row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
-          row.transform_keys! { |key| key.strip }
-        end
-        rows << row
-      end
-
-      { :rows => rows, :cols => cols }
-    end
-
-    def import layer, repairs
-      repairs.each do |repair|
-        repair_hash = build_repair_hash(repair)
-
-        coordinates = repair['Координати']
-        coordinates1 = repair['Координати1']
-
-        repair_hash[:coordinates] =
-          if coordinates1.blank?
-            if coordinates.blank?
-              nil
-            else
-              coordinates.split(',').map(&:to_f)
-            end
-          else
-            [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
-          end
-
-        layer_repair = Repairing::Repair.create(repair_hash)
-        layer_repair.layer = layer
-        category = Repairing::Category.where(title: repair['Робота']).first
-        layer_repair.repairing_category = category unless category.nil?
-        layer_repair.save!
-      end
-    end
+    # def read_csv_xls(xls)
+    #   cols = []
+    #   xls.first_column.upto(xls.last_column) { |col|
+    #     cols << xls.cell(1, col).to_s.strip
+    #   }
+    #
+    #   rows = []
+    #   2.upto(xls.last_row) do |line|
+    #     row = {}
+    #     xls.first_column.upto(xls.last_column ) do |col|
+    #       row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
+    #       row.transform_keys! { |key| key.strip }
+    #     end
+    #     rows << row
+    #   end
+    #
+    #   { :rows => rows, :cols => cols }
+    # end
 
     # PATCH/PUT /repairing/layers/1
     # PATCH/PUT /repairing/layers/1.json
@@ -218,34 +195,7 @@ module Repairing
         end
       end
 
-      def build_repair_hash(repair)
-        # this function build hash for repair model
-        # get two parameters repair hash and coordinates array
-        # first of all convert repair start and end date to date
-        # after that build and return hash
 
-        start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
-        end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
-
-        {
-            obj_owner: repair['Виконавець'],
-            subject: repair['Об\'єкт'],
-            work: repair['Робота'],
-            amount: repair['Вартість'],
-            warranty_date: repair['Гарантія'],
-            description: repair['Додаткова інформація'],
-
-            repair_start_date: start_repair_date,
-            repair_end_date: end_repair_date,
-            prozzoro_id: repair['ID закупівлі'],
-            edrpou_artist: repair['ЄДРПОУ виконавця'],
-            spending_units: repair['Розпорядник бюджетних коштів'],
-            edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
-
-            address: repair['Адреса'],
-            address_to: repair['Адреса1'],
-        }
-      end
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
         @repairing_layer = Repairing::Layer.find(params[:id])

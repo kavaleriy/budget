@@ -113,7 +113,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # programs = Programs::Town.get_town_by_title(town).first
     # programs = Programs::TargetedProgram.first
     programs = Programs::TargetedProgram.by_town(@town).first
-    e_data = Modules::Classifier.by_town(@town).first
+    e_data = Modules::Classifier.by_koatuu(@town.koatuu, @town.koatuu[2..10].eql?('00000000') ? 2 : 5).first
     result = []
     result << get_budget_compare_hash('budget_compare')
     result << get_indicate_hash(indicate_taxonomy, 'indicators')

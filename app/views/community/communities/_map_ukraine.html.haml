@@ -31,7 +31,7 @@
   $(document).ready(function() {
 
     var embed_code = aEmbedCode();
-    var src = 'http://' + window.location.host + "/community/map";
+    var src = 'https://' + window.location.host + "/community/map";
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code_timeline", src: src});
 
     var data_areas, data_towns;
@@ -209,7 +209,7 @@
           aRepairMap.addGeoJsonPoints(data['centers'], pointOptions);
           $('#edit_btn').attr("href", "/community/edit/" + feature.properties.id + '?locale=' + '#{params[:locale]}').css("display","inline-block");
           $('#upload_btn').css("display","none");
-          var src = "http://" + window.location.host + "/community/map/" + feature.properties.id;
+          var src = "https://" + window.location.host + "/community/map/" + feature.properties.id;
           $('#embed_code_timeline').css("display","block");
           embed_code.set_iframe(src);
         }

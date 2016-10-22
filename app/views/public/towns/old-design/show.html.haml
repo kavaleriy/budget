@@ -339,7 +339,7 @@
       var town = "#{@town.id}"
       //el_id this is dom element selector, where render size form for iframe
       var embed_code_timeline = aEmbedCode();
-      var src = window.location.origin + "/widgets/town/profile/" + town;
+      var src = "https://" + window.location.host + "/widgets/town/profile/" + town;
       embed_code_timeline.initialize({width: '700', height: '700', el_id: "#embeded_code_modal_window", src: src});
       embed_code_timeline.set_iframe(src);
       $('#embeded_code_modal_window').find('#embed_src').val(src);

@@ -17,6 +17,8 @@ uk:
     destroy:
       success: 'Файл успішно видалено!'
 #End. [ Controllers ]
+  empty_data: ''
+  file_example: 'Приклад файлу'
   found_docs: 'Результат'
   choose_calendar: "Календар"
   actions: "Дії"
@@ -39,7 +41,21 @@ uk:
   confirm_no: "Ні"
   confirm_destroy: "Видалення"
   no_town_description_info: "Нажаль, інформація відсутня"
-
+  external_api:
+    prozzoro_info:
+      number: 'Номер закупівлі'
+      title: 'Назва закупівлі'
+      start_prop: 'Початок прийому пропозицій'
+      end_prop: 'Звкінчення прийому пропозицій'
+      status: 'Статус'
+      price: 'Очікувана вартість'
+      customer: 'Замовник'
+    edr_info:
+      title: 'Назва'
+      address: 'Адреса'
+      main_person: 'Керівник'
+      occupation: 'Вид діяльності'
+      status: 'Статус'
   template:
     title:
       title: 'Заголовок для Pdf'
@@ -1060,6 +1076,7 @@ uk:
 
   modules:
     classifier:
+      get_more: "Дізнатись більше"
       search_data:
         payer: "Платник"
         recipt: "Отримувач"
@@ -1077,6 +1094,7 @@ uk:
         recipt_type_placeholder: "Оберіть тип отримувача"
         recipt_form_placeholder: "Введіть назву / ЄДРПОУ отримувача"
         search: 'Знайти'
+        region: 'В межах того ж регіону'
         dateranges:
           yesterday: 'За вчора'
           last_7_days: 'За 7 днів'
@@ -1304,6 +1322,9 @@ uk:
       image_load: "Завантажити/змінити"
       need_name_category: "Вкажіть назву категорії..."
     layers:
+      import_file_success: "Ремонтні роботи успішно завантажено. Завершення обчислення координат очікується через %{time} сек."
+      check_xlsx_format: 'Якщо це xlsx формат переконайтесь у тому що він не xls'
+      correct_formats: 'Допустимі формати .xslx, .xlsm'
       index:
         no_files: 'Ви не завантажили жодного файлу'
       search:
@@ -1324,6 +1345,29 @@ uk:
         success: 'Дані успішно відредаговано'
         error: 'Вибачте але виникла помилка'
     repairs:
+      repair_info:
+        repair_time: 'Час ремонту'
+        start_date: 'Дата початку ремонту'
+        end_date: 'Дата закінчення ремонту'
+        repairing_category: 'Категорія ремонту'
+        warranty_date: 'Гарантія'
+        description: 'Опис робіт'
+        info_coordinates: "Кординати"
+        info_adress: "Адреса"
+        info_object: "Об\'єкт"
+        info_works: 'Роботи'
+        info_performer: 'Підрядник'
+        info_spending_units: 'Розпорядник'
+        info_price: 'Вартість'
+        info_currency: 'грн.'
+        more_info: 'Додаткова інформація'
+        e_data: 'Транзакції на Є-data'
+        prozzoro: 'Закупівлі на Prozorro'
+        court_register: 'Судовий реєстр'
+        edr_data: 'Єдиний державний реєстр'
+      coords:
+        wrong_length: 'Не корректна довжина в полі з координатами'
+        wrong_type: 'Не корректний тип даних в полі з координатами'
       form:
         erdpou_spending: 'Ердпоу розпорядника'
         erdpou_artist: 'Ердпоу отримувача'
@@ -1348,19 +1392,6 @@ uk:
     maps:
       info_popup:
         more: 'Детальніше'
-        start_date: 'Дата початку ремонту'
-        end_date: 'Дата закінчення ремонту'
-        repairing_category: 'Категорія ремонту'
-        warranty_date: 'Гарантійний срок'
-        description: 'Опис'
-        info_coordinates: "Кординати"
-        info_adress: "Адреса"
-        info_object: "Об\'єкт"
-        info_works: 'Роботи'
-        info_performer: 'Виконавець'
-        info_spending_units: 'Розпорядник'
-        info_price: 'Вартість'
-        info_currency: 'грн.'
       map_select:
         search_adress: "Пошук за адресою ремонту"
         select_category_work: "Вибрати категорію робіт:"

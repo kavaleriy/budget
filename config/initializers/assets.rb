@@ -14,6 +14,7 @@ Rails.application.config.assets.precompile += %w( leaflet/leaflet-heat.js )
 Rails.application.config.assets.precompile += %w( leaflet/markercluster.js leaflet/markercluster.default.css leaflet/markercluster.css )
 Rails.application.config.assets.precompile += %w( leaflet/zoomfs.js )
 Rails.application.config.assets.precompile += %w( leaflet/leaflet-routing-machine.js leaflet/leaflet-routing-machine.css )
+Rails.application.config.assets.precompile += %w( leaflet/leaflet-routing-machine.min.js )
 
 Rails.application.config.assets.precompile += %w( geosearch/l.control.geosearch.js geosearch/l.geosearch.provider.openstreetmap.js geosearch/l.geosearch.css )
 

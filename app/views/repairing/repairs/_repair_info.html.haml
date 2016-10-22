@@ -1,0 +1,203 @@
+:scss
+  $border-color: #0c2231;
+  #more-info-modal {
+    .modal-dialog {
+      margin: 15px;
+      .modal-content {
+        width: 95vw;
+        //height: 93vh;
+        border-radius: 0;
+        border: 1px solid $border-color;
+        button.close{
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin-top: -4px;
+          padding: 0 0px 0 0;
+          font-weight: normal;
+          color: white;
+          text-shadow: none;
+          opacity: 1;
+        }
+        .fond-for-close{
+          width: 14px;
+          height: 14px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: $border-color;
+        }
+        .modal-header {
+          padding: 10px 0;
+          border-bottom: 2px solid $border-color;
+          .modal-title {
+            font-size: 18px;
+          }
+          &:hover,
+          &:focus {
+            color: $border-color;
+          }
+        }
+        .modal-body {
+          padding: 10px 0 0 0;
+          h4.head-desc{
+            text-transform: uppercase;
+          }
+          .row {
+            margin-bottom: 3px;
+            .title-key {
+              font-weight: bold;
+              .fa {
+                margin-right: 7px;
+                margin-left: -5px;
+                width: 25px;
+                text-align: center;
+              }
+            }
+          }
+          .row:nth-last-of-type(2) .value {
+            font-weight: bold;
+          }
+          h4{
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: bold !important;
+          }
+          .more-data{
+            .api{
+              .api-text{
+                display: none;
+              }
+              margin-top: 15px;
+              a{
+                display: block;
+                margin-bottom: 5px;
+                text-decoration: none;
+                color: $border-color;
+                font-size: 18px;
+                &:before{
+                  font-family: FontAwesome;
+                  content: '\f196';
+                }
+                .button{
+                  font-size: 25px;
+                  margin-right: 10px;
+                }
+                .icon{
+                  width: 25px;
+                  text-align: center;
+                }
+
+              }
+              &.active{
+                .api-text{
+                  display: block;
+                }
+                a{
+                  &:before{
+                    font-family: FontAwesome;
+                    content: '\f147';
+                  }
+                }
+              }
+            }
+
+          }
+          //.e-data-frame {
+          //  width: 100%;
+          //  height: 70vh;
+          //}
+        }
+      }
+    }
+  }
+
+.fond-for-close
+%button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+  %span{'aria-hidden' => 'true'} &times;
+.modal-header
+  .modal-title
+    %i.fa.fa-graduation-cap
+    = @repairing_repair.subject
+    -#= "Реконструкція площі Двірцевої, у т. ч. виготовлення проектно-кошторисної документації"
+.modal-body
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-map-marker
+      = "#{ t('.info_adress') } :"
+    .col-xs-8.value
+      = @repairing_repair.address
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-gears
+      = "#{ t('.info_works') } :"
+    .col-xs-8
+      = @repairing_repair.work
+
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-university
+      = "#{ t('.info_spending_units') } :"
+    .col-xs-8.value
+      = @repairing_repair.spending_units
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-user-secret
+      = "#{ t('.info_performer') } :"
+    .col-xs-8.value
+      = @repairing_repair.obj_owner
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-calendar
+      = "#{ t('.repair_time') } :"
+    .col-xs-8
+      -#= "23.05.2016 - 31.05.2017"
+      = "#{@repairing_repair.repair_start_date} - #{@repairing_repair.repair_end_date}"
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.warranty_date') } :"
+    .col-xs-8.value
+      -#= "5 років"
+      = @repairing_repair.warranty_date
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('.info_price') } :"
+    .col-xs-8.value
+      = @repairing_repair.amount
+  %h4.head-desc
+    = t('.description')
+  %p
+    = @repairing_repair.work
+  %h4.head-desc
+    = t('.more_info')
+  %p
+    = @repairing_repair.description
+  .more-data
+    .api
+      = link_to external_api_e_data_path(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units),
+      remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-gears.icon
+        = t('.e_data')
+      #e-data.api-text
+    .api
+      = link_to external_api_prozzoro_path(@repairing_repair.prozzoro_id), remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-university.icon
+        = t('.prozzoro')
+      #prozzoro.api-text
+    -#= link_to external_api_edr_path(@repairing_repair), remote: true do
+    -#  %i.fa.fa-plus-square-o.button
+    -#  %i.fa.fa-money.icon
+    -#  = t('.court_register')
+    -##court-register
+    .api
+      = link_to external_api_edr_path(@repairing_repair.edrpou_artist), remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-money.icon
+        = t('.edr_data')
+      #edr.api-text
+
+

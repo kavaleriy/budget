@@ -33,19 +33,23 @@ class ExportBudgetsController < ApplicationController
     # get all pages array size
     # minus 1 it is content array in pages array
     # plus content array size
-    page_length = (@export_budget.pages.size - 1) + @export_budget.pages[:content].size
-    render pdf: @export_budget.title,
-           formats: [:html],
-           dpi: '300',
-           margin: {   top:               margin_size,                     # default 10 (mm)
-                       bottom:            margin_size,
-                       left:              margin_size,
-                       right:             margin_size },
-           template: 'export_budgets/create_pdf',
-           show_as_html: params.key?('debug'),
-           :footer => {
-               :content => render_to_string(:template => 'export_budgets/footer.pdf.erb',locals: {page_length: page_length})
-           }
+    if @export_budget.pages.nil?
+      redirect_to :back, notice: t('repairing.layers.update.error')
+    else
+      page_length = (@export_budget.pages.size - 1) + @export_budget.pages[:content].size
+      render pdf: @export_budget.title,
+             formats: [:html],
+             dpi: '300',
+             margin: {   top:               margin_size,                     # default 10 (mm)
+                         bottom:            margin_size,
+                         left:              margin_size,
+                         right:             margin_size },
+             template: 'export_budgets/create_pdf',
+             show_as_html: params.key?('debug'),
+             :footer => {
+                 :content => render_to_string(:template => 'export_budgets/footer.pdf.erb',locals: {page_length: page_length})
+             }
+    end
   end
 
   # GET /export_budgets/new

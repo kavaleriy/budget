@@ -10,210 +10,178 @@
     width: 100%;
   }
 
-  .search_block, .search_block div {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 10px;
-  }
+  /*.search_block, .search_block div {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+    /*margin-bottom: 10px;*/
+  /*}*/
 
-  .search_block .form-control {
-    height: 37px;
-  }
+  /*.search_block .form-control {*/
+    /*height: 37px;*/
+  /*}*/
 
 
 :scss
   /* New search style. Begin */
-  .search_block {
-    position: absolute;
-    z-index: 1;
-    width: calc(100vw - 50px);
-    left: 50px;
-    padding-top: 10px;
-    .search-container {
-      margin: 2px;
-      ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        color: white;
-      }
-      ::-moz-placeholder { /* Firefox 19+ */
-        color: white;
-      }
-      :-ms-input-placeholder { /* IE 10+ */
-        color: white;
-      }
-      :-moz-placeholder { /* Firefox 18- */
-        color: white;
-      }
-      input:-webkit-autofill,
-      textarea:-webkit-autofill,
-      select:-webkit-autofill {
-        background-color: #7D94A4 !important;
-      }
-
-      .search-box {
-        -webkit-transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
-        transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
-        width: 50px;
-        height: 50px;
-        border: none;
-        cursor: pointer;
-        background: #7D94A4;
-        + label .search-icon {
-          color: white;
-        }
-        &:hover {
-          color: white;
-          background: #A2B2BE;
-          box-shadow: 0 0 0 2px #7D94A4;
-          + label .search-icon {
-            color: white;
-          }
-        }
-        &:focus {
-          -webkit-transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
-          transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
-          border: none;
-          outline: none;
-          box-shadow: none;
-          padding-left: 15px;
-          cursor: text;
-          width: 300px;
-          border-radius: auto;
-          background: #7D94A4;
-          color: white;
-          + label .search-icon {
-            color: white;
-          }
-        }
-        &:not(:focus) {
-          text-indent: -5000px;
-        }
-      }
-
-      #search_btn {
-        position: relative;
-        left: -5000px;
-      }
-
-      .search-icon {
-        position: relative;
-        left: -36px;
-        color: white;
-        cursor: pointer;
-      }
-    }
-  }
+  //.search_block {
+  //  position: absolute;
+  //  z-index: 1;
+  //  width: calc(100vw - 50px);
+  //  left: 50px;
+  //  padding-top: 10px;
+  //  .search-container {
+  //    margin: 2px;
+  //    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  //      color: white;
+  //    }
+  //    ::-moz-placeholder { /* Firefox 19+ */
+  //      color: white;
+  //    }
+  //    :-ms-input-placeholder { /* IE 10+ */
+  //      color: white;
+  //    }
+  //    :-moz-placeholder { /* Firefox 18- */
+  //      color: white;
+  //    }
+  //    input:-webkit-autofill,
+  //    textarea:-webkit-autofill,
+  //    select:-webkit-autofill {
+  //      background-color: #7D94A4 !important;
+  //    }
+  //
+  //    .search-box {
+  //      -webkit-transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+  //      transition: width 0.6s, border-radius 0.6s, background 0.6s, box-shadow 0.6s;
+  //      width: 50px;
+  //      height: 50px;
+  //      border: none;
+  //      cursor: pointer;
+  //      background: #7D94A4;
+  //      + label .search-icon {
+  //        color: white;
+  //      }
+  //      &:hover {
+  //        color: white;
+  //        background: #A2B2BE;
+  //        box-shadow: 0 0 0 2px #7D94A4;
+  //        + label .search-icon {
+  //          color: white;
+  //        }
+  //      }
+  //      &:focus {
+  //        -webkit-transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+  //        transition: width 0.6s cubic-bezier(0, 1.22, 0.66, 1.39), border-radius 0.6s, background 0.6s;
+  //        border: none;
+  //        outline: none;
+  //        box-shadow: none;
+  //        padding-left: 15px;
+  //        cursor: text;
+  //        width: 300px;
+  //        border-radius: auto;
+  //        background: #7D94A4;
+  //        color: white;
+  //        + label .search-icon {
+  //          color: white;
+  //        }
+  //      }
+  //      &:not(:focus) {
+  //        text-indent: -5000px;
+  //      }
+  //    }
+  //
+  //    #search_btn {
+  //      position: relative;
+  //      left: -5000px;
+  //    }
+  //
+  //    .search-icon {
+  //      position: relative;
+  //      left: -36px;
+  //      color: white;
+  //      cursor: pointer;
+  //    }
+  //  }
+  //}
   /* New search style. End */
 
   /* Search bar. Begin */
-  #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin: 25px;
-    transition: all 0.5s ease-in-out;
-    ul {
-      li {
-        background: #7D94A4;
-        overflow: hidden;
-        transition: all .5s ease-in-out;
-        white-space: nowrap;
-        max-width: 50px;
-        min-width: 50px;
-        &:hover {
-          max-width: 200px;
-        }
-        a {
-          i {
-            width: 50px;
-            height: 50px;
-            //box-shadow: 1px 0 #476B84;
-            font-size: 12pt;
-            text-align: center;
-            line-height: 50px;
-          }
-          span {
-            padding: 0 15px;
-            opacity: 0;
-            transform: translateX(15px);
-          }
-        }
-      }
-      > li a {
-        height: 50px;
-        //border-top: 1px solid #476B84;
-        display: block;
-        color: #FFF;
-        line-height: 50px;
-        text-decoration: none;
-      }
-    }
-    &:hover ul li a span {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  #sidebar {
-    position: absolute;
-    width: 20%;
-    height: auto;
-    top: 190px;
-    float: left;
-    margin: 0 0 0 10px;
-    z-index: 1;
-    display: none;
-  }
-
-  .left-side {
-    ul {
-      padding: 0;
-      margin: 0;
-      li {
-        margin: 0 0 5px 0;
-        a {
-          .e-data, .prozzorro {
-            width: 20px;
-            height: 20px;
-            margin: 15px;
-          }
-        }
-      }
-    }
-  }
-  //Modal window e-data
-  #e-dataModal, #more-infoModal {
-    .modal-dialog {
-      margin: 15px;
-      .modal-content {
-        width: 95vw;
-        //height: 93vh;
-        border-radius: 0;
-        .modal-header {
-          padding: 10px 0;
-          border-bottom: 1px solid #0c2231;
-          .close {
-
-          }
-          &:hover,
-          &:focus {
-            color: #0c2231;
-          }
-        }
-        .modal-body {
-          padding: 10px;
-          .e-data-frame {
-            width: 100%;
-            height: 70vh;
-          }
-        }
-      }
-    }
-  }
-
-  //.example .var2 {
-  //  position: relative !important;
+  //#sidebar {
+  //  position: fixed;
+  //  top: 0;
+  //  left: 0;
+  //  margin: 25px;
+  //  transition: all 0.5s ease-in-out;
+  //  ul {
+  //    li {
+  //      background: #7D94A4;
+  //      overflow: hidden;
+  //      transition: all .5s ease-in-out;
+  //      white-space: nowrap;
+  //      max-width: 50px;
+  //      min-width: 50px;
+  //      &:hover {
+  //        max-width: 200px;
+  //      }
+  //      a {
+  //        i {
+  //          width: 50px;
+  //          height: 50px;
+  //          //box-shadow: 1px 0 #476B84;
+  //          font-size: 12pt;
+  //          text-align: center;
+  //          line-height: 50px;
+  //        }
+  //        span {
+  //          padding: 0 15px;
+  //          opacity: 0;
+  //          transform: translateX(15px);
+  //        }
+  //      }
+  //    }
+  //    > li a {
+  //      height: 50px;
+  //      //border-top: 1px solid #476B84;
+  //      display: block;
+  //      color: #FFF;
+  //      line-height: 50px;
+  //      text-decoration: none;
+  //    }
+  //  }
+  //  &:hover ul li a span {
+  //    opacity: 1;
+  //    transform: translateX(0);
+  //  }
   //}
-  /* Search bar. End */
+
+  //#sidebar {
+  //  position: absolute;
+  //  width: 20%;
+  //  height: auto;
+  //  top: 190px;
+  //  float: left;
+  //  margin: 0 0 0 10px;
+  //  z-index: 1;
+  //  display: none;
+  //}
+  //
+  //.left-side {
+  //  ul {
+  //    padding: 0;
+  //    margin: 0;
+  //    li {
+  //      margin: 0 0 5px 0;
+  //      a {
+  //        .e-data, .prozzorro {
+  //          width: 20px;
+  //          height: 20px;
+  //          margin: 15px;
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+
+
 
 -# Old search
 -#.search_block.col-xs-12
@@ -237,37 +205,31 @@
 -#    %input#search_btn{type: 'submit'}
 
 -# Left buttons
-%nav#sidebar.left-side
-  %ul
-    %li
-      -#%a{:href => "#"}
-      = link_to '#', id: 'e-data' do
-        -#%i.fa.fa-user
-        = image_tag('icons/e-data_icon.png', class: 'e-data')
-        %span
-          = t('repairing.maps.sitebar.e_data')
-    %li
-      =link_to '#', id: 'prozzoro' do
-        -#%i.fa.fa-picture-o
-        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
-        %span
-          = t('repairing.maps.sitebar.prozzoro')
-    %li
-      -#%a{:href => "#"}
-      = link_to '#', id: 'more-info' do
-        %i.fa.fa-info
-        %span
-          = t('repairing.maps.sitebar.information')
+-#%nav#sidebar.left-side
+-#  %ul
+-#    %li
+-#      -#%a{:href => "#"}
+-#      = link_to '#', id: 'e-data' do
+-#        -#%i.fa.fa-user
+-#        = image_tag('icons/e-data_icon.png', class: 'e-data')
+-#        %span
+-#          = t('repairing.maps.sitebar.e_data')
+-#    %li
+-#      =link_to '#', id: 'prozzoro' do
+-#        -#%i.fa.fa-picture-o
+-#        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
+-#        %span
+-#          = t('repairing.maps.sitebar.prozzoro')
+-#    %li
+-#      -#%a{:href => "#"}
+-#      = link_to '#', id: 'more-info' do
+-#        %i.fa.fa-info
+-#        %span
+-#          = t('repairing.maps.sitebar.information')
 
-.modal.fade{:id => 'more-infoModal', role: 'dialog', tabindex: '-1'}
+.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1'}
   .modal-dialog
     .modal-content
-      .modal-header
-        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-          %span{'aria-hidden' => 'true'} &times;
-        .modal-title
-          = t('repairing.maps.sitebar.information')
-      .modal-body
 
 
 -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
@@ -287,67 +249,34 @@
 :javascript
 
   $(document).ready(function() {
-    var modal_dom = $('#more-infoModal');
-    var modal_title = modal_dom.find('.modal-title');
+    // var modal_dom = $('#more-infoModal');
+    // var modal_title = modal_dom.find('.modal-title');
 
-    function setModalInfo(url,data,title){
-      $.ajax({
-        url: url,
-        data: data,
-        dataType: 'script',
-        success: function(data){
-          modal_title.html(title);
-          // modal_body.html(data);
-          modal_dom.modal();
-        }
-      })
-    }
+
     function getRepairId(){
-      return $('#sidebar').attr('data-repair-id');
+      return $('.new_info_panel').attr('data-repair-id');
     }
-
-    $('#e-data').click(function(){
-      var data = {
-        id: getRepairId()
-      };
-      setModalInfo("#{repairing_e_data_path}",data,"#{t('repairing.maps.frame.e_data')}");
-
-      // modal_title.html('Інформація з порталу E-data');
-      // var frame = $('<iframe></iframe>');
-      // frame.addClass('e-data-frame');
-      // frame.attr('src','/external_api/edata')
-      // modal_body.append(frame);
-      // modal_dom.modal();
-    });
-
-    $('#prozzoro').click(function(){
-      var data = { id: getRepairId() }
-      setModalInfo("#{repairing_prozzoro_path}",data,"#{t('repairing.maps.frame.prozzoro')}");
-    });
 
     function get_repair_info_modal(){
       var repair_id = getRepairId();
       $.ajax({
         url: "#{repairing_show_repair_info_path}",
+        dataType: 'script',
         data: { id: repair_id },
         success: function(data){
-          modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
           //modal_dom.find('.modal-content').css('width','50vw');
-          modal_body.html(data);
-          modal_dom.modal();
+          // modal_body.html(data);
+          // modal_dom.modal();
         }
       })
     }
+
     $('body').on('click','.more-text',function(){
       get_repair_info_modal();
     });
-    $('#more-info').click(function(){
-      get_repair_info_modal();
-
-    });
-
     var embed_code = aMapEmbedCode();
-    var src = 'http://' + window.location.host + "/repairing/maps/frame/6/";
+    var src = 'https://' + window.location.host + "/repairing/maps/frame/6/";
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code", src: src});
 
     var categories, category = "all"
@@ -505,9 +434,9 @@
         }
       });
 
-      $("#search_btn").on("click", function(){
-        aRepairMap.showAdressMarker($("#q").val());
-      })
+      // $("#search_btn").on("click", function(){
+      //   aRepairMap.showAdressMarker($("#q").val());
+      // })
 
       $('#map_town').select2({
         sortResults: function(results, container, query) {

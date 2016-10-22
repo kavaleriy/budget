@@ -5,7 +5,7 @@ if (barChart) {
   $('#most-received').hide();
 }
 
-<%- unless params['payers_edrpous'].blank? || @receivers.size < 5 %>
+<%- unless params[:payers_edrpous].blank? || @receivers.size < 3 %>
   $('#most-received').show();
 
   var label = [];
@@ -79,7 +79,7 @@ if (barChart) {
         this.data.datasets.forEach(function (dataset) {
           for (var i = 0; i < dataset.data.length; i++) {
             var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-            ctx.fillText(parseInt(dataset.data[i] / 1000) + ' тис. грн.', model.x + 5, model.y - 5);
+            ctx.fillText(parseFloat(dataset.data[i] / 1000).toFixed(1) + ' тис. грн.', model.x + 5, model.y - 5);
           }
         });
       }
