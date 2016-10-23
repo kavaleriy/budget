@@ -204,7 +204,7 @@ Rails.application.routes.draw do
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'maps/instruction' => 'maps#instruction'
     get 'download' => 'maps#download'
-
+    get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
     get 'show_repair_info' =>'repairs#show_repair_info',as: 'show_repair_info'
     # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
     # get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
