@@ -144,9 +144,10 @@ module Repairing
           unless cross.nil?
             @crosses << cross
           end
-
         end
       end
+
+      @dtp = [ [48.497381, 35.069956] ,[48.511189, 35.076803], [48.527318, 35.083619], [48.519006, 35.080125], [48.461868, 35.042746], [48.466149, 35.035007] ]
     end
       private
       # Use callbacks to share common setup or constraints between actions.

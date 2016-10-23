@@ -27,6 +27,9 @@
     var crossesArr = #{@crosses.first.to_json}
     var route = #{@routes.to_json}
     var repairs = #{@repairings.to_json}
+    var dtp = #{@dtp.to_json}
+    console.log(dtp)
+
     var markers = [];
     var mymap = L.map('map').setView(crossesArr[0], 13);
 
@@ -57,6 +60,18 @@
       markers.push(marker);
     });
     // end add crosses markers
+
+
+    // add dtp markers
+    $.each(dtp,function(index, item) {
+      var marker = L.marker(item,{
+        icon: customIcon('/assets/leaflet/images/hackaton/road-dtp.png', 55, 55)
+      });
+      marker.bindPopup('Аварійно небезпечна ділянка');
+      marker.addTo(mymap);
+      markers.push(marker);
+    });
+    // end add dtp markers
 
     // add bus route
     var bus_route = route.map(function(it,index){
