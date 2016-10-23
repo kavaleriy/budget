@@ -30,7 +30,7 @@
     var markers = [];
     var mymap = L.map('map').setView(crossesArr[0], 13);
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 20,
         id: 'quicks.0hf3cla6',
@@ -72,7 +72,7 @@
       routeWhileDragging: false,
       createMarker: function(i, wp, nWps) {
         return L.marker(wp.latLng,{
-          icon: customIcon('/assets/leaflet/images/hackaton/school-bus.png', 38, 30)
+          icon: customIcon('/assets/leaflet/images/hackaton/school-bus.png', 30, 23)
         })
             .bindPopup('Шлях маршруту автобуса');
       },
