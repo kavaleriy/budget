@@ -149,20 +149,21 @@
     // WARN! May be delete
     function getScale(){
 
-      var scale = d3.scale
+      var scale = d3.scale.log()
 
-      switch($('#type_scale').val()){
-        case 'log':
-          result = scale.log()
-          break;
-        case 'linear':
-          result = scale.linear()
-          break;
-        case 'sqrt':
-          result = scale.sqrt().exponent(.6)
-          break;
-      }
-      return result.domain([ (getValuesFromData(zippedData, 'max') / 100), getValuesFromData(zippedData, 'max') ]).range([ 6, chartWidth ])
+      // switch($('#type_scale').val()){
+      //   case 'log':
+      //     result = scale.log()
+      //     break;
+      //   case 'linear':
+      //     result = scale.linear()
+      //     break;
+      //   case 'sqrt':
+      //     result = scale.sqrt().exponent(.6)
+      //     break;
+      // }
+      // return result.domain([ (getValuesFromData(zippedData, 'max') / 100), getValuesFromData(zippedData, 'max') ]).range([ 6, chartWidth ])
+      return scale.domain([ (getValuesFromData(zippedData, 'max') / 100), getValuesFromData(zippedData, 'max') ]).range([ 6, chartWidth ])
     }
     // correct display bar's length
     // WARN! Length work correctly
