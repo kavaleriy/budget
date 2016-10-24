@@ -4,8 +4,10 @@ class Modules::Partner
   field :name, type: String
   field :url, type: String
   field :order_logo, type: Integer
+  field :category, type: String
   field :publish_on, type: Mongoid::Boolean
 
+  scope :by_category, -> (type) { where(category: type) }
   scope :get_publish_partners, -> {where(publish_on: true)}
 
   before_create :set_order_logo
