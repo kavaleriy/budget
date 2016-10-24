@@ -40,7 +40,6 @@ class ExternalApiController < ApplicationController
   # end
 
   def prozzoro_info
-    # @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
     @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
 
     respond_to do |format|
