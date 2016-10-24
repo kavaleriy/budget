@@ -88,7 +88,7 @@ module Repairing
 
     def download
 
-      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer.xlsx'
+      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer_example.xlsx'
       if File.exist?(file_path)
         send_file(
             "#{file_path}",
