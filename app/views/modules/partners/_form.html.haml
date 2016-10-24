@@ -25,7 +25,17 @@
     = f.input :name, label: t('modules.partners.index.name')
     = f.input :logo, as: :file, label: t('modules.partners.index.logo'), :input_html => { :class => 'form-control', accept: 'image/*' }
     = f.input :url, as: :url, label: t('.url'), :input_html => { :class => 'form-control'}
+    = f.input :category, label: 'Category'
     = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
   .form-actions
     = f.button :button, t('save'), class: 'btn-primary'
     = link_to t('modules.partners.index.header'), modules_partners_path, :class => 'btn btn-info'
+
+:javascript
+  // TODO: Change double space to Enter-key
+  $(document).ready(function() {
+    $('#modules_partner_category').select2({
+      tags: true,
+      tokenSeparators: ['  ']
+    });
+  });

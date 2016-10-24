@@ -86,6 +86,6 @@ class Modules::PartnersController < AdminController
     end
 
     def modules_partner_params
-      params.require(:modules_partner).permit(:name, :url, :publish_on, :logo)
+      params.require(:modules_partner).permit(:name, :url, :publish_on, :category, :logo)
     end
 end
