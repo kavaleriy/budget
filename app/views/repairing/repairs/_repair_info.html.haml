@@ -199,5 +199,31 @@
         %i.fa.fa-money.icon
         = t('.edr_data')
       #edr.api-text
+    .api
+      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.edrpou_spending_units} do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-money.icon
+        = t('.acm')
+      #acm-api-text
 
+:javascript
+  $(document).ready(function() {
+    $('#acm-link').click(function() {
 
+      var spendingEdrpou = $(this).data('erdpou');
+
+      if(spendingEdrpou){
+        // redirect to acm-ua.org
+        window.open("http://acm-ua.org/poshuk.php?poshuk=:edrpou".replace(':edrpou', spendingEdrpou), '_blank');
+      }else{
+        // show external api no data yet partial
+        $.ajax({
+          url: '/external_api/no_data_yet',
+          dataType: 'script',
+          data: {
+            selector: '#acm-api-text'
+          }
+        })
+      }
+    })
+  })
