@@ -343,12 +343,12 @@
               options.dragCallback(layer, ll)
             }
           },
-          popupopen: function(e){
-            showSidebar(feature);
-          },
-          popupclose: function(e){
-            hideSidebar();
-          }
+          // popupopen: function(e){
+          //   showSidebar(feature);
+          // },
+          // popupclose: function(e){
+          //   hideSidebar();
+          // }
         });
       }
     }
@@ -564,15 +564,15 @@
       });
     }
 
-    function showSidebar(feature) {
-      $('#sidebar').attr('data-repair-id',feature.properties.id);
-      $('#sidebar').show('slow');
-    }
-
-    function hideSidebar() {
-      $('#sidebar').removeAttr('data-repair-id');
-      $('#sidebar').hide('fast');
-    }
+    // function showSidebar(feature) {
+    //   $('#sidebar').attr('data-repair-id',feature.properties.id);
+    //   $('#sidebar').show('slow');
+    // }
+    //
+    // function hideSidebar() {
+    //   $('#sidebar').removeAttr('data-repair-id');
+    //   $('#sidebar').hide('fast');
+    // }
 
     function addAdditionalLayer(tileName){
       var additionalTilelayer;
@@ -622,8 +622,8 @@
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
-      showSidebar: showSidebar,
-      hideSidebar: hideSidebar,
+      // showSidebar: showSidebar,
+      // hideSidebar: hideSidebar,
       addAdditionalLayer: addAdditionalLayer,
       removeAdditionalLayer: removeAdditionalLayer
     }
