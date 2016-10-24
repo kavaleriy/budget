@@ -1,7 +1,7 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
   require 'external_api'
-
+  before_action :set_repair, only: [:e_data, :edr_info, :prozzoro_info]
   # http://localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json
 
   # def edata
@@ -40,7 +40,8 @@ class ExternalApiController < ApplicationController
   # end
 
   def prozzoro_info
-    @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
+    # @prozzoro_info = ExternalApi.prozzoro_data(params[:prozzoro_id])
+    @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
 
     respond_to do |format|
       format.js {
@@ -54,23 +55,34 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
-    e_data_payments = ExternalApi.e_data_payments(params[:edrpou_spending_units], params[:edrpou_artist])
-
-    @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
+    e_data_payments = ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
 
     respond_to do |format|
-      format.html {render partial: 'modules/classifier/search_e_data',layout: false}
-      format.js {
-        render file: 'external_api/api_info',
-               locals: {
-                   selector: '#e-data',
-                   partial_name: 'modules/classifier/search_e_data'
-               }
-      }
+      if e_data_payments.blank?
+        format.html{ render partial: 'no_data_yet' }
+        format.js {
+          render file: 'external_api/api_info',
+                 locals: {
+                     selector: '#e-data',
+                     partial_name: 'no_data_yet'
+                 }
+        }
+      else
+        @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
+        format.html {render partial: 'modules/classifier/search_e_data',layout: false}
+        format.js {
+          render file: 'external_api/api_info',
+                 locals: {
+                     selector: '#e-data',
+                     partial_name: 'modules/classifier/search_e_data'
+                 }
+        }
+      end
+
     end
   end
   def edr_info
-    @edr_data = ExternalApi.edr_data(params[:edrpou]).first
+    @edr_data = ExternalApi.edr_data(@repairing_repairs.edrpou_artist).first
 
     respond_to do |format|
       format.js {
@@ -81,5 +93,10 @@ class ExternalApiController < ApplicationController
                }
       }
     end
+  end
+
+  private
+  def set_repair
+    @repairing_repairs = Repairing::Repair.find(params[:repair_id])
   end
 end
