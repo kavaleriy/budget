@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get 'external_api/e_data/:repair_id' => 'external_api#e_data',as: 'external_api_e_data'
     get 'external_api/prozzoro/:repair_id' => 'external_api#prozzoro',as: 'external_api_prozzoro'
     get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
+    get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 

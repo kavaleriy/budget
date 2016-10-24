@@ -94,6 +94,16 @@ class ExternalApiController < ApplicationController
     end
   end
 
+  def no_data_yet
+    respond_to do |format|
+      format.js {
+        render file: 'external_api/no_data_yet',
+               locals: {
+                   selector: params[:selector]
+               }
+      }
+    end
+  end
   private
   def set_repair
     @repairing_repairs = Repairing::Repair.find(params[:repair_id])
