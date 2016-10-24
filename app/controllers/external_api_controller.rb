@@ -1,7 +1,7 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
   require 'external_api'
-  before_action :set_repair, only: [:e_data, :edr_info, :prozzoro_info]
+  before_action :set_repair, only: [:e_data, :edr, :prozzoro]
   # http://localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json
 
   # def edata
@@ -39,7 +39,7 @@ class ExternalApiController < ApplicationController
   #   end
   # end
 
-  def prozzoro_info
+  def prozzoro
     @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
 
     respond_to do |format|
@@ -80,7 +80,7 @@ class ExternalApiController < ApplicationController
 
     end
   end
-  def edr_info
+  def edr
     @edr_data = ExternalApi.edr_data(@repairing_repairs.edrpou_artist).first
 
     respond_to do |format|
