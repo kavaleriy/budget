@@ -22,6 +22,7 @@
 
 
 :scss
+
   /* New search style. Begin */
   //.search_block {
   //  position: absolute;
@@ -249,9 +250,10 @@
 :javascript
 
   $(document).ready(function() {
+
+
     // var modal_dom = $('#more-infoModal');
     // var modal_title = modal_dom.find('.modal-title');
-
 
     function getRepairId(){
       return $('.new_info_panel').attr('data-repair-id');
@@ -337,7 +339,9 @@
       aRepairMap.addCategoryControl(categories);
 
 
-      //aRepairMap.addYearLayer(new Date().getFullYear());
+      $('#fullscreen').click(function(){
+        aRepairMap.toggleMapInFullscreen();
+      })
 
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
