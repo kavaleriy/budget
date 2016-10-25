@@ -108,6 +108,13 @@
 
 :scss
   #map {
+    #last_updated_repair{
+      background-color: white;
+      position: absolute;
+      z-index: 1000;
+      bottom: 10px;
+      left: 20px;
+    }
     .leaflet-control-container {
       .leaflet-top {
         z-index: 1;
@@ -121,8 +128,9 @@
   }
 
 #map
-
-
+  #last_updated_repair
+    Останнє оновлення візуалізації :
+    %span.rep-date
 :javascript
 
   var RepairMap

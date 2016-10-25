@@ -252,7 +252,10 @@
     // var modal_dom = $('#more-infoModal');
     // var modal_title = modal_dom.find('.modal-title');
 
-
+    function setLastRepairUpdate(date){
+      var formatedDate = new Date(date);
+      $('#last_updated_repair .rep-date').html(formatedDate.toLocaleDateString());
+    }
     function getRepairId(){
       return $('.new_info_panel').attr('data-repair-id');
     }
@@ -303,6 +306,7 @@
       dataType: 'json',
     })
     .done(function (data) {
+      setLastRepairUpdate(data.last_updated);
 
       function addMarkers() {
         filtered_data = {type: data.type, features: []}

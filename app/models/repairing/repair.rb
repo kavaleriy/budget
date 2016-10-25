@@ -2,7 +2,11 @@ require 'ext/string'
 module Repairing
   class Repair
     include Mongoid::Document
+    include Mongoid::Timestamps
+
     extend RepairingLayerUpload
+
+    scope :last_updated, -> {order("updated_at DESC").limit(1)}
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
@@ -131,6 +135,37 @@ module Repairing
           description: repair['Додаткова інформація'],
       }
     end
+    def self.repair_json_by_town(town)
+      repairings = Repairing::Layer.valid_layers_with_repairs
+      geo_jsons = []
 
+      # set default last update date of repair
+      last_updated = Time.new('1970-01-01')
+
+      # if town not empty filter array by town
+      repairings.select!{ |key,value| key['town_id'].to_s.eql?(town) } unless town.blank?
+      repairings.each { |layer,repairs|
+        repairs.each do |repair|
+          unless repair['updated_at'].nil?
+            if  last_updated < repair['updated_at']
+              last_updated = repair['updated_at']
+            end
+          end
+          repair['layer'] = {}
+          repair['layer']['town_id'] = layer['town_id'].to_s
+          repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
+
+          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
+          geo_jsons << repair_json if repair_json
+        end
+
+      }
+
+      {
+          'type' => 'FeatureCollection',
+          'features' => geo_jsons,
+          'last_updated' => last_updated
+      }
+    end
   end
 end
