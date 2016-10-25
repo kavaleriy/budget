@@ -64,12 +64,12 @@
             font-weight: bold !important;
           }
           .more-data{
-            .api{
+            & > .api{
               .api-text{
                 display: none;
               }
               margin-top: 15px;
-              a{
+              & > a{
                 display: block;
                 margin-bottom: 5px;
                 text-decoration: none;
@@ -93,7 +93,7 @@
                 .api-text{
                   display: block;
                 }
-                a{
+                & > a{
                   &:before{
                     font-family: FontAwesome;
                     content: '\f147';
@@ -204,7 +204,7 @@
         -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-money.icon
         = t('.acm')
-      #acm-api-text
+      #acm-api-text.api-text
 
 :javascript
   $(document).ready(function() {

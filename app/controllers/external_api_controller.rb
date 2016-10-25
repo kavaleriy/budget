@@ -81,7 +81,8 @@ class ExternalApiController < ApplicationController
     end
   end
   def edr
-    @edr_data = ExternalApi.edr_data(@repairing_repairs.edrpou_artist).first
+    edr_data_arr = ExternalApi.edr_data(@repairing_repairs.edrpou_artist)
+    @edr_data = edr_data_arr.first unless edr_data_arr.nil?
 
     respond_to do |format|
       format.js {
@@ -97,9 +98,10 @@ class ExternalApiController < ApplicationController
   def no_data_yet
     respond_to do |format|
       format.js {
-        render file: 'external_api/no_data_yet',
+        render file: 'external_api/api_info',
                locals: {
-                   selector: params[:selector]
+                   selector: params[:selector],
+                   partial_name: 'external_api/no_data_yet',
                }
       }
     end
