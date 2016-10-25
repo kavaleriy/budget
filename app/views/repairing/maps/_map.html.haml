@@ -296,7 +296,14 @@
       addGeoJsonPoint(data, getPoint, options)
     }
 
+    function setLastRepairUpdate(date){
+      var formatedDate = new Date(date);
+      $('#last_updated_repair .rep-date').html(formatedDate.toLocaleDateString());
+    }
+
     function addGeoJsonPoint(data, getPoint, options) {
+      setLastRepairUpdate(data.last_update);
+
       options = options || {};
 
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
@@ -318,8 +325,7 @@
       }
 
       function getPointToLayer(feature, latlng) {
-        //  TODO: feature.properties get not valid data for road
-        // Need Ad hoc for show road icon on repairing map (models/repairing/geojson_builder, 43 line)
+
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
