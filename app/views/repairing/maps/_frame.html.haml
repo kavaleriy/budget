@@ -305,7 +305,7 @@
     .done(function (data) {
 
       function addMarkers() {
-        filtered_data = {type: data.type, features: []}
+        filtered_data = {type: data.type, features: [], last_update: data.last_updated}
 
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)

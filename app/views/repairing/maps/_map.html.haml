@@ -108,6 +108,13 @@
 
 :scss
   #map {
+    #last_updated_repair{
+      background-color: white;
+      position: absolute;
+      z-index: 1000;
+      bottom: 10px;
+      left: 20px;
+    }
     .leaflet-control-container {
       .leaflet-top {
         z-index: 1;
@@ -121,8 +128,9 @@
   }
 
 #map
-
-
+  #last_updated_repair
+    Останнє оновлення візуалізації :
+    %span.rep-date
 :javascript
 
   var RepairMap
@@ -288,7 +296,14 @@
       addGeoJsonPoint(data, getPoint, options)
     }
 
+    function setLastRepairUpdate(date){
+      var formatedDate = new Date(date);
+      $('#last_updated_repair .rep-date').html(formatedDate.toLocaleDateString());
+    }
+
     function addGeoJsonPoint(data, getPoint, options) {
+      setLastRepairUpdate(data.last_update);
+
       options = options || {};
 
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
@@ -310,8 +325,7 @@
       }
 
       function getPointToLayer(feature, latlng) {
-        //  TODO: feature.properties get not valid data for road
-        // Need Ad hoc for show road icon on repairing map (models/repairing/geojson_builder, 43 line)
+
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -343,12 +357,12 @@
               options.dragCallback(layer, ll)
             }
           },
-          popupopen: function(e){
-            showSidebar(feature);
-          },
-          popupclose: function(e){
-            hideSidebar();
-          }
+          // popupopen: function(e){
+          //   showSidebar(feature);
+          // },
+          // popupclose: function(e){
+          //   hideSidebar();
+          // }
         });
       }
     }
@@ -564,15 +578,15 @@
       });
     }
 
-    function showSidebar(feature) {
-      $('#sidebar').attr('data-repair-id',feature.properties.id);
-      $('#sidebar').show('slow');
-    }
-
-    function hideSidebar() {
-      $('#sidebar').removeAttr('data-repair-id');
-      $('#sidebar').hide('fast');
-    }
+    // function showSidebar(feature) {
+    //   $('#sidebar').attr('data-repair-id',feature.properties.id);
+    //   $('#sidebar').show('slow');
+    // }
+    //
+    // function hideSidebar() {
+    //   $('#sidebar').removeAttr('data-repair-id');
+    //   $('#sidebar').hide('fast');
+    // }
 
     function addAdditionalLayer(tileName){
       var additionalTilelayer;
@@ -622,8 +636,8 @@
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
-      showSidebar: showSidebar,
-      hideSidebar: hideSidebar,
+      // showSidebar: showSidebar,
+      // hideSidebar: hideSidebar,
       addAdditionalLayer: addAdditionalLayer,
       removeAdditionalLayer: removeAdditionalLayer
     }

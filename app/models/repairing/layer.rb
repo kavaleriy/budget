@@ -93,6 +93,7 @@ class Repairing::Layer
                                                                      {
                                                                          # show this fields
                                                                          '$project' => {
+                                                                             'updated_at' => 1,
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
                                                                              'repair_date' => 1,
