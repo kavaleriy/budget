@@ -357,11 +357,9 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      if($('#_item_type_payers').val() || $('#_item_type_recipt').val()) {
-        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
-        $("#items-list").hide();
-        $('#entrepreneurs').show();
-      }
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      $("#items-list").hide();
+      $('#entrepreneurs').show();
       e.preventDefault();
     });
 
