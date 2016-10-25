@@ -8,7 +8,7 @@ class Modules::Partner
   field :publish_on, type: Mongoid::Boolean
 
   scope :by_category, -> (type) { where(category: type) }
-  scope :get_publish_partners, -> {where(publish_on: true)}
+  scope :get_publish_partners, -> { where(publish_on: true) }
 
   before_create :set_order_logo
 
