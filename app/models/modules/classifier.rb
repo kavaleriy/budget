@@ -61,11 +61,21 @@ class Modules::Classifier
 
   def self.to_csv payments
     CSV.generate(headers: true, col_sep: "\t") do |csv|
-      csv << [I18n.t('modules.classifier.search_e_data.sum'), I18n.t('modules.classifier.search_e_data.payer'),
-              I18n.t('modules.classifier.search_e_data.recipt'), I18n.t('modules.classifier.search_e_data.purpose'),
-              I18n.t('modules.classifier.search_e_data.date')]
+      csv << [
+          I18n.t('modules.classifier.search_e_data.sum'),
+          I18n.t('modules.classifier.search_e_data.payer'),
+          I18n.t('modules.classifier.search_e_data.recipt'),
+          I18n.t('modules.classifier.search_e_data.purpose'),
+          I18n.t('modules.classifier.search_e_data.date')
+      ]
       payments.each do |payment|
-        csv << [payment["amount"], payment["payer_name"], payment["recipt_name"] + " " + payment["recipt_edrpou"], payment["payment_details"], payment['trans_date'].split('T')[0]]
+        csv << [
+            payment['amount'],
+            payment['payer_name'],
+            payment['recipt_name'] + " " + payment['recipt_edrpou'],
+            payment['payment_details'],
+            payment['trans_date'].split('T')[0]
+        ]
       end
     end
   end

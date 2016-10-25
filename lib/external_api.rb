@@ -22,9 +22,12 @@ class ExternalApi
     most_received = []
     data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
 
-    data.group_by{ |hash| hash['recipt_edrpou'] }.each do |recipt_edrpou, payment|
+    role = (payer_erdpou.blank? and not recipt_edrpou.blank?) ? 'payer' : 'recipt'
+    data.group_by{ |hash| hash["#{role}_edrpou"] }.each do |edrpou, payment|
+      next if edrpou.to_i.eql?(0)
       most_received << {
-          name: payment.first['recipt_name'],
+          name: payment.first["#{role}_name"],
+          edrpou: payment.first["#{role}_edrpou"],
           val: payment.inject(0) { |sum, item| sum += item['amount'].to_f }
       }
     end

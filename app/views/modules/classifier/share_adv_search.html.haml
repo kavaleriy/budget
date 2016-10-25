@@ -421,3 +421,16 @@
     }
     return data;
   }
+
+  function graph_click(edrpou, text) {
+    var data = init_search_params();
+    if (!data.payers_edrpous) {
+      data.payers_edrpous = edrpou;
+      $('#_item_payers').select2('data', { id: edrpou, text: text });
+    }
+    if (!data.recipt_edrpous) {
+      data.recipt_edrpous = edrpou;
+      $('#_item_recipt').select2('data', { id: edrpou, text: text });
+    }
+    classifier_search("#{modules_classifier_search_e_data_url}", data);
+  }
