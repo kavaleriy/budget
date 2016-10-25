@@ -1,3 +1,23 @@
-.subtitle
-  = t('.most_received')
+:scss
+  $button-background: #0c2231;
+  $button-text: white;
+  #entrepreneurs {
+    background-color: $button-background;
+    margin: 5px;
+    padding: 2px 10px;
+    height: 26px;
+    min-width: 150px;
+    border-radius: 0;
+    float: right;
+    color: $button-text;
+    font-weight: bold;
+    display: none;
+  }
+
+.row
+  .col-xs-8.subtitle
+    = t('.most_received')
+  .col-xs-4.text-right
+    %button.btn#entrepreneurs
+      = t('modules.classifier.advanced_search.entrepreneurs')
 %canvas#barChart

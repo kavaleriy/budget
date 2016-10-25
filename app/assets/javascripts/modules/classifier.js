@@ -78,12 +78,12 @@ function init_items_select2_with_field_id(field_id, parent_field_id, url, placeh
 // sorting params may be empty
 // sorting apply for items list only (manage by controller)
 function get_items(url, type, role, _sort_param) {
-  $('#spinner-container').show();
+  // $('#spinner-container').show();
   var town_id = $('#_item_type_payers').data('town-id');
   $.ajax({
     type: 'get',
     url: url,
-    async: false,
+    // async: false,
     dataType: 'script',
     data: {
       town_id: town_id,
@@ -94,7 +94,7 @@ function get_items(url, type, role, _sort_param) {
       sort_direction: (_sort_param != null ? _sort_param.sort_dir : null)
     }
   });
-  $('#spinner-container').hide();
+  // $('#spinner-container').hide();
 }
 
 // TODO: refactor in future
