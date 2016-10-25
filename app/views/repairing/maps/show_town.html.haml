@@ -6,6 +6,6 @@
     border: none;
   }
 
-%iframe{src: "/repairing/maps/frame/10/#{params[:town_id]}?locale=#{params[:locale]}"}
+%iframe{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true', src: "/repairing/maps/frame/10/#{params[:town_id]}?locale=#{params[:locale]}"}
 
 -#= render partial: 'show_map'
