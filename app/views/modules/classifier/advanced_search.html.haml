@@ -255,7 +255,7 @@
     }
   }
   .social-btns {
-    margin: 5px 0 5px 0;
+    margin: 5px 0;
   }
   .at4-share-outer {
     // hide sidebar for share
@@ -456,13 +456,11 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      if($('#_item_type_payers').val() || $('#_item_type_recipt').val()) {
-        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
-        // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
-        // $('#most-received .subtitle').html(title);
-        $("#items-list").hide();
-        $('#entrepreneurs').show();
-      }
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
+      // $('#most-received .subtitle').html(title);
+      $("#items-list").hide();
+      $('#entrepreneurs').show();
       e.preventDefault();
     });
 
