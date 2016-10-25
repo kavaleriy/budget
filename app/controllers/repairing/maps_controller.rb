@@ -90,6 +90,7 @@ module Repairing
     end
 
     def get_heapmap_geo_json
+
       repairings = Repairing::Repair.where(:coordinates.ne => nil ).entries
       geo_json = []
       repairings.each do |repair|
