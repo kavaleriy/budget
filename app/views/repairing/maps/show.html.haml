@@ -8,6 +8,6 @@
     padding-bottom: 5px;
   }
 
-%iframe{src: "/repairing/maps/frame/6?locale=#{params[:locale]}", frameborder: 0}
+%iframe{src: "/repairing/maps/frame/6?locale=#{params[:locale]}", frameborder: 0, :allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
 
 = render partial: 'show_map'

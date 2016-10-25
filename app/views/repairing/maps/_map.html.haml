@@ -108,6 +108,15 @@
 
 :scss
   #map {
+
+    #ewe{
+      z-index: 1002;
+      position: absolute;
+      top: 100px;
+      left: 40px;
+      width: 100px;
+      height: 50px;
+    }
     #fullscreen{
       position: absolute;
       right: 10px;
@@ -143,6 +152,9 @@
   }
 
 #map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
+  .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
+    .modal-dialog
+      .modal-content
   #fullscreen
     %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
   #last_updated_repair

@@ -228,9 +228,9 @@
 -#        %span
 -#          = t('repairing.maps.sitebar.information')
 
-.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1'}
-  .modal-dialog
-    .modal-content
+-#.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
+-#  .modal-dialog
+-#    .modal-content
 
 
 -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
@@ -244,16 +244,11 @@
 -#      .modal-body
 -#        Content here
 
-
 = render partial: 'map_ukraine'
 
 :javascript
 
   $(document).ready(function() {
-
-
-    // var modal_dom = $('#more-infoModal');
-    // var modal_title = modal_dom.find('.modal-title');
 
     function getRepairId(){
       return $('.new_info_panel').attr('data-repair-id');
@@ -337,7 +332,6 @@
 
       categories = JSON.parse('#{@categories.to_json(:except => :img)}')
       aRepairMap.addCategoryControl(categories);
-
 
       $('#fullscreen').click(function(){
         aRepairMap.toggleMapInFullscreen();

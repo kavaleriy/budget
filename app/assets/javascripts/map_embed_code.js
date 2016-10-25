@@ -2,10 +2,17 @@ function aMapEmbedCode() {
 
     var el_id, width, height, src, k,
         min_width, min_height,
-        max_width, max_height;
+        max_width, max_height,
+        allowfullscreen = true,
+        mozallowfullscreen = true,
+        webkitallowfullscreen = true;
+
+    function iframeHtml(){
+       return "<iframe allowfullscreen=" + allowfullscreen + " mozallowfullscreen=" + mozallowfullscreen + " webkitallowfullscreen=" + webkitallowfullscreen + " width=" + width + " height=" + height + " src='" + src + "'></iframe>"
+    }
 
     function reset() {
-        $(el_id + ' .frame_url').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+        $(el_id + ' .frame_url').val(iframeHtml());
     }
 
     return {
@@ -28,7 +35,7 @@ function aMapEmbedCode() {
                 title: I18n.t('embed'),
                 content: function() {
                     var content = "";
-                    $(el_id + ' .frame_url').val("<iframe width=" + width + " height=" + height + " src='" + src + "'></iframe>");
+                    $(el_id + ' .frame_url').val(iframeHtml());
                     return $(el_id + ' .form-horizontal');
                 }
             })
