@@ -5,14 +5,18 @@ if (barChart) {
   $('#most-received').hide();
 }
 
-<%- unless params[:payers_edrpous].blank? || @receivers.size < 3 %>
+<%#- unless params[:payers_edrpous].blank? || @receivers.size < 3 %>
+<%#- if ((params[:payers_edrpous].present? and not params[:recipt_edrpous].present?) or (not params[:payers_edrpous].present? and params[:recipt_edrpous].present?)) and @receivers.size > 3 %>
+<%- if @receivers.size > 3 %>
   $('#most-received').show();
 
   var label = [];
   var data_set = [];
+  var edrpous = [];
   <%- @receivers.each do |payment| %>
     label.push('<%= payment[:name].html_safe %>');
     data_set.push(<%= '%.2f' % payment[:val] %>);
+    edrpous.push('<%= payment[:edrpou] %>');
   <%- end %>
 
   // prepare chart options and datasets
@@ -30,6 +34,9 @@ if (barChart) {
   var ctx = $('#barChart').get(0);
   var options = {
     maintainAspectRatio: false,
+    onClick: function (e, data) {
+      graph_click(edrpous[data[0]._index], label[data[0]._index]);
+    },
     tooltips: {
       backgroundColor: 'rgba(12, 34, 49, 1)'
     },
@@ -53,7 +60,7 @@ if (barChart) {
         position: 'bottom',
         gridLines: {
           drawBorder: false,
-          display: false,
+          display: false
         },
         ticks: {
           min: data_set[data_set.length-1] / 2,
