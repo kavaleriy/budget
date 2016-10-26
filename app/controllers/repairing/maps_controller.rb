@@ -53,6 +53,11 @@ module Repairing
     end
 
     def frame
+      @partners = Modules::Partner.by_category(t('maps.show.map')).get_publish_partners.order(order_logo: :asc)
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def geo_json

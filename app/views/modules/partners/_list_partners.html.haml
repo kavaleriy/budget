@@ -25,7 +25,7 @@
 - @modules_partners.group_by(&:category).each do |category, partners|
   .category
     %h3
-      =category
+      ="#{'Cторінка: '}" + category
     - partners.each_with_index do |partner, i|
       .partner{'data-id' => partner.id}
         .data-actions
