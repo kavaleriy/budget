@@ -1,7 +1,7 @@
 :scss
   .map_container {
     min-height: 300px;
-    height: calc(100vh - 101px);
+    height: calc(100vh - 120px);
   }
   .btn-container{
     text-align: left;
@@ -13,6 +13,17 @@
     .embedded-button{
       display: inline-block;
       vertical-align: top;
+    }
+    .partner-logos {
+      display: inline-block;
+      vertical-align: top;
+      float: right;
+      .item {
+        display: inline-block;
+        img {
+          height: 40px;
+        }
+      }
     }
   }
   //hide sidebar for share
@@ -28,6 +39,10 @@
       = render partial: 'layouts/addthis_hor_share'
     .embedded-button
       = render partial: 'show_map'
+    .partner-logos
+      - @partners.each do |partner|
+        .item
+          = get_item(partner, 'partner')
 
 
 
