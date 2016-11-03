@@ -101,7 +101,7 @@ function get_items(url, type, role, _sort_param) {
 function share_buttons_set_url(url) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
-    if (!$('.demo_index')) {
+    if (!$('.demo_index').length) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
         $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.csv'));
         // console.log(url.replace('search_e_data', 'direct_link'));
