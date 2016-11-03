@@ -319,14 +319,14 @@
     init_items_select2_with_field_id(
       '#_item_payers',
       '#_item_type_payers',
-      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
     );
 
     init_items_select2_with_field_id(
       '#_item_recipt',
       '#_item_type_recipt',
-      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
     );
 
@@ -336,7 +336,7 @@
     // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
       $('.results').empty();
-      if (barChart) {
+      if (barChart.chart) {
         barChart.destroy();
         $('#most-received').hide();
       }
@@ -357,8 +357,9 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
       $("#items-list").hide();
+      $('#entrepreneurs').show();
       e.preventDefault();
     });
 
@@ -367,6 +368,13 @@
       $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
       classifier_search("#{modules_classifier_search_e_data_url}", init_search_params($(this).attr('data-column'), $(this).attr('data-sort-direction')))
       $(this).attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
+    });
+
+    // Show entrepreneurs only. Entrepreneurs have no 'edrpou', that's why passing const 'xxxxxxxxxx'.
+    $('#entrepreneurs').on('click', function(e) {
+      graph_click('xxxxxxxxxx');
+      $(this).hide();
+      e.preventDefault;
     });
 
     // add event for sorting items list
@@ -420,4 +428,21 @@
       sort_dir: sort_dir
     }
     return data;
+  }
+
+  // show payer or recipt by click on barchart
+  function graph_click(edrpou, text) {
+    if (!parseInt(edrpou)) {
+      text = I18n.t('modules.classifier.advanced_search.entrepreneurs');
+    }
+    var data = init_search_params();
+    if (!data.payers_edrpous) {
+      data.payers_edrpous = edrpou;
+      $('#_item_payers').select2('data', { id: edrpou, text: text });
+    }
+    if (!data.recipt_edrpous) {
+      data.recipt_edrpous = edrpou;
+      $('#_item_recipt').select2('data', { id: edrpou, text: text });
+    }
+    classifier_search("#{modules_classifier_search_e_data_url}", data);
   }

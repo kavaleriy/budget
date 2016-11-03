@@ -22,6 +22,7 @@
 
 
 :scss
+
   /* New search style. Begin */
   //.search_block {
   //  position: absolute;
@@ -227,9 +228,9 @@
 -#        %span
 -#          = t('repairing.maps.sitebar.information')
 
-.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1'}
-  .modal-dialog
-    .modal-content
+-#.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
+-#  .modal-dialog
+-#    .modal-content
 
 
 -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
@@ -243,15 +244,11 @@
 -#      .modal-body
 -#        Content here
 
-
 = render partial: 'map_ukraine'
 
 :javascript
 
   $(document).ready(function() {
-    // var modal_dom = $('#more-infoModal');
-    // var modal_title = modal_dom.find('.modal-title');
-
 
     function getRepairId(){
       return $('.new_info_panel').attr('data-repair-id');
@@ -305,7 +302,7 @@
     .done(function (data) {
 
       function addMarkers() {
-        filtered_data = {type: data.type, features: []}
+        filtered_data = {type: data.type, features: [], last_update: data.last_updated}
 
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)
@@ -336,8 +333,9 @@
       categories = JSON.parse('#{@categories.to_json(:except => :img)}')
       aRepairMap.addCategoryControl(categories);
 
-
-      //aRepairMap.addYearLayer(new Date().getFullYear());
+      $('#fullscreen').click(function(){
+        aRepairMap.toggleMapInFullscreen();
+      })
 
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){

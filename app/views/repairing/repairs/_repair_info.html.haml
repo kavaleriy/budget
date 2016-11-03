@@ -64,12 +64,12 @@
             font-weight: bold !important;
           }
           .more-data{
-            .api{
+            & > .api{
               .api-text{
                 display: none;
               }
               margin-top: 15px;
-              a{
+              & > a{
                 display: block;
                 margin-bottom: 5px;
                 text-decoration: none;
@@ -93,7 +93,7 @@
                 .api-text{
                   display: block;
                 }
-                a{
+                & > a{
                   &:before{
                     font-family: FontAwesome;
                     content: '\f147';
@@ -175,32 +175,55 @@
   %p
     = @repairing_repair.description
   .more-data
-    - unless @repairing_repair.edrpou_artist.nil? && @repairing_repair.edrpou_spending_units.nil?
-      .api
-        = link_to external_api_e_data_path(@repairing_repair.edrpou_artist, @repairing_repair.edrpou_spending_units),
-        remote: true do
-          -#%i.fa.fa-plus-square-o.button
-          %i.fa.fa-gears.icon
-          = t('.e_data')
-        #e-data.api-text
-    - unless @repairing_repair.prozzoro_id.nil?
-      .api
-        = link_to external_api_prozzoro_path(@repairing_repair.prozzoro_id), remote: true do
-          -#%i.fa.fa-plus-square-o.button
-          %i.fa.fa-university.icon
-          = t('.prozzoro')
-        #prozzoro.api-text
+    .api
+      = link_to external_api_e_data_path(@repairing_repair),
+      remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-gears.icon
+        = t('.e_data')
+      #e-data.api-text
+    .api
+      = link_to external_api_prozzoro_path(@repairing_repair), remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-university.icon
+        = t('.prozzoro')
+      #prozzoro.api-text
     -#= link_to external_api_edr_path(@repairing_repair), remote: true do
     -#  %i.fa.fa-plus-square-o.button
     -#  %i.fa.fa-money.icon
     -#  = t('.court_register')
     -##court-register
-    - unless @repairing_repair.edrpou_artist.nil?
-      .api
-        = link_to external_api_edr_path(@repairing_repair.edrpou_artist), remote: true do
-          -#%i.fa.fa-plus-square-o.button
-          %i.fa.fa-money.icon
-          = t('.edr_data')
-        #edr.api-text
+    .api
+      = link_to external_api_edr_path(@repairing_repair), remote: true do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-money.icon
+        = t('.edr_data')
+      #edr.api-text
+    .api
+      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.edrpou_spending_units} do
+        -#%i.fa.fa-plus-square-o.button
+        %i.fa.fa-money.icon
+        = t('.acm')
+      #acm-api-text.api-text
 
+:javascript
+  $(document).ready(function() {
+    $('#acm-link').click(function() {
 
+      var spendingEdrpou = $(this).data('erdpou');
+
+      if(spendingEdrpou){
+        // redirect to acm-ua.org
+        window.open("http://acm-ua.org/poshuk.php?poshuk=:edrpou".replace(':edrpou', spendingEdrpou), '_blank');
+      }else{
+        // show external api no data yet partial
+        $.ajax({
+          url: '/external_api/no_data_yet',
+          dataType: 'script',
+          data: {
+            selector: '#acm-api-text'
+          }
+        })
+      }
+    })
+  })

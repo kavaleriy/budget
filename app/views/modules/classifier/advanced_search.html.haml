@@ -255,17 +255,17 @@
     }
   }
   .social-btns {
-    margin: 0 0 10px 0;
+    margin: 5px 0;
   }
-   // hide sidebar for share
   .at4-share-outer {
+    // hide sidebar for share
     display: none;
   }
   .embeded-btn {
     #export_classifier,
     #embedded-profile {
       background-color: $button-background;
-      margin-left: 10px;
+      margin: 5px;
       padding: 2px 10px;
       height: 26px;
       min-width: 150px;
@@ -335,8 +335,8 @@
   }
   .copyright_info {
     font-size: 75%;
-    position: absolute;
-    bottom: 5px;
+    //position: absolute;
+    //bottom: 5px;
     p {
       margin: 0;
     }
@@ -421,14 +421,14 @@
     init_items_select2_with_field_id(
       '#_item_payers',
       '#_item_type_payers',
-      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
     );
 
     init_items_select2_with_field_id(
       '#_item_recipt',
       '#_item_type_recipt',
-      "#{modules_classifier_select_collection_url(format: 'json', town_id: @town.id)}",
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
     );
 
@@ -456,9 +456,19 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
+      // $('#most-received .subtitle').html(title);
       $("#items-list").hide();
+      $('#entrepreneurs').show();
       e.preventDefault();
+    });
+
+    // Show entrepreneurs only. Entrepreneurs have no 'edrpou', that's why passing const 'xxxxxxxxxx'.
+    $('#entrepreneurs').on('click', function(e) {
+      graph_click('xxxxxxxxxx');
+      $(this).hide();
+      e.preventDefault;
     });
 
     // add event for sorting search results
@@ -517,4 +527,21 @@
       sort_dir: sort_dir
     }
     return data;
+  }
+
+  // show payer or recipt by click on barchart
+  function graph_click(edrpou, text) {
+    if (!parseInt(edrpou)) {
+      text = I18n.t('modules.classifier.advanced_search.entrepreneurs');
+    }
+    var data = init_search_params();
+    if (!data.payers_edrpous) {
+      data.payers_edrpous = edrpou;
+      $('#_item_payers').select2('data', { id: edrpou, text: text });
+    }
+    if (!data.recipt_edrpous) {
+      data.recipt_edrpous = edrpou;
+      $('#_item_recipt').select2('data', { id: edrpou, text: text });
+    }
+    classifier_search("#{modules_classifier_search_e_data_url}", data);
   }

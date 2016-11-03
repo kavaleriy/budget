@@ -1,16 +1,14 @@
 Rails.application.routes.draw do
 
-  mount Ckeditor::Engine => '/ckeditor'
   namespace :compare_taxonomies do
     get 'index'
   end
   get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
 
-    get 'external_api/e_data/:edrpou_artist/:edrpou_spending_units' => 'external_api#e_data',as: 'external_api_e_data'
-    get 'external_api/prozzoro/:prozzoro_id' => 'external_api#prozzoro_info',as: 'external_api_prozzoro'
-    get 'external_api/edr/:edrpou' => 'external_api#edr_info',as: 'external_api_edr'
-    # get 'edata'
-    # get 'edr'
+    get 'external_api/e_data/:repair_id' => 'external_api#e_data',as: 'external_api_e_data'
+    get 'external_api/prozzoro/:repair_id' => 'external_api#prozzoro',as: 'external_api_prozzoro'
+    get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
+    get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 

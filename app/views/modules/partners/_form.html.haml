@@ -17,15 +17,33 @@
       }
     }
   }
+- categories = []
+- @modules_partners.group_by(&:category).each do |category, partner|
+  - categories << category
 
 = simple_form_for(@modules_partner) do |f|
   = f.error_notification
 
   .form-inputs
-    = f.input :name, label: t('modules.partners.index.name')
-    = f.input :logo, as: :file, label: t('modules.partners.index.logo'), :input_html => { :class => 'form-control', accept: 'image/*' }
-    = f.input :url, as: :url, label: t('.url'), :input_html => { :class => 'form-control'}
+    .row
+      .col-xs-12.col-md-10.partners-title
+        = f.input :name, label: t('modules.partners.index.name')
+      .col-xs-12.col-md-2.partners-file
+        = f.input :logo, as: :file, label: t('modules.partners.index.logo'), input_html: { class: 'form-control', accept: 'image/*' }
+    .row
+      .col-xs-12.col-md-6.partners-category
+        = f.input :category, label: t('modules.partners.index.category')
+      .col-xs-12.col-md-6.partners-link
+        = f.input :url, as: :url, label: t('.url'), input_html: { class: 'form-control' }
     = f.input :publish_on, as: :boolean, label: t('modules.partners.index.show')
   .form-actions
     = f.button :button, t('save'), class: 'btn-primary'
-    = link_to t('modules.partners.index.header'), modules_partners_path, :class => 'btn btn-info'
+    = link_to t('modules.partners.index.header'), modules_partners_path, class: 'btn btn-info'
+
+:javascript
+  // TODO: Change double space to Enter-key
+  $(document).ready(function() {
+    $('#modules_partner_category').select2({
+      tags: []
+    });
+  });

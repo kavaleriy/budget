@@ -252,7 +252,7 @@
 
 %h1
   = t('.title')
-  = select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
+  -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
 %ul.nav.nav-pills
   %li.active
     %a{"data-toggle" => "tab", :href => "#rov-tab"}

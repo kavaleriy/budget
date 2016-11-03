@@ -53,30 +53,15 @@ module Repairing
     end
 
     def frame
+      @partners = Modules::Partner.by_category(t('maps.show.map')).get_publish_partners.order(order_logo: :asc)
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def geo_json
-      start_time = Time.now
-      repairings = Repairing::Layer.valid_layers_with_repairs
-      geo_jsons = []
-      # if params[:town] not empty filter array by town
-      repairings.select!{ |key,value| key['town_id'].to_s.eql?(params[:town]) } unless params[:town].blank?
-      repairings.each { |layer,repairs|
-        repairs.each do |repair|
-          repair['layer'] = {}
-          repair['layer']['town_id'] = layer['town_id'].to_s
-          repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
-
-          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
-          geo_jsons << repair_json if repair_json
-        end
-
-      }
-      result = {
-                "type" => "FeatureCollection",
-                "features" => geo_jsons
-               }
-      puts Time.now - start_time
+      result = Repairing::Repair.repair_json_by_town(params[:town])
       respond_to do |format|
         format.json { render json: result }
       end
@@ -88,7 +73,7 @@ module Repairing
 
     def download
 
-      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer.xlsx'
+      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer_example.xlsx'
       if File.exist?(file_path)
         send_file(
             "#{file_path}",
@@ -110,6 +95,7 @@ module Repairing
     end
 
     def get_heapmap_geo_json
+
       repairings = Repairing::Repair.where(:coordinates.ne => nil ).entries
       geo_json = []
       repairings.each do |repair|
