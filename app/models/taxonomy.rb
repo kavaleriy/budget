@@ -6,6 +6,8 @@
     scope :owned_by, lambda { |town| where(:owner => town) }
     # select all active taxonomies
     scope :get_active, -> { where(active: true ) }
+    # select taxonomies by town id
+    scope :by_town_id, lambda { |town_id| where(:town_id => town_id) }
 
     before_save :generate_title
 
@@ -32,6 +34,10 @@
     def self.get_active_by_town(town)
       # get active taxonomies belongs to town
       self.owned_by(town).get_active
+    end
+
+    def self.active_taxonomies_by_town(town_id)
+      self.by_town_id(town_id).get_active
     end
 
     def self.get_active_for_all_towns

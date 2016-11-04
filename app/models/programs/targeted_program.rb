@@ -93,6 +93,58 @@ class Programs::TargetedProgram
     user.is_admin? || self.owner.eql?(user)
   end
 
+  def self.data_bar(taxonomy,year)
+
+    kfk_spr = codes_relations
+    taxonomy = taxonomy
+    explainer = taxonomy.explanation['ktfk']
+
+    tree = taxonomy.get_tree [:ktfk]
+
+    result = []
+
+    tree['children'].each do |item|
+      key = item['key']
+      result <<
+      {
+          ktvk: key,
+          kfk: kfk_spr[key],
+          title: explainer[key]['title'],
+          amount: item['amount'][:fact][year.first]['0']['total']
+      }
+    end
+    result
+
+  end
+
+  def self.load_from_csv(file_name)
+
+    # load data from CSV file
+    # input csv file with 2 fields: ftvk code; kfk code
+    # return (Hash): 'ftvk' => 'kfk'
+    # or
+    # empty Hash if error
+
+    codes = {}
+    CSV.foreach(file_name, headers: true, col_sep: ";") do |row|
+      codes[row[0]] = row[1]
+    end
+    codes
+  rescue => e
+    {}
+  end
+
+  def self.codes_relations
+
+    # open to load file "db/ktvk_to_kfk.csv"
+    # return (Hash): 'ftvk' => 'kfk'
+    # or
+    # nil if file cann't read
+
+    @ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if @ktvk_to_kfk.nil?
+    @ktvk_to_kfk
+  end
+
   private
 
   def self.create_program_by_xls(sheet)

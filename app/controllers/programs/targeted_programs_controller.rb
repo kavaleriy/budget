@@ -91,6 +91,10 @@ class Programs::TargetedProgramsController < ApplicationController
   def town_programs
     @programs = Programs::TargetedProgram.by_town(params[:town])
     @years = Programs::TargetedProgram.programs_years(@programs)
+
+    taxonomies = TaxonomyRov.active_taxonomies_by_town(params[:town]).last
+    @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years)
+
     respond_with(@programs) do |format|
       format.js { render layout: false }
       format.html { render file: 'programs/targeted_programs/town_programs', layout: 'visify'}
