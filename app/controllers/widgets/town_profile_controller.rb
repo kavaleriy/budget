@@ -209,7 +209,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_e_data_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_url(@town),name)
+    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_path(@town),name)
   end
 
   def get_purchase_hash(name)
