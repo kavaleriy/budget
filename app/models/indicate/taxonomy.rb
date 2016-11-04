@@ -31,6 +31,7 @@ class Indicate::Taxonomy
         indicators[group][name][year]['id'] = indicator._id.to_s
         indicators[group][name][year]['matching'] = indicator['matching']
         indicators[group][name][year]['link'] = indicator['link']
+        indicators[group][name]['id'] = group + "_" + name
       }
     }
     indicators
