@@ -42,8 +42,6 @@
     })
 
     console.log(data1);
-
-
     console.log("#{@indicate_taxonomy.id}");
 
     function create_graphs2(){
@@ -76,18 +74,18 @@
       // TODO: Delete fill custom data when get real
 
       // create default random data
-      var arr1 = [], arr2 = [];
+      var arr1 = ["134", "145", "122"], arr2 = ["130", "142"];
 
-      for (var b = 100, e = 400, i = 0; b < e; i++, b+= 12) {
-
-        var n1 = Math.round(Math.random() * e),
-            n2 = Math.round(Math.random() * n1);
-
-        (n1 > 100 && n1 < 400) ? arr1.push(n1) : i-= 1;
-
-        (n2 > 100 && n2 < 400) ? arr2.push(n1) : i-= 1;
-
-      }
+      // for (var b = 100, e = 400, i = 0; b < e; i++, b+= 12) {
+      //
+      //   var n1 = Math.round(Math.random() * e),
+      //       n2 = Math.round(Math.random() * n1);
+      //
+      //   (n1 > 100 && n1 < 400) ? arr1.push(n1) : i-= 1;
+      //
+      //   (n2 > 100 && n2 < 400) ? arr2.push(n1) : i-= 1;
+      //
+      // }
 
       // create chart with 2 lines
       var c = $(id).get(0);
@@ -99,7 +97,7 @@
           labels: ["2014", "2015", "2016"],
           datasets: [
             {
-              label: "Dataset",
+              label: "plan",
 
               lineTension: 0.5,
 
@@ -129,7 +127,7 @@
               spanGaps: false
             },
             {
-              label: "Dataset 1",
+              label: "fact",
 
               lineTension: 0.5,
 
