@@ -31,10 +31,15 @@ class Indicate::Taxonomy
         indicators[group][name][year]['id'] = indicator._id.to_s
         indicators[group][name][year]['matching'] = indicator['matching']
         indicators[group][name][year]['link'] = indicator['link']
-        indicators[group][name]['id'] = group + "_" + name
+        indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
       }
     }
     indicators
+  end
+
+  def replace_space_indicator_chart_id(str1, str2)
+    string = "#{str1}_#{str2}"
+    string.tr(' ','_')
   end
 
 end
