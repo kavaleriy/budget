@@ -24,6 +24,8 @@ class Modules::Classifier
   before_save :encode_fields, :find_town
   belongs_to :town, class_name: 'Town',index: true
   scope :by_town, -> (town) { where(town: town) }
+  # if received koatuu of areas ('oblast') then get only 2 first digits, because it looks like 'xx00000000';
+  # else get 5 first digits for get all organization in this territory
   scope :by_koatuu, -> (koatuu, symbol_quantity = koatuu[2..10].eql?('00000000') ? 2 : 5) { where(k_ter: /^#{(koatuu.to_s.strip)[0..symbol_quantity-1]}/i) }
   scope :search_part_title, -> (part) {any_of({pnaz: /#{part}/i}, {edrpou: /^#{part}/i})}
 
