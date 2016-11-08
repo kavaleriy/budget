@@ -36,7 +36,6 @@
       success: function(json) {
 
         data1 = json;
-        console.log(data1);
         create_graphs2();
       }
     })
@@ -48,12 +47,54 @@
       console.log(data1['indicators']);
       $.each(data1['indicators'], function(key, value) {
         $.each(value, function(k, v) {
-          console.log(key);
-          console.log(k);
+          console.log(v['plan']);
+          var years = [];
+          years_p = [];
+          years_f = [];
+          var values = [];
+          var data = [];
+          $.each(v['plan'], function(k_p, v_p){
+            years.push(k_p);
+            years_p.push(k_p);
+          })
+          $.each(v['fact'], function(k_f, v_f){
+            years.push(k_f);
+            years_f.push(k_f);
+          })
+
+          values_p = [];
+          values_f = [];
+          last_year = years.sort()[years.length-1];
+          console.log("l_y - " + v['plan'][last_year]['value']);
+          for(var i = parseInt(last_year); i > parseInt(last_year) - 3; i--){
+            console.log(i);
+            if (v['plan'][i]){
+              values_p.unshift(v['plan'][i]['value']);
+            } else{
+              values_p.unshift("");
+            }
+            if (v['fact'][i]){
+              values_f.unshift(v['fact'][i]['value']);
+            } else{
+              values_f.unshift("");
+            }
+          }
+
+          console.log(values_p);
+          $.each(v['plan'], function(k_p, v_p){
+            console.log(k_p);
+            // for(var i = 0; i < i -3; i--){
+            //
+            // }
+          })
+          $.each(v['fact'], function(k_f, v_f){
+            console.log(k_f);
+          })
+
 
           id_chart = "#" + v['id'];
           console.log(id_chart);
-          buildLineChart(id_chart);
+          buildLineChart(id_chart, last_year, values_p, values_f);
           // var current_year = new Date().getFullYear() - 1;
           // var years = [];
           // var values = [];
@@ -69,13 +110,16 @@
       })
     }
 
-    function buildLineChart(id) {
+    function buildLineChart(id, last_year, data_plan, data_fact) {
       console.log(data1['indicators']);
       // TODO: Delete fill custom data when get real
 
       // create default random data
-      var arr1 = ["134", "145", "122"], arr2 = ["130", "142"];
+      var arr1 = ["135", "145", "122"], arr2 = ["130", "", "142"];
 
+      plan_fact = $.merge(data_plan, data_fact);
+      max_value = Math.max.apply(null, plan_fact);
+      step = max_value / 5
       // for (var b = 100, e = 400, i = 0; b < e; i++, b+= 12) {
       //
       //   var n1 = Math.round(Math.random() * e),
@@ -94,7 +138,7 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ["2014", "2015", "2016"],
+          labels: [ last_year - 2, last_year - 1, last_year ],
           datasets: [
             {
               label: "plan",
@@ -122,7 +166,7 @@
               pointHoverBackgroundColor: "#ffd304",
               pointHoverBorderColor: "#fff",
 
-              data: arr1,
+              data: data_plan,
 
               spanGaps: false
             },
@@ -152,7 +196,7 @@
               pointHoverBackgroundColor: "#ffd304",
               pointHoverBorderColor: "#fff",
 
-              data: arr2,
+              data: data_fact,
 
               spanGaps: false
             }
@@ -196,9 +240,9 @@
                 ticks: {
                   fontColor: '#fff',
                   padding: 20,
-                  min: 100,
+                  min: 0,
                   maxTicksLimit: 6,
-                  stepSize: 50
+                  stepSize: step
                 }
               }
             ]
