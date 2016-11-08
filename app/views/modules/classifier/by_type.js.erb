@@ -1,17 +1,1 @@
 $('#items-list').html('<%= escape_javascript( render partial: 'by_type', formats: [:html]) %>');
-
-// clear all options for select (depend on role and selected type) and add first option with empty value
-var empty_el = $('<option></option>').val('');
-$('#_item_<%= @role %>').empty().append(empty_el);
-
-// add options depend on role and selected type
-<%- @items.map do |item| %>
-  var option = $('<option></option>').val('<%= item.edrpou %>').html("<%= item.pnaz %> <%= item.edrpou %>");
-  $('#_item_<%= @role %>').append(option);
-<% end %>
-
-// reinit select2 after changing options
-$('#_item_<%= @role %>').select2({
-  placeholder: I18n.t('modules.classifier.advanced_search.<%= @role %>_form_placeholder'),
-  allowClear: true
-});

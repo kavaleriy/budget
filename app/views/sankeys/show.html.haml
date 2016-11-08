@@ -10,7 +10,7 @@
   $(document).ready(function() {
 
     var embed_code = aEmbedCode();
-    var src = 'http://' + window.location.host + "/sankeys/sankey/#{@sankey.id}";
+    var src = 'https://' + window.location.host + "/sankeys/sankey/#{@sankey.id}";
     embed_code.initialize({width: 900, height: 500, el_id: "#embed_code_sankey", src: src});
 
   })

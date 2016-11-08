@@ -17,6 +17,8 @@ class Repairing::Layer
 
   has_many :repairs, class_name: 'Repairing::Repair', autosave: true, dependent: :destroy
 
+  validates :town, :owner, :title, presence: true
+
   def self.visible_to user
     files = if user.nil?
       self.where(owner: nil)
@@ -91,6 +93,7 @@ class Repairing::Layer
                                                                      {
                                                                          # show this fields
                                                                          '$project' => {
+                                                                             'updated_at' => 1,
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
                                                                              'repair_date' => 1,

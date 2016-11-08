@@ -17,7 +17,12 @@ module Repairing
 
         # Add this 'if' for 'Demonstration of a typical city profile' because this town has not coordinates
         if !town['coordinates'].nil?
-          @map_center = town['coordinates'] if town.level && town.level > 1 # area
+          if town.level && town.level.eql?(1)  # area
+            regional_center = Town.where(area_title: town.title, level: 13).first  # level: 13 - regional_center(town) of area
+            @map_center = regional_center['coordinates'] unless regional_center.nil?
+          elsif town.level  # town or region
+            @map_center = town['coordinates']
+          end
         else
           @zoom = '6' # view map Ukraine
         end
@@ -48,30 +53,15 @@ module Repairing
     end
 
     def frame
+      @partners = Modules::Partner.by_category(t('maps.show.map')).get_publish_partners.order(order_logo: :asc)
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
 
     def geo_json
-      start_time = Time.now
-      repairings = Repairing::Layer.valid_layers_with_repairs
-      geo_jsons = []
-      # if params[:town] not empty filter array by town
-      repairings.select!{ |key,value| key['town_id'].to_s.eql?(params[:town]) } unless params[:town].blank?
-      repairings.each { |layer,repairs|
-        repairs.each do |repair|
-          repair['layer'] = {}
-          repair['layer']['town_id'] = layer['town_id'].to_s
-          repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
-
-          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
-          geo_jsons << repair_json if repair_json
-        end
-
-      }
-      result = {
-                "type" => "FeatureCollection",
-                "features" => geo_jsons
-               }
-      puts Time.now - start_time
+      result = Repairing::Repair.repair_json_by_town(params[:town])
       respond_to do |format|
         format.json { render json: result }
       end
@@ -82,12 +72,15 @@ module Repairing
     end
 
     def download
-      file_path = Rails.public_path.to_s + '/files/files_for_instructions/repairing_map.xlsx'
+
+      file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer_example.xlsx'
       if File.exist?(file_path)
         send_file(
             "#{file_path}",
             :x_sendfile=>true
         )
+      else
+        redirect_to :back, notice: t('budget_files_controller.not_download_file')
       end
     end
 
@@ -102,6 +95,7 @@ module Repairing
     end
 
     def get_heapmap_geo_json
+
       repairings = Repairing::Repair.where(:coordinates.ne => nil ).entries
       geo_json = []
       repairings.each do |repair|

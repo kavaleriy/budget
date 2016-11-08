@@ -208,3 +208,9 @@
     data[$('[name="[role]"]:checked').val() + '_edrpous'] = $('#_item').val();
     return data;
   }
+
+  function graph_click(param) {
+    var data = init_search_params();
+    data[$('[name="[role]"]').not(':checked').val() + '_edrpous'] = param;
+    classifier_search("#{modules_classifier_search_e_data_url}", data);
+  }

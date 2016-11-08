@@ -1,7 +1,7 @@
 class Modules::PartnersController < AdminController
   layout 'application_admin'
   before_action :set_modules_partner, only: [:show, :edit, :update, :destroy]
-  before_action :get_modules_partners, only: [:index, :change_order]
+  before_action :get_modules_partners, only: [:index, :new, :change_order]
 
   respond_to :html
 
@@ -86,6 +86,6 @@ class Modules::PartnersController < AdminController
     end
 
     def modules_partner_params
-      params.require(:modules_partner).permit(:name, :url, :publish_on, :logo)
+      params.require(:modules_partner).permit(:name, :url, :publish_on, :category, :logo)
     end
 end

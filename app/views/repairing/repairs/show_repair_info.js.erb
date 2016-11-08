@@ -1,0 +1,3 @@
+var modalWindow = $('#more-info-modal');
+modalWindow.find('.modal-content').html("<%= escape_javascript(render partial: 'repairing/repairs/repair_info', layout: false) %>");
+modalWindow.modal();

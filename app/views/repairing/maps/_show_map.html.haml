@@ -1,21 +1,12 @@
-:css
-  iframe {
-    width: 100%;
-    min-height: 400px;
-    height: calc(100vh - 162px);
-    border: none;
-  }
-
-.col-xs-12
-  #embed_code.pull-right
-    = render partial: 'embed_code'
+#embed_code
+  = render partial: 'embed_code'
 
 :javascript
 
   $(document).ready(function() {
 
     var embed_code = aMapEmbedCode();
-    var src = 'http://' + window.location.host + "/repairing/maps/frame/6/?locale=" + "#{params[:locale]}";
+    var src = 'https://' + window.location.host + "/repairing/maps/frame/6/?locale=" + "#{params[:locale]}";
     embed_code.initialize({width: '100%', height: '800px', el_id: "#embed_code", src: src});
 
     $('#town_select').select2({
@@ -84,7 +75,7 @@
       if(!town){
         town = '0';
       }
-      var src = 'http://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town;
+      var src = 'https://' + window.location.host + "/repairing/maps/frame/" + zoom + "/" + town;
 
       var year = $('#embed_code #year_select').val()
       if (year != '')

@@ -1,3 +1,17 @@
-%button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(url), 'tooltip' => t('public.towns.show.click') } }
+%button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(url, 'http://'), 'tooltip' => t('public.towns.show.click') } }
   = fa_icon 'code 1x'
   = t('.get_code')
+%a.btn#export_classifier
+  =t('helpers.links.export')
+
+-#:javascript
+  $(document).ready(function() {
+    $('#export_classifier').on('click', function(e){
+      var town_id = $('#_item_payers').data('town-id');
+      var start_date = $('#_startdate').val();
+      var params = "&town_id="+town_id + "&payers_edrpous="
+        + $('#_item_payers').val() + "&recipt_edrpous=" + $('#_item_recipt').val() + "&period=" + start_date ;
+      var href = "#{modules_classifier_search_e_data_url(:format => :csv)}" + params ;
+      $(this).attr('href', href);
+    });
+  });

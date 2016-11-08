@@ -1,7 +1,7 @@
 - @items.each do |item|
   %tr{'data-edrpou' => item['edrpou'], 'data-role' => @role}
     %td= item['edrpou']
-    %td= item['pnaz']
+    %td.name= item['pnaz']
     %td= item['naz_v']
     %td= item['adp']
 
@@ -9,7 +9,7 @@
   $(document).ready(function() {
     // add event for change item select value by mouse click and hide items list
     $('#edata_items tbody tr').on('click', function() {
-      $('#_item_' + $(this).data('role')).val($(this).data('edrpou')).trigger('change');
+      $('#_item_' + $(this).data('role')).select2('data', { id: $(this).data('edrpou'), text: $(this).find('.name').text() });
       $("#items-list").fadeOut();
     });
   });

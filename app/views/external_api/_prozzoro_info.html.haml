@@ -1,0 +1,45 @@
+-if @prozzoro_info.nil?
+  = render partial: 'no_data_yet'
+-else
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.number') } :"
+    .col-xs-8.value
+      = @prozzoro_info['tenderId']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.title') } :"
+    .col-xs-8.value
+      = @prozzoro_info['title']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.start_prop') } :"
+    .col-xs-8.value
+      = @prozzoro_info['enquiryPeriod']['startDate']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.end_prop') } :"
+    .col-xs-8.value
+      = @prozzoro_info['enquiryPeriod']['endDate']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.status') } :"
+    .col-xs-8.value
+      = @prozzoro_info['status']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.price') } :"
+    .col-xs-8.value
+      = "#{@prozzoro_info['value']['amount']} #{@prozzoro_info['value']['currency']} "
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.customer') } :"
+    .col-xs-8.value
+      = @prozzoro_info['procuringEntity']['name']
