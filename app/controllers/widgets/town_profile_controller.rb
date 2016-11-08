@@ -102,8 +102,8 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_town_items_hash
-    taxonomy = Taxonomy.owned_by(@town.title).first
-    calendar = Calendar.get_calendar_by_town(@town.title)
+    taxonomy = Taxonomy.owned_by(@town).first
+    calendar = Calendar.get_calendar_by_town(@town)
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(@town).last
     programs = Programs::TargetedProgram.by_town(@town).first
     e_data = Modules::Classifier.by_koatuu(@town.koatuu).first
