@@ -13,12 +13,37 @@
       = data[:amount]
 
 :javascript
-  function get_data(selector, attr_name) {
-    var json = $(selector).attr(attr_name);
-    return jQuery.parseJSON(json);
+  function getData(selector, attr_name) {
+    // func to get data
+    // get:
+    //    selector of DOM element
+    //    attr_name of DOM element
+    // return array of Object's
+    return jQuery.parseJSON($(selector).attr(attr_name));
+  }
+
+  var _data = getData('.bar', 'data-bar');
+
+  function getTotalAmount (obj_key) {
+    // func to cut last element of data array
+    // get: last array Object key
+    // return last array Object value
+    return _data.pop()[obj_key];
+  }
+
+  function createPercentageRatio(obj_key) {
+    // TODO: Add comment
+    var resultTable = [];
+    var lastElementValue = getTotalAmount(obj_key);
+    $.each(_data, function(key, value) {
+      resultTable.push( (value[obj_key]/lastElementValue * 100).toFixed(2) );
+    })
+    return resultTable;
   }
 
   $(document).ready(function() {
-    var _data = get_data('.bar', 'data-bar');
-    console.log(_data);
+    // var _data = getData('.bar', 'data-bar');
+    // console.log(getTotalAmount('amount'));
+    // console.log('data', _data);
+    console.log(createPercentageRatio('amount'));
   });
