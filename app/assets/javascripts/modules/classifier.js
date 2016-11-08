@@ -6,18 +6,18 @@
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
 function classifier_search(url, params) {
-  $('#spinner-container').show();
+  // $('#spinner-container').show();
   $.ajax({
     type: 'get',
     url: url,
-    async: false,
+    // async: false,
     dataType: 'script',
     data: params,
     complete: function() {
       share_buttons_set_url(this.url);
     }
   });
-  $('#spinner-container').hide();
+  // $('#spinner-container').hide();
 }
 
 function init_items_select2_with_field_id(field_id, parent_field_id, url, placeholder){
@@ -101,10 +101,18 @@ function get_items(url, type, role, _sort_param) {
 function share_buttons_set_url(url) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
-    if (!$('.demo_index')) {
+    if (!$('.demo_index').length) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
-        $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.csv'));
         // console.log(url.replace('search_e_data', 'direct_link'));
+        // TODO: refactor in future
+        $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.csv'));
+        // TODO: refactor in future
+        var clipboard_data = $('#embedded-profile').attr('data-clipboard-text');
+        var aditional_params = url.substr(url.indexOf('&payers_edrpous'));
+        var current_src = clipboard_data.match(/src="\S*/)[0];
+        var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
+        var new_data = clipboard_data.replace(current_src, new_src);
+        $('#embedded-profile').attr('data-clipboard-text', new_data);
     }
 }
 

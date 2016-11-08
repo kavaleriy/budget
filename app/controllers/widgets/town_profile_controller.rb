@@ -66,7 +66,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
 
   def portfolio
     # @town = Town.find(params[:town_id])
-    @town_items = get_town_items_hash(@town)
+    @town_items = get_town_items_hash
     respond_to do |format|
       format.js
       format.html
@@ -101,119 +101,34 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     @town.is_test?
   end
 
-  def get_town_items_hash (town_object)
-    @town = town_object
-    town = nil
-    town = town_object.title unless town_object.blank?
-    # taxonomy_rot = TaxonomyRot.get_rot_by_owner_city(town).last
-    # taxonomy_rov = TaxonomyRov.get_rov_by_owner_city(town).last
-    taxonomy = Taxonomy.owned_by(town_object.to_s).first
-    calendar = Calendar.get_calendar_by_town(town)
-    indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(town_object).last
-    # programs = Programs::Town.get_town_by_title(town).first
-    # programs = Programs::TargetedProgram.first
+  def get_town_items_hash
+    taxonomy = Taxonomy.owned_by(@town.title).first
+    calendar = Calendar.get_calendar_by_town(@town.title)
+    indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(@town).last
     programs = Programs::TargetedProgram.by_town(@town).first
-    e_data = Modules::Classifier.by_koatuu(@town.koatuu, @town.koatuu[2..10].eql?('00000000') ? 2 : 5).first
-    result = []
-    result << get_budget_compare_hash('budget_compare')
-    result << get_indicate_hash(indicate_taxonomy, 'indicators')
-    result << get_taxonomy_rot_hash(taxonomy, 'budget')
-    result << get_calendar_hash(calendar, 'calendar')
-    # result << get_taxonomy_rov_hash(taxonomy_rov,'budget')
-    result << get_repair_hash('repair')
-    result << get_e_data_hash('e_data') unless e_data.nil?
-    #result << get_programs_hash('programs', programs)
-    result << get_programs_hash('programs')
+    e_data = Modules::Classifier.by_koatuu(@town.koatuu).first
 
-    # result << get_key_docs_hash('key_docs')
-    # result << get_prozorro_hash('prozoroo')
-    # result << get_edata_hash('edata')
-    # result << get_purchase_hash('purchase')
-    # result << get_keys_hash('keys')
+    result = []
+    result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town))
+    result << get_item_hash('indicators', indicate_taxonomies_town_profile_path(@town)) unless indicate_taxonomy.nil?
+    result << get_item_hash('budget', public_budget_files_path(@town)) unless taxonomy.nil?
+    result << get_item_hash('calendar', calendar_town_profile_path(calendar)) unless calendar.nil?
+    result << get_item_hash('e_data', modules_classifier_search_data_path(@town)) unless e_data.nil?
+    result << get_item_hash('programs', programs_town_targeted_programs_path(@town)) unless programs.nil?
+    # TODO: get url with repairing_frame_with_town_path(zoom: 9,town_id: params[:town_id]) and setting logic for this url
+    # WARN: script in _frame.html.haml don`t use maps#geo_json
+    result << get_item_hash('repair', repairing_map_show_town_path(@town))
 
     result.compact
   end
 
-
-  def get_budget_compare_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), compare_taxonomies_compare_budget_path(@town), name)
-  end
-
-  def get_taxonomy_rot_hash(taxonomy_rot, name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
-      unless taxonomy_rot.nil?
-        return { 'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> public_budget_files_path(@town), 'name' => name }
-      end
-    end
-  end
-
-  def get_indicate_hash(indicate, name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
-      unless indicate.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> indicate_taxonomies_town_profile_path(@town), 'name' => name}
-      end
-    end
-  end
-
-  def get_taxonomy_rov_hash(taxonomy_rov, name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
-      unless taxonomy_rov.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> taxonomies_town_profile_path(@town),'name' => name}
-      end
-    end
-  end
-
-  def get_calendar_hash(calendar, name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
-      unless calendar.nil?
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> calendar_town_profile_path(calendar), 'name' => name}
-      end
-    end
-  end
-
-  def get_keys_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio('no_data'), '#', name) do
-      if @town.key_indicate_map_indicators
-        {'title' => title_for_portfolio(name), 'img_src' => img_url(name), 'url'=> key_indicate_map_indicators_get_town_profile_path(@town), 'name' => name}
-      end
-    end
-  end
-
-  def get_programs_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), programs_town_targeted_programs_path(@town), name) unless @town.nil?
-  end
-
-  def get_item_hash(item_img_src, item_title, item_url, name)
-    result = yield if block_given?
-    unless result.nil?
-      return result
-    end
-    unless item_url == "#"
-      {'title' => item_title, 'img_src' => item_img_src, 'url'=> item_url, 'name' => name}
-    end
-
-  end
-
-  def get_repair_hash(name)
-    # TODO: get url with repairing_frame_with_town_path(zoom: 9,town_id: params[:town_id]) and setting logic for this url
-    # WARN: script in _frame.html.haml don`t use maps#geo_json
-    get_item_hash(img_url(name), title_for_portfolio(name), repairing_map_show_town_path(params[:town_id]), name) #(6, @town))
-  end
-
-  def get_key_docs_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), public_documents_town_profile_path(@town), name)
-  end
-
-  def get_prozorro_hash(name)
-    get_item_hash("public/" + name + ".png", title_for_portfolio(name), 'http://bi.prozorro.org/sense/app/fba3f2f2-cf55-40a0-a79f-b74f5ce947c2/sheet/HbXjQep/state/analysis', name)
-  end
-
-  def get_e_data_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), modules_classifier_search_data_url(@town),name)
-  end
-
-  def get_purchase_hash(name)
-    get_item_hash(img_url(name), title_for_portfolio(name), 'https://ips.vdz.ua/ua/purchase_search.htm', name)
+  def get_item_hash(title, url)
+    {
+        'img_src' => img_url(title),
+        'title' => title_for_portfolio(title),
+        'url'=> url,
+        'name' => title
+    }
   end
 
   def img_url (item)
