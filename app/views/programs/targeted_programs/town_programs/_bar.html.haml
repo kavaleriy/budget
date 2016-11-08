@@ -1,2 +1,24 @@
-bar data:
--tax_data
+-#-binding.pry
+
+.bar{ 'data-bar' => tax_data.to_json }
+
+  - total = tax_data.last[:amount]
+  = 'total: '
+  = total
+  -tax_data.each do |data|
+    .row
+      = data[:ktvk]
+      = data[:kfk]
+      = data[:title]
+      = data[:amount]
+
+:javascript
+  function get_data(selector, attr_name) {
+    var json = $(selector).attr(attr_name);
+    return jQuery.parseJSON(json);
+  }
+
+  $(document).ready(function() {
+    var _data = get_data('.bar', 'data-bar');
+    console.log(_data);
+  });

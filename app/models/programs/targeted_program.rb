@@ -93,28 +93,45 @@ class Programs::TargetedProgram
     user.is_admin? || self.owner.eql?(user)
   end
 
-  def self.data_bar(taxonomy,year)
+  def self.data_bar(taxonomy, year, type)
+    # generates data for drawing bar
+    # get:
+    #   3 params:
+    #     taxonomy
+    #     year
+    #     type ( fond, ktfk, ftfk_aaa, kvk, kekv, krk )
+    # return:
+    #   array with Hash { ktvk, kfk, title, amount }
 
     kfk_spr = codes_relations
-    taxonomy = taxonomy
-    explainer = taxonomy.explanation['ktfk']
-
-    tree = taxonomy.get_tree [:ktfk]
+    explainer = taxonomy.explanation[type]
+    tree = taxonomy.get_tree([type.to_sym])
 
     result = []
+
+    # Add item to array
 
     tree['children'].each do |item|
       key = item['key']
       result <<
       {
-          ktvk: key,
-          kfk: kfk_spr[key],
-          title: explainer[key]['title'],
-          amount: item['amount'][:fact][year.first]['0']['total']
+        ktvk: key,
+        kfk: kfk_spr[key],
+        title: explainer[key]['title'],
+        amount: item['amount'][:fact][year.first]['0']['total']
       }
     end
-    result
 
+    # Add Total at the end of array
+
+    tree['amount'].each do |item|
+      result <<
+          {
+              title: 'Всього',
+              amount: item.last[year.first]['0']['total']
+          }
+    end
+    result
   end
 
   def self.load_from_csv(file_name)
@@ -141,8 +158,8 @@ class Programs::TargetedProgram
     # or
     # nil if file cann't read
 
-    @ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if @ktvk_to_kfk.nil?
-    @ktvk_to_kfk
+    ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if ktvk_to_kfk.nil?
+    ktvk_to_kfk
   end
 
   private
