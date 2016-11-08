@@ -1,4 +1,4 @@
-:css
+:scss
 
   .popover {
     width: 700px;
@@ -49,10 +49,20 @@
   input[type="number"] {
      width:60px;
   }
+  button.btn-embed{
+    border: none;
+    color: white;
+    background: #0c2231;
+    padding: 0px 10px;
+    &:focus {
+      outline: none;
+    }
+  }
 
-.embed_btn.pull-right
-  %button.btn.btn-primary.btn_embed{"data-toggle" => "popover"}
+.embed_btn
+  %button.btn-embed{"data-toggle" => "popover"}
     %i.fa.fa-code
+    = t('modules.classifier.embeded_btn.get_code')
 
 .embed-hide{'style' => 'display: none;'}
   .form-horizontal

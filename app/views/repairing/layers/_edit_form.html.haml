@@ -45,10 +45,19 @@
                          'data-emptytext' => t('repairing.layers.edit.description') }
               = @repairing_layer.description
 .clear
-
+.col-xs-12
+  #test-road.btn.btn-default
+    test
 :javascript
 
   $(document).ready(function(){
+    $('#test-road').click(function() {
+      var coords = $('#repairing_repair_coordinates').val();
+      console.log(coords);
+      // $.ajax({
+      //   url:
+      // })
+    })
     $('#edit_layer .editable').editable({
       success: function(response,newValue){
         show_bootstrap_flash(response.message,response.class_name);

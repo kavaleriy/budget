@@ -47,25 +47,6 @@
       }
     }
 
-    #pagination {
-      .pagination {
-        li {
-          a {
-            border: none;
-            border-radius: 0;
-            color: $text;
-            padding: 2px 7px;
-            font-weight: bold;
-          }
-        }
-        .active {
-          a {
-            background-color: $active;
-            color: $text;
-          }
-        }
-      }
-    }
   }
    // hide sidebar for share
   .at4-share-outer {
@@ -100,9 +81,7 @@
         %th.active{'data-column' => 'trans_date', 'data-sort-direction' => 'asc'}
           %span
             = t('.date')
-
       = render partial: 'modules/classifier/search_e_data_results'
-
     #pagination.text-center
       = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
 
@@ -110,3 +89,4 @@
     $(document).ready(function() {
       $('.sharing').show();
     });
+

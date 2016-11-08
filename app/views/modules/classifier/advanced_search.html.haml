@@ -60,6 +60,85 @@
           }
         }
       }
+      .squaredTwo {
+        width: 33px;
+        height: 33px;
+        background: #fcfff4;
+
+        background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+        float: left;
+
+        -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+        position: relative;
+        input[type=checkbox] {
+          visibility: hidden;
+          &:checked + label:after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+            filter: alpha(opacity=100);
+            opacity: 1;
+          }
+        }
+        label {
+          cursor: pointer;
+          position: absolute;
+          width: 25px;
+          height: 25px;
+          left: 4px;
+          top: 4px;
+
+          -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+          -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+          box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+
+          background: -webkit-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -moz-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -o-linear-gradient(top, #222 0%, #45484d 100%);
+          background: -ms-linear-gradient(top, #222 0%, #45484d 100%);
+          background: linear-gradient(top, #222 0%, #45484d 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#222', endColorstr='#45484d',GradientType=0 );
+
+          &:after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            opacity: 0;
+            content: '';
+            position: absolute;
+            width: 13px;
+            height: 8px;
+            background: transparent;
+            top: 6px;
+            left: 6px;
+            border: 3px solid #fcfff4;
+            border-top: none;
+            border-right: none;
+
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+          }
+          &:hover::after {
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+            filter: alpha(opacity=30);
+            opacity: 0.3;
+          }
+        }
+      }
+      .lab {
+        width: calc(100% - 33px);
+        padding-left: 48px;
+        height: 33px;
+        line-height: 33px;
+        font-family: 'Lato', sans-serif;
+      }
       ._item_payers,
       ._item_recipt,
       ._item_type_payers,
@@ -98,6 +177,7 @@
             .select2-chosen {
               margin-left: 33px;
               margin-right: 55px;
+              padding: 0;
             }
             .select2-search-choice-close {
               right: 35px;
@@ -145,19 +225,50 @@
     overflow: auto;
     display: none;
   }
-  .social-btns {
-    margin: 0 0 10px 0;
+  #most-received {
+    height: 400px;
+    display: none;
+    margin-bottom: 70px;
+    .subtitle {
+      height: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    canvas {
+      height: 100%;
+      width: 100%;
+    }
   }
-   // hide sidebar for share
+  @media screen and (max-width: 1024px) {
+    #search-data {
+      #most-received {
+        height: 300px;
+      }
+    }
+  }
+  @media screen and (max-width: 992px) {
+    #search-data {
+      #most-received {
+        height: 200px;
+      }
+    }
+  }
+  .social-btns {
+    margin: 5px 0;
+  }
   .at4-share-outer {
+    // hide sidebar for share
     display: none;
   }
   .embeded-btn {
+    #export_classifier,
     #embedded-profile {
       background-color: $button-background;
-      padding: 0 10px;
+      margin: 5px;
+      padding: 2px 10px;
       height: 26px;
-      //width: 28px;
+      min-width: 150px;
       border-radius: 0;
       float: right;
       color: $button-text;
@@ -222,6 +333,14 @@
     display: none;
     padding-bottom: 30px;
   }
+  .copyright_info {
+    font-size: 75%;
+    //position: absolute;
+    //bottom: 5px;
+    p {
+      margin: 0;
+    }
+  }
 
 = stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
 
@@ -229,31 +348,43 @@
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-3
-        = f.input :startdate, input_html: { class: 'daterange' }, label: false
+        = f.input(:startdate, input_html: { class: 'daterange' }, label: false)
+        .squaredTwo
+          = f.input_field(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, checked: true, boolean_style: :inline, class: 'squaredTwo')
+          %label{'for' => '_apply_region'}
+        .lab= t('.region')
+        -#= f.input(:apply_region, as: :boolean, checked_value: true, unchecked_value: false, label: t('.region'),
+        -#boolean_style: :inline, input_html: { checked: true, class: 'squaredTwo' })
       .col-md-3
-        = f.input(:item_type_payers, collection: @types.map { |type| [type.name, type.code] },
+        = f.input(:item_type_payers, collection: @types_payer.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false, class: 'type')
-        = f.input(:item_type_recipt, collection: @types.map { |type| [type.name, type.code] },
+        = f.input(:item_type_recipt, collection: @types_receipt.map { |type| [type.name, type.id] },
         input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false, class: 'item')
       .col-md-5
-        = f.input(:item_payers, as: :select, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
-        = f.input(:item_recipt, as: :select,input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
-        -#= f.input(:item_payers, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
-        -#= f.input(:item_recipt, collection: @items.map { |item| ["#{item.pnaz} #{item.edrpou}", item.edrpou] },
-        -#input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
+        = f.input(:item_payers, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'payers' }, label: false)
+        = f.input(:item_recipt, input_html: { 'data-town-id' => params['town_id'], 'data-role' => 'recipt' }, label: false)
       .col-md-1
         = f.button :submit, t('.search'), class: 'btn btn-primary search-button', id: 'search'
 
     #items-list
     .results
+
+    - if request.format.html?
+      = render partial: 'tell_more'
+
     .row.sharing
       .col-xs-6
         .social-btns#share_results
       .col-xs-6.text-right
         .embeded-btn
 
+    #most-received
+      = render partial: 'chart'
+
     = render partial: 'layouts/spinner'
+
+  .copyright_info
+    = render partial: 'copyright_info'
 
 :javascript
   $(document).ready(function() {
@@ -287,12 +418,27 @@
       minimumResultsForSearch: -1
     });
 
-    init_item_select($('#_item_payers'));
-    init_item_select($('#_item_recipt'));
+    init_items_select2_with_field_id(
+      '#_item_payers',
+      '#_item_type_payers',
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
+    );
+
+    init_items_select2_with_field_id(
+      '#_item_recipt',
+      '#_item_type_recipt',
+      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
+    );
 
     // add event: if select/unselect item -> clear results and toggle items list
     $('#_item_payers, #_item_recipt').on('change', function() {
       $('.results').empty();
+      if (barChart.chart) {
+        barChart.destroy();
+        $('#most-received').hide();
+      }
       // check for empty value
       if($(this).val()) {
         $("#items-list").hide();
@@ -303,15 +449,26 @@
 
     // add event: if change type -> clear value of item select and change select options
     $('#_item_type_payers, #_item_type_recipt').on('change', function() {
+      $('.results').empty();
       init_item_select($(this));
       $("#items-list").show();
     });
 
     // add action for search button
     $('#search').on('click', function(e){
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params())
+      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
+      // $('#most-received .subtitle').html(title);
       $("#items-list").hide();
+      $('#entrepreneurs').show();
       e.preventDefault();
+    });
+
+    // Show entrepreneurs only. Entrepreneurs have no 'edrpou', that's why passing const 'xxxxxxxxxx'.
+    $('#entrepreneurs').on('click', function(e) {
+      graph_click('xxxxxxxxxx');
+      $(this).hide();
+      e.preventDefault;
     });
 
     // add event for sorting search results
@@ -333,7 +490,6 @@
       get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
     });
-
   });
 
   function dp_ranges_config() {
@@ -356,7 +512,7 @@
   // and reinit select2 after changing select options.
   // This actions define in '*.js.erb'
   function init_item_select(selector) {
-    $('#_item_' + selector.data('role')).val('').trigger('change');
+    $('#_item_' + selector.data('role')).select2('val', '');
     get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
   }
 
@@ -366,8 +522,26 @@
       payers_edrpous: $('#_item_payers').val(),
       recipt_edrpous: $('#_item_recipt').val(),
       period: $('#_startdate').val(),
+      region: $('[name="[apply_region]"]:checked').val(),
       sort_col: sort_col,
       sort_dir: sort_dir
     }
     return data;
+  }
+
+  // show payer or recipt by click on barchart
+  function graph_click(edrpou, text) {
+    if (!parseInt(edrpou)) {
+      text = I18n.t('modules.classifier.advanced_search.entrepreneurs');
+    }
+    var data = init_search_params();
+    if (!data.payers_edrpous) {
+      data.payers_edrpous = edrpou;
+      $('#_item_payers').select2('data', { id: edrpou, text: text });
+    }
+    if (!data.recipt_edrpous) {
+      data.recipt_edrpous = edrpou;
+      $('#_item_recipt').select2('data', { id: edrpou, text: text });
+    }
+    classifier_search("#{modules_classifier_search_e_data_url}", data);
   }

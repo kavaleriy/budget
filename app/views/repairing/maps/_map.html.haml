@@ -7,8 +7,8 @@
 = stylesheet_link_tag 'leaflet/leaflet.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.default.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
-= stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
-
+-#= stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
+= stylesheet_link_tag 'leaflet/leaflet-routing-machine'
 
 -#https://github.com/smeijer/L.GeoSearch/tree/develop/src/js
 = stylesheet_link_tag 'geosearch/l.geosearch.css', :media => 'all'
@@ -16,7 +16,8 @@
 = content_for :head do
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
-  = javascript_include_tag "leaflet/leaflet-routing-machine.js"
+  = javascript_include_tag 'leaflet/leaflet-routing-machine.min'
+  -#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
@@ -81,7 +82,7 @@
   }
   //   New info_panel
   .leaflet-popup{
-    bottom: 0 !important;
+    bottom: 25px !important;
     //left: -107px !important;
   }
   .leaflet-popup-content-wrapper{
@@ -92,31 +93,52 @@
     margin: 0;
   }
   .leaflet-container a.leaflet-popup-close-button{
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 5px 0 0 0;
-    width: 25px;
-    height: 25px;
-    font-size: 18px;
-    color: #ffffff;
-    background: #7D94A4;
-    background-position: 100% 20%;
-    border-radius: 0;
-    border: 1px solid white;
+    padding: 1px 0 0 0;
   }
   .leaflet-container a.leaflet-popup-close-button:hover{
-    color: #7D94A4;
-    background: #ffffff;
-    border: 1px solid #7D94A4;
+    //color: #7D94A4;
+    //background: #ffffff;
+    //border: 1px solid #7D94A4;
   }
   .leaflet-popup-tip-container{
     // 20px it is half of .leaflet-popup-tip-container
-    margin-left: calc(50% - 20px);
+    //margin-left: calc(50% - 20px);
+    display: none;
   }
 
 :scss
   #map {
+
+    #ewe{
+      z-index: 1002;
+      position: absolute;
+      top: 100px;
+      left: 40px;
+      width: 100px;
+      height: 50px;
+    }
+    #fullscreen{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 1001;
+      cursor: pointer;
+      background-color: white;
+      i{
+        font-size: 30px;
+      }
+      &.hide{
+        display: none;
+      }
+    }
+
+    #last_updated_repair{
+      background-color: white;
+      position: absolute;
+      z-index: 1000;
+      bottom: 10px;
+      left: 20px;
+    }
     .leaflet-control-container {
       .leaflet-top {
         z-index: 1;
@@ -129,9 +151,15 @@
     }
   }
 
-#map
-
-
+#map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
+  .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
+    .modal-dialog
+      .modal-content
+  #fullscreen
+    %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+  #last_updated_repair
+    Останнє оновлення візуалізації :
+    %span.rep-date
 :javascript
 
   var RepairMap
@@ -210,7 +238,7 @@
       function onMapClick(e) {
         //Hide left sidebar
         //$('#sidebar').hide('slow');
-        hideSidebar();
+        // hideSidebar();
 
         if (options.getMapPopupContent) {
           popup
@@ -236,7 +264,7 @@
 
     function initRouting() {
       // routing machine
-      router = L.Routing.osrm()
+      // router = L.Routing.osrm()
     }
 
     function addGeoJsonSvg(data, options) {
@@ -297,7 +325,14 @@
       addGeoJsonPoint(data, getPoint, options)
     }
 
+    function setLastRepairUpdate(date){
+      var formatedDate = new Date(date);
+      $('#last_updated_repair .rep-date').html(formatedDate.toLocaleDateString());
+    }
+
     function addGeoJsonPoint(data, getPoint, options) {
+      setLastRepairUpdate(data.last_update);
+
       options = options || {};
 
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
@@ -319,8 +354,7 @@
       }
 
       function getPointToLayer(feature, latlng) {
-        //  TODO: feature.properties get not valid data for road
-        // Need Ad hoc for show road icon on repairing map (models/repairing/geojson_builder, 43 line)
+
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -352,12 +386,12 @@
               options.dragCallback(layer, ll)
             }
           },
-          popupopen: function(e){
-            showSidebar(feature);
-          },
-          popupclose: function(e){
-            hideSidebar();
-          }
+          // popupopen: function(e){
+          //   showSidebar(feature);
+          // },
+          // popupclose: function(e){
+          //   hideSidebar();
+          // }
         });
       }
     }
@@ -573,14 +607,35 @@
       });
     }
 
-    function showSidebar(feature) {
-      $('#sidebar').attr('data-repair-id',feature.properties.id);
-      $('#sidebar').show('slow');
-    }
+    function toggleMapInFullscreen(){
+      // !!! get element via simple js
+      var element = document.getElementById('map');
 
-    function hideSidebar() {
-      $('#sidebar').removeAttr('data-repair-id');
-      $('#sidebar').hide('fast');
+      // get fullscreen element
+      var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+
+      // if map in fullscreen mode
+      if(fullscreenElement == element){
+        // exit from fullscreen
+        if(document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if(document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if(document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+
+      }else{
+        // show map in fullscreen mode
+        if (element.requestFullScreen) {
+          element.requestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        }
+
+      }
     }
 
     function addAdditionalLayer(tileName){
@@ -612,6 +667,7 @@
       });
     }
 
+
     initMap();
     initPopup();
     addGeoSearch()
@@ -621,6 +677,7 @@
     return {
       map: map,
       markers: markers,
+      toggleMapInFullscreen: toggleMapInFullscreen,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       addGeoJsonPoint: addGeoJsonPoint,
@@ -631,8 +688,6 @@
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
-      showSidebar: showSidebar,
-      hideSidebar: hideSidebar,
       addAdditionalLayer: addAdditionalLayer,
       removeAdditionalLayer: removeAdditionalLayer
     }

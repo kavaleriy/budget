@@ -1,9 +1,32 @@
-= paginator.render do
-  %ul.pagination
-    = prev_page_tag unless current_page.first?
-    - each_page do |page|
-      - if page.left_outer? || page.right_outer? || page.inside_window?
-        = page_tag page
-      - elsif !page.was_truncated?
-        = gap_tag
-    = next_page_tag unless current_page.last?
+:scss
+  $active: #ffd304;
+  $text: #0c2231;
+  #e-data-paginator{
+    .pagination {
+      li {
+        a {
+          border: none;
+          border-radius: 0;
+          color: $text;
+          padding: 2px 7px;
+          font-weight: bold;
+        }
+      }
+      .active {
+        a {
+          background-color: $active;
+          color: $text;
+        }
+      }
+    }
+  }
+#e-data-paginator
+  = paginator.render do
+    %ul.pagination
+      = prev_page_tag unless current_page.first?
+      - each_page do |page|
+        - if page.left_outer? || page.right_outer? || page.inside_window?
+          = page_tag page
+        - elsif !page.was_truncated?
+          = gap_tag
+      = next_page_tag unless current_page.last?
