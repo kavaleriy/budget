@@ -1,0 +1,94 @@
+:scss
+  $darkBlue: #0c2231;
+  .bar {
+    border: 1px solid black;
+    height: 26px;
+    a {
+      height: 24px;
+      float: left;
+      background: red;
+    }
+    a + .tooltip > {
+      .tooltip-arrow {
+        border-top-color: $darkBlue;
+      }
+      .tooltip-inner {
+        background-color: $darkBlue;
+      }
+    }
+  }
+
+.bar{ 'data-bar' => tax_data.to_json }
+  -#
+  -#-tax_data.each do |data|
+  -#  .row
+  -#    = data[:ktvk]
+  -#    = data[:kfk]
+  -#    = data[:title]
+  -#    = data[:amount]
+
+:javascript
+  function getData(selector, attr_name) {
+    // func to get data
+    // get:
+    //    selector of DOM element
+    //    attr_name of DOM element
+    // return array of Object's
+    return jQuery.parseJSON($(selector).attr(attr_name));
+  }
+
+  var _data = getData('.bar', 'data-bar');
+
+  function getTotalAmount (obj_key) {
+    // func to cut last element of data array
+    // get: last array Object key
+    // return last array Object value
+    return _data.pop()[obj_key];
+  }
+
+  function createPercentageRatio(obj_key) {
+    // func to create ruselt table
+    // get: data array
+    // return array of Objects [{amount:value, title:value}]
+    var resultTable = [];
+    var lastElementValue = getTotalAmount(obj_key);
+    $.each(_data, function(key, value) {
+      resultTable.push({ amount: (value[obj_key]/lastElementValue * 100).toFixed(2),
+                         title: value.title });
+    })
+    return resultTable;
+  }
+
+  function addBarChild(parent) {
+    // func to add child to bar
+    // get: parent selector
+    // return DOM element's, like this: <a></a>
+    var barChild = $('<a href="#" data-toggle="tooltip"></span></a>');
+    return barChild.appendTo(parent);
+  }
+
+  function buildBar(tooltipPlacement) {
+    // func build bar with child
+    // get: tooltip placement ['top', 'rigth', 'bottom', 'left']
+    // return DOM element's, like a bar
+    var colors = ['red', 'blue', 'green', 'teal', 'rosybrown', 'tan', 'plum', 'saddlebrown'];
+    var _data = createPercentageRatio('amount');
+    $.each(_data, function(key, value) {
+      // setColor = colors[Math.floor(Math.random() * colors.length)];
+      addBarChild('.bar')
+      .attr('title', value.title)
+      .css('width', value.amount + '%')
+      .css('background', colors[key])
+      .tooltip({placement: tooltipPlacement});
+    });
+  }
+
+  $(document).ready(function() {
+    // TODO: delete it after merge
+    // var _data = getData('.bar', 'data-bar');
+    // console.log(getTotalAmount('amount'));
+    // console.log('data', _data);
+    // console.log(createPercentageRatio('amount'));
+    // addBarChild('.bar').css('width', "25vw");
+    buildBar('top');
+  });
