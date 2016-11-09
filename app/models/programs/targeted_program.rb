@@ -147,8 +147,6 @@ class Programs::TargetedProgram
       codes[row[0]] = row[1]
     end
     codes
-  rescue => e
-    {}
   end
 
   def self.codes_relations
