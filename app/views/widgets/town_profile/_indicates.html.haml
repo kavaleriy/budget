@@ -56,7 +56,14 @@
           .chart
             = render partial: 'test_charts', locals: { id: v['id'] }
             -#= render partial: 'test_charts', locals: { id: "333444" }
-
+          .comments
+            -#%a.editable-href
+          .reports
+            = link_to '#' do
+              %i.fa.fa-download
+              Завантажити звіт за
+              %span
+                2015
 
 :javascript
 
@@ -95,8 +102,8 @@
             break;
       }
 
-      $('.chartjs-hidden-iframe').remove();   // drop old chart
-      create_graphs2(num_of_years);           // create new chart
+      $('.chartjs-hidden-iframe').remove();   // drop old charts
+      create_graphs2(num_of_years);           // create new charts
     });
 
     function create_graphs2(count_years){
@@ -104,56 +111,94 @@
       $.each(data1['indicators'], function(key, value) {
         $.each(value, function(k, v) {
           years = [];
-          $.each(v['plan'], function(k_p, v_p){
-            years.push(k_p);
-          })
-          $.each(v['fact'], function(k_f, v_f){
-            years.push(k_f);
-          })
+          if (v['plan']){
+            $.each(v['plan'], function(k_p, v_p){
+              years.push(k_p);
+            })
+          }
+          if (v['fact']){
+            $.each(v['fact'], function(k_f, v_f){
+              years.push(k_f);
+            })
+          }
+          // values_p = [];
+          // values_f = [];
+          // comments_p = [];
+          // comments_f = [];
+          // links_p = [];
+          // links_f = [];
+          console.log("Years length - " + years.length);
 
-          values_p = [];
-          values_f = [];
-          comments_p = [];
-          comments_f = [];
-          links_p = [];
-          links_f = [];
           last_year = years.sort()[years.length-1];
+          if (years.length == 0){
+            last_year = 2018;
+          }
+
+          arrays_data = {};
+          arrays_data['values'] = {};
+          arrays_data['values']['values_p'] = [];
+          arrays_data['values']['values_f'] = [];
+
+          arrays_data['comments'] = {};
+          arrays_data['comments']['comments_p'] = [];
+          arrays_data['comments']['comments_f'] = [];
+
+          arrays_data['links'] = {};
+          arrays_data['links']['links_p'] = [];
+          arrays_data['links']['links_f'] = [];
+
 
           array_years = [];
           for(var i = parseInt(last_year); i > parseInt(last_year) - count_years; i--){
             array_years.unshift(i);
-            if (v['plan'][i]){
-              values_p.unshift(v['plan'][i]['value']);
-              comments_p.unshift(v['plan'][i]['comment']);
-              links_p.unshift(v['plan'][i]['link']);
+            if (v['plan'] && v['plan'][i]){
+              arrays_data['values']['values_p'].unshift(v['plan'][i]['value']);
+              arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
+              arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
+
+              // values_p.unshift(v['plan'][i]['value']);
+              // comments_p.unshift(v['plan'][i]['comment']);
+              // links_p.unshift(v['plan'][i]['link']);
             } else{
-              values_p.unshift("");
-              comments_p.unshift("");
-              links_p.unshift("");
+              arrays_data['values']['values_p'].unshift("");
+              arrays_data['comments']['comments_p'].unshift("");
+              arrays_data['links']['links_p'].unshift("");
+
+              // values_p.unshift("");
+              // comments_p.unshift("");
+              // links_p.unshift("");
             }
-            if (v['fact'][i]){
-              values_f.unshift(v['fact'][i]['value']);
-              comments_f.unshift(v['fact'][i]['comment']);
-              links_f.unshift(v['fact'][i]['link']);
+            if (v['fact'] && v['fact'][i]){
+              arrays_data['values']['values_f'].unshift(v['fact'][i]['value']);
+              arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
+              arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
+
+              // values_f.unshift(v['fact'][i]['value']);
+              // comments_f.unshift(v['fact'][i]['comment']);
+              // links_f.unshift(v['fact'][i]['link']);
             } else{
-              values_f.unshift("");
-              comments_f.unshift("");
-              links_f.unshift("");
+              arrays_data['values']['values_f'].unshift("");
+              arrays_data['comments']['comments_f'].unshift("");
+              arrays_data['links']['links_f'].unshift("");
+
+              // values_f.unshift("");
+              // comments_f.unshift("");
+              // links_f.unshift("");
             }
           }
 
-          values = [];
-          comments = [];
-          links = [];
-          data_arrays = [];
-          values.push(values_p, values_f);
-          comments.push(comments_p, comments_f);
-          links.push(links_p, links_f);
-          data_arrays.push(values, comments, links);
+          // values = [];
+          // comments = [];
+          // links = [];
+          // data_arrays = [];
+          // values.push(values_p, values_f);
+          // comments.push(comments_p, comments_f);
+          // links.push(links_p, links_f);
+          // data_arrays.push(values, comments, links);
 
           id_chart = "#" + v['id'];
           console.log(id_chart);
-          buildLineChart(id_chart, array_years, data_arrays);
+          buildLineChart(id_chart, array_years, arrays_data);
         })
       })
     }
@@ -163,7 +208,7 @@
       // TODO: Delete fill custom data when get real
 
       // create default random data
-      var arr1 = ["135", "145", "122"], arr2 = ["130", "", "142"];
+      // var arr1 = ["135", "145", "122"], arr2 = ["130", "", "142"];
 
       plan_fact = [];
       function plan_fact_data(array) {
@@ -171,8 +216,8 @@
           plan_fact.push(v);
         })
       }
-      plan_fact_data(arrays_data[0][1]);
-      plan_fact_data(arrays_data[0][0]);
+      plan_fact_data(arrays_data['values']['values_p']);
+      plan_fact_data(arrays_data['values']['values_f']);
       max_value = Math.max.apply(null, plan_fact);
       step = Math.round(max_value / 100) * 100 / 5;
 
@@ -191,8 +236,8 @@
         type: 'line',
         data: {
           labels: array_years,
-          comments: arrays_data[1],
-          links: arrays_data[2],
+          comments: arrays_data['comments'],
+          links: arrays_data['links'],
           datasets: [
             {
               label: "plan",
@@ -219,7 +264,7 @@
               pointHoverBackgroundColor: "#ffd304",
               pointHoverBorderColor: "#fff",
 
-              data: arrays_data[0][0],
+              data: arrays_data['values']['values_p'],
               spanGaps: false
             },
             {
@@ -247,7 +292,7 @@
               pointHoverBackgroundColor: "#ffd304",
               pointHoverBorderColor: "#fff",
 
-              data: arrays_data[0][1],
+              data: arrays_data['values']['values_f'],
 
               spanGaps: false
             }
@@ -305,19 +350,45 @@
       function handleClick(evt){
         var activeElement = myChart.getElementAtEvent(evt);
         console.log(activeElement[0]);
-        console.log(activeElement[0]['_chart']);
-        // console.log(myChart.datasets[0].activeElement[0].indexOf(activeElement[0]));
+        console.log(activeElement[0]['_chart']['config']['data']['comments']);
 
+        console.log('_index' + activeElement[0]._index);
+        console.log('_datasetIndex' + activeElement[0]._datasetIndex);
+
+        comments = activeElement[0]['_chart']['config']['data']['comments'];
+        point_position = activeElement[0]._index;
+        point_type = activeElement[0]._datasetIndex;
+        year = activeElement[0]['_chart']['config']['data']['labels'][point_position];
+        var comment = '';
+        if (point_type == 0){
+          comment = comments['comments_p'][point_position];
+        } else if (point_type == 1){
+          comment = comments['comments_f'][point_position];
+        }
+
+        links = activeElement[0]['_chart']['config']['data']['links'];
+        var link = '';
+        if (point_type == 0){
+          link = links['links_p'][point_position];
+        } else if (point_type == 1){
+          link = links['links_f'][point_position];
+        }
+
+        $parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
+        $div_comments = $parent_div.next('.comments');
+        $div_comments.text(comment);
+        $div_links = $div_comments.next('.reports');
+        $download_link = $div_links.children('a');
+        $download_link.attr("href", link);
+
+        if(link == '' ){
+          $download_link.css("color", "grey");
+        } else{
+          $download_link.css("color", "darkblue");
+        }
+
+        $download_link.children('span').text(year);
       }
-
-      $("canvas").click(function(e) {
-        // var activeBars = myChart.getLinesAtEvent(e);
-        // console.log(activeBars);
-      });
-      // $("canvas").click(function(evt){
-      //   var activePoints = myChart.getElementsAtEvent(evt);
-      //   console.log(activePoints[0]);
-      // });
     }
   });
 

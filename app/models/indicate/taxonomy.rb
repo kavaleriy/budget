@@ -34,6 +34,7 @@ class Indicate::Taxonomy
         # indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
 
         matching = indicator['matching']
+        matching = 'fact' if matching.eql?('')
         indicators[group][name][matching] = {} if indicators[group][name][matching].nil?
         indicators[group][name][matching][year] = {} if indicators[group][name][matching][year].nil?
         indicators[group][name][matching][year]['comment'] = indicator['comment']
