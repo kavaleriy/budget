@@ -41,10 +41,8 @@ class Indicate::Taxonomy
         indicators[group][name][matching][year]['value'] = indicator['value']
         indicators[group][name][matching][year]['link'] = indicator['link']
         indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
-        puts(indicators[group][name]['id'])
       }
     }
-    # binding.pry
     indicators
   end
 
