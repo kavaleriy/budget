@@ -30,6 +30,15 @@
       }
     }
   }
+  #indicators2{
+    .group{
+      .indicator{
+        .reports{
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
 
 #year_list
   =t('vtarnay.module5s.show.year_list')
@@ -61,7 +70,7 @@
           .reports
             = link_to '#' do
               %i.fa.fa-download
-              Завантажити звіт за
+              Скачати звіт за
               %span
                 2015
 
@@ -219,7 +228,7 @@
       plan_fact_data(arrays_data['values']['values_p']);
       plan_fact_data(arrays_data['values']['values_f']);
       max_value = Math.max.apply(null, plan_fact);
-      step = Math.round(max_value / 100) * 100 / 5;
+      step = Math.round(max_value / 100) * 10;
 
       // for (var b = 100, e = 400, i = 0; b < e; i++, b+= 12) {
       //   var n1 = Math.round(Math.random() * e),
@@ -336,9 +345,9 @@
                 ticks: {
                   fontColor: '#fff',
                   padding: 20,
-                  min: 0,
+                  // min: 0,
                   maxTicksLimit: 6,
-                  stepSize: step
+                  // stepSize: step
                 }
               }
             ]

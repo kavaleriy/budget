@@ -5,27 +5,35 @@
 .group {
   font-size: 1.4em;
   font-weight: bold;
-  text-align: center;
-  margin-top: 30px;
-
+  //text-align: center;
+  & > p{
+    text-align: center;
+    margin: 10px 0 0;
+  }
   .title {
     height: 50px;
     font-weight: bold;
+    font-size: 16px;
   }
 
   .comments {
-    height: 100px;
+    height: 85px;
     width: 100%;
+    margin: 10px 0;
+    padding: 10px 2px 0;
     overflow: hidden;
-    color: #7E8283;
     border: none;
-    border-radius: 4px;
-    padding: 5px;
   }
 
   .comments:hover {
     overflow-y: auto;
-    border: 1px solid #7E8283;
+  }
+
+  .reports{
+    text-transform: uppercase;
+    a{
+      text-decoration: none;
+    }
   }
 
   path {
@@ -71,8 +79,11 @@
 .indicator {
   font-size: 0.7em;
   font-weight: normal;
-  text-align: center;
   margin-top: 10px;
+
+  .title{
+    text-align: center;
+  }
 
   .area {
     fill: lightgray;
@@ -107,7 +118,7 @@ body {
   }
 }
 
-#indicators {
+#indicators2 {
 
   .dropdown > a:after {
     content: ""
