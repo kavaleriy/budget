@@ -137,11 +137,8 @@
       }
     })
 
-    console.log(data1);
-    console.log("#{@indicate_taxonomy.id}");
-
     $('#years_chart').select2({
-      placeholder: "#{t("form.period")}"
+      placeholder: "#{t('form.period')}"
     }).on('change', function() {
      num_of_years = $(this).val();
       switch(num_of_years) {
@@ -222,19 +219,12 @@
           }
 
           id_chart = "#" + v['id'];
-          console.log(id_chart);
           buildLineChart(id_chart, array_years, arrays_data);
         })
       })
     }
 
     function buildLineChart(id, array_years, arrays_data) {
-      console.log(data1['indicators']);
-      // TODO: Delete fill custom data when get real
-
-      // create default random data
-      // var arr1 = ["135", "145", "122"], arr2 = ["130", "", "142"];
-
       plan_fact = [];
       function plan_fact_data(array) {
         $.each(array, function(k, v) {
@@ -244,18 +234,10 @@
       plan_fact_data(arrays_data['values']['values_p']);
       plan_fact_data(arrays_data['values']['values_f']);
       max_value = Math.max.apply(null, plan_fact);
-      step = Math.round(max_value / 100) * 10;
-
-      // for (var b = 100, e = 400, i = 0; b < e; i++, b+= 12) {
-      //   var n1 = Math.round(Math.random() * e),
-      //       n2 = Math.round(Math.random() * n1);
-      //   (n1 > 100 && n1 < 400) ? arr1.push(n1) : i-= 1;
-      //   (n2 > 100 && n2 < 400) ? arr2.push(n1) : i-= 1;
-      // }
+      // step = Math.round(max_value / 100) * 10;
 
       // create chart with 2 lines
       var c = $(id).get(0);
-      console.log(id);
       var ctx = c.getContext('2d');
       var myChart = new Chart(ctx, {
         type: 'line',
@@ -374,11 +356,6 @@
 
       function handleClick(evt){
         var activeElement = myChart.getElementAtEvent(evt);
-        console.log(activeElement[0]);
-        console.log(activeElement[0]['_chart']['config']['data']['comments']);
-
-        console.log('_index' + activeElement[0]._index);
-        console.log('_datasetIndex' + activeElement[0]._datasetIndex);
 
         comments = activeElement[0]['_chart']['config']['data']['comments'];
         point_position = activeElement[0]._index;
@@ -406,10 +383,10 @@
         $download_link = $div_links.children('a');
         $download_link.attr("href", link);
 
-        if(link == '' ){
+        if(link == '#' || link == ''){
           $download_link.css("color", "grey");
         } else{
-          $download_link.css("color", "darkblue");
+          $download_link.css("color", "#2A4989");
         }
 
         $download_link.children('span').text(year);
