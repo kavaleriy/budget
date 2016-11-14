@@ -68,9 +68,7 @@ class BudgetFilesController < ApplicationController
   end
 
   def new
-    user_visible_taxonomies = get_taxonomies(current_user.town)
-    @taxonomies = []
-    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
+    @taxonomies = get_taxonomies.map{ |tax| {id: tax.id.to_s, text: tax.title }}
   end
 
   # POST /revenues

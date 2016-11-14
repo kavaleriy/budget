@@ -2,6 +2,7 @@
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    scope :by_town, lambda { |town| where(town: town) }
     # select taxonomies belongs to town
     scope :owned_by, lambda { |town| where(:owner => town) }
     # select all active taxonomies
