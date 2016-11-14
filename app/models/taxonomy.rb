@@ -96,7 +96,7 @@
                 if user.has_role? :admin
                   self.all
                 else
-                  self.where(:owner => user.town,:author.in => [user,nil])
+                  self.where(:town => user.town_model,:author.in => [user,nil])
                 end
               else
                 self.where(:owner => '')
