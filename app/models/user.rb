@@ -70,9 +70,6 @@ class User
     roles.member? :central_authority
   end
 
-  def user_public_roles
-
-  end
   private
 
   def lock_user
