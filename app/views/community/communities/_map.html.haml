@@ -113,10 +113,11 @@
         map.on('click', onMapClick);
       }
 
-      function initRouting() {
-        // routing machine
-        router = L.Routing.osrm()
-      }
+      // TODO: Delete after merge conflict with https
+      // function initRouting() {
+      //   // routing machine
+      //   router = L.Routing.osrm()
+      // }
 
       function addGeoJsonSvg(data, options) {
         options = options || {};
@@ -507,7 +508,8 @@
 
       initMap();
       initPopup();
-      initRouting();
+      // TODO: Delete it after merge conflict with https
+      // initRouting();
 
       addLogosControl();
 

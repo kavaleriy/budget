@@ -68,7 +68,7 @@
       border: 2px solid $button-border;
       color: $button-text;
       font-weight: bold;
-      min-width: 125px;
+      min-width: 118px;
       border-radius: 0;
       padding: 4px 10px;
     }
@@ -80,6 +80,7 @@
       }
     }
     .btn-switch-role[for="_role_recipt"] {
+      margin-right: 30px;
       &:before {
         content: '\f0c8';
         font-family: FontAwesome;
@@ -218,7 +219,7 @@
     }
   }
   .sharing {
-    display: none;
+    //display: none;
     padding-bottom: 30px;
   }
   .copyright_info {
@@ -233,29 +234,31 @@
 #search-data
   = simple_form_for '', remote: true do |f|
     .row
-      .col-md-7
-        = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] },
-        input_html: {'data-town-id' => params['town_id']}, label: false)
-      .col-md-5
-        .row
-          .col-sm-7
-            = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: 'payers'} do |b|
-              = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-          .col-sm-5.text-right
-            = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: true do
-              %i.fa.fa-cogs
-              = t('.advanced_button')
+      .col-sm-6.col-md-7
+        -# use for pre-selecting payer or recipt if params exists
+        - if params['payers_edrpous'].blank? and params['recipt_edrpous'].blank?
+          = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false)
+        - else
+          = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
+      .col-sm-6.col-md-5
+        = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
+          = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
+        = link_to t('modules.classifier.advanced_search.search'), '#', class: 'btn btn-primary advanced_search_button', id: 'search'
+        = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: request.format.html? ? false : true do
+          %i.fa.fa-cogs
+          = t('.advanced_button')
 
   .results
 
   - if request.format.html?
     = render partial: 'tell_more'
-
-  .row.sharing
-    .col-xs-6
-      .social-btns#share_results
-    .col-xs-6.text-right
-      .embeded-btn
+  - else
+    .row.sharing
+      .col-xs-6
+        .social-btns#share_results
+      .col-xs-6.text-right
+        .embeded-btn
+          = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
 
   #most-received
     = render partial: 'chart'
@@ -275,6 +278,12 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
+        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      }
+    });
+
+    $('#search').on('click', function(){
+      if($('#_item').val()) {
         classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
       }
     });
