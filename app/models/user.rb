@@ -16,9 +16,6 @@ class User
 
   # Setup accessible (or protected) attributes for your model
   field :locked
-  def is_locked?
-    self.locked == true || self.locked == '1'
-  end
 
   field :name
   field :phone
@@ -42,6 +39,9 @@ class User
   field :reset_password_token, type: String
   field :reset_password_sent_at, type: DateTime
 
+  belongs_to :town_model, class_name: 'Town'
+
+  validates :email, :town_model, presence: true
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask
@@ -49,6 +49,10 @@ class User
   # declare the valid roles -- do not change the order if you add more
   # roles later, always append them at the end!
   roles :admin, :guest, :editor, :public_organisation, :city_authority, :central_authority
+
+  def is_locked?
+    self.locked == true || self.locked == '1'
+  end
 
   def to_s
     self.email
@@ -66,6 +70,9 @@ class User
     roles.member? :central_authority
   end
 
+  def user_public_roles
+
+  end
   private
 
   def lock_user

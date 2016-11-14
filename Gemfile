@@ -48,8 +48,8 @@ gem 'unicorn'
 
 group :development do
   gem 'pry-rails'
-  gem 'better_errors'
-  gem 'stack_rescue'
+  # gem 'better_errors'
+  # gem 'stack_rescue'
 end
 
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
