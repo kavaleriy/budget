@@ -40,14 +40,15 @@ class BudgetFile
   end
 
   def self.visible_to user
-    files = if user.nil?
-      self.where(:author => nil)
-    elsif user.has_role? :admin
-      self.all
-    else
-      self.where(author: user.email)
-      # self.or({author: nil}, {author: user.email})
-    end
+    files =
+      if user.nil?
+        self.where(:author => nil)
+      elsif user.is_admin?
+        self.all
+      else
+        self.where(author: user.email)
+        # self.or({author: nil}, {author: user.email})
+      end
 
     files || []
   end
