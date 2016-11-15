@@ -11,7 +11,6 @@ class User
   include RoleModel
 
   scope :find_by_email, -> (email) {where(email: email)}
-  scope :valid_users, -> {where( :town_model.ne => [nil, ''], :email.ne => [nil, ''] )}
   before_create :lock_user
 
   # Setup accessible (or protected) attributes for your model

@@ -55,7 +55,7 @@
   .head.pull-left
     %i.fa.fa-money
     =t('.title')
-
+-#= link_to 'Юзера на проверку', not_valid_users_url, class: 'btn btn-danger'
 %table.table.table-striped.small
   %thead
     %tr
@@ -85,9 +85,7 @@
         %td.hide-in-small= user.phone
         %td= user.email
         %td.hide-in-small= user.last_sign_in_at
-        -if user.town_model.nil?
-          - binding.pry
-        %td.hide-in-small= user.town_model.title
+        %td.hide-in-small= user_town(user)
         %td.hide-in-small= render partial: 'roles', :locals => { roles: user.roles }
         %td.text-center.hide-in-small= render partial: 'locked', :locals => { locked: user.is_locked? }
 

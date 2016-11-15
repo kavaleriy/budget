@@ -7,8 +7,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.valid_users
-    binding.pry
+    @users = User.all
   end
 
   # GET /users/1
