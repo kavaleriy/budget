@@ -10,13 +10,15 @@ class Calendar
   field :countdown_title, type: String
   field :countdown_event, type: Event
   field :import_file, type: String
-  field :is_test, type: Boolean
   field :locale,type: String,:default => 'uk'
   field :is_active, type: Boolean
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
   belongs_to :town_model, class_name: 'Town'
+  belongs_to :author_model, class_name: 'User'
+
+  validates :title, :town_model, :author_model, presence: true
 
   # active status only for one calendar
   def change_active_status
@@ -133,6 +135,7 @@ class Calendar
                 elsif user.has_role? :admin
                   self.all
                 else
+                  # TODO!!!
                   self.where(:author => nil).any_of({:author => user.email},{:town => user.town})
                 end
     calendars || self
