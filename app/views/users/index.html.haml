@@ -85,7 +85,9 @@
         %td.hide-in-small= user.phone
         %td= user.email
         %td.hide-in-small= user.last_sign_in_at
-        %td.hide-in-small= user.town
+        -if user.town_model.nil?
+          - binding.pry
+        %td.hide-in-small= user.town_model.title
         %td.hide-in-small= render partial: 'roles', :locals => { roles: user.roles }
         %td.text-center.hide-in-small= render partial: 'locked', :locals => { locked: user.is_locked? }
 

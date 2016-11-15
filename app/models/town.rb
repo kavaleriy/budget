@@ -18,6 +18,7 @@ class Town
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
   scope :get_town_by_part_title, -> (part) {where(title: Regexp.new("^#{part}.*"))}
   scope :get_towns_by_titles, -> (titles) {where(:title.in => titles)}
+
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -43,11 +44,12 @@ class Town
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
   has_one :export_budget
-  has_many :taxonomy, class_name: 'Taxonomy'
-  has_many :programs, class_name: 'Programs::TargetedProgram'
+  has_many :taxonomy, class_name: 'Taxonomy', dependent: :nullify
+  has_many :programs, class_name: 'Programs::TargetedProgram', dependent: :nullify
+  has_many :users, dependent: :nullify
 
-  validates :title ,presence: true
-  # validates :koatuu, :is_area_level
+  validates :title, :koatuu, presence: true
+
   validates :koatuu,uniqueness: true,
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },

@@ -1,4 +1,11 @@
 namespace :refactor_town do
+
+  task clear_no_valid_town: :environment do
+    Town.where(:title.in => ['', nil], :koatuu.in => [nil, '']).each do |town|
+      town.destroy
+    end
+  end
+
   task calendar: :environment do
     counter = 0
     calendars_with_town = Calendar.where(:town.ne => nil)
@@ -65,6 +72,9 @@ namespace :refactor_town do
     Rails.logger.debug "in #{counter} users was set new town"
   end
 
+  # task parse_koatuu: :environment do
+  #
+  # end
 
 
 end
