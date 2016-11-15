@@ -151,93 +151,114 @@
             $('.indicator').attr('class', 'indicator col-xs-12 col-md-6');
             break;
         default:
-            num_of_years = 3;
+            num_of_years = '3';
             $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
             break;
       }
 
-      $('.chartjs-hidden-iframe').remove();   // drop old charts
-      create_graphs(num_of_years);           // create new charts
+      create_graphs(num_of_years);  // create new charts
     });
 
     function create_graphs(count_years){
       $.each(data1['indicators'], function(key, value) {
         $.each(value, function(k, v) {
+          var last_year = getLastYear();
           var years = [];
-          if (v['plan']){
-            $.each(v['plan'], function(k_p, v_p){
-              years.push(k_p);
-            })
-          }
-          if (v['fact']){
-            $.each(v['fact'], function(k_f, v_f){
-              years.push(k_f);
-            })
-          }
+          var arrays_data = getData();
+          var id_chart = v['id'];
 
-          var last_year = years.sort()[years.length-1];
-          if (years.length == 0){
-            var today = new Date();
-            last_year = today.getFullYear();
+          // If call this function for select2
+          if (typeof count_years === 'string' ){
+            // find container old chart
+            var lineChart = $("#" + id_chart).parent();
+            // drop old chart canvas
+            $("#" + id_chart).remove();
+            // add new canvas
+            lineChart.append("<canvas id=" + id_chart + " data-p= 54>");
+            // drop iframe, drop old charts
+            $('.chartjs-hidden-iframe').remove();
           }
 
-          var arrays_data = {};
-          arrays_data['values'] = {};
-          arrays_data['values']['values_p'] = [];
-          arrays_data['values']['values_f'] = [];
+          buildLineChart(id_chart, years, arrays_data);
 
-          arrays_data['comments'] = {};
-          arrays_data['comments']['comments_p'] = [];
-          arrays_data['comments']['comments_f'] = [];
-
-          arrays_data['links'] = {};
-          arrays_data['links']['links_p'] = [];
-          arrays_data['links']['links_f'] = [];
-
-          var array_years = [];
-          for(var i = parseInt(last_year); i > parseInt(last_year) - count_years; i--){
-            array_years.unshift(i);
-            if (v['plan'] && v['plan'][i]){
-              arrays_data['values']['values_p'].unshift(v['plan'][i]['value']);
-              arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
-              arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
-            } else{
-              arrays_data['values']['values_p'].unshift("");
-              arrays_data['comments']['comments_p'].unshift("");
-              arrays_data['links']['links_p'].unshift("");
+          function getLastYear(){
+            var years = [];
+            if (v['plan']){
+              $.each(v['plan'], function(k_p, v_p){
+                years.push(k_p);
+              })
             }
-            if (v['fact'] && v['fact'][i]){
-              arrays_data['values']['values_f'].unshift(v['fact'][i]['value']);
-              arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
-              arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
-            } else{
-              arrays_data['values']['values_f'].unshift("");
-              arrays_data['comments']['comments_f'].unshift("");
-              arrays_data['links']['links_f'].unshift("");
+            if (v['fact']){
+              $.each(v['fact'], function(k_f, v_f){
+                years.push(k_f);
+              })
             }
+
+            var last_year = years.sort()[years.length-1];
+            if (years.length == 0){
+              var today = new Date();
+              last_year = today.getFullYear();
+            }
+            return last_year;
           }
 
-          var id_chart = "#" + v['id'];
-          buildLineChart(id_chart, array_years, arrays_data);
+          function getData(){
+            var arrays_data = {};
+            arrays_data['values'] = {};
+            arrays_data['values']['values_p'] = [];
+            arrays_data['values']['values_f'] = [];
+
+            arrays_data['comments'] = {};
+            arrays_data['comments']['comments_p'] = [];
+            arrays_data['comments']['comments_f'] = [];
+
+            arrays_data['links'] = {};
+            arrays_data['links']['links_p'] = [];
+            arrays_data['links']['links_f'] = [];
+
+            for(var i = parseInt(last_year); i > parseInt(last_year) - count_years; i--){
+              years.unshift(i);
+              if (v['plan'] && v['plan'][i]){
+                arrays_data['values']['values_p'].unshift(v['plan'][i]['value']);
+                arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
+                arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
+              } else{
+                arrays_data['values']['values_p'].unshift("");
+                arrays_data['comments']['comments_p'].unshift("");
+                arrays_data['links']['links_p'].unshift("");
+              }
+              if (v['fact'] && v['fact'][i]){
+                arrays_data['values']['values_f'].unshift(v['fact'][i]['value']);
+                arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
+                arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
+              } else{
+                arrays_data['values']['values_f'].unshift("");
+                arrays_data['comments']['comments_f'].unshift("");
+                arrays_data['links']['links_f'].unshift("");
+              }
+            }
+            return arrays_data;
+          }
         })
       })
     }
 
     function buildLineChart(id, array_years, arrays_data) {
-      var plan_fact = [];
-      function plan_fact_data(array) {
-        $.each(array, function(k, v) {
-          plan_fact.push(v);
-        })
-      }
-      plan_fact_data(arrays_data['values']['values_p']);
-      plan_fact_data(arrays_data['values']['values_f']);
-      var max_value = Math.max.apply(null, plan_fact);
+      // var plan_fact = [];
+      // function plan_fact_data(array) {
+      //   $.each(array, function(k, v) {
+      //     plan_fact.push(v);
+      //   })
+      // }
+      // plan_fact_data(arrays_data['values']['values_p']);
+      // plan_fact_data(arrays_data['values']['values_f']);
+      // var max_value = Math.max.apply(null, plan_fact);
       // step = Math.round(max_value / 100) * 10;
 
       // create chart with 2 lines
-      var c = $(id).get(0);
+      var c = $("#" + id).get(0);
       var ctx = c.getContext('2d');
+
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
