@@ -46,7 +46,7 @@ class BudgetFile
       elsif user.is_admin?
         self.all
       else
-        self.where(author: user.email)
+        self.where(author_model: user)
         # self.or({author: nil}, {author: user.email})
       end
 

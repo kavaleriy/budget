@@ -168,6 +168,7 @@ class BudgetFilesController < ApplicationController
 
   def generate_budget_file
     @budget_file = BudgetFile.new
+    @budget_file.author_model = current_user
   end
 
   private
