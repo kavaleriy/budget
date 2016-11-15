@@ -20,11 +20,11 @@ class ZipBudgetFilesController < ApplicationController
       table
     end
 
-    def get_owner
-      current_user.town
+    def get_owner_town
+      current_user.town_model
     end
 
-    owner = get_owner
+    owner_town = get_owner_town
 
     def generate_budget_file entry, taxonomy, budget_file
       table = extract_file_data(entry)
@@ -57,7 +57,7 @@ class ZipBudgetFilesController < ApplicationController
         next unless entry.name.match /^\d+M21(_\d+)?.dbf/
 
         taxonomy_name = entry.name.gsub(/\d\dM/i, 'XX')
-        taxonomy = TaxonomyRot.find_or_create_by!(owner: owner, name: taxonomy_name)
+        taxonomy = TaxonomyRot.find_or_create_by!(town: owner_town, name: taxonomy_name)
 
         budget_file = BudgetFileRotVz.find_or_create_by(taxonomy: taxonomy, path: "#{entry.name}.#{params[:year]}")
 
@@ -70,7 +70,7 @@ class ZipBudgetFilesController < ApplicationController
         next unless entry.name.match /^\d+M22(_\d+)?.dbf/
 
         taxonomy_name = entry.name.gsub(/\d\dM/i, 'XX')
-        taxonomy = TaxonomyRov.find_or_create_by!(owner: owner, name: taxonomy_name)
+        taxonomy = TaxonomyRov.find_or_create_by!(town: owner_town, name: taxonomy_name)
 
         budget_file = BudgetFileRovVz.find_or_create_by(taxonomy: taxonomy, path: "#{entry.name}.#{params[:year]}")
 

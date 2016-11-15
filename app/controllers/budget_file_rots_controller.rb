@@ -7,8 +7,9 @@ class BudgetFileRotsController < BudgetFilesController
     @budget_file.data_type = :plan
   end
 
-  def get_taxonomies owner
-    TaxonomyRot.owned_by(current_user.town)
+  def get_taxonomies
+    TaxonomyRot.by_town(current_user.town_model)
+    # TaxonomyRot.owned_by(current_user.town)
   end
 
   def create_taxonomy

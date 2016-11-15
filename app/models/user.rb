@@ -44,7 +44,7 @@ class User
 
   belongs_to :town_model, class_name: 'Town'
 
-  validates :town, :email, presence: true
+  validates :email, :town_model, presence: true
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask
