@@ -2,6 +2,9 @@
   #embed_code_visify{
     width: 40px;
   }
+  .buttons{
+    margin: 20px 0 5px;
+  }
 = content_for :header do
   .head
     %i.fa.fa-money
@@ -11,12 +14,13 @@
 
 = render partial: '/widgets/town_profile/indicates'
 
-.pull-right
-  #embed_code_visify
-    = render partial: 'widgets/visify/embed_code'
--if current_user.is_admin?
-  = link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
-  = link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
+.buttons
+  .pull-right
+    #embed_code_visify
+      = render partial: 'widgets/visify/embed_code'
+  -if current_user.is_admin?
+    = link_to t('form.edit'), edit_indicate_taxonomy_path(@indicate_taxonomy), :class => 'btn btn-primary'
+    = link_to t('form.back'), indicate_taxonomies_path, :class => 'btn btn-default'
 
 
 :javascript
