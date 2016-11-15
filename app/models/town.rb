@@ -269,6 +269,39 @@ class Town
   end
 
   private
+  def self.by_title(town_name)
+
+    town = self.get_town_by_title(town_name).first || Town.where(_id: town_name).first
+    if town.nil?
+      # if town name is like "Лебедин, Сумська обл"
+      town_name_arr = town_name.split(',')
+
+      if town_name_arr.size > 1
+        # cut empty space before and after string
+        town_title = town_name_arr[0].strip
+        town_area_title = town_name_arr[1].strip
+
+        # split area title for check if correct area name
+        town_area_title_arr = town_area_title.split(' ')
+        unless town_area_title_arr[1].eql?('область')
+          area = 'область'
+          town_area_title = "#{town_area_title_arr[0]} #{area}"
+        end
+        town = self.get_town_by_title(town_title).get_town_by_area_title(town_area_title).first
+      else
+        # check if town name like "Івано-франківськ"
+        town_name_arr_with_minus = town_name.split('-')
+        if town_name_arr_with_minus.size > 1
+          # convert and capitalize second town name
+          town_name_arr_with_minus[1] = town_name_arr_with_minus[1].mb_chars.capitalize.to_s
+          inside_town_name = town_name_arr_with_minus.join('-')
+          town = self.get_town_by_title(inside_town_name).first
+        end
+
+      end
+    end
+    town
+  end
 
   def self.get_node(node)
     { id: "#{node.id}", title: node.title, img_url: node.img.icon.url } unless node.nil?

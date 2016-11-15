@@ -42,6 +42,9 @@ class User
   field :reset_password_token, type: String
   field :reset_password_sent_at, type: DateTime
 
+  belongs_to :town_model, class_name: 'Town'
+
+  validates :town, :email, presence: true
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask

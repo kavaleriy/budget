@@ -16,6 +16,7 @@ class Calendar
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
+  belongs_to :town_model, class_name: 'Town'
 
   # active status only for one calendar
   def change_active_status
