@@ -192,14 +192,11 @@ class Widgets::VisifyController < Widgets::WidgetsController
     @levels = @taxonomy.columns.keys
     @file_type = @taxonomy._type
 
-    unless @taxonomy.owner.nil?
-      town_title = @taxonomy.owner.split(',')
-      @town = Town.where(title: town_title[0])
-      @town = @town.where(area_title: town_title[1].squish) if town_title[1]
-      @town = @town.first
+    unless @taxonomy.town.nil?
+      @town = @taxonomy.town
     end
 
-    @author = "#{@taxonomy.get_author}, #{@taxonomy.owner}"
+    @author = "#{@taxonomy.get_author}, #{@town.title}"
   end
 
   def set_params

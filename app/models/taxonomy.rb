@@ -364,11 +364,8 @@
     end
 
     def get_author
-      if self.budget_files.any?
-        email = self.budget_files.last.author
-        User.find_by(email: email).organisation rescue email
-      else
-        '-'
+      unless author.nil?
+        author.organisation || author.email
       end
     end
 
