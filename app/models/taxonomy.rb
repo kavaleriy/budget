@@ -32,6 +32,14 @@
     belongs_to :town, class_name: 'Town'
 
 
+    def self.active_or_first_by_town(town)
+      res = self.by_town(town).get_active.first
+      if res.nil?
+        res = self.by_town(town).first
+      end
+      res
+    end
+
     def self.get_active_by_town(town)
       # get active taxonomies belongs to town
       self.owned_by(town).get_active

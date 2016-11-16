@@ -15,8 +15,9 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # set first element of hash is active
     @tabs = []
 
-    taxonomy_rot = TaxonomyRot.owned_by(@town.to_s).first
-    taxonomy_rov = TaxonomyRov.owned_by(@town.to_s).first
+    taxonomy_rot = TaxonomyRot.active_or_first_by_town(@town)
+    taxonomy_rov = TaxonomyRov.active_or_first_by_town(@town)
+
     sankey_url = widgets_sankey_by_taxonomies_path(taxonomy_rot.id,taxonomy_rov.id) unless taxonomy_rov.nil? || taxonomy_rot.nil?
 
     @tabs << { title: t('public.towns.budget.tab_rot'), url: widgets_bubbletree_path(taxonomy_rot.id)} if taxonomy_rot
@@ -102,7 +103,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
   end
 
   def get_town_items_hash
-    taxonomy = Taxonomy.owned_by(@town).first
+    taxonomy = Taxonomy.active_or_first_by_town(@town)
     calendar = Calendar.get_calendar_by_town(@town)
     indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(@town).last
     programs = Programs::TargetedProgram.by_town(@town).first

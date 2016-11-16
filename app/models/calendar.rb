@@ -136,7 +136,7 @@ class Calendar
                   self.all
                 else
                   # TODO!!!
-                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town})
+                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town}, {author_model: user})
                 end
     calendars || self
   end
