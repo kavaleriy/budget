@@ -197,7 +197,7 @@ module Repairing
         if ( coordinates =~ /^\d{1,2}[.]\d*/ )
           Geocoder.coordinates(coordinates)
         else
-          user_town = current_user.town
+          user_town = current_user.town_model.title
           Geocoder.coordinates(user_town + ' ' + coordinates)
         end
       end
