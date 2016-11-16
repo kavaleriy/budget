@@ -86,7 +86,7 @@ module Repairing
       if current_user.has_role?(:admin)
         @repairing_layer.town = Town.find(repairing_layer_params['town'])
       else
-        @repairing_layer.town = Town.where(title: current_user.town).first_or_create
+        @repairing_layer.town = current_user.town_model
       end
       @repairing_layer.owner = current_user
       @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) unless repairing_layer_params['repairing_category'].blank?
