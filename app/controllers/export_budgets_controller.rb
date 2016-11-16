@@ -108,11 +108,6 @@ class ExportBudgetsController < ApplicationController
 
   private
 
-    def get_bubbletree_url_by_taxonomy_rot
-      taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
-      "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
-    end
-
     def access_user?
       unless current_user.is_admin? || current_user.public_organisation? || current_user.city_authority? || current_user.central_authority?
         redirect_to root_url, alert: t('export_budgets.notice_access')
