@@ -10,7 +10,8 @@ class Public::TownsController < ApplicationController
   end
 
   def show
-    @calendars = Calendar.where(:town => @town)
+    # Now this query not use
+    # @calendars = Calendar.where(town_model_id: @town)
 
     @town_export_budgets = ExportBudget.get_export_budget_by_town(@town)
 

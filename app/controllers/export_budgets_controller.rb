@@ -127,7 +127,7 @@ class ExportBudgetsController < ApplicationController
       @presenter = ExportBudget::FormPresenter.new(current_user,params[:locale])
     end
     def get_town_calendar
-      @town_calendar = Calendar.where(:town => @export_budget.town.title).first unless @export_budget.town.nil?
+      @town_calendar = Calendar.where(town_model_id: @export_budget.town).first unless @export_budget.town.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
