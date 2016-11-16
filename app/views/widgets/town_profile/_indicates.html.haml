@@ -94,9 +94,9 @@
 
 #indicators2.row.clearfix
   -@indicators.each_with_index do |(key,value),index|
-    .group.row.col-xs-12{'data-value' => key, :id => index.to_s + 'group' }
+    .group.row.col-xs-12{'data-value' => key, id: index.to_s + 'group' }
       %p=key
-      -value.each_with_index do |(k,v),i|
+      -value.each do |k, v|
         .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
           - first_year = v[v.keys[0]].keys[0]
           - first_values = v[v.keys[0]][first_year]
@@ -123,9 +123,8 @@
 
 :javascript
 
-  var data1;
-
   $(document).ready(function(){
+    var data1;
 
     $.ajax({
       url: '/indicate/taxonomies/#{@indicate_taxonomy.id}/get_indicators',
@@ -133,14 +132,14 @@
       dataType: "json",
       success: function(json) {
         data1 = json;
-        create_graphs2(3);
+        create_graphs(3);
       }
     })
 
     $('#years_chart').select2({
       placeholder: "#{t('form.period')}"
     }).on('change', function() {
-     num_of_years = $(this).val();
+      var num_of_years = $(this).val();
       switch(num_of_years) {
         case '3':
             $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
@@ -152,92 +151,114 @@
             $('.indicator').attr('class', 'indicator col-xs-12 col-md-6');
             break;
         default:
-            num_of_years = 3;
+            num_of_years = '3';
             $('.indicator').attr('class', 'indicator col-xs-12 col-sm-6 col-md-4 col-lg-3');
             break;
       }
 
-      $('.chartjs-hidden-iframe').remove();   // drop old charts
-      create_graphs2(num_of_years);           // create new charts
+      create_graphs(num_of_years);  // create new charts
     });
 
-    function create_graphs2(count_years){
+    function create_graphs(count_years){
       $.each(data1['indicators'], function(key, value) {
         $.each(value, function(k, v) {
-          years = [];
-          if (v['plan']){
-            $.each(v['plan'], function(k_p, v_p){
-              years.push(k_p);
-            })
+          var last_year = getLastYear();
+          var years = [];
+          var arrays_data = getData();
+          var id_chart = v['id'];
+
+          // If call this function for select2
+          if (typeof count_years === 'string' ){
+            // find container old chart
+            var lineChart = $("#" + id_chart).parent();
+            // drop old chart canvas
+            $("#" + id_chart).remove();
+            // add new canvas
+            lineChart.append("<canvas id=" + id_chart + " data-p= 54>");
+            // drop iframe, drop old charts
+            $('.chartjs-hidden-iframe').remove();
           }
-          if (v['fact']){
-            $.each(v['fact'], function(k_f, v_f){
-              years.push(k_f);
-            })
-          }
 
-          last_year = years.sort()[years.length-1];
-          if (years.length == 0){
-            last_year = 2018;
-          }
+          buildLineChart(id_chart, years, arrays_data);
 
-          arrays_data = {};
-          arrays_data['values'] = {};
-          arrays_data['values']['values_p'] = [];
-          arrays_data['values']['values_f'] = [];
-
-          arrays_data['comments'] = {};
-          arrays_data['comments']['comments_p'] = [];
-          arrays_data['comments']['comments_f'] = [];
-
-          arrays_data['links'] = {};
-          arrays_data['links']['links_p'] = [];
-          arrays_data['links']['links_f'] = [];
-
-          array_years = [];
-          for(var i = parseInt(last_year); i > parseInt(last_year) - count_years; i--){
-            array_years.unshift(i);
-            if (v['plan'] && v['plan'][i]){
-              arrays_data['values']['values_p'].unshift(v['plan'][i]['value']);
-              arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
-              arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
-            } else{
-              arrays_data['values']['values_p'].unshift("");
-              arrays_data['comments']['comments_p'].unshift("");
-              arrays_data['links']['links_p'].unshift("");
+          function getLastYear(){
+            var years = [];
+            if (v['plan']){
+              $.each(v['plan'], function(k_p, v_p){
+                years.push(k_p);
+              })
             }
-            if (v['fact'] && v['fact'][i]){
-              arrays_data['values']['values_f'].unshift(v['fact'][i]['value']);
-              arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
-              arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
-            } else{
-              arrays_data['values']['values_f'].unshift("");
-              arrays_data['comments']['comments_f'].unshift("");
-              arrays_data['links']['links_f'].unshift("");
+            if (v['fact']){
+              $.each(v['fact'], function(k_f, v_f){
+                years.push(k_f);
+              })
             }
+
+            var last_year = years.sort()[years.length-1];
+            if (years.length == 0){
+              var today = new Date();
+              last_year = today.getFullYear();
+            }
+            return last_year;
           }
 
-          id_chart = "#" + v['id'];
-          buildLineChart(id_chart, array_years, arrays_data);
+          function getData(){
+            var arrays_data = {};
+            arrays_data['values'] = {};
+            arrays_data['values']['values_p'] = [];
+            arrays_data['values']['values_f'] = [];
+
+            arrays_data['comments'] = {};
+            arrays_data['comments']['comments_p'] = [];
+            arrays_data['comments']['comments_f'] = [];
+
+            arrays_data['links'] = {};
+            arrays_data['links']['links_p'] = [];
+            arrays_data['links']['links_f'] = [];
+
+            for(var i = parseInt(last_year); i > parseInt(last_year) - count_years; i--){
+              years.unshift(i);
+              if (v['plan'] && v['plan'][i]){
+                arrays_data['values']['values_p'].unshift(v['plan'][i]['value']);
+                arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
+                arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
+              } else{
+                arrays_data['values']['values_p'].unshift("");
+                arrays_data['comments']['comments_p'].unshift("");
+                arrays_data['links']['links_p'].unshift("");
+              }
+              if (v['fact'] && v['fact'][i]){
+                arrays_data['values']['values_f'].unshift(v['fact'][i]['value']);
+                arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
+                arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
+              } else{
+                arrays_data['values']['values_f'].unshift("");
+                arrays_data['comments']['comments_f'].unshift("");
+                arrays_data['links']['links_f'].unshift("");
+              }
+            }
+            return arrays_data;
+          }
         })
       })
     }
 
     function buildLineChart(id, array_years, arrays_data) {
-      plan_fact = [];
-      function plan_fact_data(array) {
-        $.each(array, function(k, v) {
-          plan_fact.push(v);
-        })
-      }
-      plan_fact_data(arrays_data['values']['values_p']);
-      plan_fact_data(arrays_data['values']['values_f']);
-      max_value = Math.max.apply(null, plan_fact);
+      // var plan_fact = [];
+      // function plan_fact_data(array) {
+      //   $.each(array, function(k, v) {
+      //     plan_fact.push(v);
+      //   })
+      // }
+      // plan_fact_data(arrays_data['values']['values_p']);
+      // plan_fact_data(arrays_data['values']['values_f']);
+      // var max_value = Math.max.apply(null, plan_fact);
       // step = Math.round(max_value / 100) * 10;
 
       // create chart with 2 lines
-      var c = $(id).get(0);
+      var c = $("#" + id).get(0);
       var ctx = c.getContext('2d');
+
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -355,40 +376,58 @@
 
       function handleClick(evt){
         var activeElement = myChart.getElementAtEvent(evt);
+        var data = activeElement[0]['_chart']['config']['data'];
 
-        comments = activeElement[0]['_chart']['config']['data']['comments'];
-        point_position = activeElement[0]._index;
-        point_type = activeElement[0]._datasetIndex;
-        year = activeElement[0]['_chart']['config']['data']['labels'][point_position];
-        var comment = '';
-        if (point_type == 0){
-          comment = comments['comments_p'][point_position];
-        } else if (point_type == 1){
-          comment = comments['comments_f'][point_position];
+        var point_position = activeElement[0]._index;
+
+        settingCommentLinkForPoint();
+
+        function getCommentLink(str){
+          // Get comment or link
+          var values = data[str];
+          var point_type = activeElement[0]._datasetIndex;
+
+          switch(point_type){
+            case 0:
+              value = values[str + '_p'][point_position];
+              break;
+            case 1:
+              value = values[str + '_f'][point_position];
+              break;
+            default:
+              value = ''
+          }
+
+          return value;
         }
 
-        links = activeElement[0]['_chart']['config']['data']['links'];
-        var link = '';
-        if (point_type == 0){
-          link = links['links_p'][point_position];
-        } else if (point_type == 1){
-          link = links['links_f'][point_position];
+        function settingCommentLinkForPoint(){
+          // Refactor this code if changed DOM structure in widgets/town_profile/indicates.html
+
+          var comment = getCommentLink('comments');
+          var link = getCommentLink('links');
+
+          // set comment to chart
+          $parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
+          $div_comments = $parent_div.next('.comments');
+          $div_comments.text(comment);
+
+          // set link to chart
+          $div_links = $div_comments.next('.reports');
+          $download_link = $div_links.children('a');
+          $download_link.attr("href", link);
+
+          // set year to link for point
+          var year = data['labels'][point_position];
+          $download_link.children('span').text(year);
+
+          // setting css to link
+          if (link == '#' || link == ''){
+            $download_link.css("color", "grey");
+          } else{
+            $download_link.css("color", "#2A4989");
+          }
         }
-
-        $parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
-        $div_comments = $parent_div.next('.comments');
-        $div_comments.text(comment);
-        $div_links = $div_comments.next('.reports');
-        $download_link = $div_links.children('a');
-        $download_link.attr("href", link);
-
-        if(link == '#' || link == ''){
-          $download_link.css("color", "grey");
-        } else{
-          $download_link.css("color", "#2A4989");
-        }
-
-        $download_link.children('span').text(year);
       }
     }
   });
