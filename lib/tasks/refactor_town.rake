@@ -106,20 +106,17 @@ namespace :refactor_town do
       town.title = title.to_s
       town.note = note
       town.level = level if town.level.blank?
+
       town.save
     end
 
-
-    # post-process
-    # Town.where(:koatuu => '8000000000').first.update( { :level => 13, :area_title => "Київська область"} ) # kyiv
-    # Town.delete_all(:koatuu => Regexp.new("^01.*"))
-
-    # Town.delete_all(:koatuu => '8500000000') # Sevastopol
-
-    # Town.delete_all(:level => nil)
-
     # calculate area title
+    Town.areas.each do |area|
+      area.mark_delete = false
+      area.save
+    end
     Town.each do |town|
+      town.mark_delete = false
       unless town.level == 1
         next if town.koatuu.blank? || town.koatuu == '8000000000'
         area_title = Town.areas(town.koatuu.slice(0, 2)).first
@@ -127,8 +124,11 @@ namespace :refactor_town do
           # TODO refactor area_title
           town.area_town = area_title
           town.area_title = area_title
-          town.save
+
+        else
+          town.mark_delete = true
         end
+        town.save
       end
     end
   end
