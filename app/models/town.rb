@@ -11,7 +11,7 @@ class Town
   include Mongoid::Document
   require 'carrierwave/mongoid'
 
-  default_scope lambda { where(mark_delete: false).order_by(:title => :asc) }
+  default_scope lambda { order_by(:title => :asc) }
   scope :get_test_town, -> {where(koatuu: TEST_TOWN_KOATUU )}
   scope :get_town_by_koatuu, -> (koatuu){where(koatuu: koatuu)}
   scope :get_town_by_title, -> (town_title) {where(title: town_title)}
