@@ -1,11 +1,5 @@
 namespace :refactor_town do
 
-  task clear_no_valid_town: :environment do
-    Town.where(:title.in => ['', nil], :koatuu.in => [nil, '']).each do |town|
-      town.destroy
-    end
-  end
-
   task calendar: :environment do
     counter = 0
     calendars_with_town = Calendar.where(:town.ne => nil)
@@ -29,7 +23,7 @@ namespace :refactor_town do
 
   end
 
-  task taxonomy: :environment do
+  task taxonomy: :calendar do
     counter = 0
     tax_with_town = Taxonomy.where(:owner.ne => nil)
     tax_without_town = Taxonomy.where(owner: nil)
@@ -52,7 +46,7 @@ namespace :refactor_town do
     Rails.logger.debug "in #{counter} taxonomies was set new town"
   end
 
-  task user: :environment do
+  task user: :taxonomy do
     counter = 0
     user_with_town = User.where(:town.ne => nil)
     user_without_town = User.where(town: nil)
@@ -72,7 +66,7 @@ namespace :refactor_town do
     Rails.logger.debug "in #{counter} users was set new town"
   end
 
-  task parse_new_koatuu: :environment do
+  task parse_new_koatuu: :user do
     require 'roo'
 
     xls = Roo::Excelx.new("db/koatuu/decomunization/KOATU_02112016.xlsx")
