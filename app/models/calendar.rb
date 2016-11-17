@@ -18,8 +18,7 @@ class Calendar
   belongs_to :town_model, class_name: 'Town'
   belongs_to :author_model, class_name: 'User'
 
-  # Todo: Validates commented for successful run task 'rake refactor_town:calendar'
-  # validates :title, :town_model, :author_model, presence: true
+  validates :title, :town_model, :author_model, presence: true
 
   # active status only for one calendar
   def change_active_status

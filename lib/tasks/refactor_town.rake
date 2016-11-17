@@ -15,7 +15,7 @@ namespace :refactor_town do
       unless town.nil?
         counter += 1
         cal.town_model = town
-        cal.save
+        cal.save(validate: false)
       else
         puts "calendar #{cal.title} was not set new town"
         Rails.logger.debug "calendar #{cal.title} was not set new town"
@@ -40,7 +40,7 @@ namespace :refactor_town do
       unless town.nil?
         counter += 1
         tax.town = town
-        tax.save
+        tax.save(validate: false)
       else
         puts "taxonomy #{tax.owner} was not set new town"
         Rails.logger.debug "taxonomy #{tax.owner} was not set new town"
@@ -61,7 +61,7 @@ namespace :refactor_town do
       unless town.nil?
         counter += 1
         user.town_model = town
-        user.save
+        user.save(validate: false)
       else
         puts "user #{user.email} was not set new town"
         Rails.logger.debug "user #{user.email} was not set new town"
@@ -72,9 +72,61 @@ namespace :refactor_town do
     Rails.logger.debug "in #{counter} users was set new town"
   end
 
-  # task parse_koatuu: :environment do
-  #
-  # end
+  task parse_koatuu: :environment do
+    require 'roo'
+
+    xls = Roo::Excelx.new("db/koatuu/decomunization/KOATU_02112016.xlsx")
+    xls.default_sheet = xls.sheets.first
+
+    2.upto(xls.last_row) do |line|
+
+      koatuu = xls.cell(line,'A').to_s.gsub('.0', '').rjust(10, '0')
+
+      note = xls.cell(line,'B') || ''
+      title = extract_name (xls.cell(line,'D')) || ''
+
+      b3 = koatuu[2]
+      b6 = koatuu[5]
+
+      level = if b3 == '0' and b6 == '0'
+        Town::AREA_LEVEL
+      elsif b3.index(/[23]/) and b6 == '0' and koatuu.match(/.0000000/).nil?
+        Town::REGION_LEVEL
+      elsif koatuu.index('10100000')
+        Town::CITY_LEVEL # head of area
+      elsif note.index(/[М]/)
+        Town::TOWN_LEVEL
+      elsif note.index(/[Т]/)
+        Town::VILLAGE_LEVEL
+      else
+        Town::WITHOUT_LEVEL
+      end
+
+      town = Town.find_or_create_by(:koatuu => koatuu)
+      town.title = title.to_s
+      town.note = note
+      town.level = level if town.level.blank?
+      town.save
+    end
+
+
+    # post-process
+    # Town.where(:koatuu => '8000000000').first.update( { :level => 13, :area_title => "Київська область"} ) # kyiv
+    # Town.delete_all(:koatuu => Regexp.new("^01.*"))
+
+    # Town.delete_all(:koatuu => '8500000000') # Sevastopol
+
+    # Town.delete_all(:level => nil)
+
+    # calculate area title
+    Town.each do |town|
+      unless town.level == 1
+        next if town.koatuu.blank? || town.koatuu == '8000000000'
+        area_title = Town.areas(town.koatuu.slice(0, 2)).first
+        town.update( area_title: area_title )
+      end
+    end
+  end
 
 
 end
