@@ -2,8 +2,9 @@
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    scope :by_town, lambda { |town| where(town: town) }
     # select taxonomies belongs to town
-    scope :owned_by, lambda { |town| where(:owner => town) }
+    # scope :owned_by, lambda { |town| where(:owner => town) }
     # select all active taxonomies
     scope :get_active, -> { where(active: true ) }
     # select taxonomies by town id
@@ -31,10 +32,18 @@
     belongs_to :town, class_name: 'Town'
 
 
-    def self.get_active_by_town(town)
-      # get active taxonomies belongs to town
-      self.owned_by(town).get_active
+    def self.active_or_first_by_town(town)
+      res = self.by_town(town).get_active.first
+      if res.nil?
+        res = self.by_town(town).first
+      end
+      res
     end
+
+    # def self.get_active_by_town(town)
+    #   # get active taxonomies belongs to town
+    #   self.owned_by(town).get_active
+    # end
 
     def self.active_taxonomies_by_town(town_id)
       self.by_town_id(town_id).get_active
@@ -43,25 +52,16 @@
     def self.get_active_for_all_towns
       # this function grouped taxonomies by town
       # and return array of hashes active or first taxonomies from town
-      taxonomies_group_by_town = self.all.group_by{|f| f.owner}.keys
-
+      taxonomies_group_by_town = self.all.group_by{|f| f.town}.keys.compact
       result = []
 
-      taxonomies_group_by_town.each do |town_title|
-        taxonomy = self.get_active_or_first(town_title)
-
-        # get town by taxonomy
-        town = taxonomy.town
-
-        # if town not exist get town by town title
-        if town.nil?
-          town = Town.get_town_by_title(town_title).first
-        end
+      taxonomies_group_by_town.each do |town|
+        taxonomy = self.active_or_first_by_town(town)
 
         # get town blazon if town exist and town have img
         town_blazon = town.img.url unless town.nil? || town.img.nil?
 
-        town_name = town.title.gsub(/,.*/, '') unless town.blank?
+        town_name = town.title unless town.blank?
 
         # push taxonomy with blazon
         unless town_name.blank?
@@ -101,7 +101,7 @@
                 if user.has_role? :admin
                   self.all
                 else
-                  self.where(:owner => user.town,:author.in => [user,nil])
+                  self.where(:town => user.town_model,:author.in => [user,nil])
                 end
               else
                 self.where(:owner => '')
@@ -364,11 +364,8 @@
     end
 
     def get_author
-      if self.budget_files.any?
-        email = self.budget_files.last.author
-        User.find_by(email: email).organisation rescue email
-      else
-        '-'
+      unless author.nil?
+        author.organisation || author.email
       end
     end
 

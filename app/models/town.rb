@@ -1,7 +1,7 @@
 class Town
-
-  REGION_LEVEL = 1
-  AREA_LEVEL = 2
+  WITHOUT_LEVEL = -1
+  AREA_LEVEL = 1
+  REGION_LEVEL = 2
   TOWN_LEVEL = 3
   CITY_LEVEL = 13
   VILLAGE_LEVEL = 31
@@ -18,6 +18,7 @@ class Town
   scope :get_town_by_area_title, -> (area_title) {where(area_title: area_title)}
   scope :get_town_by_part_title, -> (part) {where(title: Regexp.new("^#{part}.*"))}
   scope :get_towns_by_titles, -> (titles) {where(:title.in => titles)}
+
   after_update :clear_cache
 
   field :koatuu, type: String
@@ -31,6 +32,8 @@ class Town
   field :bounds, type: Array
   field :center, type: Array
   field :geometry_type, type: String
+  field :p_id, type: String
+  field :mark_delete, type: Boolean, default: false
 
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
@@ -42,12 +45,14 @@ class Town
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
   has_one :indicate_taxonomy, :class_name => 'Indicate::Taxonomy'
   has_many :community_communities, :class_name => 'Community::Community', autosave: true
-  has_one :export_budget
-  has_many :taxonomy, class_name: 'Taxonomy'
-  has_many :programs, class_name: 'Programs::TargetedProgram'
+  has_many :export_budget
+  has_many :taxonomy, class_name: 'Taxonomy', dependent: :nullify
+  has_many :programs, class_name: 'Programs::TargetedProgram', dependent: :nullify
+  has_many :users, dependent: :nullify
+  belongs_to :area_town, class_name: 'Town', foreign_key: 'p_id'
 
-  validates :title ,presence: true
-  # validates :koatuu, :is_area_level
+  validates :title, :koatuu, presence: true
+
   validates :koatuu,uniqueness: true,
             presence: true,
             length: {is: 10, message: I18n.t('invalid_length', length: 10) },
@@ -72,13 +77,10 @@ class Town
   def self.get_central_authority_towns(query)
     # first of all get users with authority roles mask
     city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
-                                                         User.mask_for(:central_authority)])
+                                                         User.mask_for(:central_authority)]).pluck(:town_model_id)
 
     # second we find all they towns and last add regular expression to all they towns
-    Town.where(:title.in => city_authority_users.map{|user|
-      town = Town.get_user_town(user)
-      town.title unless town.nil?
-    }).and(title: Regexp.new("^#{query}.*"))
+    Town.where(:_id.in => city_authority_users).and(title: Regexp.new("^#{query}.*"))
   end
 
   def is_test?
@@ -238,6 +240,7 @@ class Town
   end
 
   def self.get_user_town(user)
+    user.town_model
     # this function return town from user if user not nil
     # function get one parameters user model
     # init user_town as new Town
@@ -246,29 +249,62 @@ class Town
     # add area_title to search
     # and assigned to user_town
     # return user_town(town model)
-    unless user.nil?
-      unless user.town.empty?
-        user_town = Town.new
-        town_arr = user.town.split(',') unless user.nil?
-
-        town_title = town_arr.first
-        town_title.strip!
-
-        unless town_title.empty?
-          user_town = Town.get_town_by_title(town_title)
-
-          if town_arr.size > 1
-            town_area_title = town_arr.last
-            town_area_title.strip!
-            user_town = user_town.get_town_by_area_title(town_area_title)
-          end
-        end
-        user_town.first
-      end
-    end
+    # unless user.nil?
+    #   unless user.town.empty?
+    #     user_town = Town.new
+    #     town_arr = user.town.split(',') unless user.nil?
+    #
+    #     town_title = town_arr.first
+    #     town_title.strip!
+    #
+    #     unless town_title.empty?
+    #       user_town = Town.get_town_by_title(town_title)
+    #
+    #       if town_arr.size > 1
+    #         town_area_title = town_arr.last
+    #         town_area_title.strip!
+    #         user_town = user_town.get_town_by_area_title(town_area_title)
+    #       end
+    #     end
+    #     user_town.first
+    #   end
+    # end
   end
 
   private
+  def self.by_title(town_name)
+
+    town = self.get_town_by_title(town_name).first || Town.where(_id: town_name).first
+    if town.nil?
+      # if town name is like "Лебедин, Сумська обл"
+      town_name_arr = town_name.split(',')
+
+      if town_name_arr.size > 1
+        # cut empty space before and after string
+        town_title = town_name_arr[0].strip
+        town_area_title = town_name_arr[1].strip
+
+        # split area title for check if correct area name
+        town_area_title_arr = town_area_title.split(' ')
+        unless town_area_title_arr[1].eql?('область')
+          area = 'область'
+          town_area_title = "#{town_area_title_arr[0]} #{area}"
+        end
+        town = self.get_town_by_title(town_title).get_town_by_area_title(town_area_title).first
+      else
+        # check if town name like "Івано-франківськ"
+        town_name_arr_with_minus = town_name.split('-')
+        if town_name_arr_with_minus.size > 1
+          # convert and capitalize second town name
+          town_name_arr_with_minus[1] = town_name_arr_with_minus[1].mb_chars.capitalize.to_s
+          inside_town_name = town_name_arr_with_minus.join('-')
+          town = self.get_town_by_title(inside_town_name).first
+        end
+
+      end
+    end
+    town
+  end
 
   def self.get_node(node)
     { id: "#{node.id}", title: node.title, img_url: node.img.icon.url } unless node.nil?

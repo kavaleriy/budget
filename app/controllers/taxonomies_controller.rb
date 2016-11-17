@@ -39,16 +39,13 @@ class TaxonomiesController < ApplicationController
     end
   end
 
-  def town_profile
-    if params[:town_id] == 'test'
-      @taxonomy = Taxonomy.where(:owner => '').first
-    else
-      town = Town.find(params[:town_id])
-      @taxonomy = Taxonomy.where(:owner => town.title).first
-    end
-
-    render 'show'
-  end
+  #
+  # def town_profile
+  #   town = Town.find(params[:town_id])
+  #   @taxonomy = Taxonomy.where(:owner => town.title).first
+  #
+  #   render 'show'
+  # end
 
   def index
     @taxonomies = Taxonomy.visible_to(current_user).page(params[:page])

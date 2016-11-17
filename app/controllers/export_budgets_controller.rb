@@ -108,11 +108,6 @@ class ExportBudgetsController < ApplicationController
 
   private
 
-    def get_bubbletree_url_by_taxonomy_rot
-      taxonomy_rot = TaxonomyRot.owned_by(@town_calendar.town).first
-      "#{request.base_url}/widgets/visify/bubbletree/#{taxonomy_rot.id}"
-    end
-
     def access_user?
       unless current_user.is_admin? || current_user.public_organisation? || current_user.city_authority? || current_user.central_authority?
         redirect_to root_url, alert: t('export_budgets.notice_access')
@@ -127,7 +122,7 @@ class ExportBudgetsController < ApplicationController
       @presenter = ExportBudget::FormPresenter.new(current_user,params[:locale])
     end
     def get_town_calendar
-      @town_calendar = Calendar.where(:town => @export_budget.town.title).first unless @export_budget.town.nil?
+      @town_calendar = Calendar.where(town_model_id: @export_budget.town).first unless @export_budget.town.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
