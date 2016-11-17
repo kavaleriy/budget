@@ -32,6 +32,7 @@ class Town
   field :bounds, type: Array
   field :center, type: Array
   field :geometry_type, type: String
+  field :p_id, type: String
 
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img
@@ -47,6 +48,7 @@ class Town
   has_many :taxonomy, class_name: 'Taxonomy', dependent: :nullify
   has_many :programs, class_name: 'Programs::TargetedProgram', dependent: :nullify
   has_many :users, dependent: :nullify
+  belongs_to :area_town, class_name: 'Town', foreign_key: 'p_id'
 
   validates :title, :koatuu, presence: true
 

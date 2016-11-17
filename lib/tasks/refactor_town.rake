@@ -72,7 +72,7 @@ namespace :refactor_town do
     Rails.logger.debug "in #{counter} users was set new town"
   end
 
-  task parse_koatuu: :environment do
+  task parse_new_koatuu: :environment do
     require 'roo'
 
     xls = Roo::Excelx.new("db/koatuu/decomunization/KOATU_02112016.xlsx")
@@ -123,7 +123,12 @@ namespace :refactor_town do
       unless town.level == 1
         next if town.koatuu.blank? || town.koatuu == '8000000000'
         area_title = Town.areas(town.koatuu.slice(0, 2)).first
-        town.update( area_title: area_title )
+        if town.valid?
+          # TODO refactor area_title
+          town.area_town = area_title
+          town.area_title = area_title
+          town.save
+        end
       end
     end
   end
