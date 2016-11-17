@@ -82,8 +82,6 @@ class TownsController < ApplicationController
   # GET /indicator_files
   # GET /indicator_files.json
   def index
-    binding.pry
-
     @test_town = Town.get_test_town.first
     @towns = Town.areas
   end
