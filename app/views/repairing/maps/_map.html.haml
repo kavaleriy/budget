@@ -117,20 +117,20 @@
       width: 100px;
       height: 50px;
     }
-    #fullscreen{
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      z-index: 1001;
-      cursor: pointer;
-      background-color: transparent;
-      i{
-        font-size: 30px;
-      }
-      &.hide{
-        display: none;
-      }
-    }
+    //#fullscreen{
+    //  position: absolute;
+    //  right: 10px;
+    //  top: 10px;
+    //  z-index: 1001;
+    //  cursor: pointer;
+    //  background-color: transparent;
+    //  i{
+    //    font-size: 30px;
+    //  }
+    //  &.hide{
+    //    display: none;
+    //  }
+    //}
 
     #last_updated_repair{
       background-color: white;
@@ -155,8 +155,8 @@
   .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
     .modal-dialog
       .modal-content
-  #fullscreen
-    %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+  -##fullscreen
+  -#  %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
   #last_updated_repair
     Останнє оновлення візуалізації :
     %span.rep-date
@@ -609,7 +609,7 @@
 
     function toggleMapInFullscreen(){
       // !!! get element via simple js
-      var element = document.getElementById('map');
+      var element = document.getElementById('repairing-map');
 
       // get fullscreen element
       var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
