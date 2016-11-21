@@ -103,7 +103,8 @@ class Programs::TargetedProgram
     # return:
     #   array with Hash { ktvk, kfk, title, amount }
 
-    kfk_spr = codes_relations
+    # TODO: Clear function code after finish coding
+    # kfk_spr = codes_relations
     explainer = taxonomy.explanation[type]
     tree = taxonomy.get_tree([type.to_sym])
 
@@ -115,8 +116,8 @@ class Programs::TargetedProgram
       key = item['key']
       result <<
       {
-        ktvk: key,
-        kfk: kfk_spr[key],
+        kvk: key,
+        # kvk: kfk_spr[key],
         title: explainer[key]['title'],
         amount: item['amount'][:fact][year.first]['0']['total']
       }
@@ -149,16 +150,17 @@ class Programs::TargetedProgram
     codes
   end
 
-  def self.codes_relations
-
-    # open to load file "db/ktvk_to_kfk.csv"
-    # return (Hash): 'ftvk' => 'kfk'
-    # or
-    # nil if file cann't read
-
-    ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if ktvk_to_kfk.nil?
-    ktvk_to_kfk
-  end
+  # TODO: Now it's code nothing to do. Can be deleted
+  # def self.codes_relations
+  #
+  #   # open to load file "db/ktvk_to_kfk.csv"
+  #   # return (Hash): 'ftvk' => 'kfk'
+  #   # or
+  #   # nil if file cann't read
+  #
+  #   ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if ktvk_to_kfk.nil?
+  #   ktvk_to_kfk
+  # end
 
   private
 
