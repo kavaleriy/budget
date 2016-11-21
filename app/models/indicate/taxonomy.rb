@@ -34,7 +34,7 @@ class Indicate::Taxonomy
         # indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
 
         matching = indicator['matching']
-        matching = 'fact' if matching.eql?('') || matching.nil?
+        matching = 'fact' if matching.blank?
         indicators[group][name][matching] = {} if indicators[group][name][matching].nil?
         indicators[group][name][matching][year] = {} if indicators[group][name][matching][year].nil?
         indicators[group][name][matching][year]['comment'] = indicator['comment']
@@ -47,8 +47,9 @@ class Indicate::Taxonomy
   end
 
   def replace_space_indicator_chart_id(str1, str2)
-    string = "#{str1}_#{str2}"
-    string.tr(', ','__')
+    # This function create id for one chart
+    # '.tr()' replace comma and space to underscore
+    return "#{str1}_#{str2}".tr(', ','__')
   end
 
 end
