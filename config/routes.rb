@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :hackatton do
+  get 'dani_mist/load_data'
+  end
+
   namespace :compare_taxonomies do
     get 'index'
   end

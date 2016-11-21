@@ -1,0 +1,2 @@
+module Hackatton::DaniMistHelper
+end
