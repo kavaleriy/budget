@@ -59,38 +59,59 @@ class BudgetFilesController < ApplicationController
   def create
     @town = Town.find(params[:town])
 
-    budget_file_params[:path].each do |uploaded|
-      @file_name = uploaded.original_filename
 
-      new_file_name = get_file_name_for uploaded
-      file = upload_file uploaded, new_file_name
+    process_files = -> (files) do
+      def process_single_file uploaded
+        @file_name = uploaded.original_filename
 
-      file_path = file[:path].to_s
-      taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
-      generate_budget_file
+        new_file_name = get_file_name_for uploaded
+        file = upload_file uploaded, new_file_name
 
-      fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
-      table = read_table_from_file file_path
+        file_path = file[:path].to_s
+        taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy])
+        generate_budget_file
 
-      @budget_file.import(table[:rows])
+        fill_budget_file(budget_file_params[:data_type],file_path,taxonomy)
+        table = read_table_from_file file_path
 
-      if @budget_file.taxonomy.columns.blank?
-        @budget_file.taxonomy.columns = {}
+        @budget_file.import(table[:rows])
 
-        column_names = table[:rows].first.keys.reject{|key| %w(_year _month).include? key }
-        column_names.delete column_names.last # remove amount
+        if @budget_file.taxonomy.columns.blank?
+          @budget_file.taxonomy.columns = {}
 
-        column_names.map.with_index{ |column, level|
-          @budget_file.taxonomy.columns[column] = {:level => level + 1, :title=> column }
-        }
+          column_names = table[:rows].first.keys.reject{|key| %w(_year _month).include? key }
+          column_names.delete column_names.last # remove amount
+
+          column_names.map.with_index{ |column, level|
+            @budget_file.taxonomy.columns[column] = {:level => level + 1, :title=> column }
+          }
+        end
+
+        @budget_file.save!
       end
 
-      @budget_file.save!
+      files.each do |uploaded|
+        process_single_file(uploaded) rescue nil # TODO: logging of files upload
+      end
     end
 
+    if (params[:is_deffered])
+      Thread.new do
+        process_files.call(budget_file_params[:path])
+      end
+    else
+      process_files.call(budget_file_params[:path])
+    end
+
+
     respond_to do |format|
-      format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
-      format.json { render :show, status: :created, location: @budget_file }
+        if (params[:is_deffered])
+          format.html { redirect_to budget_files_path, notice: t('budget_files_controller.load_deffered') }
+        else
+          format.html { redirect_to @budget_file.taxonomy, notice: t('budget_files_controller.load_success') }
+        end
+
+        format.json { render :show, status: :created, location: @budget_file }
     end
 
   rescue Ole::Storage::FormatError
