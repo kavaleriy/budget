@@ -338,10 +338,6 @@
       categories = JSON.parse('#{@categories.to_json(:except => :img)}')
       aRepairMap.addCategoryControl(categories);
 
-      $('#fullscreen').click(function(){
-        aRepairMap.toggleMapInFullscreen();
-      })
-
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
           $('#category_btns .btn').removeClass('active');

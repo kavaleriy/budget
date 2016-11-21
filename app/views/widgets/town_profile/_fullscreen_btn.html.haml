@@ -1,0 +1,56 @@
+:scss
+  #fullscreen{
+    text-align: right;
+    padding-right: 2px;
+    cursor: pointer;
+    background-color: transparent;
+    i{
+      font-size: 40px;
+    }
+    &.hide{
+      display: none;
+    }
+  }
+
+%i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#fullscreen').click(function(){
+      // console.log($(this).attr('data-module'));
+      idForFullScreen = $(this).attr('data-module');
+      toggleMapInFullscreen(idForFullScreen);
+    })
+
+    function toggleMapInFullscreen(idForFullScreen){
+      // !!! get element via simple js
+      var element = document.getElementById(idForFullScreen);
+
+      // get fullscreen element
+      var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+
+      // if map in fullscreen mode
+      if(fullscreenElement == element){
+        // exit from fullscreen
+        if(document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if(document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if(document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+
+      }else{
+        // show map in fullscreen mode
+        if (element.requestFullScreen) {
+          element.requestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        }
+      }
+    }
+  })

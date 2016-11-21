@@ -6,73 +6,78 @@
   $gray: #999;
   $box-icon: 32px;
 
-  #year_list{
-    margin-top: 10px;
-    p{
-      width: 160px;
-    }
-    .select2-container {
-      &:after {
-        content: '\f073';
-        font-family: FontAwesome;
-        position: absolute;
-        left: 0;
-        top: 1px;
-        cursor: pointer;
-        font-size: 20px;
-        width: $box-icon;
-        height: $box-icon;
-        background: $dark-blue;
-        color: $white;
-        padding: 3px 0 2px 7px;
+  #indicators{
+    height: 100%;
+    overflow-y: auto;
+    #year_list{
+      margin-top: 10px;
+      p{
+        width: 160px;
       }
-      width: 100%;
-      .select2-choice {
-        height: 34px;
-        border-radius: 0;
-        border-color: $dark-blue;
-        background-color: $no-color;
-        background-image: none;
-        abbr{
-          right: $box-icon;
-        }
-        .select2-chosen {
-          text-align: right;
-          margin: 3px 30px 3px;
-          font-size: 16px;
-          color: $gray;
-          //text-transform: lowercase;
-          float: left;
-          padding-top: 0 !important;
-        }
-        .select2-arrow{
-          border-left: 0;
-          border-radius: 0;
-          background: $dark-blue;
+      .select2-container {
+        &:after {
+          content: '\f073';
+          font-family: FontAwesome;
+          position: absolute;
+          left: 0;
+          top: 1px;
+          cursor: pointer;
+          font-size: 20px;
           width: $box-icon;
-          &:before {
-            content: '\f04b';
-            transform: rotate(90deg);
-            font-family: FontAwesome;
-            position: absolute;
-            right: 0;
-            cursor: pointer;
-            font-size: 20px;
-            width: $box-icon;
-            height: $box-icon;
-            border-right: 1px solid $dark-blue;
-            background: $white;
-            color: $dark-blue;
-            padding: 3px 0 2px 9px;
-          }
+          height: $box-icon;
+          background: $dark-blue;
+          color: $white;
+          padding: 3px 0 2px 7px;
         }
-        &:hover,
-        &:focus {
-          outline-color: inherit;
+        width: 100%;
+        .select2-choice {
+          height: 34px;
+          border-radius: 0;
+          border-color: $dark-blue;
+          background-color: $no-color;
+          background-image: none;
+          abbr{
+            right: $box-icon;
+          }
+          .select2-chosen {
+            text-align: right;
+            margin: 3px 30px 3px;
+            font-size: 16px;
+            color: $gray;
+            //text-transform: lowercase;
+            float: left;
+            padding-top: 0 !important;
+          }
+          .select2-arrow{
+            border-left: 0;
+            border-radius: 0;
+            background: $dark-blue;
+            width: $box-icon;
+            &:before {
+              content: '\f04b';
+              transform: rotate(90deg);
+              font-family: FontAwesome;
+              position: absolute;
+              right: 0;
+              cursor: pointer;
+              font-size: 20px;
+              width: $box-icon;
+              height: $box-icon;
+              border-right: 1px solid $dark-blue;
+              background: $white;
+              color: $dark-blue;
+              padding: 3px 0 2px 9px;
+            }
+          }
+          &:hover,
+          &:focus {
+            outline-color: inherit;
+          }
         }
       }
     }
   }
+
   .select2-drop-multi {
     border-color: $dark-blue;
     margin-left: 1px;
@@ -89,39 +94,41 @@
 
 
 
-
-#year_list
-  %p
-    = select_tag 'years_chart', options_for_select([3, 5, 10]), prompt: t('form.period')
-
-#indicators2.row.clearfix
-  -@indicators.each_with_index do |(key,value),index|
-    .group.row.col-xs-12{'data-value' => key, id: index.to_s + 'group' }
-      %p=key
-      -value.each do |k, v|
-        .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
-          - first_year = v[v.keys[0]].keys[0]
-          - first_values = v[v.keys[0]][first_year]
-          .title
-            = k
-          .chart
-            = render partial: 'indicators_charts', locals: { id: v['id'] }
-          .comments
-            -#%a.editable-href
-            = first_values['comment']
-          .reports
-            - if first_values['link'] != ''
-              = link_to "#{first_values['link']}" do
-                %i.fa.fa-download
-                = t('widgets.indicators.download_report')
-                %span
-                  = first_year
-            - else
-              = link_to "#" do
-                %i.fa.fa-download
-                = t('widgets.indicators.download_report')
-                %span
-                  = Date.today.year
+#indicators
+  #year_list
+    %p
+      = select_tag 'years_chart', options_for_select([3, 5, 10]), prompt: t('form.period')
+  -#.pull-right#fullscreen{'data-module' => 'indicators'}
+    -#%i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+    = render partial: 'widgets/town_profile/fullscreen_btn'
+  .indicators-container.row.clearfix
+    -@indicators.each_with_index do |(key,value),index|
+      .group.row.col-xs-12{'data-value' => key, id: index.to_s + 'group' }
+        %p=key
+        -value.each do |k, v|
+          .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
+            - first_year = v[v.keys[0]].keys[0]
+            - first_values = v[v.keys[0]][first_year]
+            .title
+              = k
+            .chart
+              = render partial: 'indicators_charts', locals: { id: v['id'] }
+            .comments
+              -#%a.editable-href
+              = first_values['comment']
+            .reports
+              - if first_values['link'] != ''
+                = link_to "#{first_values['link']}" do
+                  %i.fa.fa-download
+                  = t('widgets.indicators.download_report')
+                  %span
+                    = first_year
+              - else
+                = link_to "#" do
+                  %i.fa.fa-download
+                  = t('widgets.indicators.download_report')
+                  %span
+                    = Date.today.year
 
 :javascript
 
