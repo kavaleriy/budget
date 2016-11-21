@@ -119,7 +119,13 @@
   }
 
   $(document).ready(function(){
-    showOnMap();
+      $.ajax({
+          url: 'https://data.danimist.org.ua/dataset/9abc5a08-3e46-4be8-94d5-49e1a3352988/resource/d1770d50-db3a-4416-b221-5d319c2b9159/download/routesbusdnipro.json',
+          dataType: 'json',
+      }).done(function (data) {
+         showOnMap(data);
+      })
+
     $('#map').hide('fast')
     $('.show-on-map').click(function() {
       $('#map').toggle('slow');
