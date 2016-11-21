@@ -4,5 +4,10 @@
 
   = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
 
+  .form-group
+    = check_box_tag :is_deffered
+    = f.label :is_deffered, t('.deffered')
+
   = f.submit nil, :class => 'btn btn-primary'
   = link_to t('form.cancel', :default => t("helpers.links.cancel")), zip_budget_files_path, :class => 'btn btn-default'
+
