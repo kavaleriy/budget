@@ -12,7 +12,7 @@ class BudgetFile
   field :data_type
   before_save :symbolize_data_type
   def symbolize_data_type
-    self.data_type = self.data_type.to_sym
+    self.data_type = self.data_type.to_sym if self.data_type
   end
 
   field :cumulative_sum, :type => Boolean
