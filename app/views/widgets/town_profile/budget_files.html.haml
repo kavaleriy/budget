@@ -196,9 +196,10 @@
       set_iframe($(this).attr('data-url'));
     });
     function set_iframe(url) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + '/' + url
+      protocol = "#{request.protocol}";             // => 'http://' or 'https://'
+      host_with_port = "#{request.host_with_port}"; // => 'localhost:3000' or 'openbudget.in.ua'
+      frame_url = protocol + host_with_port + url;
+
       $('.tab-content iframe').attr('src', frame_url)
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
     }
