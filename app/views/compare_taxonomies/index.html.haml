@@ -7,6 +7,10 @@
   $light-grey: #ACA99F;
   $yellow: #ffd304;
 
+  #budget-compare{
+    width: 100%;
+    height: 100vh;
+  }
   .nav-pills {
     padding: 0;
     margin-bottom: -1px;
@@ -250,35 +254,38 @@
     taxonomies_cache: {}
   }
 
-%h1
-  = t('.title')
-  -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
-%ul.nav.nav-pills
-  %li.active
-    %a{"data-toggle" => "tab", :href => "#rov-tab"}
-      =t('.rov')
-  %li
-    %a{"data-toggle" => "tab", :href => "#rot-tab"}
-      =t('.rot')
+#taxonomies-compare
+  %h1
+    = t('.title')
+    -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
+  %ul.nav.nav-pills
+    %li.active
+      %a{"data-toggle" => "tab", :href => "#rov-tab"}
+        =t('.rov')
+    %li
+      %a{"data-toggle" => "tab", :href => "#rot-tab"}
+        =t('.rot')
+  #fullscreen{'data-module' => 'taxonomies-compare'}
+    = render partial: 'widgets/town_profile/fullscreen_btn'
 
-.row.tab-content.compare
-  #rov-tab.tab-pane.active
-    .col-sm-5.town-select
-      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov, id: "rov" }
-  #rot-tab.tab-pane
-    .col-sm-5.town-select
-      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rot, id: "rot" }
-  .col-sm-7.filters
-    = render :partial => 'select_year', :locals => { years: @years }
-    -#= render :partial => 'select_amountype'
-    = render :partial => 'select_level'
-    = render :partial => 'select_divider', :locals => { amounts: @amounts }
+  .row.tab-content.compare
+    #rov-tab.tab-pane.active
+      .col-sm-5.town-select
+        = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov, id: "rov" }
+    #rot-tab.tab-pane
+      .col-sm-5.town-select
+        = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rot, id: "rot" }
+    .col-sm-7.filters
+      = render :partial => 'select_year', :locals => { years: @years }
+      -#= render :partial => 'select_amountype'
+      = render :partial => 'select_level'
+      = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
-.row
-  = render :partial => 'path'
+  .row
+    = render :partial => 'path'
 
-.row
-  = render :partial => 'chart'
+  .row
+    = render :partial => 'chart'
 
 
 :javascript

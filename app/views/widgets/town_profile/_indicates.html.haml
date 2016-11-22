@@ -98,7 +98,7 @@
   #year_list
     %p
       = select_tag 'years_chart', options_for_select([3, 5, 10]), prompt: t('form.period')
-  -#.pull-right#fullscreen{'data-module' => 'indicators'}
+  .pull-right#fullscreen{'data-module' => 'indicators'}
     -#%i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
     = render partial: 'widgets/town_profile/fullscreen_btn'
   .indicators-container.row.clearfix
