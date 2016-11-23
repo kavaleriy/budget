@@ -1,15 +1,14 @@
 :scss
   #fullscreen{
     text-align: right;
-    padding-right: 2px;
     cursor: pointer;
     background-color: transparent;
     i{
       font-size: 40px;
     }
-    &.hide{
-      display: none;
-    }
+    //&.hide{
+    //  display: none;
+    //}
   }
   .select2-drop{
     z-index: 9999999999;
@@ -24,6 +23,8 @@
     $('#fullscreen').click(function(){
       // console.log($(this).attr('data-module'));
       idForFullScreen = $(this).attr('data-module');
+
+      $("#" + idForFullScreen).toggleClass('fullscreen');
       toggleMapInFullscreen(idForFullScreen);
     })
 
