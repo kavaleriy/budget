@@ -6,9 +6,15 @@
       padding: 0;
     }
     .header{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      h2{
+        display: inline-block;
+      }
+      .btn{
+        margin-right: 20px;
+      }
+      //display: flex;
+      //flex-wrap: wrap;
+      //justify-content: flex-start;
     }
     .partner{
         background: linear-gradient(to right, transparent, silver, transparent);
@@ -76,12 +82,14 @@
     }
   }
 
-
-.col-md-10.col-md-offset-1.partners
-  .header
-    %h2= t('.header')
-    .new-budget-btn
-      %h2= link_to t('.new_btn_name'), new_modules_partner_path, :class => 'btn btn-info'
-  %hr
-  .list-partners
-    = render 'list_partners'
+.row
+  .col-md-10.col-md-offset-1.partners
+    .header
+      %h2= t('.header')
+      .pull-right
+        = link_to t('.new_btn_name'), new_modules_partner_path, :class => 'btn btn-info'
+      .pull-right
+        = link_to t('.categories'), modules_partners_categories_path, :class => 'btn btn-warning'
+    %hr
+    .list-partners
+      = render 'list_partners'

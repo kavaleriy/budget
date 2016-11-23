@@ -1,0 +1,30 @@
+:scss
+  .btn{
+    margin-right: 20px;
+  }
+
+%h1.header= t('.header')
+.pull-right
+  = link_to t('.new_category'), new_modules_partners_category_path, class: 'btn btn-primary'
+  = link_to t('modules.partners.index.header'), modules_partners_path, class: 'btn btn-warning'
+
+.table-responsive
+  %table.table.table-hover.text-center.custom-table
+    %thead
+      %tr
+        %th= t('.cat_title')
+        %th Alias
+        %th
+
+    %tbody
+      - @modules_partners_categories.each do |modules_partners_category|
+        %tr
+          %td= modules_partners_category.title
+          %td= modules_partners_category.alias_str
+          %td.actions
+            = link_to  modules_partners_category do
+              %i.fa.fa-eye.fa-2x
+            = link_to edit_modules_partners_category_path(modules_partners_category) do
+              %i.fa.fa-pencil.fa-2x
+            = link_to modules_partners_category, :method => :delete,title: t('destroy'), :data => { :confirm => t('helpers.links.confirm') } do
+              %i.fa.fa-trash-o.fa-2x

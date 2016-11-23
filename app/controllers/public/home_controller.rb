@@ -10,7 +10,7 @@ module Public
       @news = Modules::BudgetNews.published_news.get_last_news(3)
       @test_town = Town.get_test_town.first
       @info_pages = ContentManager::PageContainer.get_info_pages
-      @partners = Modules::Partner.by_category(t('home.index.home')).get_publish_partners.order(order_logo: :asc)
+      @partners = Modules::PartnersCategory.by_alias_str('main').first.modules_partners.get_publish_partners
     end
 
     def about

@@ -1,7 +1,8 @@
 module Repairing
   class RepairsController < ApplicationController
     layout 'application_admin'
-
+    # before_action :check_admin_permission, except: [:cross_busroute_with_repairings]
+    layout 'application' , only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
     before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info]
