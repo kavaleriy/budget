@@ -1,6 +1,7 @@
 class Modules::PartnersController < AdminController
   before_action :set_modules_partner, only: [:show, :edit, :update, :destroy]
   before_action :get_modules_partners, only: [:index, :new, :change_order]
+  before_action :partners_categories, only: [:new, :edit]
 
   respond_to :html
 
@@ -72,6 +73,9 @@ class Modules::PartnersController < AdminController
         partner.update_attribute(:order_logo, i)
         i+=1
       end
+    end
+    def partners_categories
+      @partners_categories = Modules::PartnersCategory.all
     end
 
     def get_modules_partners

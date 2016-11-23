@@ -6,16 +6,18 @@ class Modules::Partner
   field :order_logo, type: Integer
   # field :category, type: String
   field :publish_on, type: Mongoid::Boolean
+  belongs_to :modules_partners_category, :class_name => 'Modules::PartnersCategory'
+
   default_scope ->{order(order_logo: :asc)}
   scope :by_category, -> (type) { where(category: type) }
   scope :get_publish_partners, -> { where(publish_on: true) }
 
   before_create :set_order_logo
 
-  validates_presence_of :name
+  validates_presence_of :name, :modules_partners_category
   validates_presence_of :logo, on: :create
 
-  belongs_to :modules_partners_category, :class_name => 'Modules::PartnersCategory'
+
 
   mount_uploader :logo, PartnerLogoUploader
   skip_callback :update, :store_previous_model_for_logo

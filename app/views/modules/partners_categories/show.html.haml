@@ -1,12 +1,11 @@
 %p#notice= notice
 
 %p
-  %b Title:
+  %b=t('.title')
   = @modules_partners_category.title
 %p
   %b Alias:
   = @modules_partners_category.alias_str
 
-= link_to 'Edit', edit_modules_partners_category_path(@modules_partners_category)
-\|
-= link_to 'Back', modules_partners_categories_path
+= link_to t('edit'), edit_modules_partners_category_path(@modules_partners_category), class: 'btn btn-success'
+= link_to t('back'), modules_partners_categories_path, class: 'btn btn-info'

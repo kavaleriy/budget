@@ -22,12 +22,55 @@
 
     = yield :head
 :scss
+  h1.header{
+    display: inline-block;
+  }
+  .links{
+    display: inline-block;
+    .btn{
+      margin-right: 20px;
+    }
+  }
   .container-fluid{
     #admin-flash{
       margin-top: 0;
     }
     .select2-choice{
       height: 100%;
+    }
+  }
+  .custom-table{
+    thead{
+      tr{
+        th{
+          text-align: center;
+        }
+      }
+    }
+
+    .actions{
+      width: 150px;
+    //td{
+      a{
+        text-align: left;
+        margin: 0 15px 0 5px;
+        &:nth-child(1){
+            color: green;
+        }
+        &:nth-child(2){
+            color: #bbc055;
+        }
+        &:nth-child(3){
+            color: red;
+        }
+        &:hover{
+          color: grey;
+          background: none;
+        }
+
+      }
+    //}
+
     }
   }
 

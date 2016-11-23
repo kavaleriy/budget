@@ -1,7 +1,7 @@
-%h1 Editing modules_partners_category
+%h1=t('.header')
 
 = render 'form'
 
-= link_to 'Show', @modules_partners_category
-\|
-= link_to 'Back', modules_partners_categories_path
+= link_to t('show'), @modules_partners_category,class: 'btn btn-success'
+
+= link_to t('back'), modules_partners_categories_path, class: 'btn btn-info'

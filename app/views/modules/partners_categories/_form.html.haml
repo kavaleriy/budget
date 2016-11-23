@@ -2,8 +2,9 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :title
-    = f.input :alias_str
+    = f.input :title, label: t('modules.partners_categories.index.cat_title')
+    -if @modules_partners_category.new_record?
+      = f.input :alias_str
 
   .form-actions
     = f.button :submit

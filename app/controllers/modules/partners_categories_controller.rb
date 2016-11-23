@@ -21,13 +21,13 @@ class Modules::PartnersCategoriesController < AdminController
   end
 
   def create
-    @modules_partners_category = Modules::PartnersCategory.new(partners_category_params)
+    @modules_partners_category = Modules::PartnersCategory.new(modules_partners_category_params)
     @modules_partners_category.save
     respond_with(@modules_partners_category)
   end
 
   def update
-    @modules_partners_category.update(partners_category_params)
+    @modules_partners_category.update(modules_partners_category_params)
     respond_with(@modules_partners_category)
   end
 
@@ -42,6 +42,6 @@ class Modules::PartnersCategoriesController < AdminController
     end
 
     def modules_partners_category_params
-      params.require(:modules_partners_category).permit(:title, :alias)
+      params.require(:modules_partners_category).permit(:title, :alias_str)
     end
 end
