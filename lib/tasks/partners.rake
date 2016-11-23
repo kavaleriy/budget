@@ -1,9 +1,17 @@
 namespace :partners do
-  desc 'Set category to partners slides'
 
-  task :set_category => :environment do
-    Modules::Partner.where(category: nil).each do |t|
-      t.update_attribute :category, I18n.t('tasks.partners.main_page')
+  task create_categories: :environment do
+    Modules::PartnersCategory.create(title: 'Мапа', alias_str: 'map')
+    Modules::PartnersCategory.create(title: 'Головна', alias_str: 'main')
+    Modules::PartnersCategory.create(title: 'Календар', alias_str: 'calendar')
+  end
+
+  desc 'Set category to partners slides'
+  task :set_category => :create_categories do
+    main_cat = Modules::PartnersCategory.by_alias_str('main').first
+    Modules::Partner.where(modules_partners_category_id: nil).each do |partner|
+      partner.modules_partners_category = main_cat
+      partner.save
     end
   end
 end

@@ -4,9 +4,9 @@ class Modules::Partner
   field :name, type: String
   field :url, type: String
   field :order_logo, type: Integer
-  field :category, type: String
+  # field :category, type: String
   field :publish_on, type: Mongoid::Boolean
-
+  default_scope ->{order(order_logo: :asc)}
   scope :by_category, -> (type) { where(category: type) }
   scope :get_publish_partners, -> { where(publish_on: true) }
 
@@ -14,6 +14,8 @@ class Modules::Partner
 
   validates_presence_of :name
   validates_presence_of :logo, on: :create
+
+  belongs_to :modules_partners_category, :class_name => 'Modules::PartnersCategory'
 
   mount_uploader :logo, PartnerLogoUploader
   skip_callback :update, :store_previous_model_for_logo
@@ -25,5 +27,9 @@ class Modules::Partner
   def set_order_logo
     count = Modules::Partner.count
     self.order_logo = count + 1
+  end
+
+  def self.grouped_partners
+    self.all.group_by{|partner| partner.modules_partners_category}
   end
 end

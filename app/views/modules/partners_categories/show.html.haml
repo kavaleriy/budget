@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @modules_partners_category.title
+%p
+  %b Alias:
+  = @modules_partners_category.alias_str
+
+= link_to 'Edit', edit_modules_partners_category_path(@modules_partners_category)
+\|
+= link_to 'Back', modules_partners_categories_path

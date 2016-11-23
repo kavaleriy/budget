@@ -1,0 +1,23 @@
+%h1 Listing modules_partners_categories
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Alias
+      %th
+      %th
+      %th
+
+  %tbody
+    - @modules_partners_categories.each do |modules_partners_category|
+      %tr
+        %td= modules_partners_category.title
+        %td= modules_partners_category.alias_str
+        %td= link_to 'Show', modules_partners_category
+        %td= link_to 'Edit', edit_modules_partners_category_path(modules_partners_category)
+        %td= link_to 'Destroy', modules_partners_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Partners category', new_modules_partners_category_path
