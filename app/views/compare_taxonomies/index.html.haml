@@ -7,230 +7,244 @@
   $light-grey: #ACA99F;
   $yellow: #ffd304;
 
-  #budget-compare{
+  #taxonomies-compare.fullscreen{
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    padding: 5px;
   }
-  .nav-pills {
-    padding: 0;
-    margin-bottom: -1px;
-    > li + li {
-      margin: 0;
-      a {
-        border-bottom-color: $white;
+  #taxonomies-compare{
+    .header{
+      margin-bottom: 10px;
+      .title-compare{
+        float: left;
+        font-size: 36px;
+        line-height: normal;
+      }
+      #fullscreen{
+        float: right;
       }
     }
-    li {
-      border: 1px solid transparent;
-      border-bottom-color: $yellow;
-      a {
-        color: $dark-blue;
-        border-radius: 0;
-        &:hover,
-        &:focus {
-          background-color: transparent;
+    .nav-pills {
+      padding: 0;
+      margin-bottom: -1px;
+      > li + li {
+        margin: 0;
+        a {
+          border-bottom-color: $white;
         }
       }
-      &.active {
-        border: 1px solid $yellow;
+      li {
+        border: 1px solid transparent;
+        border-bottom-color: $yellow;
         a {
-          border-bottom: none;
-          background-color: $yellow;
           color: $dark-blue;
+          border-radius: 0;
           &:hover,
           &:focus {
+            background-color: transparent;
+          }
+        }
+        &.active {
+          border: 1px solid $yellow;
+          a {
+            border-bottom: none;
+            background-color: $yellow;
+            color: $dark-blue;
+            &:hover,
+            &:focus {
+              background-color: $yellow;
+              color: $dark-blue;
+            }
+          }
+          &:hover,
+          &:focus {
+            //border-color: $white;
             background-color: $yellow;
             color: $dark-blue;
           }
         }
-        &:hover,
-        &:focus {
-          //border-color: $white;
-          background-color: $yellow;
-          color: $dark-blue;
-        }
       }
     }
-  }
 
-  .tab-content.compare {
-    border-top: 1px solid $yellow;
-    padding-top: 5px;
-  }
-
-  .row {
-    margin: 0;
-    .town-select {
-      padding: 0 0 10px 0;
-      .select2-container {
-        border-color: $no-color;
-        .select2-choices {
-          border-color: $dark-blue;
-          padding-right: 32px;
-          margin-right: -2px;
-          &:before {
-            content: '\f067';
-            font-family: FontAwesome;
-            position: absolute;
-            right: 0;
-            cursor: pointer;
-            font-size: 20px;
-            color: $light-grey;
-            width: 32px;
-            height: 32px;
-            background: $dark-blue;
-            color: $white;
-            padding: 3px 0 2px 9px;
-          }
-          .select2-search-choice {
-            padding: 6px 18px 6px 3px;
-            margin: 3px 0 3px 3px;
-            .select2-search-choice-close {
-              right: 3px;
-              left: inherit;
-            }
-          }
-        }
-      }
+    .tab-content.compare {
+      border-top: 1px solid $yellow;
+      padding-top: 5px;
     }
-    .filters {
-      padding: 0;
-      .select-year,
-      .select-level,
-      .select-amount {
-        padding: 0 0 10px 15px;
-        //display: inline-block;
+
+    .row {
+      margin: 0;
+      .town-select {
+        padding: 0 0 10px 0;
         .select2-container {
-          width: 100%;
-          .select2-choice {
-            height: 34px;
-            border-radius: 0;
+          border-color: $no-color;
+          .select2-choices {
             border-color: $dark-blue;
-            background-color: $no-color;
-            background-image: none;
-            abbr{
-              right: 32px;
-            }
-            .select2-chosen {
-              text-align: right;
-              margin: 3px 46px 3px auto;
-              font-size: 16px;
-              color: $gray;
-              text-transform: lowercase;
-              float: right;
-            }
-            .select2-arrow{
-              border-left: 0;
-              border-radius: 0;
-              background: $dark-blue;
+            padding-right: 32px;
+            margin-right: -2px;
+            &:before {
+              content: '\f067';
+              font-family: FontAwesome;
+              position: absolute;
+              right: 0;
+              cursor: pointer;
+              font-size: 20px;
+              color: $light-grey;
               width: 32px;
-              &:before {
-                content: '\f04b';
-                transform: rotate(90deg);
-                font-family: FontAwesome;
-                position: absolute;
-                right: 0;
-                cursor: pointer;
-                font-size: 20px;
-                width: 32px;
-                height: 32px;
+              height: 32px;
+              background: $dark-blue;
+              color: $white;
+              padding: 3px 0 2px 9px;
+            }
+            .select2-search-choice {
+              padding: 6px 18px 6px 3px;
+              margin: 3px 0 3px 3px;
+              .select2-search-choice-close {
+                right: 3px;
+                left: inherit;
+              }
+            }
+          }
+        }
+      }
+      .filters {
+        padding: 0;
+        .select-year,
+        .select-level,
+        .select-amount {
+          padding: 0 0 10px 15px;
+          //display: inline-block;
+          .select2-container {
+            width: 100%;
+            .select2-choice {
+              height: 34px;
+              border-radius: 0;
+              border-color: $dark-blue;
+              background-color: $no-color;
+              background-image: none;
+              abbr{
+                right: 32px;
+              }
+              .select2-chosen {
+                text-align: right;
+                margin: 3px 46px 3px auto;
+                font-size: 16px;
+                color: $gray;
+                text-transform: lowercase;
+                float: right;
+              }
+              .select2-arrow{
+                border-left: 0;
+                border-radius: 0;
                 background: $dark-blue;
-                color: $white;
-                padding: 3px 0 2px 9px;
+                width: 32px;
+                &:before {
+                  content: '\f04b';
+                  transform: rotate(90deg);
+                  font-family: FontAwesome;
+                  position: absolute;
+                  right: 0;
+                  cursor: pointer;
+                  font-size: 20px;
+                  width: 32px;
+                  height: 32px;
+                  background: $dark-blue;
+                  color: $white;
+                  padding: 3px 0 2px 9px;
+                }
               }
-            }
-            &:hover,
-            &:focus {
-              outline-color: inherit;
+              &:hover,
+              &:focus {
+                outline-color: inherit;
+              }
             }
           }
         }
       }
     }
-  }
-  .select2-drop-multi {
-    border-color: $dark-blue;
-    margin-left: 1px;
-    .select2-results {
-      padding: 0;
-      margin: 4px 0;
+    .select2-drop-multi {
+      border-color: $dark-blue;
+      margin-left: 1px;
+      .select2-results {
+        padding: 0;
+        margin: 4px 0;
+      }
     }
-  }
-  .select2-drop-active {
-    border: 1px solid $dark-blue;
-    border-top: 0;
-    border-radius: 0;
-    //.select2-search{
-    //  display: none;
-    //}
-  }
+    .select2-drop-active {
+      border: 1px solid $dark-blue;
+      border-top: 0;
+      border-radius: 0;
+      //.select2-search{
+      //  display: none;
+      //}
+    }
 
-  //Media
-  @media (min-width: 992px) and (max-width: 1023px) {
-    .row {
-      .filters {
-        .select-year,
-        .select-level,
-        .select-amount {
-          .select2-container {
-            .select2-choice {
-              .select2-chosen {
-                font-size: 13px;
-                margin-right: 38px;
+    //Media
+    @media (min-width: 992px) and (max-width: 1023px) {
+      .row {
+        .filters {
+          .select-year,
+          .select-level,
+          .select-amount {
+            .select2-container {
+              .select2-choice {
+                .select2-chosen {
+                  font-size: 13px;
+                  margin-right: 38px;
+                }
               }
             }
           }
         }
       }
     }
-  }
-  @media (min-width: 768px) and (max-width: 991px) {
-    .row {
-      .town-select {
-        .select2-container {
-          .select2-choices {
-            .select2-search-choice {
-              font-size: 11px;
+    @media (min-width: 768px) and (max-width: 991px) {
+      .row {
+        .town-select {
+          .select2-container {
+            .select2-choices {
+              .select2-search-choice {
+                font-size: 11px;
+              }
             }
           }
         }
-      }
-      .filters {
-        .select-year,
-        .select-level,
-        .select-amount {
-          .select2-container {
-            .select2-choice {
-              .select2-chosen {
-                font-size: 11px;
-                margin-right: 35px;
+        .filters {
+          .select-year,
+          .select-level,
+          .select-amount {
+            .select2-container {
+              .select2-choice {
+                .select2-chosen {
+                  font-size: 11px;
+                  margin-right: 35px;
+                }
               }
             }
           }
         }
       }
     }
-  }
-  @media (max-width: 400px) {
-    .row {
-      .town-select {
-        .select2-container {
-          .select2-choices {
-            .select2-search-choice {
-              font-size: 11px;
+    @media (max-width: 400px) {
+      .row {
+        .town-select {
+          .select2-container {
+            .select2-choices {
+              .select2-search-choice {
+                font-size: 11px;
+              }
             }
           }
         }
-      }
-      .filters {
-        .select-year,
-        .select-level,
-        .select-amount {
-          .select2-container {
-            .select2-choice {
-              .select2-chosen {
-                font-size: 11px;
-                margin-right: 35px;
+        .filters {
+          .select-year,
+          .select-level,
+          .select-amount {
+            .select2-container {
+              .select2-choice {
+                .select2-chosen {
+                  font-size: 11px;
+                  margin-right: 35px;
+                }
               }
             }
           }
@@ -255,19 +269,20 @@
   }
 
 #taxonomies-compare
-  %h1
-    = t('.title')
+  .header.clearfix
+    .title-compare
+      = t('.title')
     -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
-  %ul.nav.nav-pills
-    %li.active
-      %a{"data-toggle" => "tab", :href => "#rov-tab"}
-        =t('.rov')
-    %li
-      %a{"data-toggle" => "tab", :href => "#rot-tab"}
-        =t('.rot')
-  #fullscreen{'data-module' => 'taxonomies-compare'}
-    = render partial: 'widgets/town_profile/fullscreen_btn'
-
+    #fullscreen{'data-module' => 'taxonomies-compare'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
+  .revenue-outlay
+    %ul.nav.nav-pills
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#rov-tab"}
+          =t('.rov')
+      %li
+        %a{"data-toggle" => "tab", :href => "#rot-tab"}
+          =t('.rot')
   .row.tab-content.compare
     #rov-tab.tab-pane.active
       .col-sm-5.town-select
