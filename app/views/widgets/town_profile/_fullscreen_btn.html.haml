@@ -1,31 +1,57 @@
 :scss
+  // init colors
+  $yellow: #ffd304;
+  $black: black;
+  $no-color: transparent;
+
   #fullscreen{
     text-align: right;
     cursor: pointer;
-    background-color: transparent;
+    background-color: $no-color;
     i{
       font-size: 40px;
     }
-    //&.hide{
-    //  display: none;
-    //}
+    .tooltip {
+      .tooltip-arrow {
+        border-bottom-color: $yellow;
+      }
+      .tooltip-inner {
+        background-color: $yellow;
+        color: $black;
+        font-size: 14px;
+      }
+    }
   }
   .select2-drop{
+    // fix for open select2 with fullscreen
     z-index: 9999999999;
   }
 
-%i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+%i.fa.fa-arrows-alt.fa-5{'aria-hidden' => 'true', title: t('fullscreen.fullscreen_on'),
+                         'data-toggle' => 'tooltip', 'data-placement' => 'left'}
 
 :javascript
 
   $(document).ready(function() {
 
     $('#fullscreen').click(function(){
-      // console.log($(this).attr('data-module'));
       idForFullScreen = $(this).attr('data-module');
 
+      // add class for setting css fullscreen window
       $("#" + idForFullScreen).toggleClass('fullscreen');
+
+      // open/close fullscreen window
       toggleMapInFullscreen(idForFullScreen);
+
+      // change tooltip text
+      $faIcon = $(this).children('.fa');
+      if ($faIcon.hasClass('active')) {
+        $faIcon.removeClass('active');
+        $faIcon.attr("data-original-title", "#{t('fullscreen.fullscreen_on')}");
+      } else {
+        $faIcon.addClass('active');
+        $faIcon.attr("data-original-title", "#{t('fullscreen.fullscreen_of')}");
+      }
     })
 
     function toggleMapInFullscreen(idForFullScreen){
@@ -58,3 +84,10 @@
       }
     }
   })
+
+:javascript
+  $(document).ready(function() {
+    $('#fullscreen .fa').tooltip({
+      trigger: 'hover'
+    });
+  });
