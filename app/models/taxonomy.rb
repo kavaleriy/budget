@@ -38,6 +38,7 @@
 
     def self.active_taxonomies_by_town(town_id)
       self.by_town_id(town_id).get_active
+      # self.by_town_id(town_id) # for open town programs with old data
     end
 
     def self.get_active_for_all_towns

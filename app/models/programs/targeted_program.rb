@@ -111,7 +111,6 @@ class Programs::TargetedProgram
     result = []
 
     # Add item to array
-
     tree['children'].each do |item|
       key = item['key']
       result <<
@@ -120,6 +119,7 @@ class Programs::TargetedProgram
         # kvk: kfk_spr[key],
         title: explainer[key]['title'],
         amount: item['amount'][:fact][year.first]['0']['total']
+        # amount: item['amount'][:fact][tree['children'][0]['amount'][:fact].keys[0]]['9']['total'] # for open town programs with old data
       }
     end
 
@@ -130,6 +130,7 @@ class Programs::TargetedProgram
           {
               title: 'Всього',
               amount: item.last[year.first]['0']['total']
+              # amount: item.last[item.last.keys[1]]['0']['total'] # for open town programs with old data
           }
     end
     result

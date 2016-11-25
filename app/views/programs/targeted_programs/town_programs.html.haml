@@ -1,46 +1,62 @@
 :scss
-  //fix for no-data-yet block
-  .no-data {
-    padding: 0;
-  }
 
-  .row {
-    margin: 0;
-    .page-title,
-    .title-list {
-      text-align: left;
-      font-weight: normal;
-      font-family: 'Lato', sans-serif;
-      font-size: 1.6rem;
-      text-transform: uppercase;
-      padding: 15px 0;
-    }
-    .program-bar {
+  #town-programs.fullscreen{
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+  }
+  #town-programs{
+    #fullscreen, .select-year{
       padding: 0;
-      text-align: center;
+    }
+    #fullscreen{
+      i{
+        font-size: 35px;
+      }
+    }
+    //fix for no-data-yet block
+    .no-data {
+      padding: 0;
+    }
+    .row {
+      margin: 0;
+      .page-title,
+      .title-list {
+        text-align: left;
+        font-weight: normal;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        padding: 15px 0;
+      }
+      .program-bar {
+        padding: 0;
+        text-align: center;
+      }
     }
   }
 
 
--if @tax_data.blank?
+#town-programs
+  -if @tax_data.blank?
+    = render partial: 'layouts/no_data_yet'
+  -else
+    .row
+      .col-xs-6.col-sm-3.select-year
+        = render partial: 'programs/targeted_programs/town_programs/selects',
+                        locals: { years: @years }
+      .col-xs-6.col-sm-2.col-sm-offset-7#fullscreen{'data-module' => 'town-programs'}
+        = render partial: 'widgets/town_profile/fullscreen_btn'
 
-  = render partial: 'layouts/no_data_yet'
-
--else
-
-  .row
-    = render partial: 'programs/targeted_programs/town_programs/selects',
-    locals: { years: @years }
-
-  .row
-    .col-xs-12.page-title.pull-left
-      = t('.division')
-    .col-xs-12.program-bar
-      = render partial: 'programs/targeted_programs/town_programs/bar',
-      locals: { tax_data: @tax_data }
-  .row
-    .programs-list
-      .col-xs-12.title-list.pull-left
-        = t('.list')
-        = render partial: 'programs/targeted_programs/town_programs/program_list',
-        locals: { programs: @programs, years: @years }
+    .row
+      .col-xs-12.page-title.pull-left
+        = t('.division')
+      .col-xs-12.program-bar
+        = render partial: 'programs/targeted_programs/town_programs/bar',
+        locals: { tax_data: @tax_data }
+    .row
+      .programs-list
+        .col-xs-12.title-list.pull-left
+          = t('.list')
+          = render partial: 'programs/targeted_programs/town_programs/program_list',
+          locals: { programs: @programs, years: @years }

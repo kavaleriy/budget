@@ -607,37 +607,6 @@
       });
     }
 
-    function toggleMapInFullscreen(){
-      // !!! get element via simple js
-      var element = document.getElementById('repairing-map');
-
-      // get fullscreen element
-      var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
-
-      // if map in fullscreen mode
-      if(fullscreenElement == element){
-        // exit from fullscreen
-        if(document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if(document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if(document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-
-      }else{
-        // show map in fullscreen mode
-        if (element.requestFullScreen) {
-          element.requestFullScreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
-        }
-
-      }
-    }
-
     function addAdditionalLayer(tileName){
       var additionalTilelayer;
 
@@ -677,7 +646,6 @@
     return {
       map: map,
       markers: markers,
-      toggleMapInFullscreen: toggleMapInFullscreen,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       addGeoJsonPoint: addGeoJsonPoint,

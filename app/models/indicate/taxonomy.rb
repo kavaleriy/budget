@@ -49,7 +49,7 @@ class Indicate::Taxonomy
   def replace_space_indicator_chart_id(str1, str2)
     # This function create id for one chart
     # '.tr()' replace comma and space to underscore
-    return "#{str1}_#{str2}".tr(', ','__')
+    return "#{str1}_#{str2}".tr(', .%','_')
   end
 
 end
