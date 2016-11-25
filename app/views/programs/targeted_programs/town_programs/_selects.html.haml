@@ -73,8 +73,7 @@
     border-radius: 0;
   }
 
-.col-xs-6.col-sm-2.select-year.pull-right
-  = select_tag :year_select, options_for_select(years.reverse), { include_blank: true }
+= select_tag :year_select, options_for_select(years.reverse), { include_blank: true }
 
 :javascript
   $("#year_select").select2({
