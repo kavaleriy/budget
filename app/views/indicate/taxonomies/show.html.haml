@@ -12,7 +12,7 @@
     %span.descr
       =@indicate_taxonomy.town
 
-= render partial: '/widgets/town_profile/indicates'
+= render partial: 'indicate/taxonomies/indicators'
 
 .buttons
   .pull-right
@@ -30,11 +30,11 @@
       var indicator_file =  "#{@indicate_taxonomy.id}"
       return location.origin + "/indicate/taxonomies/indicators/" + indicator_file;
     }
-
+    var fullscreen = "allowfullscreen='true' mozallowfullscreen='true' webkitallowfullscreen='true'";
 
     var embed_code = aEmbedCode();
     var src = getSrc();
-    embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: src})
+    embed_code.initialize({screen_full: fullscreen, width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: src})
 
     $('#embed_code_visify').click(function(){
       $('#embeded_code_modal_window').find('#embed_src').val(src);
