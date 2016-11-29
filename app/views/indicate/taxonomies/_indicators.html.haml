@@ -365,6 +365,14 @@
           legend: {
             display: false
           },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                // add unit in tooltip
+                return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + "#{t('short_units.unit')}.";
+              }
+            }
+          },
           scales: {
             xAxes: [
               {
