@@ -6,6 +6,7 @@ class Indicate::TaxonomiesController < ApplicationController
   load_and_authorize_resource
 
   skip_before_filter :verify_authenticity_token, :only => [:get_indicators]
+  after_filter :allow_iframe, :only => [:indicators]
 
   layout 'visify', only: [:indicators]
 
@@ -99,6 +100,13 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   private
+  # Copy from WidgetsController for show iframe in other sites
+  def allow_iframe
+    response.headers['x-frame-options'] = 'ALLOWALL'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_indicate_taxonomy
     @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
