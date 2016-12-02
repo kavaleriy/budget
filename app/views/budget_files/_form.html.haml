@@ -24,15 +24,17 @@
   .form-group
     %label.control-label
       = t('owner')
-    - if current_user && current_user.has_role?(:admin)
-      = text_field_tag 'town_select'
+    - if current_user.is_admin?
+      = text_field_tag 'town', current_user.town_model.id
     - else
       -#= ": #{current_user.town}"
-      - town = current_user.town.split(',')
-      - if town.length > 1
-        = select_tag :town, options_for_select(Town.all.where(:title => town[0].strip, :area_title => town[1].strip), current_user.town), class: 'select-town form-control'
-      - else
-        = select_tag :town, options_for_select(Town.all.where(:title => current_user.town) + Town.all.where(:area_title => current_user.town), current_user.town), class: 'select-town form-control'
+      -#- town = current_user.town_model.title.split(',')
+      -#- if town.length > 1
+      -#  = select_tag :town, options_for_select(Town.all.where(:title => town[0].strip, :area_title => town[1].strip), current_user.town), class: 'select-town form-control'
+      -#- else
+      -#  -test = (Town.all.where(_id: current_user.town_model.id) + Town.all.where(:area_title => current_user.town_model.title)).map{|town| [town.title,town.id]}
+
+      = select_tag :town, options_for_select([current_user.town_model].map{|town| [town.title, town.id]}), class:'select-town form-control'
 
   .form-group
     = f.select :data_type, options_for_select( [nil, :plan, :fact], @budget_file.data_type), class: 'select-town form-control', label: t('data_type')
@@ -52,6 +54,7 @@
         formatSelectionCssClass: function (data, container) { return "select2_select"; },
         maximumSelectionSize: 1,
     });
+    init_town_select2_with_field_id('#town',"#{search_for_towns_town_path}");
 
     $('#town_select').select2({
       sortResults: function(results, container, query) {

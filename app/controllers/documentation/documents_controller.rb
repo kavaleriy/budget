@@ -47,7 +47,7 @@ module Documentation
     def create
       @documents = []
 
-      params[:documentation_document][:town_id].blank? ? town = Town.where(title: current_user.town).first_or_create : town = Town.find(params[:documentation_document][:town_id])
+      town = params[:documentation_document][:town_id].blank? ? current_user.town_model : Town.find(params[:documentation_document][:town_id])
 
       params['doc_file'].each do |f|
         doc = Documentation::Document.new(documentation_document_params)
