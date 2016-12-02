@@ -101,20 +101,7 @@
         }
       }
       #fullscreen{
-        text-align: right;
         padding-right: 2px;
-        //position: absolute;
-        //right: 0;
-        //top: 0;
-        //z-index: 1001;
-        cursor: pointer;
-        background-color: transparent;
-        i{
-          font-size: 40px;
-        }
-        &.hide{
-          display: none;
-        }
       }
     }
   }
@@ -346,8 +333,8 @@
           = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
       -##subcategories
   .col-xs-12.col-sm-4.select-roads-years
-    .pull-right#fullscreen
-      %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+    .pull-right#fullscreen{'data-module' => 'repairing-map'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
     .pull-right.year-select
       -#- if @town.blank?
       -#  .form-group

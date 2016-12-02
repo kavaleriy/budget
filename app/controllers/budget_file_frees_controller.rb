@@ -6,8 +6,8 @@ class BudgetFileFreesController < BudgetFilesController
     @budget_file = BudgetFileFree.new
   end
 
-  def get_taxonomies owner
-    TaxonomyFree.where(:owner => owner)
+  def get_taxonomies
+    TaxonomyFree.by_town(current_user.town_model)
   end
 
   def create_taxonomy

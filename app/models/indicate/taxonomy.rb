@@ -29,17 +29,17 @@ class Indicate::Taxonomy
         # indicators[group][name][year]['comment'] = indicator['comment']
         # indicators[group][name][year]['value'] = indicator['value']
         # indicators[group][name][year]['id'] = indicator._id.to_s
-        # indicators[group][name][year]['matching'] = indicator['matching']
+        # indicators[group][name][year]['status'] = indicator['status']
         # indicators[group][name][year]['link'] = indicator['link']
         # indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
 
-        matching = indicator['matching']
-        matching = 'fact' if matching.blank?
-        indicators[group][name][matching] = {} if indicators[group][name][matching].nil?
-        indicators[group][name][matching][year] = {} if indicators[group][name][matching][year].nil?
-        indicators[group][name][matching][year]['comment'] = indicator['comment']
-        indicators[group][name][matching][year]['value'] = indicator['value']
-        indicators[group][name][matching][year]['link'] = indicator['link']
+        status = indicator['status']
+        status = 'fact' if status.blank?
+        indicators[group][name][status] = {} if indicators[group][name][status].nil?
+        indicators[group][name][status][year] = {} if indicators[group][name][status][year].nil?
+        indicators[group][name][status][year]['comment'] = indicator['comment']
+        indicators[group][name][status][year]['value'] = indicator['value']
+        indicators[group][name][status][year]['link'] = indicator['link']
         indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
       }
     }
@@ -49,7 +49,7 @@ class Indicate::Taxonomy
   def replace_space_indicator_chart_id(str1, str2)
     # This function create id for one chart
     # '.tr()' replace comma and space to underscore
-    return "#{str1}_#{str2}".tr(', ','__')
+    return "#{str1}_#{str2}".tr(', .%','_')
   end
 
 end

@@ -11,7 +11,6 @@ class User
   include RoleModel
 
   scope :find_by_email, -> (email) {where(email: email)}
-
   before_create :lock_user
 
   # Setup accessible (or protected) attributes for your model
@@ -42,6 +41,9 @@ class User
   field :reset_password_token, type: String
   field :reset_password_sent_at, type: DateTime
 
+  belongs_to :town_model, class_name: 'Town'
+
+  validates :email, :town_model, presence: true
   # optionally set the integer attribute to store the roles in,
   # :roles_mask is the default
   roles_attribute :roles_mask

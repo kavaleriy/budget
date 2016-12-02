@@ -5,6 +5,10 @@ class BudgetFilesController < ApplicationController
   helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
+  before_action :generate_budget_file, only: [:new]
+
+  # before_action :update_user_town, only: [:create]
+
   before_action :authenticate_user!
   load_and_authorize_resource
 
@@ -17,65 +21,43 @@ class BudgetFilesController < ApplicationController
   # GET /revenues
   # GET / revenues.json
   def index
-    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user).page(params[:page])
+    @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user)
 
-    @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym) unless params["data_type"].blank?
+    @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym).page(params[:page]) unless
+        params["data_type"].blank?
     unless params["q"].blank?
       @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
     end
 
-
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
     file_owners = Taxonomy.where(:id.in => taxonomy_ids)
 
-    # @budget_files = case sort_column
-    #                   when "title"
-    #                     @budget_files.order_by(title: sort_direction)
-    #                   when "taxonomy.owner"
-    #                     # TODO order budget files by town
-    #                     @budget_files.order_by(taxonomy:'owner ASC')
-    #                   when "data_type"
-    #                     @budget_files.order_by(data_type: sort_direction)
-    #                   when "author"
-    #                     @budget_files.order_by(author: sort_direction)
-    #                 end
-    #
-    # @budget_files.reverse! if sort_direction == "desc"
-
     unless params["town_select"].blank?
-      towns = []
-      params["town_select"].split(",").each{|town_id|
-        towns << Town.find(town_id).title
-      }
-      file_owners = file_owners.where(:owner.in => towns)
+      file_owners = file_owners.where(:town.in => params["town_select"].split(","))
+      @budget_files = @budget_files.where(:taxonomy_id.in => file_owners.pluck(:_id))
     end
 
+    @budget_files = @budget_files.page(params[:page])
     @file_owners = file_owners.pluck(:id, :owner).to_h
 
     respond_to do |format|
       format.js
       format.html
     end
-
   end
 
   def show
   end
 
   def new
-    user_visible_taxonomies = get_taxonomies(current_user.town)
-    @taxonomies = []
-    user_visible_taxonomies.each { |taxonomy| @taxonomies << {id: taxonomy.id.to_s,text: taxonomy.title }}
-
-    @budget_file = generate_budget_file(nil, nil)
+    @taxonomies = get_taxonomies.map{ |tax| {id: tax.id.to_s, text: tax.title }}
   end
 
   # POST /revenues
   # POST /revenues.json
 
   def create
-    @town_title = params['town_select'].blank? ? current_user.town : Town.find(params['town_select']).to_s
-    @town = Town.get_town_by_title(@town_title).first
+    @town = Town.find(params[:town])
 
     process_files = -> (files) do
       def process_single_file uploaded
@@ -131,17 +113,17 @@ class BudgetFilesController < ApplicationController
       format.json { render :show, status: :created, location: @budget_file }
     end
 
-  # rescue Ole::Storage::FormatError
-  #   message = [t('invalid_format')]
-  #   message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
-  #   respond_with_error_message(message)
-  # rescue DBF::Column::NameError
-  #   message = [t('invalid_format')]
-  #   message << 'Допустимі формати .dbf, .xsl, .csv'
-  #   respond_with_error_message(message)
-  # rescue => e
-  #   message = "Не вдалося створити візуалізацію : #{e}"
-  #   respond_with_error_message(message)
+  rescue Ole::Storage::FormatError
+    message = [t('invalid_format')]
+    message << 'Якщо це xls формат переконайтесь у тому що він не xlsx'
+    respond_with_error_message(message)
+  rescue DBF::Column::NameError
+    message = [t('invalid_format')]
+    message << 'Допустимі формати .dbf, .xsl, .csv'
+    respond_with_error_message(message)
+  rescue => e
+    message = "Не вдалося створити візуалізацію : #{e}"
+    respond_with_error_message(message)
 
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"
@@ -211,6 +193,10 @@ class BudgetFilesController < ApplicationController
     uploaded_io.original_filename
   end
 
+  def generate_budget_file
+    @budget_file = BudgetFile.new
+    @budget_file.author_model = current_user
+  end
   private
 
   def fill_budget_file(data_type,file_path,taxonomy)
@@ -232,12 +218,11 @@ class BudgetFilesController < ApplicationController
     @budget_file.name = @file_name if @budget_file.name.nil?
   end
 
-  def generate_budget_file taxonomy, file_name
-  end
+  def set_taxonomy_by_budget_file(taxonomy_id)
+    taxonomy = Taxonomy.where(id: taxonomy_id).first
+    if taxonomy.nil?
+      taxonomy = create_taxonomy
 
-  def set_taxonomy_by_budget_file(taxonomy_id, file_name)
-    if taxonomy_id.blank?
-      taxonomy = create_taxonomy params[:area], file_name
       taxonomy.town = @town
       taxonomy
     else

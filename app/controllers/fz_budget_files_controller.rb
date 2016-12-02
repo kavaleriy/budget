@@ -8,7 +8,7 @@ class FzBudgetFilesController < ApplicationController
 
   def new
     def get_taxonomies_list model
-      taxs = model.owned_by(current_user.town)
+      taxs = model.by_town(current_user.town_model)
       tax_id = taxs.last.id unless taxs.blank?
       [taxs, tax_id]
     end

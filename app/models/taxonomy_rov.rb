@@ -1,16 +1,6 @@
 class TaxonomyRov < Taxonomy
 
-  scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
-
-
-  def self.get_active_or_first(town)
-
-    result = self.get_active_by_town(town).first
-    # check for active
-    # case 1: return first
-    # case 2: return active
-    (result.nil?) ? self.owned_by(town).first : result
-  end
+  # scope :get_rov_by_owner_city, ->(town) { where(:owner => town) }
 
   def columns
 

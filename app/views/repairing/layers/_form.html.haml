@@ -1,18 +1,18 @@
-= bootstrap_form_for @repairing_layer do |f|
+= simple_form_for @repairing_layer do |f|
 
   - if current_user && current_user.has_role?(:admin)
-    = f.text_field :town, label: t('repairing.repairs.form.town') , class: 'form-control'
+    = f.text_field :town, label: t('repairing.repairs.form.town') , class: 'form-control',value: current_user.town_model.id
   - else
     = t('repairing.repairs.form.town') + ": " + current_user.town
 
-  = f.hidden_field :locale, value: params[:locale]
-  = f.text_field :title, label: t('repairing.repairs.form.title'), class: 'form-control'
-  = f.select :repairing_category,
-              options_for_select( [nil] + Repairing::Category.by_locale.select{|p| p.category.nil?}.collect {|p| [ p.title, p.id ] }, nil),
-              label: t('repairing.repairs.form.category'),
-              class: 'form-control'
-  = f.text_area :description, label: t('repairing.repairs.form.description'), rows: '8'
-  = f.file_field :repairs_file, label: t('repairing.repairs.form.repairs_file')
+  = f.input :locale, as: :hidden, value: params[:locale]
+  = f.input :title, label: t('repairing.repairs.form.title'), class: 'form-control'
+  = f.input :repairing_category,
+              collection: @categories.map {|cat| [ cat.title, cat.id ] } ,
+              label: t('repairing.repairs.form.category')
+
+  = f.input :description, as: :text,  label: t('repairing.repairs.form.description'), rows: '8'
+  = f.input :repairs_file,as: :file, label: t('repairing.repairs.form.repairs_file')
 
   = f.submit t('form.add'), class: 'btn btn-primary'
   = link_to t('form.cancel', default: t('helpers.links.cancel')), repairing_layers_path, class: 'btn btn-default'
