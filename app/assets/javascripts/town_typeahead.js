@@ -21,7 +21,7 @@ function init_town_typeahead(url){
 
 function init_town_select2(url){
 
-    $('#user_town').select2({
+    $('#user_town_model').select2({
         sortResults: function(results, container, query) {
             if (query.term) {
                 // use the built in javascript sort function
@@ -55,7 +55,7 @@ function init_town_select2(url){
                 var resArr = [];
                 for(var i = 0; i < data.length;i++) {
                     var arr = {};
-                    arr['id'] = data[i].text;
+                    arr['id'] = data[i].id;
                     arr['text'] = data[i].text;
                     resArr.push(arr);
                 }

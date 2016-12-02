@@ -5,7 +5,8 @@ class Indicate::TaxonomiesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :show]
   load_and_authorize_resource
 
-  skip_before_filter :verify_authenticity_token, :only => [:get_indicators]
+  skip_before_filter :verify_authenticity_token, only: [:get_indicators]
+  after_filter :allow_iframe, only: [:indicators]
 
   layout 'visify', only: [:indicators]
 
@@ -29,7 +30,7 @@ class Indicate::TaxonomiesController < ApplicationController
 
   def get_indicators
     @indicators = @indicate_taxonomy.get_indicators
-    render :json => { 'indicators' => @indicators }
+    render json: { indicators: @indicators }
   end
 
   # GET /indicate/taxonomies/indicator_file
@@ -81,8 +82,8 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def get_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => params[:town]).first || Indicate::Taxonomy.new
-    render :partial => '/indicate/indicator_files/indicator_files', :locals => {:files => @indicate_taxonomy.indicate_indicator_files}
+    @indicate_taxonomy = Indicate::Taxonomy.where(town: params[:town]).first || Indicate::Taxonomy.new
+    render partial: '/indicate/indicator_files/indicator_files', locals: {files: @indicate_taxonomy.indicate_indicator_files}
   end
 
   def town_profile
@@ -90,7 +91,7 @@ class Indicate::TaxonomiesController < ApplicationController
 
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
-    @current_user = current_user || User.new(:town => Town.get_test_town.first)
+    @current_user = current_user || User.new(town: Town.get_test_town.first)
     respond_to do |format|
       format.html {render 'show'}
       format.js { render 'show'}
@@ -99,19 +100,26 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   private
+  # Copy from WidgetsController for show iframe in other sites
+  def allow_iframe
+    response.headers['x-frame-options'] = 'ALLOWALL'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_indicate_taxonomy
     @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
-    @indicate_taxonomy.town = ::Town.new(:title => "") if @indicate_taxonomy.town.nil?
+    @indicate_taxonomy.town = ::Town.new(title: '') if @indicate_taxonomy.town.nil?
   end
 
   def create_indicate_taxonomy
     if current_user.has_role?(:admin)
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town => ::Town.where(:title => current_user.town).first ).first if current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.new(:town => ::Town.new(:title => '') ) unless current_user.town.nil?
-      @indicate_taxonomy.town = ::Town.new(:title => '') unless @indicate_taxonomy.town.nil?
+      @indicate_taxonomy = Indicate::Taxonomy.where(town: ::Town.where(title: current_user.town).first ).first if current_user.town
+      @indicate_taxonomy = Indicate::Taxonomy.new(town: ::Town.new(title: '') ) unless current_user.town.nil?
+      @indicate_taxonomy.town = ::Town.new(title: '') unless @indicate_taxonomy.town.nil?
     elsif current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.where(:town_id => ::Town.where(:title => current_user.town).first.id).first || Indicate::Taxonomy.create(:town => ::Town.where(:title => current_user.town).first)
+      @indicate_taxonomy = Indicate::Taxonomy.where(town_id: ::Town.where(title: current_user.town).first.id).first || Indicate::Taxonomy.create(town: ::Town.where(title: current_user.town).first)
     end
   end
 

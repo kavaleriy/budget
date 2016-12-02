@@ -16,8 +16,8 @@ class BudgetFileRovsController < BudgetFilesController
     budget_file
   end
 
-  def get_taxonomies owner
-    TaxonomyRov.owned_by(current_user.town)
+  def get_taxonomies
+    TaxonomyRot.by_town(current_user.town_model)
   end
 
   def create_taxonomy area_id, file_name

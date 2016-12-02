@@ -9,7 +9,7 @@
     .form-group
       = f.text_field :email
     .form-group
-      = f.text_field :town, label: t('devise.form.city')
+      = f.text_field :town_model, label: t('devise.form.city'), value: @user.town_model.id
 
   .col-sm-6
     .form-group

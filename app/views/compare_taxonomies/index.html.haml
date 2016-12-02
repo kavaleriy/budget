@@ -7,60 +7,79 @@
   $light-grey: #ACA99F;
   $yellow: #ffd304;
 
-  .nav-pills {
-    padding: 0;
-    margin-bottom: -1px;
-    > li + li {
-      margin: 0;
-      a {
-        border-bottom-color: $white;
+  #taxonomies-compare.fullscreen{
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    overflow-y: auto;
+  }
+  #taxonomies-compare{
+    .header{
+      margin-bottom: 10px;
+      .title-compare{
+        float: left;
+        font-size: 36px;
+        line-height: normal;
+      }
+      #fullscreen{
+        float: right;
       }
     }
-    li {
-      border: 1px solid transparent;
-      border-bottom-color: $yellow;
-      a {
-        color: $dark-blue;
-        border-radius: 0;
-        &:hover,
-        &:focus {
-          background-color: transparent;
+    .nav-pills {
+      padding: 0;
+      margin-bottom: -1px;
+      > li + li {
+        margin: 0;
+        a {
+          border-bottom-color: $white;
         }
       }
-      &.active {
-        border: 1px solid $yellow;
+      li {
+        border: 1px solid transparent;
+        border-bottom-color: $yellow;
         a {
-          border-bottom: none;
-          background-color: $yellow;
           color: $dark-blue;
+          border-radius: 0;
           &:hover,
           &:focus {
+            background-color: transparent;
+          }
+        }
+        &.active {
+          border: 1px solid $yellow;
+          a {
+            border-bottom: none;
+            background-color: $yellow;
+            color: $dark-blue;
+            &:hover,
+            &:focus {
+              background-color: $yellow;
+              color: $dark-blue;
+            }
+          }
+          &:hover,
+          &:focus {
+            //border-color: $white;
             background-color: $yellow;
             color: $dark-blue;
           }
         }
-        &:hover,
-        &:focus {
-          //border-color: $white;
-          background-color: $yellow;
-          color: $dark-blue;
-        }
       }
     }
+    .tab-content.compare {
+      border-top: 1px solid $yellow;
+      padding-top: 5px;
+    }
   }
-
-  .tab-content.compare {
-    border-top: 1px solid $yellow;
-    padding-top: 5px;
-  }
-
   .row {
     margin: 0;
     .town-select {
       padding: 0 0 10px 0;
       .select2-container {
         border-color: $no-color;
+        border-top: none;
         .select2-choices {
+          min-height: 34px;
           border-color: $dark-blue;
           padding-right: 32px;
           margin-right: -2px;
@@ -235,6 +254,7 @@
     }
   }
 
+
 :javascript
   var aCompareTaxonomies = {
     selected_amountype: 'plan',
@@ -250,35 +270,39 @@
     taxonomies_cache: {}
   }
 
-%h1
-  = t('.title')
-  -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
-%ul.nav.nav-pills
-  %li.active
-    %a{"data-toggle" => "tab", :href => "#rov-tab"}
-      =t('.rov')
-  %li
-    %a{"data-toggle" => "tab", :href => "#rot-tab"}
-      =t('.rot')
+#taxonomies-compare
+  .header.clearfix
+    .title-compare
+      = t('.title')
+    -#= select_tag 'type_scale', "<option>log</option><option>linear</option><option>sqrt</option>".html_safe
+    #fullscreen{'data-module' => 'taxonomies-compare'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
+  .revenue-outlay
+    %ul.nav.nav-pills
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#rov-tab"}
+          =t('.rov')
+      %li
+        %a{"data-toggle" => "tab", :href => "#rot-tab"}
+          =t('.rot')
+  .row.tab-content.compare
+    #rov-tab.tab-pane.active
+      .col-sm-5.town-select
+        = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov, id: "rov" }
+    #rot-tab.tab-pane
+      .col-sm-5.town-select
+        = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rot, id: "rot" }
+    .col-sm-7.filters
+      = render :partial => 'select_year', :locals => { years: @years }
+      -#= render :partial => 'select_amountype'
+      = render :partial => 'select_level'
+      = render :partial => 'select_divider', :locals => { amounts: @amounts }
 
-.row.tab-content.compare
-  #rov-tab.tab-pane.active
-    .col-sm-5.town-select
-      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rov, id: "rov" }
-  #rot-tab.tab-pane
-    .col-sm-5.town-select
-      = render :partial => 'select_taxonomy', :locals => { taxonomies: @towns_with_tax_rot, id: "rot" }
-  .col-sm-7.filters
-    = render :partial => 'select_year', :locals => { years: @years }
-    -#= render :partial => 'select_amountype'
-    = render :partial => 'select_level'
-    = render :partial => 'select_divider', :locals => { amounts: @amounts }
+  .row
+    = render :partial => 'path'
 
-.row
-  = render :partial => 'path'
-
-.row
-  = render :partial => 'chart'
+  .row
+    = render :partial => 'chart'
 
 
 :javascript

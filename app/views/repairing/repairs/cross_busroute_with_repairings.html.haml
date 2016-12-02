@@ -2,7 +2,13 @@
   #map{
     height: calc(100vh - 100px);
     width: 100%;
+    opacity: 0;
+    transition: all 0.5s ease;
+
     //display: none;
+    &.active{
+      opacity: 1;
+    }
   }
   .leaflet-top.leaflet-right{
     display: none;
@@ -28,7 +34,7 @@
     var route = #{@routes.to_json}
     var repairs = #{@repairings.to_json}
     var dtp = #{@dtp.to_json}
-    console.log(dtp)
+    // console.log(dtp)
 
     var markers = [];
     var mymap = L.map('map').setView(crossesArr[0], 13);
@@ -119,16 +125,15 @@
   }
 
   $(document).ready(function(){
+    $('.show-on-map').click(function() {
+      $('#map').toggleClass('active');
+    })
       $.ajax({
-          url: 'https://data.danimist.org.ua/dataset/9abc5a08-3e46-4be8-94d5-49e1a3352988/resource/d1770d50-db3a-4416-b221-5d319c2b9159/download/routesbusdnipro.json',
-          dataType: 'json',
-      }).done(function (data) {
+        url:'/hackatton/dani_mist/load_data'
+      })
+      .done(function (data) {
          showOnMap(data);
       })
 
-    $('#map').hide('fast')
-    $('.show-on-map').click(function() {
-      $('#map').toggle('slow');
-    })
   })
 

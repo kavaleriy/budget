@@ -28,7 +28,7 @@ module Modules
 
     def search_e_data
       data = sort_e_data
-      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.nil?
+      @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart
       @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?)).first(10)
@@ -152,7 +152,7 @@ module Modules
       payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?))
       # Sort data
       sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
-      unless payments_data.nil?
+      unless payments_data.blank?
         payments_data.sort_by! do |hash|
           if sort_col.eql?('amount')
             hash[sort_col.to_s].to_f

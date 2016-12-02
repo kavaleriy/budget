@@ -10,25 +10,28 @@ class Calendar
   field :countdown_title, type: String
   field :countdown_event, type: Event
   field :import_file, type: String
-  field :is_test, type: Boolean
-  field :locale,type: String,:default => 'uk'
+  field :locale, type: String, default: 'uk'
   field :is_active, type: Boolean
 
   embeds_many :events
   has_and_belongs_to_many :subscribers
+  belongs_to :town_model, class_name: 'Town'
+  belongs_to :author_model, class_name: 'User'
+
+  validates :title, :town_model, :author_model, presence: true
 
   # active status only for one calendar
   def change_active_status
     if is_active_changed? && is_active
-      Calendar.where(:id.ne => self.id, town: self.town, is_active: true).update_all(is_active: false)
+      Calendar.where(:id.ne => self.id, town_model_id: self.town_model_id, is_active: true).update_all(is_active: false)
     end
   end
 
   # get active calendar if it is, otherwise any first
   def self.get_calendar_by_town(town)
-    calendar = where(:town => town, :is_active => true)
+    calendar = where(town_model_id: town, :is_active => true)
     if calendar.first.nil?
-      calendar = where(:town => town)
+      calendar = where(town_model_id: town)
     end
     calendar.first
   end
@@ -132,7 +135,8 @@ class Calendar
                 elsif user.has_role? :admin
                   self.all
                 else
-                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town})
+                  # TODO!!!
+                  self.where(:author => nil).any_of({:author => user.email},{:town => user.town}, {author_model: user})
                 end
     calendars || self
   end

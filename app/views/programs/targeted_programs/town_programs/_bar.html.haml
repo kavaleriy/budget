@@ -77,7 +77,8 @@
       // setColor = colors[Math.floor(Math.random() * colors.length)];
       addBarChild('.bar')
       .attr('title', value.title)
-      .css('width', value.amount + '%')
+      // TODO: Hack for rectangles. Fix in future
+      .css('width', 'calc(' + value.amount + '% - 0.1px)')
       .css('background', colors[key])
       .tooltip({placement: tooltipPlacement});
     });

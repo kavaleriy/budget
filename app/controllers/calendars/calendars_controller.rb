@@ -13,7 +13,6 @@ module Calendars
     # GET /calendars
     # GET /calendars.json
     def index
-      # @calendars = view_context.get_calendars
       @calendars = Calendar.visible_to(current_user,params[:locale])
     end
 
@@ -58,10 +57,8 @@ module Calendars
         @calendar.title += " | Copy #{Date.current}"
       end
 
-      unless current_user.nil?
-        @calendar.author = current_user.email
-        @calendar.town = current_user.town.gsub(/,.*/, '')
-      end
+      @calendar.author_model = current_user
+      @calendar.town_model = current_user.town_model
 
       respond_to do |format|
         if @calendar.save
@@ -77,17 +74,9 @@ module Calendars
     # PATCH/PUT /calendars/1
     # PATCH/PUT /calendars/1.json
     def update
-      new_params = calendar_params
-      unless current_user.nil?
-        if @calendar.is_test.nil?
-          new_params[:author] = current_user.email
-          # Ad hoc: Get town name without name area
-          new_params[:town] = current_user.town.gsub(/,.*/, '')
-        end
-      end
 
       respond_to do |format|
-        if @calendar.update(new_params)
+        if @calendar.update(calendar_params)
           format.html { redirect_to calendars_calendars_url, notice: t('calendar.update') }
           format.json { render :show, status: :ok, location: calendars_calendars_url }
         else
