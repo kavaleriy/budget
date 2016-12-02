@@ -6,24 +6,26 @@ class BudgetFileRotFtsController < BudgetFileRotsController
 
   protected
 
-  def generate_budget_file
-    if @taxonomy
-      @budget_file = BudgetFileRotFt.find_or_create_by(taxonomy: @taxonomy, name: @file_name)
+  def generate_budget_file taxonomy, file_name
+    if taxonomy
+      budget_file = BudgetFileRotFt.find_or_create_by(taxonomy: taxonomy, name: file_name)
     else
-      @budget_file = BudgetFileRotFt.new
+      budget_file = BudgetFileRotFt.new
     end
 
-    @budget_file.data_type = :fact
-    @budget_file.cumulative_sum = true
+    budget_file.data_type = :fact
+    budget_file.cumulative_sum = true
+
+    budget_file
   end
 
-  def create_taxonomy
-    area_id = params[:area]
-    name = @file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FTxxxxxx.\k<TERRA>.' + area_id)
-    # name = @file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d)/i, 'FT\k<BUDGET>xxxx.\k<TERRA>.' + area_id)
+  def create_taxonomy area_id, file_name
+    name = file_name.gsub(/ft(?<BUDGET>\d\d)\d\w\w\d\.(?<TERRA>\d\d\d).*/i, 'FTxxxxxx.\k<TERRA>.' + area_id)
     taxonomy = TaxonomyRot.find_or_create_by!(owner: @town_title, name: name)
+
     taxonomy.title = get_title
     taxonomy.area = params[:area]
+
     taxonomy
   end
 
@@ -31,14 +33,11 @@ class BudgetFileRotFtsController < BudgetFileRotsController
     "#{uploaded_io.original_filename}.dbf"
   end
 
-  def get_file_title
-    get_title
+  def get_title
+    /ft(?<code>\d\d)\d\w\w\d\.(?<town_id>\d\d\d).*/i =~ @file_name
+    area_id = params[:area]
+    "#{@file_name} #{get_terra_title(area_id, town_id)}"
   end
 
-  def get_title
-    /ft(?<code>\d\d)\d\w\w\d\.(?<town_id>\d\d\d)/i =~ @file_name
-    area_id = params[:area]
-    get_terra_title area_id, town_id
-  end
 
 end
