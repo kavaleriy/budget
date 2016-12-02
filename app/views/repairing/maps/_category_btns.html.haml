@@ -30,8 +30,9 @@
 
 :scss
   .map-header {
+    margin-top: 5px;
     .select-categories {
-      padding-bottom: 15px;
+      padding-bottom: 5px;
       #category_btns {
         .btn {
           border-radius: 0;
@@ -68,24 +69,51 @@
         }
       }
     }
-    .year-select {
-      .input-group {
-        width: 14vw;
-        float: right;
-        .input-group-addon {
-          border-radius: 0;
-          color: white;
-          font-weight: 400;
-          background-color: #A2B2BE;
-          border: 1px solid #7D94A4;
-        }
-        .form-control {
-          border-radius: 0;
-          border: 1px solid #7D94A4;
-          border-left: transparent;
-          option:hover, option:focus {
-            background-color: #7D94A4;
+    .select-roads-years{
+      .pull-right{
+        margin-left: 5px;
+        margin-bottom: 2px;
+      }
+      .year-select {
+        .input-group {
+          width: 62px;
+          float: right;
+          .input-group-addon {
+            position: absolute;
+            padding: 13px 30px 9px 10px;
+            height: 40px;
+            border-radius: 0;
+            color: white;
+            font-weight: 400;
+            background-color: #A2B2BE;
+            border: 1px solid #7D94A4;
           }
+          .form-control {
+            position: static;
+            height: 40px;
+            border-radius: 0;
+            border: 1px solid #7D94A4;
+            border-left: transparent;
+            option:hover, option:focus {
+              background-color: #7D94A4;
+            }
+          }
+        }
+      }
+      #fullscreen{
+        text-align: right;
+        padding-right: 2px;
+        //position: absolute;
+        //right: 0;
+        //top: 0;
+        //z-index: 1001;
+        cursor: pointer;
+        background-color: transparent;
+        i{
+          font-size: 40px;
+        }
+        &.hide{
+          display: none;
         }
       }
     }
@@ -317,13 +345,16 @@
         .btn.btn-default.tooltip-bottom{'data-tooltip' => category.title, 'data-id' => category.id}
           = image_tag category.img? ? category.img.thumb.url : 'repairing/default_thumb.png'
       -##subcategories
-  .col-xs-12.col-sm-2.road-condition-select
-    =render partial: 'repairing/maps/road_condition'
-  .col-xs-12.col-sm-2.year-select
-    -#- if @town.blank?
-    -#  .form-group
-    -#    = text_field_tag 'map_town', ''
-    .input-group
-      %span.input-group-addon
-        %b= t('repairing.maps.map_select.year')
-      = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse, :selected => "#{@year}"), :class => 'form-control'
+  .col-xs-12.col-sm-4.select-roads-years
+    .pull-right#fullscreen
+      %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+    .pull-right.year-select
+      -#- if @town.blank?
+      -#  .form-group
+      -#    = text_field_tag 'map_town', ''
+      .input-group
+        %span.input-group-addon
+          %b= t('repairing.maps.map_select.year')
+        = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse, selected: "#{@year}"), class: 'form-control'
+    .pull-right.road-condition-select
+      =render partial: 'repairing/maps/road_condition'
