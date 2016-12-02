@@ -5,6 +5,7 @@ module Repairing
     layout 'application_admin'
 
     before_action :authenticate_user!, except: [:geo_json]
+    before_action :set_categories, only: [:new, :edit]
     load_and_authorize_resource
 
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
@@ -82,14 +83,8 @@ module Repairing
     # POST /repairing/layers.json
     def create
       @repairing_layer = Repairing::Layer.new(repairing_layer_params)
-
-      if current_user.has_role?(:admin)
-        @repairing_layer.town = Town.find(repairing_layer_params['town'])
-      else
-        @repairing_layer.town = current_user.town_model
-      end
       @repairing_layer.owner = current_user
-      @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) unless repairing_layer_params['repairing_category'].blank?
+      # @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params['repairing_category']) unless repairing_layer_params['repairing_category'].blank?
 
       respond_to do |format|
         if @repairing_layer.save
@@ -211,6 +206,9 @@ module Repairing
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
         params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale)
+      end
+      def set_categories
+        @categories = Repairing::Category.by_locale.select{|p| p.category.nil?}
       end
   end
 end
