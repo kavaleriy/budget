@@ -33,26 +33,15 @@
 :javascript
 
   $(document).ready(function() {
-    var fullscreenElement1 = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
 
+    // var fullscreenElement1 = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    // var fullscreenElement1 = window.document.fullscreenElement || window.document.webkitFullscreenElement || window.document.mozFullScreenElement;
     // hide fullscreen btn if portfolio fullscreen
     // Todo: fix if return to portfolio (click breadcrumbs -> reload page)
-    if($("#fullscreen[data-module='modules-fullscreen']").length == 0 || fullscreenElement1){
-      if(fullscreenElement1 || parent.$(".fullscreen").length){
-        $("#fullscreen").hide();
-      }
-    }
-
-    // var fullscreenElement1 = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || window.parent.document.fullscreenElement || window.parent.document.webkitFullscreenElement || window.parent.document.mozFullScreenElement;
-    // console.log(fullscreenElement1);
-    // if(fullscreenElement1){
-    //   console.log("001");
-    //   console.log(fullscreenElement1);
-    //   $("#fullscreen").hide();
-    //   // $("#fullscreen[data-module='modules-fullscreen']").show();
-    // }else{
-    //   console.log("007");
-    //   console.log(fullscreenElement1);
+    // if($("#fullscreen[data-module='modules-fullscreen']").length == 0 ){
+    //   if(fullscreenElement1 || parent.$(".fullscreen").length){
+    //     $("#fullscreen").hide();
+    //   }
     // }
 
     $('#fullscreen').click(function(){
