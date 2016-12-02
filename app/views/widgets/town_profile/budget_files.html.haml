@@ -215,6 +215,7 @@
     });
     function set_iframe(url) {
       protocol = "#{request.protocol}";             // => 'http://' or 'https://'
+      console.log(protocol);                        // first inspect protocol
       host_with_port = "#{request.host_with_port}"; // => 'localhost:3000' or 'openbudget.in.ua'
       frame_url = protocol + host_with_port + url;
 
