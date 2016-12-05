@@ -3,6 +3,7 @@
   #calendar-box.fullscreen{
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     .calendar-view{
       padding: 10px 15px;
     }
@@ -52,19 +53,19 @@
           .clear
           .tab-content
             #calendar_year.tab-pane.fade.in.active
-              = render partial: '/widgets/calendar/pie_cycle', :locals => { calendar: @calendar }
+              = render partial: '/widgets/calendar/pie_cycle', locals: { calendar: @calendar }
             -#.pull-right
             -#  = render partial: 'layouts/export_img', :locals => { container: '#calendar_year' }
             #calendar_month.tab-pane.fade
-              = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
+              = render partial: '/widgets/calendar/calendar', locals: { calendar: @calendar }
             #calendar_timeline.tab-pane.fade.clearfix
-              = render partial: '/widgets/calendar/timeline', :locals => { calendar: @calendar }
+              = render partial: '/widgets/calendar/timeline', locals: { calendar: @calendar }
 
     = render partial: 'calendar_actions/default_action_list'
 
   .col-sm-5.col-xs-12
-    = render partial: '/widgets/calendar/event', :locals => { owner: 1 }
-    = render partial: '/widgets/calendar/event', :locals => { owner: 2 }
+    = render partial: '/widgets/calendar/event', locals: { owner: 1 }
+    = render partial: '/widgets/calendar/event', locals: { owner: 2 }
 
 - if has_own_referer?
   .col-sm-12

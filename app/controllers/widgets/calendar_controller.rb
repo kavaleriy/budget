@@ -1,7 +1,7 @@
 class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
   before_action :set_calendar
-  after_filter :allow_iframe, only: [:pie_cycle]
+  after_filter :allow_iframe, only: [:pie_cycle, :calendar, :timeline]
 
   def show
     @calendar = Calendar.find(params[:calendar_id])
