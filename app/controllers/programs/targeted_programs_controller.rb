@@ -93,7 +93,7 @@ class Programs::TargetedProgramsController < ApplicationController
     @years = Programs::TargetedProgram.programs_years(@programs)
 
     taxonomies = TaxonomyRov.active_taxonomies_by_town(params[:town]).last
-    @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years, 'kvk')
+    # @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years, 'kvk')
 
     respond_with(@programs) do |format|
       format.js { render layout: false }
