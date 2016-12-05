@@ -2,6 +2,8 @@ module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:search_data, :advanced_search, :by_type]
 
+    after_filter :allow_iframe, only: [:search_data]
+
     def search_data
       @items = items_by_koatuu.only(:pnaz, :edrpou)
       respond_to do |format|
@@ -146,6 +148,12 @@ module Modules
     end
 
     private
+    # Copy from WidgetsController for show iframe in other sites
+    def allow_iframe
+      response.headers['x-frame-options'] = 'ALLOWALL'
+      response.headers['Access-Control-Allow-Origin'] = '*'
+      response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    end
 
     def sort_e_data
       # Data
