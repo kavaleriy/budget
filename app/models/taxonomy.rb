@@ -366,7 +366,7 @@
 
     def get_author
       unless author.nil?
-        author.organisation || author.email
+        author.organisation
       end
     end
 

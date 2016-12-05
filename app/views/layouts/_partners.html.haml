@@ -1,0 +1,19 @@
+:scss
+  .partner_logo {
+    float: left;
+    margin-left: 15px;
+    opacity: .7;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    img {
+      max-height: 6vh;
+    }
+  }
+
+.partner_logo
+  = link_to (image_tag 'http://eidos.org.ua/wp-content/uploads/2016/03/logo.jpg', alt: 'ЕЙДОС'), 'http://www.de-novo.biz/', :target => '_blank'
+.partner_logo
+  = link_to (image_tag 'http://www.de-novo.biz/wp-content/themes/denovo/images/logos/logo_denovo_uk.png', alt: 'denovo'), 'http://www.de-novo.biz/', :target => '_blank'

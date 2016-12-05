@@ -1,10 +1,14 @@
-:css
+:scss
   .vis_controls div {
     padding-right: 10px;
   }
   /*hide sidebar for share*/
   .at4-share-outer {
     display: none;
+  }
+
+  .partners {
+    margin-bottom: 10px;
   }
 
 .visify
@@ -67,7 +71,10 @@
       - updated_time = @taxonomy.updated_at.nil? ? '-' : (@taxonomy.updated_at).strftime("%d.%m.%Y") + t('lower_year')
       = t('last_update') + updated_time
   .col-xs-12
-    =render partial: 'layouts/addthis_hor_share'
+    .pull-left
+      =render partial: 'layouts/addthis_hor_share'
+    .partners.pull-right
+      =render partial: 'layouts/partners'
 
   = render partial: 'helpers'
 

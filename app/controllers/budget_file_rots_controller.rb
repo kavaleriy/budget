@@ -40,7 +40,7 @@ class BudgetFileRotsController < BudgetFilesController
   def get_file_title
     /rot\d{5}\.(?<town_id>\d\d\d).*/i =~ @file_name
     area_id = params[:area]
-    "#{@file_name} #{get_terra_title(area_id, town_id)}"
+    "#{get_terra_title(area_id, town_id)}"
   end
 
 end
