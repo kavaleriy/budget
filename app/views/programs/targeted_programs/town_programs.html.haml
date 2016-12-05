@@ -38,7 +38,7 @@
 
 
 #town-programs
-  -unless @tax_data.blank?
+  -if @tax_data.blank?
     = render partial: 'layouts/no_data_yet'
   -else
     .row
@@ -52,8 +52,8 @@
       .col-xs-12.page-title.pull-left
         = t('.division')
       .col-xs-12.program-bar
-        -#= render partial: 'programs/targeted_programs/town_programs/bar',
-        -#locals: { tax_data: @tax_data }
+        = render partial: 'programs/targeted_programs/town_programs/bar',
+        locals: { tax_data: @tax_data }
     .row
       .programs-list
         .col-xs-12.title-list.pull-left
