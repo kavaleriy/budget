@@ -24,7 +24,7 @@ class BudgetFileRovsController < BudgetFilesController
     name = file_name.gsub(/rov\d{5}\.(?<TERRA>\d\d\d).*/i, 'VDxxxxxx.\k<TERRA>.' + area_id)
     taxonomy = TaxonomyRov.find_or_create_by!(owner: @town_title, name: name)
 
-    taxonomy.title = get_title
+    taxonomy.title = get_file_title
     taxonomy.area = area_id
 
     taxonomy
