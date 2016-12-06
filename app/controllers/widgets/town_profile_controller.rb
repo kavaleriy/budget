@@ -111,7 +111,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     repairs = Repairing::Repair.repair_json_by_town(@town.id.to_s)
 
     result = []
-    result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town))
+    result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town)) unless taxonomy.nil?
     result << get_item_hash('indicators', indicate_taxonomies_town_profile_path(@town)) unless indicate_taxonomy.nil?
     result << get_item_hash('budget', public_budget_files_path(@town)) unless taxonomy.nil?
     result << get_item_hash('calendar', calendar_town_profile_path(calendar)) unless calendar.nil?
