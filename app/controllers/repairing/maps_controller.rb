@@ -62,6 +62,7 @@ module Repairing
 
     def geo_json
       result = Repairing::Repair.repair_json_by_town(params[:town])
+      # binding.pry
       respond_to do |format|
         format.json { render json: result }
       end
