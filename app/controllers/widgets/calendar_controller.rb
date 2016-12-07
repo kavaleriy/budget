@@ -1,6 +1,7 @@
 class Widgets::CalendarController < Widgets::WidgetsController
   include EventsHelper
   before_action :set_calendar
+  after_filter :allow_iframe, only: [:pie_cycle, :calendar, :timeline]
 
   def show
     @calendar = Calendar.find(params[:calendar_id])
@@ -90,6 +91,12 @@ class Widgets::CalendarController < Widgets::WidgetsController
 
 
   private
+  # Copy from WidgetsController for show iframe in other sites
+  def allow_iframe
+    response.headers['x-frame-options'] = 'ALLOWALL'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+  end
 
   def build_pie starts_at, ends_at, ev
     pie = [ { ends_at: starts_at, events: [] }]

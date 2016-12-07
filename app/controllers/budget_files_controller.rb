@@ -5,7 +5,7 @@ class BudgetFilesController < ApplicationController
   helper_method :sort_column, :sort_direction
   before_action :set_budget_file, only: [:show, :edit, :update, :destroy, :download]
 
-  before_action :generate_budget_file, only: [:new]
+  # before_action :generate_budget_file, only: [:new]
 
   # before_action :update_user_town, only: [:create]
 
@@ -51,13 +51,14 @@ class BudgetFilesController < ApplicationController
 
   def new
     @taxonomies = get_taxonomies.map{ |tax| {id: tax.id.to_s, text: tax.title }}
+    @budget_file = generate_budget_file nil, nil
   end
 
   # POST /revenues
   # POST /revenues.json
 
   def create
-    @town = Town.find(params[:town])
+    @town = current_user.town
 
     process_files = -> (files) do
       def process_single_file uploaded
@@ -68,7 +69,9 @@ class BudgetFilesController < ApplicationController
         file = upload_file uploaded, new_file_name
 
         file_path = file[:path].to_s
-        taxonomy = set_taxonomy_by_budget_file(params[:budget_file_taxonomy], file_name)
+
+        taxonomy = create_taxonomy(params[:area], file_name)
+        taxonomy.town = current_user.town_model
         @budget_file = generate_budget_file taxonomy, file_name
 
         fill_budget_file(budget_file_params[:data_type],file_path, taxonomy)
@@ -91,7 +94,7 @@ class BudgetFilesController < ApplicationController
       end
 
       files.each do |uploaded|
-        process_single_file(uploaded) rescue nil # TODO: logging of files upload
+        process_single_file(uploaded) # rescue nil # TODO: logging of files upload
       end
     end
 
@@ -193,10 +196,6 @@ class BudgetFilesController < ApplicationController
     uploaded_io.original_filename
   end
 
-  def generate_budget_file
-    @budget_file = BudgetFile.new
-    @budget_file.author_model = current_user
-  end
   private
 
   def fill_budget_file(data_type,file_path,taxonomy)
@@ -218,17 +217,18 @@ class BudgetFilesController < ApplicationController
     @budget_file.name = @file_name if @budget_file.name.nil?
   end
 
-  def set_taxonomy_by_budget_file(taxonomy_id)
-    taxonomy = Taxonomy.where(id: taxonomy_id).first
-    if taxonomy.nil?
-      taxonomy = create_taxonomy
-
-      taxonomy.town = @town
-      taxonomy
-    else
-      Taxonomy.where(id: taxonomy_id).first
-    end
-  end
+  # def set_taxonomy_by_budget_file(taxonomy_id)
+  #   taxonomy = Taxonomy.where(id: taxonomy_id).first
+  #   if taxonomy.nil?
+  #     taxonomy = create_taxonomy
+  #
+  #     taxonomy.town = @town
+  #     taxonomy
+  #   else
+  #     Taxonomy.where(id: taxonomy_id).first
+  #   end
+  # end
+  #
 
   def sort_column
     params[:sort] ? params[:sort] : "title"
