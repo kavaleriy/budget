@@ -4,7 +4,23 @@
   $white: white;
   $dHaki: darkkhaki;
 
+  .modules.fullscreen{
+    width: 100%;
+    height: 100%;
+  }
   .modules {
+    .modules-wrapper{
+      position: relative;
+      #fullscreen[data-module='modules-fullscreen']{
+        position: absolute;
+        right: 0;
+        padding: 0 3rem 0 0;
+        bottom: 5px;
+        i{
+          font-size: 30px;
+        }
+      }
+    }
     .module {
       padding: 0 3rem 0 0;
       margin-bottom: 3rem;
@@ -209,9 +225,11 @@
     }
   }
 
-.modules
+.modules#modules-fullscreen
   =render partial: 'module_breadcrumbs', locals: { init_text: t('new_design.town_profile.visualization') }
   .modules-wrapper
+    #fullscreen{'data-module' => 'modules-fullscreen'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
     -@town_items.each do |item|
       .col-xs-12.col-sm-6.col-md-4.module
         = link_to item['url'], remote: true do

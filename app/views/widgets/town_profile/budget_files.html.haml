@@ -1,85 +1,97 @@
 :scss
-  body > div > div > ul > li > a{
-    cursor: pointer;
-  }
-  .plus-to-compare{
-    width: 30px;
-    color: blue;
-    cursor: pointer;
-    font-size: 30px;
-  }
-  .town-typeahead{
-    width: 150px;
-    float: left;
-    margin: 0 15px;
-  }
+  $full-percent: 100%;
 
-  .city-title{
-    margin-right: 70px;
-    //width: auto;
+  #budget-files.fullscreen{
+    width: $full-percent;
+    height: $full-percent;
+    .budget{
+      height: $full-percent;
+      .tab-content{
+        height: $full-percent;
+        #budget-chart{
+          height: calc(100% - 40px);
+        }
+      }
+    }
   }
-  .add-town-to-compare{
-    .compare-nav{
-      height: 40px;
+  #budget-files{
+    body > div > div > ul > li > a{
+      cursor: pointer;
     }
     .plus-to-compare{
-      float: left;
-      height: 30px;
+      width: 30px;
+      color: blue;
+      cursor: pointer;
       font-size: 30px;
-      display: inline-block;
-      padding: 0;
+    }
+    .town-typeahead{
+      width: 150px;
+      float: left;
+      margin: 0 15px;
+    }
+    .city-title{
+      margin-right: 30px;
       //width: auto;
     }
-    .text-compare{
-      margin-top: 10px;
-      padding-right: 10px;
-      float: left;
+    .add-town-to-compare{
+      .compare-nav{
+        height: 40px;
+      }
+      .plus-to-compare{
+        float: left;
+        height: 30px;
+        font-size: 30px;
+        display: inline-block;
+        padding: 0;
+        //width: auto;
+      }
+      .text-compare{
+        margin-top: 10px;
+        padding-right: 10px;
+        float: left;
+        display: inline-block;
+        width: auto;
+      }
+      .compare-button{
+        cursor: pointer;
+        margin-left: 20px;
+        float: left;
+        width: 30px;
+        font-size: 30px;
+        color: green;
+      }
+    }
+    .compare-wrapper{
+      margin-right: 15px;
+      padding-top: 10px;
+      //max-width: 220px;
       display: inline-block;
-      width: auto;
+      .compare-town-title{
+        //max-width: 198px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: left;
+      }
+      .compare-town-minus{
+        cursor: pointer;
+        font-size: 25px;
+        color: red;
+        margin-top: -7px;
+        width: auto;
+        float: left;
+        margin-left: 10px;
+      }
     }
-    .compare-button{
-      cursor: pointer;
-      margin-left: 20px;
+    #compare-list{
       float: left;
-      width: 30px;
-      font-size: 30px;
-      color: green;
-    }
-
-  }
-  .compare-wrapper{
-    margin-right: 15px;
-    padding-top: 10px;
-    //max-width: 220px;
-    display: inline-block;
-    .compare-town-title{
-      //max-width: 198px;
-      overflow: hidden;
       text-overflow: ellipsis;
-      float: left;
+      overflow: hidden;
     }
-    .compare-town-minus{
-      cursor: pointer;
-      font-size: 25px;
-      color: red;
-      margin-top: -7px;
-      width: auto;
-      float: left;
-      margin-left: 10px;
+    #town-compare-field,
+    .town-search{
+      display: none;
     }
-
-
   }
-  #compare-list{
-    float: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  #town-compare-field,
-  .town-search{
-    display: none;
-  }
-
 -#.row
 -#  .col-md-4.city-title
 -#    %h3
@@ -95,32 +107,38 @@
   -#        %i.fa.fa-plus{"aria-hidden" => "true"}
   -#      .compare-button
   -#        %i.fa.fa-th-list{"aria-hidden" => "true"}
-.row-fluid
-  %ul.nav.nav-tabs.pull-left{role: 'tablist'}
-    - active = 'active'
-    - @tabs.each do |tab|
-      %li{ class: tab[:cname]}
-        %a{role: 'tab', 'data-toggle' => 'tab', 'data-url' => tab[:url]}
-          = tab[:title]
-  .pull-right
-    .city-title
-      %h3
-        = town_english_title(@town.title)
-.budget.row-fluid
-  .tab-content
-    %iframe{ 'width' => '100%', 'height' => '800' }
-.town-search
-  =text_field_tag 'city_compare'
-#town-compare-field
-  .col-md-6
-    .compare-wrapper
-      .compare-town-title
-      .compare-town-minus
-        %i.fa.fa-minus{"aria-hidden" => "true"}
+
+#budget-files
+  .row-fluid
+    .pull-right#fullscreen{'data-module' => 'budget-files'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
+    .pull-right
+      .city-title
+        %h3
+          = town_english_title(@town.title)
+    %ul.nav.nav-tabs.pull-left{role: 'tablist'}
+      - active = 'active'
+      - @tabs.each do |tab|
+        %li{ class: tab[:cname]}
+          %a{role: 'tab', 'data-toggle' => 'tab', 'data-url' => tab[:url]}
+            = tab[:title]
+  .budget.row-fluid
+    .tab-content
+      %iframe{ 'width' => '100%', 'height' => '800', id: 'budget-chart' }
+  .town-search
+    =text_field_tag 'city_compare'
+  #town-compare-field
+    .col-md-6
+      .compare-wrapper
+        .compare-town-title
+        .compare-town-minus
+          %i.fa.fa-minus{"aria-hidden" => "true"}
+
 -#= link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 -#.col-sm-12
 -#  #embed_code_budget.embed_code
 -#    = render partial: 'widgets/visify/embed_code'
+
 :javascript
 
   $(document).on('ready page:load', function() {
@@ -196,9 +214,9 @@
       set_iframe($(this).attr('data-url'));
     });
     function set_iframe(url) {
-      path = "#{request.base_url}"
-      query = "#{URI.parse(request.url).query}"
-      frame_url = path + '/' + url
+      //get protocol, host, port + path
+      frame_url = location.origin + url;
+
       $('.tab-content iframe').attr('src', frame_url)
       embed_code.initialize({width: 1200, height: 900, el_id: "#embeded_code_modal_window", src: frame_url})
     }

@@ -5,7 +5,7 @@ function aEmbedCode() {
         max_width, max_height;
 
     function reset() {
-        $(el_id).find('input').val("<iframe width='100%' height=" + height + " src='" + src + "'></iframe>");
+        $(el_id).find('input').val("<iframe width='100%' height=" + height + " src='" + src + "' " + screen_full + "></iframe>");
         $(el_id + ' .iframe_other_size').html('');
         $(el_id).find('.iframe_size_select').html("<option value=\"min\">" + min_width + "x" + min_height + "</option>\
                                                  <option value=\"default\" selected>100%x" + height + "</option>" +
@@ -15,6 +15,7 @@ function aEmbedCode() {
 
     return {
         initialize: function(options) {
+            screen_full = options.screen_full;
             width = options.width;
             min_width = width - 300;
             max_width = width + 300;

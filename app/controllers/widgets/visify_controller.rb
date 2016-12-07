@@ -196,7 +196,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
       @town = @taxonomy.town
     end
 
-    @author = "#{@taxonomy.get_author}, #{@town.title}"
+    @author = "#{@taxonomy.get_author}, #{@taxonomy.title}"
   end
 
   def set_params

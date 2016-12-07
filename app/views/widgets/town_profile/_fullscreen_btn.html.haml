@@ -1,0 +1,103 @@
+:scss
+  // init colors
+  $yellow: #ffd304;
+  $black: black;
+  $no-color: transparent;
+
+  #fullscreen{
+    text-align: right;
+    cursor: pointer;
+    background-color: $no-color;
+    i{
+      font-size: 40px;
+    }
+    .tooltip {
+      .tooltip-arrow {
+        border-bottom-color: $yellow;
+      }
+      .tooltip-inner {
+        background-color: $yellow;
+        color: $black;
+        font-size: 14px;
+      }
+    }
+  }
+  .select2-drop{
+    // fix for open select2 with fullscreen
+    z-index: 9999999999;
+  }
+
+%i.fa.fa-arrows-alt.fa-5{'aria-hidden' => 'true', title: t('fullscreen.fullscreen_on'),
+                         'data-toggle' => 'tooltip', 'data-placement' => 'left'}
+
+:javascript
+
+  $(document).ready(function() {
+
+    // var fullscreenElement1 = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    // var fullscreenElement1 = window.document.fullscreenElement || window.document.webkitFullscreenElement || window.document.mozFullScreenElement;
+    // hide fullscreen btn if portfolio fullscreen
+    // Todo: fix if return to portfolio (click breadcrumbs -> reload page)
+    // if($("#fullscreen[data-module='modules-fullscreen']").length == 0 ){
+    //   if(fullscreenElement1 || parent.$(".fullscreen").length){
+    //     $("#fullscreen").hide();
+    //   }
+    // }
+
+    $('#fullscreen').click(function(){
+      idForFullScreen = $(this).attr('data-module');
+
+      // add class for setting css fullscreen window
+      $("#" + idForFullScreen).toggleClass('fullscreen');
+
+      // open/close fullscreen window
+      toggleMapInFullscreen(idForFullScreen);
+
+      // change tooltip text
+      $faIcon = $(this).children('.fa');
+      if ($faIcon.hasClass('active')) {
+        $faIcon.removeClass('active');
+        $faIcon.attr("data-original-title", "#{t('fullscreen.fullscreen_on')}");
+      } else {
+        $faIcon.addClass('active');
+        $faIcon.attr("data-original-title", "#{t('fullscreen.fullscreen_of')}");
+      }
+    })
+
+    function toggleMapInFullscreen(idForFullScreen){
+      // !!! get element via simple js
+      var element = document.getElementById(idForFullScreen);
+
+      // get fullscreen element
+      var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+
+      // if map in fullscreen mode
+      if(fullscreenElement == element){
+        // exit from fullscreen
+        if(document.cancelFullScreen) {
+          document.cancelFullScreen();
+        } else if(document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if(document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+
+      }else{
+        // show map in fullscreen mode
+        if (element.requestFullScreen) {
+          element.requestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        }
+      }
+    }
+  })
+
+:javascript
+  $(document).ready(function() {
+    $('#fullscreen .fa').tooltip({
+      trigger: 'hover'
+    });
+  });

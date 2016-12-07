@@ -9,19 +9,19 @@
   $black: black;
   $white: white;
 
-  // allow different style in app and in iframe
-  // set margin in iframe
-  #search-data {
-    margin-top: 20px;
+  #search-data.fullscreen{
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
-  // set margin in app
-  .modules-wrapper {
-    #search-data {
-      margin-top: 0;
+  #search-data {
+    #fullscreen{
+      i{
+        font-size: 30px;
+      }
     }
-  }
-
-  #search-data {
     & .row > div {
       min-height: 30px;
     }
@@ -241,6 +241,8 @@
         - else
           = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
       .col-sm-6.col-md-5
+        .pull-right#fullscreen{'data-module' => 'search-data'}
+          = render partial: 'widgets/town_profile/fullscreen_btn'
         = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
           = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
         = link_to t('modules.classifier.advanced_search.search'), '#', class: 'btn btn-primary advanced_search_button', id: 'search'

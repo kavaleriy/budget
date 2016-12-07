@@ -1,5 +1,6 @@
 .col-xs-8
-  = render partial: '/widgets/calendar/calendar', :locals => { calendar: @calendar }
+  = render partial: '/widgets/calendar/calendar', locals: { calendar: @calendar }
 
 .col-xs-4
-  = render partial: 'event'
+  = render partial: '/widgets/calendar/event', locals: { owner: 1 }
+  = render partial: '/widgets/calendar/event', locals: { owner: 2 }

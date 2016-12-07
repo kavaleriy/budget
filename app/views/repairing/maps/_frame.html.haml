@@ -182,69 +182,74 @@
   //  }
   //}
 
+  #repairing-map{
+    width: 100%;
+    height: 100%;
+  }
 
 
--# Old search
--#.search_block.col-xs-12
--#  .input-group
--#    = text_field_tag :q, '', :class => 'form-control', :placeholder => t('repairing.maps.map_select.search_adress')
--#    .input-group-btn
--#      = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
--#        = t('form.search')
--#        %i.fa.fa-search.fa-lg
+#repairing-map
+  -# Old search
+  -#.search_block.col-xs-12
+  -#  .input-group
+  -#    = text_field_tag :q, '', :class => 'form-control', :placeholder => t('repairing.maps.map_select.search_adress')
+  -#    .input-group-btn
+  -#      = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
+  -#        = t('form.search')
+  -#        %i.fa.fa-search.fa-lg
 
--# Add filters categories before search bar
--# (see details at: maps/_map.html.haml [ js => function (addCategoryControl) ])
-= render partial: 'repairing/maps/category_btns'
+  -# Add filters categories before search bar
+  -# (see details at: maps/_map.html.haml [ js => function (addCategoryControl) ])
+  = render partial: 'repairing/maps/category_btns'
 
--# New search
--#.search_block.col-xs-12
--#  %form.search-container{action: '#'}
--#    %input#search-box.search-box{name: 'q', type: 'text', placeholder: t('repairing.maps.map_select.search_adress')}/
--#    %label{for: 'search-box'}
--#      %span.fa.fa-search.search-icon
--#    %input#search_btn{type: 'submit'}
+  -# New search
+  -#.search_block.col-xs-12
+  -#  %form.search-container{action: '#'}
+  -#    %input#search-box.search-box{name: 'q', type: 'text', placeholder: t('repairing.maps.map_select.search_adress')}/
+  -#    %label{for: 'search-box'}
+  -#      %span.fa.fa-search.search-icon
+  -#    %input#search_btn{type: 'submit'}
 
--# Left buttons
--#%nav#sidebar.left-side
--#  %ul
--#    %li
--#      -#%a{:href => "#"}
--#      = link_to '#', id: 'e-data' do
--#        -#%i.fa.fa-user
--#        = image_tag('icons/e-data_icon.png', class: 'e-data')
--#        %span
--#          = t('repairing.maps.sitebar.e_data')
--#    %li
--#      =link_to '#', id: 'prozzoro' do
--#        -#%i.fa.fa-picture-o
--#        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
--#        %span
--#          = t('repairing.maps.sitebar.prozzoro')
--#    %li
--#      -#%a{:href => "#"}
--#      = link_to '#', id: 'more-info' do
--#        %i.fa.fa-info
--#        %span
--#          = t('repairing.maps.sitebar.information')
+  -# Left buttons
+  -#%nav#sidebar.left-side
+  -#  %ul
+  -#    %li
+  -#      -#%a{:href => "#"}
+  -#      = link_to '#', id: 'e-data' do
+  -#        -#%i.fa.fa-user
+  -#        = image_tag('icons/e-data_icon.png', class: 'e-data')
+  -#        %span
+  -#          = t('repairing.maps.sitebar.e_data')
+  -#    %li
+  -#      =link_to '#', id: 'prozzoro' do
+  -#        -#%i.fa.fa-picture-o
+  -#        = image_tag('icons/prozorro-icon.png', class: 'prozzorro')
+  -#        %span
+  -#          = t('repairing.maps.sitebar.prozzoro')
+  -#    %li
+  -#      -#%a{:href => "#"}
+  -#      = link_to '#', id: 'more-info' do
+  -#        %i.fa.fa-info
+  -#        %span
+  -#          = t('repairing.maps.sitebar.information')
 
--#.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
--#  .modal-dialog
--#    .modal-content
+  -#.modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
+  -#  .modal-dialog
+  -#    .modal-content
 
 
--#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
--#  .modal-dialog{:role => 'document'}
--#    .modal-content
--#      .modal-header
--#        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
--#          %span{'aria-hidden' => 'true'} &times;
--#        .modal-title
--#          Додаткова інформація
--#      .modal-body
--#        Content here
+  -#.modal.fade{:id => 'more-infoModal',  role: 'dialog', tabindex: '-1'}
+  -#  .modal-dialog{:role => 'document'}
+  -#    .modal-content
+  -#      .modal-header
+  -#        %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+  -#          %span{'aria-hidden' => 'true'} &times;
+  -#        .modal-title
+  -#          Додаткова інформація
+  -#      .modal-body
+  -#        Content here
 
-= render partial: 'map_ukraine'
+  = render partial: 'map_ukraine'
 
 :javascript
 
@@ -332,10 +337,6 @@
 
       categories = JSON.parse('#{@categories.to_json(:except => :img)}')
       aRepairMap.addCategoryControl(categories);
-
-      $('#fullscreen').click(function(){
-        aRepairMap.toggleMapInFullscreen();
-      })
 
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){

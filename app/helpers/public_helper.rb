@@ -13,7 +13,10 @@ module PublicHelper
     # path = "#{request.base_url}"
     path = "#{protocol}#{request.env['HTTP_HOST']}"
     full_URL = path + url_path
-    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;')
+
+    # 'allowfullscreen' use for embed modules and portal_public_finances
+    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;',
+                allowfullscreen: 'true', mozallowfullscreen: 'true', webkitallowfullscreen: 'true')
   end
 
   def download_instruction(page_alias)
