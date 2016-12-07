@@ -71,6 +71,7 @@ class BudgetFilesController < ApplicationController
         file_path = file[:path].to_s
 
         taxonomy = create_taxonomy(params[:area], file_name)
+        taxonomy.town = current_user.town_model
         @budget_file = generate_budget_file taxonomy, file_name
 
         fill_budget_file(budget_file_params[:data_type],file_path, taxonomy)

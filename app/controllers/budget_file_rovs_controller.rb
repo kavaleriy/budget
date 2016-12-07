@@ -26,7 +26,6 @@ class BudgetFileRovsController < BudgetFilesController
 
     taxonomy.title = get_file_title
     taxonomy.area = area_id
-    taxonomy.town = Town.get_user_town(current_user)
 
     taxonomy
   end
