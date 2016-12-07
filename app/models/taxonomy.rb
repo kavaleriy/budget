@@ -106,7 +106,8 @@
                 if user.has_role? :admin
                   self.all
                 else
-                  self.where(:town => user.town_model,:author.in => [user,nil])
+                  # request with owner needs for old data
+                  self.any_of({:town => user.town_model, :author.in => [user,nil]}, {owner: user.town_model.title})
                 end
               else
                 self.where(:owner => '')
