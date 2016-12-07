@@ -105,10 +105,15 @@ class Programs::TargetedProgram
 
     # TODO: Clear function code after finish coding
     # kfk_spr = codes_relations
+
     explainer = taxonomy.explanation[type]
     tree = taxonomy.get_tree([type.to_sym])
 
     result = []
+
+    if explainer.blank?
+      return false
+    end
 
     # Add item to array
     tree['children'].each do |item|

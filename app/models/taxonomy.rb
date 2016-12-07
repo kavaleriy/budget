@@ -50,6 +50,10 @@
       # self.by_town_id(town_id) # for open town programs with old data
     end
 
+    def self.last_taxonomies_by_town(town_id)
+      self.by_town_id(town_id).last
+    end
+
     def self.get_active_for_all_towns
       # this function grouped taxonomies by town
       # and return array of hashes active or first taxonomies from town
