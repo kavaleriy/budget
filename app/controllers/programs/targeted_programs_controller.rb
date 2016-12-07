@@ -100,7 +100,6 @@ class Programs::TargetedProgramsController < ApplicationController
 
     @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years, 'kvk')
 
-
     respond_with(@programs) do |format|
       format.js { render layout: false }
       format.html { render file: 'programs/targeted_programs/town_programs', layout: 'visify'}
