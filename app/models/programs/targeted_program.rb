@@ -137,14 +137,12 @@ class Programs::TargetedProgram
 
     # Add Total at the end of array
 
-    tree['amount'].each do |item|
+    item = tree['amount'][:plan]
       result <<
           {
               title: 'Всього',
-              amount: item.last[year.first]['0']['total']
+              amount: item[year.first]['0']['total']
           }
-    end
-    result
 
   end
 
