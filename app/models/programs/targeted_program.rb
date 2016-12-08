@@ -123,8 +123,6 @@ class Programs::TargetedProgram
     # Add item to array
     tree['children'].each do |item|
       key = item['key']
-
-
       result <<
       {
         kvk: key,
@@ -137,13 +135,13 @@ class Programs::TargetedProgram
 
     # Add Total at the end of array
 
-    tree['amount'].each do |item|
-      result <<
-          {
-              title: 'Всього',
-              amount: item.last[year.first]['0']['total']
-          }
-    end
+    # tree['amount'].each do |item|
+    #   result <<
+    #       {
+    #           title: 'Всього',
+    #           amount: item.last[year.first]['0']['total']
+    #       }
+    # end
     result
 
   end

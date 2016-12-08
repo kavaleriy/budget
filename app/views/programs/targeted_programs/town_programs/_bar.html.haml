@@ -1,82 +1,156 @@
 :scss
-  $darkBlue: #0c2231;
-  .bar {
-    border: 1px solid black;
-    height: 26px;
-    a {
-      height: 24px;
-      float: left;
-      background: red;
-    }
-    a + .tooltip > {
-      .tooltip-arrow {
-        border-top-color: $darkBlue;
-      }
-      .tooltip-inner {
-        background-color: $darkBlue;
-      }
-    }
+  div.tooltip.bar {
+    color: white;
+    position: absolute;
+    text-align: center;
+    min-width: 100px;
+    padding: 7px 10px;
+    //line-height: 30px;
+    min-height: 28px;
+    //padding: 2px;
+    font: 12px sans-serif;
+    background: #0B212F;
+    border: 0px;
+    border-radius: 0;
+    pointer-events: none;
+    top: -30px;
+    transition: opacity .5s ease;
   }
+  $darkBlue: #0c2231;
+  //.bar {
+  //  border: 1px solid black;
+  //  height: 26px;
+  //  a {
+  //    height: 24px;
+  //    float: left;
+  //    background: red;
+  //  }
+  //  a + .tooltip > {
+  //    .tooltip-arrow {
+  //      border-top-color: $darkBlue;
+  //    }
+  //    .tooltip-inner {
+  //      background-color: $darkBlue;
+  //    }
+  //  }
+  //}
 
 .bar{ 'data-bar' => tax_data.to_json }
 
 :javascript
-  function getData(selector, attr_name) {
-    // func to get data
-    // get:
-    //    selector of DOM element
-    //    attr_name of DOM element
-    // return array of Object's
-    return jQuery.parseJSON($(selector).attr(attr_name));
+  // function getData(selector, attr_name) {
+  //   // func to get data
+  //   // get:
+  //   //    selector of DOM element
+  //   //    attr_name of DOM element
+  //   // return array of Object's
+  //   return jQuery.parseJSON($(selector).attr(attr_name));
+  // }
+  //
+  // var _data = getData('.bar', 'data-bar');
+  //
+  // function getTotalAmount (obj_key) {
+  //   // func to cut last element of data array
+  //   // get: last array Object key
+  //   // return last array Object value
+  //   return _data.pop()[obj_key];
+  // }
+  //
+  // function createPercentageRatio(obj_key) {
+  //   // func to create ruselt table
+  //   // get: data array
+  //   // return array of Objects [{amount:value, title:value}]
+  //   var resultTable = [];
+  //   var lastElementValue = getTotalAmount(obj_key);
+  //   $.each(_data, function(key, value) {
+  //     resultTable.push({ amount: (value[obj_key]/lastElementValue * 100).toFixed(2),
+  //                        title: value.title });
+  //   })
+  //   return resultTable;
+  // }
+  //
+  // function addBarChild(parent) {
+  //   // func to add child to bar
+  //   // get: parent selector
+  //   // return DOM element's, like this: <a></a>
+  //   var barChild = $('<a href="#" data-toggle="tooltip"></span></a>');
+  //   return barChild.appendTo(parent);
+  // }
+  //
+  // function buildBar(tooltipPlacement) {
+  //   // func build bar with child
+  //   // get: tooltip placement ['top', 'rigth', 'bottom', 'left']
+  //   // return DOM element's, like a bar
+  //   var colors = ['red', 'blue', 'green', 'teal', 'rosybrown', 'tan', 'plum', 'saddlebrown'];
+  //   var _data = createPercentageRatio('amount');
+  //   $.each(_data, function(key, value) {
+  //     // setColor = colors[Math.floor(Math.random() * colors.length)];
+  //     addBarChild('.bar')
+  //     .attr('title', value.title)
+  //     // TODO: Hack for rectangles. Fix in future
+  //     .css('width', 'calc(' + value.amount + '% - 0.1px)')
+  //     .css('background', colors[key])
+  //     .tooltip({placement: tooltipPlacement});
+  //   });
+  // }
+
+  var Bar = {
+    width: $('.bar').css('width'),
+    clientWidth: $('.bar')[0].clientWidth,
+    height: 30,
+    draw: function(data){
+      var colors = d3.scale.category20();
+
+      var total = 0;
+      data.map(function(d){ total += d.amount })
+
+      var x = d3.scale.linear()
+        .domain([0, total])
+        .range([0, Bar.clientWidth]);
+
+      var svg = d3.select(".bar")
+        .append("svg")
+        .attr('width',Bar.width)
+        .attr('height', Bar.height)
+
+      var div = d3.select(".bar").append("div")
+            .attr("class", "tooltip bar")
+            .style("opacity", 0);
+      var res = 0;
+      svg.selectAll('.bars')
+        .data(data)
+        .enter()
+        .append("rect")
+          .attr('fill', function(d, i){ return colors(i) })
+          // .attr('width', function(d, i) { return (parseFloat(x(d.amount)) / parseFloat(Bar.width)) * 100 + '%' })
+          .attr('x', function(d, i) {
+            if(i > 0){
+              res += parseFloat(x(data[i - 1].amount));
+            }
+            return res;
+          })
+          .attr('width', function(d, i) { return x(d.amount) })
+          .attr('height', Bar.height)
+          .on('mousemove', function(d, i){
+            var tooltipX = 0;
+            var mouseX = d3.mouse(svg.node())[0]
+            var barWidth = $('.bar')[0].clientWidth
+            if(barWidth / 2 < mouseX){
+              tooltipX = mouseX - $('.bar.tooltip')[0].clientWidth;
+            }else{
+              tooltipX = mouseX;
+            }
+            div.html(d.title)
+              .style('opacity', 0.9)
+              .style('left', tooltipX + "px")
+          }).on('mouseout', function(d, i){
+            div.style('opacity', 0)
+          })
+    }
   }
-
-  var _data = getData('.bar', 'data-bar');
-
-  function getTotalAmount (obj_key) {
-    // func to cut last element of data array
-    // get: last array Object key
-    // return last array Object value
-    return _data.pop()[obj_key];
-  }
-
-  function createPercentageRatio(obj_key) {
-    // func to create ruselt table
-    // get: data array
-    // return array of Objects [{amount:value, title:value}]
-    var resultTable = [];
-    var lastElementValue = getTotalAmount(obj_key);
-    $.each(_data, function(key, value) {
-      resultTable.push({ amount: (value[obj_key]/lastElementValue * 100).toFixed(2),
-                         title: value.title });
-    })
-    return resultTable;
-  }
-
-  function addBarChild(parent) {
-    // func to add child to bar
-    // get: parent selector
-    // return DOM element's, like this: <a></a>
-    var barChild = $('<a href="#" data-toggle="tooltip"></span></a>');
-    return barChild.appendTo(parent);
-  }
-
-  function buildBar(tooltipPlacement) {
-    // func build bar with child
-    // get: tooltip placement ['top', 'rigth', 'bottom', 'left']
-    // return DOM element's, like a bar
-    var colors = ['red', 'blue', 'green', 'teal', 'rosybrown', 'tan', 'plum', 'saddlebrown'];
-    var _data = createPercentageRatio('amount');
-    $.each(_data, function(key, value) {
-      // setColor = colors[Math.floor(Math.random() * colors.length)];
-      addBarChild('.bar')
-      .attr('title', value.title)
-      // TODO: Hack for rectangles. Fix in future
-      .css('width', 'calc(' + value.amount + '% - 0.1px)')
-      .css('background', colors[key])
-      .tooltip({placement: tooltipPlacement});
-    });
-  }
-
+  var test = 0;
   $(document).ready(function() {
-    buildBar('top');
+    var data = JSON.parse(d3.select('.bar').attr('data-bar'));
+    Bar.draw(data);
+    test = data;
   });
