@@ -60,7 +60,13 @@ class Programs::TargetedProgram
         }
     }
   end
-
+  def self.visible_to(user)
+    if user.is_admin?
+      self.all
+    else
+      where(author: user)
+    end
+  end
   def self.import(file_path)
     workbook = XlsParser.get_workbook(file_path)
     worksheet = workbook[0]
@@ -118,14 +124,15 @@ class Programs::TargetedProgram
     tree['children'].each do |item|
       key = item['key']
 
+
       result <<
       {
         kvk: key,
         # kvk: kvk[key],
         title: explainer[key]['title'],
-        amount: item['amount'][:fact][year.first]['0']['total']
-        # amount: item['amount'][:fact][tree['children'][0]['amount'][:fact].keys[0]]['9']['total'] # for open town programs with old data
-      }
+        amount: item['amount'][:plan][year.first]['0']['total']
+      } unless item['amount'][:plan].blank?
+
     end
 
     # Add Total at the end of array
@@ -135,7 +142,6 @@ class Programs::TargetedProgram
           {
               title: 'Всього',
               amount: item.last[year.first]['0']['total']
-              # amount: item.last[item.last.keys[1]]['0']['total'] # for open town programs with old data
           }
     end
     result
