@@ -19,13 +19,6 @@
   }
 
 .bar{ 'data-bar' => tax_data.to_json }
-  -#
-  -#-tax_data.each do |data|
-  -#  .row
-  -#    = data[:ktvk]
-  -#    = data[:kfk]
-  -#    = data[:title]
-  -#    = data[:amount]
 
 :javascript
   function getData(selector, attr_name) {
@@ -85,11 +78,5 @@
   }
 
   $(document).ready(function() {
-    // TODO: delete it after merge
-    // var _data = getData('.bar', 'data-bar');
-    // console.log(getTotalAmount('amount'));
-    // console.log('data', _data);
-    // console.log(createPercentageRatio('amount'));
-    // addBarChild('.bar').css('width', "25vw");
     buildBar('top');
   });
