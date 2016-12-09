@@ -24,6 +24,7 @@ module Repairing
     field :spending_units, type: String
     field :edrpou_spending_units, type: String
     field :prozzoro_id, type: String
+    field :prozzoro_inner_id, type: String
 
     field :warranty_date, type: String
     field :description, type: String
@@ -128,6 +129,7 @@ module Repairing
           warranty_date: repair['Гарантія'],
 
           prozzoro_id: repair['ID закупівлі'],
+          prozzoro_inner_id: repair['ID закупівлі внутрішнє'],
 
           obj_owner: repair['Виконавець'],
           edrpou_artist: repair['ЄДРПОУ виконавця'],

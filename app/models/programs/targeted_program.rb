@@ -123,6 +123,8 @@ class Programs::TargetedProgram
     # Add item to array
     tree['children'].each do |item|
       key = item['key']
+
+
       result <<
       {
         kvk: key,
