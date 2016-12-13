@@ -25,7 +25,7 @@
 - @grouped_modules_partners.each do |category, partners|
   .category
     %h3
-      ="Cторінка: #{category.title}"
+      = category.blank? ? t('modules.partners.index.without_page') : "#{t('modules.partners.index.page')} #{category.title}"
     - partners.each_with_index do |partner, i|
       .partner{'data-id' => partner.id}
         .data-actions
