@@ -266,7 +266,6 @@
       .attr("x", function(d) {
         res = 0;
         d.plan > (getValuesFromData(zippedData, 'max')/100) ? res = d.plan : res = (getValuesFromData(zippedData, 'max')/100);
-      console.log(x(res))
       xPos = x(res) < 155 ? x(res) + 309 : x(res)
       return xPos  || 0 })
       .attr("y", barHeight / 2)
@@ -297,19 +296,52 @@
       // default path to file
       fullPath = path + filename;
 
-        // create path for type [ ktfk, kekv, kkd ]
-        // path = PATHtofolder/foldername(TYPE)/filename.svg(KEY)
-        (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
+      // create path for type [ ktfk, kekv, kkd ]
+      // path = PATHtofolder/foldername(TYPE)/filename.svg(KEY)
+      (type == 'ktfk' || type == 'kekv' || type == 'kkd') ? fullPath = path + type + '/' + key + '.svg' : fullPath;
 
-        // create path for type [ ktfk_aaa ]
-        // cond 1: key consist 2 digits - filename = 0[KEY]000.svg
-        // cond 2: key consist 3 digits - filename = [KEY]000.svg
-        if (type == "ktfk_aaa") {
-
-          (key.toString().length) == 2 ? filename = "0" + key + "000.svg" : ((key.toString().length) == 3 ? filename = key + "000.svg" : filename)
-
-          fullPath = path + type.substring(0,4) + '/' + filename;
+      // create path for type [ ktfk_aaa ]
+      if (type == "ktfk_aaa") {
+        filename = key + "000.svg"
+        fullPath = path + type.substring(0,4) + '/' + filename;
+      }
+      // create path for type [ kkd_* ]
+      else if(type.substring(0,4) == 'kkd_'){
+        // Alternative way generate icon name by key
+        key_length = key.toString().length;
+        icon_name = key;
+        kkd_length = 8;
+        for(var i = 0; i < kkd_length - key_length; i++){
+          icon_name += '0';
         }
+
+        filename = icon_name + ".svg"
+        fullPath = path + type.substring(0,3) + '/' + filename;
+
+        // Generate icon name by key
+        // case 'kkd_a' : key consist 1 digits - filename = [KEY]0000000.svg
+        // case 'kkd_b' : key consist 2 digits - filename = [KEY]000000.svg
+        // case 'kkd_cc': key consist 4 or 5 digits - filename = [KEY]0000.svg or [KEY]000.svg
+        // case 'kkd_dd': key consist 6 digits - filename = [KEY]00.svg
+        // switch(type) {
+        //   case 'kkd_a':
+        //     filename = key + "0000000.svg"
+        //     break;
+        //   case 'kkd_b':
+        //     filename = key + "000000.svg"
+        //     break;
+        //   case 'kkd_cc':
+        //     (key.toString().length) == 4 ? filename = key + "0000.svg" : ((key.toString().length) == 5 ? filename = key + "000.svg" : filename)
+        //     break;
+        //   case 'kkd_dd':
+        //     filename = key + "00.svg"
+        //     break;
+        //   default:
+        //     filename = filename
+        // }
+        // fullPath = path + type.substring(0,3) + '/' + filename;
+      }
+
       return fullPath;
     }
 
