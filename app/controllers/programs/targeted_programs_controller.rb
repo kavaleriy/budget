@@ -10,7 +10,7 @@ class Programs::TargetedProgramsController < ApplicationController
 
   def index
     stub_data
-    @programs = Programs::TargetedProgram.get_main_programs
+    @programs = Programs::TargetedProgram.visible_to(current_user).get_main_programs
   end
 
   def new
@@ -44,8 +44,9 @@ class Programs::TargetedProgramsController < ApplicationController
   def import
     program = Programs::TargetedProgram.import(params[:import_file].tempfile)
     # set town
-    program.town = Town.get_user_town(current_user)
+    program.town = current_user.town_model
     # set autor
+
     program.author = current_user
     # attach upload file
     program.targeted_program_file = params[:import_file]
@@ -92,14 +93,9 @@ class Programs::TargetedProgramsController < ApplicationController
     @programs = Programs::TargetedProgram.by_town(params[:town])
     @years = Programs::TargetedProgram.programs_years(@programs)
 
-    taxonomies = TaxonomyRov.active_taxonomies_by_town(params[:town]).last
+    taxonomies = TaxonomyRov.active_taxonomies_by_town(params[:town]).last || TaxonomyRov.last_taxonomies_by_town(params[:town])
 
-    if taxonomies.blank?
-      taxonomies = TaxonomyRov.last_taxonomies_by_town(params[:town])
-    end
-
-    @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years, 'kvk')
-
+    @tax_data = Programs::TargetedProgram.data_bar(taxonomies, @years, 'kvk') unless taxonomies.nil?
 
     respond_with(@programs) do |format|
       format.js { render layout: false }

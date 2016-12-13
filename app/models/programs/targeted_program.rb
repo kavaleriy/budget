@@ -60,7 +60,13 @@ class Programs::TargetedProgram
         }
     }
   end
-
+  def self.visible_to(user)
+    if user.is_admin?
+      self.all
+    else
+      where(author: user)
+    end
+  end
   def self.import(file_path)
     workbook = XlsParser.get_workbook(file_path)
     worksheet = workbook[0]
@@ -104,8 +110,7 @@ class Programs::TargetedProgram
     #   array with Hash { ktvk, kfk, title, amount }
 
     # TODO: Clear function code after finish coding
-    # kfk_spr = codes_relations
-
+    # kvk = codes_relations
     explainer = taxonomy.explanation[type]
     tree = taxonomy.get_tree([type.to_sym])
 
@@ -118,27 +123,29 @@ class Programs::TargetedProgram
     # Add item to array
     tree['children'].each do |item|
       key = item['key']
+
+
       result <<
       {
         kvk: key,
-        # kvk: kfk_spr[key],
+        # kvk: kvk[key],
         title: explainer[key]['title'],
-        amount: item['amount'][:fact][year.first]['0']['total']
-        # amount: item['amount'][:fact][tree['children'][0]['amount'][:fact].keys[0]]['9']['total'] # for open town programs with old data
-      }
+        amount: item['amount'][:plan][year.first]['0']['total']
+      } unless item['amount'][:plan].blank?
+
     end
 
     # Add Total at the end of array
 
-    tree['amount'].each do |item|
-      result <<
-          {
-              title: 'Всього',
-              amount: item.last[year.first]['0']['total']
-              # amount: item.last[item.last.keys[1]]['0']['total'] # for open town programs with old data
-          }
-    end
+    # tree['amount'].each do |item|
+    #   result <<
+    #       {
+    #           title: 'Всього',
+    #           amount: item.last[year.first]['0']['total']
+    #       }
+    # end
     result
+
   end
 
   def self.load_from_csv(file_name)
@@ -157,16 +164,16 @@ class Programs::TargetedProgram
   end
 
   # TODO: Now it's code nothing to do. Can be deleted
-  # def self.codes_relations
-  #
-  #   # open to load file "db/ktvk_to_kfk.csv"
-  #   # return (Hash): 'ftvk' => 'kfk'
-  #   # or
-  #   # nil if file cann't read
-  #
-  #   ktvk_to_kfk = self.load_from_csv 'db/ktvk_to_kfk.csv' if ktvk_to_kfk.nil?
-  #   ktvk_to_kfk
-  # end
+  def self.codes_relations
+
+    # open to load file "db/ktvk_to_kfk.csv"
+    # return (Hash): 'ftvk' => 'kfk'
+    # or
+    # nil if file cann't read
+
+    kvk = self.load_from_csv 'db/kvk_mistc.csv' if kvk.nil?
+    kvk
+  end
 
   private
 
