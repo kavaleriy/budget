@@ -266,7 +266,6 @@
       .attr("x", function(d) {
         res = 0;
         d.plan > (getValuesFromData(zippedData, 'max')/100) ? res = d.plan : res = (getValuesFromData(zippedData, 'max')/100);
-      console.log(x(res))
       xPos = x(res) < 155 ? x(res) + 309 : x(res)
       return xPos  || 0 })
       .attr("y", barHeight / 2)
@@ -296,8 +295,6 @@
       filename = 'no-image.svg'
       // default path to file
       fullPath = path + filename;
-      console.log(type);
-      console.log(key);
 
       // create path for type [ ktfk, kekv, kkd ]
       // path = PATHtofolder/foldername(TYPE)/filename.svg(KEY)
