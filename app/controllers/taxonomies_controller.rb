@@ -174,7 +174,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def taxonomy_params
-    params.require(params[:controller].singularize).permit(:title, :name, :description, :is_kvk, :attachment_id, :description, :recipient_amount, :kmb, :active)
+    params.require(params[:controller].singularize).permit(:title, :name, :description, :is_kvk, :attachment_id, :description, :recipient_amount, :kmb, :active, :town_id)
   end
 
 end
