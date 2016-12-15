@@ -77,7 +77,9 @@ class Town
   def self.get_central_authority_towns(query)
     # first of all get users with authority roles mask
     city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
-                                                         User.mask_for(:central_authority)]).pluck(:town_model_id)
+                                                         User.mask_for(:central_authority),
+                                                         User.mask_for(:municipal_enterprise),
+                                                         User.mask_for(:state_enterprise)]).pluck(:town_model_id)
 
     # second we find all they towns and last add regular expression to all they towns
     Town.where(:_id.in => city_authority_users).and(title: Regexp.new("^#{query}.*"))

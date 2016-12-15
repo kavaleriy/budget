@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   def update
     params['locked'] ? @user.locked = true : @user.locked = false
 
-    @user.roles -= [:public_organisation, :city_authority]
+    @user.roles -= [:public_organisation, :city_authority, :municipal_enterprise, :state_enterprise]
     unless params['roles'].nil?
       params['roles'].each { |role| @user.roles << role.to_sym }
     end
