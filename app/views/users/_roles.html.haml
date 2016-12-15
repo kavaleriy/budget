@@ -14,3 +14,11 @@
 -if roles.member? :central_authority
   %i.glyphicon.glyphicon-tower
     =t('users.index.roles.central_authority')
+
+-if roles.member? :municipal_enterprise
+  %i.fa.fa-border.fa-university
+    =t('users.index.roles.municipal_enterprise')
+
+-if roles.member? :state_enterprise
+  %i.fa.fa-border.fa-university
+    =t('users.index.roles.state_enterprise')
