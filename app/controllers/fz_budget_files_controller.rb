@@ -37,7 +37,7 @@ class FzBudgetFilesController < ApplicationController
         fz_name = file[:name].gsub(/rzt\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
         fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
 
-        budget_file = BudgetFileRotRzt.find_or_create_by(name: name, taxonomy: taxonomy_rot, :data_type => :plan, path: path)
+        budget_file = BudgetFileRotRzt.find_or_create_by(name: name, taxonomy: taxonomy_rot, data_type: :plan)
         budget_file.title = name + ' - Доходи'
         budget_file.path = path
         budget_file.make_empty
@@ -57,7 +57,7 @@ class FzBudgetFilesController < ApplicationController
         fz_name = file[:name].gsub(/rzv\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
         fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
 
-        budget_file = BudgetFileRovRzv.find_or_create_by(name: name, taxonomy: taxonomy_rov, :data_type => :plan, path: path)
+        budget_file = BudgetFileRovRzv.find_or_create_by(name: name, taxonomy: taxonomy_rov, data_type: :plan)
         budget_file.title = name + ' - Видатки'
         budget_file.path = path
         budget_file.make_empty

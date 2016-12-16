@@ -18,4 +18,15 @@ namespace :budget_files do
     end
   end
 
+  desc "Add fz_file_path in budget_file"
+  task add_fz_path_in_budget_file: :environment  do
+    BudgetFile.where(:fz_budget_file_id.ne => nil, path: nil).each do |file|
+      fz_file = FzBudgetFile.find(file.fz_budget_file_id)
+
+      puts "#{file.name} - #{fz_file.title} - #{fz_file.path}"
+      file.path = fz_file.path if fz_file
+      file.save
+    end
+  end
+
 end
