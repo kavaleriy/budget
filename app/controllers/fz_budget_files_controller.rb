@@ -37,7 +37,7 @@ class FzBudgetFilesController < ApplicationController
         fz_name = file[:name].gsub(/rzt\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
         fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
 
-        budget_file = BudgetFileRotRzt.find_or_create_by(name: name, taxonomy: taxonomy_rot, :data_type => :plan)
+        budget_file = BudgetFileRotRzt.find_or_create_by(name: name, taxonomy: taxonomy_rot, data_type: :plan)
         budget_file.title = name + ' - Доходи'
         budget_file.path = path
         budget_file.make_empty
@@ -57,7 +57,7 @@ class FzBudgetFilesController < ApplicationController
         fz_name = file[:name].gsub(/rzv\d\d\d\d\d.(?<TERRA>\d\d\d).*/i, 'RZD.\k<TERRA>')
         fz_file = FzBudgetFile.find_or_create_by(title: fz_name)
 
-        budget_file = BudgetFileRovRzv.find_or_create_by(name: name, taxonomy: taxonomy_rov, :data_type => :plan)
+        budget_file = BudgetFileRovRzv.find_or_create_by(name: name, taxonomy: taxonomy_rov, data_type: :plan)
         budget_file.title = name + ' - Видатки'
         budget_file.path = path
         budget_file.make_empty
@@ -89,8 +89,8 @@ class FzBudgetFilesController < ApplicationController
 
         rows = calc_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
 
-        rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot) if taxonomy_rot
-        rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov) if taxonomy_rov
+        rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot, path: fz_file.path) if taxonomy_rot
+        rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov, path: fz_file.path) if taxonomy_rov
 
         [rot_file, rov_file].compact.each do |budget_file|
           budget_file.data_type = :plan
