@@ -23,9 +23,11 @@ namespace :budget_files do
     BudgetFile.where(:fz_budget_file_id.ne => nil, path: nil).each do |file|
       fz_file = FzBudgetFile.find(file.fz_budget_file_id)
 
-      puts "#{file.name} - #{fz_file.title} - #{fz_file.path}"
-      file.path = fz_file.path if fz_file
-      file.save
+      if fz_file
+        puts "#{file.name} - #{fz_file.title} - #{fz_file.path}"
+        file.path = fz_file.path
+        file.save
+      end
     end
   end
 
