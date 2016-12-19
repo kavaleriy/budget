@@ -1,15 +1,17 @@
 .col-xs-12
+  -#= text_field_tag 'active_town_select', '', placeholder: t('.choose_town')
+
   = bootstrap_form_for @taxonomy, :html => { :class => 'form-horizontal' } do |f|
     = f.text_field :title, label: t('taxonomies.index.file_title')
     - if current_user.admin?
       = f.text_field :name, label: t('taxonomies.index.file_title')
+      = f.text_field :town_id, label: t('form.town'), id: 'active_town_select'
 
     = f.text_field :description, label: t('taxonomies.index.description')
     = f.text_field :kmb, label: t('.kmb')
 
     = f.check_box :is_kvk, label: t('.is_kvk')
     = f.check_box :active, label: t('.activate')
-
 
     %hr
     = render :partial => "editinfo"
@@ -20,3 +22,8 @@
 
 .col-xs-12#attachments
   = render :partial => 'file_upload', :locals => { :attachments => @attachments, :taxonomy_id=>@taxonomy.id }
+
+:javascript
+  $(document).ready(function(){
+    init_town_select2_with_field_id('#active_town_select',"#{search_for_active_towns_path}")
+  })

@@ -109,7 +109,7 @@ class ExportBudgetsController < ApplicationController
   private
 
     def access_user?
-      unless current_user.is_admin? || current_user.public_organisation? || current_user.city_authority? || current_user.central_authority?
+      unless current_user && current_user.has_any_role?(:admin, :city_authority, :public_organisation, :municipal_enterprise, :state_enterprise)
         redirect_to root_url, alert: t('export_budgets.notice_access')
       end
     end

@@ -50,10 +50,6 @@
       # self.by_town_id(town_id) # for open town programs with old data
     end
 
-    def self.last_taxonomies_by_town(town_id)
-      self.by_town_id(town_id).last
-    end
-
     def self.get_active_for_all_towns
       # this function grouped taxonomies by town
       # and return array of hashes active or first taxonomies from town
@@ -106,8 +102,7 @@
                 if user.has_role? :admin
                   self.all
                 else
-                  # request with owner needs for old data
-                  self.any_of({:town => user.town_model, :author.in => [user,nil]}, {owner: user.town_model.title})
+                  self.where(:town => user.town_model,:author.in => [user,nil])
                 end
               else
                 self.where(:owner => '')
@@ -371,7 +366,7 @@
 
     def get_author
       unless author.nil?
-        author.organisation
+        author.organisation || author.email
       end
     end
 
