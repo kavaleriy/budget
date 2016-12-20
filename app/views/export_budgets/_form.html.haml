@@ -205,7 +205,8 @@
     });
     var send_ajax = function(number,page_id){
       $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
+        // url: "#{widgets_visualisation_list_path(current_user)}",
+        url: "#{widgets_visualisation_list_path(@export_budget.town.id)}",
         dataType:'script',
         data: { data_number: number,
                 page_id: page_id  }
