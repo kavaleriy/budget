@@ -1,6 +1,8 @@
 class Calendar
   include Mongoid::Document
 
+  scope :by_town, lambda { |town| where(town_model_id: town) }
+
   before_save :change_active_status
 
   field :author, type: String

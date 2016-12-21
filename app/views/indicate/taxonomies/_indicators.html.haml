@@ -136,7 +136,7 @@
             .title
               = k
             .chart
-              = render partial: 'indicators_chart', locals: { id: v['id'] }
+              = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
             .comments
               -#%a.editable-href
               = first_values['comment']
