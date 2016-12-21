@@ -204,9 +204,9 @@
       set_year_in_title_page($(this).val());
     });
     var send_ajax = function(number,page_id){
+      town_id = $('#export_budget_town').val();
       $.ajax({
-        // url: "#{widgets_visualisation_list_path(current_user)}",
-        url: "#{widgets_visualisation_list_path(@export_budget.town.id)}",
+        url: "/widgets/user/widgets/visualisation_list/" + town_id + "?locale=" + I18n.locale,
         dataType:'script',
         data: { data_number: number,
                 page_id: page_id  }

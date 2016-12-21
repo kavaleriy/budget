@@ -240,7 +240,7 @@ Rails.application.routes.draw do
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
-    get 'user/widgets/visualisation_list/:user_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
+    get 'user/widgets/visualisation_list/:town_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
 
 
     get 'visify/visify/:file_id' => 'visify#visify'
