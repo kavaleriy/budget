@@ -48,7 +48,20 @@ class TaxonomiesController < ApplicationController
   # end
 
   def index
-    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page])
+    @taxonomies = Taxonomy.visible_to(current_user)
+
+    @taxonomies = @taxonomies.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
+
+    @taxonomies = @taxonomies.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+
+    @taxonomies = @taxonomies.where(:_type => params['taxonomy_type'].to_sym)      unless params["taxonomy_type"].blank?
+
+    @taxonomies = @taxonomies.page(params[:page])
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   def show
