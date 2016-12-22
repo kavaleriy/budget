@@ -6,7 +6,8 @@
       = link_to taxonomy.title, taxonomy
     -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
     %td= taxonomy.get_author
-    %td= taxonomy.owner
+    %td
+      = taxonomy.town.title if taxonomy.town
     %td= get_created_at(taxonomy.created_at)
     %td
       = get_active_icon(taxonomy.active)
