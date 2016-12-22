@@ -1,0 +1,3 @@
+$('#search_results').html('<%= escape_javascript( render partial: 'search_results', :locals => { taxonomies: @taxonomies } ) %>')
+
+$('.paginator').html('<%= escape_javascript(paginate(@taxonomies, :remote => true)) %>')
