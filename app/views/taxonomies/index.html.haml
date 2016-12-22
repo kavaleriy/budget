@@ -14,7 +14,11 @@
 %table.table.table-striped
   %thead
     %tr
-      %th
+      %th#multiple-delete
+        -#= link_to t('form.destroy', default: t("helpers.links.destroy")),
+                  taxonomies_multiple_destroy_path, method: :get, remote: true,
+                  data: { confirm: t('form.confirm', default: t("helpers.links.confirm", default: 'Ви впевнені?')) }
+
         = t('helpers.links.destroy')
       %th
         = t('key')
@@ -35,3 +39,38 @@
 
 .paginator
   = paginate @taxonomies
+
+:javascript
+
+  $(document).ready(function(){
+
+    $('#multiple-delete').click(function(){
+      // var that = $(this);
+      dataConfirmModal.confirm({
+        // title: I18n.t('.are_you_sure'),
+        text: I18n.t('export_budgets.form.really_destroy?'),
+        // commit: I18n.t('yes'),
+        // cancel: I18n.t('no'),
+        zIindex: 10099,
+
+        onConfirm: function() {
+          var result = $('input[type="checkbox"]:checked');
+          var arr = [];
+
+          result.each(function(){
+            id = $(this).val();
+            arr.push(id);
+          })
+
+          console.log(arr)
+          $.ajax({
+            type: "POST",
+            url: "#{taxonomies_multiple_destroy_path}",
+            data: { ids: JSON.stringify(arr) },
+            success: function() { alert("Success!"); }
+          });
+        },
+
+      });
+    })
+  })

@@ -342,6 +342,7 @@ Rails.application.routes.draw do
   delete 'taxonomies/attachment_destroy/:attachment_id' => 'taxonomies#attachment_destroy'
   put 'taxonomies/attachment_update/:attachment_id' => 'taxonomies#attachment_update'
   post 'taxonomies/:id/attachment_create' => 'taxonomies#attachment_create'
+  post 'taxonomies/multiple_destroy' => 'taxonomies#multiple_destroy', as: 'taxonomies_multiple_destroy'
 
   namespace :calendars do
     resources :calendars do
