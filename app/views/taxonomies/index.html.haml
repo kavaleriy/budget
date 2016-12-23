@@ -1,4 +1,23 @@
 :scss
+  table{
+    .multiple-delete{
+      .btn-group{
+         border: 0;
+         padding: 0;
+        .dropdown-toggle, .dropdown-menu{
+          border-radius: 0;
+        }
+        .dropdown-toggle{
+          padding: 0 3px;
+        }
+        .dropdown-menu{
+          %li#multiple-delete{
+            //display: none;
+          }
+        }
+      }
+    }
+  }
   .paginator {
     text-align: center;
   }
@@ -14,12 +33,15 @@
 %table.table.table-striped
   %thead
     %tr
-      %th#multiple-delete
-        -#= link_to t('form.destroy', default: t("helpers.links.destroy")),
-                  taxonomies_multiple_destroy_path, method: :get, remote: true,
-                  data: { confirm: t('form.confirm', default: t("helpers.links.confirm", default: 'Ви впевнені?')) }
-
-        = t('helpers.links.destroy')
+      %th.multiple-delete
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+            %span.glyphicon.glyphicon-ok
+          %ul.dropdown-menu{:role => "menu"}
+            %li#select-all
+              %a{:href => "#"} Select all
+            %li#multiple-delete
+              %a{:href => "#"} Delete
       %th
         = t('key')
       %th
@@ -44,8 +66,52 @@
 
   $(document).ready(function(){
 
+    function drop_taxonomies(){
+      var result1 = $('input[type="checkbox"]:checked');
+
+      // console.log("***" + result.length);// -----*******************************
+      return result1;
+    }
+
+    $('.multiple-delete').click(function(){
+      // console.log("12222");// -----*******************************
+      // console.log(drop_taxonomies().length);// -----*******************************
+      if (drop_taxonomies().length > 0){
+        $('#multiple-delete').show();
+      } else{
+        $('#multiple-delete').hide();
+      }
+    })
+
+
+    function all_checkbox(){
+      result2 = $('input[type="checkbox"]');
+      // console.log(result) // -----*******************************
+      return result2;
+    }
+
+    function all_checked(on_off){
+      var result3 = all_checkbox();
+      // console.log(result); // -----*******************************
+      // console.log(result3[0].value); // -----*******************************
+      // console.log(result3[0]); // ---
+      result3.each(function(){
+        $(this).attr('checked', on_off);
+      });
+    }
+
+    $('#select-all').on('click', function() {
+      $(this).toggleClass('check');
+      if($(this).hasClass('check')){
+        // console.log("jhh" + $(this).hasClass('check')); // -----*******************************
+        all_checked(true);
+      } else{
+        all_checked(false);
+        // console.log("jhh" + $(this).hasClass('check')); // -----*******************************
+      }
+    })
+
     $('#multiple-delete').click(function(){
-      // var that = $(this);
       dataConfirmModal.confirm({
         // title: I18n.t('.are_you_sure'),
         text: I18n.t('helpers.links.confirm'),
@@ -54,7 +120,7 @@
         zIindex: 10099,
 
         onConfirm: function() {
-          var result = $('input[type="checkbox"]:checked');
+          var result = drop_taxonomies();
           var arr = [];
 
           result.each(function(){
@@ -62,11 +128,11 @@
             arr.push(id);
           })
 
-          console.log(arr)
+          // console.log(arr) // -----*******************************
           $.ajax({
             type: "POST",
             url: "#{taxonomies_multiple_destroy_path}",
-            data: { ids: JSON.stringify(arr) },
+            data: { ids: arr },
             success: function() { alert("Success!"); }
           });
         },

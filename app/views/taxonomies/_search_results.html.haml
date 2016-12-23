@@ -1,10 +1,9 @@
 - taxonomies.each do |taxonomy|
   %tr{'data-id' => taxonomy.id}
-    %th= check_box_tag '', taxonomy.id, false, class: 'delete_multiple_checkbox', name: 'taxonomy'
+    %td= check_box_tag '', taxonomy.id, false, class: 'delete_multiple_checkbox', name: 'taxonomy'
     %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
     %td
       = link_to taxonomy.title, taxonomy
-    -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
     %td= taxonomy.get_author
     %td
       = taxonomy.town.title if taxonomy.town

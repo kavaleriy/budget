@@ -100,16 +100,10 @@ class TaxonomiesController < ApplicationController
   end
 
   def multiple_destroy
-    taxonomies_ids = JSON.parse(params[:ids])
-    @taxonomies = Taxonomy.where(:id.in => taxonomies_ids).destroy_all
-
-    # binding.pry
+    taxonomies_ids = params[:ids]
+    Taxonomy.where(:id.in => taxonomies_ids).destroy_all
 
     redirect_to :back
-    # respond_to do |format|
-    #   format.js
-    #   format.json { head :no_content }
-    # end
   end
 
   def destroy
