@@ -58,16 +58,17 @@
   %thead
     %tr
       %th.multiple-delete
-        .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: 'Видалення'}
+        .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy')}
           %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
             %span.glyphicon.glyphicon-ok
           %ul.dropdown-menu{:role => "menu"}
             %li#select-all
               %label{:for => "taxonomy_all"}
                 %input#taxonomy_all{:type => 'checkbox', name: 'taxonomy_all'}
-                Select all
+                = t('.multiple_delete.all')
             %li#multiple-delete
-              %a{:href => "#"} Delete
+              %a{:href => "#"}
+                = t('destroy')
       %th
         = t('key')
       %th
@@ -92,6 +93,7 @@
   $(document).ready(function(){
 
     function selected_taxonomies(){
+      // Get selected taxonomies
       var result = $('#search_results input[name="taxonomy"]:checked');
       var arr = [];
 
@@ -104,6 +106,7 @@
     }
 
     $('.multiple-delete').click(function(){
+      // Hide/Show button for delete selected taxonomies
       if (selected_taxonomies().length > 0){
         $('#multiple-delete').show();
       } else{
@@ -112,6 +115,7 @@
     })
 
     $('#taxonomy_all').click(function(){
+      // On/Off select all taxonomies
       var status = $(this).is(':checked');
       checkboxes = $('#search_results input[name="taxonomy"]');
 
@@ -121,6 +125,7 @@
     });
 
     $('#multiple-delete').click(function(){
+      // Delete selected taxonomies with confirm modal window
       dataConfirmModal.confirm({
         text: I18n.t('helpers.links.confirm'),
         zIindex: 10099,
@@ -133,7 +138,7 @@
             type: "POST",
             url: "#{taxonomies_multiple_destroy_path}",
             data: { ids: arr },
-            success: function() { alert("Success!"); }
+            success: function() { alert("#{t('success_destroy')}"); }
           });
         },
       });
