@@ -1,6 +1,22 @@
 :scss
+  // init colors
+  $yellow: #ffd304;
+  $black: black;
+  $on-hover: #f5f5f5;
+
   table{
     .multiple-delete{
+      .tooltip {
+        font-weight: normal;
+        .tooltip-arrow {
+          border-bottom-color: $yellow;
+        }
+        .tooltip-inner {
+          background-color: $yellow;
+          color: $black;
+          font-size: 14px;
+        }
+      }
       .btn-group{
          border: 0;
          padding: 0;
@@ -11,8 +27,16 @@
           padding: 0 3px;
         }
         .dropdown-menu{
-          %li#multiple-delete{
-            //display: none;
+          li#select-all{
+            label{
+              display: block;
+              padding: 3px;
+              margim: 0;
+              font-weight: normal;
+              &:hover{
+                background-color: $on-hover;
+              }
+            }
           }
         }
       }
@@ -34,12 +58,14 @@
   %thead
     %tr
       %th.multiple-delete
-        .btn-group
+        .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: 'Видалення'}
           %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
             %span.glyphicon.glyphicon-ok
           %ul.dropdown-menu{:role => "menu"}
             %li#select-all
-              %a{:href => "#"} Select all
+              %label{:for => "taxonomy_all"}
+                %input#taxonomy_all{:type => 'checkbox', name: 'taxonomy_all'}
+                Select all
             %li#multiple-delete
               %a{:href => "#"} Delete
       %th
@@ -63,72 +89,46 @@
   = paginate @taxonomies
 
 :javascript
-
   $(document).ready(function(){
 
-    function drop_taxonomies(){
-      var result1 = $('input[type="checkbox"]:checked');
+    function selected_taxonomies(){
+      var result = $('#search_results input[name="taxonomy"]:checked');
+      var arr = [];
 
-      // console.log("***" + result.length);// -----*******************************
-      return result1;
+      result.each(function(){
+        id = $(this).val();
+        arr.push(id);
+      })
+
+      return arr;
     }
 
     $('.multiple-delete').click(function(){
-      // console.log("12222");// -----*******************************
-      // console.log(drop_taxonomies().length);// -----*******************************
-      if (drop_taxonomies().length > 0){
+      if (selected_taxonomies().length > 0){
         $('#multiple-delete').show();
       } else{
         $('#multiple-delete').hide();
       }
     })
 
+    $('#taxonomy_all').click(function(){
+      var status = $(this).is(':checked');
+      checkboxes = $('#search_results input[name="taxonomy"]');
 
-    function all_checkbox(){
-      result2 = $('input[type="checkbox"]');
-      // console.log(result) // -----*******************************
-      return result2;
-    }
-
-    function all_checked(on_off){
-      var result3 = all_checkbox();
-      // console.log(result); // -----*******************************
-      // console.log(result3[0].value); // -----*******************************
-      // console.log(result3[0]); // ---
-      result3.each(function(){
-        $(this).attr('checked', on_off);
-      });
-    }
-
-    $('#select-all').on('click', function() {
-      $(this).toggleClass('check');
-      if($(this).hasClass('check')){
-        // console.log("jhh" + $(this).hasClass('check')); // -----*******************************
-        all_checked(true);
-      } else{
-        all_checked(false);
-        // console.log("jhh" + $(this).hasClass('check')); // -----*******************************
+      for(var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = status;
       }
-    })
+    });
 
     $('#multiple-delete').click(function(){
       dataConfirmModal.confirm({
-        // title: I18n.t('.are_you_sure'),
         text: I18n.t('helpers.links.confirm'),
-        // commit: I18n.t('yes'),
-        // cancel: I18n.t('no'),
         zIindex: 10099,
 
         onConfirm: function() {
-          var result = drop_taxonomies();
-          var arr = [];
+          var arr = selected_taxonomies();
 
-          result.each(function(){
-            id = $(this).val();
-            arr.push(id);
-          })
-
-          // console.log(arr) // -----*******************************
+          console.log(arr) // -----*******************************
           $.ajax({
             type: "POST",
             url: "#{taxonomies_multiple_destroy_path}",
@@ -136,7 +136,14 @@
             success: function() { alert("Success!"); }
           });
         },
-
       });
-    })
+    });
+
   })
+
+:javascript
+  $(document).ready(function() {
+    $('.multiple-delete .btn-group').tooltip({
+      trigger: 'hover'
+    });
+  });
