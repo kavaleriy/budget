@@ -72,15 +72,15 @@
       %th
         = t('key')
       %th
-        = t('title')
+        = sortable 'title', t('title')
       %th
         = t('author')
       %th
-        = t('owner')
+        = sortable 'town_id', t('owner')
       %th
-        = t('.created_at')
+        = sortable 'created_at', t('.created_at')
       %th
-        = t('.active')
+        = sortable 'active', t('.active')
       %th
         =t 'form.actions', :default => t("helpers.actions")
   %tbody#taxonomies_list#search_results

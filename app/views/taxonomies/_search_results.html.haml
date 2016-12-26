@@ -2,14 +2,11 @@
   %tr{'data-id' => taxonomy.id}
     %td= check_box_tag '', taxonomy.id, false, class: 'delete_multiple_checkbox', name: 'taxonomy'
     %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
-    %td
-      = link_to taxonomy.title, taxonomy
+    %td= link_to taxonomy.title, taxonomy
     %td= taxonomy.get_author
-    %td
-      = taxonomy.town.title if taxonomy.town
+    %td= taxonomy.town.title if taxonomy.town
     %td= get_created_at(taxonomy.created_at)
-    %td
-      = get_active_icon(taxonomy.active)
+    %td= get_active_icon(taxonomy.active)
     -#= check_box_tag(:active, taxonomy.id, taxonomy.active || !taxonomy.active.nil? ? true : false, disabled: true)
     %td
       = link_to t('recipients'), recipients_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'

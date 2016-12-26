@@ -106,7 +106,7 @@
                 end
               else
                 self.where(:owner => '')
-              end.order_by(:owner.asc)
+              end
 
       files
     end
