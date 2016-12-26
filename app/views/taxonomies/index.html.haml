@@ -133,7 +133,6 @@
         onConfirm: function() {
           var arr = selected_taxonomies();
 
-          console.log(arr) // -----*******************************
           $.ajax({
             type: "POST",
             url: "#{taxonomies_multiple_destroy_path}",
