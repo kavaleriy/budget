@@ -49,7 +49,6 @@ class TaxonomiesController < ApplicationController
   # end
 
   def index
-    # @taxonomies = Taxonomy.order(sort_column + " " + sort_direction).visible_to(current_user)
     @taxonomies = Taxonomy.visible_to(current_user)
 
     @taxonomies = @taxonomies.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
