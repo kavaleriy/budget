@@ -103,8 +103,7 @@ class TaxonomiesController < ApplicationController
   end
 
   def multiple_destroy
-    taxonomies_ids = params[:ids]
-    Taxonomy.where(:id.in => taxonomies_ids).destroy_all
+    Taxonomy.get_by_ids(params[:ids]).destroy_all
 
     redirect_to :back
   end
