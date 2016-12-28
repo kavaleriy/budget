@@ -1,0 +1,14 @@
+- taxonomies.each do |taxonomy|
+  %tr{'data-id' => taxonomy.id}
+    %td= check_box_tag '', taxonomy.id, false, class: 'delete_multiple_checkbox', name: 'taxonomy'
+    %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
+    %td= link_to taxonomy.title, taxonomy
+    %td= taxonomy.get_author
+    %td= taxonomy.town.title if taxonomy.town
+    %td= get_created_at(taxonomy.created_at)
+    %td= get_active_icon(taxonomy.active)
+    -#= check_box_tag(:active, taxonomy.id, taxonomy.active || !taxonomy.active.nil? ? true : false, disabled: true)
+    %td
+      = link_to t('recipients'), recipients_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
+      = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
+      = link_to t('form.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :remote => true, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'

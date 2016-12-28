@@ -23,11 +23,9 @@ class BudgetFilesController < ApplicationController
   def index
     @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user)
 
-    @budget_files = @budget_files.where(:data_type => params['data_type'].to_sym).page(params[:page]) unless
-        params["data_type"].blank?
-    unless params["q"].blank?
-      @budget_files = @budget_files.where(:title => /.*#{params['q']}.*/)
-    end
+    @budget_files = @budget_files.where(data_type: params['data_type'].to_sym) unless params["data_type"].blank?
+
+    @budget_files = @budget_files.where(title: /.*#{params['q']}.*/)           unless params["q"].blank?
 
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
     file_owners = Taxonomy.where(:id.in => taxonomy_ids)

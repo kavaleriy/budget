@@ -1,5 +1,6 @@
 class TaxonomiesController < ApplicationController
   layout 'application_admin'
+  helper_method :sort_column, :sort_direction
 
   before_action :set_taxonomy, only: [:update, :show, :show_modify, :edit, :destroy, :recipients, :recipient_by_code]
   before_action :set_params, only: [:show_modify]
@@ -48,7 +49,22 @@ class TaxonomiesController < ApplicationController
   # end
 
   def index
-    @taxonomies = Taxonomy.visible_to(current_user).page(params[:page])
+    @taxonomies = Taxonomy.visible_to(current_user)
+
+    @taxonomies = @taxonomies.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
+
+    @taxonomies = @taxonomies.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+
+    @taxonomies = @taxonomies.where(:_type => params['taxonomy_type'].to_sym)      unless params["taxonomy_type"].blank?
+
+    @taxonomies = @taxonomies.order(sort_column + " " + sort_direction)
+
+    @taxonomies = @taxonomies.page(params[:page])
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   def show
@@ -84,6 +100,12 @@ class TaxonomiesController < ApplicationController
         format.json { render json: @taxonomy.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def multiple_destroy
+    Taxonomy.get_by_ids(params[:ids]).destroy_all
+
+    redirect_to :back
   end
 
   def destroy
@@ -171,6 +193,14 @@ class TaxonomiesController < ApplicationController
   def set_attachments
     @taxonomy = Taxonomy.find(params[:id]) unless @taxonomy
     @attachments = @taxonomy.taxonomy_attachments
+  end
+
+  def sort_column
+    Taxonomy.fields.keys.include?(params[:sort]) ? params[:sort] : "created_at"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
 
   def taxonomy_params

@@ -9,6 +9,7 @@
     scope :get_active, -> { where(active: true ) }
     # select taxonomies by town id
     scope :by_town_id, lambda { |town_id| where(:town_id => town_id) }
+    scope :get_by_ids, lambda { |ids| where(:id.in => ids) }
 
     before_save :generate_title
 
@@ -106,7 +107,7 @@
                 end
               else
                 self.where(:owner => '')
-              end.order_by(:owner.asc)
+              end
 
       files
     end

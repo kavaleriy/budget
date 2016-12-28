@@ -116,7 +116,7 @@
   = simple_form_for(@export_budget) do |f|
     = f.input :year, label: t('.year'),as: :string,input_html: { class: "datepicker" }
     = f.input :title, label: t('.title')
-    = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id }
+    = f.input :town,label: t('.town_name'),input_html: {data_admin: current_user.is_admin?, value: @export_budget.town.id}
     = f.simple_fields_for :pages,:defaults => { :input_html => { :class => "summernote_input" } } do |ff|
       =render partial: 'page_form',locals: {f: ff,key: :title_page,value: @export_budget.pages[:title_page],index: '',add_page: false}
       =render partial: 'page_form',locals: {f: ff,key: :content_page,value: @export_budget.pages[:content_page],index: '',add_page: false}
@@ -204,8 +204,9 @@
       set_year_in_title_page($(this).val());
     });
     var send_ajax = function(number,page_id){
+      town_id = $('#export_budget_town').val();
       $.ajax({
-        url: "#{widgets_visualisation_list_path(current_user)}",
+        url: "/widgets/user/widgets/visualisation_list/" + town_id + "?locale=" + I18n.locale,
         dataType:'script',
         data: { data_number: number,
                 page_id: page_id  }
@@ -300,8 +301,10 @@
     });
 
     init_town_select2_with_field_id('#export_budget_town',"#{search_for_towns_town_path}");
+    //show selected town
+    $('#select2-chosen-1').html("#{@export_budget.town.title}")  // in select
     $('#export_budget_town').on('change',function(){
-      set_town_in_title_page($(this).select2('data').text);
+      set_town_in_title_page($(this).select2('data').text);      // in Title page
     });
 
     $('body').on('click','.add-btn',function(){

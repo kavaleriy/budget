@@ -240,7 +240,7 @@ Rails.application.routes.draw do
   resources :users , only: [:index, :show, :edit, :update, :destroy]
 
   namespace :widgets do
-    get 'user/widgets/visualisation_list/:user_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
+    get 'user/widgets/visualisation_list/:town_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
 
 
     get 'visify/visify/:file_id' => 'visify#visify'
@@ -342,6 +342,7 @@ Rails.application.routes.draw do
   delete 'taxonomies/attachment_destroy/:attachment_id' => 'taxonomies#attachment_destroy'
   put 'taxonomies/attachment_update/:attachment_id' => 'taxonomies#attachment_update'
   post 'taxonomies/:id/attachment_create' => 'taxonomies#attachment_create'
+  post 'taxonomies/multiple_destroy' => 'taxonomies#multiple_destroy', as: 'taxonomies_multiple_destroy'
 
   namespace :calendars do
     resources :calendars do

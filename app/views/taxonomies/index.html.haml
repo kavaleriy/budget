@@ -1,4 +1,47 @@
 :scss
+  // init colors
+  $yellow: #ffd304;
+  $black: black;
+  $on-hover: #f5f5f5;
+
+  table{
+    .multiple-delete{
+      .tooltip {
+        font-weight: normal;
+        .tooltip-arrow {
+          border-bottom-color: $yellow;
+        }
+        .tooltip-inner {
+          background-color: $yellow;
+          color: $black;
+          font-size: 14px;
+        }
+      }
+      .btn-group{
+         border: 0;
+         padding: 0;
+        .dropdown-toggle, .dropdown-menu{
+          border-radius: 0;
+        }
+        .dropdown-toggle{
+          padding: 0 3px;
+        }
+        .dropdown-menu{
+          li#select-all{
+            label{
+              display: block;
+              padding: 3px;
+              margim: 0;
+              font-weight: normal;
+              &:hover{
+                background-color: $on-hover;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .paginator {
     text-align: center;
   }
@@ -9,39 +52,102 @@
     %i.fa.fa-money
     #{t('.title')}
 
+.col-xs-12.documents_search
+  = render partial: 'search'
 %table.table.table-striped
   %thead
     %tr
+      %th.multiple-delete
+        .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy')}
+          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+            %span.glyphicon.glyphicon-ok
+          %ul.dropdown-menu{:role => "menu"}
+            %li#select-all
+              %label{:for => "taxonomy_all"}
+                %input#taxonomy_all{:type => 'checkbox', name: 'taxonomy_all'}
+                = t('.multiple_delete.all')
+            %li#multiple-delete
+              %a{:href => "#"}
+                = t('destroy')
       %th
         = t('key')
       %th
-        = t('title')
+        = sortable 'title', t('title')
       %th
         = t('author')
       %th
-        = t('owner')
+        = sortable 'town_id', t('owner')
       %th
-        = t('.created_at')
+        = sortable 'created_at', t('.created_at')
       %th
-        = t('.active')
+        = sortable 'active', t('.active')
       %th
         =t 'form.actions', :default => t("helpers.actions")
-  %tbody#taxonomies_list
-    - @taxonomies.each do |taxonomy|
-      %tr{'data-id' => taxonomy.id}
-        %td= link_to "#{taxonomy.id} (#{taxonomy.class})", taxonomy_path(taxonomy)
-        %td
-          = link_to taxonomy.title, taxonomy
-          -#= " - #{budget_file.owner_email}" if current_user and current_user.has_role? :admin and budget_file.owner_email
-        %td= taxonomy.get_author
-        %td= taxonomy.owner
-        %td= get_created_at(taxonomy.created_at)
-        %td
-          = get_active_icon(taxonomy.active)
-          -#= check_box_tag(:active, taxonomy.id, taxonomy.active || !taxonomy.active.nil? ? true : false, disabled: true)
-        %td
-          = link_to t('recipients'), recipients_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
-          = link_to t('form.edit', :default => t("helpers.links.edit")), edit_taxonomy_path(taxonomy), :class => 'btn btn-default btn-xs'
-          = link_to t('form.destroy', :default => t("helpers.links.destroy")), taxonomy_path(taxonomy), :method => :delete, :remote => true, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Ви впевнені?')) }, :class => 'btn btn-xs btn-danger'
+  %tbody#taxonomies_list#search_results
+    = render partial: 'search_results', locals: {taxonomies: @taxonomies}
+
 .paginator
   = paginate @taxonomies
+
+:javascript
+  $(document).ready(function(){
+
+    function selected_taxonomies(){
+      // Get selected taxonomies
+      var result = $('#search_results input[name="taxonomy"]:checked');
+      var arr = [];
+
+      result.each(function(){
+        id = $(this).val();
+        arr.push(id);
+      })
+
+      return arr;
+    }
+
+    $('.multiple-delete').click(function(){
+      // Hide/Show button for delete selected taxonomies
+      if (selected_taxonomies().length > 0){
+        $('#multiple-delete').show();
+      } else{
+        $('#multiple-delete').hide();
+      }
+    })
+
+    $('#taxonomy_all').click(function(){
+      // On/Off select all taxonomies
+      var status = $(this).is(':checked');
+      checkboxes = $('#search_results input[name="taxonomy"]');
+
+      for(var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = status;
+      }
+    });
+
+    $('#multiple-delete').click(function(){
+      // Delete selected taxonomies with confirm modal window
+      dataConfirmModal.confirm({
+        text: I18n.t('helpers.links.confirm'),
+        zIindex: 10099,
+
+        onConfirm: function() {
+          var arr = selected_taxonomies();
+
+          $.ajax({
+            type: "POST",
+            url: "#{taxonomies_multiple_destroy_path}",
+            data: { ids: arr },
+            success: function() { alert("#{t('success_destroy')}"); }
+          });
+        },
+      });
+    });
+
+  })
+
+:javascript
+  $(document).ready(function() {
+    $('.multiple-delete .btn-group').tooltip({
+      trigger: 'hover'
+    });
+  });
