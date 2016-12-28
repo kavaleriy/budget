@@ -1,4 +1,16 @@
 :scss
+  // init colors
+  $yellow: #ffd304;
+  $dark-blue: #0c2231;
+  $black: #000000;
+
+  /* ===== Styles for select2 ===== */
+  .select2-drop{
+      border-radius: 0;
+  }
+  .select2-drop-active{
+    border: 1px solid $black;
+  }
   /* ===== Main section. Begin ===== */
   .main-section {
     margin-top: -73px;
@@ -67,7 +79,7 @@
           width: 88px;
           height: 88px;
           border-radius: 50%;
-          border: 1px solid #0c2231;
+          border: 1px solid $dark-blue;
         }
         .pig-block .pig-icon .pig,
         .list-block .list-icon .list,
@@ -125,7 +137,7 @@
         .sankey-block .sankey-icon .vertical-line {
           width: 100%;
           height: 250px;
-          border-left: 2px solid #0c2231;
+          border-left: 2px solid $dark-blue;
           position: relative;
           left: 50%;
           opacity: .5;
@@ -149,8 +161,8 @@
         .folders-block .folders-icon a.icon-tooltip + .tooltip > .tooltip-inner,
         .edata-block .edata-icon a.icon-tooltip + .tooltip > .tooltip-inner,
         .sankey-block .sankey-icon a.icon-tooltip + .tooltip > .tooltip-inner {
-          background-color: #ffd304;
-          color: #000000;
+          background-color: $yellow;
+          color: $black;
           text-transform: uppercase;
           border-radius: 0;
           font-weight: 800;
@@ -197,7 +209,7 @@
               font-weight: 400;
               text-transform: uppercase;
               text-align: center;
-              background: #ffd304;
+              background: $yellow;
               margin: 0;
             }
           }
@@ -208,7 +220,7 @@
             height: 155px;
             border-radius: 50%;
             margin: 0 15px 10px;
-            background: #ffd304;
+            background: $yellow;
             > img {
               margin: 10% 14% 18%;
               width: 72%;
@@ -217,7 +229,7 @@
           }
           &:hover .icon,
           &:focus .icon {
-            border: 2px solid #0c2231;
+            border: 2px solid $dark-blue;
           }
         }
       }
@@ -227,7 +239,7 @@
           padding: 0;
           width: 100%;
           height: auto;
-          background: #ffd304;
+          background: $yellow;
           > p {
             font-family: 'Lato', sans-serif;
             font-size: 43px;
@@ -247,28 +259,42 @@
             margin: 0;
           }
         }
-        .button {
-          border: 1px solid black;
+        .button-search-town {
           padding: 2px;
           width: 300px;
           height: 70px;
           float: right;
-          background: #000000;
+          .select2-dropdown-open .select2-choice{
+            box-shadow: none;
+          }
           .select2-container{
             height: 100%;
-            a{
+            &:focus{
+              outline: none;
+            }
+            a.select2-choice{
               height: 100%;
+              color: $yellow !important;
+              background: $black;
+              border-radius: 0;
+              border: 1px solid $black;
+              &:focus{
+                outline: none;
+              }
               #select2-chosen-1.select2-chosen{
                 padding-top: 15px;
                 height: 100%;
-
                 font-size: 55px;
               }
               span.select2-arrow{
                 width: 65px;
+                border-radius: 0;
+                border-color: $yellow;
+                background: $yellow;
+                color: $black;
                 &:before{
                   right: 5px;
-                  top: 15px;
+                  top: 17px;
                   font-size: 50px;
                   font-family: FontAwesome;
                   content: "\f002";
@@ -283,29 +309,6 @@
               }
             }
           }
-          //.try {
-          //  .button-text {
-          //    display: inline-block;
-          //    text-transform: uppercase;
-          //    font-family: 'Lato', sans-serif;
-          //    font-size: 40px;
-          //    margin: 2px 0 2px 10px;
-          //    vertical-align: middle;
-          //    color: #ffd304;
-          //  }
-          //  .icon-block {
-          //    display: inline-block;
-          //    width: 20%;
-          //    height: 100%;
-          //    float: right;
-          //    background: #ffd304;
-          //    > i {
-          //      font-size: 60px;
-          //      margin: 0 12px;
-          //      color: black;
-          //    }
-          //  }
-          //}
         }
       }
     }
@@ -927,22 +930,8 @@
       .col-xs-12.text
         %p
           =t('new_design.home_page.text_preamble')
-      .col-xs-12.button
-        = text_field_tag 'active_town_select', '', placeholder: 'Пошук'
-
-      -#.col-xs-12.button
-        - if @test_town
-          = link_to public_path(@test_town), class: 'try' do
-            %p.button-text
-              = t('new_design.home_page.button_try')
-            .icon-block
-              %i.fa.fa-search{"aria-hidden" => "true"}
-        - else
-          = link_to '#', class: 'try' do
-            %p.button-text
-              = t('new_design.home_page.button_soon')
-            .icon-block
-              %i.fa.fa-arrow-right{"aria-hidden" => "true"}
+      .col-xs-12.button-search-town
+        = text_field_tag 'active_town_select', '', placeholder: t('form.search')
 
 :javascript
   $(document).ready(function(){
@@ -963,6 +952,7 @@
       $(this).tooltip('toggle');
     });
 
+    // search and go to town
     init_town_select2_with_field_id('#active_town_select',"#{search_for_active_towns_path}")
     $('#active_town_select').on('change',function(){
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
