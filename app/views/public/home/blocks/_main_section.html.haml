@@ -261,7 +261,7 @@
         }
         .button-search-town {
           padding: 2px;
-          width: 300px;
+          width: 330px;
           height: 70px;
           float: right;
           .select2-dropdown-open .select2-choice{
@@ -282,18 +282,18 @@
                 outline: none;
               }
               #select2-chosen-1.select2-chosen{
-                padding-top: 15px;
+                padding-top: 20px;
                 height: 100%;
-                font-size: 55px;
+                font-size: 40px;
               }
               span.select2-arrow{
-                width: 65px;
+                width: 67px;
                 border-radius: 0;
-                border-color: $yellow;
                 background: $yellow;
+                border: 2px solid $black;
                 color: $black;
                 &:before{
-                  right: 5px;
+                  right: 3px;
                   top: 17px;
                   font-size: 50px;
                   font-family: FontAwesome;
@@ -931,7 +931,7 @@
         %p
           =t('new_design.home_page.text_preamble')
       .col-xs-12.button-search-town
-        = text_field_tag 'active_town_select', '', placeholder: t('form.search')
+        = text_field_tag 'active_town_select', '', placeholder: t('public.towns.show.choose_town')
 
 :javascript
   $(document).ready(function(){
