@@ -5,8 +5,33 @@
   $black: #000000;
 
   /* ===== Styles for select2 ===== */
+  .select2-dropdown-bellow{
+    top: -30px;
+  }
   .select2-drop{
+      top: -30px;
       border-radius: 0;
+      background: $yellow;
+      .select2-search{
+        input{
+          border: 1px solid $black;
+          background: $yellow;
+        }
+      }
+      .select2-results{
+        margin: 2px 4px 2px 0px;
+        .select2-no-results{
+          height: 0px;
+          background: $yellow;
+        }
+        .select2-searching{
+          background: $yellow;
+        }
+        .select2-highlighted{
+          background: $black;
+          color: $yellow;
+        }
+      }
   }
   .select2-drop-active{
     border: 1px solid $black;
@@ -957,5 +982,8 @@
     $('#active_town_select').on('change',function(){
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
-    
+
+    // $('#active_town_select').on("select2-opening", function(){
+    //   console.log("=k=k=k=");
+    // })
   });
