@@ -6,31 +6,60 @@
 
   /* ===== Styles for select2 ===== */
   .select2-drop{
-      border-radius: 0;
-      background: $yellow;
-      .select2-search{
-        input{
-          border: 1px solid $black;
-          background: $yellow;
-        }
+    margin-top: -11px;
+    padding: 0;
+    border-radius: 0;
+    background: $yellow;
+    .select2-search{
+      padding: 0;
+      outline: 2px solid $black;
+      input{
+        min-height: 67px !important;
+        padding: 4px 70px 4px 5px;
+        border: 1px solid $black;
+        background: $black;
+        color: $yellow;
+        font-size: 2.8em;
       }
-      .select2-results{
-        margin: 2px 4px 2px 0px;
-        .select2-no-results{
-          height: 0px;
-          background: $yellow;
-        }
-        .select2-searching{
-          background: $yellow;
-        }
-        .select2-highlighted{
-          background: $black;
-          color: $yellow;
-        }
+      &:before{
+        display: inline-block;
+        position: absolute;
+        right: -2px;
+        top: -2px;
+        width: 68px;
+        height: 70px;
+        content: "\f002";
+        text-align: center;
+        background: $yellow;
+        color: $black;
+        box-shadow: inset 0px 0px 0px 2px $black;
+        font-size: 50px;
+        font-family: FontAwesome;
       }
+    }
+    .select2-results{
+      margin: 0 4px 0 0px;
+      .select2-result:nth-child(1){
+        margin-top: 6px;
+      }
+      .select2-result:nth-last-child(1){
+        margin-bottom: 4px;
+      }
+      .select2-no-results{
+        height: 0px;
+        background: $yellow;
+      }
+      .select2-searching{
+        background: $yellow;
+      }
+      .select2-highlighted{
+        background: $black;
+        color: $yellow;
+      }
+    }
   }
   .select2-drop-active{
-    border: 1px solid $black;
+    border: 2px solid $black;
   }
   /* ===== Main section. Begin ===== */
   .main-section {
@@ -283,7 +312,7 @@
         .button-search-town {
           padding: 2px;
           width: 330px;
-          height: 70px;
+          height: 74px;
           float: right;
           .select2-dropdown-open .select2-choice{
             box-shadow: none;
@@ -303,7 +332,7 @@
                 outline: none;
               }
               #select2-chosen-1.select2-chosen{
-                padding-top: 20px;
+                padding-top: 24px;
                 height: 100%;
                 font-size: 40px;
               }
@@ -314,8 +343,8 @@
                 border: 2px solid $black;
                 color: $black;
                 &:before{
-                  right: 3px;
-                  top: 17px;
+                  right: 5px;
+                  top: 21px;
                   font-size: 50px;
                   font-family: FontAwesome;
                   content: "\f002";
@@ -979,4 +1008,19 @@
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
 
+    // restructure find town btn
+    $('#active_town_select').on("select2-opening", function(){
+      console.log("=k=k=k=");
+      $('.button-search-town').height(0);
+      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '0');
+      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('border', 'none');
+      // $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '0');
+    })
+
+    $('#active_town_select').on("select2-close", function(){
+      console.log("=k=k=j=");
+      $('.button-search-town').height(70);
+      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('border', 'border: 1px solid black');
+      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '100%');
+    })
   });
