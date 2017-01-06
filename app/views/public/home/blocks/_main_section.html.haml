@@ -3,19 +3,21 @@
   $yellow: #ffd304;
   $dark-blue: #0c2231;
   $black: #000000;
+  $icon-size: 70px;
 
   /* ===== Styles for select2 ===== */
   .select2-drop{
-    margin-top: -11px;
+    margin-top: -$icon-size;
     padding: 0;
     border-radius: 0;
+    box-shadow: none;
     background: $yellow;
     .select2-search{
       padding: 0;
       outline: 2px solid $black;
       input{
-        min-height: 67px !important;
-        padding: 4px 70px 4px 5px;
+        min-height: 66px !important;
+        padding: 4px $icon-size 4px 5px;
         border: 1px solid $black;
         background: $black;
         color: $yellow;
@@ -26,13 +28,13 @@
         position: absolute;
         right: -2px;
         top: -2px;
-        width: 68px;
-        height: 70px;
+        width: $icon-size;
+        height: $icon-size;
         content: "\f002";
         text-align: center;
         background: $yellow;
         color: $black;
-        box-shadow: inset 0px 0px 0px 2px $black;
+        box-shadow: inset 0px 0px 0px 3px $black;
         font-size: 50px;
         font-family: FontAwesome;
       }
@@ -46,7 +48,7 @@
         margin-bottom: 4px;
       }
       .select2-no-results{
-        height: 0px;
+        height: 0px; // hide help messages
         background: $yellow;
       }
       .select2-searching{
@@ -312,9 +314,9 @@
         .button-search-town {
           padding: 2px;
           width: 330px;
-          height: 74px;
+          height: $icon-size + 4;
           float: right;
-          .select2-dropdown-open .select2-choice{
+          .select2-dropdown-open .select2-choice, .select2-container-active .select2-choice, .select2-container-active .select2-choices{
             box-shadow: none;
           }
           .select2-container{
@@ -337,14 +339,14 @@
                 font-size: 40px;
               }
               span.select2-arrow{
-                width: 67px;
+                width: $icon-size - 2;
                 border-radius: 0;
                 background: $yellow;
                 border: 2px solid $black;
                 color: $black;
                 &:before{
                   right: 5px;
-                  top: 21px;
+                  top: 19px;
                   font-size: 50px;
                   font-family: FontAwesome;
                   content: "\f002";
@@ -354,7 +356,7 @@
                   vertical-align: middle;
                 }
                 b{
-                  display: none;
+                  display: none; // hide icon select2
                 }
               }
             }
@@ -1008,19 +1010,13 @@
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
 
-    // restructure find town btn
+    // Restructure find town btn in select2
     $('#active_town_select').on("select2-opening", function(){
-      console.log("=k=k=k=");
-      $('.button-search-town').height(0);
-      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '0');
-      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('border', 'none');
-      // $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '0');
+      $('.button-search-town').css({visibility: 'hidden'});
     })
 
     $('#active_town_select').on("select2-close", function(){
-      console.log("=k=k=j=");
-      $('.button-search-town').height(70);
-      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('border', 'border: 1px solid black');
-      $('.main-section .titles-blocks .titles .button-search-town .select2-container a.select2-choice').css('height', '100%');
+      $('.button-search-town').css({visibility: 'visible'});
     })
+
   });
