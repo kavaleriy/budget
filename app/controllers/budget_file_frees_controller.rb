@@ -18,8 +18,8 @@ class BudgetFileFreesController < BudgetFilesController
     TaxonomyFree.by_town(current_user.town_model)
   end
 
-  def create_taxonomy n, m    # (n, m) for successful create
-    TaxonomyFree.create!(:owner => @town_title)
+  def create_taxonomy area_id, file_name
+    TaxonomyFree.find_or_create_by!(id: params[:budget_file_taxonomy])
   end
 
 end
