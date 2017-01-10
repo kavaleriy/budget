@@ -11,13 +11,14 @@ class Repairing::Layer
   field :title, type: String
   field :description, type: String
   field :locale, type: String, default: 'uk'
+  field :status, type: String
 
   mount_uploader :repairs_file, RepairingRepairUploader
   skip_callback :update, :before, :store_previous_model_for_repairs_file
 
   has_many :repairs, class_name: 'Repairing::Repair', autosave: true, dependent: :destroy
 
-  validates :town, :owner, :repairing_category, :title, presence: true
+  validates :town, :owner, :repairing_category, :title, :status, presence: true
 
   def self.visible_to user
     files = if user.nil?
