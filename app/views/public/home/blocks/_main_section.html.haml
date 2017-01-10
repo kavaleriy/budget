@@ -3,34 +3,65 @@
   $yellow: #ffd304;
   $dark-blue: #0c2231;
   $black: #000000;
+  $icon-size: 70px;
 
   /* ===== Styles for select2 ===== */
   .select2-drop{
-      border-radius: 0;
-      background: $yellow;
-      .select2-search{
-        input{
-          border: 1px solid $black;
-          background: $yellow;
-        }
+    margin-top: -$icon-size;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: $yellow;
+    .select2-search{
+      padding: 0;
+      outline: 2px solid $black;
+      input{
+        min-height: 66px !important;
+        padding: 4px $icon-size 4px 5px;
+        border: 1px solid $black;
+        background: $black;
+        color: $yellow;
+        font-size: 2.8em;
       }
-      .select2-results{
-        margin: 2px 4px 2px 0px;
-        .select2-no-results{
-          height: 0px;
-          background: $yellow;
-        }
-        .select2-searching{
-          background: $yellow;
-        }
-        .select2-highlighted{
-          background: $black;
-          color: $yellow;
-        }
+      &:before{
+        display: inline-block;
+        position: absolute;
+        right: -2px;
+        top: -2px;
+        width: $icon-size;
+        height: $icon-size;
+        content: "\f002";
+        text-align: center;
+        background: $yellow;
+        color: $black;
+        box-shadow: inset 0px 0px 0px 3px $black;
+        font-size: 50px;
+        font-family: FontAwesome;
       }
+    }
+    .select2-results{
+      margin: 0 4px 0 0px;
+      .select2-result:nth-child(1){
+        margin-top: 6px;
+      }
+      .select2-result:nth-last-child(1){
+        margin-bottom: 4px;
+      }
+      .select2-no-results{
+        height: 0px; // hide help messages
+        background: $yellow;
+      }
+      .select2-searching{
+        background: $yellow;
+      }
+      .select2-highlighted{
+        background: $black;
+        color: $yellow;
+      }
+    }
   }
   .select2-drop-active{
-    border: 1px solid $black;
+    border: 2px solid $black;
   }
   /* ===== Main section. Begin ===== */
   .main-section {
@@ -283,9 +314,9 @@
         .button-search-town {
           padding: 2px;
           width: 330px;
-          height: 70px;
+          height: $icon-size + 4;
           float: right;
-          .select2-dropdown-open .select2-choice{
+          .select2-dropdown-open .select2-choice, .select2-container-active .select2-choice, .select2-container-active .select2-choices{
             box-shadow: none;
           }
           .select2-container{
@@ -303,19 +334,19 @@
                 outline: none;
               }
               #select2-chosen-1.select2-chosen{
-                padding-top: 20px;
+                padding-top: 24px;
                 height: 100%;
                 font-size: 40px;
               }
               span.select2-arrow{
-                width: 67px;
+                width: $icon-size - 2;
                 border-radius: 0;
                 background: $yellow;
                 border: 2px solid $black;
                 color: $black;
                 &:before{
-                  right: 3px;
-                  top: 17px;
+                  right: 5px;
+                  top: 19px;
                   font-size: 50px;
                   font-family: FontAwesome;
                   content: "\f002";
@@ -325,7 +356,7 @@
                   vertical-align: middle;
                 }
                 b{
-                  display: none;
+                  display: none; // hide icon select2
                 }
               }
             }
@@ -978,5 +1009,14 @@
     $('#active_town_select').on('change',function(){
       window.location.replace("#{public_path('ID')}".replace('ID', $(this).select2('data').id));
     });
+
+    // Restructure find town btn in select2
+    $('#active_town_select').on("select2-opening", function(){
+      $('.button-search-town').css({visibility: 'hidden'});
+    })
+
+    $('#active_town_select').on("select2-close", function(){
+      $('.button-search-town').css({visibility: 'visible'});
+    })
 
   });
