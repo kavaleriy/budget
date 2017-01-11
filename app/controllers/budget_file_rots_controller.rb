@@ -24,7 +24,7 @@ class BudgetFileRotsController < BudgetFilesController
 
   def create_taxonomy area_id, file_name
     name = file_name.gsub(/rot\d{5}\.(?<TERRA>\d\d\d).*/i, 'FTxxxxxx.\k<TERRA>.' + area_id)
-    taxonomy = TaxonomyRot.find_or_create_by!(owner: @town_title, name: name)
+    taxonomy = TaxonomyRot.find_or_create_by!(name: name)
 
     get_title = -> () do
       /rot\d{5}\.(?<town_id>\d\d\d).*/i =~ file_name
