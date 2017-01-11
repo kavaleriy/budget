@@ -6,6 +6,11 @@
   $icon-size: 70px;
 
   /* ===== Styles for select2 ===== */
+  .select2-drop.select2-drop-above{
+    //fix show on fullhd
+    margin-top: $icon-size - 2;
+    box-shadow: none;
+  }
   .select2-drop{
     margin-top: -$icon-size;
     padding: 0;
@@ -14,6 +19,7 @@
     background: $yellow;
     .select2-search{
       padding: 0;
+      -moz-outline: 2px solid $black;
       outline: 2px solid $black;
       input{
         min-height: 66px !important;
