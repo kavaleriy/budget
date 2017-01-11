@@ -4,11 +4,12 @@
   $dark-blue: #0c2231;
   $black: #000000;
   $icon-size: 70px;
+  $position-to: $icon-size - 2;
 
   /* ===== Styles for select2 ===== */
   .select2-drop.select2-drop-above{
     //fix show on fullhd
-    margin-top: $icon-size - 2;
+    margin-top: $position-to;
     box-shadow: none;
   }
   .select2-drop{
@@ -319,7 +320,7 @@
         .button-search-town {
           padding: 2px;
           width: 330px;
-          height: $icon-size + 4;
+          height: 74px;
           float: right;
           .select2-dropdown-open .select2-choice, .select2-container-active .select2-choice, .select2-container-active .select2-choices{
             box-shadow: none;
@@ -344,7 +345,7 @@
                 font-size: 40px;
               }
               span.select2-arrow{
-                width: $icon-size - 2;
+                width: 68px;
                 border-radius: 0;
                 background: $yellow;
                 border: 2px solid $black;
