@@ -1,5 +1,7 @@
 class Programs::TargetedProgramsController < ApplicationController
   layout 'application_admin', except: [:show]
+  helper_method :sort_column, :sort_direction
+
   respond_to :html
   before_action :authenticate_user!, only: [:new, :edit]
   before_action :set_target_program, only: [:edit, :show, :update, :lock, :destroy]
@@ -11,6 +13,16 @@ class Programs::TargetedProgramsController < ApplicationController
   def index
     stub_data
     @programs = Programs::TargetedProgram.visible_to(current_user).get_main_programs
+
+    @programs = @programs.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
+    @programs = @programs.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+
+    @programs = @programs.order(sort_column + " " + sort_direction)
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   def new
@@ -113,6 +125,13 @@ class Programs::TargetedProgramsController < ApplicationController
     @year = Date.today.year.to_s
   end
 
+  def sort_column
+    Programs::TargetedProgram.fields.keys.include?(params[:sort]) ? params[:sort] : "updated_at"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+  end
   # Never trust parameters from the scary internet, only allow the white list through.
     def programs_targeted_program_params
       params.require(:programs_targeted_program).permit!

@@ -3,7 +3,7 @@
 
 %tr
   %th.centred
-    = t('.title')
+    = sortable 'title', t('.title')
   %th.centred
     = t('.file')
   %th.numeric.centred
@@ -11,12 +11,12 @@
   %th.numeric.centred
     = t('.fact')
   %th.numeric.centred
-    = t('.date-updated')
+    = sortable 'updated_at', t('.date-updated')
   %th.numeric.centred
-    = t('.town-title')
+    = sortable 'town_id', t('.town-title')
   %th.numeric.centred
-    = t('.author')
+    = sortable 'author_id', t('.author')
   %th.numeric.centred
-    = t('.active')
+    = sortable 'active', t('.active')
   %th.numeric.centred
     = t('.actions')

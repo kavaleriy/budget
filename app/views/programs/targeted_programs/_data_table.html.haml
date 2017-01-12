@@ -116,8 +116,10 @@
 .col-xs-12.data-table
   .row
     #no-more-tables
+      .col-xs-12.documents_search
+        = render partial: 'search'
       %table.col-md-12.table-bordered.table-striped.table-condensed
         %thead
           =render partial: 'data_table_header'
-        %tbody
+        %tbody#search_results
           =render partial: 'data_table_body', locals: { programs: @programs }
