@@ -1,22 +1,22 @@
 .btn-group{'data-toggle' => 'buttons'}
   %label.btn.btn-default.active.level
-    %input{:name => "level", :type => "radio", :value => "ktfk_aaa"}
+    %input{:name => "level", :type => "radio", :value => "ktfk_aaa ktfk kekv"}
     = t('widgets.visify.bubbletree.programmatic')
 
   %label.btn.btn-default.level
-    %input{:name => "level", :type => "radio", :value => "kekv"}
+    %input{:name => "level", :type => "radio", :value => "kekv ktfk_aaa ktfk"}
     = t('widgets.visify.bubbletree.economic')
+
+  %label.btn.btn-default.level
+    %input{:name => "level", :type => "radio", :value => "kvk ktfk_aaa ktfk kekv"}
+    = t('widgets.visify.bubbletree.kvk')
 
 :javascript
 
   $(document).ready(function() {
     // radio buttons to switch level
     $('.level').on("click", function(){
-      level = $(this).children(':first').val();
-      if(level == 'ktfk_aaa') {
-        aTreeChart.get_data(['ktfk_aaa', 'ktfk', 'kekv']);
-      } else if(level == 'kekv') {
-        aTreeChart.get_data(['kekv', 'ktfk_aaa', 'ktfk']);
-      }
+      var levels = $(this).children(':first').val().split(' ');
+      aTreeChart.get_data(levels);
     });
   })
