@@ -1,0 +1,3 @@
+.form-group
+  = t('year')
+  = select_year Date.today, :start_year => 10.years.ago.year, :end_year => Date.today.year, :prefix => "year", :discard_type => true, class: 'form-control'

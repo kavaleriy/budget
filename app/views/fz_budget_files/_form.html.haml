@@ -12,6 +12,8 @@
 
     %hr
 
+    = render partial: 'budget_files/year_select'
+
   .form-group
     = f.file_field :path, multiple: true, label: t('file_path'), class: 'btn btn-default'
 
