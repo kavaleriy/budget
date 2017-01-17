@@ -4,6 +4,8 @@ class BudgetFile
 
   # Get budget files by string in title
   scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+  scope :by_data_type, lambda { |data_type| where(data_type: data_type) }
+  scope :by_taxonomy_ids, lambda { |taxonomy_ids| where(:taxonomy_id.in => taxonomy_ids) }
 
   field :author, type: String
 

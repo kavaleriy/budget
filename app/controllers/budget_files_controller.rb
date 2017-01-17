@@ -23,16 +23,16 @@ class BudgetFilesController < ApplicationController
   def index
     @budget_files = BudgetFile.only(:id, :taxonomy_id, :title, :name, :data_type, :author).visible_to(current_user)
 
-    @budget_files = @budget_files.where(data_type: params['data_type'].to_sym) unless params["data_type"].blank?
+    @budget_files = @budget_files.by_data_type(params['data_type'])   unless params['data_type'].blank?
 
-    @budget_files = @budget_files.find_by_string(params['q'])       unless params['q'].blank?
+    @budget_files = @budget_files.find_by_string(params['q'])         unless params['q'].blank?
 
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
-    file_owners = Taxonomy.where(:id.in => taxonomy_ids)
+    file_owners = Taxonomy.by_ids(taxonomy_ids)
 
-    unless params["town_select"].blank?
-      file_owners = file_owners.where(:town.in => params["town_select"].split(","))
-      @budget_files = @budget_files.where(:taxonomy_id.in => file_owners.pluck(:_id))
+    unless params['town_select'].blank?
+      file_owners = file_owners.by_towns(params['town_select'])
+      @budget_files = @budget_files.by_taxonomy_ids(file_owners.pluck(:_id))
     end
 
     @budget_files = @budget_files.page(params[:page])
