@@ -53,7 +53,7 @@ class TaxonomiesController < ApplicationController
 
     @taxonomies = @taxonomies.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
 
-    @taxonomies = @taxonomies.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+    @taxonomies = @taxonomies.find_by_string(params['q'])       unless params['q'].blank?
 
     @taxonomies = @taxonomies.where(:_type => params['taxonomy_type'].to_sym)      unless params["taxonomy_type"].blank?
 

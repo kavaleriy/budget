@@ -1,6 +1,10 @@
 class BudgetFile
   include Mongoid::Document
 
+
+  # Get budget files by string in title
+  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+
   field :author, type: String
 
   belongs_to :author_model,class_name: 'User'

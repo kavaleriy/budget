@@ -25,7 +25,7 @@ class BudgetFilesController < ApplicationController
 
     @budget_files = @budget_files.where(data_type: params['data_type'].to_sym) unless params["data_type"].blank?
 
-    @budget_files = @budget_files.where(title: /.*#{params['q']}.*/)           unless params["q"].blank?
+    @budget_files = @budget_files.find_by_string(params['q'])       unless params['q'].blank?
 
     taxonomy_ids = @budget_files.pluck(:taxonomy_id)
     file_owners = Taxonomy.where(:id.in => taxonomy_ids)

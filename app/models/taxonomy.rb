@@ -10,6 +10,8 @@
     # select taxonomies by town id
     scope :by_town_id, lambda { |town_id| where(:town_id => town_id) }
     scope :get_by_ids, lambda { |ids| where(:id.in => ids) }
+    # Get budget files by string in title
+    scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
 
     before_save :generate_title
 
