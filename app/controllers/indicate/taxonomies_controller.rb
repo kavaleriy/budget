@@ -3,8 +3,8 @@ class Indicate::TaxonomiesController < AdminController
   before_action :create_indicate_taxonomy, only: [:new]
 
   before_action :authenticate_user!, only: [:new, :edit, :show]
-  load_and_authorize_resource
   before_action :check_admin_permission, except: [:indicators, :get_indicators, :town_profile]
+  load_and_authorize_resource
 
   skip_before_filter :verify_authenticity_token, only: [:get_indicators]
   after_filter :allow_iframe, only: [:indicators]
