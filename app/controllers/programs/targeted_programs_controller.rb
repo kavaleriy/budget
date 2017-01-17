@@ -14,10 +14,10 @@ class Programs::TargetedProgramsController < ApplicationController
     stub_data
     @programs = Programs::TargetedProgram.visible_to(current_user).get_main_programs
 
-    @programs = @programs.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
-    @programs = @programs.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+    @programs = @programs.by_towns(params['town_select'])   unless params['town_select'].blank?
+    @programs = @programs.find_by_string(params['q'])       unless params['q'].blank?
 
-    @programs = @programs.order(sort_column + " " + sort_direction)
+    @programs = @programs.order(sort_column + ' ' + sort_direction)
 
     respond_to do |format|
       format.js
