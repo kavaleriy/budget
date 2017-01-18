@@ -49,7 +49,7 @@
                   =t('static.budget_file_help.help')
 
             %li.divider
-            -unless current_user.admin?
+            -#-unless current_user.admin?
               - Taxonomy.visible_to(current_user).reject{|t| t.budget_files.empty?}.each do |taxonomy|
                 %li
                   =link_to taxonomy_path(taxonomy), {title: "#{taxonomy.title}"} do
