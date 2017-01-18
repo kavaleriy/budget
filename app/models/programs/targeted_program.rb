@@ -37,6 +37,10 @@ class Programs::TargetedProgram
   scope :by_town, -> (town) { where(town: town) }
   # Get active programs
   scope :by_active, -> { where(active: true) }
+  # Get programs by string in title
+  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+  # Get programs by towns
+  scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
 
   validates :title, :responsible, :manager, :town, :author, presence: true
 

@@ -1,6 +1,8 @@
 class Indicate::IndicatorFilesController < ApplicationController
+  layout 'application_admin'
   before_action :set_indicate_indicator_file, only: [:show, :edit, :update, :destroy]
   before_action :set_indicate_taxonomy, only: [:create, :destroy]
+  before_action :authenticate_user!
 
   # GET /indicate/indicator_files
   # GET /indicate/indicator_files.json
