@@ -3,6 +3,8 @@
     = t('indicate.taxonomies.index.header')
 
 - if @indicate_taxonomies.length > 0
+  .col-xs-12.documents_search
+    = render partial: 'search'
   %table.table.table-striped
     %thead
       %tr
@@ -12,16 +14,8 @@
           = t('indicate.taxonomies.index.town')
         %th.col-sm-1
           = t('indicate.taxonomies.index.action')
-    %tbody
-    - @indicate_taxonomies.each do |indicate_taxonomy|
-      %tr
-        %td= link_to indicate_taxonomy._id.to_s, indicate_taxonomy
-        %td
-          = indicate_taxonomy.town
-        %td
-          =link_to t('form.edit', :default => t("helpers.links.edit")), edit_indicate_taxonomy_path(indicate_taxonomy), :method => :get, :class => 'btn btn-default btn-xs'
-          =link_to t('form.destroy', :default => t("helpers.links.destroy")), indicate_taxonomy, :method => :delete, :data => { :confirm =>  t("helpers.links.confirm")}, :class => 'btn btn-xs btn-danger'
-      %br
+    %tbody#search_results
+      = render partial: 'search_results', locals: {indicate_taxonomies: @indicate_taxonomies}
 
 = link_to t('vtarnay.module5s.index.load'), new_indicate_taxonomy_path, :type => "button", :method => :get, :class => "btn btn-primary"
 
