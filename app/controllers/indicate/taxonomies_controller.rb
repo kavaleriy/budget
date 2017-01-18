@@ -1,9 +1,9 @@
-class Indicate::TaxonomiesController < AdminController
+class Indicate::TaxonomiesController < ApplicationController
+  layout 'application_admin'
   before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators, :get_indicators]
   before_action :create_indicate_taxonomy, only: [:new]
 
   before_action :authenticate_user!, only: [:new, :edit, :show]
-  before_action :check_admin_permission, except: [:indicators, :get_indicators, :town_profile]
   load_and_authorize_resource
 
   skip_before_filter :verify_authenticity_token, only: [:get_indicators]
@@ -13,6 +13,7 @@ class Indicate::TaxonomiesController < AdminController
   # GET /indicate/taxonomies.json
   def index
     @indicate_taxonomies = Indicate::Taxonomy.all
+    @indicate_taxonomies = @indicate_taxonomies.by_towns(params['town_select'])   unless params['town_select'].blank?
   end
 
   # GET /indicate/taxonomies/1

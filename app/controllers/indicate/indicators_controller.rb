@@ -1,5 +1,7 @@
 class Indicate::IndicatorsController < ApplicationController
+  layout 'application_admin'
   before_action :set_indicate_indicator, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /indicate/indicators
   # GET /indicate/indicators.json
