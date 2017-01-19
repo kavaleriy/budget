@@ -4,6 +4,8 @@ module Calendars
 
     layout 'application_admin'
 
+    helper_method :sort_column, :sort_direction
+
     before_action :set_calendar, only: [:show, :edit, :update, :destroy]
 
     before_action :authenticate_user!, only: [:show, :edit]
@@ -14,6 +16,8 @@ module Calendars
     # GET /calendars.json
     def index
       @calendars = Calendar.visible_to(current_user,params[:locale])
+
+      @calendars = @calendars.order(sort_column + ' ' + sort_direction)
     end
 
     # GET /calendars/1
@@ -102,7 +106,13 @@ module Calendars
         @calendar = Calendar.find(params[:id])
       end
 
+      def sort_column
+        Calendar.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+      end
 
+      def sort_direction
+        %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+      end
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def calendar_params

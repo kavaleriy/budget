@@ -10,11 +10,15 @@
 %table.table.table-striped
   %thead
     %tr
-      %th= t('.name')
-      %th= t('.author')
+      %th
+        = sortable 'title', t('.name')
+      %th
+        = sortable 'author', t('.author')
       -if current_user.is_admin?
-        %th= t('.town')
-      %th= t('.active')
+        %th
+          = sortable 'town', t('.town')
+      %th
+        = sortable 'is_active', t('.active')
       %th= t('form.actions')
   %tbody
     - @calendars.each do |calendar|
