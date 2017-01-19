@@ -1,0 +1,61 @@
+= form_tag calendars_calendars_path	, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
+  .col-sm-12.col-md-2
+    = text_field_tag 'town_select', ''
+  .col-sm-12.col-md-3
+    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
+
+  .col-sm-6.col-md-1
+    = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
+      = t('form.search')
+      %i.fa.fa-search.fa-lg
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#town_select').select2({
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+      },
+      allowClear: true,
+      multiSelect: true,
+      multiple: true,
+      minimumInputLength: 2,
+      placeholder: '#{t('budget_files.index.search_town')}',
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      $("#search_btn").trigger("click");
+    });
+
+    $("#taxonomy_type").on("change", function(){
+      $("#search_btn").trigger("click");
+    });
+  });
+
