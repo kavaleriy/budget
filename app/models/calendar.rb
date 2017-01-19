@@ -2,6 +2,11 @@ class Calendar
   include Mongoid::Document
 
   scope :by_town, lambda { |town| where(town_model_id: town) }
+  # Get taxonomies by towns
+  scope :by_towns, lambda { |towns| where(:town_model.in => towns.split(",")) }
+  # Get taxonomies files by string in title
+  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+  scope :by_active, lambda { |status| where(is_active: status) }
 
   before_save :change_active_status
 
