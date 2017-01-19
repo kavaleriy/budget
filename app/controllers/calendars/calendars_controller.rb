@@ -114,7 +114,7 @@ module Calendars
       end
 
       def sort_direction
-        %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+        %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
