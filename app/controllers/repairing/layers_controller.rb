@@ -5,7 +5,7 @@ module Repairing
     helper_method :sort_column, :sort_direction
 
     before_action :authenticate_user!, except: [:geo_json]
-    before_action :set_categories, only: [:new, :edit]
+    before_action :set_categories, only: [:index, :new, :edit]
     load_and_authorize_resource
 
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
@@ -64,9 +64,18 @@ module Repairing
     def index
       @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user)
 
+      @repairing_layers = @repairing_layers.by_towns(params['town_select'])   unless params['town_select'].blank?
+      @repairing_layers = @repairing_layers.find_by_string(params['q'])       unless params['q'].blank?
+      @repairing_layers = @repairing_layers.by_category(params['category'])   unless params['category'].blank?
+
       @repairing_layers = @repairing_layers.order(sort_column + ' ' + sort_direction)
 
       @repairing_layers = @repairing_layers.page(params[:page])
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
     end
 
     # GET /repairing/layers/1
