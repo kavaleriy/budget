@@ -6,7 +6,6 @@ class Calendar
   scope :by_towns, lambda { |towns| where(:town_model.in => towns.split(",")) }
   # Get taxonomies files by string in title
   scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
-  scope :by_active, lambda { |status| where(is_active: status) }
 
   before_save :change_active_status
 

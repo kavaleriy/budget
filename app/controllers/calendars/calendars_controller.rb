@@ -19,7 +19,6 @@ module Calendars
 
       @calendars = @calendars.by_towns(params['town_select'])   unless params['town_select'].blank?
       @calendars = @calendars.find_by_string(params['q'])       unless params['q'].blank?
-      @calendars = @calendars.by_active(params['active'])       unless params['active'].blank?
 
       @calendars = @calendars.order(sort_column + ' ' + sort_direction)
     end

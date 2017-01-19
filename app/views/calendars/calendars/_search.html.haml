@@ -3,15 +3,7 @@
     = text_field_tag 'town_select', ''
   .col-sm-12.col-md-3
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
-  .col-sm-12.col-md-2.form-inline
-    .input-group
-      %span.input-group-addon
-        %b= t('budget_files.index.type_select.type')
-      = select_tag :active, options_for_select({ '' => '',
-                                                 t('calendars.calendars.index.actives') => :true,
-                                                 t('calendars.calendars.index.inactives') => :false }),
-                            id: 'calendar_type',
-                            class: 'form-control'
+
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
