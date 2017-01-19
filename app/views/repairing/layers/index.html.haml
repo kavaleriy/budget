@@ -54,17 +54,17 @@
           .col-xs-6
             =t('key')
           .col-xs-6
-            =t('repairing.repairs.form.title')
+            = sortable 'title', t('repairing.repairs.form.title')
         .col-sm-5.reset-padding
           .col-xs-6
             =t('file')
           .col-xs-6
-            =t('repairing.repairs.form.category')
+            = sortable 'repairing_category_id', t('repairing.repairs.form.category')
         .col-sm-3.reset-padding
           .col-xs-6
-            =t('repairing.repairs.form.town')
+            = sortable 'town_id', t('repairing.repairs.form.town')
           .col-xs-6
-            =t('author')
+            = sortable 'owner_id', t('author')
       .col-sm-1.reset-padding.text-center
         =t 'form.actions', default: t('helpers.actions')
     - @repairing_layers.each do |layer|

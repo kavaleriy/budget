@@ -1,8 +1,8 @@
 
 module Repairing
   class LayersController < ApplicationController
-
     layout 'application_admin'
+    helper_method :sort_column, :sort_direction
 
     before_action :authenticate_user!, except: [:geo_json]
     before_action :set_categories, only: [:new, :edit]
@@ -62,7 +62,11 @@ module Repairing
     # GET /repairing/layers
     # GET /repairing/layers.json
     def index
-      @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user).page(params[:page])
+      @repairing_layers = Repairing::Layer.by_locale.visible_to(current_user)
+
+      @repairing_layers = @repairing_layers.order(sort_column + ' ' + sort_direction)
+
+      @repairing_layers = @repairing_layers.page(params[:page])
     end
 
     # GET /repairing/layers/1
@@ -197,6 +201,13 @@ module Repairing
         end
       end
 
+      def sort_column
+        Repairing::Layer.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+      end
+
+      def sort_direction
+        %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      end
 
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
