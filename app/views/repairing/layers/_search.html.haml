@@ -1,10 +1,71 @@
-.search_map
-  = form_tag create_repair_by_addr_repairing_layer_path(layer), method: :post, remote: true, html: { class: 'form-vertical' } do |f|
-    .input-group.input-group-sm
-      .col-sm-6
-        = text_field_tag :q, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address')}"
-      .col-sm-6
-        = text_field_tag :q1, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address_to')}"
-      %span.input-group-btn
-        = submit_tag t('form.add'), class: 'btn btn-primary' do
-          %i.fa.fa-search.fa-lg
+= form_tag repairing_layers_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
+  .col-sm-12.col-md-2
+    = text_field_tag 'town_select', ''
+
+  .col-sm-12.col-md-3
+    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
+
+  .col-sm-12.col-md-2.form-inline
+    .input-group
+      %span.input-group-addon
+        %b= t('budget_files.index.type_select.type')
+      = select_tag :category, options_from_collection_for_select(@categories, '_id', 'title'),
+                              include_blank: true,
+                              id: 'taxonomy_type',
+                              class: 'form-control'
+
+  .col-sm-6.col-md-1
+    = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
+      = t('form.search')
+      %i.fa.fa-search.fa-lg
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#town_select').select2({
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+      },
+      allowClear: true,
+      multiSelect: true,
+      multiple: true,
+      minimumInputLength: 2,
+      placeholder: '#{t('budget_files.index.search_town')}',
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      $("#search_btn").trigger("click");
+    });
+
+    $("#taxonomy_type").on("change", function(){
+      $("#search_btn").trigger("click");
+    });
+  });
+

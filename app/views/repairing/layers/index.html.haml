@@ -1,4 +1,7 @@
 :scss
+  .documents_search{
+    margin: 5px 0;
+  }
   .table-title{
     font-weight: bold;
     border-bottom: solid lightgrey 2px;
@@ -44,9 +47,13 @@
 = content_for :header do
   .head.pull-left
     = t('layouts.navbar_admin.repairing_layers')
+
 - if current_user && current_user.has_any_role?(:admin, :city_authority, :public_organisation, :municipal_enterprise, :state_enterprise)
   = link_to t('.new', default: t('helpers.links.new')), new_repairing_layer_path, class: 'btn btn-primary'
+
 -unless @repairing_layers.empty?
+  .col-xs-12.documents_search
+    = render partial: 'search'
   .container-fluid
     .row.table-title.hide-in-small
       .col-sm-11.reset-padding
@@ -54,7 +61,7 @@
           .col-xs-6
             =t('key')
           .col-xs-6
-            =t('repairing.repairs.form.title')
+            = sortable 'title', t('repairing.repairs.form.title')
         .col-sm-5.reset-padding
           .col-xs-6
             =t('file')
@@ -67,65 +74,11 @@
             =t('author')
       .col-sm-1.reset-padding.text-center
         =t 'form.actions', default: t('helpers.actions')
-    - @repairing_layers.each do |layer|
-      .row.table-body
-        .col-sm-11.reset-padding
-          .col-sm-4.reset-padding
-            .col-sm-6.hide-overflow
-              = link_to layer.id, repairing_layer_path(layer)
-            .col-sm-6.hide-overflow
-              = layer.title
-          .col-sm-5.reset-padding
-            .col-sm-6.hide-overflow
-              = link_to layer.repairs_file.url, class: '' do
-                %i.fa.fa-download.fa.fa-border
-                = layer.repairs_file_identifier
-            .col-sm-6.hide-overflow
-              = layer.repairing_category.title unless layer.repairing_category.nil?
-          .col-sm-3.reset-padding
-            .col-sm-6.hide-overflow
-              = "#{layer.town.title unless layer.town.blank?} "
-            .col-sm-6.hide-overflow
-              = layer.owner.email
-        .col-sm-1.reset-padding.text-center
-          = link_to t('.edit', default: t('helpers.links.edit')),
-                    edit_repairing_layer_path(layer),
-                    class: 'btn btn-default btn-xs'
-          = link_to t('.destroy', default: t('helpers.links.destroy')),
-                    repairing_layer_path(layer),
-                    class: 'btn btn-xs btn-danger',
-                    method: :delete,
-                    data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) },
-                    style: 'min-width: 78px'
-
-  -#todo --> dellete this block after applying layout
-  -#%table.table.table-striped
-    %thead
-      %tr
-        %th=t('key')
-        %th=t('repairing.repairs.form.title')
-        %th=t('file')
-        %th=t('repairing.repairs.form.category')
-        %th=t('repairing.repairs.form.town')
-        %th=t('author')
-        %th=t 'form.actions', :default => t("helpers.actions")
-    %tbody
-      - @repairing_layers.each do |layer|
-        %tr
-          %td= link_to layer.id, repairing_layer_path(layer)
-          %td
-            = layer.title
-          %td
-            = link_to layer.repairs_file.url, :class => '' do
-              %i.fa.fa-download.fa.fa-border
-              = layer.repairs_file_identifier
-          %td= layer.repairing_category.title unless layer.repairing_category.nil?
-          %td= "#{layer.town.title unless layer.town.blank?} "
-          %td= layer.owner.email
-          %td
-            = link_to t('.edit', :default => t("helpers.links.edit")), edit_repairing_layer_path(layer), :class => 'btn btn-default btn-xs'
-            = link_to t('.destroy', :default => t("helpers.links.destroy")), repairing_layer_path(layer), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+    #search_results
+      = render partial: 'search_results', locals: {repairing_layers: @repairing_layers}
 
 -else
   =t ('.no_files')
-= paginate @repairing_layers
+
+.paginator
+  = paginate @repairing_layers
