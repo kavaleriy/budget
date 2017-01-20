@@ -1,19 +1,6 @@
-= form_tag repairing_layers_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
-  .col-sm-12.col-md-2
+= form_tag indicate_taxonomies_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
+  .col-sm-12.col-md-4
     = text_field_tag 'town_select', ''
-
-  .col-sm-12.col-md-3
-    = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
-
-  .col-sm-12.col-md-2.form-inline
-    .input-group
-      %span.input-group-addon
-        %b= t('budget_files.index.type_select.type')
-      = select_tag :category, options_from_collection_for_select(@categories, '_id', 'title'),
-                              include_blank: true,
-                              id: 'taxonomy_type',
-                              class: 'form-control'
-
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')

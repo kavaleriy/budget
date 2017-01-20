@@ -51,13 +51,13 @@ class TaxonomiesController < ApplicationController
   def index
     @taxonomies = Taxonomy.visible_to(current_user)
 
-    @taxonomies = @taxonomies.where(:town.in => params["town_select"].split(","))  unless params["town_select"].blank?
+    @taxonomies = @taxonomies.by_towns(params['town_select'])   unless params['town_select'].blank?
 
-    @taxonomies = @taxonomies.where(:title => /.*#{params['q']}.*/)                unless params["q"].blank?
+    @taxonomies = @taxonomies.find_by_string(params['q'])       unless params['q'].blank?
 
-    @taxonomies = @taxonomies.where(:_type => params['taxonomy_type'].to_sym)      unless params["taxonomy_type"].blank?
+    @taxonomies = @taxonomies.by_type(params['taxonomy_type'])  unless params['taxonomy_type'].blank?
 
-    @taxonomies = @taxonomies.order(sort_column + " " + sort_direction)
+    @taxonomies = @taxonomies.order(sort_column + ' ' + sort_direction)
 
     @taxonomies = @taxonomies.page(params[:page])
 

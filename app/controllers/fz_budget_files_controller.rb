@@ -89,6 +89,8 @@ class FzBudgetFilesController < ApplicationController
 
         rows = calc_annual_rows.call(read_table_from_file(fz_file.path)[:rows])
 
+        rows.each{|row| row.merge!('_year' => params[:year])} if params[:year]
+
         rot_file = BudgetFileRotFz.new(title: fz_file.title + ' - Доходи', taxonomy: taxonomy_rot, path: fz_file.path) if taxonomy_rot
         rov_file = BudgetFileRovFz.new(title: fz_file.title + ' - Видатки', taxonomy: taxonomy_rov, path: fz_file.path) if taxonomy_rov
 

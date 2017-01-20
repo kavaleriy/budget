@@ -1,0 +1,8 @@
+- indicate_taxonomies.each do |indicate_taxonomy|
+  %tr
+    %td= link_to indicate_taxonomy._id.to_s, indicate_taxonomy
+    %td
+      = indicate_taxonomy.town
+    %td
+      =link_to t('form.edit', :default => t("helpers.links.edit")), edit_indicate_taxonomy_path(indicate_taxonomy), :method => :get, :class => 'btn btn-default btn-xs'
+      =link_to t('form.destroy', :default => t("helpers.links.destroy")), indicate_taxonomy, :method => :delete, :data => { :confirm =>  t("helpers.links.confirm")}, :class => 'btn btn-xs btn-danger'

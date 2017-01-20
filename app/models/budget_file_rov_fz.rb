@@ -30,6 +30,7 @@ class BudgetFileRovFz < BudgetFile
     ktfk_aaa = '80' if ktfk_aaa == '81'
     ktfk_aaa = '90' if ktfk_aaa == '91'
 
+    year = row['_year']
 
     generate_item = ->(amount, month) do
       item = {
@@ -40,6 +41,7 @@ class BudgetFileRovFz < BudgetFile
           'kvk' => kvk,
           'kekv' => kekv,
           'krk' => row['KRK'].to_s.split('.')[0],
+          '_year' => year,
           '_month' => month.to_s
       }
       return item
