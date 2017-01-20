@@ -3,6 +3,11 @@ class Repairing::Layer
   include ColumnsList
 
   scope :by_locale, lambda { where(locale: I18n.locale) }
+  scope :by_category, lambda { |category| where(repairing_category: category) }
+  # Get taxonomies by towns
+  scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
+  # Get budget files by string in title
+  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
 
   belongs_to :town, class_name: 'Town'
   belongs_to :owner, class_name: 'User'
