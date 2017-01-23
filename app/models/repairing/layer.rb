@@ -75,6 +75,7 @@ class Repairing::Layer
                                                            '$project' => {
                                                                'repairing_category_id' => 1,
                                                                'town_id' => 1,
+                                                               'status' => 1,
                                                            }
                                                        }
                                                    ])
