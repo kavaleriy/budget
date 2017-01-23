@@ -141,6 +141,12 @@
         when 'ktfk_aaa'
           # expense_codes[key.ljust(5, '0')] || expense_codes[key.ljust(6, '0')]
           expense_codes["#{key}000"]
+
+        when 'kpk_aa'
+          kpk_aa_codes[key.ljust(2, '0')]
+        when 'kpk_cccd'
+          ktpvkmb_codes[key.ljust(4, '0')]
+
         when 'kvk'
           expense_kvk_codes[key.split(':')[0]]
         when 'kekv'
@@ -409,9 +415,13 @@
             node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
 
             columns.each { |taxonomy_key|
+              # TODO - need to update levels selection logic
+              taxonomy_key = 'kpk_aa' if taxonomy_key == 'ktfk_aaa' and row['kpk_aa']
+              taxonomy_key = 'kpk_cccd' if taxonomy_key == 'ktfk' and row['kpk_cccd']
+
               if row[taxonomy_key].nil?
                 next unless taxonomy_key == 'ktfk_aaa'
-                taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3)
+                taxonomy_value = row['ktfk'].slice(0, row['ktfk'].length - 3) unless row['ktfk'].blank?
               else
                 taxonomy_value = row[taxonomy_key]
               end
@@ -541,6 +551,16 @@
     def expense_codes
       @ktfk_info = Taxonomy.load_from_csv "db/expense_codes.#{I18n.locale.to_s || 'uk'}.csv" if @ktfk_info.nil?
       @ktfk_info
+    end
+
+    def kpk_aa_codes
+      @kpk_aa_info = Taxonomy.load_from_csv "db/kvk_mistc.#{I18n.locale.to_s || 'uk'}.csv" if @kpk_aa_info.nil?
+      @kpk_aa_info
+    end
+
+    def ktpvkmb_codes
+      @ktpvkmb_info = Taxonomy.load_from_csv "db/ktpvkmb.#{I18n.locale.to_s || 'uk'}.csv" if @ktpvkmb_info.nil?
+      @ktpvkmb_info
     end
 
     def self.fond_codes(locale)

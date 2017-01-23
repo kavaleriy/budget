@@ -175,7 +175,7 @@ class Programs::TargetedProgram
     # or
     # nil if file cann't read
 
-    kvk = self.load_from_csv 'db/kvk_mistc.csv' if kvk.nil?
+    kvk = self.load_from_csv 'db/kvk_mistc.uk.csv' if kvk.nil?
     kvk
   end
 
