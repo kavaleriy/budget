@@ -344,4 +344,6 @@
           %b= t('repairing.maps.map_select.year')
         = select_tag 'year_select', options_for_select([nil] + ((Time.now.year - 4)..Time.now.year).to_a.reverse, selected: "#{@year}"), class: 'form-control'
     .pull-right.road-condition-select
-      =render partial: 'repairing/maps/road_condition'
+      = render partial: 'repairing/maps/road_condition'
+    .pull-right.status-btns
+      = render partial: 'repairing/maps/status_btns'

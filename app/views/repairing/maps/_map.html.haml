@@ -326,8 +326,14 @@
     }
 
     function setLastRepairUpdate(date){
-      var formatedDate = new Date(date);
-      $('#last_updated_repair .rep-date').html(formatedDate.toLocaleDateString());
+      // inspect for correct date in repair.rb line 145
+      if(date.slice(0, 4) == '1970'){
+        var last_date = 'no date';
+      }else{
+        var formatedDate = new Date(date);
+        var last_date = formatedDate.toLocaleDateString();
+      }
+      $('#last_updated_repair .rep-date').html(last_date);
     }
 
     function addGeoJsonPoint(data, getPoint, options) {
