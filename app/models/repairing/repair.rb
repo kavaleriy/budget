@@ -155,7 +155,7 @@ module Repairing
           end
           repair['layer'] = {}
           repair['layer']['town_id'] = layer['town_id'].to_s
-          repair['layer']['status'] = layer['status']
+          repair['layer']['status'] = layer['status'] || :plan
           repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
 
           repair_json = Repairing::GeojsonBuilder.build_repair(repair)
