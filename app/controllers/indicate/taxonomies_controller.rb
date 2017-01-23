@@ -1,19 +1,19 @@
 class Indicate::TaxonomiesController < ApplicationController
+  layout 'application_admin'
   before_action :set_indicate_taxonomy, only: [:show, :edit, :update, :destroy, :indicators, :get_indicators]
   before_action :create_indicate_taxonomy, only: [:new]
 
-  before_action :authenticate_user!, only: [:new, :edit, :show]
+  before_action :authenticate_user!, except: [:get_indicators, :indicators, :town_profile]
   load_and_authorize_resource
 
   skip_before_filter :verify_authenticity_token, only: [:get_indicators]
   after_filter :allow_iframe, only: [:indicators]
 
-  layout 'visify', only: [:indicators]
-
   # GET /indicate/taxonomies
   # GET /indicate/taxonomies.json
   def index
     @indicate_taxonomies = Indicate::Taxonomy.all
+    @indicate_taxonomies = @indicate_taxonomies.by_towns(params['town_select'])   unless params['town_select'].blank?
   end
 
   # GET /indicate/taxonomies/1
@@ -26,6 +26,7 @@ class Indicate::TaxonomiesController < ApplicationController
   def indicators
     @indicators = @indicate_taxonomy.get_indicators
     @current_user = current_user
+    render layout: 'visify'
   end
 
   def get_indicators

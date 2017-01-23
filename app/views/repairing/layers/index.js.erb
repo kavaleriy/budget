@@ -1,0 +1,3 @@
+$('#search_results').html('<%= escape_javascript( render partial: 'search_results', :locals => { repairing_layers: @repairing_layers } ) %>')
+
+$('.paginator').html('<%= escape_javascript(paginate(@repairing_layers, :remote => true)) %>')
