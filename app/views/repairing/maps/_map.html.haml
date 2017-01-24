@@ -158,7 +158,7 @@
   -##fullscreen
   -#  %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
   #last_updated_repair
-    Останнє оновлення візуалізації :
+    = t('last_update')
     %span.rep-date
 :javascript
 
@@ -327,8 +327,9 @@
 
     function setLastRepairUpdate(date){
       // inspect for correct date in repair.rb line 145
-      if(date.slice(0, 4) == '1970'){
-        var last_date = 'no date';
+      //TODO: change logic for default date(1970)
+      if(date == undefined || date.slice(0, 4) == '1970'){
+        var last_date = I18n.t('no_data');
       }else{
         var formatedDate = new Date(date);
         var last_date = formatedDate.toLocaleDateString();
