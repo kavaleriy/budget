@@ -69,15 +69,20 @@
         cache: true
       },
     }).on("change", function(){
-      $("#search_btn").trigger("click");
+      clickSearchBtn();
     });
 
     $("#layer_type").on("change", function(){
-      $("#search_btn").trigger("click");
+      clickSearchBtn();
     });
 
     $("#status").on("change", function(){
-      $("#search_btn").trigger("click");
+      clickSearchBtn();
     });
+
+    function clickSearchBtn(){
+      $("#search_btn").trigger("click");
+    }
+
   });
 
