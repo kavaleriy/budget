@@ -1,0 +1,30 @@
+- repairing_layers.each do |layer|
+  .row.table-body
+    .col-sm-11.reset-padding
+      .col-sm-4.reset-padding
+        .col-sm-6.hide-overflow
+          = link_to layer.id, repairing_layer_path(layer)
+        .col-sm-6.hide-overflow
+          = layer.title
+      .col-sm-5.reset-padding
+        .col-sm-6.hide-overflow
+          = link_to layer.repairs_file.url, class: '' do
+            %i.fa.fa-download.fa.fa-border
+            = layer.repairs_file_identifier
+        .col-sm-6.hide-overflow
+          = layer.repairing_category.title unless layer.repairing_category.nil?
+      .col-sm-3.reset-padding
+        .col-sm-6.hide-overflow
+          = "#{layer.town.title unless layer.town.blank?} "
+        .col-sm-6.hide-overflow
+          = layer.owner.email
+    .col-sm-1.reset-padding.text-center
+      = link_to t('.edit', default: t('helpers.links.edit')),
+                  edit_repairing_layer_path(layer),
+                  class: 'btn btn-default btn-xs'
+      = link_to t('.destroy', default: t('helpers.links.destroy')),
+                  repairing_layer_path(layer),
+                  class: 'btn btn-xs btn-danger',
+                  method: :delete,
+                  data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) },
+                  style: 'min-width: 78px'

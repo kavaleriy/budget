@@ -3,6 +3,11 @@ class Repairing::Layer
   include ColumnsList
 
   scope :by_locale, lambda { where(locale: I18n.locale) }
+  scope :by_category, lambda { |category| where(repairing_category: category) }
+  # Get taxonomies by towns
+  scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
+  # Get budget files by string in title
+  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
 
   belongs_to :town, class_name: 'Town'
   belongs_to :owner, class_name: 'User'
@@ -11,13 +16,14 @@ class Repairing::Layer
   field :title, type: String
   field :description, type: String
   field :locale, type: String, default: 'uk'
+  field :status, type: String
 
   mount_uploader :repairs_file, RepairingRepairUploader
   skip_callback :update, :before, :store_previous_model_for_repairs_file
 
   has_many :repairs, class_name: 'Repairing::Repair', autosave: true, dependent: :destroy
 
-  validates :town, :owner, :repairing_category, :title, presence: true
+  validates :town, :owner, :repairing_category, :title, :status, presence: true
 
   def self.visible_to user
     files = if user.nil?
@@ -69,6 +75,7 @@ class Repairing::Layer
                                                            '$project' => {
                                                                'repairing_category_id' => 1,
                                                                'town_id' => 1,
+                                                               'status' => 1,
                                                            }
                                                        }
                                                    ])
