@@ -95,7 +95,7 @@ module Modules
     # TODO: Do refactor in future
     def import_dbf
       unless params[:file_name].nil?
-        
+
         file = upload_file params[:file_name], params[:file_name].original_filename
         file_path = file[:path].to_s
         table = read_table_from_file file_path
