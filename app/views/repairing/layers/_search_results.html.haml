@@ -7,12 +7,14 @@
         .col-sm-6.hide-overflow
           = layer.title
       .col-sm-5.reset-padding
-        .col-sm-6.hide-overflow
+        .col-sm-4.hide-overflow
           = link_to layer.repairs_file.url, class: '' do
             %i.fa.fa-download.fa.fa-border
             = layer.repairs_file_identifier
-        .col-sm-6.hide-overflow
+        .col-sm-5.hide-overflow
           = layer.repairing_category.title unless layer.repairing_category.nil?
+        .col-sm-3.hide-overflow
+          = get_status(layer.status)
       .col-sm-3.reset-padding
         .col-sm-6.hide-overflow
           = "#{layer.town.title unless layer.town.blank?} "
