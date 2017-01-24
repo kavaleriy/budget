@@ -29,5 +29,4 @@ namespace :modules_classifier_types do
     Modules::ClassifierType.delete_all
   end
 
-
 end

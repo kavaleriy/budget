@@ -1,16 +1,17 @@
 = simple_form_for @repairing_layer do |f|
 
   - if current_user && current_user.has_role?(:admin)
-    = f.text_field :town, label: t('repairing.repairs.form.town') , class: 'form-control',value: current_user.town_model.id
+    = f.input :town, as: :text, label: t('repairing.repairs.form.town') , class: 'form-control', value: current_user.town_model.id
   - else
     = t('repairing.repairs.form.town') + ": " + current_user.town
 
-  = f.input :locale, as: :hidden, value: params[:locale]
+  = f.input :locale, as: :hidden, input_html: {value: params[:locale]}
   = f.input :title, label: t('repairing.repairs.form.title'), class: 'form-control'
-  = f.input :repairing_category,
-              collection: @categories.map {|cat| [ cat.title, cat.id ] } ,
-              label: t('repairing.repairs.form.category')
-
+  = f.input :repairing_category, collection: @categories.map {|cat| [ cat.title, cat.id ] } ,
+                                 label: t('repairing.repairs.form.category')
+  = f.input :status, collection: {t('js.visify.plan') => :plan, t('js.visify.fact') => :fact},
+                     prompt: false,
+                     label: t('repairing.repairs.form.status')
   = f.input :description, as: :text,  label: t('repairing.repairs.form.description'), rows: '8'
   = f.input :repairs_file,as: :file, label: t('repairing.repairs.form.repairs_file')
 

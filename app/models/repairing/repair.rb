@@ -142,6 +142,7 @@ module Repairing
       geo_jsons = []
 
       # set default last update date of repair
+      #TODO: change logic for default date(1970)
       last_updated = Time.new('1970-01-01')
 
       # if town not empty filter array by town
@@ -155,6 +156,7 @@ module Repairing
           end
           repair['layer'] = {}
           repair['layer']['town_id'] = layer['town_id'].to_s
+          repair['layer']['status'] = layer['status'] || :plan
           repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
 
           repair_json = Repairing::GeojsonBuilder.build_repair(repair)
