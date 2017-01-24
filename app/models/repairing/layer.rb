@@ -4,6 +4,7 @@ class Repairing::Layer
 
   scope :by_locale, lambda { where(locale: I18n.locale) }
   scope :by_category, lambda { |category| where(repairing_category: category) }
+  scope :by_status, lambda { |status| where(status: status) }
   # Get taxonomies by towns
   scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
   # Get budget files by string in title
@@ -16,7 +17,7 @@ class Repairing::Layer
   field :title, type: String
   field :description, type: String
   field :locale, type: String, default: 'uk'
-  field :status, type: String
+  field :status, type: String, default: :plan
 
   mount_uploader :repairs_file, RepairingRepairUploader
   skip_callback :update, :before, :store_previous_model_for_repairs_file

@@ -142,6 +142,7 @@ module Repairing
       geo_jsons = []
 
       # set default last update date of repair
+      #TODO: change logic for default date(1970)
       last_updated = Time.new('1970-01-01')
 
       # if town not empty filter array by town
