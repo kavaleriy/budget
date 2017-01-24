@@ -1,3 +1,11 @@
+:scss
+
+  form{
+    .input-group-addon{
+      text-transform: lowercase;
+    }
+  }
+
 = form_tag repairing_layers_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
   .col-sm-12.col-md-2
     = text_field_tag 'town_select', ''
@@ -16,7 +24,8 @@
   .col-sm-12.col-md-2.form-inline
     .input-group
       %span.input-group-addon
-        %b= 'статус'
+        %b
+          =t('repairing.layers.index.status')
       = select_tag :status, options_for_select({'' => '',
                                                 t('js.visify.plan') => :plan,
                                                 t('js.visify.fact') => :fact}),
