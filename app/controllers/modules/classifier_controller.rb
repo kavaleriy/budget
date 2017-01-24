@@ -1,3 +1,4 @@
+include BudgetFileUpload
 module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:search_data, :advanced_search, :by_type]
@@ -94,17 +95,16 @@ module Modules
     # TODO: Do refactor in future
     def import_dbf
       unless params[:file_name].nil?
-        data = File.open(params[:file_name].tempfile)
-        widgets = DBF::Table.new(data, nil, 'cp866')
-        #TODO: Do refactor in future
-        i = 0
-        types = Modules::ClassifierType.all_types
-        #binding.pry
 
-        widgets.each do |widget|
+        file = upload_file params[:file_name], params[:file_name].original_filename
+        file_path = file[:path].to_s
+        table = read_table_from_file file_path
+
+
+        table.each do |row|
 
           if i < 5
-            attributes = widget.attributes
+            attributes = row.attributes
             web = Modules::Classifier.new
             if(web.fill_params attributes, types)
               # i=i+1

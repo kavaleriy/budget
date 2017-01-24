@@ -33,9 +33,8 @@ class Modules::Classifier
 
 
   def encode_fields
-    attr_array = [pnaz, knaz, n_form, naz_v, adp]
+    attr_array = [pnaz, adp]
     attr_array.each do |attr|
-      #binding.pry
       incorrect_characters(attr)
     end
 
@@ -85,23 +84,24 @@ class Modules::Classifier
   end
 
   def fill_params attributes, types
-      if types.include? attributes["K_FORM"]
+      if types.include? attributes["K_FORM"].to_i
         self.sk_ter = attributes["SK_TER"]
         self.kvk = attributes["KVK"]
-        self.rkrk = attributes["RKRK"]
         self.edrpou = attributes["EDRPOU"]
         self.pnaz = attributes["PNAZ"]
         self.knaz = attributes["KNAZ"]
-        self.status = attributes["STATUS"]
+        self.k_ter = attributes["K_TER"]
+        self.adp = attributes["ADP"]
+        self.tel1 = attributes["TEL1"]
+        self.tel2 = attributes["TEL2"]
         self.k_form = attributes["K_FORM"]
+
+        self.rkrk = attributes["RKRK"]
+        self.status = attributes["STATUS"]
         self.n_form = attributes["N_FORM"]
         self.edrpou_v = attributes["EDRPOU_V"]
         self.naz_v = attributes["NAZ_V"]
-        self.k_ter = attributes["K_TER"]
-        self.adp = attributes["ADP"]
         self.mtk = attributes["MTK"]
-        self.tel1 = attributes["TEL1"]
-        self.tel2 = attributes["TEL2"]
         self.save
         true
       else false
