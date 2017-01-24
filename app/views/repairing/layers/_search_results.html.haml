@@ -14,7 +14,7 @@
         .col-sm-5.hide-overflow
           = layer.repairing_category.title unless layer.repairing_category.nil?
         .col-sm-3.hide-overflow
-          = get_status(layer.status)
+          = t("js.visify.#{layer.status}")
       .col-sm-3.reset-padding
         .col-sm-6.hide-overflow
           = "#{layer.town.title unless layer.town.blank?} "
