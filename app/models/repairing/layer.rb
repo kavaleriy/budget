@@ -4,6 +4,7 @@ class Repairing::Layer
 
   scope :by_locale, lambda { where(locale: I18n.locale) }
   scope :by_category, lambda { |category| where(repairing_category: category) }
+  scope :by_status, lambda { |status| where(status: status) }
   # Get taxonomies by towns
   scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
   # Get budget files by string in title

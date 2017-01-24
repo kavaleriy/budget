@@ -11,14 +11,22 @@
         %b= t('budget_files.index.type_select.type')
       = select_tag :category, options_from_collection_for_select(@categories, '_id', 'title'),
                               include_blank: true,
-                              id: 'taxonomy_type',
+                              id: 'layer_type',
                               class: 'form-control'
+  .col-sm-12.col-md-2.form-inline
+    .input-group
+      %span.input-group-addon
+        %b= 'статус'
+      = select_tag :status, options_for_select({'' => '',
+                                                t('js.visify.plan') => :plan,
+                                                t('js.visify.fact') => :fact}),
+                             id: 'status',
+                             class: 'form-control'
 
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
       %i.fa.fa-search.fa-lg
-
 
 :javascript
 
@@ -64,7 +72,11 @@
       $("#search_btn").trigger("click");
     });
 
-    $("#taxonomy_type").on("change", function(){
+    $("#layer_type").on("change", function(){
+      $("#search_btn").trigger("click");
+    });
+
+    $("#status").on("change", function(){
       $("#search_btn").trigger("click");
     });
   });
