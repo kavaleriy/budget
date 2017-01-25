@@ -76,11 +76,11 @@
       }
       .year-select {
         .input-group {
-          width: 62px;
+          width: 70px;
           float: right;
           .input-group-addon {
             position: absolute;
-            padding: 13px 30px 9px 10px;
+            padding: 13px 35px 9px 15px;
             height: 40px;
             border-radius: 0;
             color: white;
@@ -91,6 +91,7 @@
           .form-control {
             position: static;
             height: 40px;
+            padding: 5px 3px;
             border-radius: 0;
             border: 1px solid #7D94A4;
             border-left: transparent;
@@ -342,7 +343,9 @@
       .input-group
         %span.input-group-addon
           %b= t('repairing.maps.map_select.year')
-        = select_tag 'year_select', options_for_select([nil] + (2015..Time.now.year).to_a.reverse, selected: "#{@year}"), class: 'form-control'
+        = select_tag 'year_select',
+                      options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), 'no year']] + (2015..Time.now.year).to_a.reverse, selected: "#{@year}"),
+                      class: 'form-control'
     .pull-right.road-condition-select
       = render partial: 'repairing/maps/road_condition'
     .pull-right.status-btns

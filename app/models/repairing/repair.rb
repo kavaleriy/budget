@@ -16,7 +16,7 @@ module Repairing
     field :subject, type: String
     field :work, type: String
     field :amount, type: Float
-    # field :repair_date, type: Date
+    field :repair_date, type: Date
     # field for e-data.gov.ua
     field :repair_start_date, type: Date
     field :repair_end_date, type: Date

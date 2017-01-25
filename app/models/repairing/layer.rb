@@ -105,6 +105,7 @@ class Repairing::Layer
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
                                                                              'repair_date' => 1,
+                                                                             'repair_start_date' => 1,
                                                                          }
                                                                      }
                                                                  # group repairs by layer
