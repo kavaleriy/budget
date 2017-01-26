@@ -1,7 +1,8 @@
-%h1
-  = t ('.header')
+.row
+  .col-md-8.col-md-offset-2
+    %h1
+      = t ('.header')
 
-= render 'form'
+    = render 'form'
 
-.col-xs-12
-  = link_to t('.back'), modules_budget_news_index_path
+    = link_to t('.back'), modules_budget_news_index_path

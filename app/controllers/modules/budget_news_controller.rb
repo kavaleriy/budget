@@ -2,7 +2,6 @@ module Modules
   class BudgetNewsController < AdminController
     before_action :set_budget_news, only: [:show, :edit, :update, :destroy]
     skip_before_action :check_admin_permission, only: [:show, :all_news]
-    # before_action :check_admin_permission, except: [:show, :all_news]
     before_action :get_published_news, only: [:all_news]
     respond_to :html
 
@@ -15,7 +14,8 @@ module Modules
     def show
       @budgets_news = BudgetNews.get_last_news(10)
       @banners = Modules::Banner.get_publish_banners.order(order_banner: :desc)
-      respond_with(@budget_news)
+
+      render layout: 'application'
     end
 
     def new
@@ -62,6 +62,8 @@ module Modules
 
     def all_news
       @budget_news = @published_budget_news.page(params[:page]).per(9).order(news_date: :desc) unless @published_budget_news.nil?
+
+      render layout: 'application'
     end
 
     private
