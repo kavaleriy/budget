@@ -32,7 +32,7 @@ class Modules::BudgetNews
 
   def get_link
     if self.link.empty?
-      self.link = modules_budget_news_path(self)
+      self.link = show_one_budget_news_path(self)
     end
     self.link
   end
