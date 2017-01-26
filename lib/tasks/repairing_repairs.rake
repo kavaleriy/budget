@@ -8,6 +8,8 @@ namespace :repairing_repairs do
     old_date_repairs.each do |repair|
       if repair.coordinates.blank?
         puts "#{counter} not changed, repair_id - #{repair.id}, layer_id - #{repair.layer_id} - coordinates blank"
+        # repair_post = Repairing::LayersController.new
+        # repair_post.post "/repairing/layers/#{repair.layer_id}/create_repair_by_addr?locale=uk", {q: repair.address, q1: repair.address_to}
         next
       end
 
