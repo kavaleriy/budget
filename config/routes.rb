@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   end
 
   namespace :modules do
-    get 'budget_news/news/list' => 'budget_news#all_news',as: 'all_budget_news'
     get 'classifier/import_dbf' => 'classifier#import_dbf',as: 'classifier_import_dbf'
     get 'classifier/all_classifier' => 'classifier#all_classifier',as: 'classifier_all_classifier'
     get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
@@ -49,6 +48,9 @@ Rails.application.routes.draw do
     resources :banners
     post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
   end
+
+  get 'news' => 'modules/budget_news#all_news', as: 'all_budget_news'
+  get 'news/:id' =>	'modules/budget_news#show', as: 'show_one_budget_news'
 
   resources :export_budgets
   get 'download_pdf' => 'export_budgets#download_pdf'
