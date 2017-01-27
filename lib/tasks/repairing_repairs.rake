@@ -7,18 +7,21 @@ namespace :repairing_repairs do
 
     old_date_repairs.each do |repair|
       if repair.coordinates.blank?
-        puts "#{counter} not changed, repair_id - #{repair.id}, layer_id - #{repair.layer_id} - coordinates blank"
-        # repair_post = Repairing::LayersController.new
-        # repair_post.post "/repairing/layers/#{repair.layer_id}/create_repair_by_addr?locale=uk", {q: repair.address, q1: repair.address_to}
+        puts "#{counter} not changed, repair_id - #{repair.id}, layer_id - #{repair.layer_id}"
         next
       end
 
       repair.repair_start_date = repair.repair_date
-      repair.save(validate: false)
+
+      repair.spending_units = 'no data'         unless repair.spending_units
+      repair.edrpou_spending_units = 'no data'  unless repair.edrpou_spending_units
+      repair.address = 'no address'             unless repair.address
+      repair.amount = 0.0                       unless repair.amount
+
+      repair.save()
       counter += 1
     end
 
-    puts "#{old_date_repairs.count} was not changed"
     puts "#{counter} was changed"
   end
 end
