@@ -23,7 +23,6 @@ module Repairing
               edrpou_spending_units: 00000000,
               spending_units: 'Unknown',
               amount: 1.00,
-              repair_start_date: Date.today,
               address_to: params[:q1]
           )
           repair.save!
@@ -38,7 +37,6 @@ module Repairing
               edrpou_spending_units: 00000000,
               spending_units: 'Unknown',
               amount: 1.00,
-              repair_start_date: Date.today,
           )
           repair.save!
 

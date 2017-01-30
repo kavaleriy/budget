@@ -33,7 +33,7 @@ module Repairing
     field :address_to, type: String
     field :coordinates, type: Array
 
-    validates :spending_units, :edrpou_spending_units, :address, :amount, :repair_start_date, presence: true
+    validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     validate :validate_coords
 
     before_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? and !obj.coordinates.present?}
