@@ -18,6 +18,7 @@ class Repairing::Layer
   field :description, type: String
   field :locale, type: String, default: 'uk'
   field :status, type: String, default: :plan
+  field :year, type: String, default: Time.now.year
 
   mount_uploader :repairs_file, RepairingRepairUploader
   skip_callback :update, :before, :store_previous_model_for_repairs_file

@@ -226,7 +226,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status, :year)
       end
       def set_categories
         @categories = Repairing::Category.by_locale.select{|p| p.category.nil?}
