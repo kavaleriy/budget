@@ -426,8 +426,14 @@
                 taxonomy_value = row[taxonomy_key]
               end
 
+              if node[taxonomy_key].nil?
+                node[taxonomy_key] = {}
+              end
+
+              node = node[taxonomy_key]
+
               if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
+                node[taxonomy_value] = { :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
                 node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
                 node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
               else
@@ -445,7 +451,6 @@
               end
 
               node[taxonomy_value][:amount][data_type]['_cumulative'] = row['_cumulative']
-
               node = node[taxonomy_value]
             }
           end
@@ -454,11 +459,11 @@
       tree
     end
 
-    def create_tree_item(items, key = I18n.t('mongoid.taxonomy.in_total'))
+    def create_tree_item(items, taxonomy_key = I18n.t('mongoid.taxonomy.in_total'), taxonomy_name = '-')
       node = {
           'amount' => items[:amount],
-          'key' => key,
-          'taxonomy' => items[:taxonomy]
+          'key' => taxonomy_key,
+          'taxonomy' => taxonomy_name
       }
 
       if node['amount'][:fact] and node['amount'][:fact]['_cumulative']
@@ -530,13 +535,15 @@
         }
       }
 
-      children = items.keys.reject{|k| k.in?([:amount, :taxonomy]) }
+      children = items.keys.reject{|k| k.in?([:amount]) }
 
       unless children.empty?
         node['children'] = []
-        children.each { |item_key|
-          node['children'] << self.create_tree_item(items[item_key], item_key)
-        }
+        children.each do |item_key|
+          items[item_key].each { |key, item|
+            node['children'] << self.create_tree_item(item, key, item_key)
+          }
+        end
       end
 
       node
