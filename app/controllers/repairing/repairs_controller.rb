@@ -60,6 +60,9 @@ module Repairing
           format.js {}
           format.json { render :show, status: :ok }
         else
+          # localization messages for error fields in uk.locale.yml(attributes:)
+          flash[:notice] = @repairing_repair.errors
+          format.js {}
           format.json { render json: @repairing_repair.errors, status: :unprocessable_entity }
         end
       end
