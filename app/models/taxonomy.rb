@@ -399,6 +399,8 @@
           rows[year][month].each do |row|
             node = tree
 
+            amount = row['amount'].round(2)
+
             data_type = row['_amount_type']
             fond = row['fond'] || ''
 
@@ -408,11 +410,11 @@
             node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
             node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
-            node[:amount][data_type][year][month]['total'] += row['amount']
+            node[:amount][data_type][year][month]['total'] += amount
 
             node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
             node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
-            node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
+            node[:amount][data_type][year][month]['fonds'][fond] += amount
 
             columns.each { |taxonomy_key|
               # TODO - need to update levels selection logic
@@ -433,20 +435,20 @@
               node = node[taxonomy_key]
 
               if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
+                node[taxonomy_value] = { :amount => { data_type => { year => { month => { 'total' => amount }}}} }
                 node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
-                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = amount unless fond.nil?
               else
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
                 node[taxonomy_value][:amount][data_type][year][month] = {} if node[taxonomy_value][:amount][data_type][year][month].nil?
                 node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
-                node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
+                node[taxonomy_value][:amount][data_type][year][month]['total'] += amount
 
                 unless fond.nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
-                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += row['amount']
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += amount
                 end
               end
 
