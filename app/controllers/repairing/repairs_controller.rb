@@ -7,7 +7,7 @@ module Repairing
 
     before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info]
 
-    # GET /repairing/repairs
+    # GET  /repairing/repairs
     # GET /repairing/repairs.json
     def index
       @repairing_repairs = Repairing::Repair.all

@@ -16,7 +16,7 @@ module Repairing
     field :subject, type: String
     field :work, type: String
     field :amount, type: Float
-    # field :repair_date, type: Date
+    field :repair_date, type: Date
     # field for e-data.gov.ua
     field :repair_start_date, type: Date
     field :repair_end_date, type: Date
@@ -142,6 +142,7 @@ module Repairing
       geo_jsons = []
 
       # set default last update date of repair
+      #TODO: change logic for default date(1970)
       last_updated = Time.new('1970-01-01')
 
       # if town not empty filter array by town
