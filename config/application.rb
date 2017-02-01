@@ -50,7 +50,7 @@ module Budget
     end
 
     # compress content
-    # config.middleware.use Rack::Deflater
+    config.middleware.use Rack::Deflater
 
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/presenters)
