@@ -17,6 +17,8 @@
           %th
             = t('repairing.repairs.form.town')
           %th
+            = t('repairing.repairs.form.year')
+          %th
             = t('repairing.repairs.form.description')
       %tbody
         %tr
@@ -38,6 +40,12 @@
                          'data-url' => "#{repairing_layer_path(@repairing_layer)}",
                          'data-emptytext' => t('repairing.layers.edit.town') }
               = @repairing_layer.town.title if @repairing_layer.town
+          %td
+            %a.edit_year{ href: '#', 'data-resource' => 'repairing_layer',
+                         id: 'year', 'data-type' => 'select', 'data-pk' => "#{@repairing_layer.id}",
+                         'data-url' => "#{repairing_layer_path(@repairing_layer)}",
+                         'data-emptytext' => t('repairing.layers.edit.year') }
+              = @repairing_layer.year
           %td
             %a.editable{ href: '#', 'data-resource' => 'repairing_layer',
                          id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@repairing_layer.id}",
@@ -73,6 +81,18 @@
         width: '350px',
         allowClear: true,
         minimumInputLength: 2
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+
+    $('#edit_layer .edit_year').editable({
+      value: "#{@repairing_layer.year}",
+      source: "#{years_array(2015)}",
+      select2: {
+        width: '350px',
+        allowClear: true
       },
       success: function(response,newValue){
         show_bootstrap_flash(response.message,response.class_name);

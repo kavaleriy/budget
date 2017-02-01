@@ -2,10 +2,12 @@
   .row.table-body
     .col-sm-11.reset-padding
       .col-sm-4.reset-padding
-        .col-sm-6.hide-overflow
+        .col-sm-5.hide-overflow
           = link_to layer.id, repairing_layer_path(layer)
-        .col-sm-6.hide-overflow
+        .col-sm-5.hide-overflow
           = layer.title
+        .col-sm-2.hide-overflow
+          = layer.year
       .col-sm-5.reset-padding
         .col-sm-4.hide-overflow
           = link_to layer.repairs_file.url, class: '' do
@@ -19,7 +21,7 @@
         .col-sm-6.hide-overflow
           = "#{layer.town.title unless layer.town.blank?} "
         .col-sm-6.hide-overflow
-          = layer.owner.email
+          = layer.owner.email if layer.owner
     .col-sm-1.reset-padding.text-center
       = link_to t('.edit', default: t('helpers.links.edit')),
                   edit_repairing_layer_path(layer),

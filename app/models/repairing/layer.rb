@@ -5,6 +5,7 @@ class Repairing::Layer
   scope :by_locale, lambda { where(locale: I18n.locale) }
   scope :by_category, lambda { |category| where(repairing_category: category) }
   scope :by_status, lambda { |status| where(status: status) }
+  scope :by_year, lambda { |year| where(year: year) }
   # Get taxonomies by towns
   scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
   # Get budget files by string in title
@@ -18,6 +19,7 @@ class Repairing::Layer
   field :description, type: String
   field :locale, type: String, default: 'uk'
   field :status, type: String, default: :plan
+  field :year, type: String
 
   mount_uploader :repairs_file, RepairingRepairUploader
   skip_callback :update, :before, :store_previous_model_for_repairs_file
@@ -77,6 +79,7 @@ class Repairing::Layer
                                                                'repairing_category_id' => 1,
                                                                'town_id' => 1,
                                                                'status' => 1,
+                                                               'year' => 1,
                                                            }
                                                        }
                                                    ])
@@ -104,7 +107,6 @@ class Repairing::Layer
                                                                              'updated_at' => 1,
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
-                                                                             'repair_date' => 1,
                                                                              'repair_start_date' => 1,
                                                                          }
                                                                      }

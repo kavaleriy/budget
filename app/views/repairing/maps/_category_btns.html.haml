@@ -344,7 +344,7 @@
         %span.input-group-addon
           %b= t('repairing.maps.map_select.year')
         = select_tag 'year_select',
-                      options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + (2015..Time.now.year).to_a.reverse, selected: "#{@year}"),
+                      options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + years_array(2015), selected: "#{@year}"),
                       class: 'form-control'
     .pull-right.road-condition-select
       = render partial: 'repairing/maps/road_condition'
