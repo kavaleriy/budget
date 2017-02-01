@@ -49,6 +49,9 @@ module Budget
       end
     end
 
+    # compress content
+    config.middleware.use Rack::Deflater
+
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/presenters)
     config.watchable_dirs['lib'] = [:rb]
