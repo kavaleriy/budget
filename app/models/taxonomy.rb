@@ -399,6 +399,8 @@
           rows[year][month].each do |row|
             node = tree
 
+            amount = row['amount'].round(2)
+
             data_type = row['_amount_type']
             fond = row['fond'] || ''
 
@@ -408,11 +410,11 @@
             node[:amount][data_type][year] = {}  if node[:amount][data_type][year].nil?
             node[:amount][data_type][year][month] = {}  if node[:amount][data_type][year][month].nil?
             node[:amount][data_type][year][month]['total'] = 0 if node[:amount][data_type][year][month]['total'].nil?
-            node[:amount][data_type][year][month]['total'] += row['amount']
+            node[:amount][data_type][year][month]['total'] = (node[:amount][data_type][year][month]['total'] + amount).round(2)
 
             node[:amount][data_type][year][month]['fonds'] = {} if node[:amount][data_type][year][month]['fonds'].nil?
             node[:amount][data_type][year][month]['fonds'][fond] = 0 if node[:amount][data_type][year][month]['fonds'][fond].nil?
-            node[:amount][data_type][year][month]['fonds'][fond] += row['amount']
+            node[:amount][data_type][year][month]['fonds'][fond] = (node[:amount][data_type][year][month]['fonds'][fond] + amount).round(2)
 
             columns.each { |taxonomy_key|
               # TODO - need to update levels selection logic
@@ -426,26 +428,33 @@
                 taxonomy_value = row[taxonomy_key]
               end
 
+              if node[taxonomy_key].nil?
+                node[taxonomy_key] = {}
+              end
+
+              node = node[taxonomy_key]
+
               if node[taxonomy_value].nil?
-                node[taxonomy_value] = { :taxonomy => taxonomy_key, :amount => { data_type => { year => { month => { 'total' => row['amount'] }}}} }
+                node[taxonomy_value] = { :amount => { data_type => { year => { month => { 'total' => amount }}}} }
                 node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {}
-                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = row['amount'] unless fond.nil?
+                node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = amount unless fond.nil?
               else
                 node[taxonomy_value][:amount][data_type] = {} if node[taxonomy_value][:amount][data_type].nil?
                 node[taxonomy_value][:amount][data_type][year] = {} if node[taxonomy_value][:amount][data_type][year].nil?
                 node[taxonomy_value][:amount][data_type][year][month] = {} if node[taxonomy_value][:amount][data_type][year][month].nil?
                 node[taxonomy_value][:amount][data_type][year][month]['total'] = 0 if node[taxonomy_value][:amount][data_type][year][month]['total'].nil?
-                node[taxonomy_value][:amount][data_type][year][month]['total'] += row['amount']
+                node[taxonomy_value][:amount][data_type][year][month]['total'] =
+                    (node[taxonomy_value][:amount][data_type][year][month]['total'] + amount).round(2)
 
                 unless fond.nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'] = {} if node[taxonomy_value][:amount][data_type][year][month]['fonds'].nil?
                   node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] = 0 if node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond].nil?
-                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] += row['amount']
+                  node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] =
+                      (node[taxonomy_value][:amount][data_type][year][month]['fonds'][fond] + amount).round(2)
                 end
               end
 
               node[taxonomy_value][:amount][data_type]['_cumulative'] = row['_cumulative']
-
               node = node[taxonomy_value]
             }
           end
@@ -454,11 +463,11 @@
       tree
     end
 
-    def create_tree_item(items, key = I18n.t('mongoid.taxonomy.in_total'))
+    def create_tree_item(items, taxonomy_key = I18n.t('mongoid.taxonomy.in_total'), taxonomy_name = '-')
       node = {
           'amount' => items[:amount],
-          'key' => key,
-          'taxonomy' => items[:taxonomy]
+          'key' => taxonomy_key,
+          'taxonomy' => taxonomy_name
       }
 
       if node['amount'][:fact] and node['amount'][:fact]['_cumulative']
@@ -521,7 +530,7 @@
         node['amount'][dt].each{ |year, months|
           next if year == '_cumulative'
           next if months['0']
-          
+
           annual = { 'total' => 0 }
           months.each_key{ |month|
             annual['total'] += months[month]['total']
@@ -530,13 +539,15 @@
         }
       }
 
-      children = items.keys.reject{|k| k.in?([:amount, :taxonomy]) }
+      children = items.keys.reject{|k| k.in?([:amount]) }
 
       unless children.empty?
         node['children'] = []
-        children.each { |item_key|
-          node['children'] << self.create_tree_item(items[item_key], item_key)
-        }
+        children.each do |item_key|
+          items[item_key].each { |key, item|
+            node['children'] << self.create_tree_item(item, key, item_key)
+          }
+        end
       end
 
       node

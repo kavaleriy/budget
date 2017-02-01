@@ -58,10 +58,12 @@
     .row.table-title.hide-in-small
       .col-sm-11.reset-padding
         .col-sm-4.reset-padding
-          .col-xs-6
+          .col-xs-5
             =t('key')
-          .col-xs-6
+          .col-xs-5
             = sortable 'title', t('repairing.repairs.form.title')
+          .col-xs-2
+            = sortable 'year', t('year')
         .col-sm-5.reset-padding
           .col-xs-4
             =t('file')

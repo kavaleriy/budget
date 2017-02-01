@@ -31,6 +31,15 @@
                                                 t('js.visify.fact') => :fact}),
                              id: 'status',
                              class: 'form-control'
+  .col-sm-12.col-md-2.form-inline
+    .input-group
+      %span.input-group-addon
+        %b
+          =t('year')
+      = select_tag :year, options_for_select(years_array(2015)),
+                          include_blank: true,
+                          id: 'layer_year',
+                          class: 'form-control'
 
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
@@ -81,11 +90,7 @@
       clickSearchBtn();
     });
 
-    $("#layer_type").on("change", function(){
-      clickSearchBtn();
-    });
-
-    $("#status").on("change", function(){
+    $("#layer_type, #status, #layer_year").on("change", function(){
       clickSearchBtn();
     });
 

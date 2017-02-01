@@ -68,6 +68,7 @@ module Repairing
       @repairing_layers = @repairing_layers.find_by_string(params['q'])       unless params['q'].blank?
       @repairing_layers = @repairing_layers.by_category(params['category'])   unless params['category'].blank?
       @repairing_layers = @repairing_layers.by_status(params['status'])       unless params['status'].blank?
+      @repairing_layers = @repairing_layers.by_year(params['year'])           unless params['year'].blank?
 
       @repairing_layers = @repairing_layers.order(sort_column + ' ' + sort_direction)
 
@@ -226,7 +227,7 @@ module Repairing
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status)
+        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status, :year)
       end
       def set_categories
         @categories = Repairing::Category.by_locale.select{|p| p.category.nil?}

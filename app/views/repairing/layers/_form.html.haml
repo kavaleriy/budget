@@ -12,6 +12,9 @@
   = f.input :status, collection: {t('js.visify.plan') => :plan, t('js.visify.fact') => :fact},
                      prompt: false,
                      label: t('repairing.repairs.form.status')
+  = f.input :year, collection: years_array(2015),
+                     prompt: false,
+                     label: t('repairing.repairs.form.year')
   = f.input :description, as: :text,  label: t('repairing.repairs.form.description'), rows: '8'
   = f.input :repairs_file,as: :file, label: t('repairing.repairs.form.repairs_file')
 
