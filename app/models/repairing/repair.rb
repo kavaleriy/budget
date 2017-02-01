@@ -16,7 +16,7 @@ module Repairing
     field :subject, type: String
     field :work, type: String
     field :amount, type: Float
-    field :repair_date, type: Date
+    # field :repair_date, type: Date
     # field for e-data.gov.ua
     field :repair_start_date, type: Date
     field :repair_end_date, type: Date
@@ -157,6 +157,7 @@ module Repairing
           repair['layer'] = {}
           repair['layer']['town_id'] = layer['town_id'].to_s
           repair['layer']['status'] = layer['status'] || :plan
+          repair['layer']['year'] = layer['year']
           repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
 
           repair_json = Repairing::GeojsonBuilder.build_repair(repair)

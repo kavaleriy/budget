@@ -78,6 +78,7 @@ class Repairing::Layer
                                                                'repairing_category_id' => 1,
                                                                'town_id' => 1,
                                                                'status' => 1,
+                                                               'year' => 1,
                                                            }
                                                        }
                                                    ])
@@ -105,7 +106,6 @@ class Repairing::Layer
                                                                              'updated_at' => 1,
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
-                                                                             'repair_date' => 1,
                                                                              'repair_start_date' => 1,
                                                                          }
                                                                      }
