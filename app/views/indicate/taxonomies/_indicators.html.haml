@@ -135,6 +135,8 @@
             - first_values = v[v.keys[0]][first_year]
             .title
               = k
+            .unit
+              = "(#{v['unit']})"
             .chart
               = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
             .comments
