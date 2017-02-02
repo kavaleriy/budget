@@ -149,6 +149,7 @@
                   = t('widgets.indicators.download_report')
                   %span
                     = first_year
+                    = t("js.visify.#{v.keys[0]}")
               - else
                 = link_to "#" do
                   %i.fa.fa-download
@@ -444,6 +445,23 @@
           return value;
         }
 
+        function getStatus(){
+          // Get localise status string
+          var point_type = activeElement[0]._datasetIndex;
+
+          switch(point_type){
+            case 0:
+              value = I18n.t('js.visify.plan');
+              break;
+            case 1:
+              value = I18n.t('js.visify.fact');
+              break;
+            default:
+              value = ''
+          }
+          return value;
+        }
+
         function settingCommentLinkForPoint(){
           // Refactor this code if changed DOM structure in widgets/town_profile/indicates.html
 
@@ -462,7 +480,9 @@
 
           // set year to link for point
           var year = data['labels'][point_position];
-          $download_link.children('span').text(year);
+          // set status for point
+          var status = getStatus();
+          $download_link.children('span').text(year + ' ' + status);
 
           // setting css to link
           if (link == '#' || link == ''){
