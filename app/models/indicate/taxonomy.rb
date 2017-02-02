@@ -43,6 +43,7 @@ class Indicate::Taxonomy
         indicators[group][name][status][year]['value'] = indicator['value']
         indicators[group][name][status][year]['link'] = indicator['link']
         indicators[group][name]['id'] = replace_space_indicator_chart_id(group, name)
+        indicators[group][name]['unit'] = indicator['unit'] || 'units'
       }
     }
     indicators
