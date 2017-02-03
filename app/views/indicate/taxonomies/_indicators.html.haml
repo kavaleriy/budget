@@ -258,7 +258,7 @@
                 arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
                 arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
               } else{
-                arrays_data['values']['values_p'].unshift("");
+                arrays_data['values']['values_p'].unshift(null);
                 arrays_data['comments']['comments_p'].unshift("");
                 arrays_data['links']['links_p'].unshift("");
               }
@@ -267,7 +267,7 @@
                 arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
                 arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
               } else{
-                arrays_data['values']['values_f'].unshift("");
+                arrays_data['values']['values_f'].unshift(null);
                 arrays_data['comments']['comments_f'].unshift("");
                 arrays_data['links']['links_f'].unshift("");
               }
@@ -327,7 +327,7 @@
               pointHoverBorderColor: "#fff",
 
               data: arrays_data['values']['values_p'],
-              spanGaps: false
+              spanGaps: true
             },
             {
               label: "fact",
@@ -356,7 +356,7 @@
 
               data: arrays_data['values']['values_f'],
 
-              spanGaps: false
+              spanGaps: true,
             }
           ]
         },
