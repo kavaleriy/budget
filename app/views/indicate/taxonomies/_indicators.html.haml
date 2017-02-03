@@ -142,7 +142,7 @@
             .comments
               = first_values['comment']
             .reports
-              - if first_values['link'] != nil
+              - unless first_values['link'].blank?
                 = link_to "#{first_values['link']}" do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
@@ -413,82 +413,53 @@
               }
             ]
           },
-          onClick: handleClick
+          onClick: setCommentLinkForPoint
         }
       });
 
-      function handleClick(evt){
+      function setCommentLinkForPoint(evt){
         var activeElement = myChart.getElementAtEvent(evt);
         var data = activeElement[0]['_chart']['config']['data'];
 
         var point_position = activeElement[0]._index;
 
-        settingCommentLinkForPoint();
+        // Refactor this code if csettingCommentLinkForPointanged DOM structure in widgets/town_profile/indicates.html
+        var point_order = activeElement[0]._datasetIndex;
+        var comment = getCommentLink('comments', point_order);
+        var link = getCommentLink('links', point_order);
 
-        function getCommentLink(str){
+        // set comment to chart for point
+        var parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
+        var div_comments = parent_div.next('.comments');
+        div_comments.text(comment);
+
+        // set link to chart for point
+        var div_links = div_comments.next('.reports');
+        var download_link = div_links.children('a');
+        download_link.attr("href", link);
+
+        // set year to link for point
+        var year = data['labels'][point_position];
+        // set status to link for point
+        var status = getStatus(activeElement[0]._datasetIndex);
+        download_link.children('span').text(year + ' ' + status);
+
+        // setting view of link
+        if (link == '' || link == null || link == '#'){
+          download_link.addClass('no-link');
+        } else{
+          download_link.removeClass('no-link');
+        }
+
+        function getCommentLink(str, point_order){
           // Get comment or link
           var values = data[str];
-          var point_type = activeElement[0]._datasetIndex;
-
-          switch(point_type){
-            case 0:
-              value = values[str + '_p'][point_position];
-              break;
-            case 1:
-              value = values[str + '_f'][point_position];
-              break;
-            default:
-              value = ''
-          }
-
-          return value;
+          return point_order == 0 ? values[str + '_p'][point_position] : values[str + '_f'][point_position];
         }
 
-        function getStatus(){
+        function getStatus(data_index){
           // Get localise status string
-          var point_type = activeElement[0]._datasetIndex;
-
-          switch(point_type){
-            case 0:
-              value = I18n.t('js.visify.plan');
-              break;
-            case 1:
-              value = I18n.t('js.visify.fact');
-              break;
-            default:
-              value = ''
-          }
-          return value;
-        }
-
-        function settingCommentLinkForPoint(){
-          // Refactor this code if changed DOM structure in widgets/town_profile/indicates.html
-
-          var comment = getCommentLink('comments');
-          var link = getCommentLink('links');
-
-          // set comment to chart
-          $parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
-          $div_comments = $parent_div.next('.comments');
-          $div_comments.text(comment);
-
-          // set link to chart
-          $div_links = $div_comments.next('.reports');
-          $download_link = $div_links.children('a');
-          $download_link.attr("href", link);
-
-          // set year to link for point
-          var year = data['labels'][point_position];
-          // set status to link for point
-          var status = getStatus();
-          $download_link.children('span').text(year + ' ' + status);
-
-          // setting css to link
-          if (['#','', null].indexOf(link) != -1){
-            $download_link.addClass('no-link');
-          } else{
-            $download_link.removeClass('no-link');
-          }
+          return data_index == 0 ? I18n.t('js.visify.plan') : I18n.t('js.visify.fact');
         }
       }
     }
