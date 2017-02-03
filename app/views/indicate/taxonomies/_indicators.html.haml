@@ -420,13 +420,12 @@
       function setCommentLinkForPoint(evt){
         var activeElement = myChart.getElementAtEvent(evt);
         var data = activeElement[0]['_chart']['config']['data'];
-
         var point_position = activeElement[0]._index;
 
         // Refactor this code if csettingCommentLinkForPointanged DOM structure in widgets/town_profile/indicates.html
-        var point_order = activeElement[0]._datasetIndex;
-        var comment = getCommentLink('comments', point_order);
-        var link = getCommentLink('links', point_order);
+        var point_status = activeElement[0]._datasetIndex;
+        var comment = getCommentLink('comments', point_status);
+        var link = getCommentLink('links', point_status);
 
         // set comment to chart for point
         var parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
@@ -441,7 +440,7 @@
         // set year to link for point
         var year = data['labels'][point_position];
         // set status to link for point
-        var status = getStatus(activeElement[0]._datasetIndex);
+        var status = getStatus(point_status);
         download_link.children('span').text(year + ' ' + status);
 
         // setting view of link
@@ -451,15 +450,15 @@
           download_link.removeClass('no-link');
         }
 
-        function getCommentLink(str, point_order){
+        function getCommentLink(str, point_status){
           // Get comment or link
           var values = data[str];
-          return point_order == 0 ? values[str + '_p'][point_position] : values[str + '_f'][point_position];
+          return point_status == 0 ? values[str + '_p'][point_position] : values[str + '_f'][point_position];
         }
 
-        function getStatus(data_index){
+        function getStatus(point_status){
           // Get localise status string
-          return data_index == 0 ? I18n.t('js.visify.plan') : I18n.t('js.visify.fact');
+          return point_status == 0 ? I18n.t('js.visify.plan') : I18n.t('js.visify.fact');
         }
       }
     }
