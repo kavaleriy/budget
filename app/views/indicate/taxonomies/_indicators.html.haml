@@ -140,10 +140,9 @@
             .chart
               = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
             .comments
-              -#%a.editable-href
               = first_values['comment']
             .reports
-              - if first_values['link'] != ''
+              - if first_values['link'] != nil
                 = link_to "#{first_values['link']}" do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
@@ -151,11 +150,11 @@
                     = first_year
                     = t("js.visify.#{v.keys[0]}")
               - else
-                = link_to "#" do
+                = link_to "#", class: 'no-link' do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
                   %span
-                    = Date.today.year
+                    = '__'
 
 :javascript
 
@@ -480,15 +479,15 @@
 
           // set year to link for point
           var year = data['labels'][point_position];
-          // set status for point
+          // set status to link for point
           var status = getStatus();
           $download_link.children('span').text(year + ' ' + status);
 
           // setting css to link
-          if (link == '#' || link == ''){
-            $download_link.css("color", "grey");
+          if (['#','', null].indexOf(link) != -1){
+            $download_link.addClass('no-link');
           } else{
-            $download_link.css("color", "#2A4989");
+            $download_link.removeClass('no-link');
           }
         }
       }
