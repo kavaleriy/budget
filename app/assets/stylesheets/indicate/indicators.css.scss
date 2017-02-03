@@ -2,6 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+// init colors
+$gray: gray;
+$darkgray: darkgray;
+$lightgray: lightgray;
+
 .group {
   font-size: 1.4em;
   font-weight: bold;
@@ -17,7 +22,7 @@
   }
   .unit {
     padding-bottom: 5px;
-    color: grey;
+    color: $gray;
     text-align: center;
     font-style: italic;
   }
@@ -41,7 +46,7 @@
       text-decoration: none;
     }
     a.no-link{
-      color: grey;
+      color: $gray;
       cursor: default;
     }
   }
@@ -57,7 +62,7 @@
   }
 
   .x.axis line {
-    stroke: lightgrey;
+    stroke: $lightgray;
   }
 
   .x.axis text {
@@ -79,7 +84,7 @@
   }
 
   .active_point {
-    stroke: lightgray;
+    stroke: $lightgray;
     stroke-width: 8;
     stroke-opacity: 0.6;
   }
@@ -96,7 +101,7 @@
   }
 
   .area {
-    fill: lightgray;
+    fill: $lightgray;
     fill-opacity: 0.3;
     stroke-width: 0;
   }
@@ -108,12 +113,12 @@ body {
   }
 
   .tooltip-inner {
-    background-color: darkgray;
+    background-color: $darkgray;
     color: #ffffff;
   }
 
   .tooltip.top .tooltip-arrow {
-    border-top-color: darkgray;
+    border-top-color: $darkgray;
   }
 
   .load_button {
