@@ -57,13 +57,13 @@ class Repairing::GeojsonBuilder
   def self.extract_props repair
     # category = Repairing::Category.find(repair.layer[:repairing_category_id]) if repair.layer && repair.layer[:repairing_category_id]
 
-    year = repair['layer']['year'] ? repair['layer']['year'] : :no_year # 'no_year' use in partial: _category_btns for select repairs on map
     # from maps controller we get BSON::Document in layer
     # from other place we get BSON::Object
     # if layer is object than set this layer as repair layer
     if repair['layer'].class.eql?( BSON::ObjectId )
       repair['layer'] = repair.layer
     end
+    year = repair['layer']['year'] ? repair['layer']['year'] : :no_year # 'no_year' use in partial: _category_btns for select repairs on map
     {
         id: "#{repair['_id']}",
         p_c_id: "#{repair['layer']['repairing_category_id'] if repair['layer_id']}", #parent_category_id
