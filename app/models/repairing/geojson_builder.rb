@@ -4,7 +4,7 @@ class Repairing::GeojsonBuilder
     return if repair['coordinates'].blank? ||
         repair['coordinates'][0].nil? ||
         repair['coordinates'][1].nil?
-
+    # binding.pry
     if repair['coordinates'][0].is_a?(Array)
       build_repair_path(repair)
     else
@@ -28,6 +28,16 @@ class Repairing::GeojsonBuilder
   end
 
   def self.build_repair_path(repair)
+    # coordinates =  repair['coordinates'].map{|test| test.map(&:to_f)}
+    coordinates =  repair['coordinates'].map.with_index do |test, i|
+      test.map.with_index do |lit, j|
+        if lit.to_i == 0
+          repair['coordinates'][i-1] ? repair['coordinates'][i-1][j] : lit
+        else
+          lit
+        end
+      end
+    end
     {
         type: "FeatureCollection",
         properties: {
@@ -38,12 +48,12 @@ class Repairing::GeojsonBuilder
           type: "Feature",
           geometry: {
             type: 'Point',
-            coordinates: repair['coordinates'][ repair['coordinates'].count / 2 ]
+            coordinates: coordinates[ coordinates.count / 2 ]
           },
           properties: {
             id: repair['_id'].to_s,
             repair: "road",
-            route: reduceCoordinatesCount(repair['coordinates'])
+            route: reduceCoordinatesCount(coordinates)
             # TODO: views/repairing/maps/_map.html.haml, 324 line
           }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
         },
