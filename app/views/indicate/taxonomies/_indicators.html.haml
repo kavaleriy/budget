@@ -135,24 +135,26 @@
             - first_values = v[v.keys[0]][first_year]
             .title
               = k
+            .unit
+              = "(#{v['unit']})"
             .chart
               = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
             .comments
-              -#%a.editable-href
               = first_values['comment']
             .reports
-              - if first_values['link'] != ''
+              - unless first_values['link'].blank?
                 = link_to "#{first_values['link']}" do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
                   %span
                     = first_year
+                    = t("js.visify.#{v.keys[0]}")
               - else
-                = link_to "#" do
+                = link_to "#", class: 'no-link' do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
                   %span
-                    = Date.today.year
+                    = '__'
 
 :javascript
 
@@ -256,7 +258,7 @@
                 arrays_data['comments']['comments_p'].unshift(v['plan'][i]['comment']);
                 arrays_data['links']['links_p'].unshift(v['plan'][i]['link']);
               } else{
-                arrays_data['values']['values_p'].unshift("");
+                arrays_data['values']['values_p'].unshift(null);
                 arrays_data['comments']['comments_p'].unshift("");
                 arrays_data['links']['links_p'].unshift("");
               }
@@ -265,7 +267,7 @@
                 arrays_data['comments']['comments_f'].unshift(v['fact'][i]['comment']);
                 arrays_data['links']['links_f'].unshift(v['fact'][i]['link']);
               } else{
-                arrays_data['values']['values_f'].unshift("");
+                arrays_data['values']['values_f'].unshift(null);
                 arrays_data['comments']['comments_f'].unshift("");
                 arrays_data['links']['links_f'].unshift("");
               }
@@ -325,7 +327,7 @@
               pointHoverBorderColor: "#fff",
 
               data: arrays_data['values']['values_p'],
-              spanGaps: false
+              spanGaps: true
             },
             {
               label: "fact",
@@ -354,7 +356,7 @@
 
               data: arrays_data['values']['values_f'],
 
-              spanGaps: false
+              spanGaps: true,
             }
           ]
         },
@@ -411,63 +413,52 @@
               }
             ]
           },
-          onClick: handleClick
+          onClick: setCommentLinkForPoint
         }
       });
 
-      function handleClick(evt){
+      function setCommentLinkForPoint(evt){
         var activeElement = myChart.getElementAtEvent(evt);
         var data = activeElement[0]['_chart']['config']['data'];
-
         var point_position = activeElement[0]._index;
 
-        settingCommentLinkForPoint();
+        // Refactor this code if csettingCommentLinkForPointanged DOM structure in widgets/town_profile/indicates.html
+        var point_status = activeElement[0]._datasetIndex;
+        var comment = getCommentLink('comments', point_status);
+        var link = getCommentLink('links', point_status);
 
-        function getCommentLink(str){
-          // Get comment or link
-          var values = data[str];
-          var point_type = activeElement[0]._datasetIndex;
+        // set comment to chart for point
+        var parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
+        var div_comments = parent_div.next('.comments');
+        div_comments.text(comment);
 
-          switch(point_type){
-            case 0:
-              value = values[str + '_p'][point_position];
-              break;
-            case 1:
-              value = values[str + '_f'][point_position];
-              break;
-            default:
-              value = ''
-          }
+        // set link to chart for point
+        var div_links = div_comments.next('.reports');
+        var download_link = div_links.children('a');
+        download_link.attr("href", link);
 
-          return value;
+        // set year to link for point
+        var year = data['labels'][point_position];
+        // set status to link for point
+        var status = getStatus(point_status);
+        download_link.children('span').text(year + ' ' + status);
+
+        // setting view of link
+        if (link == '' || link == null || link == '#'){
+          download_link.addClass('no-link');
+        } else{
+          download_link.removeClass('no-link');
         }
 
-        function settingCommentLinkForPoint(){
-          // Refactor this code if changed DOM structure in widgets/town_profile/indicates.html
+        function getCommentLink(str, point_status){
+          // Get comment or link
+          var values = data[str];
+          return point_status == 0 ? values[str + '_p'][point_position] : values[str + '_f'][point_position];
+        }
 
-          var comment = getCommentLink('comments');
-          var link = getCommentLink('links');
-
-          // set comment to chart
-          $parent_div = $(activeElement[0]['_chart']['canvas']).parent().parent();
-          $div_comments = $parent_div.next('.comments');
-          $div_comments.text(comment);
-
-          // set link to chart
-          $div_links = $div_comments.next('.reports');
-          $download_link = $div_links.children('a');
-          $download_link.attr("href", link);
-
-          // set year to link for point
-          var year = data['labels'][point_position];
-          $download_link.children('span').text(year);
-
-          // setting css to link
-          if (link == '#' || link == ''){
-            $download_link.css("color", "grey");
-          } else{
-            $download_link.css("color", "#2A4989");
-          }
+        function getStatus(point_status){
+          // Get localise status string
+          return point_status == 0 ? I18n.t('js.visify.plan') : I18n.t('js.visify.fact');
         }
       }
     }

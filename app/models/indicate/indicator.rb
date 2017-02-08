@@ -6,6 +6,7 @@ class Indicate::Indicator
   field :comment, type: String
   field :value, type: String
   field :year, type: String
+  field :unit, type: String
 
   belongs_to :indicate_indicator_file, :class_name => 'Indicate::IndicatorFile', autosave: true
 

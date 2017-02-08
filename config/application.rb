@@ -41,6 +41,9 @@ module Budget
     # Dev sharing link
     # config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f7636836f4b813"
 
+    # Test sharing link 7.02.2017
+    # config.addthis_url = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-589861d9a7e4d1ac"
+
     # Cross-origin resource sharing (CORS)
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
