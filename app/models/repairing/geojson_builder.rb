@@ -4,7 +4,6 @@ class Repairing::GeojsonBuilder
     return if repair['coordinates'].blank? ||
         repair['coordinates'][0].nil? ||
         repair['coordinates'][1].nil?
-    # binding.pry
     if repair['coordinates'][0].is_a?(Array)
       build_repair_path(repair)
     else
