@@ -13,9 +13,9 @@ class TaxonomyRov < Taxonomy
           'kekv' =>{:level => 3, :draggable => true, :title=>I18n.t('mongoid.taxonomy_rov.economy')},
           'krk'=>{:level => 4, :title=>I18n.t('mongoid.taxonomy_rov.disposer')},
           'kpk_aa'=>{:level => 5, :title=>I18n.t('mongoid.taxonomy_rov.kpk_aa')},
-          'kpk_b'=>{:level => 7, :title=>I18n.t('mongoid.taxonomy_rov.kpk_b')},
+          # 'kpk_b'=>{:level => 7, :title=>I18n.t('mongoid.taxonomy_rov.kpk_b')},
           'kpk_cccd'=>{:level => 8, :title=>I18n.t('mongoid.taxonomy_rov.kpk_cccd')},
-          'kpk_d'=>{:level => 9, :title=>I18n.t('mongoid.taxonomy_rov.kpk_d')},
+          # 'kpk_d'=>{:level => 9, :title=>I18n.t('mongoid.taxonomy_rov.kpk_d')},
       }
     else
       {
@@ -26,9 +26,9 @@ class TaxonomyRov < Taxonomy
           'krk'=>{:level => 4, :title=>I18n.t('mongoid.taxonomy_rov.disposer')},
           'kvk' =>{:level => 5, :title=>I18n.t('mongoid.taxonomy_rov.department')},
           'kpk_aa'=>{:level => 6, :title=>I18n.t('mongoid.taxonomy_rov.kpk_aa')},
-          'kpk_b'=>{:level => 7, :title=>I18n.t('mongoid.taxonomy_rov.kpk_b')},
+          # 'kpk_b'=>{:level => 7, :title=>I18n.t('mongoid.taxonomy_rov.kpk_b')},
           'kpk_cccd'=>{:level => 8, :title=>I18n.t('mongoid.taxonomy_rov.kpk_cccd')},
-          'kpk_d'=>{:level => 9, :title=>I18n.t('mongoid.taxonomy_rov.kpk_d')},
+          # 'kpk_d'=>{:level => 9, :title=>I18n.t('mongoid.taxonomy_rov.kpk_d')},
       }
     end
   end
