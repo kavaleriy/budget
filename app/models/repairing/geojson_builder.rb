@@ -5,7 +5,7 @@ class Repairing::GeojsonBuilder
         repair['coordinates'][0].nil? ||
         repair['coordinates'][1].nil?
 
-    if repair['coordinates'][0].is_a?(Array) # && repair['coordinates'][0].length != 1
+    if repair['coordinates'][0].is_a?(Array) && repair['coordinates'][0].length != 1
       build_repair_path(repair)
     else
       if repair['coordinates'][0].is_a?(Float) && repair['coordinates'][1].is_a?(Float)
@@ -29,17 +29,10 @@ class Repairing::GeojsonBuilder
 
   def self.build_repair_path(repair)
     # coordinates =  repair['coordinates']
-    coordinates =  repair['coordinates'].map.with_index do |point, i|
+    coordinates =  repair['coordinates'].map do |point|
       # If not valid data in db
-      # if point has only one coordinate
-      if point.length == 1
-        point << point[0]
-      end
-      # if point has coordinate as string
-      point.map.with_index do |coord, j|
+      point.map do |coord|
         if coord.to_i == 0    # coord is string
-          # set coord from previous point
-          # repair['coordinates'][i-1] ? repair['coordinates'][i-1][j] : coord
           return
         else
           coord
