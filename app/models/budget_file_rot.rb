@@ -12,7 +12,7 @@ class BudgetFileRot < BudgetFile
     return unless is_allowed_fond(fond)
 
     kod =  row['KOD'].to_s.split('.')[0]
-    return if kkd.slice(0, 3) == '250' and kod == '2'
+    # return if kkd.slice(0, 3) == '250' and kod == '2'
 
 
     item = {

@@ -17,11 +17,14 @@ class BudgetFileRov < BudgetFile
     kod =  row['KOD'].to_s.split('.')[0]
     return if fond != '1' and kod == '1'
 
-    months = [ row['MONTH'].to_s.split('.')[0] ]
+    # calc special fond annual amount
+    month = row['MONTH'].to_s.split('.')[0]
+    return if fond == '7' and month == '0' and ktfk.blank? # since 2017 this patch is outdated
+    months = [ month ]
     months << '0' if fond == '7' # add annual amount manually
 
 
-    months.map do |month|
+    months.map do |mon|
       item = if ktfk.blank?
                kpk = row['KPK'].to_s.ljust(7, '0')
                # Головний розпорядник (код відомчої класифікації видатків та кредитування місцевого бюджету)
@@ -54,7 +57,7 @@ class BudgetFileRov < BudgetFile
 
       item.merge({
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
-        '_month' => month,
+        '_month' => mon,
 
         'fond' => fond,
 
