@@ -32,22 +32,22 @@ class Repairing::GeojsonBuilder
     {
         type: "FeatureCollection",
         properties: {
-            id: repair['_id'].to_s
+          id: repair['_id'].to_s
         }.merge(extract_props(repair)),
         features: [
-            {
-                type: "Feature",
-                geometry: {
-                    type: 'Point',
-                    coordinates: repair['coordinates'][ repair['coordinates'].count / 2 ]
-                },
-                properties: {
-                    id: repair['_id'].to_s,
-                    repair: "road",
-                    route: reduceCoordinatesCount(repair['coordinates'])
-                    # TODO: views/repairing/maps/_map.html.haml, 324 line
-                }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
-            },
+        {
+          type: "Feature",
+          geometry: {
+            type: 'Point',
+            coordinates: repair['coordinates'][ repair['coordinates'].count / 2 ]
+          },
+          properties: {
+            id: repair['_id'].to_s,
+            repair: "road",
+            route: reduceCoordinatesCount(repair['coordinates'])
+            # TODO: views/repairing/maps/_map.html.haml, 324 line
+          }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
+        },
         ]
     }
 
