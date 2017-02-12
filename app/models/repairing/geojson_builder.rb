@@ -5,6 +5,7 @@ class Repairing::GeojsonBuilder
         repair['coordinates'][0].nil? ||
         repair['coordinates'][1].nil?
 
+    # Check latitude and longitude with '.length' , Del this check when added 2d indexes
     if repair['coordinates'][0].is_a?(Array) && repair['coordinates'][0].length != 1
       build_repair_path(repair)
     else
@@ -28,36 +29,25 @@ class Repairing::GeojsonBuilder
   end
 
   def self.build_repair_path(repair)
-    # coordinates =  repair['coordinates']
-    coordinates =  repair['coordinates'].map do |point|
-      # If not valid data in db
-      point.map do |coord|
-        if coord.to_i == 0    # coord is string
-          return
-        else
-          coord
-        end
-      end
-    end
     {
         type: "FeatureCollection",
         properties: {
-          id: repair['_id'].to_s
+            id: repair['_id'].to_s
         }.merge(extract_props(repair)),
         features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: 'Point',
-            coordinates: coordinates[ coordinates.count / 2 ]
-          },
-          properties: {
-            id: repair['_id'].to_s,
-            repair: "road",
-            route: reduceCoordinatesCount(coordinates)
-            # TODO: views/repairing/maps/_map.html.haml, 324 line
-          }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
-        },
+            {
+                type: "Feature",
+                geometry: {
+                    type: 'Point',
+                    coordinates: repair['coordinates'][ repair['coordinates'].count / 2 ]
+                },
+                properties: {
+                    id: repair['_id'].to_s,
+                    repair: "road",
+                    route: reduceCoordinatesCount(repair['coordinates'])
+                    # TODO: views/repairing/maps/_map.html.haml, 324 line
+                }.merge(extract_props(repair)) # Ad hoc (add p_c_id field in this hash) for show road icon on repairing map
+            },
         ]
     }
 
