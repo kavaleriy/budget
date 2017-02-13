@@ -20,11 +20,12 @@
     %meta(property="og:title"       content="Відкритий бюджет")
     %meta(property="og:description" content="Візуалізація доходів і видатків місцевих бюджетів, бюджетного процесу і показників діяльності міст України")
     %meta(property="og:site_name"   content="Візуалізація бюджету")
-    %meta(property="og:type"        content="website")
+    %meta(property="og:type"        content="article")
     %meta(property="og:url"         content="http://openbudget.in.ua")
-    = tag :meta,
-          property: 'og:image',
-          content: image_url('fb-share-img.jpg')
+    %meta(property="og:image"       content="#{image_url('fb-share-img.jpg')}")
+    -#= tag :meta,
+    -#      property: 'og:image',
+    -#      content: image_url('fb-share-img.jpg')
     -#%meta(property="og:image"       content="http://openbudget.in.ua/assets/fb-share-img.jpg")
     %meta(property="og:image:type"  content="image/jpeg")
     %meta(property="og:image:type"  content="image/jpg")
