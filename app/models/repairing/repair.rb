@@ -33,6 +33,8 @@ module Repairing
     field :address_to, type: String
     field :coordinates, type: Array
 
+    # index({ coordinates: "2d" }, { min: -200, max: 200 })
+
     validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     validate :validate_coords
 
