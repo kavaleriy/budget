@@ -18,7 +18,7 @@ module BudgetFileTerra
   end
 
   def get_town area, town_id
-    Dictionary::TlTerra.towns(area)[town_id]
+    Dictionary::TlTerra.towns(area)[town_id] rescue nil
   end
 
 end
