@@ -88,9 +88,14 @@ module Repairing
 
       def update_repairing_coordinates
         par = params[:repairing_repair][:coordinates]
-        unless (par.nil? || par.kind_of?(Array))
-          coordinates = par.split(") ").map{|p| p.split(", ")}.map{|p| [p[0].split("LatLng(")[1],p[1]]}
-          params[:repairing_repair][:coordinates] = coordinates
+        unless par.nil?
+          if par.kind_of?(Array)
+            coordinates = par.map{|p| p.to_f}
+            params[:repairing_repair][:coordinates] = coordinates
+          else
+            coordinates = par.split(") ").map{|p| p.split(", ")}.map{|p| [p[0].split("LatLng(")[1].to_f,p[1].to_f]}
+            params[:repairing_repair][:coordinates] = coordinates
+          end
         end
       end
 
