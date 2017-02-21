@@ -18,10 +18,10 @@
     .form-group
       %label.control-label
         = t('owner')
-      - if current_user && current_user.has_role?(:admin)
-        = text_field_tag :town_select, '', { class: 'town_select' }
+      - if current_user && current_user.admin?
+        = text_field_tag :town_select, '', { class: 'town_select form-control', required: true }
       - else
-        = ": #{current_user.town}"
+        = ": #{current_user.town_model.title}"
 
   .col-sm-12
     .form-group

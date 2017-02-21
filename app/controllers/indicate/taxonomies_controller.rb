@@ -83,12 +83,12 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def get_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(town: params[:town]).first || Indicate::Taxonomy.new
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town]).first || Indicate::Taxonomy.new
     render partial: '/indicate/indicator_files/indicator_files', locals: {files: @indicate_taxonomy.indicate_indicator_files}
   end
 
   def town_profile
-    @indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(params[:town_id]).first
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town_id]).first
 
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
@@ -111,17 +111,14 @@ class Indicate::TaxonomiesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_indicate_taxonomy
     @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
-    @indicate_taxonomy.town = ::Town.new(title: '') if @indicate_taxonomy.town.nil?
+  end
+
+  def get_town_by_user
+    Town.find(current_user.town_model)
   end
 
   def create_indicate_taxonomy
-    if current_user.has_role?(:admin)
-      @indicate_taxonomy = Indicate::Taxonomy.where(town: ::Town.where(title: current_user.town).first ).first if current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.new(town: ::Town.new(title: '') ) unless current_user.town.nil?
-      @indicate_taxonomy.town = ::Town.new(title: '') unless @indicate_taxonomy.town.nil?
-    elsif current_user.town
-      @indicate_taxonomy = Indicate::Taxonomy.where(town_id: ::Town.where(title: current_user.town).first.id).first || Indicate::Taxonomy.create(town: ::Town.where(title: current_user.town).first)
-    end
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
