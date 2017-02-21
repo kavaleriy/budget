@@ -8,6 +8,8 @@ class Indicate::Taxonomy
   belongs_to :town, :class_name => 'Town'
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
 
+  validates :town, presence: true
+
   def self.visible_to user
     if user.is_admin?
       self.all

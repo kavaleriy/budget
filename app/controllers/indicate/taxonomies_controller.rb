@@ -111,7 +111,6 @@ class Indicate::TaxonomiesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_indicate_taxonomy
     @indicate_taxonomy = Indicate::Taxonomy.find(params[:id])
-    @indicate_taxonomy.town = Town.new(title: '') if @indicate_taxonomy.town.nil?
   end
 
   def get_town_by_user
@@ -119,13 +118,7 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def create_indicate_taxonomy
-    if current_user.has_role?(:admin)
-      @indicate_taxonomy = Indicate::Taxonomy.where(town: get_town_by_user).first if current_user.town_model
-      @indicate_taxonomy = Indicate::Taxonomy.new(town: Town.new(title: '') ) unless current_user.town_model.nil?
-      @indicate_taxonomy.town = Town.new(title: '') unless @indicate_taxonomy.town.nil?
-    elsif current_user.town_model
-      @indicate_taxonomy = Indicate::Taxonomy.where(town: get_town_by_user).first || Indicate::Taxonomy.create(town: get_town_by_user)
-    end
+    @indicate_taxonomy = Indicate::Taxonomy.where(town: get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
