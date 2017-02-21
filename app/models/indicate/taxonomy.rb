@@ -1,9 +1,9 @@
 class Indicate::Taxonomy
   include Mongoid::Document
 
-  scope :by_town, -> (town){where(:town => town)}
+  scope :by_town, -> (town) {where(town: town)}
   # Get indicate_taxonomies by towns
-  scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
+  scope :by_towns, -> (towns) {where(:town.in => towns.split(","))}
 
   belongs_to :town, :class_name => 'Town'
   has_many :indicate_indicator_files, :class_name => 'Indicate::IndicatorFile', autosave: true, :dependent => :destroy
