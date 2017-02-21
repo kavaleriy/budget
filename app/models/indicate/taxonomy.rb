@@ -1,7 +1,7 @@
 class Indicate::Taxonomy
   include Mongoid::Document
 
-  scope :get_indicate_by_town, ->(town){ where(:town => town) }
+  scope :by_town, -> (town){where(:town => town)}
   # Get indicate_taxonomies by towns
   scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
 
@@ -14,7 +14,7 @@ class Indicate::Taxonomy
     if user.is_admin?
       self.all
     else
-      self.get_indicate_by_town(user.town)
+      self.by_town(user.town)
     end
   end
 

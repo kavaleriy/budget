@@ -83,12 +83,12 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def get_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(town: params[:town]).first || Indicate::Taxonomy.new
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town]).first || Indicate::Taxonomy.new
     render partial: '/indicate/indicator_files/indicator_files', locals: {files: @indicate_taxonomy.indicate_indicator_files}
   end
 
   def town_profile
-    @indicate_taxonomy = Indicate::Taxonomy.get_indicate_by_town(params[:town_id]).first
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town_id]).first
 
     @indicators = @indicate_taxonomy.get_indicators
     @years = @indicators.keys.sort!.reverse!
@@ -118,7 +118,7 @@ class Indicate::TaxonomiesController < ApplicationController
   end
 
   def create_indicate_taxonomy
-    @indicate_taxonomy = Indicate::Taxonomy.where(town: get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

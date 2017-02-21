@@ -75,7 +75,7 @@ class Indicate::IndicatorFilesController < ApplicationController
 
   def get_files
     town = ::Town.find(params[:town])
-    @indicate_taxonomy = Indicate::Taxonomy.where(:town => town).first || Indicate::Taxonomy.create(:town => town)
+    @indicate_taxonomy = Indicate::Taxonomy.by_town(town).first || Indicate::Taxonomy.create(:town => town)
     render :partial => '/indicate/indicator_files/indicator_files', :locals => { :files => @indicate_taxonomy.indicate_indicator_files }
   end
 
@@ -140,9 +140,9 @@ class Indicate::IndicatorFilesController < ApplicationController
 
     def set_indicate_taxonomy
       if current_user.admin? && params[:town_select]
-        @indicate_taxonomy = Indicate::Taxonomy.where(town: params[:town_select]).first
+        @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town_select]).first
       else
-        @indicate_taxonomy = Indicate::Taxonomy.where(town: get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
+        @indicate_taxonomy = Indicate::Taxonomy.by_town(get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
       end
     end
 
