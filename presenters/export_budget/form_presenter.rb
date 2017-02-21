@@ -16,7 +16,7 @@ class ExportBudget::FormPresenter
     Calendar.by_town(@town).get_calendars_by_locale(@locale).to_a
   end
   def indicates
-    Indicate::Taxonomy.get_indicate_by_town(@town).to_a
+    Indicate::Taxonomy.by_town(@town).to_a
   end
 
 end
