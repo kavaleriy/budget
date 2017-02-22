@@ -3,9 +3,11 @@ class BudgetFileRovVd < BudgetFile
   protected
 
   def readline row
+    ktfk = row['KTFK'].to_i.to_s.gsub(/^0*/, "")
+    kpk = row['KPK'].to_s.ljust(7, '0')
+
     fond = row['KF'].to_s.split('.')[0]
 
-    ktfk = row['KTFK'].to_s.split('.')[0].gsub(/^0*/, "")
     kekv = row['KEKV'].to_s.split('.')[0]
 
     return if (ktfk =~ /000$/) != nil
@@ -24,8 +26,11 @@ class BudgetFileRovVd < BudgetFile
         { :amount => row['KVNP'].to_f / 100 },
     ].map do |line|
       next if line[:amount] == 0
+      item = rov_get_item_by_code(ktfk, kpk)
 
-      item = {
+      dt = row['DT'].to_date
+
+      item.merge({
           'amount' => line[:amount],
           'fond' => fond,
           'ktfk' => ktfk,
@@ -33,13 +38,9 @@ class BudgetFileRovVd < BudgetFile
           'kekv' => kekv,
           'kvk' => kvk,
           'krk' => krk,
-      }
-
-      dt = row['DT'].to_date
-      item['_year'] = dt.year.to_s
-      item['_month'] = dt.month.to_s
-
-      item
+          '_year' => dt.year.to_s,
+          '_month' => dt.month.to_s,
+      })
     end.reject {|c| c.nil?}
     # end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
   end
