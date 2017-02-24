@@ -1,10 +1,11 @@
 = simple_form_for @repairing_layer do |f|
 
-  - if current_user && current_user.has_role?(:admin)
-    = f.input :town, as: :text, label: t('repairing.repairs.form.town') , class: 'form-control', value: current_user.town_model.id
-  - else
+  - if !current_user.admin?
     = t('repairing.repairs.form.town') + ": " + current_user.town
 
+  = f.input :town, as: type_for_user_role,
+                   label: t('repairing.repairs.form.town'),
+                   input_html: {value: current_user.town_model.id}
   = f.input :locale, as: :hidden, input_html: {value: params[:locale]}
   = f.input :title, label: t('repairing.repairs.form.title'), class: 'form-control'
   = f.input :repairing_category, collection: @categories.map {|cat| [ cat.title, cat.id ] } ,
@@ -24,6 +25,7 @@
 :javascript
   $(document).ready(function(){
     init_town_select2_with_field_id('#repairing_layer_town',"#{search_for_towns_town_path}");
+    $("#repairing_layer_town").select2("data", {id: "#{current_user.town_model.id}", text: "#{current_user.town_model.title}" });
   });
 
 
