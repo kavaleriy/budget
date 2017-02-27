@@ -52,6 +52,10 @@ class User
   # roles later, always append them at the end!
   roles :admin, :guest, :editor, :public_organisation, :city_authority, :central_authority, :municipal_enterprise, :state_enterprise
 
+  def town
+    self.town_model.title
+  end
+
   def to_s
     self.email
   end
