@@ -128,9 +128,9 @@ class BudgetFilesController < ApplicationController
     message = [t('invalid_format')]
     message << 'Допустимі формати .dbf, .xsl, .csv'
     respond_with_error_message(message)
-  rescue => e
-    message = "Не вдалося створити візуалізацію : #{e}"
-    respond_with_error_message(message)
+  # rescue => e
+  #   message = "Не вдалося створити візуалізацію : #{e}"
+  #   respond_with_error_message(message)
 
   # rescue => e
   #   logger.error "Не вдалося створити візуалізацію. Перевірте коректність змісту завантаженого файлу => #{e}"

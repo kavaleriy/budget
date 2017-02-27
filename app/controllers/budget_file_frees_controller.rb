@@ -19,7 +19,12 @@ class BudgetFileFreesController < BudgetFilesController
   end
 
   def create_taxonomy area_id, file_name
-    TaxonomyFree.find_or_create_by!(id: params[:budget_file_taxonomy])
+    if params[:budget_file_taxonomy].blank?
+      taxonomy = TaxonomyFree.find_or_create_by!(name: file_name)
+    else
+      TaxonomyFree.find_or_create_by!(id: params[:budget_file_taxonomy])
+    end
+
   end
 
 end

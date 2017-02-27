@@ -36,6 +36,35 @@ class BudgetFile
   field :meta_data, :type => Hash
 
 
+  def rov_get_item_by_code ktfk, kpk
+     if ktfk.blank?
+       # Головний розпорядник (код відомчої класифікації видатків та кредитування місцевого бюджету)
+       kpk_aa = kpk.slice(0, 2)
+       # Відповідальний виконавець бюджетної програми у системі головного розпорядника.
+       kpk_b = kpk.slice(2, 1)
+       # Номер програми
+       kpk_ccc = kpk.slice(3, 3)
+       # Номер підпрограми
+       kpk_d = kpk.slice(6, 1)
+
+       {
+           'kpk_aa' => kpk_aa,
+           'kpk_b' => kpk_b,
+           'kpk_cccd' => kpk_ccc + kpk_d,
+           'kpk_d' => kpk_d,
+       }
+     else
+       ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
+       ktfk_aaa = '80' if ktfk_aaa == '81'
+       ktfk_aaa = '90' if ktfk_aaa == '91'
+
+       {
+           'ktfk' => ktfk,
+           'ktfk_aaa' => ktfk_aaa
+       }
+     end
+  end
+
   def is_allowed_fond fond
     fond.nil? or %w(1 2 3 7).include? fond
   end
