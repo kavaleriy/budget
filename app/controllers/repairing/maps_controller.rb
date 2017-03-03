@@ -35,7 +35,7 @@ module Repairing
     end
 
     def show
-      @current_user_town = Town.get_user_town(current_user)
+      # @current_user_town = Town.get_user_town(current_user)
       respond_to do |format|
         format.html
         format.js
@@ -45,7 +45,7 @@ module Repairing
     # TODO: delete this method, his views and use method frame for show layers by town in town profile
     # WARN: script in _frame.html.haml don`t use geo_json method
     def show_town
-      @current_user_town = Town.get_user_town(current_user)
+      # @current_user_town = Town.get_user_town(current_user)
       respond_to do |format|
         format.html
         format.js
@@ -53,6 +53,9 @@ module Repairing
     end
 
     def frame
+      # TODO: setting @current_user_town for embed code town_map(show_town) and ukraine_map(show method)
+      # WARN: default embed url with error
+      @current_user_town = Town.find(params[:town_id]) if params[:town_id]
       @partners = Modules::Partner.by_category(t('maps.show.map')).get_publish_partners.order(order_logo: :asc)
       respond_to do |format|
         format.html
