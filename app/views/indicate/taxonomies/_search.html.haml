@@ -1,7 +1,7 @@
 = form_tag indicate_taxonomies_path, :method => :get, :remote => true, :html => { :class => 'form-inline col-sm-12' } do |f|
-  .col-sm-12.col-md-4
+  .col-xs-12.col-sm-4
     = text_field_tag 'town_select', ''
-  .col-sm-6.col-md-1
+  .col-xs-12.col-sm-1
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
       %i.fa.fa-search.fa-lg
