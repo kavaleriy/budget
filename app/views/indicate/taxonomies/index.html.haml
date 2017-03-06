@@ -3,7 +3,6 @@
     margin-bottom: 10px;
   }
 
-
 = content_for :header do
   .head.pull-left
     = t('indicate.taxonomies.index.header')
@@ -16,7 +15,6 @@
 - if @indicate_taxonomies.length > 0
   .col-xs-12.documents_search
     = render partial: 'search'
-
   %table.table.table-striped
     %thead
       %tr
