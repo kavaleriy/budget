@@ -1,6 +1,6 @@
 = simple_form_for @repairing_layer do |f|
 
-  - if !current_user.admin?
+  - unless current_user.admin?
     = t('repairing.repairs.form.town') + ": " + current_user.town
 
   = f.input :town, as: type_for_user_role,
