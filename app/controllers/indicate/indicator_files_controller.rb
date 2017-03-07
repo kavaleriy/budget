@@ -140,7 +140,7 @@ class Indicate::IndicatorFilesController < ApplicationController
 
     def set_indicate_taxonomy
       if current_user.admin? && params[:town_select]
-        @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town_select]).first
+        @indicate_taxonomy = Indicate::Taxonomy.by_town(params[:town_select]).first || Indicate::Taxonomy.new(town: params[:town_select])
       else
         @indicate_taxonomy = Indicate::Taxonomy.by_town(get_town_by_user).first || Indicate::Taxonomy.new(town: get_town_by_user)
       end
