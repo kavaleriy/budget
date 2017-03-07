@@ -1,6 +1,16 @@
+:scss
+  .new-indicate-taxonomies{
+    margin-bottom: 10px;
+  }
+
 = content_for :header do
   .head.pull-left
     = t('indicate.taxonomies.index.header')
+
+= link_to t('vtarnay.module5s.index.load'), new_indicate_taxonomy_path,
+          type: 'button',
+          method: :get,
+          class: 'btn btn-primary new-indicate-taxonomies'
 
 - if @indicate_taxonomies.length > 0
   .col-xs-12.documents_search
@@ -16,8 +26,6 @@
           = t('indicate.taxonomies.index.action')
     %tbody#search_results
       = render partial: 'search_results', locals: {indicate_taxonomies: @indicate_taxonomies}
-
-= link_to t('vtarnay.module5s.index.load'), new_indicate_taxonomy_path, :type => "button", :method => :get, :class => "btn btn-primary"
 
 :javascript
   dataConfirmModal.setDefaults({
