@@ -133,9 +133,9 @@
           .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
             - first_year = v[v.keys[0]].keys[0]
             - first_values = v[v.keys[0]][first_year]
-            .title
+            .title{title: "#{k}", 'aria-hidden' => 'true',  'data-toggle' => 'tooltip', 'data-placement' => 'top'}
               = k
-            .unit
+            .unit{title: "(#{v['unit']})", 'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'bottom'}
               = "(#{v['unit']})"
             .chart
               = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
@@ -462,4 +462,8 @@
         }
       }
     }
+
+    $('.group .title, .group .unit').tooltip({
+      trigger: 'hover'
+    });
   });

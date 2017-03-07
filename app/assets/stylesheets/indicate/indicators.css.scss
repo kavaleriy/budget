@@ -6,14 +6,30 @@
 $gray: gray;
 $darkgray: darkgray;
 $lightgray: lightgray;
+$black-fon: rgba(51,51,51,0.9);
+$white: white;
 
 .group {
   font-size: 1.4em;
   font-weight: bold;
   //text-align: center;
-  & > p{
+  > p{
     text-align: center;
     margin: 10px 0 0;
+  }
+  .title, .unit {
+    overflow: hidden;
+    + .tooltip {
+      .tooltip-inner {
+        background-color: $black-fon;
+        color: $white;
+        font-size: 14px;
+      }
+      .tooltip-arrow {
+        border-top-color: $black-fon;
+        border-bottom-color: $black-fon;
+      }
+    }
   }
   .title {
     height: 45px;
@@ -21,6 +37,7 @@ $lightgray: lightgray;
     font-size: 16px;
   }
   .unit {
+    height: 20px;
     padding-bottom: 5px;
     color: $gray;
     text-align: center;
