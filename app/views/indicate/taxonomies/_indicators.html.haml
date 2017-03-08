@@ -131,11 +131,11 @@
         %p=key
         -value.each do |k, v|
           .indicator.col-xs-12.col-sm-6.col-md-4.col-lg-3{'data-value' => k}
-            - first_year = v[v.keys[0]].keys[0]
-            - first_values = v[v.keys[0]][first_year]
-            .title
+            - last_year = v[v.keys[0]].keys.max
+            - first_values = v[v.keys[0]][last_year]
+            .title{title: "#{k}", 'aria-hidden' => 'true',  'data-toggle' => 'tooltip', 'data-placement' => 'top'}
               = k
-            .unit
+            .unit{title: "(#{v['unit']})", 'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'bottom'}
               = "(#{v['unit']})"
             .chart
               = render partial: 'indicate/taxonomies/indicators_chart', locals: { id: v['id'] }
@@ -143,11 +143,11 @@
               = first_values['comment']
             .reports
               - unless first_values['link'].blank?
-                = link_to "#{first_values['link']}" do
+                = link_to "#{first_values['link']}", target: '_blank' do
                   %i.fa.fa-download
                   = t('widgets.indicators.download_report')
                   %span
-                    = first_year
+                    = last_year
                     = t("js.visify.#{v.keys[0]}")
               - else
                 = link_to "#", class: 'no-link' do
@@ -437,6 +437,12 @@
         var download_link = div_links.children('a');
         download_link.attr("href", link);
 
+        // run animation to link for point
+        download_link.addClass('active-report');
+        setTimeout(function(){
+          download_link.removeClass("active-report");
+        }, 2000);
+
         // set year to link for point
         var year = data['labels'][point_position];
         // set status to link for point
@@ -462,4 +468,8 @@
         }
       }
     }
+
+    $('.group .title, .group .unit').tooltip({
+      trigger: 'hover'
+    });
   });
