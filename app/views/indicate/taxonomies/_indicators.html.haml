@@ -437,6 +437,12 @@
         var download_link = div_links.children('a');
         download_link.attr("href", link);
 
+        // run animation to link for point
+        download_link.addClass('active-report');
+        setTimeout(function(){
+          download_link.removeClass("active-report");
+        }, 2000);
+
         // set year to link for point
         var year = data['labels'][point_position];
         // set status to link for point
