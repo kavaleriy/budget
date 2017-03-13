@@ -7,6 +7,7 @@ module Repairing
     extend RepairingLayerUpload
 
     scope :last_updated, -> {order("updated_at DESC").limit(1)}
+    scope :by_layer, -> (layer_id) {where(layer: layer_id)}
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 

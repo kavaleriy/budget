@@ -1,0 +1,27 @@
+%h1 Listing repairs
+
+%table
+  %tr
+    %th Obj_owner
+    %th Subject
+    %th Date
+    %th Address
+    %th Description
+    %th Amount
+    %th Coordinates
+    %th
+    %th
+    %th
+
+  - repairs.each do |repair|
+    %tr
+      %td= repair.obj_owner
+      %td= repair.subject
+      %td= repair.repair_start_date
+      %td= repair.address
+      %td= repair.description
+      %td= repair.amount
+      %td= repair.coordinates
+      -#%td= link_to 'Show', repair
+      -#%td= link_to 'Edit', edit_repairing_repair_path(repair)
+      -#%td= link_to 'Destroy', repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
