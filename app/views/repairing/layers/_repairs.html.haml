@@ -1,27 +1,70 @@
-%h1 Listing repairs
+:scss
 
-%table
+  table{
+    border-spacing: 1px;
+    border-collapse: separate;
+    tr:nth-child(even) {background: #DDD}
+    tr:nth-child(odd) {background: #FFF}
+    td{
+      border: 0px;
+      border-right: 1px #FFF;
+    }
+    .popover-content {
+      padding: 0;
+    }
+  }
+
+
+%h1 Listing repairs
+%table#edit_repairs
   %tr
-    %th Obj_owner
     %th Subject
-    %th Date
-    %th Address
-    %th Description
+    %th Edrpou artist
+    %th Erdpou spending units
+    %th Object owner
+    %th Repairing category
     %th Amount
+    %th Warranty
+    %th Repair start date
+    %th Repair end date
+    %th Address
+    %th Address to
+    %th Description
     %th Coordinates
-    %th
-    %th
-    %th
+    -#%th
 
   - repairs.each do |repair|
     %tr
-      %td= repair.obj_owner
       %td= repair.subject
-      %td= repair.repair_start_date
-      %td= repair.address
-      %td= repair.description
+      %td= repair.edrpou_artist
+      %td= repair.edrpou_spending_units
+      %td
+        %a.editable{ href: '#', 'data-resource' => 'repairing_repair',
+                         id: 'obj_owner', 'data-type' => 'text', 'data-pk' => "#{repair.id}",
+                         'data-url' => "#{repairing_layer_repair_path(repair.layer_id, repair)}", remote: true,
+                         'data-emptytext' => t('repairing.layers.edit.title') }
+          = repair.obj_owner
+      %td= repair.repairing_category.title if repair.repairing_category
       %td= repair.amount
+      %td= repair.warranty_date
+      %td= repair.repair_start_date
+      %td= repair.repair_end_date
+      %td= repair.address
+      %td= repair.address_to
+      %td= repair.description
       %td= repair.coordinates
       -#%td= link_to 'Show', repair
       -#%td= link_to 'Edit', edit_repairing_repair_path(repair)
       -#%td= link_to 'Destroy', repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+:javascript
+
+  $(document).ready(function(){
+    $('#edit_repairs .editable').editable({
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+        console.log(response);
+      }
+    });
+
+  })

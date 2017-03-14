@@ -56,9 +56,10 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_repair.update(repairing_repair_params)
-          flash[:notice] = I18n.t('repairing.layers.update.success')
+          flash[:notice] = I18n.t('repairing.layers.update.success')  # edit repair message for form
+          msg = {class_name: 'success', message: flash[:notice]}      # edit repair message for x-editable
           format.js {}
-          format.json { render :show, status: :ok }
+          format.json{ render :show, status: :ok, json: msg }
         else
           # localization messages for error fields in uk.locale.yml(attributes:)
           flash[:notice] = @repairing_repair.errors
