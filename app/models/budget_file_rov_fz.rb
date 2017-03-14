@@ -9,9 +9,9 @@ class BudgetFileRovFz < BudgetFile
 
     return unless row['kmb'].to_s == self.taxonomy.kmb
 
-    ktfk = row['fcode'].to_s
-    return if (ktfk =~ /000$/) != nil
-    return if (ktfk =~ /^900/) != nil
+    kpk = row['fcode'].to_s.ljust(7, '0')
+    # return if (ktfk =~ /000$/) != nil
+    # return if (ktfk =~ /^900/) != nil
 
     kekv = row['ecode'].to_s
     return unless kekv.length == 4
@@ -21,29 +21,29 @@ class BudgetFileRovFz < BudgetFile
     # return unless is_allowed_fond(fond)
 
     kod =  row['KOD'].to_s.split('.')[0]
-    return if fond != '1' and kod == '1'
+    # return if fond != '1' and kod == '1'
 
     kvk = row['kvk'].to_s
 
 
-    ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
-    ktfk_aaa = '80' if ktfk_aaa == '81'
-    ktfk_aaa = '90' if ktfk_aaa == '91'
+    # ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
+    # ktfk_aaa = '80' if ktfk_aaa == '81'
+    # ktfk_aaa = '90' if ktfk_aaa == '91'
 
     year = row['_year']
 
     generate_item = ->(amount, month) do
-      item = {
+      item = rov_get_item_by_code(nil, kpk)      
+      
+      item.merge({
           'amount' => amount,
           'fond' => fond,
-          'ktfk' => ktfk,
-          'ktfk_aaa' => ktfk_aaa,
           'kvk' => kvk,
           'kekv' => kekv,
           'krk' => row['KRK'].to_s.split('.')[0],
           '_year' => year,
           '_month' => month.to_s
-      }
+      })
       return item
     end
 
