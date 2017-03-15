@@ -88,7 +88,8 @@ module Repairing
       end
 
       def update_repairing_coordinates
-        par = params[:repairing_repair][:coordinates]
+        binding.pry
+        par = params[:repairing_repair][:coordinates] #if params[:repairing_repair]
         unless par.nil?
           if par.kind_of?(Array)
             coordinates = par.map{|p| p.to_f}
