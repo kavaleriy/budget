@@ -40,7 +40,10 @@ class ExternalApiController < ApplicationController
   # end
 
   def prozzoro
-    @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
+
+    @prozzoro_info = ExternalApi.prozzoro_data('5ab6b0f5482641d79ab6ad621c5d68ac')
+    @prozzoro_info['docs'] = @prozzoro_info['documents']
+    @prozzoro_info['docs'] += @prozzoro_info['contracts'].first['documents'] || [] unless @prozzoro_info['contracts'].blank?
 
     respond_to do |format|
       format.js {
