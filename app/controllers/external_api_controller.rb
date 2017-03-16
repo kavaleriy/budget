@@ -40,10 +40,11 @@ class ExternalApiController < ApplicationController
   # end
 
   def prozzoro
-
     @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
-    @prozzoro_info['docs'] = @prozzoro_info['documents']
-    @prozzoro_info['docs'] += @prozzoro_info['contracts'].first['documents'] || [] unless @prozzoro_info['contracts'].blank?
+    unless @prozzoro_info.blank?
+      @prozzoro_info['docs'] = @prozzoro_info['documents']
+      @prozzoro_info['docs'] += @prozzoro_info['contracts'].first['documents'] || [] unless @prozzoro_info['contracts'].blank?
+    end
 
     respond_to do |format|
       format.js {
@@ -57,8 +58,6 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
-    @repairing_repairs.edrpou_spending_units = ''
-    @repairing_repairs.edrpou_artist = 33147770
     e_data_payments = ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
 
     respond_to do |format|
@@ -67,7 +66,7 @@ class ExternalApiController < ApplicationController
         format.js {
           render file: 'external_api/api_info',
                  locals: {
-                     selector: '#e-data #edata_payments tbody',
+                     selector: '#e-data',
                      partial_name: 'no_data_yet'
                  }
         }
