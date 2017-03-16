@@ -7,7 +7,7 @@ class BudgetFileRovFz < BudgetFile
 
     return if row['TF'].to_s == '3'
 
-    return unless row['KMB'].to_s == self.taxonomy.kmb
+    return unless self.taxonomy.kmb == "" || row['KMB'].to_s == self.taxonomy.kmb
 
     kpk = row['FCODE'].to_s.ljust(7, '0')
     # return if (ktfk =~ /000$/) != nil
