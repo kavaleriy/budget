@@ -78,6 +78,13 @@ module Repairing
     end
 
     def show_repair_info
+      if @repairing_repair.obj_owner.blank?
+        prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
+        unless prozzoro_info.nil?
+          @repairing_repair.obj_owner = prozzoro_info['awards'].first['suppliers'].first['name'] unless prozzoro_info['awards'].blank?
+        end
+      end
+
     end
 
       private
