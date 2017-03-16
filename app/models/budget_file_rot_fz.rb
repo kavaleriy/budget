@@ -8,7 +8,7 @@ class BudgetFileRotFz < BudgetFile
     return unless row['TYPE_ROZD'].to_s == '2'
     return if row['TF'].to_s == '3'
     
-    return unless self.taxonomy.kmb == "" || row['KMB'].to_s == self.taxonomy.kmb
+    return unless self.taxonomy.kmb.blank? || row['KMB'].to_s == self.taxonomy.kmb
 
     fond = row['CF'].to_s
     return unless is_allowed_fond(fond)
