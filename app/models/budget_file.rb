@@ -95,11 +95,9 @@ class BudgetFile
   end
 
   def import table
-
     rows = table.map { |row|
-      readline(row)
+      readline(row.transform_keys!(&:upcase))
     }.compact.flatten.reject{|row| row['amount'] == 0}.sort_by{|row| -row['amount']}
-
     # tree = {}
     # table[:rows].each { |row|
     #   parsed_rows = readline(row)

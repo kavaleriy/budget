@@ -3,17 +3,18 @@ class BudgetFileRotFz < BudgetFile
   protected
 
   def readline row
-    kkd = row['fcode'].to_s
+    kkd = row['FCODE'].to_s
 
-    return unless row['type_rozd'].to_s == '2'
-    return if row['tf'].to_s == '3'
-    return unless row['kmb'].to_s == self.taxonomy.kmb
+    return unless row['TYPE_ROZD'].to_s == '2'
+    return if row['TF'].to_s == '3'
+    
+    return unless self.taxonomy.kmb.blank? || row['KMB'].to_s == self.taxonomy.kmb
 
-    fond = row['cf'].to_s
+    fond = row['CF'].to_s
     return unless is_allowed_fond(fond)
 
-    kod =  row['KOD'].to_s.split('.')[0]
-    return if kkd.slice(0, 3) == '250' and kod == '2'
+    # kod =  row['KOD'].to_s.split('.')[0]
+    # return if kkd.slice(0, 3) == '250' and kod == '2'
 
     return if %w(90010100 90010200 90010300).include?(kkd)
 
@@ -43,7 +44,7 @@ class BudgetFileRotFz < BudgetFile
     end
 
     items = (1..12).map do |i|
-      amount = row["m#{i}"].to_f
+      amount = row["M#{i}"].to_f
 
       next if amount == 0
 
