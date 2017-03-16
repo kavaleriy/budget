@@ -47,7 +47,7 @@ class BudgetFileRovFz < BudgetFile
       return item
     end
 
-    items = (0..12).map do |i|
+    items = (1..12).map do |i|
       amount = row["M#{i}"].to_f
 
       next if amount == 0
@@ -56,6 +56,8 @@ class BudgetFileRovFz < BudgetFile
     end.reject {|c| c.nil?}
     # end.reject {|c| c.nil? || (c['ktfk'] =~ /000$/) != nil}
 
+    annual_amount = items.map {|s| s['amount']}.sum
+    items << generate_item.call(annual_amount, 0)
 
     items
   end
