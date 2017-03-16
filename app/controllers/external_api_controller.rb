@@ -57,6 +57,8 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
+    @repairing_repairs.edrpou_spending_units = ''
+    @repairing_repairs.edrpou_artist = 33147770
     e_data_payments = ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
 
     respond_to do |format|
@@ -65,7 +67,7 @@ class ExternalApiController < ApplicationController
         format.js {
           render file: 'external_api/api_info',
                  locals: {
-                     selector: '#e-data',
+                     selector: '#e-data #edata_payments tbody',
                      partial_name: 'no_data_yet'
                  }
         }
@@ -73,7 +75,7 @@ class ExternalApiController < ApplicationController
         @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
         format.html {render partial: 'modules/classifier/search_e_data',layout: false}
         format.js {
-          render file: 'external_api/api_info',
+          render file: 'external_api/e_data',
                  locals: {
                      selector: '#e-data',
                      partial_name: 'modules/classifier/search_e_data'
