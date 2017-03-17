@@ -27,7 +27,7 @@ class BudgetFileRov < BudgetFile
     months.map do |mon|
       item = rov_get_item_by_code(ktfk, kpk)
 
-      item.merge({
+      item.merge!({
         '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
         '_month' => mon,
 

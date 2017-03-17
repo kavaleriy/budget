@@ -182,6 +182,8 @@
         %i.fa.fa-gears.icon
         = t('.e_data')
       #e-data.api-text
+        #edata_payments
+          %tbody
     .api
       = link_to external_api_prozzoro_path(@repairing_repair), remote: true do
         -#%i.fa.fa-plus-square-o.button
@@ -200,7 +202,7 @@
         = t('.edr_data')
       #edr.api-text
     .api
-      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.edrpou_spending_units} do
+      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.edrpou_artist} do
         -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-money.icon
         = t('.acm')

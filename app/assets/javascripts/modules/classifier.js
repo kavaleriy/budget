@@ -108,11 +108,14 @@ function share_buttons_set_url(url) {
         $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.csv'));
         // TODO: refactor in future
         var clipboard_data = $('#embedded-profile').attr('data-clipboard-text');
-        var aditional_params = url.substr(url.indexOf('&payers_edrpous'));
-        var current_src = clipboard_data.match(/src="\S*/)[0];
-        var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
-        var new_data = clipboard_data.replace(current_src, new_src);
-        $('#embedded-profile').attr('data-clipboard-text', new_data);
+        if (clipboard_data){
+            var aditional_params = url.substr(url.indexOf('&payers_edrpous'));
+            var current_src = clipboard_data.match(/src="\S*/)[0];
+            var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
+            var new_data = clipboard_data.replace(current_src, new_src);
+            $('#embedded-profile').attr('data-clipboard-text', new_data);
+        }
+
     }
 }
 
