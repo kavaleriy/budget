@@ -5,7 +5,7 @@ module Repairing
     layout 'application' , only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal]
 
     # GET  /repairing/repairs
     # GET /repairing/repairs.json
@@ -86,6 +86,10 @@ module Repairing
         end
       end
 
+    end
+
+    def edit_in_modal
+      @repairing_repair.valid?
     end
 
       private

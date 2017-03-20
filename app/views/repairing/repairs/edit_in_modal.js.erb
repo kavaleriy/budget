@@ -1,0 +1,3 @@
+var modalWindow = $('#edit_repair');
+modalWindow.find('.modal-repair').html("<%= escape_javascript(render partial: 'repairing/repairs/edit_in_modal', layout: false) %>");
+modalWindow.modal();

@@ -14,6 +14,9 @@
     }
   }
 
+.modal.fade{id: 'edit_repair', role: 'dialog', tabindex: '-1', appendTo: '#repairs'}
+  .modal-dialog.modal-sm{role: :document}
+    .modal-content.modal-repair
 
 %h1 Listing repairs
 %table#edit_repairs
@@ -28,9 +31,9 @@
     %th Repair start date
     %th Repair end date
     %th Address
-    %th Coordinate
+    -#%th Coordinate
     %th Address to
-    %th Coordinate1
+    -#%th Coordinate1
     %th Description
     %th Coordinates
     %th
@@ -38,43 +41,34 @@
 
   - repairs.each do |repair|
     %tr.editable-table-row
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'subject', 'data-pk' => "#{repair.id}" }
-          = repair.subject
-      %td= repair.edrpou_artist
-      %td= repair.edrpou_spending_units
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'obj_owner', 'data-pk' => "#{repair.id}" }
-          = repair.obj_owner
       -#%td
       -#  %a.editable.editable-row-item{ href: '#', 'data-resource' => 'repairing_repair',
       -#                   id: 'obj_owner', 'data-type' => 'text', 'data-pk' => "#{repair.id}",
       -#                   'data-url' => "#{repairing_layer_repair_path(repair.layer_id, repair)}" }
       -#    = repair.obj_owner
+
+      %td= repair.subject
+      %td= repair.edrpou_artist
+      %td= repair.edrpou_spending_units
+      %td= repair.obj_owner
       %td= repair.repairing_category.title if repair.repairing_category
       %td= repair.amount
       %td= repair.warranty_date
       %td= repair.repair_start_date
       %td= repair.repair_end_date
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'address', 'data-pk' => "#{repair.id}" }
-          = repair.address
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'coordinate', 'data-pk' => "#{repair.id}" }
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'address_to', 'data-pk' => "#{repair.id}" }
-          = repair.address_to
-      %td
-        %a.editable.editable-row-item{ href: '#', id: 'coordinate1', 'data-pk' => "#{repair.id}" }
+      %td= repair.address
+      %td= repair.address_to
       %td= repair.description
       %td= repair.coordinates
+
       %td
-        %buttom#save-btn.btn.btn-primary{ 'data-url' => "#{repairing_layer_repair_path(repair.layer_id, repair)}",
+        .edit-repair.btn.btn-primary{ 'data-toggle' => 'modal', 'data-target'=> '#myModal',
                                           'data-repair-id' => "#{repair.id}" }
-          Save
+          Edit
       %td
-        %buttom#reset-btn.btn
-          Reset
+        = link_to 'Drop', repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
+
+
       -#%td= link_to 'Show', repair
       -#%td= link_to 'Edit', edit_repairing_repair_path(repair)
       -#%td= link_to 'Destroy', repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
@@ -82,127 +76,19 @@
 :javascript
 
   $(document).ready(function(){
-    $.fn.editable.defaults.mode = 'inline';
 
-    //init editables
-    $('.editable-row-item').editable({
-      // url: '/post' //this url will not be used for creating new user, it is only for update
-      type: 'text',
-      // emptytext: 'Click to Edit',
-      // showbuttons: false,
-      // unsavedclass: null,
-      // toggle: 'manual',
-      resource: 'repairing_repair',
-      // onblur: 'ignore',
-      // success: function (response, newValue) {
-      //   // console.log(newValue);
-      //   show_bootstrap_flash(response.message,response.class_name);
-      // }
+    function get_repair_info_modal(id_repair){
+      $.ajax({
+        url: "#{repairing_edit_in_modal_path}",
+        dataType: 'script',
+        data: { id: id_repair },
+        success: function(data){}
+      })
+    }
+
+    $('.edit-repair').on('click',function(){
+      var repair_id = $(this).attr('data-repair-id');
+      get_repair_info_modal(repair_id);
     });
-
-    //make username required
-    // $('#new_username').editable('option', 'validate', function(v) {
-    //   if(!v) return 'Required field!';
-    // });
-
-    //automatically show next editable
-    // $('.myeditable').on('save.newuser', function(){
-    //   var that = this;
-    //   setTimeout(function() {
-    //     $(that).closest('tr').next().find('.myeditable').editable('show');
-    //   }, 200);
-    // });
-
-    $('#save-btn').click(function() {
-      var id_repair = $(this).attr('data-repair-id');
-      var data = {};
-      data['repairing_repair'] = {};
-
-      $("[data-pk=" + id_repair +"]").not(".editable-empty").each(function(){
-         var name = $(this).attr('id'),
-             value = $(this).text();
-
-         data['repairing_repair'][name] = [];
-         data['repairing_repair'][name] = value;
-      });
-
-      // console.log($('#form .editable'));
-
-      $('editable-row-item').editable('submit', {
-        url: $(this).attr('data-url'),
-        ajaxOptions: {
-          dataType: 'json', //assuming json response
-          type: "PUT",
-          data: data
-        },
-        success: function (response, newValue) {
-          // console.log(newValue);
-          show_bootstrap_flash(response.message,response.class_name);
-        }
-        // success: function(data, config) {
-        //   if(data && data.id) {  //record created, response like {"id": 2}
-        //     //set pk
-        //     $(this).editable('option', 'pk', data.id);
-        //     //remove unsaved class
-        //     $(this).removeClass('editable-unsaved');
-        //     //show messages
-        //     var msg = 'New user created! Now editables submit individually.';
-        //     $('#msg').addClass('alert-success').removeClass('alert-error').html(msg).show();
-        //     $('#save-btn').hide();
-        //     $(this).off('save.newuser');
-        //   } else if(data && data.errors){
-        //     //server-side validation error, response like {"errors": {"username": "username already exist"} }
-        //     config.error.call(this, data.errors);
-        //   }
-        // },
-        // error: function(errors) {
-        //   var msg = '';
-        //   if(errors && errors.responseText) { //ajax error, errors = xhr object
-        //     msg = errors.responseText;
-        //   } else { //validation error (client-side or server-side)
-        //     $.each(errors, function(k, v) { msg += k+": "+v+"<br>"; });
-        //   }
-        //   $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
-        // }
-      });
-    });
-
-    // $('#edit_repairs .editable').editable({
-    //   success: function(response,newValue){
-    //     show_bootstrap_flash(response.message,response.class_name);
-    //     console.log(response);
-    //   }
-    // });
-
-    // $('.editable-row-item').editable({
-    //   type: 'text',
-    //   emptytext: 'Click to Edit',
-    //   showbuttons: false,
-    //   unsavedclass: null,
-    //   toggle: 'manual',
-    //   resource: 'repairing_repair',
-    //   onblur: 'ignore',
-    //   success: function (response, newValue) {
-    //     // console.log(newValue);
-    //     show_bootstrap_flash(response.message,response.class_name);
-    //   }
-    // });
-    //
-    // function submitEditable() {
-    //   $('.editable-table-row .editableform').editable().submit();
-    //   }
-    //
-    // $('.editable-table-row').on('click', function (e) {
-    //   e.stopPropagation();
-    //   e.preventDefault();
-    //   if ($(this).find('.editableform').length < 1) { submitEditable();}
-    //   $(this).find('a').each(function () { $(this).editable('show'); });
-    //   $(this).find('.editableform').each(function () { $(this).on('keydown', function (e) { if ((e.keyCode || e.which) == 13) { submitEditable(); } }) });
-    //
-    // });
-    //
-    // $(document).click(function () {
-    //   submitEditable();
-    // });
 
   })
