@@ -28,7 +28,6 @@ module Repairing
 
     # GET /repairing/repairs/1/edit
     def edit
-
       respond_to do |format|
         format.js { render :edit }
       end
@@ -72,7 +71,9 @@ module Repairing
     # DELETE /repairing/repairs/1
     # DELETE /repairing/repairs/1.json
     def destroy
+      @repairs = Repairing::Repair.by_layer(@repairing_repair.layer_id) unless @repairing_repair.layer_id.blank?
       @repairing_repair.destroy
+
       respond_to do |format|
         format.js
       end

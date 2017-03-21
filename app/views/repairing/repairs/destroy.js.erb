@@ -1,3 +1,4 @@
 $('#repair').html('');
 $('#remove_repair').trigger("click");
+$('#repairs').html('<%= escape_javascript(render partial: 'repairing/layers/repairs', locals: { repairs: @repairs }) %>');
 
