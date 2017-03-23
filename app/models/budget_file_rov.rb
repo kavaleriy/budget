@@ -4,7 +4,7 @@ class BudgetFileRov < BudgetFile
 
   def readline row
     ktfk = row['KTFK'].to_i.to_s.gsub(/^0*/, "")
-    kpk = row['KPK'].to_s.ljust(7, '0')
+    kpk = row['KPK'].to_s
 
     amount = row['SUMM'].to_i
     return if amount.nil? || amount == 0
