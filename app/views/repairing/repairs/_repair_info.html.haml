@@ -202,7 +202,7 @@
         = t('.edr_data')
       #edr.api-text
     .api
-      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.edrpou_artist} do
+      = link_to '#', id: 'acm-link', data: {erdpou: @repairing_repair.prozzoro_id.blank? ? @repairing_repair.edrpou_artist : @repairing_repair.prozzoro_id } do
         -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-money.icon
         = t('.acm')
