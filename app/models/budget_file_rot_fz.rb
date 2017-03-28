@@ -23,7 +23,7 @@ class BudgetFileRotFz < BudgetFile
     kkd_cc = kkd.slice(0, 4)
     kkd_dd = kkd.slice(0, 6)
 
-    year = row['_year']
+    year = row['d_utv'].to_date.year.to_s
 
     generate_item = ->(amount, month) do
       item = {
