@@ -134,7 +134,7 @@ module Repairing
       message << t('repairing.layers.correct_formats')
       respond_with_error_message(message)
     rescue => e
-      message = "#{t('repairing.layers.update.error')}"
+      message = "#{e}"
       respond_with_error_message(message)
 
     end
