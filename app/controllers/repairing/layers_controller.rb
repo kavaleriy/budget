@@ -131,17 +131,17 @@ module Repairing
 
       end
 
-    rescue Roo::Base::TypeError
-      message = [t('invalid_format')]
-      message << t('repairing.layers.check_xlsx_format')
-      respond_with_error_message(message)
-    rescue DBF::Column::NameError
-      message = [t('invalid_format')]
-      message << t('repairing.layers.correct_formats')
-      respond_with_error_message(message)
-    rescue => e
-      message = "#{t('repairing.layers.update.error')}"
-      respond_with_error_message(message)
+    # rescue Roo::Base::TypeError
+    #   message = [t('invalid_format')]
+    #   message << t('repairing.layers.check_xlsx_format')
+    #   respond_with_error_message(message)
+    # rescue DBF::Column::NameError
+    #   message = [t('invalid_format')]
+    #   message << t('repairing.layers.correct_formats')
+    #   respond_with_error_message(message)
+    # rescue => e
+    #   message = "#{t('repairing.layers.update.error')}"
+    #   respond_with_error_message(message)
 
     end
 

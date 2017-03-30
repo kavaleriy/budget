@@ -67,7 +67,7 @@
       %td= repair.obj_owner
       %td= repair.edrpou_artist
       %td= repair.description
-      %td.coordinates= truncate(repair.coordinates.to_s, length: 30)
+      %td.coordinates{class: "#{valid_status(repair, :coordinates)}"}= truncate(repair.coordinates.to_s, length: 30)
 
       %td
         .edit-repair.btn.btn-primary{ 'data-toggle' => 'modal', 'data-target'=> '#myModal',

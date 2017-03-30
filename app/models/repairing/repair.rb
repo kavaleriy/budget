@@ -36,8 +36,8 @@ module Repairing
 
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
-    validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
-    validate :validate_coords
+    validates :spending_units, :edrpou_spending_units, :address, :amount, :coordinates, presence: true
+    # validate :validate_coords
 
     before_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? and !obj.coordinates.present?}
     before_save :set_end_date
@@ -52,13 +52,13 @@ module Repairing
     end
 
     def validate_coords
-      if coordinates[0].kind_of?(Array)
-        coordinates.each do |coords|
-          check_coords_array(coords)
-        end
-      else
-        check_coords_array(coordinates)
-      end
+      # if coordinates[0].kind_of?(Array)
+      #   coordinates.each do |coords|
+      #     check_coords_array(coords)
+      #   end
+      # else
+      #   check_coords_array(coordinates)
+      # end
     end
 
     def geocode
@@ -102,7 +102,7 @@ module Repairing
 
         layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
 
-        layer_repair.save!
+        layer_repair.save(validate: false)
       end
     end
 
