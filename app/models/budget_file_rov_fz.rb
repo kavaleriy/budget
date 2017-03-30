@@ -9,7 +9,7 @@ class BudgetFileRovFz < BudgetFile
 
     return unless self.taxonomy.kmb.blank? || row['KMB'].to_s == self.taxonomy.kmb
 
-    kpk = row['FCODE'].to_s.ljust(7, '0')
+    kpk = row['FCODE'].to_s
     # return if (ktfk =~ /000$/) != nil
     # return if (ktfk =~ /^900/) != nil
 
@@ -30,7 +30,7 @@ class BudgetFileRovFz < BudgetFile
     # ktfk_aaa = '80' if ktfk_aaa == '81'
     # ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    year = row['_year']
+    year = row['D_UTV'].to_date.year.to_s
 
     generate_item = ->(amount, month) do
       item = rov_get_item_by_code(nil, kpk)      
