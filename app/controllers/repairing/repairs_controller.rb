@@ -53,17 +53,6 @@ module Repairing
     # PATCH/PUT /repairing/repairs/1
     # PATCH/PUT /repairing/repairs/1.json
     def update
-      if @repairing_repair.coordinates.nil? || !@repairing_repair.address.eql?(repairing_repair_params[:address]) || !@repairing_repair.address_to.eql?(repairing_repair_params[:address_to])
-        location = Geocoder.coordinates(repairing_repair_params[:address])
-        location1 = Geocoder.coordinates(repairing_repair_params[:address_to]) unless repairing_repair_params[:address_to].empty? || repairing_repair_params[:address] == repairing_repair_params[:address_to]
-
-        if location1
-          repairing_repair_params[:coordinates] = [location, location1]
-        elsif location
-          repairing_repair_params[:coordinates] = location
-        end
-      end
-
       respond_to do |format|
         if @repairing_repair.update(repairing_repair_params)
           flash[:notice] = I18n.t('repairing.layers.update.success')  # edit repair message for form

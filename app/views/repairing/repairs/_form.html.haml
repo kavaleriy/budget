@@ -1,5 +1,4 @@
 = bootstrap_form_for @repairing_repair, url: repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), remote: true, label_errors: true do |f|
-  - @repairing_repair.valid?
   = f.text_field :subject, :label => t('repairing.repairs.form.title')
   = f.text_field :edrpou_artist,label: t('.erdpou_artist')
   = f.text_field :edrpou_spending_units,label: t('.erdpou_spending')

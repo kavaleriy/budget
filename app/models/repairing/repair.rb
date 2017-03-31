@@ -36,10 +36,10 @@ module Repairing
 
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
-    validates :spending_units, :edrpou_spending_units, :address, :amount, :coordinates, presence: true
+    validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
-    before_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? and !obj.coordinates.present?}
+    before_validation :geocode, if: ->(obj){ (obj.address.present?) && (!obj.coordinates.present? || obj.address_changed?) }
     before_save :set_end_date
 
     def set_end_date
