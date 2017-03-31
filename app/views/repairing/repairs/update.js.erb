@@ -6,3 +6,8 @@ message_div.show('slow');
 setTimeout(function(){
   message_div.hide('slow');
 },5000);
+
+// setting update repair effects
+$('#edit_repair').modal('toggle');
+$('#repair-<%= @repairing_repair.id %>').replaceWith('<%= j render partial: 'repairing/layers/repair', locals: {repair: @repairing_repair} %>');
+$('#repair-<%= @repairing_repair.id %>').effect("highlight", {color: "#5cb85c"}, 2000);

@@ -1,0 +1,28 @@
+%tr.editable-table-row{id: "repair-#{repair.id}"}
+  %td{class: "#{valid_status(repair.spending_units)}"}
+    = repair.spending_units
+  %td{class: "#{valid_status(repair.edrpou_spending_units)}"}
+    = repair.edrpou_spending_units
+  %td= repair.subject
+  %td{class: "#{valid_status(repair.address)}"}
+    = repair.address
+  %td= repair.address_to
+  %td= repair.work
+  %td= repair.repairing_category.title if repair.repairing_category
+  %td{class: "#{valid_status(repair.amount)}"}
+    = repair.amount
+  %td= repair.repair_start_date
+  %td= repair.repair_end_date
+  %td= repair.warranty_date
+  %td= repair.prozzoro_id
+  %td= repair.obj_owner
+  %td= repair.edrpou_artist
+  %td= repair.description
+  %td.coordinates{class: "#{valid_status(repair.coordinates)}"}
+    = truncate(repair.coordinates.to_s, length: 30)
+
+  %td
+    %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }
+      %i.fa.fa-pencil.fa-2x
+    = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'drop-repair', data: { confirm: 'Are you sure?' } do
+      %i.fa.fa-trash-o.fa-2x
