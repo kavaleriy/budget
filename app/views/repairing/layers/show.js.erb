@@ -1,6 +1,2 @@
 $('#repairs').html('<%= escape_javascript(render partial: 'repairs') %>');
 $('.paginator-repairs').html('<%= escape_javascript(paginate(@repairs, remote: true)) %>');
-
-$('.drop-repair').bind('ajax:success', function() {
-  $(this).closest('tr').fadeOut();
-});

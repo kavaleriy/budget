@@ -48,7 +48,7 @@
     %th
 
   - @repairs.each do |repair|
-    %tr.editable-table-row
+    %tr.editable-table-row{id: "repair-#{repair.id}"}
       %td{class: "#{valid_status(repair.spending_units)}"}
         = repair.spending_units
       %td{class: "#{valid_status(repair.edrpou_spending_units)}"}

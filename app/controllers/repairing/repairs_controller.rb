@@ -71,16 +71,12 @@ module Repairing
     # DELETE /repairing/repairs/1
     # DELETE /repairing/repairs/1.json
     def destroy
-      # @repairs = Repairing::Repair.by_layer(@repairing_repair.layer_id).page(params[:page]).per(25) unless @repairing_repair.layer_id.blank?
       @repairing_repair.destroy
 
       respond_to do |format|
         format.html { redirect_to repairing_layer_path(@repairing_repair.layer_id) }
         format.json { head :no_content }
         format.js   { render :layout => false }
-
-        # format.js {@repairs}
-        # format.html { redirect_to repairing_layer_path(@repairing_repair.layer_id) }
       end
     end
 
