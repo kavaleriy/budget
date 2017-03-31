@@ -74,11 +74,11 @@
       %td
         %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }
           %i.fa.fa-pencil.fa-2x
-        = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: '', data: { confirm: 'Are you sure?' } do
+        = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'drop-repair', data: { confirm: 'Are you sure?' } do
           %i.fa.fa-trash-o.fa-2x
 
 .paginator-repairs
-  = paginate @repairs
+  = paginate @repairs, :remote => true
 
 :javascript
 
