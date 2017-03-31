@@ -53,9 +53,9 @@ module Repairing
     # PATCH/PUT /repairing/repairs/1
     # PATCH/PUT /repairing/repairs/1.json
     def update
-      if @repairing_repair.coordinates.nil?
-        location = coordinate(repairing_repair_params[:address])
-        location1 = coordinate(repairing_repair_params[:address_to]) unless repairing_repair_params[:address_to].empty? || repairing_repair_params[:address] == repairing_repair_params[:address_to]
+      if @repairing_repair.coordinates.nil? || !@repairing_repair.address.eql?(repairing_repair_params[:address]) || !@repairing_repair.address_to.eql?(repairing_repair_params[:address_to])
+        location = Geocoder.coordinates(repairing_repair_params[:address])
+        location1 = Geocoder.coordinates(repairing_repair_params[:address_to]) unless repairing_repair_params[:address_to].empty? || repairing_repair_params[:address] == repairing_repair_params[:address_to]
 
         if location1
           repairing_repair_params[:coordinates] = [location, location1]
@@ -105,14 +105,6 @@ module Repairing
     end
 
       private
-      def coordinate(coordinates)
-        if ( coordinates =~ /^\d{1,2}[.]\d*/ )
-          Geocoder.coordinates(coordinates)
-        else
-          user_town = current_user.town_model.title
-          Geocoder.coordinates(user_town + ' ' + coordinates)
-        end
-      end
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_repair
         @repairing_repair = Repairing::Repair.find(params[:id])

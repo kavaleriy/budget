@@ -24,7 +24,8 @@
   .modal-dialog.modal-sm{role: :document}
     .modal-content.modal-repair#repair
 
-%h1 Listing repairs
+%h1
+  = "Таблиця ремонтів (#{@repairs.count()})"
 %table#edit_repairs
   %tr
     %th Spending units
@@ -46,7 +47,7 @@
     %th
     %th
 
-  - repairs.each do |repair|
+  - @repairs.each do |repair|
     %tr.editable-table-row
       %td{class: "#{valid_status(repair, :spending_units)}"}
         = repair.spending_units
@@ -70,15 +71,13 @@
       %td.coordinates{class: "#{valid_status(repair, :coordinates)}"}= truncate(repair.coordinates.to_s, length: 30)
 
       %td
-        .edit-repair.btn.btn-primary{ 'data-toggle' => 'modal', 'data-target'=> '#myModal',
-                                          'data-repair-id' => "#{repair.id}" }
-          Edit
-        = link_to 'Drop', repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
+        %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }
+          %i.fa.fa-pencil.fa-2x
+        = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: '', data: { confirm: 'Are you sure?' } do
+          %i.fa.fa-trash-o.fa-2x
 
-
-      -#%td= link_to 'Show', repair
-      -#%td= link_to 'Edit', edit_repairing_repair_path(repair)
-      -#%td= link_to 'Destroy', repair, :method => :delete, :data => { :confirm => 'Are you sure?' }
+.paginator-repairs
+  = paginate @repairs
 
 :javascript
 
