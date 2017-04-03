@@ -8,6 +8,6 @@ setTimeout(function(){
 },5000);
 
 // setting update repair effects
-$('#edit_repair').modal('toggle');
+//$('#edit_repair').modal('toggle'); // when I using this I don`t see error messages // fix in feature
 $('#repair-<%= @repairing_repair.id %>').replaceWith('<%= j render partial: 'repairing/layers/repair', locals: {repair: @repairing_repair} %>');
 $('#repair-<%= @repairing_repair.id %>').effect("highlight", {color: "#5cb85c"}, 2000);
