@@ -143,9 +143,9 @@
           expense_codes["#{key}000"]
 
         when 'kpk_aa'
-          kpk_aa_codes[key.ljust(2, '0')]
+          kpk_aa_codes[key]
         when 'kpk_cccd'
-          ktpvkmb_codes[key.ljust(4, '0')]
+          ktpvkmb_codes[key]
 
         when 'kvk'
           expense_kvk_codes[key.split(':')[0]]

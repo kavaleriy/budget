@@ -105,7 +105,9 @@ module Repairing
         if @repairing_layer.save
           unless @repairing_layer.repairs_file.path.nil?
             # repairs = read_table_from_file(@repairing_layer.repairs_file.path)
+
             Repairing::Repair.import(@repairing_layer, @repairing_layer.repairs_file.path)
+
             Thread.new do
               @repairing_layer.repairs.each do |repair|
                 repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
@@ -124,7 +126,7 @@ module Repairing
         end
 
       end
-
+    
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
       message << t('repairing.layers.check_xlsx_format')
