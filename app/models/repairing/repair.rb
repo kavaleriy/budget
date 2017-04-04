@@ -52,7 +52,8 @@ module Repairing
     end
 
     def validate_coords
-      # if coordinates[0].kind_of?(Array)
+      # TODO
+      # if coordinates[0] and coordinates[0].kind_of?(Array)
       #   coordinates.each do |coords|
       #     check_coords_array(coords)
       #   end
@@ -102,7 +103,7 @@ module Repairing
 
         layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
 
-        layer_repair.save(validate: false)
+        layer_repair.save!
       end
     end
 

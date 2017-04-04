@@ -37,7 +37,16 @@ class BudgetFile
 
 
   def rov_get_item_by_code ktfk, kpk
-     if ktfk.blank?
+     if kpk.blank?
+       ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
+       ktfk_aaa = '80' if ktfk_aaa == '81'
+       ktfk_aaa = '90' if ktfk_aaa == '91'
+
+       {
+           'ktfk' => ktfk,
+           'ktfk_aaa' => ktfk_aaa
+       }
+     else
        kpk = kpk.rjust(7, '0')
        # Головний розпорядник (код відомчої класифікації видатків та кредитування місцевого бюджету)
        kpk_aa = kpk.slice(0, 2)
@@ -53,15 +62,6 @@ class BudgetFile
            'kpk_b' => kpk_b,
            'kpk_cccd' => kpk_ccc + kpk_d,
            'kpk_d' => kpk_d,
-       }
-     else
-       ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
-       ktfk_aaa = '80' if ktfk_aaa == '81'
-       ktfk_aaa = '90' if ktfk_aaa == '91'
-
-       {
-           'ktfk' => ktfk,
-           'ktfk_aaa' => ktfk_aaa
        }
      end
   end
