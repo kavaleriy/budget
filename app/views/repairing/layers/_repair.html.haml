@@ -19,7 +19,7 @@
   %td= repair.edrpou_artist
   %td= repair.description
   %td.coordinates{class: "#{valid_status(repair.coordinates)}"}
-    = truncate(repair.coordinates.to_s, length: 30)
+    = truncate(repair.coordinates.to_s, length: 120)
 
   %td
     %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }

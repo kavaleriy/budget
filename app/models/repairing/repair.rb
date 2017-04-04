@@ -39,7 +39,7 @@ module Repairing
     validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
-    before_validation :geocode, if: ->(obj){ (obj.address.present?) && (!obj.coordinates.present? || obj.address_changed?) }
+    before_validation :geocode, if: ->(obj){ (obj.address.present?) && (!obj.coordinates.present? || obj.address_changed? || obj.address_to_changed?) }
     before_save :set_end_date
 
     def set_end_date
@@ -63,7 +63,7 @@ module Repairing
     end
 
     def geocode
-      self.coordinates =  Geocoder.coordinates(address)
+      self.coordinates = RepairingGeocoder.calc_coordinates(address, address_to)
     end
 
     private

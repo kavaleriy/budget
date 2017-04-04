@@ -4,7 +4,7 @@ class RepairingGeocoder
   def self.calc_coordinates(address, address_to)
     location = self.coordinates_by_addr(address)
     location1 = self.coordinates_by_addr (address_to)
-    if location1
+    if location && location1
       [location, location1]
     else
       location
