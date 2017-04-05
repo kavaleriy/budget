@@ -38,101 +38,50 @@ namespace :repairing_repairs do
 
     repairs = Repairing::Repair.all.each do |repair|
       if repair.coordinates && repair.coordinates[0].is_a?(Array) && repair.coordinates[0].length != 1
-
-        # --- road coordinates as string
-        if  repair.coordinates.length == 2 && repair.coordinates[0][0].is_a?(String)
-          # ---------  string coordinates road ( two points )  ------ to_f 1/0 on preprod/prod
-          # puts " ---p_road(#{repair.coordinates}) "
-          # counter += 1
-        elsif repair.coordinates.length != 2 && repair.coordinates[0][0].is_a?(String)
-          # ---------  string coordinates road ------ to_f 2/2 on preprod/prod
-          # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-          # puts " p_road(#{repair.coordinates}) "
-          # counter += 1
-        else
-          # ---------  float coordinates road ------ to_f 357/362 on preprod/prod
-          # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-          # puts " p_road(#{repair.coordinates}) "
-          # counter += 1
-        end
-        # counter += 1
+        # --- road coordinates
       elsif repair.coordinates && repair.coordinates[0].is_a?(Float) && repair.coordinates[1].is_a?(Float)
         # valid coordinates
-        # counter += 1
-        # puts " p_road(#{repair.coordinates}) "
       elsif repair.coordinates && repair.coordinates[0].is_a?(Float) && !repair.coordinates[1].is_a?(Float)
         # !!!!!!!!! --------[50.944891, 0]----- --- м. Суми, провул. Громадянський,4а ------- # 36/1 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " p_road(#{repair.coordinates}) "
 
         new_coordinates(repair)
       elsif repair.coordinates && repair.coordinates[0].is_a?(Array) && repair.coordinates[0].length == 1
         # !!!!!!!!!!!-----------([[4], [9]]) --- 3 --- 5 # 1/3 on preprod/prod
-        # puts " p_road(#{repair.coordinates}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " ------(#{repair.to_a})-----"
-        # counter += 1
 
         @counter += 1
         repair.coordinates = nil
         repair.save(validate: false)
       elsif repair.coordinates && repair.coordinates[0].is_a?(String) && repair.coordinates[1].is_a?(String)
         # !!!!!!!!!!-----------["50.88917404890332", "33.50830078125"]--------- # 86/80 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates (#{repair.coordinates}) "
 
         @counter += 1
         repair.coordinates = repair.coordinates.map{|repair| repair.to_f}
         repair.save(validate: false)
       elsif !repair.coordinates && !repair.address
         # !!!!!!!!!!!!!!!!-----------()---   --   ---- # 96/96 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates(#{repair.coordinates}) "
 
         deleted += 1
         repair.destroy
       elsif !repair.coordinates
         # !!!!!!!!!!!!!!!!-----------()---different addresses------ # 153/151 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates(#{repair.coordinates}) "
       elsif repair.coordinates && !repair.coordinates[0].is_a?(Float) && repair.coordinates[0] == 0
         # !!!!!!!!!!!!!!!!-----------[0]---м.Конотоп, пр-т Миру,8 --- м.Конотоп, вул.Сарнавська, 38а------ # 22/22 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates(#{repair.coordinates}) "
 
         new_coordinates(repair)
       elsif repair.coordinates && !repair.coordinates[0].is_a?(Float) && repair.coordinates[0] == nil
         # !!!!!!!!!!!!!!!!-----------[nil, [51.25868579999999, 33.1998598]]----- --- () --- (м.Конотоп, вул.Успенсько-Троїцька,61)------ # 32/32 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates (#{repair.coordinates}) "
 
         new_coordinates(repair)
       elsif repair.coordinates && !repair.coordinates[0].is_a?(Float) && repair.coordinates.length == 3
         # !!!!!!!!!!!!!!!---------[48, 429492, 35.002657]-------- м.Дніпропетровськ, вул. Суворова 11 ------ # 1/1 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " p_road(#{repair.coordinates}) "
-
-        # puts " ------(#{repair.to_a})-----"
 
         new_coordinates(repair)
       elsif repair.coordinates && !repair.coordinates[0].is_a?(Float)
         # !!!!!!!!!!!!!!!---------([44])---([22, 22]) ----------  м.Суми, вул.Кооперативна,4 --- м.Контоп, вул.Усп.Троїцька,58 ------ # 15/15 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates (#{repair.coordinates}) "
 
         new_coordinates(repair)
       else
         # ------ # 0/0 on preprod/prod
-        # counter += 1
-        # puts " p_road(#{repair.layer_id}) --- #{repair.address} --- #{repair.address_to}"
-        # puts " coordinates: #{repair.coordinates}"
       end
     end
 
