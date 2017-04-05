@@ -25,7 +25,7 @@ namespace :repairing_repairs do
     puts "#{counter} was changed"
   end
 
-  desc 'Coordinates to float'
+  desc 'Refactor coordinates'
   task refactor_coordinates: :environment do
     deleted = 0
     @counter = 0
