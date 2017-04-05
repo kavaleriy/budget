@@ -7,6 +7,7 @@ module Repairing
     extend RepairingLayerUpload
 
     scope :last_updated, -> {order("updated_at DESC").limit(1)}
+    scope :by_layer, -> (layer_id) {where(layer: layer_id)}
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
@@ -38,7 +39,7 @@ module Repairing
     validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
-    before_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? and !obj.coordinates.present?}, on: :update
+    before_validation :geocode, if: ->(obj){ (obj.address.present?) && (!obj.coordinates.present? || obj.address_changed? || obj.address_to_changed?) }
     before_save :set_end_date
 
     def set_end_date
@@ -62,7 +63,7 @@ module Repairing
     end
 
     def geocode
-      self.coordinates =  Geocoder.coordinates(address)
+      self.coordinates = RepairingGeocoder.calc_coordinates(address, address_to)
     end
 
     private
@@ -70,7 +71,7 @@ module Repairing
     def check_coords_array(coords)
       # errors.add(I18n.t('repairing.repairs.coords.wrong_length')) unless coords.size.eql?(2)
       # if coords[0].kind_of?(String) && coords[1].kind_of?(String)
-      #   errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].valid_by_float? || coords[1].valid_by_float?
+      #   errors.add(I18n.t('repairing.obj_ownerrepairs.coords.wrong_type')) unless coords[0].valid_by_float? || coords[1].valid_by_float?
       # else
       #   errors.add(I18n.t('repairing.repairs.coords.wrong_type')) unless coords[0].kind_of?(Float) || coords[1].kind_of?(Float)
       # end

@@ -5,7 +5,7 @@ module Repairing
     layout 'application' , only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal]
 
     # GET  /repairing/repairs
     # GET /repairing/repairs.json
@@ -28,7 +28,6 @@ module Repairing
 
     # GET /repairing/repairs/1/edit
     def edit
-
       respond_to do |format|
         format.js { render :edit }
       end
@@ -56,9 +55,10 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_repair.update(repairing_repair_params)
-          flash[:notice] = I18n.t('repairing.layers.update.success')
+          flash[:notice] = I18n.t('repairing.layers.update.success')  # edit repair message for form
+          msg = {class_name: 'success', message: flash[:notice]}      # edit repair message for x-editable
           format.js {}
-          format.json { render :show, status: :ok }
+          format.json{ render :show, status: :ok, json: msg }
         else
           # localization messages for error fields in uk.locale.yml(attributes:)
           flash[:notice] = @repairing_repair.errors
@@ -72,8 +72,11 @@ module Repairing
     # DELETE /repairing/repairs/1.json
     def destroy
       @repairing_repair.destroy
+
       respond_to do |format|
-        format.js
+        format.html { redirect_to repairing_layer_path(@repairing_repair.layer_id) }
+        format.json { head :no_content }
+        format.js   { render :layout => false }
       end
     end
 
@@ -85,6 +88,10 @@ module Repairing
         end
       end
 
+    end
+
+    def edit_in_modal
+      @repairing_repair.valid?
     end
 
       private

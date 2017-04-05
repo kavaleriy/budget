@@ -1,2 +1,2 @@
 $('#results').html('<%= escape_javascript(raw(render partial: "search_books")) %>');
-  $('#books-paginator').html('<%= escape_javascript(paginate(@library_books, remote: true)) %>');
+$('#books-paginator').html('<%= escape_javascript(paginate(@library_books, remote: true)) %>');
