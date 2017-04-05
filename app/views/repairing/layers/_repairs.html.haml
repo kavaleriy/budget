@@ -29,25 +29,25 @@
     .modal-content.modal-repair#repair
 
 %h1
-  = "Таблиця ремонтів (#{@repairs.count()})"
+  = "#{t('repairing.repairs.repairs')} (#{@repairs.count()})"
 %table#edit_repairs
   %tr
-    %th Spending units
-    %th Erdpou spending units
-    %th Subject
-    %th Address
-    %th Address to
-    %th Work
-    %th Repairing category
-    %th Amount
-    %th Repair start date
-    %th Repair end date
-    %th Warranty
-    %th Prozzoro id
-    %th Object owner
-    %th Edrpou artist
-    %th Description
-    %th Coordinates
+    %th= t('repairing.repairs.form.spending_units')
+    %th= t('repairing.repairs.form.erdpou_spending')
+    %th= t('repairing.repairs.form.subject')
+    %th= t('repairing.repairs.form.address')
+    %th= t('repairing.repairs.form.address_to')
+    %th= t('repairing.repairs.form.work')
+    %th= t('repairing.repairs.form.category')
+    %th= t('repairing.repairs.form.amount')
+    %th= t('repairing.repairs.form.repair_start_date')
+    %th= t('repairing.repairs.form.repair_end_date')
+    %th= t('repairing.repairs.form.warranity_date')
+    %th= t('repairing.repairs.form.prozzoro_id')
+    %th= t('repairing.repairs.form.obj_owner')
+    %th= t('repairing.repairs.form.erdpou_artist')
+    %th= t('repairing.repairs.form.description')
+    %th= t('repairing.repairs.form.coordinates')
     %th
     %th
 
