@@ -83,6 +83,12 @@ module Repairing
     # GET /repairing/layers/1
     # GET /repairing/layers/1.json
     def show
+      @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(25) unless params[:layer_id].blank?
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
     end
 
     # GET /repairing/layers/new
@@ -126,7 +132,7 @@ module Repairing
         end
 
       end
-    
+
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
       message << t('repairing.layers.check_xlsx_format')

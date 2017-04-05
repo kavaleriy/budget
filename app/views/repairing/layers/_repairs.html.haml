@@ -1,0 +1,86 @@
+:scss
+
+  .container-fluid.modal-open {
+    padding-right: 30px;
+  }
+
+  table{
+    border-spacing: 1px;
+    border-collapse: separate;
+    tr:nth-child(even) {background: #DDD}
+    tr:nth-child(odd) {background: #FFF}
+    td{
+      border: 0px;
+      border-right: 1px #FFF;
+    }
+    td.not-valid{
+      background: #FFB59D;
+    }
+    td.coordinates{
+      overflow: hidden;
+    }
+    .popover-content {
+      padding: 0;
+    }
+  }
+
+.modal.fade{id: 'edit_repair', role: 'dialog', tabindex: '-1', appendTo: '#repairs'}
+  .modal-dialog.modal-sm{role: :document}
+    .modal-content.modal-repair#repair
+
+%h1
+  = "#{t('repairing.repairs.repairs')} (#{@repairs.count()})"
+%table#edit_repairs
+  %tr
+    %th= t('repairing.repairs.form.spending_units')
+    %th= t('repairing.repairs.form.erdpou_spending')
+    %th= t('repairing.repairs.form.subject')
+    %th= t('repairing.repairs.form.address')
+    %th= t('repairing.repairs.form.address_to')
+    %th= t('repairing.repairs.form.work')
+    %th= t('repairing.repairs.form.category')
+    %th= t('repairing.repairs.form.amount')
+    %th= t('repairing.repairs.form.repair_start_date')
+    %th= t('repairing.repairs.form.repair_end_date')
+    %th= t('repairing.repairs.form.warranity_date')
+    %th= t('repairing.repairs.form.prozzoro_id')
+    %th= t('repairing.repairs.form.obj_owner')
+    %th= t('repairing.repairs.form.erdpou_artist')
+    %th= t('repairing.repairs.form.description')
+    %th= t('repairing.repairs.form.coordinates')
+    %th
+    %th
+
+  = render partial: 'repair', collection: @repairs
+
+.paginator-repairs
+  = paginate @repairs, :remote => true
+
+:javascript
+
+  $(document).ready(function(){
+
+    // get repairs for layer
+    function get_repair_info_modal(id_repair){
+      $.ajax({
+        url: "#{repairing_edit_in_modal_path}",
+        dataType: 'script',
+        data: { id: id_repair },
+        success: function(data){}
+      })
+    }
+
+    // show all repairs of layer
+    $('.edit-repair').on('click',function(){
+      var repair_id = $(this).attr('data-repair-id');
+      get_repair_info_modal(repair_id);
+    });
+
+    // setting modal window for static page behavior
+    $("#edit_repair").on("show.bs.modal", function () {
+      $(".container-fluid").addClass("modal-open");
+    }).on("hidden.bs.modal", function () {
+      $(".container-fluid").removeClass("modal-open")
+    });
+
+  })
