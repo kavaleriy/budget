@@ -75,11 +75,17 @@ class FzBudgetFilesController < ApplicationController
         fz_file.title = file[:name]
         fz_file.path = file[:path].to_s
 
-        def remove_old_fz user_name, file_name
-          BudgetFile.where(:author => user_name, :name => file_name).destroy_all
+        def get_fz_name year = params[:year], filename = file[:name] 
+          "#{year}.#{filename}"
         end
 
-        remove_old_fz(current_user.email, file[:name])
+        def remove_old_fz
+          name = get_fz_name(params[:year], file[:name])
+          BudgetFile.where(:author => current_user.email,
+            :name => name).destroy_all
+        end
+
+        remove_old_fz
 
         calc_annual_rows = ->(rows) do
           rows.each do |row|
@@ -97,7 +103,7 @@ class FzBudgetFilesController < ApplicationController
         [rot_file, rov_file].compact.each do |budget_file|
           budget_file.data_type = :plan
           budget_file.author = current_user.email
-          budget_file.name = file[:name]
+          budget_file.name = get_fz_name
           budget_file.import rows
         end
 
