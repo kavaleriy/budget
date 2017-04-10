@@ -83,7 +83,7 @@ module Repairing
     # GET /repairing/layers/1
     # GET /repairing/layers/1.json
     def show
-      @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(25) unless params[:layer_id].blank?
+      @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(100) unless params[:layer_id].blank?
 
       respond_to do |format|
         format.js
