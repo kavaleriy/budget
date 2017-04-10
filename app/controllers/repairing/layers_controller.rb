@@ -117,7 +117,7 @@ module Repairing
             Thread.new do
               @repairing_layer.repairs.each do |repair|
                 repair.coordinates = RepairingGeocoder.calc_coordinates(repair.address, repair.address_to) if repair.coordinates.blank?
-                repair.save!
+                repair.save(validate: false)
               end
             end
           end
