@@ -107,7 +107,7 @@ module Repairing
 
         layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
 
-        layer_repair.save!
+        layer_repair.save(validate: false)
       end
     end
 
