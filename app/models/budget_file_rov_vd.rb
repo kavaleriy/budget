@@ -4,7 +4,7 @@ class BudgetFileRovVd < BudgetFile
 
   def readline row
     ktfk = row['KTFK'].to_i.to_s.gsub(/^0*/, "")
-    kpk = row['KPK'].to_s.ljust(7, '0')
+    kpk = row['KPK'].to_s
 
     fond = row['KF'].to_s.split('.')[0]
 

@@ -35,8 +35,8 @@ class BudgetFileRovFz < BudgetFile
 
     generate_item = ->(amount, month) do
       item = is_kpk_format ?
-        rov_get_item_by_code(kpk, nil) :
-        rov_get_item_by_code(nil, kpk)
+        rov_get_item_by_code(nil, kpk) :
+        rov_get_item_by_code(kpk, nil)
 
       item.merge!({
           'amount' => amount,
