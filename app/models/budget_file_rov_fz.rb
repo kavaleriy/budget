@@ -30,11 +30,14 @@ class BudgetFileRovFz < BudgetFile
     # ktfk_aaa = '80' if ktfk_aaa == '81'
     # ktfk_aaa = '90' if ktfk_aaa == '91'
 
-    year = row['D_UTV'].to_date.year.to_s
+    year = row['_year'] || row['D_UTV'].to_date.year.to_s
+    is_kpk_format = year.to_i > 2016
 
     generate_item = ->(amount, month) do
-      item = rov_get_item_by_code(nil, kpk)      
-      
+      item = is_kpk_format ?
+        rov_get_item_by_code(nil, kpk) :
+        rov_get_item_by_code(kpk, nil)
+
       item.merge!({
           'amount' => amount,
           'fond' => fond,
