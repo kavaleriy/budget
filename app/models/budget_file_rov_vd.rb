@@ -26,9 +26,11 @@ class BudgetFileRovVd < BudgetFile
         { :amount => row['KVNP'].to_f / 100 },
     ].map do |line|
       next if line[:amount] == 0
-      item = rov_get_item_by_code(ktfk, kpk)
 
       dt = row['DT'].to_date
+      year = dt.year.to_s
+
+      item = parse_rov_code(year, ktfk, kpk)
 
       item.merge({
           'amount' => line[:amount],
@@ -38,7 +40,7 @@ class BudgetFileRovVd < BudgetFile
           'kekv' => kekv,
           'kvk' => kvk,
           'krk' => krk,
-          '_year' => dt.year.to_s,
+          '_year' => year,
           '_month' => dt.month.to_s,
       })
     end.reject {|c| c.nil?}

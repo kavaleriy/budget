@@ -36,34 +36,38 @@ class BudgetFile
   field :meta_data, :type => Hash
 
 
-  def rov_get_item_by_code ktfk, kpk
-     if kpk.blank?
-       ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
-       ktfk_aaa = '80' if ktfk_aaa == '81'
-       ktfk_aaa = '90' if ktfk_aaa == '91'
+  def parse_rov_code(year, ktfk, kpk)
+    by_kpk = -> () do
+      kpk = kpk.rjust(7, '0')
+      # Головний розпорядник (код відомчої класифікації видатків та кредитування місцевого бюджету)
+      kpk_aa = kpk.slice(0, 2)
+      # Відповідальний виконавець бюджетної програми у системі головного розпорядника.
+      kpk_b = kpk.slice(2, 1)
+      # Номер програми
+      kpk_ccc = kpk.slice(3, 3)
+      # Номер підпрограми
+      kpk_d = kpk.slice(6, 1)
 
-       {
-           'ktfk' => ktfk,
-           'ktfk_aaa' => ktfk_aaa
-       }
-     else
-       kpk = kpk.rjust(7, '0')
-       # Головний розпорядник (код відомчої класифікації видатків та кредитування місцевого бюджету)
-       kpk_aa = kpk.slice(0, 2)
-       # Відповідальний виконавець бюджетної програми у системі головного розпорядника.
-       kpk_b = kpk.slice(2, 1)
-       # Номер програми
-       kpk_ccc = kpk.slice(3, 3)
-       # Номер підпрограми
-       kpk_d = kpk.slice(6, 1)
+      {
+          'kpk_aa' => kpk_aa,
+          'kpk_b' => kpk_b,
+          'kpk_cccd' => kpk_ccc + kpk_d,
+          'kpk_d' => kpk_d,
+      }
+    end
 
-       {
-           'kpk_aa' => kpk_aa,
-           'kpk_b' => kpk_b,
-           'kpk_cccd' => kpk_ccc + kpk_d,
-           'kpk_d' => kpk_d,
-       }
-     end
+    by_ktfk = -> () do
+      ktfk_aaa = ktfk.slice(0, ktfk.length - 3) #.ljust(3, '0')
+      ktfk_aaa = '80' if ktfk_aaa == '81'
+      ktfk_aaa = '90' if ktfk_aaa == '91'
+
+      {
+          'ktfk' => ktfk,
+          'ktfk_aaa' => ktfk_aaa
+      }
+    end
+
+    return year.to_i > 2016 ? by_kpk.call() : by_ktfk.call()
   end
 
   def is_allowed_fond fond
