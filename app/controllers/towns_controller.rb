@@ -40,6 +40,19 @@ class TownsController < ApplicationController
 
   end
 
+  def search_for_regions
+    @towns = use_cache get_controller_action_key do
+      Town.all.reject{|town| town.level != 2 }
+    end
+
+    respond_to do |format|
+      q = params[:query].mb_chars.capitalize.to_s
+      @towns = @towns.select{ |t| Regexp.new("^#{q}.*") =~ t.title }
+      format.json
+    end
+
+  end
+
   def search_for_towns
     @towns = use_cache get_controller_action_key do
       # Town.all.reject{|town| town.level == 1 }
@@ -112,12 +125,11 @@ class TownsController < ApplicationController
 
     @town.area_title = Town.get_area_title(town_params[:koatuu])
       if  @town.save
-        has_parent_area = Town.town_exists?(params[:region_title])
-
-        Town.create_parent_area(params[:region_title],town_params[:koatuu]) unless has_parent_area && !town_params[:level] == Town::TOWN_LEVEL
+        # binding.pry
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
       else
+        # binding.pry
         format.html { render :new_town }
         format.json { render json: @town.errors, status: :unprocessable_entity }
       end
@@ -210,7 +222,7 @@ class TownsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def town_params
-      params.require(:town).permit(:region_title, :level, :koatuu, :title, :img, :links, :coordinates, :geometry_type, :description, :counters => [:citizens, :house_holdings, :square])
+      params.require(:town).permit(:region_title, :area_town, :level, :koatuu, :title, :img, :links, :coordinates, :geometry_type, :description, :counters => [:citizens, :house_holdings, :square])
     end
 
 
