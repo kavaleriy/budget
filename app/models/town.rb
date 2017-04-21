@@ -91,12 +91,13 @@ class Town
     self.koatuu.eql?(TEST_TOWN_KOATUU)
   end
 
-  def self.town_exists?(title)
-    # this function check if exist town by title
-    # return true if exists else return false
-    town = Town.get_town_by_title(title).first
-    !town.nil?
-  end
+  # not used
+  # def self.town_exists?(title)
+  #   # this function check if exist town by title
+  #   # return true if exists else return false
+  #   town = Town.get_town_by_title(title).first
+  #   !town.nil?
+  # end
 
   def self.get_area_title(koatuu)
     # this function return region title
@@ -110,20 +111,21 @@ class Town
     area_title
   end
 
-  def self.create_parent_area(title,koatuu)
-    # this function create new town with level = AREA_LEVEL
-    # get two params title is he title, koatuu is child koatuu
-    # koatuu area is first 5 number params koatuu
-    # skip validation because sometime town with AREA_LEVEL can have same koatuu like child town with TOWN_LEVEL
-    town = Town.new
-    town.title = title
-    town.koatuu = "#{koatuu[0...5]}00000"
-    area_title = Town.get_area_title(koatuu)
-    town.level = AREA_LEVEL
-    town.area_title = area_title
-    town.save(validate: false)
-
-  end
+  # not used
+  # def self.create_parent_area(title,koatuu)
+  #   # this function create new town with level = AREA_LEVEL
+  #   # get two params title is he title, koatuu is child koatuu
+  #   # koatuu area is first 5 number params koatuu
+  #   # skip validation because sometime town with AREA_LEVEL can have same koatuu like child town with TOWN_LEVEL
+  #   town = Town.new
+  #   town.title = title
+  #   town.koatuu = "#{koatuu[0...5]}00000"
+  #   area_title = Town.get_area_title(koatuu)
+  #   town.level = AREA_LEVEL
+  #   town.area_title = area_title
+  #   town.save(validate: false)
+  #
+  # end
 
   def self.get_levels_array
     # this function return levels array
@@ -212,6 +214,9 @@ class Town
   end
   def self.towns(koatuu = '')
     self.where(:level.in => [3, 31]).where(:koatuu => Regexp.new("^#{koatuu}.*"))
+  end
+  def self.region_towns(region_id)
+    self.where(level: 3, p_id: region_id)
   end
 
   # key indicators for key_indicate_map

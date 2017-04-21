@@ -125,11 +125,9 @@ class TownsController < ApplicationController
 
     @town.area_title = Town.get_area_title(town_params[:koatuu])
       if  @town.save
-        # binding.pry
         format.html { redirect_to @town, notice: 'Town was successfully created.' }
         format.json { render :show, status: :created, location: @town }
       else
-        # binding.pry
         format.html { render :new_town }
         format.json { render json: @town.errors, status: :unprocessable_entity }
       end
@@ -211,7 +209,11 @@ class TownsController < ApplicationController
   def get_child_towns
     @koatuu = params[:koatuu]
     area_code = params[:koatuu].slice(0,5)
-    @cities = Town.towns(area_code)
+    region = Town.get_town_by_koatuu(@koatuu).first
+    region_town = Town.region_towns(region.id)
+    region_cities = Town.towns(area_code)
+
+    @cities = region_town + region_cities
   end
 
   private
