@@ -158,7 +158,7 @@ class TownsController < ApplicationController
   # DELETE /indicator_files/1
   # DELETE /indicator_files/1.json
   def destroy
-    if check_admin
+    if current_user && current_user.admin?
       @town.destroy
       respond_to do |format|
         format.html { redirect_to towns_url, notice: 'Town was successfully destroyed.' }
