@@ -158,11 +158,13 @@ class TownsController < ApplicationController
   # DELETE /indicator_files/1
   # DELETE /indicator_files/1.json
   def destroy
-    # @town.destroy
-    # respond_to do |format|
-    #   format.html { redirect_to towns_url, notice: 'Town was successfully destroyed.' }
-    #   format.json { head :no_content }
-    # end
+    if current_user.admin?
+      @town.destroy
+      respond_to do |format|
+        format.html { redirect_to towns_url, notice: 'Town was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   def indicator_file_destroy
