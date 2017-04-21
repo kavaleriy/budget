@@ -1,6 +1,9 @@
 :scss
   #regions_title{
     display: none;
+    .select2-choice{
+      height: 32px;
+    }
   }
 
 = content_for :header do
@@ -13,9 +16,7 @@
       =f.text_field :title
       =f.select :level,Town.get_levels_array.map{|level|[level.last,level.first]},{label: t('.level')}
       #regions_title
-        .form-group
-          =label_tag :region_title,'Район'
-          =text_field_tag :region_title,'' ,{class: 'form-control'}
+        =f.text_field :area_town, id: 'town_select', label: t('REGION_LEVEL')
         %br
       =f.submit t('.create_city'), {class: 'btn btn-primary'}
 
@@ -44,6 +45,29 @@
     if(($('#town_level').val() == region_level || $('#town_level').val() == village_level) && $('#town_koatuu').val()){
       getParent($('#town_level').val(),$('#town_koatuu').val());
     }
+
+    $('#town_select').select2({
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      height: 35,
+      ajax: {
+        url: '#{search_for_regions_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    });
 
     $('#town_level').change(function(){
       $('#region_title').val('');
