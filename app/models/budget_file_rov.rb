@@ -24,11 +24,13 @@ class BudgetFileRov < BudgetFile
     months = [ month ]
     months << '0' if fond == '7' # add annual amount manually
 
+    year = row['_year'] || row['DATA'].to_date.year.to_s.split('.')[0]
+
     months.map do |mon|
-      item = rov_get_item_by_code(ktfk, kpk)
+      item = parse_rov_code(year, ktfk, kpk)
 
       item.merge!({
-        '_year' => row['DATA'].to_date.year.to_s.split('.')[0],
+        '_year' => year,
         '_month' => mon,
 
         'fond' => fond,

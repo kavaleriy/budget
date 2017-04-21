@@ -195,6 +195,8 @@ Rails.application.routes.draw do
   # check url, maybe it's not use
   get 'search_for_areas_town' => 'towns#search_for_areas'
 
+  get 'search_for_regions' => 'towns#search_for_regions'
+
   post 'get_child_regions/:koatuu' => 'towns#get_child_regions',as: 'child_regions'
   post 'get_child_towns/:koatuu' => 'towns#get_child_towns',as: 'child_towns'
   resources :towns
