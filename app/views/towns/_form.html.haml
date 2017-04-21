@@ -44,6 +44,8 @@
         .col-md-12.fix-pad
           = link_to t('.cancel', :default => t("helpers.links.cancel")), towns_path, class: 'btn btn-default pull-right'
           = f.submit nil, class: 'btn btn-primary pull-right'
+          - if check_admin
+            = link_to t('destroy'), @town, method: :delete, data: { confirm: t('library.books.index.ask') }, class: 'btn btn-danger'
 
 
 :javascript
