@@ -9,9 +9,15 @@ class BudgetFileRovFz < BudgetFile
 
     return unless self.taxonomy.kmb.blank? || row['KMB'].to_s == self.taxonomy.kmb
 
-    ktfk = row['FCODE'].to_s
-    kpk = row['FCODE'].to_s
+    year = row['_year'] || row['D_UTV'].to_date.year.to_s
 
+    kvk = row['KVK'].to_s
+
+    ktfk = row['FCODE'].to_s
+
+    kpk = row['FCODE'].to_s
+    return if kpk.length == 6 && year > 2016
+    kpk = kvk + kpk.rjust(5, '0') if kpk.length < 6
 
     kekv = row['ECODE'].to_s
     return unless kekv.length == 4
@@ -22,11 +28,6 @@ class BudgetFileRovFz < BudgetFile
 
     kod =  row['KOD'].to_s.split('.')[0]
     # return if fond != '1' and kod == '1'
-
-    kvk = row['KVK'].to_s
-
-
-    year = row['_year'] || row['D_UTV'].to_date.year.to_s
 
 
     generate_item = ->(amount, month) do
