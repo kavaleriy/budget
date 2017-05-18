@@ -16,8 +16,8 @@ class BudgetFileRovFz < BudgetFile
     ktfk = row['FCODE'].to_s
 
     kpk = row['FCODE'].to_s
-    return if kpk.length == 6 && year > 2016
-    kpk = kvk + kpk.rjust(5, '0') if kpk.length < 6
+    return if kpk.length == 6 && year.to_i > 2016
+    kpk = kvk + kpk.rjust(7 - kvk.length, '0') if kpk.length < 6
 
     kekv = row['ECODE'].to_s
     return unless kekv.length == 4
