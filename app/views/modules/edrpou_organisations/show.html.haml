@@ -1,0 +1,13 @@
+%p#notice= notice
+
+%p
+  %b Edrpou:
+  = @modules_edrpou_organisation.edrpou
+
+%p
+  %b Title:
+  = @modules_edrpou_organisation.title
+
+= link_to 'Edit', edit_modules_edrpou_organisation_path(@modules_edrpou_organisation)
+\|
+= link_to 'Back', modules_edrpou_organisations_path

@@ -1,0 +1,23 @@
+%h1 Listing modules_edrpou_organisations
+
+%table
+  %thead
+    %tr
+      %th Edrpou
+      %th Title
+      %th
+      %th
+      %th
+
+  %tbody
+    - @modules_edrpou_organisations.each do |modules_edrpou_organisation|
+      %tr
+        %td= modules_edrpou_organisation.edrpou
+        %td= modules_edrpou_organisation.title
+        %td= link_to 'Show', modules_edrpou_organisation
+        %td= link_to 'Edit', edit_modules_edrpou_organisation_path(modules_edrpou_organisation)
+        %td= link_to 'Destroy', modules_edrpou_organisation, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Edrpou organisation', new_modules_edrpou_organisation_path

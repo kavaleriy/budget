@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :modules do
+    resources :edrpou_organisations
+  end
+
   namespace :hackatton do
   get 'dani_mist/load_data'
   end

@@ -1,0 +1,2 @@
+module Modules::EdrpouOrganisationsHelper
+end
