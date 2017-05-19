@@ -29,6 +29,32 @@ class Modules::EdrpouOrganisationsController < ApplicationController
     respond_with(@modules_edrpou_organisation)
   end
 
+  def import
+    town = current_user.admin? ? params[:town] : current_user.town_model
+
+    Modules::EdrpouOrganisation.import(params[:file], town)
+    redirect_to modules_edrpou_organisations_path, notice:  'Edrpou organisations imported.'
+
+  rescue Roo::Base::TypeError
+    message = [t('invalid_format')]
+    message << t('repairing.layers.check_xlsx_format')
+    respond_with_error_message(message)
+  rescue DBF::Column::NameError
+    message = [t('invalid_format')]
+    message << t('repairing.layers.correct_formats')
+    respond_with_error_message(message)
+  rescue => e
+    message = [t('repairing.layers.update.error')]
+    message << "#{e}"
+    respond_with_error_message(message)
+  end
+
+  def respond_with_error_message(message)
+    respond_to do |format|
+      format.html { redirect_to :back, alert:  message }
+    end
+  end
+
   def update
     @modules_edrpou_organisation.update(edrpou_organisation_params)
     respond_with(@modules_edrpou_organisation)

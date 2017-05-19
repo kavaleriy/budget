@@ -1,15 +1,7 @@
 Rails.application.routes.draw do
 
-  namespace :modules do
-    resources :edrpou_organisations
-  end
-
   namespace :hackatton do
   get 'dani_mist/load_data'
-  end
-
-  namespace :modules do
-    resources :partners_categories
   end
 
   namespace :compare_taxonomies do
@@ -51,6 +43,10 @@ Rails.application.routes.draw do
     post 'change_partner_order', to: 'partners#change_order', as: :change_partner_order
     resources :banners
     post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
+    resources :partners_categories
+    resources :edrpou_organisations do
+      collection { post :import }
+    end
   end
 
   get 'news' => 'modules/budget_news#all_news', as: 'all_budget_news'
