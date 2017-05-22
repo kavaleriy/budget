@@ -1,23 +1,30 @@
-%h1 New modules_edrpou_organisation
+%h1 Завантажити перелік розпорядиків бюджетних коштів
 
-= render 'form'
+%ul.nav.nav-tabs
+  %li.active
+    = link_to 'Створити один', '#create-edrpou', aria: { expanded: true }, data: { toggle: 'tab'}
+  %li
+    = link_to 'Імпортувати файлом', '#import-edrpou', aria: { expanded: true }, data: { toggle: 'tab'}
 
-= form_tag import_modules_edrpou_organisations_path, multipart: true do
+.tab-content
+  #create-edrpou.tab-pane.fade.active.in
+    = render 'form'
+  #import-edrpou.tab-pane.fade
+    = form_tag import_modules_funds_managers_path, multipart: true do
+      .form-inputs
+        = file_field_tag :file
+      .form-group
+        %label.control-label
+          = t('owner')
+        - if current_user && current_user.admin?
+          = text_field_tag :town, '', { class: 'town_select form-control', required: true }
+        - else
+          = ": #{current_user.town_model.title}"
 
-  .form-inputs
-    = file_field_tag :file
-  .form-group
-    %label.control-label
-      = t('owner')
-    - if current_user && current_user.admin?
-      = text_field_tag :town, '', { class: 'town_select form-control', required: true }
-    - else
-      = ": #{current_user.town_model.title}"
+      .form-actions
+        = submit_tag 'Import'
 
-  .form-actions
-    = submit_tag 'Import'
-
-= link_to 'Back', modules_edrpou_organisations_path
+= link_to 'Back', modules_funds_managers_path, class: 'btn btn-primary'
 
 :javascript
 

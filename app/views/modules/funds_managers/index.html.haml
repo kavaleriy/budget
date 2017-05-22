@@ -1,0 +1,23 @@
+%h1 Перелік розпорядників бюджетних коштів
+
+%table
+  %thead
+    %tr
+      %th ЄДРПОУ
+      %th Назва
+      %th
+      %th
+      %th
+
+  %tbody
+    - @funds_managers.each do |funds_manager|
+      %tr
+        %td= funds_manager.edrpou
+        %td= funds_manager.title
+        %td= link_to 'Show', funds_manager
+        %td= link_to 'Edit', edit_modules_funds_manager_path(funds_manager)
+        %td= link_to 'Destroy', funds_manager, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Edrpou organisation', new_modules_funds_manager_path

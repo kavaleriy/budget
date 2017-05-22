@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     resources :banners
     post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
     resources :partners_categories
-    resources :edrpou_organisations do
+    resources :funds_managers do
       collection { post :import }
     end
   end
