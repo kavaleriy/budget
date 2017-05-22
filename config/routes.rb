@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :funds_managers do
+    collection { post :import }
+  end
+
   namespace :hackatton do
   get 'dani_mist/load_data'
   end
@@ -44,9 +48,6 @@ Rails.application.routes.draw do
     resources :banners
     post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
     resources :partners_categories
-    resources :funds_managers do
-      collection { post :import }
-    end
   end
 
   get 'news' => 'modules/budget_news#all_news', as: 'all_budget_news'
@@ -169,14 +170,7 @@ Rails.application.routes.draw do
   end
 
   namespace :library do
-    # resources :categories
-    # get 'categories_tree_root' => 'categories#tree_root'
-    # get 'categories_tree' => 'categories#tree'
-
     resources :books
-
-    # resources :links
-    # put 'documents/lock/:id' => 'documents#lock'
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'

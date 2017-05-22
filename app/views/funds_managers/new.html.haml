@@ -10,7 +10,7 @@
   #create-edrpou.tab-pane.fade.active.in
     = render 'form'
   #import-edrpou.tab-pane.fade
-    = form_tag import_modules_funds_managers_path, multipart: true do
+    = form_tag import_funds_managers_path, multipart: true do
       - if current_user && current_user.admin?
         .form-group
           = render 'select_town'
@@ -20,4 +20,4 @@
       .form-actions
         = submit_tag 'Завантажити', class: 'btn btn-default'
 
-= link_to 'Back', modules_funds_managers_path, class: 'btn btn-primary'
+= link_to 'Back', funds_managers_path, class: 'btn btn-primary'

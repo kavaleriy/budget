@@ -1,4 +1,4 @@
-class Modules::FundsManager
+class FundsManager
   require 'external_api'
   include Mongoid::Document
   field :edrpou, type: String

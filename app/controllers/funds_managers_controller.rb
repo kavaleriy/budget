@@ -1,4 +1,4 @@
-class Modules::FundsManagersController < ApplicationController
+class FundsManagersController < ApplicationController
   layout 'application_admin'
   before_action :access_user?
   before_action :set_funds_manager, only: [:show, :edit, :update, :destroy]
@@ -7,7 +7,7 @@ class Modules::FundsManagersController < ApplicationController
   respond_to :html
 
   def index
-    @funds_managers = Modules::FundsManager.all
+    @funds_managers = FundsManager.all
     respond_with(@funds_managers)
   end
 
@@ -16,7 +16,7 @@ class Modules::FundsManagersController < ApplicationController
   end
 
   def new
-    @funds_manager = Modules::FundsManager.new
+    @funds_manager = FundsManager.new
     respond_with(@funds_manager)
   end
 
@@ -24,7 +24,7 @@ class Modules::FundsManagersController < ApplicationController
   end
 
   def create
-    @funds_manager = Modules::FundsManager.new(funds_manager_params)
+    @funds_manager = FundsManager.new(funds_manager_params)
     @funds_manager.save
     respond_with(@funds_manager)
   end
@@ -32,8 +32,8 @@ class Modules::FundsManagersController < ApplicationController
   def import
     town = current_user.admin? ? params[:town] : current_user.town_model
 
-    Modules::FundsManager.import(params[:file], town)
-    redirect_to modules_edrpou_organisations_path, notice:  'Edrpou organisations imported.'
+    FundsManager.import(params[:file], town)
+    redirect_to funds_managers_path, notice:  'Edrpou organisations imported.'
 
   rescue Roo::Base::TypeError
     message = [t('invalid_format')]
@@ -70,10 +70,10 @@ class Modules::FundsManagersController < ApplicationController
     end
 
     def set_funds_manager
-      @funds_manager = Modules::FundsManager.find(params[:id])
+      @funds_manager = FundsManager.find(params[:id])
     end
 
     def funds_manager_params
-      params.require(:modules_funds_manager).permit(:edrpou)
+      params.require(:funds_manager).permit(:edrpou)
     end
 end
