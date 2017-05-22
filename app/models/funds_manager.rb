@@ -10,7 +10,6 @@ class FundsManager
 
   validates_presence_of :edrpou
   validates_uniqueness_of :edrpou, scope: :town
-  validates :edrpou, uniqueness: { scope: :town }
 
   def title
     edr_data_arr = ExternalApi.edr_data(self.edrpou)
