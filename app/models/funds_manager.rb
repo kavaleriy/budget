@@ -9,6 +9,8 @@ class FundsManager
   belongs_to :town
 
   validates_presence_of :edrpou
+  validates_uniqueness_of :edrpou, scope: :town
+  validates :edrpou, uniqueness: { scope: :town }
 
   def title
     edr_data_arr = ExternalApi.edr_data(self.edrpou)
@@ -26,7 +28,8 @@ class FundsManager
     header = spreadsheet.row(1)
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      edrpou = by_edrpou(row['edrpou']).first || new
+      # edrpou = by_edrpou(row['edrpou']).first || new
+      edrpou = new
       edrpou.edrpou = row['edrpou']
       edrpou.town = town
       edrpou.save!

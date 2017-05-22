@@ -1,0 +1,23 @@
+- if @funds_managers
+  - @funds_managers.each do |funds_manager|
+    .table-body{'data-id' => funds_manager.id}
+      .row
+        .col-xs-11.reset-padding
+          .col-md-2.reset-padding
+            .col-xs-4.visible-sm.visible-xs
+              = 'ЄДРПОУ'
+            .col-xs-8.col-md-12
+              = funds_manager.edrpou
+          .col-md-8.reset-padding
+            .col-xs-4.visible-sm.visible-xs
+              = 'Назва'
+            .col-xs-8.col-md-12
+              = funds_manager.title
+          .col-md-2.reset-padding
+            .col-xs-4.visible-sm.visible-xs
+              = 'Місто'
+            .col-xs-8.col-md-12
+              = funds_manager.town.title if funds_manager.town?
+        .col-xs-1.text-center.reset-padding.files-action-button
+          = link_to funds_manager, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash-o.fa-2x

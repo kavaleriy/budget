@@ -1,21 +1,35 @@
+:scss
+  #import-funds-managers{
+    .file-upload{
+      .input-group, .formats{
+        display: inline-block;
+      }
+      .input-group{
+        margin-right: 10px;
+      }
+    }
+  }
+
 %h1 Завантажити перелік розпорядиків бюджетних коштів
 
 %ul.nav.nav-tabs
   %li.active
-    = link_to 'Створити один', '#create-edrpou', aria: { expanded: true }, data: { toggle: 'tab'}
+    = link_to 'Створити один', '#create-funds-manager', aria: { expanded: true }, data: { toggle: 'tab'}
   %li
-    = link_to 'Імпортувати файлом', '#import-edrpou', aria: { expanded: true }, data: { toggle: 'tab'}
+    = link_to 'Імпортувати файлом', '#import-funds-managers', aria: { expanded: true }, data: { toggle: 'tab'}
 
 .tab-content
-  #create-edrpou.tab-pane.fade.active.in
+  #create-funds-manager.tab-pane.fade.active.in
     = render 'form'
-  #import-edrpou.tab-pane.fade
+  #import-funds-managers.tab-pane.fade
     = form_tag import_funds_managers_path, multipart: true do
       - if current_user && current_user.admin?
         .form-group
           = render 'select_town'
-      .form-group
+      .form-group.file-upload
         = file_field_tag :file
+        .formats
+          = '*.csv, *.xls, *xlsx'
 
       .form-actions
         = submit_tag 'Завантажити', class: 'btn btn-default'

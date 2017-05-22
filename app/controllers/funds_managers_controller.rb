@@ -7,26 +7,42 @@ class FundsManagersController < ApplicationController
   respond_to :html
 
   def index
-    @funds_managers = FundsManager.all
-    respond_with(@funds_managers)
+    @funds_managers = current_user.admin? ? FundsManager.all : FundsManager.by_town(current_user.town_model)
+    @funds_managers = @funds_managers.page(params[:page]).per(30)
+
+    # respond_with(@funds_managers)
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
-  def show
-    respond_with(@funds_manager)
-  end
+  # def show
+  #   respond_with(@funds_manager)
+  # end
 
   def new
     @funds_manager = FundsManager.new
     respond_with(@funds_manager)
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
   def create
     @funds_manager = FundsManager.new(funds_manager_params)
-    @funds_manager.save
-    respond_with(@funds_manager)
+    @funds_manager.town = current_user.town_model
+    # @funds_manager.save
+    # respond_with(@funds_manager)
+
+    respond_to do |format|
+      if @funds_manager.save
+        format.html { redirect_to funds_managers_path, notice:  'Funds manager created.'}
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @funds_manager.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def import
@@ -51,10 +67,10 @@ class FundsManagersController < ApplicationController
     end
   end
 
-  def update
-    @funds_manager.update(funds_manager_params)
-    respond_with(@funds_manager)
-  end
+  # def update
+  #   @funds_manager.update(funds_manager_params)
+  #   respond_with(@funds_manager)
+  # end
 
   def destroy
     @funds_manager.destroy

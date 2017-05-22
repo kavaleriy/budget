@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :funds_managers do
+  resources :funds_managers, except: [:show, :edit, :update] do
     collection { post :import }
   end
 
