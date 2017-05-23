@@ -22,6 +22,11 @@ class FundsManager
     end
   end
 
+  # get title for town profile(portal of public finances)
+  def pnaz
+    title
+  end
+
   def self.import(file, town)
     spreadsheet = open_spreadsheet(file)
     header = spreadsheet.row(1)
