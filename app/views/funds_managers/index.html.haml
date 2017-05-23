@@ -89,21 +89,22 @@
 
 .funds_managers
   .header
-    %h2= 'Перелік розпорядників бюджетних коштів'
+    %h2
+      = t('.header')
     .new-btn
-      %h2= link_to 'Додати', new_funds_manager_path, :class => 'btn btn-info'
+      %h2= link_to t('form.new'), new_funds_manager_path, :class => 'btn btn-info'
 
   .table-title.text-center.visible-md.visible-lg
     .row
       .col-md-11.reset-padding
         .col-sm-2
-          = 'ЄДРПОУ'
+          = t('modules.classifier.by_type.edrpou')
         .col-sm-8
-          = 'Назва'
+          = t('title')
         .col-sm-2
-          = 'Місто'
+          = t('owner')
       .col-md-1.reset-padding
-        = t('form.actions', :default => t('helpers.actions'))
+        = t('form.actions')
   #funds_managers
     = render partial: 'funds_managers'
 

@@ -1,8 +1,7 @@
 class FundsManagersController < ApplicationController
   layout 'application_admin'
   before_action :access_user?
-  before_action :set_funds_manager, only: [:show, :edit, :update, :destroy]
-  # skip_before_action :check_admin_permission
+  before_action :set_funds_manager, only: :destroy
 
   respond_to :html
 
@@ -37,7 +36,7 @@ class FundsManagersController < ApplicationController
 
     respond_to do |format|
       if @funds_manager.save
-        format.html { redirect_to funds_managers_path, notice:  'Funds manager created.'}
+        format.html { redirect_to funds_managers_path, notice:  'Розпорядник коштів створений.'}
       else
         format.html { render action: 'new' }
         format.json { render json: @funds_manager.errors, status: :unprocessable_entity }
@@ -49,7 +48,7 @@ class FundsManagersController < ApplicationController
     town = current_user.admin? ? params[:town] : current_user.town_model
 
     FundsManager.import(params[:file], town)
-    redirect_to funds_managers_path, notice:  'Edrpou organisations imported.'
+    redirect_to funds_managers_path, notice:  'Розпорядники коштів завантажені.'
 
   rescue Roo::Base::TypeError
     message = [t('invalid_format')]

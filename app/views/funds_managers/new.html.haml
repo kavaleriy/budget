@@ -10,13 +10,13 @@
     }
   }
 
-%h1 Завантажити перелік розпорядиків бюджетних коштів
-
+%h1
+  = t('.header')
 %ul.nav.nav-tabs
   %li.active
-    = link_to 'Створити один', '#create-funds-manager', aria: { expanded: true }, data: { toggle: 'tab'}
+    = link_to t('.create_one'), '#create-funds-manager', aria: { expanded: true }, data: { toggle: 'tab'}
   %li
-    = link_to 'Імпортувати файлом', '#import-funds-managers', aria: { expanded: true }, data: { toggle: 'tab'}
+    = link_to t('.import_file'), '#import-funds-managers', aria: { expanded: true }, data: { toggle: 'tab'}
 
 .tab-content
   #create-funds-manager.tab-pane.fade.active.in
@@ -32,6 +32,6 @@
           = '*.csv, *.xls, *xlsx'
 
       .form-actions
-        = submit_tag 'Завантажити', class: 'btn btn-default'
+        = submit_tag t('form.upload'), class: 'btn btn-default'
 
 = link_to 'Back', funds_managers_path, class: 'btn btn-primary'
