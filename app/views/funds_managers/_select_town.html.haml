@@ -1,0 +1,44 @@
+%label.control-label
+  = t('owner')
+= text_field_tag :town, '', { class: 'town_select form-control', required: true }
+
+:javascript
+
+  $(document).ready(function() {
+    var town_select = $(".town_select");
+
+    town_select.select2({
+      placeholder: "Вкажіть місто",
+      allowClear: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data };
+        },
+        cache: true
+      },
+    }).on("change", function(){
+      town = $(this).val();
+      $.ajax({
+        url: "/indicate/indicator_files/get_files/" + town,
+        type: "GET",
+        dataType: "html",
+        success: function(data) {
+          $('.documents').html(data);
+          $(".can_be_disable").removeAttr('disabled');
+        }
+      })
+    })
+
+    town_select.select2("data", {id: "#{current_user.town_model.id}", text: "#{current_user.town_model.title}" });
+
+  })

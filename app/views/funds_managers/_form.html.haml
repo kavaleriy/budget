@@ -1,0 +1,8 @@
+= simple_form_for(@funds_manager) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :edrpou, label: t('.edrpou_manager')
+
+  .form-actions
+    = f.button :submit, t('save')

@@ -1,0 +1,115 @@
+:scss
+
+  .bootstrap_flash > div {
+    margin: 0;
+  }
+  .funds_managers{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .paginator {
+      text-align: center;
+    }
+    .table-title{
+      font-weight: bold;
+      border-bottom: solid lightgrey 2px;
+      padding: 5px 0;
+     .row{
+        text-align: left;
+        & > div:last-child{
+          text-align: center;
+        }
+      }
+    }
+    .table-body{
+      border-bottom: solid lightgrey 1px;
+      padding: 5px 0;
+      & div{
+        min-height: 22px;
+      }
+    }
+    .files-action-button{
+      display: flex;
+      justify-content: center;
+      a{
+        text-decoration: none;
+        background: transparent;
+        padding: 0 5px;
+      }
+    }
+    .reset-padding{
+      padding: 0;
+      & > .reset-padding{
+        & div{
+          overflow: hidden;
+          //white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    @media (min-width: 992px) {
+      .reset-padding{
+        & > .reset-padding{
+          //& > div:hover{
+          //  overflow: visible;
+          //  white-space: normal;
+          //  word-wrap: break-word;
+          //  font-size: smaller;
+          //}
+        }
+      }
+    }
+    @media (max-width: 991.9px) {
+      .reset-padding{
+        & div{
+          //border-bottom: solid lightcyan 1px;
+        }
+      }
+      .files-action-button{
+        flex-direction: column;
+      }
+      .fact-icon,
+      .plan-icon,
+      .pf-icon{
+        height: 2rem;
+        width: 2rem;
+        font-size: 1.3rem;
+      }
+    }
+    @media (max-width: 384px) {
+      .reset-padding{
+        & > .reset-padding{
+          & div{
+            font-size: small;
+          }
+        }
+      }
+    }
+  }
+
+.funds_managers
+  .header
+    %h2
+      = t('.header')
+    .new-btn
+      %h2= link_to t('form.new'), new_funds_manager_path, :class => 'btn btn-info'
+
+  .table-title.text-center.visible-md.visible-lg
+    .row
+      .col-md-11.reset-padding
+        .col-sm-2
+          = t('modules.classifier.by_type.edrpou')
+        .col-sm-8
+          = t('title')
+        .col-sm-2
+          = t('owner')
+      .col-md-1.reset-padding
+        = t('form.actions')
+  #funds_managers
+    = render partial: 'funds_managers'
+
+  .paginator
+    = paginate @funds_managers, remote: true

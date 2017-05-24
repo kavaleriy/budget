@@ -6,7 +6,13 @@ module Modules
     after_filter :allow_iframe, only: [:search_data]
 
     def search_data
-      @items = items_by_koatuu.only(:pnaz, :edrpou)
+      items = FundsManager.by_town(params[:town_id])
+      if items.any?
+        @items = items
+      else
+        @items = items_by_koatuu.only(:pnaz, :edrpou)
+      end
+
       respond_to do |format|
         format.html { render file: 'modules/classifier/search_data', layout: 'visify'}
         format.js
