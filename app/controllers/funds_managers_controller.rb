@@ -30,7 +30,7 @@ class FundsManagersController < ApplicationController
 
   def create
     @funds_manager = FundsManager.new(funds_manager_params)
-    @funds_manager.town = get_town(params[:town])
+    @funds_manager.town = get_town_by_role(params[:town])
 
     respond_to do |format|
       if @funds_manager.save
@@ -42,12 +42,8 @@ class FundsManagersController < ApplicationController
     end
   end
 
-  def get_town(town)
-    current_user.admin? ? town : current_user.town_model
-  end
-
   def import
-    town = get_town(params[:town])
+    town = get_town_by_role(params[:town])
     FundsManager.import(params[:file], town)
     redirect_to funds_managers_path, notice:  'Розпорядники коштів завантажені.'
 
@@ -78,6 +74,10 @@ class FundsManagersController < ApplicationController
   end
 
   private
+
+    def get_town_by_role(town)
+      current_user.admin? ? town : current_user.town_model
+    end
 
     def access_user?
       unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority, :municipal_enterprise, :state_enterprise)
