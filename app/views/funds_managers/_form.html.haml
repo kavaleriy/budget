@@ -1,6 +1,9 @@
 = simple_form_for(@funds_manager) do |f|
   = f.error_notification
 
+  - if current_user && current_user.admin?
+    .form-group
+      = render 'select_town'
   .form-inputs
     = f.input :edrpou, label: t('.edrpou_manager')
 

@@ -30,7 +30,9 @@ class FundsManagersController < ApplicationController
 
   def create
     @funds_manager = FundsManager.new(funds_manager_params)
-    @funds_manager.town = current_user.town_model
+    # @funds_manager.town = current_user.town_model
+    @funds_manager.town = get_town(params[:town])
+
     # @funds_manager.save
     # respond_with(@funds_manager)
 
@@ -44,8 +46,13 @@ class FundsManagersController < ApplicationController
     end
   end
 
+  def get_town(town)
+    current_user.admin? ? town : current_user.town_model
+  end
+
   def import
-    town = current_user.admin? ? params[:town] : current_user.town_model
+    # town = current_user.admin? ? params[:town] : current_user.town_model
+    get_town(params[:town])
 
     FundsManager.import(params[:file], town)
     redirect_to funds_managers_path, notice:  'Розпорядники коштів завантажені.'
