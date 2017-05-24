@@ -50,6 +50,7 @@ class Town
   has_many :programs, class_name: 'Programs::TargetedProgram', dependent: :nullify
   has_many :users, dependent: :nullify
   belongs_to :area_town, class_name: 'Town', foreign_key: 'p_id'
+  has_many :funds_managers, class_name: 'Modules::FundsManager', dependent: :destroy
 
   validates :title, :koatuu, presence: true
 

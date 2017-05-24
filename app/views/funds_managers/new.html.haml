@@ -1,0 +1,37 @@
+:scss
+  #import-funds-managers{
+    .file-upload{
+      .input-group, .formats{
+        display: inline-block;
+      }
+      .input-group{
+        margin-right: 10px;
+      }
+    }
+  }
+
+%h1
+  = t('.header')
+%ul.nav.nav-tabs
+  %li.active
+    = link_to t('.create_one'), '#create-funds-manager', aria: { expanded: true }, data: { toggle: 'tab'}
+  %li
+    = link_to t('.import_file'), '#import-funds-managers', aria: { expanded: true }, data: { toggle: 'tab'}
+
+.tab-content
+  #create-funds-manager.tab-pane.fade.active.in
+    = render 'form'
+  #import-funds-managers.tab-pane.fade
+    = form_tag import_funds_managers_path, multipart: true do
+      - if current_user && current_user.admin?
+        .form-group
+          = render 'select_town'
+      .form-group.file-upload
+        = file_field_tag :file
+        .formats
+          = '*.csv, *.xls, *xlsx'
+
+      .form-actions
+        = submit_tag t('form.upload'), class: 'btn btn-default'
+
+= link_to t('back'), funds_managers_path, class: 'btn btn-primary'

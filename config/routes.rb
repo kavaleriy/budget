@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
-  namespace :hackatton do
-  get 'dani_mist/load_data'
+  resources :funds_managers, except: [:show, :edit, :update] do
+    collection { post :import }
   end
 
-  namespace :modules do
-    resources :partners_categories
+  namespace :hackatton do
+  get 'dani_mist/load_data'
   end
 
   namespace :compare_taxonomies do
@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     post 'change_partner_order', to: 'partners#change_order', as: :change_partner_order
     resources :banners
     post 'change_banner_order', to: 'banners#change_order', as: :change_banner_order
+    resources :partners_categories
   end
 
   get 'news' => 'modules/budget_news#all_news', as: 'all_budget_news'
@@ -169,14 +170,7 @@ Rails.application.routes.draw do
   end
 
   namespace :library do
-    # resources :categories
-    # get 'categories_tree_root' => 'categories#tree_root'
-    # get 'categories_tree' => 'categories#tree'
-
     resources :books
-
-    # resources :links
-    # put 'documents/lock/:id' => 'documents#lock'
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
