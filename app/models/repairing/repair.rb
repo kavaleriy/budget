@@ -117,8 +117,8 @@ module Repairing
       # first of all convert repair start and end date to date
       # after that build and return hash
 
-      start_repair_date = repair['дата початку ремонту'] ? repair['дата початку ремонту'].to_date : nil
-      end_repair_date = repair['дата закінчення ремонту'] ? repair['дата закінчення ремонту'].to_date : nil
+      start_repair_date = repair['дата початку ремонту'].try(:to_date)
+      end_repair_date = repair['дата закінчення ремонту'].try(:to_date)
 
       {
           spending_units: repair['розпорядник бюджетних коштів'],
