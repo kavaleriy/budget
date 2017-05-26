@@ -4,7 +4,6 @@ module RepairingLayerUpload
     cols = []
     xls.first_column.upto(xls.last_column) { |col|
       cols << downcase_header(xls.cell(1, col))
-      # binding.pry
     }
 
     rows = []
@@ -17,7 +16,6 @@ module RepairingLayerUpload
       rows << row
     end
 
-    binding.pry
     { :rows => rows, :cols => cols }
   end
 
