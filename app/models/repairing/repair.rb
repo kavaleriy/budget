@@ -88,8 +88,8 @@ module Repairing
       repairs_arr.each do |repair|
         repair_hash = build_repair_hash(repair)
 
-        coordinates = repair['Координати']
-        coordinates1 = repair['Координати1']
+        coordinates = repair['координати']
+        coordinates1 = repair['координати1']
 
         repair_hash[:coordinates] =
             if coordinates1.blank?
@@ -105,7 +105,7 @@ module Repairing
         layer_repair = self.create(repair_hash)
         layer_repair.layer = layer
 
-        layer_repair.repairing_category = Repairing::Category.where(title: repair['Опис робіт']).first
+        layer_repair.repairing_category = Repairing::Category.where(title: repair['опис робіт']).first
 
         layer_repair.save(validate: false)
       end
@@ -117,32 +117,32 @@ module Repairing
       # first of all convert repair start and end date to date
       # after that build and return hash
 
-      start_repair_date = repair['Дата початку ремонту'] ? repair['Дата початку ремонту'].to_date : nil
-      end_repair_date = repair['Дата закінчення ремонту'] ? repair['Дата закінчення ремонту'].to_date : nil
+      start_repair_date = repair['дата початку ремонту'].try(:to_date)
+      end_repair_date = repair['дата закінчення ремонту'].try(:to_date)
 
       {
-          spending_units: repair['Розпорядник бюджетних коштів'],
-          edrpou_spending_units: repair['ЄДРПОУ розпорядника бюджетних коштів'],
+          spending_units: repair['розпорядник бюджетних коштів'],
+          edrpou_spending_units: repair['єдрпоу розпорядника бюджетних коштів'],
 
-          subject: repair['Назва об\'єкту'],
+          subject: repair['назва об\'єкту'],
 
-          address: repair['Адреса'],
-          address_to: repair['Адреса1'],
+          address: repair['адреса'],
+          address_to: repair['адреса1'],
 
-          work: repair['Опис робіт'],
-          amount: repair['Вартість'],
+          work: repair['опис робіт'],
+          amount: repair['вартість'],
 
           repair_start_date: start_repair_date,
           repair_end_date: end_repair_date,
-          warranty_date: repair['Гарантія'],
+          warranty_date: repair['гарантія'],
 
-          prozzoro_id: repair['ID закупівлі'],
-          prozzoro_inner_id: repair['ID закупівлі внутрішнє'],
+          prozzoro_id: repair['id закупівлі'],
+          prozzoro_inner_id: repair['id закупівлі внутрішнє'],
 
-          obj_owner: repair['Виконавець'],
-          edrpou_artist: repair['ЄДРПОУ виконавця'],
+          obj_owner: repair['виконавець'],
+          edrpou_artist: repair['єдрпоу виконавця'],
 
-          description: repair['Додаткова інформація'],
+          description: repair['додаткова інформація'],
       }
     end
     def self.repair_json_by_town(town)

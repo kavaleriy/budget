@@ -3,15 +3,14 @@ module RepairingLayerUpload
   def read_csv_xls(xls)
     cols = []
     xls.first_column.upto(xls.last_column) { |col|
-      cols << xls.cell(1, col).to_s.strip
+      cols << downcase_header(xls.cell(1, col))
     }
 
     rows = []
     2.upto(xls.last_row) do |line|
       row = {}
       xls.first_column.upto(xls.last_column ) do |col|
-        row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
-        row.transform_keys! { |key| key.strip }
+        row[downcase_header(xls.cell(1, col))] = xls.cell(line,col).to_s.strip
       end
       rows << row
     end
@@ -27,5 +26,8 @@ module RepairingLayerUpload
     read_csv_xls xls
   end
 
+  def downcase_header(str)
+    str.mb_chars.downcase.to_s.strip
+  end
 
 end
