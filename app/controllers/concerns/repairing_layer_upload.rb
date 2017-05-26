@@ -11,7 +11,6 @@ module RepairingLayerUpload
       row = {}
       xls.first_column.upto(xls.last_column ) do |col|
         row[downcase_header(xls.cell(1, col))] = xls.cell(line,col).to_s.strip
-        # row.transform_keys! { |key| key.strip }
       end
       rows << row
     end
