@@ -1,1 +1,1 @@
-Geocoder.configure(language: :uk, lookup: :yandex)
+Geocoder.configure(language: :uk, lookup: :google)
