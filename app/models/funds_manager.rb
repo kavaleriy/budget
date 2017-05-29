@@ -8,8 +8,14 @@ class FundsManager
 
   belongs_to :town
 
+  before_validation :check_and_emend_edrpou, if: -> { edrpou.length == 7 }
+
   validates_presence_of :edrpou
   validates_uniqueness_of :edrpou, scope: :town
+
+  def check_and_emend_edrpou
+    self.edrpou = "0#{edrpou}"
+  end
 
   def title
     edr_data_arr = ExternalApi.edr_data(self.edrpou)

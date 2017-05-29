@@ -36,11 +36,18 @@ module Repairing
 
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
+    before_validation :check_and_emend_edrpou
+    before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
+
     validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
-    before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
     before_save :set_end_date
+
+    def check_and_emend_edrpou
+      self.edrpou_artist         =  "0#{edrpou_artist}"          if edrpou_artist.length == 7
+      self.edrpou_spending_units =  "0#{edrpou_spending_units}"  if edrpou_spending_units.length == 7
+    end
 
     def set_end_date
       # If repair_end_date is empty fill it.
