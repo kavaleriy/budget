@@ -21,6 +21,7 @@
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
+  %script{:src => "https://maps.googleapis.com/maps/api/js?v=3&libraries=places&sensor=false&key=AIzaSyCHS_JvRT4Er8-qiOr0gSW2mv9loPDFxK0"}
 
 :css
   #map {
@@ -108,6 +109,25 @@
 
 :scss
   #map {
+    .leaflet-control-container{
+      .leaflet-right {
+        right: auto;
+        width: 305px;
+      }
+      #searchBox {
+        font-size: 14px;
+        min-width: 250px;
+        margin-left: 10px;
+        padding: 11px 35px 11px 18px;
+        border: none;
+        background: url(//cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-32.png) no-repeat #fff 210px 6px;
+        &:focus{
+          outline-offset: 0;
+          outline: none;
+          background: #fff;
+        }
+      }
+    }
 
     #ewe{
       z-index: 1002;
@@ -229,6 +249,51 @@
         function positionError(err) {
         }
       }
+
+      var GoogleSearch = L.Control.extend({
+        onAdd: function() {
+          var element = document.createElement("input");
+
+          element.id = "searchBox";
+
+          return element;
+        }
+      });
+
+      (new GoogleSearch).addTo(map);
+
+      var input = document.getElementById("searchBox");
+
+      var searchBox = new google.maps.places.SearchBox(input);
+
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        var group = L.featureGroup();
+
+        places.forEach(function(place) {
+
+          // Create a marker for each place.
+          console.log(places);
+          console.log(place.geometry.location.lat() + " / " + place.geometry.location.lng());
+          var marker = L.marker([
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          ]);
+          group.addLayer(marker);
+        });
+
+        group.addTo(map);
+        map.fitBounds(group.getBounds());
+
+      });
+
+
+
     }
 
 
