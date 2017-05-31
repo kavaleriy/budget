@@ -21,94 +21,12 @@
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
+  = javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3&libraries=places&sensor=false&key=AIzaSyCHS_JvRT4Er8-qiOr0gSW2mv9loPDFxK0"
 
-:css
+:scss
   #map {
     width: 100%;
     height: 100%;
-  }
-
-  .info {
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    background: white;
-    opacity: .9;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-  }
-  .info .title {
-    color: #777;
-  }
-  .info.categoryBtns {
-    opacity: 1;
-  }
-
-
-:scss
-  //   Old info_panel
-  .info_panel{
-    min-width: 320px;
-    //border: 1px solid blue;
-    border-radius: 3px;
-    //overflow-wrap: break-word;
-    //word-break: break-all;
-    .info_header{
-      min-height: 25px;
-      border-radius: 2px;
-      //background-color: #182A70;
-      color: #182A70;
-      padding-top: 7px;
-      text-align: center;
-
-    }
-    .heroviy{
-      margin: 5px 0 0 0;
-      border-color: #182A70;
-      }
-    .info_text{
-      padding: 10px;
-      .text_title{
-        padding-right: 2px;
-        margin-top: 7px;
-      }
-      .text_desc{
-        margin-top: 7px;
-        //word-break: break-all;
-      }
-
-    }
-  }
-  //   New info_panel
-  .leaflet-popup{
-    bottom: 25px !important;
-    //left: -107px !important;
-  }
-  .leaflet-popup-content-wrapper{
-    border-radius: 0;
-    padding: 0;
-  }
-  .leaflet-popup-content{
-    margin: 0;
-  }
-  .leaflet-container a.leaflet-popup-close-button{
-    padding: 1px 0 0 0;
-  }
-  .leaflet-container a.leaflet-popup-close-button:hover{
-    //color: #7D94A4;
-    //background: #ffffff;
-    //border: 1px solid #7D94A4;
-  }
-  .leaflet-popup-tip-container{
-    // 20px it is half of .leaflet-popup-tip-container
-    //margin-left: calc(50% - 20px);
-    display: none;
-  }
-
-:scss
-  #map {
-
     #ewe{
       z-index: 1002;
       position: absolute;
@@ -117,27 +35,12 @@
       width: 100px;
       height: 50px;
     }
-    //#fullscreen{
-    //  position: absolute;
-    //  right: 10px;
-    //  top: 10px;
-    //  z-index: 1001;
-    //  cursor: pointer;
-    //  background-color: transparent;
-    //  i{
-    //    font-size: 30px;
-    //  }
-    //  &.hide{
-    //    display: none;
-    //  }
-    //}
-
     #last_updated_repair{
       background-color: white;
       position: absolute;
       z-index: 1000;
       bottom: 10px;
-      left: 20px;
+      left: 10px;
     }
     .leaflet-control-container {
       .leaflet-top {
@@ -148,6 +51,40 @@
           }
         }
       }
+      .leaflet-top.leaflet-right{
+        right: auto;
+        width: 325px;
+      }
+      #searchBox {
+        font-size: 14px;
+        min-width: 270px;
+        margin-left: 10px;
+        padding: 12px 18px;
+        border: none;
+        //padding: 12px 40px 12px 18px;
+        //background: url(//cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-32.png) no-repeat #fff 230px 6px;
+        &:focus{
+          outline-offset: 0;
+          outline: none;
+        }
+      }
+    }
+    // Info_panel
+    .leaflet-popup{
+      bottom: 25px !important;
+      a.leaflet-popup-close-button{
+        padding: 1px 0 0 0;
+      }
+      .leaflet-popup-content-wrapper{
+        border-radius: 0;
+        padding: 0;
+        .leaflet-popup-content{
+          margin: 0;
+        }
+      }
+      .leaflet-popup-tip-container{
+        display: none;
+      }
     }
   }
 
@@ -155,11 +92,11 @@
   .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
     .modal-dialog
       .modal-content
-  -##fullscreen
-  -#  %i.fa.fa-arrows-alt.fa-5{"aria-hidden" => "true"}
+
   #last_updated_repair
     = t('last_update')
     %span.rep-date
+
 :javascript
 
   var RepairMap
@@ -259,6 +196,48 @@
           showMarker: false,
           retainZoomLevel: false,
        }).addTo(map);
+    }
+
+    function addGoogleSearch() {
+      var GoogleSearch = L.Control.extend({
+        onAdd: function() {
+          var element = document.createElement("input");
+          element.id = "searchBox";
+          element.placeholder = "Пошук на Google Картах";
+          return element;
+        }
+      });
+
+      (new GoogleSearch).addTo(map);
+
+      var input = document.getElementById("searchBox");
+      var searchBox = new google.maps.places.SearchBox(input);
+
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        var group = L.featureGroup();
+        var options = { maxZoom: 16 }
+
+        places.forEach(function(place) {
+          // Create a marker for each place.
+          console.log(places);
+          console.log(place.geometry.location.lat() + " / " + place.geometry.location.lng());
+          var marker = L.marker([
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          ]);
+          group.addLayer(marker);
+        });
+
+        group.addTo(map);
+        map.fitBounds(group.getBounds(), options);
+
+      });
     }
 
     function addGeoJsonSvg(data, options) {
@@ -640,7 +619,8 @@
 
     initMap();
     initPopup();
-    addGeoSearch()
+    addGeoSearch();
+    addGoogleSearch();
     //addControl();
 
     return {
