@@ -1,27 +1,82 @@
-%tr.editable-table-row{id: "repair-#{repair.id}"}
-  %td{class: "#{valid_status(repair.spending_units)}"}
-    = repair.spending_units
-  %td{class: "#{valid_status(repair.edrpou_spending_units)}"}
-    = repair.edrpou_spending_units
-  %td= repair.subject
-  %td{class: "#{valid_status(repair.address)}"}
-    = repair.address
-  %td= repair.address_to
-  %td= repair.work
-  %td= repair.repairing_category.title if repair.repairing_category
-  %td{class: "#{valid_status(repair.amount)}"}
-    = repair.amount
-  %td= repair.repair_start_date
-  %td= repair.repair_end_date
-  %td= repair.warranty_date
-  %td= repair.prozzoro_id
-  %td= repair.obj_owner
-  %td= repair.edrpou_artist
-  %td= repair.description
-  %td.coordinates{class: "#{valid_status(repair.coordinates)}"}
-    = truncate(repair.coordinates.to_s, length: 120)
+.row{id: "repair-#{repair.id}"}
+  .col-sm-3.col-md-4
+    .row
+      .col-sm-12.col-md-6
+        .odd{class: "#{valid_status(repair.spending_units)}"}
+          = repair.spending_units
+        .even{class: "#{valid_status(repair.edrpou_spending_units)}"}
+          = repair.edrpou_spending_units
+      .col-sm-12.col-md-6
+        .odd{class: "#{valid_status(repair.address)}"}
+          = repair.address
+        .even
+          = repair.address_to
+        .odd.coordinates{class: "#{valid_status(repair.coordinates)}"}
+          = truncate(repair.coordinates.to_s, length: 120)
+  .col-sm-3.col-md-4
+    .row
+      .col-sm-12.col-md-6
+        .odd= repair.obj_owner
+        .even= repair.edrpou_artist
+      .col-sm-12.col-md-6
+        .odd= repair.subject
+        .even= repair.work
+        .odd= repair.repairing_category.title if repair.repairing_category
+  .col-sm-3.col-md-2
+    .odd= repair.repair_start_date
+    .even= repair.repair_end_date
+    .odd= repair.warranty_date
+  .col-sm-3.col-md-2
+    .odd{class: "#{valid_status(repair.amount)}"}
+      = repair.amount
+    .even= repair.prozzoro_id
+    .odd= repair.description
+    .actions
+      %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }
+        %i.fa.fa-pencil.fa-2x
+      = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'drop-repair', data: { confirm: 'Are you sure?' } do
+        %i.fa.fa-trash-o.fa-2x
+    -#%th= t('repairing.repairs.form.spending_units')
+    -#%th= t('repairing.repairs.form.erdpou_spending')
+    -#%th= t('repairing.repairs.form.subject')
+    -#%th= t('repairing.repairs.form.address')
+    -#%th= t('repairing.repairs.form.address_to')
+    -#%th= t('repairing.repairs.form.coordinates')
+    -#%th= t('repairing.repairs.form.work')
+    -#%th= t('repairing.repairs.form.category')
+    -#%th= t('repairing.repairs.form.amount')
+    -#%th= t('repairing.repairs.form.repair_start_date')
+    -#%th= t('repairing.repairs.form.repair_end_date')
+    -#%th= t('repairing.repairs.form.warranity_date')
+    -#%th= t('repairing.repairs.form.prozzoro_id')
+    -#%th= t('repairing.repairs.form.obj_owner')
+    -#%th= t('repairing.repairs.form.erdpou_artist')
+    -#%th= t('repairing.repairs.form.description')
 
-  %td
+-#%tr.editable-table-row{id: "repair-#{repair.id}"}
+-#  %td{class: "#{valid_status(repair.spending_units)}"}
+-#    = repair.spending_units
+-#  %td{class: "#{valid_status(repair.edrpou_spending_units)}"}
+-#    = repair.edrpou_spending_units
+-#  %td= repair.subject
+-#  %td{class: "#{valid_status(repair.address)}"}
+-#    = repair.address
+-#  %td= repair.address_to
+-#  %td.coordinates{class: "#{valid_status(repair.coordinates)}"}
+-#    = truncate(repair.coordinates.to_s, length: 120)
+-#  %td= repair.work
+-#  %td= repair.repairing_category.title if repair.repairing_category
+-#  %td{class: "#{valid_status(repair.amount)}"}
+-#    = repair.amount
+-#  %td= repair.repair_start_date
+-#  %td= repair.repair_end_date
+-#  %td= repair.warranty_date
+-#  %td= repair.prozzoro_id
+-#  %td= repair.obj_owner
+-#  %td= repair.edrpou_artist
+-#  %td= repair.description
+-#
+-#  %td
     %a.edit-repair{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-repair-id' => "#{repair.id}" }
       %i.fa.fa-pencil.fa-2x
     = link_to repairing_layer_repair_path(repair.layer_id, repair.id), method: :delete, remote: true, class: 'drop-repair', data: { confirm: 'Are you sure?' } do

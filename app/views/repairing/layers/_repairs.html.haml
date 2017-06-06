@@ -4,23 +4,74 @@
     padding-right: 30px;
   }
 
-  table{
-    border-spacing: 1px;
-    border-collapse: separate;
-    tr:nth-child(even) {background: #DDD}
-    tr:nth-child(odd) {background: #FFF}
-    td{
-      border: 0px;
-      border-right: 1px #FFF;
+  //table{
+  //  border-spacing: 1px;
+  //  border-collapse: separate;
+  //  font-size: 12px;
+  //  tr:nth-child(even) {background: #DDD}
+  //  tr:nth-child(odd) {background: #FFF}
+  //  td{
+  //    border: 0px;
+  //    border-right: 1px #FFF;
+  //  }
+  //  td.not-valid{
+  //    background: #FFB59D;
+  //  }
+  //  td.coordinates{
+  //    overflow: hidden;
+  //  }
+  //  .popover-content {
+  //    padding: 0;
+  //  }
+  //}
+  
+  .table{
+    .headers{
+      padding: 4px 4px 2px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      background: #428bca;
+      //background: #f0f0f0;
+      //border-bottom: solid 2px grey;
+      .row{
+        .header{
+          padding: 0 2px;
+          margin-bottom: 2px;
+          background: #fff;
+        }
+      }
     }
-    td.not-valid{
-      background: #FFB59D;
-    }
-    td.coordinates{
-      overflow: hidden;
-    }
-    .popover-content {
-      padding: 0;
+    .data{
+      >.row{
+        padding: 4px 0 2px;
+        &:nth-child(even){
+          background: #F5F5F5;
+        }
+        &:nth-child(odd){
+          background: #D8D8D8;
+        }
+        .actions{
+          margin-top: 0;
+          text-align: right;
+        }
+      }
+      .row{
+        .odd{
+          background: #D8F0E3;
+        }
+        .even{
+          background: #f0f0f0;
+        }
+        .odd, .even{
+          background: #fff;
+          min-height: 20px;
+          padding: 1px;
+          margin-bottom: 2px;
+        }
+        .not-valid{
+          background: #FFB59D;
+        }
+      }
     }
   }
 
@@ -30,28 +81,62 @@
 
 %h1
   = "#{t('repairing.repairs.repairs')} (#{@repairs.count()})"
+
+
+.table
+  .headers
+    .row
+      .col-sm-3.col-md-4
+        .row
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.spending_units')
+            .header= t('repairing.repairs.form.erdpou_spending')
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.address')
+            .header= t('repairing.repairs.form.address_to')
+            .header= t('repairing.repairs.form.coordinates')
+      .col-sm-3.col-md-4
+        .row
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.obj_owner')
+            .header= t('repairing.repairs.form.erdpou_artist')
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.subject')
+            .header= t('repairing.repairs.form.work')
+            .header= t('repairing.repairs.form.category')
+      .col-sm-3.col-md-2
+        .header= t('repairing.repairs.form.repair_start_date')
+        .header= t('repairing.repairs.form.repair_end_date')
+        .header= t('repairing.repairs.form.warranity_date')
+      .col-sm-3.col-md-2
+        .header= t('repairing.repairs.form.amount')
+        .header= t('repairing.repairs.form.prozzoro_id')
+        .header= t('repairing.repairs.form.description')
+  .data
+    = render partial: 'repair', collection: @repairs
+
 %table#edit_repairs
   %tr
-    %th= t('repairing.repairs.form.spending_units')
-    %th= t('repairing.repairs.form.erdpou_spending')
-    %th= t('repairing.repairs.form.subject')
-    %th= t('repairing.repairs.form.address')
-    %th= t('repairing.repairs.form.address_to')
-    %th= t('repairing.repairs.form.work')
-    %th= t('repairing.repairs.form.category')
-    %th= t('repairing.repairs.form.amount')
-    %th= t('repairing.repairs.form.repair_start_date')
-    %th= t('repairing.repairs.form.repair_end_date')
-    %th= t('repairing.repairs.form.warranity_date')
-    %th= t('repairing.repairs.form.prozzoro_id')
-    %th= t('repairing.repairs.form.obj_owner')
-    %th= t('repairing.repairs.form.erdpou_artist')
-    %th= t('repairing.repairs.form.description')
-    %th= t('repairing.repairs.form.coordinates')
-    %th
-    %th
+    -#%th= t('repairing.repairs.form.spending_units')
+    -#%th= t('repairing.repairs.form.erdpou_spending')
+    -#%th= t('repairing.repairs.form.subject')
+    -#%th= t('repairing.repairs.form.address')
+    -#%th= t('repairing.repairs.form.address_to')
+    -#%th= t('repairing.repairs.form.coordinates')
+    -#%th= t('repairing.repairs.form.work')
+    -#%th= t('repairing.repairs.form.category')
+    -#%th= t('repairing.repairs.form.amount')
+    -#%th= t('repairing.repairs.form.repair_start_date')
+    -#%th= t('repairing.repairs.form.repair_end_date')
+    -#%th= t('repairing.repairs.form.warranity_date')
+    -#%th= t('repairing.repairs.form.prozzoro_id')
+    -#%th= t('repairing.repairs.form.obj_owner')
+    -#%th= t('repairing.repairs.form.erdpou_artist')
+    -#%th= t('repairing.repairs.form.description')
+    -#%th
+    -#%th
 
-  = render partial: 'repair', collection: @repairs
+  -#= render partial: 'repair', collection: @repairs
 
 .paginator-repairs
   = paginate @repairs, :remote => true
