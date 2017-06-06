@@ -31,15 +31,13 @@
       padding: 4px 4px;
       margin-bottom: 5px;
       font-weight: bold;
-      //background: #54C3F0;
-      background: #f0f0f0;
+      background: #428bca;
+      //background: #f0f0f0;
       .row{
         .header{
+          padding: 0 2px;
           margin-bottom: 2px;
-          //background: #D8F0E3;
-          &.odd{
-            //background: #f0f0f0;
-          }
+          background: #fff;
         }
       }
     }
@@ -91,29 +89,29 @@
       .col-sm-3.col-md-4
         .row
           .col-sm-12.col-md-6
-            .header.odd= t('repairing.repairs.form.spending_units')
+            .header= t('repairing.repairs.form.spending_units')
             .header= t('repairing.repairs.form.erdpou_spending')
           .col-sm-12.col-md-6
-            .header.odd= t('repairing.repairs.form.address')
+            .header= t('repairing.repairs.form.address')
             .header= t('repairing.repairs.form.address_to')
-            .header.odd= t('repairing.repairs.form.coordinates')
+            .header= t('repairing.repairs.form.coordinates')
       .col-sm-3.col-md-4
         .row
           .col-sm-12.col-md-6
-            .header.odd= t('repairing.repairs.form.obj_owner')
+            .header= t('repairing.repairs.form.obj_owner')
             .header= t('repairing.repairs.form.erdpou_artist')
           .col-sm-12.col-md-6
-            .header.odd= t('repairing.repairs.form.subject')
+            .header= t('repairing.repairs.form.subject')
             .header= t('repairing.repairs.form.work')
-            .header.odd= t('repairing.repairs.form.category')
+            .header= t('repairing.repairs.form.category')
       .col-sm-3.col-md-2
-        .header.odd= t('repairing.repairs.form.repair_start_date')
+        .header= t('repairing.repairs.form.repair_start_date')
         .header= t('repairing.repairs.form.repair_end_date')
-        .header.odd= t('repairing.repairs.form.warranity_date')
+        .header= t('repairing.repairs.form.warranity_date')
       .col-sm-3.col-md-2
-        .header.odd= t('repairing.repairs.form.amount')
+        .header= t('repairing.repairs.form.amount')
         .header= t('repairing.repairs.form.prozzoro_id')
-        .header.odd= t('repairing.repairs.form.description')
+        .header= t('repairing.repairs.form.description')
   .data
     = render partial: 'repair', collection: @repairs
 

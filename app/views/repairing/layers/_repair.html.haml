@@ -1,6 +1,9 @@
 .row{id: "repair-#{repair.id}"}
   .col-sm-3.col-md-4
     .row
+
+      .col-sm-12.col-md-6
+        .header= t('repairing.repairs.form.spending_units')
       .col-sm-12.col-md-6
         .odd{class: "#{valid_status(repair.spending_units)}"}
           = repair.spending_units
