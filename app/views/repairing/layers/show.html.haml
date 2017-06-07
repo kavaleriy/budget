@@ -30,9 +30,8 @@
           data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
 = link_to t('repairing.repairs.all_repairs'),
           repairing_layer_path(layer_id: @layer.id),
-          class: 'btn btn-success',
           remote: true,
-          method: 'get'
+          class: 'btn btn-success'
 #repairs
   - if @repairs
     = render partial: 'repairs'

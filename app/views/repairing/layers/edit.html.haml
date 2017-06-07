@@ -41,9 +41,8 @@
 
 = link_to t('repairing.repairs.all_repairs'),
           edit_repairing_layer_path(layer_id: @layer.id),
-          class: 'btn btn-success',
           remote: true,
-          method: 'get'
+          class: 'btn btn-success'
 
 #repairs
   - if @repairs
