@@ -9,6 +9,7 @@ module Repairing
     load_and_authorize_resource
 
     before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
+    before_action :set_repairs, only: [:show, :edit]
 
     def create_repair_by_addr
       @location = coordinate(params[:q])
@@ -83,8 +84,6 @@ module Repairing
     # GET /repairing/layers/1
     # GET /repairing/layers/1.json
     def show
-      @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(100) unless params[:layer_id].blank?
-
       respond_to do |format|
         format.js
         format.html
@@ -98,6 +97,10 @@ module Repairing
 
     # GET /repairing/layers/1/edit
     def edit
+      respond_to do |format|
+        format.html
+        format.js { render action: 'show' }
+      end
     end
 
     # POST /repairing/layers
@@ -231,6 +234,10 @@ module Repairing
       # Use callbacks to share common setup or constraints between actions.
       def set_repairing_layer
         @repairing_layer = Repairing::Layer.find(params[:id])
+      end
+
+      def set_repairs
+        @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(100) unless params[:layer_id].blank?
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.

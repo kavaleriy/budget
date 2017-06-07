@@ -39,6 +39,15 @@
 
 = link_to t('form.back'), repairing_layers_path, class: 'btn btn-default'
 
+= link_to t('repairing.repairs.all_repairs'),
+          edit_repairing_layer_path(layer_id: @layer.id),
+          class: 'btn btn-success',
+          remote: true,
+          method: 'get'
+
+#repairs
+  - if @repairs
+    = render partial: 'repairs'
 
 :javascript
 
