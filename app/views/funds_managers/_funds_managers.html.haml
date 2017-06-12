@@ -11,14 +11,15 @@
           .col-md-8.reset-padding
             .col-xs-4.visible-sm.visible-xs
               = t('title')
-            .col-xs-8.col-md-12
-              -# fix error view template with title
-              -#= "#{funds_manager.title}"
+            .col-xs-8.col-md-12{class: "#{valid_status(funds_manager.title)}"}
+              = funds_manager.title
           .col-md-2.reset-padding
             .col-xs-4.visible-sm.visible-xs
               = t('owner')
             .col-xs-8.col-md-12
               = funds_manager.town.title if funds_manager.town?
         .col-xs-1.text-center.reset-padding.files-action-button
+          = link_to edit_funds_manager_path(funds_manager) do
+            %i.fa.fa-pencil.fa-2x
           = link_to funds_manager, method: :delete, title: t('destroy'), data: { confirm: t('devise.confirm') } do
             %i.fa.fa-trash-o.fa-2x

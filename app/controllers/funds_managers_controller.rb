@@ -1,7 +1,7 @@
 class FundsManagersController < ApplicationController
   layout 'application_admin'
   before_action :access_user?
-  before_action :set_funds_manager, only: :destroy
+  before_action :set_funds_manager, only: [:destroy, :edit, :update]
 
   respond_to :html
 
@@ -25,8 +25,8 @@ class FundsManagersController < ApplicationController
     respond_with(@funds_manager)
   end
 
-  # def edit
-  # end
+  def edit
+  end
 
   def create
     @funds_manager = FundsManager.new(funds_manager_params)
@@ -63,10 +63,11 @@ class FundsManagersController < ApplicationController
     end
   end
 
-  # def update
-  #   @funds_manager.update(funds_manager_params)
-  #   respond_with(@funds_manager)
-  # end
+  def update
+    @funds_manager.town = get_town_by_role(params[:town])
+    @funds_manager.update(funds_manager_params)
+    redirect_to funds_managers_path, notice:  'Розпорядник коштів оновлений.'
+  end
 
   def destroy
     @funds_manager.destroy

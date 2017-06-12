@@ -2,6 +2,7 @@ class FundsManager
   require 'external_api'
   include Mongoid::Document
   field :edrpou, type: String
+  field :title, type: String
 
   scope :by_edrpou, -> (edrpou){ where(edrpou: edrpou) }
   scope :by_town, -> (id){ where(town: id) }
@@ -15,17 +16,6 @@ class FundsManager
 
   def check_and_emend_edrpou
     self.edrpou = "0#{edrpou}"
-  end
-
-  def title
-    edr_data_arr = ExternalApi.edr_data(self.edrpou)
-    # @edr_data = edr_data_arr.first['officialName'] unless edr_data_arr.nil?
-
-    unless edr_data_arr.blank?
-      @edr_data = edr_data_arr.first['officialName']
-    else
-      'Дані відсутні'
-    end
   end
 
   # get title for town profile(portal of public finances)
