@@ -29,8 +29,11 @@ class FundsManagersController < ApplicationController
   end
 
   def create
+    require 'external_api'
     @funds_manager = FundsManager.new(funds_manager_params)
     @funds_manager.town = get_town_by_role(params[:town])
+
+    @funds_manager.title = FundsManager.get_title_by_edrpou(params[:funds_manager][:edrpou])
 
     respond_to do |format|
       if @funds_manager.save
