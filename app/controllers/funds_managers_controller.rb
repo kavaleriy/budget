@@ -53,9 +53,6 @@ class FundsManagersController < ApplicationController
     message = [t('invalid_format')]
     message << t('repairing.layers.check_xlsx_format')
     respond_with_error_message(message)
-  rescue RuntimeError
-    message = [t('funds_managers.messages.uploaded') + t('funds_managers.valid_errors.edrpou_town_taken')]
-    redirect_to funds_managers_path, notice:  message
   rescue => e
     message = [t('repairing.layers.update.error')]
     message << "#{e}"
