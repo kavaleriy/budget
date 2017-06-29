@@ -43,7 +43,6 @@ class FundsManager
 
       edrpou.edrpou = row['edrpou']
       edrpou.town = town
-      binding.pry
       # edrpou.save!
 
       begin
