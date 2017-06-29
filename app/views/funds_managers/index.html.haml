@@ -106,9 +106,9 @@
         .col-sm-2
           = t('modules.classifier.by_type.edrpou')
         .col-sm-8
-          = t('title')
+          = sortable 'title', t('title')
         .col-sm-2
-          = t('owner')
+          = sortable 'town_id', t('owner')
       .col-md-1.reset-padding
         = t('form.actions')
   #funds_managers

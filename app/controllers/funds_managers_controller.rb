@@ -1,5 +1,6 @@
 class FundsManagersController < ApplicationController
   layout 'application_admin'
+  helper_method :sort_column, :sort_direction
   before_action :access_user?
   before_action :set_funds_manager, only: [:destroy, :edit, :update]
 
@@ -7,6 +8,7 @@ class FundsManagersController < ApplicationController
 
   def index
     @funds_managers = current_user.admin? ? FundsManager.all : FundsManager.by_town(current_user.town_model)
+    @funds_managers = @funds_managers.order(sort_column + ' ' + sort_direction) if params[:sort]
     @funds_managers = @funds_managers.page(params[:page]).per(30)
 
     # respond_with(@funds_managers)
@@ -86,6 +88,14 @@ class FundsManagersController < ApplicationController
       unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority, :municipal_enterprise, :state_enterprise)
         redirect_to root_url, alert: t('export_budgets.notice_access')
       end
+    end
+
+    def sort_column
+      FundsManager.fields.keys.include?(params[:sort]) ? params[:sort] : 'title'
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
     end
 
     def set_funds_manager
