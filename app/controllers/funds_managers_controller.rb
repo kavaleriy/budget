@@ -96,6 +96,6 @@ class FundsManagersController < ApplicationController
     end
 
     def funds_manager_params
-      params.require(:funds_manager).permit(:edrpou)
+      params.require(:funds_manager).permit(:edrpou, :title)
     end
 end
