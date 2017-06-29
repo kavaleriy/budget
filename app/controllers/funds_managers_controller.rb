@@ -29,12 +29,14 @@ class FundsManagersController < ApplicationController
   end
 
   def create
+    require 'external_api'
     @funds_manager = FundsManager.new(funds_manager_params)
     @funds_manager.town = get_town_by_role(params[:town])
+    @funds_manager.title = FundsManager.get_title_by_edrpou(params[:funds_manager][:edrpou])
 
     respond_to do |format|
       if @funds_manager.save
-        format.html { redirect_to funds_managers_path, notice:  'Розпорядник коштів створений.'}
+        format.html { redirect_to funds_managers_path, notice: t('funds_managers.messages.created')}
       else
         format.html { render action: 'new' }
         format.json { render json: @funds_manager.errors, status: :unprocessable_entity }
@@ -45,7 +47,7 @@ class FundsManagersController < ApplicationController
   def import
     town = get_town_by_role(params[:town])
     FundsManager.import(params[:file], town)
-    redirect_to funds_managers_path, notice:  'Розпорядники коштів завантажені.'
+    redirect_to funds_managers_path, notice: t('funds_managers.messages.uploaded')
 
   rescue Roo::Base::TypeError
     message = [t('invalid_format')]
@@ -66,7 +68,7 @@ class FundsManagersController < ApplicationController
   def update
     @funds_manager.town = get_town_by_role(params[:town])
     @funds_manager.update(funds_manager_params)
-    redirect_to funds_managers_path, notice:  'Розпорядник коштів оновлений.'
+    redirect_to funds_managers_path, notice:  t('funds_managers.messages.updated')
   end
 
   def destroy
@@ -91,6 +93,6 @@ class FundsManagersController < ApplicationController
     end
 
     def funds_manager_params
-      params.require(:funds_manager).permit(:edrpou)
+      params.require(:funds_manager).permit(:edrpou, :title)
     end
 end

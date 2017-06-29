@@ -1,6 +1,7 @@
-%h1 Редагування розпорядника бюлжетних коштів
+%h1
+  = t('.header')
 
-= render 'form'
+= render 'form', edit_title: true
 
 -#= link_to t('show'), @funds_manager
 -#\|

@@ -1,4 +1,17 @@
 uk:
+  errors: &errors
+    format:  '%{attribute} %{message}'
+    messages:
+      validations:
+        message: Виявлені помилки в %{document}
+        summary: "Errors:\n    %{errors}"
+        resolution: Перевірте випадки для цієї моделі, шукаючи відсутні поля або неправильні значення.
+  activemodel:
+    errors:
+      <<: *errors
+  mongoid:
+    errors:
+      <<: *errors
 #Begin. [ Controllers ]
   budget_news:
     create:
@@ -1575,5 +1588,11 @@ uk:
       header: "Завантажити перелік розпорядиків бюджетних коштів"
       create_one: "Створити один"
       import_file: "Імпортувати файлом"
+    edit:
+      header: 'Редагування розпорядника бюджетних коштів'
     form:
       edrpou_manager: "ЄДРПОУ розпорядника"
+    messages:
+      created: 'Розпорядник коштів створений.'
+      uploaded: 'Розпорядники коштів завантажені.'
+      updated: 'Розпорядник коштів оновлений.'

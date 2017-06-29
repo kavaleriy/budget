@@ -7,5 +7,9 @@
   .form-inputs
     = f.input :edrpou, label: t('.edrpou_manager')
 
+  - if defined?(edit_title) && edit_title
+    .form-inputs
+      = f.input :title, label: t('title')
+
   .form-actions
     = f.button :submit, t('save')

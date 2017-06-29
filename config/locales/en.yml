@@ -20,6 +20,19 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  errors: &errors
+    format:  '%{attribute} %{message}'
+    messages:
+      validations:
+        message: There was validation errors on %{document}
+        summary: "Errors:\n    %{errors}"
+        resolution: Check the instances for this model looking for missing fields or wrong values.
+  activemodel:
+    errors:
+      <<: *errors
+  mongoid:
+    errors:
+      <<: *errors
 #Begin. [ Controllers ]
   budget_news:
     create:
@@ -1556,5 +1569,11 @@ en:
       header: "Upload a list of funds managers"
       create_one: "Create one"
       import_file: "Import file"
+    edit:
+      header: 'Editing funds manager'
     form:
       edrpou_manager: "EDRPOU manager"
+    messages:
+      created: 'Funds manager created.'
+      uploaded: 'Funds managers uploaded.'
+      updated: 'Funds manager updated.'

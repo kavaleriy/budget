@@ -23,6 +23,13 @@ class FundsManager
     title
   end
 
+  def self.get_title_by_edrpou(edrpou)
+    edr_data_arr = ExternalApi.edr_data(edrpou)
+    title = ''
+    title = edr_data_arr.first['officialName'] unless edr_data_arr.blank?
+    title
+  end
+
   def self.import(file, town)
     spreadsheet = open_spreadsheet(file)
     header = spreadsheet.row(1)
@@ -30,9 +37,18 @@ class FundsManager
       row = Hash[[header, spreadsheet.row(i)].transpose]
       # edrpou = by_edrpou(row['edrpou']).first || new
       edrpou = new
+
+      edrpou.title = get_title_by_edrpou(row['edrpou'])
+
       edrpou.edrpou = row['edrpou']
       edrpou.town = town
-      edrpou.save!
+
+      # create next if not valid(edrpou is already in the database)
+      begin
+        edrpou.save!
+      rescue Mongoid::Errors::Validations => e
+        next
+      end
     end
   end
 
