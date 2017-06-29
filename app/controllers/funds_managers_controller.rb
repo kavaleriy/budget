@@ -70,9 +70,6 @@ class FundsManagersController < ApplicationController
 
   def update
     @funds_manager.town = get_town_by_role(params[:town])
-    @funds_manager.title = FundsManager.get_title_by_edrpou(params[:funds_manager][:edrpou])
-
-
     @funds_manager.update(funds_manager_params)
     redirect_to funds_managers_path, notice:  'Розпорядник коштів оновлений.'
   end
