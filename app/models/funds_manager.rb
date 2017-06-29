@@ -25,9 +25,7 @@ class FundsManager
 
   def self.get_title_by_edrpou(edrpou)
     edr_data_arr = ExternalApi.edr_data(edrpou)
-    title = ''
-    title = edr_data_arr.first['officialName'] unless edr_data_arr.blank?
-    title
+    title = edr_data_arr.blank? ? '' : edr_data_arr.first['officialName']
   end
 
   def self.import(file, town)
