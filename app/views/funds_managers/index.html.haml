@@ -9,6 +9,10 @@
       flex-wrap: wrap;
       justify-content: space-between;
     }
+    .documents_search{
+      display: inline-block;
+      width: 100%;
+    }
     .paginator {
       text-align: center;
     }
@@ -101,7 +105,7 @@
     .new-btn
       %h2= link_to t('form.new'), new_funds_manager_path, :class => 'btn btn-info'
 
-  .col-xs-12.documents_search
+  .documents_search
     = render partial: 'search'
   .table-title.text-center.visible-md.visible-lg
     .row
