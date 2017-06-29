@@ -16,6 +16,7 @@
       font-weight: bold;
       border-bottom: solid lightgrey 2px;
       padding: 5px 0;
+      //margin-top: 10px;
      .row{
         text-align: left;
         & > div:last-child{
@@ -100,6 +101,8 @@
     .new-btn
       %h2= link_to t('form.new'), new_funds_manager_path, :class => 'btn btn-info'
 
+  .col-xs-12.documents_search
+    = render partial: 'search'
   .table-title.text-center.visible-md.visible-lg
     .row
       .col-md-11.reset-padding

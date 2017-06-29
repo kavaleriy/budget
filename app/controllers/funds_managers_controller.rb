@@ -8,6 +8,8 @@ class FundsManagersController < ApplicationController
 
   def index
     @funds_managers = current_user.admin? ? FundsManager.all : FundsManager.by_town(current_user.town_model)
+    @funds_managers = @funds_managers.by_towns(params['town_select'])           unless params['town_select'].blank?
+    @funds_managers = @funds_managers.find_by_string(params['query'])           unless params['query'].blank?
     @funds_managers = @funds_managers.order(sort_column + ' ' + sort_direction) if params[:sort]
     @funds_managers = @funds_managers.page(params[:page]).per(30)
 
