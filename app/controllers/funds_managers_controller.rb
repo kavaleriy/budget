@@ -32,7 +32,6 @@ class FundsManagersController < ApplicationController
     require 'external_api'
     @funds_manager = FundsManager.new(funds_manager_params)
     @funds_manager.town = get_town_by_role(params[:town])
-
     @funds_manager.title = FundsManager.get_title_by_edrpou(params[:funds_manager][:edrpou])
 
     respond_to do |format|
@@ -54,6 +53,9 @@ class FundsManagersController < ApplicationController
     message = [t('invalid_format')]
     message << t('repairing.layers.check_xlsx_format')
     respond_with_error_message(message)
+  rescue RuntimeError
+    message = ['Розпорядники коштів завантажені. ' + t('funds_managers.valid_errors.edrpou_town_taken')]
+    redirect_to funds_managers_path, notice:  message
   rescue => e
     message = [t('repairing.layers.update.error')]
     message << "#{e}"
@@ -68,6 +70,9 @@ class FundsManagersController < ApplicationController
 
   def update
     @funds_manager.town = get_town_by_role(params[:town])
+    @funds_manager.title = FundsManager.get_title_by_edrpou(params[:funds_manager][:edrpou])
+
+
     @funds_manager.update(funds_manager_params)
     redirect_to funds_managers_path, notice:  'Розпорядник коштів оновлений.'
   end

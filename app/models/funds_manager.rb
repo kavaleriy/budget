@@ -31,6 +31,7 @@ class FundsManager
   end
 
   def self.import(file, town)
+    errors = false
     spreadsheet = open_spreadsheet(file)
     header = spreadsheet.row(1)
     (2..spreadsheet.last_row).each do |i|
@@ -39,12 +40,21 @@ class FundsManager
       edrpou = new
 
       edrpou.title = get_title_by_edrpou(row['edrpou'])
-      binding.pry
 
       edrpou.edrpou = row['edrpou']
       edrpou.town = town
-      edrpou.save!
+      binding.pry
+      # edrpou.save!
+
+      begin
+        edrpou.save!
+      rescue Mongoid::Errors::Validations => e
+        errors = true
+        next
+      end
     end
+
+    if errors then raise 'Errors validations.' end
   end
 
   def self.open_spreadsheet(file)

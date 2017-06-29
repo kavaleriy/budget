@@ -20,6 +20,19 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  errors: &errors
+    format:  '%{attribute} %{message}'
+    messages:
+      validations:
+        message: There was validation errors on %{document}
+        summary: "Errors:\n    %{errors}"
+        resolution: Check the instances for this model looking for missing fields or wrong values.
+  activemodel:
+    errors:
+      <<: *errors
+  mongoid:
+    errors:
+      <<: *errors
 #Begin. [ Controllers ]
   budget_news:
     create:
@@ -1558,3 +1571,5 @@ en:
       import_file: "Import file"
     form:
       edrpou_manager: "EDRPOU manager"
+    valid_errors:
+      edrpou_town_taken: 'Some managers have been uploaded before to your town.'

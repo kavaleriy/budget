@@ -1,4 +1,17 @@
 uk:
+  errors: &errors
+    format:  '%{attribute} %{message}'
+    messages:
+      validations:
+        message: Виявлені помилки в %{document}
+        summary: "Errors:\n    %{errors}"
+        resolution: Перевірте випадки для цієї моделі, шукаючи відсутні поля або неправильні значення.
+  activemodel:
+    errors:
+      <<: *errors
+  mongoid:
+    errors:
+      <<: *errors
 #Begin. [ Controllers ]
   budget_news:
     create:
@@ -1577,3 +1590,5 @@ uk:
       import_file: "Імпортувати файлом"
     form:
       edrpou_manager: "ЄДРПОУ розпорядника"
+    valid_errors:
+      edrpou_town_taken: 'Деякі розпорядники були завантажені раніше до вашого міста.'
