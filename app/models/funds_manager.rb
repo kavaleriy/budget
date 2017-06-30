@@ -8,7 +8,7 @@ class FundsManager
   scope :by_town, -> (id){ where(town: id) }
   scope :by_towns, -> (towns){ where(:town.in => towns.split(",")) }
   # search manager by text from title
-  scope :find_by_string, -> (text){ where(title: /.*#{text}.*/) }
+  scope :find_by_string, -> (text){ where(title: /#{text}/i) }
 
   belongs_to :town
 
