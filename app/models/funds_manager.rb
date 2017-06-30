@@ -6,9 +6,9 @@ class FundsManager
 
   scope :by_edrpou, -> (edrpou){ where(edrpou: edrpou) }
   scope :by_town, -> (id){ where(town: id) }
-  scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
-  # Get taxonomies files by string in title
-  scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+  scope :by_towns, -> (towns){ where(:town.in => towns.split(",")) }
+  # search manager by text from title
+  scope :find_by_string, -> (text){ where(title: /.*#{text}.*/) }
 
   belongs_to :town
 
