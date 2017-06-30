@@ -5,6 +5,8 @@
 
   .documents_search {
     margin-top: 20px;
+    display: inline-block;
+    padding: 10px 0;
   }
   .reset-padding{
     padding: 5px 0;
@@ -61,7 +63,7 @@
       %small
         =t('.documents_search')
 
-.col-xs-12.documents_search
+.row.documents_search
   = render partial: 'search'
 
 .documentation.row.table-title
