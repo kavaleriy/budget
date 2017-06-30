@@ -5,6 +5,8 @@
 
   .documents_search {
     margin-top: 20px;
+    display: inline-block;
+    padding: 10px 0;
   }
   .reset-padding{
     padding: 5px 0;
@@ -61,7 +63,7 @@
       %small
         =t('.documents_search')
 
-.col-xs-12.documents_search
+.row.documents_search
   = render partial: 'search'
 
 .documentation.row.table-title
@@ -92,6 +94,8 @@
 .col-xs-12.reset-padding#results
   = render partial: 'search_results', :locals => { documents: @documentation_documents }
 
+.paginator
+  = paginate @documentation_documents, remote: true
 
 -#todo --> dellete this block if layouts structure will apply
 -#.documentation.col-xs-12.table-responsive

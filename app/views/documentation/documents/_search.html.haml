@@ -8,7 +8,7 @@
   .col-sm-12.col-md-2
     = select_tag :branch_select, options_for_select(Documentation::Branch.all.collect { |t| [t.title, t.id] } ), { multiple: true, class: 'branch_select' }
 
-  .col-sm-12.col-md-3
+  .col-sm-12.col-md-2
     = text_field_tag :q, '', :class => 'form-control', :placeholder => "#{t('documentation.documents.search.doc_search')}"
 
   .col-sm-12.col-md-2.form-inline
@@ -22,7 +22,7 @@
     %label
       =t('documentation.documents.index.only_locked')
 
-  .col-sm-6.col-md-1
+  .col-sm-6.col-md-2
     = button_tag(type: 'submit', :class => 'btn btn-primary', :id => 'search_btn') do
       = t('form.search')
       %i.fa.fa-search.fa-lg
