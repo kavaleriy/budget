@@ -6,6 +6,9 @@ class FundsManager
 
   scope :by_edrpou, -> (edrpou){ where(edrpou: edrpou) }
   scope :by_town, -> (id){ where(town: id) }
+  scope :by_towns, -> (towns){ where(:town.in => towns.split(",")) }
+  # search manager by text from title
+  scope :find_by_string, -> (text){ where(title: /.*#{text}.*/) }
 
   belongs_to :town
 
@@ -25,9 +28,7 @@ class FundsManager
 
   def self.get_title_by_edrpou(edrpou)
     edr_data_arr = ExternalApi.edr_data(edrpou)
-    title = ''
-    title = edr_data_arr.first['officialName'] unless edr_data_arr.blank?
-    title
+    title = edr_data_arr.blank? ? '' : edr_data_arr.first['officialName']
   end
 
   def self.import(file, town)

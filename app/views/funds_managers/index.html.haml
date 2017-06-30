@@ -9,6 +9,10 @@
       flex-wrap: wrap;
       justify-content: space-between;
     }
+    .documents_search{
+      display: inline-block;
+      width: 100%;
+    }
     .paginator {
       text-align: center;
     }
@@ -100,15 +104,17 @@
     .new-btn
       %h2= link_to t('form.new'), new_funds_manager_path, :class => 'btn btn-info'
 
+  .documents_search
+    = render partial: 'search'
   .table-title.text-center.visible-md.visible-lg
     .row
       .col-md-11.reset-padding
         .col-sm-2
           = t('modules.classifier.by_type.edrpou')
         .col-sm-8
-          = t('title')
+          = sortable 'title', t('title')
         .col-sm-2
-          = t('owner')
+          = sortable 'town_id', t('owner')
       .col-md-1.reset-padding
         = t('form.actions')
   #funds_managers
