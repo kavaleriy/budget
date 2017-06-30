@@ -92,6 +92,8 @@
 .col-xs-12.reset-padding#results
   = render partial: 'search_results', :locals => { documents: @documentation_documents }
 
+.paginator
+  = paginate @documentation_documents, remote: true
 
 -#todo --> dellete this block if layouts structure will apply
 -#.documentation.col-xs-12.table-responsive
