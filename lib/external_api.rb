@@ -57,7 +57,8 @@ class ExternalApi
   def self.edr_data(company_edrpou)
     # TODO need refactor url path
     unless company_edrpou.nil?
-      uri = URI('http://edr.data-gov-ua.org/api/companies?where=\{"edrpou":"company_edrpou"\}'.sub! 'company_edrpou', company_edrpou)
+      # uri = URI('http://edr.data-gov-ua.org/api/companies?where=\{"edrpou":"company_edrpou"\}'.sub! 'company_edrpou', company_edrpou)
+      uri = URI.parse(URI.encode('http://edr.data-gov-ua.org/api/companies?where={"edrpou":"company_edrpou"}'.sub! 'company_edrpou', company_edrpou))
 
       http = Net::HTTP.new(uri.host, uri.port)
 
