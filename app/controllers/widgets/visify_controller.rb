@@ -1,6 +1,6 @@
 class Widgets::VisifyController < Widgets::WidgetsController
   include ControllerCaching
-
+  skip_before_action :set_menu
   before_action :set_budget_file
   before_action :set_params, :except => [:get_bubbletree_nodedata]
   before_action :set_amounts, :except => [:get_bubbletree_nodedata]
