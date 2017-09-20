@@ -16,10 +16,10 @@
   .col-sm-3.col-md-4
     .row
       .col-sm-12.col-md-6
-        .odd= repair.obj_owner
+        .odd= strip_tags(repair.obj_owner)
         .even= repair.edrpou_artist
       .col-sm-12.col-md-6
-        .odd= repair.subject
+        .odd= strip_tags(repair.subject)
         .even= repair.work
         .odd= repair.repairing_category.title if repair.repairing_category
   .col-sm-3.col-md-2
