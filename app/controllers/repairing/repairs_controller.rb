@@ -54,6 +54,7 @@ module Repairing
     # PATCH/PUT /repairing/repairs/1.json
     def update
       respond_to do |format|
+        repairing_repair_params.delete :repairing_category if repairing_repair_params[:repairing_category].blank?
         if @repairing_repair.update(repairing_repair_params)
           flash[:notice] = I18n.t('repairing.layers.update.success')  # edit repair message for form
           msg = {class_name: 'success', message: flash[:notice]}      # edit repair message for x-editable
