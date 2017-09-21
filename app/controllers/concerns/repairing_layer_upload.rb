@@ -3,7 +3,6 @@ module RepairingLayerUpload
   include ActionView::Helpers::SanitizeHelper
   def read_csv_xls(xls)
     cols = []
-    binding.pry
     xls.first_column.upto(xls.last_column) { |col|
       cols << downcase_header(xls.cell(1, col))
     }
