@@ -1,6 +1,5 @@
 module RepairingLayerUpload
   extend ActiveSupport::Concern
-  include ActionView::Helpers::SanitizeHelper
   def read_csv_xls(xls)
     cols = []
     xls.first_column.upto(xls.last_column) { |col|
