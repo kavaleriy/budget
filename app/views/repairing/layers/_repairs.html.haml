@@ -4,35 +4,20 @@
     padding-right: 30px;
   }
 
-  //table{
-  //  border-spacing: 1px;
-  //  border-collapse: separate;
-  //  font-size: 12px;
-  //  tr:nth-child(even) {background: #DDD}
-  //  tr:nth-child(odd) {background: #FFF}
-  //  td{
-  //    border: 0px;
-  //    border-right: 1px #FFF;
-  //  }
-  //  td.not-valid{
-  //    background: #FFB59D;
-  //  }
-  //  td.coordinates{
-  //    overflow: hidden;
-  //  }
-  //  .popover-content {
-  //    padding: 0;
-  //  }
-  //}
-  
   .table{
     .headers{
       padding: 4px 4px 2px;
       margin-bottom: 5px;
       font-weight: bold;
       background: #428bca;
-      //background: #f0f0f0;
-      //border-bottom: solid 2px grey;
+      &.fixed-top{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        margin: 5px 15px;
+      }
       .row{
         .header{
           padding: 0 2px;
@@ -84,7 +69,8 @@
 
 
 .table
-  .headers
+  .sticky-anchor
+  .headers.sticky-content
     .row
       .col-sm-3.col-md-4
         .row
@@ -115,29 +101,6 @@
   .data
     = render partial: 'repair', collection: @repairs
 
-%table#edit_repairs
-  %tr
-    -#%th= t('repairing.repairs.form.spending_units')
-    -#%th= t('repairing.repairs.form.erdpou_spending')
-    -#%th= t('repairing.repairs.form.subject')
-    -#%th= t('repairing.repairs.form.address')
-    -#%th= t('repairing.repairs.form.address_to')
-    -#%th= t('repairing.repairs.form.coordinates')
-    -#%th= t('repairing.repairs.form.work')
-    -#%th= t('repairing.repairs.form.category')
-    -#%th= t('repairing.repairs.form.amount')
-    -#%th= t('repairing.repairs.form.repair_start_date')
-    -#%th= t('repairing.repairs.form.repair_end_date')
-    -#%th= t('repairing.repairs.form.warranity_date')
-    -#%th= t('repairing.repairs.form.prozzoro_id')
-    -#%th= t('repairing.repairs.form.obj_owner')
-    -#%th= t('repairing.repairs.form.erdpou_artist')
-    -#%th= t('repairing.repairs.form.description')
-    -#%th
-    -#%th
-
-  -#= render partial: 'repair', collection: @repairs
-
 .paginator-repairs
   = paginate @repairs, :remote => true
 
@@ -167,5 +130,37 @@
     }).on("hidden.bs.modal", function () {
       $(".container-fluid").removeClass("modal-open")
     });
+
+    // fixed position header table
+    // https://codepen.io/stanislas-prime/pen/xrEcj
+    StickyElement = function(node){
+      var doc = $(document);
+      var fixed = false;
+      var anchor = node.find('.sticky-anchor');
+      var content = node.find('.sticky-content');
+
+      var onScroll = function(e){
+        var docTop = doc.scrollTop();
+        var anchorTop = anchor.offset().top;
+
+        if(docTop > anchorTop){
+          if(!fixed){
+            anchor.height(content.outerHeight());
+            content.addClass('fixed-top');
+            fixed = true;
+          }
+        }  else   {
+          if(fixed){
+            anchor.height(0);
+            content.removeClass('fixed-top');
+            fixed = false;
+          }
+        }
+      };
+
+      $(window).on('scroll', onScroll);
+    };
+
+    StickyElement($('.table'));
 
   })
