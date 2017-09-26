@@ -12,29 +12,21 @@ class ExternalApi
     http.request(request).body rescue {}
   end
 
-  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = Time.now.months_since(-3).strftime("%d-%m-%Y"), end_date = Time.now.strftime("%d-%m-%Y"))
-    start_date = start_date || Time.now.months_since(-3).strftime("%d-%m-%Y")
-    end_date = end_date || Time.now.strftime("%d-%m-%Y")
+  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = Time.now.months_since(-3).strftime("%Y-%m-%d"), end_date = Time.now.strftime("%Y-%m-%d"))
+    start_date = start_date || Time.now.months_since(-3).strftime("%Y-%m-%d")
+    end_date = end_date || Time.now.strftime("%Y-%m-%d")
 
     # https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614
-    # edrpous from this http://api.spending.gov.ua/api/v2/api/transactions/top100
-    # payer_erdpou = "37567646"
-    # recipt_edrpou = "00013480"
-    data = self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
+    # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
+    uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
 
-    uri = URI.parse('http://api.e-data.gov.ua:8080/api/rest/1.0/transactions')
-    # uri = URI.parse('http://api.e-data.gov.ua:8080/api/v2/api/transactions')
-    # uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions')
-    # uri = URI.parse('http://api.spending.gov.ua/api/rest/1.0/transactions')
+    params = self.params(payer_erdpou, recipt_edrpou, start_date, end_date, )
+    uri.query = URI.encode_www_form(params)
 
-    # binding.pry
+    res = Net::HTTP.get_response(uri)
+    # puts res.body if res.is_a?(Net::HTTPSuccess)
 
-    http = Net::HTTP.new(uri.host, uri.port)
-
-    request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
-    request.body = data.to_json
-
-    JSON.parse(http.request(request).body)['response']['transactions'] rescue {}
+    JSON.parse(res.body) rescue {}
   end
 
   def self.most_received(payer_erdpou, recipt_edrpou, start_date = Time.now.months_since(-3).strftime("%d-%m-%Y"), end_date = Time.now.strftime("%d-%m-%Y"))
@@ -92,8 +84,8 @@ class ExternalApi
   private
   def self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
     data = {
-        'startdate' => start_date,
-        'enddate' => end_date
+        startdate: start_date,
+        enddate: end_date
     }
 
     data['payers_edrpous'] = payer_erdpou
