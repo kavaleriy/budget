@@ -84,8 +84,8 @@ class ExternalApi
   private
   def self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
     data = {
-        startdate: start_date,
-        enddate: end_date
+        'startdate' => start_date,
+        'enddate' => end_date
     }
 
     data['payers_edrpous'] = payer_erdpou
