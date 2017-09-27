@@ -89,16 +89,15 @@ class ExternalApi
 
     def params(payer_erdpou, recipt_edrpou, start_date, end_date)
       data = {
-          'startdate' => start_date,
-          'enddate' => end_date
+        startdate: start_date,
+        enddate: end_date
       }
 
       data['payers_edrpous'] = payer_erdpou
       data['recipt_edrpous'] = recipt_edrpou
 
-      data.delete_if { |key, value| value.blank? }
+      data.delete_if { |_key, value| value.blank? }
     end
-
   end
 
 end
