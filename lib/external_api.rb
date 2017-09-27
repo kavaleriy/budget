@@ -17,7 +17,7 @@ class ExternalApi
     # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
     uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
 
-    params = self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
+    params = params(payer_erdpou, recipt_edrpou, start_date, end_date)
     uri.query = URI.encode_www_form(params)
 
     res = Net::HTTP.get_response(uri)
@@ -76,27 +76,29 @@ class ExternalApi
     end
   end
 
-  private
+  class << self
+    private
 
-  def self.default_start_date
-    Time.now.months_since(-3).strftime('%Y-%m-%d')
+    def default_start_date
+      Time.now.months_since(-3).strftime('%Y-%m-%d')
+    end
+
+    def default_end_date
+      Time.now.strftime('%Y-%m-%d')
+    end
+
+    def params(payer_erdpou, recipt_edrpou, start_date, end_date)
+      data = {
+          'startdate' => start_date,
+          'enddate' => end_date
+      }
+
+      data['payers_edrpous'] = payer_erdpou
+      data['recipt_edrpous'] = recipt_edrpou
+
+      data.delete_if { |key, value| value.blank? }
+    end
+
   end
-
-  def self.default_end_date
-    Time.now.strftime('%Y-%m-%d')
-  end
-
-  def self.params(payer_erdpou, recipt_edrpou, start_date, end_date)
-    data = {
-        'startdate' => start_date,
-        'enddate' => end_date
-    }
-
-    data['payers_edrpous'] = payer_erdpou
-    data['recipt_edrpous'] = recipt_edrpou
-
-    data.delete_if { |key, value| value.blank? }
-  end
-
 
 end
