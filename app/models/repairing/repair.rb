@@ -125,7 +125,7 @@ module Repairing
       # ad hoc
       # Example: "31.06.2017" - not valid date because June has 30 days
       # return Sat, 01 Jul 2017 ("01.07.2017")
-      d_string.try(:to_time).try(:to_date)
+      d_string.try(:to_time).try(:to_date).yesterday
     end
 
     def self.build_repair_hash(repair)
