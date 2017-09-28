@@ -118,14 +118,24 @@ module Repairing
       end
     end
 
+
+    def self.expiration_date(d_string)
+      d_string.try(:to_date)
+    rescue ArgumentError
+      # ad hoc
+      # Example: "31.06.2017" - not valid date because June has 30 days
+      # return Sat, 01 Jul 2017 ("01.07.2017")
+      d_string.try(:to_time).try(:to_date)
+    end
+
     def self.build_repair_hash(repair)
       # this function build hash for repair model
       # get two parameters repair hash and coordinates array
       # first of all convert repair start and end date to date
       # after that build and return hash
 
-      start_repair_date = repair['дата початку ремонту'].try(:to_date)
-      end_repair_date = repair['дата закінчення ремонту'].try(:to_date)
+      start_repair_date = expiration_date(repair['дата початку ремонту'])
+      end_repair_date = expiration_date(repair['дата закінчення ремонту'])
 
       {
           spending_units: repair['розпорядник бюджетних коштів'],
