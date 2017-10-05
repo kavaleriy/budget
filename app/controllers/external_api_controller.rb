@@ -22,6 +22,8 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
+    # data_bot = ExternalApi.data_bot(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
+
     e_data_payments = ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
 
     respond_to do |format|
@@ -48,6 +50,7 @@ class ExternalApiController < ApplicationController
 
     end
   end
+
   def edr
     edr_data_arr = ExternalApi.edr_data(@repairing_repairs.edrpou_artist)
     @edr_data = edr_data_arr.first unless edr_data_arr.nil?
