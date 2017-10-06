@@ -260,13 +260,13 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
-        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
       }
     });
 
     $('#search').on('click', function(){
       if($('#_item').val()) {
-        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
       }
     });
 
@@ -274,7 +274,7 @@
     $('[name="[role]"]').on('change', function() {
       // check for empty value, if empty -> do nothing
       if($('#_item').val()) {
-        classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
         // var title = $('[name="[role]"]:checked').val() == 'payers' ? I18n.t('modules.classifier.chart.most_payers') : I18n.t('modules.classifier.chart.most_received');
         // $('#most-received .subtitle').html(title);
       }
@@ -286,7 +286,7 @@
       $('#edata_payments th').not(_this).removeClass('active').attr('data-sort-direction', 'asc');
       var sort_col = _this.attr('data-column'),
           sort_dir = _this.attr('data-sort-direction');
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params(sort_col, sort_dir));
+      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(sort_col, sort_dir));
       _this.attr('data-sort-direction', sort_direction(sort_dir)).addClass('active');
     });
 
@@ -310,5 +310,5 @@
   function graph_click(param) {
     var data = init_search_params();
     data[$('[name="[role]"]').not(':checked').val() + '_edrpous'] = param;
-    classifier_search("#{modules_classifier_search_e_data_url}", data);
+    classifier_search("#{modules_classifier_search_e_data_path}", data);
   }
