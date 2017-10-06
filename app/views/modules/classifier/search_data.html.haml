@@ -226,7 +226,7 @@
         = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
           = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
         = link_to t('modules.classifier.advanced_search.search'), '#', class: 'btn btn-primary advanced_search_button', id: 'search'
-        = link_to modules_classifier_advanced_search_url(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: request.format.html? ? false : true do
+        = link_to modules_classifier_advanced_search_path(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: request.format.html? ? false : true do
           %i.fa.fa-cogs
           = t('.advanced_button')
 
