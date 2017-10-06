@@ -402,14 +402,14 @@
     init_items_select2_with_field_id(
       '#_item_payers',
       '#_item_type_payers',
-      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      "#{modules_classifier_select_collection_path(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
     );
 
     init_items_select2_with_field_id(
       '#_item_recipt',
       '#_item_type_recipt',
-      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      "#{modules_classifier_select_collection_path(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
     );
 
