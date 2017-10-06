@@ -468,7 +468,7 @@
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
+      get_items("#{modules_classifier_by_type_path}", type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
     });
   });
@@ -494,7 +494,7 @@
   // This actions define in '*.js.erb'
   function init_item_select(selector) {
     $('#_item_' + selector.data('role')).select2('val', '');
-    get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
+    get_items("#{modules_classifier_by_type_path}", selector.val(), selector.data('role'));
   }
 
   function init_search_params(sort_col, sort_dir) {
