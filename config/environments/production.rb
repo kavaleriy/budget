@@ -41,8 +41,6 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
-  # config.routes.default_url_options[:protocol] = 'https'
-  Rails.application.routes.default_url_options[:protocol] = 'https'
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
@@ -96,3 +94,5 @@ Rails.application.configure do
   }
 
 end
+
+Rails.application.routes.default_url_options[:protocol] = 'https'
