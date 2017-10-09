@@ -40,7 +40,7 @@ module Modules
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart
-      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?)).first(10)
+      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?)).first(10)
 
       respond_to do |format|
         # TODO should be rewrite using as :template
@@ -163,7 +163,7 @@ module Modules
 
     def sort_e_data
       # Data
-      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (params[:period].split('/').first unless params[:period].blank?), (params[:period].split('/').last unless params[:period].blank?))
+      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
       # Sort data
       sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
       unless payments_data.blank?
@@ -178,6 +178,18 @@ module Modules
       end
       # Results
       payments_data
+    end
+
+    def start_date(period)
+      format_date_for_api(period.split('/').first)
+    end
+
+    def end_date(period)
+      format_date_for_api(period.split('/').last)
+    end
+
+    def format_date_for_api(date)
+      date.to_date.strftime("%Y-%m-%d")
     end
 
     def items_by_koatuu
