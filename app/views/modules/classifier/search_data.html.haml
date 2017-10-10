@@ -211,6 +211,18 @@
       }
     }
   }
+  // custom styles for spinner
+  .vis-spinner{
+    #spinner-container{
+      background: none;
+      .spinner{
+        .sk-circle:before{
+          background-color: #ffd304;
+        }
+      }
+    }
+  }
+
 #search-data
   = simple_form_for '', remote: true do |f|
     .row
@@ -245,7 +257,8 @@
   #most-received
     = render partial: 'chart'
 
-  = render partial: 'layouts/spinner'
+  .vis-spinner
+    = render partial: 'layouts/spinner'
 
   .copyright_info
     = render partial: 'copyright_info'
