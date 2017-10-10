@@ -15,7 +15,6 @@ function classifier_search(url, params) {
     data: params,
     complete: function() {
       share_buttons_set_url(this.url);
-      $("#spinner-container").hide();
     }
   });
 }
@@ -101,6 +100,7 @@ function get_items(url, type, role, _sort_param) {
 function share_buttons_set_url(url) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
+    $("#spinner-container").hide();
     if (!$('.demo_index').length) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
         // console.log(url.replace('search_e_data', 'direct_link'));
