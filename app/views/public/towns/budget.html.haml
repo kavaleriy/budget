@@ -20,7 +20,7 @@
     var embed_code = aEmbedCode();
 
     // TODO need refactor in future. Also need to check controller for 'allowing cross-origin access'
-    var iframe_url = $('#budget_iframe').attr('src').replace('http:', 'https:');
+    var iframe_url = location.origin + $('#budget_iframe').attr('src');
 
     $('.btn-embed').on('click',function(){
       var fullscreen = "allowfullscreen='true' mozallowfullscreen='true' webkitallowfullscreen='true'";
