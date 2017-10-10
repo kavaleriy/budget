@@ -321,6 +321,17 @@
       }
     }
   }
+  // custom styles for spinner
+  .vis-spinner{
+    #spinner-container{
+      background: none;
+      .spinner{
+        .sk-circle:before{
+          background-color: #ffd304;
+        }
+      }
+    }
+  }
 
 = stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
 
@@ -362,7 +373,8 @@
     #most-received
       = render partial: 'chart'
 
-    = render partial: 'layouts/spinner'
+    .vis-spinner
+      = render partial: 'layouts/spinner'
 
   .copyright_info
     = render partial: 'copyright_info'

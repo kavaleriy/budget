@@ -6,7 +6,7 @@
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
 function classifier_search(url, params) {
-  // $('#spinner-container').show();
+  $("#spinner-container").show();
   $.ajax({
     type: 'get',
     url: url,
@@ -15,9 +15,9 @@ function classifier_search(url, params) {
     data: params,
     complete: function() {
       share_buttons_set_url(this.url);
+      $("#spinner-container").hide();
     }
   });
-  // $('#spinner-container').hide();
 }
 
 function init_items_select2_with_field_id(field_id, parent_field_id, url, placeholder){
