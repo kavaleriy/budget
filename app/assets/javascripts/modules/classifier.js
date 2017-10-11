@@ -6,7 +6,7 @@
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
 function classifier_search(url, params) {
-  // $('#spinner-container').show();
+  $("#spinner-container").show();
   $.ajax({
     type: 'get',
     url: url,
@@ -17,7 +17,6 @@ function classifier_search(url, params) {
       share_buttons_set_url(this.url);
     }
   });
-  // $('#spinner-container').hide();
 }
 
 function init_items_select2_with_field_id(field_id, parent_field_id, url, placeholder){
@@ -101,6 +100,7 @@ function get_items(url, type, role, _sort_param) {
 function share_buttons_set_url(url) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
+    $("#spinner-container").hide();
     if (!$('.demo_index').length) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
         // console.log(url.replace('search_e_data', 'direct_link'));

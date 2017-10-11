@@ -7,7 +7,7 @@
 .budget.row-fluid
   .tab-content
     %iframe{allowfullscreen: 'true', mozallowfullscreen: 'true', webkitallowfullscreen: 'true',
-            width: '100%', height: '850', src: widgets_budget_files_url(@town), id: 'budget_iframe'}
+            width: '100%', height: '850', src: widgets_budget_files_path(@town), id: 'budget_iframe'}
 
 -#= link_to t('form.back', :default => t("helpers.links.back")), public_path, :class => 'btn btn-default'
 .col-sm-12
@@ -20,7 +20,7 @@
     var embed_code = aEmbedCode();
 
     // TODO need refactor in future. Also need to check controller for 'allowing cross-origin access'
-    var iframe_url = $('#budget_iframe').attr('src').replace('http:', 'https:');
+    var iframe_url = location.origin + $('#budget_iframe').attr('src');
 
     $('.btn-embed').on('click',function(){
       var fullscreen = "allowfullscreen='true' mozallowfullscreen='true' webkitallowfullscreen='true'";

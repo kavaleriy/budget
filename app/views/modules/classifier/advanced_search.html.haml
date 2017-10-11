@@ -321,6 +321,17 @@
       }
     }
   }
+  // custom styles for spinner
+  .vis-spinner{
+    #spinner-container{
+      background: none;
+      .spinner{
+        .sk-circle:before{
+          background-color: #ffd304;
+        }
+      }
+    }
+  }
 
 = stylesheet_link_tag 'modules/classifier/daterangepicker-bs3'
 
@@ -362,7 +373,8 @@
     #most-received
       = render partial: 'chart'
 
-    = render partial: 'layouts/spinner'
+    .vis-spinner
+      = render partial: 'layouts/spinner'
 
   .copyright_info
     = render partial: 'copyright_info'
@@ -402,14 +414,14 @@
     init_items_select2_with_field_id(
       '#_item_payers',
       '#_item_type_payers',
-      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      "#{modules_classifier_select_collection_path(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.payers_form_placeholder')
     );
 
     init_items_select2_with_field_id(
       '#_item_recipt',
       '#_item_type_recipt',
-      "#{modules_classifier_select_collection_url(format: :json, town_id: @town.id)}",
+      "#{modules_classifier_select_collection_path(format: :json, town_id: @town.id)}",
       I18n.t('modules.classifier.advanced_search.recipt_form_placeholder')
     );
 
@@ -437,7 +449,7 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params());
+      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
       // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
       // $('#most-received .subtitle').html(title);
       $("#items-list").hide();
@@ -455,7 +467,7 @@
     // add event for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       $('#edata_payments th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
-      classifier_search("#{modules_classifier_search_e_data_url}", init_search_params($(this).attr('data-column'), $(this).attr('data-sort-direction')))
+      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params($(this).attr('data-column'), $(this).attr('data-sort-direction')))
       $(this).attr('data-sort-direction', sort_direction(sort_conf['sort_dir'])).addClass('active');
     });
 
@@ -468,7 +480,7 @@
         sort_col: _this.attr('data-column'),
         sort_dir: _this.attr('data-sort-direction')
       };
-      get_items("#{modules_classifier_by_type_url}", type, _this.data('role'), sort_param);
+      get_items("#{modules_classifier_by_type_path}", type, _this.data('role'), sort_param);
       _this.attr('data-sort-direction', sort_direction(sort_param.sort_dir)).addClass('active');
     });
   });
@@ -494,7 +506,7 @@
   // This actions define in '*.js.erb'
   function init_item_select(selector) {
     $('#_item_' + selector.data('role')).select2('val', '');
-    get_items("#{modules_classifier_by_type_url}", selector.val(), selector.data('role'));
+    get_items("#{modules_classifier_by_type_path}", selector.val(), selector.data('role'));
   }
 
   function init_search_params(sort_col, sort_dir) {
@@ -524,5 +536,5 @@
       data.recipt_edrpous = edrpou;
       $('#_item_recipt').select2('data', { id: edrpou, text: text });
     }
-    classifier_search("#{modules_classifier_search_e_data_url}", data);
+    classifier_search("#{modules_classifier_search_e_data_path}", data);
   }
