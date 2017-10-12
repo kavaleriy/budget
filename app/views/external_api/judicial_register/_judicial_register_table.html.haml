@@ -1,0 +1,100 @@
+:scss
+  // init colors
+  $active: #ffd304;
+  $text: #0c2231;
+
+  #judicial_decisions {
+    table {
+      thead {
+        th {
+          white-space: nowrap;
+          min-width: 90px;
+          cursor: pointer;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+          span {
+            &:before {
+              content: '\f0ec';
+              font-family: FontAwesome;
+              font-size: 12px;
+              -ms-transform: rotate(90deg); /* IE 9 */
+              -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+              transform: rotate(90deg);
+              float: left;
+              margin-right: 5px;
+            }
+          }
+        }
+        .payment_details {
+          width: 50%;
+        }
+        .active {
+          background: none;
+          span {
+            border-bottom: 2px solid $active;
+          }
+        }
+      }
+      tbody {
+        tr {
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+  }
+  // hide sidebar for share
+  .addthis-smartlayers-desktop {
+    display: none;
+  }
+
+
+-if @judicial_decisions.blank?
+  = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
+  -#= t('.no-data')
+
+  -#:javascript
+  -#  $(document).ready(function() {
+  -#    $('.sharing').hide();
+  -#  });
+
+-else
+  #judicial_decisions.table-responsive
+    %table.table.table-striped
+      %thead
+        -#%th{'data-column' => 'amount', 'data-sort-direction' => 'asc'}
+        -#  %span
+        -#    = t('.sum')
+        -#%th{'data-column' => 'payer_name', 'data-sort-direction' => 'asc'}
+        -#  %span
+        -#    = t('.payer')
+        -#%th{'data-column' => 'recipt_name', 'data-sort-direction' => 'asc'}
+        -#  %span
+        -#    = t('.recipt')
+        -#%th.payment_details{'data-column' => 'payment_details', 'data-sort-direction' => 'asc'}
+        -#  %span
+        -#    = t('.purpose')
+
+        %th.active{'data-column' => 'entry_date', 'data-sort-direction' => 'desc'}
+          %span
+            = t('modules.classifier.search_e_data.date')
+        %th{'data-column' => 'number', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.judicial_register.decision') + '№'
+        %th{'data-column' => 'form', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.judicial_register.type_proceedings')
+      = render partial: 'external_api/judicial_register/search_data_bot_results'
+    #pagination.text-center
+      = paginate @judicial_decisions, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+
+  -#:javascript
+  -#  $(document).ready(function() {
+  -#    $('.sharing').show();
+  -#  });
+

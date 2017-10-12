@@ -1,7 +1,7 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
   require 'external_api'
-  before_action :set_repair, only: [:e_data, :edr, :prozzoro]
+  before_action :set_repair, only: [:e_data, :edr, :prozzoro, :judicial_register]
 
   def prozzoro
     @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
@@ -22,12 +22,17 @@ class ExternalApiController < ApplicationController
   end
 
   def e_data
-    # data_bot = ExternalApi.data_bot(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
-
-    e_data_payments = ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
+    e_data_payments =
+      if @repairing_repairs.edrpou_spending_units.blank? || @repairing_repairs.edrpou_artist.blank?
+        ''
+      else
+        # return array data, empty array or hash with errors
+        ExternalApi.e_data_payments(@repairing_repairs.edrpou_spending_units, @repairing_repairs.edrpou_artist)
+      end
 
     respond_to do |format|
-      if e_data_payments.blank?
+      if e_data_payments.blank? || e_data_payments.is_a?(Hash)
+        # if e_data_payments empty or hash with errors
         format.html{ render partial: 'no_data_yet' }
         format.js {
           render file: 'external_api/api_info',
@@ -66,15 +71,52 @@ class ExternalApiController < ApplicationController
     end
   end
 
+  def judicial_register
+    company_data =
+      if @repairing_repairs.edrpou_artist.blank?
+        { 'error' => true }
+      else
+        # return hash with company data or hash error
+        ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+      end
+
+    respond_to do |format|
+      if company_data.key?('warnings')
+        # if company has judicial decisions
+        @judicial_decisions = Kaminari.paginate_array(company_data['warnings'][0]['decisions']).page(params[:page]).per(10)
+        format.html {render partial: 'external_api/judicial_register/judicial_register_table', layout: false}
+        format.js do
+          render file: 'external_api/judicial_register/judicial_register',
+                 locals: {
+                   selector: '#judicial-register',
+                   partial_name: 'external_api/judicial_register/judicial_register_table'
+                 }
+        end
+      else
+        message = company_data.key?('error') ? nil : t('external_api.judicial_register.no_data_message')
+
+        format.html { render partial: 'no_data_yet' }
+        format.js do
+          render file: 'external_api/api_info',
+                 locals: {
+                   selector: '#judicial-register',
+                   partial_name: 'no_data_yet',
+                   message: message
+                 }
+        end
+      end
+    end
+  end
+
   def no_data_yet
     respond_to do |format|
-      format.js {
+      format.js do
         render file: 'external_api/api_info',
                locals: {
-                   selector: params[:selector],
-                   partial_name: 'external_api/no_data_yet',
+                 selector: params[:selector],
+                 partial_name: 'external_api/no_data_yet'
                }
-      }
+      end
     end
   end
   private

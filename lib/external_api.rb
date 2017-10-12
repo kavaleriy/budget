@@ -26,33 +26,27 @@ class ExternalApi
     JSON.parse(res.body)
   end
 
-  # def self.data_bot(payer_erdpou, recipt_edrpou)
-  #   # https://opendatabot.com/api/v1/fullcompany/05447349?apiKey=984TP4gxmqnF
-  #   require 'net/http'
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/fullcompany/40796115?apiKey=984TP4gxmqnF')
-  #   encode_url = URI.encode('https://opendatabot.com/api/v1/company/40796115?apiKey=984TP4gxmqnF')
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/fop/05447349?apiKey=984TP4gxmqnF')  # {"error"=>"Page not found"}
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/register/05447349?apiKey=984TP4gxmqnF') # {"error"=>"Incorrect ApiKey"}
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/unregister/05447349?apiKey=984TP4gxmqnF') # {"error"=>"Incorrect ApiKey"}
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/lists?apiKey=984TP4gxmqnF') # {"error"=>"Incorrect API key"}
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/vat?apiKey=984TP4gxmqnF&code=05447349') # {"error"=>"Page not found"} # {"error"=>"Incorrect ApiKey"}
-  #   # encode_url = URI.encode('https://opendatabot.com/api/v1/schedule/05447349?apiKey=984TP4gxmqnF') # {"error"=>"Incorrect ApiKey"}
-  #
-  #   url = URI.parse(encode_url)
-  #
-  #   params = {apiKey: '984TP4gxmqnF'}
-  #   # params = {apiKey: '984TP4gxmqnF', code: '05447349'}
-  #
-  #   req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
-  #   http = Net::HTTP.new(url.host, url.port)
-  #   http.use_ssl = true if url.scheme == 'https'
-  #   req.body = params.to_json
-  #   res = http.start do |http|
-  #     http.request(req)
-  #   end
-  #   # binding.pry
-  #   JSON.parse(res.body)
-  # end
+  def self.data_bot_decisions(erdpou)
+    require 'net/http'
+
+    encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
+    # test request by edrpou without decisions (40796115)
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/40796115?apiKey=984TP4gxmqnF")
+
+    url = URI.parse(encode_url)
+
+    params = { apiKey: '984TP4gxmqnF' }
+
+    req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = true if url.scheme == 'https'
+    req.body = params.to_json
+    res = http.start do |http|
+      http.request(req)
+    end
+
+    JSON.parse(res.body)
+  end
 
   def self.most_received(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
     most_received = []

@@ -13,10 +13,11 @@ Rails.application.routes.draw do
   end
   get 'compare_budget/:town_id' => 'compare_taxonomies#compare_budget', as: 'compare_taxonomies_compare_budget'
 
-    get 'external_api/e_data/:repair_id' => 'external_api#e_data',as: 'external_api_e_data'
-    get 'external_api/prozzoro/:repair_id' => 'external_api#prozzoro',as: 'external_api_prozzoro'
-    get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
-    get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
+  get 'external_api/e_data/:repair_id' => 'external_api#e_data',as: 'external_api_e_data'
+  get 'external_api/prozzoro/:repair_id' => 'external_api#prozzoro',as: 'external_api_prozzoro'
+  get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
+  get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
+  get 'external_api/judicial_register/:repair_id' => 'external_api#judicial_register', as: 'external_api_judicial_register'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
     get 'classifier/iframe/:town_id' => 'classifier#iframe', as: 'classifier_iframe'
     get 'classifier/direct_link' => 'classifier#direct_link', as: 'classifier_direct_link'
     get 'classifier/select_collection' => 'classifier#select_collection', as: 'classifier_select_collection'
+    get 'classifier/search_data_bot' => 'classifier#search_data_bot', as: 'classifier_search_data_bot'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

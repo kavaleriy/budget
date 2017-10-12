@@ -1,0 +1,8 @@
+$('#judicial_decisions tbody').html("<%= escape_javascript(render partial: 'external_api/judicial_register/search_data_bot_results') %>");
+$('#pagination .pagination').html("<%= escape_javascript( paginate( @judicial_decisions,
+                                                                    remote: true,
+                                                                    theme: 'e_data_template',
+                                                                    params: { 'sort_col' => params['sort_col'],
+                                                                              'sort_dir' => params['sort_dir']
+                                                                    }
+                                                                   )) %>");

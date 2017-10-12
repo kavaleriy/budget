@@ -56,6 +56,18 @@ module Modules
       end
     end
 
+    def search_data_bot
+      data = sort_data_bot
+      @judicial_decisions = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
+
+      respond_to do |format|
+        format.json { render json: @judicial_decisions }
+        unless params[:sort_col].blank?
+          format.js { render 'external_api/judicial_register/sort_data_bot' }
+        end
+      end
+    end
+
     def advanced_search
       @types_payer = Modules::ClassifierType.where(payer: true).all
       @types_receipt = Modules::ClassifierType.where(receipt: true).all
@@ -178,6 +190,21 @@ module Modules
       end
       # Results
       payments_data
+    end
+
+    def sort_data_bot
+      # Data
+      judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['warnings'][0]['decisions']
+      # Sort data
+      sort_col = params[:sort_col].blank? ? 'entry_date' : params[:sort_col]
+      unless judicial_decisions.blank?
+        judicial_decisions.sort_by! do |hash|
+          hash[sort_col.to_s]
+        end
+        judicial_decisions.reverse! unless params[:sort_dir].eql?('asc')
+      end
+      # Results
+      judicial_decisions
     end
 
     def start_date(period)

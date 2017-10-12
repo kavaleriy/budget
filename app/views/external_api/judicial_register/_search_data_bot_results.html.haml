@@ -1,0 +1,6 @@
+- @judicial_decisions.each do |decision|
+  %tr{'data-edrpou' => decision['payer_edrpou']}
+    %td= decision['entry_date']
+    %td
+      = link_to decision['number'], decision['link'], target: '_blank'
+    %td= decision['form']

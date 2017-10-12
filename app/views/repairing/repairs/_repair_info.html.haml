@@ -207,6 +207,13 @@
         %i.fa.fa-money.icon
         = t('.acm')
       #acm-api-text.api-text
+    .api
+      = link_to external_api_judicial_register_path(@repairing_repair), remote: true do
+        %i.fa.fa-balance-scale.icon
+        = t('.judicial_register')
+      #judicial-register.api-text
+        #judicial-register-table
+          %tbody
 
 :javascript
   $(document).ready(function() {
