@@ -3,6 +3,7 @@ $('<%= selector %>').parents('.api').addClass('active');
 $('<%= selector %>').html('<%= escape_javascript(render partial: partial_name,layout: false) %>');
 //$('<%= selector %>').append('<%= escape_javascript(render partial: 'modules/classifier/embeded_btn', locals: {url: ''}) %>');
 
+$("#spinner-container").hide();
 
 function init_search_params(sort_col, sort_dir) {
   var data = {
