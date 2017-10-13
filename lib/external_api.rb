@@ -13,6 +13,8 @@ class ExternalApi
   end
 
   def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
+    require 'net/http'
+
     # https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614
     # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
     uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
