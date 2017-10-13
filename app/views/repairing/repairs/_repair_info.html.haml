@@ -111,6 +111,17 @@
       }
     }
   }
+  // custom styles for spinner
+  .vis-spinner{
+    #spinner-container{
+      background: none;
+      .spinner{
+        .sk-circle:before{
+          background-color: #ffd304;
+        }
+      }
+    }
+  }
 
 .fond-for-close
 %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
@@ -175,6 +186,8 @@
   %p
     = @repairing_repair.description
   .more-data
+    .vis-spinner
+      = render partial: 'layouts/spinner'
     .api
       = link_to external_api_e_data_path(@repairing_repair),
       remote: true do
@@ -215,8 +228,14 @@
         #judicial-register-table
           %tbody
 
+= javascript_include_tag 'spinner'
+
 :javascript
   $(document).ready(function() {
+    $('.api > a').not('#acm-link').click(function() {
+      $('#spinner-container').trigger('spinner:run')
+    })
+
     $('#acm-link').click(function() {
 
       var spendingEdrpou = $(this).data('erdpou');
@@ -236,3 +255,7 @@
       }
     })
   })
+
+  $( document ).ajaxComplete(function() {
+    $('#spinner-container').trigger('spinner:stop')
+  });

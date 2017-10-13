@@ -3,7 +3,6 @@ $('<%= selector %>').parents('.api').addClass('active');
 $('<%= selector %>').html('<%= escape_javascript(render partial: partial_name,layout: false) %>');
 //$('<%= selector %>').append('<%= escape_javascript(render partial: 'modules/classifier/embeded_btn', locals: {url: ''}) %>');
 
-
 function init_search_params(sort_col, sort_dir) {
   var data = {
     town_id: $('#_item_payers').data('town-id'),
