@@ -1,1 +1,2 @@
-$('<%= selector %>').html('<%= escape_javascript(render partial: 'external_api/no_data_yet') %>');
+$('<%= selector %>').html('<%= escape_javascript( render partial: 'external_api/no_data_yet',
+                                                         locals: message = message || nil ) %>');

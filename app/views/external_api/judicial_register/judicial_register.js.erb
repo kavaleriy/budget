@@ -1,0 +1,34 @@
+$('.more-data').find('.active').removeClass('active');
+$('<%= selector %>').parents('.api').addClass('active');
+$('<%= selector %>').html('<%= escape_javascript(render partial: partial_name,layout: false) %>');
+//$('<%= selector %>').append('<%= escape_javascript(render partial: 'modules/classifier/embeded_btn', locals: {url: ''}) %>');
+
+
+function init_search_params(sort_col, sort_dir) {
+  var data = {
+    town_id: $('#_item_payers').data('town-id'),
+    edrpou: "<%= @repairing_repairs.edrpou_artist %>",
+    sort_col: sort_col,
+    sort_dir: sort_dir
+  };
+  return data;
+}
+$(document).ready(function(){
+
+  $(document).off('click', '#judicial_decisions th');
+  $(document).on('click', '#judicial_decisions th', function() {
+
+    $('#judicial_decisions th').not($(this)).removeClass('active').attr('data-sort-direction', 'asc');
+
+    var sortDir = sort_direction($(this).attr('data-sort-direction'));
+
+    $(this).attr('data-sort-direction', sortDir).addClass('active');
+
+    classifier_search(
+        "<%= modules_classifier_search_data_bot_url %>",
+        init_search_params($(this).attr('data-column'),
+        $(this).attr('data-sort-direction')))
+
+  });
+  //  $('#judicial_decisions th').first().trigger('click');
+});

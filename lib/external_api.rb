@@ -26,6 +26,28 @@ class ExternalApi
     JSON.parse(res.body)
   end
 
+  def self.data_bot_decisions(erdpou)
+    require 'net/http'
+
+    encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
+    # test request by edrpou without decisions (40796115)
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/40796115?apiKey=984TP4gxmqnF")
+
+    url = URI.parse(encode_url)
+
+    params = { apiKey: '984TP4gxmqnF' }
+
+    req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = true if url.scheme == 'https'
+    req.body = params.to_json
+    res = http.start do |http|
+      http.request(req)
+    end
+
+    JSON.parse(res.body)
+  end
+
   def self.most_received(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
     most_received = []
     data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
