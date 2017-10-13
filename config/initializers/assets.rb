@@ -35,3 +35,4 @@ Rails.application.config.assets.precompile += %w(*.jpg, *.png)
 
 Rails.application.config.assets.precompile += %w( modules/classifier/daterangepicker-bs3.css )
 Rails.application.config.assets.precompile += %w( modules/classifier.js )
+Rails.application.config.assets.precompile += %w( spinner.js )

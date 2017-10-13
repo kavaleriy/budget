@@ -71,6 +71,3 @@
             %i.fa.fa-clock-o{"aria-hidden" => "true"}
             = doc['dateModified'].to_datetime.strftime('%F %H:%M')
             = link_to doc['title'], doc['url'], input_html:{ 'download' => true }
-
-:javascript
-  $("#spinner-container").hide();

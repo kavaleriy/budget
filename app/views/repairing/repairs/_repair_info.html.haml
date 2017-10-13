@@ -123,6 +123,7 @@
     }
   }
 
+
 .fond-for-close
 %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
   %span{'aria-hidden' => 'true'} &times;
@@ -228,16 +229,12 @@
         #judicial-register-table
           %tbody
 
+= javascript_include_tag 'spinner'
+
 :javascript
   $(document).ready(function() {
     $('.api > a').not('#acm-link').click(function() {
-      $("#spinner-container").show();
-      // hide in files:
-      // /external_api/_no_data_yet.html.haml
-      // /modules/classifier/_search_e_data.html.haml
-      // /external_api/_prozzoro_info.html.haml
-      // /external_api/_edr_info.html.haml
-      // /external_api/judicial_register/judicial_register.js.erb
+      $('#spinner-container').trigger('spinner:run')
     })
 
     $('#acm-link').click(function() {
@@ -259,3 +256,7 @@
       }
     })
   })
+
+  $( document ).ajaxComplete(function() {
+    $('#spinner-container').trigger('spinner:stop')
+  });
