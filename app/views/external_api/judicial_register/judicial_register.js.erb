@@ -25,7 +25,7 @@ $(document).ready(function(){
     $(this).attr('data-sort-direction', sortDir).addClass('active');
 
     classifier_search(
-        "<%= modules_classifier_search_data_bot_url %>",
+        "<%= modules_classifier_search_data_bot_path %>",
         init_search_params($(this).attr('data-column'),
         $(this).attr('data-sort-direction')))
 
