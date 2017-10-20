@@ -9,13 +9,13 @@ module PublicHelper
     image_tag(logo_path, class: 'img-responsive')
   end
 
-  def embedFullUrl(url_path, protocol='https://')
-    # path = "#{request.base_url}"
-    path = "#{protocol}#{request.env['HTTP_HOST']}"
-    full_URL = path + url_path
+  def embedFullUrl(url_path)
+    # path = "#{protocol}#{request.env['HTTP_HOST']}"
+    path = request.base_url.to_s
+    full_url = path + url_path
 
     # 'allowfullscreen' use for embed modules and portal_public_finances
-    content_tag(:iframe, nil, src: full_URL, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;',
+    content_tag(:iframe, nil, src: full_url, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;',
                 allowfullscreen: 'true', mozallowfullscreen: 'true', webkitallowfullscreen: 'true')
   end
 
