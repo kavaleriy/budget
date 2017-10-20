@@ -9,7 +9,7 @@ module PublicHelper
     image_tag(logo_path, class: 'img-responsive')
   end
 
-  def embedFullUrl(url_path)
+  def embed_full_url(url_path)
     # path = "#{protocol}#{request.env['HTTP_HOST']}"
     path = request.base_url.to_s
     full_url = path + url_path

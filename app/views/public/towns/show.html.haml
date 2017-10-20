@@ -429,7 +429,7 @@
         #pub_budget.tab-pane.fade
           =render partial: 'pdf_docs', locals: { export_budgets: @town_export_budgets }
     .col-xs-12.embedded-block
-      %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(widgets_town_profile_path(@town)), 'tooltip' => "#{t('.click')}" } }
+      %button.btn#embedded-profile{ data: { 'clipboard-text' => embed_full_url(widgets_town_profile_path(@town)), 'tooltip' => "#{t('.click')}" } }
         = fa_icon 'code 1x'
 
 :javascript

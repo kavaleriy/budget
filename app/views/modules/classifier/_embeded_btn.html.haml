@@ -23,7 +23,7 @@
 
 
 - unless url.blank?
-  %button.btn#embedded-profile{ data: { 'clipboard-text' => embedFullUrl(url), 'tooltip' => t('public.towns.show.click') } }
+  %button.btn#embedded-profile{ data: { 'clipboard-text' => embed_full_url(url), 'tooltip' => t('public.towns.show.click') } }
     = fa_icon 'code 1x'
     = t('.get_code')
 %a.btn#export_classifier
