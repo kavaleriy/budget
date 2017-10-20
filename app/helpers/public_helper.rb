@@ -10,9 +10,12 @@ module PublicHelper
   end
 
   def embed_full_url(url_path)
-    # path = "#{protocol}#{request.env['HTTP_HOST']}"
-    path = request.base_url.to_s
-    full_url = path + url_path
+    # TODO: setting nginx config for https protocol
+    # https://github.com/cerebris/jsonapi-resources/issues/501
+    # because I can't get https from request.base_url
+    protocol = 'https://'
+    base_url = "#{protocol}#{request.host_with_port}"
+    full_url = base_url + url_path
 
     # 'allowfullscreen' use for embed modules and portal_public_finances
     content_tag(:iframe, nil, src: full_url, class: 'embed-responsive-item', frameborder: 0, style: 'width: 100%; height: 50vh;',
