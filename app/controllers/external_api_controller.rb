@@ -72,19 +72,16 @@ class ExternalApiController < ApplicationController
   end
 
   def judicial_register
-    company_data =
-      if @repairing_repairs.edrpou_artist.blank?
-        { 'error' => true }
-      else
-        # return hash with company data or hash error
-        ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
-      end
-
     respond_to do |format|
-      if company_data.key?('warnings')
-        # if company has judicial decisions
-        @judicial_decisions = Kaminari.paginate_array(company_data['warnings'][0]['decisions']).page(params[:page]).per(10)
-        format.html {render partial: 'external_api/judicial_register/judicial_register_table', layout: false}
+      lack_data(format) if @repairing_repairs.edrpou_artist.blank?
+
+      # return hash with company data or hash error
+      open_data_request = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+      company_data = Requests::OpenDataBot.new(open_data_request)
+
+      if company_data.decisions?
+        @judicial_decisions = Kaminari.paginate_array(company_data.decisions).page(params[:page]).per(10)
+        format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
         format.js do
           render file: 'external_api/judicial_register/judicial_register',
                  locals: {
@@ -93,17 +90,8 @@ class ExternalApiController < ApplicationController
                  }
         end
       else
-        message = company_data.key?('error') ? nil : t('external_api.judicial_register.no_data_message')
-
-        format.html { render partial: 'no_data_yet' }
-        format.js do
-          render file: 'external_api/api_info',
-                 locals: {
-                   selector: '#judicial-register',
-                   partial_name: 'no_data_yet',
-                   message: message
-                 }
-        end
+        message = t('external_api.judicial_register.no_data_message')
+        lack_data(format, message)
       end
     end
   end
@@ -119,8 +107,22 @@ class ExternalApiController < ApplicationController
       end
     end
   end
+
   private
+
   def set_repair
     @repairing_repairs = Repairing::Repair.find(params[:repair_id])
+  end
+
+  def lack_data(format, message = nil)
+    format.html { render partial: 'external_api/no_data_yet' }
+    format.js do
+      render file: 'external_api/api_info',
+             locals: {
+               selector: '#judicial-register',
+               partial_name: 'no_data_yet',
+               message: message
+             }
+    end
   end
 end

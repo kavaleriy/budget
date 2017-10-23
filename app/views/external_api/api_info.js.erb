@@ -1,5 +1,5 @@
 $('.more-data').find('.active').removeClass('active');
 $('<%= selector %>').parents('.api').addClass('active');
 $('<%= selector %>').html('<%= escape_javascript(render partial: partial_name,
-                                                        locals: message = message || nil,
+                                                        locals: { message: message || nil },
                                                         layout: false) %>');
