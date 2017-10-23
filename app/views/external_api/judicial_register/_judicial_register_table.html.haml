@@ -93,8 +93,9 @@
     #pagination.text-center
       = paginate @judicial_decisions, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
 
-  -#:javascript
-  -#  $(document).ready(function() {
-  -#    $('.sharing').show();
-  -#  });
-
+    .copyright_info
+      %p
+        *Інформація щодо фізичних осіб-підприємців недоступна у зв'язку з особливістю роботи судового реєстру.
+      %p
+        ** Дані судового реєстру отримано завдяки
+        = link_to  'Opendatabot','https://opendatabot.com/', target: '_blank'
