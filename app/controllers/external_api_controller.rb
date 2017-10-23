@@ -76,10 +76,11 @@ class ExternalApiController < ApplicationController
       lack_data(format) if @repairing_repairs.edrpou_artist.blank?
 
       # return hash with company data or hash error
-      company_data = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+      open_data_request = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+      company_data = Requests::OpenDataBot.new(open_data_request)
 
-      if company_has_decisions?(company_data)
-        @judicial_decisions = Kaminari.paginate_array(company_data['warnings'][0]['decisions']).page(params[:page]).per(10)
+      if company_data.has_decisions?
+        @judicial_decisions = Kaminari.paginate_array(company_data.decisions).page(params[:page]).per(10)
         format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
         format.js do
           render file: 'external_api/judicial_register/judicial_register',
@@ -124,9 +125,4 @@ class ExternalApiController < ApplicationController
              }
     end
   end
-
-  def company_has_decisions?(company_data)
-    company_data.key?('warnings') && company_data['warnings'][0].key?('decisions')
-  end
-
 end
