@@ -79,7 +79,7 @@ class ExternalApiController < ApplicationController
       open_data_request = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
       company_data = Requests::OpenDataBot.new(open_data_request)
 
-      if company_data.has_decisions?
+      if company_data.decisions?
         @judicial_decisions = Kaminari.paginate_array(company_data.decisions).page(params[:page]).per(10)
         format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
         format.js do

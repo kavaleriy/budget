@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Requests
   class OpenDataBot
     attr_reader :warnings
@@ -5,7 +7,7 @@ module Requests
       @warnings = attributes['warnings']
     end
 
-    def has_decisions?
+    def decisions?
       @warnings && @warnings[0].key?('decisions')
     end
 
