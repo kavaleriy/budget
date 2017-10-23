@@ -72,49 +72,15 @@ class ExternalApiController < ApplicationController
   end
 
   def judicial_register
-    # lack_data if !@repairing_repairs.edrpou_artist.blank?
-    if @repairing_repairs.edrpou_artist.blank?
-      respond_to do |format|
-        lack_data(format)
-      end
-      return
-    end
-
-    # return hash with company data or hash error
-    company_data = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
-    # company_data = {
-    #   full_name: 'ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ "НАУКОВО-ВИРОБНИЧЕ ПІДПРИЄМСТВО "КОНТАКТСІЧ-АКВА"',
-    #   short_name: 'ТОВ "НВП"КОНТАКТСІЧ-АКВА"',
-    #   code: '39701685',
-    #   last_time: '2017-10-23 12:16:51',
-    #   location: '69097, Запорізька обл., місто Запоріжжя, Хортицький район ВУЛИЦЯ ЗАДНІПРОВСЬКА буд. 16 А кв. 109',
-    #   ceo_name: 'ДМИТРЕНКО БОГДАН МИКОЛАЙОВИЧ',
-    #   'warnings' => [
-    #     {
-    #       type: 'pdv',
-    #       number: '397016808318',
-    #       status: 'active',
-    #       text: 'платник ПДВ (номер 397016808318)',
-    #       icon: '✅',
-    #       database_date: '20.10.2017',
-    #       'decisions'=>
-    #           [{"number"=>"62032051",
-    #             "type"=>"Постанова",
-    #             "form"=>"Господарське",
-    #             "document_number"=>"914/1109/16",
-    #             "court_name"=>"Львівський апеляційний господарський суд",
-    #             "entry_date"=>"2016-10-12",
-    #             "judge"=>"Дубник О.П.",
-    #             "link"=>"https://opendatabot.com/court/62032051-31654a258d369a42fcc94c69e4e9a9c4"},
-    #           ]
-    #     }
-    #   ]
-    # }
-
     respond_to do |format|
-      if company_has_decisions(company_data)
+      lack_data(format) if @repairing_repairs.edrpou_artist.blank?
+
+      # return hash with company data or hash error
+      company_data = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+
+      if company_has_decisions?(company_data)
         @judicial_decisions = Kaminari.paginate_array(company_data['warnings'][0]['decisions']).page(params[:page]).per(10)
-        format.html {render partial: 'external_api/judicial_register/judicial_register_table', layout: false}
+        format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
         format.js do
           render file: 'external_api/judicial_register/judicial_register',
                  locals: {
@@ -142,6 +108,7 @@ class ExternalApiController < ApplicationController
   end
 
   private
+
   def set_repair
     @repairing_repairs = Repairing::Repair.find(params[:repair_id])
   end
@@ -155,11 +122,11 @@ class ExternalApiController < ApplicationController
                partial_name: 'no_data_yet',
                message: message
              }
-      end
+    end
   end
 
-  def company_has_decisions(company_data)
-    company_data.key?('warnings') && company_data['warnings'][0]['decisions']
+  def company_has_decisions?(company_data)
+    company_data.key?('warnings') && company_data['warnings'][0].key?('decisions')
   end
 
 end
