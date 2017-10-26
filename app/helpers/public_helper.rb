@@ -22,18 +22,4 @@ module PublicHelper
                 allowfullscreen: 'true', mozallowfullscreen: 'true', webkitallowfullscreen: 'true')
   end
 
-  def download_instruction(page_alias)
-    case page_alias
-      when 'repairing_maps_help'
-        repairing_download_url
-      when 'key_indicator_file_help'
-        file_example = KeyIndicate::IndicatorFile.first
-        unless file_example.nil?
-          file_example.indicate_file.url
-        end
-      else
-        nil
-    end
-  end
-
 end

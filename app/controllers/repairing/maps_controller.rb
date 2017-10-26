@@ -70,10 +70,6 @@ module Repairing
       end
     end
 
-    def instruction
-
-    end
-
     def download
 
       file_path = Rails.public_path.to_s + '/files/file_examples/repair_layer_example.xlsx'
