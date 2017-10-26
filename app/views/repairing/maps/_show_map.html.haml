@@ -11,9 +11,11 @@
 
     $('#town_select').select2({
       initSelection: function(element, callback) {
-        var current_user_town_id = "#{@current_user_town[:id] unless @current_user_town.nil?}";
+        var current_user_town_id = current_town_id();
         var current_user_town_text = "#{@current_user_town[:title] unless @current_user_town.nil?}";
+        // TODO: callback(data) not add town_id in select
         var data = {id: current_user_town_id , text: current_user_town_text };
+
         set_frame_url(current_user_town_id, $('#zoom_select').val());
         callback(data);
       },
@@ -70,8 +72,13 @@
       set_frame_url($('#town_select').val(), $('#zoom_select').val());
     })
 
+    function current_town_id(){
+      return "#{@current_user_town[:id] unless @current_user_town.nil?}"
+    }
+
     function set_frame_url(town_id, zoom){
-      var town = town_id;
+      //TODO: ad hoc if town_id empty
+      var town = town_id.trim() ? town_id : current_town_id();
       if(!town){
         town = '0';
       }
