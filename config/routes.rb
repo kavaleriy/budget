@@ -208,8 +208,6 @@ Rails.application.routes.draw do
     get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
-    get 'maps/instruction' => 'maps#instruction'
-    get 'download' => 'maps#download'
     get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
     get 'show_repair_info' =>'repairs#show_repair_info', as: 'show_repair_info'
     get 'edit_in_modal' =>'repairs#edit_in_modal', as: 'edit_in_modal'
