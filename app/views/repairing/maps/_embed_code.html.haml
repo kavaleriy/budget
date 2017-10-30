@@ -65,7 +65,8 @@
     = t('modules.classifier.embeded_btn.get_code')
 
 .embed-hide{'style' => 'display: none;'}
-  .form-horizontal
+  .form-horizontal.town-data{ data: { town_id: "#{@current_user_town[:id] unless @current_user_town.nil?}",
+                                      town_title: "#{@current_user_town[:title] unless @current_user_town.nil?}"} }
     .form-group
       %input.frame_url.form-control
     .form-group
