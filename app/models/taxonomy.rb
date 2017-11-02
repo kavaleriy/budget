@@ -272,8 +272,8 @@
       levels
     end
 
-    def get_tree levels
-      rows = get_rows
+    def get_tree levels, year
+      rows = get_rows year
 
       create_tree rows, [], levels
     end
@@ -322,10 +322,10 @@
       rows
     end
 
-    def get_rows
+    def get_rows year
       combined_rows = {}
 
-      self.budget_files.collect { |file| file.get_rows }.collect{ |rows|
+      self.budget_files.collect { |file| file.get_rows(year) }.collect{ |rows|
         combined_rows.deep_merge!(rows){ |key, this_val, other_val| this_val + other_val }
       }
 

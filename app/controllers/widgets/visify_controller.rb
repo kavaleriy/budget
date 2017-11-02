@@ -14,7 +14,9 @@ class Widgets::VisifyController < Widgets::WidgetsController
   def get_bubbletree_data
     # result = use_cache do
     levels = params[:levels] ? params[:levels].split(",") : []
-    result = get_bubble_tree(levels)
+    year = params[:year] ? params[:year] : Date.today.year.to_s
+
+    result = get_bubble_tree(levels, year)
     # end
 
     render json: result
@@ -114,8 +116,8 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
   private
 
-  def get_bubble_tree levels
-    tree = @budget_file.get_tree levels
+  def get_bubble_tree levels, year
+    tree = @budget_file.get_tree levels, year
     return if tree.nil?
 
     get_bubble_tree_item(tree, { 'color' => 'green', 'icon' => '/assets/icons/pig.svg' })
