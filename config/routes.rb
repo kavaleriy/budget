@@ -227,6 +227,9 @@ Rails.application.routes.draw do
       resources :repairs
 
     end
+    get 'repair_photos/:id' => 'repairs#photos', as: 'repair_photos'
+    post 'create_repair_photo/:id', to: 'repair_photos#create', as: 'create_repair_photo'
+    delete 'destroy_repair_photo/:id/:photo_id', to: 'repair_photos#destroy', as: 'destroy_repair_photo'
   end
 
   namespace :to_pdf do

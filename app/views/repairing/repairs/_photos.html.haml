@@ -1,0 +1,12 @@
+- @repairing_repair.photos.each do |photo|
+  %div.photo{'data-id' => "#{photo.id}"}
+    - if photo.image.middle
+      = link_to image_tag(photo.image.middle),
+        image_path(photo.image),
+        target: '_blank'
+    = link_to '<i class="fa fa-times"></i>'.html_safe,
+      repairing_destroy_repair_photo_path(@repairing_repair, photo),
+      title: 'Видалити',
+      method: :delete,
+      data: { confirm: 'Ви впевнені?' },
+      class: 'btn btn-danger btn-photo btn-delete'

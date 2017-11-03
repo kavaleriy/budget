@@ -29,7 +29,17 @@
 
   .clear
   = f.submit t('form.save'), class: 'btn btn-primary'
-  = link_to t('form.destroy'), repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id), method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning'
+  = link_to t('form.destroy'),
+            repairing_layer_repair_path(@repairing_repair.layer.id, @repairing_repair.id),
+            method: :delete,
+            remote: true,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-warning'
+
+  = link_to t('repairing.repairs.photos'),
+            repairing_repair_photos_path(@repairing_repair.id),
+            class: 'btn btn-info photos pull-right',
+            target: '_blank'
 
 :javascript
 

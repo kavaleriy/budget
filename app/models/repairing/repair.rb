@@ -11,7 +11,8 @@ module Repairing
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
-    belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
+    belongs_to :repairing_category, class_name: 'Repairing::Category', dependent: :nullify
+    embeds_many :photos
 
     field :obj_owner, type: String
     field :subject, type: String
@@ -199,4 +200,24 @@ module Repairing
     end
   end
 
+  class Photo
+    require 'file_size_validator'
+
+    include Mongoid::Document
+    require 'carrierwave/mongoid'
+    include Mongoid::Timestamps
+
+    embedded_in :repairing_repair, class_name: 'Repairing::Repair'
+
+    mount_uploader :image, Repairing::RepairPhotoUploader
+
+    file_size = 2
+    validates :image,
+              presence: true,
+              file_size: {
+                maximum: file_size.megabytes.to_i,
+                message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
+              }
+
+  end
 end
