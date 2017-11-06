@@ -3,21 +3,52 @@ module Repairing
     before_action :set_repair
 
     def create
+      # respond_to do |format|
+      #   if @repairing_repair.photos.create!(photo_params)
+      #     flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
+      #     format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
+      #     format.js { render 'repairing/repairs/photos' }
+      #   else
+      #
+      #     flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
+      #     format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
+      #     format.js { render 'repairing/repairs/photos' }
+      #   end
+      # end
+      begin
+        @repairing_repair.photos.create!(photo_params)
+        flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
+
+        binding.pry
+      rescue Exception => e
+        binding.pry
+        # logger.warn("Unable to save record: #{self.to_yaml}. Error: #{e}")
+        # errors[:base] << "Please correct the errors in your form"
+        # false
+
+        flash.now[:notice] = e
+      end
+
       respond_to do |format|
-        if @repairing_repair.photos.create!(photo_params)
-          format.html{ redirect_to repairing_repair_photos_path(@repairing_repair), notice: t('repairing.repairs.repair_info.photo_saved')}
-          format.json { render :show, status: :ok, location: @repairing_repair }
-        else
-          @photo = @repairing_repair.photos.find(params[:id])
-          format.html { render 'repairing/repairs/photos', notice: t('errors.messages.not_saved')}
-          format.json { render json: @photo.errors, status: :unprocessable_entity, location: [@repairing_repair, @photo] }
-        end
+        # if @repairing_repair.photos.create!(photo_params)
+        #   flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
+        # else
+        #   flash.now[:notice] = 'Not saved'
+        # end
+
+        format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
+        format.js { render 'repairing/repairs/photos' }
       end
     end
 
     def destroy
       @repairing_repair.photos.find(params[:photo_id]).destroy
-      redirect_to repairing_repair_photos_path(@repairing_repair), notice: t('repairing.repairs.repair_info.photo_deleted')
+
+      respond_to do |format|
+        flash.now[:notice] = t('repairing.repairs.repair_info.photo_deleted')
+        format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
+        format.js { render 'repairing/repairs/photos' }
+      end
     end
 
     private

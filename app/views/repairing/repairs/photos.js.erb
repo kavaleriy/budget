@@ -1,0 +1,4 @@
+$('.photos').replaceWith('<%= j render partial: 'repairing/repairs/photos' %>');
+var messages = $('#admin-flash')
+messages.html('<%=  j (bootstrap_flash) %>').show();
+setTimeout(function(){ messages.hide('slow') }, 2000);

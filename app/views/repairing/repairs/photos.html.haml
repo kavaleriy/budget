@@ -69,7 +69,7 @@
   .form
     = form_for [@repairing_repair, @photo],
                url: { action: 'create', controller: 'repairing/repair_photos' },
-               html: { class: 'form-horizontal' } do |f|
+               html: { class: 'form-horizontal', remote: true } do |f|
       -#- if @photo.errors.any?
         #error_explanation
           %h2= "#{pluralize(@photo.errors.count, "error")} prohibited this reply from being saved:"
@@ -77,8 +77,8 @@
             - @photo.errors.full_messages.each do |msg|
               %li= msg
       = f.label :image, t('repairing.repairs.add_photo'), :class => 'control-label btn btn-success file-label'
-      = f.file_field :image, accept: 'image/*', onChange: 'form.submit()', :class => 'form-control input-responsive'
+      = f.file_field :image, accept: 'image/*', onchange:'javascript: $( this ).trigger("submit.rails")', :class => 'form-control input-responsive'
 
-.photos
-  - if @repairing_repair.photos.any?
-    = render partial: 'repairing/repairs/photos'
+
+- if @repairing_repair.photos.any?
+  = render partial: 'repairing/repairs/photos'
