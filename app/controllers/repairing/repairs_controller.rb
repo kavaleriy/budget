@@ -99,9 +99,6 @@ module Repairing
       @photo = Repairing::Photo.new
       respond_to do |format|
         format.html { render layout: 'application_admin' }
-        # format.html { redirect_to repairing_layer_path(@repairing_repair.layer_id) }
-        # format.json { head :no_content }
-        # format.js   { render layout: false }
       end
     end
 

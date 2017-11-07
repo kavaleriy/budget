@@ -25,6 +25,6 @@
     = @repairing_repair.address
 
 .fotorama{ "data-nav" => :thumbs }
-  - @repairing_repair.photos.each_with_index do |photo, i|
+  - @repairing_repair.photos.each do |photo|
     = link_to photo.image.url do
       = image_tag photo.image.thumb
