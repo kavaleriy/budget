@@ -12,7 +12,7 @@ module Repairing
     validates :layer, presence: true
 
     belongs_to :repairing_category, class_name: 'Repairing::Category', dependent: :nullify
-    embeds_many :photos
+    embeds_many :photos, class_name: 'Repairing::Photo'
 
     field :obj_owner, type: String
     field :subject, type: String
@@ -211,13 +211,14 @@ module Repairing
 
     mount_uploader :image, Repairing::RepairPhotoUploader
 
-    file_size = 2
-    validates :image,
-              presence: true,
-              file_size: {
-                maximum: file_size.megabytes.to_i,
-                message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
-              }
+    validates :image, presence: true
 
+    # Not used now, because uploader not saved original image
+    # file_size = 2
+    # validates :image,
+    #           file_size: {
+    #             maximum: file_size.megabytes.to_i,
+    #             message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
+    #           }
   end
 end

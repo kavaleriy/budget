@@ -1,41 +1,17 @@
 module Repairing
   class RepairPhotosController < ApplicationController
+    skip_before_filter :verify_authenticity_token, only: :create
     before_action :set_repair
 
     def create
-      # respond_to do |format|
-      #   if @repairing_repair.photos.create!(photo_params)
-      #     flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
-      #     format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
-      #     format.js { render 'repairing/repairs/photos' }
-      #   else
-      #
-      #     flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
-      #     format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
-      #     format.js { render 'repairing/repairs/photos' }
-      #   end
-      # end
       begin
         @repairing_repair.photos.create!(photo_params)
         flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
-
-        binding.pry
       rescue Exception => e
-        binding.pry
-        # logger.warn("Unable to save record: #{self.to_yaml}. Error: #{e}")
-        # errors[:base] << "Please correct the errors in your form"
-        # false
-
         flash.now[:notice] = e
       end
 
       respond_to do |format|
-        # if @repairing_repair.photos.create!(photo_params)
-        #   flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
-        # else
-        #   flash.now[:notice] = 'Not saved'
-        # end
-
         format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }
         format.js { render 'repairing/repairs/photos' }
       end
