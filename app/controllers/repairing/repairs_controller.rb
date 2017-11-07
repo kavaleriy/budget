@@ -5,7 +5,7 @@ module Repairing
     layout 'application' , only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal, :photos, :photos_slider]
 
     # GET  /repairing/repairs
     # GET /repairing/repairs.json
@@ -95,28 +95,38 @@ module Repairing
       @repairing_repair.valid?
     end
 
-      private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_repairing_repair
-        @repairing_repair = Repairing::Repair.find(params[:id])
+    def photos
+      @photo = Repairing::Photo.new
+      respond_to do |format|
+        format.html { render layout: 'application_admin' }
       end
+    end
 
-      def update_repairing_coordinates
-        par = params[:repairing_repair][:coordinates]
-        unless par.nil?
-          if par.kind_of?(Array)
-            coordinates = par.map{|p| p.to_f}
-            params[:repairing_repair][:coordinates] = coordinates
-          else
-            coordinates = par.split(") ").map{|p| p.split(", ")}.map{|p| [p[0].split("LatLng(")[1].to_f,p[1].to_f]}
-            params[:repairing_repair][:coordinates] = coordinates
-          end
+    def photos_slider; end
+
+    private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_repairing_repair
+      @repairing_repair = Repairing::Repair.find(params[:id])
+    end
+
+    def update_repairing_coordinates
+      par = params[:repairing_repair][:coordinates]
+      unless par.nil?
+        if par.kind_of?(Array)
+          coordinates = par.map{|p| p.to_f}
+          params[:repairing_repair][:coordinates] = coordinates
+        else
+          coordinates = par.split(") ").map{|p| p.split(", ")}.map{|p| [p[0].split("LatLng(")[1].to_f,p[1].to_f]}
+          params[:repairing_repair][:coordinates] = coordinates
         end
       end
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-      def repairing_repair_params
-        params.require(:repairing_repair).permit! #(:description, :amount, :repair_date, :address, :address_to, :coordinates).tap { |whitelisted|  whitelisted[:coordinates] = params[:repairing_repair][:coordinates] }
-      end
+    def repairing_repair_params
+      params.require(:repairing_repair).permit! #(:description, :amount, :repair_date, :address, :address_to, :coordinates).tap { |whitelisted|  whitelisted[:coordinates] = params[:repairing_repair][:coordinates] }
+    end
   end
 end

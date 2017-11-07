@@ -11,7 +11,8 @@ module Repairing
     belongs_to :layer, class_name: 'Repairing::Layer'
     validates :layer, presence: true
 
-    belongs_to :repairing_category, :class_name => 'Repairing::Category', :dependent => :nullify
+    belongs_to :repairing_category, class_name: 'Repairing::Category', dependent: :nullify
+    embeds_many :photos, class_name: 'Repairing::Photo'
 
     field :obj_owner, type: String
     field :subject, type: String

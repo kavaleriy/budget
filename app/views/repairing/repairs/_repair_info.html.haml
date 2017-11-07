@@ -54,6 +54,13 @@
                 text-align: center;
               }
             }
+            &.photos{
+              .img{
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+              }
+            }
           }
           .row:nth-last-of-type(2) .value {
             font-weight: bold;
@@ -177,6 +184,17 @@
       = "#{ t('.info_price') } :"
     .col-xs-8.value
       = @repairing_repair.amount
+
+  - unless @repairing_repair.photos.blank?
+    .row.photos
+      .col-xs-4.title-key
+        %i.fa.fa-image
+        = link_to t('repairing.repairs.photos'), repairing_photos_slider_path(@repairing_repair.id), target: '_blank'
+      .col-xs-8.value
+        - @repairing_repair.photos[0..4].each do |photo|
+          = link_to repairing_photos_slider_path(@repairing_repair.id), target: '_blank' do
+            .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
+
   %h4.head-desc
     = t('.description')
   %p

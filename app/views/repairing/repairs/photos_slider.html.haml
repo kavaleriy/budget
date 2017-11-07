@@ -1,0 +1,28 @@
+:scss
+  .header{
+    margin: 30px auto;
+    text-align: center;
+    .address{
+      font-size: 14px;
+    }
+  }
+  .fotorama{
+    .fotorama__wrap{
+      margin: 0 auto;
+    }
+  }
+
+/ fotorama.css & fotorama.js.
+%link{:href => "http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css", :rel => "stylesheet"}/
+%script{:src => "http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"}
+
+%h3.header
+  %p.work
+    = @repairing_repair.work
+  %p.address
+    = @repairing_repair.address
+
+.fotorama{ "data-nav" => :thumbs }
+  - @repairing_repair.photos.each do |photo|
+    = link_to photo.image.url do
+      = image_tag photo.image.thumb
