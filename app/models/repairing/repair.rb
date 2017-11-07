@@ -214,7 +214,7 @@ module Repairing
     validates :image, presence: true
 
     # Not used now, because uploader not saved original image
-    # file_size = 2
+    # file_size = 1
     # validates :image,
     #           file_size: {
     #             maximum: file_size.megabytes.to_i,

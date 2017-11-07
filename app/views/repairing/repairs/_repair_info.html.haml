@@ -191,12 +191,9 @@
         %i.fa.fa-image
         = link_to t('repairing.repairs.photos'), repairing_photos_slider_path(@repairing_repair.id), target: '_blank'
       .col-xs-8.value
-        - @repairing_repair.photos[0..5].each do |photo|
+        - @repairing_repair.photos[0..4].each do |photo|
           = link_to repairing_photos_slider_path(@repairing_repair.id), target: '_blank' do
             .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
-            -#= content_tag(:div, 'Fsdfsd fsd', style: "background-image:url('#{photo.image.thumb}'); width:50px;" )
-
-            -#= image_tag photo.image.thumb
 
   %h4.head-desc
     = t('.description')

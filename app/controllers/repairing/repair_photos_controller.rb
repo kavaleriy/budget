@@ -4,12 +4,8 @@ module Repairing
     before_action :set_repair
 
     def create
-      begin
-        @repairing_repair.photos.create!(photo_params)
-        flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
-      rescue Exception => e
-        flash.now[:notice] = e
-      end
+      @repairing_repair.photos.create!(photo_params)
+      flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
 
       respond_to do |format|
         format.html { redirect_to repairing_repair_photos_path(@repairing_repair) }

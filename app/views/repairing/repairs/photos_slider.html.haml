@@ -12,8 +12,6 @@
     }
   }
 
-/ 1. Link to jQuery (1.8 or later)
-%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
 / fotorama.css & fotorama.js.
 %link{:href => "http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css", :rel => "stylesheet"}/
 %script{:src => "http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"}
@@ -27,6 +25,6 @@
     = @repairing_repair.address
 
 .fotorama{ "data-nav" => :thumbs }
-  - @repairing_repair.photos.each do |photo|
+  - @repairing_repair.photos.each_with_index do |photo, i|
     = link_to photo.image.url do
       = image_tag photo.image.thumb
