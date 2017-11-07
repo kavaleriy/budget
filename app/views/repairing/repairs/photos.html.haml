@@ -45,7 +45,7 @@
         right: 15px;
       }
     }
-    .photo:nth-child(3n){
+    .photo:nth-child(4n){
       padding-right: 0px;
       .btn-delete{
         right: -5px;
@@ -57,6 +57,12 @@
     .photos{
       .photo{
         width: 49.5%;
+        &:nth-child(2n){
+          padding-right: 0px;
+          .btn-delete{
+            right: -5px;
+          }
+        }
       }
     }
   }
@@ -64,6 +70,10 @@
     .photos{
       .photo{
         width: 100%;
+        padding-right: 0px;
+        .btn-delete{
+          right: -5px;
+        }
       }
     }
   }
