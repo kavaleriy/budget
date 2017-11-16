@@ -222,36 +222,32 @@
       }
     }
   }
+  .embeded-btn{
+    #embedded-profile{
+      display: none;
+    }
+  }
 
 #search-data
   = simple_form_for '', remote: true do |f|
     .row
       .col-sm-6.col-md-7
-        -# use for pre-selecting payer or recipt if params exists
-        - if params['payers_edrpous'].blank? and params['recipt_edrpous'].blank?
-          = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false)
-        - else
-          = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
+        = f.input(:item,
+          value: @classifier.pnaz,
+          placeholder: @classifier.pnaz,
+          disabled: true,
+          input_html: {'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]},
+          label: false)
+        -# - else
+        -#   = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
       .col-sm-6.col-md-5
         .pull-right#fullscreen{'data-module' => 'search-data'}
           = render partial: 'widgets/town_profile/fullscreen_btn'
-        = f.collection_radio_buttons :role, [['payers', t('.payer')] ,['recipt', t('.recipt')]], :first, :last, {checked: params['recipt_edrpous'].blank? ? 'payers' : 'recipt'} do |b|
-          = b.radio_button(style: 'display: none') + b.label(class: 'btn btn-default btn-switch-role')
-        = link_to t('modules.classifier.advanced_search.search'), '#', class: 'btn btn-primary advanced_search_button', id: 'search'
-        = link_to modules_classifier_advanced_search_path(@town), id: 'advanced_search_button', class: 'btn btn-primary advanced_search_button', remote: request.format.html? ? false : true do
-          %i.fa.fa-cogs
-          = t('.advanced_button')
+        .col-xs-6.text-right
+          .embeded-btn
+            = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
 
   .results
-  - if request.format.html?
-    = render partial: 'tell_more'
-  - else
-    .row.sharing
-      .col-xs-6
-        .social-btns#share_results
-      .col-xs-6.text-right
-        .embeded-btn
-          = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
 
   #most-received
     = render partial: 'chart'
@@ -261,12 +257,14 @@
 
   .copyright_info
     = render partial: 'copyright_info'
-
+-# - binding.pry
 :javascript
   $(document).ready(function() {
-
+    $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :csv, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
+    classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+    //"/modules/classifier/search_e_data.csv?locale=uk&amp;town_id=55a809316b61730709596600&amp;payers_edrpous=33499944&amp;_=1510818700170"
     // init select2 and add event -> search if change value (if select not empty)
-    $('#_item').select2({
+    /*$('#_item').select2({
       placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
     }).on('change', function(data) {
@@ -290,7 +288,7 @@
         // var title = $('[name="[role]"]:checked').val() == 'payers' ? I18n.t('modules.classifier.chart.most_payers') : I18n.t('modules.classifier.chart.most_received');
         // $('#most-received .subtitle').html(title);
       }
-    });
+    });*/
 
     // add new event and clear previous events for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
@@ -303,10 +301,10 @@
     });
 
     // add breadcrumbs element
-    $('#advanced_search_button').click(function(){
+    /*$('#advanced_search_button').click(function(){
         var breadcrumbs_title = $.trim($(this).text());
         addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
-    });
+    });*/
   });
 
   function init_search_params(sort_col, sort_dir) {
@@ -315,12 +313,12 @@
       sort_col: sort_col,
       sort_dir: sort_dir
     }
-    data[$('[name="[role]"]:checked').val() + '_edrpous'] = $('#_item').val();
+    data['payers_edrpous'] = $('#_item').data('payers_edrpous');
     return data;
   }
 
   function graph_click(param) {
     var data = init_search_params();
-    data[$('[name="[role]"]').not(':checked').val() + '_edrpous'] = param;
+    data['recipt_edrpous'] = param;
     classifier_search("#{modules_classifier_search_e_data_path}", data);
   }

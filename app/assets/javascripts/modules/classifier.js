@@ -101,7 +101,7 @@ function share_buttons_set_url(url) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
     $("#spinner-container").hide();
-    if (!$('.demo_index').length) {
+    // if (!$('.demo_index').length) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
         // console.log(url.replace('search_e_data', 'direct_link'));
         // TODO: refactor in future
@@ -116,7 +116,7 @@ function share_buttons_set_url(url) {
             $('#embedded-profile').attr('data-clipboard-text', new_data);
         }
 
-    }
+    // }
 }
 
 // switch sort direction

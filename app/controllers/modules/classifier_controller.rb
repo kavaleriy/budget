@@ -1,9 +1,9 @@
 include BudgetFileUpload
 module Modules
   class ClassifierController < ApplicationController
-    before_action :town, only: [:search_data, :advanced_search, :by_type]
+    before_action :town, only: [:search_data, :advanced_search, :by_type, :by_edrpou]
 
-    after_filter :allow_iframe, only: [:search_data]
+    after_filter :allow_iframe, only: [:search_data, :by_edrpou]
 
     def search_data
       items = FundsManager.by_town(params[:town_id])
@@ -18,6 +18,15 @@ module Modules
         format.js
       end
     end
+
+    def by_edrpou
+      @classifier = Classifier.find_by(edrpou: params[:payers_edrpous])
+      respond_to do |format|
+        format.html { render layout: 'visify'}
+        format.js
+      end
+    end
+
 
     def direct_link
       # access from direct link (socials networks)
@@ -174,22 +183,24 @@ module Modules
     end
 
     def sort_e_data
-      # Data
-      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
-      # Sort data
-      sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
-      unless payments_data.blank?
-        payments_data.sort_by! do |hash|
-          if sort_col.eql?('amount')
-            hash[sort_col.to_s].to_f
-          else
-            hash[sort_col.to_s]
+      Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}",expiries_in: 1.day) do
+        # Data
+        payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
+        # Sort data
+        sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
+        unless payments_data.blank?
+          payments_data.sort_by! do |hash|
+            if sort_col.eql?('amount')
+              hash[sort_col.to_s].to_f
+            else
+              hash[sort_col.to_s]
+            end
           end
+          payments_data.reverse! unless params[:sort_dir].eql?('asc')
         end
-        payments_data.reverse! unless params[:sort_dir].eql?('asc')
+        # Results
+        payments_data
       end
-      # Results
-      payments_data
     end
 
     def sort_data_bot

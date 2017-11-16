@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
 
   namespace :modules do
+    get 'classifier/by_edrpou/:town_id/:payers_edrpous' => 'classifier#by_edrpou'
     get 'classifier/import_dbf' => 'classifier#import_dbf',as: 'classifier_import_dbf'
     get 'classifier/all_classifier' => 'classifier#all_classifier',as: 'classifier_all_classifier'
     get 'classifier/all_classifier_region' => 'classifier#all_classifier_region',as: 'classifier_all_classifier_region'
