@@ -111,8 +111,18 @@ function share_buttons_set_url(url) {
         if (clipboard_data){
             var aditional_params = url.substr(url.indexOf('&payers_edrpous'));
             var current_src = clipboard_data.match(/src="\S*/)[0];
-            var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
-            var new_data = clipboard_data.replace(current_src, new_src);
+            // var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
+            // var new_data = clipboard_data.replace(current_src, new_src);
+
+            var payers_edrpous = "payers_edrpous=";
+            var start_edrpou = url.substr(url.indexOf(payers_edrpous) + payers_edrpous.length);
+            var edrpou = start_edrpou.slice(0, start_edrpou.indexOf("&"));
+            var src_without_params = current_src.slice(0, current_src.indexOf("?"));
+            var src_with_edrpou = src_without_params + "/" + edrpou + '"';
+            var src_by_edrpou = src_with_edrpou.replace("search_data", "by_edrpou");
+
+            var new_data = clipboard_data.replace(current_src, src_by_edrpou);
+
             $('#embedded-profile').attr('data-clipboard-text', new_data);
         }
 
