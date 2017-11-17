@@ -1,18 +1,15 @@
 :scss
   $button-background: #0c2231;
-  $button-text: white;
+  $button-text: black;
 
     #export_classifier,
     #embedded-profile {
-      background-color: $button-background;
       margin: 5px;
-      padding: 2px 10px;
-      height: 26px;
-      min-width: 150px;
-      border-radius: 0;
-      float: right;
       color: $button-text;
       font-weight: bold;
+      font-size: 17px;
+      margin: 3px 20px;
+      display: inline-block;
       i {
         padding-right: 5px;
         color: $button-text;
@@ -26,7 +23,9 @@
   %button.btn#embedded-profile{ data: { 'clipboard-text' => embed_full_url(url), 'tooltip' => t('public.towns.show.click') } }
     = fa_icon 'code 1x'
     = t('.get_code')
-%a.btn#export_classifier
+%a#export_classifier
+  %i.fa.fa-sign-out{"aria-hidden" => "true"}
+  |
   =t('helpers.links.export')
 
 -# :javascript

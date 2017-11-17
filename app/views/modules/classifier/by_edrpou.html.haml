@@ -227,6 +227,16 @@
   .payer_name{
     display: none;
   }
+  .additional-btns{
+    position: absolute;
+    right: 0;
+    width: 25%;
+    #fullscreen{
+      position: fixed;
+      top: 30px;
+      right: 5px;
+    }
+  }
 
 #search-data
   .row
@@ -235,11 +245,13 @@
 
   #most-received
     = render partial: 'chart'
-
-    .col-sm-6.col-md-5
+    .col-sm-12.text-center
+      %h4
+        Список платежів
+    .additional-btns
       .pull-right#fullscreen{'data-module' => 'search-data'}
         = render partial: 'widgets/town_profile/fullscreen_btn'
-      .col-xs-6.text-right
+      .text-right
         .embeded-btn
           = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
 
