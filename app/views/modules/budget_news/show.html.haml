@@ -181,6 +181,14 @@
         = @budget_news.get_date('medium')
       .artcile-content
         = @budget_news.news_text.html_safe
+        - if @budget_news.id.to_s.eql?('5a0d5e072f212019f8000000')
+          %iframe.embed-responsive-item{:allowfullscreen => "allowfullscreen",
+            :frameborder => "0",
+            :mozallowfullscreen => "true",
+            :src => "https://openbudget.in.ua/modules/classifier/by_edrpou/55a809316b61730709596600/01488038",
+            :style => "width: 100%; height: 50vh;",
+            :webkitallowfullscreen => "true"}
+
       -#.article-social-btns
       -#  .social-buttons
       -#    %a.social-button.facebook{:href => "#"}
@@ -201,4 +209,3 @@
         %img{:src => "http://placehold.it/360x200/ffd304/ffffff"}
       - @banners.each do |banner|
         = get_item(banner, 'banner')
-
