@@ -46,6 +46,13 @@ module Modules
 
     def search_e_data
       data = sort_e_data
+      if params[:by_purpose]
+        query_str = params[:by_purpose].mb_chars.downcase.to_s
+        data.select! do |transaction|
+          purpose_title = transaction['payment_details'].mb_chars.downcase.to_s
+          purpose_title.include?(query_str)
+        end
+      end
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart

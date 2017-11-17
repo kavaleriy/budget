@@ -1,9 +1,6 @@
 $('.results').html('<%= escape_javascript(render partial: "search_e_data") %>');
 
-if (barChart) {
-  barChart.destroy();
-  $('#most-received').hide();
-}
+
 
 <%#- unless params[:payers_edrpous].blank? || @receivers.size < 3 %>
 <%#- if ((params[:payers_edrpous].present? and not params[:recipt_edrpous].present?) or (not params[:payers_edrpous].present? and params[:recipt_edrpous].present?)) and @receivers.size > 3 %>
@@ -92,12 +89,17 @@ if (barChart) {
       }
     }
   };
-
-  // create and draw the chart
-  var barChart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: data,
-    options: options
-  });
+  <%- if params[:by_purpose].blank? %>
+    if (barChart) {
+      barChart.destroy();
+      $('#most-received').hide();
+    }
+    // create and draw the chart
+    var barChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: data,
+      options: options
+    });
+  <%- end %>
 
 <%- end %>
