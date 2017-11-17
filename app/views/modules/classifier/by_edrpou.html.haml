@@ -237,6 +237,17 @@
       right: 5px;
     }
   }
+  #search-by-purpose-wrapper{
+    position: absolute;
+    margin: 3px 0;
+    z-index: 2;
+    #select2-chosen-1{
+      padding-top: 0;
+    }
+    .select2-container .select2-choice{
+      border-radius: 0;
+    }
+  }
 
 #search-data
   .row
@@ -245,6 +256,10 @@
 
   #most-received
     = render partial: 'chart'
+    .col-sm-3#search-by-purpose-wrapper
+      = select_tag :search_by_purpose,
+        options_for_select([' ','Очищення', 'Товари', 'Послуги', 'Ремонт', 'Харчування', 'Меблі']),
+        data: {placrholdr: 'data-placeholder'}
     .col-sm-12.text-center
       %h4
         Список платежів
@@ -257,8 +272,6 @@
 
   .results
 
-
-
   .vis-spinner
     = render partial: 'layouts/spinner'
 
@@ -267,36 +280,16 @@
 -# - binding.pry
 :javascript
   $(document).ready(function() {
+    $('#search_by_purpose').select2({
+      height: 25,
+      width: '100%',
+      allowClear: true
+    }).on('change', function(e){
+      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+    });
+
     $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :csv, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
     classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
-    //"/modules/classifier/search_e_data.csv?locale=uk&amp;town_id=55a809316b61730709596600&amp;payers_edrpous=33499944&amp;_=1510818700170"
-    // init select2 and add event -> search if change value (if select not empty)
-    /*$('#_item').select2({
-      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
-      allowClear: true
-    }).on('change', function(data) {
-      // check for empty value, if empty -> do nothing
-      if(data.val) {
-        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
-      }
-    });
-
-    $('#search').on('click', function(){
-      if($('#_item').val()) {
-        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
-      }
-    });
-
-    // add event -> search if change value (if select not empty)
-    $('[name="[role]"]').on('change', function() {
-      // check for empty value, if empty -> do nothing
-      if($('#_item').val()) {
-        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
-        // var title = $('[name="[role]"]:checked').val() == 'payers' ? I18n.t('modules.classifier.chart.most_payers') : I18n.t('modules.classifier.chart.most_received');
-        // $('#most-received .subtitle').html(title);
-      }
-    });*/
-
     // add new event and clear previous events for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
       var _this = $(this);
@@ -307,18 +300,15 @@
       _this.attr('data-sort-direction', sort_direction(sort_dir)).addClass('active');
     });
 
-    // add breadcrumbs element
-    /*$('#advanced_search_button').click(function(){
-        var breadcrumbs_title = $.trim($(this).text());
-        addBreadcrumbs(breadcrumbs_title, "#{modules_classifier_search_data_path(@town)}");
-    });*/
+
   });
 
   function init_search_params(sort_col, sort_dir) {
     var data = {
       town_id: $('#classifier').data('town-id'),
       sort_col: sort_col,
-      sort_dir: sort_dir
+      sort_dir: sort_dir,
+      by_purpose: $('#search_by_purpose').val()
     }
     data['payers_edrpous'] = $('#classifier').data('payers_edrpous');
     return data;
