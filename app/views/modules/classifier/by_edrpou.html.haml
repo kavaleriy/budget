@@ -146,19 +146,15 @@
   .social-btns {
     margin: 5px 0;
   }
-   // hide sidebar for share
   .addthis-smartlayers-desktop {
     display: none;
   }
 
   .sharing {
-    //display: none;
     padding-bottom: 30px;
   }
   .copyright_info {
     font-size: 75%;
-    //position: absolute;
-    //bottom: 5px;
     p {
       margin: 0;
     }
@@ -228,29 +224,28 @@
     }
   }
 
-#search-data
-  = simple_form_for '', remote: true do |f|
-    .row
-      .col-sm-6.col-md-7
-        = f.input(:item,
-          value: @classifier.pnaz,
-          placeholder: @classifier.pnaz,
-          disabled: true,
-          input_html: {'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]},
-          label: false)
-        -# - else
-        -#   = f.input(:item, type: 'hidden', collection: @items.map{ |classd| ["#{classd.pnaz} #{classd.edrpou}", classd.edrpou] }, input_html: {'data-town-id' => params['town_id']}, label: false, selected: params['payers_edrpous'] || params['recipt_edrpous'])
-      .col-sm-6.col-md-5
-        .pull-right#fullscreen{'data-module' => 'search-data'}
-          = render partial: 'widgets/town_profile/fullscreen_btn'
-        .col-xs-6.text-right
-          .embeded-btn
-            = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
+  .payer_name{
+    display: none;
+  }
 
-  .results
+#search-data
+  .row
+    .col-sm-12.text-center#classifier{'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]}
+      %h3= @classifier.pnaz
 
   #most-received
     = render partial: 'chart'
+
+    .col-sm-6.col-md-5
+      .pull-right#fullscreen{'data-module' => 'search-data'}
+        = render partial: 'widgets/town_profile/fullscreen_btn'
+      .col-xs-6.text-right
+        .embeded-btn
+          = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
+
+  .results
+
+
 
   .vis-spinner
     = render partial: 'layouts/spinner'
@@ -309,11 +304,11 @@
 
   function init_search_params(sort_col, sort_dir) {
     var data = {
-      town_id: $('#_item').data('town-id'),
+      town_id: $('#classifier').data('town-id'),
       sort_col: sort_col,
       sort_dir: sort_dir
     }
-    data['payers_edrpous'] = $('#_item').data('payers_edrpous');
+    data['payers_edrpous'] = $('#classifier').data('payers_edrpous');
     return data;
   }
 

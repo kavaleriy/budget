@@ -15,9 +15,10 @@
   }
 
 .row
-  .col-xs-8.subtitle
-    = t('.most_received')
-  .col-xs-4.text-right
+  .col-xs-12.subtitle.text-center
+    %h4
+      = t('.most_received')
+  -# .col-xs-4.text-right
     %button.btn#entrepreneurs
       = t('modules.classifier.advanced_search.entrepreneurs')
 %canvas#barChart
