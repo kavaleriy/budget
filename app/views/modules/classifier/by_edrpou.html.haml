@@ -237,6 +237,9 @@
     //  right: 5px;
     //}
   }
+  #search-by-purpose-wrapper-row{
+    margin-left: 0;
+  }
   #search-by-purpose-wrapper{
     //# position: relative;
     width: 25%;
@@ -269,7 +272,7 @@
     .pull-right#fullscreen{'data-module' => 'search-data'}
       = render partial: 'widgets/town_profile/fullscreen_btn'
     = render partial: 'chart'
-    .row
+    .row#search-by-purpose-wrapper-row
       #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
           options_for_select([' ','Очищення', 'Товари', 'Послуги', 'Ремонт', 'Харчування', 'Меблі']),
