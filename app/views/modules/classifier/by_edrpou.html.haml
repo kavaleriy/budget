@@ -228,19 +228,19 @@
     display: none;
   }
   .additional-btns{
-    position: absolute;
-    right: 0;
-    width: 25%;
-    #fullscreen{
-      position: fixed;
-      top: 30px;
-      right: 5px;
-    }
+    //position: absolute;
+    //right: 0;
+    //width: 25%;
+    //#fullscreen{
+    //  position: fixed;
+    //  top: 30px;
+    //  right: 5px;
+    //}
   }
   #search-by-purpose-wrapper{
-    position: absolute;
+    //# position: relative;
     margin: 3px 0;
-    z-index: 2;
+    //z-index: 2;
     #select2-chosen-1{
       padding-top: 0;
     }
@@ -253,19 +253,20 @@
   .row
     .col-sm-12.text-center#classifier{'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]}
       %h3= @classifier.pnaz
-
   #most-received
+    .pull-right#fullscreen{'data-module' => 'search-data'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
     = render partial: 'chart'
+
     .col-sm-3#search-by-purpose-wrapper
       = select_tag :search_by_purpose,
         options_for_select([' ','Очищення', 'Товари', 'Послуги', 'Ремонт', 'Харчування', 'Меблі']),
         data: {placrholdr: 'data-placeholder'}
-    .col-sm-12.text-center
+    .col-sm-6.text-center
       %h4
         Список платежів
-    .additional-btns
-      .pull-right#fullscreen{'data-module' => 'search-data'}
-        = render partial: 'widgets/town_profile/fullscreen_btn'
+    .col-sm-3.additional-btns
+
       .text-right
         .embeded-btn
           = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
