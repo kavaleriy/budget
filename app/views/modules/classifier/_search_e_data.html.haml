@@ -69,7 +69,7 @@
         %th{'data-column' => 'amount', 'data-sort-direction' => 'asc'}
           %span
             = t('.sum')
-        %th{'data-column' => 'payer_name', 'data-sort-direction' => 'asc'}
+        %th.payer_name{'data-column' => 'payer_name', 'data-sort-direction' => 'asc'}
           %span
             = t('.payer')
         %th{'data-column' => 'recipt_name', 'data-sort-direction' => 'asc'}
@@ -89,4 +89,3 @@
     $(document).ready(function() {
       $('.sharing').show();
     });
-
