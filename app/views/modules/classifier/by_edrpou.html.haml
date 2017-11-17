@@ -239,13 +239,23 @@
   }
   #search-by-purpose-wrapper{
     //# position: relative;
+    width: 25%;
+    flaot: left;
     margin: 3px 0;
     //z-index: 2;
     #select2-chosen-1{
       padding-top: 0;
     }
+    .purposes-title{
+      width: 50%;
+      flaot: left;
+    }
     .select2-container .select2-choice{
       border-radius: 0;
+    }
+    .additional-btns{
+      width: 25%;
+      float: left;
     }
   }
 
@@ -258,15 +268,14 @@
       = render partial: 'widgets/town_profile/fullscreen_btn'
     = render partial: 'chart'
     .row
-      .col-sm-3#search-by-purpose-wrapper
+      #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
           options_for_select([' ','Очищення', 'Товари', 'Послуги', 'Ремонт', 'Харчування', 'Меблі']),
           data: {placrholdr: 'data-placeholder'}
-      .col-sm-6.text-center
+      .text-center.purposes-title
         %h4
           Список платежів
-      .col-sm-3.additional-btns
-
+      .additional-btns
         .text-right
           .embeded-btn
             = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
