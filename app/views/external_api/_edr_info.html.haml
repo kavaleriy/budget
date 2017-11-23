@@ -1,4 +1,4 @@
--if @edr_data.nil?
+-if @edr_data_bot.nil?
   = render partial: 'no_data_yet'
 -else
   .row
@@ -6,28 +6,75 @@
       %i.fa.fa-map-marker
       = "#{ t('.title') } :"
     .col-xs-8.value
-      = @edr_data['officialName']
+      = @edr_data_bot['full_name']
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
       = "#{ t('.address') } :"
     .col-xs-8.value
-      = @edr_data['address']
+      = @edr_data_bot['location']
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
       = "#{ t('.main_person') } :"
     .col-xs-8.value
-      = @edr_data['mainPerson']
+      = @edr_data_bot['ceo_name']
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
       = "#{ t('.occupation') } :"
     .col-xs-8.value
-      = @edr_data['occupation']
+      = @edr_data_bot['activities'][0]['name']
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
       = "#{ t('.status') } :"
     .col-xs-8.value
-      = @edr_data['status']
+      = @edr_data_bot['status']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-map-marker
+      = "#{ t('.end_beneficiaries') } :"
+    .col-xs-8.value
+      - @edr_data_bot['beneficiaries'].each do |beneficiary|
+        %span
+          = beneficiary['name']
+          = ", #{ t('.contribution') }"
+          = beneficiary['amount']
+        %br
+  %p
+    = render partial: 'external_api/thanks_data_bot'
+
+-#-if @edr_data.nil?
+-#  = render partial: 'no_data_yet'
+-#-else
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      = "#{ t('.title') } :"
+-#    .col-xs-8.value
+-#      = @edr_data['officialName']
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      = "#{ t('.address') } :"
+-#    .col-xs-8.value
+-#      = @edr_data['address']
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      = "#{ t('.main_person') } :"
+-#    .col-xs-8.value
+-#      = @edr_data['mainPerson']
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      = "#{ t('.occupation') } :"
+-#    .col-xs-8.value
+-#      = @edr_data['occupation']
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      = "#{ t('.status') } :"
+-#    .col-xs-8.value
+-#      = @edr_data['status']

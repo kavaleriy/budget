@@ -57,23 +57,42 @@ class ExternalApiController < ApplicationController
   end
 
   def edr
-    edr_data_arr = ExternalApi.edr_data(@repairing_repairs.edrpou_artist)
-    @edr_data = edr_data_arr.first unless edr_data_arr.nil?
+    # edr_data_arr = ExternalApi.edr_data(@repairing_repairs.edrpou_artist)
+    # @edr_data = edr_data_arr.first unless edr_data_arr.nil?
+
+    @edr_data_bot = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
 
     respond_to do |format|
-      format.js {
-        render file: 'external_api/api_info',
-               locals: {
-                   selector: '#edr',
+      selector = '#edr'
+      if @edr_data_bot.key?('full_name')
+        format.js {
+          render file: 'external_api/api_info',
+                 locals: {
+                   selector: selector,
                    partial_name: 'external_api/edr_info'
-               }
-      }
+                 }
+        }
+      else
+        lack_data(format, selector)
+      end
     end
+
+    # respond_to do |format|
+    #   format.js {
+    #     render file: 'external_api/api_info',
+    #            locals: {
+    #                selector: '#edr',
+    #                partial_name: 'external_api/edr_info'
+    #            }
+    #   }
+    # end
+
   end
 
   def judicial_register
     respond_to do |format|
-      lack_data(format) if @repairing_repairs.edrpou_artist.blank?
+      selector = '#judicial-register'
+      lack_data(format, selector) if @repairing_repairs.edrpou_artist.blank?
 
       # return hash with company data or hash error
       open_data_request = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
@@ -85,13 +104,13 @@ class ExternalApiController < ApplicationController
         format.js do
           render file: 'external_api/judicial_register/judicial_register',
                  locals: {
-                   selector: '#judicial-register',
+                   selector: selector,
                    partial_name: 'external_api/judicial_register/judicial_register_table'
                  }
         end
       else
         message = t('external_api.judicial_register.no_data_message')
-        lack_data(format, message)
+        lack_data(format, selector, message)
       end
     end
   end
@@ -114,12 +133,12 @@ class ExternalApiController < ApplicationController
     @repairing_repairs = Repairing::Repair.find(params[:repair_id])
   end
 
-  def lack_data(format, message = nil)
+  def lack_data(format, selector, message = nil)
     format.html { render partial: 'external_api/no_data_yet' }
     format.js do
       render file: 'external_api/api_info',
              locals: {
-               selector: '#judicial-register',
+               selector: selector,
                partial_name: 'no_data_yet',
                message: message
              }
