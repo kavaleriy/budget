@@ -57,9 +57,6 @@ class ExternalApiController < ApplicationController
   end
 
   def edr
-    # edr_data_arr = ExternalApi.edr_data(@repairing_repairs.edrpou_artist)
-    # @edr_data = edr_data_arr.first unless edr_data_arr.nil?
-
     @edr_data_bot = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
 
     respond_to do |format|
@@ -76,17 +73,6 @@ class ExternalApiController < ApplicationController
         lack_data(format, selector)
       end
     end
-
-    # respond_to do |format|
-    #   format.js {
-    #     render file: 'external_api/api_info',
-    #            locals: {
-    #                selector: '#edr',
-    #                partial_name: 'external_api/edr_info'
-    #            }
-    #   }
-    # end
-
   end
 
   def judicial_register
