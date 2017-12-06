@@ -164,39 +164,42 @@ module Repairing
       }
     end
     def self.repair_json_by_town(town)
-      repairings = Repairing::Layer.valid_layers_with_repairs
-      geo_jsons = []
+      Rails.cache.fetch("/repairings/as_json/#{town}", expires_in: 1.week) do
+        repairings = Repairing::Layer.valid_layers_with_repairs
+        geo_jsons = []
 
-      # set default last update date of repair
-      #TODO: change logic for default date(1970)
-      last_updated = Time.new('1970-01-01')
+        # set default last update date of repair
+        #TODO: change logic for default date(1970)
+        last_updated = Time.new('1970-01-01')
 
-      # if town not empty filter array by town
-      repairings.select!{ |key,value| key['town_id'].to_s.eql?(town) } unless town.blank?
-      repairings.each { |layer,repairs|
-        repairs.each do |repair|
-          unless repair['updated_at'].nil?
-            if  last_updated < repair['updated_at']
-              last_updated = repair['updated_at']
+        # if town not empty filter array by town
+        repairings.select!{ |key,value| key['town_id'].to_s.eql?(town) } unless town.blank?
+        repairings.each { |layer,repairs|
+          repairs.each do |repair|
+            unless repair['updated_at'].nil?
+              if  last_updated < repair['updated_at']
+                last_updated = repair['updated_at']
+              end
             end
+            repair['layer'] = {}
+            repair['layer']['town_id'] = layer['town_id'].to_s
+            repair['layer']['status'] = layer['status'] || :plan
+            repair['layer']['year'] = layer['year']
+            repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
+
+            repair_json = Repairing::GeojsonBuilder.build_repair(repair)
+            geo_jsons << repair_json if repair_json
           end
-          repair['layer'] = {}
-          repair['layer']['town_id'] = layer['town_id'].to_s
-          repair['layer']['status'] = layer['status'] || :plan
-          repair['layer']['year'] = layer['year']
-          repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
 
-          repair_json = Repairing::GeojsonBuilder.build_repair(repair)
-          geo_jsons << repair_json if repair_json
-        end
+        }
 
-      }
+        {
+            'type' => 'FeatureCollection',
+            'features' => geo_jsons,
+            'last_updated' => last_updated
+        }
+      end
 
-      {
-          'type' => 'FeatureCollection',
-          'features' => geo_jsons,
-          'last_updated' => last_updated
-      }
     end
   end
 
