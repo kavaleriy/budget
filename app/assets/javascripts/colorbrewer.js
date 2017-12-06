@@ -1,1 +1,0 @@
-// http://www.colorbrewer2.org/export/colorbrewer.js
