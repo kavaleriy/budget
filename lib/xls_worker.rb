@@ -6,6 +6,10 @@ class XlsWorker
     # write_town_data_in_table(town,table[0])
   end
 
+  def self.create_xls_with_e_data(data)
+    filling_e_data_file(data)
+  end
+
   private
   # @town_import_path = "#{Rails.root}/public/files/import_town.xlsx"
 
@@ -15,11 +19,8 @@ class XlsWorker
     worksheet.sheet_name = 'Town'
 
     town_table_header = %w{koatuu citizens house_holdings square}
-    index = 0
-    for item in town_table_header
-      worksheet.add_cell(0, index, item)
-      index = index + 1
-    end
+
+    build_header(worksheet, town_table_header)
 
     row_num = 1
     worksheet.add_cell(row_num, 0, town.koatuu)
@@ -33,6 +34,40 @@ class XlsWorker
     # table = Roo::Excelx.new(@town_import_path)
     # table.default_sheet = table.sheets.first
     # table
+  end
+
+  def self.filling_e_data_file(data)
+    workbook = RubyXL::Workbook.new
+    worksheet = workbook[0]
+    worksheet.sheet_name = 'Search_e_data'
+
+    data_table_header = [
+        I18n.t('modules.classifier.search_e_data.sum'),
+        I18n.t('modules.classifier.search_e_data.payer'),
+        I18n.t('modules.classifier.search_e_data.recipt'),
+        I18n.t('modules.classifier.search_e_data.purpose'),
+        I18n.t('modules.classifier.search_e_data.date')
+    ]
+
+    build_header(worksheet, data_table_header)
+
+    unless data.blank?
+      data.each_with_index do |line, i|
+        row_num = i + 1
+        worksheet.add_cell(row_num, 0, line['amount'])
+        worksheet.add_cell(row_num, 1, line['payer_name'])
+        worksheet.add_cell(row_num, 2, line['recipt_name'] + " " + line['recipt_edrpou'])
+        worksheet.add_cell(row_num, 3, line['payment_details'])
+        worksheet.add_cell(row_num, 4, line['trans_date'].split('T')[0])
+      end
+    end
+
+    workbook.stream.read
+  end
+
+  def self.build_header(worksheet, header_list)
+    # add_cell(row_num, col_num, string)
+    header_list.each_with_index { |item, i| worksheet.add_cell(0, i, item) }
   end
 
   def self.write_town_data_in_table(town,out_table)

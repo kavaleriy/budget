@@ -105,7 +105,7 @@ function share_buttons_set_url(url) {
         addthis.update('share', 'url', url.replace('search_e_data', 'direct_link'));
         // console.log(url.replace('search_e_data', 'direct_link'));
         // TODO: refactor in future
-        $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.csv'));
+        $('#export_classifier').attr('href', url.replace('search_e_data', 'search_e_data.xls'));
         // TODO: refactor in future
         var clipboard_data = $('#embedded-profile').attr('data-clipboard-text');
         if (clipboard_data){
