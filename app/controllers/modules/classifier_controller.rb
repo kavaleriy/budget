@@ -45,6 +45,7 @@ module Modules
     end
 
     def search_e_data
+      require 'xls_worker'
       data = sort_e_data
       if params[:by_purpose]
         query_str = params[:by_purpose].mb_chars.downcase.to_s
@@ -62,7 +63,8 @@ module Modules
         # TODO should be rewrite using as :template
         format.html {render 'modules/classifier/_search_e_data', layout: 'visify'}
         format.json { render json: @payments }
-        format.csv { send_data Modules::Classifier.to_csv(data) }
+        # format.csv { send_data Modules::Classifier.to_csv(data) }
+        format.xls { send_data XlsWorker.create_xls_with_e_data(data) }
         # switch between '*.js.erb' depend on sorting params
         if params[:sort_col].blank?
           format.js { render 'modules/classifier/search_e_data' }
