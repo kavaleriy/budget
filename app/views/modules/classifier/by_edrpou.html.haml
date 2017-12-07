@@ -303,7 +303,7 @@
       classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     });
 
-    $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :csv, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
+    $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :xls, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
     classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     // add new event and clear previous events for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
