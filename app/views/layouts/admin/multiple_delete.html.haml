@@ -45,14 +45,14 @@
 // used /assets/javascripts/multiple_delete.js.erb (application.js.erb => //= require_tree .)
 
 .multiple-delete
-  .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy')}
-    %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+  .btn-group{ 'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy') }
+    %button.btn.btn-default.dropdown-toggle{ "data-toggle" => "dropdown", type: "button" }
       %span.glyphicon.glyphicon-ok
-    %ul.dropdown-menu{:role => "menu"}
+    %ul.dropdown-menu{ role: 'menu' }
       %li#select-all
-        %label{:for => "taxonomy_all"}
-          %input#select_all{:type => 'checkbox', name: 'taxonomy_all'}
+        %label{ for: 'taxonomy_all' }
+          %input#select_all{ type: 'checkbox', name: 'taxonomy_all' }
           = t('all')
       %li#multiple-delete{ data: { delete_path: delete_path } }
-        %a{:href => "#"}
+        %a{ href: '#' }
           = t('destroy')
