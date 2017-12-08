@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :funds_managers do
     collection { post :import }
   end
+  post 'funds_managers/multiple_destroy' => 'funds_managers#multiple_destroy', as: :funds_managers_multiple_destroy
 
   namespace :hackatton do
   get 'dani_mist/load_data'

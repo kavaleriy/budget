@@ -1,0 +1,58 @@
+:scss
+  // init colors
+  $yellow: #ffd304;
+  $black: black;
+  $on-hover: #f5f5f5;
+
+  .multiple-delete{
+    .tooltip {
+      font-weight: normal;
+      .tooltip-arrow {
+        border-bottom-color: $yellow;
+      }
+      .tooltip-inner {
+        background-color: $yellow;
+        color: $black;
+        font-size: 14px;
+      }
+    }
+    .btn-group{
+       border: 0;
+       padding: 0;
+      .dropdown-toggle, .dropdown-menu{
+        border-radius: 0;
+      }
+      .dropdown-toggle{
+        padding: 0 3px;
+      }
+      .dropdown-menu{
+        li#select-all{
+          label{
+            display: block;
+            padding: 3px;
+            margim: 0;
+            font-weight: normal;
+            &:hover{
+              background-color: $on-hover;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+// used /assets/javascripts/multiple_delete.js.erb (application.js.erb => //= require_tree .)
+
+.multiple-delete
+  .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy')}
+    %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+      %span.glyphicon.glyphicon-ok
+    %ul.dropdown-menu{:role => "menu"}
+      %li#select-all
+        %label{:for => "taxonomy_all"}
+          %input#select_all{:type => 'checkbox', name: 'taxonomy_all'}
+          = t('all')
+      %li#multiple-delete{ data: { delete_path: delete_path } }
+        %a{:href => "#"}
+          = t('destroy')

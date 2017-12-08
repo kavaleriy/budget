@@ -1,0 +1,59 @@
+$(document).ready(function(){
+
+    function selected_items(){
+        // Get selected items
+        var result = $('#search_results input.delete_multiple_checkbox:checked');
+        var arr = [];
+
+        result.each(function(){
+            id = $(this).val();
+            arr.push(id);
+        })
+
+        return arr;
+    }
+
+    $('.multiple-delete').click(function(){
+        // Hide/Show button for delete selected items
+        if (selected_items().length > 0){
+            $('#multiple-delete').show();
+        } else{
+            $('#multiple-delete').hide();
+        }
+    })
+
+    $('#select_all').click(function(){
+        // On/Off select all items
+        var status = $(this).is(':checked');
+        checkboxes = $('#search_results input.delete_multiple_checkbox');
+
+        for(var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = status;
+        }
+    });
+
+    $('#multiple-delete').click(function(){
+        // Delete selected items with confirm modal window
+        var url = $(this).attr("data-delete-path");
+        dataConfirmModal.confirm({
+            text: I18n.t('helpers.links.confirm'),
+            zIindex: 10099,
+
+            onConfirm: function() {
+                var arr = selected_items();
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { ids: arr },
+                    success: function() { alert(I18n.t('success_destroy')); }
+                });
+            },
+        });
+    });
+
+    $('.multiple-delete .btn-group').tooltip({
+        trigger: 'hover'
+    });
+
+})

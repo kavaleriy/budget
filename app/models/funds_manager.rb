@@ -9,6 +9,7 @@ class FundsManager
   scope :by_towns, -> (towns){ where(:town.in => towns.split(",")) }
   # search manager by text from title
   scope :find_by_string, -> (text){ where(title: /#{text}/i) }
+  scope :get_by_ids, lambda { |ids| where(:id.in => ids) }
 
   belongs_to :town
 
