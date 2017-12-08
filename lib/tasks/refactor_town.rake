@@ -127,5 +127,13 @@ namespace :refactor_town do
     end
   end
 
+  desc 'update town by title'
+  task :update_title, [:title_old, :title_new] => :environment do |_task, args|
+    town = Town.get_town_by_title(args[:title_old]).first
+    town.title = args[:title_new]
+    town.save!
+
+    p "Town updated: from '#{args[:title_old]}' to '#{args[:title_new]}'"
+  end
 
 end
