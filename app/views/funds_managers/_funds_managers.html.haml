@@ -3,17 +3,20 @@
     .table-body{'data-id' => funds_manager.id}
       .row
         .col-xs-11.reset-padding
-          .col-md-2.reset-padding
+          .col-md-1.reset-padding.hidden-xs.hidden-sm
+            .col-md-12
+              = check_box_tag '', funds_manager.id, false, class: 'delete_multiple_checkbox', name: 'taxonomy'
+          .col-sm-12.col-md-2.reset-padding
             .col-xs-4.visible-sm.visible-xs
               = t('modules.classifier.by_type.edrpou')
             .col-xs-8.col-md-12
               = funds_manager.edrpou
-          .col-md-8.reset-padding
+          .col-sm-12.col-md-7.reset-padding
             .col-xs-4.visible-sm.visible-xs
               = t('title')
             .col-xs-8.col-md-12{class: "#{valid_status(funds_manager.title)}"}
               = funds_manager.title
-          .col-md-2.reset-padding
+          .col-sm-12.col-md-2.reset-padding
             .col-xs-4.visible-sm.visible-xs
               = t('owner')
             .col-xs-8.col-md-12

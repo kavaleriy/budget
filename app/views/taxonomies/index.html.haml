@@ -1,47 +1,4 @@
 :scss
-  // init colors
-  $yellow: #ffd304;
-  $black: black;
-  $on-hover: #f5f5f5;
-
-  table{
-    .multiple-delete{
-      .tooltip {
-        font-weight: normal;
-        .tooltip-arrow {
-          border-bottom-color: $yellow;
-        }
-        .tooltip-inner {
-          background-color: $yellow;
-          color: $black;
-          font-size: 14px;
-        }
-      }
-      .btn-group{
-         border: 0;
-         padding: 0;
-        .dropdown-toggle, .dropdown-menu{
-          border-radius: 0;
-        }
-        .dropdown-toggle{
-          padding: 0 3px;
-        }
-        .dropdown-menu{
-          li#select-all{
-            label{
-              display: block;
-              padding: 3px;
-              margim: 0;
-              font-weight: normal;
-              &:hover{
-                background-color: $on-hover;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
   .paginator {
     text-align: center;
   }
@@ -57,18 +14,8 @@
 %table.table.table-striped
   %thead
     %tr
-      %th.multiple-delete
-        .btn-group{'aria-hidden' => 'true', 'data-toggle' => 'tooltip', 'data-placement' => 'right', title: t('confirm_destroy')}
-          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-            %span.glyphicon.glyphicon-ok
-          %ul.dropdown-menu{:role => "menu"}
-            %li#select-all
-              %label{:for => "taxonomy_all"}
-                %input#taxonomy_all{:type => 'checkbox', name: 'taxonomy_all'}
-                = t('.multiple_delete.all')
-            %li#multiple-delete
-              %a{:href => "#"}
-                = t('destroy')
+      %th
+        = render file: 'layouts/admin/multiple_delete', locals: { delete_path: taxonomies_multiple_destroy_path }
       %th
         = t('key')
       %th
@@ -88,66 +35,3 @@
 
 .paginator
   = paginate @taxonomies
-
-:javascript
-  $(document).ready(function(){
-
-    function selected_taxonomies(){
-      // Get selected taxonomies
-      var result = $('#search_results input[name="taxonomy"]:checked');
-      var arr = [];
-
-      result.each(function(){
-        id = $(this).val();
-        arr.push(id);
-      })
-
-      return arr;
-    }
-
-    $('.multiple-delete').click(function(){
-      // Hide/Show button for delete selected taxonomies
-      if (selected_taxonomies().length > 0){
-        $('#multiple-delete').show();
-      } else{
-        $('#multiple-delete').hide();
-      }
-    })
-
-    $('#taxonomy_all').click(function(){
-      // On/Off select all taxonomies
-      var status = $(this).is(':checked');
-      checkboxes = $('#search_results input[name="taxonomy"]');
-
-      for(var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = status;
-      }
-    });
-
-    $('#multiple-delete').click(function(){
-      // Delete selected taxonomies with confirm modal window
-      dataConfirmModal.confirm({
-        text: I18n.t('helpers.links.confirm'),
-        zIindex: 10099,
-
-        onConfirm: function() {
-          var arr = selected_taxonomies();
-
-          $.ajax({
-            type: "POST",
-            url: "#{taxonomies_multiple_destroy_path}",
-            data: { ids: arr },
-            success: function() { alert("#{t('success_destroy')}"); }
-          });
-        },
-      });
-    });
-
-  })
-
-:javascript
-  $(document).ready(function() {
-    $('.multiple-delete .btn-group').tooltip({
-      trigger: 'hover'
-    });
-  });

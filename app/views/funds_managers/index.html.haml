@@ -109,15 +109,17 @@
   .table-title.text-center.visible-md.visible-lg
     .row
       .col-md-11.reset-padding
+        .col-sm-1
+          = render file: 'layouts/admin/multiple_delete', locals: { delete_path: funds_managers_multiple_destroy_path }
         .col-sm-2
           = t('modules.classifier.by_type.edrpou')
-        .col-sm-8
+        .col-sm-7
           = sortable 'title', t('title')
         .col-sm-2
           = sortable 'town_id', t('owner')
       .col-md-1.reset-padding
         = t('form.actions')
-  #funds_managers
+  #funds_managers#search_results
     = render partial: 'funds_managers'
 
   .paginator

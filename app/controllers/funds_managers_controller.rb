@@ -75,6 +75,12 @@ class FundsManagersController < ApplicationController
     redirect_to funds_managers_path, notice:  t('funds_managers.messages.updated')
   end
 
+  def multiple_destroy
+    FundsManager.get_by_ids(params[:ids]).destroy_all
+
+    redirect_to :back
+  end
+
   def destroy
     @funds_manager.destroy
     respond_with(@funds_manager)
