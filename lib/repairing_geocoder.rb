@@ -16,7 +16,8 @@ class RepairingGeocoder
   def self.coordinates_by_addr(addr, wait = 1)
     return if addr.blank?
 
-    addr.gsub!(/м./i, '')
+    # geocoder with google correct worked without this gsub!()
+    # addr.gsub!(/м[.]/i, '')
 
     coord = Geocoder.coordinates(addr)
 
