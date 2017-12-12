@@ -17,7 +17,8 @@ class ExternalApi
 
     # https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614
     # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
-    uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
+    # uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
+    uri = URI('http://api.spending.gov.ua/api/v2/api/transactions/')
 
     params = params(payer_erdpou, recipt_edrpou, start_date, end_date)
     uri.query = URI.encode_www_form(params)
@@ -32,6 +33,7 @@ class ExternalApi
     require 'net/http'
 
     encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
+    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=984TP4gxmqnF")
     # test request by edrpou without decisions (40796115)
     # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
 
