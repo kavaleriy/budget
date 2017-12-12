@@ -192,6 +192,8 @@ module Modules
     end
 
     def sort_e_data
+      # TODO: When first request to api cache with error:
+      # SocketError (getaddrinfo: Name or service not known)
       # payments_data = Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}",expiries_in: 1.day) do
       #   # Data
       #   ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
