@@ -14,18 +14,31 @@ class ExternalApi
 
   def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
     require 'net/http'
-
     # https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614
     # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
+
+    # # # OLd
     # uri = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
-    uri = URI('http://api.spending.gov.ua/api/v2/api/transactions/')
+    #
+    # params = params(payer_erdpou, recipt_edrpou, start_date, end_date)
+    # uri.query = URI.encode_www_form(params)
+    #
+    # res = Net::HTTP.get_response(uri)
+    # # puts res.body if res.is_a?(Net::HTTPSuccess)
+    #
+    # JSON.parse(res.body)
+
+    # # # New
+    url = URI.parse('http://api.spending.gov.ua/api/v2/api/transactions/')
 
     params = params(payer_erdpou, recipt_edrpou, start_date, end_date)
-    uri.query = URI.encode_www_form(params)
+    url.query = URI.encode_www_form(params)
 
-    res = Net::HTTP.get_response(uri)
-    # puts res.body if res.is_a?(Net::HTTPSuccess)
+    http = Net::HTTP.new(url.host, url.port)
+    req = Net::HTTP::Get.new(url.request_uri, { 'Content-Type' => 'application/json' })
+    res = http.request(req)
 
+    # puts(res.body)
     JSON.parse(res.body)
   end
 
@@ -34,17 +47,15 @@ class ExternalApi
 
     encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
     # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=984TP4gxmqnF")
+    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=984TP4gxmqnF")
     # test request by edrpou without decisions (40796115)
     # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
 
     url = URI.parse(encode_url)
 
-    params = { apiKey: '984TP4gxmqnF' }
-
     req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true if url.scheme == 'https'
-    req.body = params.to_json
     res = http.start do |http|
       http.request(req)
     end
