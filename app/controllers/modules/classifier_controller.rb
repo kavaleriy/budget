@@ -192,11 +192,13 @@ module Modules
     end
 
     def sort_e_data
-      payments_data = Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}",expiries_in: 1.day) do
-        # Data
-        ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
-        # Sort data
-      end
+      # payments_data = Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}",expiries_in: 1.day) do
+      #   # Data
+      #   ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
+      #   # Sort data
+      # end
+      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
+
       sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
       unless payments_data.blank?
         payments_data.sort_by! do |hash|
