@@ -24,7 +24,7 @@
       %i.fa.fa-map-marker
       = "#{ t('.occupation') } :"
     .col-xs-8.value
-      = @edr_data_bot['activities'][0]['name']
+      = @edr_data_bot['activities']
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
@@ -38,9 +38,9 @@
     .col-xs-8.value
       - @edr_data_bot['beneficiaries'].each do |beneficiary|
         %span
-          = beneficiary['name']
+          = beneficiary['title']
           = ", #{ t('.contribution') }"
-          = beneficiary['amount']
+          = beneficiary['capital']
         %br
   %p
     = render partial: 'external_api/thanks_data_bot'

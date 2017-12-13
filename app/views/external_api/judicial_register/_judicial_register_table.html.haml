@@ -80,15 +80,18 @@
         -#  %span
         -#    = t('.purpose')
 
-        %th.active{'data-column' => 'entry_date', 'data-sort-direction' => 'desc'}
+        %th.active{'data-column' => 'receipt_date', 'data-sort-direction' => 'desc'}
           %span
             = t('modules.classifier.search_e_data.date')
-        %th{'data-column' => 'number', 'data-sort-direction' => 'desc'}
+        %th{'data-column' => 'doc_id', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.judicial_register.decision') + '№'
-        %th{'data-column' => 'form', 'data-sort-direction' => 'desc'}
+        %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.judicial_register.type_proceedings')
+        %th{'data-column' => 'judge', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.judicial_register.judge')
       = render partial: 'external_api/judicial_register/search_data_bot_results'
     #pagination.text-center
       = paginate @judicial_decisions, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
