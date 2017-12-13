@@ -57,11 +57,12 @@ class ExternalApiController < ApplicationController
   end
 
   def edr
-    @edr_data_bot = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
-
     respond_to do |format|
       selector = '#edr'
-      if @edr_data_bot.key?('full_name')
+      edrpou = @repairing_repairs.edrpou_artist
+
+      @edr_data_bot = ExternalApi.data_bot_edr(edrpou) if edrpou.present?
+      if @edr_data_bot && @edr_data_bot.key?('full_name')
         format.js {
           render file: 'external_api/api_info',
                  locals: {
@@ -80,12 +81,9 @@ class ExternalApiController < ApplicationController
       selector = '#judicial-register'
       lack_data(format, selector) if @repairing_repairs.edrpou_artist.blank?
 
-      # return hash with company data or hash error
-      open_data_request = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
-      company_data = Requests::OpenDataBot.new(open_data_request)
-
-      if company_data.decisions?
-        @judicial_decisions = Kaminari.paginate_array(company_data.decisions).page(params[:page]).per(10)
+      company_data = ExternalApi.data_bot_decisions(@repairing_repairs.edrpou_artist)
+      unless company_data['items'].blank?
+        @judicial_decisions = Kaminari.paginate_array(company_data['items']).page(params[:page]).per(10)
         format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
         format.js do
           render file: 'external_api/judicial_register/judicial_register',
