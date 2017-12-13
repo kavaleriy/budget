@@ -57,11 +57,12 @@ class ExternalApiController < ApplicationController
   end
 
   def edr
-    @edr_data_bot = ExternalApi.data_bot_edr(@repairing_repairs.edrpou_artist)
-
     respond_to do |format|
       selector = '#edr'
-      if @edr_data_bot.key?('full_name')
+      edrpou = @repairing_repairs.edrpou_artist
+
+      @edr_data_bot = ExternalApi.data_bot_edr(edrpou) if edrpou.present?
+      if @edr_data_bot && @edr_data_bot.key?('full_name')
         format.js {
           render file: 'external_api/api_info',
                  locals: {
