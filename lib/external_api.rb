@@ -36,8 +36,14 @@ class ExternalApi
 
     http = Net::HTTP.new(url.host, url.port)
     req = Net::HTTP::Get.new(url.request_uri, { 'Content-Type' => 'application/json' })
-    res = http.request(req)
 
+    tries ||= 3
+    p "try # #{tries}"
+    res = http.request(req)
+  # Retry query 3 times to api if SocketError
+  rescue SocketError => e
+    retry unless (tries -= 1).zero?
+  else
     # puts(res.body)
     JSON.parse(res.body)
   end
