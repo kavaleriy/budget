@@ -61,7 +61,7 @@ class ExternalApiController < ApplicationController
       selector = '#edr'
       edrpou = @repairing_repairs.edrpou_artist
 
-      @edr_data_bot = ExternalApi.data_bot_edr(edrpou) if edrpou.present?
+      @edr_data_bot = ExternalApi.data_bot_edr(edrpou).first if edrpou.present?
       if @edr_data_bot && @edr_data_bot.key?('full_name')
         format.js {
           render file: 'external_api/api_info',
