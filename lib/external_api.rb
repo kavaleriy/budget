@@ -53,7 +53,7 @@ class ExternalApi
     # test request by edrpou without decisions (40796115)
     # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
 
-    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&apiKey=984TP4gxmqnF")
+    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=984TP4gxmqnF")
     get_request(uri)
   end
 
