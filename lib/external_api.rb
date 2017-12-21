@@ -36,8 +36,14 @@ class ExternalApi
 
     http = Net::HTTP.new(url.host, url.port)
     req = Net::HTTP::Get.new(url.request_uri, { 'Content-Type' => 'application/json' })
-    res = http.request(req)
 
+    tries ||= 3
+    p "try # #{tries}"
+    res = http.request(req)
+  # Retry query 3 times to api if SocketError
+  rescue SocketError => e
+    retry unless (tries -= 1).zero?
+  else
     # puts(res.body)
     JSON.parse(res.body)
   end
@@ -53,7 +59,7 @@ class ExternalApi
     # test request by edrpou without decisions (40796115)
     # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
 
-    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&apiKey=984TP4gxmqnF")
+    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=984TP4gxmqnF")
     get_request(uri)
   end
 
