@@ -36,31 +36,31 @@ class ExternalApi
 
     http = Net::HTTP.new(url.host, url.port)
     req = Net::HTTP::Get.new(url.request_uri, { 'Content-Type' => 'application/json' })
-    res = http.request(req)
 
+    tries ||= 3
+    p "try # #{tries}"
+    res = http.request(req)
+  # Retry query 3 times to api if SocketError
+  rescue SocketError => e
+    retry unless (tries -= 1).zero?
+  else
     # puts(res.body)
     JSON.parse(res.body)
   end
 
+  def self.data_bot_edr(erdpou)
+    uri = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=984TP4gxmqnF")
+    get_request(uri)
+  end
+
   def self.data_bot_decisions(erdpou)
-    require 'net/http'
-
-    encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
-    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
-    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
+    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=984TP4gxmqnF")
     # test request by edrpou without decisions (40796115)
-    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
 
-    url = URI.parse(encode_url)
-
-    req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true if url.scheme == 'https'
-    res = http.start do |http|
-      http.request(req)
-    end
-
-    JSON.parse(res.body)
+    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=984TP4gxmqnF")
+    get_request(uri)
   end
 
   def self.most_received(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
@@ -115,6 +115,21 @@ class ExternalApi
 
   class << self
     private
+
+    def get_request(uri)
+      require 'net/http'
+
+      url = URI.parse(uri)
+
+      req = Net::HTTP::Patch.new(url.to_s, 'Content-Type' => 'application/json')
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == 'https'
+      res = http.start do |http|
+        http.request(req)
+      end
+
+      JSON.parse(res.body)
+    end
 
     def default_start_date
       Time.now.months_since(-3).strftime('%Y-%m-%d')

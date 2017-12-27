@@ -218,9 +218,9 @@ module Modules
 
     def sort_data_bot
       # Data
-      judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['warnings'][0]['decisions']
+      judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['items']
       # Sort data
-      sort_col = params[:sort_col].blank? ? 'entry_date' : params[:sort_col]
+      sort_col = params[:sort_col].blank? ? 'receipt_date' : params[:sort_col]
       unless judicial_decisions.blank?
         judicial_decisions.sort_by! do |hash|
           hash[sort_col.to_s]

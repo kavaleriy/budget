@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# not used
+# previously used for api queries open_data_bot
 module Requests
   class OpenDataBot
     attr_reader :warnings

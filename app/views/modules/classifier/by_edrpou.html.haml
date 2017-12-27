@@ -19,7 +19,7 @@
   #search-data {
     #fullscreen{
       i{
-        font-size: 30px;
+        font-size: 39px;
       }
     }
     & .row > div {
@@ -238,13 +238,14 @@
     //}
   }
   #search-by-purpose-wrapper-row{
-    margin-left: 0;
+    margin: 20px 0;
+    //margin-left: 0;
   }
   #search-by-purpose-wrapper{
     //# position: relative;
     width: 25%;
-    float: left;
-    margin: 3px 0;
+    //margin: 20px auto;
+
     //z-index: 2;
     #select2-chosen-1{
       padding-top: 0;
@@ -263,32 +264,70 @@
     width: 25%;
     float: left;
   }
+  .paywatch_logo{
+    display: block;
+    margin: 0 auto;
+  }
+  #search-by-purpose-wrapper{
+    width: 40%;
+    margin: 0 auto;
+    .select2-container .select2-choice{
+      height: 40px;
+      font-size: 18px;
+      .select2-arrow{
+        width: 40px;
+        b {
+          display: block;
+          width: 100%;
+          height: 100%;
+          background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-32.png') no-repeat center;
+        }
+      }
+    }
+    #select2-chosen-1{
+      font-size: 18px;
+      padding-top: 6px !important;
+    }
+  }
+  .export-btn{
+    position: relative;
 
-#search-data
+    .additional-btns{
+      position: absolute;
+      right: 0;
+      top: -52px;
+    }
+  }
+  .results{
+    table{
+      font-size: 16px;
+    }
+  }
+
+#search-data.container
+  = image_tag 'paywatch_logo.png', class: 'paywatch_logo'
   .row
     .col-sm-12.text-center#classifier{'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]}
       %h3= @classifier.pnaz
-  #most-received
-    .pull-right#fullscreen{'data-module' => 'search-data'}
-      = render partial: 'widgets/town_profile/fullscreen_btn'
-    = render partial: 'chart'
-    .row#search-by-purpose-wrapper-row
+
+
+  .row#search-by-purpose-wrapper-row
+    .col-xs-offset-1.col-xs-10
       #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
-          options_for_select([' ','Очищення', 'Товари', 'Послуги', 'Ремонт', 'Харчування', 'Меблі']),
-          data: {placrholdr: 'data-placeholder'}
-      .text-center.purposes-title
-        %h4
-          Список платежів
-      .additional-btns
-        .text-right
-          .embeded-btn
-            = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
-
+          options_for_select([' ','Очищення', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
+    .col-xs-1.pull-right#fullscreen{'data-module' => 'search-data'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
   .results
-
+  .export-btn
+    .additional-btns
+      .text-right
+        .embeded-btn
+          = render partial: 'embeded_btn', locals: {url: modules_classifier_search_data_path(@town)}
+  #most-received
+    = render partial: 'chart'
   .vis-spinner
-    = render partial: 'layouts/spinner'
+    -# = render partial: 'layouts/spinner'
 
   .copyright_info
     = render partial: 'copyright_info'
@@ -298,11 +337,18 @@
     $('#search_by_purpose').select2({
       height: 25,
       width: '100%',
-      allowClear: true
+      allowClear: true,
     }).on('change', function(e){
       classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     });
-
+    $(document).on('keyup', '.select2-input', function(e){
+      var value = e.target.value;
+      if(e.keyCode == 13 && value.length > 3){
+        $('#search_by_purpose').append($('<option>').text(value).attr('selected', true)).select2('close');
+        $('#search_by_purpose').val(value).trigger('change.select2');
+        $('#search_by_purpose').trigger('change')
+      }
+    })
     $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :xls, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
     classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     // add new event and clear previous events for sorting search results
