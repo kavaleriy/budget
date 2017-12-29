@@ -49,17 +49,17 @@ class ExternalApi
   end
 
   def self.data_bot_edr(erdpou)
-    uri = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=984TP4gxmqnF")
+    uri = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
     get_request(uri)
   end
 
   def self.data_bot_decisions(erdpou)
-    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=984TP4gxmqnF")
-    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=984TP4gxmqnF")
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
+    # encode_url = URI.encode("https://opendatabot.com/api/v2/company/39043167?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
     # test request by edrpou without decisions (40796115)
-    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=984TP4gxmqnF")
+    # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
 
-    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=984TP4gxmqnF")
+    uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
     get_request(uri)
   end
 
