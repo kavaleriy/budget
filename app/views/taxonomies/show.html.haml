@@ -43,7 +43,8 @@
     });
 
     function set_iframe(visualizator) {
-      path = "#{request.base_url}"
+      //path = "#{request.base_url}"
+      path = location.origin;
       query = "#{URI.parse(request.url).query}"
       frame_url = path + "/widgets/visify/"+ visualizator + "/#{@taxonomy.id}" + '/?' + query
       $('.tab-content iframe').attr('src', frame_url)
