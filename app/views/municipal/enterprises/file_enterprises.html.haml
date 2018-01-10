@@ -1,0 +1,15 @@
+.container
+  %h3 Комунальні підприємства
+
+  .row.import-enterprises
+    = form_tag municipal_import_enterprises_path, multipart: true do
+      - if current_user && current_user.admin?
+        .form-group
+          = render 'funds_managers/select_town'
+      .form-group.file-upload
+        = file_field_tag :file
+        .formats
+          = '*.xls, *xlsx'
+
+      .form-actions
+        = submit_tag t('form.upload'), class: 'btn btn-default'

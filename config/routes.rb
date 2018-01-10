@@ -177,6 +177,11 @@ Rails.application.routes.draw do
     resources :books
   end
 
+  namespace :municipal do
+    get 'file_enterprises', to: 'enterprises#file_enterprises'
+    post 'import_enterprises', to: 'enterprises#import'
+  end
+
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
   get 'towns/get_parent' => 'towns#get_parent',as: 'get_parent_town'
   get 'export_in_xls/:id' => 'towns#export_town_in_xls', as: 'export_town_in_xls'
