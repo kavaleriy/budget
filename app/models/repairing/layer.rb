@@ -11,7 +11,7 @@ class Repairing::Layer
   # Get budget files by string in title
   scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
 
-  belongs_to :town, class_name: 'Town'
+  belongs_to :town, class_name: 'Town', touch: true
   belongs_to :owner, class_name: 'User'
   belongs_to :repairing_category, class_name: 'Repairing::Category'
 
