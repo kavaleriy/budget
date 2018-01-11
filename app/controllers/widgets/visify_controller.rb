@@ -15,6 +15,7 @@ class Widgets::VisifyController < Widgets::WidgetsController
     # result = use_cache do
     levels = params[:levels] ? params[:levels].split(",") : []
     year = params[:year] ? params[:year] : Date.today.year.to_s
+    year = @sel_year unless @range.map {|k,v| k}.include? year
 
     result = get_bubble_tree(levels, year)
     # end
