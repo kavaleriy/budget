@@ -9,6 +9,7 @@ class Town
   TEST_TOWN_KOATUU = '9876543210'
 
   include Mongoid::Document
+  include Mongoid::Timestamps
   require 'carrierwave/mongoid'
 
   default_scope lambda { order_by(:title => :asc) }
