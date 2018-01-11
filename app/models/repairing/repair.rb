@@ -8,7 +8,7 @@ module Repairing
 
     scope :last_updated, -> {order("updated_at DESC").limit(1)}
     scope :by_layer, -> (layer_id) {where(layer: layer_id)}
-    belongs_to :layer, class_name: 'Repairing::Layer'
+    belongs_to :layer, class_name: 'Repairing::Layer', touch: true
     validates :layer, presence: true
 
     belongs_to :repairing_category, class_name: 'Repairing::Category', dependent: :nullify
@@ -164,7 +164,7 @@ module Repairing
       }
     end
     def self.repair_json_by_town(town)
-      Rails.cache.fetch("/repairings/as_json/#{town}", expires_in: 1.week) do
+      Rails.cache.fetch("/repairings/as_json/#{town}/#{town_updated(town)}", expires_in: 1.week) do
         repairings = Repairing::Layer.valid_layers_with_repairs
         geo_jsons = []
 
@@ -200,6 +200,10 @@ module Repairing
         }
       end
 
+    end
+
+    def self.town_updated(id)
+      Town.find(id).updated_at
     end
   end
 
