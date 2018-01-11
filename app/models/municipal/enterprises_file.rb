@@ -6,6 +6,8 @@ class Municipal::EnterprisesFile
 
   include Mongoid::Timestamps
 
+  scope :by_town, ->(id) { where(town: id) }
+
   belongs_to :owner, class_name: 'User'
   belongs_to :town, class_name: 'Town'
 

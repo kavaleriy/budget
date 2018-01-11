@@ -178,7 +178,8 @@ Rails.application.routes.draw do
   end
 
   namespace :municipal do
-    get 'file_enterprises', to: 'enterprises#file_enterprises'
+    get 'enterprises', to: 'enterprises#index'
+    get 'new_enterprises', to: 'enterprises#new'
     post 'import_enterprises', to: 'enterprises#import'
   end
 
