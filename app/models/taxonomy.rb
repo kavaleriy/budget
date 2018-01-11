@@ -332,6 +332,10 @@
       combined_rows
     end
 
+    def get_years
+      self.budget_files.map { |file| file.get_years }.flatten
+    end
+
     def get_range
       self.budget_files.map { |file| file.get_range }.flatten
     end

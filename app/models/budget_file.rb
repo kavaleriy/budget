@@ -140,7 +140,6 @@ class BudgetFile
 
   end
 
-
   def get_rows year
     rows = self.rows.select{|key| key == year}
     self.rows.select{|key| key != year}.each { |year|
@@ -180,6 +179,11 @@ class BudgetFile
     }
     self.taxonomy.create_tree subrows, filter
   end
+
+  def get_years
+    self.rows.keys.each {|year| year }
+  end
+
 
   def get_range
     range = {}
