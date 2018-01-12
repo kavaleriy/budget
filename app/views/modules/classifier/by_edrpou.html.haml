@@ -266,6 +266,7 @@
   }
   .paywatch_logo{
     display: block;
+    width: 100%;
     margin: 0 auto;
   }
   #search-by-purpose-wrapper{
@@ -312,7 +313,7 @@
 
 
   .row#search-by-purpose-wrapper-row
-    .col-xs-offset-1.col-xs-10
+    .col-sm-offset-1.col-xs-10
       #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
           options_for_select([' ','Очищення', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
