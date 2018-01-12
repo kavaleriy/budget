@@ -2,8 +2,8 @@ require 'file_size_validator'
 
 class Municipal::Enterprise
   include Mongoid::Document
-  include Mongoid::Timestamps
 
+  include Mongoid::Timestamps
   field :edrpou, type: String
   field :title, type: String
 
@@ -34,6 +34,15 @@ class Municipal::Enterprise
       rescue Mongoid::Errors::Validations => e
         next
       end
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename).upcase
+      when '.CSV'  then Roo::CSV.new(file.path)
+      when '.XLS'  then Roo::Spreadsheet.open(file.path, extension: :xls)
+      when '.XLSX' then Roo::Excelx.new(file.path, file_warning: :ignore)
+      else raise "Unknown file type: #{file.original_filename}"
     end
   end
 
