@@ -12,10 +12,10 @@ module Municipal
     end
 
     def import
-      @file_enterprises = EnterprisesFile.new(file_enterprises_params)
+      town = get_town_by_role(params[:town])
+      @file_enterprises = EnterprisesFile.new(file_enterprises_params.merge(town: town))
       @file_enterprises.owner = current_user
 
-      town = get_town_by_role(params[:town])
       Enterprise.import(params[:file], town)
 
       respond_to do |format|

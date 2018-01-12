@@ -23,7 +23,8 @@ class Municipal::Enterprise
       # edrpou = by_edrpou(row['edrpou']).first || new
       edrpou = new
 
-      edrpou.edrpou = row['Код ЄДРПОУ']
+      # to_i for xls files
+      edrpou.edrpou = row['Код ЄДРПОУ'].to_i
       edrpou.title = row['Назва підприємства']
 
       edrpou.town = town

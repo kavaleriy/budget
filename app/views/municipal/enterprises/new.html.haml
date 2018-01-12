@@ -9,6 +9,9 @@
       }
     }
   }
+  .file{
+    display: block;
+  }
 
 .container
   %h3 Завантаження списку комунальних підприємств
@@ -30,7 +33,8 @@
         = submit_tag t('form.upload'), class: 'btn btn-success'
         = link_to 'Повернутись', municipal_enterprises_path, class: 'btn btn-default'
 
-
   - @files.each do |file|
     = link_to file.file.url, class: 'file' do
+      = file.town
       %i.fa.fa-download.fa.fa-border
+      = file.file_identifier
