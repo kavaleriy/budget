@@ -11,6 +11,14 @@
   }
   .file{
     display: block;
+    margin-bottom: 10px;
+    .fa-close{
+      margin-left: 10px;
+      color: red;
+    }
+  }
+  .all-files{
+    margin-top: 50px;
   }
 
 .container
@@ -20,21 +28,20 @@
     = form_tag municipal_import_enterprises_path, multipart: true do
       - if current_user && current_user.admin?
         .form-group
-          = render 'funds_managers/select_town'
+          = render 'select_town'
       - else
         .form-group
           = "Місто: #{current_user.town_model.title}"
-      .form-group.file-upload
+      .form-group.file-upload.clearfix
         = file_field_tag :file
         .formats
           = '*.csv, *.xls, *xlsx'
 
       .form-actions
-        = submit_tag t('form.upload'), class: 'btn btn-success'
+        = submit_tag t('form.save'), class: 'btn btn-success'
         = link_to 'Повернутись', municipal_enterprises_path, class: 'btn btn-default'
 
-  - @files.each do |file|
-    = link_to file.file.url, class: 'file' do
-      = file.town
-      %i.fa.fa-download.fa.fa-border
-      = file.file_identifier
+    -#- if current_user.admin?
+    -#%h3.all-files Усі файли
+    .col-md-12.all-files
+      = render partial: 'files'
