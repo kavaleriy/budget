@@ -1,20 +1,21 @@
-require 'file_size_validator'
+# frozen_string_literal: true
 
-class Municipal::EnterprisesFile
-  include Mongoid::Document
-  require 'carrierwave/mongoid'
+module Municipal
+  class EnterprisesFile
+    include Mongoid::Document
+    require 'carrierwave/mongoid'
 
-  include Mongoid::Timestamps
+    include Mongoid::Timestamps
 
-  scope :by_town, ->(id) { where(town: id) }
+    scope :by_town, ->(id) { where(town: id) }
 
-  belongs_to :owner, class_name: 'User'
-  belongs_to :town, class_name: 'Town'
+    belongs_to :owner, class_name: 'User'
+    belongs_to :town, class_name: 'Town'
+    has_many :enterprises, class_name: 'Municipal::Enterprise', dependent: :destroy
 
-  has_many :enterprises, class_name: 'Municipal::Enterprise', dependent: :destroy
+    private
 
-  private
+    mount_uploader :file, FileUploader
 
-  mount_uploader :file, FileUploader
-
+  end
 end

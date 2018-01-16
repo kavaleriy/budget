@@ -11,6 +11,11 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
+    #search_results{
+      .table-body{
+        margin-top: 5px;
+      }
+    }
   }
 
 .container
@@ -19,10 +24,9 @@
     .header
       %h2 Комунальні підриємства
       .new-btn
-        %h2= link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
+        %h2
+          = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
 
-    -#.documents_search
-      = render partial: 'search'
     .table-title.visible-md.visible-lg
       .row
         .col-sm-2
@@ -31,10 +35,10 @@
           = t('title')
         .col-sm-3
           = t('owner')
-    #enterprises#search_results
+    #search_results
       - if @enterprises
         - @enterprises.each do |enterprise|
-          .table-body{'data-id' => enterprise.id}
+          .table-body{ 'data-id' => enterprise.id }
             .row
               .col-sm-12.col-md-2.reset-padding
                 .row
@@ -46,7 +50,7 @@
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('title')
-                  .col-xs-8.col-md-12{class: "#{valid_status(enterprise.title)}"}
+                  .col-xs-8.col-md-12{ class: "#{valid_status(enterprise.title)}" }
                     = enterprise.title
               .col-sm-12.col-md-3.reset-padding
                 .row
@@ -54,6 +58,3 @@
                     = t('owner')
                   .col-xs-8.col-md-12
                     = enterprise.town.title if enterprise.town?
-
-    -#.paginator
-      = paginate @funds_managers, remote: true
