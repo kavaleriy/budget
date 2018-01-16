@@ -1,0 +1,8 @@
+- @files.each do |file|
+  .file
+    = link_to file.file.url, title: 'Завантажити' do
+      %i.fa.fa-download.fa.fa-border
+      = file.town
+      = file.file_identifier
+    = link_to municipal_destroy_file_enterprises_path(file), method: :delete, title: 'Видалити' do
+      %i.fa.fa-close.fa.fa-border
