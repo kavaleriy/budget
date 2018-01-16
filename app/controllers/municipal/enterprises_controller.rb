@@ -19,7 +19,7 @@ module Municipal
 
       respond_to do |format|
         if @file_enterprises.save
-          # ImportData::MunicipalEnterprises.import(params[:file], @file_enterprises)
+          ImportData::MunicipalEnterprises.import(params[:file], @file_enterprises)
           format.html { redirect_to :back, notice: 'Saved.' }
         else
           format.html { redirect_to :back, notice: 'Not saved.' }

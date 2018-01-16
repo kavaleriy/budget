@@ -180,9 +180,9 @@ Rails.application.routes.draw do
   namespace :municipal do
     get 'enterprises', to: 'enterprises#index'
     get 'new_enterprises', to: 'enterprises#new'
-    post 'import_enterprises', to: 'enterprises#import'
-    delete 'destroy_file_enterprises/:id', to: 'enterprises#destroy_file', as: :destroy_file_enterprises
-    get 'files_by_town/:town', to: 'enterprises#files_by_town', as: :files_by_town
+    # post 'import_enterprises', to: 'enterprises#import'
+    # delete 'destroy_file_enterprises/:id', to: 'enterprises#destroy_file', as: :destroy_file_enterprises
+    # get 'files_by_town/:town', to: 'enterprises#files_by_town', as: :files_by_town
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
