@@ -14,5 +14,7 @@ module Municipal
     has_many :enterprises, class_name: 'Municipal::Enterprise', dependent: :destroy
 
     mount_uploader :file, FileUploader
+
   end
+
 end
