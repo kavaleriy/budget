@@ -16,5 +16,4 @@ module Municipal
     mount_uploader :file, FileUploader
 
   end
-
 end
