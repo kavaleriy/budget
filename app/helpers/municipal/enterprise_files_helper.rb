@@ -1,0 +1,2 @@
+module Municipal::EnterpriseFilesHelper
+end

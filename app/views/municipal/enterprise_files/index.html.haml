@@ -1,0 +1,19 @@
+%h1 Listing municipal_enterprise_files
+
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @municipal_enterprise_files.each do |municipal_enterprise_file|
+      %tr
+        %td= link_to 'Show', municipal_enterprise_file
+        %td= link_to 'Edit', edit_municipal_enterprise_file_path(municipal_enterprise_file)
+        %td= link_to 'Destroy', municipal_enterprise_file, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Enterprise file', new_municipal_enterprise_file_path
