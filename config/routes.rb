@@ -178,7 +178,7 @@ Rails.application.routes.draw do
   end
 
   namespace :municipal do
-    resources :enterprise_files
+    resources :enterprise_files,except: [:show, :edit, :update]
 
     get 'enterprises', to: 'enterprises#index'
     get 'new_enterprises', to: 'enterprises#new'
