@@ -24,6 +24,7 @@ module Municipal
 
     def create
       @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file_params)
+      @municipal_enterprise_file.owner = current_user
 
       respond_to do |format|
         if @municipal_enterprise_file.save

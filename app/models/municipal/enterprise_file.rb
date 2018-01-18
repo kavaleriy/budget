@@ -19,6 +19,7 @@ module Municipal
     field :year, type: Integer
 
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
+    belongs_to :owner, class_name: 'User'
     has_many :code_values, class_name: 'Municipal::CodeValue', dependent: :destroy
 
     validates_presence_of :enterprise, :file_type, :year, :file
@@ -27,7 +28,7 @@ module Municipal
       [
         { id: FORM_1, title: I18n.t('enterprise_files.type_files.form_1') },
         { id: FORM_2, title: I18n.t('enterprise_files.type_files.form_2') },
-        { id: OTHER, title: I18n.t('enterprise_files.type_files.other') }
+        { id: OTHER, title: I18n.t('enterprise_files.type_files.form_3') }
       ]
     end
 
