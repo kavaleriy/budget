@@ -6,6 +6,10 @@ module Municipal
     include Mongoid::Document
     require 'carrierwave/mongoid'
 
+    FORM_1 = '1'.freeze
+    FORM_2 = '2'.freeze
+    OTHER = '3'.freeze
+
     include Mongoid::Timestamps
     mount_uploader :file, FileUploader
     # used for update record with uploader
@@ -14,16 +18,16 @@ module Municipal
     field :file_type, type: String
     field :year, type: Integer
 
-
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
+    has_many :code_values, class_name: 'Municipal::CodeValue', dependent: :destroy
 
     validates_presence_of :enterprise, :file_type, :year, :file
 
     def self.type_files
       [
-        { id: 1, title: I18n.t('enterprise_files.type_files.form_1') },
-        { id: 2, title: I18n.t('enterprise_files.type_files.form_2') },
-        { id: 3, title: I18n.t('enterprise_files.type_files.other') }
+        { id: FORM_1, title: I18n.t('enterprise_files.type_files.form_1') },
+        { id: FORM_2, title: I18n.t('enterprise_files.type_files.form_2') },
+        { id: OTHER, title: I18n.t('enterprise_files.type_files.other') }
       ]
     end
 
