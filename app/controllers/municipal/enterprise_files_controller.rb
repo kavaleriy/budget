@@ -1,7 +1,7 @@
 module Municipal
   # upload enterprises files and parse them
   class EnterpriseFilesController < MunicipalController
-    before_action :set_municipal_enterprise_file, only: [:show, :edit, :update, :destroy]
+    before_action :set_municipal_enterprise_file, only: [:show, :edit, :update, :destroy, :show_code_values]
     before_action :set_enterprises, only: [:new, :edit]
 
     respond_to :html
@@ -14,6 +14,10 @@ module Municipal
     # def show
     #   respond_with(@municipal_enterprise_file)
     # end
+
+    def show_code_values
+      @code_values = Municipal::CodeValue.by_file(@municipal_enterprise_file)
+    end
 
     def new
       @municipal_enterprise_file = Municipal::EnterpriseFile.new

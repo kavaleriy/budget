@@ -20,7 +20,7 @@
 
 -#.container
 
-.enterprises
+.enterprises.col-md-12
   .header
     %h2 Файли комунальних підприємств
     .new-btn
@@ -82,5 +82,7 @@
             .col-sm-12.col-md-1.reset-padding
               = link_to file.file.url, title: 'Завантажити' do
                 %i.fa.fa-download.fa.fa-border
+              = link_to municipal_show_code_values_path(file), target: '_blank', title: 'Переглянути дані' do
+                %i.fa.fa-table.fa.fa-border
               = link_to file, method: :delete, title: 'Видалити', :data => { :confirm => 'Are you sure?' } do
                 %i.fa.fa-close.fa.fa-border
