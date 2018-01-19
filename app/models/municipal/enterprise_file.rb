@@ -32,5 +32,10 @@ module Municipal
       ]
     end
 
+    def self.by_town(town)
+      enterprise_ids = Municipal::Enterprise.where(town: town).pluck(:id)
+      files = where(:enterprise_id.in => enterprise_ids)
+    end
+
   end
 end

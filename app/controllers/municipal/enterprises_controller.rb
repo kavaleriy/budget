@@ -6,8 +6,7 @@ module Municipal
     end
 
     def new
-      files_by_user = EnterprisesFile.by_town(current_user.town_model)
-      @files = current_user.admin? ? EnterprisesFile.all : files_by_user
+      @files = current_user.admin? ? EnterprisesFile.all : EnterprisesFile.by_town(current_user.town_model)
     end
 
     def import

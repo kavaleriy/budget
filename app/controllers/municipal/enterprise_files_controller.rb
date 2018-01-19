@@ -7,8 +7,13 @@ module Municipal
     respond_to :html
 
     def index
-      @municipal_enterprise_files = Municipal::EnterpriseFile.all
-      respond_with(@municipal_enterprise_files)
+      @municipal_enterprise_files = current_user.admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
+      @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
     end
 
     # def show
@@ -51,11 +56,22 @@ module Municipal
     # end
 
     def destroy
-      @municipal_enterprise_file.destroy
-      respond_with(@municipal_enterprise_file)
+      respond_to do |format|
+        if access_by_town?(@municipal_enterprise_file) || current_user.admin?
+          @municipal_enterprise_file.destroy
+          notice =  'Файл видалено.'
+        else
+          notice =  'У вас немає прав для видалення цього файлу.'
+        end
+        format.html { redirect_to municipal_enterprise_files_path, notice: notice }
+      end
     end
 
     private
+
+    def access_by_town?(file)
+      current_user.town.eql?(file.enterprise.town)
+    end
 
     def set_enterprises
       @enterprises = Municipal::Enterprise.by_town(current_user.town_model)
