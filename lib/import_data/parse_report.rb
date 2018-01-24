@@ -3,9 +3,9 @@
 module ImportData
   # import municipal enterprises from file
   class ParseReport < TableFile
-    CODE_LINE = 'Код рядка'.freeze
-    END_REPORTING_PERIOD = 'На кінець звітного періоду'.freeze # for form_1
-    REPORTING_PERIOD = 'За звітний період'.freeze # for form_2
+    CODE_LINE = 'Код рядка'
+    END_REPORTING_PERIOD = 'На кінець звітного періоду' # for form_1
+    REPORTING_PERIOD = 'За звітний період' # for form_2
 
     def self.import_form(file_path, file_record)
       spreadsheet = open_spreadsheet(file_path)
