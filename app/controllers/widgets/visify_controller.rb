@@ -12,14 +12,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
   end
 
   def get_bubbletree_data
-    # result = use_cache do
-    levels = params[:levels] ? params[:levels].split(",") : []
-    year = params[:year] ? params[:year] : Date.today.year.to_s
-    year = @sel_year unless @range.map {|k,v| k}.include? year
+    result = use_cache("#{@budget_file.updated_at}/1#{params[:levels]}") do
+      levels = params[:levels] ? params[:levels].split(",") : []
+      year = params[:year] ? params[:year] : Date.today.year.to_s
+      year = @sel_year unless @range.map {|k,v| k}.include? year
 
-    result = get_bubble_tree(levels, year)
-    # end
-
+      JSON.dump(get_bubble_tree(levels, year))
+    end
     render json: result
   end
 
