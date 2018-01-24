@@ -6,9 +6,9 @@ module Municipal
     include Mongoid::Document
     require 'carrierwave/mongoid'
 
-    FORM_1 = '1'.freeze
-    FORM_2 = '2'.freeze
-    OTHER = '3'.freeze
+    FORM_1 = '1'
+    FORM_2 = '2'
+    OTHER = '3'
 
     include Mongoid::Timestamps
     mount_uploader :file, FileUploader
