@@ -1,0 +1,42 @@
+- if enterprise_files
+  - enterprise_files.each do |file|
+    .table-body{ 'data-id' => file.id }
+      .row
+        .col-sm-12.col-md-3.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = t('modules.classifier.by_type.edrpou')
+            .col-xs-8.col-md-12
+              = file.enterprise.title
+        .col-sm-12.col-md-2.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = 'Звітність'
+            .col-xs-8.col-md-12
+              = t('enterprise_files.type_files.form_' + file.file_type)
+        .col-sm-12.col-md-1.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = t('year')
+            .col-xs-8.col-md-12
+              = file.year
+        .col-sm-12.col-md-3.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = t('title')
+            .col-xs-8.col-md-12
+              = file.file_identifier
+        .col-sm-12.col-md-2.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = t('author')
+            .col-xs-8.col-md-12
+              = file.owner
+
+        .col-sm-12.col-md-1.reset-padding
+          = link_to file.file.url, title: t('form.upload') do
+            %i.fa.fa-download.fa.fa-border
+          = link_to municipal_show_code_values_path(file), target: '_blank', title: t('show') do
+            %i.fa.fa-table.fa.fa-border
+          = link_to file, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
+            %i.fa.fa-close.fa.fa-border

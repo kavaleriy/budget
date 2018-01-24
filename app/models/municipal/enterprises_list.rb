@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Municipal
-  class EnterprisesFile
+  # upload files with enterprises
+  class EnterprisesList
     include Mongoid::Document
     require 'carrierwave/mongoid'
 

@@ -1,0 +1,16 @@
+%h3
+  = @municipal_enterprise_file.enterprise.title
+%p
+  = @municipal_enterprise_file.file_identifier
+  = @municipal_enterprise_file.year
+
+
+%table.table.table-stripped
+  %tr
+    %th Код рядка
+    %th Сума
+
+  - @code_values.each do |code_value|
+    %tr
+      %td= code_value.code
+      %td= code_value.value
