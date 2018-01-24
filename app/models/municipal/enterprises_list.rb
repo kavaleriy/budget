@@ -2,7 +2,7 @@
 
 module Municipal
   # upload files with enterprises
-  class EnterprisesFile
+  class EnterprisesList
     include Mongoid::Document
     require 'carrierwave/mongoid'
 

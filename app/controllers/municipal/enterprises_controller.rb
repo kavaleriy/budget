@@ -6,12 +6,12 @@ module Municipal
     end
 
     def new
-      @files = current_user.admin? ? EnterprisesFile.all : EnterprisesFile.by_town(current_user.town_model)
+      @files = current_user.admin? ? EnterprisesList.all : EnterprisesList.by_town(current_user.town_model)
     end
 
     def import
       town = get_town_by_role(params[:town])
-      @file_enterprises = EnterprisesFile.new(file_enterprises_params.merge(town: town))
+      @file_enterprises = EnterprisesList.new(file_enterprises_params.merge(town: town))
       @file_enterprises.owner = current_user
 
       respond_to do |format|
@@ -25,7 +25,7 @@ module Municipal
     end
 
     def destroy_file
-      @file_enterprises = EnterprisesFile.find(params[:id])
+      @file_enterprises = EnterprisesList.find(params[:id])
       @file_enterprises.destroy
 
       respond_to do |format|
@@ -34,7 +34,7 @@ module Municipal
     end
 
     def files_by_town
-      @files = EnterprisesFile.by_town(params[:town])
+      @files = EnterprisesList.by_town(params[:town])
       respond_to do |format|
         format.js
       end

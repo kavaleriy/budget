@@ -1,6 +1,7 @@
 module Municipal
   # upload enterprises files and parse them
   class EnterpriseFilesController < MunicipalController
+    helper_method :sort_column, :sort_direction
     before_action :set_municipal_enterprise_file, only: [:show, :edit, :update, :destroy, :show_code_values]
     before_action :set_enterprises, only: [:new, :edit]
 
@@ -8,7 +9,10 @@ module Municipal
 
     def index
       @municipal_enterprise_files = current_user.admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
-      @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
+
+      @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
+      @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page])
 
       respond_to do |format|
         format.js
@@ -68,6 +72,14 @@ module Municipal
     end
 
     private
+
+    def sort_column
+      Municipal::EnterpriseFile.fields.keys.include?(params[:sort]) ? params[:sort] : 'year'
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    end
 
     def access_by_town?(file)
       current_user.town.eql?(file.enterprise.town)

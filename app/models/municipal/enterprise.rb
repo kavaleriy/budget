@@ -9,7 +9,7 @@ module Municipal
     field :edrpou, type: String
     field :title, type: String
 
-    belongs_to :file, class_name: 'Municipal::EnterprisesFile'
+    belongs_to :file, class_name: 'Municipal::EnterprisesList'
     belongs_to :town, class_name: 'Town'
     has_many :files, class_name: 'Municipal::EnterpriseFile', dependent: :destroy
 
