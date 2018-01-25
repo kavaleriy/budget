@@ -12,6 +12,18 @@
       }
     }
   }
+  .clarity-analysis{
+    a{
+      display: inline-block;
+      &:nth-child(1){
+        margin-right: 10px;
+      }
+      img {
+        max-width: 100% !important;
+        max-height: 30px;
+      }
+    }
+  }
 
 -if @prozzoro_info.nil?
   = render partial: 'no_data_yet'
@@ -71,3 +83,16 @@
             %i.fa.fa-clock-o{"aria-hidden" => "true"}
             = doc['dateModified'].to_datetime.strftime('%F %H:%M')
             = link_to doc['title'], doc['url'], input_html:{ 'download' => true }
+  .row.clarity-analysis
+    .col-xs-4.title-key
+    .col-xs-8.value
+      .row
+        .col-xs-12
+          - if @repairing_repairs.edrpou_spending_units
+            = link_to image_tag('repairing/customer.png', class: 'img-responsive'),
+                      "https://clarity-project.info/entity/#{@repairing_repairs.edrpou_spending_units}",
+                      target: '_blank'
+          - if @repairing_repairs.edrpou_artist
+            = link_to image_tag('repairing/contractor.png', class: 'img-responsive'),
+                      "https://clarity-project.info/entity/#{@repairing_repairs.edrpou_artist}",
+                      target: '_blank'
