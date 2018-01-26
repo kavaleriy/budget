@@ -19,9 +19,9 @@ module Municipal
       respond_to do |format|
         if @file_enterprises.save
           ImportData::MunicipalEnterprises.import(params[:file], @file_enterprises)
-          format.html { redirect_to :back, notice: 'Saved.' }
+          format.html { redirect_to :back, notice: 'Файл збережено.' }
         else
-          format.html { redirect_to :back, notice: 'Not saved.' }
+          format.html { redirect_to :back, notice: 'Не збережено.' }
         end
       end
     end
@@ -31,7 +31,7 @@ module Municipal
       @file_enterprises.destroy
 
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'File and its enterprises have been deleted.' }
+        format.html { redirect_to :back, notice: 'Файл видалено.' }
       end
     end
 
