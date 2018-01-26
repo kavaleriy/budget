@@ -61,7 +61,7 @@ module Municipal
 
     def destroy
       respond_to do |format|
-        if access_by_town?(@municipal_enterprise_file) || current_user.admin?
+        if current_user.admin? || access_by_town?(@municipal_enterprise_file)
           @municipal_enterprise_file.destroy
           notice =  'Файл видалено.'
         else

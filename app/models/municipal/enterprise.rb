@@ -8,6 +8,7 @@ module Municipal
     include Mongoid::Timestamps
     field :edrpou, type: String
     field :title, type: String
+    field :reporting_type, type: String
 
     belongs_to :file, class_name: 'Municipal::EnterprisesList'
     belongs_to :town, class_name: 'Town'
