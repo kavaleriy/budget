@@ -5,9 +5,10 @@ class ExternalApiController < ApplicationController
 
   def prozzoro
     @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
-    unless @prozzoro_info.blank?
-      @prozzoro_info['docs'] = @prozzoro_info['documents']
-      @prozzoro_info['docs'] += @prozzoro_info['contracts'].first['documents'] || [] unless @prozzoro_info['contracts'].blank?
+    if @prozzoro_info.present?
+      @prozzoro_info['docs'] = []
+      @prozzoro_info['docs'] = @prozzoro_info['documents'] if @prozzoro_info['documents']
+      @prozzoro_info['docs'] += @prozzoro_info['contracts'].first['documents'] || [] if @prozzoro_info['contracts'].present?
     end
 
     respond_to do |format|
