@@ -13,7 +13,7 @@ module Municipal
 
     belongs_to :owner, class_name: 'User'
     belongs_to :town, class_name: 'Town'
-    has_many :enterprises, class_name: 'Municipal::Enterprise', dependent: :destroy
+    has_many :enterprises, class_name: 'Municipal::Enterprise'
 
   end
 end

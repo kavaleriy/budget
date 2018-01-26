@@ -14,6 +14,7 @@ module ImportData
         # to_i for xls files
         enterprise.edrpou = row['Код ЄДРПОУ'].to_i
         enterprise.title = row['Назва підприємства']
+        enterprise.reporting_type = row['Тип звітності']
 
         enterprise.file = file_record.id
         enterprise.town = file_record.town

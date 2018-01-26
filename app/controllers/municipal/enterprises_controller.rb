@@ -1,6 +1,8 @@
 module Municipal
   # upload enterprises from file and show their list
   class EnterprisesController < MunicipalController
+    before_action :set_enterprise, only: [:edit, :update, :destroy]
+
     def index
       @enterprises = current_user.admin? ? Enterprise.all : Enterprise.by_town(current_user.town_model)
     end
@@ -17,9 +19,9 @@ module Municipal
       respond_to do |format|
         if @file_enterprises.save
           ImportData::MunicipalEnterprises.import(params[:file], @file_enterprises)
-          format.html { redirect_to :back, notice: 'Saved.' }
+          format.html { redirect_to :back, notice: 'Файл збережено.' }
         else
-          format.html { redirect_to :back, notice: 'Not saved.' }
+          format.html { redirect_to :back, notice: 'Не збережено.' }
         end
       end
     end
@@ -29,7 +31,32 @@ module Municipal
       @file_enterprises.destroy
 
       respond_to do |format|
-        format.html { redirect_to :back, notice: 'File and its enterprises have been deleted.' }
+        format.html { redirect_to :back, notice: 'Файл видалено.' }
+      end
+    end
+
+    def edit; end
+
+    def update
+      respond_to do |format|
+        if @enterprise.update(enterprise_params)
+          format.html { redirect_to municipal_enterprises_path, notice: 'Успішно оновлено.' }
+        else
+          format.html { render :edit }
+          format.json { render json: @enterprise.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def destroy
+      respond_to do |format|
+        if current_user.admin? || access_by_town?(@enterprise)
+          @enterprise.destroy
+          notice =  'Видалено.'
+        else
+          notice =  'У вас немає прав для видалення.'
+        end
+        format.html { redirect_to municipal_enterprises_path, notice: notice }
       end
     end
 
@@ -42,12 +69,24 @@ module Municipal
 
     private
 
+    def access_by_town?(enterprise)
+      current_user.town.eql?(enterprise.town)
+    end
+
+    def set_enterprise
+      @enterprise = Municipal::Enterprise.find(params[:id])
+    end
+
     def get_town_by_role(town)
       current_user.admin? ? town : current_user.town_model
     end
 
     def file_enterprises_params
       params.permit(:file, :town)
+    end
+
+    def enterprise_params
+      params.require(:municipal_enterprise).permit(:edrpou, :title, :reporting_type)
     end
 
   end

@@ -1,0 +1,13 @@
+= simple_form_for(@enterprise) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :edrpou, label: 'EDRPOU'
+    = f.input :title, label: 'Назва підприємства'
+    = f.input :reporting_type, label: 'Тип',
+              collection: ['З', 'М', 'МС'],
+              prompt: false
+
+  .form-actions
+    = f.button :submit, t('save'), class: 'btn btn-success'
+    = link_to t('back'), municipal_enterprises_path, class: 'btn btn-info'

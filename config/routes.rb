@@ -178,10 +178,10 @@ Rails.application.routes.draw do
   end
 
   namespace :municipal do
+    resources :enterprises, except: [:new, :create]
     resources :enterprise_files, except: [:show, :edit, :update]
     get 'show_code_values/:id', to: 'enterprise_files#show_code_values', as: :show_code_values
 
-    get 'enterprises', to: 'enterprises#index'
     get 'new_enterprises', to: 'enterprises#new'
     post 'import_enterprises', to: 'enterprises#import'
     delete 'destroy_file_enterprises/:id', to: 'enterprises#destroy_file', as: :destroy_file_enterprises

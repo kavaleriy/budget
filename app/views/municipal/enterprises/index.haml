@@ -29,32 +29,51 @@
 
     .table-title.visible-md.visible-lg
       .row
-        .col-sm-2
+        .col-sm-1
           = t('modules.classifier.by_type.edrpou')
-        .col-sm-7
+        .col-sm-6
           = t('title')
+        .col-sm-1
+          = 'Тип звітності'
         .col-sm-3
           = t('owner')
+        .col-sm-1
+          = t('actions')
     #search_results
       - if @enterprises
         - @enterprises.each do |enterprise|
           .table-body{ 'data-id' => enterprise.id }
             .row
-              .col-sm-12.col-md-2.reset-padding
+              .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('modules.classifier.by_type.edrpou')
                   .col-xs-8.col-md-12
                     = enterprise.edrpou
-              .col-sm-12.col-md-7.reset-padding
+              .col-sm-12.col-md-6.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('title')
-                  .col-xs-8.col-md-12{ class: "#{valid_status(enterprise.title)}" }
+                  .col-xs-8.col-md-12
                     = enterprise.title
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = 'Тип звітності'
+                  .col-xs-8.col-md-12
+                    = enterprise.reporting_type
               .col-sm-12.col-md-3.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('owner')
                   .col-xs-8.col-md-12
                     = enterprise.town.title if enterprise.town?
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = t('actions')
+                  .col-xs-8.col-md-12
+                    = link_to edit_municipal_enterprise_path(enterprise), title: t('form.edit') do
+                      %i.fa.fa-pencil.fa.fa-border
+                    = link_to enterprise, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
+                      %i.fa.fa-close.fa.fa-border
