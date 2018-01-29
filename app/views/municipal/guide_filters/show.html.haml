@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Type file:
+  = @municipal_guide_filter.type_file
+%p
+  %b Type enterprise:
+  = @municipal_guide_filter.type_enterprise
+
+= link_to 'Edit', edit_municipal_guide_filter_path(@municipal_guide_filter)
+\|
+= link_to 'Back', municipal_guide_filters_path

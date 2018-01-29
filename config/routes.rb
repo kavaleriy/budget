@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :municipal do
+    resources :guide_filters
+  end
+
   resources :funds_managers do
     collection { post :import }
   end
