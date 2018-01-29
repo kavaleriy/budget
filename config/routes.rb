@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  namespace :municipal do
-    resources :guide_filters
-  end
-
   resources :funds_managers do
     collection { post :import }
   end
@@ -184,7 +180,10 @@ Rails.application.routes.draw do
   namespace :municipal do
     resources :enterprises, except: [:new, :create]
     resources :enterprise_files, except: [:show, :edit, :update]
+    resources :guide_filters
     get 'show_code_values/:id', to: 'enterprise_files#show_code_values', as: :show_code_values
+
+    put 'update_code_desc/:id', to: 'guide_filters#update_code_desc', as: :update_code_desc
 
     get 'new_enterprises', to: 'enterprises#new'
     post 'import_enterprises', to: 'enterprises#import'

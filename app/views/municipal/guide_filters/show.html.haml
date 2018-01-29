@@ -1,12 +1,112 @@
-%p#notice= notice
+:scss
+  .editable-pre-wrapped {
+    white-space: normal;
+    color: #333333;
+    border-bottom: none;
+  }
+  a.editable{
+    border-bottom: none;
+  }
+  .code-descriptions{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .table-title{
+      font-weight: bold;
+      border-bottom: solid lightgrey 2px;
+      //padding: 5px 0;
+    }
+    #search_results{
+      .table-body{
+        margin-top: 5px;
+      }
+    }
+  }
 
-%p
-  %b Type file:
-  = @municipal_guide_filter.type_file
-%p
-  %b Type enterprise:
-  = @municipal_guide_filter.type_enterprise
+=javascript_include_tag 'bootstrap_flash'
+.container
 
-= link_to 'Edit', edit_municipal_guide_filter_path(@municipal_guide_filter)
-\|
-= link_to 'Back', municipal_guide_filters_path
+  .code-descriptions
+    .header
+      %h2 Основні показники
+      -#.new-btn
+      -#  %h2
+      -#    = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
+
+    .table-title.visible-md.visible-lg
+      .row
+        .col-sm-1
+          %i.fa.fa-check-square-o
+        .col-sm-1
+          = 'Код рядка'
+        .col-sm-3
+          = t('title')
+        .col-sm-1
+          = 'Одиниці виміру'
+        .col-sm-4
+          = 'Опис'
+    #search_results
+      - if @municipal_guide_filter
+        - @municipal_guide_filter.code_descriptions.each do |code_desc|
+          .table-body{ 'data-id' => code_desc.id }
+            .row
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    %i.fa.fa-check-square-o
+                  .col-xs-8.col-md-12
+                    = check_box_tag '', code_desc.id, false, class: 'publish-code-desc', name: 'code-desc'
+                    -#%a.editable{ href: '#',
+                    -#   id: 'publish', 'data-type' => 'text', 'data-pk' => "#{code_desc.id}",
+                    -#   'data-url' => "#{municipal_update_code_desc_path(code_desc.id)}",
+                    -#   'data-emptytext' => t('repairing.layers.edit.title') }
+                    -#  = code_desc.publish
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = 'Код рядка'
+                  .col-xs-8.col-md-12
+                    = code_desc.code
+              .col-sm-12.col-md-3.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = t('title')
+                  .col-xs-8.col-md-12
+                    = code_desc.title
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = 'Одиниці виміру'
+                  .col-xs-8.col-md-12
+                    = code_desc.unit
+              .col-sm-12.col-md-6.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = 'Опис'
+                  .col-xs-8.col-md-12
+                    -#= code_desc.description
+                    %a.editable{ href: '#',
+                       id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{code_desc.id}",
+                       'data-url' => "#{municipal_update_code_desc_path(code_desc.id)}",
+                       'data-emptytext' => t('repairing.layers.edit.title') }
+                      = code_desc.description
+              -#.col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = t('actions')
+                  .col-xs-8.col-md-12
+                    = link_to edit_municipal_enterprise_path(code_desc), title: t('form.edit') do
+                      %i.fa.fa-pencil.fa.fa-border
+                    = link_to code_desc, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
+                      %i.fa.fa-close.fa.fa-border
+:javascript
+
+  $(document).ready(function(){
+    $('#search_results .editable').editable({
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+  })

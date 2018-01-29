@@ -11,6 +11,8 @@ module Municipal
     field :unit, type: String
     field :publish, type: Boolean
 
+    default_scope -> { order_by(code: :asc) }
+
     belongs_to :guide_filter, class_name: 'Municipal::GuideFilter'
   end
 end
