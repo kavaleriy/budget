@@ -7,10 +7,12 @@
 
 %table.table.table-stripped
   %tr
+    %th Назва рядка
     %th Код рядка
-    %th Сума
+    %th Значення рядка
 
   - @code_values.each do |code_value|
     %tr
+      %td= code_value.title
       %td= code_value.code
       %td= code_value.value
