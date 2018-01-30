@@ -13,7 +13,9 @@ module Municipal
     scope :by_file, ->(id) { where(enterprise_file: id) }
 
     def title
-      Municipal::CodeDescription.find_by(code: code).try(:title)
+      Rails.cache.fetch("/code_values/title/#{code}", expires_in: 1.week) do
+        Municipal::CodeDescription.find_by(code: code).try(:title)
+      end
     end
 
   end
