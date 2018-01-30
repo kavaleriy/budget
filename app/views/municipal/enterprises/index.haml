@@ -22,7 +22,7 @@
 
   .enterprises
     .header
-      %h2 Комунальні підриємства
+      %h2 = t('enterprise_files.municipal_enterprises')
       .new-btn
         %h2
           = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
@@ -34,7 +34,7 @@
         .col-sm-6
           = t('title')
         .col-sm-1
-          = t('enterprise_files.index.reporting_type')
+          = t('enterprise_files.reporting_type')
         .col-sm-3
           = t('owner')
         .col-sm-1
@@ -59,7 +59,7 @@
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = t('enterprise_files.index.reporting_type')
+                    = t('enterprise_files.reporting_type')
                   .col-xs-8.col-md-12
                     = enterprise.reporting_type
               .col-sm-12.col-md-3.reset-padding

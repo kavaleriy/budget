@@ -1,6 +1,6 @@
 
 .header
-  %h2 Довідники
+  %h2 = t('guide_filters.catalogues')
   .new-btn
     %h2
       = link_to t('form.new'), new_municipal_guide_filter_path, class: 'btn btn-info'
@@ -8,10 +8,10 @@
 %table.table.table-striped
   %thead
     %tr
-      %th Тип підприємства
-      %th Тип файлу
-      %th Назва
-      %th Дії
+      %th = t('guide_filters.enterprise_type')
+      %th = t('guide_filters.file_type')
+      %th = t('title')
+      %th = t('actions')
 
   %tbody
     - @municipal_guide_filters.each do |guide_filter|
