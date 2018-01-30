@@ -11,6 +11,6 @@ module Repairing::RepairsHelper
   end
 
   def correct_edrpou(edrpou)
-    edrpou.length == 7 ? "0#{edrpou}" : edrpou
+    edrpou.rjust(8, '0')
   end
 end
