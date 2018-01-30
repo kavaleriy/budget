@@ -7,10 +7,15 @@
 
 %table.table.table-stripped
   %tr
-    %th Код рядка
-    %th Сума
+    %th
+      = t('enterprise_files.code_title')
+    %th
+      = t('guide_filters.line_code')
+    %th
+      = t('enterprise_files.code_value')
 
   - @code_values.each do |code_value|
     %tr
+      %td= code_value.title
       %td= code_value.code
       %td= code_value.value

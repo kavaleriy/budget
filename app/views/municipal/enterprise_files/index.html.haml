@@ -12,7 +12,7 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
-    #search_results{
+    #search-results{
       .table-body{
         margin-top: 5px;
       }
@@ -22,7 +22,7 @@
 .enterprises.col-md-12
   .header
     %h2
-      = t('enterprise_files.index.utilities_files')
+      = t('enterprise_files.utilities_files')
     .new-btn
       %h2
         = link_to t('form.new'), new_municipal_enterprise_file_path, class: 'btn btn-info'
@@ -32,9 +32,9 @@
   .table-title.visible-md.visible-lg
     .row
       .col-sm-3
-        = sortable 'enterprise_id', t('enterprise_files.index.municipal_enterprise')
+        = sortable 'enterprise_id', t('enterprise_files.municipal_enterprise')
       .col-sm-2
-        = sortable 'file_type', t('enterprise_files.index.accounting')
+        = sortable 'file_type', t('enterprise_files.accounting')
       .col-sm-1
         = sortable 'year', t('year')
       .col-sm-3
@@ -43,7 +43,7 @@
         = sortable 'owner_id', t('author')
       .col-sm-1
         = t('actions')
-  #search_results
+  #search-results
     = render partial: 'search_results', locals: { enterprise_files: @municipal_enterprise_files }
 
   .paginator

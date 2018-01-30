@@ -9,4 +9,8 @@ module Repairing::RepairsHelper
       'not-valid'
     end
   end
+
+  def correct_edrpou(edrpou)
+    edrpou.length == 7 ? "0#{edrpou}" : edrpou
+  end
 end

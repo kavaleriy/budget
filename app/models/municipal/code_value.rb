@@ -12,5 +12,9 @@ module Municipal
 
     scope :by_file, ->(id) { where(enterprise_file: id) }
 
+    def title
+      Municipal::CodeDescription.find_by(code: code).try(:title)
+    end
+
   end
 end
