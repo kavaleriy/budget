@@ -26,7 +26,7 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
-    #search_results{
+    #search-results{
       .table-body{
         margin-top: 5px;
       }
@@ -36,7 +36,8 @@
 .container
   .code-descriptions
     .header
-      %h2 Основні показники
+      %h2
+        = t('guide_filters.key_indicators')
       -#.new-btn
       -#  %h2
       -#    = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
@@ -46,14 +47,14 @@
         .col-sm-1
           %i.fa.fa-check-square-o
         .col-sm-1
-          = 'Код рядка'
+          = t('guide_filters.line_code')
         .col-sm-3
           = t('title')
         .col-sm-1
-          = 'Одиниці виміру'
+          = t('guide_filters.units')
         .col-sm-6
-          = 'Опис коду'
-    #search_results
+          = t('guide_filters.code_description')
+    #search-results
       - if @municipal_guide_filter
         - @municipal_guide_filter.code_descriptions.each do |code_desc|
           .table-body{ id: code_desc.id }
@@ -69,7 +70,7 @@
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = 'Код рядка'
+                    = t('guide_filters.line_code')
                   .col-xs-8.col-md-12
                     = code_desc.code
               .col-sm-12.col-md-3.reset-padding
@@ -81,13 +82,13 @@
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = 'Одиниці виміру'
+                    = t('guide_filters.units')
                   .col-xs-8.col-md-12
                     = code_desc.unit
               .col-sm-12.col-md-6.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = 'Опис'
+                    = t('guide_filters.code_description')
                   .col-xs-8.col-md-12
                     -#= code_desc.description
                     %a.editable{ href: '#',
@@ -107,7 +108,7 @@
 :javascript
 
   $(document).ready(function(){
-    $('#search_results .editable').editable({
+    $('#search-results .editable').editable({
       success: function(response,newValue){
         show_bootstrap_flash(response.message,response.class_name);
       }

@@ -12,7 +12,7 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
-    #search_results{
+    #search-results{
       .table-body{
         margin-top: 5px;
       }
@@ -43,7 +43,7 @@
         = sortable 'owner_id', t('author')
       .col-sm-1
         = t('actions')
-  #search_results
+  #search-results
     = render partial: 'search_results', locals: { enterprise_files: @municipal_enterprise_files }
 
   .paginator

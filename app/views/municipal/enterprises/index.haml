@@ -11,7 +11,7 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
-    #search_results{
+    #search-results{
       .table-body{
         margin-top: 5px;
       }
@@ -34,12 +34,12 @@
         .col-sm-6
           = t('title')
         .col-sm-1
-          = 'Тип звітності'
+          = t('enterprise_files.index.reporting_type')
         .col-sm-3
           = t('owner')
         .col-sm-1
           = t('actions')
-    #search_results
+    #search-results
       - if @enterprises
         - @enterprises.each do |enterprise|
           .table-body{ 'data-id' => enterprise.id }
@@ -59,7 +59,7 @@
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = 'Тип звітності'
+                    = t('enterprise_files.index.reporting_type')
                   .col-xs-8.col-md-12
                     = enterprise.reporting_type
               .col-sm-12.col-md-3.reset-padding
