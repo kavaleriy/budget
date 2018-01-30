@@ -9,7 +9,7 @@ module Municipal
     field :title, type: String
     field :description, type: String
     field :unit, type: String
-    field :publish, type: Boolean
+    field :publish, type: Boolean, default: false
 
     default_scope -> { order_by(code: :asc) }
 

@@ -7,6 +7,14 @@
   a.editable{
     border-bottom: none;
   }
+  .popover-content{
+    padding: 0;
+    .editableform{
+      .input-large{
+        width: 400px;
+      }
+    }
+  }
   .code-descriptions{
     .header{
       display: flex;
@@ -25,9 +33,7 @@
     }
   }
 
-=javascript_include_tag 'bootstrap_flash'
 .container
-
   .code-descriptions
     .header
       %h2 Основні показники
@@ -45,24 +51,21 @@
           = t('title')
         .col-sm-1
           = 'Одиниці виміру'
-        .col-sm-4
-          = 'Опис'
+        .col-sm-6
+          = 'Опис коду'
     #search_results
       - if @municipal_guide_filter
         - @municipal_guide_filter.code_descriptions.each do |code_desc|
-          .table-body{ 'data-id' => code_desc.id }
+          .table-body{ id: code_desc.id }
             .row
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     %i.fa.fa-check-square-o
                   .col-xs-8.col-md-12
-                    = check_box_tag '', code_desc.id, false, class: 'publish-code-desc', name: 'code-desc'
-                    -#%a.editable{ href: '#',
-                    -#   id: 'publish', 'data-type' => 'text', 'data-pk' => "#{code_desc.id}",
-                    -#   'data-url' => "#{municipal_update_code_desc_path(code_desc.id)}",
-                    -#   'data-emptytext' => t('repairing.layers.edit.title') }
-                    -#  = code_desc.publish
+                    = check_box_tag :publish, code_desc.id, code_desc.publish,
+                      onchange: "$(this).data('params', 'publish=' + this.checked)",
+                      data: { remote: true, url: municipal_update_code_desc_path(code_desc.id), method: :put}
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
@@ -90,7 +93,7 @@
                     %a.editable{ href: '#',
                        id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{code_desc.id}",
                        'data-url' => "#{municipal_update_code_desc_path(code_desc.id)}",
-                       'data-emptytext' => t('repairing.layers.edit.title') }
+                       'data-emptytext' => t('repairing.layers.edit.title'), 'data-showbuttons' => 'bottom' }
                       = code_desc.description
               -#.col-sm-12.col-md-1.reset-padding
                 .row

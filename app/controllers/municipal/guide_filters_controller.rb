@@ -61,6 +61,12 @@ module Municipal
 
     private
 
+    def access_user?
+      unless current_user && current_user.admin?
+        redirect_to root_url, alert: t('export_budgets.notice_access')
+      end
+    end
+
     def set_municipal_guide_filter
       @municipal_guide_filter = Municipal::GuideFilter.find(params[:id])
     end
