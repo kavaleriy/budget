@@ -7,9 +7,12 @@
 
 %table.table.table-stripped
   %tr
-    %th Назва рядка
-    %th Код рядка
-    %th Значення рядка
+    %th
+      = t('enterprise_files.code_title')
+    %th
+      = t('guide_filters.line_code')
+    %th
+      = t('enterprise_files.code_value')
 
   - @code_values.each do |code_value|
     %tr

@@ -8,10 +8,14 @@
 %table.table.table-striped
   %thead
     %tr
-      %th = t('guide_filters.enterprise_type')
-      %th = t('guide_filters.file_type')
-      %th = t('title')
-      %th = t('actions')
+      %th
+        = t('guide_filters.enterprise_type')
+      %th
+        = t('guide_filters.file_type')
+      %th
+        = t('title')
+      %th
+        = t('actions')
 
   %tbody
     - @municipal_guide_filters.each do |guide_filter|
