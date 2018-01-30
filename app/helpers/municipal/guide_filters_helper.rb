@@ -1,0 +1,2 @@
+module Municipal::GuideFiltersHelper
+end

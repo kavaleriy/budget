@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Municipal
-  # upload files for enterprise
+  # code values from enterprise file
   class CodeValue
     include Mongoid::Document
 

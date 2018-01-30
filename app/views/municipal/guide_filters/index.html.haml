@@ -1,0 +1,27 @@
+
+.header
+  %h2 Довідники
+  .new-btn
+    %h2
+      = link_to t('form.new'), new_municipal_guide_filter_path, class: 'btn btn-info'
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Тип підприємства
+      %th Тип файлу
+      %th Назва
+      %th Дії
+
+  %tbody
+    - @municipal_guide_filters.each do |guide_filter|
+      %tr
+        %td= guide_filter.type_enterprise
+        %td
+          = t('enterprise_files.type_files.form_' + guide_filter.type_file)
+        %td= guide_filter.file_identifier
+        %td
+          = link_to guide_filter, title: t('form.show') do
+            %i.fa.fa-eye.fa.fa-border
+          = link_to guide_filter, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
+            %i.fa.fa-close.fa.fa-border
