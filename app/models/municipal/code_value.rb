@@ -14,7 +14,7 @@ module Municipal
 
     def title
       Rails.cache.fetch("/code_values/title/#{code}", expires_in: 1.week) do
-        Municipal::CodeDescription.find_by(code: code).try(:title)
+        Municipal::CodeDescription.where(code: code).first.try(:title)
       end
     end
 
