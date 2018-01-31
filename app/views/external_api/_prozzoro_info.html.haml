@@ -14,7 +14,7 @@
   }
 
 -if @prozzoro_info.nil?
-  - unless @repairing_repairs.edrpou_spending_units || @repairing_repairs.edrpou_artist
+  - if @repairing_repairs.edrpou_spending_units.blank? && @repairing_repairs.edrpou_artist.blank?
     = render partial: 'no_data_yet'
   = render partial: 'clarity_analysis'
 -else
