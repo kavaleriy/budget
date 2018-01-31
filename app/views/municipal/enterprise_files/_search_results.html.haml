@@ -33,10 +33,11 @@
             .col-xs-8.col-md-12
               = file.owner
 
-        .col-sm-12.col-md-1.reset-padding
+        .col-sm-12.col-md-1.reset-padding.action-btns
+          - unless file.file_type.eql?('3')
+            = link_to municipal_show_code_values_path(file), target: '_blank', title: t('show') do
+              %i.fa.fa-table.fa.fa-border
           = link_to file.file.url, title: t('form.upload') do
             %i.fa.fa-download.fa.fa-border
-          = link_to municipal_show_code_values_path(file), target: '_blank', title: t('show') do
-            %i.fa.fa-table.fa.fa-border
           = link_to file, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
             %i.fa.fa-close.fa.fa-border

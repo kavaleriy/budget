@@ -22,7 +22,8 @@
 
   .enterprises
     .header
-      %h2 = t('enterprise_files.municipal_enterprises')
+      %h2
+        = t('enterprise_files.municipal_enterprises')
       .new-btn
         %h2
           = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
