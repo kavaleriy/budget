@@ -14,11 +14,11 @@
 
 .row.clarity-analysis
   .col-xs-12
-    - if @repairing_repairs.edrpou_spending_units
+    - if @repairing_repairs.edrpou_spending_units.present?
       = link_to image_tag('repairing/customer.png', class: 'img-responsive'),
                 "https://clarity-project.info/entity/#{correct_edrpou(@repairing_repairs.edrpou_spending_units)}",
                 target: '_blank'
-    - if @repairing_repairs.edrpou_artist
+    - if @repairing_repairs.edrpou_artist.present?
       = link_to image_tag('repairing/contractor.png', class: 'img-responsive'),
                 "https://clarity-project.info/entity/#{correct_edrpou(@repairing_repairs.edrpou_artist)}",
                 target: '_blank'
