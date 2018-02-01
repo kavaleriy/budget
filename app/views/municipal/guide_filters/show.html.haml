@@ -20,6 +20,9 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      .file-title{
+        font-size: 14px;
+      }
     }
     .table-title{
       font-weight: bold;
@@ -38,6 +41,8 @@
     .header
       %h2
         = t('guide_filters.key_indicators')
+        .file-title
+          = @municipal_guide_filter.file_identifier
       -#.new-btn
       -#  %h2
       -#    = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'

@@ -109,6 +109,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     programs = Programs::TargetedProgram.by_town(@town).first
     e_data = Modules::Classifier.by_koatuu(@town.koatuu).first
     repairs = Repairing::Repair.repair_json_by_town(@town.id.to_s)
+    municipal_enterprises = Municipal::Enterprise.by_town(@town).first if current_user && current_user.admin?
 
     result = []
     result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town)) unless taxonomy.nil?
@@ -120,6 +121,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     # TODO: get url with repairing_frame_with_town_path(zoom: 9,town_id: params[:town_id]) and setting logic for this url
     # WARN: script in _frame.html.haml don`t use maps#geo_json
     result << get_item_hash('repair', repairing_map_show_town_path(@town)) unless repairs['features'].blank?
+    result << get_item_hash('municipal_enterprises', municipal_enterprise_analysis_path(@town)) unless municipal_enterprises.nil?
 
     result.compact
   end
