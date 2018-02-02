@@ -11,6 +11,17 @@ module Municipal
         format.html { render file: 'municipal/public_enterprises/enterprise_analysis', layout: 'visify'}
       end
     end
+
+    def search_enterprise_data
+      @enterprise_files = Municipal::EnterpriseFile.where(enterprise_id: params[:enterprise_id])
+
+      respond_to do |format|
+        format.html { render 'municipal/public_enterprises/_search_enterprise_data', layout: 'visify' }
+        format.json { render json: @enterprise_files }
+        format.js
+      end
+    end
+
   end
 end
 

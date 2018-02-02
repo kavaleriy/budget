@@ -191,6 +191,7 @@ Rails.application.routes.draw do
     get 'files_by_town/:town', to: 'enterprises#files_by_town', as: :files_by_town
 
     get 'enterprises_by_town/:town', to: 'public_enterprises#enterprise_analysis', as: :enterprise_analysis
+    get 'public_enterprise_files', to: 'public_enterprises#search_enterprise_data', as: :public_enterprise_files
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'
