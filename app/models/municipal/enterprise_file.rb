@@ -37,5 +37,20 @@ module Municipal
       files = where(:enterprise_id.in => enterprise_ids)
     end
 
+    def self.reporting_chart(enterprise_id, code)
+      files = where(enterprise: enterprise_id).where(file_type: FORM_1)
+      chart = {}
+
+      files.each do |file|
+        year = file.year
+        value = file.code_values.where(code: code).first.value
+        chart[code] = {} if chart[code].nil?
+        chart[code]['years'] = {} if chart[code]['years'].nil?
+
+        chart[code]['years'][year] = value
+      end
+      chart
+    end
+
   end
 end

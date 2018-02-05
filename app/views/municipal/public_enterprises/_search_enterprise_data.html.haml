@@ -1,4 +1,90 @@
-%h1 Файли під-ва
-- if @enterprise_files
-  - @enterprise_files.each do |file|
-    %p= file.file_identifier
+%h3
+  %span Код показника
+  = select_tag :form_1, options_for_select(@codes_form_1.collect{ |c| ["#{c.code}", c.code] }), prompt: "B"
+  = select_tag :form_2, options_for_select(@codes_form_2.collect{ |c| ["#{c.code}", c.code] }), prompt: "F"
+
+= render partial: 'reporting_chart'
+
+:javascript
+  $(document).ready(function(){
+    var data1;
+    var code = 1000;
+    get_chart(code)
+
+    $('#form_1').on('change', function(){
+      code = $(this).val();
+      get_chart(code)
+    });
+
+   function get_chart(code){
+    $.ajax({
+      url: "#{municipal_reporting_chart_path}",
+      type: "GET",
+      dataType: 'json',
+      data: {
+        enterprise_id: $('#_enterprises').val(),
+        code: code
+      },
+      success: function(json) {
+        data1 = json;
+        create_graph();
+      }
+    })
+   }
+
+    function create_graph(){
+      var years = [];
+      var values = [];
+      var data_years = data1[code]['years'];
+
+      $.each(data_years, function(key, value){
+        years.push(key);
+        values.push(value);
+      });
+
+      // If call this function with selected code
+      // Because chart buggy with old selected codes
+      if (typeof code === 'string' ){
+        // find container old chart
+        var lineChart = $("#code-chart").parent();
+        // drop old chart canvas
+        $("#code-chart").remove();
+        // add new canvas
+        lineChart.append('<canvas id="code-chart">');
+        // drop iframe, drop old charts
+        $('.chartjs-hidden-iframe').remove();
+      }
+
+      build_graph(years, values)
+    }
+
+    function build_graph(years, values){
+      var ctx = document.getElementById("code-chart").getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            data: values
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scaleStartValue : 0,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          }
+        }
+      })
+    }
+
+  })
