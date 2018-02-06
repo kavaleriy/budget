@@ -38,14 +38,19 @@ module Municipal
     end
 
     def self.reporting_chart(enterprise_id, code)
-      files = where(enterprise: enterprise_id).where(file_type: FORM_1)
+      file_type = code.first.eql?(FORM_1) ? FORM_1 : FORM_2
+      files = where(enterprise: enterprise_id, file_type: file_type)
+      desc = Municipal::CodeDescription.where(code: code).first.try(:description)
       chart = {}
+
+      chart[code] = {} if chart[code].nil?
+      chart[code]['years'] = {} if chart[code]['years'].nil?
+      chart[code]['desc'] = {} if chart[code]['desc'].nil?
+      chart[code]['desc'] = desc
 
       files.each do |file|
         year = file.year
         value = file.code_values.where(code: code).first.value
-        chart[code] = {} if chart[code].nil?
-        chart[code]['years'] = {} if chart[code]['years'].nil?
 
         chart[code]['years'][year] = value
       end

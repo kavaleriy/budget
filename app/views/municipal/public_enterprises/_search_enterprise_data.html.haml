@@ -1,9 +1,47 @@
-%h3
-  %span Код показника
-  = select_tag :form_1, options_for_select(@codes_form_1.collect{ |c| ["#{c.code}", c.code] }), prompt: "B"
-  = select_tag :form_2, options_for_select(@codes_form_2.collect{ |c| ["#{c.code}", c.code] }), prompt: "F"
+:scss
+  #reporting{
+    margin-top: 10px;
+    select{
+      width: 65px;
+    }
+    #reporting-chart{
+      margin-bottom: 10px;
+      #desc{
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
 
-= render partial: 'reporting_chart'
+
+%ul.nav.nav-tabs{role: 'tablist'}
+  %li.active
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#reporting'}
+      Фінансові показники
+  %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
+      Фінансовий аналіз
+
+.tab-content
+  #reporting.tab-pane.fade.in.active
+    %h4
+      %span Код показника
+      = select_tag :form_1, options_for_select(@codes_form_1.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "B"
+      = select_tag :form_2, options_for_select(@codes_form_2.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "F"
+
+    = render partial: 'reporting_chart'
+
+    .row
+      .col-xs-12
+        .files
+          - @enterprise.other_files.each do |file|
+            = link_to file.file.url, title: 'Завантажити' do
+              %i.fa.fa-download.fa.fa-border
+              = file.file_identifier
+
+  #analysis.tab-pane.fade
+    %h4
+      %span Похідні показники
 
 :javascript
   $(document).ready(function(){
@@ -11,7 +49,7 @@
     var code = 1000;
     get_chart(code)
 
-    $('#form_1').on('change', function(){
+    $('#form_1, #form_2').on('change', function(){
       code = $(this).val();
       get_chart(code)
     });
@@ -55,17 +93,28 @@
         $('.chartjs-hidden-iframe').remove();
       }
 
+      //desc for this graph
+      $("#desc").text(data1[code]['desc']);
+
       build_graph(years, values)
     }
 
     function build_graph(years, values){
       var ctx = document.getElementById("code-chart").getContext('2d');
-      var myChart = new Chart(ctx, {
+      var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      var myChart;
+      gradient.addColorStop(0, 'green');
+      gradient.addColorStop(0.8, 'yellow');
+      gradient.addColorStop(1, 'orange');
+
+      myChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: years,
           datasets: [{
-            data: values
+            data: values,
+            backgroundColor: gradient,
+            hoverBackgroundColor: gradient,
           }]
         },
         options: {
