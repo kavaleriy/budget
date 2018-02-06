@@ -39,9 +39,6 @@
     }
   }
 
-
--#%h3 Комунальні під-ва
-
 #enterprise-analysis
   = simple_form_for '', remote: true do |f|
     .row
@@ -58,7 +55,6 @@
 
     // init select2 and add event -> search if change value (if select not empty)
     $('#_enterprises').select2({
-      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
       allowClear: true
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
@@ -73,18 +69,5 @@
         enterprise_id: $('#_enterprises').val()
       }
       return data;
-    }
-    function classifier_search(url, params) {
-      $("#spinner-container").show();
-      $.ajax({
-        type: 'get',
-        url: url,
-        // async: false,
-        dataType: 'script',
-        data: params,
-        complete: function() {
-          // share_buttons_set_url(this.url);
-        }
-      });
     }
   });
