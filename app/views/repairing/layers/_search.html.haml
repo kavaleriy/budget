@@ -36,7 +36,7 @@
       %span.input-group-addon
         %b
           =t('year')
-      = select_tag :year, options_for_select(years_array(2015)),
+      = select_tag :year, options_for_select(years_from(2015)),
                           include_blank: true,
                           id: 'layer_year',
                           class: 'form-control'

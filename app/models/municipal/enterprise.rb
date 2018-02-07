@@ -19,5 +19,9 @@ module Municipal
     validates_presence_of :edrpou
     validates_uniqueness_of :edrpou, scope: :town
 
+    def other_files
+      files.where(file_type: Municipal::EnterpriseFile::OTHER)
+    end
+
   end
 end

@@ -9,7 +9,7 @@
               collection: @type_files.map {|type| [ type[:title], type[:id] ] },
               prompt: false
     = f.input :year, label: 'Рік',
-              collection: years_array(2015),
+              collection: select_years(10),
               prompt: false
     = f.input :file, label: 'Вибір файлу', class: 'form-control'
 

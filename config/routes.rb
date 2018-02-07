@@ -189,6 +189,10 @@ Rails.application.routes.draw do
     post 'import_enterprises', to: 'enterprises#import'
     delete 'destroy_file_enterprises/:id', to: 'enterprises#destroy_file', as: :destroy_file_enterprises
     get 'files_by_town/:town', to: 'enterprises#files_by_town', as: :files_by_town
+
+    get 'enterprises_by_town/:town', to: 'public_enterprises#enterprise_analysis', as: :enterprise_analysis
+    get 'public_enterprise_files', to: 'public_enterprises#search_enterprise_data', as: :public_enterprise_files
+    get 'reporting_chart', to: 'public_enterprises#reporting_chart', as: :reporting_chart
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'

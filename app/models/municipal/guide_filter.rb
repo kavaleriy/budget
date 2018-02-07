@@ -9,6 +9,12 @@ module Municipal
     field :type_file, type: String
     field :type_enterprise, type: String
 
+    scope :by_type, ->(type_e, type_f) { where(type_enterprise: type_e, type_file: type_f) }
+
     has_many :code_descriptions, class_name: 'Municipal::CodeDescription', dependent: :destroy
+
+    def publish_codes
+      code_descriptions.where(publish: true)
+    end
   end
 end
