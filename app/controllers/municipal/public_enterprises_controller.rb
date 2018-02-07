@@ -5,11 +5,6 @@ module Municipal
 
     def enterprise_analysis
       @enterprises = Municipal::Enterprise.by_town(params[:town])
-
-      respond_with(@enterprises) do |format|
-        format.js { render layout: false }
-        format.html { render file: 'municipal/public_enterprises/enterprise_analysis', layout: 'visify'}
-      end
     end
 
     def search_enterprise_data

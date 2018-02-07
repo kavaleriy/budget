@@ -34,25 +34,22 @@ module Municipal
 
     def self.by_town(town)
       enterprise_ids = Municipal::Enterprise.where(town: town).pluck(:id)
-      files = where(:enterprise_id.in => enterprise_ids)
+      where(:enterprise_id.in => enterprise_ids)
     end
 
     def self.reporting_chart(enterprise_id, code)
+      return {} if code.blank?
       file_type = code.first.eql?(FORM_1) ? FORM_1 : FORM_2
       files = where(enterprise: enterprise_id, file_type: file_type)
       desc = Municipal::CodeDescription.where(code: code).first.try(:description)
       chart = {}
-
-      chart[code] = {} if chart[code].nil?
-      chart[code]['years'] = {} if chart[code]['years'].nil?
-      chart[code]['desc'] = {} if chart[code]['desc'].nil?
-      chart[code]['desc'] = desc
+      chart[code] = { years: {}, desc: desc }
 
       files.each do |file|
         year = file.year
         value = file.code_values.where(code: code).first.value
 
-        chart[code]['years'][year] = value
+        chart[code][:years][year] = value
       end
       chart
     end
