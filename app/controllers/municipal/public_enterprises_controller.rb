@@ -27,6 +27,17 @@ module Municipal
       end
     end
 
+    def analysis_chart
+      # @chart = Municipal::EnterpriseFile.reporting_chart(params[:enterprise_id], params[:code])
+      @chart_analysis = Municipal::EnterpriseFile.analysis_chart(params[:enterprise_id], params[:code_an])
+
+      respond_to do |format|
+        format.html { render 'municipal/public_enterprises/_analysis_chart' }
+        format.json { render json: @chart_analysis }
+        # format.json { render json: @chart }
+      end
+    end
+
   end
 end
 

@@ -54,5 +54,48 @@ module Municipal
       chart
     end
 
+    def self.analysis_chart(enterprise_id, code)
+      return {} if code.blank?
+      file_type = code[2].eql?(FORM_1) ? FORM_1 : FORM_2
+      files = where(enterprise: enterprise_id, file_type: file_type)
+      desc = Municipal::CodeDescription.where(code: code).first.try(:description)
+      chart = {}
+      chart[code] = { years: {}, desc: desc }
+
+      code_info = get_code_info(code)
+
+      files.each do |file|
+        year = file.year
+        # chart[code][:years]["c_#{year}"] = {} if chart[code][:years]["c_#{year}"].nil?
+
+        code_info['f_codes'].each do |code_f|
+          value_f = file.code_values.where(code: code_f).first.try(:value)
+          # chart[code][:years]["c_#{year}"]["c_#{code_f}"] = value_f
+          instance_variable_set("@c_#{code_f}", value_f.to_f)
+        end
+
+        # example code_info['formula'] = "(c_2350/c_2000)*100"
+        chart[code][:years][year] = eval(code_info['formula']).try(:round, 2)
+      end
+
+      binding.pry
+      chart
+    end
+
+    def self.get_code_info(code)
+      require 'csv'
+      csv_text = File.read('db/municipal/formula.csv')
+      csv = CSV.parse(csv_text, headers: true, col_sep: ';')
+
+      code_info = {}
+      csv.each do |row|
+        next unless row['code'].eql?(code)
+        code_info['formula'] = row['formula']
+        code_info['f_codes'] = row['f_codes'].split('|')
+        code_info['abbreviation'] = row['abbreviation']
+      end
+      code_info
+    end
+
   end
 end

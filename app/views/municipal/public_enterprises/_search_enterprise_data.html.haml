@@ -42,6 +42,8 @@
   #analysis.tab-pane.fade
     %h4
       %span Похідні показники
+    = render partial: 'analysis_chart'
+
 
 :javascript
   $(document).ready(function(){
@@ -101,6 +103,103 @@
 
     function build_graph(years, values){
       var ctx = document.getElementById("code-chart").getContext('2d');
+      var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      var myChart;
+      gradient.addColorStop(0, 'green');
+      gradient.addColorStop(0.8, 'yellow');
+      gradient.addColorStop(1, 'orange');
+
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            data: values,
+            backgroundColor: gradient,
+            hoverBackgroundColor: gradient,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scaleStartValue : 0,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          }
+        }
+      })
+    }
+
+  })
+
+
+:javascript
+  $(document).ready(function(){
+    var data1;
+    var code = 71110;
+    get_chart(code)
+
+    // $('#form_1, #form_2').on('change', function(){
+    //   code = $(this).val();
+    //   get_chart(code)
+    // });
+
+   function get_chart(code){
+    $.ajax({
+      url: "#{municipal_analysis_chart_path}",
+      type: "GET",
+      dataType: 'json',
+      data: {
+        enterprise_id: $('#_enterprises').val(),
+        code_an: code
+      },
+      success: function(json) {
+        data1 = json;
+        create_graph();
+      }
+    })
+   }
+
+    function create_graph(){
+      console.log(data1);
+      var years = [];
+      var values = [];
+      var data_years = data1[code]['years'];
+
+      $.each(data_years, function(key, value){
+        years.push(key);
+        values.push(value);
+      });
+
+      // If call this function with selected code
+      // Because chart buggy with old selected codes
+      if (typeof code === 'string' ){
+        // find container old chart
+        var lineChart = $("#code-an-chart").parent();
+        // drop old chart canvas
+        $("#code-an-chart").remove();
+        // add new canvas
+        lineChart.append('<canvas id="code-an-chart">');
+        // drop iframe, drop old charts
+        $('.chartjs-hidden-iframe').remove();
+      }
+
+      //desc for this graph
+      $("#desc").text(data1[code]['desc']);
+
+      build_graph(years, values)
+    }
+
+    function build_graph(years, values){
+      var ctx = document.getElementById("code-an-chart").getContext('2d');
       var gradient = ctx.createLinearGradient(0, 0, 0, 300);
       var myChart;
       gradient.addColorStop(0, 'green');
