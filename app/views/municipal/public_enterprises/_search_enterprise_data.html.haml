@@ -144,7 +144,9 @@
 :javascript
   $(document).ready(function(){
     var data1;
-    var code = 72501;
+    // var code = 72501;
+    // var code = 71103;
+    var code = [72501, 71103];
     get_chart(code)
 
     // $('#form_1, #form_2').on('change', function(){
@@ -170,15 +172,31 @@
 
     function create_graph(){
       console.log(data1);
-      var years = [];
-      var values = [];
-      var data_years = data1[code]['years'];
+      var data_chart = {};
 
-      $.each(data_years, function(key, value){
-        years.push(key);
-        values.push(value);
-      });
+      $.each(data1, function(key, value) {
+        // console.log('key_value');
+        // console.log(key);
+        // console.log(value);
 
+        data_chart[key] = {}
+        data_chart[key]['label'] =  code[0];
+        data_chart[key]['spanGaps'] =  true;
+        data_chart[key]['data'] = [];
+
+
+        console.log('one_value');
+        console.log(value);
+        console.log(value[code[key]]['years']);
+        $.each(value[code[key]]['years'], function(k, v){
+          // console.log('one_value' + k);
+          // console.log(k);
+          // console.log(v);
+          data_chart[key]['data'].push(v);
+        });
+      })
+
+      console.log(data_chart);
       // If call this function with selected code
       // Because chart buggy with old selected codes
       if (typeof code === 'string' ){
@@ -192,29 +210,32 @@
         $('.chartjs-hidden-iframe').remove();
       }
 
-      //desc for this graph
-      $("#desc").text(data1[code]['desc']);
+      var years = [];
+      var data_years = data1[0][code[0]]['years'];
 
-      build_graph(years, values)
+      $.each(data_years, function(key, value){
+        years.push(key);
+      });
+
+      //desc for this graph
+      // $("#desc").text(value['desc']);
+
+      build_graph(years, data_chart)
     }
 
-    function build_graph(years, values){
+    function build_graph(years, data){
       var ctx = document.getElementById("code-an-chart").getContext('2d');
-      var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      // var gradient = ctx.createLinearGradient(0, 0, 0, 300);
       var myChart;
-      gradient.addColorStop(0, 'green');
-      gradient.addColorStop(0.8, 'yellow');
-      gradient.addColorStop(1, 'orange');
+      // gradient.addColorStop(0, 'green');
+      // gradient.addColorStop(0.8, 'yellow');
+      // gradient.addColorStop(1, 'orange');
 
       myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
           labels: years,
-          datasets: [{
-            data: values,
-            backgroundColor: gradient,
-            hoverBackgroundColor: gradient,
-          }]
+          datasets: data
         },
         options: {
           responsive: true,
@@ -224,12 +245,42 @@
             display: false
           },
           scales: {
-            xAxes: [{
-              stacked: true
-            }],
-            yAxes: [{
-              stacked: true
-            }]
+            xAxes: [
+              {
+                gridLines: {
+                  display: false,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                }
+              }
+            ],
+            yAxes: [
+              {
+                id: 'y-axis-0',
+                gridLines: {
+                  // display: true,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                scaleLabel: {
+                  fontColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                  padding: 20,
+                  // min: 0,
+                  maxTicksLimit: 6,
+                  // stepSize: step
+                }
+              }
+            ]
           }
         }
       })
