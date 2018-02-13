@@ -54,7 +54,6 @@ module Municipal
       chart
     end
 
-
     def self.analysis_chart(enterprise_id, codes)
       line_chart = []
 
@@ -68,12 +67,12 @@ module Municipal
     def self.build_line(enterprise_id, code)
       # file_type = code[2].eql?(FORM_1) ? FORM_1 : FORM_2
       # files = where(enterprise: enterprise_id, file_type: file_type).order(year: :asc)
-      files = where(enterprise: enterprise_id, :file_type.in => [FORM_1, FORM_2]).order(year: :asc)
-      desc = Municipal::CodeDescription.where(code: code).first.try(:description)
-      chart = {}
-      chart[code] = { years: {}, desc: desc }
-
       code_info = get_code_info(code)
+      files = where(enterprise: enterprise_id, :file_type.in => [FORM_1, FORM_2]).order(year: :asc)
+      desc = Municipal::CodeDescription.where(code: code).first
+      chart = {}
+      chart[code] = { years: {}, desc: desc.try(:description), title: desc.try(:title), abbr: code_info['abbreviation'] }
+
 
       years = {}
       files.each do |file|
@@ -117,10 +116,10 @@ module Municipal
       csv.each do |row|
         next unless row['code'].eql?(code)
         code_info['formula'] = row['formula']
+        code_info['abbreviation'] = row['abbreviation']
         code_info['codes_1_year'] = row['codes_1_year'].split('|').reject(&:blank?) if row['codes_1_year']
         code_info['codes_2_year'] = row['codes_2_year'].split('|').reject(&:blank?) if row['codes_2_year']
         code_info['f_codes'] = (code_info['codes_1_year'] + code_info['codes_2_year'])
-        code_info['abbreviation'] = row['abbreviation']
       end
       code_info
     end

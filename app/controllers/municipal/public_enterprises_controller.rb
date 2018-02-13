@@ -1,6 +1,7 @@
 module Municipal
   # common logic of municipal enterprises
   class PublicEnterprisesController < ApplicationController
+    before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes]
     respond_to :html
 
     def enterprise_analysis
@@ -8,7 +9,6 @@ module Municipal
     end
 
     def search_enterprise_data
-      @enterprise = Municipal::Enterprise.find(params[:enterprise_id])
       @codes_form_1 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_1).first.publish_codes
       @codes_form_2 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_2).first.publish_codes
 
@@ -28,16 +28,28 @@ module Municipal
     end
 
     def analysis_chart
-      # @chart = Municipal::EnterpriseFile.reporting_chart(params[:enterprise_id], params[:code])
       @chart_analysis = Municipal::EnterpriseFile.analysis_chart(params[:enterprise_id], params[:code_an])
 
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_analysis_chart' }
         format.json { render json: @chart_analysis }
-        # format.json { render json: @chart }
       end
     end
 
+    def analysis_chart_codes
+      @codes_form_3 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::OTHER).first.publish_codes.map(&:code)
+
+      respond_to do |format|
+        format.html { render 'municipal/public_enterprises/_analysis_chart' }
+        format.json { render json: @codes_form_3 }
+      end
+    end
+
+    private
+
+    def set_enterprise
+      @enterprise = Municipal::Enterprise.find(params[:enterprise_id])
+    end
   end
 end
 

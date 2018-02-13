@@ -67,12 +67,12 @@
       },
       success: function(json) {
         data1 = json;
-        create_graph();
+        create_chart();
       }
     })
    }
 
-    function create_graph(){
+    function create_chart(){
       var years = [];
       var values = [];
       var data_years = data1[code]['years'];
@@ -98,10 +98,10 @@
       //desc for this graph
       $("#desc").text(data1[code]['desc']);
 
-      build_graph(years, values)
+      build_chart(years, values)
     }
 
-    function build_graph(years, values){
+    function build_chart(years, values){
       var ctx = document.getElementById("code-chart").getContext('2d');
       var gradient = ctx.createLinearGradient(0, 0, 0, 300);
       var myChart;
@@ -144,86 +144,83 @@
 :javascript
   $(document).ready(function(){
     var data1;
-    // var code = 72501;
-    // var code = 71103;
-    var code = [72501, 71103];
-    get_chart(code)
+    var code;
 
-    // $('#form_1, #form_2').on('change', function(){
-    //   code = $(this).val();
-    //   get_chart(code)
-    // });
-
-   function get_chart(code){
     $.ajax({
-      url: "#{municipal_analysis_chart_path}",
+      url: "#{municipal_analysis_chart_codes_path}",
       type: "GET",
       dataType: 'json',
       data: {
-        enterprise_id: $('#_enterprises').val(),
-        code_an: code
+        enterprise_id: $('#_enterprises').val()
       },
       success: function(json) {
-        data1 = json;
-        create_graph();
+        code = json;
+        get_chart(code)
       }
     })
-   }
 
-    function create_graph(){
-      console.log(data1);
-      var data_chart = {};
+    function get_chart(code){
+      $.ajax({
+        url: "#{municipal_analysis_chart_path}",
+        type: "GET",
+        dataType: 'json',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          code_an: code
+        },
+        success: function(json) {
+          data1 = json;
+          create_chart();
+        }
+      })
+    }
+
+    function create_chart(){
+      // console.log(data1);
+      var data_chart = [];
+      var years = [];
 
       $.each(data1, function(key, value) {
-        // console.log('key_value');
-        // console.log(key);
-        // console.log(value);
-
         data_chart[key] = {}
-        data_chart[key]['label'] =  code[0];
+        data_chart[key]['label'] =  value[code[key]]['abbr'];
         data_chart[key]['spanGaps'] =  true;
         data_chart[key]['data'] = [];
 
-
-        console.log('one_value');
-        console.log(value);
-        console.log(value[code[key]]['years']);
         $.each(value[code[key]]['years'], function(k, v){
-          // console.log('one_value' + k);
-          // console.log(k);
-          // console.log(v);
+          years.push(k);
           data_chart[key]['data'].push(v);
         });
       })
 
-      console.log(data_chart);
+      var data_years = Array.from(new Set(years));
+
       // If call this function with selected code
       // Because chart buggy with old selected codes
-      if (typeof code === 'string' ){
-        // find container old chart
-        var lineChart = $("#code-an-chart").parent();
-        // drop old chart canvas
-        $("#code-an-chart").remove();
-        // add new canvas
-        lineChart.append('<canvas id="code-an-chart">');
-        // drop iframe, drop old charts
-        $('.chartjs-hidden-iframe').remove();
-      }
+      // if (typeof code === 'string' ){
+      //   // find container old chart
+      //   var lineChart = $("#code-an-chart").parent();
+      //   // drop old chart canvas
+      //   $("#code-an-chart").remove();
+      //   // add new canvas
+      //   lineChart.append('<canvas id="code-an-chart">');
+      //   // drop iframe, drop old charts
+      //   $('.chartjs-hidden-iframe').remove();
+      // }
 
-      var years = [];
-      var data_years = data1[0][code[0]]['years'];
-
-      $.each(data_years, function(key, value){
-        years.push(key);
-      });
+      // var years = [];
+      // var data_years = data1[0][code[0]]['years'];
+      //
+      // $.each(data_years, function(key, value){
+      //   years.push(key);
+      // });
 
       //desc for this graph
       // $("#desc").text(value['desc']);
 
-      build_graph(years, data_chart)
+      build_chart(data_years, data_chart)
     }
 
-    function build_graph(years, data){
+    function build_chart(years, data){
       var ctx = document.getElementById("code-an-chart").getContext('2d');
       // var gradient = ctx.createLinearGradient(0, 0, 0, 300);
       var myChart;
@@ -241,46 +238,13 @@
           responsive: true,
           maintainAspectRatio: true,
           scaleStartValue : 0,
-          legend: {
-            display: false
-          },
           scales: {
-            xAxes: [
-              {
-                gridLines: {
-                  display: false,
-                  color: '#fff',
-                  // lineWidth: 1,
-                  zeroLineWidth: 3,
-                  zeroLineColor: '#fff'
-                },
-                ticks: {
-                  fontColor: '#fff',
-                }
-              }
-            ],
-            yAxes: [
-              {
-                id: 'y-axis-0',
-                gridLines: {
-                  // display: true,
-                  color: '#fff',
-                  // lineWidth: 1,
-                  zeroLineWidth: 3,
-                  zeroLineColor: '#fff'
-                },
-                scaleLabel: {
-                  fontColor: '#fff'
-                },
-                ticks: {
-                  fontColor: '#fff',
-                  padding: 20,
-                  // min: 0,
-                  maxTicksLimit: 6,
-                  // stepSize: step
-                }
-              }
-            ]
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: true
+            }]
           }
         }
       })
