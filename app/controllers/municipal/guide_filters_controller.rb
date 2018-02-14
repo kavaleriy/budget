@@ -16,6 +16,7 @@ module Municipal
 
     def new
       @municipal_guide_filter = Municipal::GuideFilter.new
+      @report_type = Municipal::Enterprise.report_type
       @type_files = Municipal::EnterpriseFile.type_files
       respond_with(@municipal_guide_filter)
     end

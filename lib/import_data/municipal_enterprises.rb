@@ -14,7 +14,7 @@ module ImportData
         # to_i for xls files
         enterprise.edrpou = row['Код ЄДРПОУ'].to_i
         enterprise.title = row['Назва підприємства']
-        enterprise.reporting_type = row['Тип звітності']
+        enterprise.reporting_type = report_type(row['Тип звітності'])
 
         enterprise.file = file_record.id
         enterprise.town = file_record.town
@@ -25,6 +25,15 @@ module ImportData
         rescue Mongoid::Errors::Validations => e
           next
         end
+      end
+    end
+
+    def self.report_type(type)
+      case type
+      when 'З' then Municipal::Enterprise::REPORT_TYPE_1
+      when 'М' then Municipal::Enterprise::REPORT_TYPE_2
+      when 'МС' then Municipal::Enterprise::REPORT_TYPE_3
+      else raise "Unknown report type: #{type}"
       end
     end
 

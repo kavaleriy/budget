@@ -67,7 +67,9 @@ module Municipal
     def self.build_line(enterprise_id, code)
       # file_type = code[2].eql?(FORM_1) ? FORM_1 : FORM_2
       # files = where(enterprise: enterprise_id, file_type: file_type).order(year: :asc)
-      code_info = get_code_info(code)
+      enterprise_type = Municipal::Enterprise.find(enterprise_id).try(:reporting_type)
+      code_info = get_code_info(enterprise_type, code)
+
       files = where(enterprise: enterprise_id, :file_type.in => [FORM_1, FORM_2]).order(year: :asc)
       desc = Municipal::CodeDescription.where(code: code).first
       chart = {}
@@ -107,9 +109,9 @@ module Municipal
       chart
     end
 
-    def self.get_code_info(code)
+    def self.get_code_info(enterprise_type, code)
       require 'csv'
-      csv_text = File.read('db/municipal/formula.csv')
+      csv_text = File.read("db/municipal/#{enterprise_type}_formula.csv")
       csv = CSV.parse(csv_text, headers: true, col_sep: ';')
 
       code_info = {}
