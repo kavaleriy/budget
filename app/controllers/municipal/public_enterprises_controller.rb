@@ -19,7 +19,7 @@ module Municipal
     end
 
     def reporting_chart
-      @chart = Municipal::EnterpriseFile.reporting_chart(params[:enterprise_id], params[:code])
+      @chart = Charts::ReportingChart.data_chart(params[:enterprise_id], params[:code])
 
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_reporting_chart' }
@@ -28,7 +28,7 @@ module Municipal
     end
 
     def analysis_chart
-      @chart_analysis = Municipal::EnterpriseFile.analysis_chart(params[:enterprise_id], params[:code_an])
+      @chart_analysis = Charts::AnalysisChart.data_chart(params[:enterprise_id], params[:codes])
 
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_analysis_chart' }
