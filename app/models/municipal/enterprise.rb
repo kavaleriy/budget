@@ -5,10 +5,6 @@ module Municipal
   class Enterprise
     include Mongoid::Document
 
-    REPORT_TYPE_1 = '1'
-    REPORT_TYPE_2 = '2'
-    REPORT_TYPE_3 = '3'
-
     include Mongoid::Timestamps
     field :edrpou, type: String
     field :title, type: String
@@ -27,12 +23,5 @@ module Municipal
       files.where(file_type: Municipal::EnterpriseFile::OTHER)
     end
 
-    def self.report_type
-      [
-        { id: REPORT_TYPE_1, title: 'З' },
-        { id: REPORT_TYPE_2, title: 'М' },
-        { id: REPORT_TYPE_3, title: 'МС' }
-      ]
-    end
   end
 end

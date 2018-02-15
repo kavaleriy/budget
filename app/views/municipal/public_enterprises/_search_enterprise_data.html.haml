@@ -42,8 +42,6 @@
   #analysis.tab-pane.fade
     %h4
       %span Похідні показники
-    = render partial: 'analysis_chart'
-
 
 :javascript
   $(document).ready(function(){
@@ -67,12 +65,12 @@
       },
       success: function(json) {
         data1 = json;
-        create_chart();
+        create_graph();
       }
     })
    }
 
-    function create_chart(){
+    function create_graph(){
       var years = [];
       var values = [];
       var data_years = data1[code]['years'];
@@ -98,10 +96,10 @@
       //desc for this graph
       $("#desc").text(data1[code]['desc']);
 
-      build_chart(years, values)
+      build_graph(years, values)
     }
 
-    function build_chart(years, values){
+    function build_graph(years, values){
       var ctx = document.getElementById("code-chart").getContext('2d');
       var gradient = ctx.createLinearGradient(0, 0, 0, 300);
       var myChart;
@@ -126,126 +124,6 @@
           legend: {
             display: false
           },
-          scales: {
-            xAxes: [{
-              stacked: true
-            }],
-            yAxes: [{
-              stacked: true
-            }]
-          }
-        }
-      })
-    }
-
-  })
-
-
-:javascript
-  $(document).ready(function(){
-    var data1;
-    var codes;
-
-    $.ajax({
-      url: "#{municipal_analysis_chart_codes_path}",
-      type: "GET",
-      dataType: 'json',
-      data: {
-        enterprise_id: $('#_enterprises').val()
-      },
-      success: function(json) {
-        codes = json;
-        get_chart(codes)
-      }
-    })
-
-    function get_chart(codes){
-      $.ajax({
-        url: "#{municipal_analysis_chart_path}",
-        type: "GET",
-        dataType: 'json',
-        data: {
-          enterprise_id: $('#_enterprises').val(),
-          codes: codes
-        },
-        success: function(json) {
-          data1 = json;
-          create_chart();
-        }
-      })
-    }
-
-    function dynamicColors() {
-      var r = Math.floor(Math.random() * 255);
-      var g = Math.floor(Math.random() * 255);
-      var b = Math.floor(Math.random() * 255);
-      return "rgba(" + r + "," + g + "," + b + ",0.4)";
-    }
-
-    function create_chart(){
-      // console.log(data1);
-      var data_chart = [];
-      var years = [];
-
-      $.each(data1, function(key, value) {
-        data_chart[key] = {}
-        data_chart[key]['label'] =  value[codes[key]]['abbr'];
-        data_chart[key]['spanGaps'] =  true;
-        data_chart[key]['data'] = [];
-        data_chart[key]['backgroundColor'] = dynamicColors();
-
-        $.each(value[codes[key]]['years'], function(k, v){
-          years.push(k);
-          data_chart[key]['data'].push(v);
-        });
-      })
-
-      var data_years = Array.from(new Set(years));
-
-      // If call this function with selected code
-      // Because chart buggy with old selected codes
-      // if (typeof code === 'string' ){
-      //   // find container old chart
-      //   var lineChart = $("#code-an-chart").parent();
-      //   // drop old chart canvas
-      //   $("#code-an-chart").remove();
-      //   // add new canvas
-      //   lineChart.append('<canvas id="code-an-chart">');
-      //   // drop iframe, drop old charts
-      //   $('.chartjs-hidden-iframe').remove();
-      // }
-
-      // var years = [];
-      // var data_years = data1[0][code[0]]['years'];
-      //
-      // $.each(data_years, function(key, value){
-      //   years.push(key);
-      // });
-
-      //desc for this graph
-      // $("#desc").text(value['desc']);
-
-      build_chart(data_years, data_chart)
-    }
-
-    function build_chart(years, data){
-      var ctx = document.getElementById("code-an-chart").getContext('2d');
-      // var gradient = ctx.createLinearGradient(0, 0, 0, 300);
-      var myChart;
-      // gradient.addColorStop(0, 'green');
-      // gradient.addColorStop(0.8, 'yellow');
-      // gradient.addColorStop(1, 'orange');
-
-      myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: years,
-          datasets: data
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          scaleStartValue : 0,
           scales: {
             xAxes: [{
               stacked: true

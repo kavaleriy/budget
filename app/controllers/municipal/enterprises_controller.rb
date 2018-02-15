@@ -35,9 +35,7 @@ module Municipal
       end
     end
 
-    def edit
-      @report_type = Municipal::Enterprise.report_type
-    end
+    def edit; end
 
     def update
       respond_to do |format|

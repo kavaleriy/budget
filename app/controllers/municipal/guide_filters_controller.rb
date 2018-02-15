@@ -16,7 +16,7 @@ module Municipal
 
     def new
       @municipal_guide_filter = Municipal::GuideFilter.new
-      set_data_select
+      @type_files = Municipal::EnterpriseFile.type_files
       respond_with(@municipal_guide_filter)
     end
 
@@ -30,7 +30,6 @@ module Municipal
           ImportData::ParseGuideFilter.import(guide_filter_params[:file], @municipal_guide_filter)
           format.html { redirect_to municipal_guide_filters_url, notice: 'Файл успішно додано.' }
         else
-          set_data_select
           format.html { render action: 'new' }
           format.json { render json: @municipal_guide_filter.errors, status: :unprocessable_entity }
         end
@@ -70,11 +69,6 @@ module Municipal
 
     def set_municipal_guide_filter
       @municipal_guide_filter = Municipal::GuideFilter.find(params[:id])
-    end
-
-    def set_data_select
-      @report_type = Municipal::Enterprise.report_type
-      @type_files = Municipal::EnterpriseFile.type_files
     end
 
     def guide_filter_params
