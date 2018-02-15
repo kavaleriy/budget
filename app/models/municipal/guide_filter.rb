@@ -13,8 +13,6 @@ module Municipal
 
     has_many :code_descriptions, class_name: 'Municipal::CodeDescription', dependent: :destroy
 
-    validates_uniqueness_of :type_file, scope: :type_enterprise
-
     def publish_codes
       code_descriptions.where(publish: true)
     end

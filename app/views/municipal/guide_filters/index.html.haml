@@ -31,12 +31,10 @@
     %tbody
       - @municipal_guide_filters.each do |guide_filter|
         %tr
-          %td
-            =t('enterprise.report.type_' + guide_filter.type_enterprise)
+          %td= guide_filter.type_enterprise
           %td
             = t('enterprise_files.type_files.form_' + guide_filter.type_file)
-          %td
-            = guide_filter.file_identifier
+          %td= guide_filter.file_identifier
           %td
             = link_to guide_filter, title: t('form.show'), target: '_blank' do
               %i.fa.fa-eye.fa.fa-border
