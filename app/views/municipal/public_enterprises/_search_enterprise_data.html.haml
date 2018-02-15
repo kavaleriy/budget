@@ -175,6 +175,13 @@
       })
     }
 
+    function dynamicColors() {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      return "rgba(" + r + "," + g + "," + b + ",0.4)";
+    }
+
     function create_chart(){
       // console.log(data1);
       var data_chart = [];
@@ -185,6 +192,7 @@
         data_chart[key]['label'] =  value[codes[key]]['abbr'];
         data_chart[key]['spanGaps'] =  true;
         data_chart[key]['data'] = [];
+        data_chart[key]['backgroundColor'] = dynamicColors();
 
         $.each(value[codes[key]]['years'], function(k, v){
           years.push(k);
