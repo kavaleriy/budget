@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :type_enterprise, label: 'Тип підприємства',
-              collection: %w[З МС М],
+              collection: @report_type.map {|type| [ type[:title], type[:id] ] },
               prompt: false
     = f.input :type_file, label: 'Тип файлу',
               collection: @type_files.map {|type| [ type[:title], type[:id] ] },
