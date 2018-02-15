@@ -16,12 +16,10 @@ module Charts
     end
 
     def self.build_line(enterprise_id, code)
-      # file_type = code[2].eql?(FORM_1) ? FORM_1 : FORM_2
-      # files = where(enterprise: enterprise_id, file_type: file_type).order(year: :asc)
       enterprise_type = Municipal::Enterprise.find(enterprise_id).try(:reporting_type)
       code_info = get_code_info(enterprise_type, code)
+      file_types = file_types(code[2])
 
-      file_types = [Municipal::EnterpriseFile::FORM_1, Municipal::EnterpriseFile::FORM_2]
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, :file_type.in => file_types).order(year: :asc)
       desc = Municipal::CodeDescription.where(code: code).first
       chart = {}
@@ -52,11 +50,9 @@ module Charts
           instance_variable_set("@c2_#{code_f}", before_year[code_f].to_f)
         end if code_info['codes_2_year'].present?
 
-        # binding.pry
         chart[code][:years][year_k] = eval(code_info['formula']).try(:round, 3) if before_year || !code_info['codes_2_year'].present?
       end
 
-      # binding.pry
       chart
     end
 
@@ -76,5 +72,14 @@ module Charts
       end
       code_info
     end
+
+    def self.file_types(type)
+      case type
+      when '1' then [Municipal::EnterpriseFile::FORM_1]
+      when '2' then [Municipal::EnterpriseFile::FORM_2]
+      when '3' then [Municipal::EnterpriseFile::FORM_1, Municipal::EnterpriseFile::FORM_2]
+      end
+    end
+
   end
 end
