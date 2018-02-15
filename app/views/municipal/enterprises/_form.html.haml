@@ -5,7 +5,7 @@
     = f.input :edrpou, label: 'EDRPOU'
     = f.input :title, label: 'Назва підприємства'
     = f.input :reporting_type, label: 'Тип',
-              collection: ['З', 'М', 'МС'],
+              collection: @report_type.map {|type| [ type[:title], type[:id] ] },
               prompt: false
 
   .form-actions
