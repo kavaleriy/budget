@@ -27,6 +27,15 @@ module Municipal
       end
     end
 
+    def reporting_charts
+      @charts = Charts::ReportingChart.data_charts(params[:enterprise_id], params[:codes])
+
+      respond_to do |format|
+        format.js
+        format.json { render json: @charts }
+      end
+    end
+
     def analysis_chart
       @chart_analysis = Charts::AnalysisChart.data_chart(params[:enterprise_id], params[:codes])
 

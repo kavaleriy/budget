@@ -1,0 +1,22 @@
+:scss
+  .reporting-charts{
+    .chart{
+      .title{
+        text-align: center;
+      }
+      .desc{
+        height: 50px;
+      }
+    }
+  }
+
+
+.row.reporting-charts
+  - if @charts
+    - @charts.each do |chart|
+      .col-xs-12.col-md-6.chart
+        .title
+          = chart[chart.keys[0]][:title]
+        %canvas{id: "chart-#{chart.keys[0]}" }
+        .desc
+          = chart[chart.keys[0]][:desc]
