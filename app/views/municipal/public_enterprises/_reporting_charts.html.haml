@@ -1,11 +1,48 @@
 :scss
+
+  // init colors
+  $black-fon: rgba(51,51,51,0.9);
+  $white: white;
+
   .reporting-charts{
     .chart{
       .title{
         text-align: center;
+        overflow: hidden;
+        + .tooltip {
+          .tooltip-inner {
+            background-color: $black-fon;
+            color: $white;
+            font-size: 14px;
+          }
+          .tooltip-arrow {
+            border-top-color: $black-fon;
+            border-bottom-color: $black-fon;
+          }
+        }
+      }
+      .title {
+        height: 20px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .unit {
+        height: 25px;
+        padding-bottom: 5px;
+        color: gray;
+        font-style: italic;
+      }
+      .line-chart{
+        background: lightblue;
+        //padding: 25px 15px 15px 10px;
+        padding: 15px 10px 10px 5px;
       }
       .desc{
-        height: 50px;
+        height: 40px;
+        overflow: hidden;
+        &:hover{
+          overflow-y: auto;
+        }
       }
     }
   }
@@ -15,8 +52,20 @@
   - if @charts
     - @charts.each do |chart|
       .col-xs-12.col-md-6.chart
-        .title
+        .title{title: "#{chart[chart.keys[0]][:title]}", 'aria-hidden' => 'true',  'data-toggle' => 'tooltip', 'data-placement' => 'top'}
+          = chart.keys[0]
           = chart[chart.keys[0]][:title]
-        %canvas{id: "chart-#{chart.keys[0]}" }
+        .unit
+          = chart[chart.keys[0]][:unit]
+        .line-chart
+          %canvas{id: "chart-#{chart.keys[0]}" }
         .desc
           = chart[chart.keys[0]][:desc]
+
+:javascript
+
+  $(document).ready(function(){
+    $('.chart .title').tooltip({
+      trigger: 'hover'
+    });
+  })

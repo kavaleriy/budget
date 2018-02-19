@@ -1,1 +1,1 @@
-$('#reporting_chart').html('<%= escape_javascript(raw(render partial: 'municipal/public_enterprises/reporting_charts')) %>');
+$('#charts_form_' + '<%= @type_form %>').html('<%= escape_javascript(raw(render partial: 'municipal/public_enterprises/reporting_charts')) %>');

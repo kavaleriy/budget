@@ -194,6 +194,7 @@ Rails.application.routes.draw do
     get 'public_enterprise_files', to: 'public_enterprises#search_enterprise_data', as: :public_enterprise_files
     get 'reporting_chart', to: 'public_enterprises#reporting_chart', as: :reporting_chart
     get 'reporting_charts', to: 'public_enterprises#reporting_charts', as: :reporting_charts
+    get 'analysis_charts', to: 'public_enterprises#analysis_charts', as: :analysis_charts
     get 'analysis_chart', to: 'public_enterprises#analysis_chart', as: :analysis_chart
     get 'analysis_chart_codes', to: 'public_enterprises#analysis_chart_codes', as: :analysis_chart_codes
   end

@@ -19,11 +19,12 @@ module Charts
       return {} if code.blank?
       file_type = code.first.eql?(Municipal::EnterpriseFile::FORM_1) ? Municipal::EnterpriseFile::FORM_1 : Municipal::EnterpriseFile::FORM_2
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, file_type: file_type)
-      code_desc = Municipal::CodeDescription.where(code: code).first
-      title = code_desc.try(:title)
-      desc = code_desc.try(:description)
+      code_info = Municipal::CodeDescription.where(code: code).first
+      title = code_info.try(:title)
+      desc = code_info.try(:description)
+      unit = code_info.try(:unit)
       chart = {}
-      chart[code] = { years: {}, desc: desc, title: title }
+      chart[code] = { years: {}, desc: desc, title: title, unit: unit }
 
       files.each do |file|
         year = file.year

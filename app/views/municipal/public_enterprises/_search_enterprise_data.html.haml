@@ -1,17 +1,18 @@
 :scss
-  #form_1{
-    margin-top: 10px;
-    select{
-      width: 65px;
-    }
-    #reporting-chart{
-      margin-bottom: 10px;
-      #desc{
-        font-size: 16px;
-        font-weight: bold;
+
+  .tab-content{
+    .tab-pane{
+      .codes-list{
+        margin-top: 20px;
+        .input{
+          label{
+            display: inline;
+          }
+        }
       }
     }
   }
+
 
 
 %ul.nav.nav-tabs{role: 'tablist'}
@@ -22,6 +23,9 @@
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_2'}
       Звіт про рух грошових коштів
   %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_7'}
+      Фінансова аналітика
+  -#%li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
       Фінансова аналітика
   %li
@@ -32,7 +36,7 @@
   #form_1.tab-pane.fade.in.active
     -#= form_tag form_charts_path do |f|
     .row
-      .col-md-3
+      .col-md-3.codes-list
         - @codes_form_1.each do |code|
           .input
             = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
@@ -40,30 +44,40 @@
             = label_tag code.code, "#{code.code} #{code.title}"
         = link_to 'Застосувати', '#', class: 'run-selected'
 
-      .col-md-9#reporting_chart
+      .col-md-9#charts_form_1
         -#= render partial: 'reporting_chart'
         = render partial: 'reporting_charts'
 
 
+  #form_2.tab-pane.fade
+    .row
+      .col-md-3.codes-list
+        - @codes_form_2.each do |code|
+          .input
+            = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
+            -#= check_box_tag '', code.code, false, class: 'code_checkbox', name: 'form_1'
+            = label_tag code.code, "#{code.code} #{code.title}"
+        = link_to 'Застосувати', '#', class: 'run-selected'
 
-    -#%h4
-    -#  %span Код показника
-    -#  = select_tag :form_1, options_for_select(@codes_form_1.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "B"
-    -#  = select_tag :form_2, options_for_select(@codes_form_2.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "F"
-    -#
-    -#= render partial: 'reporting_chart'
-    -#
-    -#.row
-    -#  .col-xs-12
-    -#    .files
-    -#      - @enterprise.other_files.each do |file|
-    -#        = link_to file.file.url, title: 'Завантажити' do
-    -#          %i.fa.fa-download.fa.fa-border
-    -#          = file.file_identifier
+      .col-md-9#charts_form_2
+        -#= render partial: 'reporting_chart'
+        = render partial: 'reporting_charts'
 
-  -##form_2.tab-pane.fade
+  #form_7.tab-pane.fade
+    .row
+      .col-md-3.codes-list
+        - @codes_form_7.each do |code|
+          .input
+            = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
+            -#= check_box_tag '', code.code, false, class: 'code_checkbox', name: 'form_1'
+            = label_tag code.code, "#{code.code} #{code.title}"
+        = link_to 'Застосувати', '#', class: 'run-selected'
 
-  #analysis.tab-pane.fade
+      .col-md-9#charts_form_7
+        -#= render partial: 'reporting_chart'
+        = render partial: 'reporting_charts'
+
+  -##analysis.tab-pane.fade
     %h4
       %span Похідні показники
     = render partial: 'analysis_chart'
@@ -71,36 +85,44 @@
 
 :javascript
   $(document).ready(function(){
-
     var data1;
     var codes;
 
-    // var code = 1000;
-    // get_chart(code)
-    // var datat = [{"1000":{"years":{"2017":43,"2016":57,"2015":50},"desc":"Наводиться залишкова вартість, яка визначається як різниця між первісною вартістю і сумою накопиченої амортизації"}},{"1001":{"years":{"2017":309,"2016":311,"2015":300},"desc":"Наводиться первісна вартість нематеріальних активів"}}]
-
-    function selected_items(){
-      var result = $('#form_1 input.code-checkbox:checked');
+    function selected_items(id_charts){
+      var result = $(id_charts + ' input.code-checkbox:checked');
       var arr = [];
 
       result.each(function(){
           id = $(this).val();
           arr.push(id);
       })
-
       return arr;
     }
 
-    $('.run-selected').on('click', function(){
-      codes = selected_items();
-      console.log('codes');
+    $('#form_1 .run-selected').on('click', function(){
+      codes = selected_items('#form_1');
+      console.log('codes 1');
       console.log(codes);
       get_charts(codes);
     });
 
-   function get_charts(code){
+    $('#form_2 .run-selected').on('click', function(){
+      codes = selected_items('#form_2');
+      console.log('codes 2');
+      console.log(codes);
+      get_charts(codes);
+    });
+
+    $('#form_7 .run-selected').on('click', function(){
+      codes = selected_items('#form_7');
+      console.log('codes 7');
+      console.log(codes);
+      get_charts(codes, "#{municipal_analysis_charts_path}");
+    });
+
+   function get_charts(code, path = "#{municipal_reporting_charts_path}"){
     $.ajax({
-      url: "#{municipal_reporting_charts_path}",
+      url: path,
       type: "GET",
       dataType: 'script',
       data: {
@@ -109,7 +131,7 @@
       },
       success: function() {
         $.ajax({
-          url: "#{municipal_reporting_charts_path}",
+          url: path,
           type: "GET",
           dataType: 'json',
           data: {
@@ -120,7 +142,6 @@
             console.log('json');
             console.log(json);
             data1 = json;
-
             create_chart();
           }
         })
@@ -133,29 +154,29 @@
 
       $.each(data1, function(key, value) {
         var data_chart = {};
-        var years = [];
-        var code;
+        data_chart['data'] = [];
+        data_chart['years'] = [];
+
         console.log('value');
         console.log(value);
         console.log(codes[key]);
-        // console.log(value);
-        code = codes[key];
-        data_chart = {}
-        data_chart['label'] = code;
-        data_chart['data'] = [];
-        data_chart['spanGaps'] =  true;
+
+        data_chart['code'] = codes[key];
+
         // data_chart[key]['backgroundColor'] = dynamicColors();
 
         $.each(value[codes[key]]['years'], function(k, v){
-          years.push(k);
+          data_chart['years'].push(k);
           data_chart['data'].push(v);
         });
 
-        build_chart(code, years, data_chart);
+        // setTimeout(build_chart(code, years, data_chart), 3000);
+        build_chart(data_chart);
       })
     }
 
-    function build_chart(code, years, data){
+    function build_chart(data){
+      var code = data['code'];
       var chart_id = 'chart-' + code;
       var ctx = document.getElementById(chart_id).getContext('2d');
       var myChart;
@@ -163,29 +184,90 @@
       myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: years,
-          datasets: [data]
+          labels: data['years'],
+          datasets: [{
+            label: code,
+            lineTension: 0.5,
+
+            // fill: false,
+            // backgroundColor: "rgba(240, 177, 80, 0.5)",
+            backgroundColor: "rgba(143, 171, 59, 0.5)",
+
+            borderColor: "#fff",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.1,
+            borderJoinStyle: 'miter',
+
+            pointRadius: 5,
+            pointBorderWidth: 2,
+            pointHitRadius: 4,
+            pointBackgroundColor: "#0c2231",
+            pointBorderColor: "#fff",
+
+            pointHoverRadius: 5,
+            pointHoverBorderWidth: 2,
+            pointHoverHitRadius: 4,
+            pointHoverBackgroundColor: "#ffd304",
+            pointHoverBorderColor: "#fff",
+
+            data: data['data'],
+
+            spanGaps: true,
+          }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: true,
           scaleStartValue : 0,
+          legend: {
+            display: false
+          },
           scales: {
-            xAxes: [{
-              stacked: true
-            }],
-            yAxes: [{
-              stacked: true
-            }]
+            xAxes: [
+              {
+                gridLines: {
+                  display: false,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                }
+              }
+            ],
+            yAxes: [
+              {
+                id: 'y-axis-0',
+                gridLines: {
+                  // display: true,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                scaleLabel: {
+                  fontColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                  padding: 20,
+                  // min: 0,
+                  // maxTicksLimit: 6,
+                  // stepSize: step
+                }
+              }
+            ]
           }
         }
       })
     }
-
   })
 
 
-:javascript
+-#:javascript
   $(document).ready(function(){
     var data1;
     var codes;
