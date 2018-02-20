@@ -61,7 +61,7 @@
           = t('guide_filters.code_description')
     #search-results
       - if @municipal_guide_filter
-        - @municipal_guide_filter.code_descriptions.each do |code_desc|
+        - @municipal_guide_filter.codes.each do |code_desc|
           .table-body{ id: code_desc.id }
             .row
               .col-sm-12.col-md-1.reset-padding

@@ -30,9 +30,9 @@
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_7'}
       Фінансова аналітика
-  -#%li
+  %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
-      Фінансова аналітика
+      Фінансова аналітика(зведена)
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#compare'}
       Порівняти з іншими підприємствами
@@ -47,14 +47,18 @@
   #form_7.tab-pane.fade
     = render partial: 'codes_list', locals: { codes: @codes_form_7, code_type: 7 }
 
-  -##analysis.tab-pane.fade
+  #analysis.tab-pane.fade
     %h4
       %span Похідні показники
     = render partial: 'analysis_chart'
 
+  #compare.tab-pane.fade
+    = render partial: 'compare_enterprises'
+
 
 :javascript
   $(document).ready(function(){
+    // $('.collapse').collapse()
     var data1;
     var codes;
 
@@ -96,8 +100,8 @@
       var arr = [];
 
       result.each(function(){
-          id = $(this).val();
-          arr.push(id);
+        id = $(this).val();
+        arr.push(id);
       })
       return arr;
     }
@@ -238,7 +242,7 @@
   })
 
 
--#:javascript
+:javascript
   $(document).ready(function(){
     var data1;
     var codes;
@@ -267,6 +271,7 @@
         },
         success: function(json) {
           data1 = json;
+          console.log(json);
           create_chart();
         }
       })

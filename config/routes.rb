@@ -192,11 +192,13 @@ Rails.application.routes.draw do
 
     get 'enterprises_by_town/:town', to: 'public_enterprises#enterprise_analysis', as: :enterprise_analysis
     get 'public_enterprise_files', to: 'public_enterprises#search_enterprise_data', as: :public_enterprise_files
-    get 'reporting_chart', to: 'public_enterprises#reporting_chart', as: :reporting_chart
     get 'reporting_charts', to: 'public_enterprises#reporting_charts', as: :reporting_charts
     get 'analysis_charts', to: 'public_enterprises#analysis_charts', as: :analysis_charts
-    get 'analysis_chart', to: 'public_enterprises#analysis_chart', as: :analysis_chart
-    get 'analysis_chart_codes', to: 'public_enterprises#analysis_chart_codes', as: :analysis_chart_codes
+    get 'analysis_chart', to: 'public_enterprises#analysis_chart', as: :analysis_chart ###
+    get 'analysis_chart_codes', to: 'public_enterprises#analysis_chart_codes', as: :analysis_chart_codes ###
+
+    get 'compare_chart', to: 'public_enterprises#compare_chart', as: :compare_chart
+    get 'codes_by_enterprise_type', to: 'public_enterprises#codes_by_enterprise_type', as: :codes_by_enterprise_type
   end
 
   get 'towns/new_town' => 'towns#new_town',as: 'town_new_town'

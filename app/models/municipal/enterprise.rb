@@ -27,6 +27,12 @@ module Municipal
       files.where(file_type: Municipal::EnterpriseFile::OTHER)
     end
 
+    def self.by_type
+      # test query
+      # to do refactor
+      where(reporting_type: REPORT_TYPE_1)
+    end
+
     def self.report_type
       [
         { id: REPORT_TYPE_1, title: 'З' },

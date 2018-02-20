@@ -1,0 +1,4 @@
+- codes_list.each do |code|
+  .input
+    = check_box_tag "#{code.code}", "#{code.code}", code.publish, class: 'code-checkbox'
+    = label_tag code.code, "#{code.code} #{code.title}"

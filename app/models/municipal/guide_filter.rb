@@ -16,7 +16,7 @@ module Municipal
     validates_uniqueness_of :type_file, scope: :type_enterprise
 
     def publish_codes
-      code_descriptions.where(publish: true)
+      codes.where(publish: true)
     end
   end
 end

@@ -1,0 +1,106 @@
+.row
+  .col-md-3.codes-list
+    .run-selected.btn.btn-success Застосувати
+
+    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      .panel.panel-default
+        #headingOne.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne", :role => "button"}
+              Обрати показник
+        #collapseOne.panel-collapse.collapse.in{"aria-labelledby" => "headingOne", :role => "tabpanel"}
+          .panel-body
+            = simple_form_for '', remote: true do |f|
+              = f.input(:code_types, type: 'hidden',
+                  collection: Municipal::EnterpriseFile.type_files.map{ |type| [ type[:title], type[:id] ] },
+                  placeholder: 'Оберіть тип показників',
+                  input_html: {}, label: false)
+
+            #codes-list
+              = render partial: 'codes_by_enterprise_type', locals: { codes_list: @codes_form_1 }
+
+      .panel.panel-default
+        #headingTwo.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo", :role => "button"}
+              Обрати підприємство
+        #collapseTwo.panel-collapse.collapse{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
+          .panel-body
+            - Municipal::Enterprise.by_type.each do |ent|
+              .input
+                = check_box_tag "#{ent.id}", "#{ent.id}", false, class: 'ent-checkbox'
+                = label_tag ent.id, "#{ent.title}"
+
+  .col-md-9
+    = render partial: 'reporting_charts'
+
+
+
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    // init select2 and add event -> search if change value (if select not empty)
+    $('#_code_types').select2({
+      allowClear: true
+    }).on('change', function(data) {
+      // check for empty value, if empty -> do nothing
+      if(data.val) {
+        $.ajax({
+          type: 'get',
+          url: "#{municipal_codes_by_enterprise_type_path}",
+          // async: false,
+          dataType: 'script',
+          data: {
+            enterprise_id: $('#_enterprises').val(),
+            code_type: $('#_code_types').val()
+          },
+          complete: function() {
+            // share_buttons_set_url(this.url);
+          }
+        });
+      }
+    });
+
+    $('#compare .run-selected').on('click', function(){
+      start_chart()
+    });
+
+    function start_chart(){
+      var codes = selected_items('code');
+      var enterprises = selected_items('ent');
+      get_charts_data(codes, enterprises);
+    }
+
+    function selected_items(id_checkboxes){
+      var result = $('#compare input.' + id_checkboxes + '-checkbox:checked');
+
+      var arr = [];
+
+      result.each(function(){
+        id = $(this).val();
+        arr.push(id);
+      })
+      return arr;
+    }
+
+    function get_charts_data(codes, enterprises){
+      $.ajax({
+        url: "#{municipal_compare_chart_path}",
+        type: "GET",
+        dataType: 'json',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          codes: codes,
+          enterprises: enterprises
+        },
+        success: function(json) {
+          data1 = json;
+          create_chart();
+        }
+      })
+    }
+
+  });
