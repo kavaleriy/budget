@@ -7,7 +7,12 @@
         .input{
           label{
             display: inline;
+            font-weight: normal;
           }
+        }
+        .run-selected{
+          margin-bottom: 10px;
+          border-radius: 0;
         }
       }
     }
@@ -32,50 +37,15 @@
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#compare'}
       Порівняти з іншими підприємствами
 
-.tab-content
+.tab-content.charts
   #form_1.tab-pane.fade.in.active
-    -#= form_tag form_charts_path do |f|
-    .row
-      .col-md-3.codes-list
-        - @codes_form_1.each do |code|
-          .input
-            = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
-            -#= check_box_tag '', code.code, false, class: 'code_checkbox', name: 'form_1'
-            = label_tag code.code, "#{code.code} #{code.title}"
-        = link_to 'Застосувати', '#', class: 'run-selected'
-
-      .col-md-9#charts_form_1
-        -#= render partial: 'reporting_chart'
-        = render partial: 'reporting_charts'
-
+    = render partial: 'codes_list', locals: { codes: @codes_form_1, code_type: 1 }
 
   #form_2.tab-pane.fade
-    .row
-      .col-md-3.codes-list
-        - @codes_form_2.each do |code|
-          .input
-            = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
-            -#= check_box_tag '', code.code, false, class: 'code_checkbox', name: 'form_1'
-            = label_tag code.code, "#{code.code} #{code.title}"
-        = link_to 'Застосувати', '#', class: 'run-selected'
-
-      .col-md-9#charts_form_2
-        -#= render partial: 'reporting_chart'
-        = render partial: 'reporting_charts'
+    = render partial: 'codes_list', locals: { codes: @codes_form_2, code_type: 2 }
 
   #form_7.tab-pane.fade
-    .row
-      .col-md-3.codes-list
-        - @codes_form_7.each do |code|
-          .input
-            = check_box_tag "#{code.code}", "#{code.code}", false, class: 'code-checkbox'
-            -#= check_box_tag '', code.code, false, class: 'code_checkbox', name: 'form_1'
-            = label_tag code.code, "#{code.code} #{code.title}"
-        = link_to 'Застосувати', '#', class: 'run-selected'
-
-      .col-md-9#charts_form_7
-        -#= render partial: 'reporting_chart'
-        = render partial: 'reporting_charts'
+    = render partial: 'codes_list', locals: { codes: @codes_form_7, code_type: 7 }
 
   -##analysis.tab-pane.fade
     %h4
@@ -88,6 +58,39 @@
     var data1;
     var codes;
 
+    if($('.charts .tab-pane').hasClass('active')){
+      var chart = $('.charts .tab-pane.active');
+      start_chart('#' + chart[0].id)
+    }
+
+    // $("#results .nav-tabs li").click(function(){
+    //   if($('.charts .tab-pane').hasClass("active")){
+    //     var chart = $('.charts .tab-pane.active');
+    //     console.log(chart[0].nextElementSibling);
+    //
+    //     start_chart('#' + chart[0].id)
+    //   }
+    // })
+
+    $('#form_1 .run-selected').on('click', function(){
+      start_chart('#form_1')
+    });
+
+    $('#form_2 .run-selected').on('click', function(){
+      start_chart('#form_2')
+    });
+
+    $('#form_7 .run-selected').on('click', function(){
+      start_chart('#form_7', "#{municipal_analysis_charts_path}")
+    });
+
+    function start_chart(selector, path = "#{municipal_reporting_charts_path}"){
+      codes = selected_items(selector);
+      // console.log('codes 1');
+      // console.log(codes);
+      get_charts_data(codes, path);
+    }
+
     function selected_items(id_charts){
       var result = $(id_charts + ' input.code-checkbox:checked');
       var arr = [];
@@ -99,70 +102,39 @@
       return arr;
     }
 
-    $('#form_1 .run-selected').on('click', function(){
-      codes = selected_items('#form_1');
-      console.log('codes 1');
-      console.log(codes);
-      get_charts(codes);
-    });
-
-    $('#form_2 .run-selected').on('click', function(){
-      codes = selected_items('#form_2');
-      console.log('codes 2');
-      console.log(codes);
-      get_charts(codes);
-    });
-
-    $('#form_7 .run-selected').on('click', function(){
-      codes = selected_items('#form_7');
-      console.log('codes 7');
-      console.log(codes);
-      get_charts(codes, "#{municipal_analysis_charts_path}");
-    });
-
-   function get_charts(code, path = "#{municipal_reporting_charts_path}"){
-    $.ajax({
-      url: path,
-      type: "GET",
-      dataType: 'script',
-      data: {
-        enterprise_id: $('#_enterprises').val(),
-        codes: code
-      },
-      success: function() {
-        $.ajax({
-          url: path,
-          type: "GET",
-          dataType: 'json',
-          data: {
-            enterprise_id: $('#_enterprises').val(),
-            codes: code
-          },
-          success: function(json) {
-            console.log('json');
-            console.log(json);
-            data1 = json;
-            create_chart();
-          }
-        })
-      }
-    })
-   }
+    function get_charts_data(code, path){
+      $.ajax({
+        url: path,
+        type: "GET",
+        dataType: 'script',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          codes: code
+        },
+        success: function() {
+          $.ajax({
+            url: path,
+            type: "GET",
+            dataType: 'json',
+            data: {
+              enterprise_id: $('#_enterprises').val(),
+              codes: code
+            },
+            success: function(json) {
+              data1 = json;
+              create_chart();
+            }
+          })
+        }
+      })
+    }
 
     function create_chart(){
-      // console.log(data1);
-
       $.each(data1, function(key, value) {
         var data_chart = {};
         data_chart['data'] = [];
         data_chart['years'] = [];
-
-        console.log('value');
-        console.log(value);
-        console.log(codes[key]);
-
         data_chart['code'] = codes[key];
-
         // data_chart[key]['backgroundColor'] = dynamicColors();
 
         $.each(value[codes[key]]['years'], function(k, v){
@@ -170,7 +142,6 @@
           data_chart['data'].push(v);
         });
 
-        // setTimeout(build_chart(code, years, data_chart), 3000);
         build_chart(data_chart);
       })
     }

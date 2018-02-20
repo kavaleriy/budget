@@ -11,7 +11,7 @@ module Municipal
 
     scope :by_type, ->(type_e, type_f) { where(type_enterprise: type_e, type_file: type_f) }
 
-    has_many :code_descriptions, class_name: 'Municipal::CodeDescription', dependent: :destroy
+    has_many :codes, class_name: 'Municipal::CodeDescription', dependent: :destroy
 
     validates_uniqueness_of :type_file, scope: :type_enterprise
 
