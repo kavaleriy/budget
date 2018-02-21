@@ -1,7 +1,7 @@
 module Municipal
   # common logic of municipal enterprises
   class PublicEnterprisesController < ApplicationController
-    before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes, :codes_by_enterprise_type]
+    before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes, :codes_by_enterprise_type, :compare_chart]
     respond_to :html
 
     def enterprise_analysis
@@ -66,12 +66,12 @@ module Municipal
     end
 
     def compare_chart
-      # binding.pry
-      # @codes_form = Municipal::GuideFilter.by_type(@enterprise.reporting_type, params[:code_type]).first.codes
-      #
-      # respond_to do |format|
-      #   format.js
-      # end
+      @enterprises = Municipal::Enterprise.where(reporting_type: @enterprise.reporting_type, town: @enterprise.town, :id.in => params[:enterprises])
+      @chart = Charts::CompareChart.data_chart(@enterprises, params[:code])
+
+      respond_to do |format|
+        format.json { render json: @chart }
+      end
     end
 
     private

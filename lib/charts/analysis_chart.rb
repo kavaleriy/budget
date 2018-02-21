@@ -27,7 +27,7 @@ module Charts
         years: {},
         desc: code_info.try(:description),
         title: code_info.try(:title),
-        abbr: code_formula_info['abbreviation'],
+        # abbr: code_formula_info['abbreviation'],
         unit: code_info.try(:unit)
       }
 

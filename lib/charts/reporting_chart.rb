@@ -24,7 +24,12 @@ module Charts
       desc = code_info.try(:description)
       unit = code_info.try(:unit)
       chart = {}
-      chart[code] = { years: {}, desc: desc, title: title, unit: unit }
+      chart[code] = {
+        years: {},
+        desc: desc,
+        title: title,
+        unit: unit
+      }
 
       files.each do |file|
         year = file.year

@@ -19,18 +19,15 @@ module Municipal
     has_many :files, class_name: 'Municipal::EnterpriseFile', dependent: :destroy
 
     scope :by_town, ->(id) { where(town: id) }
+    scope :by_type, ->(enterprise) {
+      where(reporting_type: enterprise.reporting_type, town: enterprise.town)
+    }
 
     validates_presence_of :edrpou
     validates_uniqueness_of :edrpou, scope: :town
 
     def other_files
       files.where(file_type: Municipal::EnterpriseFile::OTHER)
-    end
-
-    def self.by_type
-      # test query
-      # to do refactor
-      where(reporting_type: REPORT_TYPE_1)
     end
 
     def self.report_type
