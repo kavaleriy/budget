@@ -31,7 +31,7 @@
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_7'}
       Фінансова аналітика
-  %li
+  -#%li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
       Фінансова аналітика(зведена)
   %li
@@ -48,7 +48,7 @@
   #form_7.tab-pane.fade
     = render partial: 'codes_list', locals: { codes: @codes_form_7, code_type: 7 }
 
-  #analysis.tab-pane.fade
+  -##analysis.tab-pane.fade
     %h4
       %span Похідні показники
     = render partial: 'analysis_chart'
@@ -60,22 +60,13 @@
 :javascript
   $(document).ready(function(){
     // $('.collapse').collapse()
-    var data1;
-    var codes;
+    // var data1;
+    // var codes;
 
-    if($('.charts .tab-pane').hasClass('active')){
-      var chart = $('.charts .tab-pane.active');
-      start_chart('#' + chart[0].id)
-    }
-
-    // $("#results .nav-tabs li").click(function(){
-    //   if($('.charts .tab-pane').hasClass("active")){
-    //     var chart = $('.charts .tab-pane.active');
-    //     console.log(chart[0].nextElementSibling);
-    //
-    //     start_chart('#' + chart[0].id)
-    //   }
-    // })
+    // if($('.charts .tab-pane').hasClass('active')){
+    //   var chart = $('.charts .tab-pane.active');
+    //   start_chart('#' + chart[0].id);
+    // }
 
     $('#form_1 .run-selected').on('click', function(){
       start_chart('#form_1')
@@ -89,10 +80,23 @@
       start_chart('#form_7', "#{municipal_analysis_charts_path}")
     });
 
+    // load page with first nav-tab content
+    $('#form_1 .run-selected').trigger("click");
+
+    // load nav-tabs content if first click
+    $('.nav-tabs li a').click(function(){
+      id_chart = $(this).attr('href');
+      // $(id_chart + ' .run-selected').trigger("click");
+
+      if($(id_chart).find('canvas').length == 0){
+        $(id_chart + ' .run-selected').trigger("click");
+      }
+    })
+
     function start_chart(selector, path = "#{municipal_reporting_charts_path}"){
-      codes = selected_items(selector);
-      // console.log('codes 1');
-      // console.log(codes);
+      // console.log("sdfsdfsd ");
+      // console.log(selector);
+      var codes = selected_items(selector);
       get_charts_data(codes, path);
     }
 
@@ -107,42 +111,45 @@
       return arr;
     }
 
-    function get_charts_data(code, path){
+    function get_charts_data(codes, path){
+      // var data1;
       $.ajax({
         url: path,
         type: "GET",
+        async: false,
         dataType: 'script',
         data: {
           enterprise_id: $('#_enterprises').val(),
-          codes: code
+          codes: codes
         },
         success: function() {
           $.ajax({
             url: path,
             type: "GET",
+            async: false,
             dataType: 'json',
             data: {
               enterprise_id: $('#_enterprises').val(),
-              codes: code
+              codes: codes
             },
             success: function(json) {
-              data1 = json;
-              create_chart();
+              create_chart(json);
             }
           })
         }
       })
     }
 
-    function create_chart(){
+    function create_chart(data1){
       $.each(data1, function(key, value) {
         var data_chart = {};
+        var code = Object.keys(value)[0];
         data_chart['data'] = [];
         data_chart['years'] = [];
-        data_chart['code'] = codes[key];
+        data_chart['code'] = code;
         // data_chart[key]['backgroundColor'] = dynamicColors();
 
-        $.each(value[codes[key]]['years'], function(k, v){
+        $.each(value[code]['years'], function(k, v){
           data_chart['years'].push(k);
           data_chart['data'].push(v);
         });
@@ -243,7 +250,7 @@
   })
 
 
-:javascript
+-#:javascript
   $(document).ready(function(){
     var data1;
     var codes;
@@ -272,7 +279,7 @@
         },
         success: function(json) {
           data1 = json;
-          console.log(json);
+          // console.log(json);
           create_chart();
         }
       })
@@ -351,10 +358,10 @@
           scaleStartValue : 0,
           scales: {
             xAxes: [{
-              stacked: true
+              // stacked: true
             }],
             yAxes: [{
-              stacked: true
+              // stacked: true
             }]
           }
         }

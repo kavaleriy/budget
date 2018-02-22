@@ -59,15 +59,21 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val) {
-        classifier_search("#{municipal_public_enterprise_files_path}", init_search_params());
+        // classifier_search("#{municipal_public_enterprise_files_path}", init_search_params());
+        $.ajax({
+          type: 'get',
+          url: "#{municipal_public_enterprise_files_path}",
+          // async: false,
+          dataType: 'script',
+          data: {
+            town_id: $('#_enterprises').data('town-id'),
+            enterprise_id: $('#_enterprises').val()
+          },
+          complete: function() {
+            // share_buttons_set_url(this.url);
+          }
+        });
       }
     });
 
-    function init_search_params() {
-      var data = {
-        town_id: $('#_enterprises').data('town-id'),
-        enterprise_id: $('#_enterprises').val()
-      }
-      return data;
-    }
   });

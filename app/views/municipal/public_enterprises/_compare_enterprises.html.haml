@@ -19,12 +19,11 @@
               Обрати показник
         #collapseOne.panel-collapse.collapse.in{"aria-labelledby" => "headingOne", :role => "tabpanel"}
           .panel-body
-            = simple_form_for '', remote: true do |f|
-              = f.input(:code_types, type: 'hidden',
-                  collection: Municipal::EnterpriseFile.type_files.map{ |type| [ type[:title], type[:id] ] },
-                  placeholder: 'Оберіть тип показників',
-                  input_html: {}, label: false)
-
+            .form-group
+              = select_tag :code_types,
+                           options_for_select(Municipal::EnterpriseFile.type_files.collect{ |type| [ type[:title], type[:id] ] }),
+                           placeholder: 'Оберіть тип показників',
+                           class: 'form-control'
             #codes-list
               = render partial: 'codes_by_enterprise_type', locals: { codes_list: @codes_form_1 }
 
@@ -33,12 +32,12 @@
           %h4.panel-title
             %a.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo", :role => "button"}
               Обрати підприємство
-        #collapseTwo.panel-collapse.collapse{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
+        #collapseTwo.panel-collapse.collapse.in{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
           .panel-body
             - Municipal::Enterprise.by_type(@enterprise).each do |ent|
               .input
-                = check_box_tag "#{ent.id}", "#{ent.id}", false, class: 'ent-checkbox'
-                = label_tag ent.id, "#{ent.title}"
+                = check_box_tag ent.id, ent.id, ent.id.to_s.eql?(params[:enterprise_id]), class: 'ent-checkbox'
+                = label_tag ent.id, ent.title
 
   .col-md-9#compare-chart
     = render partial: 'compare_chart'
@@ -52,35 +51,29 @@
   $(document).ready(function() {
     var data1;
     var code;
-    // init select2 and add event -> search if change value (if select not empty)
-    $('#_code_types').select2({
-      allowClear: true
-    }).on('change', function(data) {
-      // check for empty value, if empty -> do nothing
-      if(data.val) {
-        $.ajax({
-          type: 'get',
-          url: "#{municipal_codes_by_enterprise_type_path}",
-          // async: false,
-          dataType: 'script',
-          data: {
-            enterprise_id: $('#_enterprises').val(),
-            code_type: $('#_code_types').val()
-          },
-          complete: function() {
-            // share_buttons_set_url(this.url);
-          }
-        });
-      }
+    var run_selected_btn = $('#compare .run-selected');
+
+    $('#code_types').change(function() {
+      $.ajax({
+        type: 'get',
+        url: "#{municipal_codes_by_enterprise_type_path}",
+        dataType: 'script',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          code_type: this.value
+        }
+      });
     });
 
-    $('#compare .run-selected').on('click', function(){
+    run_selected_btn.on('click', function(){
       start_chart()
     });
+    run_selected_btn.trigger("click");
 
     function start_chart(){
       // var codes = selected_items('code');
-      code = $("#compare input[name=code]:checked").val()
+      // code = $("#compare input[name=code]:checked").val()
+      code = $("#code option:selected").val();
       var enterprises = selected_items('ent');
       get_charts_data(code, enterprises);
     }
@@ -122,7 +115,6 @@
     }
 
     function create_chart(){
-      console.log(data1);
       var data_chart = [];
       var years = [];
 
@@ -147,16 +139,16 @@
 
       // If call this function with selected code
       // Because chart buggy with old selected codes
-      // if (typeof code === 'string' ){
-      //   // find container old chart
-      //   var lineChart = $("#code-an-chart").parent();
-      //   // drop old chart canvas
-      //   $("#code-an-chart").remove();
-      //   // add new canvas
-      //   lineChart.append('<canvas id="code-an-chart">');
-      //   // drop iframe, drop old charts
-      //   $('.chartjs-hidden-iframe').remove();
-      // }
+      if (typeof code === 'string' ){
+        // find container old chart
+        var lineChart = $("#compare-line-chart").parent();
+        // drop old chart canvas
+        $("#compare-line-chart").remove();
+        // add new canvas
+        lineChart.append('<canvas id="compare-line-chart">');
+        // drop iframe, drop old charts
+        $('.chartjs-hidden-iframe').remove();
+      }
 
       // var years = [];
       // var data_years = data1[0][code[0]]['years'];
@@ -167,7 +159,6 @@
 
       //desc for this graph
       // $("#desc").text(value['desc']);
-
       build_chart(data_years, data_chart)
     }
 
@@ -177,7 +168,6 @@
 
       myChart = new Chart(ctx, {
         type: 'line',
-        textAlign: 'left',
         data: {
           labels: years,
           datasets: data
@@ -188,10 +178,10 @@
           scaleStartValue : 0,
           scales: {
             xAxes: [{
-              stacked: true
+              // stacked: true
             }],
             yAxes: [{
-              stacked: true
+              // stacked: true
             }]
           },
           legend:{
