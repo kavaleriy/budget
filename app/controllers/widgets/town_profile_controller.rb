@@ -109,7 +109,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     programs = Programs::TargetedProgram.by_town(@town).first
     e_data = Modules::Classifier.by_koatuu(@town.koatuu).first
     repairs = Repairing::Repair.repair_json_by_town(@town.id.to_s)
-    municipal_enterprises = Municipal::Enterprise.by_town(@town).first if current_user && current_user.admin?
+    municipal_enterprises = Municipal::Enterprise.by_town(@town).first
 
     result = []
     result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town)) unless taxonomy.nil?
