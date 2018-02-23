@@ -32,6 +32,14 @@ module Municipal
       ]
     end
 
+    def self.type_codes
+      [
+        { id: FORM_1, title: I18n.t('guide_filters.type_codes.form_1') },
+        { id: FORM_2, title: I18n.t('guide_filters.type_codes.form_2') },
+        { id: OTHER, title: I18n.t('guide_filters.type_codes.form_3') }
+      ]
+    end
+
     def self.by_town(town)
       enterprise_ids = Municipal::Enterprise.where(town: town).pluck(:id)
       where(:enterprise_id.in => enterprise_ids)

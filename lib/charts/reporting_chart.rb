@@ -5,13 +5,31 @@
 module Charts
   # Build chart by enterprise reporting
   class ReportingChart
-    def self.data_chart(enterprise_id, code)
+    def self.data_charts(enterprise_id, codes)
+      line_chart = []
+
+      codes.each do |code|
+        return {} if code.blank?
+        line_chart << build_line(enterprise_id, code)
+      end
+      line_chart
+    end
+
+    def self.build_line(enterprise_id, code)
       return {} if code.blank?
       file_type = code.first.eql?(Municipal::EnterpriseFile::FORM_1) ? Municipal::EnterpriseFile::FORM_1 : Municipal::EnterpriseFile::FORM_2
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, file_type: file_type)
-      desc = Municipal::CodeDescription.where(code: code).first.try(:description)
+      code_info = Municipal::CodeDescription.where(code: code).first
+      title = code_info.try(:title)
+      desc = code_info.try(:description)
+      unit = code_info.try(:unit)
       chart = {}
-      chart[code] = { years: {}, desc: desc }
+      chart[code] = {
+        years: {},
+        desc: desc,
+        title: title,
+        unit: unit
+      }
 
       files.each do |file|
         year = file.year

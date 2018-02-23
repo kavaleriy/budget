@@ -1,122 +1,189 @@
 :scss
-  #reporting{
-    margin-top: 10px;
-    select{
-      width: 65px;
-    }
-    #reporting-chart{
-      margin-bottom: 10px;
-      #desc{
-        font-size: 16px;
-        font-weight: bold;
+  .nav-tabs > li > a,
+  .panel-group .panel,
+  .form-control{
+    border-radius: 0;
+  }
+  .tab-content{
+    .tab-pane{
+      .codes-list{
+        margin-top: 20px;
+        .input{
+          label{
+            display: inline;
+            font-weight: normal;
+          }
+        }
+        .run-selected{
+          display: block;
+          margin-bottom: 10px;
+          border-radius: 0;
+        }
       }
     }
   }
 
 
+
 %ul.nav.nav-tabs{role: 'tablist'}
   %li.active
-    %a{role: 'tab', 'data-toggle' => 'tab', href: '#reporting'}
-      Фінансові показники
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_1'}
+      Баланс
   %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_2'}
+      Звіт про рух грошових коштів
+  %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_7'}
+      Фінансова аналітика
+  -#%li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
-      Фінансовий аналіз
+      Фінансова аналітика(зведена)
+  %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#compare'}
+      Порівняти з іншими підприємствами
 
-.tab-content
-  #reporting.tab-pane.fade.in.active
-    %h4
-      %span Код показника
-      = select_tag :form_1, options_for_select(@codes_form_1.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "B"
-      = select_tag :form_2, options_for_select(@codes_form_2.collect{ |c| ["#{c.code} #{c.title}", c.code] }), prompt: "F"
+.tab-content.charts
+  #form_1.tab-pane.fade.in.active
+    = render partial: 'codes_list', locals: { codes: @codes_form_1, code_type: 1 }
 
-    = render partial: 'reporting_chart'
+  #form_2.tab-pane.fade
+    = render partial: 'codes_list', locals: { codes: @codes_form_2, code_type: 2 }
 
-    .row
-      .col-xs-12
-        .files
-          - @enterprise.other_files.each do |file|
-            = link_to file.file.url, title: 'Завантажити' do
-              %i.fa.fa-download.fa.fa-border
-              = file.file_identifier
+  #form_7.tab-pane.fade
+    = render partial: 'codes_list', locals: { codes: @codes_form_7, code_type: 7 }
 
-  #analysis.tab-pane.fade
+  -##analysis.tab-pane.fade
     %h4
       %span Похідні показники
     = render partial: 'analysis_chart'
 
+  #compare.tab-pane.fade
+    = render partial: 'compare_enterprises'
+
 
 :javascript
   $(document).ready(function(){
-    var data1;
-    var code = 1000;
-    get_chart(code)
-
-    $('#form_1, #form_2').on('change', function(){
-      code = $(this).val();
-      get_chart(code)
+    $('#form_1 .run-selected').on('click', function(){
+      get_charts_data('#form_1')
     });
 
-   function get_chart(code){
-    $.ajax({
-      url: "#{municipal_reporting_chart_path}",
-      type: "GET",
-      dataType: 'json',
-      data: {
-        enterprise_id: $('#_enterprises').val(),
-        code: code
-      },
-      success: function(json) {
-        data1 = json;
-        create_chart();
+    $('#form_2 .run-selected').on('click', function(){
+      get_charts_data('#form_2')
+    });
+
+    $('#form_7 .run-selected').on('click', function(){
+      get_charts_data('#form_7', "#{municipal_analysis_charts_path}")
+    });
+
+    // load page with first nav-tab content
+    $('#form_1 .run-selected').trigger("click");
+
+    // load nav-tabs content if first click
+    $('.nav-tabs li a').click(function(){
+      var id_chart = $(this).attr('href');
+
+      if($(id_chart).find('canvas').length == 0){
+        $(id_chart + ' .run-selected').trigger("click");
       }
     })
-   }
 
-    function create_chart(){
-      var years = [];
-      var values = [];
-      var data_years = data1[code]['years'];
+    function selected_items(id_charts){
+      var result = $(id_charts + ' input.code-checkbox:checked');
+      var arr = [];
 
-      $.each(data_years, function(key, value){
-        years.push(key);
-        values.push(value);
-      });
-
-      // If call this function with selected code
-      // Because chart buggy with old selected codes
-      if (typeof code === 'string' ){
-        // find container old chart
-        var lineChart = $("#code-chart").parent();
-        // drop old chart canvas
-        $("#code-chart").remove();
-        // add new canvas
-        lineChart.append('<canvas id="code-chart">');
-        // drop iframe, drop old charts
-        $('.chartjs-hidden-iframe').remove();
-      }
-
-      //desc for this graph
-      $("#desc").text(data1[code]['desc']);
-
-      build_chart(years, values)
+      result.each(function(){
+        id = $(this).val();
+        arr.push(id);
+      })
+      return arr;
     }
 
-    function build_chart(years, values){
-      var ctx = document.getElementById("code-chart").getContext('2d');
-      var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    function get_charts_data(selector, path = "#{municipal_reporting_charts_path}"){
+      var codes = selected_items(selector);
+
+      $.ajax({
+        url: path,
+        type: "GET",
+        async: false,
+        dataType: 'script',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          codes: codes
+        },
+        success: function() {
+          $.ajax({
+            url: path,
+            type: "GET",
+            async: false,
+            dataType: 'json',
+            data: {
+              enterprise_id: $('#_enterprises').val(),
+              codes: codes
+            },
+            success: function(json) {
+              create_charts(json);
+            }
+          })
+        }
+      })
+    }
+
+    function create_charts(data_charts){
+      $.each(data_charts, function(key, value) {
+        var data_chart = {};
+        var code = Object.keys(value)[0];
+        data_chart['data'] = [];
+        data_chart['years'] = [];
+        data_chart['code'] = code;
+
+        $.each(value[code]['years'], function(k, v){
+          data_chart['years'].push(k);
+          data_chart['data'].push(v);
+        });
+
+        build_chart(data_chart);
+      })
+    }
+
+    function build_chart(data){
+      var code = data['code'];
+      var chart_id = 'chart-' + code;
+      var ctx = document.getElementById(chart_id).getContext('2d');
       var myChart;
-      gradient.addColorStop(0, 'green');
-      gradient.addColorStop(0.8, 'yellow');
-      gradient.addColorStop(1, 'orange');
 
       myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-          labels: years,
+          labels: data['years'],
           datasets: [{
-            data: values,
-            backgroundColor: gradient,
-            hoverBackgroundColor: gradient,
+            label: code,
+            lineTension: 0.5,
+
+            // fill: false,
+            // backgroundColor: "rgba(240, 177, 80, 0.5)",
+            backgroundColor: "rgba(143, 171, 59, 0.5)",
+
+            borderColor: "#fff",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.1,
+            borderJoinStyle: 'miter',
+
+            pointRadius: 5,
+            pointBorderWidth: 2,
+            pointHitRadius: 4,
+            pointBackgroundColor: "#0c2231",
+            pointBorderColor: "#fff",
+
+            pointHoverRadius: 5,
+            pointHoverBorderWidth: 2,
+            pointHoverHitRadius: 4,
+            pointHoverBackgroundColor: "#ffd304",
+            pointHoverBorderColor: "#fff",
+
+            data: data['data'],
+
+            spanGaps: true,
           }]
         },
         options: {
@@ -127,21 +194,50 @@
             display: false
           },
           scales: {
-            xAxes: [{
-              stacked: true
-            }],
-            yAxes: [{
-              stacked: true
-            }]
+            xAxes: [
+              {
+                gridLines: {
+                  display: false,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                }
+              }
+            ],
+            yAxes: [
+              {
+                id: 'y-axis-0',
+                gridLines: {
+                  // display: true,
+                  color: '#fff',
+                  // lineWidth: 1,
+                  zeroLineWidth: 3,
+                  zeroLineColor: '#fff'
+                },
+                scaleLabel: {
+                  fontColor: '#fff'
+                },
+                ticks: {
+                  fontColor: '#fff',
+                  padding: 20,
+                  // min: 0,
+                  // maxTicksLimit: 6,
+                  // stepSize: step
+                }
+              }
+            ]
           }
         }
       })
     }
-
   })
 
 
-:javascript
+-#:javascript
   $(document).ready(function(){
     var data1;
     var codes;
@@ -170,6 +266,7 @@
         },
         success: function(json) {
           data1 = json;
+          // console.log(json);
           create_chart();
         }
       })
@@ -248,10 +345,10 @@
           scaleStartValue : 0,
           scales: {
             xAxes: [{
-              stacked: true
+              // stacked: true
             }],
             yAxes: [{
-              stacked: true
+              // stacked: true
             }]
           }
         }

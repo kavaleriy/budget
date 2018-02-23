@@ -6,7 +6,7 @@
               collection: @report_type.map {|type| [ type[:title], type[:id] ] },
               prompt: false
     = f.input :type_file, label: 'Тип файлу',
-              collection: @type_files.map {|type| [ type[:title], type[:id] ] },
+              collection: @type_codes.map {|type| [ type[:title], type[:id] ] },
               prompt: false
     = f.input :file, label: 'Вибір файлу', class: 'form-control'
 

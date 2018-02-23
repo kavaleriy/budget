@@ -17,20 +17,26 @@ module Charts
 
     def self.build_line(enterprise_id, code)
       enterprise_type = Municipal::Enterprise.find(enterprise_id).try(:reporting_type)
-      code_info = get_code_info(enterprise_type, code)
+      code_formula_info = get_code_info(enterprise_type, code)
       file_types = file_types(code[2])
 
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, :file_type.in => file_types).order(year: :asc)
-      desc = Municipal::CodeDescription.where(code: code).first
+      code_info = Municipal::CodeDescription.where(code: code).first
       chart = {}
-      chart[code] = { years: {}, desc: desc.try(:description), title: desc.try(:title), abbr: code_info['abbreviation'] }
+      chart[code] = {
+        years: {},
+        desc: code_info.try(:description),
+        title: code_info.try(:title),
+        # abbr: code_formula_info['abbreviation'],
+        unit: code_info.try(:unit)
+      }
 
       years = {}
       files.each do |file|
         year = file.year
         years[year] = {} unless years[year]
 
-        code_info['f_codes'].each do |code_f|
+        code_formula_info['f_codes'].each do |code_f|
           value_f = file.code_values.where(code: code_f).first.try(:value)
           years[year][code_f] = value_f if value_f
           # {2015=>{"1495"=>5353}, 2016=>{"1495"=>5353, "2350"=>71}, 2017=>{"1495"=>5296, "2350"=>283}}
@@ -40,17 +46,17 @@ module Charts
       years.each do |year_k, year_v|
         before_year = nil
 
-        code_info['codes_1_year'].each do |code_f|
+        code_formula_info['codes_1_year'].each do |code_f|
           instance_variable_set("@c_#{code_f}", year_v[code_f].to_f)
-        end if code_info['codes_1_year'].present?
+        end if code_formula_info['codes_1_year'].present?
 
-        code_info['codes_2_year'].each do |code_f|
+        code_formula_info['codes_2_year'].each do |code_f|
           before_year = years[year_k]
           instance_variable_set("@c1_#{code_f}", year_v[code_f].to_f)
           instance_variable_set("@c2_#{code_f}", before_year[code_f].to_f)
-        end if code_info['codes_2_year'].present?
+        end if code_formula_info['codes_2_year'].present?
 
-        chart[code][:years][year_k] = eval(code_info['formula']).try(:round, 3) if before_year || !code_info['codes_2_year'].present?
+        chart[code][:years][year_k] = eval(code_formula_info['formula']).try(:round, 3) if before_year || !code_formula_info['codes_2_year'].present?
       end
 
       chart

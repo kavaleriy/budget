@@ -19,6 +19,9 @@ module Municipal
     has_many :files, class_name: 'Municipal::EnterpriseFile', dependent: :destroy
 
     scope :by_town, ->(id) { where(town: id) }
+    scope :by_type, ->(enterprise) {
+      where(reporting_type: enterprise.reporting_type, town: enterprise.town)
+    }
 
     validates_presence_of :edrpou
     validates_uniqueness_of :edrpou, scope: :town

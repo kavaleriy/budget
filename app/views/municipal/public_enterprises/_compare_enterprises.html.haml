@@ -1,0 +1,201 @@
+:scss
+  #compare-chart{
+    margin-top: 20px;
+    .compare-line-chart{
+      background: #eeeeee;
+      padding: 25px 15px 15px 10px;
+    }
+  }
+
+.row
+  .col-md-3.codes-list
+    .run-selected.btn.btn-success Застосувати
+
+    #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+      .panel.panel-default
+        #headingOne.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne", :role => "button"}
+              Обрати показник
+        #collapseOne.panel-collapse.collapse.in{"aria-labelledby" => "headingOne", :role => "tabpanel"}
+          .panel-body
+            .form-group
+              = select_tag :code_types,
+                           options_for_select(Municipal::EnterpriseFile.type_codes.collect{ |type| [ type[:title], type[:id] ] }),
+                           placeholder: 'Оберіть тип показників',
+                           class: 'form-control'
+            #codes-list
+              = render partial: 'codes_by_enterprise_type', locals: { codes_list: @codes_form_1 }
+
+      .panel.panel-default
+        #headingTwo.panel-heading{:role => "tab"}
+          %h4.panel-title
+            %a.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo", :role => "button"}
+              Обрати підприємство
+        #collapseTwo.panel-collapse.collapse.in{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
+          .panel-body
+            - Municipal::Enterprise.by_type(@enterprise).each do |ent|
+              .input
+                = check_box_tag ent.id, ent.id, ent.id.to_s.eql?(params[:enterprise_id]), class: 'ent-checkbox'
+                = label_tag ent.id, ent.title
+
+  .col-md-9#compare-chart
+    = render partial: 'compare_chart'
+
+
+
+
+
+:javascript
+
+  $(document).ready(function() {
+    var run_selected_btn = $('#compare .run-selected');
+
+    run_selected_btn.on('click', function(){
+      get_charts_data();
+    });
+    run_selected_btn.trigger("click");
+
+    $('#code_types').change(function() {
+      $.ajax({
+        type: 'get',
+        url: "#{municipal_codes_by_enterprise_type_path}",
+        dataType: 'script',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          code_type: this.value
+        }
+      });
+    });
+
+    function selected_items(){
+      var result = $('#compare input.ent-checkbox:checked');
+      var arr = [];
+
+      result.each(function(){
+        id = $(this).val();
+        arr.push(id);
+      })
+      return arr;
+    }
+
+    function get_charts_data(){
+      var code = $("#code option:selected").val();
+      var enterprises = selected_items();
+
+      $.ajax({
+        url: "#{municipal_compare_chart_path}",
+        type: "GET",
+        dataType: 'json',
+        data: {
+          enterprise_id: $('#_enterprises').val(),
+          code: code,
+          enterprises: enterprises
+        },
+        success: function(json) {
+          create_chart(json, code);
+        }
+      })
+    }
+
+    function dynamicColors() {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      return "rgba(" + r + "," + g + "," + b + ",0.9)";
+    }
+
+    function create_chart(data, code){
+      var data_chart = [];
+      var data_years= [];
+      var years = [];
+
+      data_chart['title'] = data[0][code]['title'];
+      data_chart['desc'] = data[0][code]['desc'];
+      data_chart['unit'] = data[0][code]['unit'];
+      $.each(data, function(key, value) {
+        // data_chart[key]['backgroundColor'] = dynamicColors();
+        // data_chart[key]['pointStyle'] = 'circle';
+        data_chart[key] = {}
+        data_chart[key]['label'] =  value['title'];
+        data_chart[key]['borderColor'] = dynamicColors();
+        data_chart[key]['spanGaps'] =  true;
+        data_chart[key]['data'] = [];
+
+        $.each(value[code]['years'], function(k, v){
+          years.push(k);
+          data_chart[key]['data'].push(v);
+        });
+      })
+
+      // generate array uniq years
+      data_years = Array.from(new Set(years));
+
+      //info for this graph
+      $("#code-title").text(data_chart['title']);
+      $("#code-unit").text(data_chart['unit']);
+      $("#code-desc").text(data_chart['desc']);
+
+      // If call this function with selected code
+      // Because chart buggy with old selected codes
+      if (typeof code === 'string' ){
+        // find container old chart
+        var lineChart = $("#compare-line-chart").parent();
+        // drop old chart canvas
+        $("#compare-line-chart").remove();
+        // add new canvas
+        lineChart.append('<canvas id="compare-line-chart">');
+        // drop iframe, drop old charts
+        $('.chartjs-hidden-iframe').remove();
+      }
+
+      build_chart(data_years, data_chart)
+    }
+
+    function build_chart(years, data){
+      var ctx = document.getElementById("compare-line-chart").getContext('2d');
+      var myChart;
+
+      myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: data
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scaleStartValue : 0,
+          scales: {
+            xAxes: [{
+              // stacked: true
+            }],
+            yAxes: [{
+              // stacked: true
+            }]
+          },
+          legend:{
+            display: true,
+            position:'bottom',
+            labels:{
+              // usePointStyle: true
+            }
+          },
+          // title:{
+          //   display:true,
+          //   text: data['title'],
+          //   fontColor:'#3498db',
+          //   fontSize:16,
+          //   fontStyle:' bold'
+          // },
+          elements: {
+            line: {
+              tension:0.4,
+              fill:false
+            }
+          }
+        }
+      });
+    }
+
+  });
