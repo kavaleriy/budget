@@ -59,25 +59,16 @@
 
 :javascript
   $(document).ready(function(){
-    // $('.collapse').collapse()
-    // var data1;
-    // var codes;
-
-    // if($('.charts .tab-pane').hasClass('active')){
-    //   var chart = $('.charts .tab-pane.active');
-    //   start_chart('#' + chart[0].id);
-    // }
-
     $('#form_1 .run-selected').on('click', function(){
-      start_chart('#form_1')
+      get_charts_data('#form_1')
     });
 
     $('#form_2 .run-selected').on('click', function(){
-      start_chart('#form_2')
+      get_charts_data('#form_2')
     });
 
     $('#form_7 .run-selected').on('click', function(){
-      start_chart('#form_7', "#{municipal_analysis_charts_path}")
+      get_charts_data('#form_7', "#{municipal_analysis_charts_path}")
     });
 
     // load page with first nav-tab content
@@ -85,20 +76,12 @@
 
     // load nav-tabs content if first click
     $('.nav-tabs li a').click(function(){
-      id_chart = $(this).attr('href');
-      // $(id_chart + ' .run-selected').trigger("click");
+      var id_chart = $(this).attr('href');
 
       if($(id_chart).find('canvas').length == 0){
         $(id_chart + ' .run-selected').trigger("click");
       }
     })
-
-    function start_chart(selector, path = "#{municipal_reporting_charts_path}"){
-      // console.log("sdfsdfsd ");
-      // console.log(selector);
-      var codes = selected_items(selector);
-      get_charts_data(codes, path);
-    }
 
     function selected_items(id_charts){
       var result = $(id_charts + ' input.code-checkbox:checked');
@@ -111,8 +94,9 @@
       return arr;
     }
 
-    function get_charts_data(codes, path){
-      // var data1;
+    function get_charts_data(selector, path = "#{municipal_reporting_charts_path}"){
+      var codes = selected_items(selector);
+
       $.ajax({
         url: path,
         type: "GET",
@@ -133,21 +117,20 @@
               codes: codes
             },
             success: function(json) {
-              create_chart(json);
+              create_charts(json);
             }
           })
         }
       })
     }
 
-    function create_chart(data1){
-      $.each(data1, function(key, value) {
+    function create_charts(data_charts){
+      $.each(data_charts, function(key, value) {
         var data_chart = {};
         var code = Object.keys(value)[0];
         data_chart['data'] = [];
         data_chart['years'] = [];
         data_chart['code'] = code;
-        // data_chart[key]['backgroundColor'] = dynamicColors();
 
         $.each(value[code]['years'], function(k, v){
           data_chart['years'].push(k);
