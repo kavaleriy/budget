@@ -47,10 +47,10 @@ module Municipal
       respond_with(@municipal_guide_filter)
     end
 
-    def update_code_desc
-      @code_desc = Municipal::CodeDescription.find(params[:id])
+    def update_code_info
+      @code_info = Municipal::CodeDescription.find(params[:id])
       respond_to do |format|
-        if @code_desc.update(code_desc_params)
+        if @code_info.update(code_info_params)
           msg = { class_name: 'success', message: I18n.t('repairing.layers.update.success') }
         else
           msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
@@ -81,8 +81,8 @@ module Municipal
       params.require(:municipal_guide_filter).permit(:type_file, :type_enterprise, :file)
     end
 
-    def code_desc_params
-      params.permit(:publish, :description)
+    def code_info_params
+      params.permit(:publish, :description, :unit, :title)
     end
   end
 end

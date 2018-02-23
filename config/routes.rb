@@ -183,7 +183,7 @@ Rails.application.routes.draw do
     resources :guide_filters
     get 'show_code_values/:id', to: 'enterprise_files#show_code_values', as: :show_code_values
 
-    put 'update_code_desc/:id', to: 'guide_filters#update_code_desc', as: :update_code_desc
+    put 'update_code_info/:id', to: 'guide_filters#update_code_info', as: :update_code_info
 
     get 'new_enterprises', to: 'enterprises#new'
     post 'import_enterprises', to: 'enterprises#import'

@@ -1,5 +1,5 @@
 :scss
-  .editable-pre-wrapped {
+  .editable-click {
     white-space: normal;
     color: #333333;
     border-bottom: none;
@@ -43,9 +43,6 @@
         = t('guide_filters.key_indicators')
         .file-title
           = @municipal_guide_filter.file_identifier
-      -#.new-btn
-      -#  %h2
-      -#    = link_to t('form.new'), municipal_new_enterprises_path, :class => 'btn btn-info'
 
     .table-title.visible-md.visible-lg
       .row
@@ -61,54 +58,61 @@
           = t('guide_filters.code_description')
     #search-results
       - if @municipal_guide_filter
-        - @municipal_guide_filter.codes.each do |code_desc|
-          .table-body{ id: code_desc.id }
+        - @municipal_guide_filter.codes.each do |code_info|
+          .table-body{ id: code_info.id }
             .row
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     %i.fa.fa-check-square-o
                   .col-xs-8.col-md-12
-                    = check_box_tag :publish, code_desc.id, code_desc.publish,
+                    = check_box_tag :publish, code_info.id, code_info.publish,
                       onchange: "$(this).data('params', 'publish=' + this.checked)",
-                      data: { remote: true, url: municipal_update_code_desc_path(code_desc.id), method: :put}
+                      data: { remote: true, url: municipal_update_code_info_path(code_info.id), method: :put}
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('guide_filters.line_code')
                   .col-xs-8.col-md-12
-                    = code_desc.code
+                    = code_info.code
               .col-sm-12.col-md-3.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('title')
                   .col-xs-8.col-md-12
-                    = code_desc.title
+                    %a.editable{ href: '#',
+                       id: 'title', 'data-type' => 'text', 'data-pk' => "#{code_info.id}",
+                       'data-url' => "#{municipal_update_code_info_path(code_info.id)}",
+                       'data-emptytext' => t('repairing.layers.edit.title'), 'data-showbuttons' => 'bottom' }
+                      = code_info.title
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('guide_filters.units')
                   .col-xs-8.col-md-12
-                    = code_desc.unit
+                    %a.editable{ href: '#',
+                       id: 'unit', 'data-type' => 'text', 'data-pk' => "#{code_info.id}",
+                       'data-url' => "#{municipal_update_code_info_path(code_info.id)}",
+                       'data-emptytext' => t('repairing.layers.edit.title'), 'data-showbuttons' => 'bottom' }
+                      = code_info.unit
               .col-sm-12.col-md-6.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('guide_filters.code_description')
                   .col-xs-8.col-md-12
-                    -#= code_desc.description
                     %a.editable{ href: '#',
-                       id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{code_desc.id}",
-                       'data-url' => "#{municipal_update_code_desc_path(code_desc.id)}",
+                       id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{code_info.id}",
+                       'data-url' => "#{municipal_update_code_info_path(code_info.id)}",
                        'data-emptytext' => t('repairing.layers.edit.title'), 'data-showbuttons' => 'bottom' }
-                      = code_desc.description
+                      = code_info.description
               -#.col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('actions')
                   .col-xs-8.col-md-12
-                    = link_to edit_municipal_enterprise_path(code_desc), title: t('form.edit') do
+                    = link_to edit_municipal_enterprise_path(@code_info), title: t('form.edit') do
                       %i.fa.fa-pencil.fa.fa-border
-                    = link_to code_desc, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
+                    = link_to @code_info, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
                       %i.fa.fa-close.fa.fa-border
 :javascript
 
