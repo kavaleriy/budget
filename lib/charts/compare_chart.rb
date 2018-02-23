@@ -16,7 +16,7 @@ module Charts
 
     def self.build_line(enterprise, code)
       code_type = code.first
-      ent_data = { title: enterprise.title, id: enterprise.id.to_s }
+      ent_data = { id: enterprise.id.to_s, title: enterprise.title }
       line = case code_type
              when '1', '2'
                Charts::ReportingChart.build_line(enterprise, code)

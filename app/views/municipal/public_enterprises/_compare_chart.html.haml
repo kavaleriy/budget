@@ -1,5 +1,29 @@
+:scss
+  #compare-chart{
+    #code-title {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+    #code-unit {
+      height: 25px;
+      padding-bottom: 5px;
+      color: gray;
+      text-align: center;
+      font-style: italic;
+    }
+    .compare-line-chart{
+      margin-bottom: 15px;
+    }
+    #code-desc{
+      text-align: justify;
+    }
+  }
+
 .row
-  .col-xs-12.col-md-12.compare-line-chart
-    %canvas{id: 'compare-line-chart'}
-  -#.col-xs-12.col-md-5
+  .col-md-12
+    #code-title
+    #code-unit
+    .compare-line-chart
+      %canvas{id: 'compare-line-chart'}
     #code-desc

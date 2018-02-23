@@ -1,6 +1,10 @@
 :scss
   #compare-chart{
     margin-top: 20px;
+    .panel-group .panel,
+    .form-control{
+      border-radius: 0;
+    }
     .compare-line-chart{
       background: #eeeeee;
       padding: 25px 15px 15px 10px;
@@ -21,7 +25,7 @@
           .panel-body
             .form-group
               = select_tag :code_types,
-                           options_for_select(Municipal::EnterpriseFile.type_files.collect{ |type| [ type[:title], type[:id] ] }),
+                           options_for_select(Municipal::EnterpriseFile.type_codes.collect{ |type| [ type[:title], type[:id] ] }),
                            placeholder: 'Оберіть тип показників',
                            class: 'form-control'
             #codes-list
@@ -49,9 +53,12 @@
 :javascript
 
   $(document).ready(function() {
-    var data1;
-    var code;
     var run_selected_btn = $('#compare .run-selected');
+
+    run_selected_btn.on('click', function(){
+      get_charts_data();
+    });
+    run_selected_btn.trigger("click");
 
     $('#code_types').change(function() {
       $.ajax({
@@ -65,22 +72,8 @@
       });
     });
 
-    run_selected_btn.on('click', function(){
-      start_chart()
-    });
-    run_selected_btn.trigger("click");
-
-    function start_chart(){
-      // var codes = selected_items('code');
-      // code = $("#compare input[name=code]:checked").val()
-      code = $("#code option:selected").val();
-      var enterprises = selected_items('ent');
-      get_charts_data(code, enterprises);
-    }
-
-    function selected_items(id_checkboxes){
-      var result = $('#compare input.' + id_checkboxes + '-checkbox:checked');
-
+    function selected_items(){
+      var result = $('#compare input.ent-checkbox:checked');
       var arr = [];
 
       result.each(function(){
@@ -90,7 +83,10 @@
       return arr;
     }
 
-    function get_charts_data(code, enterprises){
+    function get_charts_data(){
+      var code = $("#code option:selected").val();
+      var enterprises = selected_items();
+
       $.ajax({
         url: "#{municipal_compare_chart_path}",
         type: "GET",
@@ -101,8 +97,7 @@
           enterprises: enterprises
         },
         success: function(json) {
-          data1 = json;
-          create_chart();
+          create_chart(json, code);
         }
       })
     }
@@ -114,20 +109,22 @@
       return "rgba(" + r + "," + g + "," + b + ",0.9)";
     }
 
-    function create_chart(){
+    function create_chart(data, code){
       var data_chart = [];
+      var data_years= [];
       var years = [];
 
-      $.each(data1, function(key, value) {
+      data_chart['title'] = data[0][code]['title'];
+      data_chart['desc'] = data[0][code]['desc'];
+      data_chart['unit'] = data[0][code]['unit'];
+      $.each(data, function(key, value) {
+        // data_chart[key]['backgroundColor'] = dynamicColors();
+        // data_chart[key]['pointStyle'] = 'circle';
         data_chart[key] = {}
-        data_chart['title'] =  value[code]['title'];
         data_chart[key]['label'] =  value['title'];
         data_chart[key]['borderColor'] = dynamicColors();
-        // data_chart[key]['pointStyle'] = 'circle';
-
         data_chart[key]['spanGaps'] =  true;
         data_chart[key]['data'] = [];
-        // data_chart[key]['backgroundColor'] = dynamicColors();
 
         $.each(value[code]['years'], function(k, v){
           years.push(k);
@@ -135,7 +132,13 @@
         });
       })
 
-      var data_years = Array.from(new Set(years));
+      // generate array uniq years
+      data_years = Array.from(new Set(years));
+
+      //info for this graph
+      $("#code-title").text(data_chart['title']);
+      $("#code-unit").text(data_chart['unit']);
+      $("#code-desc").text(data_chart['desc']);
 
       // If call this function with selected code
       // Because chart buggy with old selected codes
@@ -150,15 +153,6 @@
         $('.chartjs-hidden-iframe').remove();
       }
 
-      // var years = [];
-      // var data_years = data1[0][code[0]]['years'];
-      //
-      // $.each(data_years, function(key, value){
-      //   years.push(key);
-      // });
-
-      //desc for this graph
-      // $("#desc").text(value['desc']);
       build_chart(data_years, data_chart)
     }
 
@@ -191,13 +185,13 @@
               // usePointStyle: true
             }
           },
-          title:{
-            display:true,
-            text: data['title'],
-            fontColor:'#3498db',
-            fontSize:16,
-            fontStyle:' bold'
-          },
+          // title:{
+          //   display:true,
+          //   text: data['title'],
+          //   fontColor:'#3498db',
+          //   fontSize:16,
+          //   fontStyle:' bold'
+          // },
           elements: {
             line: {
               tension:0.4,

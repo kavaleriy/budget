@@ -74,7 +74,7 @@ module Municipal
 
     def set_data_select
       @report_type = Municipal::Enterprise.report_type
-      @type_files = Municipal::EnterpriseFile.type_files
+      @type_codes = Municipal::EnterpriseFile.type_codes
     end
 
     def guide_filter_params
