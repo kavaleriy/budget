@@ -306,6 +306,9 @@
       }else{
         var formatedDate = new Date(date);
         var last_date = formatedDate.toLocaleDateString();
+
+        // ad hoc: for embed iframe with last year repairing data (/views/repairing/maps/_embed_code.html.haml)
+        $('.town-data #year_select').val(last_date.slice(-4)).trigger('change');
       }
       $('#last_updated_repair .rep-date').html(last_date);
     }
