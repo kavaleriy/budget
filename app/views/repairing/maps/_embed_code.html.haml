@@ -74,7 +74,8 @@
     .form-group
       %label
         = t('datetime.prompts.year')
-      = text_field_tag 'year_select', Date.current.year
+      -# ad hoc: set last_date with js (views/repairing/maps/_map.html.haml)
+      = text_field_tag 'year_select', ''
     .form-group
       %label
         = t('.scale')
