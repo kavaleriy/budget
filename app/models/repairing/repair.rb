@@ -46,8 +46,8 @@ module Repairing
     before_save :set_end_date
 
     def check_and_emend_edrpou
-      self.edrpou_artist         =  "0#{edrpou_artist}"          if edrpou_artist.length == 7
-      self.edrpou_spending_units =  "0#{edrpou_spending_units}"  if edrpou_spending_units.length == 7
+      self.edrpou_artist         =  "0#{edrpou_artist}"          if edrpou_artist.try(:length) == 7
+      self.edrpou_spending_units =  "0#{edrpou_spending_units}"  if edrpou_spending_units.try(:length) == 7
     end
 
     def set_end_date
