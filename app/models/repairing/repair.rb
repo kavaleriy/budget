@@ -171,16 +171,19 @@ module Repairing
         # set default last update date of repair
         #TODO: change logic for default date(1970)
         last_updated = Time.new('1970-01-01')
+        last_year_data = ''
 
         # if town not empty filter array by town
-        repairings.select!{ |key,value| key['town_id'].to_s.eql?(town) } unless town.blank?
-        repairings.each { |layer,repairs|
+        repairings.select! { |key, _value| key['town_id'].to_s.eql?(town) } unless town.blank?
+
+        repairings.each do |layer, repairs|
+          last_year_data = layer['year'] if layer['year'].present? && (last_year_data < layer['year'])
+
           repairs.each do |repair|
-            unless repair['updated_at'].nil?
-              if  last_updated < repair['updated_at']
-                last_updated = repair['updated_at']
-              end
+            if repair['updated_at'].present? && last_updated < repair['updated_at']
+              last_updated = repair['updated_at']
             end
+
             repair['layer'] = {}
             repair['layer']['town_id'] = layer['town_id'].to_s
             repair['layer']['status'] = layer['status'] || :plan
@@ -190,13 +193,13 @@ module Repairing
             repair_json = Repairing::GeojsonBuilder.build_repair(repair)
             geo_jsons << repair_json if repair_json
           end
-
-        }
+        end
 
         {
-            'type' => 'FeatureCollection',
-            'features' => geo_jsons,
-            'last_updated' => last_updated
+          'type' => 'FeatureCollection',
+          'features' => geo_jsons,
+          'last_updated' => last_updated,
+          'last_year_data' => last_year_data
         }
       end
 
