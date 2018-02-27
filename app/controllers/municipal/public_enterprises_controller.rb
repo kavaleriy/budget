@@ -1,11 +1,12 @@
 module Municipal
   # common logic of municipal enterprises
-  class PublicEnterprisesController < ApplicationController
+  class PublicEnterprisesController < Widgets::WidgetsController
     before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes, :codes_by_enterprise_type, :compare_chart]
     respond_to :html
 
     def enterprise_analysis
       @enterprises = Municipal::Enterprise.by_town(params[:town])
+      render layout: 'visify'
     end
 
     def search_enterprise_data
@@ -79,6 +80,7 @@ module Municipal
     def set_enterprise
       @enterprise = Municipal::Enterprise.find(params[:enterprise_id])
     end
+
   end
 end
 

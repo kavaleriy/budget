@@ -1,28 +1,37 @@
 :scss
-  .nav-tabs > li > a,
-  .panel-group .panel,
-  .form-control{
-    border-radius: 0;
-  }
-  .tab-content{
-    .tab-pane{
-      .codes-list{
-        margin-top: 20px;
-        .input{
-          label{
-            display: inline;
-            font-weight: normal;
+
+  #results{
+    margin-bottom: 10px;
+    .nav-tabs > li > a,
+    .panel-group .panel,
+    .form-control{
+      border-radius: 0;
+    }
+    .tab-content{
+      .tab-pane{
+        .codes-list{
+          margin-top: 20px;
+          .input{
+            label{
+              display: inline;
+              font-weight: normal;
+            }
           }
-        }
-        .run-selected{
-          display: block;
-          margin-bottom: 10px;
-          border-radius: 0;
+          .run-selected{
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 0;
+          }
         }
       }
     }
+    .sharing{
+      display: none;
+      .show{
+        display: block;
+      }
+    }
   }
-
 
 
 %ul.nav.nav-tabs{role: 'tablist'}
@@ -60,9 +69,20 @@
   #compare.tab-pane.fade
     = render partial: 'compare_enterprises'
 
+.row.sharing
+  -#.col-xs-6
+    .social-btns#share_results
+  .col-xs-12.text-left
+    .embeded-btn
+      = render partial: 'embeded_btn', locals: {url: municipal_enterprise_from_town_path(params[:town_id], params[:enterprise_id] )}
 
 :javascript
   $(document).ready(function(){
+    // show embed_btn if view in town profile
+    if ($('#enterprise-analysis').parents('.modules-wrapper').length) {
+      $('.sharing').addClass('show');
+    }
+
     $('#form_1 .run-selected').on('click', function(){
       get_charts_data('#form_1')
     });

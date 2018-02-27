@@ -4,7 +4,7 @@
     - codes.each do |code|
       .input
         = check_box_tag "#{code.code}", "#{code.code}", code.publish, class: 'code-checkbox'
-        = label_tag code.code, "#{code.code} #{code.title}"
+        = label_tag code.code, title_for_code(code.code, code.title)
 
   .col-md-9{ id: "charts-form-#{code_type}"}
     = render partial: 'reporting_charts'

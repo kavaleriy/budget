@@ -1,0 +1,22 @@
+:scss
+  $button-text: black;
+
+  #embedded-profile {
+    margin-top: 10px;
+    color: $button-text;
+    font-weight: bold;
+    font-size: 17px;
+    display: inline-block;
+    i {
+      padding-right: 5px;
+      color: $button-text;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+  }
+
+
+- if url.present?
+  %button.btn#embedded-profile{ data: { 'clipboard-text' => embed_full_url(url), 'tooltip' => t('public.towns.show.click') } }
+    = fa_icon 'code 1x'
+    = t('modules.classifier.embeded_btn.get_code')

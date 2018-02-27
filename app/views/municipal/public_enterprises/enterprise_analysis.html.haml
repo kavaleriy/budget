@@ -4,6 +4,7 @@
   $search-border: #0c2231;
 
   #enterprise-analysis{
+    margin-top: 5px;
     .select2-container {
       border: none;
       .select2-choice {
@@ -23,7 +24,7 @@
           width: 33px;
           background: $search-border;
           text-align: center;
-          margin: -2px auto;
+          margin: -1px auto;
         }
         .select2-chosen {
           padding-top: 0;
@@ -43,27 +44,29 @@
   = simple_form_for '', remote: true do |f|
     .row
       .col-md-offset-3.col-md-6
-        = f.input(:enterprises, type: 'hidden',
+        = f.input(:enterprises,
           collection: @enterprises.map{ |ent| ["#{ent.title} #{ent.edrpou}", ent.id] },
           placeholder: 'Назва підприємства, ЄДРПОУ',
-          input_html: {'data-town-id' => params['town']}, label: false)
+          input_html: { 'data-town-id' => params['town'] },
+          label: false)
 
 #results
 
 :javascript
   $(document).ready(function() {
+    var enterprise = "#{params[:enterprise_id]}";
 
     // init select2 and add event -> search if change value (if select not empty)
     $('#_enterprises').select2({
       allowClear: true
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
-      if(data.val) {
+      if(data.val || enterprise) {
         // classifier_search("#{municipal_public_enterprise_files_path}", init_search_params());
         $.ajax({
           type: 'get',
           url: "#{municipal_public_enterprise_files_path}",
-          // async: false,
+          async: false,
           dataType: 'script',
           data: {
             town_id: $('#_enterprises').data('town-id'),
@@ -75,5 +78,8 @@
         });
       }
     });
+
+    // used for iframe
+    $('#_enterprises').val(enterprise).trigger('change');
 
   });
