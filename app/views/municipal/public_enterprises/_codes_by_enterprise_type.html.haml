@@ -1,8 +1,3 @@
--#- codes_list.each do |code|
-  .input
-    = radio_button_tag 'code', "#{code.code}", code.publish, class: 'code-radio'
-    = label_tag "code_#{code.code}", "#{code.code} #{code.title}"
-
 = select_tag  :code,
-              options_for_select(codes_list.collect{|code| ["#{code.code} #{code.title}", code.code]}, codes_list.first.code),
+              options_for_select(codes_list.collect{|code| [title_for_code(code.code, code.title), code.code]}, codes_list.first.code),
               class: 'form-control'

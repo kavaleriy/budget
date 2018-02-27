@@ -54,8 +54,7 @@
     - @charts.each do |chart|
       .col-xs-12.col-md-6.chart
         .title{title: "#{chart[chart.keys[0]][:title]}", 'aria-hidden' => 'true',  'data-toggle' => 'tooltip', 'data-placement' => 'top'}
-          = chart.keys[0]
-          = chart[chart.keys[0]][:title]
+          = title_for_code(chart.keys[0], chart[chart.keys[0]][:title])
         .unit
           = chart[chart.keys[0]][:unit]
         .line-chart

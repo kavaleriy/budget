@@ -1,8 +1,7 @@
 module Municipal
   # common logic of municipal enterprises
-  class PublicEnterprisesController < ApplicationController
+  class PublicEnterprisesController < Widgets::WidgetsController
     before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes, :codes_by_enterprise_type, :compare_chart]
-    after_action :allow_iframe, only: [:enterprise_analysis]
     respond_to :html
 
     def enterprise_analysis
@@ -80,12 +79,6 @@ module Municipal
 
     def set_enterprise
       @enterprise = Municipal::Enterprise.find(params[:enterprise_id])
-    end
-
-    def allow_iframe
-      response.headers['x-frame-options'] = 'ALLOWALL'
-      response.headers['Access-Control-Allow-Origin'] = '*'
-      response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
     end
 
   end
