@@ -107,26 +107,44 @@
 
     function create_chart(data, code){
       var data_chart = [];
-      var data_years= [];
+      var data_years;
       var years = [];
+
+      function default_data(index, title) {
+        data_chart[index] = {}
+        data_chart[index]['label'] =  title;
+        data_chart[index]['borderColor'] = dynamicColors();
+        data_chart[index]['spanGaps'] =  true;
+        data_chart[index]['data'] = [];
+      }
 
       data_chart['title'] = data[0][code]['title'];
       data_chart['desc'] = data[0][code]['desc'];
       data_chart['unit'] = data[0][code]['unit'];
-      $.each(data, function(key, value) {
-        // data_chart[key]['backgroundColor'] = dynamicColors();
-        // data_chart[key]['pointStyle'] = 'circle';
-        data_chart[key] = {}
-        data_chart[key]['label'] =  value['title'];
-        data_chart[key]['borderColor'] = dynamicColors();
-        data_chart[key]['spanGaps'] =  true;
-        data_chart[key]['data'] = [];
+
+      // *build data average line chart
+      default_data(0, 'Середнє значення');
+      data_chart[0]['borderDash'] = [15, 5];
+
+      $.each(data, function(index, value) {
+        var new_index = index + 1;
+        var i = 0;
+        default_data(new_index, value['title']);
 
         $.each(value[code]['years'], function(k, v){
           years.push(k);
-          data_chart[key]['data'].push(v);
+          data_chart[new_index]['data'].push(v);
+
+          // *sum all values by year
+          data_chart[0]['data'][i] = (data_chart[0]['data'][i] + v || v);
+          i += 1;
         });
       })
+
+      // *set average value for each year
+      $.each(data_chart[0]['data'], function(k, v){
+        data_chart[0]['data'][k] = v / data.length;
+      });
 
       // generate array uniq years
       data_years = Array.from(new Set(years));
