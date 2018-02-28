@@ -36,7 +36,7 @@
           .panel-body
             - Municipal::Enterprise.by_type(@enterprise).each do |ent|
               .input
-                = check_box_tag ent.id, ent.id, ent.id.to_s.eql?(params[:enterprise_id]), class: 'ent-checkbox'
+                = check_box_tag ent.id, ent.id, true, class: 'ent-checkbox'
                 = label_tag ent.id, ent.title
 
   .col-md-9#compare-chart
