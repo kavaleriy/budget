@@ -111,11 +111,12 @@
       var years = [];
 
       function default_data(index, title) {
-        data_chart[index] = {}
-        data_chart[index]['label'] =  title;
-        data_chart[index]['borderColor'] = dynamicColors();
-        data_chart[index]['spanGaps'] =  true;
-        data_chart[index]['data'] = [];
+        data_chart[index] = {
+          label: title,
+          borderColor: dynamicColors(),
+          spanGaps: true,
+          data: []
+        }
       }
 
       data_chart['title'] = data[0][code]['title'];
