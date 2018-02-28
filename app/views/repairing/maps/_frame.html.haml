@@ -313,7 +313,6 @@
 
     function onFeatureClick(feature, layer) {
       var repair_id = feature.properties.id;
-      // aRepairMap.map.scrollWheelZoom.disable();
       $.ajax({
         url: "#{repairing_show_repair_info_path}",
         dataType: 'script',
