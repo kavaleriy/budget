@@ -36,7 +36,7 @@
           .panel-body
             - Municipal::Enterprise.by_type(@enterprise).each do |ent|
               .input
-                = check_box_tag ent.id, ent.id, ent.id.to_s.eql?(params[:enterprise_id]), class: 'ent-checkbox'
+                = check_box_tag ent.id, ent.id, true, class: 'ent-checkbox'
                 = label_tag ent.id, ent.title
 
   .col-md-9#compare-chart
@@ -107,34 +107,54 @@
 
     function create_chart(data, code){
       var data_chart = [];
-      var data_years= [];
+      var data_years;
       var years = [];
+      var chart_info = {
+        title: data[0][code]['title'],
+        desc: data[0][code]['desc'],
+        unit: data[0][code]['unit']
+      }
 
-      data_chart['title'] = data[0][code]['title'];
-      data_chart['desc'] = data[0][code]['desc'];
-      data_chart['unit'] = data[0][code]['unit'];
-      $.each(data, function(key, value) {
-        // data_chart[key]['backgroundColor'] = dynamicColors();
-        // data_chart[key]['pointStyle'] = 'circle';
-        data_chart[key] = {}
-        data_chart[key]['label'] =  value['title'];
-        data_chart[key]['borderColor'] = dynamicColors();
-        data_chart[key]['spanGaps'] =  true;
-        data_chart[key]['data'] = [];
+      function default_data(index, title) {
+        data_chart[index] = {
+          label: title,
+          borderColor: dynamicColors(),
+          spanGaps: true,
+          data: []
+        }
+      }
+
+      // *build data average line chart
+      default_data(0, 'Середнє значення');
+      data_chart[0]['borderDash'] = [15, 5];
+
+      $.each(data, function(index, value) {
+        var new_index = index + 1;
+        var i = 0;
+        default_data(new_index, value['title']);
 
         $.each(value[code]['years'], function(k, v){
           years.push(k);
-          data_chart[key]['data'].push(v);
+          data_chart[new_index]['data'].push(v);
+
+          // *sum all values by year
+          data_chart[0]['data'][i] = (data_chart[0]['data'][i] + v || v);
+          i += 1;
         });
       })
+
+      // *set average value for each year
+      $.each(data_chart[0]['data'], function(k, v){
+        data_chart[0]['data'][k] = v / data.length;
+      });
 
       // generate array uniq years
       data_years = Array.from(new Set(years));
 
       //info for this graph
-      $("#code-title").text(data_chart['title']);
-      $("#code-unit").text(data_chart['unit']);
-      $("#code-desc").text(data_chart['desc']);
+      $("#code-title").text(chart_info['title']);
+      $("#code-unit").text(chart_info['unit']);
+      $("#code-desc").text(chart_info['desc']);
 
       // If call this function with selected code
       // Because chart buggy with old selected codes
