@@ -109,6 +109,11 @@
       var data_chart = [];
       var data_years;
       var years = [];
+      var chart_info = {
+        title: data[0][code]['title'],
+        desc: data[0][code]['desc'],
+        unit: data[0][code]['unit']
+      }
 
       function default_data(index, title) {
         data_chart[index] = {
@@ -118,10 +123,6 @@
           data: []
         }
       }
-
-      data_chart['title'] = data[0][code]['title'];
-      data_chart['desc'] = data[0][code]['desc'];
-      data_chart['unit'] = data[0][code]['unit'];
 
       // *build data average line chart
       default_data(0, 'Середнє значення');
@@ -151,9 +152,9 @@
       data_years = Array.from(new Set(years));
 
       //info for this graph
-      $("#code-title").text(data_chart['title']);
-      $("#code-unit").text(data_chart['unit']);
-      $("#code-desc").text(data_chart['desc']);
+      $("#code-title").text(chart_info['title']);
+      $("#code-unit").text(chart_info['unit']);
+      $("#code-desc").text(chart_info['desc']);
 
       // If call this function with selected code
       // Because chart buggy with old selected codes
