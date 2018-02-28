@@ -169,8 +169,9 @@
       %i.fa.fa-calendar
       = "#{ t('.repair_time') } :"
     .col-xs-8
-      -#= "23.05.2016 - 31.05.2017"
-      = "#{@repairing_repair.repair_start_date} - #{@repairing_repair.repair_end_date}"
+      = format_date(@repairing_repair.repair_start_date)
+      = '-'
+      = format_date(@repairing_repair.repair_end_date)
   .row
     .col-xs-4.title-key
       %i.fa.fa-certificate

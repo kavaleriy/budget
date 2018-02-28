@@ -4,6 +4,10 @@ module ApplicationHelper
     year == @current_year
   end
 
+  def format_date(date)
+    date.strftime("%d.%m.%Y") if date.present?
+  end
+
  def hexToRgb(color = "#ffffff")
   a = ( color.match /#(..?)(..?)(..?)/ )[1..3]
   a.map!{ |x| x + x } if color.size == 4
