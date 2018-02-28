@@ -83,6 +83,8 @@ module Repairing
       end
     end
 
+    # not used in town profile
+    # used in show, edit layer
     def getInfoContentForPopup
       # this function have url 'repairing/map/getInfoContentForPopup/:repair_id'
       # format: *.js

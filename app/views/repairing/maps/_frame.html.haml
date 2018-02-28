@@ -26,28 +26,28 @@
 
   $(document).ready(function() {
 
-    function getRepairId(){
-      return $('.new_info_panel').attr('data-repair-id');
-    }
-
-    function get_repair_info_modal(){
-      var repair_id = getRepairId();
-      $.ajax({
-        url: "#{repairing_show_repair_info_path}",
-        dataType: 'script',
-        data: { id: repair_id },
-        success: function(data){
-          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
-          //modal_dom.find('.modal-content').css('width','50vw');
-          // modal_body.html(data);
-          // modal_dom.modal();
-        }
-      })
-    }
-
-    $('body').on('click','.more-text',function(){
-      get_repair_info_modal();
-    });
+    // function getRepairId(){
+    //   return $('.new_info_panel').attr('data-repair-id');
+    // }
+    //
+    // function get_repair_info_modal(){
+    //   var repair_id = getRepairId();
+    //   $.ajax({
+    //     url: "#{repairing_show_repair_info_path}",
+    //     dataType: 'script',
+    //     data: { id: repair_id },
+    //     success: function(data){
+    //    // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+    //    // modal_dom.find('.modal-content').css('width','50vw');
+    //       // modal_body.html(data);
+    //       // modal_dom.modal();
+    //     }
+    //   })
+    // }
+    //
+    // $('body').on('click','.more-text',function(){
+    //   get_repair_info_modal();
+    // });
 
     var embed_code = aMapEmbedCode();
     var src = 'https://' + window.location.host + "/repairing/maps/frame/6/";
@@ -301,12 +301,26 @@
       return point;
     }
 
+    // function onFeatureClick(feature, layer) {
+    //   featureId = feature.properties.id
+    //   $.ajax({
+    //     url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+    //     success:function(data){
+    //      layer.bindPopup(data).openPopup();
+    //     }
+    //   })
+    // }
+
     function onFeatureClick(feature, layer) {
-      featureId = feature.properties.id
+      var repair_id = feature.properties.id;
+      // aRepairMap.map.scrollWheelZoom.disable();
       $.ajax({
-        url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
-        success:function(data){
-         layer.bindPopup(data).openPopup();
+        url: "#{repairing_show_repair_info_path}",
+        dataType: 'script',
+        data: { id: repair_id },
+        success: function(data){
+          // stop scroll map under modal window
+          aRepairMap.map.scrollWheelZoom.disable();
         }
       })
     }
