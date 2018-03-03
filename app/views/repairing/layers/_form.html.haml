@@ -1,3 +1,8 @@
+:scss
+  .child_category_select{
+    display: none;
+  }
+
 = simple_form_for @repairing_layer do |f|
 
   - unless current_user.admin?
@@ -8,8 +13,20 @@
                    input_html: {value: current_user.town_model.id}
   = f.input :locale, as: :hidden, input_html: {value: params[:locale]}
   = f.input :title, label: t('repairing.repairs.form.title'), class: 'form-control'
-  = f.input :repairing_category, collection: @categories.map {|cat| [ cat.title, cat.id ] } ,
-                                 label: t('repairing.repairs.form.category')
+
+  .row
+    .col-md-6
+      = f.input :repairing_category,
+                collection: @categories.map {|cat| [ cat.title, cat.id ] },
+                label: t('repairing.repairs.form.category')
+    .col-md-6.form-group.child_category_select
+      = label_tag :child_category,
+                  t('repairing.repairs.repair_info.description'),
+                  class: 'select control-label'
+      = f.grouped_collection_select :repairing_category, Repairing::Category.tree_root, :categories, :title, :id, :title,
+                  { include_blank: true },
+                  { class: 'select form-control', id: 'child_category', name: 'child_category' }
+
   = f.input :status, collection: {t('js.visify.plan') => :plan, t('js.visify.fact') => :fact},
                      prompt: false,
                      label: t('repairing.repairs.form.status')
@@ -26,6 +43,24 @@
   $(document).ready(function(){
     init_town_select2_with_field_id('#repairing_layer_town',"#{search_for_towns_town_path}");
     $("#repairing_layer_town").select2("data", {id: "#{current_user.town_model.id}", text: "#{current_user.town_model.title}" });
+
+
+    // dynamic generate second select with children repairing categories
+    var children_ctegories = $('#child_category').html();
+
+    $('#repairing_layer_repairing_category').change(function() {
+      var category, options;
+      category = $('#repairing_layer_repairing_category :selected').text();
+      options = $(children_ctegories).filter("optgroup[label='" + category + "']").html();
+      if (options) {
+        $('#child_category').html("<option value=''></option>");
+        $('#child_category').append(options);
+        return $('#child_category').parent().show();
+      } else {
+        $('#child_category').empty();
+        return $('#child_category').parent().hide();
+      }
+    });
   });
 
 

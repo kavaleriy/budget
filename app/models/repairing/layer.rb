@@ -107,6 +107,7 @@ class Repairing::Layer
                                                                              'updated_at' => 1,
                                                                              'coordinates' => 1,
                                                                              'layer_id' => 1,
+                                                                             'repairing_category_id' => 1,
                                                                              'repair_start_date' => 1,
                                                                          }
                                                                      }

@@ -90,7 +90,7 @@ module Repairing
 
     end
 
-    def self.import(layer, filepath)
+    def self.import(layer, filepath, child_category)
       repairs_arr = read_table_from_file(filepath)[:rows]
 
       repairs_arr.each do |repair|
@@ -112,8 +112,7 @@ module Repairing
 
         layer_repair = self.create(repair_hash)
         layer_repair.layer = layer
-
-        layer_repair.repairing_category = Repairing::Category.where(title: repair['опис робіт']).first
+        layer_repair.repairing_category = child_category if child_category.present?
 
         layer_repair.save(validate: false)
       end
@@ -163,8 +162,9 @@ module Repairing
           description: repair['додаткова інформація'],
       }
     end
+
     def self.repair_json_by_town(town)
-      Rails.cache.fetch("/repairings/as_json/#{town}/#{town_updated(town)}", expires_in: 1.week) do
+      Rails.cache.fetch("/repairings/as_json/#{town}/#{town_updated(town)}", expires_in: 1.hours) do
         repairings = Repairing::Layer.valid_layers_with_repairs
         geo_jsons = []
 
@@ -189,6 +189,7 @@ module Repairing
             repair['layer']['status'] = layer['status'] || :plan
             repair['layer']['year'] = layer['year']
             repair['layer']['repairing_category_id'] = layer['repairing_category_id'].to_s
+            repair['repairing_category_id'] = repair['repairing_category_id'].to_s
 
             repair_json = Repairing::GeojsonBuilder.build_repair(repair)
             geo_jsons << repair_json if repair_json
@@ -206,7 +207,7 @@ module Repairing
     end
 
     def self.town_updated(id)
-      Town.find(id).updated_at
+      Town.find(id).updated_at if id.present?
     end
   end
 

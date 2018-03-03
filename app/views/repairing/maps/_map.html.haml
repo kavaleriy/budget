@@ -407,18 +407,19 @@
       info.addTo(map);
     }
 
-    function addCategoryControl(data) {
-      categories = data;
-      var categoryBtns = L.control({position: 'topright'});
-
-      categoryBtns.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info categoryBtns');
-        this._div.innerHTML = '#{ escape_javascript render partial: "repairing/maps/category_btns" }';
-        return this._div;
-      };
-
-      //categoryBtns.addTo(map);
-    }
+    // not used
+    // function addCategoryControl(data) {
+    //   categories = data;
+    //   var categoryBtns = L.control({position: 'topright'});
+    //
+    //   categoryBtns.onAdd = function (map) {
+    //     this._div = L.DomUtil.create('div', 'info categoryBtns');
+    //     this._div.innerHTML = '#{ escape_javascript render partial: "repairing/maps/category_btns" }';
+    //     return this._div;
+    //   };
+    //
+    //  //categoryBtns.addTo(map);
+    // }
 
     function editRoute(waypoints, routeFoundCallback) {
       var line;
@@ -637,7 +638,7 @@
       addGeoJsonPoint: addGeoJsonPoint,
       editRoute: editRoute,
       showRoute: showRoute,
-      addCategoryControl: addCategoryControl,
+      // addCategoryControl: addCategoryControl,
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,

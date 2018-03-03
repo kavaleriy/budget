@@ -8,7 +8,8 @@ class Repairing::Category
 
   has_many :repairing_layers, class_name: 'Repairing::Layer', autosave: true, dependent: :nullify
   has_many :repairing_repairs, class_name: 'Repairing::Repair', autosave: true, dependent: :nullify
-  has_one :parent, class_name: 'Repairing::Category', dependent: :nullify
+  # has_one :parent, class_name: 'Repairing::Category', dependent: :nullify
+  has_many :categories, class_name: 'Repairing::Category', autosave: true, dependent: :destroy
   belongs_to :category, class_name: 'Repairing::Category'
 
   field :title, type: String
@@ -25,6 +26,10 @@ class Repairing::Category
     Repairing::Category.where(:category_id.in =>[ nil, '#']).by_locale
   end
 
+  def self.with_image
+    Repairing::Category.where(:img.ne => nil).by_locale
+  end
+
   def childrens
     Repairing::Category.where(category_id: id).by_locale
   end
@@ -33,7 +38,7 @@ class Repairing::Category
     # this function return json array root categories
     # where key is category.id and value is category.img
 
-    root_categories = self.tree_root.to_a
+    root_categories = self.with_image.to_a
     res = {}
     root_categories.each do |category|
       img = ''
