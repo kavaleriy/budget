@@ -68,7 +68,7 @@
           opacity: 1,
         },
         featureClickCallback: onFeatureClick,
-        dragCallback: onDrag,
+        // dragCallback: onDrag,
         editInfoContent: true
       })
 
@@ -161,20 +161,13 @@
       return point;
     }
 
-    function onMapClick(feature, popup) {
-    }
-
     function getMapPopupContent(e) {
-      var content = e.latlng.toString()
+      var place_for_close_btn = '<span style="color:white">----</span>'
+      var content = e.latlng.toString() + place_for_close_btn;
       return content
     }
 
-    var _removedFeature
-    var _selectedFeature
-
     function onFeatureClick(feature, layer) {
-      selectFeature(feature, layer)
-
       featureId = feature.properties.id
       $.ajax({
         url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
@@ -182,143 +175,30 @@
           layer.bindPopup(data).openPopup();
         }
       })
-
     }
 
+    function getRepairId(){
+      return $('.new_info_panel').attr('data-repair-id');
+    }
 
-    function onDrag(layer, ll) {
+    function get_repair_info_modal(){
+      var repair_id = getRepairId();
       $.ajax({
-        method: 'PUT',
-        url: '#{repairing_layer_repair_path(@layer.id, "%id%")}'.replace("%id%", layer.feature.properties.id),
-        dataType: 'json',
-        cache: false,
-        data: {
-          repairing_repair: {
-            coordinates: [ll.lat, ll.lng]
-          }
+        url: "#{repairing_show_repair_info_path}",
+        dataType: 'script',
+        data: { id: repair_id },
+        success: function(data){
+          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+          // modal_dom.find('.modal-content').css('width','50vw');
+          // modal_body.html(data);
+          // modal_dom.modal();
         }
-      })
-      .fail(function () {
-        alert('Не вдалось зберегти дані')
       })
     }
 
-    $('.search_map form').bind("ajax:success", function(f, data){
-      if (data.features) {
-        selectFeature(data.features[0]);
-      } else {
-        aRepairMap.addGeoJsonPoint([data['properties']['id'], 0, data], getPoint, {
-          clustered: true,
-          style: {
-            opacity: 0.8,
-          },
-          hoverStyle: {
-            opacity: 1,
-          },
-          featureClickCallback: onFeatureClick,
-          dragCallback: onDrag,
-          editInfoContent: true
-        });
-        selectFeature(data);
-      }
+    $('body').on('click','.more-text',function(){
+      get_repair_info_modal();
     });
-
-    function selectFeature(feature, target) {
-      $('#repair').html('');
-
-      //if (_removedFeature) {
-        //url = '#{repairing_layer_repair_path(@layer.id, "%id%")}'.replace("%id%", _removedFeature.properties.id)
-        //_removedFeature = undefined
-
-        //$.ajax({
-        //  method: 'GET',
-        //  cache: false,
-        //  url: url,
-        //}).done(function (data) {
-        //  aRepairMap.addGeoJsonPoint(data);
-        //})
-      //}
-
-      _selectedFeature = feature
-
-      if (_selectedFeature) {
-        $.ajax({
-          method: 'GET',
-          cache: false,
-          url: '#{edit_repairing_layer_repair_path(@layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
-          success: function(){
-            $('#remove_repair').on('click',function(){
-                aRepairMap.removeMarker(_selectedFeature);
-            });
-          }
-        })
-        .fail(function () {
-          console.log('click fail')
-        })
-
-        if (_selectedFeature.properties.repair == "road") {
-          //if (target) {
-          //  _removedFeature = target.feature
-          //  aRepairMap.map.removeLayer(target)
-          //}
-
-          editRoute()
-        } else {
-          aRepairMap.editRoute([])
-        }
-      }
-    }
-
-    function editRoute(feature) {
-
-      if (feature == null)
-        feature = _selectedFeature
-
-      var coordinates  = feature.properties.route
-
-      var waypoints = []
-      waypoints.push({ latLng: L.latLng(coordinates[0]) });
-      waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
-
-      aRepairMap.editRoute(waypoints, routeFoundCallback)
-
-      function routeFoundCallback(route) {
-        updateRoute(route, feature)
-      }
-    }
-
-    function updateRoute(route, feature){
-      update_feature_coords()
-      store_route()
-
-      function update_feature_coords() {
-        feature.properties.route = []
-        $.each(route, function(key,val) {
-          feature.properties.route.push([val['lat'], val['lng']])
-        })
-      }
-
-      function store_route() {
-        var coordinates = ''
-        $.each(route, function(key,val) {
-          coordinates += val + ' '
-        })
-
-        $.ajax({
-          method: 'PUT',
-          url: '#{repairing_layer_repair_path(@layer.id, "%id%")}'.replace("%id%", feature.properties.id),
-          dataType: 'json',
-          data: {
-            repairing_repair: {
-              coordinates: coordinates
-            }
-          }
-        })
-        .fail(function () {
-          alert('Не вдалось зберегти дані')
-        })
-      }
-    }
 
   });
 

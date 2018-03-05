@@ -177,7 +177,8 @@
     }
 
     function getMapPopupContent(e) {
-      var content = e.latlng.toString()
+      var place_for_close_btn = '<span style="color:white">----</span>'
+      var content = e.latlng.toString() + place_for_close_btn;
       return content
     }
 
@@ -196,6 +197,29 @@
       })
 
     }
+
+    function getRepairId(){
+      return $('.new_info_panel').attr('data-repair-id');
+    }
+
+    function get_repair_info_modal(){
+      var repair_id = getRepairId();
+      $.ajax({
+        url: "#{repairing_show_repair_info_path}",
+        dataType: 'script',
+        data: { id: repair_id },
+        success: function(data){
+          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+          // modal_dom.find('.modal-content').css('width','50vw');
+          // modal_body.html(data);
+          // modal_dom.modal();
+        }
+      })
+    }
+
+    $('body').on('click','.more-text',function(){
+      get_repair_info_modal();
+    });
 
     function onDrag(layer, ll) {
       $.ajax({
