@@ -69,12 +69,13 @@
       scrollWheelZoom: true
     })
     // disable map zoom if we open repair additional info
-    $(document).on('click', '.leaflet-popup .more-text', function(){
-      aRepairMap.map.scrollWheelZoom.disable();
-    })
+    // $(document).on('click', '.leaflet-popup .more-text', function(){
+    //   aRepairMap.map.scrollWheelZoom.disable();
+    // })
     // enable map zoom if we close repair additional info
     $('#map').on('hide.bs.modal', function(){
       aRepairMap.map.scrollWheelZoom.enable();
+      aRepairMap.map.dragging.enable();
     })
     // add markers
     $.ajax({
@@ -122,8 +123,8 @@
 
       addMarkers()
 
-      categories = JSON.parse('#{@categories.to_json(:except => :img)}')
-      aRepairMap.addCategoryControl(categories);
+      // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
+      // aRepairMap.addCategoryControl(categories);
 
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
@@ -285,18 +286,20 @@
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
 
-    function getIconByCategory(category_id){
-
+    function getIconByCategory(parent_cat, child_cat){
       var iconCategoryUrl = '/assets/repairing/default_icon.png';
-      if (categories_icons[category_id] ){
-        iconCategoryUrl = categories_icons[category_id];
-      };
+      if (categories_icons[child_cat]){
+        iconCategoryUrl = categories_icons[child_cat];
+      }
+      else if (categories_icons[parent_cat]){
+        iconCategoryUrl = categories_icons[parent_cat];
+      }
 
       return new Icon({iconUrl: iconCategoryUrl});
     };
     function getPoint(properties) {
       var point = {}
-      point.icon = getIconByCategory(properties.p_c_id);
+      point.icon = getIconByCategory(properties.p_c_id, properties.c_id);
 
       return point;
     }
@@ -318,8 +321,9 @@
         dataType: 'script',
         data: { id: repair_id },
         success: function(data){
-          // stop scroll map under modal window
+          // stop scroll and drag for map under modal window
           aRepairMap.map.scrollWheelZoom.disable();
+          aRepairMap.map.dragging.disable();
         }
       })
     }

@@ -114,8 +114,7 @@ module Repairing
         if @repairing_layer.save
           unless @repairing_layer.repairs_file.path.nil?
             # repairs = read_table_from_file(@repairing_layer.repairs_file.path)
-
-            Repairing::Repair.import(@repairing_layer, @repairing_layer.repairs_file.path)
+            Repairing::Repair.import(@repairing_layer, @repairing_layer.repairs_file.path,params[:child_category])
 
             Thread.new do
               @repairing_layer.repairs.each do |repair|
