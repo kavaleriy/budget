@@ -37,19 +37,19 @@
 %ul.nav.nav-tabs{role: 'tablist'}
   %li.active
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_1'}
-      Баланс
+      = t('guide_filters.type_codes.form_1')
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_2'}
-      Звіт про рух грошових коштів
+      = t('guide_filters.type_codes.form_2')
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#form_7'}
-      Фінансова аналітика
+      = t('guide_filters.type_codes.form_3')
   -#%li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#analysis'}
       Фінансова аналітика(зведена)
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#compare'}
-      Порівняти з іншими підприємствами
+      = t('enterprise.compare')
 
 .tab-content.charts
   #form_1.tab-pane.fade.in.active
