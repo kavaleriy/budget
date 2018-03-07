@@ -3,54 +3,72 @@
   $search-background: white;
   $search-border: #0c2231;
 
-  #enterprise-analysis{
-    margin-top: 5px;
-    .select2-container {
-      border: none;
-      .select2-choice {
-        height: 33px;
-        line-height: 33px;
-        background: $search-background;
-        border: 1px solid $search-border;
-        border-radius: 0;
-        &:before {
-          content: '\f002';
-          font-family: FontAwesome;
-          position: absolute;
-          right: 0;
-          cursor: pointer;
-          font-size: 20px;
-          color: $search-background;
-          width: 33px;
-          background: $search-border;
-          text-align: center;
-          margin: -1px auto;
-        }
-        .select2-chosen {
-          padding-top: 0;
-          margin-right: 55px;
-        }
-        .select2-search-choice-close {
-          right: 40px;
-        }
-        .select2-arrow {
-          display: none;
+  #municipal-enterprise{
+    &.fullscreen{
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+      height: 100%;
+      #enterprise-analysis,
+      #results{
+        padding: 0 5px;
+      }
+    }
+    #enterprise-analysis{
+      margin-top: 5px;
+      #fullscreen i {
+        font-size: 34px;
+      }
+      .select2-container {
+        border: none;
+        .select2-choice {
+          height: 33px;
+          line-height: 33px;
+          background: $search-background;
+          border: 1px solid $search-border;
+          border-radius: 0;
+          &:before {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+            font-size: 20px;
+            color: $search-background;
+            width: 33px;
+            background: $search-border;
+            text-align: center;
+            margin: -1px auto;
+          }
+          .select2-chosen {
+            padding-top: 0;
+            margin-right: 55px;
+          }
+          .select2-search-choice-close {
+            right: 40px;
+          }
+          .select2-arrow {
+            display: none;
+          }
         }
       }
     }
   }
 
-#enterprise-analysis
-  = simple_form_for '', remote: true do |f|
-    .row
-      .col-md-offset-3.col-md-6
-        = f.input(:enterprises,
-          collection: @enterprises.map{ |ent| ["#{ent.title} #{ent.edrpou}", ent.id] },
-          placeholder: 'Назва підприємства, ЄДРПОУ',
-          input_html: { 'data-town-id' => params['town'] },
-          label: false)
+#municipal-enterprise
+  #enterprise-analysis
+    = simple_form_for '', remote: true do |f|
+      .row
+        .col-md-offset-3.col-md-6
+          = f.input(:enterprises,
+            collection: @enterprises.map{ |ent| ["#{ent.title} #{ent.edrpou}", ent.id] },
+            placeholder: 'Назва підприємства, ЄДРПОУ',
+            input_html: { 'data-town-id' => params['town'] },
+            label: false)
+        .col-md-3#fullscreen{'data-module' => 'municipal-enterprise'}
+          = render partial: 'widgets/town_profile/fullscreen_btn'
 
-#results
+  #results
 
 :javascript
   $(document).ready(function() {
