@@ -63,8 +63,8 @@
   }
 
 -if @payments.blank?
-  = render partial: 'layouts/no_data_yet'
-  -#= t('.no-data')
+  .row
+    = render partial: 'layouts/no_data_yet'
 
   :javascript
     $(document).ready(function() {
