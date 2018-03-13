@@ -266,8 +266,8 @@
   }
   .paywatch_logo{
     display: block;
-    width: 100%;
-    margin: 0 auto;
+    width: 50%;
+    margin: 30px auto;
   }
   #search-by-purpose-wrapper{
     width: 40%;
@@ -292,10 +292,9 @@
   }
   .export-btn{
     position: relative;
-
     .additional-btns{
       position: absolute;
-      right: 0;
+      right: 40px;
       top: -52px;
     }
   }
@@ -316,7 +315,7 @@
     .col-sm-offset-1.col-xs-10
       #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
-          options_for_select([' ','Очищення', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
+          options_for_select([' ', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
     .col-xs-1.pull-right#fullscreen{'data-module' => 'search-data'}
       = render partial: 'widgets/town_profile/fullscreen_btn'
   .results
@@ -328,7 +327,7 @@
   #most-received
     = render partial: 'chart'
   .vis-spinner
-    -# = render partial: 'layouts/spinner'
+    = render partial: 'layouts/spinner'
 
   .copyright_info
     = render partial: 'copyright_info'

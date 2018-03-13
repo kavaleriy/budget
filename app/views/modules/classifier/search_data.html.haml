@@ -271,10 +271,26 @@
       allowClear: true
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
-      if(data.val) {
+      if(data.val || check_edrpou(data.target.value)) {
         classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
       }
     });
+
+    // If user input new code edrpou
+    // for embed iframe with needed enterprise
+    $(document).on('keyup', '.select2-input', function(e){
+      var value = e.target.value;
+      if(e.keyCode == 13 && check_edrpou(value)){
+        $('#_item').prepend($('<option>').text(value).attr('selected', true)).select2('close');
+        $('#_item').val(value).trigger('change.select2');
+        $('#_item').trigger('change');
+      }
+    })
+
+    function check_edrpou(edrpou){
+      var eight_length_regex = /^[0-9]{8}$/;
+      return eight_length_regex.test(edrpou);
+    }
 
     $('#search').on('click', function(){
       if($('#_item').val()) {
