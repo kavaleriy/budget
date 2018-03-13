@@ -281,15 +281,19 @@
     $(document).on('keyup', '.select2-input', function(e){
       var value = e.target.value;
       if(e.keyCode == 13 && check_edrpou(value)){
-        $('#_item').prepend($('<option>').text(value).attr('selected', true)).select2('close');
-        $('#_item').val(value).trigger('change.select2');
+        // add zero if edrpou short (56789 ~ 00056789)
+        var select_value =  value.padStart(8, 0);
+        
+        $('#_item').prepend($('<option>').text(select_value).attr('selected', true)).select2('close');
+        $('#_item').val(select_value).trigger('change.select2');
         $('#_item').trigger('change');
       }
     })
 
     function check_edrpou(edrpou){
-      var eight_length_regex = /^[0-9]{8}$/;
-      return eight_length_regex.test(edrpou);
+      // regex from 5 to 8 number length
+      var length_regex = /^[0-9]{5,8}$/;
+      return length_regex.test(edrpou);
     }
 
     $('#search').on('click', function(){
