@@ -20,7 +20,9 @@ module Modules
     end
 
     def by_edrpou
-      @classifier = Classifier.find_by(edrpou: params[:payers_edrpous])
+      classifier = Classifier.find_by(edrpou: params[:payers_edrpous]) rescue nil
+      @funds_manager_title = classifier.try(:pnaz) || FundsManager.get_title_by_edrpou(params[:payers_edrpous])
+
       respond_to do |format|
         format.html { render layout: 'visify'}
         format.js
@@ -57,7 +59,9 @@ module Modules
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart
-      @receivers = ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?)).first(10)
+      @receivers = Rails.cache.fetch("/edata/most_received/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}", expiries_in: 1.hours) do
+        ExternalApi::most_received(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?)).first(10)
+      end
 
       respond_to do |format|
         # TODO should be rewrite using as :template
@@ -192,15 +196,9 @@ module Modules
     end
 
     def sort_e_data
-      # TODO: When first request to api cache with error:
-      # SocketError (getaddrinfo: Name or service not known)
-      # payments_data = Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}",expiries_in: 1.day) do
-      #   # Data
-      #   ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
-      #   # Sort data
-      # end
-      payments_data = ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
-
+      payments_data = Rails.cache.fetch("/edata/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}", expiries_in: 1.hours) do
+        ExternalApi::e_data_payments(params[:payers_edrpous], params[:recipt_edrpous], (start_date(params[:period]) unless params[:period].blank?), (end_date(params[:period]) unless params[:period].blank?))
+      end
       sort_col = params[:sort_col].blank? ? 'trans_date' : params[:sort_col]
       unless payments_data.blank?
         payments_data.sort_by! do |hash|

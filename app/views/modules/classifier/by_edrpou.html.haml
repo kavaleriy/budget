@@ -308,8 +308,7 @@
   = image_tag 'paywatch_logo.png', class: 'paywatch_logo'
   .row
     .col-sm-12.text-center#classifier{'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]}
-      %h3= @classifier.pnaz
-
+      %h3= @funds_manager_title
 
   .row#search-by-purpose-wrapper-row
     .col-sm-offset-1.col-xs-10
@@ -331,7 +330,7 @@
 
   .copyright_info
     = render partial: 'copyright_info'
--# - binding.pry
+
 :javascript
   $(document).ready(function() {
     $('#search_by_purpose').select2({
