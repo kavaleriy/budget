@@ -1,8 +1,54 @@
 - model_class = Repairing::Layer
 
-:css
-  .map_container {
-    height: 750px;
+:scss
+  .edit-layer{
+    #edit_layer{
+      margin-bottom: 0;
+    }
+    .search_map{
+      form{
+        margin: 0;
+        .form-inline{
+          .form-group{
+            padding: 0;
+            input{
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+    .map_container {
+      height: 750px;
+      padding: 0;
+    }
+    #repair{
+      form{
+        margin: 0;
+        .form-control {
+          width: 100%;
+        }
+      }
+    }
+    .edit-btns{
+      padding-bottom: 15px;
+    }
+  }
+  @media (min-width: 768px){
+    .edit-layer{
+      .search_map{
+        form{
+          .form-inline{
+            .form-group{
+              padding-right: 15px;
+              &:nth-last-child(1){
+                padding-right: 0;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
 = content_for :header do
@@ -11,38 +57,40 @@
     = @repairing_layer.town.title if @repairing_layer.town
     = ", " + @repairing_layer.title unless @repairing_layer.title.blank?
 
-.col-xs-12
-  = render 'edit_form'
+.row.edit-layer
+  .col-xs-12
+    = render 'edit_form'
 
-.col-xs-12.col-md-8
-  .panel.panel-default
-    .panel-heading
-      = render partial: 'search_repairs_coordinates', locals: { layer: @repairing_layer }
-    .panel-body
-      .map_container.col-xs-12
-        = render partial: 'repairing/maps/map'
+  .col-xs-12.col-md-8
+    .panel.panel-default
+      .panel-heading
+        = render partial: 'search_repairs_coordinates', locals: { layer: @repairing_layer }
+      .panel-body
+        .map_container.col-xs-12
+          = render partial: 'repairing/maps/map'
 
-.col-xs-12.col-md-4
-  .panel.panel-default
-    .panel-heading
-      = t('repairing.layers.edit.repair')
-    .panel-body
-      #repair
-      #remove_repair
+  .col-xs-12.col-md-4
+    .panel.panel-default
+      .panel-heading
+        = t('repairing.layers.edit.repair')
+      .panel-body
+        #repair
+        #remove_repair
 
-.clear
+  .clear
 
-%button#calc_roads.btn.btn-info{ disabled: 'disabled' }
-  = t('.calculate_coordinates')
+  .col-xs-12.edit-btns
+    %button#calc_roads.btn.btn-info{ disabled: 'disabled' }
+      = t('.calculate_coordinates')
 
-= link_to t('form.show'), @repairing_layer, class: 'btn btn-primary'
+    = link_to t('form.show'), @repairing_layer, class: 'btn btn-primary'
 
-= link_to t('form.back'), repairing_layers_path, class: 'btn btn-default'
+    = link_to t('form.back'), repairing_layers_path, class: 'btn btn-default'
 
-= link_to t('repairing.repairs.all_repairs'),
-          edit_repairing_layer_path(layer_id: @layer.id),
-          remote: true,
-          class: 'btn btn-success'
+    = link_to t('repairing.repairs.all_repairs'),
+              edit_repairing_layer_path(layer_id: @layer.id),
+              remote: true,
+              class: 'btn btn-success'
 
 #repairs
   - if @repairs

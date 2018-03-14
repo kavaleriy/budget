@@ -8,7 +8,7 @@ module Repairing
     before_action :set_categories, only: [:index, :new, :edit]
     load_and_authorize_resource
 
-    before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr]
+    before_action :set_repairing_layer, only: [:show, :edit, :update, :destroy, :geo_json, :create_repair_by_addr, :subcategories, :update_repairs_category, :subcategories_select]
     before_action :set_repairs, only: [:show, :edit]
 
     def create_repair_by_addr
@@ -179,17 +179,15 @@ module Repairing
     def update
       respond_to do |format|
         if @repairing_layer.update(repairing_layer_params)
-          msg = {class_name: 'success', message: I18n.t('repairing.layers.update.success')}
+          update_subcategory if repairing_layer_params[:repairing_category].present?
+
+          msg = { class_name: 'success', message: I18n.t('repairing.layers.update.success') }
           format.js
-          format.json do
-            render json: msg
-          end
+          format.json { render json: msg }
         else
-          msg = {class_name: 'danger' ,message: I18n.t('repairing.layers.update.error')}
+          msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
           format.js
-          format.json do
-            render json: msg
-          end
+          format.json { render json: msg }
         end
       end
     end
@@ -204,47 +202,76 @@ module Repairing
       end
     end
 
-    def get_categories
+    def categories
       categories = Repairing::Category.by_locale.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
 
       respond_to do |format|
-        format.json { render json: categories}
+        format.json { render json: categories }
+      end
+    end
+
+    def subcategories
+      subcategories = Repairing::Category.where(category: @repairing_layer.repairing_category_id).map{|c| {id: c.id.to_s, text: c.title}}
+
+      respond_to do |format|
+        format.json { render json: subcategories }
+      end
+    end
+
+    def update_subcategory(category = '')
+      @repairing_layer.repairs.update_all(repairing_category_id: category)
+    end
+
+    def update_repairs_category
+      update_subcategory(params[:update_repairs_category][:repairing_subcategory])
+      msg = { class_name: 'success', message: I18n.t('repairing.layers.update.success') }
+
+      respond_to do |format|
+        format.json { render json: msg }
+      end
+    end
+
+    def subcategories_select
+      respond_to do |format|
+        format.js
       end
     end
 
     private
-      def coordinate(coordinates)
-        if ( coordinates =~ /^\d{1,2}[.]\d*/ )
-          Geocoder.coordinates(coordinates)
-        else
-          user_town = current_user.town_model.title
-          Geocoder.coordinates(user_town + ' ' + coordinates)
-        end
-      end
 
-      def sort_column
-        Repairing::Layer.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+    def coordinate(coordinates)
+      if ( coordinates =~ /^\d{1,2}[.]\d*/ )
+        Geocoder.coordinates(coordinates)
+      else
+        user_town = current_user.town_model.title
+        Geocoder.coordinates(user_town + ' ' + coordinates)
       end
+    end
 
-      def sort_direction
-        %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-      end
+    def sort_column
+      Repairing::Layer.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+    end
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_repairing_layer
-        @repairing_layer = Repairing::Layer.find(params[:id])
-      end
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
 
-      def set_repairs
-        @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(100) unless params[:layer_id].blank?
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_repairing_layer
+      @repairing_layer = Repairing::Layer.find(params[:id])
+    end
 
-      # Never trust parameters from the scary internet, only allow the white list through.
-      def repairing_layer_params
-        params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status, :year)
-      end
-      def set_categories
-        @categories = Repairing::Category.by_locale.select{|p| p.category.nil?}
-      end
+    def set_repairs
+      @repairs = Repairing::Repair.by_layer(params[:layer_id]).page(params[:page]).per(100) unless params[:layer_id].blank?
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def repairing_layer_params
+      params.require(:repairing_layer).permit(:title, :description, :town, :owner, :repairs_file, :repairing_category, :locale, :status, :year)
+    end
+
+    def set_categories
+      @categories = Repairing::Category.by_locale.select{|p| p.category.nil?}
+    end
   end
 end

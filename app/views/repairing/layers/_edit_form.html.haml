@@ -15,6 +15,8 @@
           %th
             = t('repairing.repairs.form.category')
           %th
+            = t('repairing.repairs.form.subcategory')
+          %th
             = t('repairing.repairs.form.town')
           %th
             = t('repairing.repairs.form.year')
@@ -34,6 +36,10 @@
                               'data-url' => "#{repairing_layer_path(@repairing_layer)}",
                               'data-emptytext' => t('repairing.layers.edit.category') }
               = @repairing_layer.repairing_category.title if @repairing_layer.repairing_category
+
+          %td#subcategories-select
+            = render partial: 'subcategories_select'
+
           %td
             %a.edit_twn{ href: '#', 'data-resource' => 'repairing_layer',
                          id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}",
@@ -64,13 +70,18 @@
     });
     $('#edit_layer .edit_category').editable({
       value: "#{@repairing_layer.repairing_category.id if @repairing_layer.repairing_category}",
-      source: '#{get_categories_repairing_layer_path}',
+      source: '#{categories_repairing_layer_path}',
       select2: {
         width: '350px',
         allowClear: true
       },
       success: function(response,newValue){
         show_bootstrap_flash(response.message,response.class_name);
+        $.ajax({
+          type: 'get',
+          url: "#{subcategories_select_repairing_layer_path}",
+          dataType: 'script'
+        });
       }
     });
 
