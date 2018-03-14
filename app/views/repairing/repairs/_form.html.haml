@@ -2,10 +2,7 @@
 
   = f.text_field :spending_units ,label: t('.spending_units')
   = f.text_field :edrpou_spending_units, label: t('.erdpou_spending')
-
   = f.text_field :subject, label: t('repairing.repairs.form.subject')
-  = f.text_field :work, label: t('repairing.repairs.form.work')
-
   = f.text_field :address, label: t('repairing.repairs.form.address')
   = f.text_field :address_to, label: t('repairing.repairs.form.address_to')
 
@@ -27,9 +24,8 @@
   = f.text_field :prozzoro_id, label: t('repairing.repairs.form.prozzoro_id')
   = f.text_field :obj_owner, label: t('repairing.repairs.form.obj_owner')
   = f.text_field :edrpou_artist, label: t('.erdpou_artist')
-
+  = f.text_field :work, label: t('repairing.repairs.form.work')
   = f.text_area :description, label: t('repairing.repairs.form.description'), rows: '4'
-
   = f.text_field :coordinates, label: t('repairing.repairs.form.coordinates'), disabled: 'disabled'
 
   .clear
