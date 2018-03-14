@@ -8,7 +8,11 @@
   = f.text_field :address, label: t('repairing.repairs.form.address')
   = f.text_field :address_to, label: t('repairing.repairs.form.address_to')
 
-  = f.select :repairing_category, options_for_select( [nil] + Repairing::Category.all.reject{|p| !p.category || p.category != @repairing_repair.layer.repairing_category}.collect {|p| [ p.title, p.id ] }, @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil), { label: t('repairing.repairs.form.work') }, class: 'form-control'
+  = f.select :repairing_category,
+    options_for_select([nil] + @repairing_repair.layer.repairing_category.categories.collect {|p| [ p.title, p.id ] },
+                       @repairing_repair.repairing_category ? @repairing_repair.repairing_category.id : nil),
+    { label: t('repairing.repairs.form.work') },
+    class: 'form-control'
   .row
     .col-xs-6
       = f.text_field :amount, label: t('repairing.repairs.form.amount')

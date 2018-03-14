@@ -1,0 +1,20 @@
+%a.edit_subcategory{ href: '#', 'data-resource' => 'update_repairs_category',
+                     id: 'repairing_subcategory', 'data-type' => 'select2', 'data-pk' => "#{@repairing_layer.id}",
+                     'data-url' => "#{update_repairs_category_repairing_layer_path}",
+                     'data-emptytext' => t('repairing.layers.edit.subcategory') }
+  = @repairing_layer.repairs.first.repairing_category.title if @repairing_layer.repairs.first.repairing_category
+
+:javascript
+  $(document).ready(function(){
+    $('#edit_layer .edit_subcategory').editable({
+      value: "#{@repairing_layer.repairs.first.repairing_category.id if @repairing_layer.repairs.first.repairing_category}",
+      source: '#{subcategories_repairing_layer_path}',
+      select2: {
+        width: '350px',
+        allowClear: true
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+  })
