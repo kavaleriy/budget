@@ -24,21 +24,25 @@
           = f.file_field :img, class: 'btn btn-default'
           %a.btn.btn-default.button-toggle
             %i.fa.fa-cog
-          .toggle-element{"data-state" => "closed"}
+          .row.toggle-element{"data-state" => "closed"}
             .col-md-6.r-pad
               = f.text_field :koatuu, :readonly => true, class: 'control-label'
             .col-md-6
               = f.text_field :level, :readonly => true, class: 'control-label'
-            = f.text_area :coordinates, class: 'control-label'
-            = f.text_field :geometry_type, class: 'control-label', label: t('mongoid.attributes.town.geographical_type')
-
+            .col-md-12
+              = f.text_area :coordinates, class: 'control-label'
+              = f.text_field :geometry_type, class: 'control-label', label: t('mongoid.attributes.town.geographical_type')
+              = f.fields_for :counters, @town.counters || @town.build_counters do |c|
+                = render 'counters', f: c
         .col-md-7
           = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
           %hr.towns-form
           = f.text_area :description, :placeholder => t("town_description_placeholder"), class: 'wysihtml5'
-      .row
-        = f.fields_for :counters, @town.counters || @town.build_counters do |c|
-          = render 'counters', :f => c
+
+          %hr.towns-form
+          = f.check_box :permit_emails, label: 'Включити модуль "Зворотній зв`язок"'
+          = f.fields_for :emails, @town.emails || @town.build_emails do |c|
+            = render 'emails', f: c
 
       .row.buttom-user-menu
         .col-md-12.fix-pad

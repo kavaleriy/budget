@@ -218,15 +218,29 @@ class TownsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_town
-      @town = Town.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def town_params
-      params.require(:town).permit(:region_title, :area_town, :level, :koatuu, :title, :img, :links, :coordinates, :geometry_type, :description, :counters => [:citizens, :house_holdings, :square])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_town
+    @town = Town.find(params[:id])
+  end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def town_params
+    params.require(:town).permit(
+      :region_title,
+      :area_town,
+      :level,
+      :koatuu,
+      :title,
+      :img,
+      :links,
+      :coordinates,
+      :geometry_type,
+      :description,
+      :permit_emails,
+      counters: [:citizens, :house_holdings, :square],
+      emails: [:city_council, :local_deputy, :peoples_deputy, :state_audit_office]
+    )
+  end
 
 end

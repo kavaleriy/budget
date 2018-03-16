@@ -27,7 +27,6 @@
                 = radio_button_tag :nested, 'emails'
                 = label_tag :nested_emails, 'Електронні адреси'
               .form-group
-                -#= label_tag(:xls, t('xls.add_file'), class: 'form-control')
                 = file_field_tag :xls
                 #xls_error
                 = submit_tag t('xls.edit_button'), class: 'btn btn-primary'
