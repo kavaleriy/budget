@@ -41,6 +41,7 @@ class Town
 
   # counters for per-capita calculations
   embeds_one :counters, class_name: 'TownCounter'
+  embeds_one :emails, class_name: 'TownEmail'
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
@@ -239,15 +240,6 @@ class Town
     indicators
   end
 
-  def save_counter_by_xls(arr)
-    if self.counters.nil?
-      self.counters = TownCounter.new(arr)
-    else
-      self.counters.update(arr)
-    end
-    self.counters.save!
-  end
-
   def self.get_user_town(user)
     user.town_model
     # this function return town from user if user not nil
@@ -324,19 +316,22 @@ class Town
   end
 
 
-  def self.edit_counters_by_table(table)
+  def self.edit_nested_by_table(table, nested)
     errors_arr = []
     index = 1
-    unless table.nil?
+    unless table.nil? && nested.blank?
       table[:rows].each do |rows|
-        koatuu = rows.delete('koatuu').to_i
+        # TODO: fix in feature with other parser *.xls files
+        # '.to_i.to_s.rjust' after parsing *.xls ('05000000000' or '2323232323.0')
+        koatuu = rows.delete('koatuu').to_i.to_s.rjust(10, '0')
         town = Town.get_town_by_koatuu(koatuu).first
-        unless town.nil?
-          town.save_counter_by_xls(rows)
+        if town.present?
+          nested_attr = { nested => rows }
+          town.update_attributes(nested_attr)
         else
-          errors_arr << I18n.t('xls.error_row_number',koatuu: koatuu,row: index)
+          errors_arr << I18n.t('xls.error_row_number', koatuu: koatuu, row: index)
         end
-        index = index+1
+        index += 1
       end
     end
     errors_arr

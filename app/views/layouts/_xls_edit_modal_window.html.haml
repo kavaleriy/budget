@@ -5,7 +5,7 @@
       min-height: 20px;
     }
     .panel-body{
-      border: 1px solid grey;
+      //border: 1px solid grey;
     }
   }
 
@@ -21,10 +21,16 @@
           .panel-body
             = form_tag(edit_by_xls_path, method: 'post', multipart: true, id: 'xls_edit_form') do
               .form-group
-                = label_tag(:xls, t('xls.add_file'), class: 'form-control')
-                = file_field_tag(:xls)
+                = radio_button_tag :nested, 'counters', true
+                = label_tag :nested_counters, 'Дані міста'
+              .form-group
+                = radio_button_tag :nested, 'emails'
+                = label_tag :nested_emails, 'Електронні адреси'
+              .form-group
+                -#= label_tag(:xls, t('xls.add_file'), class: 'form-control')
+                = file_field_tag :xls
                 #xls_error
-                = submit_tag(t('xls.edit_button'), class: 'btn btn-primary')
+                = submit_tag t('xls.edit_button'), class: 'btn btn-primary'
       .modal-footer
         %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
 

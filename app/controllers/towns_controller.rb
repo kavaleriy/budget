@@ -175,10 +175,9 @@ class TownsController < ApplicationController
     begin
       errors_arr = []
       table = get_arr_by_table_path(params[:xls])
-      errors_arr = Town.edit_counters_by_table(table)
+      errors_arr = Town.edit_nested_by_table(table, params[:nested])
     rescue Mongoid::Errors::UnknownAttribute => detail
       errors_arr << I18n.t('xls.check_row_name')
-
     end
 
     if errors_arr.empty?
