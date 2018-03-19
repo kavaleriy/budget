@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @repairing_appeal_scenario.title
+%p
+  %b Text form:
+  = @repairing_appeal_scenario.text_form
+%p
+  %b Text appeal:
+  = @repairing_appeal_scenario.text_appeal
+
+= link_to 'Edit', edit_repairing_appeal_scenario_path(@repairing_appeal_scenario)
+\|
+= link_to 'Back', repairing_appeal_scenarios_path

@@ -1,0 +1,37 @@
+:scss
+
+  .appeal_scenarios{
+    .header{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  }
+
+.container.appeal_scenarios
+  .header
+    %h2 Сценарії звернень
+    .new-budget-btn
+      %h2= link_to 'Додати сценарій', new_repairing_appeal_scenario_path, class: 'btn btn-info'
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Назва
+        %th Текст форми
+        %th Текст звернення
+        %th= t('form.actions')
+
+    %tbody
+      - @repairing_appeal_scenarios.each do |appeal_scenario|
+        %tr
+          %td= appeal_scenario.title
+          %td= appeal_scenario.text_form
+          %td= appeal_scenario.text_appeal
+          %td
+            = link_to appeal_scenario do
+              %i.fa.fa-eye.fa-2x
+            = link_to edit_repairing_appeal_scenario_path(appeal_scenario) do
+              %i.fa.fa-pencil.fa-2x
+            = link_to appeal_scenario, method: :delete, data: { confirm: 'Are you sure?' } do
+              %i.fa.fa-trash-o.fa-2x
