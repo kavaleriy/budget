@@ -101,40 +101,7 @@
   -#= link_to t('.new', :default => t("helpers.links.new")), new_town_path, :class => 'btn btn-primary'
 
 #xls_info_content
-  .col-xs-10.col-xs-offset-1
-    .row
-      %table.table.table-bordered
-        %tr
-          %td koatuu
-          %td citizens
-          %td house_holdings
-          %td square
-        %tr
-          %td 1424555100
-          %td 2000
-          %td 312
-          %td 1234211.1
-        %tr
-          %td 3224555100
-          %td 30210
-          %td 3132
-          %td 4432211.1
-        %tr
-          %td 4354555100
-          %td 54224
-          %td 1223
-          %td 545431.1
-    .row
-      %p
-        Де <mark>koatuu</mark>: koatuu міста
-      %p
-        Де <mark>citizens</mark>: кільість мешканців міста
-      %p
-        Де <mark>house_holdings</mark>: кількість домогосподарств міста
-      %p
-        Де <mark>square</mark>: площа міста
-
-:javascript
+  = render partial: 'xls_info_content'
 
 :javascript
 
