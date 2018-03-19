@@ -175,10 +175,9 @@ class TownsController < ApplicationController
     begin
       errors_arr = []
       table = get_arr_by_table_path(params[:xls])
-      errors_arr = Town.edit_counters_by_table(table)
+      errors_arr = Town.edit_nested_by_table(table, params[:nested])
     rescue Mongoid::Errors::UnknownAttribute => detail
       errors_arr << I18n.t('xls.check_row_name')
-
     end
 
     if errors_arr.empty?
@@ -219,15 +218,29 @@ class TownsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_town
-      @town = Town.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def town_params
-      params.require(:town).permit(:region_title, :area_town, :level, :koatuu, :title, :img, :links, :coordinates, :geometry_type, :description, :counters => [:citizens, :house_holdings, :square])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_town
+    @town = Town.find(params[:id])
+  end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def town_params
+    params.require(:town).permit(
+      :region_title,
+      :area_town,
+      :level,
+      :koatuu,
+      :title,
+      :img,
+      :links,
+      :coordinates,
+      :geometry_type,
+      :description,
+      :permit_emails,
+      counters: [:citizens, :house_holdings, :square],
+      emails: [:city_council, :local_deputy, :peoples_deputy, :state_audit_office]
+    )
+  end
 
 end
