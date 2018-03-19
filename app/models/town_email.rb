@@ -8,4 +8,6 @@ class TownEmail
   field :local_deputy, type: String
   field :peoples_deputy, type: String
   field :state_audit_office, type: String
+
+  validates :city_council, :local_deputy, :peoples_deputy, :state_audit_office, format: Devise.email_regexp
 end

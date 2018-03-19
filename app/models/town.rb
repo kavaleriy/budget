@@ -328,7 +328,9 @@ class Town
         town = Town.get_town_by_koatuu(koatuu).first
         if town.present?
           nested_attr = { nested => rows }
-          town.update_attributes(nested_attr)
+          unless town.update_attributes(nested_attr)
+            errors_arr << "koatuu: #{koatuu}, #{town.errors.messages.inspect}"
+          end
         else
           errors_arr << I18n.t('xls.error_row_number', koatuu: koatuu, row: index)
         end
