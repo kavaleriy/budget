@@ -1,0 +1,11 @@
+= simple_form_for(@repairing_appeal_scenario) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title, label: 'Назва'
+    = f.input :text_form, label: 'Текст форми', as: :text, input_html: { rows: 5 }
+    = f.input :text_appeal, label: 'Текст звернення', as: :text, input_html: { rows: 5 }
+
+  .form-actions
+    = f.submit t('save'), class: 'btn btn-primary'
+    = link_to t('back'), repairing_appeal_scenarios_path, class: 'btn btn-info'

@@ -261,6 +261,8 @@ Rails.application.routes.draw do
     post 'create_repair_photo/:id', to: 'repair_photos#create', as: 'create_repair_photo'
     delete 'destroy_repair_photo/:id/:photo_id', to: 'repair_photos#destroy', as: 'destroy_repair_photo'
     get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
+
+    resources :appeal_scenarios
   end
 
   namespace :to_pdf do
