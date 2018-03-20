@@ -1,0 +1,18 @@
+= simple_form_for(@repairing_appeal) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :full_name, placeholder: 'ПІБ'
+    = f.input :email, placeholder: 'Email'
+    = f.fields_for :address do |builder|
+      = builder.input :street
+      = builder.input :house
+      = builder.input :apartment
+
+    = f.input :phone
+    = f.input :text
+    = f.input :user_consent
+    -#= f.input :approved
+
+  .form-actions
+    = f.button :submit

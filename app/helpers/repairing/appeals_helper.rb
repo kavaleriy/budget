@@ -1,0 +1,2 @@
+module Repairing::AppealsHelper
+end

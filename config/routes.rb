@@ -263,6 +263,7 @@ Rails.application.routes.draw do
     get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
 
     resources :appeal_scenarios
+    resources :appeals
   end
 
   namespace :to_pdf do

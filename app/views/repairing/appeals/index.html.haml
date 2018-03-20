@@ -1,0 +1,31 @@
+%h1 Listing repairing_appeals
+
+%table
+  %thead
+    %tr
+      %th Text
+      %th Approved
+      %th Full name
+      %th Phone
+      %th Address
+      %th User consent
+      %th
+      %th
+      %th
+
+  %tbody
+    - @repairing_appeals.each do |repairing_appeal|
+      %tr
+        %td= repairing_appeal.text
+        %td= repairing_appeal.approved
+        %td= repairing_appeal.full_name
+        %td= repairing_appeal.phone
+        %td= repairing_appeal.address
+        %td= repairing_appeal.user_consent
+        %td= link_to 'Show', repairing_appeal
+        %td= link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
+        %td= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Appeal', new_repairing_appeal_path

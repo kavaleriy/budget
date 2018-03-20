@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Text:
+  = @repairing_appeal.text
+%p
+  %b Approved:
+  = @repairing_appeal.approved
+%p
+  %b Full name:
+  = @repairing_appeal.full_name
+%p
+  %b Phone:
+  = @repairing_appeal.phone
+%p
+  %b Address:
+  = @repairing_appeal.address
+%p
+  %b User consent:
+  = @repairing_appeal.user_consent
+
+= link_to 'Edit', edit_repairing_appeal_path(@repairing_appeal)
+\|
+= link_to 'Back', repairing_appeals_path
