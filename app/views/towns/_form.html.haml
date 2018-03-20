@@ -1,11 +1,29 @@
-:css
+:scss
+
+  .rails-bootstrap-forms-error-summary{
+      padding: 0;
+    li{
+      color: darkred;
+      background: #fbdcdc;
+      padding: 10px;
+      border-radius: 5px;
+      list-style-type: none;
+      list-style: none;
+    }
+  }
+  .label-emails{
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
   .dropdown > a:after {
     content: " "
   }
 
 .width-container.clearfix
   .column_container.clearfix
-    = bootstrap_form_for @town, :html => { :class => 'edit_town', :multipart => true} do |f|
+    = bootstrap_form_for @town, label_errors: true, :html => { :class => 'edit_town', :multipart => true} do |f|
       .row.top-user-menu
         .col-md-6
           %a{ :href => '#', 'data-resource' => 'town', id: 'title', 'data-type' => 'text', 'data-pk' => "#{@town.id}", 'data-url' => "#{town_path(@town)}", 'data-emptytext' => 'Введіть назву територіальної одиниці' }
@@ -15,6 +33,8 @@
           = button_tag(class: 'btn btn-primary pull-right') do
             %i.fa.fa-floppy-o
       .row
+        .col-md-12
+          = f.error_summary
         .col-md-5
           .upload_img
             -if @town.img?
@@ -41,8 +61,11 @@
 
           %hr.towns-form
           = f.check_box :permit_emails, label: 'Включити модуль "Зворотній зв`язок"'
-          = f.fields_for :emails, @town.emails || @town.build_emails do |c|
-            = render 'emails', f: c
+          .label-emails Emails:
+          - TownEmail::TYPES.each do |type|
+            = f.fields_for :emails, @town.emails.find_or_initialize_by(alias: type) do |ff|
+              = ff.hidden_field :alias
+              = ff.text_field :email, label: t("mongoid.attributes.town.#{type}")
 
       .row.buttom-user-menu
         .col-md-12.fix-pad

@@ -1,13 +1,12 @@
+# government emails
 class TownEmail
   include Mongoid::Document
+  TYPES = %i[city_council local_deputy peoples_deputy state_audit_office]
 
-  embedded_in :town, inverse_of: :emails
+  belongs_to :town, inverse_of: :emails
 
-  # government emails
-  field :city_council, type: String
-  field :local_deputy, type: String
-  field :peoples_deputy, type: String
-  field :state_audit_office, type: String
+  field :email, type: String
+  field :alias, type: String
 
-  validates :city_council, :local_deputy, :peoples_deputy, :state_audit_office, format: Devise.email_regexp
+  validates :email, format: Devise.email_regexp
 end

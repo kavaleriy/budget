@@ -42,7 +42,8 @@ class Town
 
   # counters for per-capita calculations
   embeds_one :counters, class_name: 'TownCounter'
-  embeds_one :emails, class_name: 'TownEmail'
+  has_many :emails, class_name: 'TownEmail', autosave: true, dependent: :destroy
+  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: ->(email){ email['email'].blank? }
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
