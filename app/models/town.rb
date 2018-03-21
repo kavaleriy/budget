@@ -319,26 +319,45 @@ class Town
 
 
   def self.edit_nested_by_table(table, nested)
-    errors_arr = []
+    @errors_arr = []
     index = 1
     unless table.nil? && nested.blank?
-      table[:rows].each do |rows|
+      table[:rows].each do |row|
         # TODO: fix in feature with other parser *.xls files
         # '.to_i.to_s.rjust' after parsing *.xls ('05000000000' or '2323232323.0')
-        koatuu = rows.delete('koatuu').to_i.to_s.rjust(10, '0')
+        koatuu = row.delete('koatuu').to_i.to_s.rjust(10, '0')
         town = Town.get_town_by_koatuu(koatuu).first
         if town.present?
-          nested_attr = { nested => rows }
-          unless town.update_attributes(nested_attr)
-            errors_arr << "koatuu: #{koatuu}, #{town.errors.messages.inspect}"
+          if nested.eql?('emails')
+            update_belongs_nested(town, row)
+          else
+            nested_attr = { nested => row }
+            update_embeded_nested(town, nested_attr)
           end
         else
-          errors_arr << I18n.t('xls.error_row_number', koatuu: koatuu, row: index)
+          @errors_arr << I18n.t('xls.error_row_number', koatuu: koatuu, row: index)
         end
         index += 1
       end
     end
-    errors_arr
+    @errors_arr
+  end
+
+  def self.update_embeded_nested(town, nested_attr)
+    # create or update nested in town obj
+    unless town.update_attributes(nested_attr)
+      @errors_arr << "koatuu: #{town.koatuu}, #{town.errors.messages.inspect}"
+    end
+  end
+
+  def self.update_belongs_nested(town, row)
+    # create or update nested for town in other table
+    row.each do |cell|
+      email = town.emails.find_or_create_by(alias: cell.first)
+      unless email.update_attributes(email: cell.second)
+        @errors_arr << "koatuu: #{town.koatuu}, cell: #{cell.first}, #{email.errors.messages.inspect}"
+      end
+    end
   end
 
 end
