@@ -239,7 +239,7 @@ class TownsController < ApplicationController
       :description,
       :permit_emails,
       counters: [:citizens, :house_holdings, :square],
-      emails_attributes: [:email, :alias]
+      emails_attributes: [:id, :email, :alias]
     )
   end
 
