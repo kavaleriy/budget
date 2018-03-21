@@ -1,18 +1,71 @@
+:scss
+  .form-inputs{
+    .appeal-scenario{
+      font-size: 15px;
+    }
+  }
+
 = simple_form_for(@repairing_appeal) do |f|
   = f.error_notification
 
   .form-inputs
-    = f.input :full_name, placeholder: 'ПІБ'
-    = f.input :email, placeholder: 'Email'
-    = f.fields_for :address do |builder|
-      = builder.input :street
-      = builder.input :house
-      = builder.input :apartment
+    .row
+      .col-md-8
+        .row
+          .col-sm-6
+            = f.input :full_name, placeholder: 'ПІБ'
+            = f.input :email, placeholder: 'Email', as: :email
+            = f.input :phone
+          .col-sm-6
+            = f.fields_for :address, @repairing_appeal.address do |builder|
+              = builder.input :city
+              = builder.input :street
+              .row
+                .col-xs-6
+                  = builder.input :house
+                .col-xs-6
+                  = builder.input :apartment, required: false
+        .form-group.recipients
+          %p
+            %b Кому
+          - town = Town.find('55a807946b61730709600400')
+          - town.emails.each do |recipient|
+            .recipient
+              = check_box_tag 'repairing_appeal[recipients][]',
+                              recipient.email,
+                              @repairing_appeal.recipients.include?(recipient.email),
+                              { id: recipient.owner }
+              = label_tag recipient.owner, t("mongoid.attributes.town.#{recipient.owner}")
 
-    = f.input :phone
-    = f.input :text
-    = f.input :user_consent
-    -#= f.input :approved
+        = f.input :text, as: :text, input_html: { rows: 5 }
+        = f.input :user_consent, as: :boolean
 
-  .form-actions
-    = f.button :submit
+        .form-actions
+          = f.button :submit, disabled: true
+
+      .col-md-4.appeal-scenario
+        %p.text-center 
+          %b
+            Відповідно до законодавства:
+        %ol
+          %li
+            %p
+              Суб'єкти господарювання зобов'язані за рішенням місцевої ради за рахунок своїх коштів відповідно до закону створювати спеціальні робочі місця для осіб з обмеженою працездатністю та організовувати їх професійну підготовку.
+          %li
+            %p
+              Суб'єкти господарювання відповідно до частини четвертої статті 175 цього Кодексу можуть, незалежно від статутної мети своєї діяльності, брати на себе зобов'язання про господарську допомогу у вирішенні питань соціального розвитку населених пунктів їх місцезнаходження, у будівництві й утриманні соціально-культурних об'єктів та об'єктів комунального господарства і побутового обслуговування, подавати іншу господарську допомогу з метою розв'язання місцевих проблем. Суб'єкти господарювання мають право брати участь у формуванні відповідних фондів місцевих рад, якщо інше не встановлено законом, та у виконанні робіт щодо комплексного економічного і соціального розвитку територій.
+
+:javascript
+  $('document').ready(function(){
+    function checkChecked(){
+      // check if user checked recipient and consent
+      var recipients = ($('.recipients input[type="checkbox"]').is(':checked'));
+      var user_consent = ($('#repairing_appeal_user_consent').is(':checked'));
+      var result =  recipients && user_consent
+      $('.form-actions input[type="submit"]').prop("disabled", !result);
+    }
+
+    $("#repairing_appeal_user_consent, .recipients input[type='checkbox']").change(function(){
+      checkChecked();
+    });
+  })
