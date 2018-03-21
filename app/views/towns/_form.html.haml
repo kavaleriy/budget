@@ -62,10 +62,10 @@
           %hr.towns-form
           = f.check_box :permit_emails, label: 'Включити модуль "Зворотній зв`язок"'
           .label-emails Emails:
-          - TownEmail::TYPES.each do |type|
-            = f.fields_for :emails, @town.emails.find_or_initialize_by(alias: type) do |ff|
-              = ff.hidden_field :alias
-              = ff.text_field :email, label: t("mongoid.attributes.town.#{type}")
+          - TownEmail::OWNERS.each do |owner|
+            = f.fields_for :emails, @town.emails.find_or_initialize_by(owner: owner) do |ff|
+              = ff.hidden_field :owner
+              = ff.email_field :email, label: t("mongoid.attributes.town.#{owner}")
 
       .row.buttom-user-menu
         .col-md-12.fix-pad

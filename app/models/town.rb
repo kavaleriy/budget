@@ -332,7 +332,7 @@ class Town
             update_belongs_nested(town, row)
           else
             nested_attr = { nested => row }
-            update_embeded_nested(town, nested_attr)
+            update_embedded_nested(town, nested_attr)
           end
         else
           @errors_arr << I18n.t('xls.error_row_number', koatuu: koatuu, row: index)
@@ -343,7 +343,7 @@ class Town
     @errors_arr
   end
 
-  def self.update_embeded_nested(town, nested_attr)
+  def self.update_embedded_nested(town, nested_attr)
     # create or update nested in town obj
     unless town.update_attributes(nested_attr)
       @errors_arr << "koatuu: #{town.koatuu}, #{town.errors.messages.inspect}"
@@ -353,7 +353,7 @@ class Town
   def self.update_belongs_nested(town, row)
     # create or update nested for town in other table
     row.each do |cell|
-      email = town.emails.find_or_create_by(alias: cell.first)
+      email = town.emails.find_or_create_by(owner: cell.first)
       unless email.update_attributes(email: cell.second)
         @errors_arr << "koatuu: #{town.koatuu}, cell: #{cell.first}, #{email.errors.messages.inspect}"
       end
