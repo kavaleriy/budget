@@ -49,6 +49,7 @@ module Repairing
         :phone,
         :text,
         :user_consent,
+        :file,
         address: %i[city street house apartment],
         recipients: []
       )
