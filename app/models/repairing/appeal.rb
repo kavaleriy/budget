@@ -14,7 +14,7 @@ module Repairing
     field :recipients, type: Array, default: []
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
-    field :approved, type: Mongoid::Boolean
+    field :approved, type: Mongoid::Boolean, default: false
 
     mount_uploader :file, FileUploader
     # used for update record with uploader

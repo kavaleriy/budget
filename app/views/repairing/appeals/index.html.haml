@@ -1,30 +1,43 @@
 %h1 Listing repairing_appeals
 
-%table
+%table.table.table-striped
   %thead
     %tr
+      %th №
+      %th Town
+      %th Category
       %th Text
-      %th Approved
+      %th Recipients
+      %th File
+      %th Contacts
       %th Full name
-      %th Phone
-      %th Address
-      %th User consent
-      %th
-      %th
-      %th
+      %th Repair
+      %th Date
+      %th Approved
 
   %tbody
     - @repairing_appeals.each do |repairing_appeal|
       %tr
+        %td №
+        %td Town
+        %td Category
         %td= repairing_appeal.text
-        %td= repairing_appeal.approved
+        %td Recipients
+        %td File
+        %td
+          = repairing_appeal.address.city
+          = repairing_appeal.address.street
+          = repairing_appeal.address.house
+          = repairing_appeal.address.apartment
+          = repairing_appeal.phone
         %td= repairing_appeal.full_name
-        %td= repairing_appeal.phone
-        %td= repairing_appeal.address
-        %td= repairing_appeal.user_consent
-        %td= link_to 'Show', repairing_appeal
-        %td= link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
-        %td= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td Repair
+        %td= repairing_appeal.created_at
+        %td
+          = repairing_appeal.approved
+          = link_to 'Show', repairing_appeal
+          = link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
+          = link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
