@@ -33,6 +33,14 @@ module Municipal
       respond_with(@municipal_enterprise_file)
     end
 
+    def select_enterprises_by_town
+      enterprises_by_town(params[:town_id])
+
+      respond_to do |format|
+        format.js
+      end
+    end
+
     # def edit; end
 
     def create
@@ -86,8 +94,12 @@ module Municipal
     end
 
     def set_enterprises
-      @enterprises = Municipal::Enterprise.by_town(current_user.town_model)
+      enterprises_by_town(current_user.town_model)
       @type_files = Municipal::EnterpriseFile.type_files
+    end
+
+    def enterprises_by_town(town)
+      @enterprises = Municipal::Enterprise.by_town(town)
     end
 
     def set_municipal_enterprise_file

@@ -1,0 +1,9 @@
+.form-group.select.required
+  = label_tag 'municipal_enterprise', class: 'select required control-label' do
+    %abbr{ title: 'вимагається' } *
+    Підприємство
+  = select_tag 'municipal_enterprise',
+    options_from_collection_for_select(@enterprises, 'id', 'title'),
+    name: "municipal_enterprise_file[enterprise]",
+    required: true,
+    class: 'select required form-control'

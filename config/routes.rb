@@ -180,6 +180,7 @@ Rails.application.routes.draw do
   namespace :municipal do
     resources :enterprises, except: [:new, :create]
     resources :enterprise_files, except: [:show, :edit, :update]
+    get 'select_enterprises_by_town', to: 'enterprise_files#select_enterprises_by_town', as: :select_enterprises_by_town
     resources :guide_filters
     get 'show_code_values/:id', to: 'enterprise_files#show_code_values', as: :show_code_values
 

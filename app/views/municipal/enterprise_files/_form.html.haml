@@ -2,9 +2,12 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :enterprise, label: 'Підприємство',
-              collection: @enterprises.map {|ent| [ ent.title, ent.id ] },
-              prompt: false
+    - if current_user && current_user.admin?
+      .form-group
+        = render 'select_town'
+    .select-enterprises
+      = render partial: 'select_enterprises'
+
     = f.input :file_type, label: 'Тип файлу',
               collection: @type_files.map {|type| [ type[:title], type[:id] ] },
               prompt: false
