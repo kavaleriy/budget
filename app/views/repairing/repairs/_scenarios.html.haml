@@ -1,0 +1,41 @@
+:scss
+  .modal-body{
+    .send-appeal{
+      position: absolute;
+      bottom: -5px;
+      right: 0;
+      a.btn {
+        color: #fff;
+        border-radius: 2px;
+      }
+      #scenarios{
+        .well{
+          padding: 0;
+          margin-bottom: 10px;
+          border-radius: 2px;
+        }
+        a{
+          padding: 5px 15px;
+          display: block;
+          font-size: 16px;
+          text-decoration: none;
+          color: #444444;
+          &:hover{
+            background: #e9e9e9;
+            color: #025570;
+          }
+        }
+      }
+    }
+  }
+
+.send-appeal
+  #scenarios.collapse
+    .well
+      - Repairing::AppealScenario.all.each do |scenario|
+        = link_to scenario.title, '#'
+
+  = link_to 'Подати скаргу', '#scenarios',
+            "data-toggle" => 'collapse',
+            class: 'btn btn-danger pull-right',
+            role: 'button'

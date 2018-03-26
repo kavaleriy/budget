@@ -248,6 +248,9 @@
         #judicial-register-table
           %tbody
 
+  - if @repairing_repair.permit_town_emails?
+    = render partial: 'scenarios'
+
 = javascript_include_tag 'spinner'
 
 :javascript
