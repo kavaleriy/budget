@@ -1,4 +1,4 @@
-%h1 Listing repairing_appeals
+%h1 Список звернень
 
 %table.table.table-striped
   %thead
@@ -16,29 +16,34 @@
       %th Approved
 
   %tbody
-    - @repairing_appeals.each do |repairing_appeal|
+    - @repairing_appeals.each_with_index do |repairing_appeal, i|
       %tr
-        %td №
-        %td Town
-        %td Category
+        %td= i + 1
+        %td= repairing_appeal.try(:town_title)
+        %td= repairing_appeal.try(:category_title)
         %td= repairing_appeal.text
-        %td Recipients
-        %td File
+        %td
+          - repairing_appeal.recipients.each do |rec|
+            = rec
+        %td
+          - if repairing_appeal.file.url
+            = link_to repairing_appeal.file.url, title: repairing_appeal.file_identifier, target:'_blank' do
+              %i.fa.fa-download.fa.fa-border
+              файл
         %td
           = repairing_appeal.address.city
           = repairing_appeal.address.street
           = repairing_appeal.address.house
           = repairing_appeal.address.apartment
           = repairing_appeal.phone
-        %td= repairing_appeal.full_name
-        %td Repair
-        %td= repairing_appeal.created_at
+        %td
+          = repairing_appeal.full_name
+        %td
+          = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
+        %td
+          = format_date(repairing_appeal.created_at)
         %td
           = repairing_appeal.approved
-          = link_to 'Show', repairing_appeal
-          = link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
-          = link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Appeal', new_repairing_appeal_path
+          -#= link_to 'Show', repairing_appeal
+          -#= link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
+          -#= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }

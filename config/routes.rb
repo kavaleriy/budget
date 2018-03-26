@@ -264,7 +264,8 @@ Rails.application.routes.draw do
     get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
 
     resources :appeal_scenarios
-    resources :appeals
+    resources :appeals, only: [:index, :new, :create, :show]
+    post 'preview_appeal', to: 'appeals#preview'
   end
 
   namespace :to_pdf do

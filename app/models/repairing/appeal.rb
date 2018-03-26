@@ -22,6 +22,8 @@ module Repairing
     skip_callback :update, :before, :store_previous_model_for_file
 
     embeds_one :address, class_name: 'Repairing::AppellantAddress'
+    belongs_to :repair, class_name: 'Repairing::Repair'
+    belongs_to :scenario, class_name: 'Repairing::AppealScenario'
 
     validates_presence_of :full_name, :email, :text, :user_consent
     validates :email, format: Devise.email_regexp
@@ -32,5 +34,14 @@ module Repairing
                 maximum: file_size.megabytes.to_i,
                 message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
               }
+
+    def town_title
+      repair.layer.town.title rescue nil
+    end
+
+    def category_title
+      repair.layer.repairing_category.title rescue nil
+    end
+
   end
 end

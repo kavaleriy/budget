@@ -55,6 +55,10 @@
     input[type="submit"]{
       background: $asterisk-color;
       color: #fff;
+      &.appeals-letter{
+        background: #fff;
+        color: $asterisk-color;
+      }
     }
   }
 
@@ -66,6 +70,8 @@
       %p
         У відповідності до Закону України "Про звернення громадян", анонімні звернення не розглядаються. Через це просимо вказати наступні дані:
       .row
+        = f.input :repair, as: :hidden, input_html: { value: @repair.id } if @repair
+        = f.input :scenario, as: :hidden, input_html: { value: @scenario.id }  if @scenario
         .col-sm-6.label-left-group
           %p.title-group Від кого
           = f.input :full_name, placeholder: 'ПІБ', label: ''
@@ -84,9 +90,7 @@
       .form-group.recipients
         %p.title-group
           Кому
-        -# TODO: get repair town
-        - town = Town.find('55a807946b61730709600400') rescue nil
-        - town.try(:emails).try(:each) do |recipient|
+        - @repair.town_emails.try(:each) do |recipient|
           .recipient
             = check_box_tag 'repairing_appeal[recipients][]',
                             recipient.email,
@@ -109,7 +113,11 @@
         = f.input :file, label: false, class: 'form-control'
         .message-file-size.btn.pull-left
           до 3 мегабайт.
-        = link_to 'Переглянути текст звернення', '#', class: 'appeals-letter btn btn-default pull-right'
+
+        = f.button :submit, 'Переглянути текст звернення',
+                   formtarget: '_blank',
+                   formaction: repairing_preview_appeal_path,
+                   class: 'appeals-letter btn btn-default pull-right'
 
       .form-actions
         = f.button :submit, 'Надіслати звернення', disabled: true, class: 'pull-right'
@@ -118,13 +126,8 @@
       %p.text-center
         %b
           Відповідно до законодавства:
-      %ol
-        %li
-          %p
-            Суб'єкти господарювання зобов'язані за рішенням місцевої ради за рахунок своїх коштів відповідно до закону створювати спеціальні робочі місця для осіб з обмеженою працездатністю та організовувати їх професійну підготовку.
-        %li
-          %p
-            Суб'єкти господарювання відповідно до частини четвертої статті 175 цього Кодексу можуть, незалежно від статутної мети своєї діяльності, брати на себе зобов'язання про господарську допомогу у вирішенні питань соціального розвитку населених пунктів їх місцезнаходження, у будівництві й утриманні соціально-культурних об'єктів та об'єктів комунального господарства і побутового обслуговування, подавати іншу господарську допомогу з метою розв'язання місцевих проблем. Суб'єкти господарювання мають право брати участь у формуванні відповідних фондів місцевих рад, якщо інше не встановлено законом, та у виконанні робіт щодо комплексного економічного і соціального розвитку територій.
+      %p
+        = @scenario.try(:text_form)
 
 :javascript
   $('document').ready(function(){

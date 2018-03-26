@@ -33,7 +33,9 @@
   #scenarios.collapse
     .well
       - Repairing::AppealScenario.all.each do |scenario|
-        = link_to scenario.title, '#'
+        = link_to scenario.title,
+                  new_repairing_appeal_path(repair_id: @repairing_repair, scenario_id: scenario.id),
+                  target: '_blank'
 
   = link_to 'Подати скаргу', '#scenarios',
             "data-toggle" => 'collapse',
