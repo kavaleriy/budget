@@ -32,8 +32,18 @@ module Repairing
 
     def create
       @repairing_appeal = Repairing::Appeal.new(appeal_params)
-      @repairing_appeal.save
-      respond_with(@repairing_appeal)
+
+      respond_to do |format|
+        if @repairing_appeal.save
+          AppealMailer.sample_email(@repairing_appeal).deliver
+
+          format.html { redirect_to @repairing_appeal, notice: 'Звернення прийнято для розгляду.' }
+          format.json { render :show, status: :created, location: @repairing_appeal }
+        else
+          format.html { render :new }
+          format.json { render json: @repairing_appeal.errors, status: :unprocessable_entity }
+        end
+      end
     end
 
     def approve
