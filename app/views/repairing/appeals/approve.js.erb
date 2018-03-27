@@ -1,0 +1,10 @@
+$('#<%= @appeal.id %> input').prop('disabled', true);
+$('#<%= @appeal.id %>').prepend("<%= j (bootstrap_flash) %>");
+$('#<%= @appeal.id %> .alert').delay(3000).fadeOut('slow');
+
+//$('#<%= @appeal.id %>').animate({
+//    backgroundColor: "#8bed7e"
+//}, 1000).animate({
+//    backgroundColor: "white"
+//}, 500);
+

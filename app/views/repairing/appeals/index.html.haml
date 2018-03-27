@@ -1,3 +1,18 @@
+:scss
+
+  table{
+    tbody{
+      tr{
+        td{
+          .alert{
+            position: absolute;
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+
 %h1 Список звернень
 
 %table.table.table-striped
@@ -42,8 +57,19 @@
           = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
         %td
           = format_date(repairing_appeal.created_at)
-        %td
-          = repairing_appeal.approved
+        %td{ id: repairing_appeal.id }
+          -#= repairing_appeal.approved
+          = check_box_tag :approved, repairing_appeal.id, repairing_appeal.approved,
+                          onchange: "$(this).data('params', 'approved=' + this.checked)",
+                          data: { remote: true, url: repairing_appeal_approve_path(repairing_appeal.id), method: :put}
+
           -#= link_to 'Show', repairing_appeal
           -#= link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
           -#= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+:javascript
+
+  // $('input[checked="checked"]').prop('disabled', true);
+  $(document).ready(function(){
+    $('input[checked="checked"]').prop('disabled', true);
+  })

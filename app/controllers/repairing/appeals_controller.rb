@@ -6,7 +6,6 @@ module Repairing
     before_action :set_repair, only: [:new]
     before_action :set_scenario, only: [:new]
 
-
     respond_to :html
 
     def index
@@ -37,6 +36,19 @@ module Repairing
       respond_with(@repairing_appeal)
     end
 
+    def approve
+      @appeal = Repairing::Appeal.find(params[:id])
+      respond_to do |format|
+        if @appeal.update(appeal_approved)
+          msg = { class_name: 'success', message: 'Звернення одобрено. Відправка звернення органам влади.' }
+        else
+          msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
+        end
+
+        format.js { flash.now[msg[:class_name]] = msg[:message] }
+      end
+    end
+
     # def update
     #   @repairing_appeal.update(appeal_params)
     #   respond_with(@repairing_appeal)
@@ -50,7 +62,7 @@ module Repairing
     private
 
     def access_user?
-      unless current_user && current_user.admiin?
+      unless current_user && current_user.admin?
         redirect_to root_url, alert: t('export_budgets.notice_access')
       end
     end
@@ -65,6 +77,10 @@ module Repairing
 
     def set_scenario
       @scenario = Repairing::AppealScenario.find(params[:scenario_id])
+    end
+
+    def appeal_approved
+      params.permit(:approved)
     end
 
     def appeal_params
