@@ -43,7 +43,7 @@ class Town
   # counters for per-capita calculations
   embeds_one :counters, class_name: 'TownCounter'
   has_many :emails, class_name: 'TownEmail', autosave: true, dependent: :destroy
-  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: ->(email){ email['email'].blank? }
+  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: :email_rejectable?
   has_many :documentation_documents, class_name: 'Documentation::Document'
   has_many :key_indicate_indicator_files, :class_name => 'KeyIndicate::IndicatorFile', autosave: true, :dependent => :destroy
   has_many :key_indicate_map_indicators, :class_name => 'KeyIndicateMap::Indicator', autosave: true, :dependent => :destroy
@@ -274,7 +274,18 @@ class Town
     # end
   end
 
+  def present_emails
+    emails.where(:email.nin => ['', nil])
+  end
+
   private
+
+  def email_rejectable?(email)
+    # check if params[:email] blank and
+    # email record missing in db for delete email in town edit form
+    email['email'].blank? && emails.where(id: email[:id]).blank?
+  end
+
   def self.by_title(town_name)
 
     town = self.get_town_by_title(town_name).first || Town.where(_id: town_name).first

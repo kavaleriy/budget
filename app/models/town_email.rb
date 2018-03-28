@@ -8,5 +8,5 @@ class TownEmail
   field :email, type: String
   field :owner, type: String
 
-  validates :email, format: Devise.email_regexp
+  validates :email, format: Devise.email_regexp, allow_blank: true
 end

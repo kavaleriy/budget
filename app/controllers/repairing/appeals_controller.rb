@@ -35,8 +35,6 @@ module Repairing
 
       respond_to do |format|
         if @repairing_appeal.save
-          AppealMailer.sample_email(@repairing_appeal).deliver
-
           format.html { redirect_to @repairing_appeal, notice: 'Звернення прийнято для розгляду.' }
           format.json { render :show, status: :created, location: @repairing_appeal }
         else
@@ -50,7 +48,8 @@ module Repairing
       @appeal = Repairing::Appeal.find(params[:id])
       respond_to do |format|
         if @appeal.update(appeal_approved)
-          msg = { class_name: 'success', message: 'Звернення одобрено. Відправка звернення органам влади.' }
+          AppealMailer.send_appeal(@appeal).deliver
+          msg = { class_name: 'success', message: 'Звернення одобрено.' }
         else
           msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
         end

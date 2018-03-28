@@ -79,7 +79,7 @@ module Repairing
     end
 
     def town_emails
-      layer.town.emails
+      layer.town.present_emails
     end
 
     def permit_town_emails?
