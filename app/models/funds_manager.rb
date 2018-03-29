@@ -28,8 +28,12 @@ class FundsManager
   end
 
   def self.get_title_by_edrpou(edrpou)
-    edr_data_arr = ExternalApi.edr_data(edrpou)
-    title = edr_data_arr.blank? ? '' : edr_data_arr.first['officialName']
+    #  TODO: del in feature 'http://edr.data-gov-ua.org/api'
+    # because 28.03.2018 this api was not working
+    # edr_data_arr = ExternalApi.edr_data(edrpou)
+    # title = edr_data_arr.blank? ? '' : edr_data_arr.first['officialName']
+    edr_data_arr = ExternalApi.data_bot_edr(edrpou)
+    title = edr_data_arr.blank? ? '' : edr_data_arr.first['full_name']
   end
 
   def self.import(file, town)

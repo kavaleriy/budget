@@ -89,6 +89,9 @@ class ExternalApi
     most_received.sort_by! { |hash| hash[:val] }.reverse!
   end
 
+  #  TODO: del in feature 'http://edr.data-gov-ua.org/api'
+  # because 28.03.2018 this api was not working
+  # and now not used in this app
   def self.edr_data(company_edrpou)
     unless company_edrpou.nil?
       uri = URI.parse("http://edr.data-gov-ua.org/api/companies?where={\"edrpou\":{\"contains\":\"#{company_edrpou}\"}}&limit=1")
