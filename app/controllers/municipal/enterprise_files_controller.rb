@@ -90,7 +90,7 @@ module Municipal
     end
 
     def access_by_town?(file)
-      current_user.town.eql?(file.enterprise.town)
+      current_user.town_model.eql?(file.enterprise.town)
     end
 
     def set_enterprises
