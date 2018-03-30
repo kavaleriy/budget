@@ -267,6 +267,7 @@ Rails.application.routes.draw do
     resources :appeals, only: [:index, :new, :create, :show]
     post 'preview_appeal', to: 'appeals#preview'
     put 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
+    get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
   end
 
   namespace :to_pdf do

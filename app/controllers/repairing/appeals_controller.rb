@@ -18,7 +18,6 @@ module Repairing
     end
 
     def new
-      # binding.pry
       @repairing_appeal = Repairing::Appeal.new
       respond_with(@repairing_appeal, layout: 'application')
     end
@@ -35,13 +34,16 @@ module Repairing
 
       respond_to do |format|
         if @repairing_appeal.save
-          format.html { redirect_to @repairing_appeal, notice: 'Звернення прийнято для розгляду.' }
-          format.json { render :show, status: :created, location: @repairing_appeal }
+          format.html { redirect_to repairing_appeal_saved_path }
         else
           format.html { render :new }
           format.json { render json: @repairing_appeal.errors, status: :unprocessable_entity }
         end
       end
+    end
+
+    def appeal_saved
+      render layout: 'application'
     end
 
     def approve
