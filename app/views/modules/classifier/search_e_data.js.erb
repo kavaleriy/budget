@@ -11,7 +11,8 @@ $('.results').html('<%= escape_javascript(render partial: "search_e_data") %>');
   var data_set = [];
   var edrpous = [];
   <%- @receivers.each do |payment| %>
-    label.push('<%= "#{payment[:name][0..30]}...".html_safe %>');
+    <!-- gsub for apostrophe `'` because js crash -->
+    label.push('<%= "#{payment[:name][0..30]}...".gsub("'", '’').html_safe %>');
     data_set.push(<%= '%.2f' % payment[:val] %>);
     edrpous.push('<%= payment[:edrpou] %>');
   <%- end %>
