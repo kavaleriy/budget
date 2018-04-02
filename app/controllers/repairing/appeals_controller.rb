@@ -50,7 +50,8 @@ module Repairing
       @appeal = Repairing::Appeal.find(params[:id])
       respond_to do |format|
         if @appeal.update(appeal_approved)
-          AppealMailer.send_appeal(@appeal).deliver
+          AppealMailer.email_to_user(@appeal).deliver
+          AppealMailer.email_to_recipients(@appeal).deliver
           msg = { class_name: 'success', message: 'Звернення одобрено.' }
         else
           msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
