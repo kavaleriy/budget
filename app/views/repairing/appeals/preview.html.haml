@@ -23,7 +23,7 @@
 
   %p
     %b Стандартна текстовка про openbudget + Посилання на об’єкт на мапі про який йде мова.
-  %p= link_to 'ремонт', repairing_photos_slider_url(@repairing_appeal.try(:repair)), target: '_blank' if @repairing_appeal.repair
+  %p= link_to 'ремонт', repairing_repair_on_map_url(@repairing_appeal.try(:repair)), target: '_blank' if @repairing_appeal.repair
 
 
   - if @repairing_appeal.file.url

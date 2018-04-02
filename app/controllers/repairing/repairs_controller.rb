@@ -5,7 +5,7 @@ module Repairing
     layout 'application' , only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
-    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal, :photos, :photos_slider]
+    before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal, :photos, :photos_slider, :repair_on_map]
 
     # GET  /repairing/repairs
     # GET /repairing/repairs.json
@@ -103,6 +103,8 @@ module Repairing
     end
 
     def photos_slider; end
+
+    def repair_on_map; end
 
     private
 

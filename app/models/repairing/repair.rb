@@ -86,6 +86,15 @@ module Repairing
       layer.status.eql?('fact') && layer.town.permit_emails
     end
 
+    def repair_coordinate
+      if coordinates.first.kind_of?(Array)
+        size = coordinates.size
+        coordinates[size / 2]
+      else
+        coordinates
+      end
+    end
+
     private
 
     def check_coords_array(coords)

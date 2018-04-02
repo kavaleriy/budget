@@ -268,6 +268,7 @@ Rails.application.routes.draw do
     post 'preview_appeal', to: 'appeals#preview'
     put 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
     get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
+    get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
   end
 
   namespace :to_pdf do
