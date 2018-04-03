@@ -28,7 +28,7 @@
 
   - if @repairing_appeal.file.url
     %p
-      %b Файли прикріплені до звернення.
+      %b Прикріплений файл до звернення.
       = link_to "#{root_url}#{@repairing_appeal.file.url}", title: @repairing_appeal.file_identifier, target:'_blank' do
         %i.fa.fa-download.fa.fa-border
         файл

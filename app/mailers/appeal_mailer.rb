@@ -17,6 +17,14 @@ class AppealMailer < ApplicationMailer
     mail(to: recipients, subject: 'Звернення.')
   end
 
+  def disapprove_email(appeal)
+    @repairing_appeal = appeal
+    email_attachments
+    user = @repairing_appeal.email
+
+    mail(to: user, subject: 'Ваше звернення не пройшло модерацію.')
+  end
+
   def email_attachments
     attachments["Ремонт_#{@repairing_appeal.id}.pdf"] =
       WickedPdf.new.pdf_from_string(

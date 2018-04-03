@@ -9,7 +9,7 @@
         td{
           .alert{
             position: absolute;
-            right: 15px;
+            right: 90px;
           }
           &.actions{
             padding: 8px 0px;
@@ -37,6 +37,9 @@
     }
   }
 
+.modal-container
+  #modal-window.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog"}
+
 %h1 Список звернень
 
 %table.table.table-striped
@@ -56,7 +59,7 @@
 
   %tbody
     - @repairing_appeals.each_with_index do |repairing_appeal, i|
-      %tr
+      %tr{ id: repairing_appeal.id }
         %td= i + 1
         %td= repairing_appeal.try(:town_title)
         %td= repairing_appeal.try(:category_title)
@@ -81,18 +84,26 @@
           = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
         %td
           = format_date(repairing_appeal.created_at)
-        %td{ id: repairing_appeal.id, class: 'actions' }
+        %td.actions{ title: appeal_status(repairing_appeal) }
           -#= repairing_appeal.approved
           -#= check_box_tag :approved, repairing_appeal.id, repairing_appeal.approved,
                           onchange: "$(this).data('params', 'approved=' + this.checked)",
                           data: { remote: true, url: repairing_appeal_approve_path(repairing_appeal.id), method: :put}
 
           .approved-btns
-            = link_to repairing_appeal_approve_path(repairing_appeal.id), method: :put, title: 'Одобрити', class: 'btn' do
+            = link_to repairing_appeal_approve_path(repairing_appeal.id),
+              method: :post, remote: true,
+              title: 'Одобрити',
+              class: appeal_disable(repairing_appeal) do
               %i.fa.fa-border.fa-thumbs-up
-            = link_to repairing_appeal_approve_path(repairing_appeal.id), method: :put, title: 'Відмовити', class: 'btn' do
+
+            = link_to repairing_appeal_disapprove_form_path(repairing_appeal.id),
+              title: 'Відмовити', remote: true,
+              class: appeal_disable(repairing_appeal),
+              data: { toggle: 'modal', target: '#modal-window' } do
               %i.fa.fa-border.fa-thumbs-down
-          .show-edit-btns
+
+          .crud-btns
             = link_to repairing_appeal, title: t('show'), class: 'btn' do
               %i.fa.fa-border.fa-eye
             = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do

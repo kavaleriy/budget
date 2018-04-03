@@ -266,9 +266,11 @@ Rails.application.routes.draw do
     resources :appeal_scenarios
     resources :appeals, except: :destroy
     post 'preview_appeal', to: 'appeals#preview'
-    put 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
+    post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
     get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
     get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
+    get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
+    post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
   end
 
   namespace :to_pdf do
