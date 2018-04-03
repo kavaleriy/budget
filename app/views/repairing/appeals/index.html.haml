@@ -3,10 +3,34 @@
   table{
     tbody{
       tr{
+        &:nth-child(even) {
+          background: #ECECEC
+        }
         td{
           .alert{
             position: absolute;
             right: 15px;
+          }
+          &.actions{
+            padding: 8px 0px;
+            text-align: right;
+            a.btn{
+              display: inline-block;
+              padding: 2px;
+              font-size: 16px;
+              .fa-thumbs-up{
+                color: green;
+              }
+              .fa-thumbs-down{
+                color: red;
+              }
+              &:hover{
+                background: lightgrey;
+                .fa-border{
+                  border-color: lightgrey;
+                }
+              }
+            }
           }
         }
       }
@@ -57,16 +81,23 @@
           = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
         %td
           = format_date(repairing_appeal.created_at)
-        %td{ id: repairing_appeal.id }
+        %td{ id: repairing_appeal.id, class: 'actions' }
           -#= repairing_appeal.approved
-          = check_box_tag :approved, repairing_appeal.id, repairing_appeal.approved,
+          -#= check_box_tag :approved, repairing_appeal.id, repairing_appeal.approved,
                           onchange: "$(this).data('params', 'approved=' + this.checked)",
                           data: { remote: true, url: repairing_appeal_approve_path(repairing_appeal.id), method: :put}
 
-          = link_to repairing_appeal, title: t('edit'), class: 'btn' do
-            %i.fa.fa-eye
-          = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
-            %i.fa.fa-pencil
+          .approved-btns
+            = link_to repairing_appeal_approve_path(repairing_appeal.id), method: :put, title: 'Одобрити', class: 'btn' do
+              %i.fa.fa-border.fa-thumbs-up
+            = link_to repairing_appeal_approve_path(repairing_appeal.id), method: :put, title: 'Відмовити', class: 'btn' do
+              %i.fa.fa-border.fa-thumbs-down
+          .show-edit-btns
+            = link_to repairing_appeal, title: t('show'), class: 'btn' do
+              %i.fa.fa-border.fa-eye
+            = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
+              %i.fa.fa-border.fa-pencil
+
           -#= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 :javascript
