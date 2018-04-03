@@ -63,8 +63,10 @@
                           onchange: "$(this).data('params', 'approved=' + this.checked)",
                           data: { remote: true, url: repairing_appeal_approve_path(repairing_appeal.id), method: :put}
 
-          -#= link_to 'Show', repairing_appeal
-          -#= link_to 'Edit', edit_repairing_appeal_path(repairing_appeal)
+          = link_to repairing_appeal, title: t('edit'), class: 'btn' do
+            %i.fa.fa-eye
+          = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
+            %i.fa.fa-pencil
           -#= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 :javascript

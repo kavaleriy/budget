@@ -120,7 +120,7 @@
                    class: 'appeals-letter btn btn-default pull-right'
 
       .form-actions
-        = f.button :submit, 'Надіслати звернення', disabled: true, class: 'pull-right'
+        = f.button :submit, yield(:title_save_btn), disabled: true, class: 'pull-right'
 
     .col-md-4.appeal-scenario
       %p.text-center
@@ -139,6 +139,7 @@
       $('.form-actions input[type="submit"]').prop("disabled", !result);
     }
 
+    checkChecked();
     $("#repairing_appeal_user_consent, .recipients input[type='checkbox']").change(function(){
       checkChecked();
     });

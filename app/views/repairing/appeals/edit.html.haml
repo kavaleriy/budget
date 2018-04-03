@@ -1,9 +1,18 @@
+:scss
+  .file-letter-btns{
+    display: none;
+  }
+
+= content_for(:title_save_btn) { t('save') }
+
 .container
   .col-md-12
     %h3 Редагування звернення
 
   = render 'form'
 
-  -#= link_to 'Show', @repairing_appeal
-  -#\|
-  -#= link_to 'Back', repairing_appeals_path
+
+
+-#= link_to 'Show', @repairing_appeal
+-#\|
+-#= link_to 'Back', repairing_appeals_path

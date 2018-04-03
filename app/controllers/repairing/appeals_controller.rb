@@ -2,9 +2,9 @@ module Repairing
   class AppealsController < ApplicationController
     layout 'application_admin'
     before_action :access_user?, only: [:index]
-    before_action :set_repairing_appeal, only: [:show]
-    before_action :set_repair, only: [:new]
-    before_action :set_scenario, only: [:new]
+    before_action :set_repairing_appeal, only: [:show, :edit, :update]
+    before_action :set_repair, only: [:new, :edit]
+    before_action :set_scenario, only: [:new, :edit]
 
     respond_to :html
 
@@ -61,11 +61,11 @@ module Repairing
       end
     end
 
-    # def update
-    #   @repairing_appeal.update(appeal_params)
-    #   respond_with(@repairing_appeal)
-    # end
-    #
+    def update
+      @repairing_appeal.update(appeal_params)
+      respond_with(@repairing_appeal)
+    end
+
     # def destroy
     #   @repairing_appeal.destroy
     #   respond_with(@repairing_appeal)
@@ -84,11 +84,11 @@ module Repairing
     end
 
     def set_repair
-      @repair = Repairing::Repair.find(params[:repair_id])
+      @repair = Repairing::Repair.find(params[:repair_id] || @repairing_appeal.repair_id)
     end
 
     def set_scenario
-      @scenario = Repairing::AppealScenario.find(params[:scenario_id])
+      @scenario = Repairing::AppealScenario.find(params[:scenario_id] || @repairing_appeal.scenario_id)
     end
 
     def appeal_approved
