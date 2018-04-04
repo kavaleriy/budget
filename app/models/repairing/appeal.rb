@@ -31,8 +31,8 @@ module Repairing
 
     validates_presence_of :full_name, :email, :text, :user_consent
     validates :email, format: Devise.email_regexp
-    validates :text, length: { minimum: 100, maximum: 2500 }
-    validates :not_approved_text, length: { minimum: 50, maximum: 2500 }, allow_nil: true
+    validates :text, length: 100..2500
+    validates :not_approved_text, length: 50..2500, on: :update
 
     file_size = 3
     validates :file,

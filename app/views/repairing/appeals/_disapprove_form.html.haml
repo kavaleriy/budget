@@ -2,7 +2,7 @@
   .modal-content.clearfix
     .col-md-12
       %h3
-        Відмова
+        Відмова для
         = @repairing_appeal.full_name
 
     = form_tag(repairing_appeal_disapprove_path(@repairing_appeal), method: :post, remote: true) do

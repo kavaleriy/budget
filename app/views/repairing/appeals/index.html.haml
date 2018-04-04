@@ -1,6 +1,11 @@
 :scss
 
   table{
+    thead{
+      th:nth-last-child(1){
+        text-align: right;
+      }
+    }
     tbody{
       tr{
         &:nth-child(even) {
@@ -9,7 +14,8 @@
         td{
           .alert{
             position: absolute;
-            right: 90px;
+            right: 15px;
+            margin-top: 25px;
           }
           &.actions{
             padding: 8px 0px;
@@ -31,6 +37,13 @@
                 }
               }
             }
+            .status{
+              .btn{
+                padding: 0 5px;
+                margin-bottom: 5px;
+                font-size: 14px;
+              }
+            }
           }
         }
       }
@@ -46,74 +59,17 @@
   %thead
     %tr
       %th №
-      %th Town
-      %th Category
-      %th Text
-      %th Recipients
-      %th File
-      %th Contacts
-      %th Full name
-      %th Repair
-      %th Date
-      %th Approved
+      %th Місто
+      %th Категорія
+      %th Текст
+      %th Отримувачі
+      %th Файл
+      %th Контакти
+      %th ПІБ
+      %th Ремонт
+      %th Дата
+      %th Статус і дії
 
   %tbody
     - @repairing_appeals.each_with_index do |repairing_appeal, i|
-      %tr{ id: repairing_appeal.id }
-        %td= i + 1
-        %td= repairing_appeal.try(:town_title)
-        %td= repairing_appeal.try(:category_title)
-        %td= repairing_appeal.text
-        %td
-          - repairing_appeal.recipients.each do |rec|
-            = rec
-        %td
-          - if repairing_appeal.file.url
-            = link_to repairing_appeal.file.url, title: repairing_appeal.file_identifier, target:'_blank' do
-              %i.fa.fa-download.fa.fa-border
-              файл
-        %td
-          = repairing_appeal.address.city
-          = repairing_appeal.address.street
-          = repairing_appeal.address.house
-          = repairing_appeal.address.apartment
-          = repairing_appeal.phone
-        %td
-          = repairing_appeal.full_name
-        %td
-          = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
-        %td
-          = format_date(repairing_appeal.created_at)
-        %td.actions{ title: appeal_status(repairing_appeal) }
-          -#= repairing_appeal.approved
-          -#= check_box_tag :approved, repairing_appeal.id, repairing_appeal.approved,
-                          onchange: "$(this).data('params', 'approved=' + this.checked)",
-                          data: { remote: true, url: repairing_appeal_approve_path(repairing_appeal.id), method: :put}
-
-          .approved-btns
-            = link_to repairing_appeal_approve_path(repairing_appeal.id),
-              method: :post, remote: true,
-              title: 'Одобрити',
-              class: appeal_disable(repairing_appeal) do
-              %i.fa.fa-border.fa-thumbs-up
-
-            = link_to repairing_appeal_disapprove_form_path(repairing_appeal.id),
-              title: 'Відмовити', remote: true,
-              class: appeal_disable(repairing_appeal),
-              data: { toggle: 'modal', target: '#modal-window' } do
-              %i.fa.fa-border.fa-thumbs-down
-
-          .crud-btns
-            = link_to repairing_appeal, title: t('show'), class: 'btn' do
-              %i.fa.fa-border.fa-eye
-            = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
-              %i.fa.fa-border.fa-pencil
-
-          -#= link_to 'Destroy', repairing_appeal, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-:javascript
-
-  $(document).ready(function(){
-    // disabled checkboxes because after check send emails
-    $('input[checked="checked"]').prop('disabled', true);
-  })
+      = render partial: 'repairing/appeals/appeal', locals: { repairing_appeal: repairing_appeal, i: i }

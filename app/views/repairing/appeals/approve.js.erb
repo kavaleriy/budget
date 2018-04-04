@@ -1,3 +1,8 @@
-$('#<%= @repairing_appeal.id %> .approved-btns a').addClass('disabled');
+$('#<%= @repairing_appeal.id %> .actions').replaceWith(
+  '<%= j render partial: 'repairing/appeals/appeal_status',
+         locals: { repairing_appeal: @repairing_appeal }
+  %>'
+);
+
 $('#<%= @repairing_appeal.id %> td:nth-child(1)').prepend("<%= j (bootstrap_flash) %>");
 $('#<%= @repairing_appeal.id %> .alert').delay(3000).fadeOut('slow');

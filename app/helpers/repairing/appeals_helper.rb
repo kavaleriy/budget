@@ -1,16 +1,21 @@
 module Repairing::AppealsHelper
-  def appeal_disable(appeal)
-    # check if appeal approved or disapprove_form
-    appeal.approved.present? || appeal.not_approved_text.present? ? 'btn disabled' : 'btn'
+  def appeal_status_class(appeal)
+    btns = {
+      pending: 'btn-info',
+      approved: 'btn-success',
+      declined: 'btn-danger'
+    }
+
+    "#{btns[appeal.status]} btn disabled"
   end
 
   def appeal_status(appeal)
-    if appeal.not_approved_text.present?
-      'Відмовлено'
-    elsif appeal.approved.present?
-      'Одобрено'
-    else
-      'Очікує модерації'
-    end
+    titles = {
+      pending: 'Очікує модерації',
+      approved: 'Одобрено',
+      declined: 'Відмовлено'
+    }
+
+    titles[appeal.status]
   end
 end

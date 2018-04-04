@@ -70,8 +70,10 @@ module Repairing
           AppealMailer.disapprove_email(@repairing_appeal).deliver
           msg = { class_name: 'success', message: 'Повідомлення про відмову відправено.' }
         else
-          msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
+          msg = { class_name: 'danger', message: @repairing_appeal.errors.full_messages }
+          set_repairing_appeal
         end
+
         format.js { flash.now[msg[:class_name]] = msg[:message] }
       end
     end
