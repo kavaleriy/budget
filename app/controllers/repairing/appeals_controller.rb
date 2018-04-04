@@ -27,7 +27,7 @@ module Repairing
       render layout: 'application'
     end
 
-    # def edit; end
+    def edit; end
 
     def create
       @repairing_appeal = Repairing::Appeal.new(appeal_params)
@@ -48,7 +48,7 @@ module Repairing
 
     def approve
       respond_to do |format|
-        if @repairing_appeal.update(approved: true)
+        if @repairing_appeal.update(status: :approved)
           AppealMailer.email_to_user(@repairing_appeal).deliver
           AppealMailer.email_to_recipients(@repairing_appeal).deliver
           msg = { class_name: 'success', message: 'Звернення одобрено.' }
@@ -66,7 +66,7 @@ module Repairing
 
     def disapprove
       respond_to do |format|
-        if @repairing_appeal.update(not_approved_text: params[:not_approved_text])
+        if @repairing_appeal.update(status: :declined, not_approved_text: params[:not_approved_text])
           AppealMailer.disapprove_email(@repairing_appeal).deliver
           msg = { class_name: 'success', message: 'Повідомлення про відмову відправено.' }
         else
@@ -99,11 +99,11 @@ module Repairing
     end
 
     def set_repair
-      @repair = Repairing::Repair.find(params[:repair_id] || appeal_params[:repair] || @repairing_appeal.repair_id )
+      @repair = Repairing::Repair.find(params[:repair_id] || @repairing_appeal.try(:repair_id) || appeal_params[:repair])
     end
 
     def set_scenario
-      @scenario = Repairing::AppealScenario.find(params[:scenario_id] || appeal_params[:scenario] || @repairing_appeal.scenario_id)
+      @scenario = Repairing::AppealScenario.find(params[:scenario_id] || @repairing_appeal.try(:scenario_id) || appeal_params[:scenario])
     end
 
     # def appeal_approved

@@ -4,6 +4,7 @@ module Repairing
   # Appeal for repair
   class Appeal
     include Mongoid::Document
+    include Mongoid::Enum
     require 'carrierwave/mongoid'
 
     include Mongoid::Timestamps
@@ -16,6 +17,8 @@ module Repairing
     field :user_consent, type: Mongoid::Boolean
     field :approved, type: Mongoid::Boolean, default: false
     field :not_approved_text, type: String
+
+    enum :status, %i[pending approved declined], default: :pending
 
     mount_uploader :file, FileUploader
     # used for update record with uploader
