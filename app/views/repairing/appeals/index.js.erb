@@ -1,0 +1,2 @@
+$('#results').html('<%= escape_javascript(raw(render partial: 'repairing/appeals/appeals_list')) %>');
+$('#appeals-paginator').html('<%= escape_javascript(paginate(@repairing_appeals, remote: true)) %>');

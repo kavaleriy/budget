@@ -9,8 +9,12 @@ module Repairing
     respond_to :html
 
     def index
-      @repairing_appeals = Repairing::Appeal.all
-      respond_with(@repairing_appeals)
+      @repairing_appeals = Repairing::Appeal.by_create.page(params[:page]).per(20)
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
     end
 
     def show

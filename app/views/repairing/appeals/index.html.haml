@@ -69,6 +69,8 @@
       %th Дата
       %th Статус і дії
 
-  %tbody
-    - @repairing_appeals.each_with_index do |repairing_appeal, i|
-      = render partial: 'repairing/appeals/appeal', locals: { repairing_appeal: repairing_appeal, i: i }
+  %tbody#results
+    = render partial: 'repairing/appeals/appeals_list'
+
+#appeals-paginator.text-center.pagination-bar
+  = paginate @repairing_appeals, views_prefix: 'paginator_semantic', remote: true

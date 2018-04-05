@@ -24,6 +24,8 @@ module Repairing
     # TODO: del skip_callback because file will not update
     skip_callback :update, :before, :store_previous_model_for_file
 
+    scope :by_create, -> { order(created_at: :desc) }
+
     embeds_one :address, class_name: 'Repairing::AppellantAddress'
     belongs_to :repair, class_name: 'Repairing::Repair'
     belongs_to :scenario, class_name: 'Repairing::AppealScenario'
