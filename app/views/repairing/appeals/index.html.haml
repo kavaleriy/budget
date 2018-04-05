@@ -1,47 +1,50 @@
 :scss
 
-  table{
-    thead{
-      th:nth-last-child(1){
-        text-align: right;
-      }
-    }
-    tbody{
-      tr{
-        &:nth-child(even) {
-          background: #ECECEC
+  .appeals-table{
+    overflow-x: auto;
+    table{
+      thead{
+        th:nth-last-child(1){
+          text-align: right;
         }
-        td{
-          .alert{
-            position: absolute;
-            right: 15px;
-            margin-top: 25px;
+      }
+      tbody{
+        tr{
+          &:nth-child(even) {
+            background: #ECECEC
           }
-          &.actions{
-            padding: 8px 0px;
-            text-align: right;
-            a.btn{
-              display: inline-block;
-              padding: 2px;
-              font-size: 16px;
-              .fa-thumbs-up{
-                color: green;
-              }
-              .fa-thumbs-down{
-                color: red;
-              }
-              &:hover{
-                background: lightgrey;
-                .fa-border{
-                  border-color: lightgrey;
+          td{
+            .alert{
+              position: absolute;
+              right: 15px;
+              margin-top: 25px;
+            }
+            &.actions{
+              padding: 8px 0px;
+              text-align: right;
+              a.btn{
+                display: inline-block;
+                padding: 2px;
+                font-size: 16px;
+                .fa-thumbs-up{
+                  color: green;
+                }
+                .fa-thumbs-down{
+                  color: red;
+                }
+                &:hover{
+                  background: lightgrey;
+                  .fa-border{
+                    border-color: lightgrey;
+                  }
                 }
               }
-            }
-            .status{
-              .btn{
-                padding: 0 5px;
-                margin-bottom: 5px;
-                font-size: 14px;
+              .status{
+                .btn{
+                  padding: 0 5px;
+                  margin-bottom: 5px;
+                  font-size: 14px;
+                }
               }
             }
           }
@@ -54,23 +57,24 @@
 
 %h1 Список звернень
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th №
-      %th Місто
-      %th Категорія
-      %th Текст
-      %th Отримувачі
-      %th Файл
-      %th Контакти
-      %th ПІБ
-      %th Ремонт
-      %th Дата
-      %th Статус і дії
+.appeals-table
+  %table.table.table-striped
+    %thead
+      %tr
+        %th №
+        %th Місто
+        %th Категорія
+        %th Текст
+        %th Отримувачі
+        %th Файл
+        %th Контакти
+        %th ПІБ
+        %th Ремонт
+        %th Дата
+        %th Статус і дії
 
-  %tbody#results
-    = render partial: 'repairing/appeals/appeals_list'
+    %tbody#results
+      = render partial: 'repairing/appeals/appeals_list'
 
 #appeals-paginator.text-center.pagination-bar
   = paginate @repairing_appeals, views_prefix: 'paginator_semantic', remote: true
