@@ -53,7 +53,7 @@ module Repairing
           AppealMailer.email_to_recipients(@repairing_appeal).deliver
           msg = { class_name: 'success', message: 'Звернення одобрено.' }
         else
-          msg = { class_name: 'danger', message: I18n.t('repairing.layers.update.error') }
+          msg = { class_name: 'danger', message: @repairing_appeal.errors.full_messages }
         end
 
         format.js { flash.now[msg[:class_name]] = msg[:message] }
@@ -66,7 +66,7 @@ module Repairing
 
     def disapprove
       respond_to do |format|
-        if @repairing_appeal.update(status: :declined, not_approved_text: params[:not_approved_text])
+        if @repairing_appeal.update(status: :declined, declined_text: params[:declined_text])
           AppealMailer.disapprove_email(@repairing_appeal).deliver
           msg = { class_name: 'success', message: 'Повідомлення про відмову відправено.' }
         else

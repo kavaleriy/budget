@@ -4,7 +4,7 @@
       = appeal_status(repairing_appeal)
 
   = content_for "show_btn_#{repairing_appeal.id}" do
-    = link_to repairing_appeal, title: t('show'), class: 'btn' do
+    = link_to repairing_appeal, title: t('show'), class: 'btn show-btn' do
       %i.fa.fa-border.fa-eye
 
   - if repairing_appeal.pending?

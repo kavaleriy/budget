@@ -7,7 +7,7 @@
 
     = form_tag(repairing_appeal_disapprove_path(@repairing_appeal), method: :post, remote: true) do
       .form-group
-        = label_tag :not_approved_text, 'Причина відмови:', class: 'control-label'
-        = text_area_tag :not_approved_text, nil, { rows: 5, class: 'form-control' }
+        = label_tag :declined_text, 'Причина відмови:', class: 'control-label'
+        = text_area_tag :declined_text, nil, { rows: 5, class: 'form-control' }
 
       = submit_tag 'Відправити', remote: true, class: 'btn btn-default pull-right'

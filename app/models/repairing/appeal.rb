@@ -15,8 +15,7 @@ module Repairing
     field :recipients, type: Array, default: []
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
-    field :approved, type: Mongoid::Boolean, default: false
-    field :not_approved_text, type: String
+    field :declined_text, type: String
 
     enum :status, %i[pending approved declined], default: :pending
 
@@ -32,7 +31,8 @@ module Repairing
     validates_presence_of :full_name, :email, :text, :user_consent
     validates :email, format: Devise.email_regexp
     validates :text, length: 100..2500
-    validates :not_approved_text, length: 50..2500, on: :update
+    # validation only for disapprove appeal
+    validates :declined_text, length: 50..2500, on: :update, if: :declined?
 
     file_size = 3
     validates :file,
