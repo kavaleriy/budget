@@ -6,7 +6,6 @@
     table{
       float: right;
       .actions{
-        padding: 8px 0px;
         text-align: right;
         .approved-btns, .crud-btns{
           display: inline-block;
@@ -51,6 +50,8 @@
     %p
       %b.moderator-message Відповідь модератора:
       = @repairing_appeal.declined_text
+
+  = render partial: 'repairing/appeals/appeals_list_btn'
 
   %table
     %tr{ id: @repairing_appeal.id }

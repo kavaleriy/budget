@@ -120,6 +120,7 @@
                    class: 'appeals-letter btn btn-default pull-right'
 
       .form-actions
+        = content_for :appeals_list_btn if content_for?(:appeals_list_btn)
         = f.button :submit, yield(:title_save_btn), disabled: true, class: 'pull-right'
 
     .col-md-4.appeal-scenario

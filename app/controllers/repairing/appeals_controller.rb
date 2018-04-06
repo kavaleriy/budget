@@ -1,8 +1,8 @@
 module Repairing
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user?, only: [:index]
-    before_action :set_repairing_appeal, only: [:show, :edit, :update, :approve, :disapprove_form, :disapprove]
+    before_action :access_user?, exept: [:new, :create, :preview, :appeal_saved]
+    before_action :set_repairing_appeal, only: [:show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :set_repair, only: [:new, :create, :edit]
     before_action :set_scenario, only: [:new, :create, :edit]
 
@@ -87,10 +87,11 @@ module Repairing
       respond_with(@repairing_appeal)
     end
 
-    # def destroy
-    #   @repairing_appeal.destroy
-    #   respond_with(@repairing_appeal)
-    # end
+    def destroy
+      @repairing_appeal.destroy
+      flash[:success] = t('success_destroy')
+      respond_with(@repairing_appeal)
+    end
 
     private
 
@@ -111,10 +112,6 @@ module Repairing
     def set_scenario
       @scenario = Repairing::AppealScenario.find(params[:scenario_id] || @repairing_appeal.try(:scenario_id) || appeal_params[:scenario])
     end
-
-    # def appeal_approved
-    #   params.permit(:approved)
-    # end
 
     def appeal_params
       params.require(:repairing_appeal).permit(

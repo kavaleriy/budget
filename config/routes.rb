@@ -264,7 +264,7 @@ Rails.application.routes.draw do
     get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
 
     resources :appeal_scenarios
-    resources :appeals, except: :destroy
+    resources :appeals
     post 'preview_appeal', to: 'appeals#preview'
     post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
     get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
