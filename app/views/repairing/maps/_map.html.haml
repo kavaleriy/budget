@@ -42,6 +42,13 @@
       bottom: 10px;
       left: 10px;
     }
+    #developed-eidos-logo{
+      background-color: white;
+      position: absolute;
+      z-index: 1000;
+      top: 5px;
+      right: 5px;
+    }
     .leaflet-control-container {
       .leaflet-top {
         z-index: 1;
@@ -96,6 +103,10 @@
   #last_updated_repair
     = t('last_update')
     %span.rep-date
+
+  - unless has_own_referer?
+    #developed-eidos-logo
+      = link_to image_tag('developed-eidos-logo.png'), 'https://www.openbudget.in.ua/', target: '_blank'
 
 :javascript
 
