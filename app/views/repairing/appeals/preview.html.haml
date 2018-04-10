@@ -1,0 +1,53 @@
+-# used as text for send email to recipients
+-# and generating pdf as attachment in email
+:scss
+  .preview{
+    .appeal-head{
+      text-align: center;
+    }
+  }
+
+
+.preview
+  %h2.appeal-head
+    = 'Звернення'
+
+  %p.block
+    %b
+      Блок юридичної текстовки з довідника відповідно до обраного сценарію («текст який лягає в звернення»)
+  %p= @repairing_appeal.scenario.text_appeal
+
+  %p
+    %b Текст набраний користувачем.
+  %p= @repairing_appeal.text
+
+  %p
+    %b Стандартна текстовка про openbudget + Посилання на об’єкт на мапі про який йде мова.
+  %p= link_to 'ремонт', repairing_repair_on_map_url(@repairing_appeal.try(:repair)), target: '_blank' if @repairing_appeal.repair
+
+
+  - if @repairing_appeal.file.url
+    %p
+      %b Прикріплений файл до звернення.
+      = link_to "#{root_url}#{@repairing_appeal.file.url}", title: @repairing_appeal.file_identifier, target:'_blank' do
+        %i.fa.fa-download.fa.fa-border
+        файл
+
+  %p
+    %b Відповідь прошу надіслати на електронну скриньку
+    = @repairing_appeal.email
+    = ", контактний телефон #{@repairing_appeal.phone}." if @repairing_appeal.phone.present?
+
+  %p
+    %b ПІБ, адреса
+  %p
+    = @repairing_appeal.full_name
+    ,
+    = @repairing_appeal.address.city
+    = @repairing_appeal.address.street
+    = @repairing_appeal.address.house
+    = @repairing_appeal.address.apartment
+
+  %p
+    %b Дата
+    = format_date(@repairing_appeal.created_at) || format_date(Time.now)

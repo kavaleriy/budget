@@ -1,0 +1,147 @@
+:scss
+
+  $asterisk-color: #ff5722;
+  $asterisk-size: 16px;
+  $asterisk-left: 3px;
+  $btn-background: #d4d4d8;
+
+  .simple_form{
+    input, textarea, .btn{
+      border-radius: 2px !important;
+    }
+    .appeal-scenario{
+      font-size: 15px;
+    }
+    .label-left-group{
+      label{
+        position: absolute;
+        left: $asterisk-left;
+      }
+    }
+    .title-group{
+      font-weight: bold;
+    }
+    label{
+      abbr[title]{
+        font-size: $asterisk-size;
+        font-weight: bold;
+        text-decoration: none;
+        border-bottom: none;
+        color: $asterisk-color;
+      }
+      &.text, &.boolean.required{
+        abbr[title]{
+          position: absolute;
+          left: $asterisk-left;
+        }
+      }
+    }
+    .recipients{
+      .title-group:before{
+        content: '*';
+        position: absolute;
+        left: $asterisk-left;
+        font-size: $asterisk-size;
+        color: $asterisk-color;
+      }
+    }
+    .repairing_appeal_file{
+      display: inline-block;
+      float: left;
+    }
+    .btn-default{
+      color: $asterisk-color;
+    }
+    input[type="submit"]{
+      background: $asterisk-color;
+      color: #fff;
+      &.appeals-letter{
+        background: #fff;
+        color: $asterisk-color;
+      }
+    }
+  }
+
+= simple_form_for(@repairing_appeal) do |f|
+  = f.error_notification
+
+  .row
+    .col-md-8
+      %p
+        У відповідності до Закону України "Про звернення громадян", анонімні звернення не розглядаються. Через це просимо вказати наступні дані:
+      .row
+        = f.input :repair, as: :hidden, input_html: { value: @repair.id } if @repair
+        = f.input :scenario, as: :hidden, input_html: { value: @scenario.id }  if @scenario
+        .col-sm-6.label-left-group
+          %p.title-group Від кого
+          = f.input :full_name, placeholder: 'ПІБ', label: ''
+          = f.input :email, placeholder: 'Email', as: :email, label: ''
+          = f.input :phone, placeholder: 'Контактний телефон', label: false
+        .col-sm-6.label-left-group
+          %p.title-group Адреса
+          = f.fields_for :address, @repairing_appeal.address do |builder|
+            = builder.input :city, placeholder: 'місто', label: ''
+            = builder.input :street, placeholder: 'вулиця', label: ''
+            .row
+              .col-xs-6
+                = builder.input :house, placeholder: 'будинок', label: ''
+              .col-xs-6
+                = builder.input :apartment, placeholder: 'квартира', required: false, label: false
+      .form-group.recipients
+        %p.title-group
+          Кому
+        - @repair.town_emails.try(:each) do |recipient|
+          .recipient
+            = check_box_tag 'repairing_appeal[recipients][]',
+                            recipient.email,
+                            @repairing_appeal.recipients.include?(recipient.email),
+                            { id: recipient.owner }
+            = label_tag recipient.owner, t("mongoid.attributes.town.#{recipient.owner}")
+
+      .text-input
+        = f.input :text, as: :text,
+                  placeholder: 'Тут коротко опишіть суть проблеми. По можливості, не більше двох-трьох фраз, без емоцій.',
+                  input_html: { rows: 5 },
+                  label: 'Коротко опишіть суть проблеми:'
+        = f.input :user_consent, as: :boolean,
+                  label: 'Даю згоду на обробку моїх персональних даних ГО Центр "Ейдос"',
+                  class: ''
+      %p
+        Детальна інформація з системи Відкритий бюджет, щодо обраного об'єкту буде автоматично приєднана до звернення.
+
+      .file-letter-btns.clearfix
+        = f.input :file, label: false, class: 'form-control'
+        .message-file-size.btn.pull-left
+          до 3 мегабайт.
+
+        = f.button :submit, 'Переглянути текст звернення',
+                   formtarget: '_blank',
+                   formaction: repairing_preview_appeal_path,
+                   class: 'appeals-letter btn btn-default pull-right'
+
+      .form-actions
+        = content_for :appeals_list_btn if content_for?(:appeals_list_btn)
+        = f.button :submit, yield(:title_save_btn), disabled: true, class: 'pull-right'
+
+    .col-md-4.appeal-scenario
+      %p.text-center
+        %b
+          Відповідно до законодавства:
+      %p
+        = @scenario.try(:text_form)
+
+:javascript
+  $('document').ready(function(){
+    function checkChecked(){
+      // check if user checked recipient and consent
+      var recipients = ($('.recipients input[type="checkbox"]').is(':checked'));
+      var user_consent = ($('#repairing_appeal_user_consent').is(':checked'));
+      var result =  recipients && user_consent
+      $('.form-actions input[type="submit"]').prop("disabled", !result);
+    }
+
+    checkChecked();
+    $("#repairing_appeal_user_consent, .recipients input[type='checkbox']").change(function(){
+      checkChecked();
+    });
+  })

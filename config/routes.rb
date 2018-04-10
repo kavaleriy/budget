@@ -264,6 +264,13 @@ Rails.application.routes.draw do
     get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
 
     resources :appeal_scenarios
+    resources :appeals
+    post 'preview_appeal', to: 'appeals#preview'
+    post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
+    get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
+    get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
+    get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
+    post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
   end
 
   namespace :to_pdf do

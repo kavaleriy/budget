@@ -1,0 +1,15 @@
+:scss
+  .new-appeal{
+    form{
+      margin: 15px;
+    }
+  }
+
+= content_for(:title_save_btn) { 'Надіслати звернення' }
+
+.new-appeal
+  .col-md-12
+    %h2 Звернення
+
+  = render 'form'
+

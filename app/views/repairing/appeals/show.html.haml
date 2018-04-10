@@ -1,0 +1,58 @@
+:scss
+  .show-appeal{
+    .moderator-message{
+      color: darkred;
+    }
+    table{
+      float: right;
+      .actions{
+        text-align: right;
+        .approved-btns, .crud-btns{
+          display: inline-block;
+        }
+        a.btn{
+          display: inline-block;
+          padding: 2px;
+          font-size: 16px;
+          &.show-btn{
+            display: none;
+          }
+          .fa-thumbs-up{
+            color: green;
+          }
+          .fa-thumbs-down{
+            color: red;
+          }
+          &:hover{
+            background: lightgrey;
+            .fa-border{
+              border-color: lightgrey;
+            }
+          }
+        }
+        .status{
+          .btn{
+            padding: 0 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+= render partial: 'layouts/modal_container'
+
+.container.show-appeal
+  = render file: 'repairing/appeals/preview'
+
+  - if @repairing_appeal.declined?
+    %p
+      %b.moderator-message Відповідь модератора:
+      = @repairing_appeal.declined_text
+
+  = render partial: 'repairing/appeals/appeals_list_btn'
+
+  %table
+    %tr{ id: @repairing_appeal.id }
+      = render partial: 'repairing/appeals/appeal_status', locals: { repairing_appeal: @repairing_appeal }

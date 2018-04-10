@@ -78,6 +78,23 @@ module Repairing
       (address.present?) && (!coordinates.present? || address_changed? || address_to_changed?)
     end
 
+    def town_emails
+      layer.town.present_emails
+    end
+
+    def permit_appeal?
+      layer.status.eql?('fact') && layer.town.permit_emails
+    end
+
+    def repair_coordinate
+      if coordinates.first.kind_of?(Array)
+        size = coordinates.size
+        coordinates[size / 2]
+      else
+        coordinates
+      end
+    end
+
     private
 
     def check_coords_array(coords)

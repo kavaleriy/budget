@@ -1,0 +1,15 @@
+:scss
+  .file-letter-btns{
+    display: none;
+  }
+
+= content_for(:title_save_btn) { t('save') }
+= content_for :appeals_list_btn do
+  = render partial: 'repairing/appeals/appeals_list_btn'
+
+.container
+  .col-md-12
+    %h2 Редагування звернення
+
+  = render 'form'
+
