@@ -107,7 +107,7 @@
     = t('last_update')
     %span.rep-date
 
-  - if has_own_referer?
+  - unless has_own_referer?
     #developed-eidos-logo
       = link_to image_tag("developed-eidos-#{locale}.png"), 'https://www.openbudget.in.ua/', target: '_blank'
 
