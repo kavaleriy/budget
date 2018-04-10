@@ -181,7 +181,7 @@ module Repairing
     end
 
     def self.repair_json_by_town(town)
-      Rails.cache.fetch("/repairings/as_json1/#{town}/#{town_updated(town)}", expires_in: 1.hours) do
+      Rails.cache.fetch("/repairings/as_json/#{town}/#{town_updated(town)}", expires_in: 1.hours) do
         repairings = Repairing::Layer.valid_layers_with_repairs
         geo_jsons = []
 
