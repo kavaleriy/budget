@@ -49,10 +49,67 @@
 
     function openCurrentRepair(){
       var repair_id = getRepairId();
-      $.each(aRepairMap.map._layers, function(i, item){
-        if(this.feature && this.feature.properties.id == repair_id){
-          onFeatureClick(this.feature, this);
+
+      aRepairMap.map.eachLayer(function (layer) {
+
+        // if(this.feature && this.feature.properties.id == repair_id){
+        //   zoomToShowLayer(this)
+        // }
+        // var layer_c = this;
+        // if ('_gridClusters' in layer_c){
+        //   $.each(layer_c.getAllChildMarkers(), function(i, item){
+        //     if(item.feature && item.feature.properties.id == repair_id){
+        //       layer_c.zoomToShowLayer(item);
+        //
+        //     }
+        //   })
+        // }
+
+
+        // if ('_gridClusters' in this){
+        //   console.log('_gridClusters');
+        //   this.on('clusterclick', function(a) {
+        //     console.log(this);
+        //     console.log(a);
+        //     console.log(a.layer);
+        //   })
+        // }
+
+        if ('_gridClusters' in layer){
+
+          layer.on('clusterclick', function(a) {
+
+            $.each(a.layer.getAllChildMarkers(), function(i, item){
+              if(item.feature && item.feature.properties.id == repair_id){
+                // onFeatureClick(this.feature, this);
+
+                // var marker = a.layer.getAllChildMarkers()[0];
+                // var content = marker._popup._content;
+                // var cluster = a.target.getVisibleParent(marker);
+
+                featureId = item.feature.properties.id
+                console.log(featureId);
+                $.ajax({
+                  url: '/repairing/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+                  success:function(data){
+
+                    var marker = a.layer.getAllChildMarkers()[0];
+                    var content = data;
+                    var cluster = a.target.getVisibleParent(marker);
+                    cluster.bindPopup(content).openPopup();
+                    // this.bindPopup(data).openPopup();
+                  }
+                })
+              }
+            })
+
+          });
+
         }
+
+        // if(this.feature && this.feature.properties.id == repair_id){
+        //   onFeatureClick(this.feature, this);
+        // }
       });
     }
 
