@@ -92,9 +92,9 @@
           Кому
         - @repair.town_emails.try(:each) do |recipient|
           .recipient
-            = check_box_tag 'repairing_appeal[recipients][]',
-                            recipient.email,
-                            @repairing_appeal.recipients.include?(recipient.email),
+            = check_box_tag 'repairing_appeal[recipient_ids][]',
+                            recipient.id,
+                            @repairing_appeal.recipients.map(&:id).include?(recipient.id),
                             { id: recipient.owner }
             = label_tag recipient.owner, t("mongoid.attributes.town.#{recipient.owner}")
 
@@ -111,6 +111,7 @@
 
       .file-letter-btns.clearfix
         = f.input :file, label: false, class: 'form-control'
+        = f.input :file_cache, as: :hidden
         .message-file-size.btn.pull-left
           до 3 мегабайт.
 

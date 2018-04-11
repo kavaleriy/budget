@@ -12,7 +12,7 @@ class AppealMailer < ApplicationMailer
   def email_to_recipients(appeal)
     @repairing_appeal = appeal
     email_attachments
-    recipients = @repairing_appeal.recipients.join(",")
+    recipients = @repairing_appeal.recipients.pluck(:email).join(",")
 
     mail(to: recipients, subject: 'Звернення.')
   end

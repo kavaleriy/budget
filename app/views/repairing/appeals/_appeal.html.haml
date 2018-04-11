@@ -4,8 +4,8 @@
   %td= repairing_appeal.try(:category_title)
   %td= repairing_appeal.text
   %td
-    - repairing_appeal.recipients.each do |rec|
-      = rec
+    - repairing_appeal.recipients.try(:each) do |name|
+      = t("mongoid.attributes.town.#{name.owner}")
   %td
     - if repairing_appeal.file.url
       = link_to repairing_appeal.file.url, title: repairing_appeal.file_identifier, target:'_blank' do

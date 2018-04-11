@@ -123,7 +123,7 @@ module Repairing
         :user_consent,
         :file,
         address: %i[city street house apartment],
-        recipients: []
+        recipient_ids: []
       )
     end
   end
