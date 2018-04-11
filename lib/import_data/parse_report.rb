@@ -9,7 +9,7 @@ module ImportData
 
     def self.import_form(file_path, file_record)
       spreadsheet = open_spreadsheet(file_path)
-      header = spreadsheet.row(1)
+      header = spreadsheet.row(1).map(&:squish)
       value_header = file_record.file_type.eql?(Municipal::EnterpriseFile::FORM_1) ? END_REPORTING_PERIOD : REPORTING_PERIOD
 
       (2..spreadsheet.last_row).each do |i|
