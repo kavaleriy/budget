@@ -1,7 +1,7 @@
 module Repairing
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user?, exept: [:new, :create, :preview, :appeal_saved]
+    before_action :access_user, only: [:index, :show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :set_repairing_appeal, only: [:show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :set_repair, only: [:new, :create, :edit]
     before_action :set_scenario, only: [:new, :create, :edit]
@@ -95,10 +95,9 @@ module Repairing
 
     private
 
-    def access_user?
-      unless current_user && current_user.admin?
-        redirect_to root_url, alert: t('export_budgets.notice_access')
-      end
+    def access_user
+      return if current_user && current_user.admin?
+      redirect_to root_url, alert: t('export_budgets.notice_access')
     end
 
     def set_repairing_appeal
