@@ -20,7 +20,7 @@
   %td
     = repairing_appeal.full_name
   %td
-    = link_to 'ремонт', repairing_photos_slider_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
+    = link_to 'ремонт', repairing_repair_on_map_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
   %td
     = format_date(repairing_appeal.created_at)
 
