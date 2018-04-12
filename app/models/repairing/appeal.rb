@@ -12,7 +12,6 @@ module Repairing
     field :email, type: String
     field :phone, type: String
     field :address, type: String
-    field :recipients, type: Array, default: []
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
@@ -29,6 +28,7 @@ module Repairing
     embeds_one :address, class_name: 'Repairing::AppellantAddress'
     belongs_to :repair, class_name: 'Repairing::Repair'
     belongs_to :scenario, class_name: 'Repairing::AppealScenario'
+    has_and_belongs_to_many :recipients, class_name: 'TownEmail'
 
     validates_presence_of :full_name, :email, :text, :user_consent
     validates :email, format: Devise.email_regexp
