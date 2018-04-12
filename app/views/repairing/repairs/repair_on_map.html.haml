@@ -15,7 +15,7 @@
 
   $(document).ready(function() {
     var aRepairMap = RepairMap({
-      zoom: 12,
+      zoom: 18,
       minZoom: 5,
       maxZoom: 18,
       center: JSON.parse('#{@repairing_repair.repair_coordinate}'),
@@ -49,11 +49,12 @@
 
     function openCurrentRepair(){
       var repair_id = getRepairId();
-      $.each(aRepairMap.map._layers, function(i, item){
-        if(this.feature && this.feature.properties.id == repair_id){
-          onFeatureClick(this.feature, this);
+
+      aRepairMap.map.eachLayer(function (layer) {
+        if(layer.feature && layer.feature.properties.id == repair_id){
+          onFeatureClick(layer.feature, layer);
         }
-      });
+      })
     }
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
