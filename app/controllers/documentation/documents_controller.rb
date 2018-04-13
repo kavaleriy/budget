@@ -1,10 +1,7 @@
 module Documentation
-  class DocumentsController < ApplicationController
+  class DocumentsController < DocumentationController
     helper_method :sort_column, :sort_direction
-
-    before_action :authenticate_user!, except: [:index]
-    # load_and_authorize_resource  #user can`t create, update document
-
+    before_action :access_user, except: [:index, :download]
     before_action :set_documentation_document, only: [:show, :edit, :lock, :update, :destroy,:download]
 
     # GET /documentation/documents
@@ -24,7 +21,7 @@ module Documentation
 
       respond_to do |format|
         format.js
-        format.html
+        format.html { render layout: 'application' }
       end
     end
 
@@ -46,18 +43,13 @@ module Documentation
     # POST /documentation/documents.json
     def create
       @documents = []
-
       town = params[:documentation_document][:town_id].blank? ? current_user.town_model : Town.find(params[:documentation_document][:town_id])
 
       params['doc_file'].each do |f|
         doc = Documentation::Document.new(documentation_document_params)
         doc.doc_file = f
-
         doc.town = town
-
         doc.owner = current_user
-
-        current_user.has_role?(:admin) ? doc.locked = false : doc.locked = true
         doc.save!
 
         @documents << doc
@@ -67,7 +59,6 @@ module Documentation
         format.js
         format.json { head :no_content, status: :created }
       end
-
     end
 
     # PATCH/PUT /documentation/documents/1
@@ -122,27 +113,28 @@ module Documentation
             :x_sendfile=>true
         )
       else
-        redirect_to :back , alert: error
+        redirect_to :back, alert: error
       end
     end
+
     private
 
-      def sort_column
-        Documentation::Document.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
-      end
+    def sort_column
+      Documentation::Document.fields.keys.include?(params[:sort]) ? params[:sort] : "title"
+    end
 
-      def sort_direction
-        %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-      end
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_documentation_document
-        @documentation_document = Documentation::Document.find(params[:id])
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_documentation_document
+      @documentation_document = Documentation::Document.find(params[:id])
+    end
 
-      # Never trust parameters from the scary internet, only allow the white list through.
-      def documentation_document_params
-        params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :town_id, :description, :year, :yearFrom, :yearTo, :locked, :sort, :direction)
-      end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def documentation_document_params
+      params.require(:documentation_document).permit(:category_id, :title, :branch, :town, :town_id, :description, :year, :yearFrom, :yearTo, :locked, :sort, :direction)
+    end
   end
 end

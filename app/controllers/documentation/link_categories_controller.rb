@@ -1,9 +1,5 @@
 module Documentation
-  class LinkCategoriesController < ApplicationController
-    layout 'application_admin'
-
-    before_action :authenticate_user!, except: [:index, :tree_root, :tree]
-
+  class LinkCategoriesController < DocumentationController
     before_action :set_documentation_link_category, only: [:show, :edit, :update, :destroy]
 
     # GET /documentation/link_categories

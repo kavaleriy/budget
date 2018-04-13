@@ -1,12 +1,6 @@
 module Documentation
-  class LinksController < ApplicationController
-
-    before_action :authenticate_user!, except: [:index]
-    load_and_authorize_resource
-
+  class LinksController < DocumentationController
     before_action :set_documentation_link, only: [:show, :edit, :lock, :update, :destroy]
-
-
 
     # GET /documentation/links/1
     # GET /documentation/links/1.json

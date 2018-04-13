@@ -1,9 +1,5 @@
 module Documentation
-  class CategoriesController < ApplicationController
-    layout 'application_admin'
-
-    before_action :authenticate_user!, except: [:index, :tree_root, :tree]
-
+  class CategoriesController < DocumentationController
     before_action :set_documentation_category, only: [:show, :edit, :update, :destroy]
 
     # GET /documentation/categories

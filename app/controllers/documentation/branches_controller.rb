@@ -1,10 +1,5 @@
 module Documentation
-  class BranchesController < ApplicationController
-    layout 'application_admin'
-
-    before_action :authenticate_user!, except: [:index]
-    load_and_authorize_resource
-
+  class BranchesController < DocumentationController
     before_action :set_documentation_branch, only: [:show, :edit, :update, :destroy]
 
     def search

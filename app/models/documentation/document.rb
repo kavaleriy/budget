@@ -18,7 +18,7 @@ class Documentation::Document
   field :description, type: String
   field :yearFrom, type: Integer
   field :yearTo, type: Integer
-  field :locked, type: Boolean
+  field :locked, type: Boolean, default: false
 
   mount_uploader :doc_file, DocumentationUploader
   skip_callback :update, :before, :store_previous_model_for_doc_file
@@ -40,8 +40,7 @@ class Documentation::Document
     # return true if user admin
     # return true if user created this document
     # else return false
-    user.is_admin? || self.owner.eql?(user)
-
+    user.is_admin? || self.town.eql?(user.town_model)
   end
 
   def get_years
