@@ -11,14 +11,18 @@
     %span -
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.to') }
       = document.yearTo
-  %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
+  - if current_user.has_role? :admin
+    %td
+      %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
+        = document.town.to_s if document.town
+  - else
+    %td
       = document.town.to_s if document.town
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.type') }
       = document.branch.title if document.branch
   %td
-    - if current_user.has_role? :admin
+    - if document.check_access(current_user)
       %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
     - else
       - if document.locked.nil? || !document.locked

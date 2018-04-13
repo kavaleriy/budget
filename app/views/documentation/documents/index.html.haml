@@ -89,8 +89,9 @@
         = sortable "town_id", t('.town')
       .col-sm-5
         = sortable "branch_id", t('.type')
-      .col-sm-4.text-right
-        = sortable "locked", t('.locked')
+      - if check_access(current_user)
+        .col-sm-4.text-right
+          = sortable "locked", t('.locked')
 .col-xs-12.reset-padding#results
   = render partial: 'search_results', :locals => { documents: @documentation_documents }
 

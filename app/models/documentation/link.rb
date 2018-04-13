@@ -28,4 +28,9 @@ class Documentation::Link
     end
     res
   end
+
+  def check_access(user)
+    # TODO: some method in document model
+    user.is_admin? || self.town.eql?(user.town_model)
+  end
 end
