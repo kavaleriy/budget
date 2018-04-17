@@ -11,6 +11,7 @@
     %span -
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.to') }
       = document.yearTo
+
   - if current_user.has_role? :admin
     %td
       %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
@@ -18,6 +19,7 @@
   - else
     %td
       = document.town.to_s if document.town
+
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.type') }
       = document.branch.title if document.branch
@@ -29,6 +31,7 @@
         %i.fa.fa-square-o
       - else
         %i.fa.fa-check-square-o
+
   -if document.check_access(current_user)
     %td
       = link_to document, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
