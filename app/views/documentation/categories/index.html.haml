@@ -1,29 +1,41 @@
 = stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
-:css
+:scss
   .documentation {
     min-height: 400px;
     padding-top: 15px;
+    .tree_view{
+      min-height: 400px;
+      padding-top: 15px;
+    }
+    .documents {
+      overflow: visible;
+      .document{
+        .title-file{
+          word-break: break-all;
+        }
+      }
+    }
+    .jstree-anchor{
+      white-space: normal;
+    }
+    .jstree-default .jstree-anchor{
+      height: auto;
+      min-height: 24px;
+    }
   }
 
-  .documentation .tree_view{
-    min-height: 400px;
-    padding-top: 15px;
-  }
-
-  .documentation .documents {
-    overflow: visible;
-  }
 
 = content_for :header do
   .head.pull-left
     = t('.header')
 
 .documentation
-  .panel.panel-default.col-sm-4
-    .panel-body
-      = render :partial => 'tree_control', :locals => { prefix: 'documentation_category' }
-      = render :partial => 'tree_view', :locals => { prefix: 'documentation_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+  .col-sm-4
+    .panel.panel-default
+      .panel-body
+        = render :partial => 'tree_control', :locals => { prefix: 'documentation_category' }
+        = render :partial => 'tree_view', :locals => { prefix: 'documentation_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
       #category_content
 

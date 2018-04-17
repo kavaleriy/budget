@@ -3,7 +3,7 @@
     - if document.doc_file?
       = link_to document.doc_file.url do
         %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-  %td
+  %td.title-file
     %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.name') }
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.from') }
@@ -12,12 +12,11 @@
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.to') }
       = document.yearTo
 
-  - if current_user.has_role? :admin
-    %td
+  %td
+    - if current_user.has_role? :admin
       %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
         = document.town.to_s if document.town
-  - else
-    %td
+    - else
       = document.town.to_s if document.town
 
   %td
@@ -32,8 +31,8 @@
       - else
         %i.fa.fa-check-square-o
 
-  -if document.check_access(current_user)
-    %td
+  %td
+    - if document.check_access(current_user)
       = link_to document, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
         %i.fa.fa-times.pull-right
 
