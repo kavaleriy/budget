@@ -2,6 +2,7 @@ require 'file_size_validator'
 require 'carrierwave/mongoid'
 
 class Documentation::Document
+  include Documentation
   include Mongoid::Document
 
   before_save :generate_title
@@ -32,15 +33,6 @@ class Documentation::Document
 
   def select_file_message
     I18n.t('documentation.documents.model_messages.select_file')
-  end
-
-  def check_access(user)
-    # this function check access to update or destroy document
-    # get one parameter user model
-    # return true if user admin
-    # return true if user created this document
-    # else return false
-    user.is_admin? || self.town.eql?(user.town_model)
   end
 
   def get_years

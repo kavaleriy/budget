@@ -1,4 +1,5 @@
 class Documentation::Link
+  include Documentation
   include Mongoid::Document
 
   scope :get_links_by_town, -> (town) { where(:town => town) }
@@ -27,10 +28,5 @@ class Documentation::Link
       res << tmp_hash
     end
     res
-  end
-
-  def check_access(user)
-    # TODO: some method in document model
-    user.is_admin? || self.town.eql?(user.town_model)
   end
 end
