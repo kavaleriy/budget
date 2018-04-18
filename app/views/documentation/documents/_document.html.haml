@@ -3,7 +3,7 @@
     - if document.doc_file?
       = link_to document.doc_file.url do
         %i.fa{ class: "#{get_file_type_icon(document.doc_file_identifier)}" }
-  %td
+  %td.title-file
     %a{ href: '#', id: 'documentation_document', 'data-type' => 'documentation_document', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.name') }
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearFrom', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.from') }
@@ -11,22 +11,28 @@
     %span -
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'yearTo', 'data-type' => 'text', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.to') }
       = document.yearTo
+
   %td
-    %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
+    - if current_user.has_role? :admin
+      %a{ href: '#', 'data-resource' => 'documentation_document', id: 'town', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.city') }
+        = document.town.to_s if document.town
+    - else
       = document.town.to_s if document.town
+
   %td
     %a{ href: '#', 'data-resource' => 'documentation_document', id: 'branch', 'data-type' => 'select2', 'data-pk' => "#{document.id}", 'data-url' => "#{documentation_document_path(document)}", 'data-emptytext' => t('documentation.documents.index.documents_list.type') }
       = document.branch.title if document.branch
   %td
-    - if current_user.has_role? :admin
+    - if document.check_access(current_user)
       %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => 'unlocked', 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
     - else
       - if document.locked.nil? || !document.locked
         %i.fa.fa-square-o
       - else
         %i.fa.fa-check-square-o
-  -if document.check_access(current_user)
-    %td
+
+  %td
+    - if document.check_access(current_user)
       = link_to document, :remote => true, :method => :delete, :data => { :confirm => t('helpers.links.confirm') }, :class => '' do
         %i.fa.fa-times.pull-right
 

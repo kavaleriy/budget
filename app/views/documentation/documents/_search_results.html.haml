@@ -39,7 +39,7 @@
           .col-xs-4.visible-xs
             = sortable "locked", t('documentation.documents.index.locked')
           .col-xs-8.col-sm-12
-            - if !current_user.nil? && document.check_access(current_user)
+            - if document.check_access(current_user)
               %a.doc_lock{:href => "#", 'data-url' => '/documentation/documents/lock/' + document.id, 'data-pk' => "#{document.id}", 'data-resource' => 'locked', 'data-emptytext' => t('documentation.documents.index.unlocked'), 'data-value' => document.locked.nil? || !document.locked ? 0 : 1 }
     .col-xs-1.col-sm-pull-11.reset-padding
       - unless document.doc_file.url.blank?

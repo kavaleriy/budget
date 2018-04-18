@@ -1,4 +1,5 @@
 class Documentation::Link
+  include Documentation
   include Mongoid::Document
 
   scope :get_links_by_town, -> (town) { where(:town => town) }

@@ -2,6 +2,8 @@ require 'role_model'
 class User
   include Mongoid::Document
 
+  ROLES = %i[public_organisation city_authority central_authority municipal_enterprise state_enterprise].freeze
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
