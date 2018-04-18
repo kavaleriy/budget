@@ -19,11 +19,15 @@ module ImportData
         next if row[CODE_LINE].blank?
         # to_i for xls files
         code_value.code = row[CODE_LINE].to_i
-        code_value.value = row[value_header]
+        code_value.value = code_value(row[value_header])
         code_value.enterprise_file = file_record.id
         code_value.save!
       end
     end
 
+    def self.code_value(string)
+      # clear brackets and white spaces for negative value "( 4567 )"
+      string.kind_of?(String) && string.include?('(') ? "-#{string.delete('() ')}" : string
+    end
   end
 end
