@@ -15,6 +15,19 @@
     #search-results{
       .table-body{
         margin-top: 5px;
+        .title-file,
+        .email{
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal; /* for IE */
+          text-overflow: ellipsis;
+          &:hover{
+            overflow: visible;
+            white-space: normal;
+            word-wrap: break-word;
+            font-size: smaller;
+          }
+        }
       }
       .action-btns{
         text-align: right;
