@@ -5,7 +5,7 @@
 // this function return search results and using for sort them
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
-function classifier_search(url, params) {
+function classifier_search(url, params, frame = "") {
   $("#spinner-container").show();
   $.ajax({
     type: 'get',
