@@ -278,10 +278,10 @@
 
     function frame_path(code){
       var town = $('#_item').data('town-id');
-      url_type = $('[name="[role]"]:checked').val() + '_edrpous';
+      var url_type = $('[name="[role]"]:checked').val() + '_edrpous';
+      var url = 'https://' + window.location.host + '/modules/classifier/by_' + url_type + '/' +  town + '/' + code;
 
-      var url = "modules/classifier/by_" + url_type + '/' +  town + '/' + code;
-      console.log(url);
+      return url;
     }
 
     // If user input new code edrpou

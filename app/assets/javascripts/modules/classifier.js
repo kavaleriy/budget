@@ -5,7 +5,7 @@
 // this function return search results and using for sort them
 // url receive route to action, params receive data for searching and sorting data
 // params prepare in views
-function classifier_search(url, params, frame = "") {
+function classifier_search(url, params, iframe_src) {
   $("#spinner-container").show();
   $.ajax({
     type: 'get',
@@ -14,7 +14,7 @@ function classifier_search(url, params, frame = "") {
     dataType: 'script',
     data: params,
     complete: function() {
-      share_buttons_set_url(this.url);
+      share_buttons_set_url(this.url, iframe_src);
     }
   });
 }
@@ -97,7 +97,7 @@ function get_items(url, type, role, _sort_param) {
 }
 
 // TODO: refactor in future
-function share_buttons_set_url(url) {
+function share_buttons_set_url(url, iframe_src) {
     // Shares buttons disappearing in iframe
     // $('.demo_index') need for avoid crash script in that case
     $("#spinner-container").hide();
@@ -109,24 +109,8 @@ function share_buttons_set_url(url) {
         // TODO: refactor in future
         var clipboard_data = $('#embedded-profile').attr('data-clipboard-text');
         if (clipboard_data){
-            var aditional_params = url.substr(url.indexOf('&payers_edrpous'));
-            var current_src = clipboard_data.match(/src="\S*/)[0];
-            // var new_src = current_src.slice(0, current_src.length-1) + aditional_params + '"';
-            // var new_data = clipboard_data.replace(current_src, new_src);
-
-            var payers_edrpous = "payers_edrpous=";
-            var start_edrpou = url.substr(url.indexOf(payers_edrpous) + payers_edrpous.length);
-            var edrpou = start_edrpou.slice(0, start_edrpou.indexOf("&"));
-            var src_without_params = current_src.slice(0, current_src.indexOf("?"));
-
-            var alias_src = "by_edrpou"
-            if(src_without_params.includes(alias_src)){
-                src_without_params = src_without_params.slice(0, src_without_params.lastIndexOf("/"));
-            }
-
-            var src_with_edrpou = src_without_params + "/" + edrpou + '"';
-            var src_by_edrpou = src_with_edrpou.replace("search_data", alias_src);
-            var new_data = clipboard_data.replace(current_src, src_by_edrpou);
+            var current_src = clipboard_data.match(/src="([^"]*)/)[1];
+            var new_data = clipboard_data.replace(current_src, iframe_src);
 
             $('#embedded-profile').attr('data-clipboard-text', new_data);
         }
