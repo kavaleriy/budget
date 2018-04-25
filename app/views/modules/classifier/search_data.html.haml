@@ -272,9 +272,17 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val || check_edrpou(data.target.value)) {
-        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(), iframe_src(data.val || data.target.value));
       }
     });
+
+    function iframe_src(code){
+      var town = $('#_item').data('town-id');
+      var url_type = $('[name="[role]"]:checked').val() + '_edrpous';
+      var url = 'https://' + window.location.host + '/modules/classifier/by_' + url_type + '/' +  town + '/' + code;
+
+      return url;
+    }
 
     // If user input new code edrpou
     // for embed iframe with needed enterprise
@@ -306,7 +314,7 @@
     $('[name="[role]"]').on('change', function() {
       // check for empty value, if empty -> do nothing
       if($('#_item').val()) {
-        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+        classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(), iframe_src( $('#_item').val()));
         // var title = $('[name="[role]"]:checked').val() == 'payers' ? I18n.t('modules.classifier.chart.most_payers') : I18n.t('modules.classifier.chart.most_received');
         // $('#most-received .subtitle').html(title);
       }

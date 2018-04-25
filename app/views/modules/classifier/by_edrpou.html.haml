@@ -224,9 +224,9 @@
     }
   }
 
-  .payer_name{
-    display: none;
-  }
+  //.payer_name{
+  //  display: none;
+  //}
   .additional-btns{
     //position: absolute;
     //right: 0;
@@ -307,7 +307,7 @@
 #search-data.container
   = image_tag 'paywatch_logo.png', class: 'paywatch_logo'
   .row
-    .col-sm-12.text-center#classifier{'data-town-id' => params['town_id'], 'data-payers_edrpous' => params[:payers_edrpous]}
+    .col-sm-12.text-center#classifier{ data: { town_id: params[:town_id], edrpou_type: @type, edrpou_code: @code } }
       %h3= @funds_manager_title
 
   .row#search-by-purpose-wrapper-row
@@ -348,7 +348,7 @@
         $('#search_by_purpose').trigger('change')
       }
     })
-    $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :xls, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous])}");
+    $('#export_classifier').attr('href', "#{modules_classifier_search_e_data_path(format: :xls, town_id: params[:town_id], payers_edrpous: params[:payers_edrpous], recipt_edrpous: params[:recipt_edrpous])}");
     classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     // add new event and clear previous events for sorting search results
     $('.results').on('click', '#edata_payments th', function() {
@@ -370,7 +370,7 @@
       sort_dir: sort_dir,
       by_purpose: $('#search_by_purpose').val()
     }
-    data['payers_edrpous'] = $('#classifier').data('payers_edrpous');
+    data[$('#classifier').data('edrpou-type')] = $('#classifier').data('edrpou-code');
     return data;
   }
 

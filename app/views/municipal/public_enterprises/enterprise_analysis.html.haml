@@ -80,7 +80,6 @@
     }).on('change', function(data) {
       // check for empty value, if empty -> do nothing
       if(data.val || enterprise) {
-        // classifier_search("#{municipal_public_enterprise_files_path}", init_search_params());
         $.ajax({
           type: 'get',
           url: "#{municipal_public_enterprise_files_path}",

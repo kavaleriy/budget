@@ -20,8 +20,10 @@ module Modules
     end
 
     def by_edrpou
-      classifier = Classifier.find_by(edrpou: params[:payers_edrpous]) rescue nil
-      @funds_manager_title = classifier.try(:pnaz) || FundsManager.get_title_by_edrpou(params[:payers_edrpous])
+      @type = params[:payers_edrpous].present? ? :payers_edrpous : :recipt_edrpous
+      @code = params[:payers_edrpous] || params[:recipt_edrpous]
+      classifier = Classifier.find_by(edrpou: @code) rescue nil
+      @funds_manager_title = classifier.try(:pnaz) || FundsManager.get_title_by_edrpou(@code)
 
       respond_to do |format|
         format.html { render layout: 'visify'}
