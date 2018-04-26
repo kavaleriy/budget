@@ -33,7 +33,7 @@ module Charts
 
       files.each do |file|
         year = file.year
-        value = file.code_values.where(code: code).first.value
+        value = file.code_values.where(code: code).first.try(:value)
 
         chart[code][:years][year] = value
       end
