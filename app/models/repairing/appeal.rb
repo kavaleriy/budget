@@ -4,6 +4,7 @@ module Repairing
   # Appeal for repair
   class Appeal
     include Mongoid::Document
+    include Mongoid::Slug
     include Mongoid::Enum
     require 'carrierwave/mongoid'
 
@@ -15,8 +16,9 @@ module Repairing
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
-    field :account_number, type: Integer
+    field :account_number, type: String
 
+    slug :account_number
     enum :status, %i[pending approved declined], default: :pending
 
     mount_uploader :file, FileUploader
@@ -56,7 +58,7 @@ module Repairing
 
     def set_account_number
       last_account_number = Repairing::Appeal.max(:account_number) || 0
-      self.account_number = last_account_number + 1
+      self.account_number = last_account_number.to_i + 1
     end
   end
 end

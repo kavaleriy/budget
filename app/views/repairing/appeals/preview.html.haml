@@ -7,6 +7,9 @@
     }
   }
 
+= content_for :openbudget_email do
+  %b та порталу Відкритий бюджет
+  = "openbudget.in.ua+#{@repairing_appeal.account_number}@gmail.com"
 
 .preview
   %h2.appeal-head
@@ -34,12 +37,16 @@
         файл
 
   %p
-    %b Відповідь прошу надіслати на електронну скриньку
+    %b Відповідь прошу надіслати на електронну скриньку громадянина
     = @repairing_appeal.email
-    = ", контактний телефон #{@repairing_appeal.phone}." if @repairing_appeal.phone.present?
+    %b та порталу Відкритий бюджет
+    = "openbudget.in.ua+#{@repairing_appeal.account_number}@gmail.com"
+
+    -#= ", контактний телефон #{@repairing_appeal.phone}." if @repairing_appeal.phone.present?
 
   %p
-    %b ПІБ, адреса
+    %b Контактний телефон:
+    = @repairing_appeal.phone
   %p
     = @repairing_appeal.full_name
     ,

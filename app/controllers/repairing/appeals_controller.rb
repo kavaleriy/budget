@@ -35,6 +35,7 @@ module Repairing
 
     def create
       @repairing_appeal = Repairing::Appeal.new(appeal_params)
+      @repairing_appeal.set_account_number
 
       respond_to do |format|
         if @repairing_appeal.save
