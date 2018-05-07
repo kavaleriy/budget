@@ -36,6 +36,7 @@ module Repairing
     has_and_belongs_to_many :recipients, class_name: 'TownEmail'
 
     validates_presence_of :full_name, :email, :text, :user_consent
+    validates_uniqueness_of :account_number
     validates :email, format: Devise.email_regexp
     validates :text, length: 100..2500
     # validation only for disapprove appeal
