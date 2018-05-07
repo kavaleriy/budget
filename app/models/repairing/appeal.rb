@@ -15,6 +15,7 @@ module Repairing
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
+    field :account_number, type: Integer
 
     enum :status, %i[pending approved declined], default: :pending
 
@@ -22,6 +23,8 @@ module Repairing
     # used for update record with uploader
     # TODO: del skip_callback because file will not update
     skip_callback :update, :before, :store_previous_model_for_file
+
+    before_create :set_account_number
 
     scope :by_create, -> { order(created_at: :desc) }
 
@@ -51,5 +54,9 @@ module Repairing
       repair.layer.repairing_category.title rescue nil
     end
 
+    def set_account_number
+      last_account_number = Repairing::Appeal.max(:account_number) || 0
+      self.account_number = last_account_number + 1
+    end
   end
 end
