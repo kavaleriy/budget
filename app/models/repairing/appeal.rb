@@ -4,6 +4,7 @@ module Repairing
   # Appeal for repair
   class Appeal
     include Mongoid::Document
+    include Mongoid::Slug
     include Mongoid::Enum
     require 'carrierwave/mongoid'
 
@@ -15,13 +16,17 @@ module Repairing
     field :text, type: String
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
+    field :account_number, type: String
 
+    slug :account_number
     enum :status, %i[pending approved declined], default: :pending
 
     mount_uploader :file, FileUploader
     # used for update record with uploader
     # TODO: del skip_callback because file will not update
     skip_callback :update, :before, :store_previous_model_for_file
+
+    before_create :set_account_number
 
     scope :by_create, -> { order(created_at: :desc) }
 
@@ -31,6 +36,7 @@ module Repairing
     has_and_belongs_to_many :recipients, class_name: 'TownEmail'
 
     validates_presence_of :full_name, :email, :text, :user_consent
+    validates_uniqueness_of :account_number
     validates :email, format: Devise.email_regexp
     validates :text, length: 100..2500
     # validation only for disapprove appeal
@@ -51,5 +57,9 @@ module Repairing
       repair.layer.repairing_category.title rescue nil
     end
 
+    def set_account_number
+      last_account_number = Repairing::Appeal.max(:account_number) || 0
+      self.account_number = last_account_number.to_i + 1
+    end
   end
 end

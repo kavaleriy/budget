@@ -64,6 +64,7 @@ gem 'bootstrap-wysihtml5-rails', branch: 'b3', git: 'https://github.com/Nerian/b
 # https://gorails.com/blog/rails-4-0-with-mongodb-and-mongoid
 gem 'mongoid', '~> 4.0.0'
 gem 'mongoid-enum'
+gem 'mongoid-slug'
 
 # https://github.com/haml/haml/tree/rails_4.1.0.rc1
 gem 'haml-rails'
