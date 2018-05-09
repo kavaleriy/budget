@@ -47,10 +47,12 @@ module Municipal
       @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file_params)
       @municipal_enterprise_file.owner = current_user
 
+      # set_status
       respond_to do |format|
         if @municipal_enterprise_file.save
           unless enterprise_file_params[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
             ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
+            # set_status
           end
           format.html { redirect_to municipal_enterprise_files_url, notice: 'Файл успішно додано.' }
         else
@@ -59,6 +61,60 @@ module Municipal
         end
       end
       # respond_with(@municipal_enterprise_file)
+    end
+
+    def set_status
+      ent_files_by_type = Municipal::EnterpriseFile.where(enterprise: @municipal_enterprise_file.enterprise, file_type: @municipal_enterprise_file.file_type).order(year: :desc)
+      # binding.pry
+
+      return unless ent_files_by_type.size >= 2
+
+      if @municipal_enterprise_file.year >= ent_files_by_type.second.try(:year)
+        # set form 1, form 2 chart status
+        # set analysis chart
+        p "#########  set form 1, form 2 chart status"
+        codes = {}
+        ent_files_by_type.first.code_values.each do |code|
+          codes[code.code] = []
+          codes[code.code].push(code.value)
+          p "code - #{code.code}, value - #{code.value}"
+        end
+        ent_files_by_type.second.code_values.each do |code|
+          codes[code.code] = [] unless codes.key?(code.code)
+          codes[code.code].try(:push, code.value)
+          p "code - #{code.code}, value - #{code.value}"
+        end
+
+        codes.each do |code|
+          status = Municipal::CodeStatus.new(enterprise: @municipal_enterprise_file.enterprise, code: code[0])
+          values = code[1]
+
+          next if values[0].blank? && values[1].blank?
+
+          status_type =
+            if values[0].to_i > values[1].to_i
+              p "#{code[0]} - up!"
+              :up
+            elsif values[0].to_i == values[1].to_i
+              p "#{code[0]} - some!"
+              :some
+            elsif values[0].to_i < values[1].to_i
+              p "#{code[0]} - down!"
+              :down
+            end
+
+          status.status = status_type
+          p "#{code[0]} code 0 - #{values[0]}, code 1 - #{values[1]}"
+          p status
+        end
+        binding.pry
+      end
+
+      if @municipal_enterprise_file.year >= ent_files_by_type.third.try(:year)
+        # set analysis chart status
+        p "#########  set analysis chart status"
+      end
+
     end
 
     # def update
