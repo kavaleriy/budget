@@ -6,7 +6,7 @@ module Municipal
     include Mongoid::Document
     include Mongoid::Enum
 
-    field :code, type: String
+    field :code_number, type: String
     enum :status, %i[up some down]
 
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
