@@ -14,6 +14,11 @@ module Municipal
       @codes_form_2 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_2).first.codes
       @codes_form_7 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::OTHER).first.codes
 
+
+      # @codes_form_1 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_1)
+      # @codes_form_2 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_2)
+      # @codes_form_7 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::OTHER)
+
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_search_enterprise_data' }
         format.js
