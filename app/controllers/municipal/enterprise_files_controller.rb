@@ -47,20 +47,18 @@ module Municipal
       @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file_params)
       @municipal_enterprise_file.owner = current_user
 
-      StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
-      # respond_to do |format|
-      #   if @municipal_enterprise_file.save
-      #     unless enterprise_file_params[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
-      #       ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
-      #       # set_status
-      #       # CodeStatus::SetStatus.generate_statuses(@municipal_enterprise_file)
-      #     end
-      #     format.html { redirect_to municipal_enterprise_files_url, notice: 'Файл успішно додано.' }
-      #   else
-      #     format.html { render action: 'new' }
-      #     format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
-      #   end
-      # end
+      respond_to do |format|
+        if @municipal_enterprise_file.save
+          unless enterprise_file_params[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
+            ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
+            StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
+          end
+          format.html { redirect_to municipal_enterprise_files_url, notice: 'Файл успішно додано.' }
+        else
+          format.html { render action: 'new' }
+          format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
+        end
+      end
     end
 
     # def update
@@ -73,6 +71,7 @@ module Municipal
       respond_to do |format|
         if current_user.admin? || access_by_town?(@municipal_enterprise_file)
           @municipal_enterprise_file.destroy
+          StatusCode::SetStatus.del_statuses(@municipal_enterprise_file)
           notice =  'Файл видалено.'
         else
           notice =  'У вас немає прав для видалення цього файлу.'

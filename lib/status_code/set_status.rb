@@ -3,23 +3,63 @@
 module StatusCode
   # Build code statuses by enterprise reporting
   class SetStatus
+    def self.all_enterprises
+      enterprises = Municipal::Enterprise.all
+      enterprises.each do |enterprise|
+        enterprise(enterprise)
+      end
+    end
+
+    def self.enterprise(enterprise)
+      Municipal::CodeStatus.destroy_all(enterprise: enterprise)
+      files_form_1 = enterprise.files.where(enterprise: enterprise, file_type: '1').order(year: :desc)
+      files_form_2 = enterprise.files.where(enterprise: enterprise, file_type: '2').order(year: :desc)
+      last_file_form_1 = files_form_1.first
+      last_file_form_2 = files_form_2.first
+
+      generate_statuses(last_file_form_1) if last_file_form_1
+      generate_statuses(last_file_form_2) if last_file_form_2
+    end
+
     def self.generate_statuses(enterprise_file)
       report_files = Municipal::EnterpriseFile.where(enterprise: enterprise_file.enterprise, file_type: enterprise_file.file_type).order(year: :desc)
-      return unless report_files.size >= 2
 
+      return unless report_files.size >= 2
       if enterprise_file.year >= report_files.second.try(:year)
-        # set form 1, form 2 chart status
-        # set analysis chart
+        # set form 1, form 2 chart statuses
+        # set analysis chart statuses
         reports_statuses(enterprise_file, report_files)
-        binding.pry
         analysis_statuses(enterprise_file)
-        binding.pry
       elsif (report_files.size > 2) && (enterprise_file.year >= report_files.third.try(:year))
-        # set analysis chart status
-        p "#########  set analysis chart status 2"
+        # set analysis chart statuses
         analysis_statuses(enterprise_file)
-        binding.pry
       end
+    end
+
+    def self.del_statuses(enterprise_file)
+      report_files = Municipal::EnterpriseFile.where(enterprise: enterprise_file.enterprise, file_type: enterprise_file.file_type).order(year: :desc)
+
+      if report_files.size <= 1
+        del_reports_statuses(enterprise_file)
+        del_analysis_statuses(enterprise_file)
+        analysis_statuses(enterprise_file)
+      elsif report_files.size >= 2 && (enterprise_file.year >= report_files.second.try(:year))
+        del_reports_statuses(enterprise_file)
+        reports_statuses(enterprise_file, report_files)
+        del_analysis_statuses(enterprise_file)
+        analysis_statuses(enterprise_file)
+      elsif report_files.size >= 3 && (enterprise_file.year >= report_files.third.try(:year))
+        del_analysis_statuses(enterprise_file)
+        analysis_statuses(enterprise_file)
+      end
+    end
+
+    def self.del_analysis_statuses(enterprise_file)
+      Municipal::CodeStatus.destroy_all(enterprise: enterprise_file.enterprise, reporting_type: 3)
+    end
+
+    def self.del_reports_statuses(enterprise_file)
+      Municipal::CodeStatus.destroy_all(enterprise: enterprise_file.enterprise, reporting_type: enterprise_file.file_type)
     end
 
     def self.reports_statuses(enterprise_file, report_files)
@@ -47,12 +87,12 @@ module StatusCode
       file_1.code_values.each do |code|
         codes[code.code] = []
         codes[code.code].push(code.value)
-        p "code - #{code.code}, value - #{code.value}"
+        # p "code - #{code.code}, value - #{code.value}"
       end
       file_2.code_values.each do |code|
         codes[code.code] = [] unless codes.key?(code.code)
         codes[code.code].try(:push, code.value)
-        p "code - #{code.code}, value - #{code.value}"
+        # p "code - #{code.code}, value - #{code.value}"
       end
 
       codes
@@ -73,7 +113,7 @@ module StatusCode
     end
 
     def self.zero_or_infinite?(value)
-      value.finite? && !value.zero?
+      !value.blank? && value.finite? && !value.zero?
     end
 
     def self.save_status(code, enterprise)
@@ -85,19 +125,15 @@ module StatusCode
 
       status_type =
         if values[0].to_i > values[1].to_i
-          p "#{code[0]} - up!"
           :up
         elsif values[0].to_i == values[1].to_i
-          p "#{code[0]} - some!"
           :some
         elsif values[0].to_i < values[1].to_i
-          p "#{code[0]} - down!"
           :down
         end
 
       status.status = status_type
-      p "#{code[0]} code - #{values[0]}, #{values[1]}"
-      p status
+      p "#{code[0]} status - #{status_type}; code - #{values[0]}, #{values[1]}"
       status.save
     end
   end

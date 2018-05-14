@@ -24,8 +24,9 @@
                            options_for_select(Municipal::EnterpriseFile.type_codes.collect{ |type| [ type[:title], type[:id] ] }),
                            placeholder: 'Оберіть тип показників',
                            class: 'form-control'
-            #codes-list
-              = render partial: 'codes_by_enterprise_type', locals: { codes_list: @codes_form_1 }
+            - if @codes_form_1.present?
+              #codes-list
+                = render partial: 'codes_by_enterprise_type', locals: { codes_list: @codes_form_1 }
 
       .panel.panel-default
         #headingTwo.panel-heading{:role => "tab"}
