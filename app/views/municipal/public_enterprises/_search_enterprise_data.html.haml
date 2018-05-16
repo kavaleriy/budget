@@ -1,4 +1,8 @@
 :scss
+  //init colors
+  $status-up: green;
+  $status-some: #ffd600;
+  $status-down: red;
 
   #results{
     margin-bottom: 10px;
@@ -21,6 +25,51 @@
             display: block;
             margin-bottom: 10px;
             border-radius: 0;
+          }
+          input.status-checkbox[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            &[name="up"]{
+              background-color: $status-up;
+            }
+            &[name="some"]{
+              background-color: $status-some;
+                  }
+            &[name="down"]{
+              background-color: $status-down;
+            }
+            &:checked {
+              &:after{
+                content: '\2714';
+                padding-left: 3px;
+                position: absolute;
+                font-size: 18px;
+                color: white;
+              }
+            }
+            &:focus {
+              outline: none;
+            }
+          }
+          .status{
+            display: inline-block;
+            width: 12px;
+            height: 13px;
+            border-bottom: 1px solid white;
+            &.color-up{
+              background-color: $status-up;
+            }
+            &.color-some{
+              background-color: $status-some;
+            }
+            &.color-down{
+              background-color: $status-down;
+            }
           }
         }
       }
@@ -105,6 +154,12 @@
       if($(id_chart).find('canvas').length == 0){
         $(id_chart + ' .run-selected').trigger("click");
       }
+    })
+
+    $('.status-checkbox').change(function(){
+      var status = $(this);
+      var checkboxes = status.closest('.codes-list').find('.' + status.val());
+      checkboxes.prop('checked', status.is(':checked'));
     })
 
     function selected_items(id_charts){

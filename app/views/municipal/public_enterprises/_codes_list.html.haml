@@ -1,10 +1,21 @@
 .row
   .col-md-3.codes-list
-    .run-selected.btn.btn-success Застосувати
-    - codes.each do |code|
-      .input
-        = check_box_tag "#{code.code}", "#{code.code}", code.publish, class: 'code-checkbox'
-        = label_tag code.code, title_for_code(code.code, code.title)
+    - if codes.present?
+      .run-selected.btn.btn-success Застосувати
+      = check_box_tag 'up', 'up', true, class: 'status-checkbox', id: "up-#{code_type}", title: 'Зростає'
+      -#= label_tag "up-#{code_type}", 'Up'
+      = check_box_tag 'some', 'some', false, class: 'status-checkbox', id: "some-#{code_type}", title: 'Вирівнюється'
+      -#= label_tag "some-#{code_type}", 'Some'
+      = check_box_tag 'down', 'down', false, class: 'status-checkbox',  id: "down-#{code_type}", title: 'Спадає'
+      -#= label_tag "down-#{code_type}", 'Down'
+
+      - codes.each do |code|
+        .input
+          .status{ class: "color-#{code.status}" }
+          = check_box_tag "#{code.code}", "#{code.code}", code.publish, class: "code-checkbox #{code.status}"
+          = label_tag code.code, title_for_code(code.code, code.title)
+    - else
+      %p Дані для порівняння відсутні.
 
   .col-md-9{ id: "charts-form-#{code_type}"}
     = render partial: 'reporting_charts'

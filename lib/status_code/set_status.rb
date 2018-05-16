@@ -124,11 +124,11 @@ module StatusCode
       return if values[0].blank? && values[1].blank?
 
       status_type =
-        if values[0].to_i > values[1].to_i
+        if values[0].to_f > values[1].to_f
           :up
-        elsif values[0].to_i == values[1].to_i
+        elsif values[0].to_f == values[1].to_f
           :some
-        elsif values[0].to_i < values[1].to_i
+        elsif values[0].to_f < values[1].to_f
           :down
         end
 

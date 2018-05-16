@@ -21,7 +21,7 @@ module Municipal
     end
 
     def publish
-      false
+      self.up? ? true : false
     end
   end
 end
