@@ -46,7 +46,7 @@
 
     .table-title.visible-md.visible-lg
       .row
-        .col-sm-1
+        -#.col-sm-1
           %i.fa.fa-check-square-o
         .col-sm-1
           = t('guide_filters.line_code')
@@ -54,14 +54,14 @@
           = t('title')
         .col-sm-1
           = t('guide_filters.units')
-        .col-sm-6
+        .col-sm-7
           = t('guide_filters.code_description')
     #search-results
       - if @municipal_guide_filter
         - @municipal_guide_filter.codes.each do |code_info|
           .table-body{ id: code_info.id }
             .row
-              .col-sm-12.col-md-1.reset-padding
+              -#.col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     %i.fa.fa-check-square-o
@@ -95,7 +95,7 @@
                        'data-url' => "#{municipal_update_code_info_path(code_info.id)}",
                        'data-emptytext' => t('repairing.layers.edit.title'), 'data-showbuttons' => 'bottom' }
                       = code_info.unit
-              .col-sm-12.col-md-6.reset-padding
+              .col-sm-12.col-md-7.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('guide_filters.code_description')

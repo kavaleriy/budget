@@ -23,6 +23,7 @@ module Municipal
     has_many :code_values, class_name: 'Municipal::CodeValue', dependent: :destroy
 
     validates_presence_of :enterprise, :file_type, :year, :file
+    validates_uniqueness_of :year, scope: [:file_type, :enterprise]
 
     def self.type_files
       [

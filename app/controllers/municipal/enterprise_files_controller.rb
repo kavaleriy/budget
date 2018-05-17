@@ -3,7 +3,7 @@ module Municipal
   class EnterpriseFilesController < MunicipalController
     helper_method :sort_column, :sort_direction
     before_action :set_municipal_enterprise_file, only: [:show, :edit, :update, :destroy, :show_code_values]
-    before_action :set_enterprises, only: [:new, :edit]
+    before_action :set_enterprises, only: [:new, :edit, :create]
 
     respond_to :html
 
@@ -51,6 +51,7 @@ module Municipal
         if @municipal_enterprise_file.save
           unless enterprise_file_params[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
             ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
+            StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
           end
           format.html { redirect_to municipal_enterprise_files_url, notice: 'Файл успішно додано.' }
         else
@@ -58,7 +59,6 @@ module Municipal
           format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
         end
       end
-      # respond_with(@municipal_enterprise_file)
     end
 
     # def update
@@ -71,6 +71,7 @@ module Municipal
       respond_to do |format|
         if current_user.admin? || access_by_town?(@municipal_enterprise_file)
           @municipal_enterprise_file.destroy
+          StatusCode::SetStatus.del_statuses(@municipal_enterprise_file)
           notice =  'Файл видалено.'
         else
           notice =  'У вас немає прав для видалення цього файлу.'
