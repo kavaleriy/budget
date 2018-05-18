@@ -238,6 +238,7 @@ class TownsController < ApplicationController
       :geometry_type,
       :description,
       :permit_emails,
+      :auto_send_appeal,
       counters: [:citizens, :house_holdings, :square],
       emails_attributes: [:id, :email, :owner]
     )

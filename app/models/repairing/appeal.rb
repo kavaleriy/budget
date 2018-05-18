@@ -58,8 +58,12 @@ module Repairing
     end
 
     def set_account_number
-      last_account_number = Repairing::Appeal.max(:account_number) || 0
+      last_account_number = Repairing::Appeal.order(created_at: :desc).first.account_number
       self.account_number = last_account_number.to_i + 1
+    end
+
+    def auto_send_appeal?
+      self.repair.layer.town.auto_send_appeal
     end
   end
 end
