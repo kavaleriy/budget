@@ -36,6 +36,7 @@ class Town
   field :p_id, type: String
   field :mark_delete, type: Boolean, default: false
   field :permit_emails, type: Boolean, default: false
+  field :auto_send_appeal, type: Boolean, default: false
 
   mount_uploader :img, TownUploader
   skip_callback :update, :before, :store_previous_model_for_img

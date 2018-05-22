@@ -1,8 +1,9 @@
 module Repairing
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user, only: [:index, :show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
+    before_action :access_user, only: [:index, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
     before_action :set_repairing_appeal, only: [:show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
+    before_action :access_approve_user, only: [:approve]
     before_action :set_repair, only: [:new, :create, :edit]
     before_action :set_scenario, only: [:new, :create, :edit]
 
@@ -39,7 +40,13 @@ module Repairing
 
       respond_to do |format|
         if @repairing_appeal.save
-          format.html { redirect_to repairing_appeal_saved_path }
+          format.html do
+            if @repairing_appeal.auto_send_appeal?
+              redirect_to repairing_approve_saved_appeal_path(@repairing_appeal)
+            else
+              redirect_to repairing_status_saved_appeal_path(:saved)
+            end
+          end
         else
           format.html { render :new, layout: 'application' }
           format.json { render json: @repairing_appeal.errors, status: :unprocessable_entity }
@@ -47,7 +54,8 @@ module Repairing
       end
     end
 
-    def appeal_saved
+    def appeal_status
+      @message = t("repairing.repairs.appeals.messages.#{params[:status]}")
       render layout: 'application'
     end
 
@@ -62,6 +70,9 @@ module Repairing
         end
 
         format.js { flash.now[msg[:class_name]] = msg[:message] }
+        format.html do
+          redirect_to repairing_status_saved_appeal_path(:saved_and_sent)
+        end
       end
     end
 
@@ -98,6 +109,11 @@ module Repairing
 
     def access_user
       return if current_user && current_user.admin?
+      redirect_to root_url, alert: t('export_budgets.notice_access')
+    end
+
+    def access_approve_user
+      return if current_user && current_user.admin? || @repairing_appeal.auto_send_appeal?
       redirect_to root_url, alert: t('export_budgets.notice_access')
     end
 

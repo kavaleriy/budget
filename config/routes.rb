@@ -269,7 +269,8 @@ Rails.application.routes.draw do
     resources :appeals
     post 'preview_appeal', to: 'appeals#preview'
     post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
-    get 'appeal_saved', to: 'appeals#appeal_saved', as: :appeal_saved
+    get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal
+    get 'appeal_status/:status', to: 'appeals#appeal_status', as: :status_saved_appeal
     get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
     get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
     post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove

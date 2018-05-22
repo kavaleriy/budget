@@ -20,6 +20,9 @@
   .dropdown > a:after {
     content: " "
   }
+  hr.towns-form {
+    margin-bottom: 16px;
+  }
 
 .width-container.clearfix
   .column_container.clearfix
@@ -56,11 +59,13 @@
                 = render 'counters', f: c
         .col-md-7
           = f.text_area :links, :placeholder => t("town_links_placeholder"), class: 'wysihtml5'
-          %hr.towns-form
+          .towns-form
           = f.text_area :description, :placeholder => t("town_description_placeholder"), class: 'wysihtml5'
 
           %hr.towns-form
           = f.check_box :permit_emails, label: 'Включити модуль "Зворотній зв`язок"'
+          .towns-form
+          = f.check_box :auto_send_appeal, label: 'Автомодерація звернень'
           .label-emails Emails:
           - TownEmail::OWNERS.each do |owner|
             = f.fields_for :emails, @town.emails.find_or_initialize_by(owner: owner) do |ff|
