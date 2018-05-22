@@ -40,13 +40,11 @@ module Repairing
 
       respond_to do |format|
         if @repairing_appeal.save
-          if @repairing_appeal.auto_send_appeal?
-            format.html { redirect_to repairing_approve_saved_appeal_path(@repairing_appeal) }
-          else
-            format.html do
-              redirect_to repairing_appeal_saved_path(
-                message: t('repairing.repairs.appeals.messages.saved')
-              )
+          format.html do
+            if @repairing_appeal.auto_send_appeal?
+              redirect_to repairing_approve_saved_appeal_path(@repairing_appeal)
+            else
+              redirect_to repairing_status_saved_appeal_path(:saved)
             end
           end
         else
@@ -56,7 +54,8 @@ module Repairing
       end
     end
 
-    def appeal_saved
+    def appeal_status
+      @message = t("repairing.repairs.appeals.messages.#{params[:status]}")
       render layout: 'application'
     end
 
@@ -72,9 +71,7 @@ module Repairing
 
         format.js { flash.now[msg[:class_name]] = msg[:message] }
         format.html do
-          redirect_to repairing_appeal_saved_path(
-            message: t('repairing.repairs.appeals.messages.saved_and_sended')
-          )
+          redirect_to repairing_status_saved_appeal_path(:saved_and_sent)
         end
       end
     end
