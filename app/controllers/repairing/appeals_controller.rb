@@ -19,6 +19,8 @@ module Repairing
     end
 
     def show
+      # email = GmailApi.email
+      # binding.pry
       respond_with(@repairing_appeal)
     end
 
