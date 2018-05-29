@@ -2,12 +2,14 @@
   .row.table-body
     .col-sm-11.reset-padding
       .col-sm-4.reset-padding
-        .col-sm-5.hide-overflow
-          = link_to layer.id, repairing_layer_path(layer)
-        .col-sm-5.hide-overflow
-          = layer.title
-        .col-sm-2.hide-overflow
-          = layer.year
+        .row
+          .col-sm-5.hide-overflow
+            = check_box_tag '', layer.id, false, class: 'delete_multiple_checkbox  hidden-xs', name: 'layer'
+            = link_to layer.id, repairing_layer_path(layer)
+          .col-sm-5.hide-overflow
+            = layer.title
+          .col-sm-2.hide-overflow
+            = layer.year
       .col-sm-5.reset-padding
         .col-sm-4.hide-overflow
           = link_to layer.repairs_file.url, class: '' do

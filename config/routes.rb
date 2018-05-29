@@ -274,6 +274,7 @@ Rails.application.routes.draw do
     get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
     get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
     post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
+    post 'layers/multiple_destroy' => 'layers#multiple_destroy', as: 'layers_multiple_destroy'
   end
 
   namespace :to_pdf do

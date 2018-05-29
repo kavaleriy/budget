@@ -10,6 +10,7 @@ class Repairing::Layer
   scope :by_towns, lambda { |towns| where(:town.in => towns.split(",")) }
   # Get budget files by string in title
   scope :find_by_string, lambda { |text| where(title: /.*#{text}.*/) }
+  scope :get_by_ids, ->(ids) { where(:id.in => ids) }
 
   belongs_to :town, class_name: 'Town', touch: true
   belongs_to :owner, class_name: 'User'

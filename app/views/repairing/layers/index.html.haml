@@ -28,6 +28,12 @@
   .reset-padding{
     padding: 0;
   }
+
+  .multiple-delete{
+    display: inline-block;
+    margin-right: 10px;
+  }
+
   @media (max-width: 767.5px) {
     .hide-overflow{
       text-align: center;
@@ -58,12 +64,14 @@
     .row.table-title.hide-in-small
       .col-sm-11.reset-padding
         .col-sm-4.reset-padding
-          .col-xs-5
-            =t('key')
-          .col-xs-5
-            = sortable 'title', t('repairing.repairs.form.title')
-          .col-xs-2
-            = sortable 'year', t('year')
+          .row
+            .col-xs-5
+              = render file: 'layouts/admin/multiple_delete', locals: { delete_path: repairing_layers_multiple_destroy_path }
+              =t('key')
+            .col-xs-5
+              = sortable 'title', t('repairing.repairs.form.title')
+            .col-xs-2
+              = sortable 'year', t('year')
         .col-sm-5.reset-padding
           .col-xs-4
             =t('file')
