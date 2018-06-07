@@ -202,6 +202,11 @@ module Repairing
       end
     end
 
+    def multiple_destroy
+      Repairing::Layer.get_by_ids(params[:ids]).destroy_all
+      redirect_to :back
+    end
+
     def categories
       categories = Repairing::Category.by_locale.select{|c| c.category.nil?}.map{|c| {id: c.id.to_s, text: c.title}}
 

@@ -19,14 +19,14 @@ module Documentation
     # POST /documentation/links
     # POST /documentation/links.json
     def create
-      @link = Documentation::Link.new(documentation_link_params)
+      @documentation_link = Documentation::Link.new(documentation_link_params)
       respond_to do |format|
-        if @link.save
+        if @documentation_link.save
           format.js
           format.json { head :no_content, status: :created }
-          # format.json { render :create, status: :created, location: @link }
+          # format.json { render :create, status: :created, location: @documentation_link }
         else
-          format.json { render json: @link.errors, status: :unprocessable_entity }
+          format.json { render json: @documentation_link.errors, status: :unprocessable_entity }
         end
         # format.js
         # format.json { head :no_content, status: :created }
@@ -38,7 +38,7 @@ module Documentation
     # PATCH/PUT /documentation/links/1.json
     def update
       respond_to do |format|
-        if @documentation_link.update!(documentation_link_params)
+        if @documentation_link.update(documentation_link_params)
           format.js
           format.json { render :show, status: :ok, location: @documentation_link }
         else

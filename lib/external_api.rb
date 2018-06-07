@@ -12,8 +12,10 @@ class ExternalApi
     http.request(request).body rescue {}
   end
 
-  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
+  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
     require 'net/http'
+    start_date ||= default_start_date
+    end_date ||= default_end_date
     # https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614
     # https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html
 
@@ -63,7 +65,9 @@ class ExternalApi
     get_request(uri)
   end
 
-  def self.most_received(payer_erdpou, recipt_edrpou, start_date = default_start_date, end_date = default_end_date)
+  def self.most_received(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
+    start_date ||= default_start_date
+    end_date ||= default_end_date
     most_received = []
     data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
 
@@ -135,7 +139,8 @@ class ExternalApi
     end
 
     def default_start_date
-      Time.now.months_since(-3).strftime('%Y-%m-%d')
+      # because {"errorMessage"=>"Перевищено максимальний діапозон дат пошуку, 92 дні"} - 06.06.2018
+      Time.now.days_since(-91).strftime('%Y-%m-%d')
     end
 
     def default_end_date
