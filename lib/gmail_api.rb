@@ -35,21 +35,42 @@ class GmailApi
   GMAIL_ACCESS_TOKEN  = ENV['GMAIL_ACCESS_TOKEN']
   GMAIL_REFRESH_TOKEN = ENV['GMAIL_REFRESH_TOKEN']
 
-  TMP_DIR = "#{Rails.root.to_s}/tmp/list" ###
+  TMP_DIR = "#{Rails.root.to_s}/db/list" ###
   APPLICATION_NAME = 'openbudget-in-ua'
   EMAIL_ADDRESS = "openbudget.in.ua@gmail.com"
   # GMAIL_QUERY = "from:openbudget.in.ua@gmail.com has:attachment subject:Email+Subject"
-  GMAIL_QUERY = "to:openbudget.in.ua+7@gmail.com" # test with appeal id 7
+  GMAIL_QUERY = "to:openbudget.in.ua+2@gmail.com" # test with appeal id 7
   Gmail = Google::Apis::GmailV1
 
-  # def initialize
-  #   FileUtils.rm_r(TMP_DIR) if File.directory?(TMP_DIR)
-  #   FileUtils.mkdir_p(TMP_DIR)
-  # end
+  attr_reader :text
 
-  # def fetch
-  #   File.read(file_path)
-  # end
+  def initialize
+    # FileUtils.rm_r(TMP_DIR) if File.directory?(TMP_DIR)
+    # FileUtils.mkdir_p(TMP_DIR)
+    @email = email
+    @text = @email.snippet
+  end
+
+  def email
+    gmail.get_user_message(EMAIL_ADDRESS, message_id)
+  end
+
+  def fetch
+    File.read(pdf_file_path)
+  end
+
+  def new_file
+    name_file = @email.payload.parts.last.filename
+    File.open(name_file, 'wb') { |f| f.puts attachment.data }
+  end
+
+  def mail
+    @email
+  end
+
+  def attachment
+    gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id, attachment_id)
+  end
 
   private
 
@@ -69,31 +90,40 @@ class GmailApi
   #   end
   # end
 
-  # def attachment
-  #   gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id, attachment_id)
-  # end
-
-  # def attachment_id
-  #   email.payload.parts.find{ |p| p.mime_type == 'application/zip' }.body.attachment_id
-  # end
-
-  def self.email
-    gmail.get_user_message(EMAIL_ADDRESS, message_id)
+  def pdf_file_path
+    "#{TMP_DIR}/archive.pdf".tap do |path|
+      File.open(path, "wb"){|f| f.puts attachment.data }
+    end
   end
 
-  def self.message_id
+
+
+  # def attachments
+  #   gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id)
+  # end
+
+  def attachment_id
+    @email.payload.parts.find{ |p| p.mime_type == 'application/pdf' }.body.attachment_id
+    # email.payload.parts.find{ |p| p.mime_type == 'text/plain' }.body.attachment_id
+  end
+
+  # def email
+  #   gmail.get_user_message(EMAIL_ADDRESS, message_id)
+  # end
+
+  def message_id
     # Get the latest email that matches the query
     @message_id ||= gmail.list_user_messages(EMAIL_ADDRESS, q: GMAIL_QUERY).messages.first.id
   end
 
-  def self.gmail
+  def gmail
     @gmail ||= Gmail::GmailService.new.tap do |publisher|
       publisher.authorization = client
       publisher.client_options.application_name = APPLICATION_NAME
     end
   end
 
-  def self.client
+  def client
     Signet::OAuth2::Client.new(
       authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token',

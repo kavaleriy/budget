@@ -17,14 +17,18 @@ module Repairing
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
     field :account_number, type: String
+    field :answer_text, type: String
+
 
     slug :account_number
     enum :status, %i[pending approved declined], default: :pending
 
+    mount_uploader :answer_file, FileUploader
     mount_uploader :file, FileUploader
     # used for update record with uploader
     # TODO: del skip_callback because file will not update
     skip_callback :update, :before, :store_previous_model_for_file
+    skip_callback :update, :before, :store_previous_model_for_answer_file
 
     before_create :set_account_number
 

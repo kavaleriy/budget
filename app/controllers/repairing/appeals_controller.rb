@@ -20,7 +20,13 @@ module Repairing
 
     def show
       # email = GmailApi.email
-      # binding.pry
+      file = GmailApi.new
+      # TODO: not saved file with carrierwave
+      @repairing_appeal.answer_file = file.new_file
+      @repairing_appeal.answer_text = file.text
+      # @repairing_appeal.save!
+      binding.pry
+
       respond_with(@repairing_appeal)
     end
 
