@@ -56,3 +56,6 @@
   %table
     %tr{ id: @repairing_appeal.id }
       = render partial: 'repairing/appeals/appeal_status', locals: { repairing_appeal: @repairing_appeal }
+
+  -#- if @repairing_appeal.answered
+  = link_to 'Файл відповіді', repairing_answer_file_path(@repairing_appeal), target: '_blank', class: 'btn btn-default'

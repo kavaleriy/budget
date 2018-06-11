@@ -18,6 +18,7 @@ module Repairing
     field :declined_text, type: String
     field :account_number, type: String
     field :answer_text, type: String
+    field :answered, type: Mongoid::Boolean, default: false
 
 
     slug :account_number

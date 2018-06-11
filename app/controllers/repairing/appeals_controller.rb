@@ -1,8 +1,8 @@
 module Repairing
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user, only: [:index, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
-    before_action :set_repairing_appeal, only: [:show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
+    before_action :access_user, only: [:index, :answer_file, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
+    before_action :set_repairing_appeal, only: [:answer_file, :show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :access_approve_user, only: [:approve]
     before_action :set_repair, only: [:new, :create, :edit]
     before_action :set_scenario, only: [:new, :create, :edit]
@@ -18,14 +18,19 @@ module Repairing
       end
     end
 
+    def answer_file
+      @file = GmailApi.new
+      send_data @file.attachment.data, filename: @file.file_name
+    end
+
     def show
       # email = GmailApi.email
-      file = GmailApi.new
-      # TODO: not saved file with carrierwave
-      @repairing_appeal.answer_file = file.new_file
-      @repairing_appeal.answer_text = file.text
+      # @file = GmailApi.new
+      # @file_test = @file.new_file
+      # @repairing_appeal.answer_file = @file.new_file
+      # @repairing_appeal.answer_text = @file.text
       # @repairing_appeal.save!
-      binding.pry
+      # binding.pry
 
       respond_with(@repairing_appeal)
     end

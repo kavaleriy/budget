@@ -267,6 +267,7 @@ Rails.application.routes.draw do
 
     resources :appeal_scenarios
     resources :appeals
+    get 'answer_file/:id', to: 'appeals#answer_file', as: :answer_file
     post 'preview_appeal', to: 'appeals#preview'
     post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
     get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal

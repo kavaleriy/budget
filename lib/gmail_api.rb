@@ -49,6 +49,7 @@ class GmailApi
     # FileUtils.mkdir_p(TMP_DIR)
     @email = email
     @text = @email.snippet
+    @attachment_data = attachment_data
   end
 
   def email
@@ -60,8 +61,14 @@ class GmailApi
   end
 
   def new_file
-    name_file = @email.payload.parts.last.filename
-    File.open(name_file, 'wb') { |f| f.puts attachment.data }
+    # used for save file in db with carrierwave
+    name_file = file_name
+    # File.open(name_file, 'wb') { |f| f.puts attachment.data }
+    file = StringIO.new(attachment.data)
+    file.define_singleton_method(:original_filename) do
+      name_file
+    end
+    file
   end
 
   def mail
@@ -70,6 +77,10 @@ class GmailApi
 
   def attachment
     gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id, attachment_id)
+  end
+
+  def attachment_data
+    @email.payload.parts.last
   end
 
   private
@@ -90,21 +101,25 @@ class GmailApi
   #   end
   # end
 
+  def file_name
+    @attachment_data.filename
+  end
+
   def pdf_file_path
     "#{TMP_DIR}/archive.pdf".tap do |path|
       File.open(path, "wb"){|f| f.puts attachment.data }
     end
   end
 
-
-
   # def attachments
   #   gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id)
   # end
 
   def attachment_id
-    @email.payload.parts.find{ |p| p.mime_type == 'application/pdf' }.body.attachment_id
     # email.payload.parts.find{ |p| p.mime_type == 'text/plain' }.body.attachment_id
+    # @email.payload.parts.find{ |p| p.mime_type == 'application/pdf' }.body.attachment_id
+
+    @attachment_data.body.attachment_id
   end
 
   # def email
@@ -113,7 +128,7 @@ class GmailApi
 
   def message_id
     # Get the latest email that matches the query
-    @message_id ||= gmail.list_user_messages(EMAIL_ADDRESS, q: GMAIL_QUERY).messages.first.id
+    @message_id ||= gmail.list_user_messages(EMAIL_ADDRESS, q: GMAIL_QUERY).messages.last.id
   end
 
   def gmail
