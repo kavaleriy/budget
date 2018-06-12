@@ -19,6 +19,7 @@ module Repairing
     field :account_number, type: String
     field :answer_text, type: String
     field :answered, type: Mongoid::Boolean, default: false
+    field :answered_date, type: Time
 
 
     slug :account_number

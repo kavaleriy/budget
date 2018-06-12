@@ -155,3 +155,5 @@ gem 'bootstrap-filestyle-rails'
 gem 'cyrillizer'
 
 gem 'google-api-client'
+
+gem 'whenever', require: false
