@@ -12,7 +12,7 @@ namespace :gmail_answer do
       email_info = gmail.email_info(appeal.account_number)
 
       next unless email_info[:messages_count]
-      puts 'messages'
+      puts "appeal - #{appeal.account_number}"
       puts email_info
       appeal.answered = true
       appeal.answered_date = email_info[:answered_date]

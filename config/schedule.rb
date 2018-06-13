@@ -22,7 +22,7 @@
 # whenever --update-crontab --set environment='development'
 
 set :output, 'log/whenever.log'
-set :environment, :development
+# set :environment, :development
 job_type :rake, 'cd :path && source ../gmail_secrets.sh && bundle exec rake :task --silent :output'
 
 # every 1.minute do
