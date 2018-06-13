@@ -19,7 +19,8 @@ module Repairing
     end
 
     def answer_file
-      @file = GmailApi.file(@repairing_appeal.account_number)
+      gmail = Gmail::GmailApi.new
+      @file = gmail.file(@repairing_appeal.account_number)
       send_data @file[:content], filename: @file[:file_name]
     end
 

@@ -19,11 +19,16 @@
 
 # Learn more: http://github.com/javan/whenever
 
-
-ENV['RAILS_ENV'] = 'development'
+# whenever --update-crontab --set environment='development'
 
 set :output, 'log/whenever.log'
+set :environment, :development
+job_type :rake, 'cd :path && source ../gmail_secrets.sh && bundle exec rake :task --silent :output'
 
-every 1.day, at: '11:20 am' do
+# every 1.minute do
+#   rake 'gmail_answer:check_answers'
+# end
+
+every :day, at: '11:50 pm' do
   rake 'gmail_answer:check_answers'
 end

@@ -1,31 +1,22 @@
 namespace :gmail_answer do
   desc "TODO"
   task check_answers: :environment do
-    # appeals = Repairing::Appeal.approved.where(answered: false)
-    # appeals = Repairing::Appeal.where(_status: :approved)
     appeals = Repairing::Appeal.approved.where(:answered.in => [nil, false])
-    puts appeals.size
+    puts "appeals = #{appeals.size}"
+
+    exit unless appeals.present?
+
+    gmail = Gmail::GmailApi.new
+
     appeals.each do |appeal|
-      # @message = GmailApi.new(appeal.account_number)
-      # binding.pry
+      email_info = gmail.email_info(appeal.account_number)
 
-      messages = GmailApi.messages(appeal.account_number)
-      puts "gim - #{appeal.account_number}"
-
-      if messages
-        puts 'messages'
-        puts messages
-        # appeal.answered = true
-        # appeal.answered_date = Time.now
-        # appeal.save
-      end
-      # check if exists
-      # save answered: true, date: today(Time.now)
-
-
-      # @file_test = @file.new_file
-      # @repairing_appeal.answer_file = @file.new_file
-      # @repairing_appeal.answer_text = @file.text
+      next unless email_info[:messages_count]
+      puts 'messages'
+      puts email_info
+      appeal.answered = true
+      appeal.answered_date = email_info[:answered_date]
+      appeal.save
     end
   end
 

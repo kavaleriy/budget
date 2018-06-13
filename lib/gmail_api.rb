@@ -51,16 +51,35 @@ class GmailApi
 
   def self.messages(appeal_id = @appeal_id)
     # Get the latest email that matches the query
+    appeal_data = {}
     @query = "to:openbudget.in.ua+#{appeal_id}@gmail.com"
     @messages = gmail.list_user_messages(EMAIL_ADDRESS, q: @query).messages
+
+    if @messages
+      message = email(@messages.last.id)
+      str_date = message.payload.headers.find{ |h| h.name == 'Date' }.value
+      date = Time.parse(str_date)
+      appeal_data[:date] = date
+    end
+
+    appeal_data[:messages_count] = @messages.try(:size)
+    appeal_data
+  end
+
+  def self.email_info(email_id = message_id)
+    gmail.get_user_message(EMAIL_ADDRESS, email_id)
+  end
+
+  def self.email(email_id = message_id)
+    gmail.get_user_message(EMAIL_ADDRESS, email_id)
   end
 
   class << self
     private
 
-    def self.email
-      gmail.get_user_message(EMAIL_ADDRESS, message_id)
-    end
+    # def self.email
+    #   gmail.get_user_message(EMAIL_ADDRESS, message_id)
+    # end
 
     def self.attachment
       gmail.get_user_message_attachment(EMAIL_ADDRESS, message_id, attachment_id)
