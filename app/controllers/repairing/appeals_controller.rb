@@ -12,6 +12,8 @@ module Repairing
     def index
       @repairing_appeals = Repairing::Appeal.by_create.page(params[:page]).per(20)
 
+      # @municipal_enterprise_files = current_user.admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
+
       respond_to do |format|
         format.js
         format.html
@@ -24,15 +26,11 @@ module Repairing
       send_data @file[:content], filename: @file[:file_name]
     end
 
-    def show
-      # email = GmailApi.email
-      # @file = GmailApi.new
-      # @file_test = @file.new_file
-      # @repairing_appeal.answer_file = @file.new_file
-      # @repairing_appeal.answer_text = @file.text
-      # @repairing_appeal.save!
-      # binding.pry
+    def check_answers
+      Rake::Task['gmail_answer:check_answers'].invoke
+    end
 
+    def show
       respond_with(@repairing_appeal)
     end
 

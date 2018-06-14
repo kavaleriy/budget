@@ -47,6 +47,13 @@
                 }
               }
             }
+            &.answered{
+              .btn{
+                padding: 0 5px;
+                margin-bottom: 5px;
+                font-size: 14px;
+              }
+            }
           }
         }
       }
@@ -56,6 +63,8 @@
 = render partial: 'layouts/modal_container'
 
 %h1 Список звернень
+
+-#= link_to  t("backup"), { controller: :repairing_appeals, action: "check_answers" }
 
 .appeals-table
   %table.table.table-striped
@@ -71,6 +80,7 @@
         %th ПІБ
         %th Ремонт
         %th Дата
+        %th Відповідь
         %th Статус і дії
 
     %tbody#results

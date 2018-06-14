@@ -23,5 +23,9 @@
     = link_to 'ремонт', repairing_repair_on_map_path(repairing_appeal.try(:repair)), target: '_blank' if repairing_appeal.repair
   %td
     = format_date(repairing_appeal.created_at)
+  %td.answered
+    - if repairing_appeal.answered
+      = link_to 'Переглянути', repairing_answer_file_path(repairing_appeal), target: '_blank', class: 'btn btn-success'
+      = format_date(repairing_appeal.answered_date)
 
   = render partial: 'repairing/appeals/appeal_status', locals: { repairing_appeal: repairing_appeal }

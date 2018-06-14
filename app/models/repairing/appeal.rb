@@ -54,6 +54,10 @@ module Repairing
                 maximum: file_size.megabytes.to_i,
                 message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
               }
+    # def self.by_town(town)
+    #   enterprise_ids = Municipal::Enterprise.where(town: town).pluck(:id)
+    #   where(:enterprise_id.in => enterprise_ids)
+    # end
 
     def town_title
       repair.layer.town.title rescue nil
