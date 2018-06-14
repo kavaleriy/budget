@@ -1,7 +1,8 @@
 module Repairing
+
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user, only: [:index, :answer_file, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
+    before_action :access_user, only: [:index, :answer_file, :check_answers, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
     before_action :set_repairing_appeal, only: [:answer_file, :show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :access_approve_user, only: [:approve]
     before_action :set_repair, only: [:new, :create, :edit]
@@ -21,13 +22,19 @@ module Repairing
     end
 
     def answer_file
-      gmail = Google::GmailApi.new
+      gmail = Googles::GmailApi.new
       @file = gmail.file(@repairing_appeal.account_number)
       send_data @file[:content], filename: @file[:file_name]
     end
 
     def check_answers
-      Rake::Task['gmail_answer:check_answers'].invoke
+      Googles::Appeals.check_answers
+      # require 'rake'
+      # Rake::Task.clear
+      # Budget::Application.load_tasks
+      #
+      # Rake::Task["gmail_answer:check_answers"].invoke
+      redirect_to :back
     end
 
     def show

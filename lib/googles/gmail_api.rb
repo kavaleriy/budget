@@ -1,5 +1,5 @@
 # gmail
-module Google
+module Googles
   # gmail_api
   class GmailApi
     # This class downloads an email from gmail and extracts a file out of a .zip attachment
@@ -97,7 +97,7 @@ module Google
 
     def message_id
       # Get the latest email that matches the query
-      messages.last.id
+      messages.first.id
     end
 
     def gmail

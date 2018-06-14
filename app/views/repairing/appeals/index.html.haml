@@ -64,7 +64,7 @@
 
 %h1 Список звернень
 
--#= link_to  t("backup"), { controller: :repairing_appeals, action: "check_answers" }
+= link_to 'Перевірити відповіді', repairing_check_answers_path, method: :post, class: 'btn btn-primary'
 
 .appeals-table
   %table.table.table-striped
