@@ -6,7 +6,7 @@ namespace :gmail_answer do
 
     exit unless appeals.present?
 
-    gmail = Gmail::GmailApi.new
+    gmail = Google::GmailApi.new
 
     appeals.each do |appeal|
       email_info = gmail.email_info(appeal.account_number)

@@ -1,5 +1,5 @@
 # gmail
-module Gmail
+module Google
   # gmail_api
   class GmailApi
     # This class downloads an email from gmail and extracts a file out of a .zip attachment
