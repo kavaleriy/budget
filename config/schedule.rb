@@ -1,34 +1,21 @@
-# Use this file to easily define all of your cron jobs.
-#
-# It's helpful, but not entirely necessary to understand cron before proceeding.
-# http://en.wikipedia.org/wiki/Cron
-
-# Example:
-#
-# set :output, "/path/to/my/cron_log.log"
-#
-# every 2.hours do
-#   command "/usr/bin/some_great_command"
-#   runner "MyModel.some_method"
-#   rake "some:great:rake:task"
-# end
-#
-# every 4.days do
-#   runner "AnotherModel.prune_old_records"
-# end
-
 # Learn more: http://github.com/javan/whenever
 
-# whenever --update-crontab --set environment='development'
+## for development
+# set :environment, :development
+# set :sh_path, '../gmail_secrets.sh'
+## whenever --update-crontab --set environment='development'
+
+## for production
+set :sh_path, '/home/budget/www/gmail_secrets.sh'
 
 set :output, 'log/whenever.log'
-# set :environment, :development
-job_type :rake, 'cd :path && source ../gmail_secrets.sh && bundle exec rake :task --silent :output'
+job_type :runner, "cd :path && source :sh_path && bin/rails runner -e :environment ':task' :output"
 
+## example test in development
 # every 1.minute do
-#   rake 'gmail_answer:check_answers'
+#   runner "Googles::CheckAppealsAnswers.call"
 # end
 
 every :day, at: '11:50 pm' do
-  rake 'gmail_answer:check_answers'
+  runner "Googles::CheckAppealsAnswers.call"
 end

@@ -1,6 +1,8 @@
+# module check answers by appeal id
 module Googles
-  class Appeals
-    def self.check_answers
+  # check answers by appeal id
+  class CheckAppealsAnswers
+    def self.call
       appeals = Repairing::Appeal.approved.where(:answered.in => [nil, false])
       puts "appeals - #{appeals.size}, #{Time.now}"
 

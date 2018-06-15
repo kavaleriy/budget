@@ -28,12 +28,9 @@ module Repairing
     end
 
     def check_answers
-      Googles::Appeals.check_answers
-      # require 'rake'
-      # Rake::Task.clear
-      # Budget::Application.load_tasks
-      #
-      # Rake::Task["gmail_answer:check_answers"].invoke
+      Googles::CheckAppealsAnswers.call
+
+      flash[:success] = 'Відповіді перевірено!'
       redirect_to :back
     end
 
