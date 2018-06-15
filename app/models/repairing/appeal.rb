@@ -17,6 +17,10 @@ module Repairing
     field :user_consent, type: Mongoid::Boolean
     field :declined_text, type: String
     field :account_number, type: String
+    field :answer_text, type: String
+    field :answered, type: Mongoid::Boolean, default: false
+    field :answered_date, type: Time
+
 
     slug :account_number
     enum :status, %i[pending approved declined], default: :pending
@@ -29,8 +33,10 @@ module Repairing
     before_create :set_account_number
 
     scope :by_create, -> { order(created_at: :desc) }
+    scope :by_town, ->(id) { where(town: id) }
 
     embeds_one :address, class_name: 'Repairing::AppellantAddress'
+    belongs_to :town, class_name: 'Town'
     belongs_to :repair, class_name: 'Repairing::Repair'
     belongs_to :scenario, class_name: 'Repairing::AppealScenario'
     has_and_belongs_to_many :recipients, class_name: 'TownEmail'

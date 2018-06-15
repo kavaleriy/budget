@@ -1,5 +1,6 @@
 class TownsController < ApplicationController
   before_action :set_town, only: [:show, :edit, :update, :destroy, :export_town_in_xls]
+  before_action :access_user, only: [:index, :show, :edit, :update, :destroy]
 
   include ControllerCaching
   include BudgetFileUpload
@@ -218,6 +219,11 @@ class TownsController < ApplicationController
   end
 
   private
+
+  def access_user
+    return unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority)
+    redirect_to root_url, alert: t('export_budgets.notice_access')
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_town

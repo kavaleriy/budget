@@ -3,35 +3,36 @@
     %span{ class: appeal_status_class(repairing_appeal) }
       = appeal_status(repairing_appeal)
 
-  = content_for "show_btn_#{repairing_appeal.id}" do
-    = link_to repairing_appeal, title: t('show'), class: 'btn show-btn' do
-      %i.fa.fa-border.fa-eye
-    = link_to repairing_appeal, method: :delete,
-      title: t('destroy'),
-      class: 'btn destroy-btn pull-right',
-      data: { confirm: t('helpers.links.confirm') } do
-      %i.fa.fa-border.fa-close
+  - if current_user.admin?
+    = content_for "show_btn_#{repairing_appeal.id}" do
+      = link_to repairing_appeal, title: t('show'), class: 'btn show-btn' do
+        %i.fa.fa-border.fa-eye
+      = link_to repairing_appeal, method: :delete,
+        title: t('destroy'),
+        class: 'btn destroy-btn pull-right',
+        data: { confirm: t('helpers.links.confirm') } do
+        %i.fa.fa-border.fa-close
 
-  - if repairing_appeal.pending?
-    .approved-btns
-      = link_to repairing_appeal_approve_path(repairing_appeal.id),
-            method: :post, remote: true,
-            title: 'Одобрити',
-            class: 'btn',
-            data: { confirm: 'Надіслати звернення органам влади?' } do
-        %i.fa.fa-border.fa-thumbs-up
+    - if repairing_appeal.pending?
+      .approved-btns
+        = link_to repairing_appeal_approve_path(repairing_appeal.id),
+              method: :post, remote: true,
+              title: 'Одобрити',
+              class: 'btn',
+              data: { confirm: 'Надіслати звернення органам влади?' } do
+          %i.fa.fa-border.fa-thumbs-up
 
-      = link_to repairing_appeal_disapprove_form_path(repairing_appeal.id),
-            title: 'Відмовити', remote: true,
-            class: 'btn',
-            data: { toggle: 'modal', target: '#modal-window' } do
-        %i.fa.fa-border.fa-thumbs-down
+        = link_to repairing_appeal_disapprove_form_path(repairing_appeal.id),
+              title: 'Відмовити', remote: true,
+              class: 'btn',
+              data: { toggle: 'modal', target: '#modal-window' } do
+          %i.fa.fa-border.fa-thumbs-down
 
-    .crud-btns
-      = content_for "show_btn_#{repairing_appeal.id}"
-      = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
-        %i.fa.fa-border.fa-pencil
+      .crud-btns
+        = content_for "show_btn_#{repairing_appeal.id}"
+        = link_to edit_repairing_appeal_path(repairing_appeal), title: t('edit'), class: 'btn' do
+          %i.fa.fa-border.fa-pencil
 
-  - else
-    .crud-btns
-      = content_for "show_btn_#{repairing_appeal.id}"
+    - else
+      .crud-btns
+        = content_for "show_btn_#{repairing_appeal.id}"
