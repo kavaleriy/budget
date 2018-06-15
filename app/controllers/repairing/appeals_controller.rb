@@ -2,7 +2,8 @@ module Repairing
 
   class AppealsController < ApplicationController
     layout 'application_admin'
-    before_action :access_user, only: [:index, :answer_file, :check_answers, :show, :edit, :update, :destroy, :disapprove_form, :disapprove]
+    before_action :access_user, only: [:edit, :update, :destroy, :disapprove_form, :disapprove]
+    before_action :access_user_by_town, only: [:index, :answer_file, :check_answers, :show]
     before_action :set_repairing_appeal, only: [:answer_file, :show, :edit, :update, :destroy, :approve, :disapprove_form, :disapprove]
     before_action :access_approve_user, only: [:approve]
     before_action :set_repair, only: [:new, :create, :edit]
@@ -11,9 +12,8 @@ module Repairing
     respond_to :html
 
     def index
-      @repairing_appeals = Repairing::Appeal.by_create.page(params[:page]).per(20)
-
-      # @municipal_enterprise_files = current_user.admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
+      @repairing_appeals = current_user.admin? ? Repairing::Appeal.all : Repairing::Appeal.by_town(current_user.town_model)
+      @repairing_appeals = @repairing_appeals.by_create.page(params[:page]).per(20)
 
       respond_to do |format|
         format.js
@@ -125,6 +125,11 @@ module Repairing
 
     def access_user
       return if current_user && current_user.admin?
+      redirect_to root_url, alert: t('export_budgets.notice_access')
+    end
+
+    def access_user_by_town
+      return if current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority)
       redirect_to root_url, alert: t('export_budgets.notice_access')
     end
 

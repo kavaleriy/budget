@@ -35,8 +35,10 @@ module Repairing
     before_create :set_account_number
 
     scope :by_create, -> { order(created_at: :desc) }
+    scope :by_town, ->(id) { where(town: id) }
 
     embeds_one :address, class_name: 'Repairing::AppellantAddress'
+    belongs_to :town, class_name: 'Town'
     belongs_to :repair, class_name: 'Repairing::Repair'
     belongs_to :scenario, class_name: 'Repairing::AppealScenario'
     has_and_belongs_to_many :recipients, class_name: 'TownEmail'
@@ -54,10 +56,6 @@ module Repairing
                 maximum: file_size.megabytes.to_i,
                 message: I18n.t('mongoid.errors.messages.error_max_file_size', file_size: file_size)
               }
-    # def self.by_town(town)
-    #   enterprise_ids = Municipal::Enterprise.where(town: town).pluck(:id)
-    #   where(:enterprise_id.in => enterprise_ids)
-    # end
 
     def town_title
       repair.layer.town.title rescue nil

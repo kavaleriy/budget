@@ -13,4 +13,13 @@ namespace :appeals do
     Googles::CheckAppealsAnswers.call
   end
 
+  desc "add town_id to appeals"
+  task add_town: :environment do
+    Repairing::Appeal.where(town: nil).each do |appeal|
+      appeal.town = appeal.repair.layer.town
+      appeal.save
+      p "Appeal - #{appeal.account_number}"
+    end
+  end
+
 end

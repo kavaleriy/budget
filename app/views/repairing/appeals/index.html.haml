@@ -58,8 +58,6 @@
 
 %h1 Список звернень
 
-= link_to 'Перевірити відповіді', repairing_check_answers_path, method: :post, class: 'btn btn-primary'
-
 .appeals-table
   %table.table.table-striped
     %thead
@@ -82,3 +80,5 @@
 
 #appeals-paginator.text-center.pagination-bar
   = paginate @repairing_appeals, views_prefix: 'paginator_semantic', remote: true
+
+= link_to 'Перевірити відповіді', repairing_check_answers_path, method: :post, class: 'btn btn-primary'
