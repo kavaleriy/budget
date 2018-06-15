@@ -1,5 +1,4 @@
 module Repairing
-
   class AppealsController < ApplicationController
     layout 'application_admin'
     before_action :access_user, only: [:edit, :update, :destroy, :disapprove_form, :disapprove]
