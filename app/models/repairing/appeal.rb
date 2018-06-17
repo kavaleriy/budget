@@ -30,7 +30,7 @@ module Repairing
     # TODO: del skip_callback because file will not update
     skip_callback :update, :before, :store_previous_model_for_file
 
-    before_create :set_account_number
+    before_create :set_account_number, :set_town
 
     scope :by_create, -> { order(created_at: :desc) }
     scope :by_town, ->(id) { where(town: id) }
@@ -66,6 +66,10 @@ module Repairing
     def set_account_number
       last_account_number = Repairing::Appeal.order(created_at: :desc).first.account_number
       self.account_number = last_account_number.to_i + 1
+    end
+
+    def set_town
+      self.town = self.repair.layer.town
     end
 
     def auto_send_appeal?
