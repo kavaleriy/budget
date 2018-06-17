@@ -221,7 +221,7 @@ class TownsController < ApplicationController
   private
 
   def access_user
-    return unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority)
+    return if current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority)
     redirect_to root_url, alert: t('export_budgets.notice_access')
   end
 
