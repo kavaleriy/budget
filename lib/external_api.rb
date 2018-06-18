@@ -31,7 +31,6 @@ class ExternalApi
     transactions
   end
 
-
   def self.e_data_payments_request(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
     require 'net/http'
     start_date ||= default_start_date
@@ -160,13 +159,11 @@ class ExternalApi
 
     def default_start_date
       # because {"errorMessage"=>"Перевищено максимальний діапозон дат пошуку, 92 дні"} - 06.06.2018
-
-      Time.now.days_since(-181).strftime('%Y-%m-%d')
+      Time.now.days_since(-91).strftime('%Y-%m-%d')
     end
 
     def default_end_date
-      Time.now.days_since(-99).strftime('%Y-%m-%d')
-      # Time.now.strftime('%Y-%m-%d')
+      Time.now.strftime('%Y-%m-%d')
     end
 
     def params(payer_erdpou, recipt_edrpou, start_date, end_date)
