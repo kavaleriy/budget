@@ -20,9 +20,9 @@ class ExternalApi
       first_date = '2015-12-31'.to_date
       dates = [today]
 
-      while first_date < dates.last do
-        dates << dates.last.days_since(-91)
-        request = e_data_payments_1(payer_erdpou, recipt_edrpou, dates.last.days_since(1), dates[-2])
+      while first_date < dates.last
+        dates << dates.last.days_since(-90)
+        request = e_data_payments_request(payer_erdpou, recipt_edrpou, dates.last.days_since(1), dates[-2])
         transactions += request if request.present?
       end
     else
