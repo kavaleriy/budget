@@ -17,12 +17,16 @@ class ExternalApi
       # get transactions by 91 day from 2016-01-01
       transactions = []
       today = Date.today
-      first_date = '2015-12-31'.to_date
+      first_date = '2016-01-01'.to_date
       dates = [today]
 
-      while first_date < dates.last
-        dates << dates.last.days_since(-90)
-        request = e_data_payments_request(payer_erdpou, recipt_edrpou, dates.last.days_since(1), dates[-2])
+      while dates.last > first_date
+        # date_from can be only >= first_date
+        dates << dates.last.days_since(-91)
+        date_from = dates.last > first_date ? dates.last.days_since(1) : first_date
+        date_to = dates[-2]
+
+        request = e_data_payments_request(payer_erdpou, recipt_edrpou, date_from, date_to)
         transactions += request if request.present?
       end
     else
