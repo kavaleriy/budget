@@ -26,7 +26,7 @@ class ExternalApi
         date_from = dates.last > first_date ? dates.last.days_since(1) : first_date
         date_to = dates[-2]
 
-        request = e_data_payments_request(payer_erdpou, recipt_edrpou, date_from,date_to)
+        request = e_data_payments_request(payer_erdpou, recipt_edrpou, date_from, date_to)
         transactions += request if request.present?
       end
     else
