@@ -92,7 +92,7 @@
             = t('.date')
       = render partial: 'modules/classifier/search_e_data_results'
     #pagination.text-center
-      = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+      = paginate @payments, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'desc'}
 
   :javascript
     $(document).ready(function() {
