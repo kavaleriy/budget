@@ -1,15 +1,20 @@
 %p#notice= notice
 
 %p
-  %b Title:
+  %strong
+    %h4 Title:
   = @repairing_appeal_scenario.title
 %p
-  %b Text form:
-  = @repairing_appeal_scenario.text_form
-%p
-  %b Text appeal:
-  = @repairing_appeal_scenario.text_appeal
+  %strong
+    %h4 Text form:
+  %p
+    = @repairing_appeal_scenario.text_form.html_safe
 
-= link_to 'Edit', edit_repairing_appeal_scenario_path(@repairing_appeal_scenario)
-\|
-= link_to 'Back', repairing_appeal_scenarios_path
+%p
+  %strong
+    %h4 Text appeal:
+  %p
+    = @repairing_appeal_scenario.text_appeal.html_safe
+
+= link_to t('edit'), edit_repairing_appeal_scenario_path(@repairing_appeal_scenario), class: 'btn btn-primary'
+= link_to t('back'), repairing_appeal_scenarios_path, class: 'btn btn-info'

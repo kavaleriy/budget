@@ -32,5 +32,8 @@ $(document).ready(function(){
         $(this).attr('data-sort-direction')))
 
   });
+
+  $('#export_classifier').attr('href', "<%= modules_classifier_search_e_data_path(format: :xls, payers_edrpous: @repairing_repairs.edrpou_spending_units, recipt_edrpous: @repairing_repairs.edrpou_artist) %>");
+
 //  $('#edata_payments th').first().trigger('click');
 });

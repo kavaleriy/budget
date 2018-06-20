@@ -11,34 +11,24 @@
   %h2.appeal-head
     = 'Звернення'
 
-  %p.block
-    %b
-      Блок юридичної текстовки з довідника відповідно до обраного сценарію («текст який лягає в звернення»)
-  %p= @repairing_appeal.scenario.text_appeal
-
-  %p
-    %b Текст набраний користувачем.
+  %p= @repairing_appeal.scenario.text_appeal.html_safe
   %p= @repairing_appeal.text
-
   %p
-    %b Стандартна текстовка про openbudget + Посилання на об’єкт на мапі про який йде мова.
-  %p= link_to 'ремонт', repairing_repair_on_map_url(@repairing_appeal.try(:repair)), target: '_blank' if @repairing_appeal.repair
-
+    %b Звернення згенероване за допомогою системи "Відкритий бюджет". Детальну інформацію про об'єкт скарги можете знайти за наведеним посиланням:
+    = link_to 'ремонт', repairing_repair_on_map_url(@repairing_appeal.try(:repair)), target: '_blank' if @repairing_appeal.repair
 
   - if @repairing_appeal.file.url
     %p
-      %b Прикріплений файл до звернення.
+      %b Прикріплений файл до звернення:
       = link_to "#{root_url}#{@repairing_appeal.file.url}", title: @repairing_appeal.file_identifier, target:'_blank' do
         %i.fa.fa-download.fa.fa-border
         файл
 
   %p
-    %b Відповідь прошу надіслати на електронну скриньку громадянина
+    %b Відповідь прошу надіслати на дві електронні скриньки
     = @repairing_appeal.email
-    %b та порталу Відкритий бюджет
+    %b та
     = "openbudget.in.ua+#{@repairing_appeal.account_number}@gmail.com"
-
-    -#= ", контактний телефон #{@repairing_appeal.phone}." if @repairing_appeal.phone.present?
 
   %p
     %b Контактний телефон:

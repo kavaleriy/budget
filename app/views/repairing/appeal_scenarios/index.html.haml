@@ -26,8 +26,10 @@
       - @repairing_appeal_scenarios.each do |appeal_scenario|
         %tr
           %td= appeal_scenario.title
-          %td= appeal_scenario.text_form
-          %td= appeal_scenario.text_appeal
+          %td
+            = strip_tags(sanitize(appeal_scenario.text_form)).truncate(150)
+          %td
+            = strip_tags(sanitize(appeal_scenario.text_appeal)).truncate(150)
           %td
             = link_to appeal_scenario do
               %i.fa.fa-eye.fa-2x
