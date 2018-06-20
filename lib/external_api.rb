@@ -12,27 +12,29 @@ class ExternalApi
     http.request(request).body rescue {}
   end
 
-  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
-    if start_date.blank? && end_date.blank?
-      # get transactions by 91 day from 2016-01-01
-      transactions = []
-      today = Date.today
-      first_date = '2016-01-01'.to_date
-      dates = [today]
+  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
+    Rails.cache.fetch("/e_data_payments/#{payer_erdpou}/#{recipt_edrpou}/#{start_date}/#{end_date}}", expiries_in: 1.hours) do
+      if start_date.blank? && end_date.blank?
+        # get transactions by 91 day from 2016-01-01
+        transactions = []
+        today = Date.today
+        first_date = '2016-01-01'.to_date
+        dates = [today]
 
-      while dates.last > first_date
-        # date_from can be only >= first_date
-        dates << dates.last.days_since(-91)
-        date_from = dates.last > first_date ? dates.last.days_since(1) : first_date
-        date_to = dates[-2]
+        while dates.last > first_date
+          # date_from can be only >= first_date
+          dates << dates.last.days_since(-91)
+          date_from = dates.last > first_date ? dates.last.days_since(1) : first_date
+          date_to = dates[-2]
 
-        request = e_data_payments_request(payer_erdpou, recipt_edrpou, date_from, date_to)
-        transactions += request if request.present?
+          request = e_data_payments_request(payer_erdpou, recipt_edrpou, date_from, date_to)
+          transactions += request if request.present?
+        end
+      else
+        transactions = e_data_payments_request(payer_erdpou, recipt_edrpou, start_date, end_date)
       end
-    else
-      transactions = e_data_payments_request(payer_erdpou, recipt_edrpou, start_date, end_date)
+      transactions
     end
-    transactions
   end
 
   def self.e_data_payments_request(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
@@ -88,9 +90,7 @@ class ExternalApi
     get_request(uri)
   end
 
-  def self.most_received(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
-    start_date ||= default_start_date
-    end_date ||= default_end_date
+  def self.most_received(payer_erdpou, recipt_edrpou, start_date, end_date)
     most_received = []
     data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)
 

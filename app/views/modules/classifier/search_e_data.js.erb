@@ -94,7 +94,7 @@ $('.results').html('<%= escape_javascript(render partial: "search_e_data") %>');
   <%- if params[:by_purpose].blank? %>
     if (barChart) {
       barChart.destroy();
-      $('#most-received').hide();
+      //$('#most-received').hide();
     }
     // create and draw the chart
     var barChart = new Chart(ctx, {
