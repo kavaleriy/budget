@@ -129,7 +129,7 @@
         %b
           Відповідно до законодавства:
       %p
-        = @scenario.try(:text_form)
+        = @scenario.try(:text_form).try(:html_safe)
 
 :javascript
   $('document').ready(function(){
