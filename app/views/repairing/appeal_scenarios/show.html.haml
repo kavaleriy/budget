@@ -16,6 +16,5 @@
   %p
     = @repairing_appeal_scenario.text_appeal.html_safe
 
-= link_to 'Edit', edit_repairing_appeal_scenario_path(@repairing_appeal_scenario)
-\|
-= link_to 'Back', repairing_appeal_scenarios_path
+= link_to t('edit'), edit_repairing_appeal_scenario_path(@repairing_appeal_scenario), class: 'btn btn-primary'
+= link_to t('back'), repairing_appeal_scenarios_path, class: 'btn btn-info'
