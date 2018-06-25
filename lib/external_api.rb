@@ -90,6 +90,33 @@ class ExternalApi
     get_request(uri)
   end
 
+  # start youscore api
+  def self.tax_debt(edrpou)
+    uri = URI.encode("https://api.youscore.com.ua/v1/taxDebt/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}")
+    get_request(uri)
+  end
+
+  def self.financial_indicators(edrpou)
+    uri = URI.encode("https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}")
+    get_request(uri)
+  end
+
+  def self.financial_indicators_per_year(edrpou, year)
+    uri = URI.encode("https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}/years/#{year}?apiKey=#{ENV['YOU_SCORE_API_KEY']}")
+    get_request(uri)
+  end
+
+  def self.financial_scoring(edrpou)
+    uri = URI.encode("https://api.youscore.com.ua/v1/financialScoring/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}")
+    get_request(uri)
+  end
+
+  def self.financial_scoring_per_year(edrpou, year)
+    uri = URI.encode("https://api.youscore.com.ua/v1/financialScoring/#{edrpou}/years/#{year}?apiKey=#{ENV['YOU_SCORE_API_KEY']}")
+    get_request(uri)
+  end
+  # end youscore api
+
   def self.most_received(payer_erdpou, recipt_edrpou, start_date, end_date)
     most_received = []
     data = self.e_data_payments(payer_erdpou, recipt_edrpou, start_date, end_date)

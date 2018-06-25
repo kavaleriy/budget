@@ -13,6 +13,8 @@ module Municipal
     field :edrpou, type: String
     field :title, type: String
     field :reporting_type, type: String
+    field :debt, type: Integer
+    field :actual_date, type: DateTime
 
     belongs_to :file, class_name: 'Municipal::EnterprisesList'
     belongs_to :town, class_name: 'Town'
