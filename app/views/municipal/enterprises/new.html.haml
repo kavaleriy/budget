@@ -26,7 +26,7 @@
 
   .row.import-enterprises
     = form_tag municipal_import_enterprises_path, multipart: true do
-      - if current_user && current_user.admin?
+      - if current_user && current_user.region_admin?
         .form-group
           = render 'select_town'
       - else

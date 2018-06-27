@@ -2,7 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    - if current_user && current_user.admin?
+    - if current_user && current_user.region_admin?
       .form-group
         = render 'select_town'
     .select-enterprises
