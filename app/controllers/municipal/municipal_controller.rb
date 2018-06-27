@@ -7,7 +7,7 @@ module Municipal
     private
 
     def access_user?
-      unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority)
+      unless current_user && current_user.has_any_role?(:admin, :city_authority, :central_authority, :municipal_enterprise)
         redirect_to root_url, alert: t('export_budgets.notice_access')
       end
     end
