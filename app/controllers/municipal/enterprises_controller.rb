@@ -4,11 +4,11 @@ module Municipal
     before_action :set_enterprise, only: [:edit, :update, :destroy]
 
     def index
-      @enterprises = current_user.admin? ? Enterprise.all : Enterprise.by_town(current_user.town_model)
+      @enterprises = current_user.region_admin? ? Enterprise.all : Enterprise.by_town(current_user.town_model)
     end
 
     def new
-      @files = current_user.admin? ? EnterprisesList.all : EnterprisesList.by_town(current_user.town_model)
+      @files = current_user.region_admin? ? EnterprisesList.all : EnterprisesList.by_town(current_user.town_model)
     end
 
     def import
@@ -52,7 +52,7 @@ module Municipal
 
     def destroy
       respond_to do |format|
-        if current_user.admin? || access_by_town?(@enterprise)
+        if current_user.region_admin? || access_by_town?(@enterprise)
           @enterprise.destroy
           notice =  'Видалено.'
         else
@@ -80,7 +80,7 @@ module Municipal
     end
 
     def get_town_by_role(town)
-      current_user.admin? ? town : current_user.town_model
+      current_user.region_admin? ? town : current_user.town_model
     end
 
     def file_enterprises_params

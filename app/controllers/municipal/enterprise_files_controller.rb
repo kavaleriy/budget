@@ -8,7 +8,7 @@ module Municipal
     respond_to :html
 
     def index
-      @municipal_enterprise_files = current_user.admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
+      @municipal_enterprise_files = current_user.region_admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
       # @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
 
       @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
@@ -69,7 +69,7 @@ module Municipal
 
     def destroy
       respond_to do |format|
-        if current_user.admin? || access_by_town?(@municipal_enterprise_file)
+        if current_user.region_admin? || access_by_town?(@municipal_enterprise_file)
           @municipal_enterprise_file.destroy
           StatusCode::SetStatus.del_statuses(@municipal_enterprise_file)
           notice =  'Файл видалено.'

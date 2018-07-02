@@ -2,7 +2,7 @@ require 'role_model'
 class User
   include Mongoid::Document
 
-  ROLES = %i[public_organisation city_authority central_authority municipal_enterprise state_enterprise].freeze
+  ROLES = %i[public_organisation city_authority central_authority municipal_enterprise state_enterprise region_authority].freeze
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -52,7 +52,7 @@ class User
 
   # declare the valid roles -- do not change the order if you add more
   # roles later, always append them at the end!
-  roles :admin, :guest, :editor, :public_organisation, :city_authority, :central_authority, :municipal_enterprise, :state_enterprise
+  roles :admin, :guest, :editor, :public_organisation, :city_authority, :central_authority, :municipal_enterprise, :state_enterprise, :region_authority
 
   def town
     self.town_model.title
@@ -60,6 +60,10 @@ class User
 
   def to_s
     self.email
+  end
+
+  def region_admin?
+    self.has_any_role?(:admin, :region_authority)
   end
 
   private

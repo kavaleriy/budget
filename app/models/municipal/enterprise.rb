@@ -4,6 +4,7 @@ module Municipal
   # municipal enterprises in town
   class Enterprise
     include Mongoid::Document
+    include Repairing::RepairsHelper
 
     REPORT_TYPE_1 = '1'
     REPORT_TYPE_2 = '2'
@@ -25,8 +26,14 @@ module Municipal
       where(reporting_type: enterprise.reporting_type, town: enterprise.town)
     }
 
+    before_save :check_and_emend_edrpou
+
     validates_presence_of :edrpou
     validates_uniqueness_of :edrpou, scope: :town
+
+    def check_and_emend_edrpou
+      self.edrpou = correct_edrpou(edrpou) if edrpou_length_short?(edrpou)
+    end
 
     def other_files
       files.where(file_type: Municipal::EnterpriseFile::OTHER)
