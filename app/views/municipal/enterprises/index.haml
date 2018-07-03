@@ -13,8 +13,12 @@
     }
     #search-results{
       .table-body{
-        margin-top: 5px;
+        padding: 5px;
+        &:nth-child(2n){
+          background: #E9E9E9;
+        }
       }
+
     }
   }
 
@@ -39,7 +43,7 @@
         .col-sm-2
           = t('owner')
         .col-sm-1
-          = 'Под. борг (грн)'
+          = 'Борг/Показники'
         .col-sm-1
           = t('actions')
     #search-results
@@ -74,9 +78,10 @@
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
-                    = 'Под. борг (грн)'
+                    = 'Борг/Показники'
                   .col-xs-8.col-md-12
-                    = enterprise.debt
+                    = format_date(enterprise.debt_checked) || 'не перевірено'
+                    = format_date(enterprise.scores_checked) || 'не перевірено'
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
