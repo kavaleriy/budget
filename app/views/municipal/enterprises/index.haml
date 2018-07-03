@@ -36,8 +36,10 @@
           = t('title')
         .col-sm-1
           = t('enterprise_files.reporting_type')
-        .col-sm-3
+        .col-sm-2
           = t('owner')
+        .col-sm-1
+          = 'Под. борг (грн)'
         .col-sm-1
           = t('actions')
     #search-results
@@ -63,12 +65,18 @@
                     = t('enterprise_files.reporting_type')
                   .col-xs-8.col-md-12
                     = t('enterprise.report.type_' + enterprise.reporting_type)
-              .col-sm-12.col-md-3.reset-padding
+              .col-sm-12.col-md-2.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs
                     = t('owner')
                   .col-xs-8.col-md-12
                     = enterprise.town.title if enterprise.town?
+              .col-sm-12.col-md-1.reset-padding
+                .row
+                  .col-xs-4.visible-sm.visible-xs
+                    = 'Под. борг (грн)'
+                  .col-xs-8.col-md-12
+                    = enterprise.debt
               .col-sm-12.col-md-1.reset-padding
                 .row
                   .col-xs-4.visible-sm.visible-xs

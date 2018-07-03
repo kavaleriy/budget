@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-
-module YouScore
+module Municipal
   # financial score for enterprise
   class FinancialScore
     include Mongoid::Document
@@ -20,7 +19,6 @@ module YouScore
     field :receivables_turnover, type: Float
 
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
-
   end
-end
 
+end
