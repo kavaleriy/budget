@@ -15,4 +15,14 @@ namespace :enterprises do
       enterprise.save
     end
   end
+
+  desc "set checked yourscore"
+  task set_checked: :environment do
+    enterprises = Municipal::Enterprise.all
+    enterprises.each do |enterprise|
+      enterprise.debt_checked = Time.now
+      enterprise.scores_checked = Time.now
+      enterprise.save
+    end
+  end
 end

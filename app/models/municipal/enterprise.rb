@@ -14,10 +14,15 @@ module Municipal
     field :edrpou, type: String
     field :title, type: String
     field :reporting_type, type: String
+    field :debt, type: Float
+    field :actual_date, type: DateTime
+    field :debt_checked, type: DateTime
+    field :scores_checked, type: DateTime
 
     belongs_to :file, class_name: 'Municipal::EnterprisesList'
     belongs_to :town, class_name: 'Town'
     has_many :files, class_name: 'Municipal::EnterpriseFile', dependent: :destroy
+    has_many :financial_scores, class_name: 'Municipal::FinancialScore', dependent: :destroy
 
     scope :by_town, ->(id) { where(town: id) }
     scope :by_type, ->(enterprise) {

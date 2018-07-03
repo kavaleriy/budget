@@ -1,3 +1,35 @@
+:scss
+  .your_score{
+    p{
+      margin-bottom: 0;
+    }
+  }
+
 %h1 Редагування підприємства
 
 = render 'form'
+
+.your_score
+  .debt
+    %p
+      %strong= "Борг перевірено #{format_date(@enterprise.debt_checked)}"
+      %p= "Борг #{@enterprise.debt} грн."
+      
+  .scores
+    %p
+      %strong= "Показники перевірені #{format_date(@enterprise.scores_checked)}"
+
+    - @enterprise.financial_scores.each do |score|
+      %p
+      %strong= "Рік #{score.year}"
+      %p= "score_mark #{score.score_mark}"
+      %p= "score_value #{score.score_value}"
+      %p= "current_ratio #{score.cash_ratio}"
+      %p= "cash_ratio #{score.year}"
+      %p= "equity_to_assets #{score.equity_to_assets}"
+      %p= "roa #{score.roa}"
+      %p= "rca #{score.rca}"
+      %p= "npm #{score.npm}"
+      %p= "total_assets_turnover #{score.total_assets_turnover}"
+      %p= "working_capital_turnover #{score.working_capital_turnover}"
+      %p= "receivables_turnover #{score.receivables_turnover}"

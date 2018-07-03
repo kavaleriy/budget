@@ -77,7 +77,7 @@ class ExternalApi
 
   def self.data_bot_edr(erdpou)
     uri = URI.encode("https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
-    get_request(uri)
+    patch_request(uri)
   end
 
   def self.data_bot_decisions(erdpou)
@@ -87,8 +87,35 @@ class ExternalApi
     # encode_url = URI.encode("https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
 
     uri = URI.encode("http://court.opendatabot.com/api/v1/court?text=#{erdpou}&limit=500&apiKey=#{ENV['OPEN_DATA_BOT_API_KEY']}")
-    get_request(uri)
+    patch_request(uri)
   end
+
+  # start youscore api
+  def self.tax_debt(edrpou)
+    url = "https://api.youscore.com.ua/v1/taxDebt/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"
+    get_request(url)
+  end
+
+  def self.financial_indicators(edrpou)
+    url = "https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"
+    get_request(url)
+  end
+
+  def self.financial_indicators_per_year(edrpou, year)
+    url = "https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}/years/#{year}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"
+    get_request(url)
+  end
+
+  def self.financial_scoring(edrpou)
+    url = "https://api.youscore.com.ua/v1/financialScoring/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"
+    get_request(url)
+  end
+
+  def self.financial_scoring_per_year(edrpou, year)
+    url = "https://api.youscore.com.ua/v1/financialScoring/#{edrpou}/years/#{year}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"
+    get_request(url)
+  end
+  # end youscore api
 
   def self.most_received(payer_erdpou, recipt_edrpou, start_date, end_date)
     most_received = []
@@ -133,20 +160,24 @@ class ExternalApi
 
   def self.prozzoro_data(id)
     unless id.nil?
-      uri = URI("https://lb.api.openprocurement.org/api/0/tenders/#{id}")
-
-      http = Net::HTTP.new(uri.host, uri.port)
-
-      request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
-      http.use_ssl = (uri.scheme == "https")
-      JSON.parse(http.request(request).body)['data'] rescue nil
+      url = "https://lb.api.openprocurement.org/api/0/tenders/#{id}"
+      get_request(url)['data'] rescue nil
     end
   end
 
   class << self
     private
 
-    def get_request(uri)
+    def get_request(url)
+      uri = URI(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      request = Net::HTTP::Get.new(uri.request_uri, {'Content-Type' =>'application/json'})
+      http.use_ssl = (uri.scheme == "https")
+
+      JSON.parse(http.request(request).body) #rescue nil
+    end
+
+    def patch_request(uri)
       require 'net/http'
 
       url = URI.parse(uri)
