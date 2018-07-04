@@ -73,6 +73,13 @@
             %i.fa.fa-clock-o{"aria-hidden" => "true"}
             = doc['dateModified'].to_datetime.strftime('%F %H:%M')
             = link_to doc['title'], doc['url'], input_html:{ 'download' => true }
+  - if tender_id?(@repairing_repairs.prozzoro_id)
+    .row
+      .col-xs-4.title-key
+        %i.fa.fa-certificate
+        = "#{ t('modules.sliders.index.link') } :"
+      .col-xs-8.value
+        = link_to tender_id_link(@repairing_repairs.prozzoro_id), tender_id_link(@repairing_repairs.prozzoro_id), target: '_blank'
   .row
     .col-xs-4.title-key
     .col-xs-8.value
