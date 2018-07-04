@@ -1,6 +1,7 @@
 class ExternalApiController < ApplicationController
   layout 'visify'
   require 'external_api'
+  include Documentation::DocumentsHelper
   before_action :set_repair, only: [:e_data, :edr, :prozzoro, :judicial_register]
 
   def prozzoro
@@ -136,8 +137,8 @@ class ExternalApiController < ApplicationController
     # parse prozorro.gov.ua for get inner_id
     # example UA-2016-10-12-000021-b
     # mast be 5f76dc96079549f789c817e04b8bee2c
-    if id.try(:start_with?, 'UA')
-      doc = Nokogiri::HTML(RestClient.get("https://prozorro.gov.ua/tender/#{id}"))
+    if tender_id?(id)
+      doc = Nokogiri::HTML(RestClient.get(tender_id_link(id)))
       doc.css('.tender--head--inf').first.children.last.to_s.squish
     else
       id

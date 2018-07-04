@@ -56,6 +56,14 @@ module Documentation::DocumentsHelper
     user && (user.is_admin? || user.is_city_authority?)
   end
 
+  def tender_id?(id)
+    id.try(:start_with?, 'UA')
+  end
+
+  def tender_id_link(id)
+    "https://prozorro.gov.ua/tender/#{id}"
+  end
+
   # todo --> delete after relize
   # def truncate_title(string, length = 25)
   #   string.size > length ? [string[0,15], string[-3,3]].join('....') : string unless string.nil?
