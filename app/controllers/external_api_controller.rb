@@ -4,7 +4,9 @@ class ExternalApiController < ApplicationController
   before_action :set_repair, only: [:e_data, :edr, :prozzoro, :judicial_register]
 
   def prozzoro
-    @prozzoro_info = ExternalApi.prozzoro_data(@repairing_repairs.prozzoro_id)
+    prozzoro_id = inner_id(@repairing_repairs.prozzoro_id)
+    @prozzoro_info = ExternalApi.prozzoro_data(prozzoro_id)
+
     if @prozzoro_info.present?
       @prozzoro_info['docs'] = []
       @prozzoro_info['docs'] = @prozzoro_info['documents'] if @prozzoro_info['documents']
@@ -129,4 +131,17 @@ class ExternalApiController < ApplicationController
              }
     end
   end
+
+  def inner_id(id)
+    # parse prozorro.gov.ua for get inner_id
+    # example UA-2016-10-12-000021-b
+    # mast be 5f76dc96079549f789c817e04b8bee2c
+    if id.try(:start_with?, 'UA')
+      doc = Nokogiri::HTML(RestClient.get("https://prozorro.gov.ua/tender/#{id}"))
+      doc.css('.tender--head--inf').first.children.last.to_s.squish
+    else
+      id
+    end
+  end
+
 end

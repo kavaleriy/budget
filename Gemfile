@@ -157,3 +157,6 @@ gem 'cyrillizer'
 gem 'google-api-client'
 
 gem 'whenever', require: false
+
+# for parse web page with nokogiri
+gem 'rest-client'
