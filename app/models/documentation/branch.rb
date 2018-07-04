@@ -7,4 +7,6 @@ class Documentation::Branch
   include ColumnsList
 
   has_many :document_category, class_name: 'Documentation::Document'
+
+  validates_uniqueness_of :title
 end
