@@ -10,6 +10,7 @@ set :sh_path, '/home/budget/www/gmail_secrets.sh'
 
 set :output, 'log/whenever.log'
 job_type :runner, "cd :path && source :sh_path && bin/rails runner -e :environment ':task' :output"
+job_type :rake, 'cd :path && bundle exec rake :task --silent :output'
 
 ## example test in development
 # every 1.minute do
@@ -18,4 +19,9 @@ job_type :runner, "cd :path && source :sh_path && bin/rails runner -e :environme
 
 every :day, at: '11:50 pm' do
   runner "Googles::CheckAppealsAnswers.call"
+end
+
+# run every month at 1st day on 23:30
+every '30 23 1 * *' do
+  rake 'tmp:clear'
 end
