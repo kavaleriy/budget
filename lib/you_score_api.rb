@@ -1,55 +1,45 @@
 class YouScoreApi
-  def self.set_tax_debt
+  # set tax_debts for all enterprises
+  def self.tax_debts
     enterprises = Municipal::Enterprise.all
 
-    data = []
-    enterprises.each_with_index do |enterprise, i|
-      tax_debt = ExternalApi.tax_debt(enterprise.edrpou)
-      # @edr_data_bot = ExternalApi.data_bot_edr(enterprise.edrpou).first
-      # tax_debt = @edr_data_bot && @edr_data_bot.try(:key?, 'full_name') ? @edr_data_bot : { message: 'no data'}
-
-      edrpou_hash = { edrpou: enterprise.edrpou, enterprise_id: enterprise.id.to_s, number: i }
-      data << tax_debt.merge(edrpou_hash)
-
-      enterprise.debt = tax_debt['debt']
-      enterprise.actual_date = tax_debt['actualDate']
-      enterprise.debt_checked = Time.now
-      enterprise.save
-    end
-
-    file_path = Rails.root.join('public', 'group_debt.json')
-    File.open(file_path, 'w') do |f|
-      f.puts JSON.pretty_generate(data)
+    enterprises.each do |enterprise|
+      set_tax_debt(enterprise)
     end
     p 'finish'
   end
 
+  # set tax_debt for enterprise
+  def self.set_tax_debt(enterprise)
+    tax_debt = ExternalApi.tax_debt(enterprise.edrpou)
+
+    enterprise.debt = tax_debt['debt']
+    enterprise.actual_date = tax_debt['actualDate']
+    enterprise.debt_checked = Time.now
+    enterprise.save
+  end
+
+  # set scores for all enterprises
   def self.financial_scoring
     @enterprises = Municipal::Enterprise.all
-    @enterprises.each_with_index do |enterprise, i|
-      set_financial_scoring(enterprise.id, enterprise.edrpou)
-      enterprise.scores_checked = Time.now
-      enterprise.save
+    @enterprises.each do |enterprise|
+      set_financial_scoring(enterprise)
     end
   end
 
-  def self.set_financial_scoring(id, edrpou)
-    scoring_years = ExternalApi.financial_scoring(edrpou)
-
-    # company_data = ExternalApi.data_bot_decisions(edrpou)
-    # scoring_years = company_data['items'].present? ? company_data['items'] : { 'message' => 'no data'}
-
-    # ent_data = { edrpou: edrpou, enterprise_id: id.to_s, scores: [] }
+  # set financial_scoring for enterprise
+  def self.set_financial_scoring(enterprise)
+    # get years with scores
+    scoring_years = ExternalApi.financial_scoring(enterprise.edrpou)
 
     if scoring_years.kind_of?(Array)
       scoring_years.each do |scoring_year|
-        scoring_data = ExternalApi.financial_scoring_per_year(edrpou, scoring_year['year'])
-        # data = scoring_data.merge({ year: scoring_year['year'] })
-        # ent_data[:scores] << data
+        # next if financial_scores exists
+        financial_scores = Municipal::FinancialScore.find_or_initialize_by(enterprise: enterprise.id, year: scoring_year['year'])
+        next if financial_scores.score_mark.present?
 
-        financial_scores = Municipal::FinancialScore.find_or_initialize_by(enterprise: id, year: scoring_year['year'])
-        financial_scores.enterprise = id
-        financial_scores.year = scoring_year['year']
+        # get scores for year and set values to financial_scores
+        scoring_data = ExternalApi.financial_scoring_per_year(enterprise.edrpou, scoring_year['year'])
         financial_scores.score_mark = scoring_data['score']['mark']
         financial_scores.score_value = scoring_data['score']['value']
         financial_scores.current_ratio = scoring_data['currentRatio']
@@ -64,18 +54,10 @@ class YouScoreApi
 
         financial_scores.save
       end
-    else
-      # scoring_years['code'].eql?('NotFound')
-      # {"code"=>"NotFound", "message"=>"No financial scoring for contractor '03063610' found"}
-      # ent_data = ent_data.merge(scoring_years)
     end
 
-    # group_file_path = Rails.root.join('public', 'group.json')
-    # json = File.read(group_file_path)
-    # File.open(group_file_path, 'w') do |f|
-    #   f.puts JSON.pretty_generate(JSON.parse(json) << ent_data)
-    # end
-
+    enterprise.scores_checked = Time.now
+    enterprise.save
   end
 
 end

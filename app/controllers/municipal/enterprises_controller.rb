@@ -1,7 +1,8 @@
 module Municipal
   # upload enterprises from file and show their list
   class EnterprisesController < MunicipalController
-    before_action :set_enterprise, only: [:edit, :update, :destroy]
+    before_action :access_admin?, only: [:check_debt, :check_score]
+    before_action :set_enterprise, only: [:edit, :update, :destroy, :check_debt, :check_score]
 
     def index
       @enterprises = current_user.region_admin? ? Enterprise.all : Enterprise.by_town(current_user.town_model)
@@ -50,6 +51,20 @@ module Municipal
       end
     end
 
+    def check_debt
+      respond_to do |format|
+        YouScoreApi.set_tax_debt(@enterprise)
+        format.html { redirect_to :back, notice: 'Податковий борг перевірено.' }
+      end
+    end
+
+    def check_score
+      respond_to do |format|
+        YouScoreApi.set_financial_scoring(@enterprise)
+        format.html { redirect_to :back, notice: 'Показники перевірено.' }
+      end
+    end
+
     def destroy
       respond_to do |format|
         if current_user.region_admin? || access_by_town?(@enterprise)
@@ -70,6 +85,12 @@ module Municipal
     end
 
     private
+
+    def access_admin?
+      unless current_user && current_user.admin?
+        redirect_to root_url, alert: t('export_budgets.notice_access')
+      end
+    end
 
     def access_by_town?(enterprise)
       current_user.town.eql?(enterprise.town)

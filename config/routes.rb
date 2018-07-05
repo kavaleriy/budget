@@ -192,6 +192,8 @@ Rails.application.routes.draw do
     post 'import_enterprises', to: 'enterprises#import'
     delete 'destroy_file_enterprises/:id', to: 'enterprises#destroy_file', as: :destroy_file_enterprises
     get 'files_by_town/:town', to: 'enterprises#files_by_town', as: :files_by_town
+    get 'check_debt/:id', to: 'enterprises#check_debt', as: :check_debt
+    get 'check_score/:id', to: 'enterprises#check_score', as: :check_score
 
     get 'enterprises_by_town/:town', to: 'public_enterprises#enterprise_analysis', as: :enterprise_analysis
     get 'enterprise_from_town/:town/:enterprise_id', to: 'public_enterprises#enterprise_analysis', as: :enterprise_from_town
