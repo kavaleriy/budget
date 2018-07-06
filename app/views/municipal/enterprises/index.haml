@@ -17,6 +17,9 @@
         &:nth-child(2n){
           background: #E9E9E9;
         }
+        .youscore{
+          color: #42caba;
+        }
       }
 
     }
@@ -87,6 +90,12 @@
                   .col-xs-4.visible-sm.visible-xs
                     = t('actions')
                   .col-xs-8.col-md-12
+                    - if current_user.admin?
+                      = link_to municipal_check_debt_path(enterprise), title: t('enterprise.check_debt') do
+                        %i.fa.fa-credit-card.fa.fa-border.youscore
+                      = link_to municipal_check_score_path(enterprise), title: t('enterprise.check_score') do
+                        %i.fa.fa-percent.fa.fa-border.youscore
+
                     = link_to edit_municipal_enterprise_path(enterprise), title: t('form.edit') do
                       %i.fa.fa-pencil.fa.fa-border
                     = link_to enterprise, method: :delete, title: t('form.destroy'), data: { confirm: t('helpers.links.confirm') } do
