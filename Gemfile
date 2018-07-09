@@ -160,3 +160,5 @@ gem 'whenever', require: false
 
 # for parse web page with nokogiri
 gem 'rest-client'
+
+gem 'selectize-rails'

@@ -272,23 +272,74 @@
   #search-by-purpose-wrapper{
     width: 40%;
     margin: 0 auto;
-    .select2-container .select2-choice{
-      height: 40px;
+    // custom selectize styles
+    .selectize-control{
       font-size: 18px;
-      .select2-arrow{
-        width: 40px;
-        b {
-          display: block;
-          width: 100%;
-          height: 100%;
-          background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-32.png') no-repeat center;
+      padding: 0;
+      border: none;
+      &,
+      .selectize-input,
+      .selectize-dropdown {
+        border-radius: 0;
+      }
+      .selectize-dropdown{
+        height: auto;
+        padding: 0;
+        border-color: $search-border;
+      }
+      &.single .selectize-input,
+      &.single .selectize-input input,
+      & .selectize-dropdown {
+        font-size: 18px;
+        line-height: 25px;
+      }
+      &.single{
+        .selectize-input{
+          height: 40px;
+          border: none;
+          outline: 1px solid $search-border;
+          outline-offset: -1px;
+          &:before {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            font-size: 30px;
+            color: $search-background;
+            width: 45px;
+            height: 42px;
+            background: $search-border;
+            text-align: center;
+            margin: -2px auto;
+            margin-right: 0;
+            padding-top: 10px;
+          }
+          &:after{
+            content: none;
+          }
         }
       }
     }
-    #select2-chosen-1{
-      font-size: 18px;
-      padding-top: 6px !important;
-    }
+    // change to selectize
+    //.select2-container .select2-choice{
+    //  height: 40px;
+    //  font-size: 18px;
+    //  .select2-arrow{
+    //    width: 40px;
+    //    b {
+    //      display: block;
+    //      width: 100%;
+    //      height: 100%;
+    //      background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-32.png') no-repeat center;
+    //    }
+    //  }
+    //}
+    //#select2-chosen-1{
+    //  font-size: 18px;
+    //  padding-top: 6px !important;
+    //}
   }
   .export-btn{
     position: relative;
@@ -314,7 +365,7 @@
     .col-sm-offset-1.col-xs-10
       #search-by-purpose-wrapper
         = select_tag :search_by_purpose,
-          options_for_select([' ', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
+          options_for_select(['', 'Товари ', 'Послуги', 'Ремонт', 'Харчування', 'Меблі'])
     .col-xs-1.pull-right#fullscreen{'data-module' => 'search-data'}
       = render partial: 'widgets/town_profile/fullscreen_btn'
   .results
@@ -333,13 +384,28 @@
 
 :javascript
   $(document).ready(function() {
-    $('#search_by_purpose').select2({
-      height: 25,
-      width: '100%',
-      allowClear: true,
+    // $('#search_by_purpose').select2({
+    //   height: 25,
+    //   width: '100%',
+    //   allowClear: true,
+    // }).on('change', function(e){
+    //  classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+    // });
+
+    $("#search_by_purpose").selectize({
+      // plugins: ['remove_button'],
+      delimiter: ',',
+      persist: false,
+      create: function(input) {
+        return {
+          value: input,
+          text: input
+        }
+      }
     }).on('change', function(e){
       classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
     });
+
     $(document).on('keyup', '.select2-input', function(e){
       var value = e.target.value;
       if(e.keyCode == 13 && value.length > 3){

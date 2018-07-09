@@ -28,39 +28,87 @@
     .form-group {
       float: left;
       width: 100%;
-      .select2-container {
+      // custom selectize styles
+      .selectize-control{
+        padding: 0;
         border: none;
-        .select2-choice {
-          height: 33px;
-          line-height: 33px;
-          background: $search-background;
-          border: 1px solid $search-border;
+        &,
+        .selectize-input,
+        .selectize-dropdown {
           border-radius: 0;
-          &:before {
-            content: '\f002';
-            font-family: FontAwesome;
-            position: absolute;
-            right: 0;
-            cursor: pointer;
-            font-size: 20px;
-            color: $search-background;
-            width: 33px;
-            background: $search-border;
-            text-align: center;
-            margin: -2px auto;
-          }
-          .select2-chosen {
-            padding-top: 0;
-            margin-right: 55px;
-          }
-          .select2-search-choice-close {
-            right: 40px;
-          }
-          .select2-arrow {
-            display: none;
+        }
+        .selectize-dropdown{
+          height: auto;
+          padding: 0;
+          border-color: $search-border;
+        }
+        &.single{
+          .selectize-input{
+            height: 32px;
+            border: none;
+            outline: 1px solid $search-border;
+            outline-offset: -1px;
+            input{
+              font-size: 14px;
+              line-height: 22px;
+            }
+            &:before{
+              content: '\f002';
+              font-family: FontAwesome;
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              font-size: 20px;
+              color: $search-background;
+              width: 33px;
+              height: 40px;
+              background: $search-border;
+              text-align: center;
+              margin: -2px auto;
+              margin-right: 0;
+              padding-top: 8px;
+            }
+            &:after{
+              content: none;
+            }
           }
         }
       }
+      // change to selectize
+      //.select2-container {
+      //  border: none;
+      //  .select2-choice {
+      //    height: 33px;
+      //    line-height: 33px;
+      //    background: $search-background;
+      //    border: 1px solid $search-border;
+      //    border-radius: 0;
+      //    &:before {
+      //      content: '\f002';
+      //      font-family: FontAwesome;
+      //      position: absolute;
+      //      right: 0;
+      //      cursor: pointer;
+      //      font-size: 20px;
+      //      color: $search-background;
+      //      width: 33px;
+      //      background: $search-border;
+      //      text-align: center;
+      //      margin: -2px auto;
+      //    }
+      //    .select2-chosen {
+      //      padding-top: 0;
+      //      margin-right: 55px;
+      //    }
+      //    .select2-search-choice-close {
+      //      right: 40px;
+      //    }
+      //    .select2-arrow {
+      //      display: none;
+      //    }
+      //  }
+      //}
     }
     .advanced_search_button,
     .btn-switch-role {
@@ -265,12 +313,31 @@
 :javascript
   $(document).ready(function() {
 
+    // change to selectize
     // init select2 and add event -> search if change value (if select not empty)
-    $('#_item').select2({
-      placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
-      allowClear: true
+    // $('#_item').select2({
+    //   placeholder: I18n.t('modules.classifier.search_data.simple_form_placeholder'),
+    //   allowClear: true
+    // }).on('change', function(data) {
+    ////check for empty value, if empty -> do nothing
+      // if(data.val || check_edrpou(data.target.value)) {
+      //   classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(), iframe_src(data.val || data.target.value));
+      // }
+    // });
+
+    // init selectize and add event -> search if change value (if select not empty)
+    $("#_item").selectize({
+      // plugins: ['remove_button'],
+      delimiter: ',',
+      persist: false,
+      create: function(input) {
+        return {
+          value: input,
+          text: input
+        }
+      }
     }).on('change', function(data) {
-      // check for empty value, if empty -> do nothing
+      //check for empty value, if empty -> do nothing
       if(data.val || check_edrpou(data.target.value)) {
         classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(), iframe_src(data.val || data.target.value));
       }
