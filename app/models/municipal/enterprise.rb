@@ -29,7 +29,7 @@ module Municipal
       where(reporting_type: enterprise.reporting_type, town: enterprise.town)
     }
 
-    before_save :check_and_emend_edrpou
+    before_validation :check_and_emend_edrpou
 
     validates_presence_of :edrpou
     validates_uniqueness_of :edrpou, scope: :town
