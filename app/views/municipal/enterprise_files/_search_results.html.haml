@@ -7,7 +7,7 @@
             .col-xs-4.visible-sm.visible-xs
               = t('modules.classifier.by_type.edrpou')
             .col-xs-8.col-md-12
-              = file.enterprise.title
+              = file.enterprise.try(:title)
         .col-sm-12.col-md-2.reset-padding
           .row
             .col-xs-4.visible-sm.visible-xs
