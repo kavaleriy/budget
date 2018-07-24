@@ -7,14 +7,14 @@
 %button.btn.btn-danger.btn-sm{ id: "#{prefix}_delete", type: 'button' }
   %i.glyphicon.glyphicon-remove
     = t('form.destroy')
+
 :javascript
   $(document).ready(function() {
     $('##{prefix}_tree_view').on('loaded.jstree', function(e){
 
       var tree = $(this).jstree(true)
-      console.log(tree);
+
       $('##{prefix}_create').on('click', function () {
-        console.log('create');
         var sel = tree.get_selected();
         sel = sel.length > 0 ? sel[0] : null
         sel = tree.create_node(sel, {"type": "file"});

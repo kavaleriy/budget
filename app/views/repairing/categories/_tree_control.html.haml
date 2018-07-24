@@ -9,9 +9,7 @@
     = t('form.destroy')
 
 :javascript
-
   $(document).ready(function() {
-
     $('##{prefix}_tree_view').on('loaded.jstree', function(e){
 
       var tree = $(this).jstree(true)
@@ -33,12 +31,18 @@
         tree.edit(sel);
       })
       $('##{prefix}_delete').on('click', function () {
-        var sel = tree.get_selected();
-        if (!sel.length) {
-          return false;
-        }
-
-        tree.delete_node(sel);
+        dataConfirmModal.confirm({
+          // text: I18n.t('confirm_destroy'),
+          title: I18n.t('helpers.links.confirm'),
+          zIindex: 10099,
+          onConfirm: function(){
+            var sel = tree.get_selected();
+            if (!sel.length) {
+              return false;
+            }
+            tree.delete_node(sel);
+          }
+        });
       })
     })
 
