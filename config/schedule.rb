@@ -22,6 +22,11 @@ every :day, at: '11:50 pm' do
 end
 
 # run every month at 1st day on 23:30
-every '30 23 1 * *' do
+# every '30 23 1 * *' do
+#   rake 'tmp:clear'
+# end
+
+# run every week on 00:30
+every 1.week, at: '0:30 am' do
   rake 'tmp:clear'
 end
