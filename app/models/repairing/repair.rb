@@ -84,7 +84,8 @@ module Repairing
     end
 
     def permit_appeal?
-      layer.status.eql?('fact') && layer.town.permit_emails
+      # layer.status.eql?('fact') && layer.town.permit_emails
+      layer.town.permit_emails
     end
 
     def repair_coordinate
