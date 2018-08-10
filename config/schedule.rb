@@ -10,7 +10,7 @@ set :sh_path, '/home/budget/www/gmail_secrets.sh'
 
 set :output, 'log/whenever.log'
 job_type :runner, "cd :path && source :sh_path && bin/rails runner -e :environment ':task' :output"
-job_type :rake, 'cd :path && bundle exec rake :task --silent :output'
+job_type :rake, 'cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output'
 
 ## example test in development
 # every 1.minute do

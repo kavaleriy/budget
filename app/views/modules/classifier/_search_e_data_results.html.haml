@@ -1,7 +1,10 @@
 - @payments.each do |payment|
   %tr{'data-edrpou' => payment['payer_edrpou']}
     %td= payment['amount']
-    %td.payer_name= payment['payer_name']
+    %td.payer_name
+      = payment['payer_name']
+      %br
+      = "Код: #{payment['recipt_edrpou']}"
     %td
       = payment['recipt_name']
       %br
