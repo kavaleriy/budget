@@ -246,7 +246,7 @@ class TownsController < ApplicationController
       :permit_emails,
       :auto_send_appeal,
       counters: [:citizens, :house_holdings, :square],
-      emails_attributes: [:id, :email, :owner]
+      emails_attributes: [:id, :email, :owner, :_destroy]
     )
   end
 

@@ -95,8 +95,8 @@
             = check_box_tag 'repairing_appeal[recipient_ids][]',
                             recipient.id,
                             @repairing_appeal.recipients.map(&:id).include?(recipient.id),
-                            { id: recipient.owner }
-            = label_tag recipient.owner, t("mongoid.attributes.town.#{recipient.owner}")
+                            { id: recipient.id }
+            = label_tag recipient.id, recipient.owner
 
       .text-input
         = f.input :text, as: :text,

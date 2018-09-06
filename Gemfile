@@ -162,3 +162,5 @@ gem 'whenever', require: false
 gem 'rest-client'
 
 gem 'selectize-rails'
+
+gem 'cocoon'

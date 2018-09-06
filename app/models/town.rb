@@ -282,9 +282,8 @@ class Town
   private
 
   def email_rejectable?(email)
-    # check if params[:email] blank and
-    # email record missing in db for delete email in town edit form
-    email['email'].blank? && emails.where(id: email[:id]).blank?
+    # check if params[:email, :owner] blank
+    email['email'].blank? && email['owner'].blank?
   end
 
   def self.by_title(town_name)
