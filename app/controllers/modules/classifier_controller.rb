@@ -21,9 +21,7 @@ module Modules
 
     def by_edrpou
       @type = params[:payers_edrpous].present? ? :payers_edrpous : :recipt_edrpous
-      @code = params[:payers_edrpous] || params[:recipt_edrpous]
-      classifier = Classifier.find_by(edrpou: @code) rescue nil
-      @funds_manager_title = classifier.try(:pnaz) || FundsManager.get_title_by_edrpou(@code)
+      @code = code
 
       respond_to do |format|
         format.html { render layout: 'visify'}
@@ -58,6 +56,9 @@ module Modules
           purpose_title.include?(query_str)
         end
       end
+
+      #  @payer_name for paywatch iframe
+      @payer_name = classifier_name || data.try(:first).try(:[], "payer_name")
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart
@@ -190,6 +191,7 @@ module Modules
     end
 
     private
+
     # Copy from WidgetsController for show iframe in other sites
     def allow_iframe
       response.headers['x-frame-options'] = 'ALLOWALL'
@@ -247,6 +249,15 @@ module Modules
 
     def town
       @town = Town.find(params[:town_id])
+    end
+
+    def code
+      params[:payers_edrpous] || params[:recipt_edrpous]
+    end
+
+    def classifier_name
+      classifier = Classifier.find_by(edrpou: code) rescue nil
+      classifier.try(:pnaz)
     end
   end
 end
