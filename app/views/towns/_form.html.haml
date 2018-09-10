@@ -24,6 +24,33 @@
     margin-bottom: 16px;
   }
 
+  #emails{
+    .nested-fields{
+      .form-inline{
+        .form-group{
+           width: 100%;
+           margin-bottom: 5px;
+          .control-label{
+            width: 20%;
+          }
+          .form-control{
+            display: inline-block;
+            width: 80%;
+          }
+        }
+      }
+      .remove_fields{
+        float: right;
+      }
+    }
+    .links{
+      margin-bottom: 10px;
+    }
+  }
+
+
+
+
 .width-container.clearfix
   .column_container.clearfix
     = bootstrap_form_for @town, label_errors: true, :html => { :class => 'edit_town', :multipart => true} do |f|
@@ -67,10 +94,12 @@
           .towns-form
           = f.check_box :auto_send_appeal, label: 'Автомодерація звернень'
           .label-emails Emails:
-          - TownEmail::OWNERS.each do |owner|
-            = f.fields_for :emails, @town.emails.find_or_initialize_by(owner: owner) do |ff|
-              = ff.hidden_field :owner
-              = ff.email_field :email, label: t("mongoid.attributes.town.#{owner}")
+
+          #emails
+            = f.fields_for :emails, f.object.emails do |field|
+              = render 'email_fields', f: field
+            .links
+              = link_to_add_association 'Додати Email', f, :emails, class: 'btn btn-success'
 
       .row.buttom-user-menu
         .col-md-12.fix-pad

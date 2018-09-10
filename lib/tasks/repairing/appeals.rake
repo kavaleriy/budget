@@ -22,4 +22,13 @@ namespace :appeals do
     end
   end
 
+  desc "change town emails title"
+  task change_town_emails_title: :environment do
+    owners_aliases = %w[city_council local_deputy peoples_deputy state_audit_office]
+
+    owners_aliases.each do |owner|
+      TownEmail.where(owner: owner).update_all(owner: I18n.t("mongoid.attributes.town.#{owner}"))
+    end
+    p "Changed alias owner to title."
+  end
 end

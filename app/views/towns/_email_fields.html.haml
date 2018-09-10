@@ -1,0 +1,9 @@
+.nested-fields
+  .row
+    .col-xs-11
+      .form-inline
+        = f.text_field :owner, label: 'Власник'
+      .form-inline
+        = f.email_field :email, label: 'Email'
+    .col-xs-1
+      = link_to_remove_association 'x', f, class: 'btn btn-danger', title: t('destroy')
