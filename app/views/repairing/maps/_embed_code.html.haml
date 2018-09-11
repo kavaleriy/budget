@@ -68,6 +68,8 @@
   .form-horizontal.town-data{ data: { town_id: "#{@current_user_town[:id] unless @current_user_town.nil?}",
                                       town_title: "#{@current_user_town[:title] unless @current_user_town.nil?}"} }
     .form-group
+      %input.road_frame_url.form-control
+    .form-group
       %input.frame_url.form-control
     .form-group
       = text_field_tag 'town_select', ''

@@ -137,12 +137,14 @@ module Repairing
     end
 
     def get_categories
-      categories = {}
-      Repairing::Category.all.reject{|p| p.category.nil? }.each{|category|
-        categories[category.category.id.to_s] = [] if categories[category.category.id.to_s].nil?
-        categories[category.category.id.to_s] << category
-      }
-      categories
+      Repairing::Category.by_locale.select{|p| p.category.nil? }
+
+      # categories = {}
+      # Repairing::Category.all.reject{|p| p.category.nil? }.each{|category|
+      #   categories[category.category.id.to_s] = [] if categories[category.category.id.to_s].nil?
+      #   categories[category.category.id.to_s] << category
+      # }
+      # categories
     end
 
   end
