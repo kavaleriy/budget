@@ -359,7 +359,7 @@
   = image_tag 'paywatch_logo.png', class: 'paywatch_logo'
   .row
     .col-sm-12.text-center#classifier{ data: { town_id: params[:town_id], edrpou_type: @type, edrpou_code: @code } }
-      %h3= @funds_manager_title
+      %h3.receipt_name
 
   .row#search-by-purpose-wrapper-row
     .col-sm-offset-1.col-xs-10
