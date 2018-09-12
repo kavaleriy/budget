@@ -31,6 +31,11 @@
 :scss
   .map-header {
     margin-top: 5px;
+    &.road-frame{
+      .select-roads-years{
+        width: 100%;
+      }
+    }
     .select-categories {
       padding-bottom: 5px;
       #category_btns {
@@ -319,16 +324,9 @@
     margin-bottom: -16px;
   }
 
-.row.map-header
+.row.map-header{ class: ('road-frame' if @categories.blank?) }
   - if @categories
     .col-xs-12.col-sm-8.select-categories
-      -#.col-xs-4.title
-      -#  #category_description
-      -#    %span
-      -#      = t('repairing.maps.map_select.select_category_work')
-      -#.col-xs-8.categories-value
-      -#  #category_content
-      -#    #category_title
       #category_btns.btn-group
         - @categories.each do |category|
           .btn.btn-default.tooltip-bottom{'data-tooltip' => category.title, 'data-id' => category.id}
