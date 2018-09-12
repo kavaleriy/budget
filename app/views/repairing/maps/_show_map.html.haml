@@ -72,6 +72,14 @@
       set_frame_url($('#town_select').val(), $('#zoom_select').val());
     })
 
+    new Clipboard('#road_frame_url', {
+      text: function() {
+        var frame = $('#embed_code .frame_url').val();
+        var road_frame = frame.replace('maps/frame', 'maps/road_frame');
+        return road_frame;
+      }
+    });
+
     function town_data(key){
       return $(".town-data").attr('data-town-' + key)
     }

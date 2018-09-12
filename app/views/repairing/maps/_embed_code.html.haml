@@ -1,54 +1,5 @@
 :scss
 
-  .popover {
-    width: 700px;
-  }
-
-  .popover-title {
-    font-weight: bold;
-  }
-
-  .embed_code {
-    display: inline;
-  }
-
-  .form-horizontal {
-    margin: 10px;
-  }
-
-  .form-horizontal table {
-    width: 100%;
-  }
-
-  .form-horizontal table tr {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .form-horizontal table tr td:nth-child(1) {
-    width: 20%;
-  }
-
-  .form-horizontal table tr td:nth-child(2) {
-    width: 80%;
-  }
-
-  .form-group label {
-    position: relative;
-    font-weight: normal;
-    top: 0;
-    right: 0;
-    width: 20%;
-  }
-
-  .form-group select {
-    display: inline-block;
-    width: 70%;
-  }
-
-  input[type="number"] {
-     width:60px;
-  }
   button.btn-embed{
     border: none;
     color: white;
@@ -56,6 +7,30 @@
     padding: 0px 10px;
     &:focus {
       outline: none;
+    }
+  }
+
+  .popover {
+    width: 700px;
+  }
+
+  .form-horizontal {
+    padding: 0 10px;
+    .form-group{
+      margin-bottom: 5px;
+      label {
+        width: 30%;
+      }
+      #year_select,
+      #zoom_select {
+        display: inline-block;
+        width: 68%;
+      }
+    }
+    .select2-container{
+      .select2-choice{
+        height: auto;
+      }
     }
   }
 
@@ -67,19 +42,25 @@
 .embed-hide{'style' => 'display: none;'}
   .form-horizontal.town-data{ data: { town_id: "#{@current_user_town[:id] unless @current_user_town.nil?}",
                                       town_title: "#{@current_user_town[:title] unless @current_user_town.nil?}"} }
+
+    .form-group
+      %button.btn#road_frame_url{ data: { tooltip: t('public.towns.show.click') } }
+        = 'Автодор фрейм'
     .form-group
       %input.frame_url.form-control
     .form-group
       = text_field_tag 'town_select', ''
+
     .form-group
       %label
         = t('datetime.prompts.year')
       -# ad hoc: set last_date with js (views/repairing/maps/_map.html.haml)
-      = text_field_tag 'year_select', ''
+      = text_field_tag 'year_select', '', class: 'form-control'
+
     .form-group
       %label
         = t('.scale')
-      = select_tag 'zoom_select', options_for_select((6..14).to_a, 10), :class => 'form-control'
+      = select_tag 'zoom_select', options_for_select((6..14).to_a, 10), class: 'form-control'
 
 .clear
 

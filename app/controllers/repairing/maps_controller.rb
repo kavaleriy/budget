@@ -5,10 +5,8 @@ module Repairing
     before_filter :set_map_params, only: [:show, :frame]
 
     def set_map_params
-      @categories = get_categories
-
+      @categories = categories
       @zoom = params[:zoom]
-
       @map_center = [48.5, 31.2] # center of Ukraine
 
       if params[:town_id] && params[:town_id] != '0'
@@ -136,13 +134,12 @@ module Repairing
       response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
     end
 
-    def get_categories
-      categories = {}
-      Repairing::Category.all.reject{|p| p.category.nil? }.each{|category|
-        categories[category.category.id.to_s] = [] if categories[category.category.id.to_s].nil?
-        categories[category.category.id.to_s] << category
-      }
-      categories
+    def categories
+      if request.original_url.include?('road_frame')
+        nil
+      else
+        Repairing::Category.by_locale.select { |p| p.category.nil? }
+      end
     end
 
   end

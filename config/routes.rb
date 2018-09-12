@@ -238,6 +238,7 @@ Rails.application.routes.draw do
     get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
     get 'geo_json' => 'maps#geo_json'
     get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
+    get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
     get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
