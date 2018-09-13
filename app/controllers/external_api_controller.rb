@@ -2,7 +2,7 @@ class ExternalApiController < ApplicationController
   layout 'visify'
   require 'external_api'
   include Documentation::DocumentsHelper
-  before_action :set_repair, only: [:e_data, :edr, :prozzoro, :judicial_register]
+  before_action :set_repair, only: [:e_data, :edr, :prozzoro, :judicial_register, :inspections]
 
   def prozzoro
     prozzoro_id = inner_id(@repairing_repairs.prozzoro_id)
@@ -94,6 +94,32 @@ class ExternalApiController < ApplicationController
                  locals: {
                    selector: selector,
                    partial_name: 'external_api/judicial_register/judicial_register_table'
+                 }
+        end
+      else
+        message = t('external_api.judicial_register.no_data_message')
+        lack_data(format, selector, message)
+      end
+    end
+  end
+
+  def inspections
+    respond_to do |format|
+      selector = '#inspections'
+      lack_data(format, selector) if @repairing_repairs.edrpou_artist.blank?
+
+      company_data = ExternalApi.inspections(@repairing_repairs.edrpou_artist)
+
+      unless company_data['items'].blank?
+        inspections = company_data['items'].select { |item| item["data"]["sanction"].present? }
+
+        @inspections = Kaminari.paginate_array(inspections).page(params[:page]).per(10)
+        format.html { render partial: 'external_api/inspections/inspections_table', layout: false }
+        format.js do
+          render file: 'external_api/inspections/inspections',
+                 locals: {
+                     selector: selector,
+                     partial_name: 'external_api/inspections/inspections_table'
                  }
         end
       else

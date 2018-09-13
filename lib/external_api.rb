@@ -90,6 +90,11 @@ class ExternalApi
     patch_request(uri)
   end
 
+  def self.inspections(erdpou)
+    url = "http://api.ias.brdo.com.ua/v1/inspections?apiKey=#{ENV['INSPECTIONS_API_KEY']}&code=#{erdpou}"
+    get_request(url) rescue nil
+  end
+
   # start youscore api
   def self.tax_debt(edrpou)
     url = "https://api.youscore.com.ua/v1/taxDebt/#{edrpou}?apiKey=#{ENV['YOU_SCORE_API_KEY']}"

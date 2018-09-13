@@ -1,0 +1,10 @@
+- @inspections.each do |inspection|
+  %tr{'data-edrpou' => inspection['last_modify']}
+    %td
+      = link_to inspection['internal_id'], inspection['data']['link'], target: '_blank'
+    %td= inspection['regulator']
+    %td= inspection['data']['activity_type']
+    %td= inspection['data']['risk']
+    %td= inspection['data']['date_finish']
+    %td
+      = inspection['data']['sanction']

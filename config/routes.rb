@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
   get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
   get 'external_api/judicial_register/:repair_id' => 'external_api#judicial_register', as: 'external_api_judicial_register'
+  get 'external_api/inspections/:repair_id' => 'external_api#inspections', as: 'external_api_inspections'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
