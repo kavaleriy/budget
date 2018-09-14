@@ -110,10 +110,15 @@ class ExternalApiController < ApplicationController
 
       company_data = ExternalApi.inspections(@repairing_repairs.edrpou_artist)
 
+      # company_data = inspections_list(@repairing_repairs.edrpou_artist)
+      # @company_data1 = company_data
+      # company_data = ExternalApi.inspections('22189570')
+      # binding.pry
       unless company_data['items'].blank?
-        inspections = company_data['items'].select { |item| item["data"]["sanction"].present? }
-
-        @inspections = Kaminari.paginate_array(inspections).page(params[:page]).per(10)
+        inspections_arr = build_inspections_arr(company_data['items'])
+        # inspections = company_data['items'].select { |item| item["data"].present? && item["data"]["sanction"].present? }
+        # binding.pry
+        @inspections = Kaminari.paginate_array(inspections_arr).page(params[:page]).per(10)
         format.html { render partial: 'external_api/inspections/inspections_table', layout: false }
         format.js do
           render file: 'external_api/inspections/inspections',
@@ -169,6 +174,32 @@ class ExternalApiController < ApplicationController
     else
       id
     end
+  end
+
+  def build_inspections_arr(inspections)
+    inspections_arr = []
+    inspections.each do |item|
+      inspection =
+        {
+          id: item['internal_id'],
+          link: item['data'].try(:[], 'link'),
+          reason_pdf: "http://cdn.inspections.gov.ua/#{item['internal_id']}/reason.pdf",
+          result_act_pdf: "http://cdn.inspections.gov.ua/#{item['internal_id']}/result_act.pdf",
+          regulator: item['regulator'],
+          activity_type: item['data'].try(:[], 'activity_type') || item['plan'].try(:[], 'activity_type'),
+          risk: item['data'].try(:[], 'risk') || item['plan'].try(:[], 'risk'),
+          status: item['data'].try(:[], 'status') || item['plan'].try(:[], 'status'),
+          date_finish: item['data'].try(:[], 'date_finish'),
+          sanction_sum:
+            if item['data'].present? && item['data']['sanction'].present?
+              item['data']['sanction'].map{|sanction| sanction['regulator']['sanction_fine_amount'].to_i}.reduce(:+)
+            end
+        }
+
+      inspections_arr.push(inspection)
+    end
+
+    inspections_arr
   end
 
 end

@@ -46,7 +46,6 @@
         }
       }
     }
-
   }
   // hide sidebar for share
   .addthis-smartlayers-desktop {
@@ -56,27 +55,16 @@
 
 -if @inspections.blank?
   = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
-  -#= t('.no-data')
-
-  -#:javascript
-  -#  $(document).ready(function() {
-  -#    $('.sharing').hide();
-  -#  });
-
 -else
   #judicial_decisions.table-responsive
     %table.table.table-striped
       %thead
-        -# #
-        -# контролюючий орган,
-        -# предмет перевірки,
-        -# ступінь ризику,
-        -# дата завершення перевірки,
-        -# накладені санкції(грн.)
-
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
             = '#'
+        %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
+          %span
+            = 'Документи'
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
             = 'Контролюючий орган'
@@ -88,13 +76,16 @@
             = 'Ступінь ризику'
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
-            = 'Дата завершення перевірки'
+            = 'Статус'
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
-            = 'Накладені санкції(грн.)'
+            = 'Дата завершення перевірки'
+        %th{'data-column' => :sanction_sum, 'data-sort-direction' => 'desc'}
+          %span
+            = 'Накладені санкції (грн.)'
 
       = render partial: 'external_api/inspections/search_inspections_results'
-
+    -#= @company_data1
     #pagination.text-center
       = paginate @inspections, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
 

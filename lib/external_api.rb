@@ -91,7 +91,7 @@ class ExternalApi
   end
 
   def self.inspections(erdpou)
-    url = "http://api.ias.brdo.com.ua/v1/inspections?apiKey=#{ENV['INSPECTIONS_API_KEY']}&code=#{erdpou}"
+    url = "http://api.ias.brdo.com.ua/v1/inspection?apiKey=#{ENV['INSPECTIONS_API_KEY']}&code=#{erdpou}"
     get_request(url) rescue nil
   end
 
