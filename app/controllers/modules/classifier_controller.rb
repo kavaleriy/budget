@@ -1,4 +1,5 @@
 include BudgetFileUpload
+include Inspections
 module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:search_data, :advanced_search, :by_type, :by_edrpou]
@@ -89,6 +90,18 @@ module Modules
         format.json { render json: @judicial_decisions }
         unless params[:sort_col].blank?
           format.js { render 'external_api/judicial_register/sort_data_bot' }
+        end
+      end
+    end
+
+    def search_inspections
+      data = sort_inspections
+      @inspections = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
+
+      respond_to do |format|
+        format.json { render json: @inspections }
+        unless params[:sort_col].blank?
+          format.js { render 'external_api/inspections/sort_inspections' }
         end
       end
     end
@@ -214,6 +227,21 @@ module Modules
       end
       # Results
       payments_data
+    end
+
+    def sort_inspections
+      # binding.pry
+      inspections = ExternalApi.inspections(params[:edrpou])['items']
+      inspections_arr = build_inspections_arr(inspections)
+      sort_col = params[:sort_col].blank? ? :date_finish : params[:sort_col]
+      unless inspections_arr.blank?
+        inspections_arr.sort_by! do |hash|
+          hash[sort_col.to_s]
+        end
+        inspections_arr.reverse! unless params[:sort_dir].eql?('asc')
+      end
+      # Results
+      inspections_arr
     end
 
     def sort_data_bot

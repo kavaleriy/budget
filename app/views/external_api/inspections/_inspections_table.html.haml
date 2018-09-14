@@ -3,7 +3,7 @@
   $active: #ffd304;
   $text: #0c2231;
 
-  #judicial_decisions {
+  #inspections {
     table {
       thead {
         th {
@@ -56,7 +56,7 @@
 -if @inspections.blank?
   = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
 -else
-  #judicial_decisions.table-responsive
+  #inspections.table-responsive
     %table.table.table-striped
       %thead
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
@@ -77,7 +77,7 @@
         %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
           %span
             = 'Статус'
-        %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
+        %th.active{'data-column' => :date_finish, 'data-sort-direction' => 'desc'}
           %span
             = 'Дата завершення перевірки'
         %th{'data-column' => :sanction_sum, 'data-sort-direction' => 'desc'}
