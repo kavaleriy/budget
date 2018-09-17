@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'external_api/edr/:repair_id' => 'external_api#edr',as: 'external_api_edr'
   get 'external_api/no_data_yet' => 'external_api#no_data_yet',as: 'external_api_no_data_yet'
   get 'external_api/judicial_register/:repair_id' => 'external_api#judicial_register', as: 'external_api_judicial_register'
+  get 'external_api/inspections/:repair_id' => 'external_api#inspections', as: 'external_api_inspections'
 
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
@@ -46,6 +47,7 @@ Rails.application.routes.draw do
     get 'classifier/direct_link' => 'classifier#direct_link', as: 'classifier_direct_link'
     get 'classifier/select_collection' => 'classifier#select_collection', as: 'classifier_select_collection'
     get 'classifier/search_data_bot' => 'classifier#search_data_bot', as: 'classifier_search_data_bot'
+    get 'classifier/search_inspections' => 'classifier#search_inspections', as: 'classifier_search_inspections'
     resources :budget_news
     resources :sliders
     patch '/sliders/crop_update/:id' => 'sliders#crop_update', as: 'crop_p'

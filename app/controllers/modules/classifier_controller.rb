@@ -1,4 +1,5 @@
 include BudgetFileUpload
+include Inspections
 module Modules
   class ClassifierController < ApplicationController
     before_action :town, only: [:search_data, :advanced_search, :by_type, :by_edrpou]
@@ -89,6 +90,18 @@ module Modules
         format.json { render json: @judicial_decisions }
         unless params[:sort_col].blank?
           format.js { render 'external_api/judicial_register/sort_data_bot' }
+        end
+      end
+    end
+
+    def search_inspections
+      data = sort_inspections
+      @inspections = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
+
+      respond_to do |format|
+        format.json { render json: @inspections }
+        unless params[:sort_col].blank?
+          format.js { render 'external_api/inspections/sort_inspections' }
         end
       end
     end
@@ -217,18 +230,27 @@ module Modules
     end
 
     def sort_data_bot
-      # Data
       judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['items']
+      sort_hash(judicial_decisions, 'receipt_date')
+    end
+
+    def sort_inspections
+      inspections = ExternalApi.inspections(params[:edrpou])['items']
+      inspections_list = build_inspections_arr(inspections)
+      sort_hash(inspections_list, 'date_finish')
+    end
+
+    def sort_hash(data_hash, default_sort_col)
       # Sort data
-      sort_col = params[:sort_col].blank? ? 'receipt_date' : params[:sort_col]
-      unless judicial_decisions.blank?
-        judicial_decisions.sort_by! do |hash|
+      sort_col = params[:sort_col].blank? ? default_sort_col : params[:sort_col]
+      unless data_hash.blank?
+        data_hash.sort_by! do |hash|
           hash[sort_col.to_s]
         end
-        judicial_decisions.reverse! unless params[:sort_dir].eql?('asc')
+        data_hash.reverse! unless params[:sort_dir].eql?('asc')
       end
       # Results
-      judicial_decisions
+      data_hash
     end
 
     def start_date(period)
