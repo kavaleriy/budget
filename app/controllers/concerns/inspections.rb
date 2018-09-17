@@ -12,7 +12,8 @@ module Inspections
           'activity_type' => item['data'].try(:[], 'activity_type') || item['plan'].try(:[], 'activity_type'),
           'risk' => item['data'].try(:[], 'risk') || item['plan'].try(:[], 'risk'),
           'status' => item['data'].try(:[], 'status') || item['plan'].try(:[], 'status'),
-          'date_finish' =>  item['data'].try(:[], 'date_finish') || '',
+          'date_start' => (item['data'].try(:[], 'date_start') || item['plan'].try(:[], 'date_start') || '').try(:slice, 0, 10),
+          'date_finish' => item['data'].try(:[], 'date_finish').try(:slice, 0, 10) || '',
           'sanction_sum' => calculate_sum(item).to_s || ''
         }
 
