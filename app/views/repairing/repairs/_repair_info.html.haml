@@ -260,6 +260,13 @@
       #inspections.api-text
         #inspections-table
           %tbody
+    - if @repairing_repair.edrpou_artist.present?
+      .api
+        = link_to "https://clarity-project.info/edr/#{@repairing_repair.edrpou_artist}/taxes",
+                  id: 'clarity-link',
+                  target: '_blank' do
+          %i.fa.fa-suitcase.icon
+          = t('.clarity')
 
   - if @repairing_repair.permit_appeal?
     = render partial: 'scenarios'
@@ -268,7 +275,7 @@
 
 :javascript
   $(document).ready(function() {
-    $('.api > a').not('#acm-link').click(function() {
+    $('.api > a').not('#acm-link, #clarity-link').click(function() {
       $('#spinner-container').trigger('spinner:run')
     })
 
