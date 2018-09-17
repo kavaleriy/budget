@@ -7,9 +7,7 @@ module Inspections
       inspection =
         {
           'id' => item['internal_id'],
-          'link' => item['data'].try(:[], 'link'),
-          'reason_pdf' => "http://cdn.inspections.gov.ua/#{item['internal_id']}/reason.pdf",
-          'result_act_pdf' => "http://cdn.inspections.gov.ua/#{item['internal_id']}/result_act.pdf",
+          'link' => item['data'].try(:[], 'link') || item['plan'].try(:[], 'link'),
           'regulator' => item['regulator'],
           'activity_type' => item['data'].try(:[], 'activity_type') || item['plan'].try(:[], 'activity_type'),
           'risk' => item['data'].try(:[], 'risk') || item['plan'].try(:[], 'risk'),

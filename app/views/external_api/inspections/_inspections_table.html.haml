@@ -7,23 +7,27 @@
     table {
       thead {
         th {
-          white-space: nowrap;
+          padding: 2px;
+          white-space: normal;
           min-width: 90px;
           cursor: pointer;
+          vertical-align: top;
           opacity: .7;
           &:hover {
             opacity: 1;
           }
           span {
             &:before {
-              content: '\f0ec';
+              content: '\f175';
               font-family: FontAwesome;
               font-size: 12px;
-              -ms-transform: rotate(90deg); /* IE 9 */
-              -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
-              transform: rotate(90deg);
               float: left;
               margin-right: 5px;
+            }
+          }
+          &.active{
+            span:before {
+              color: $active;
             }
           }
         }
@@ -56,16 +60,12 @@
 -if @inspections.blank?
   = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
 -else
-  -I18n.locale= 'en'
   #inspections.table-responsive
     %table.table.table-striped
       %thead
-        %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
+        %th.active{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
           %span
             = '№'
-        %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
-          %span
-            = t('external_api.inspections.documents')
         %th{'data-column' => 'regulator', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.inspections.control_body')
@@ -78,12 +78,15 @@
         %th{'data-column' => 'status', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.inspections.status')
-        %th.active{'data-column' => 'date_finish', 'data-sort-direction' => 'desc'}
+        %th{'data-column' => 'date_finish', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.inspections.date_finish')
         %th{'data-column' => 'sanction_sum', 'data-sort-direction' => 'desc'}
           %span
             = t('external_api.inspections.imposed_sanctions')
+        %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.documents')
 
       = render partial: 'external_api/inspections/search_inspections_results'
 
