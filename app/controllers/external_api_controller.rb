@@ -125,7 +125,7 @@ class ExternalApiController < ApplicationController
                  }
         end
       else
-        message = t('external_api.judicial_register.no_data_message')
+        message = t('external_api.inspections.no_data_message')
         lack_data(format, selector, message)
       end
     end

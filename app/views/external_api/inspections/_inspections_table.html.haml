@@ -56,42 +56,42 @@
 -if @inspections.blank?
   = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
 -else
+  -I18n.locale= 'en'
   #inspections.table-responsive
     %table.table.table-striped
       %thead
         %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
           %span
-            = '#'
-        %th{'data-column' => 'judgment_code', 'data-sort-direction' => 'desc'}
+            = '№'
+        %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
           %span
-            = 'Документи'
+            = t('external_api.inspections.documents')
         %th{'data-column' => 'regulator', 'data-sort-direction' => 'desc'}
           %span
-            = 'Контролюючий орган'
+            = t('external_api.inspections.control_body')
         %th{'data-column' => 'activity_type', 'data-sort-direction' => 'desc'}
           %span
-            = 'Предмет перевірки'
+            = t('external_api.inspections.subject_verification')
         %th{'data-column' => 'risk', 'data-sort-direction' => 'desc'}
           %span
-            = 'Ступінь ризику'
+            = t('external_api.inspections.risk')
         %th{'data-column' => 'status', 'data-sort-direction' => 'desc'}
           %span
-            = 'Статус'
-        %th.active{'data-column' => :date_finish, 'data-sort-direction' => 'desc'}
+            = t('external_api.inspections.status')
+        %th.active{'data-column' => 'date_finish', 'data-sort-direction' => 'desc'}
           %span
-            = 'Дата завершення перевірки'
-        %th{'data-column' => :sanction_sum, 'data-sort-direction' => 'desc'}
+            = t('external_api.inspections.date_finish')
+        %th{'data-column' => 'sanction_sum', 'data-sort-direction' => 'desc'}
           %span
-            = 'Накладені санкції (грн.)'
+            = t('external_api.inspections.imposed_sanctions')
 
       = render partial: 'external_api/inspections/search_inspections_results'
-    -#= @company_data1
+
     #pagination.text-center
       = paginate @inspections, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
 
-    -#.copyright_info
+    .copyright_info
       %p
-        *Інформація щодо фізичних осіб-підприємців недоступна у зв'язку з особливістю роботи судового реєстру.
-      %p
-        **
-        = render partial: 'external_api/thanks_data_bot'
+        *Дані надаються порталом
+        = link_to  'inspections.gov.ua', 'https://inspections.gov.ua/', target: '_blank'
+        Державної Регуляторної Служби, починаючи з 2018 року.

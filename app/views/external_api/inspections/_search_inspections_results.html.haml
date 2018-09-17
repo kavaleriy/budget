@@ -1,12 +1,16 @@
--#-binding.pry
 - @inspections.each do |inspection|
   -# item can be with data(not_planned) or plan(is_planned) hash
   %tr{'data-edrpou' => inspection['id']}
     %td
       = link_to inspection['id'], inspection['link'], target: '_blank'
     %td
-      = link_to 'Причина перевірки', inspection['reason_pdf'], target: '_blank'
-      = link_to 'Результат перевірки', inspection['result_act_pdf'], target: '_blank'
+      = link_to t('external_api.inspections.document_links.verification_reason'),
+                inspection['reason_pdf'],
+                target: '_blank'
+      = link_to t('external_api.inspections.document_links.verification_result'),
+                inspection['result_act_pdf'],
+                target: '_blank'
+
     %td= inspection['regulator']
     %td= inspection['activity_type']
     %td= inspection['risk']
