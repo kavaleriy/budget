@@ -111,22 +111,17 @@ class ExternalApiController < ApplicationController
       lack_data(format, selector) if @repairing_repairs.edrpou_artist.blank?
 
       company_data = ExternalApi.inspections(@repairing_repairs.edrpou_artist)
-
-      # company_data = inspections_list(@repairing_repairs.edrpou_artist)
-      # @company_data1 = company_data
-      # company_data = ExternalApi.inspections('22189570')
-      # binding.pry
+      # company_data = ExternalApi.inspections('22189570') # test PrivatBank
       unless company_data['items'].blank?
-        inspections_arr = build_inspections_arr(company_data['items'])
-        # inspections = company_data['items'].select { |item| item["data"].present? && item["data"]["sanction"].present? }
-        # binding.pry
-        @inspections = Kaminari.paginate_array(inspections_arr).page(params[:page]).per(10)
+        inspections_list = build_inspections_arr(company_data['items'])
+
+        @inspections = Kaminari.paginate_array(inspections_list).page(params[:page]).per(10)
         format.html { render partial: 'external_api/inspections/inspections_table', layout: false }
         format.js do
           render file: 'external_api/inspections/inspections',
                  locals: {
-                     selector: selector,
-                     partial_name: 'external_api/inspections/inspections_table'
+                   selector: selector,
+                   partial_name: 'external_api/inspections/inspections_table'
                  }
         end
       else

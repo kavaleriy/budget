@@ -229,34 +229,28 @@ module Modules
       payments_data
     end
 
-    def sort_inspections
-      # binding.pry
-      inspections = ExternalApi.inspections(params[:edrpou])['items']
-      inspections_arr = build_inspections_arr(inspections)
-      sort_col = params[:sort_col].blank? ? :date_finish : params[:sort_col]
-      unless inspections_arr.blank?
-        inspections_arr.sort_by! do |hash|
-          hash[sort_col.to_s]
-        end
-        inspections_arr.reverse! unless params[:sort_dir].eql?('asc')
-      end
-      # Results
-      inspections_arr
+    def sort_data_bot
+      judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['items']
+      sort_hash(judicial_decisions, 'receipt_date')
     end
 
-    def sort_data_bot
-      # Data
-      judicial_decisions = ExternalApi.data_bot_decisions(params[:edrpou])['items']
+    def sort_inspections
+      inspections = ExternalApi.inspections(params[:edrpou])['items']
+      inspections_list = build_inspections_arr(inspections)
+      sort_hash(inspections_list, 'date_finish')
+    end
+
+    def sort_hash(data_hash, default_sort_col)
       # Sort data
-      sort_col = params[:sort_col].blank? ? 'receipt_date' : params[:sort_col]
-      unless judicial_decisions.blank?
-        judicial_decisions.sort_by! do |hash|
+      sort_col = params[:sort_col].blank? ? default_sort_col : params[:sort_col]
+      unless data_hash.blank?
+        data_hash.sort_by! do |hash|
           hash[sort_col.to_s]
         end
-        judicial_decisions.reverse! unless params[:sort_dir].eql?('asc')
+        data_hash.reverse! unless params[:sort_dir].eql?('asc')
       end
       # Results
-      judicial_decisions
+      data_hash
     end
 
     def start_date(period)
