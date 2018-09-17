@@ -10,10 +10,10 @@
     %td= inspection['date_finish']
     %td= inspection['sanction_sum']
     %td
-      - if inspection['reason_pdf'].present?
+      - if inspection['status'].eql?('Проведено')
         = link_to t('external_api.inspections.document_links.verification_reason'),
-                  inspection['reason_pdf'],
+                  "http://cdn.inspections.gov.ua/#{inspection['internal_id']}/reason.pdf",
                   target: '_blank'
         = link_to t('external_api.inspections.document_links.verification_result'),
-                  inspection['result_act_pdf'],
+                  "http://cdn.inspections.gov.ua/#{inspection['internal_id']}/result_act.pdf",
                   target: '_blank'
