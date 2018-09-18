@@ -150,7 +150,7 @@
       });
 
       // generate array uniq years
-      data_years = Array.from(new Set(years));
+      data_years = Array.from(new Set(years.sort()));
 
       //info for this graph
       $("#code-title").text(chart_info['title']);
