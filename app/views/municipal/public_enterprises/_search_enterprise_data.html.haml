@@ -179,7 +179,7 @@
       $.ajax({
         url: path,
         type: "GET",
-        async: false,
+        // async: false, // hide for responsive charts on fullscreen
         dataType: 'script',
         data: {
           enterprise_id: $('#_enterprises').val(),
@@ -189,7 +189,7 @@
           $.ajax({
             url: path,
             type: "GET",
-            async: false,
+            // async: false,
             dataType: 'json',
             data: {
               enterprise_id: $('#_enterprises').val(),
