@@ -9,7 +9,8 @@ module Municipal
 
     def index
       @municipal_enterprise_files = current_user.region_admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
-      # @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])          unless params['year'].blank?
 
       @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
       @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page])

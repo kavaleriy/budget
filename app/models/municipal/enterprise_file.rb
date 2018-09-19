@@ -18,6 +18,8 @@ module Municipal
     field :file_type, type: String
     field :year, type: Integer
 
+    scope :by_year, lambda { |year| where(year: year) }
+
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
     belongs_to :owner, class_name: 'User'
     has_many :code_values, class_name: 'Municipal::CodeValue', dependent: :destroy

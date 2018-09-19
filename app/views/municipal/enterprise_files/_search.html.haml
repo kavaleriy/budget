@@ -17,6 +17,16 @@
       %span.input-group-addon
         %b= t('budget_files.index.type_select.type')
       = select_tag :taxonomy_type, options_for_select({"" => "", "TaxonomyRot" => "TaxonomyRot"}), id: 'taxonomy_type', class: 'form-control'
+
+  .col-sm-12.col-md-2.form-inline
+    .input-group
+      %span.input-group-addon
+        %b
+          =t('year')
+      = select_tag :year, options_for_select(years_from(2010)),
+                          include_blank: true,
+                          id: 'layer_year',
+                          class: 'form-control'
   .col-sm-6.col-md-1
     = button_tag(type: 'submit', class: 'btn btn-primary', id: 'search_btn') do
       = t('form.search')
