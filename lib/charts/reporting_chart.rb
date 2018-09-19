@@ -18,7 +18,7 @@ module Charts
     def self.build_line(enterprise_id, code)
       return {} if code.blank?
       file_type = code.first.eql?(Municipal::EnterpriseFile::FORM_1) ? Municipal::EnterpriseFile::FORM_1 : Municipal::EnterpriseFile::FORM_2
-      files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, file_type: file_type)
+      files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, file_type: file_type).order(year: :asc)
       code_info = Municipal::CodeDescription.where(code: code).first
       title = code_info.try(:title)
       desc = code_info.try(:description)
