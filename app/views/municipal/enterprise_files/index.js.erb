@@ -1,2 +1,4 @@
 $('#search-results').html('<%= escape_javascript( render partial: 'search_results', locals: { enterprise_files: @municipal_enterprise_files } ) %>')
 
+$('.paginator').html('<%= escape_javascript(paginate(@municipal_enterprise_files, :remote => true)) %>')
+
