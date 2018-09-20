@@ -4,7 +4,7 @@
 
   .col-sm-12.col-md-2.enterprise_select
     = select_tag :enterprise,
-                 options_for_select(Municipal::Enterprise.all.map {|ent| [ ent[:title], ent[:id] ] }),
+                 options_for_select(Municipal::Enterprise.pluck(:title, :id)),
                  prompt: '',
                  id: 'enterprise_select',
                  class: 'form-control'
