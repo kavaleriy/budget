@@ -18,7 +18,11 @@ module Municipal
     field :file_type, type: String
     field :year, type: Integer
 
-    scope :by_year, lambda { |year| where(year: year) }
+    scope :by_enterprise, ->(ent) { where(enterprise: ent) }
+    scope :by_year, ->(year) { where(year: year) }
+    scope :by_file_type, ->(type) { where(file_type: type) }
+    scope :by_file_name, ->(text) { where(file: /.*#{text}.*/) }
+
 
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
     belongs_to :owner, class_name: 'User'
@@ -26,6 +30,10 @@ module Municipal
 
     validates_presence_of :enterprise, :file_type, :year, :file
     validates_uniqueness_of :year, scope: [:file_type, :enterprise]
+
+    def town
+      owner.town_model.title
+    end
 
     def self.type_files
       [

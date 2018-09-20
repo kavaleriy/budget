@@ -4,16 +4,20 @@ module Municipal
     helper_method :sort_column, :sort_direction
     before_action :set_municipal_enterprise_file, only: [:show, :edit, :update, :destroy, :show_code_values]
     before_action :set_enterprises, only: [:new, :edit, :create]
+    before_action :set_file_types, only: [:index, :new, :edit, :create]
 
     respond_to :html
 
     def index
       @municipal_enterprise_files = current_user.region_admin? ? Municipal::EnterpriseFile.all : Municipal::EnterpriseFile.by_town(current_user.town_model)
-      @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])   if params['town_select'].present?
-      @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])          unless params['year'].blank?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_town(params['town_select'])       if params['town_select'].present?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_enterprise(params['enterprise'])  unless params['enterprise'].blank?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_file_type(params['file_type'])    unless params['file_type'].blank?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])              unless params['year'].blank?
+      @municipal_enterprise_files = @municipal_enterprise_files.by_file_name(params['file_name'])    unless params['file_name'].blank?
 
       @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
-      @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page])
+      @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page]).per(25)
 
       respond_to do |format|
         format.js
@@ -97,6 +101,9 @@ module Municipal
 
     def set_enterprises
       enterprises_by_town(current_user.town_model)
+    end
+
+    def set_file_types
       @type_files = Municipal::EnterpriseFile.type_files
     end
 

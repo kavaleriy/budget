@@ -12,9 +12,28 @@
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
     }
+    .documents_search{
+      .enterprise_select{
+        .form-control{
+          border-radius: 0;
+          border: none;
+          .select2-choice{
+            border-radius: 0;
+            &>.select2-chosen {
+              line-height: 32px;
+            }
+            .select2-arrow {
+              display: none;
+            }
+          }
+        }
+      }
+    }
     #search-results{
       .table-body{
         margin-top: 5px;
+        .town,
+        .file-type,
         .title-file,
         .email{
           overflow: hidden;
@@ -50,12 +69,14 @@
     .row
       .col-sm-3
         = sortable 'enterprise_id', t('enterprise_files.municipal_enterprise')
-      .col-sm-2
+      .col-sm-1
+        = t('owner')
+      .col-sm-1
         = sortable 'file_type', t('enterprise_files.accounting')
       .col-sm-1
-        = sortable 'year', t('year')
+        = sortable 'year', t('lower_year')
       .col-sm-3
-        = sortable 'file', t('title')
+        = sortable 'file', t('file')
       .col-sm-2
         = sortable 'owner_id', t('author')
       .col-sm-1

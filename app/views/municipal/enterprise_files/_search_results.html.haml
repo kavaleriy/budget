@@ -6,13 +6,19 @@
           .row
             .col-xs-4.visible-sm.visible-xs
               = t('modules.classifier.by_type.edrpou')
-            .col-xs-8.col-md-12
+            .col-xs-8.col-md-12.enterprise
               = file.enterprise.try(:title)
-        .col-sm-12.col-md-2.reset-padding
+        .col-sm-12.col-md-1.reset-padding
+          .row
+            .col-xs-4.visible-sm.visible-xs
+              = t('owner')
+            .col-xs-8.col-md-12.town
+              = file.town
+        .col-sm-12.col-md-1.reset-padding
           .row
             .col-xs-4.visible-sm.visible-xs
               = t('enterprise_files.accounting')
-            .col-xs-8.col-md-12
+            .col-xs-8.col-md-12.file-type
               = t('enterprise_files.type_files.form_' + file.file_type)
         .col-sm-12.col-md-1.reset-padding
           .row
@@ -23,7 +29,7 @@
         .col-sm-12.col-md-3.reset-padding
           .row
             .col-xs-4.visible-sm.visible-xs
-              = t('title')
+              = t('file')
             .col-xs-8.col-md-12.title-file
               = file.file_identifier
         .col-sm-12.col-md-2.reset-padding
