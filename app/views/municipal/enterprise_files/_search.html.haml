@@ -23,7 +23,7 @@
     .input-group
       %span.input-group-addon
         %b
-          =t('lower_year')
+          = t('lower_year')
       = select_tag :year, options_for_select(select_years(10)),
                           include_blank: true,
                           id: 'file_year',

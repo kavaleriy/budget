@@ -23,7 +23,6 @@ module Municipal
     scope :by_file_type, ->(type) { where(file_type: type) }
     scope :by_file_name, ->(text) { where(file: /.*#{text}.*/) }
 
-
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
     belongs_to :owner, class_name: 'User'
     has_many :code_values, class_name: 'Municipal::CodeValue', dependent: :destroy
