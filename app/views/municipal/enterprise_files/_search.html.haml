@@ -23,10 +23,10 @@
     .input-group
       %span.input-group-addon
         %b
-          =t('file_year')
+          =t('lower_year')
       = select_tag :year, options_for_select(select_years(10)),
                           include_blank: true,
-                          id: 'layer_year',
+                          id: 'file_year',
                           class: 'form-control'
 
   .col-sm-12.col-md-3
