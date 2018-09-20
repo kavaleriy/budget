@@ -125,6 +125,21 @@
         }
       }
 
+      function chart_years() {
+        // generate array uniq years
+        $.each(data, function(index, value) {
+          $.each(value[code]['years'], function(key){
+            if (years.indexOf(key) === -1) {
+              years.push(key);
+            }
+          });
+        })
+
+        return years.sort();
+      }
+
+      data_years = chart_years();
+
       // *build data average line chart
       default_data(0, 'Середнє значення');
       data_chart[0]['borderDash'] = [15, 5];
@@ -134,12 +149,20 @@
         var i = 0;
         default_data(new_index, value['title']);
 
-        $.each(value[code]['years'], function(k, v){
-          years.push(k);
-          data_chart[new_index]['data'].push(v);
+        $.each(years, function(k, v){
+          var code_val;
 
-          // *sum all values by year
-          data_chart[0]['data'][i] = (data_chart[0]['data'][i] + v || v);
+          if(value[code]['years'][v]){
+            code_val = value[code]['years'][v];
+          }
+          else{
+            code_val = 0;
+          }
+
+          // set value for each year
+          data_chart[new_index]['data'].push(code_val);
+          // sum values by year
+          data_chart[0]['data'][i] = (data_chart[0]['data'][i] + code_val || code_val);
           i += 1;
         });
       })
@@ -148,9 +171,6 @@
       $.each(data_chart[0]['data'], function(k, v){
         data_chart[0]['data'][k] = v / data.length;
       });
-
-      // generate array uniq years
-      data_years = Array.from(new Set(years));
 
       //info for this graph
       $("#code-title").text(chart_info['title']);
