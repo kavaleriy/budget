@@ -58,8 +58,8 @@ module Modules
         end
       end
 
-      #  @payer_name for paywatch iframe
-      @payer_name = classifier_name || data.try(:first).try(:[], "payer_name")
+      #  payer or receipt name for paywatch iframe
+      @payer_name = classifier_name || data.try(:first).try(:[], paywatch_name)
       @payments = Kaminari.paginate_array(data).page(params[:page]).per(10) unless data.blank?
 
       # this variable are using for chart
@@ -281,5 +281,10 @@ module Modules
       classifier = Classifier.find_by(edrpou: code) rescue nil
       classifier.try(:pnaz)
     end
+
+    def paywatch_name
+      params[:payers_edrpous].present? ? 'payer_name' : 'recipt_name'
+    end
+
   end
 end
