@@ -447,6 +447,34 @@
       $("#items-list").show();
     });
 
+    // If user input new code edrpou
+    // set this code and search transactions
+    $('input.select2-input').on('keyup', function(e) {
+      var value = e.target.value;
+      if(e.keyCode == 13 && check_edrpou(value)){
+        // add zero if edrpou short (56789 ~ 00056789)
+        var select_value =  value.padStart(8, 0);
+
+        // for payers_select as 4th select2
+        if (e.target.id == 's2id_autogen4_search'){
+          $('#_item_payers').select2('data', { id: value, text: value });
+          $('#_item_payers').select2('close');
+        }
+
+        // for recipts_select as 5th select2
+        if (e.target.id == 's2id_autogen5_search'){
+          $('#_item_recipt').select2('data', { id: value, text: value });
+          $('#_item_recipt').select2('close');
+        }
+      }
+    })
+
+    function check_edrpou(edrpou){
+      // regex from 5 to 8 number length
+      var length_regex = /^[0-9]{5,8}$/;
+      return length_regex.test(edrpou);
+    }
+
     // add action for search button
     $('#search').on('click', function(e){
       classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
