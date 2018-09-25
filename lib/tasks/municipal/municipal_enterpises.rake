@@ -32,7 +32,7 @@ namespace :enterprises do
 
     statuses = Municipal::CodeStatus.all
     statuses.each_with_index do |status, i|
-      unless StatusCode::SetStatus.code_desc?(status.code)
+      unless StatusCode::SetStatus.code_desc_exists?(status.code)
         p "#{i} - #{status.code} - #{status.title}"
         status.destroy
       end
