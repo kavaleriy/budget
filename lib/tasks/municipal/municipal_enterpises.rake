@@ -25,4 +25,17 @@ namespace :enterprises do
       enterprise.save
     end
   end
+
+  desc "delete code statuses without code description"
+  task delete_statuses: :environment do
+    require 'status_code/set_status'
+
+    statuses = Municipal::CodeStatus.all
+    statuses.each_with_index do |status, i|
+      unless StatusCode::SetStatus.code_desc?(status.code)
+        p "#{i} - #{status.code} - #{status.title}"
+        status.destroy
+      end
+    end
+  end
 end

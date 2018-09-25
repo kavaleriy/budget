@@ -67,7 +67,7 @@ module StatusCode
       codes = reports_code_values(report_files.first, report_files.second)
 
       codes.each do |code|
-        save_status(code, enterprise_file.enterprise)
+        save_status(code, enterprise_file.enterprise) if code_desc?(code)
       end
     end
 
@@ -78,8 +78,12 @@ module StatusCode
 
       codes = analysis_code_values(analysis_values)
       codes.each do |code|
-        save_status(code, enterprise_file.enterprise)
+        save_status(code, enterprise_file.enterprise) if code_desc?(code)
       end
+    end
+
+    def self.code_desc?(code)
+      Municipal::CodeDescription.where(code: code).exists?
     end
 
     def self.reports_code_values(file_1, file_2)
