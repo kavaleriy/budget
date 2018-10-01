@@ -1,7 +1,7 @@
 class CurrenciesController < ApplicationController
   before_action :set_currency, only: [:show, :edit, :update, :destroy, :rate_by_year]
 
-  before_action :authenticate_user!, except: [:show, :town_profile]
+  before_action :authenticate_user!, except: [:show, :town_profile, :by_currency]
   load_and_authorize_resource
 
   def rate_by_year
@@ -83,6 +83,14 @@ class CurrenciesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to currencies_url, notice: 'Currency was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def by_currency
+    @rates = Currency.find_by!(short_title: params[:unit]).rates
+
+    respond_to do |format|
+      format.json { render json: @rates, status: :ok }
     end
   end
 

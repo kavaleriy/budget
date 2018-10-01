@@ -82,6 +82,7 @@
     }
   }
 
+= javascript_include_tag 'municipal/chart_unit'
 
 %ul.nav.nav-tabs{role: 'tablist'}
   %li.active
@@ -256,7 +257,9 @@
             pointHoverBackgroundColor: "#ffd304",
             pointHoverBorderColor: "#fff",
 
-            data: data['data'],
+            // data: data['data'],
+
+            data: data_by_select(data['data']),
 
             spanGaps: true,
           }]
