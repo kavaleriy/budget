@@ -87,7 +87,8 @@ class CurrenciesController < ApplicationController
   end
 
   def by_currency
-    @rates = Currency.find_by!(short_title: params[:unit]).rates
+    exchange_rates = Currency.find_by!(short_title: params[:unit]).rates
+    @rates = Hash[exchange_rates.collect { |item| [item.year, item.rate] } ]
 
     respond_to do |format|
       format.json { render json: @rates, status: :ok }

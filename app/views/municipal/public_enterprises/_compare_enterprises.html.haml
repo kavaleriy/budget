@@ -190,8 +190,19 @@
         $('.chartjs-hidden-iframe').remove();
       }
 
-      build_chart(data_years, data_chart)
+      // change unit if chart with UAH unit
+      if (($('#code_types').val() != '3') || (chart_info['unit'] == 'тис.грн.')){
+        change_unit(data_years, data_chart);
+      }
+
+      build_chart(data_years, data_chart);
     }
+
+    function change_unit(years, data){
+      $.each(data, function(key, _value) {
+        data[key]['data'] = unit_chart.data_by_unit(data[key]['data'], years);
+      });
+    };
 
     function build_chart(years, data){
       var ctx = document.getElementById("compare-line-chart").getContext('2d');

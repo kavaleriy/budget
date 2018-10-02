@@ -127,6 +127,8 @@
       = render partial: 'embeded_btn', locals: {url: municipal_enterprise_from_town_path(params[:town_id], params[:enterprise_id] )}
 
 :javascript
+  unit_chart = new ChartUnit;
+
   $(document).ready(function(){
     // show embed_btn if view in town profile
     if ($('#enterprise-analysis').parents('.modules-wrapper').length) {
@@ -221,6 +223,15 @@
       })
     }
 
+    function change_unit(data){
+      if ($('#form_7').hasClass('active')) {
+        return data['data']
+      }
+      else{
+        return unit_chart.data_by_unit(data['data'], data['years']);
+      }
+    };
+
     function build_chart(data){
       var code = data['code'];
       var chart_id = 'chart-' + code;
@@ -258,8 +269,7 @@
             pointHoverBorderColor: "#fff",
 
             // data: data['data'],
-
-            data: data_by_select(data['data']),
+            data: change_unit(data),
 
             spanGaps: true,
           }]
