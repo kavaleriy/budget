@@ -60,11 +60,17 @@
   #enterprise-analysis
     = simple_form_for '', remote: true do |f|
       .row
-        .col-md-offset-3.col-md-6
+        .col-md-offset-2.col-md-5
           = f.input(:enterprises,
             collection: @enterprises.map{ |ent| ["#{ent.title} #{ent.edrpou}", ent.id] },
             placeholder: 'Назва підприємства, ЄДРПОУ',
             input_html: { 'data-town-id' => params['town'] },
+            label: false)
+        .col-md-2
+          = f.input(:amount_select,
+            collection: [[t('amount_uah'), 'uah'], [t('amount_usd'), 'usd'],[t('amount_citizens'), 'citizens']],
+            input_html: { 'data-town-citizens' => @enterprises.first.town.counters.citizens },
+            prompt: false,
             label: false)
         .col-md-3#fullscreen{'data-module' => 'municipal-enterprise'}
           = render partial: 'widgets/town_profile/fullscreen_btn'

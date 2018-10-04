@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       put 'rate_by_year/:year' => 'currencies#rate_by_year'
     end
   end
+  get 'by_currency/:unit' => 'currencies#by_currency'
 
   namespace :community do
     get 'geo_json' => 'communities#geo_json'
