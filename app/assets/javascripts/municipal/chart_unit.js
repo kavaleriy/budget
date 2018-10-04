@@ -56,7 +56,9 @@ function ChartUnit() {
         var count = parseInt($('#_amount_select').attr('data-town-citizens'));
 
         // thousands of hryvnia to the hryvnia
-        return data.map(x => x * 1000 / count);
+        return data.map(function(x){
+            return x * 1000 / count;
+        });
     }
 
     this.set_unit = function(unit){
