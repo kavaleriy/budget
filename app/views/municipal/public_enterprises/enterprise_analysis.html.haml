@@ -68,7 +68,7 @@
             label: false)
         .col-md-2
           = f.input(:amount_select,
-            collection: [[t('amount_uah'), 1], [t('amount_usd'), 2],[t('amount_citizens'), 3]],
+            collection: [[t('amount_uah'), 'uah'], [t('amount_usd'), 'usd'],[t('amount_citizens'), 'citizens']],
             input_html: { 'data-town-citizens' => @enterprises.first.town.counters.citizens },
             prompt: false,
             label: false)
