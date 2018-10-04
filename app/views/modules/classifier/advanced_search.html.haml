@@ -477,13 +477,20 @@
 
     // add action for search button
     $('#search').on('click', function(e){
-      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params());
+      classifier_search("#{modules_classifier_search_e_data_path}", init_search_params(), iframe_src());
       // var title = $('#_item_payers').val() ? I18n.t('modules.classifier.chart.most_received') : I18n.t('modules.classifier.chart.most_payers');
       // $('#most-received .subtitle').html(title);
       $("#items-list").hide();
       $('#entrepreneurs').show();
       e.preventDefault();
     });
+
+    function iframe_src(){
+      var path = "#{modules_classifier_advanced_search_path}";
+      var url = 'https://' + window.location.host + path;
+
+      return url;
+    }
 
     // Show entrepreneurs only. Entrepreneurs have no 'edrpou', that's why passing const 'xxxxxxxxxx'.
     $('#entrepreneurs').on('click', function(e) {
