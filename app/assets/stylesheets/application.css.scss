@@ -9,38 +9,33 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *
- *= require jquery.ui.all.css.erb
- *= require fullcalendar/fullcalendar
- *= require timecircles
- *= require fileupload/jquery.fileupload
- *= require xeditable/bootstrap3-editable/css/bootstrap-editable
- += require xeditable/inputs-ext/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2
- *= require bootstrap-wysihtml5/b3
-
- *= require bootstrap-colorpicker-master/dist/css/bootstrap-colorpicker
- *= require font-awesome
-
- *= require bootstrap-datetimepicker
-
- *= require rails_bootstrap_forms
- *= require select2
- *= require d3.slider
- *= require summernote/summernote
- *= require bootstrap-datepicker/bootstrap-datepicker
-
- new design style
- *= require new_design/owl.carousel.min
-
- *= require selectize
- *= require selectize.default
-
- *= require_self
-
- *= require_tree .
-
-
  */
+
+@import 'jquery.ui.all.css';
+@import 'fullcalendar/fullcalendar';
+@import 'timecircles';
+@import 'fileupload/jquery.fileupload';
+@import 'xeditable/bootstrap3-editable/css/bootstrap-editable';
+@import 'bootstrap-wysihtml5/b3.css';
+
+@import 'bootstrap-colorpicker-master/dist/css/bootstrap-colorpicker';
+@import 'font-awesome.css';
+@import 'bootstrap-datetimepicker';
+
+@import 'rails_bootstrap_forms';
+@import 'select2';
+@import 'd3.slider';
+@import 'summernote/summernote';
+@import 'bootstrap-datepicker/bootstrap-datepicker';
+
+
+@import 'new_design/owl.carousel.min';
+
+@import 'selectize';
+@import 'selectize.default';
+@import 'public/css_public';
+@import 'indicate/indicators';
+//@import 'library/books';
 
 /*WARN: Testing, because sometime footer don`t stick to the bottom*/
 body > .bootstrap_flash {

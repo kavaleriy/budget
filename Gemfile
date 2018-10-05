@@ -12,7 +12,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer',  platforms: :ruby
+# gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -55,8 +55,10 @@ group :development do
 end
 
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
-gem 'less-rails'
-gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
+# gem 'less-rails'
+# gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git', :branch => 'bootstrap3'
+
 # https://github.com/bootstrap-ruby/rails-bootstrap-forms
 gem 'bootstrap_form'
 gem 'bootstrap-wysihtml5-rails', branch: 'b3', git: 'https://github.com/Nerian/bootstrap-wysihtml5-rails.git'

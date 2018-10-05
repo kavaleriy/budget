@@ -1,3 +1,13 @@
+# Version of your assets, change this if you want to expire all your assets.
+# Rails.application.config.assets.version = '1.0'
+
+# Add additional assets to the asset load path.
+# Rails.application.config.assets.paths << Emoji.images_path
+# Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+# Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'stylesheets')
+# Add Yarn node_modules folder to the asset load path.
+# Rails.application.config.assets.paths << Rails.root.join('node_modules')
+
 Rails.application.config.assets.precompile += %w( redrawSvg.js )
 Rails.application.config.assets.precompile += %w( d3.geom.js jquery.history.js raphael.js vis4.js Tween.js bubbletree.js cofog.js )
 Rails.application.config.assets.precompile += %w( biPartite.js sankey.js )
@@ -37,3 +47,6 @@ Rails.application.config.assets.precompile += %w( modules/classifier/daterangepi
 Rails.application.config.assets.precompile += %w( modules/classifier.js )
 Rails.application.config.assets.precompile += %w( spinner.js )
 Rails.application.config.assets.precompile += %w( municipal/chart_unit.js )
+Rails.application.config.assets.precompile += %w( library/books.css.scss )
+Rails.application.config.assets.precompile += %w( indicate/indicators.css.scss )
+Rails.application.config.assets.precompile += %w( widgets/visify.css.scss )
