@@ -55,7 +55,7 @@ group :development do
 end
 
 # https://github.com/seyhunak/twitter-bootstrap-rails/tree/bootstrap3
-gem 'less-rails'
+gem 'less-rails', '~> 2.8.0'
 gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git',  :branch => 'bootstrap3'
 # https://github.com/bootstrap-ruby/rails-bootstrap-forms
 gem 'bootstrap_form'

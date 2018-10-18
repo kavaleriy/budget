@@ -65,9 +65,9 @@ module StatusCode
     def self.reports_statuses(enterprise_file, report_files)
       p "#########  set reports chart status"
       codes = reports_code_values(report_files.first, report_files.second)
-
+      # binding.pry
       codes.each do |code|
-        save_status(code, enterprise_file.enterprise) if code_desc_exists?(code)
+        save_status(code, enterprise_file.enterprise) if code_desc_exists?(code.first)
       end
     end
 
@@ -78,7 +78,7 @@ module StatusCode
 
       codes = analysis_code_values(analysis_values)
       codes.each do |code|
-        save_status(code, enterprise_file.enterprise) if code_desc_exists?(code)
+        save_status(code, enterprise_file.enterprise) if code_desc_exists?(code.first)
       end
     end
 
