@@ -30,7 +30,7 @@ module Municipal
     # end
 
     def show_code_values
-      @code_values = Municipal::CodeValue.by_file(@municipal_enterprise_file)
+      set_code_values
     end
 
     def new
@@ -58,7 +58,8 @@ module Municipal
             ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
             StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
           end
-          format.html { redirect_to municipal_enterprise_files_url, notice: 'Файл успішно додано.' }
+          set_code_values
+          format.html { render action: 'show_code_values', notice: 'Файл успішно додано.' }
         else
           format.html { render action: 'new' }
           format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
@@ -101,6 +102,10 @@ module Municipal
 
     def set_enterprises
       enterprises_by_town(current_user.town_model)
+    end
+
+    def set_code_values
+      @code_values = Municipal::CodeValue.by_file(@municipal_enterprise_file)
     end
 
     def set_file_types

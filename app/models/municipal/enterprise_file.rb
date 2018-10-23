@@ -31,7 +31,7 @@ module Municipal
     validates_uniqueness_of :year, scope: [:file_type, :enterprise]
 
     def town
-      owner.town_model.title
+      enterprise.try(:town).try(:title)
     end
 
     def self.type_files

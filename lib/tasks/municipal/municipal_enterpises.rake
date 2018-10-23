@@ -38,4 +38,17 @@ namespace :enterprises do
       end
     end
   end
+
+  desc "set statuses for last files from 2018-10-08 to 2018-10-21"
+  task add_statuses: :environment do
+    start_date = Date.parse('2018-10-08').beginning_of_day
+    end_date = Date.parse('2018-10-21').end_of_day
+    files = Municipal::EnterpriseFile.where(created_at: start_date..end_date).uniq(&:enterprise_id)
+
+    files.each_with_index do |file, i|
+      p "##{i} -#{file.file_type} - #{file.year} - #{file.enterprise.town.title} - #{file.enterprise.title}"
+      StatusCode::SetStatus.enterprise(file.enterprise)
+    end
+  end
+
 end
