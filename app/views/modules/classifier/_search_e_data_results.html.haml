@@ -4,14 +4,14 @@
     %td.payer_name
       = payment['payer_name']
       %br
-      = "Код:"
+      Код:
       = youcontrol_edrpou_link(payment['payer_edrpou'])
 
     %td
       = payment['recipt_name']
       %br
       -# TODO: create translate if require
-      = "Код:"
+      Код:
       = youcontrol_edrpou_link(payment['recipt_edrpou'])
 
     %td= payment['payment_details']
