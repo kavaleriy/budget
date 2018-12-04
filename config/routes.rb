@@ -87,6 +87,12 @@ Rails.application.routes.draw do
     resources :files
   end
 
+  namespace :communal_property do
+    resources :categories
+    get 'categories_tree_root' => 'categories#tree_root'
+    get 'categories_tree' => 'categories#tree'
+  end
+
   namespace :repairing do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'

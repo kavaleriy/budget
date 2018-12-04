@@ -1,0 +1,148 @@
+= stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
+
+:css
+  .communal_property {
+    min-height: 400px;
+    padding-top: 15px;
+  }
+
+  .communal_property .tree_view{
+    min-height: 400px;
+    padding-top: 15px;
+    overflow-x: auto;
+  }
+
+  .communal_property .documents {
+    overflow: visible;
+  }
+
+= content_for :header do
+  .head.pull-left
+    = t('communal_property.category')
+
+#flash_message.col-xs-12
+
+.communal_property
+
+  .panel.panel-default.col-xs-12.col-md-5
+    .panel-body
+      = render partial: 'tree_control', locals: { prefix: 'communal_property_category' }
+      = render partial: 'tree_view', locals: { prefix: 'communal_property_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+
+  .col-xs-12.col-md-7
+    .panel.panel-default
+      .panel-heading
+        = t('repairing.repairs.form.edit_category')
+      .panel-body#category_content
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#communal_property_category_tree_view').on("changed.jstree", function(e, data){
+      if(data && data.selected && data.selected.length) {
+          $.get('categories/' + data.selected + '?locale=' + "#{params[:locale]}", function (d) {
+          });
+      }
+      else {
+          $('.communal_property #category_content').html('')
+      }
+    });
+
+    $('#communal_property_category_tree_view').on("delete_node.jstree", function(e, data){
+      $.ajax({
+          method: 'DELETE',
+          url: 'categories/' + data.node.id + '.json'
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#communal_property_category_tree_view').on("create_node.jstree", function(e, data){
+      $.ajax({
+          method: 'post',
+          url: '/communal_property/categories',
+          dataType: 'json',
+          data: {
+              communal_property_category: {
+                  category_id: data.node.parent,
+                  title: data.node.text,
+                  position: data.position,
+                  locale: I18n.locale
+              }
+          }
+      })
+      .done(function (d) {
+          data.instance.set_id(data.node, d.id);
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#communal_property_category_tree_view').on("rename_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              communal_property_category: {
+                  title: data.text
+              }
+          }
+      })
+      .fail(function () {
+          console.log("fail rename_node", data)
+          data.instance.refresh();
+      });
+    })
+
+    $('#communal_property_category_tree_view').on("move_node.jstree", function(e, data){
+      $.ajax({
+          method: 'PUT',
+          url: 'categories/' + data.node.id,
+          dataType: 'json',
+          data: {
+              communal_property_category: {
+                  category_id: data.parent,
+                  position: data.position
+              }
+          }
+      })
+      .fail(function () {
+          data.instance.refresh();
+      });
+    })
+
+    $('#communal_property_category_tree_view').on("copy_node.jstree", function(e, data){
+      $.post('/communal_property/categories', {
+          communal_property_category: {
+              category_id: data.node.parent,
+              title: data.node.text,
+              position: data.position
+          }
+      })
+      .always(function () {
+          data.instance.refresh();
+      });
+    })
+
+    var selected_node = null;
+    $('#communal_property_category_tree_view').on("select_node.jstree", function(e, data){
+      if(data.node.id == selected_node){
+        $('#communal_property_category_tree_view').jstree('deselect_all');
+        $('#communal_property_category_create').removeAttr("disabled");
+        $('#category_content').html('');
+        selected_node = null;
+      } else {
+        selected_node = data.node.id;
+        if(data.node.parents.length > 1) {
+          $('#communal_property_category_create').attr("disabled","disabled");
+        } else {
+          $('#communal_property_category_create').removeAttr("disabled");
+        }
+      }
+    })
+
+  })

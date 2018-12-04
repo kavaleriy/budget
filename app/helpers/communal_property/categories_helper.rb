@@ -1,0 +1,2 @@
+module CommunalProperty::CategoriesHelper
+end

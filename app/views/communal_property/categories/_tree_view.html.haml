@@ -1,0 +1,55 @@
+= stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
+:css
+  .jstree-icon.jstree-themeicon.glyphicon-folder-open {
+    color: #f0ad4e;
+    opacity: 0.5;
+  }
+  .jstree-icon.jstree-themeicon.glyphicon-file {
+    color: #3276b1;
+    opacity: 0.2;
+  }
+
+.tree_view{ id: "#{prefix}_tree_view" }
+
+:javascript
+
+  $(document).ready(function() {
+
+    draw_tree('##{prefix}_tree_view', '#{tree_root}', '#{tree}')
+
+    function draw_tree(tree_view_id, tree_root_url, tree_url) {
+      $.getScript("/assets/jstree/jstree.js")
+        .done(function() {
+          locale = '?locale=' + I18n.locale
+          $(tree_view_id).jstree({
+            "core" : {
+              "animation" : 0,
+              "check_callback" : true,
+              "themes" : { "stripes" : true },
+              'data' : {
+                'url' : function (node) {
+                  return node.id === '#' ? tree_root_url + locale : tree_url + locale
+                },
+                'data' : function (node) {
+                  return { 'id' : node.id };
+                }
+              }
+            },
+            "types" : {
+              "root" : {
+                "icon" : "glyphicon glyphicon-folder-open",
+              },
+              "child" : {
+                "icon" : "glyphicon glyphicon-file"
+              }
+            },
+            "plugins" : [
+              "search", 'theme', "html_data", "state", "types", "wholerow"
+            ]
+          })
+        }).fail(function() {
+          console.log("fail")
+        });
+    }
+
+  })
