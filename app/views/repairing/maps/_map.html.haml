@@ -239,8 +239,6 @@
 
         places.forEach(function(place) {
           // Create a marker for each place.
-          console.log(places);
-          console.log(place.geometry.location.lat() + " / " + place.geometry.location.lng());
           var marker = L.marker([
             place.geometry.location.lat(),
             place.geometry.location.lng()
@@ -354,9 +352,7 @@
       }
 
       function getPointToLayer(feature, latlng) {
-
         var point = getPoint(feature.properties);
-
         return L.marker(latlng, {
           icon: point.icon,
           opacity: 1,
@@ -367,7 +363,6 @@
       function onEachFeature(feature, layer) {
         layer.on({
           click: function () {
-
             if (options.featureClickCallback){
               options.featureClickCallback(feature, layer);
             }
@@ -474,7 +469,7 @@
     function showRoute(feature) {
       feature.selected = true;
 
-      var route = feature.properties.route
+      var route = feature.properties.route;
       if (route){
         if (route.length == 2) {
           feature.selectedRoute = L.Routing.control({
@@ -494,7 +489,7 @@
           });
 
           feature.selectedPath = new L.polyline(routePoints, {
-            color: 'red',
+            color: 'black',
             weight: 6,
             opacity: 0.5,
             smoothFactor: 3,
@@ -650,8 +645,8 @@
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       addGeoJsonPoint: addGeoJsonPoint,
-      editRoute: editRoute,
       showRoute: showRoute,
+      hideRoute: hideRoute,
       // addCategoryControl: addCategoryControl,
       addTownLayer: addTownLayer,
       addYearLayer: addYearLayer,

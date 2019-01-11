@@ -91,7 +91,7 @@
            && (repair_status == '' || repair_status == feature.properties.status)) {
             filtered_data.features.push(feature)
           }
-        })
+        });
 
         aRepairMap.addGeoJsonPoints(filtered_data, getPoint, {
           clustered: true,
@@ -124,6 +124,30 @@
           $(this).addClass('active');
           $('#category_title').html($(this).attr('title'));
           category = $(this).data('id');
+
+          if (category == '560ce9576b61730991100000') {
+            data.features.forEach(function (feature){
+              console.log('show');
+              if (feature.type == 'FeatureCollection'){
+                feature.features.forEach(function (feature){
+                  if(feature.properties.repair == 'road'){
+                    aRepairMap.showRoute(feature)
+                  }
+                });
+              }
+            });
+          } else {
+            data.features.forEach(function (feature){
+              console.log('hide', feature);
+              if (feature.type == 'FeatureCollection'){
+                feature.features.forEach(function (feature){
+                  if(feature.properties.repair == 'road'){
+                    aRepairMap.hideRoute(feature)
+                  }
+                });
+              }
+            });
+          }
         }
 
         //updateCategoryControl()
@@ -216,7 +240,6 @@
       });
 
       $('#q').keypress(function (e) {
-        // console.log('#q');
         if (e.which == 13) {
           $('#search_btn').trigger("click");
           return false;
@@ -288,7 +311,6 @@
     function getPoint(properties) {
       var point = {}
       point.icon = getIconByCategory(properties.p_c_id, properties.c_id);
-
       return point;
     }
 
