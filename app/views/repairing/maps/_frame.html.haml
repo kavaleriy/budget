@@ -109,45 +109,148 @@
         })
       }
 
-      addMarkers()
+      addMarkers();
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
       // aRepairMap.addCategoryControl(categories);
 
-      $('#category_btns .btn').on("click",function(){
-        if($(this).hasClass('active')){
-          $('#category_btns .btn').removeClass('active');
-          $('#category_title').html('');
-          category = "all";
-        } else {
-          $('#category_btns .btn').removeClass('active');
-          $(this).addClass('active');
-          $('#category_title').html($(this).attr('title'));
-          category = $(this).data('id');
 
-          if (category == '560ce9576b61730991100000') {
+
+
+
+
+      var roadCategory = '560ce9576b61730991100000'; //Дорожньо-транспортна інфраструктура change on variable from i18-n
+
+      function clearAllRoads() {
+        data.features.forEach(function (feature){
+          if (feature.type == 'FeatureCollection'){
+            feature.features.forEach(function (feature){
+              if(feature.properties.repair == 'road'){
+                aRepairMap.hideRoute(feature)
+              }
+            });
+          }
+        });
+      }
+      function drawAllRoads() {
+        data.features.forEach(function (feature){
+          if (feature.type == 'FeatureCollection'){
+            feature.features.forEach(function (feature){
+              if(feature.properties.repair == 'road'){
+                aRepairMap.showRoute(feature);
+              }
+            });
+          }
+        });
+      }
+      function categoryRoad() {
+        clearAllRoads();
+
+        if (category == roadCategory) {
+          drawAllRoads();
+        } else {
+          clearAllRoads();
+        }
+      }
+      function roadStatus(repair_status) {
+        clearAllRoads();
+        if (category == roadCategory) {
+          if (repair_status == 'plan') {
             data.features.forEach(function (feature){
-              console.log('show');
               if (feature.type == 'FeatureCollection'){
                 feature.features.forEach(function (feature){
-                  if(feature.properties.repair == 'road'){
+                  if(feature.properties.repair == 'road' && feature.properties.status == 'plan'){
+                    aRepairMap.showRoute(feature);
+                  }
+                });
+              }
+            });
+          } else if (repair_status == 'fact') {
+            data.features.forEach(function (feature){
+              if (feature.type == 'FeatureCollection'){
+                feature.features.forEach(function (feature){
+                  if(feature.properties.repair == 'road' && feature.properties.status == 'fact'){
                     aRepairMap.showRoute(feature)
                   }
                 });
               }
             });
           } else {
+            drawAllRoads();
+          }
+        }
+      }
+      function roadYear(selected_year) {
+        clearAllRoads();
+        if (category == roadCategory) {
+          if (repair_status == 'plan') {
             data.features.forEach(function (feature){
-              console.log('hide', feature);
+              if (feature.type == 'FeatureCollection'){
+                feature.features.forEach(function (feature){
+                  if(feature.properties.repair == 'road' && selected_year == feature.properties.year){
+                    aRepairMap.showRoute(feature);
+                  } else if (feature.properties.repair == 'road' && selected_year == '' && selected_year == feature.properties.year) {
+                    aRepairMap.showRoute(feature);
+                  } else if (feature.properties.repair == 'road' && selected_year == 'no_year' && selected_year == feature.properties.year) {
+                      aRepairMap.showRoute(feature);
+                  } else {
+                    aRepairMap.hideRoute(feature);
+                  }
+                });
+              }
+            });
+          } else if (repair_status == 'fact') {
+            data.features.forEach(function (feature){
               if (feature.type == 'FeatureCollection'){
                 feature.features.forEach(function (feature){
                   if(feature.properties.repair == 'road'){
-                    aRepairMap.hideRoute(feature)
+                    if (selected_year == feature.properties.year) {
+                      aRepairMap.showRoute(feature);
+                    } else if (feature.properties.repair == 'road' && selected_year == '' && selected_year == feature.properties.year) {
+                      aRepairMap.showRoute(feature);
+                    } else if (feature.properties.repair == 'road' && selected_year == 'no_year' && selected_year == feature.properties.year) {
+                      aRepairMap.showRoute(feature);
+                    } else {
+                      aRepairMap.hideRoute(feature);
+                    }
+                  }
+                });
+              }
+            });
+          } else {
+            data.features.forEach(function (feature){
+              if (feature.type == 'FeatureCollection'){
+                feature.features.forEach(function (feature){
+                  if(feature.properties.repair == 'road' && selected_year == feature.properties.year){
+                    aRepairMap.showRoute(feature);
+                  } else if (feature.properties.repair == 'road' && selected_year == '') {
+                      aRepairMap.showRoute(feature);
+                  } else if (feature.properties.repair == 'road' && selected_year == 'no_year' && selected_year == feature.properties.year) {
+                      aRepairMap.showRoute(feature);
+                  } else {
+                    aRepairMap.hideRoute(feature);
                   }
                 });
               }
             });
           }
+        } else {
+          clearAllRoads();
+        }
+      }
+
+      $('#category_btns .btn').on("click",function(){
+        if($(this).hasClass('active')){
+          $('#category_btns .btn').removeClass('active');
+          $('#category_title').html('');
+          category = "all";
+          categoryRoad();
+        } else {
+          $('#category_btns .btn').removeClass('active');
+          $(this).addClass('active');
+          $('#category_title').html($(this).attr('title'));
+          category = $(this).data('id');
+          categoryRoad();
         }
 
         //updateCategoryControl()
@@ -207,18 +310,19 @@
         }
 
         addMarkers()
-      })
+      });
 
       $(".status-btns .btn").on("click", function(){
         if($(this).hasClass('active')){
           $('.status-btns .btn').removeClass('active');
           repair_status = "";
+          roadStatus(repair_status);
         } else {
           $('.status-btns .btn').removeClass('active');
           $(this).addClass('active');
           repair_status = $(this).data('status');
+          roadStatus(repair_status);
         }
-
         addMarkers()
       });
 
@@ -231,13 +335,21 @@
         }else{
           aRepairMap.removeAdditionalLayer(tileName);
         }
-      })
+      });
 
       $("#year_select").on("change", function(){
-        selected_year = $(this).val()
-
-        addMarkers()
+        selected_year = $(this).val();
+        roadYear(selected_year);
+        addMarkers();
       });
+
+
+
+
+
+
+
+
 
       $('#q').keypress(function (e) {
         if (e.which == 13) {
