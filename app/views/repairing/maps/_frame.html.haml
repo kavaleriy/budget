@@ -117,7 +117,7 @@
 
 
 
-
+      //TODO:drawRoads to filter and sort
 
       var roadCategory = '560ce9576b61730991100000'; //Дорожньо-транспортна інфраструктура change on variable from i18-n
 
@@ -340,18 +340,32 @@
       $("#year_select").on("change", function(){
         selected_year = $(this).val();
         roadYear(selected_year);
+
+
+        // data.features.forEach(function (feature){
+        //   if (feature.type == 'FeatureCollection'){
+        //     var featuress = feature.features.filter(function (item){
+        //       if (item.properties.repair == 'road') {
+        //
+        //         for (var key in featuresFilter) {
+        //           console.log(key);
+        //           if (item[key] === undefined || item[key] != featuresFilter[key]) {
+        //             return false;
+        //           }
+        //         }
+        //         return true;
+        //       }
+        //       // aRepairMap.showRoute(item);
+        //     });
+        //     featuress.forEach(function (value) { aRepairMap.showRoute(value); })
+        //     console.log('feature: ', featuress);
+        //   }
+        // });
+
         addMarkers();
       });
 
-
-
-
-
-
-
-
-
-      $('#q').keypress(function (e) {
+  $('#q').keypress(function (e) {
         if (e.which == 13) {
           $('#search_btn').trigger("click");
           return false;
