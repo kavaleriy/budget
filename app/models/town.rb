@@ -89,16 +89,19 @@ class Town
     #                                                      User.mask_for(:state_enterprise)]).pluck(:town_model_id)
 
     # scope users with multiple role also
-    city_authority_users = User.all.map do |u|
-      if u.has_any_role?([:city_authority, :central_authority, :municipal_enterprise, :state_enterprise])
-        u.town_model_id
-      else
-        nil
+    Rails.cache.fetch('get_central_authority_towns', expires_in: 1.minutes) do
+      city_authority_users = User.all.map do |u|
+        if u.has_any_role?([:city_authority, :central_authority, :municipal_enterprise, :state_enterprise])
+          u.town_model_id
+        else
+          nil
+        end
       end
+      # second we find all they towns and last add regular expression to all they towns
+      Town.where(:_id.in => city_authority_users.compact).and(title: Regexp.new("^#{query}.*"))
     end
 
-    # second we find all they towns and last add regular expression to all they towns
-    Town.where(:_id.in => city_authority_users.compact).and(title: Regexp.new("^#{query}.*"))
+
   end
 
   def is_test?
