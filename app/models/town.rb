@@ -80,17 +80,6 @@ class Town
     WikiParser.get_wiki_town_info(self.title) || self.description || I18n.t('no_town_description_info')
   end
 
-  # only for main_page
-  def self.query_name(city_name)
-
-
-    Town.includes(:users).where(title: Regexp.new("^#{query}.*"))
-
-    Town.where(title: Regexp.new("^#{city_name}.*"))
-
-
-  end
-
   def self.get_central_authority_towns(query)
     # first of all get users with authority roles mask
     # TODO: if everything is normal, delete the commented code below 16.01.2019
