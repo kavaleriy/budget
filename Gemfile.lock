@@ -62,6 +62,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.11)
     bootstrap-daterangepicker-rails (0.1.5)
@@ -80,6 +82,8 @@ GEM
       carrierwave (>= 0.8.0, < 0.12.0)
       mongoid (>= 3.0, < 6.0)
       mongoid-grid_fs (>= 1.3, < 3.0)
+    chronic (0.10.2)
+    cocoon (1.2.12)
     coderay (1.1.1)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -92,17 +96,39 @@ GEM
     connection_pool (2.2.0)
     cyrillizer (0.2.3)
     dbf (3.0.5)
+    declarative (0.0.10)
+    declarative-option (0.1.0)
     devise (4.1.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    domain_name (0.5.20180417)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
     font-awesome-rails (4.6.3.0)
       railties (>= 3.2, < 5.1)
     geocoder (1.3.6)
+    google-api-client (0.10.3)
+      addressable (~> 2.3)
+      googleauth (~> 0.5)
+      httpclient (~> 2.7)
+      hurley (~> 0.1)
+      memoist (~> 0.11)
+      mime-types (>= 1.6)
+      representable (~> 3.0)
+      retriable (>= 2.0, < 4.0)
+    googleauth (0.8.0)
+      faraday (~> 0.12)
+      jwt (>= 1.4, < 3.0)
+      memoist (~> 0.16)
+      multi_json (~> 1.11)
+      os (>= 0.9, < 2.0)
+      signet (~> 0.7)
     haml (4.0.7)
       tilt
     haml-rails (0.9.0)
@@ -117,6 +143,10 @@ GEM
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    httpclient (2.8.3)
+    hurley (0.2)
     i18n (0.7.0)
     i18n-js (3.0.0.rc12)
       i18n (~> 0.6, >= 0.6.6)
@@ -129,13 +159,14 @@ GEM
     jquery-ui-rails (4.1.2)
       railties (>= 3.1.0)
     json (1.8.3)
+    jwt (2.1.0)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.10.0)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (2.7.1)
+    less-rails (2.8.0)
       actionpack (>= 4.0)
       less (~> 2.6.0)
       sprockets (> 2, < 4)
@@ -144,6 +175,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memoist (0.16.0)
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_magick (4.5.1)
@@ -156,20 +188,32 @@ GEM
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
+    mongoid-compatibility (0.5.1)
+      activesupport
+      mongoid (>= 2.0)
+    mongoid-enum (0.3.0)
+      mongoid (~> 4.0)
     mongoid-grid_fs (2.2.1)
       mime-types (>= 1.0, < 3.0)
       mongoid (>= 3.0, < 6.0)
+    mongoid-slug (6.0.0)
+      mongoid (>= 3.0)
+      mongoid-compatibility
+      stringex (~> 2.0)
     moped (2.0.7)
       bson (~> 3.0)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
     multi_json (1.12.1)
+    multipart-post (2.0.0)
+    netrc (0.11.0)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     optionable (0.2.0)
     origin (2.2.0)
     orm_adapter (0.5.0)
+    os (1.0.0)
     pkg-config (1.1.7)
     polyglot (0.3.5)
     pry (0.10.3)
@@ -178,6 +222,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    public_suffix (3.0.3)
     rack (1.5.5)
     rack-cors (0.4.0)
     rack-test (0.6.3)
@@ -203,8 +248,17 @@ GEM
       json (~> 1.4)
     ref (2.0.0)
     remotipart (1.2.1)
+    representable (3.0.4)
+      declarative (< 0.1.0)
+      declarative-option (< 0.2.0)
+      uber (< 0.2.0)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rest-client (2.0.2)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    retriable (3.1.2)
     role_model (0.8.2)
     roo (2.4.0)
       nokogiri (~> 1)
@@ -231,7 +285,13 @@ GEM
       rdoc (~> 4.0)
     select2-rails (3.5.10)
       thor (~> 0.14)
+    selectize-rails (0.12.6)
     sexp_processor (4.7.0)
+    signet (0.11.0)
+      addressable (~> 2.3)
+      faraday (~> 0.9)
+      jwt (>= 1.5, < 3.0)
+      multi_json (~> 1.10)
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
@@ -248,6 +308,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    stringex (2.8.5)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -259,13 +320,19 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uber (0.1.0)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.5)
     unicorn (5.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
     warden (1.2.6)
       rack (>= 1.0)
+    whenever (0.10.0)
+      chronic (>= 0.6.3)
     wicked_pdf (1.0.6)
     wkhtmltopdf-binary (0.9.9.3)
     yaml_db (0.3.0)
@@ -285,6 +352,7 @@ DEPENDENCIES
   cancancan (~> 1.10)
   carrierwave!
   carrierwave-mongoid
+  cocoon
   coffee-rails (~> 4.0.0)
   cyrillizer
   data-confirm-modal!
@@ -292,21 +360,25 @@ DEPENDENCIES
   devise
   font-awesome-rails
   geocoder
+  google-api-client
   haml-rails
   i18n-js (>= 3.0.0.rc8)
   jbuilder (~> 2.0)
   jquery-rails
   jquery-ui-rails (= 4.1.2)
   kaminari
-  less-rails
+  less-rails (~> 2.8.0)
   mini_magick
   momentjs-rails (>= 2.9.0)
   mongoid (~> 4.0.0)
+  mongoid-enum
+  mongoid-slug
   pry-rails
   rack-cors
   rails (= 4.1.1)
   rake
   remotipart (~> 1.2)
+  rest-client
   role_model
   roo
   roo-xls
@@ -315,12 +387,17 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   select2-rails (~> 3.5)
+  selectize-rails
   simple_form
   spring
   therubyracer
   twitter-bootstrap-rails!
   uglifier (>= 1.3.0)
   unicorn
+  whenever
   wicked_pdf
   wkhtmltopdf-binary
   yaml_db
+
+BUNDLED WITH
+   1.14.6
