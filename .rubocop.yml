@@ -1,0 +1,88 @@
+Rails:
+  Enabled: true
+
+# Commonly used screens these days easily fit more than 80 characters.
+Metrics/LineLength:
+  Max: 120
+
+# Too short methods lead to extraction of single-use methods, which can make
+# the code easier to read (by naming things), but can also clutter the class
+Metrics/MethodLength:
+  Max: 20
+
+# The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
+Metrics/ClassLength:
+  Max: 500
+
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - "app/controllers/admin/payment_registers_controller.rb"
+
+# No space makes the method definition shorter and differentiates
+# from a regular assignment.
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+# { ... } for multi-line blocks is okay, follow Weirichs rule instead:
+# https://web.archive.org/web/20140221124509/http://onestepback.org/index.cgi/Tech/Ruby/BraceVsDoEnd.rdoc
+Style/BlockDelimiters:
+  Enabled: false
+
+# Enforcing the names of variables? To single letter ones? Just no.
+Style/SingleLineBlockParams:
+  Enabled: false
+
+# Check with yard instead.
+Style/Documentation:
+  Enabled: false
+
+# Ignore files.
+AllCops:
+  TargetRubyVersion: 2.2.1
+  Exclude:
+    - "db/schema.rb"
+    - "db/migrate/*"
+    - "bin/*"
+    - "lib/tasks/*"
+    - "lib/tasks/dumps/*"
+    - "lib/tasks/single/*"
+    - "node_modules/**/*"
+    - "config/routes.rb"
+    - "lib/capistrano/tasks/*.rake"
+    - "app/mailers/feedback_mailer.rb"
+    - "app/services/platforms/models/profit_history.rb"
+    - "app/models/detailed/contract.rb"
+    - "app/helpers/application_helper.rb"
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Layout/AlignParameters:
+  SupportedStyles:
+    - with_fixed_indentation
+
+# Useless when frozen string literal enabled.
+Style/MutableConstant:
+  Enabled: false
+
+# Skip checks old-style attribute validation macros.
+Rails/Validation:
+  Enabled: false
+
+# Skip `frozen_string_literal: true`.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Ignore block length for environments config files.
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/*.rb"
+    - "config/*.rb"
+    - "app/views/xml_format_service_views/show.xml.ruby"
+# For scipping dependent option
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
