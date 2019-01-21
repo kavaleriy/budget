@@ -19,7 +19,6 @@ module Charts
       enterprise_type = Municipal::Enterprise.find(enterprise_id).try(:reporting_type)
       code_formula_info = get_code_info(enterprise_type, code)
       file_types = file_types(code[2])
-      binding.pry
 
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, :file_type.in => file_types).order(year: :asc)
       code_info = Municipal::CodeDescription.where(code: code).first
