@@ -64,7 +64,7 @@ Layout/AlignParameters:
 
 # Useless when frozen string literal enabled.
 Style/MutableConstant:
-  Enabled: false
+  Enabled: true
 
 # Skip checks old-style attribute validation macros.
 Rails/Validation:
@@ -72,7 +72,7 @@ Rails/Validation:
 
 # Skip `frozen_string_literal: true`.
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
 
 # Ignore block length for environments config files.
 Metrics/BlockLength:
@@ -80,9 +80,3 @@ Metrics/BlockLength:
     - "config/environments/*.rb"
     - "config/*.rb"
     - "app/views/xml_format_service_views/show.xml.ruby"
-# For scipping dependent option
-Rails/HasManyOrHasOneDependent:
-  Enabled: false
-
-Rails/LexicallyScopedActionFilter:
-  Enabled: false
