@@ -82,13 +82,20 @@ class Town
 
   def self.get_central_authority_towns(query)
     # first of all get users with authority roles mask
-    city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
-                                                         User.mask_for(:central_authority),
-                                                         User.mask_for(:municipal_enterprise),
-                                                         User.mask_for(:state_enterprise)]).pluck(:town_model_id)
+    # TODO: if everything is normal, delete the commented code below 16.01.2019
+    # city_authority_users = User.where(:roles_mask.in => [User.mask_for(:city_authority),
+    #                                                      User.mask_for(:central_authority),
+    #                                                      User.mask_for(:municipal_enterprise),
+    #                                                      User.mask_for(:state_enterprise)]).pluck(:town_model_id)
 
+    # scope users with multiple role also
+    city_authority_users = User.all.map do |u|
+      if u.has_any_role?([:city_authority, :central_authority, :municipal_enterprise, :state_enterprise])
+        u.town_model_id
+      end
+    end
     # second we find all they towns and last add regular expression to all they towns
-    Town.where(:_id.in => city_authority_users).and(title: Regexp.new("^#{query}.*"))
+    Town.where(:_id.in => city_authority_users.compact).and(title: Regexp.new("^#{query}.*"))
   end
 
   def is_test?

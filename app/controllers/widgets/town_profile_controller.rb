@@ -112,7 +112,7 @@ class Widgets::TownProfileController < Widgets::WidgetsController
     municipal_enterprises = Municipal::Enterprise.by_town(@town).first
 
     result = []
-    result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town)) unless taxonomy.nil?
+    # result << get_item_hash('budget_compare', compare_taxonomies_compare_budget_path(@town)) unless taxonomy.nil?
     result << get_item_hash('indicators', indicate_taxonomies_town_profile_path(@town)) unless indicate_taxonomy.nil?
     result << get_item_hash('budget', public_budget_files_path(@town)) unless taxonomy.nil?
     result << get_item_hash('calendar', calendar_town_profile_path(calendar)) unless calendar.nil?
