@@ -19,6 +19,7 @@ module Charts
       enterprise_type = Municipal::Enterprise.find(enterprise_id).try(:reporting_type)
       code_formula_info = get_code_info(enterprise_type, code)
       file_types = file_types(code[2])
+      binding.pry
 
       files = Municipal::EnterpriseFile.where(enterprise: enterprise_id, :file_type.in => file_types).order(year: :asc)
       code_info = Municipal::CodeDescription.where(code: code).first
@@ -37,7 +38,18 @@ module Charts
         years[year] = {} unless years[year]
 
         code_formula_info['f_codes'].each do |code_f|
+          # TODO: Put all formules to classes imediatly!!!
+
           value_f = file.code_values.where(code: code_f).first.try(:value)
+
+          if code_f == '2350' && value_f == 0
+            code_f = '2355'
+            value_f = file.code_values.where(code: code_f).first.try(:value)
+          elsif code_f == '2190' && value_f == 0
+            code_f = '2195'
+            value_f = file.code_values.where(code: code_f).first.try(:value)
+          end
+
           years[year][code_f] = value_f if value_f
           # {2015=>{"1495"=>5353}, 2016=>{"1495"=>5353, "2350"=>71}, 2017=>{"1495"=>5296, "2350"=>283}}
         end
@@ -69,14 +81,21 @@ module Charts
 
       code_info = {}
       csv.each do |row|
+        # binding.pry
         next unless row['code'].eql?(code)
+
+
         code_info['formula'] = row['formula']
+
+
+
         code_info['abbreviation'] = row['abbreviation']
         code_info['codes_1_year'] = row['codes_1_year'].split('|').reject(&:blank?) if row['codes_1_year']
         code_info['codes_2_year'] = row['codes_2_year'].split('|').reject(&:blank?) if row['codes_2_year']
         code_info['f_codes'] = (code_info['codes_1_year'] + code_info['codes_2_year'])
       end
       code_info
+
     end
 
     def self.file_types(type)
