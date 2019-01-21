@@ -164,3 +164,4 @@ gem 'rest-client'
 gem 'selectize-rails'
 
 gem 'cocoon'
+gem 'rubocop', require: false
