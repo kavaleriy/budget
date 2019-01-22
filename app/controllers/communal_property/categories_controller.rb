@@ -3,14 +3,10 @@ class CommunalProperty::CategoriesController < ApplicationController
 
     before_action :set_category, only: [:show, :edit, :update, :destroy]
 
-    # GET /repairing/categories
-    # GET /repairing/categories.json
     def index
       @categories = CommunalProperty::Category.all
     end
 
-    # GET /repairing/categories/1
-    # GET /repairing/categories/1.json
     def show
       @categories = subcategories(@category.id)
       respond_to do |format|
@@ -26,17 +22,13 @@ class CommunalProperty::CategoriesController < ApplicationController
       @categories = CommunalProperty::Category.tree(params[:id])
     end
 
-    # GET /repairing/categories/new
     def new
       @category = CommunalProperty::Category.new
     end
 
-    # GET /repairing/categories/1/edit
     def edit
     end
 
-    # POST /repairing/categories
-    # POST /repairing/categories.json
     def create
       @category = CommunalProperty::Category.new(category_params)
       @category.parent = CommunalProperty::Category.find(category_params.category_id) if category_params.respond_to? :category_id
@@ -50,8 +42,6 @@ class CommunalProperty::CategoriesController < ApplicationController
       end
     end
 
-    # PATCH/PUT /repairing/categories/1
-    # PATCH/PUT /repairing/categories/1.json
     def update
       unless category_params[:position].nil? && category_params[:category_id].nil?
         new_position = category_params[:position].to_i
@@ -74,8 +64,6 @@ class CommunalProperty::CategoriesController < ApplicationController
       end
     end
 
-    # DELETE /repairing/categories/1
-    # DELETE /repairing/categories/1.json
     def destroy
       subcategories(@category.id).each{|category|
         category.destroy
@@ -100,7 +88,6 @@ class CommunalProperty::CategoriesController < ApplicationController
       }
 
     end
-    # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = CommunalProperty::Category.find(params[:id])
     end
@@ -109,7 +96,6 @@ class CommunalProperty::CategoriesController < ApplicationController
       CommunalProperty::Category.where(category_id: category_id)
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
       params.require(:communal_property_category).permit(:category_id, :title, :icon, :color, :position, :img, :locale)
     end
