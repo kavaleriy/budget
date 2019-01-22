@@ -7,6 +7,6 @@ namespace :users do
     user = User.find_by_email('viktor1532@gmail.com')
     user.update(roles_mask: 1)
 
-    puts 'user created'
+    puts 'user updated'
   end
 end
