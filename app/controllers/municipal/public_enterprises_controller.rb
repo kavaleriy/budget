@@ -73,7 +73,9 @@ module Municipal
 
     def compare_chart
       if params[:enterprises].present?
-        @enterprises = Municipal::Enterprise.where(reporting_type: @enterprise.reporting_type, town: @enterprise.town, :id.in => params[:enterprises])
+        @enterprises = Municipal::Enterprise.where(reporting_type: @enterprise.reporting_type,
+                                                   town: @enterprise.town,
+                                                   :id.in => params[:enterprises])
       end
 
       if params[:code].present?
