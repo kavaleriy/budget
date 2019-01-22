@@ -15,7 +15,7 @@ module Charts
     end
 
     def self.build_line(enterprise, code)
-      code_type = code.first
+      code_type = code.try(:first)
       ent_data = { id: enterprise.id.to_s, title: enterprise.title }
       line = case code_type
              when '1', '2'

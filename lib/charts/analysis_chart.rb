@@ -70,7 +70,7 @@ module Charts
           instance_variable_set("@c2_#{code_f}", before_year[code_f].to_f)
         end if code_formula_info['codes_2_year'].present?
 
-        chart[code][:years][year_k] = eval(code_formula_info['formula']).try(:round, 3) if before_year || code_formula_info['codes_2_year'].present?
+        chart[code][:years][year_k] = eval(code_formula_info['formula']).try(:round, 3) if before_year || !code_formula_info['codes_2_year'].present?
       end
 
       chart
