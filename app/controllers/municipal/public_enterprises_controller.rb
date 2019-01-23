@@ -1,7 +1,12 @@
 module Municipal
   # common logic of municipal enterprises
   class PublicEnterprisesController < Widgets::WidgetsController
-    before_action :set_enterprise, only: [:search_enterprise_data, :analysis_chart_codes, :codes_by_enterprise_type, :compare_chart]
+    before_action :set_enterprise, only: %i[
+      search_enterprise_data
+      analysis_chart_codes
+      codes_by_enterprise_type
+      compare_chart
+    ]
     respond_to :html
 
     def enterprise_analysis
@@ -10,11 +15,6 @@ module Municipal
     end
 
     def search_enterprise_data
-      # @codes_form_1 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_1).first.codes
-      # @codes_form_2 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_2).first.codes
-      # @codes_form_7 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::OTHER).first.codes
-
-
       @codes_form_1 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_1)
       @codes_form_2 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_2)
       @codes_form_7 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::OTHER)
@@ -35,7 +35,7 @@ module Municipal
       end
     end
 
-    def analysis_chart ###
+    def analysis_chart
       @chart_analysis = Charts::AnalysisChart.data_chart(params[:enterprise_id], params[:codes])
 
       respond_to do |format|
@@ -44,8 +44,9 @@ module Municipal
       end
     end
 
-    def analysis_chart_codes ###
-      @codes_form_3 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::OTHER).first.publish_codes.map(&:code)
+    def analysis_chart_codes
+      @codes_form_3 = Municipal::GuideFilter.by_type(@enterprise.reporting_type,
+                                                     Municipal::EnterpriseFile::OTHER).first.publish_codes.map(&:code)
 
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_analysis_chart' }
@@ -72,8 +73,13 @@ module Municipal
     end
 
     def compare_chart
-      @enterprises = Municipal::Enterprise.where(reporting_type: @enterprise.reporting_type, town: @enterprise.town, :id.in => params[:enterprises])
-      @chart = Charts::CompareChart.data_chart(@enterprises, params[:code])
+      if params[:enterprises].present?
+        @enterprises = Municipal::Enterprise.where(reporting_type: @enterprise.reporting_type,
+                                                   town: @enterprise.town,
+                                                   :id.in => params[:enterprises])
+      end
+
+      @chart = Charts::CompareChart.data_chart(@enterprises, params[:code]) if params[:code].present?
 
       respond_to do |format|
         format.json { render json: @chart }
@@ -85,10 +91,5 @@ module Municipal
     def set_enterprise
       @enterprise = Municipal::Enterprise.find(params[:enterprise_id])
     end
-
   end
 end
-
-
-
-
