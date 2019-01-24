@@ -4,7 +4,7 @@ namespace :categories do
     categories = Repairing::Category.tree_root
 
     categories.each do |category|
-      new_category = CommunalProperty::Category.create!(
+      new_category = Properting::Category.create!(
         category_id: "#",
         locale: "uk",
         title: category.title,
