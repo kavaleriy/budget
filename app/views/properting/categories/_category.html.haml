@@ -24,7 +24,7 @@
   %tbody
     %tr
       %td
-        %a.editable{href: '#', id: 'title', 'data-resource' => 'communal_property_category', 'data-type' => 'text', 'data-pk' => @category.id, 'data-url' => communal_property_category_path(@category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
+        %a.editable{href: '#', id: 'title', 'data-resource' => 'properting_category', 'data-type' => 'text', 'data-pk' => @category.id, 'data-url' => properting_category_path(@category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
           = @category.title
       %td
         = bootstrap_form_for @category, html: {class: 'form-inline'}, remote: true do |f|

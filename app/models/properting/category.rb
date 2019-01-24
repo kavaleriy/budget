@@ -1,4 +1,4 @@
-class CommunalProperty::Category
+class Properting::Category
   include Mongoid::Document
 
   default_scope lambda { order_by(position: :asc) }
@@ -6,11 +6,11 @@ class CommunalProperty::Category
   scope :tree_root, lambda { where(:category_id.in => [ nil, '#']) }
   scope :tree, lambda { |category_id| where( category_id: category_id) }
 
-  # has_many :repairing_layers, class_name: 'CommunalProperty::Layer', autosave: true, dependent: :nullify
-  # has_many :repairing_repairs, class_name: 'CommunalProperty::Repair', autosave: true, dependent: :nullify
-  ### has_one :parent, class_name: 'CommunalProperty::Category', dependent: :nullify
-  has_many :categories, class_name: 'CommunalProperty::Category', autosave: true, dependent: :destroy
-  belongs_to :category, class_name: 'CommunalProperty::Category'
+  # has_many :properting_layers, class_name: 'Properting::Layer', autosave: true, dependent: :nullify
+  # has_many :properting_properties, class_name: 'Properting::Property', autosave: true, dependent: :nullify
+  # has_one :parent, class_name: 'Properting::Category', dependent: :nullify
+  has_many :categories, class_name: 'Properting::Category', autosave: true, dependent: :destroy
+  belongs_to :category, class_name: 'Properting::Category'
 
   field :title, type: String
   field :icon, type: String
@@ -19,19 +19,19 @@ class CommunalProperty::Category
   field :locale, type: String, default: 'uk'
 
   require 'carrierwave/mongoid'
-  mount_uploader :img, Repairing::CategoryImgUploader
+  mount_uploader :img, Properting::CategoryImgUploader
   skip_callback :update, :before, :store_previous_model_for_img
 
   def self.tree_root
-    CommunalProperty::Category.where(:category_id.in =>[ nil, '#']).by_locale
+    Properting::Category.where(:category_id.in =>[ nil, '#']).by_locale
   end
 
   def self.with_image
-    CommunalProperty::Category.where(:img.ne => nil).by_locale
+    Properting::Category.where(:img.ne => nil).by_locale
   end
 
   def childrens
-    CommunalProperty::Category.where(category_id: id).by_locale
+    Properting::Category.where(category_id: id).by_locale
   end
 
   def self.get_category_icons
@@ -45,8 +45,6 @@ class CommunalProperty::Category
       img = category.img.thumb.url || category.img unless category.img.nil?
       res.store(category.id,img)
     end
-
     res.to_json
   end
-
 end

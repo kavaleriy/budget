@@ -87,16 +87,106 @@ Rails.application.routes.draw do
     resources :files
   end
 
-  namespace :communal_property do
+  namespace :properting do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
     get 'categories_tree' => 'categories#tree'
+
+    get 'map' => 'maps#show'
+    get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
+    get 'geo_json' => 'maps#geo_json'
+    get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
+    get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
+    get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
+    get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
+    get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
+    get 'show_repair_info' =>'repairs#show_repair_info', as: 'show_repair_info'
+    get 'edit_in_modal' =>'repairs#edit_in_modal', as: 'edit_in_modal'
+    # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
+    # get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
+    # get 'repairs/edr/:id' => 'repairs#edr_info',as: 'prozzoro'
+
+    get 'heapmap_json' => 'maps#get_heapmap_geo_json'
+    get 'heapmap' => 'maps#heapmap'
+    resources :layers do
+      member do
+        get 'geo_json'
+        get 'categories'
+        get 'subcategories'
+        get 'subcategories_select'
+        put 'update_repairs_category'
+        post 'create_repair_by_addr'
+      end
+      resources :repairs
+    end
+    get 'repair_photos/:id' => 'repairs#photos', as: 'repair_photos'
+    post 'create_repair_photo/:id', to: 'repair_photos#create', as: 'create_repair_photo'
+    delete 'destroy_repair_photo/:id/:photo_id', to: 'repair_photos#destroy', as: 'destroy_repair_photo'
+    get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
+
+    resources :appeal_scenarios
+    resources :appeals
+    post 'check_answers', to: 'appeals#check_answers', as: :check_answers
+    get 'answer_file/:id', to: 'appeals#answer_file', as: :answer_file
+    post 'preview_appeal', to: 'appeals#preview'
+    post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
+    get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal
+    get 'appeal_status/:status', to: 'appeals#appeal_status', as: :status_saved_appeal
+    get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
+    get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
+    post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
+    post 'layers/multiple_destroy' => 'layers#multiple_destroy', as: 'layers_multiple_destroy'
   end
 
   namespace :repairing do
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
     get 'categories_tree' => 'categories#tree'
+
+    get 'map' => 'maps#show'
+    get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
+    get 'geo_json' => 'maps#geo_json'
+    get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
+    get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
+    get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
+    get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
+    get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
+    get 'show_repair_info' =>'repairs#show_repair_info', as: 'show_repair_info'
+    get 'edit_in_modal' =>'repairs#edit_in_modal', as: 'edit_in_modal'
+    # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
+    # get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
+    # get 'repairs/edr/:id' => 'repairs#edr_info',as: 'prozzoro'
+
+    get 'heapmap_json' => 'maps#get_heapmap_geo_json'
+    get 'heapmap' => 'maps#heapmap'
+    resources :layers do
+      member do
+        get 'geo_json'
+        get 'categories'
+        get 'subcategories'
+        get 'subcategories_select'
+        put 'update_repairs_category'
+        post 'create_repair_by_addr'
+      end
+      resources :repairs
+    end
+    get 'repair_photos/:id' => 'repairs#photos', as: 'repair_photos'
+    post 'create_repair_photo/:id', to: 'repair_photos#create', as: 'create_repair_photo'
+    delete 'destroy_repair_photo/:id/:photo_id', to: 'repair_photos#destroy', as: 'destroy_repair_photo'
+    get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
+
+    resources :appeal_scenarios
+    resources :appeals
+    post 'check_answers', to: 'appeals#check_answers', as: :check_answers
+    get 'answer_file/:id', to: 'appeals#answer_file', as: :answer_file
+    post 'preview_appeal', to: 'appeals#preview'
+    post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
+    get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal
+    get 'appeal_status/:status', to: 'appeals#appeal_status', as: :status_saved_appeal
+    get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
+    get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
+    post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
+    post 'layers/multiple_destroy' => 'layers#multiple_destroy', as: 'layers_multiple_destroy'
   end
 
   namespace :key_indicate_map do
@@ -137,12 +227,11 @@ Rails.application.routes.draw do
 
   namespace :legacy_programs do
     resources :indicator_files
-
     resources :towns
-
     resources :target_programs
     resources :expences_files
     resources :attachments
+
     get 'load' => 'target_programs#load'
     get 'load_expences/:town' => 'target_programs#load_expences' , as: 'load_expences'
     get 'load_indicators/:town' => 'target_programs#load_indicators', as: 'load_indicators'
@@ -242,58 +331,6 @@ Rails.application.routes.draw do
   #   get 'prozzoro/:prozzoro_id' => '#prozzoro_info',as: 'prozzoro'
   #   get 'edr/:id' => '#edr_info',as: 'edr'
   # end
-  namespace :repairing do
-    get 'map' => 'maps#show'
-    get 'map_show_town/:town_id' => 'maps#show_town', as: 'map_show_town'
-    get 'geo_json' => 'maps#geo_json'
-    get 'maps/frame/:zoom/:town_id/:year' => 'maps#frame'
-    get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
-    get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
-    get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
-    get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
-    get 'show_repair_info' =>'repairs#show_repair_info', as: 'show_repair_info'
-    get 'edit_in_modal' =>'repairs#edit_in_modal', as: 'edit_in_modal'
-    # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
-    # get 'repairs/prozzoro/:id' => 'repairs#prozzoro_info',as: 'prozzoro'
-    # get 'repairs/edr/:id' => 'repairs#edr_info',as: 'prozzoro'
-
-    get 'heapmap_json' => 'maps#get_heapmap_geo_json'
-    get 'heapmap' => 'maps#heapmap'
-    resources :layers do
-      member do
-        get 'geo_json'
-        get 'categories'
-        get 'subcategories'
-        get 'subcategories_select'
-        put 'update_repairs_category'
-        post 'create_repair_by_addr'
-      end
-
-      resources :repairs
-
-    end
-    get 'repair_photos/:id' => 'repairs#photos', as: 'repair_photos'
-    post 'create_repair_photo/:id', to: 'repair_photos#create', as: 'create_repair_photo'
-    delete 'destroy_repair_photo/:id/:photo_id', to: 'repair_photos#destroy', as: 'destroy_repair_photo'
-    get 'photos_slider/:id' => 'repairs#photos_slider', as: 'photos_slider'
-
-    resources :appeal_scenarios
-    resources :appeals
-    post 'check_answers', to: 'appeals#check_answers', as: :check_answers
-    get 'answer_file/:id', to: 'appeals#answer_file', as: :answer_file
-    post 'preview_appeal', to: 'appeals#preview'
-    post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
-    get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal
-    get 'appeal_status/:status', to: 'appeals#appeal_status', as: :status_saved_appeal
-    get 'repair_on_map/:id', to: 'repairs#repair_on_map', as: :repair_on_map
-    get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
-    post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
-    post 'layers/multiple_destroy' => 'layers#multiple_destroy', as: 'layers_multiple_destroy'
-  end
-
-  namespace :to_pdf do
-
-  end
 
   resources :sankeys
 
@@ -302,7 +339,6 @@ Rails.application.routes.draw do
 
   namespace :widgets do
     get 'user/widgets/visualisation_list/:town_id' => 'user_widgets#visualisation_list',as: 'visualisation_list'
-
 
     get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/type/:file_id/:type' => 'visify#type', as: 'visify_type'
@@ -313,7 +349,6 @@ Rails.application.routes.draw do
     get 'visify/get_bubbletree_nodedata/:file_id/:taxonomy/:key' => 'visify#get_bubbletree_nodedata'
     get 'visify/get_attachments/:file_id' => 'visify#get_attachments'
     # get 'visify/get_visify_level/:file_id/:taxonomy' => 'visify#get_visify_level'
-
     get 'visify/sunburst/:file_id' => 'visify#sunburst'
     get 'visify/sunburst_seq/:file_id' => 'visify#sunburst_seq'
     get 'visify/sunburst_bilevel/:file_id' => 'visify#sunburst_bilevel'
@@ -334,14 +369,12 @@ Rails.application.routes.draw do
     get 'calendar/timeline/:calendar_id' => 'calendar#timeline'
     get 'calendar/show/:calendar_id' => 'calendar#show',as: 'calendar_show'
 
-
     get 'town/profile/:town_id' => 'town_profile#portfolio', as:'town_profile'
     get 'town_profile/budget_files/:town_id' => 'town_profile#budget_files', as: 'budget_files'
     get 'town_profile/budget_files_by_taxonomies/:tax_rot/:tax_rov' => 'town_profile#budget_files_by_taxonomies', as: 'budget_files_by_taxonomies'
     get 'town_profile/sankey_by_taxonomies/:tax_rot/:tax_rov' =>'town_profile#sankey_by_taxonomies', as:'sankey_by_taxonomies'
     get 'town_profile/show_indicates/:indicate_id' => 'town_profile#show_indicates'
     # get 'town_profile/compare_budget/:town_id' => 'town_profile#budget_compare',as: 'town_profile_budget_compare'
-
   end
 
   get 'sankeys/get_rows/:rot_file_id/:rov_file_id/:type' => 'sankeys#get_rows',as: 'get_sankey_rows'
@@ -358,15 +391,12 @@ Rails.application.routes.draw do
   resources :taxonomy_rovs
   # get 'get_taxonomies_rov_by_town' => 'taxonomy_rovs#get_taxonomies_by_town',as:'taxonomies_rov_get_taxonomies_by_town'
 
-
-
   resources :budget_files do
     get 'download' => 'budget_files#download'
   end
 
   resources :zip_budget_files
   resources :fz_budget_files
-
   resources :budget_file_frees
   resources :budget_file_lvivobl_rots
   resources :budget_file_lvivobl_rovs
@@ -374,7 +404,6 @@ Rails.application.routes.draw do
   resources :budget_file_rot_planfacts
   resources :budget_file_rot_vzs
   resources :budget_file_rot_fts
-
   resources :budget_file_rovs
   resources :budget_file_rot_fonds
   resources :budget_file_rov_fonds
@@ -384,11 +413,9 @@ Rails.application.routes.draw do
   resources :budget_file_rov_vds
   resources :budget_file_rov_vzs
 
-
   get 'static/budget_file_help' => 'static#budget_file_help'
   get 'static/key_indicator_file_help' => 'static#key_indicator_file_help'
   get 'static/get_dictionary' => 'static#get_dictionary'
-
 
   #post 'calendars/:calendar_id/events/:id' => 'events#upload_files'
   post 'calendars/:calendar_id/events/:id/attachments/:attachment_id' => 'events#update_files_description'
@@ -412,23 +439,17 @@ Rails.application.routes.draw do
       end
     end
   end
+
   resources :calendar_actions
-
-
   resources :subscribers
-
 
   namespace :public do
     get 'about' => 'home#about'
-
     get 'documents' => 'documents#index'
-
     get 'documents/find_by_title_part' => 'documents#find_by_title_part',as: 'documents_find_by_title_part'
     get 'towns/render_docs' => 'towns#render_docs', as: 'towns_render_docs'
     get 'towns/:town_id' => 'towns#show'
-
     get 'budget_files/:town_id' => 'towns#budget', as: 'budget_files'
-
     get 'ukraine_geo_json' => 'towns#geo_json'
     get 'ukraine_geo_json_town' => 'towns#geo_json_town'
   end
@@ -438,7 +459,6 @@ Rails.application.routes.draw do
   get 'public/documents/check_auth' => 'public#check_auth'
   post 'public/subscribe/:calendar_id' => 'public#subscribe'
   delete 'public/unsubscribe/:calendar_id/:subscriber_id' => 'public#unsubscribe'
-
   get 'public/towns/pdf_doc' => 'public/towns#pdf_docs',as: 'public_towns_pdf_docs'
   # get 'taxonomies/town_profile/:town_id' => 'taxonomies#town_profile', as: 'taxonomies_town_profile'
   # get 'programs/towns/town_profile/:town_id' => 'programs/target_programs#town_profile', as: 'programs_towns_town_profile'
@@ -450,58 +470,6 @@ Rails.application.routes.draw do
   get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'
   get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
   # You can have the root of your site routed with "root"
   root 'public/home#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

@@ -1,18 +1,18 @@
 = stylesheet_link_tag "jstree/themes/default/style.min.css", :media => "all"
 
 :css
-  .communal_property {
+  .properting {
     min-height: 400px;
     padding-top: 15px;
   }
 
-  .communal_property .tree_view{
+  .properting .tree_view{
     min-height: 400px;
     padding-top: 15px;
     overflow-x: auto;
   }
 
-  .communal_property .documents {
+  .properting .documents {
     overflow: visible;
   }
 
@@ -22,12 +22,12 @@
 
 #flash_message.col-xs-12
 
-.communal_property
+.properting
 
   .panel.panel-default.col-xs-12.col-md-5
     .panel-body
-      = render partial: 'tree_control', locals: { prefix: 'communal_property_category' }
-      = render partial: 'tree_view', locals: { prefix: 'communal_property_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
+      = render partial: 'tree_control', locals: { prefix: 'properting_category' }
+      = render partial: 'tree_view', locals: { prefix: 'properting_category', tree_root: 'categories_tree_root.json', tree: 'categories_tree.json' }
 
   .col-xs-12.col-md-7
     .panel.panel-default
@@ -39,17 +39,17 @@
 
   $(document).ready(function() {
 
-    $('#communal_property_category_tree_view').on("changed.jstree", function(e, data){
+    $('#properting_category_tree_view').on("changed.jstree", function(e, data){
       if(data && data.selected && data.selected.length) {
           $.get('categories/' + data.selected + '?locale=' + "#{params[:locale]}", function (d) {
           });
       }
       else {
-          $('.communal_property #category_content').html('')
+          $('.properting #category_content').html('')
       }
     });
 
-    $('#communal_property_category_tree_view').on("delete_node.jstree", function(e, data){
+    $('#properting_category_tree_view').on("delete_node.jstree", function(e, data){
       $.ajax({
           method: 'DELETE',
           url: 'categories/' + data.node.id + '.json'
@@ -59,13 +59,13 @@
       });
     })
 
-    $('#communal_property_category_tree_view').on("create_node.jstree", function(e, data){
+    $('#properting_category_tree_view').on("create_node.jstree", function(e, data){
       $.ajax({
           method: 'post',
-          url: '/communal_property/categories',
+          url: '/properting/categories',
           dataType: 'json',
           data: {
-              communal_property_category: {
+              properting_category: {
                   category_id: data.node.parent,
                   title: data.node.text,
                   position: data.position,
@@ -81,13 +81,13 @@
       });
     })
 
-    $('#communal_property_category_tree_view').on("rename_node.jstree", function(e, data){
+    $('#properting_category_tree_view').on("rename_node.jstree", function(e, data){
       $.ajax({
           method: 'PUT',
           url: 'categories/' + data.node.id,
           dataType: 'json',
           data: {
-              communal_property_category: {
+              properting_category: {
                   title: data.text
               }
           }
@@ -98,13 +98,13 @@
       });
     })
 
-    $('#communal_property_category_tree_view').on("move_node.jstree", function(e, data){
+    $('#properting_category_tree_view').on("move_node.jstree", function(e, data){
       $.ajax({
           method: 'PUT',
           url: 'categories/' + data.node.id,
           dataType: 'json',
           data: {
-              communal_property_category: {
+              properting_category: {
                   category_id: data.parent,
                   position: data.position
               }
@@ -115,9 +115,9 @@
       });
     })
 
-    $('#communal_property_category_tree_view').on("copy_node.jstree", function(e, data){
-      $.post('/communal_property/categories', {
-          communal_property_category: {
+    $('#properting_category_tree_view').on("copy_node.jstree", function(e, data){
+      $.post('/properting/categories', {
+          properting_category: {
               category_id: data.node.parent,
               title: data.node.text,
               position: data.position
@@ -129,18 +129,18 @@
     })
 
     var selected_node = null;
-    $('#communal_property_category_tree_view').on("select_node.jstree", function(e, data){
+    $('#properting_category_tree_view').on("select_node.jstree", function(e, data){
       if(data.node.id == selected_node){
-        $('#communal_property_category_tree_view').jstree('deselect_all');
-        $('#communal_property_category_create').removeAttr("disabled");
-        $('#category_content').html('');
+        $('#properting_category_tree_view').jstree('deselect_all');
+        $('#properting_category_create').removeAttr("disabled");
+        $('#properting_content').html('');
         selected_node = null;
       } else {
         selected_node = data.node.id;
         if(data.node.parents.length > 1) {
-          $('#communal_property_category_create').attr("disabled","disabled");
+          $('#properting_category_create').attr("disabled","disabled");
         } else {
-          $('#communal_property_category_create').removeAttr("disabled");
+          $('#properting_category_create').removeAttr("disabled");
         }
       }
     })

@@ -1,10 +1,10 @@
-class CommunalProperty::CategoriesController < ApplicationController
+class Properting::CategoriesController < ApplicationController
     layout 'application_admin'
 
     before_action :set_category, only: [:show, :edit, :update, :destroy]
 
     def index
-      @categories = CommunalProperty::Category.all
+      @categories = Properting::Category.all
     end
 
     def show
@@ -15,23 +15,23 @@ class CommunalProperty::CategoriesController < ApplicationController
     end
 
     def tree_root
-      @categories = CommunalProperty::Category.tree_root
+      @categories = Properting::Category.tree_root
     end
 
     def tree
-      @categories = CommunalProperty::Category.tree(params[:id])
+      @categories = Properting::Category.tree(params[:id])
     end
 
     def new
-      @category = CommunalProperty::Category.new
+      @category = Properting::Category.new
     end
 
     def edit
     end
 
     def create
-      @category = CommunalProperty::Category.new(category_params)
-      @category.parent = CommunalProperty::Category.find(category_params.category_id) if category_params.respond_to? :category_id
+      @category = Properting::Category.new(category_params)
+      @category.parent = Properting::Category.find(category_params.category_id) if category_params.respond_to? :category_id
 
       respond_to do |format|
         if @category.save
@@ -89,15 +89,15 @@ class CommunalProperty::CategoriesController < ApplicationController
 
     end
     def set_category
-      @category = CommunalProperty::Category.find(params[:id])
+      @category = Properting::Category.find(params[:id])
     end
 
     def subcategories(category_id)
-      CommunalProperty::Category.where(category_id: category_id)
+      Properting::Category.where(category_id: category_id)
     end
 
     def category_params
-      params.require(:communal_property_category).permit(:category_id, :title, :icon, :color, :position, :img, :locale)
+      params.require(:properting_category).permit(:category_id, :title, :icon, :color, :position, :img, :locale)
     end
   end
 
