@@ -1,0 +1,163 @@
+:scss
+
+  .container-fluid.modal-open {
+    padding-right: 30px;
+  }
+
+  .table{
+    .headers{
+      padding: 4px 4px 2px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      background: #428bca;
+      &.fixed-top{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        margin: 5px 15px;
+      }
+      .row{
+        .header{
+          padding: 0 2px;
+          margin-bottom: 2px;
+          background: #fff;
+        }
+      }
+    }
+    .data{
+      >.row{
+        padding: 4px 0 2px;
+        &:nth-child(even){
+          background: #F5F5F5;
+        }
+        &:nth-child(odd){
+          background: #D8D8D8;
+        }
+        .actions{
+          margin-top: 0;
+          text-align: right;
+        }
+      }
+      .row{
+        .odd{
+          background: #D8F0E3;
+        }
+        .even{
+          background: #f0f0f0;
+        }
+        .odd, .even{
+          background: #fff;
+          min-height: 20px;
+          padding: 1px;
+          margin-bottom: 2px;
+        }
+        .not-valid{
+          background: #FFB59D;
+        }
+      }
+    }
+  }
+
+.modal.fade{id: 'edit_property', role: 'dialog', tabindex: '-1', appendTo: '#properties'}
+  .modal-dialog.modal-sm{role: :document}
+    .modal-content.modal-property#property
+
+%h1
+  = "#{t('repairing.repairs.repairs')} (#{@properties.count()})"
+
+
+.table
+  .sticky-anchor
+  .headers.sticky-content
+    .row
+      .col-sm-3.col-md-4
+        .row
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.spending_units')
+            .header= t('repairing.repairs.form.erdpou_spending')
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.address')
+            .header= t('repairing.repairs.form.address_to')
+            .header= t('repairing.repairs.form.coordinates')
+      .col-sm-3.col-md-4
+        .row
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.obj_owner')
+            .header= t('repairing.repairs.form.erdpou_artist')
+          .col-sm-12.col-md-6
+            .header= t('repairing.repairs.form.subject')
+            .header= t('repairing.repairs.form.work')
+            .header= t('repairing.repairs.form.category')
+      .col-sm-3.col-md-2
+        .header= t('repairing.repairs.form.repair_start_date')
+        .header= t('repairing.repairs.form.repair_end_date')
+        .header= t('repairing.repairs.form.warranity_date')
+      .col-sm-3.col-md-2
+        .header= t('repairing.repairs.form.amount')
+        .header= t('repairing.repairs.form.prozzoro_id')
+        .header= t('repairing.repairs.form.description')
+  .data
+    = render partial: 'repair', collection: @properties
+
+.paginator-properties
+  = paginate @properties, :remote => true
+
+:javascript
+
+  $(document).ready(function(){
+
+    // get @properties for layer
+    function get_property_info_modal(id_property){
+      $.ajax({
+        url: "#{properting_edit_in_modal_path}",
+        dataType: 'script',
+        data: { id: id_property },
+        success: function(data){}
+      })
+    }
+
+    // show all properties of layer
+    $('.edit-property').on('click',function(){
+      var property_id = $(this).attr('data-property-id');
+      get_property_info_modal(property_id);
+    });
+
+    // setting modal window for static page behavior
+    $("#edit_property").on("show.bs.modal", function () {
+      $(".container-fluid").addClass("modal-open");
+    }).on("hidden.bs.modal", function () {
+      $(".container-fluid").removeClass("modal-open")
+    });
+
+    // fixed position header table
+    // https://codepen.io/stanislas-prime/pen/xrEcj
+    StickyElement = function(node){
+      var doc = $(document);
+      var fixed = false;
+      var anchor = node.find('.sticky-anchor');
+      var content = node.find('.sticky-content');
+
+      var onScroll = function(e){
+        var docTop = doc.scrollTop();
+        var anchorTop = anchor.offset().top;
+
+        if(docTop > anchorTop){
+          if(!fixed){
+            anchor.height(content.outerHeight());
+            content.addClass('fixed-top');
+            fixed = true;
+          }
+        }  else   {
+          if(fixed){
+            anchor.height(0);
+            content.removeClass('fixed-top');
+            fixed = false;
+          }
+        }
+      };
+      $(window).on('scroll', onScroll);
+    };
+    StickyElement($('.table'));
+  })

@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @properting_property.title
+%p
+  %b Koatuu:
+  = @properting_property.koatuu
+%p
+  %b District:
+  = @properting_property.district
+%p
+  %b Street:
+  = @properting_property.street
+%p
+  %b Description:
+  = @properting_property.description
+%p
+  %b Amount:
+  = @properting_property.amount
+%p
+  %b Coordinates:
+  = @properting_property.coordinates
+
+= link_to 'Edit', edit_properting_property_path(@properting_property)
+\|
+= link_to 'Back', properting_properties_path

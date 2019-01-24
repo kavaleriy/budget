@@ -1,0 +1,3 @@
+var modalWindow = $('#edit_property');
+modalWindow.find('.modal-property').html("<%= escape_javascript(render partial: 'properting/properties/edit_in_modal', layout: false) %>");
+modalWindow.modal();

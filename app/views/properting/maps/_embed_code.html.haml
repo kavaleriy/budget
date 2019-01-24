@@ -1,0 +1,65 @@
+:scss
+
+  button.btn-embed{
+    border: none;
+    color: white;
+    background: #0c2231;
+    padding: 0px 10px;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .popover {
+    width: 700px;
+  }
+
+  .form-horizontal {
+    padding: 0 10px;
+    .form-group{
+      margin-bottom: 5px;
+      label {
+        width: 30%;
+      }
+      #year_select,
+      #zoom_select {
+        display: inline-block;
+        width: 68%;
+      }
+    }
+    .select2-container{
+      .select2-choice{
+        height: auto;
+      }
+    }
+  }
+
+.embed_btn
+  %button.btn-embed{"data-toggle" => "popover"}
+    %i.fa.fa-code
+    = t('modules.classifier.embeded_btn.get_code')
+
+.embed-hide{'style' => 'display: none;'}
+  .form-horizontal.town-data{ data: { town_id: "#{@current_user_town[:id] unless @current_user_town.nil?}",
+                                      town_title: "#{@current_user_town[:title] unless @current_user_town.nil?}"} }
+
+    .form-group
+      %button.btn#road_frame_url{ data: { tooltip: t('public.towns.show.click') } }
+        = 'Автодор фрейм'
+    .form-group
+      %input.frame_url.form-control
+    .form-group
+      = text_field_tag 'town_select', ''
+
+    .form-group
+      %label
+        = t('datetime.prompts.year')
+      = text_field_tag 'year_select', '', class: 'form-control'
+
+    .form-group
+      %label
+        = t('.scale')
+      = select_tag 'zoom_select', options_for_select((6..14).to_a, 10), class: 'form-control'
+
+.clear
+

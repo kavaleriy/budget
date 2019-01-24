@@ -1,0 +1,10 @@
+.search_map
+  = form_tag create_property_by_addr_properting_layer_path(layer), method: :post, remote: true, html: { class: 'form-vertical' } do |f|
+    .form-inline.clearfix
+      .form-group.col-sm-5
+        = text_field_tag :q, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address')}"
+      .form-group.col-sm-5
+        = text_field_tag :q1, '', class: 'form-control', placeholder: "#{t('repairing.repairs.form.address_to')}"
+      .form-group.col-sm-2
+        = submit_tag t('form.add'), class: 'form-control btn btn-primary' do
+          %i.fa.fa-search.fa-lg

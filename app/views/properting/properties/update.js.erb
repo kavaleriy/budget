@@ -1,0 +1,12 @@
+var message_div = $('<div></div>');
+message_div.html('<%= escape_javascript(bootstrap_flash) %>');
+$('#property').find('.clear').before(message_div);
+message_div.show('slow');
+<%= flash.clear %>
+setTimeout(function(){
+  message_div.hide('slow');
+},5000);
+
+//$('#edit_repair').modal('toggle'); // when I using this I don`t see error messages // fix in feature
+$('#property-<%= @properting_property.id %>').replaceWith('<%= j render partial: 'properting/layers/property', locals: {property: @properting_property} %>');
+$('#property-<%= @properting_property.id %>').effect("highlight", {color: "#5cb85c"}, 2000);

@@ -1,0 +1,3 @@
+var modalWindow = $('#more-info-modal');
+modalWindow.find('.modal-content').html("<%= escape_javascript(render partial: 'properting/properties/property_info', layout: false) %>");
+modalWindow.modal();

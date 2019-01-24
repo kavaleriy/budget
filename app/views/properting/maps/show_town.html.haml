@@ -1,0 +1,11 @@
+:scss
+  iframe {
+    width: 100%;
+    min-height: 400px;
+    height: calc(100vh - 162px);
+    border: none;
+  }
+
+%iframe{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true', src: "/properting/maps/frame/10/#{params[:town_id]}?locale=#{params[:locale]}"}
+
+-#= render partial: 'show_map'

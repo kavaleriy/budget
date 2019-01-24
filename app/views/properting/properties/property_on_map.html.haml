@@ -1,0 +1,125 @@
+:scss
+  .map_container{
+    height: 650px;
+    margin-bottom: 15px;
+  }
+
+.row
+  .col-xs-12
+    %h3.property-title{ data: { property_id: @properting_property.id, layer_id: @properting_property.layer.id } }
+      = @properting_property.subject
+  .map_container.col-xs-12
+    = render partial: 'properting/maps/map'
+
+:javascript
+
+  $(document).ready(function() {
+    var aPropertyMap = PropertyMap({
+      zoom: 18,
+      minZoom: 5,
+      maxZoom: 18,
+      center: JSON.parse('#{@properting_property.property_coordinate}'),
+      getMapPopupContent: getMapPopupContent,
+      scrollWheelZoom: true
+    });
+    var categories_icons = #{Properting::Category.get_category_icons}
+
+    // add markers
+    $.ajax({
+      method: 'get',
+      url: '/properting/layers/' + getLayerId() + '/geo_json?locale=uk',
+      dataType: 'json'
+    })
+    .done(function (data) {
+      aPropertyMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.5,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        editInfoContent: true
+      })
+      openCurrentProperty()
+    })
+    .fail(function () {
+    });
+
+    function openCurrentProperty(){
+      var repair_id = getPropertyId();
+
+      aPropertyMap.map.eachLayer(function (layer) {
+        if(layer.feature && layer.feature.properties.id == property_id){
+          onFeatureClick(layer.feature, layer);
+        }
+      })
+    }
+
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
+    // REPEAT !!!!!!!!!!!!
+    // Same code in repairing/maps/_iframe.html.haml
+    function getIconByCategory(parent_cat, child_cat){
+      var iconCategoryUrl = '/assets/properting/default_icon.png';
+      if (categories_icons[child_cat]){
+        iconCategoryUrl = categories_icons[child_cat];
+      }
+      else if (categories_icons[parent_cat]){
+        iconCategoryUrl = categories_icons[parent_cat];
+      }
+
+      return new Icon({iconUrl: iconCategoryUrl});
+    };
+    function getPoint(properties) {
+      var point = {}
+      point.icon = getIconByCategory(properties.p_c_id, properties.c_id);
+
+      return point;
+    }
+
+    function onMapClick(feature, popup) {
+    }
+
+    function getMapPopupContent(e) {
+      var place_for_close_btn = '<span style="color:white">----</span>'
+      var content = e.latlng.toString() + place_for_close_btn;
+      return content
+    }
+
+    var _selectedFeature
+
+    function onFeatureClick(feature, layer) {
+      featureId = feature.properties.id
+      $.ajax({
+        url: '/properting/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+        success:function(data){
+          layer.bindPopup(data).openPopup();
+        }
+      })
+
+    }
+
+    function getPropertyId(){
+      return $('.property-title').attr('data-property-id');
+    }
+
+    function getLayerId(){
+      return $('.property-title').attr('data-layer-id');
+    }
+
+    function get_property_info_modal(){
+      var property_id = getPropertyId();
+      $.ajax({
+        url: "#{properting_show_property_info_path}",
+        dataType: 'script',
+        data: { id: property_id },
+        success: function(data){
+        }
+      })
+    }
+
+    $('body').on('click','.more-text',function(){
+      get_property_info_modal();
+    });
+  });

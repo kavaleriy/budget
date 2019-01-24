@@ -1,0 +1,205 @@
+- model_class = Properting::Layer
+
+:css
+  .map_container {
+    height: 800px;
+  }
+
+
+= content_for :header do
+  .head.pull-left
+    = @layer.title
+    .descr
+      = "#{@layer.town}, by #{@layer.owner}"
+
+= content_for :top do
+  .map_container
+    = render partial: 'properting/maps/map'
+
+%p
+  = @layer.description
+
+
+
+= link_to t('.back', default: t('helpers.links.back')), properting_layers_path, class: 'btn btn-default'
+= link_to t('.edit', default: t('helpers.links.edit')), edit_properting_layer_path(@layer), class: 'btn btn-default'
+= link_to t('.destroy', default: t('helpers.links.destroy')),
+          properting_layer_path(@layer),
+          class: 'btn btn-danger',
+          method: 'delete',
+          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
+= link_to t('repairing.repairs.all_repairs'),
+          properting_layer_path(layer_id: @layer.id),
+          remote: true,
+          class: 'btn btn-success'
+#properties
+  - if @properties
+    = render partial: 'properties'
+
+:javascript
+
+  $(document).ready(function() {
+
+    var aPropertyMap = PropertyMap({
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 18,
+      center: [48.5, 31.2],
+      bounds: [ [47.54677, 21.44531], [52.32182, 41.52832]],
+      getMapPopupContent: getMapPopupContent,
+      scrollWheelZoom: true
+    });
+    var categories_icons = #{Properting::Category.get_category_icons}
+
+    // add markers
+    $.ajax({
+      method: 'get',
+      url: '#{geo_json_properting_layer_path}',
+      dataType: 'json',
+    })
+    .done(function (data) {
+
+      aPropertyMap.addGeoJsonPoints(data, getPoint, {
+        clustered: true,
+        style: {
+          opacity: 0.5,
+        },
+        hoverStyle: {
+          opacity: 1,
+        },
+        featureClickCallback: onFeatureClick,
+        // dragCallback: onDrag,
+        editInfoContent: true
+      })
+
+      initRoads(data)
+
+      function initRoads(data) {
+        var roads = get_roads_arr()
+
+        if (roads.length > 0) {
+          $('button#calc_roads')
+            .removeAttr("disabled")
+            .click(function() {
+              reCalculateRoutes()
+            })
+        }
+
+        function get_roads_arr() {
+          var features = []
+
+          get_roads(data['features'])
+
+          function get_roads(item) {
+            if (item == null) return;
+
+            $.each(item, function(i, d){
+              if (d.properties.property == "road")
+                features.push(d)
+
+              get_roads(d['features'])
+            })
+          }
+
+          return features;
+        }
+
+        function reCalculateRoutes() {
+          if (roads.length == 0) return;
+
+          calc_routes()
+
+          function calc_routes() {
+            var road = roads.pop()
+            if (road == null) return;
+
+            calc_road_route(road)
+
+            function calc_road_route(road) {
+              var coordinates = road.properties.route
+
+              var waypoints = []
+              waypoints.push({ latLng: L.latLng(coordinates[0]) });
+              waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
+
+              L.Routing.control({
+                waypoints: waypoints,
+                routeWhileDragging: false
+              }).on('routesfound', function(router) {
+                updateRoute(router.routes[0].coordinates, road)
+              });
+            }
+
+            calc_routes()
+          }
+        }
+      }
+
+    })
+    .fail(function () {
+    });
+
+
+    var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
+    // REPEAT !!!!!!!!!!!!
+    function getIconByCategory(parent_cat, child_cat){
+      var iconCategoryUrl = '/assets/properting/default_icon.png';
+      if (categories_icons[child_cat]){
+        iconCategoryUrl = categories_icons[child_cat];
+      }
+      else if (categories_icons[parent_cat]){
+        iconCategoryUrl = categories_icons[parent_cat];
+      }
+
+      return new Icon({iconUrl: iconCategoryUrl});
+    };
+    function getPoint(properties) {
+      var point = {}
+      point.icon = getIconByCategory(properties.p_c_id, properties.c_id);
+
+      return point;
+    }
+
+    function getMapPopupContent(e) {
+      var place_for_close_btn = '<span style="color:white">----</span>'
+      var content = e.latlng.toString() + place_for_close_btn;
+      return content
+    }
+
+    function onFeatureClick(feature, layer) {
+      featureId = feature.properties.id
+      $.ajax({
+        url: '/properting/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
+        success:function(data){
+          layer.bindPopup(data).openPopup();
+        }
+      })
+    }
+
+    function getPropertyId(){
+      return $('.new_info_panel').attr('data-property-id');
+    }
+
+    function get_property_info_modal(){
+      var property_id = getPropertyId();
+      $.ajax({
+        url: "#{properting_show_property_info_path}",
+        dataType: 'script',
+        data: { id: property_id },
+        success: function(data){
+          // modal_title.html("#{t('repairing.maps.instruction.item_9')}");
+          // modal_dom.find('.modal-content').css('width','50vw');
+          // modal_body.html(data);
+          // modal_dom.modal();
+        }
+      })
+    }
+
+    $('body').on('click','.more-text',function(){
+      get_property_info_modal();
+    });
+
+  });
+
+
+

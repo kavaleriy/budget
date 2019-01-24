@@ -1,0 +1,45 @@
+:scss
+  .map_container {
+    min-height: 300px;
+    height: calc(100vh - 120px);
+  }
+  .btn-container{
+    text-align: left;
+    padding: 5px 0 0;
+    .social-btns {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .embedded-button{
+      display: inline-block;
+      vertical-align: top;
+    }
+    .partner-logos {
+      display: inline-block;
+      vertical-align: top;
+      float: right;
+      .item {
+        display: inline-block;
+        img {
+          height: 40px;
+        }
+      }
+    }
+  }
+  //hide sidebar for share
+  .addthis-smartlayers-desktop {
+    display: none;
+  }
+
+.map_container
+  = render partial: 'map'
+- if has_own_referer?
+  .col-xs-12.btn-container
+    .social-btns
+      = render partial: 'layouts/addthis_hor_share'
+    .embedded-button
+      = render partial: 'show_map'
+    .partner-logos
+      - @partners.each do |partner|
+        .item
+          = get_item(partner, 'partner')
