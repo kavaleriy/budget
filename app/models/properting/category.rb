@@ -6,8 +6,8 @@ class Properting::Category
   scope :tree_root, lambda { where(:category_id.in => [ nil, '#']) }
   scope :tree, lambda { |category_id| where( category_id: category_id) }
 
-  # has_many :properting_layers, class_name: 'Properting::Layer', autosave: true, dependent: :nullify
-  # has_many :properting_properties, class_name: 'Properting::Property', autosave: true, dependent: :nullify
+  has_many :properting_layers, class_name: 'Properting::Layer', autosave: true, dependent: :nullify
+  has_many :properting_properties, class_name: 'Properting::Property', autosave: true, dependent: :nullify
   # has_one :parent, class_name: 'Properting::Category', dependent: :nullify
   has_many :categories, class_name: 'Properting::Category', autosave: true, dependent: :destroy
   belongs_to :category, class_name: 'Properting::Category'
