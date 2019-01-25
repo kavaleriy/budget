@@ -1,7 +1,7 @@
 namespace :categories do
   desc "copy categories"
   task copy_root_categories: :environment do
-    categories = Repairing::Category.tree_root
+    categories = Properting::Category.tree_root
 
     categories.each do |category|
       new_category = Properting::Category.create!(
