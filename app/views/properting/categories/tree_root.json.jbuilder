@@ -1,9 +1,9 @@
-json.array!(@categories) do |category|
+json.array!(@properting_categories) do |properting_category|
   # json.extract! documentation_category, :id
-  json.id "#{category.id}"
-  json.children Properting::Category.where( :category_id => category.id ).present?
-  json.text category.title
-  json.position category.position
+  json.id "#{properting_category.id}"
+  json.children Properting::Category.where( :category_id => properting_category.id ).present?
+  json.text properting_category.title
+  json.position properting_category.position
   json.type 'root'
-  json.url properting_category_url(category, format: :json)
+  json.url properting_category_url(properting_category, format: :json)
 end

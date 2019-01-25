@@ -24,13 +24,13 @@
   %tbody
     %tr
       %td
-        %a.editable{href: '#', id: 'title', 'data-resource' => 'properting_category', 'data-type' => 'text', 'data-pk' => @category.id, 'data-url' => properting_category_path(@category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
-          = @category.title
+        %a.editable{href: '#', id: 'title', 'data-resource' => 'properting_category', 'data-type' => 'text', 'data-pk' => @properting_category.id, 'data-url' => properting_category_path(@properting_category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
+          = @properting_category.title
       %td
-        = bootstrap_form_for @category, html: {class: 'form-inline'}, remote: true do |f|
+        = bootstrap_form_for @properting_category, html: {class: 'form-inline'}, remote: true do |f|
           .upload_img{style: 'float:left;margin-right:10px;'}
-            -if @category.img?
-              =image_tag @category.img.thumb.url
+            -if @properting_category.img?
+              =image_tag @properting_category.img.thumb.url
             -else
               =image_tag "no_image.png"
           = f.file_field :img, label: t('repairing.category_edit.image_load'), accept: 'image/*', multiple: false
