@@ -25,7 +25,7 @@ module Properting
 
       respond_to do |format|
         if @location1
-          property = @properting_layer.repairs.new(
+          property = @properting_layer.properties.new(
               subject: "#{params[:q]} - #{params[:q1]}",
               coordinates: [@location, @location1],
               address: params[:q],
@@ -95,7 +95,7 @@ module Properting
     end
 
     def new
-      @properting_layers = Properting::Layer.new
+      @properting_layer = Properting::Layer.new
     end
 
     def edit
@@ -106,16 +106,16 @@ module Properting
     end
 
     def create
-      @properting_layers = Properting::Layer.new(properting_layer_params)
-      @properting_layers.owner = current_user
+      @properting_layer = Properting::Layer.new(properting_layer_params)
+      @properting_layer.owner = current_user
 
       respond_to do |format|
-        if @properting_layers.save
-          unless @properting_layers.properties_file.path.nil?
-            Properting::Property.import(@properting_layers, @properting_layers.properties_file.path,params[:child_category])
+        if @properting_layer.save
+          unless @properting_layer.properties_file.path.nil?
+            Properting::Property.import(@properting_layer, @properting_layer.properties_file.path,params[:child_category])
 
             Thread.new do
-              @properting_layers.properties.each do |property|
+              @properting_layer.properties.each do |property|
                 property.coordinates = RepairingGeocoder.calc_coordinates(property.address, property.address_to) if property.coordinates.blank?
                 property.save(validate: false)
               end

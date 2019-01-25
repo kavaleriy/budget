@@ -22,7 +22,7 @@ class Properting::Layer
   field :status, type: String, default: :plan
   field :year, type: String
 
-  mount_uploader :properties_file, PropertyPhotoUploader
+  mount_uploader :properties_file, PropertingPropertyUploader
   skip_callback :update, :before, :store_previous_model_for_properties_file
 
   has_many :properties, class_name: 'Properting::Property', autosave: true, dependent: :destroy
