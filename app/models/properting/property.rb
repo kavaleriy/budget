@@ -13,27 +13,53 @@ module Properting
     belongs_to :layer, class_name: 'Properting::Layer', touch: true
     validates :layer, presence: true
 
-    belongs_to :properting_category, class_name: 'Properting::Category', dependent: :nullify
+    belongs_to  :properting_category, class_name: 'Properting::Category', dependent: :nullify
     embeds_many :photos, class_name: 'Properting::Photo'
 
-    field :obj_owner, type: String
-    field :subject, type: String
-    field :work, type: String
-    field :amount, type: Float
-    field :property_start_date, type: Date
-    field :property_end_date, type: Date
-    field :edrpou_artist, type: String
-    field :spending_units, type: String
-    field :edrpou_spending_units, type: String
-    field :prozzoro_id, type: String
-    field :prozzoro_inner_id, type: String
-
-    field :warranty_date, type: String
-    field :description, type: String
-
-    field :address, type: String
-    field :address_to, type: String
+    field :balance_holder, type: String
+    field :edrpou_balance_holder, type: String
+    field :obj_address, type: String
     field :coordinates, type: Array
+    field :obj_name, type: String
+    field :obj_desc, type: String
+    field :renter_name, type: String
+    field :edrpou_renter, type: String
+    field :legal_status, type: String
+    field :deal_number, type: String
+    field :basis_contract, type: String
+    field :contract_start_date, type: Date
+    field :contract_end_date, type: Date
+    field :purpose, type: String
+    field :obj_characteristic, type: String
+    field :evaluation_date, type: Date
+    field :expert_obj_cost, type: String
+    field :rental_rate, type: String
+    field :last_rent_charge, type: String
+    field :prozzoro_id, type: String
+
+    # Внизу тепер кожному полю має бути точна назва з документу
+
+    #
+    #
+    #
+    # field :obj_owner, type: String
+    # field :subject, type: String
+    # field :work, type: String
+    # field :amount, type: Float
+    # field :property_start_date, type: Date
+    # field :property_end_date, type: Date
+    # field :edrpou_artist, type: String
+    # field :spending_units, type: String
+    # field :edrpou_spending_units, type: String
+    # field :prozzoro_id, type: String
+    # field :prozzoro_inner_id, type: String
+    #
+    # field :warranty_date, type: String
+    # field :description, type: String
+    #
+    # field :address, type: String
+    # field :address_to, type: String
+    # field :coordinates, type: Array
 
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
@@ -56,17 +82,6 @@ module Properting
         end_date = Date.new(y = start_year, m = 12, d = 31)
         self.property_end_date = end_date
       end
-    end
-
-    def validate_coords
-      # TODO
-      # if coordinates[0] and coordinates[0].kind_of?(Array)
-      #   coordinates.each do |coords|
-      #     check_coords_array(coords)
-      #   end
-      # else
-      #   check_coords_array(coordinates)
-      # end
     end
 
     # TODO:Check this concern for properting!!!!!!!!!!!!!!
@@ -98,10 +113,6 @@ module Properting
 
     private
 
-    def check_coords_array(coords)
-
-    end
-
     def self.import(layer, filepath, child_category)
       properties_arr = read_table_from_file(filepath)[:rows]
 
@@ -109,7 +120,7 @@ module Properting
         property_hash = build_property_hash(property)
 
         coordinates = property['координати']
-        coordinates1 = property['координати1']
+        # coordinates1 = property['координати1']
 
         property_hash[:coordinates] =
             if coordinates1.blank?
@@ -142,32 +153,30 @@ module Properting
 
     def self.build_property_hash(property)
 
-      start_property_date = expiration_date(property['дата початку ремонту'])
-      end_property_date = expiration_date(property['дата закінчення ремонту'])
+      contract_start_date = expiration_date(property['дата укладання договору оренди'])
+      contract_end_date = expiration_date(property['дата закінчення договору оренди'])
+      evaluation_date = expiration_date(property['дата проведення оцінки'])
 
       {
-          spending_units: property['розпорядник бюджетних коштів'],
-          edrpou_spending_units: property['єдрпоу розпорядника бюджетних коштів'],
-
-          subject: property['назва об\'єкту'],
-
-          address: property['адреса'],
-          address_to: property['адреса1'],
-
-          work: property['опис робіт'],
-          amount: property['вартість'],
-
-          property_start_date: start_property_date,
-          property_end_date: end_property_date,
-          warranty_date: property['гарантія'],
-
-          prozzoro_id: property['id закупівлі'],
-          prozzoro_inner_id: property['id закупівлі внутрішнє'],
-
-          obj_owner: property['виконавець'],
-          edrpou_artist: property['єдрпоу виконавця'],
-
-          description: property['додаткова інформація'],
+          balance_holder: property['балансоутримувач'],
+          edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
+          obj_address: property['адреса об\'єкту'],
+          obj_name: property['назва об\'єкту'],
+          obj_desc: property['опис об\'єкту'],
+          renter_name: property['найменування користувача\\орендаря'],
+          edrpou_renter: property['єдрпоу орендаря'],
+          legal_status: property['правовий статус'],
+          deal_number: property['№ договору'],
+          contract_start_date: property['дата укладання договору оренди'],
+          contract_end_date: property['дата закінчення договору оренди'],
+          evaluation_date: property['дата проведення оцінки'],
+          basis_contract: property['підстава укладання договору оренди'],
+          purpose: property['цільове призначення'],
+          obj_characteristic: property['характеритиска об\'єкту (площа)'],
+          expert_obj_cost: property['вартість об\'єкту за експертною оцінкою'],
+          rental_rate: property['орендна ставка'],
+          last_rent_charge: property['останнє нарахування орендної плати, грн'],
+          prozzoro_id: property['id prozorro.sales']
       }
     end
 
