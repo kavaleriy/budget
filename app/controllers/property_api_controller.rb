@@ -18,10 +18,10 @@ class PropertyApiController < ApplicationController
 
     respond_to do |format|
       format.js {
-        render file: 'external_api/api_info',
+        render file: 'property_api/api_info',
                locals: {
                    selector: '#prozzoro',
-                   partial_name: 'external_api/prozzoro_info'
+                   partial_name: 'property_api/prozzoro_info'
                }
       }
     end
@@ -41,7 +41,7 @@ class PropertyApiController < ApplicationController
         # if e_data_payments empty or hash with errors
         format.html{ render partial: 'no_data_yet' }
         format.js {
-          render file: 'external_api/api_info',
+          render file: 'property_api/api_info',
                  locals: {
                      selector: '#e-data',
                      partial_name: 'no_data_yet'
@@ -51,7 +51,7 @@ class PropertyApiController < ApplicationController
         @payments = Kaminari.paginate_array(e_data_payments).page(params[:page]).per(10)
         format.html {render partial: 'modules/classifier/search_e_data',layout: false}
         format.js {
-          render file: 'external_api/e_data',
+          render file: 'property_api/e_data',
                  locals: {
                      selector: '#e-data',
                      partial_name: 'modules/classifier/search_e_data'
@@ -70,10 +70,10 @@ class PropertyApiController < ApplicationController
       @edr_data_bot = ExternalApi.data_bot_edr(edrpou).first if edrpou.present?
       if @edr_data_bot && @edr_data_bot.try(:key?, 'full_name')
         format.js {
-          render file: 'external_api/api_info',
+          render file: 'property_api/api_info',
                  locals: {
                    selector: selector,
-                   partial_name: 'external_api/edr_info'
+                   partial_name: 'property_api/edr_info'
                  }
         }
       else
@@ -90,12 +90,12 @@ class PropertyApiController < ApplicationController
       company_data = ExternalApi.data_bot_decisions(@properting_properties.edrpou_renter)
       unless company_data['items'].blank?
         @judicial_decisions = Kaminari.paginate_array(company_data['items']).page(params[:page]).per(10)
-        format.html { render partial: 'external_api/judicial_register/judicial_register_table', layout: false }
+        format.html { render partial: 'property_api/judicial_register/judicial_register_table', layout: false }
         format.js do
-          render file: 'external_api/judicial_register/judicial_register',
+          render file: 'property_api/judicial_register/judicial_register',
                  locals: {
                    selector: selector,
-                   partial_name: 'external_api/judicial_register/judicial_register_table'
+                   partial_name: 'property_api/judicial_register/judicial_register_table'
                  }
         end
       else
@@ -116,12 +116,12 @@ class PropertyApiController < ApplicationController
         inspections_list = build_inspections_arr(company_data['items'])
 
         @inspections = Kaminari.paginate_array(inspections_list).page(params[:page]).per(10)
-        format.html { render partial: 'external_api/inspections/inspections_table', layout: false }
+        format.html { render partial: 'property_api/inspections/inspections_table', layout: false }
         format.js do
-          render file: 'external_api/inspections/inspections',
+          render file: 'property_api/inspections/inspections',
                  locals: {
                    selector: selector,
-                   partial_name: 'external_api/inspections/inspections_table'
+                   partial_name: 'property_api/inspections/inspections_table'
                  }
         end
       else
@@ -134,10 +134,10 @@ class PropertyApiController < ApplicationController
   def no_data_yet
     respond_to do |format|
       format.js do
-        render file: 'external_api/api_info',
+        render file: 'property_api/api_info',
                locals: {
                  selector: params[:selector],
-                 partial_name: 'external_api/no_data_yet'
+                 partial_name: 'property_api/no_data_yet'
                }
       end
     end
@@ -150,9 +150,9 @@ class PropertyApiController < ApplicationController
   end
 
   def lack_data(format, selector, message = nil)
-    format.html { render partial: 'external_api/no_data_yet' }
+    format.html { render partial: 'property_api/no_data_yet' }
     format.js do
-      render file: 'external_api/api_info',
+      render file: 'property_api/api_info',
              locals: {
                selector: selector,
                partial_name: 'no_data_yet',
