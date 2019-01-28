@@ -16,7 +16,7 @@ module Properting
     belongs_to  :properting_category, class_name: 'Properting::Category', dependent: :nullify
     embeds_many :photos, class_name: 'Properting::Photo'
 
-    field :balance_holder, type: String
+    field :obj_owner, type: String
     field :edrpou_balance_holder, type: String
     field :obj_address, type: String
     field :coordinates, type: Array
@@ -27,8 +27,10 @@ module Properting
     field :legal_status, type: String
     field :deal_number, type: String
     field :basis_contract, type: String
+
     field :contract_start_date, type: Date
     field :contract_end_date, type: Date
+
     field :purpose, type: String
     field :obj_characteristic, type: String
     field :evaluation_date, type: Date
@@ -44,19 +46,19 @@ module Properting
     before_validation :check_and_emend_edrpou
     before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
 
-    validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
+    # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
     before_save :set_end_date
 
     def check_and_emend_edrpou
-      self.edrpou_artist         = correct_edrpou(edrpou_artist)          if edrpou_length_short?(edrpou_artist)
-      self.edrpou_spending_units = correct_edrpou(edrpou_spending_units)  if edrpou_length_short?(edrpou_spending_units)
+      self.edrpou_balance_holder  = correct_edrpou(edrpou_balance_holder) if edrpou_length_short?(edrpou_balance_holder)
+      self.edrpou_renter          = correct_edrpou(edrpou_renter)         if edrpou_length_short?(edrpou_renter)
     end
 
     def set_end_date
-      if !self.property_start_date.blank? && self.property_end_date.blank?
-        start_year = self.property_start_date.year
+      if !self.contract_start_date.blank? && self.contract_end_date.blank?
+        start_year = self.contract_start_date.year
         end_date = Date.new(y = start_year, m = 12, d = 31)
         self.property_end_date = end_date
       end
@@ -97,7 +99,6 @@ module Properting
 
       properties_arr.each do |property|
         property_hash = build_property_hash(property)
-
         coordinates = property['координати']
         coordinates1 = []
 
@@ -124,7 +125,7 @@ module Properting
     def self.expiration_date(d_string)
       d_string.try(:to_date)
     rescue ArgumentError
-      # ad hoc
+      # ad h
       # Example: "31.06.2017" - not valid date because June has 30 days
       # return Sat, 01 Jul 2017 ("30.06.2017")
       d_string.try(:to_time).try(:to_date).yesterday
@@ -137,7 +138,7 @@ module Properting
       evaluation_date = expiration_date(property['дата проведення оцінки'])
 
       {
-          balance_holder: property['балансоутримувач'],
+          obj_owner: property['балансоутримувач'],
           edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
           obj_address: property['адреса об\'єкту'],
           obj_name: property['назва об\'єкту'],

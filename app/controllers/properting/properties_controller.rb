@@ -76,6 +76,7 @@ module Properting
     end
 
     def show_property_info
+
       if @properting_property.obj_owner.blank?
         prozzoro_info = ExternalApi.prozzoro_data(@properting_property.prozzoro_id)
         unless prozzoro_info.nil?

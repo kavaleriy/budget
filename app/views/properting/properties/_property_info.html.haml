@@ -143,55 +143,84 @@
 .modal-header
   .modal-title
     %i.fa.fa-graduation-cap
-    = @properting_property.subject
+    = @properting_property.obj_owner
     -#= "Реконструкція площі Двірцевої, у т. ч. виготовлення проектно-кошторисної документації"
 .modal-body
   .row
     .col-xs-4.title-key
       %i.fa.fa-map-marker
-      = "#{ t('.info_adress') } :"
+      = "#{ t('properting.properties.info_adress') } :"
     .col-xs-8.value
-      = @properting_property.address
+      = @properting_property.obj_address
   .row
     .col-xs-4.title-key
       %i.fa.fa-gears
-      = "#{ t('.info_works') } :"
+      = "#{ t('properting.properties.legal_status') } :"
     .col-xs-8
-      = @properting_property.work
-
+      = @properting_property.legal_status
   .row
     .col-xs-4.title-key
       %i.fa.fa-university
-      = "#{ t('.info_spending_units') } :"
+      = "#{ t('properting.properties.purpose') } :"
     .col-xs-8.value
-      = @properting_property.spending_units
+      = @properting_property.purpose
   .row
     .col-xs-4.title-key
       %i.fa.fa-user-secret
-      = "#{ t('.info_performer') } :"
+      = "#{ t('properting.properties.obj_owner') } :"
     .col-xs-8.value
       = @properting_property.obj_owner
   .row
     .col-xs-4.title-key
       %i.fa.fa-calendar
-      = "#{ t('.repair_time') } :"
+      = "#{ t('properting.properties.date') } :"
     .col-xs-8
-      = format_date(@properting_property.property_start_date)
+      = format_date(@properting_property.contract_start_date)
       = '-'
-      = format_date(@properting_property.property_end_date)
+      = format_date(@properting_property.contract_end_date)
   .row
     .col-xs-4.title-key
       %i.fa.fa-certificate
-      = "#{ t('.warranty_date') } :"
+      = "#{ t('properting.properties.renter_name') } :"
     .col-xs-8.value
       -#= "5 років"
-      = @properting_property.warranty_date
+      = @properting_property.renter_name
   .row
     .col-xs-4.title-key
       %i.fa.fa-money
-      = "#{ t('.info_price') } :"
+      = "#{ t('properting.properties.deal_number') } :"
     .col-xs-8.value
-      = @properting_property.amount
+      = @properting_property.deal_number
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.basis_contract') } :"
+    .col-xs-8.value
+      = @properting_property.basis_contract
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.obj_characteristic') } :"
+    .col-xs-8.value
+      = @properting_property.obj_characteristic
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.expert_obj_cost') } :"
+    .col-xs-8.value
+      = @properting_property.expert_obj_cost
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.rental_rate') } :"
+    .col-xs-8.value
+      = @properting_property.rental_rate
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.last_rent_charge') } :"
+    .col-xs-8.value
+      = @properting_property.last_rent_charge
 
   - unless @properting_property.photos.blank?
     .row.photos
@@ -204,12 +233,13 @@
             .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
 
   %h4.head-desc
-    = t('.description')
+    %p Опис:
+    -#= t('.description')
   %p
-    = @properting_property.work
-  %h4.head-desc
+    = @properting_property.obj_desc
+  -#%h4.head-desc
     = t('.more_info')
-  %p
+  -#%p
     = @properting_property.description
   .more-data
     .vis-spinner
@@ -241,7 +271,8 @@
         = t('.edr_data')
       #edr.api-text
     .api
-      = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_artist : @properting_property.prozzoro_id } do
+      -#= link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_balance_holder : @properting_property.prozzoro_id } do
+      = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_renter : @properting_property.prozzoro_id } do
         -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-money.icon
         = t('.acm')
@@ -260,16 +291,14 @@
       #inspections.api-text
         #inspections-table
           %tbody
-    - if @properting_property.edrpou_artist.present?
+    - if @properting_property.edrpou_renter.present?
       .api
-        = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_artist}/taxes",
+        = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_renter}/taxes",
                   id: 'clarity-link',
                   target: '_blank' do
           %i.fa.fa-suitcase.icon
           = t('.clarity')
 
-  -#- if @properting_property.permit_appeal?
-    = render partial: 'scenarios'
 
 = javascript_include_tag 'spinner'
 
@@ -296,8 +325,8 @@
           }
         })
       }
-    })
-  })
+    });
+  });
 
   $( document ).ajaxComplete(function() {
     $('#spinner-container').trigger('spinner:stop')
