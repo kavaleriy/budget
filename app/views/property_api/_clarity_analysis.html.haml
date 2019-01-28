@@ -1,0 +1,24 @@
+:scss
+  .clarity-analysis{
+    a{
+      display: inline-block;
+      &:nth-child(1){
+        margin-right: 10px;
+      }
+      img {
+        max-width: 100% !important;
+        max-height: 30px;
+      }
+    }
+  }
+
+.row.clarity-analysis
+  .col-xs-12
+    - if @properting_properties.edrpou_balance_holder.present?
+      = link_to image_tag('repairing/customer.png', class: 'img-responsive'),
+                "https://clarity-project.info/entity/#{correct_edrpou(@properting_properties.edrpou_balance_holder)}",
+                target: '_blank'
+    - if @properting_properties.edrpou_renter.present?
+      = link_to image_tag('repairing/contractor.png', class: 'img-responsive'),
+                "https://clarity-project.info/entity/#{correct_edrpou(@properting_properties.edrpou_renter)}",
+                target: '_blank'

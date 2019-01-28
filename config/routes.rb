@@ -21,6 +21,13 @@ Rails.application.routes.draw do
   get 'external_api/judicial_register/:repair_id' => 'external_api#judicial_register', as: 'external_api_judicial_register'
   get 'external_api/inspections/:repair_id' => 'external_api#inspections', as: 'external_api_inspections'
 
+  get 'property_api/e_data/:property_id' => 'property_api#e_data',as: 'property_api_e_data'
+  get 'property_api/prozzoro/:property_id' => 'property_api#prozzoro',as: 'property_api_prozzoro'
+  get 'property_api/edr/:property_id' => 'property_api#edr',as: 'property_api_edr'
+  get 'property_api/no_data_yet' => 'property_api#no_data_yet',as: 'property_api_no_data_yet'
+  get 'property_api/judicial_register/:property_id' => 'property_api#judicial_register', as: 'property_api_judicial_register'
+  get 'property_api/inspections/:property_id' => 'property_api#inspections', as: 'property_api_inspections'
+
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
   get '/info/:alias/show' => 'public/home#show_pages',as: 'show_pages'

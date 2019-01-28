@@ -1,0 +1,100 @@
+:scss
+  // init colors
+  $active: #ffd304;
+  $text: #0c2231;
+
+  #inspections {
+    table {
+      thead {
+        th {
+          padding: 2px;
+          white-space: normal;
+          min-width: 90px;
+          cursor: pointer;
+          vertical-align: top;
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+          span {
+            &:before {
+              content: '\f175';
+              font-family: FontAwesome;
+              font-size: 12px;
+              float: left;
+              margin-right: 5px;
+            }
+          }
+          &.active{
+            span:before {
+              color: $active;
+            }
+          }
+        }
+        .payment_details {
+          width: 50%;
+        }
+        .active {
+          background: none;
+          span {
+            border-bottom: 2px solid $active;
+          }
+        }
+      }
+      tbody {
+        tr {
+          opacity: .7;
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  // hide sidebar for share
+  .addthis-smartlayers-desktop {
+    display: none;
+  }
+
+
+-if @inspections.blank?
+  = render partial: 'layouts/no_data_yet', message: 'судових справ щодо суб’єкту в судовому реєстрі не знайдено'
+-else
+  #inspections.table-responsive
+    %table.table.table-striped
+      %thead
+        %th.active{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
+          %span
+            = '№'
+        %th{'data-column' => 'regulator', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.control_body')
+        %th{'data-column' => 'activity_type', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.subject_verification')
+        %th{'data-column' => 'risk', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.risk')
+        %th{'data-column' => 'status', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.status')
+        %th{'data-column' => 'date_start', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.date_finish')
+        %th{'data-column' => 'sanction_sum', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.imposed_sanctions')
+        %th{'data-column' => 'internal_id', 'data-sort-direction' => 'desc'}
+          %span
+            = t('external_api.inspections.documents')
+
+      = render partial: 'property_api/inspections/search_inspections_results'
+
+    #pagination.text-center
+      = paginate @inspections, remote: true, theme: 'e_data_template', params: {'sort_col' => 'trans_date', 'sort_dir' => 'asc'}
+
+    .copyright_info
+      %p
+        *Дані надаються порталом
+        = link_to  'inspections.gov.ua', 'https://inspections.gov.ua/', target: '_blank'
+        Державної Регуляторної Служби, починаючи з 2018 року.
