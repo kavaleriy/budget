@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :town do
   desc 'rename town'
   task rename_city: :environment do
