@@ -6,6 +6,6 @@ namespace :town do
     town = Town.find_by(title: 'Мукачеве')
     town.title = 'Мукачево'
     town.save
-    puts 'City was renamed'
+    puts 'City was renamed!'
   end
 end
