@@ -39,28 +39,6 @@ module Properting
 
     # Внизу тепер кожному полю має бути точна назва з документу
 
-    #
-    #
-    #
-    # field :obj_owner, type: String
-    # field :subject, type: String
-    # field :work, type: String
-    # field :amount, type: Float
-    # field :property_start_date, type: Date
-    # field :property_end_date, type: Date
-    # field :edrpou_artist, type: String
-    # field :spending_units, type: String
-    # field :edrpou_spending_units, type: String
-    # field :prozzoro_id, type: String
-    # field :prozzoro_inner_id, type: String
-    #
-    # field :warranty_date, type: String
-    # field :description, type: String
-    #
-    # field :address, type: String
-    # field :address_to, type: String
-    # field :coordinates, type: Array
-
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
     before_validation :check_and_emend_edrpou
@@ -114,13 +92,14 @@ module Properting
     private
 
     def self.import(layer, filepath, child_category)
+
       properties_arr = read_table_from_file(filepath)[:rows]
 
       properties_arr.each do |property|
         property_hash = build_property_hash(property)
 
         coordinates = property['координати']
-        # coordinates1 = property['координати1']
+        coordinates1 = []
 
         property_hash[:coordinates] =
             if coordinates1.blank?
@@ -167,10 +146,10 @@ module Properting
           edrpou_renter: property['єдрпоу орендаря'],
           legal_status: property['правовий статус'],
           deal_number: property['№ договору'],
+          basis_contract: property['підстава укладання договору оренди'],
           contract_start_date: property['дата укладання договору оренди'],
           contract_end_date: property['дата закінчення договору оренди'],
           evaluation_date: property['дата проведення оцінки'],
-          basis_contract: property['підстава укладання договору оренди'],
           purpose: property['цільове призначення'],
           obj_characteristic: property['характеритиска об\'єкту (площа)'],
           expert_obj_cost: property['вартість об\'єкту за експертною оцінкою'],
