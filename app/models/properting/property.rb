@@ -5,11 +5,11 @@ module Properting
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
 
-    # TODO:Check this concern for properting!!!!!!!!!!!!!!
+    # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
 
-    scope :last_updated, -> {order("updated_at DESC").limit(1)}
-    scope :by_layer, -> (layer_id) {where(layer: layer_id)}
+    scope :last_updated, -> { order('updated_at DESC').limit(1) }
+    scope :by_layer, ->(layer_id) { where(layer: layer_id) }
     belongs_to :layer, class_name: 'Properting::Layer', touch: true
     validates :layer, presence: true
 
@@ -57,20 +57,20 @@ module Properting
     end
 
     def set_end_date
-      if !self.contract_start_date.blank? && self.contract_end_date.blank?
-        start_year = self.contract_start_date.year
+      if contract_start_date.present? && contract_end_date.blank?
+        start_year = contract_start_date.year
         end_date = Date.new(y = start_year, m = 12, d = 31)
         self.property_end_date = end_date
       end
     end
 
-    # TODO:Check this concern for properting!!!!!!!!!!!!!!
+    # TODO: Check this concern for properting!!!!!!!!!!!!!!
     def geocode
       self.coordinates = RepairingGeocoder.calc_coordinates(address, address_to)
     end
 
     def check_address
-      (address.present?) && (!coordinates.present? || address_changed? || address_to_changed?)
+      address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
     end
 
     def town_emails
@@ -83,7 +83,7 @@ module Properting
     # end
 
     def property_coordinate
-      if coordinates.first.kind_of?(Array)
+      if coordinates.first.is_a?(Array)
         size = coordinates.size
         coordinates[size / 2]
       else
@@ -94,7 +94,6 @@ module Properting
     private
 
     def self.import(layer, filepath, child_category)
-
       properties_arr = read_table_from_file(filepath)[:rows]
 
       properties_arr.each do |property|
@@ -103,24 +102,23 @@ module Properting
         coordinates1 = []
 
         property_hash[:coordinates] =
-            if coordinates1.blank?
-              if coordinates.blank?
-                nil
-              else
-                coordinates.split(',').map(&:to_f)
-              end
+          if coordinates1.blank?
+            if coordinates.blank?
+              nil
             else
-              [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
+              coordinates.split(',').map(&:to_f)
             end
+          else
+            [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
+          end
 
-        layer_property = self.create(property_hash)
+        layer_property = create(property_hash)
         layer_property.layer = layer
         layer_property.properting_category = child_category if child_category.present?
 
         layer_property.save(validate: false)
       end
     end
-
 
     def self.expiration_date(d_string)
       d_string.try(:to_date)
@@ -132,47 +130,45 @@ module Properting
     end
 
     def self.build_property_hash(property)
-
       contract_start_date = expiration_date(property['дата укладання договору оренди'])
       contract_end_date = expiration_date(property['дата закінчення договору оренди'])
       evaluation_date = expiration_date(property['дата проведення оцінки'])
 
       {
-          obj_owner: property['балансоутримувач'],
-          edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
-          obj_address: property['адреса об\'єкту'],
-          obj_name: property['назва об\'єкту'],
-          obj_desc: property['опис об\'єкту'],
-          renter_name: property['найменування користувача\\орендаря'],
-          edrpou_renter: property['єдрпоу орендаря'],
-          legal_status: property['правовий статус'],
-          deal_number: property['№ договору'],
-          basis_contract: property['підстава укладання договору оренди'],
-          contract_start_date: property['дата укладання договору оренди'],
-          contract_end_date: property['дата закінчення договору оренди'],
-          evaluation_date: property['дата проведення оцінки'],
-          purpose: property['цільове призначення'],
-          obj_characteristic: property['характеритиска об\'єкту (площа)'],
-          expert_obj_cost: property['вартість об\'єкту за експертною оцінкою'],
-          rental_rate: property['орендна ставка'],
-          last_rent_charge: property['останнє нарахування орендної плати, грн'],
-          prozzoro_id: property['id prozorro.sales']
+        obj_owner: property['балансоутримувач'],
+        edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
+        obj_address: property['адреса об\'єкту'],
+        obj_name: property['назва об\'єкту'],
+        obj_desc: property['опис об\'єкту'],
+        renter_name: property['найменування користувача\\орендаря'],
+        edrpou_renter: property['єдрпоу орендаря'],
+        legal_status: property['правовий статус'],
+        deal_number: property['№ договору'],
+        basis_contract: property['підстава укладання договору оренди'],
+        contract_start_date: property['дата укладання договору оренди'],
+        contract_end_date: property['дата закінчення договору оренди'],
+        evaluation_date: property['дата проведення оцінки'],
+        purpose: property['цільове призначення'],
+        obj_characteristic: property['характеритиска об\'єкту (площа)'],
+        expert_obj_cost: property['вартість об\'єкту за експертною оцінкою'],
+        rental_rate: property['орендна ставка'],
+        last_rent_charge: property['останнє нарахування орендної плати, грн'],
+        prozzoro_id: property['id prozorro.sales']
       }
     end
 
     def self.property_json_by_town(town)
-
       # HERE WAS TROUBLE WITH ROUT
-      Rails.cache.fetch("/properting/as_json/#{town}/#{town_updated(town)}", expires_in: 1.hours) do
+      Rails.cache.fetch("/properting/as_json/#{town}/#{town_updated(town)}", expires_in: 1.hour) do
         propertings = Properting::Layer.valid_layers_with_properties
         geo_jsons = []
 
-        #TODO: change logic for default date(1970)
+        # TODO: change logic for default date(1970)
         last_updated = Time.new('1970-01-01')
         last_year_data = ''
 
         # if town not empty filter array by town
-        propertings.select! { |key, _value| key['town_id'].to_s.eql?(town) } unless town.blank?
+        propertings.select! { |key, _value| key['town_id'].to_s.eql?(town) } if town.present?
 
         propertings.each do |layer, properties|
           last_year_data = layer['year'] if layer['year'].present? && (last_year_data < layer['year'])

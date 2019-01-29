@@ -1,8 +1,8 @@
 module Properting
   class MapsController < ApplicationController
     layout 'visify', only: [:frame]
-    after_filter :allow_iframe, only: [:frame]
-    before_filter :set_map_params, only: [:show, :frame]
+    after_action :allow_iframe, only: [:frame]
+    before_action :set_map_params, only: %i[show frame]
 
     def set_map_params
       @categories = categories
@@ -15,17 +15,17 @@ module Properting
 
         # Add this 'if' for 'Demonstration of a typical city profile' because this town has not coordinates
         if !town['coordinates'].nil?
-          if town.level && town.level.eql?(1)  # area
-            regional_center = Town.where(area_title: town.title, level: 13).first  # level: 13 - regional_center(town) of area
+          if town.level && town.level.eql?(1) # area
+            regional_center = Town.where(area_title: town.title, level: 13).first # level: 13 - regional_center(town) of area
             @map_center = regional_center['coordinates'] unless regional_center.nil?
-          elsif town.level  # town or region
+          elsif town.level # town or region
             @map_center = town['coordinates']
           end
         else
           @zoom = '6' # view map Ukraine
         end
       else
-        @town = ""
+        @town = ''
       end
       @year = params[:year] || ''
     end
@@ -68,8 +68,8 @@ module Properting
       file_path = Rails.public_path.to_s + '/files/file_examples/property_layer_example.xlsx'
       if File.exist?(file_path)
         send_file(
-            "#{file_path}",
-            :x_sendfile=>true
+          file_path.to_s,
+          x_sendfile: true
         )
       else
         redirect_to :back, notice: t('budget_files_controller.not_download_file')
@@ -89,27 +89,27 @@ module Properting
     end
 
     def get_heapmap_geo_json
-
-      propertings = Properting::Property.where(:coordinates.ne => nil ).entries
+      propertings = Properting::Property.where(:coordinates.ne => nil).entries
       geo_json = []
       propertings.each do |property|
-        geo_json << {
-            type: "Feature",
-            geometry: {
-                type: 'Point',
-                coordinates: property[:coordinates]
-            },
-            properties: {
-                id: property[:id],
-                property: "house",
-                amount: property[:amount]
-            }
-        } unless property[:coordinates].nil? || property[:coordinates][0].nil? || property[:coordinates][1].nil?
+        next if property[:coordinates].nil? || property[:coordinates][0].nil? || property[:coordinates][1].nil?
 
+        geo_json << {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: property[:coordinates]
+          },
+          properties: {
+            id: property[:id],
+            property: 'house',
+            amount: property[:amount]
+          }
+        }
       end
       result = {
-          "type" => "FeatureCollection",
-          "features" => geo_json
+        'type' => 'FeatureCollection',
+        'features' => geo_json
       }
 
       respond_to do |format|
@@ -117,9 +117,7 @@ module Properting
       end
     end
 
-    def heapmap
-
-    end
+    def heapmap; end
 
     private
 
