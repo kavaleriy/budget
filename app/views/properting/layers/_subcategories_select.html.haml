@@ -2,8 +2,8 @@
                      id: 'properting_subcategory', 'data-type' => 'select2', 'data-pk' => "#{@properting_layer.id}",
                      'data-url' => "#{update_properties_category_properting_layer_path}",
                      'data-emptytext' => t('repairing.layers.edit.subcategory') }
-  -#= @properting_layer.properties.first.properting_category.title if @properting_layer.properties.first.properting_category
-  = @properting_layer.properting_category.title if @properting_layer.properting_category
+  = @properting_layer.properties.first.properting_category.title if @properting_layer.properties.first.properting_category
+  -#= @properting_layer.properting_category.title if @properting_layer.properting_category
 
 :javascript
   $(document).ready(function(){

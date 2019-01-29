@@ -27,14 +27,15 @@
                   { include_blank: true },
                   { class: 'select form-control', id: 'child_category', name: 'child_category' }
 
-  = f.input :status, collection: {t('js.visify.plan') => :plan, t('js.visify.fact') => :fact},
+  -#check if :plan and :fact is a not system
+  = f.input :status, collection: {t('js.visify.free') => :free, t('js.visify.occupied') => :occupied},
                      prompt: false,
-                     label: t('repairing.repairs.form.status')
+                     label: t('js.visify.free') + '/' + t('js.visify.occupied')
   = f.input :year, collection: years_from(2015),
                      prompt: false,
                      label: t('repairing.repairs.form.year')
   = f.input :description, as: :text,  label: t('repairing.repairs.form.description'), rows: '8'
-  = f.input :properties_file,as: :file, label: t('repairing.repairs.form.repairs_file')
+  = f.input :properties_file,as: :file, label: t('properting.properties.property_file')
 
   = f.submit t('form.add'), class: 'btn btn-primary'
   = link_to t('form.cancel', default: t('helpers.links.cancel')), properting_layers_path, class: 'btn btn-default'

@@ -27,8 +27,8 @@
         %b
           =t('repairing.layers.index.status')
       = select_tag :status, options_for_select({'' => '',
-                                                t('js.visify.plan') => :plan,
-                                                t('js.visify.fact') => :fact}),
+                                                t('js.visify.free') => :free,
+                                                t('js.visify.occupied') => :occupied}),
                              id: 'status',
                              class: 'form-control'
   .col-sm-12.col-md-2.form-inline
