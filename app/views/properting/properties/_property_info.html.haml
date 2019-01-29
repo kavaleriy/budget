@@ -41,9 +41,30 @@
         }
         .modal-body {
           padding: 10px 0 0 0;
-          h4.head-desc{
-            text-transform: uppercase;
-          }
+          //h4.head-desc{
+          //  text-transform: uppercase;
+          //  .dropdown {
+          //    button {
+          //      width: 100%;
+          //      text-align: left;
+          //      .dropdown-menu {
+          //        width: 100%;
+          //        padding: 20px;
+          //      }
+          //    }
+          //  }
+          //  .dropdown .open {
+          //    width: 100%;
+          //    padding: 20px;
+          //    position: initial;
+          //    .dropdown-menu {
+          //      display: block;
+          //      position: initial;
+          //      width: 100%;
+          //      padding: 20px;
+          //    }
+          //  }
+          //}
           .row {
             margin-bottom: 3px;
             .title-key {
@@ -136,6 +157,21 @@
       }
     }
   }
+  h4.head-desc{
+    text-transform: uppercase;
+    .dropdown {
+      button {
+        width: 100%;
+        text-align: left;
+        border-radius: 0;
+      }
+      .dropdown-menu {
+        width: 100%;
+        padding: 20px;
+        border-radius: 0;
+      }
+    }
+  }
 
 .fond-for-close
 %button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
@@ -187,19 +223,19 @@
       = @properting_property.renter_name
   .row
     .col-xs-4.title-key
-      %i.fa.fa-money
+      %i.fa.fa-link
       = "#{ t('properting.properties.deal_number') } :"
     .col-xs-8.value
       = @properting_property.deal_number
   .row
     .col-xs-4.title-key
-      %i.fa.fa-money
+      %i.fa.fa-check-circle-o
       = "#{ t('properting.properties.basis_contract') } :"
     .col-xs-8.value
       = @properting_property.basis_contract
   .row
     .col-xs-4.title-key
-      %i.fa.fa-money
+      %i.fa.fa-square
       = "#{ t('properting.properties.obj_characteristic') } :"
     .col-xs-8.value
       = @properting_property.obj_characteristic
@@ -233,72 +269,69 @@
             .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
 
   %h4.head-desc
-    %p Опис:
-    -#= t('.description')
-  %p
-    = @properting_property.obj_desc
-  -#%h4.head-desc
-    = t('.more_info')
-  -#%p
-    = @properting_property.description
-  .more-data
-    .vis-spinner
-      = render partial: 'layouts/spinner'
-    .api
-      = link_to property_api_e_data_path(@properting_property),
-      remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-gears.icon
-        = t('.e_data')
-      #e-data.api-text
-        #edata_payments
-          %tbody
-    .api
-      = link_to property_api_prozzoro_path(@properting_property), remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-university.icon
-        = t('.prozzoro')
-      #prozzoro.api-text
-    -#= link_to property_api_edr_path(@repairing_repair), remote: true do
-    -#  %i.fa.fa-plus-square-o.button
-    -#  %i.fa.fa-money.icon
-    -#  = t('.court_register')
-    -##court-register
-    .api
-      = link_to property_api_edr_path(@properting_property), remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-money.icon
-        = t('.edr_data')
-      #edr.api-text
-    .api
-      -#= link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_balance_holder : @properting_property.prozzoro_id } do
-      = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_renter : @properting_property.prozzoro_id } do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-money.icon
-        = t('.acm')
-      #acm-api-text.api-text
-    .api
-      = link_to property_api_judicial_register_path(@properting_property), remote: true do
-        %i.fa.fa-balance-scale.icon
-        = t('.judicial_register')
-      #judicial-register.api-text
-        #judicial-register-table
-          %tbody
-    .api
-      = link_to property_api_inspections_path(@properting_property), remote: true do
-        %i.fa.fa-calendar-check-o.icon
-        = t('.inspection_portal')
-      #inspections.api-text
-        #inspections-table
-          %tbody
-    - if @properting_property.edrpou_renter.present?
-      .api
-        = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_renter}/taxes",
-                  id: 'clarity-link',
-                  target: '_blank' do
-          %i.fa.fa-suitcase.icon
-          = t('.clarity')
-
+    .dropdown{style: "position: initial;"}
+      %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+        Опис:
+        %span.caret
+      .dropdown-menu{"aria-labelledby" => "dropdownMenu1", style: "width: 100%; padding: 20px;"}
+        %p
+          = @properting_property.obj_desc
+        .more-data
+          .vis-spinner
+            = render partial: 'layouts/spinner'
+          .api
+            = link_to property_api_e_data_path(@properting_property),
+            remote: true do
+              %i.fa.fa-gears.icon
+              = t('.e_data')
+            #e-data.api-text
+              #edata_payments
+                %tbody
+          .api
+            = link_to property_api_prozzoro_path(@properting_property), remote: true do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-university.icon
+              = t('.prozzoro')
+            #prozzoro.api-text
+          -#= link_to property_api_edr_path(@repairing_repair), remote: true do
+          -#  %i.fa.fa-plus-square-o.button
+          -#  %i.fa.fa-money.icon
+          -#  = t('.court_register')
+          -##court-register
+          .api
+            = link_to property_api_edr_path(@properting_property), remote: true do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-money.icon
+              = t('.edr_data')
+            #edr.api-text
+          .api
+            -#= link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_balance_holder : @properting_property.prozzoro_id } do
+            = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_renter : @properting_property.prozzoro_id } do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-money.icon
+              = t('.acm')
+            #acm-api-text.api-text
+          .api
+            = link_to property_api_judicial_register_path(@properting_property), remote: true do
+              %i.fa.fa-balance-scale.icon
+              = t('.judicial_register')
+            #judicial-register.api-text
+              #judicial-register-table
+                %tbody
+          .api
+            = link_to property_api_inspections_path(@properting_property), remote: true do
+              %i.fa.fa-calendar-check-o.icon
+              = t('.inspection_portal')
+            #inspections.api-text
+              #inspections-table
+                %tbody
+          - if @properting_property.edrpou_renter.present?
+            .api
+              = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_renter}/taxes",
+                        id: 'clarity-link',
+                        target: '_blank' do
+                %i.fa.fa-suitcase.icon
+                = t('.clarity')
 
 = javascript_include_tag 'spinner'
 
