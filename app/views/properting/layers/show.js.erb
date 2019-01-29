@@ -1,0 +1,3 @@
+// used for show and edit actions
+$('#properties').html('<%= escape_javascript(render partial: 'properties') %>');
+$('.paginator-properties').html('<%= escape_javascript(paginate(@properties, remote: true)) %>');

@@ -1,0 +1,351 @@
+:css
+  #category_description span, #category_title {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  #category_description span {
+    color: #428bca;
+  }
+  #category_title {
+    font-size: 1.4em;
+  }
+  #category_content {
+    margin-top: 10px;
+  }
+  .leaflet-top.leaflet-right {
+    width: 300px;
+  }
+
+  #s2id_map_town {
+    font-size: 1.2em;
+  }
+
+  #s2id_map_town .select2-choice {
+    height: 34px !important;
+  }
+
+  #category_btns .btn {
+    padding: 4px;
+  }
+
+:scss
+  .map-header {
+    margin-top: 5px;
+    &.road-frame{
+      .select-roads-years{
+        width: 100%;
+      }
+    }
+    .select-categories {
+      padding-bottom: 5px;
+      #category_btns {
+        .btn {
+          border-radius: 0;
+        }
+        .btn-default {
+          border-color: #A2B2BE;
+        }
+        .active {
+          border: 2px solid #7D94A4;
+          box-sizing: border-box;
+          padding: 3px;
+        }
+      }
+      .title {
+        width: auto;
+        padding: 0 15px 0 0;
+        margin: 0;
+        #category_description {
+          span {
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: black;
+          }
+        }
+      }
+      .categories-value {
+        padding: 0;
+        #category_content {
+          margin: 0;
+          #category_title {
+            font-size: 1.7rem;
+            color: #0c2231;
+          }
+        }
+      }
+    }
+    .select-roads-years{
+      .pull-right{
+        margin-left: 5px;
+        margin-bottom: 2px;
+      }
+      .year-select {
+        .input-group {
+          width: 70px;
+          float: right;
+          .input-group-addon {
+            position: absolute;
+            padding: 13px 35px 9px 15px;
+            height: 40px;
+            border-radius: 0;
+            color: white;
+            font-weight: 400;
+            background-color: #A2B2BE;
+            border: 1px solid #7D94A4;
+          }
+          .form-control {
+            position: static;
+            height: 40px;
+            padding: 5px 3px;
+            border-radius: 0;
+            border: 1px solid #7D94A4;
+            border-left: transparent;
+            option:hover, option:focus {
+              background-color: #7D94A4;
+            }
+          }
+        }
+      }
+      #fullscreen{
+        padding-right: 2px;
+      }
+    }
+  }
+
+:css
+  /**
+   * Tooltip Styles
+   */
+
+  /* Base styles for the element that has a tooltip */
+  [data-tooltip],
+  .tooltip {
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* Base styles for the entire tooltip */
+  [data-tooltip]:before,
+  [data-tooltip]:after,
+  .tooltip:before,
+  .tooltip:after {
+    position: absolute;
+    visibility: hidden;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    -webkit-transition:
+      opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out,
+    -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    -moz-transition:
+      opacity 0.2s ease-in-out,
+      visibility 0.2s ease-in-out,
+      -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    transition:
+      opacity 0.2s ease-in-out,
+      visibility 0.2s ease-in-out,
+      transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+      -webkit-transform: translate3d(0, 0, 0);
+      -moz-transform:    translate3d(0, 0, 0);
+      transform:         translate3d(0, 0, 0);
+      pointer-events: none;
+  }
+
+  /* Show the entire tooltip on hover and focus */
+  [data-tooltip]:hover:before,
+  [data-tooltip]:hover:after,
+  [data-tooltip]:focus:before,
+  [data-tooltip]:focus:after,
+  .tooltip:hover:before,
+  .tooltip:hover:after,
+  .tooltip:focus:before,
+  .tooltip:focus:after {
+    visibility: visible;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+
+  /* Base styles for the tooltip's directional arrow */
+  .tooltip:before,
+  [data-tooltip]:before {
+    z-index: 1001;
+    border: 6px solid transparent;
+    background: transparent;
+    content: "";
+  }
+
+  /* Base styles for the tooltip's content area */
+  .tooltip:after,
+  [data-tooltip]:after {
+    z-index: 1005;
+    padding: 8px;
+    width: auto;
+    background-color: #000;
+    background-color: hsla(0, 0%, 20%, 0.9);
+    color: #fff;
+    content: attr(data-tooltip);
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  /* Directions */
+
+  /* Top (default) */
+  [data-tooltip]:before,
+  [data-tooltip]:after,
+  .tooltip:before,
+  .tooltip:after,
+  .tooltip-top:before,
+  .tooltip-top:after {
+    bottom: 0;
+    left: 50%;
+  }
+
+  [data-tooltip]:before,
+  .tooltip:before,
+  .tooltip-top:before {
+    margin-left: 0;
+    margin-bottom: -12px;
+    border-top-color: #000;
+    border-top-color: hsla(0, 0%, 20%, 0.9);
+  }
+
+  /* Horizontally align top/bottom tooltips */
+  [data-tooltip]: cssafter,
+  .tooltip:after,
+  .tooltip-top:after {
+    margin-left: -80px;
+  }
+
+  [data-tooltip]:hover:before,
+  [data-tooltip]:hover:after,
+  [data-tooltip]:focus:before,
+  [data-tooltip]:focus:after,
+  .tooltip:hover:before,
+  .tooltip:hover:after,
+  .tooltip:focus:before,
+  .tooltip:focus:after,
+  .tooltip-top:hover:before,
+  .tooltip-top:hover:after,
+  .tooltip-top:focus:before,
+  .tooltip-top:focus:after {
+    -webkit-transform: translateY(-12px);
+    -moz-transform:    translateY(-12px);
+    transform:         translateY(-12px);
+  }
+
+  /* Left */
+  .tooltip-left:before,
+  .tooltip-left:after {
+    right: 100%;
+    bottom: 50%;
+    left: auto;
+  }
+
+  .tooltip-left:before {
+    margin-left: 0;
+    margin-right: -12px;
+    margin-bottom: 0;
+    border-top-color: transparent;
+    border-left-color: #000;
+    border-left-color: hsla(0, 0%, 20%, 0.9);
+  }
+
+  .tooltip-left:hover:before,
+  .tooltip-left:hover:after,
+  .tooltip-left:focus:before,
+  .tooltip-left:focus:after {
+    -webkit-transform: translateX(-12px);
+    -moz-transform:    translateX(-12px);
+    transform:         translateX(-12px);
+  }
+
+  /* Bottom */
+  .tooltip-bottom:before,
+  .tooltip-bottom:after {
+    top: 100%;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .tooltip-bottom:before {
+    margin-top: -12px;
+    margin-bottom: 0;
+    border-top-color: transparent;
+    border-bottom-color: #000;
+    border-bottom-color: hsla(0, 0%, 20%, 0.9);
+  }
+
+  .tooltip-bottom:hover:before,
+  .tooltip-bottom:hover:after,
+  .tooltip-bottom:focus:before,
+  .tooltip-bottom:focus:after {
+    -webkit-transform: translateY(12px);
+    -moz-transform:    translateY(12px);
+    transform:         translateY(12px);
+  }
+
+  /* Right */
+  .tooltip-right:before,
+  .tooltip-right:after {
+    bottom: 50%;
+    left: 100%;
+  }
+
+  .tooltip-right:before {
+    margin-bottom: 0;
+    margin-left: -12px;
+    border-top-color: transparent;
+    border-right-color: #000;
+    border-right-color: hsla(0, 0%, 20%, 0.9);
+  }
+
+  .tooltip-right:hover:before,
+  .tooltip-right:hover:after,
+  .tooltip-right:focus:before,
+  .tooltip-right:focus:after {
+    -webkit-transform: translateX(12px);
+    -moz-transform:    translateX(12px);
+    transform:         translateX(12px);
+  }
+
+  /* Move directional arrows down a bit for left/right tooltips */
+  .tooltip-left:before,
+  .tooltip-right:before {
+    top: 3px;
+  }
+
+  /* Vertically center tooltip content for left/right tooltips */
+  .tooltip-left:after,
+  .tooltip-right:after {
+    margin-left: 0;
+    margin-bottom: -16px;
+  }
+
+.row.map-header{ class: ('road-frame' if @categories.blank?) }
+  - if @categories
+    .col-xs-12.col-sm-8.select-categories
+      #category_btns.btn-group
+        - @categories.each do |category|
+          .btn.btn-default.tooltip-bottom{'data-tooltip' => category.title, 'data-id' => category.id}
+            = image_tag category.img? ? category.img.thumb.url : 'properting/default_thumb.png'
+        -##subcategories
+  .col-xs-12.col-sm-4.select-roads-years
+    .pull-right#fullscreen{'data-module' => 'properting-map'}
+      = render partial: 'widgets/town_profile/fullscreen_btn'
+    .pull-right.year-select
+      -#- if @town.blank?
+      -#  .form-group
+      -#    = text_field_tag 'map_town', ''
+      .input-group
+        %span.input-group-addon
+          %b= t('repairing.maps.map_select.year')
+        = select_tag 'year_select',
+                      options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + years_from(2015), selected: "#{@year}"),
+                      class: 'form-control'
+    -#.pull-right.road-condition-select
+      = render partial: 'properting/maps/road_condition'
+    .pull-right.status-btns
+      = render partial: 'properting/maps/status_btns'

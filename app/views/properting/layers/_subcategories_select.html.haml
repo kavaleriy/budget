@@ -1,0 +1,21 @@
+%a.edit_subcategory{ href: '#', 'data-resource' => 'update_properties_category',
+                     id: 'properting_subcategory', 'data-type' => 'select2', 'data-pk' => "#{@properting_layer.id}",
+                     'data-url' => "#{update_properties_category_properting_layer_path}",
+                     'data-emptytext' => t('repairing.layers.edit.subcategory') }
+  = @properting_layer.properties.first.properting_category.title if @properting_layer.properties.first.properting_category
+  -#= @properting_layer.properting_category.title if @properting_layer.properting_category
+
+:javascript
+  $(document).ready(function(){
+    $('#edit_layer .edit_subcategory').editable({
+      value: "#{@properting_layer.properting_category.id if @properting_layer.properting_category}",
+      source: '#{subcategories_properting_layer_path}',
+      select2: {
+        width: '350px',
+        allowClear: true
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+  })

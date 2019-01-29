@@ -1,0 +1,112 @@
+:css
+  .editable-pre-wrapped {
+    white-space: nowrap;
+  }
+=javascript_include_tag 'bootstrap_flash'
+.panel.panel-default
+  .panel-heading
+    = t('repairing.layers.edit.layer')
+  .panel-body
+    %table.table#edit_layer
+      %thead
+        %tr
+          %th
+            = t('repairing.repairs.form.title')
+          %th
+            = t('repairing.repairs.form.category')
+          %th
+            = t('repairing.repairs.form.subcategory')
+          %th
+            = t('repairing.repairs.form.town')
+          %th
+            = t('repairing.repairs.form.year')
+          %th
+            = t('repairing.repairs.form.description')
+      %tbody
+        %tr
+          %td
+            %a.editable{ href: '#', 'data-resource' => 'properting_layer',
+                         id: 'title', 'data-type' => 'text', 'data-pk' => "#{@properting_layer.id}",
+                         'data-url' => "#{properting_layer_path(@properting_layer)}",
+                         'data-emptytext' => t('repairing.layers.edit.title') }
+              = @properting_layer.title
+          %td
+            %a.edit_category{ href: '#', 'data-resource' => 'properting_layer',
+                              id: 'properting_category', 'data-type' => 'select2', 'data-pk' => "#{@properting_layer.id}",
+                              'data-url' => "#{properting_layer_path(@properting_layer)}",
+                              'data-emptytext' => t('repairing.layers.edit.category') }
+              = @properting_layer.properting_category.title if @properting_layer.properting_category
+
+          %td#subcategories-select
+            = render partial: 'subcategories_select'
+
+          %td
+            %a.edit_twn{ href: '#', 'data-resource' => 'properting_layer',
+                         id: 'town', 'data-type' => 'select2', 'data-pk' => "#{@properting_layer.id}",
+                         'data-url' => "#{properting_layer_path(@properting_layer)}",
+                         'data-emptytext' => t('repairing.layers.edit.town') }
+              = @properting_layer.town.title if @properting_layer.town
+          %td
+            %a.edit_year{ href: '#', 'data-resource' => 'properting_layer',
+                         id: 'year', 'data-type' => 'select', 'data-pk' => "#{@properting_layer.id}",
+                         'data-url' => "#{properting_layer_path(@properting_layer)}",
+                         'data-emptytext' => t('repairing.layers.edit.year') }
+              = @properting_layer.year
+          %td
+            %a.editable{ href: '#', 'data-resource' => 'properting_layer',
+                         id: 'description', 'data-type' => 'textarea', 'data-pk' => "#{@properting_layer.id}",
+                         'data-url' => "#{properting_layer_path(@properting_layer)}",
+                         'data-emptytext' => t('repairing.layers.edit.description') }
+              = @properting_layer.description
+.clear
+
+:javascript
+
+  $(document).ready(function(){
+    $('#edit_layer .editable').editable({
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+    $('#edit_layer .edit_category').editable({
+      value: "#{@properting_layer.properting_category.id if @properting_layer.properting_category}",
+      source: '#{categories_properting_layer_path}',
+      select2: {
+        width: '350px',
+        allowClear: true
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+        $.ajax({
+          type: 'get',
+          url: "#{subcategories_select_properting_layer_path}",
+          dataType: 'script'
+        });
+      }
+    });
+
+    $('#edit_layer .edit_twn').editable({
+      value: "#{@properting_layer.town.id if @properting_layer.town}",
+      source: '#{search_town_path}',
+      select2: {
+        width: '350px',
+        allowClear: true,
+        minimumInputLength: 2
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+
+    $('#edit_layer .edit_year').editable({
+      value: "#{@properting_layer.year}",
+      source: "#{years_from(2015)}",
+      select2: {
+        width: '350px',
+        allowClear: true
+      },
+      success: function(response,newValue){
+        show_bootstrap_flash(response.message,response.class_name);
+      }
+    });
+  })

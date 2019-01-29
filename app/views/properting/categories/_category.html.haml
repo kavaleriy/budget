@@ -1,0 +1,47 @@
+:scss
+  .category-form{
+    margin-bottom: 0px;
+    form {
+      margin: 0px;
+      .form-group{
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .btn.btn-upload{
+        position: relative;
+        top: 10px;
+      }
+    }
+  }
+
+
+%table.table.category-form
+  %thead
+    %th
+      = t('repairing.category_edit.name')
+    %th
+      = t('repairing.category_edit.image')
+  %tbody
+    %tr
+      %td
+        %a.editable{href: '#', id: 'title', 'data-resource' => 'properting_category', 'data-type' => 'text', 'data-pk' => @properting_category.id, 'data-url' => properting_category_path(@properting_category), 'data-emptytext' => t('repairing.category_edit.need_name_category')}
+          = @properting_category.title
+      %td
+        = bootstrap_form_for @properting_category, html: {class: 'form-inline'}, remote: true do |f|
+          .upload_img{style: 'float:left;margin-right:10px;'}
+            -if @properting_category.img?
+              =image_tag @properting_category.img.thumb.url
+            -else
+              =image_tag "no_image.png"
+          = f.file_field :img, label: t('repairing.category_edit.image_load'), accept: 'image/*', multiple: false
+          = f.button class: 'btn btn-primary btn-upload' do
+            %i.fa.fa-upload
+
+-# This script for stylize file field
+= render partial: 'layouts/file_upload_script'
+
+:javascript
+
+  $(document).ready(function() {
+    $(".editable").editable();
+  })

@@ -1,0 +1,28 @@
+:scss
+  .header{
+    margin: 30px auto;
+    text-align: center;
+    .address{
+      font-size: 14px;
+    }
+  }
+  .fotorama{
+    .fotorama__wrap{
+      margin: 0 auto;
+    }
+  }
+
+/ fotorama.css & fotorama.js.
+= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css'
+= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js'
+
+%h3.header
+  %p.work
+    = @properting_property.work
+  %p.address
+    = @properting_property.address
+
+.fotorama{ "data-nav" => :thumbs }
+  - @properting_property.photos.each do |photo|
+    = link_to photo.image.url do
+      = image_tag photo.image.thumb

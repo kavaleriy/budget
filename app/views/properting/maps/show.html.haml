@@ -1,0 +1,14 @@
+:scss
+  iframe {
+    width: 100%;
+    height: calc(100vh - 250px);
+    padding-top: 5px;
+  }
+  #embed_code {
+    padding-bottom: 5px;
+  }
+
+%iframe{src: "/properting/maps/frame/6?locale=#{params[:locale]}", frameborder: 0, :allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
+
+-# The frame above already have this code
+-#= render partial: 'show_map'

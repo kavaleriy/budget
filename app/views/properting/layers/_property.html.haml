@@ -1,0 +1,38 @@
+.row{id: "property-#{property.id}"}
+  .col-sm-3.col-md-4
+    .row
+      .col-sm-12.col-md-6
+        .odd{class: "#{valid_status(property.spending_units)}"}
+          = property.spending_units
+        .even{class: "#{valid_status(property.edrpou_spending_units)}"}
+          = property.edrpou_spending_units
+      .col-sm-12.col-md-6
+        .odd{class: "#{valid_status(property.address)}"}
+          = property.address
+        .even
+          = property.address_to
+        .odd.coordinates{class: "#{valid_status(property.coordinates)}"}
+          = truncate(property.coordinates.to_s, length: 120)
+  .col-sm-3.col-md-4
+    .row
+      .col-sm-12.col-md-6
+        .odd= strip_tags(property.obj_owner)
+        .even= property.edrpou_artist
+      .col-sm-12.col-md-6
+        .odd= strip_tags(property.subject)
+        .even= property.work
+        .odd= property.properting_category.title if property.properting_category
+  .col-sm-3.col-md-2
+    .odd= property.property_start_date
+    .even= property.property_end_date
+    .odd= property.warranty_date
+  .col-sm-3.col-md-2
+    .odd{class: "#{valid_status(property.amount)}"}
+      = property.amount
+    .even= property.prozzoro_id
+    .odd= property.description
+    .actions
+      %a.edit-property{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-property-id' => "#{property.id}" }
+        %i.fa.fa-pencil.fa-2x
+      = link_to properting_layer_property_path(property.layer_id, property.id), method: :delete, remote: true, class: 'drop-property', data: { confirm: 'Are you sure?' } do
+        %i.fa.fa-trash-o.fa-2x

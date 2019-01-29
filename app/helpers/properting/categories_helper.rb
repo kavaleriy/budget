@@ -1,0 +1,2 @@
+module Properting::CategoriesHelper
+end

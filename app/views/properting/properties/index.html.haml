@@ -1,0 +1,31 @@
+%h1 Listing properting_properties
+
+%table
+  %tr
+    %th Title
+    %th Koatuu
+    %th District
+    %th Street
+    %th Description
+    %th Amount
+    %th Coordinates
+    %th
+    %th
+    %th
+
+  - @properting_properties.each do |properting_property|
+    %tr
+      %td= properting_property.title
+      %td= properting_property.koatuu
+      %td= properting_property.district
+      %td= properting_property.street
+      %td= properting_property.description
+      %td= properting_property.amount
+      %td= properting_property.coordinates
+      %td= link_to 'Show', properting_property
+      %td= link_to 'Edit', edit_properting_property_path(properting_property)
+      %td= link_to 'Destroy', properting_property, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Repair', new_properting_property_path

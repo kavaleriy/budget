@@ -1,0 +1,14 @@
+.photos
+  - @properting_property.photos.each do |photo|
+    .photo{'data-id' => "#{photo.id}"}
+      - if photo.image
+        = link_to image_tag(photo.image),
+          image_path(photo.image),
+          target: '_blank'
+      = link_to '<i class="fa fa-times"></i>'.html_safe,
+        properting_destroy_property_photo_path(@properting_property, photo),
+        title: 'Видалити',
+        method: :delete,
+        remote: true,
+        data: { confirm: 'Ви впевнені?' },
+        class: 'btn btn-danger btn-photo btn-delete'

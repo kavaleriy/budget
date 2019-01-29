@@ -1,0 +1,96 @@
+:scss
+  .documents_search{
+    margin: 5px 0;
+  }
+  .table-title{
+    font-weight: bold;
+    border-bottom: solid lightgrey 2px;
+    padding: 5px 0;
+  }
+  .table-body{
+    border-bottom: solid lightgrey 1px;
+    padding: 5px 0;
+  }
+  .hide-overflow{
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal; /* for IE */
+    text-overflow: ellipsis;
+    min-height: 2.75rem;
+
+    &:hover{
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
+      font-size: smaller;
+    }
+  }
+  .reset-padding{
+    padding: 0;
+  }
+
+  .multiple-delete{
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  @media (max-width: 767.5px) {
+    .hide-overflow{
+      text-align: center;
+      border-bottom: solid lightcyan 1px;
+    }
+    .hide-in-small{
+      display: none;
+    }
+  }
+  @media (max-width: 384px) {
+    .hide-overflow{
+      font-size: small;
+    }
+  }
+
+- model_class = Properting::Layer
+= content_for :header do
+  .head.pull-left
+    = t('layouts.navbar_admin.repairing_layers')
+
+- if current_user && current_user.has_any_role?(:admin, :city_authority, :public_organisation, :municipal_enterprise, :state_enterprise)
+  = link_to t('.new', default: t('helpers.links.new')), new_properting_layer_path, class: 'btn btn-primary'
+
+-unless @properting_layers.empty?
+  .col-xs-12.documents_search
+    = render partial: 'search'
+  .container-fluid
+    .row.table-title.hide-in-small
+      .col-sm-11.reset-padding
+        .col-sm-4.reset-padding
+          .row
+            .col-xs-5
+              = render file: 'layouts/admin/multiple_delete', locals: { delete_path: properting_layers_multiple_destroy_path }
+              =t('key')
+            .col-xs-5
+              = sortable 'title', t('repairing.repairs.form.title')
+            .col-xs-2
+              = sortable 'year', t('year')
+        .col-sm-5.reset-padding
+          .col-xs-4
+            =t('file')
+          .col-xs-5
+            =t('repairing.repairs.form.category')
+          .col-xs-3
+            =t('repairing.layers.index.status')
+        .col-sm-3.reset-padding
+          .col-xs-6
+            =t('repairing.repairs.form.town')
+          .col-xs-6
+            =t('author')
+      .col-sm-1.reset-padding.text-center
+        =t 'form.actions', default: t('helpers.actions')
+    #search_results
+      = render partial: 'search_results', locals: {properting_layers: @properting_layers}
+
+-else
+  =t ('.no_files')
+
+.paginator
+  = paginate @properting_layers

@@ -1,0 +1,57 @@
+= bootstrap_form_for @properting_property, url: properting_layer_property_path(@properting_property.layer.id, @properting_property.id), remote: true, label_errors: true do |f|
+
+  = f.text_field :spending_units ,label: t('.spending_units')
+  = f.text_field :edrpou_spending_units, label: t('.erdpou_spending')
+  = f.text_field :subject, label: t('repairing.repairs.form.subject')
+  = f.text_field :address, label: t('repairing.repairs.form.address')
+  = f.text_field :address_to, label: t('repairing.repairs.form.address_to')
+
+  = f.select :properting_category,
+    options_for_select([nil] + @properting_property.layer.properting_category.categories.collect {|p| [ p.title, p.id ] },
+                       @properting_property.properting_category ? @properting_property.properting_category.id : nil),
+    { label: t('repairing.repairs.form.subcategory') },
+    class: 'form-control'
+  .row
+    .col-xs-6
+      = f.text_field :amount, label: t('repairing.repairs.form.amount')
+    .col-xs-6
+      = f.text_field :warranty_date, placeholder: t('.date_placeholder'),  label: t('repairing.repairs.form.warranity_date')
+    .col-xs-6
+      = f.text_field :property_start_date, placeholder: t('.date_placeholder'), class: 'datepicker', label: t('repairing.repairs.form.repair_start_date')
+    .col-xs-6
+      = f.text_field :property_end_date, placeholder: t('.date_placeholder'), class: 'datepicker', label: t('repairing.repairs.form.repair_end_date')
+
+  = f.text_field :prozzoro_id, label: t('repairing.repairs.form.prozzoro_id')
+  = f.text_field :obj_owner, label: t('repairing.repairs.form.obj_owner')
+  = f.text_field :edrpou_artist, label: t('.erdpou_artist')
+  = f.text_field :work, label: t('repairing.repairs.form.work')
+  = f.text_area :description, label: t('repairing.repairs.form.description'), rows: '4'
+  = f.text_field :coordinates, label: t('repairing.repairs.form.coordinates'), disabled: 'disabled'
+
+  .clear
+  = f.submit t('form.save'), class: 'btn btn-primary'
+  = link_to t('form.destroy'),
+            properting_layer_property_path(@properting_property.layer.id, @properting_property.id),
+            method: :delete,
+            remote: true,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-warning'
+
+  = link_to t('repairing.repairs.photos'),
+            properting_property_photos_path(@properting_property.id),
+            class: 'btn btn-info photos pull-right',
+            target: '_blank'
+
+:javascript
+
+  $(document).ready(function(){
+    $('.edit_properting_property').on('ajax:success',function(){
+        // alert('Дані успішно збережені');
+    });
+
+    // Use Bootstrap/JQ/UI DateTimePicker
+    $(".datepicker").datetimepicker({
+      locale: '#{I18n.locale}',
+      format: 'YYYY-MM-DD'
+    });
+  })

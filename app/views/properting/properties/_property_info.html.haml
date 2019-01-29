@@ -1,0 +1,366 @@
+:scss
+  $border-color: #0c2231;
+  #more-info-modal {
+    .modal-dialog {
+      margin: 15px;
+      .modal-content {
+        width: 95vw;
+        //height: 93vh;
+        cursor: auto;
+        border-radius: 0;
+        border: 1px solid $border-color;
+        button.close{
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin-top: -4px;
+          padding: 0 0px 0 0;
+          font-weight: normal;
+          color: white;
+          text-shadow: none;
+          opacity: 1;
+        }
+        .fond-for-close{
+          width: 14px;
+          height: 14px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: $border-color;
+        }
+        .modal-header {
+          padding: 10px 0;
+          border-bottom: 2px solid $border-color;
+          .modal-title {
+            font-size: 18px;
+          }
+          &:hover,
+          &:focus {
+            color: $border-color;
+          }
+        }
+        .modal-body {
+          padding: 10px 0 0 0;
+          //h4.head-desc{
+          //  text-transform: uppercase;
+          //  .dropdown {
+          //    button {
+          //      width: 100%;
+          //      text-align: left;
+          //      .dropdown-menu {
+          //        width: 100%;
+          //        padding: 20px;
+          //      }
+          //    }
+          //  }
+          //  .dropdown .open {
+          //    width: 100%;
+          //    padding: 20px;
+          //    position: initial;
+          //    .dropdown-menu {
+          //      display: block;
+          //      position: initial;
+          //      width: 100%;
+          //      padding: 20px;
+          //    }
+          //  }
+          //}
+          .row {
+            margin-bottom: 3px;
+            .title-key {
+              font-weight: bold;
+              .fa {
+                margin-right: 7px;
+                margin-left: -5px;
+                width: 25px;
+                text-align: center;
+              }
+            }
+            &.photos{
+              .img{
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+              }
+            }
+          }
+          .row:nth-of-type(4) .value {
+            font-weight: bold;
+          }
+          h4{
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: bold !important;
+          }
+          .more-data{
+            & > .api{
+              .api-text{
+                display: none;
+              }
+              margin-top: 15px;
+              & > a{
+                display: block;
+                margin-bottom: 5px;
+                text-decoration: none;
+                color: $border-color;
+                font-size: 18px;
+                &:before{
+                  font-family: FontAwesome;
+                  content: '\f196';
+                }
+                .button{
+                  font-size: 25px;
+                  margin-right: 10px;
+                }
+                .icon{
+                  width: 25px;
+                  text-align: center;
+                }
+
+              }
+              &.active{
+                .api-text{
+                  display: block;
+                }
+                & > a{
+                  &:before{
+                    font-family: FontAwesome;
+                    content: '\f147';
+                  }
+                }
+              }
+            }
+
+          }
+          //.e-data-frame {
+          //  width: 100%;
+          //  height: 70vh;
+          //}
+          #export_classifier {
+            display: block;
+            margin-left: 85%;
+            font-weight: normal;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+  // custom styles for spinner
+  .vis-spinner{
+    #spinner-container{
+      background: none;
+      .spinner{
+        .sk-circle:before{
+          background-color: #ffd304;
+        }
+      }
+    }
+  }
+  h4.head-desc{
+    text-transform: uppercase;
+    .dropdown {
+      button {
+        width: 100%;
+        text-align: left;
+        border-radius: 0;
+      }
+      .dropdown-menu {
+        width: 100%;
+        padding: 20px;
+        border-radius: 0;
+      }
+    }
+  }
+
+.fond-for-close
+%button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
+  %span{'aria-hidden' => 'true'} &times;
+.modal-header
+  .modal-title
+    %i.fa.fa-graduation-cap
+    = @properting_property.obj_owner
+    -#= "Реконструкція площі Двірцевої, у т. ч. виготовлення проектно-кошторисної документації"
+.modal-body
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-map-marker
+      = "#{ t('properting.properties.info_adress') } :"
+    .col-xs-8.value
+      = @properting_property.obj_address
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-gears
+      = "#{ t('properting.properties.legal_status') } :"
+    .col-xs-8
+      = @properting_property.legal_status
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-university
+      = "#{ t('properting.properties.purpose') } :"
+    .col-xs-8.value
+      = @properting_property.purpose
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-user-secret
+      = "#{ t('properting.properties.obj_owner') } :"
+    .col-xs-8.value
+      = @properting_property.obj_owner
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-calendar
+      = "#{ t('properting.properties.date') } :"
+    .col-xs-8
+      = format_date(@properting_property.contract_start_date)
+      = '-'
+      = format_date(@properting_property.contract_end_date)
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('properting.properties.renter_name') } :"
+    .col-xs-8.value
+      -#= "5 років"
+      = @properting_property.renter_name
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-link
+      = "#{ t('properting.properties.deal_number') } :"
+    .col-xs-8.value
+      = @properting_property.deal_number
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-check-circle-o
+      = "#{ t('properting.properties.basis_contract') } :"
+    .col-xs-8.value
+      = @properting_property.basis_contract
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-square
+      = "#{ t('properting.properties.obj_characteristic') } :"
+    .col-xs-8.value
+      = @properting_property.obj_characteristic
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.expert_obj_cost') } :"
+    .col-xs-8.value
+      = @properting_property.expert_obj_cost
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.rental_rate') } :"
+    .col-xs-8.value
+      = @properting_property.rental_rate
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-money
+      = "#{ t('properting.properties.last_rent_charge') } :"
+    .col-xs-8.value
+      = @properting_property.last_rent_charge
+
+  - unless @properting_property.photos.blank?
+    .row.photos
+      .col-xs-4.title-key
+        %i.fa.fa-image
+        = link_to t('repairing.repairs.photos'), properting_photos_slider_path(@properting_property.id), target: '_blank'
+      .col-xs-8.value
+        - @properting_property.photos[0..4].each do |photo|
+          = link_to properting_photos_slider_path(@properting_property.id), target: '_blank' do
+            .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
+
+  %h4.head-desc
+    .dropdown{style: "position: initial;"}
+      %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+        Опис:
+        %span.caret
+      .dropdown-menu{"aria-labelledby" => "dropdownMenu1", style: "width: 100%; padding: 20px;"}
+        %p
+          = @properting_property.obj_desc
+        .more-data
+          .vis-spinner
+            = render partial: 'layouts/spinner'
+          .api
+            = link_to property_api_e_data_path(@properting_property),
+            remote: true do
+              %i.fa.fa-gears.icon
+              = t('.e_data')
+            #e-data.api-text
+              #edata_payments
+                %tbody
+          .api
+            = link_to property_api_prozzoro_path(@properting_property), remote: true do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-university.icon
+              = t('.prozzoro')
+            #prozzoro.api-text
+          -#= link_to property_api_edr_path(@repairing_repair), remote: true do
+          -#  %i.fa.fa-plus-square-o.button
+          -#  %i.fa.fa-money.icon
+          -#  = t('.court_register')
+          -##court-register
+          .api
+            = link_to property_api_edr_path(@properting_property), remote: true do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-money.icon
+              = t('.edr_data')
+            #edr.api-text
+          .api
+            -#= link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_balance_holder : @properting_property.prozzoro_id } do
+            = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_renter : @properting_property.prozzoro_id } do
+              -#%i.fa.fa-plus-square-o.button
+              %i.fa.fa-money.icon
+              = t('.acm')
+            #acm-api-text.api-text
+          .api
+            = link_to property_api_judicial_register_path(@properting_property), remote: true do
+              %i.fa.fa-balance-scale.icon
+              = t('.judicial_register')
+            #judicial-register.api-text
+              #judicial-register-table
+                %tbody
+          .api
+            = link_to property_api_inspections_path(@properting_property), remote: true do
+              %i.fa.fa-calendar-check-o.icon
+              = t('.inspection_portal')
+            #inspections.api-text
+              #inspections-table
+                %tbody
+          - if @properting_property.edrpou_renter.present?
+            .api
+              = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_renter}/taxes",
+                        id: 'clarity-link',
+                        target: '_blank' do
+                %i.fa.fa-suitcase.icon
+                = t('.clarity')
+
+= javascript_include_tag 'spinner'
+
+:javascript
+  $(document).ready(function() {
+    $('.api > a').not('#acm-link, #clarity-link').click(function() {
+      $('#spinner-container').trigger('spinner:run')
+    })
+
+    $('#acm-link').click(function() {
+
+      var spendingEdrpou = $(this).data('erdpou');
+
+      if(spendingEdrpou){
+        // redirect to acm-ua.org
+        window.open("http://acm-ua.org/poshuk.php?poshuk=:edrpou".replace(':edrpou', spendingEdrpou), '_blank');
+      }else{
+        // show external api no data yet partial
+        $.ajax({
+          url: '/property_api/no_data_yet',
+          dataType: 'script',
+          data: {
+            selector: '#acm-api-text'
+          }
+        })
+      }
+    });
+  });
+
+  $( document ).ajaxComplete(function() {
+    $('#spinner-container').trigger('spinner:stop')
+  });

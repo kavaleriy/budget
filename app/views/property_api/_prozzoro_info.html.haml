@@ -1,0 +1,86 @@
+:scss
+  ul{
+    margin: 0;
+    padding: 0;
+      li.doc-link {
+      list-style: none;
+      i{
+        color: green;
+      }
+      a{
+        margin-left: 20px;
+      }
+    }
+  }
+
+-if @prozzoro_info.nil?
+  - if @properting_properties.edrpou_balance_holder.blank? && @properting_properties.edrpou_renter.blank?
+    = render partial: 'no_data_yet'
+  = render partial: 'clarity_analysis'
+-else
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.number') } :"
+    .col-xs-8.value
+      = @prozzoro_info['tenderId']
+
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.title') } :"
+    .col-xs-8.value
+      = @prozzoro_info['title']
+  - unless @prozzoro_info['enquiryPeriod'].blank?
+    .row
+      .col-xs-4.title-key
+        %i.fa.fa-certificate
+        = "#{ t('.start_prop') } :"
+      .col-xs-8.value
+        = @prozzoro_info['enquiryPeriod']['startDate']
+    .row
+      .col-xs-4.title-key
+        %i.fa.fa-certificate
+        = "#{ t('.end_prop') } :"
+      .col-xs-8.value
+        = @prozzoro_info['enquiryPeriod']['endDate']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.status') } :"
+    .col-xs-8.value
+      = @prozzoro_info['status']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.price') } :"
+    .col-xs-8.value
+      = "#{@prozzoro_info['value']['amount']} #{@prozzoro_info['value']['currency']} "
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.customer') } :"
+    .col-xs-8.value
+      = @prozzoro_info['procuringEntity']['name']
+  .row
+    .col-xs-4.title-key
+      %i.fa.fa-certificate
+      = "#{ t('.documents') } :"
+    .col-xs-8.value
+      %ul
+        - @prozzoro_info['docs'].each do |doc|
+          %li.doc-link
+            %i.fa.fa-clock-o{"aria-hidden" => "true"}
+            = doc['dateModified'].to_datetime.strftime('%F %H:%M')
+            = link_to doc['title'], doc['url'], input_html:{ 'download' => true }
+  - if tender_id?(@properting_properties.prozzoro_id)
+    .row
+      .col-xs-4.title-key
+        %i.fa.fa-certificate
+        = "#{ t('modules.sliders.index.link') } :"
+      .col-xs-8.value
+        = link_to tender_id_link(@properting_properties.prozzoro_id), tender_id_link(@properting_properties.prozzoro_id), target: '_blank'
+  .row
+    .col-xs-4.title-key
+    .col-xs-8.value
+      = render partial: 'clarity_analysis'

@@ -123,6 +123,5 @@ module Municipal
     def enterprise_file_params
       params.require(:municipal_enterprise_file).permit(:enterprise, :file_type, :year, :file)
     end
-
   end
 end
