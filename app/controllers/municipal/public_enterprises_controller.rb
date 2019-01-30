@@ -19,10 +19,7 @@ module Municipal
       @codes_form_2 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_2)
       @codes_form_7 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::OTHER)
 
-      @municipal = Municipal::Enterprise.find(params[:enterprise_id])
-      # town_id = enterprise.town.id
-      # layer_ids = Repairing::Layer.where(town_id: town_id).pluck(:id)
-      # @enterprise = Repairing::Repair.where(layer_id: layer_ids)
+      @municipal = @enterprise
 
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_search_enterprise_data' }
