@@ -111,10 +111,6 @@
             }
 
           }
-          //.e-data-frame {
-          //  width: 100%;
-          //  height: 70vh;
-          //}
           #export_classifier {
             display: block;
             margin-left: 85%;
@@ -136,15 +132,19 @@
       }
     }
   }
+  .modal-body {
+    .more-data {
+      margin-top: 20px;
+      .api {
+        margin-bottom: 10px;
+      }
+    }
+  }
 
 .fond-for-close
--#%button.close{'aria-label' => t('form.close'), 'data-dismiss' => 'modal', :type => 'button'}
-  %span{'aria-hidden' => 'true'} &times;
 .modal-header
   .modal-title
     %i.fa.fa-graduation-cap
-    -#-binding.pry
-
     = @enterprise.title
 
 .modal-body
@@ -153,18 +153,10 @@
       %i.fa.fa-map-marker
       місто:
     .col-xs-8.value
-
       = @municipal.town.title
       = @municipal.town.area_title
 
   %h4.head-desc
-  -#  = t('.description')
-  -#%p
-  -#  = @enterprise.work
-  -#%h4.head-desc
-  -#  = t('.more_info')
-  -#%p
-  -#  = @enterprise.description
   .more-data
     .vis-spinner
       = render partial: 'layouts/spinner'
