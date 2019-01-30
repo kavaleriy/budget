@@ -1,0 +1,22 @@
+- @inspections.each do |inspection|
+  %h2 Що тут виводити?
+  -# item can be with data(not_planned) or plan(is_planned) hash
+  -#%tr{'data-edrpou' => inspection['id']}
+    %td
+      = link_to inspection['id'], inspection['link'], target: '_blank'
+    %td= inspection['regulator']
+    %td= inspection['activity_type']
+    %td= inspection['risk']
+    %td= inspection['status']
+    %td
+      = inspection['date_start']
+      = inspection['date_finish']
+    %td= inspection['sanction_sum']
+    %td
+      - if inspection['status'].eql?('Проведено')
+        = link_to t('external_api.inspections.document_links.verification_reason'),
+                  "http://cdn.inspections.gov.ua/#{inspection['id']}/reason.pdf",
+                  target: '_blank'
+        = link_to t('external_api.inspections.document_links.verification_result'),
+                  "http://cdn.inspections.gov.ua/#{inspection['id']}/result_act.pdf",
+                  target: '_blank'

@@ -28,6 +28,18 @@ Rails.application.routes.draw do
   get 'property_api/judicial_register/:property_id' => 'property_api#judicial_register', as: 'property_api_judicial_register'
   get 'property_api/inspections/:property_id' => 'property_api#inspections', as: 'property_api_inspections'
 
+
+
+  get 'municipal_api/e_data/:municipal_id' => 'municipal_api#e_data',as: 'municipal_api_e_data'
+  get 'municipal_api/prozzoro/:municipal_id' => 'municipal_api#prozzoro',as: 'municipal_api_prozzoro'
+  get 'municipal_api/edr/:municipal_id' => 'municipal_api#edr',as: 'municipal_api_edr'
+  get 'municipal_api/no_data_yet' => 'municipal_api#no_data_yet',as: 'municipal_api_no_data_yet'
+  get 'municipal_api/judicial_register/:municipal_id' => 'municipal_api#judicial_register', as: 'municipal_api_judicial_register'
+  get 'municipal_api/inspections/:municipal_id' => 'municipal_api#inspections', as: 'municipal_api_inspections'
+
+
+
+
   get 'template/load/:partial_name' => 'template#load',as: 'template_load'
 
   get '/info/:alias/show' => 'public/home#show_pages',as: 'show_pages'

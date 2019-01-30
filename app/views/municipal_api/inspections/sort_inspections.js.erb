@@ -1,0 +1,8 @@
+$('#inspections tbody').html("<%= escape_javascript(render partial: 'municipal_api/inspections/search_inspections_results') %>");
+$('#pagination .pagination').html("<%= escape_javascript( paginate( @inspections,
+                                                                    remote: true,
+                                                                    theme: 'e_data_template',
+                                                                    params: { 'sort_col' => params['sort_col'],
+                                                                              'sort_dir' => params['sort_dir']
+                                                                    }
+                                                                   )) %>");

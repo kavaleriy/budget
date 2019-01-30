@@ -12,7 +12,7 @@ class ExternalApi
     http.request(request).body rescue {}
   end
 
-  def self.e_data_payments(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)
+  def self.e_data_payments(payer_erdpou, recipt_edrpou = nil, start_date = nil, end_date = nil)
     Rails.cache.fetch("/e_data_payments/#{payer_erdpou}/#{recipt_edrpou}/#{start_date}/#{end_date}}", expiries_in: 1.hours) do
       if start_date.blank? && end_date.blank?
         # get transactions by 91 day from 2016-01-01
