@@ -19,6 +19,8 @@ module Municipal
       @codes_form_2 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::FORM_2)
       @codes_form_7 = Municipal::CodeStatus.by_type(@enterprise, Municipal::EnterpriseFile::OTHER)
 
+      @municipal = @enterprise
+
       respond_to do |format|
         format.html { render 'municipal/public_enterprises/_search_enterprise_data' }
         format.js
