@@ -3,6 +3,7 @@ class Documentation::Link
   include Mongoid::Document
 
   scope :get_links_by_town, -> (town) { where(:town => town) }
+  scope :with_category, -> { where(:link_category_id.ne => nil) }
 
   belongs_to :link_category, class_name: 'Documentation::LinkCategory', autosave: true
   belongs_to :town, class_name: '::Town'
@@ -13,7 +14,7 @@ class Documentation::Link
   field :yearTo, type: Integer
 
   def self.get_hash_links_by_town(town)
-    links = self.get_links_by_town(town)
+    links = self.get_links_by_town(town).with_category
     res = []
     links.each do |link|
       # TODO: maybe change links query
