@@ -51,11 +51,10 @@ module Municipal
     # def edit; end
 
     def create
-      unless enterprise_file_params[:file].blank?
-        enterprise_file = enterprise_file_params[:enterprise]  if enterprise_file_params[:enterprise].present?
-        year_file = enterprise_file_params[:enterprise]        if enterprise_file_params[:year].present?
+      if enterprise_file_params[:file].present?
 
-        @municipal_enterprise_file = Municipal::EnterpriseFile.find_file(enterprise_file, year_file)
+        @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise: enterprise_file_params[:enterprise])
+                                       .find_by(year: enterprise_file_params[:year])
         @municipal_enterprise_file.destroy
       end
 

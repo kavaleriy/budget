@@ -22,7 +22,6 @@ module Municipal
     scope :by_year, ->(year) { where(year: year) }
     scope :by_file_type, ->(type) { where(file_type: type) }
     scope :by_file_name, ->(text) { where(file: /.*#{text}.*/) }
-    scope :find_file, ->(enterprise, year) { where(enterprise: enterprise).find_by(year: year) }
 
     belongs_to :enterprise, class_name: 'Municipal::Enterprise'
     belongs_to :owner, class_name: 'User'
