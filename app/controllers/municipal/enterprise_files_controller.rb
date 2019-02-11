@@ -52,7 +52,6 @@ module Municipal
 
     def create
       if enterprise_file_params[:file].present?
-
         @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise: enterprise_file_params[:enterprise])
                                        .find_by(year: enterprise_file_params[:year])
         @municipal_enterprise_file.destroy
