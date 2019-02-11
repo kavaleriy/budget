@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Municipal
   # upload enterprises files and parse them
   class EnterpriseFilesController < MunicipalController
@@ -49,6 +51,12 @@ module Municipal
     # def edit; end
 
     def create
+      if enterprise_file_params[:file].present?
+        @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise: enterprise_file_params[:enterprise])
+                                       .find_by(year: enterprise_file_params[:year])
+        @municipal_enterprise_file.destroy
+      end
+
       @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file_params)
       @municipal_enterprise_file.owner = current_user
 
