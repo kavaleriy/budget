@@ -133,9 +133,9 @@
       = render partial: 'embeded_btn', locals: {url: municipal_enterprise_from_town_path(params[:town_id], params[:enterprise_id] )}
 
 :javascript
+  unit_chart = new ChartUnit;
 
   $(document).ready(function(){
-    unit_chart = new ChartUnit;
 
     // show embed_btn if view in town profile
     if ($('#enterprise-analysis').parents('.modules-wrapper').length) {
