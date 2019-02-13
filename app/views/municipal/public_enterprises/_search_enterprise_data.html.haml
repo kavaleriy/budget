@@ -133,9 +133,10 @@
       = render partial: 'embeded_btn', locals: {url: municipal_enterprise_from_town_path(params[:town_id], params[:enterprise_id] )}
 
 :javascript
-  unit_chart = new ChartUnit;
 
   $(document).ready(function(){
+    unit_chart = new ChartUnit;
+
     // show embed_btn if view in town profile
     if ($('#enterprise-analysis').parents('.modules-wrapper').length) {
       $('.sharing').addClass('show');
@@ -154,7 +155,11 @@
     });
 
     // load page with first nav-tab content
-    $('#form_1 .run-selected').trigger("click");
+    // function delayForCharts() {
+    //   $('#form_1 .run-selected').trigger("click");
+    // }
+    // setTimeout(delayForCharts, 500);
+    // $('#form_1 .run-selected').trigger("click");
 
     // load nav-tabs content if first click
     $('.nav-tabs li a').click(function(){
@@ -183,7 +188,10 @@
     }
 
     function get_charts_data(selector, path = "#{municipal_reporting_charts_path}"){
+      console.log('selector', selector);
       var codes = selected_items(selector);
+      console.log('codes', codes);
+
 
       $.ajax({
         url: path,
@@ -328,6 +336,7 @@
         }
       })
     }
+    get_charts_data('#form_1')
   })
 
 
