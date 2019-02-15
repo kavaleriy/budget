@@ -55,14 +55,14 @@ module Municipal
         enterprise_file_params[:form].each_with_index do |form, index|
           # check on existing file
           @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise_id: enterprise_file_params[:enterprise])
-          @municipal_enterprise_file.each_with_index do |file, i|
+          @municipal_enterprise_file.each do |file|
             if @municipal_enterprise_file.present?
-              file_present  = true if @municipal_enterprise_file[i][:file].present?
-              file_year     = true if @municipal_enterprise_file[i][:year].to_s == enterprise_file_params[:form][index][:year]
-              file_type     = true if @municipal_enterprise_file[i][:file_type] == enterprise_file_params[:form][index][:file_type]
+              file_present  = true if file[:file].present?
+              file_year     = true if file[:year].to_s == enterprise_file_params[:form][index][:year]
+              file_type     = true if file[:file_type] == enterprise_file_params[:form][index][:file_type]
 
               if file_present && file_year && file_type
-                @municipal_enterprise_file.destroy
+                file.destroy
               end
             end
           end
