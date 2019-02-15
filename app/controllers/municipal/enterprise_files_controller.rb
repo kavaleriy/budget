@@ -51,26 +51,41 @@ module Municipal
     # def edit; end
 
     def create
-      if enterprise_file_params[:file].present?
-        @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise: enterprise_file_params[:enterprise])
-                                       .find_by(year: enterprise_file_params[:year])
-        @municipal_enterprise_file.destroy
-      end
-
-      @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file_params)
-      @municipal_enterprise_file.owner = current_user
-
       respond_to do |format|
-        if @municipal_enterprise_file.save
-          unless enterprise_file_params[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
-            ImportData::ParseReport.import_form(enterprise_file_params[:file], @municipal_enterprise_file)
-            StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
+        enterprise_file_params[:form].each_with_index do |form, index|
+          # check on existing file
+          @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise_id: enterprise_file_params[:enterprise])
+          @municipal_enterprise_file.each do |file|
+            if @municipal_enterprise_file.present?
+              file_present  = true if file[:file].present?
+              file_year     = true if file[:year].to_s == enterprise_file_params[:form][index][:year]
+              file_type     = true if file[:file_type] == enterprise_file_params[:form][index][:file_type]
+
+              if file_present && file_year && file_type
+                file.destroy
+              end
+            end
           end
-          set_code_values
-          format.html { render action: 'show_code_values', notice: 'Файл успішно додано.' }
-        else
-          format.html { render action: 'new' }
-          format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
+
+          enterprise_file = enterprise_file_params[:form][index]
+          enterprise_file[:enterprise] = enterprise_file_params[:enterprise]
+          @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file)
+          @municipal_enterprise_file[:file] = enterprise_file[:file]
+          @municipal_enterprise_file.owner = current_user
+
+          if @municipal_enterprise_file.save
+            unless enterprise_file[:file_type].eql?(Municipal::EnterpriseFile::OTHER)
+              ImportData::ParseReport.import_form(enterprise_file[:file], @municipal_enterprise_file)
+              StatusCode::SetStatus.generate_statuses(@municipal_enterprise_file)
+            end
+            if (index == (enterprise_file_params[:form].count - 1))
+              set_code_values
+              format.html { render action: 'show_code_values', notice: 'Файл успішно додано.' }
+            end
+          else
+            format.html { render action: 'new' }
+            format.json { render json: @municipal_enterprise_file.errors, status: :unprocessable_entity }
+          end
         end
       end
     end
@@ -129,7 +144,7 @@ module Municipal
     end
 
     def enterprise_file_params
-      params.require(:municipal_enterprise_file).permit(:enterprise, :file_type, :year, :file)
+      params.require(:municipal_enterprise_file).permit(:enterprise, form: [:file_type, :year, :file])
     end
   end
 end

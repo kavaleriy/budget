@@ -7,15 +7,67 @@
         = render 'select_town'
     .select-enterprises
       = render partial: 'select_enterprises'
-
-    = f.input :file_type, label: 'Тип файлу',
-              collection: @type_files.map {|type| [ type[:title], type[:id] ] },
-              prompt: false
-    = f.input :year, label: 'Рік',
-              collection: select_years(10),
-              prompt: false
-    = f.input :file, label: 'Вибір файлу', class: 'form-control'
+    #sections
+      .section
+        %fieldset
+          = f.input :file_type, label: 'Тип файлу',
+                    collection: @type_files.map {|type| [ type[:title], type[:id] ] },
+                    input_html: { name: 'municipal_enterprise_file[form][][file_type]' },
+                    prompt: false
+          = f.input :year, label: 'Рік',
+                    collection: select_years(10),
+                    input_html: { name: 'municipal_enterprise_file[form][][year]' },
+                    prompt: false
+          = f.input :file, label: 'Вибір файлу', class: 'form-control', input_html: { name: 'municipal_enterprise_file[form][][file]' }
+          %p
+            %a.btn.btn-danger.remove{:href => "#"}= t('delete_form')
+    %p
+      %a.btn.btn-info.addsection{:href => "#"}= t('add_form')
 
   .form-actions
     = f.button :submit, t('save'), class: 'btn btn-success'
     = link_to t('back'), municipal_enterprise_files_path, class: 'btn btn-info'
+
+:javascript
+  //clone
+  //define template
+  var template = $('#sections .section:first').clone();
+
+  //define counter
+  var sectionsCount = 1;
+
+  //add new section
+  $('body').on('click', '.addsection', function() {
+
+      //increment
+    sectionsCount++;
+
+      //loop through each input
+    var section = template.clone().find(':input').each(function(){
+
+          //set id to store the updated section number
+      var newId = this.id + sectionsCount;
+
+          //update for label
+      $(this).prev().attr('for', newId);
+
+          //update id
+      this.id = newId;
+
+    }).end()
+
+      //inject new section
+    .appendTo('#sections');
+    return false;
+  });
+
+  //remove section
+  $('#sections').on('click', '.remove', function() {
+      //fade out section
+    $(this).parent().fadeOut(300, function(){
+          //remove parent element (main section)
+      $(this).parent().parent().empty();
+      return false;
+    });
+    return false;
+  });
