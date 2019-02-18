@@ -20,10 +20,9 @@
                     prompt: false
           = f.input :file, label: 'Вибір файлу', class: 'form-control', input_html: { name: 'municipal_enterprise_file[form][][file]' }
           %p
-            %a.btn.btn-danger.remove{:href => "#"}= t('delete_form')
+            %a.btn.btn-danger.remove#clickMinus{:href => "#"}= t('delete_form')
     %p
-      %a.btn.btn-info.addsection{:href => "#"}= t('add_form')
-
+      %a.btn.btn-info.addsection#clickPlus{:href => "#"} Залишилось форм( 5 )
   .form-actions
     = f.button :submit, t('save'), class: 'btn btn-success'
     = link_to t('back'), municipal_enterprise_files_path, class: 'btn btn-info'
@@ -31,43 +30,53 @@
 :javascript
   //clone
   //define template
+  const formLimit = 6;
   var template = $('#sections .section:first').clone();
-
-  //define counter
   var sectionsCount = 1;
 
+  var myBtn = document.getElementById('clickPlus');
   //add new section
   $('body').on('click', '.addsection', function() {
 
       //increment
-    sectionsCount++;
+    if(sectionsCount < formLimit){
+      sectionsCount++;
+      var count = formLimit - sectionsCount;
 
-      //loop through each input
-    var section = template.clone().find(':input').each(function(){
+        //loop through each input
+      var section = template.clone().find(':input').each(function(){
+
+        myBtn.innerHTML = 'Залишилось форм( ' + count + ' )';
 
           //set id to store the updated section number
-      var newId = this.id + sectionsCount;
+        var newId = this.id + sectionsCount;
 
           //update for label
-      $(this).prev().attr('for', newId);
+        $(this).prev().attr('for', newId);
 
           //update id
-      this.id = newId;
+        this.id = newId;
+      }).end()
 
-    }).end()
-
-      //inject new section
-    .appendTo('#sections');
+        //inject new section
+      .appendTo('#sections');
+    }
     return false;
   });
 
   //remove section
   $('#sections').on('click', '.remove', function() {
       //fade out section
-    $(this).parent().fadeOut(300, function(){
-          //remove parent element (main section)
-      $(this).parent().parent().empty();
-      return false;
-    });
+    if(sectionsCount > 0){
+      sectionsCount--;
+      $(this).parent().fadeOut(300, function(){
+            //remove parent element (main section)
+        var count = formLimit - sectionsCount;
+        myBtn.innerHTML = 'Залишилось форм( ' + count + ' )';
+
+        $(this).parent().parent().empty();
+        return false;
+      });
+    }
     return false;
   });
