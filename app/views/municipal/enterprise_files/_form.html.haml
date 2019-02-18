@@ -23,7 +23,6 @@
             %a.btn.btn-danger.remove#clickMinus{:href => "#"}= t('delete_form')
     %p
       %a.btn.btn-info.addsection#clickPlus{:href => "#"} Залишилось форм( 5 )
-      -#%a.btn.btn-info.addsection#clickPlus{:href => "#"}= t('add_form')
   .form-actions
     = f.button :submit, t('save'), class: 'btn btn-success'
     = link_to t('back'), municipal_enterprise_files_path, class: 'btn btn-info'
