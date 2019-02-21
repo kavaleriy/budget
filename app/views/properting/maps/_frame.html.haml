@@ -55,9 +55,6 @@
           last_year_data: data.last_year_data
         }
 
-
-
-
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)
            && (town == '' || feature.properties.t_id == town)
@@ -117,33 +114,14 @@
                 subcategories.removeAttr('checked');
                 subcategories.prop('checked', false);
 
-                //markers.getLayers()[0].eachLayer(function(layer){
-                //  map.removeLayer(layer);
-                //});
               } else {
                 subcategories.attr('checked','checked');
                 subcategories.prop('checked', true);
-                //markers.getLayers()[0].eachLayer(function(layer){
-                //  if(layer.feature.properties.parent_category_id == category && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year){
-                //    map.addLayer(layer);
-                //  }
-                //});
               }
             });
             $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
               var checked = $('#subcategories input[type="checkbox"]:checked');
 
-              //markers.getLayers()[0].eachLayer(function(layer){
-              //  if(layer.feature.properties.parent_category_id == category){
-              //    map.removeLayer(layer);
-              //    $.each(checked, function(i,d){
-              //      var sub = $(d).val();
-              //      if(sub == layer.feature.properties.category_id && (layer.feature.properties.town_id == town || !town) && layer.feature.properties.year == year) {
-              //        //map.addLayer(layer);
-              //      }
-              //    })
-              //  }
-              //});
               if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
                 all_work.removeAttr('checked');
                 all_work.prop('checked', false);
@@ -153,9 +131,7 @@
               }
             })
           }
-
         }
-
         addMarkers()
       });
 
@@ -168,7 +144,6 @@
           $(this).addClass('active');
           property_status = $(this).data('status');
         }
-
         addMarkers()
       });
 
@@ -196,10 +171,6 @@
           return false;
         }
       });
-
-      // $("#search_btn").on("click", function(){
-      //   aRepairMap.showAdressMarker($("#q").val());
-      // })
 
       $('#map_town').select2({
         sortResults: function(results, container, query) {
@@ -256,7 +227,6 @@
       else if (categories_icons[parent_cat]){
         iconCategoryUrl = categories_icons[parent_cat];
       }
-
       return new Icon({iconUrl: iconCategoryUrl});
     };
     function getPoint(properties) {

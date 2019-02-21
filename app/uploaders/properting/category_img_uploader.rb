@@ -33,8 +33,8 @@ class Properting::CategoryImgUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :thumb do
-    process :resize_to_fit => [50, 66]
-    process crop: '44x44+3+3'
+    process :resize_to_fit => [44, 44]
+    # process crop: '44x44+3+3'
   end
 
   version :icon do
