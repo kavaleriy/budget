@@ -17,13 +17,18 @@ module Properting
     embeds_many :photos, class_name: 'Properting::Photo'
 
     field :obj_owner, type: String
-    field :edrpou_balance_holder, type: String
     field :obj_address, type: String
-    field :coordinates, type: Array
     field :obj_name, type: String
     field :obj_desc, type: String
-    field :renter_name, type: String
+    field :obj_characteristic, type: String
+
+    field :balance_holder_field, type: String
+
+    field :edrpou_balance_holder, type: String
     field :edrpou_renter, type: String
+
+    field :coordinates, type: Array
+    field :renter_name, type: String
     field :legal_status, type: String
     field :deal_number, type: String
     field :basis_contract, type: String
@@ -31,12 +36,11 @@ module Properting
     field :contract_start_date, type: Date
     field :contract_end_date, type: Date
 
+    field :last_rent_charge, type: String
     field :purpose, type: String
-    field :obj_characteristic, type: String
     field :evaluation_date, type: Date
     field :expert_obj_cost, type: String
     field :rental_rate, type: String
-    field :last_rent_charge, type: String
     field :prozzoro_id, type: String
 
     # Внизу тепер кожному полю має бути точна назва з документу
@@ -137,6 +141,7 @@ module Properting
       {
         obj_owner: property['балансоутримувач'],
         edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
+        balance_holder_field: property['сфера балансоутримувача'],
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
         obj_desc: property['опис об\'єкту'],
@@ -145,8 +150,8 @@ module Properting
         legal_status: property['правовий статус'],
         deal_number: property['№ договору'],
         basis_contract: property['підстава укладання договору оренди'],
-        contract_start_date: property['дата укладання договору оренди'],
-        contract_end_date: property['дата закінчення договору оренди'],
+        contract_start_date: property['дата початку оренди'],
+        contract_end_date: property['дата закінчення оренди'],
         evaluation_date: property['дата проведення оцінки'],
         purpose: property['цільове призначення'],
         obj_characteristic: property['характеритиска об\'єкту (площа)'],
