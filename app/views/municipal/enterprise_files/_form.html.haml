@@ -38,6 +38,8 @@
     cursor: pointer;
   }
 
+= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue"
+
 = simple_form_for(@municipal_enterprise_file) do |f|
   = f.error_notification
 
@@ -45,11 +47,28 @@
     - if current_user && current_user.region_admin?
       .form-group
         = render 'select_town'
-    .select-enterprises
+    -#.select-enterprises
       = render partial: 'select_enterprises'
+    #app
+      %template{'v-for' => "(input, index) in inputs"}
+        %input{type: 'text', 'v-model' => 'input.text', 'v-bind:id' => "'type-input-' + index"}
+      %button{v: { 'on:click.prevent' => 'addInput' }} add
+      #select{mode="section.intr"}
+        %template{'v-for' => "option in intrArray"}
+          %option{}
     #sections
       .section
         %fieldset
+          .select-enterprises
+            .form-group.select.required
+              = label_tag 'municipal_enterprise', class: 'select required control-label' do
+                %abbr{ title: 'вимагається' } *
+                Підприємство
+              = select_tag 'municipal_enterprise',
+                options_from_collection_for_select(@enterprises, 'id', 'title'),
+                name: "municipal_enterprise_file[enterprise]",
+                required: true,
+                class: 'select required form-control'
           = f.input :file_type, label: 'Тип файлу',
                     collection: @type_files.map {|type| [ type[:title], type[:id] ] },
                     input_html: { name: 'municipal_enterprise_file[form][][file_type]' },
@@ -78,6 +97,33 @@
         %p сторінка перезавантажиться автоматично!
 
 :javascript
+  $(document).ready(function() {
+    new Vue({
+      el: '#app',
+      data: {
+        inputs: [],
+        intrArray: [{title: 'test', id: 2}],
+        example: {text: '', }
+      },
+      mounted: function () {
+        this.addInput()
+      },
+      methods: {
+        addInput: function() {
+          this.inputs.push(Object.assign({}, this.example))
+        },
+        save: function() {
+          var that = this
+          $.ajax({
+            url: '',
+            data: {
+              sections: that.sections
+            }
+          })
+        }
+      }
+    })
+  })
 
   // Get the modal
   var modal = document.getElementById('myModal');
