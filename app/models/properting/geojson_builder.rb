@@ -60,7 +60,7 @@ class Properting::GeojsonBuilder
     year = property['layer']['year'] || :no_year
     {
       id: (property['_id']).to_s,
-      p_c_id: (property['layer']['properting_category_id_id'] if property['layer_id']).to_s, # parent_category_id
+      p_c_id: (property['layer']['properting_category_id'] if property['layer_id']).to_s, # parent_category_id
       c_id: (property['properting_category_id']).to_s, # child_category_id
       t_id: (property['layer']['town_id'] if property['layer_id']).to_s, # town_id
       year: year,
