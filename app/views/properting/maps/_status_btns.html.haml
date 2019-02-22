@@ -8,6 +8,7 @@
   $text-color: #ECECEC;
 
   .status-btns{
+    white-space: nowrap;
     .btn{
       text-transform: uppercase;
       color: $text-color;
@@ -17,10 +18,10 @@
       letter-spacing: 1px;
       background: radial-gradient($light-blue, $blue);
     }
-    .btn:nth-of-type(1){
-      margin-right: -4px;
-      border-right: 2px solid $greyblue;
-    }
+    //.btn:nth-of-type(1){
+    //  margin-right: -4px;
+    //  border-right: 2px solid $greyblue;
+    //}
     .btn.active{
       color: $yellow;
       background: linear-gradient(to bottom, $light-blue 0%, $greyblue 15%, $darkblue 19%, $darkblue 100%);
@@ -31,3 +32,5 @@
   = t('js.visify.free')
 .btn{'data-status' => :occupied}
   = t('js.visify.occupied')
+.btn{'data-status' => :rent}
+  = t('js.visify.rent')

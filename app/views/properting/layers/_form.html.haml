@@ -28,9 +28,9 @@
                   { class: 'select form-control', id: 'child_category', name: 'child_category' }
 
   -#check if :plan and :fact is a not system
-  = f.input :status, collection: {t('js.visify.free') => :free, t('js.visify.occupied') => :occupied},
+  = f.input :status, collection: {t('js.visify.free') => :free, t('js.visify.occupied') => :occupied, t('js.visify.rent') => :rent},
                      prompt: false,
-                     label: t('js.visify.free') + '/' + t('js.visify.occupied')
+                     label: t('js.visify.free') + '/' + t('js.visify.occupied') + '/' + t('js.visify.rent')
   = f.input :year, collection: years_from(2015),
                      prompt: false,
                      label: t('repairing.repairs.form.year')
