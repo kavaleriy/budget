@@ -29,20 +29,20 @@
     $("#properting_layer_town").select2("data", {id: "#{current_user.town_model.id}", text: "#{current_user.town_model.title}" });
 
 
-    // dynamic generate second select with children properting categories
-    var children_ctegories = $('#child_category').html();
-
-    $('#properting_layer_properting_category').change(function() {
-      var category, options;
-      category = $('#properting_layer_properting_category :selected').text();
-      options = $(children_ctegories).filter("optgroup[label='" + category + "']").html();
-      if (options) {
-        $('#child_category').html("<option value=''></option>");
-        $('#child_category').append(options);
-        return $('#child_category').parent().show();
-      } else {
-        $('#child_category').empty();
-        return $('#child_category').parent().hide();
-      }
-    });
+    // // dynamic generate second select with children properting categories
+    // var children_ctegories = $('#child_category').html();
+    //
+    // $('#properting_layer_properting_category').change(function() {
+    //   var category, options;
+    //   category = $('#properting_layer_properting_category :selected').text();
+    //   options = $(children_ctegories).filter("optgroup[label='" + category + "']").html();
+    //   if (options) {
+    //     $('#child_category').html("<option value=''></option>");
+    //     $('#child_category').append(options);
+    //     return $('#child_category').parent().show();
+    //   } else {
+    //     $('#child_category').empty();
+    //     return $('#child_category').parent().hide();
+    //   }
+    // });
   });

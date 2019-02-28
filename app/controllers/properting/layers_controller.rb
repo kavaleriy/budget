@@ -108,10 +108,8 @@ module Properting
     def create
       path_file =  open_file(properting_layer_params[:properties_file])
 
-      # знайти урл і перенаправити
       respond_to do |format|
         unless path_file.nil?
-          # binding.pry
           Properting::Property.import(path_file, params[:child_category], current_user, properting_layer_params)
 
           # Thread.new do
@@ -121,12 +119,9 @@ module Properting
           #   end
           # end
         end
-
         format.html {
-          redirect_to properting_property_path(properting_layer_params[:town],
-                      notice: 'Дані завантажено')
+          redirect_to properting_layer_path(properting_layer_params[:town]), notice: 'Дані завантажено'
         }
-        format.json { render :show, status: :created, location: @properting_layer }
       end
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
@@ -264,7 +259,7 @@ module Properting
                                                :town,
                                                :owner,
                                                :properties_file,
-                                               # :properting_category,
+                                               :properting_category,
                                                :locale,
                                                # :status,
                                                :year)
