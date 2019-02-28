@@ -1,6 +1,7 @@
 module Properting
   class LayersController < ApplicationController
     layout 'application_admin'
+    include PropertingLayerUpload
     helper_method :sort_column, :sort_direction
 
     before_action :authenticate_user!, except: [:geo_json]
@@ -105,31 +106,27 @@ module Properting
     end
 
     def create
-      @properting_layer = Properting::Layer.new(properting_layer_params)
-      @properting_layer.owner = current_user
+      path_file =  open_file(properting_layer_params[:properties_file])
 
+      # знайти урл і перенаправити
       respond_to do |format|
-        if @properting_layer.save
-          unless @properting_layer.properties_file.path.nil?
-            Properting::Property.import(@properting_layer, @properting_layer.properties_file.path, params[:child_category])
+        unless path_file.nil?
+          # binding.pry
+          Properting::Property.import(path_file, params[:child_category], current_user, properting_layer_params)
 
-            Thread.new do
-              @properting_layer.properties.each do |property|
-                property.coordinates = RepairingGeocoder.calc_coordinates(property.address, property.address_to) if property.coordinates.blank?
-                property.save(validate: false)
-              end
-            end
-          end
-
-          format.html {
-            redirect_to @properting_layer,
-                        notice: t('repairing.layers.import_file_success', time: (@properting_layer.properties.count / 2))
-          }
-          format.json { render :show, status: :created, location: @properting_layer }
-        else
-          format.html { render :new }
-          format.json { render json: @properting_layer.errors, status: :unprocessable_entity }
+          # Thread.new do
+          #   @properting_layer.properties.each do |property|
+          #     property.coordinates = RepairingGeocoder.calc_coordinates(property.address, property.address_to) if property.coordinates.blank?
+          #     property.save(validate: false)
+          #   end
+          # end
         end
+
+        format.html {
+          redirect_to properting_property_path(properting_layer_params[:town],
+                      notice: 'Дані завантажено')
+        }
+        format.json { render :show, status: :created, location: @properting_layer }
       end
     rescue Roo::Base::TypeError
       message = [t('invalid_format')]
@@ -267,9 +264,9 @@ module Properting
                                                :town,
                                                :owner,
                                                :properties_file,
-                                               :properting_category,
+                                               # :properting_category,
                                                :locale,
-                                               :status,
+                                               # :status,
                                                :year)
     end
 

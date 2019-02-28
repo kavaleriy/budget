@@ -4,6 +4,7 @@ module Properting
     include Mongoid::Document
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
+    include StatusBtn
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
@@ -23,6 +24,7 @@ module Properting
     field :obj_characteristic, type: String
 
     field :balance_holder_field, type: String
+    field :category, type: String
 
     field :edrpou_balance_holder, type: String
     field :edrpou_renter, type: String
@@ -48,7 +50,7 @@ module Properting
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
     before_validation :check_and_emend_edrpou
-    before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
+    # before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
 
     # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
@@ -70,12 +72,12 @@ module Properting
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     def geocode
-      self.coordinates = RepairingGeocoder.calc_coordinates(address, address_to)
+      self.coordinates = RepairingGeocoder.calc_coordinates(obj_address, address_to)
     end
 
-    def check_address
-      address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
-    end
+    # def check_address
+    #   obj_address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
+    # end
 
     def town_emails
       layer.town.present_emails
@@ -97,10 +99,10 @@ module Properting
 
     private
 
-    def self.import(layer, filepath, child_category)
+    def self.import(filepath, child_category, current_user, properting_layer_params)
       properties_arr = read_table_from_file(filepath)[:rows]
 
-      properties_arr.each do |property|
+      properties_arr.each_with_index do |property, index|
         property_hash = build_property_hash(property)
         coordinates = property['координати']
         coordinates1 = []
@@ -117,11 +119,20 @@ module Properting
           end
 
         layer_property = create(property_hash)
+        properting_category = Properting::Category.find_by(title: layer_property.category)
+        layer_property.properting_category_id = properting_category.id
+        status = status_btn(layer_property.legal_status)
+
+        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params)
+        layer.owner_id = current_user.id
+        layer.properties_file = properting_layer_params[:properties_file]
+        layer.save
+
         layer_property.layer = layer
         layer_property.properting_category = child_category if child_category.present?
-
         layer_property.save(validate: false)
       end
+      FileUtils.rm(filepath) if filepath.present?
     end
 
     def self.expiration_date(d_string)
@@ -145,6 +156,7 @@ module Properting
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
         obj_desc: property['опис об\'єкту'],
+        category: property['категорія'],
         renter_name: property['найменування користувача\\орендаря'],
         edrpou_renter: property['єдрпоу орендаря'],
         legal_status: property['правовий статус'],
@@ -182,12 +194,13 @@ module Properting
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
             end
+            # binding.pry
             property['layer'] = {}
             property['layer']['town_id'] = layer['town_id'].to_s
             property['layer']['status'] = layer['status'] || :plan
             property['layer']['year'] = layer['year']
             property['layer']['properting_category_id'] = layer['properting_category_id'].to_s
-            property['properting_category_id'] = property['properting_category_id'].to_s
+            property['properting_category_id'] = layer['properting_category_id'].to_s
 
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json
