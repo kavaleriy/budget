@@ -75,9 +75,9 @@ module Properting
       self.coordinates = RepairingGeocoder.calc_coordinates(obj_address, address_to)
     end
 
-    # def check_address
-    #   obj_address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
-    # end
+    def check_address
+      obj_address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
+    end
 
     def town_emails
       layer.town.present_emails
