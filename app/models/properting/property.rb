@@ -50,7 +50,7 @@ module Properting
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
     before_validation :check_and_emend_edrpou
-    # before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
+    before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
 
     # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
