@@ -5,6 +5,7 @@ module Properting
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
     include StatusBtn
+    include DowncaseField
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
@@ -45,8 +46,6 @@ module Properting
     field :rental_rate, type: String
     field :prozzoro_id, type: String
 
-    # Внизу тепер кожному полю має бути точна назва з документу
-
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
     before_validation :check_and_emend_edrpou
@@ -83,11 +82,6 @@ module Properting
       layer.town.present_emails
     end
 
-    # def permit_appeal?
-    #   # layer.status.eql?('fact') && layer.town.permit_emails
-    #   layer.town.permit_emails
-    # end
-
     def property_coordinate
       if coordinates.first.is_a?(Array)
         size = coordinates.size
@@ -119,16 +113,18 @@ module Properting
           end
 
         layer_property = create(property_hash)
-        properting_category = Properting::Category.find_by(title: layer_property.category)
-        layer_property.properting_category_id = properting_category.id
-        status = status_btn(layer_property.legal_status)
 
-        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params)
+        properting_category = Properting::Category.find_by(title: downcase_str(layer_property.category))
+        layer_property.properting_category_id = properting_category.id if properting_category.present?
+
+        status = status_btn(downcase_str(layer_property.legal_status))
+        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status)
+                  .first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
         layer.save
 
-        layer_property.layer = layer
+        layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
         layer_property.save(validate: false)
       end

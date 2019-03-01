@@ -3,7 +3,7 @@ module StatusBtn
 
   module ClassMethods
     def status_btn(status)
-      case status.mb_chars.downcase.to_s
+      case status
         when 'оренда'
           'rent'
         when 'в користуванні'
