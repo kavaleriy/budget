@@ -46,8 +46,6 @@ module Properting
     field :rental_rate, type: String
     field :prozzoro_id, type: String
 
-    # Внизу тепер кожному полю має бути точна назва з документу
-
     # index({ coordinates: "2d" }, { min: -200, max: 200 })
 
     before_validation :check_and_emend_edrpou
