@@ -27,7 +27,7 @@ class Properting::Layer
 
   has_many :properties, class_name: 'Properting::Property', autosave: true, dependent: :destroy
 
-  validates :town, :owner, :properting_category, :title, :status, presence: true
+  validates :town, :owner, :title, presence: true
 
   def self.visible_to(user)
     files = if user.nil?

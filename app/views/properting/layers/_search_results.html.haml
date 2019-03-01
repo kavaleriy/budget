@@ -15,9 +15,9 @@
           = link_to layer.properties_file.url, class: '' do
             %i.fa.fa-download.fa.fa-border
             = layer.properties_file_identifier
-        .col-sm-5.hide-overflow
+        -#.col-sm-5.hide-overflow
           = layer.properting_category.title unless layer.properting_category.nil?
-        .col-sm-3.hide-overflow
+        -#.col-sm-3.hide-overflow
           = t("js.visify.#{layer.status}")
       .col-sm-3.reset-padding
         .col-sm-6.hide-overflow
