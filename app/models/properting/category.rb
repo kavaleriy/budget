@@ -1,6 +1,8 @@
 class Properting::Category
   include Mongoid::Document
 
+  before_save :downcase_field
+
   default_scope -> { order_by(position: :asc) }
   scope :by_locale, -> { where(locale: I18n.locale) }
   scope :tree_root, -> { where(:category_id.in => [nil, '#']) }
@@ -46,5 +48,10 @@ class Properting::Category
       res.store(category.id, img)
     end
     res.to_json
+  end
+
+  private
+  def downcase_field
+    self.title.mb_chars.downcase.to_s
   end
 end

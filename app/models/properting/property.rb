@@ -4,7 +4,7 @@ module Properting
     include Mongoid::Document
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
-    include StatusBtn
+    include StatusBtn, DowncaseField
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
@@ -83,11 +83,6 @@ module Properting
       layer.town.present_emails
     end
 
-    # def permit_appeal?
-    #   # layer.status.eql?('fact') && layer.town.permit_emails
-    #   layer.town.permit_emails
-    # end
-
     def property_coordinate
       if coordinates.first.is_a?(Array)
         size = coordinates.size
@@ -119,11 +114,12 @@ module Properting
           end
 
         layer_property = create(property_hash)
-        properting_category = Properting::Category.find_by(title: layer_property.category)
-        layer_property.properting_category_id = properting_category.id
-        status = status_btn(layer_property.legal_status)
 
-        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params)
+        properting_category = Properting::Category.find_by(title: downcaseStr(layer_property.category))
+        layer_property.properting_category_id = properting_category.id
+        status = status_btn(downcaseStr(layer_property.legal_status))
+        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status)
+                  .first_or_create(properting_layer_params)
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
         layer.save
