@@ -1,0 +1,49 @@
+%h1
+  Список данних по видаткам
+  %small 
+    = link_to 'Завантажити видатки', new_budget_gov_files_expense_path, class: 'pull-right'
+
+%table.table.striped
+  %thead
+    %tr
+      %th Program code
+      %th Program code name
+      %th Function code
+      %th Function code name
+      %th Economic code
+      %th Economic code name
+      %th Budget plan
+      %th Budget estimate
+      %th Total done
+      %th Percent done
+      %th
+
+  %tbody
+    - @budget_gov_files_expenses.each do |budget_gov_files_expense|
+      %tr
+        -# %td= budget_gov_files_expense.fund_type
+        %td= budget_gov_files_expense.program_code
+        %td= budget_gov_files_expense.program_code_name
+        %td= budget_gov_files_expense.function_code
+        %td= budget_gov_files_expense.function_code_name
+        %td= budget_gov_files_expense.economic_code
+        %td= budget_gov_files_expense.economic_code_name
+        %td= budget_gov_files_expense.budget_plan
+        %td= budget_gov_files_expense.budget_estimate
+        %td= budget_gov_files_expense.total_done
+        %td= budget_gov_files_expense.percent_done
+        -# %td= budget_gov_files_expense.done_special_fund
+        -# %td= budget_gov_files_expense.done_service
+        -# %td= budget_gov_files_expense.done_other
+        -# %td= budget_gov_files_expense.total_bank_account
+        -# %td= budget_gov_files_expense.bank_special_fund
+        -# %td= budget_gov_files_expense.bank_service
+        -# %td= budget_gov_files_expense.bank_other
+        -# %td= link_to 'Show', budget_gov_files_expense
+        -# %td= link_to 'Edit', edit_budget_gov_files_expense_path(budget_gov_files_expense)
+        %td
+          = link_to budget_gov_files_expense, :method => :delete, :data => { :confirm => 'Are you sure?' } do 
+            %i.fa.fa-trash-o.fa-2x
+
+%br
+= paginate @budget_gov_files_expenses

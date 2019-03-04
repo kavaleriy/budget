@@ -1,5 +1,19 @@
 Rails.application.routes.draw do
 
+
+  namespace :budget do
+    namespace :gov_files do
+      resources :incomes
+      resources :expenses
+    end
+  end
+
+
+
+  namespace :budget do
+    resources :files
+  end
+
   resources :funds_managers do
     collection { post :import }
   end

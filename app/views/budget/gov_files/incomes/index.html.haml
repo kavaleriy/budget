@@ -1,0 +1,34 @@
+
+%h1
+  Список данних по доходам
+  %small 
+    = link_to 'Завантажити доходи', new_budget_gov_files_income_path, class: 'pull-right'
+
+%table.table.striped
+  %thead
+    %tr
+      %th Fund type
+      %th Income code
+      %th Income code name
+      %th Budget plan
+      %th Budget estimate
+      %th Total done
+      %th Percent done
+      %th
+
+  %tbody
+    - @budget_gov_files_incomes.each do |budget_gov_files_income|
+      %tr
+        %td= budget_gov_files_income.fund_type
+        %td= budget_gov_files_income.income_code
+        %td= budget_gov_files_income.income_code_name
+        %td= budget_gov_files_income.budget_plan
+        %td= budget_gov_files_income.budget_estimate
+        %td= budget_gov_files_income.total_done
+        %td= budget_gov_files_income.percent_done
+        %td
+          = link_to budget_gov_files_income, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash-o.fa-2x
+
+%br
+= paginate @budget_gov_files_incomes

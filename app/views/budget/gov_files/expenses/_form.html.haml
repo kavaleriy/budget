@@ -1,0 +1,55 @@
+= simple_form_for(@budget_files_expense) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :file, as: :file
+    = f.input :koatuu
+
+  .form-actions
+    = f.button :submit
+
+
+:javascript 
+  $(document).ready(function(){
+    $('#budget_gov_files_expense_koatuu').select2({
+      sortResults: function(results, container, query) {
+        if (query.term) {
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+                if (a.text.length > b.text.length) {
+                    return 1;
+                } else if (a.text.length < b.text.length) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        return results;
+    },
+      allowClear: false,
+      multiSelect: false,
+      multiple: false,
+      minimumInputLength: 2,
+      width: '100%',
+      ajax: {
+        url: '#{search_for_towns_town_path}',
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) {
+          return {
+            query: term, // search term
+          };
+        },
+        results: function (data, page) {
+          return { results: data.map(function(town){
+            return {
+              id: town.koatuu,
+              text: town.text 
+            }
+          })};
+        },
+        cache: true
+      },
+    })
+  })
