@@ -25,7 +25,7 @@ module Properting
     field :obj_characteristic, type: String
 
     field :balance_holder_field, type: String
-    field :category, type: String
+    # field :category, type: String
 
     field :edrpou_balance_holder, type: String
     field :edrpou_renter, type: String
@@ -114,7 +114,7 @@ module Properting
 
         layer_property = create(property_hash)
 
-        properting_category = Properting::Category.find_by(title: downcase_str(layer_property.category))
+        properting_category = Properting::Category.find_by(title: downcase_str(layer_property.balance_holder_field))
         layer_property.properting_category_id = properting_category.id if properting_category.present?
 
         status = status_btn(downcase_str(layer_property.legal_status))
@@ -152,7 +152,7 @@ module Properting
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
         obj_desc: property['опис об\'єкту'],
-        category: property['категорія'],
+        # category: property['категорія'],
         renter_name: property['найменування користувача\\орендаря'],
         edrpou_renter: property['єдрпоу орендаря'],
         legal_status: property['правовий статус'],

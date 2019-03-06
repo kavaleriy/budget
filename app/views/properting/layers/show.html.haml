@@ -4,6 +4,12 @@
   .map_container {
     height: 800px;
   }
+  #properties {
+    margin-bottom: 50px;
+  }
+  btn {
+    margin-bottom: 50px;
+  }
 
 
 = content_for :header do
@@ -21,17 +27,17 @@
 
 
 
-= link_to t('.back', default: t('helpers.links.back')), properting_layers_path, class: 'btn btn-default'
-= link_to t('.edit', default: t('helpers.links.edit')), edit_properting_layer_path(@layer), class: 'btn btn-default'
-= link_to t('.destroy', default: t('helpers.links.destroy')),
-          properting_layer_path(@layer),
-          class: 'btn btn-danger',
-          method: 'delete',
-          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
-= link_to t('repairing.repairs.all_repairs'),
-          properting_layer_path(layer_id: @layer.id),
-          remote: true,
-          class: 'btn btn-success'
+-#= link_to t('.back', default: t('helpers.links.back')), properting_layers_path, class: 'btn btn-default'
+-#= link_to t('.edit', default: t('helpers.links.edit')), edit_properting_layer_path(@layer), class: 'btn btn-default'
+-#= link_to t('.destroy', default: t('helpers.links.destroy')),
+-#          properting_layer_path(@layer),
+-#          class: 'btn btn-danger',
+-#          method: 'delete',
+-#          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
+-#= link_to t('repairing.repairs.all_repairs'),
+-#          properting_layer_path(layer_id: @layer.id),
+-#          remote: true,
+-#          class: 'btn btn-success'
 #properties
   - if @properties
     = render partial: 'properties'
