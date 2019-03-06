@@ -99,7 +99,7 @@
         .header= t('repairing.repairs.form.prozzoro_id')
         .header= t('repairing.repairs.form.description')
   .data
-    = render partial: 'repair', collection: @properties
+    = render partial: 'property', collection: @properties
 
 .paginator-properties
   = paginate @properties, :remote => true

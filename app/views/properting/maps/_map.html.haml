@@ -97,6 +97,9 @@
       }
     }
   }
+  #map .leaflet-popup .leaflet-popup-content-wrapper {
+    padding: 10px;
+  }
 
 #map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
   .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
@@ -184,6 +187,7 @@
 
 
     function initPopup() {
+
       popup = L.popup();
 
       function onMapClick(e) {
@@ -198,7 +202,6 @@
             .openOn(map);
         }
       }
-
       map.on('click', onMapClick);
     }
 
@@ -332,7 +335,52 @@
 
       options = options || {};
 
-      markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+      //option for non spiderfy icons, delete after common changes
+
+      markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false, }) : new L.layerGroup();
+
+
+      markers.on('clusterclick', function (a) {
+        var wrapper = $('<div></div>');
+        var markers = a.layer.getAllChildMarkers();
+
+        for (var i = 0; i < markers.length; i++) {
+
+          // var markerLi = $('body').html($('<a href="#">' + markers[i].feature.properties.property_title + ',' + '</a><br>'
+          // + 'поща: ' + markers[i].feature.properties.property_square + ', вартість: ' + markers[i].feature.properties.property_prise + '<br><br>'));
+
+          var markerLiStr = '<a href="#">' + markers[i].feature.properties.property_title + '</a><br>';
+          var domElement = $(markerLiStr);
+          // domElement.appendTo('body').html($(markerLiStr);
+
+          wrapper.append(domElement);
+
+
+
+          domElement.click = setTimeout(function() {
+            var popup = L.popup()
+                .setLatLng(a.layer.getLatLng())
+                .setContent('<p>Привет мир!<br />Это попап.</p>')
+                .openOn(map);
+            console.log('dsadsadadsadddsaasd', domElement);
+          }, 5000);
+          // domElement.click(function(){
+          //   console.log('dsadsadadsadddsaasd');
+          // });
+        }
+
+
+        map.openPopup(wrapper.html(), a.layer.getLatLng());
+
+        // setTimeout(function() {
+        //   wrapper.on('click', 'a', function(){
+        //     console.log('dasssad');
+        //   })
+        //   domElement.click(function() { console.log('dsadsadadsadddsaasd'); })
+        // }, 5000);
+      });
+
+
       map.addLayer(markers);
 
       var layerOptions = {
@@ -345,7 +393,6 @@
       if (options.hoverStyle)
         layerOptions.hoverStyle = options.hoverStyle;
       geoJson = L.geoJson(data, layerOptions).addTo(markers);
-
       function coordsToLatLng(coords) {
         return L.latLng(coords)
       }

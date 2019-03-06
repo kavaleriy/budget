@@ -4,7 +4,12 @@
   .map_container {
     height: 800px;
   }
-
+  #properties {
+    margin-bottom: 50px;
+  }
+  btn {
+    margin-bottom: 50px;
+  }
 
 = content_for :header do
   .head.pull-left
@@ -18,23 +23,22 @@
 
 %p
   = @layer.description
-
-
-
-= link_to t('.back', default: t('helpers.links.back')), properting_layers_path, class: 'btn btn-default'
-= link_to t('.edit', default: t('helpers.links.edit')), edit_properting_layer_path(@layer), class: 'btn btn-default'
-= link_to t('.destroy', default: t('helpers.links.destroy')),
-          properting_layer_path(@layer),
-          class: 'btn btn-danger',
-          method: 'delete',
-          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
-= link_to t('repairing.repairs.all_repairs'),
-          properting_layer_path(layer_id: @layer.id),
-          remote: true,
-          class: 'btn btn-success'
+-# need fix, for now not work
+-#= link_to t('.back', default: t('helpers.links.back')), properting_layers_path, class: 'btn btn-default'
+-#= link_to t('.edit', default: t('helpers.links.edit')), edit_properting_layer_path(@layer), class: 'btn btn-default'
+-#= link_to t('.destroy', default: t('helpers.links.destroy')),
+-#          properting_layer_path(@layer),
+-#          class: 'btn btn-danger',
+-#          method: 'delete',
+-#          data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) }
+-#= link_to 'Все майно',
+-#          properting_layer_path(layer_id: @layer.id),
+-#          remote: true,
+-#          class: 'btn btn-success'
 #properties
   - if @properties
     = render partial: 'properties'
+
 
 :javascript
 
@@ -71,69 +75,6 @@
         // dragCallback: onDrag,
         editInfoContent: true
       })
-
-      // initRoads(data)
-
-      // function initRoads(data) {
-      //   var roads = get_roads_arr()
-      //
-      //   if (roads.length > 0) {
-      //     $('button#calc_roads')
-      //       .removeAttr("disabled")
-      //       .click(function() {
-      //         reCalculateRoutes()
-      //       })
-      //   }
-      //
-      //   function get_roads_arr() {
-      //     var features = []
-      //
-      //     get_roads(data['features'])
-      //
-      //     function get_roads(item) {
-      //       if (item == null) return;
-      //
-      //       $.each(item, function(i, d){
-      //         if (d.properties.property == "road")
-      //           features.push(d)
-      //
-      //         get_roads(d['features'])
-      //       })
-      //     }
-      //
-      //     return features;
-      //   }
-      //
-      //   function reCalculateRoutes() {
-      //     if (roads.length == 0) return;
-      //
-      //     calc_routes()
-      //
-      //     function calc_routes() {
-      //       var road = roads.pop()
-      //       if (road == null) return;
-      //
-      //       calc_road_route(road)
-      //
-      //       function calc_road_route(road) {
-      //         var coordinates = road.properties.route
-      //
-      //         var waypoints = []
-      //         waypoints.push({ latLng: L.latLng(coordinates[0]) });
-      //         waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
-      //
-      //         L.Routing.control({
-      //           waypoints: waypoints,
-      //           routeWhileDragging: false
-      //         }).on('routesfound', function(router) {
-      //           updateRoute(router.routes[0].coordinates, road)
-      //         });
-      //       }
-      //
-      //       calc_routes()
-      //     }
-      //   }
-      // }
 
     })
     .fail(function () {

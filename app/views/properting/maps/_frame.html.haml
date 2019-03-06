@@ -43,10 +43,9 @@
       data: {
         town: town,
       },
-      dataType: 'json',
+      dataType: 'json'
     })
     .done(function (data) {
-
       function addMarkers() {
         var filtered_data = {
           type: data.type,
@@ -165,7 +164,6 @@
       });
 
       $('#q').keypress(function (e) {
-        // console.log('#q');
         if (e.which == 13) {
           $('#search_btn').trigger("click");
           return false;
