@@ -38,16 +38,15 @@
     cursor: pointer;
   }
 
--#= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue"
-
 = simple_form_for(@municipal_enterprise_file) do |f|
   = f.error_notification
 
   .form-inputs
     - if current_user && current_user.region_admin?
-
+      -# Town forms
       .form-group
         = render 'select_town'
+    -# forms wich we clone
     #sections
       .section
         %fieldset
