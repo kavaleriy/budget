@@ -38,37 +38,21 @@
     cursor: pointer;
   }
 
-= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue"
+-#= javascript_include_tag "https://cdn.jsdelivr.net/npm/vue"
 
 = simple_form_for(@municipal_enterprise_file) do |f|
   = f.error_notification
 
   .form-inputs
     - if current_user && current_user.region_admin?
+
       .form-group
         = render 'select_town'
-    -#.select-enterprises
-      = render partial: 'select_enterprises'
-    #app
-      %template{'v-for' => "(input, index) in inputs"}
-        %input{type: 'text', 'v-model' => 'input.text', 'v-bind:id' => "'type-input-' + index"}
-      %button{v: { 'on:click.prevent' => 'addInput' }} add
-      #select{mode="section.intr"}
-        %template{'v-for' => "option in intrArray"}
-          %option{}
     #sections
       .section
         %fieldset
           .select-enterprises
-            .form-group.select.required
-              = label_tag 'municipal_enterprise', class: 'select required control-label' do
-                %abbr{ title: 'вимагається' } *
-                Підприємство
-              = select_tag 'municipal_enterprise',
-                options_from_collection_for_select(@enterprises, 'id', 'title'),
-                name: "municipal_enterprise_file[enterprise]",
-                required: true,
-                class: 'select required form-control'
+            = render partial: 'select_enterprises'
           = f.input :file_type, label: 'Тип файлу',
                     collection: @type_files.map {|type| [ type[:title], type[:id] ] },
                     input_html: { name: 'municipal_enterprise_file[form][][file_type]' },
@@ -79,9 +63,9 @@
                     prompt: false
           = f.input :file, label: 'Вибір файлу', class: 'form-control', input_html: { name: 'municipal_enterprise_file[form][][file]' }
           %p
-            %a.btn.btn-danger.remove#clickMinus{:href => "#"}= t('delete_form')
+            %a.btn.btn-danger.remove#clickMinus{ href: '#' }= t('delete_form')
     %p
-      %a.btn.btn-info.addsection#clickPlus{:href => "#"} Залишилось форм( 5 )
+      %a.btn.btn-info.addsection#clickPlus{ href: '#' } Залишилось форм( 5 )
   .form-actions
     = f.button :submit, t('save'), class: 'btn btn-success', id: 'myBtn', remote: true
     = link_to t('back'), municipal_enterprise_files_path, class: 'btn btn-info'
@@ -97,69 +81,14 @@
         %p сторінка перезавантажиться автоматично!
 
 :javascript
-  $(document).ready(function() {
-    new Vue({
-      el: '#app',
-      data: {
-        inputs: [],
-        intrArray: [{title: 'test', id: 2}],
-        example: {text: '', }
-      },
-      mounted: function () {
-        this.addInput()
-      },
-      methods: {
-        addInput: function() {
-          this.inputs.push(Object.assign({}, this.example))
-        },
-        save: function() {
-          var that = this
-          $.ajax({
-            url: '',
-            data: {
-              sections: that.sections
-            }
-          })
-        }
-      }
-    })
-  })
-
-  // Get the modal
-  var modal = document.getElementById('myModal');
-
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
-
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-
-  // When the user clicks the button, open the modal
-  btn.onclick = function() {
-    modal.style.display = "block";
-  }
-
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-
-  //clone
-  //define template
   const formLimit = 6;
-  var template = $('#sections .section:first').clone();
   var sectionsCount = 1;
 
   var myBtn = document.getElementById('clickPlus');
   //add new section
   $('body').on('click', '.addsection', function() {
+
+    var template = $('#sections .section:last').clone();
 
       //increment
     if(sectionsCount < formLimit){
@@ -186,11 +115,10 @@
     }
     return false;
   });
-
   //remove section
   $('#sections').on('click', '.remove', function() {
       //fade out section
-    if(sectionsCount > 0){
+    if(sectionsCount > 1){
       sectionsCount--;
       $(this).parent().fadeOut(300, function(){
             //remove parent element (main section)
@@ -203,3 +131,29 @@
     }
     return false;
   });
+
+  // Get the modal
+  var modal = document.getElementById('myModal');
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the button, open the modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
