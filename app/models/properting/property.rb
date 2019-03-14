@@ -191,7 +191,6 @@ module Properting
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
             end
-            # binding.pry
             property['layer'] = {}
             property['layer']['town_id'] = layer['town_id'].to_s
             property['layer']['status'] = layer['status'] || :plan
