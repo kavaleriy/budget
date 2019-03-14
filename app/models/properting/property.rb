@@ -75,7 +75,8 @@ module Properting
     end
 
     def check_address
-      obj_address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
+      # compare with repair if something went wrong
+      (obj_address.present?) && (coordinates.blank?)
     end
 
     def town_emails

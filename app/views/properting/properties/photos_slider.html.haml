@@ -18,9 +18,9 @@
 
 %h3.header
   %p.work
-    = @properting_property.work
+    = @properting_property.obj_name
   %p.address
-    = @properting_property.address
+    = @properting_property.obj_address
 
 .fotorama{ "data-nav" => :thumbs }
   - @properting_property.photos.each do |photo|

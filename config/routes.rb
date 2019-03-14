@@ -113,7 +113,8 @@ Rails.application.routes.draw do
     get 'maps/road_frame/:zoom/:town_id/:year' => 'maps#frame'
     get 'maps/frame/:zoom/:town_id' => 'maps#frame', as: 'frame_with_town'
     get 'maps/frame/:zoom' => 'maps#frame', as: 'iframe_map_with_zoom'
-    get 'property_cross' => 'properties#cross_busroute_with_properties', as: 'repair_cross'
+    get 'property_cross' => 'properties#cross_busroute_with_propertings', as: 'property_cross'
+    # get 'repair_cross' => 'repairs#cross_busroute_with_repairings', as: 'repair_cross'
     get 'show_property_info' =>'properties#show_property_info', as: 'show_property_info'
     get 'edit_in_modal' =>'properties#edit_in_modal', as: 'edit_in_modal'
     # get 'repairs/e_data/:id' => 'repairs#e_data',as: 'e_data'
@@ -134,10 +135,17 @@ Rails.application.routes.draw do
       resources :properties
     end
 
+
+
+
     get 'property_photos/:id' => 'properties#photos', as: 'property_photos'
     post 'create_property_photo/:id', to: 'property_photos#create', as: 'create_property_photo'
     delete 'destroy_property_photo/:id/:photo_id', to: 'property_photos#destroy', as: 'destroy_property_photo'
     get 'photos_slider/:id' => 'properties#photos_slider', as: 'photos_slider'
+
+
+
+
 
     resources :appeal_scenarios
     resources :appeals
@@ -147,7 +155,7 @@ Rails.application.routes.draw do
     post 'appeal_approve/:id', to: 'appeals#approve', as: :appeal_approve
     get 'appeal_approve/:id', to: 'appeals#approve', as: :approve_saved_appeal
     get 'appeal_status/:status', to: 'appeals#appeal_status', as: :status_saved_appeal
-    get 'property_on_map/:id', to: 'properties#repair_on_map', as: :property_on_map
+    get 'property_on_map/:id', to: 'properties#property_on_map', as: :property_on_map
     get 'appeal_disapprove_form/:id', to: 'appeals#disapprove_form', as: :appeal_disapprove_form
     post 'appeal_disapprove/:id', to: 'appeals#disapprove', as: :appeal_disapprove
     post 'layers/multiple_destroy' => 'layers#multiple_destroy', as: 'layers_multiple_destroy'

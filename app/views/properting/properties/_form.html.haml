@@ -1,10 +1,10 @@
 = bootstrap_form_for @properting_property, url: properting_layer_property_path(@properting_property.layer.id, @properting_property.id), remote: true, label_errors: true do |f|
 
-  = f.text_field :spending_units ,label: t('.spending_units')
-  = f.text_field :edrpou_spending_units, label: t('.erdpou_spending')
-  = f.text_field :subject, label: t('repairing.repairs.form.subject')
-  = f.text_field :address, label: t('repairing.repairs.form.address')
-  = f.text_field :address_to, label: t('repairing.repairs.form.address_to')
+  = f.text_field :obj_owner ,label: 'Власник'
+  = f.text_field :edrpou_balance_holder, label: 'ЄДРПОУ власника'
+  = f.text_field :obj_name, label: 'Назва об\`єкта'
+  = f.text_field :obj_address, label: 'Адреса'
+  -#= f.text_field :address_to, label: t('repairing.repairs.form.address_to')
 
   = f.select :properting_category,
     options_for_select([nil] + @properting_property.layer.properting_category.categories.collect {|p| [ p.title, p.id ] },
@@ -13,19 +13,17 @@
     class: 'form-control'
   .row
     .col-xs-6
-      = f.text_field :amount, label: t('repairing.repairs.form.amount')
+      = f.text_field :rental_rate, label: 'Ціна'
     .col-xs-6
-      = f.text_field :warranty_date, placeholder: t('.date_placeholder'),  label: t('repairing.repairs.form.warranity_date')
+      = f.text_field :contract_start_date, placeholder: 'Дата початку', class: 'datepicker', label: 'Дата початку оренди'
     .col-xs-6
-      = f.text_field :property_start_date, placeholder: t('.date_placeholder'), class: 'datepicker', label: t('repairing.repairs.form.repair_start_date')
-    .col-xs-6
-      = f.text_field :property_end_date, placeholder: t('.date_placeholder'), class: 'datepicker', label: t('repairing.repairs.form.repair_end_date')
+      = f.text_field :contract_end_date, placeholder: 'Дата закінчення', class: 'datepicker', label: 'Дата закінчення оренди'
 
   = f.text_field :prozzoro_id, label: t('repairing.repairs.form.prozzoro_id')
-  = f.text_field :obj_owner, label: t('repairing.repairs.form.obj_owner')
-  = f.text_field :edrpou_artist, label: t('.erdpou_artist')
-  = f.text_field :work, label: t('repairing.repairs.form.work')
-  = f.text_area :description, label: t('repairing.repairs.form.description'), rows: '4'
+  = f.text_field :renter_name, label: 'Орендарь'
+  = f.text_field :edrpou_renter, label: 'ЄДРПОУ орендарья'
+  = f.text_field :purpose, label: 'Ціль оренди'
+  = f.text_area :obj_desc, label: 'характеристика об\'єкту', rows: '4'
   = f.text_field :coordinates, label: t('repairing.repairs.form.coordinates'), disabled: 'disabled'
 
   .clear

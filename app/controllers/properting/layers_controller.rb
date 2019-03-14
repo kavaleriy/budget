@@ -29,8 +29,8 @@ module Properting
             subject: "#{params[:q]} - #{params[:q1]}",
             coordinates: [@location, @location1],
             address: params[:q],
-            edrpou_spending_units: 0o0000000,
-            spending_units: 'Unknown',
+            edrpou_balance_holder: 000000000,
+            obj_owner: 'Unknown',
             amount: 1.00,
             address_to: params[:q1]
           )
@@ -43,8 +43,8 @@ module Properting
             subject: params[:q],
             coordinates: @location,
             address: params[:q],
-            edrpou_spending_units: 0o0000000,
-            spending_units: 'Unknown',
+            edrpou_balance_holder: 000000000,
+            obj_owner: 'Unknown',
             amount: 1.00
           )
           property.save!
@@ -71,8 +71,8 @@ module Properting
     def index
       @properting_layers = Properting::Layer.by_locale.visible_to(current_user)
 
-      @properting_layers = @properting_layers.by_towns(params['town_select']) if params['town_select'].present?
-      @properting_layers = @properting_layers.find_by(string: params['q']) if params['q'].present?
+      @properting_layers = @properting_layers.by_towns(params['town_select'])   if params['town_select'].present?
+      @properting_layers = @properting_layers.find_by(string: params['q'])      if params['q'].present?
       @properting_layers = @properting_layers.by_category(params['category'])   if params['category'].present?
       @properting_layers = @properting_layers.by_status(params['status'])       if params['status'].present?
       @properting_layers = @properting_layers.by_year(params['year'])           if params['year'].present?
@@ -141,25 +141,6 @@ module Properting
         format.html { redirect_to :back, alert: message }
       end
     end
-
-    # def read_csv_xls(xls)
-    #   cols = []
-    #   xls.first_column.upto(xls.last_column) { |col|
-    #     cols << xls.cell(1, col).to_s.strip
-    #   }
-    #
-    #   rows = []
-    #   2.upto(xls.last_row) do |line|
-    #     row = {}
-    #     xls.first_column.upto(xls.last_column ) do |col|
-    #       row[xls.cell(1, col)] = xls.cell(line,col).to_s.strip
-    #       row.transform_keys! { |key| key.strip }
-    #     end
-    #     rows << row
-    #   end
-    #
-    #   { :rows => rows, :cols => cols }
-    # end
 
     def update
       respond_to do |format|

@@ -13,8 +13,8 @@ namespace :properting_properties do
 
       property.property_start_date = property.property_date
 
-      property.spending_units = 'no data'         unless property.spending_units
-      property.edrpou_spending_units = 'no data'  unless property.edrpou_spending_units
+      # property.spending_units = 'no data'         unless property.spending_units
+      # property.edrpou_spending_units = 'no data'  unless property.edrpou_spending_units
       property.address = 'no address'             unless property.address
       property.amount = 0.0                       unless property.amount
 

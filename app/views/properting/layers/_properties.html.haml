@@ -65,7 +65,7 @@
     .modal-content.modal-property#property
 
 %h1
-  = "#{t('repairing.repairs.repairs')} (#{@properties.count()})"
+  = "Майно (#{@properties.count()})"
 
 
 .table
@@ -75,29 +75,28 @@
       .col-sm-3.col-md-4
         .row
           .col-sm-12.col-md-6
-            .header= t('repairing.repairs.form.spending_units')
-            .header= t('repairing.repairs.form.erdpou_spending')
+            .header Розпорядник
+            .header ЄДРПОУ розпорядника
           .col-sm-12.col-md-6
-            .header= t('repairing.repairs.form.address')
-            .header= t('repairing.repairs.form.address_to')
-            .header= t('repairing.repairs.form.coordinates')
+            -#.header= t('repairing.repairs.form.address')
+            .header Адреса
+            .header Координати
       .col-sm-3.col-md-4
         .row
           .col-sm-12.col-md-6
-            .header= t('repairing.repairs.form.obj_owner')
-            .header= t('repairing.repairs.form.erdpou_artist')
+            .header Орендар
+            .header ЄДРПОУ орендаря
           .col-sm-12.col-md-6
-            .header= t('repairing.repairs.form.subject')
-            .header= t('repairing.repairs.form.work')
-            .header= t('repairing.repairs.form.category')
+            .header Обʼєкт
+            .header Ціль оренди
+            .header Категорія
       .col-sm-3.col-md-2
-        .header= t('repairing.repairs.form.repair_start_date')
-        .header= t('repairing.repairs.form.repair_end_date')
-        .header= t('repairing.repairs.form.warranity_date')
+        .header Дата початку оренди
+        .header Дата закінчення оренди
       .col-sm-3.col-md-2
-        .header= t('repairing.repairs.form.amount')
-        .header= t('repairing.repairs.form.prozzoro_id')
-        .header= t('repairing.repairs.form.description')
+        .header Вартість
+        .header ID закупівлі
+        .header Детальний опис
   .data
     = render partial: 'property', collection: @properties
 

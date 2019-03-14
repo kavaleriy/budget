@@ -4,6 +4,7 @@ module Properting
     before_action :set_property
 
     def create
+      # binding.pry
       @properting_property.photos.create!(photo_params)
       flash.now[:notice] = t('repairing.repairs.repair_info.photo_saved')
 
