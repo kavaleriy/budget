@@ -2,17 +2,9 @@ module Properting
   class PropertiesController < ApplicationController
     layout 'application_admin'
     layout 'application', only: [:cross_busroute_with_propertings]
-    before_action :update_properting_coordinates, only: [:update]
+    before_filter :update_properting_coordinates, only: [:update]
 
-    before_action :set_properting_property, only: %i[show
-                                                     edit
-                                                     update
-                                                     destroy
-                                                     show_property_info
-                                                     edit_in_modal
-                                                     photos
-                                                     photos_slider
-                                                     property_on_map]
+    before_action :set_properting_property, only: [:show, :edit, :update, :destroy, :show_property_info, :edit_in_modal, :photos, :photos_slider, :property_on_map]
 
     def index
       @properting_properties = Properting::Property.all

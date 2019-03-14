@@ -1,40 +1,31 @@
 module Repairing
   class RepairsController < ApplicationController
     layout 'application_admin'
-    # before_action :check_admin_permission, except: [:cross_busroute_with_repairings]
-    layout 'application' , only: [:cross_busroute_with_repairings]
+    layout 'application', only: [:cross_busroute_with_repairings]
     before_filter :update_repairing_coordinates, only: [:update]
 
     before_action :set_repairing_repair, only: [:show, :edit, :update, :destroy, :show_repair_info, :edit_in_modal, :photos, :photos_slider, :repair_on_map]
 
-    # GET  /repairing/repairs
-    # GET /repairing/repairs.json
     def index
       @repairing_repairs = Repairing::Repair.all
     end
 
-    # GET /repairing/repairs/1
-    # GET /repairing/repairs/1.json
     def show
       respond_to do |format|
         format.json { render json: Repairing::GeojsonBuilder.build_repair(@repairing_repair) }
       end
     end
 
-    # GET /repairing/repairs/new
     def new
       @repairing_repair = Repairing::Repair.new
     end
 
-    # GET /repairing/repairs/1/edit
     def edit
       respond_to do |format|
         format.js { render :edit }
       end
     end
 
-    # POST /repairing/repairs
-    # POST /repairing/repairs.json
     def create
       layer = Repairing::Layer.find(params[:layer_id])
 
@@ -50,8 +41,6 @@ module Repairing
       end
     end
 
-    # PATCH/PUT /repairing/repairs/1
-    # PATCH/PUT /repairing/repairs/1.json
     def update
       respond_to do |format|
         repairing_repair_params.delete :repairing_category if repairing_repair_params[:repairing_category].blank?
@@ -69,8 +58,6 @@ module Repairing
       end
     end
 
-    # DELETE /repairing/repairs/1
-    # DELETE /repairing/repairs/1.json
     def destroy
       @repairing_repair.destroy
 

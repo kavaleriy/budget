@@ -2,35 +2,35 @@
   .col-sm-3.col-md-4
     .row
       .col-sm-12.col-md-6
-        .odd{class: "#{valid_status(property.spending_units)}"}
-          = property.spending_units
-        .even{class: "#{valid_status(property.edrpou_spending_units)}"}
-          = property.edrpou_spending_units
+        .odd{class: "#{valid_status(property.obj_owner)}"}
+          = property.obj_owner
+        .even{class: "#{valid_status(property.edrpou_balance_holder)}"}
+          = property.edrpou_balance_holder
       .col-sm-12.col-md-6
-        .odd{class: "#{valid_status(property.address)}"}
-          = property.address
+        .odd{class: "#{valid_status(property.obj_address)}"}
+          = property.obj_address
         .even
-          = property.address_to
+          = property.obj_address
         .odd.coordinates{class: "#{valid_status(property.coordinates)}"}
           = truncate(property.coordinates.to_s, length: 120)
   .col-sm-3.col-md-4
     .row
       .col-sm-12.col-md-6
-        .odd= strip_tags(property.obj_owner)
-        .even= property.edrpou_artist
+        .odd= strip_tags(property.edrpou_renter)
+        .even= property.edrpou_renter
       .col-sm-12.col-md-6
-        .odd= strip_tags(property.subject)
-        .even= property.work
+        .odd= strip_tags(property.obj_characteristic)
+        .even= property.purpose
         .odd= property.properting_category.title if property.properting_category
   .col-sm-3.col-md-2
-    .odd= property.property_start_date
-    .even= property.property_end_date
-    .odd= property.warranty_date
+    .odd= property.contract_start_date
+    .even= property.contract_end_date
+    -#.odd= property.warranty_date
   .col-sm-3.col-md-2
-    .odd{class: "#{valid_status(property.amount)}"}
-      = property.amount
+    .odd{class: "#{valid_status(property.expert_obj_cost)}"}
+      = property.expert_obj_cost
     .even= property.prozzoro_id
-    .odd= property.description
+    .odd= property.obj_characteristic
     .actions
       %a.edit-property{ 'data-toggle' => 'modal', 'data-target'=> '#myModal', 'data-property-id' => "#{property.id}" }
         %i.fa.fa-pencil.fa-2x

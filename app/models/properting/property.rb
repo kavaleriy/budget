@@ -75,7 +75,8 @@ module Properting
     end
 
     def check_address
-      obj_address.present? && (coordinates.blank? || address_changed? || address_to_changed?)
+      # compare with repair if something went wrong
+      (obj_address.present?) && (coordinates.blank?)
     end
 
     def town_emails
@@ -190,7 +191,6 @@ module Properting
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
             end
-            # binding.pry
             property['layer'] = {}
             property['layer']['town_id'] = layer['town_id'].to_s
             property['layer']['status'] = layer['status'] || :plan
