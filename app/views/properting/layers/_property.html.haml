@@ -9,8 +9,8 @@
       .col-sm-12.col-md-6
         .odd{class: "#{valid_status(property.obj_address)}"}
           = property.obj_address
-        .even
-          = property.obj_address
+        -#.even
+        -#  = property.obj_address
         .odd.coordinates{class: "#{valid_status(property.coordinates)}"}
           = truncate(property.coordinates.to_s, length: 120)
   .col-sm-3.col-md-4
