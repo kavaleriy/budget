@@ -1,7 +1,7 @@
 class Properting::Category
   include Mongoid::Document
 
-  before_save :downcase_field
+  before_save :format_title_alias
 
   default_scope -> { order_by(position: :asc) }
   scope :by_locale, -> { where(locale: I18n.locale) }
@@ -15,6 +15,7 @@ class Properting::Category
   belongs_to :category, class_name: 'Properting::Category'
 
   field :title, type: String
+  field :title_alias, type: String
   field :icon, type: String
   field :color, type: String
   field :position, type: Integer
@@ -51,7 +52,7 @@ class Properting::Category
   end
 
   private
-  def downcase_field
-    self.title.mb_chars.downcase.to_s
+  def format_title_alias
+    self.title_alias = self.title.mb_chars.downcase.gsub(/[^a-zA-ZА-Яа-я\-]/,"").to_s
   end
 end
