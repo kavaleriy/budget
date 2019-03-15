@@ -78,7 +78,6 @@
             .header Розпорядник
             .header ЄДРПОУ розпорядника
           .col-sm-12.col-md-6
-            -#.header= t('repairing.repairs.form.address')
             .header Адреса
             .header Координати
       .col-sm-3.col-md-4
@@ -127,7 +126,7 @@
     $("#edit_property").on("show.bs.modal", function () {
       $(".container-fluid").addClass("modal-open");
     }).on("hidden.bs.modal", function () {
-      $(".container-fluid").removeClass("modal-open")
+      $(".container-fluid").removeClass("modal-open");
     });
 
     // fixed position header table

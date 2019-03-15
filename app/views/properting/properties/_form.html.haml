@@ -27,7 +27,7 @@
   = f.text_field :coordinates, label: t('repairing.repairs.form.coordinates'), disabled: 'disabled'
 
   .clear
-  = f.submit t('form.save'), class: 'btn btn-primary'
+  = f.submit t('form.save'), class: 'btn btn-primary', id: 'btn-submit'
   = link_to t('form.destroy'),
             properting_layer_property_path(@properting_property.layer.id, @properting_property.id),
             method: :delete,
@@ -45,6 +45,8 @@
   $(document).ready(function(){
     $('.edit_properting_property').on('ajax:success',function(){
         // alert('Дані успішно збережені');
+        $('#edit_property').modal('hide');
+        location.reload();
     });
 
     // Use Bootstrap/JQ/UI DateTimePicker

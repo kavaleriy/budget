@@ -45,10 +45,11 @@ module Properting
       respond_to do |format|
         properting_property_params.delete :properting_category if properting_property_params[:properting_category].blank?
         if @properting_property.update(properting_property_params)
+
           flash[:notice] = I18n.t('repairing.layers.update.success')
-          msg = { class_name: 'success', message: flash[:notice] }
+          msgp = { class_name: 'success', message: flash[:notice] }
           format.js {}
-          format.json { render :show, status: :ok, json: msg }
+          format.json { render :show, status: :ok, json: msgp }
         else
           flash[:notice] = @properting_property.errors
           format.js {}
