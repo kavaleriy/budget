@@ -115,12 +115,11 @@ module Properting
 
         layer_property = create(property_hash)
 
-        properting_category = Properting::Category.find_by(title: downcase_str(layer_property.balance_holder_field))
+        properting_category = Properting::Category.find_by(title_alias: downcase_str(layer_property.balance_holder_field))
         layer_property.properting_category_id = properting_category.id if properting_category.present?
 
         status = status_btn(downcase_str(layer_property.legal_status))
-        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status)
-                  .first_or_create(properting_layer_params) if status.present?
+        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
         layer.save
