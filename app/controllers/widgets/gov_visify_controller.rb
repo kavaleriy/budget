@@ -1,4 +1,4 @@
-class Widgets::VisifyController < Widgets::WidgetsController
+class Widgets::GovVisifyController < Widgets::WidgetsController
   include ControllerCaching
   skip_before_action :set_menu
   before_action :set_budget_file
@@ -6,6 +6,13 @@ class Widgets::VisifyController < Widgets::WidgetsController
   before_action :set_amounts, :except => [:get_bubbletree_nodedata]
 
   MAX_NODES_PER_LEVEL = 100
+
+  def index
+    expenses = Budget::GovFiles::Income.where(koatuu: @budget_file.town.koatuu)
+    a = Budget::Files::Builders::Tree.new(expenses, 'income_code').call
+    render json: a.to_json
+  end
+
 
   def type
     render :partial => 'widgets/visify/' + params[:type]
@@ -19,7 +26,6 @@ class Widgets::VisifyController < Widgets::WidgetsController
 
       JSON.dump(get_bubble_tree(levels, year))
     end
-
     render json: result
   end
 
