@@ -51,16 +51,12 @@ module Municipal
     # def edit; end
 
     def create
-      # enterprise_file_params
       respond_to do |format|
         enterprise_file_params[:form].each_with_index do |form, index|
-          binding.pry
           # check on existing file
           @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise_id: enterprise_file_params[:enterprise])
           @municipal_enterprise_file.each do |file|
-            binding.pry
             if @municipal_enterprise_file.present?
-              binding.pry
               file_present  = true if file[:file].present?
               file_year     = true if file[:year].to_s == enterprise_file_params[:form][index][:year]
               file_type     = true if file[:file_type] == enterprise_file_params[:form][index][:file_type]
