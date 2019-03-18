@@ -115,7 +115,10 @@ module Properting
 
         layer_property = create(property_hash)
 
-        properting_category = Properting::Category.find_by(title_alias: downcase_str(layer_property.balance_holder_field))
+        find_category_by_title_alias =
+          layer_property.balance_holder_field.present? ? downcase_str(layer_property.balance_holder_field) : 'нше'
+
+        properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
 
         status = status_btn(downcase_str(layer_property.legal_status))
