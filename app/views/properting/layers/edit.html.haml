@@ -132,68 +132,6 @@
         editInfoContent: true
       })
 
-      // initRoads(data)
-
-      // function initRoads(data) {
-      //   var roads = get_roads_arr()
-      //
-      //   if (roads.length > 0) {
-      //     $('button#calc_roads')
-      //       .removeAttr("disabled")
-      //       .click(function() {
-      //         reCalculateRoutes()
-      //       })
-      //   }
-      //
-      //   function get_roads_arr() {
-      //     var features = []
-      //
-      //     get_roads(data['features'])
-      //
-      //     function get_roads(item) {
-      //       if (item == null) return;
-      //
-      //       $.each(item, function(i, d){
-      //         if (d.properties.repair == "road")
-      //           features.push(d)
-      //
-      //         get_roads(d['features'])
-      //       })
-      //     }
-      //
-      //     return features;
-      //   }
-      //
-      //   function reCalculateRoutes() {
-      //     if (roads.length == 0) return;
-      //
-      //     calc_routes()
-      //
-      //     function calc_routes() {
-      //       var road = roads.pop()
-      //       if (road == null) return;
-      //
-      //       calc_road_route(road)
-      //
-      //       function calc_road_route(road) {
-      //         var coordinates = road.properties.route
-      //
-      //         var waypoints = []
-      //         waypoints.push({ latLng: L.latLng(coordinates[0]) });
-      //         waypoints.push({ latLng: L.latLng(coordinates[coordinates.length - 1]) });
-      //
-      //         L.Routing.control({
-      //           waypoints: waypoints,
-      //           routeWhileDragging: false
-      //         }).on('routesfound', function(router) {
-      //           updateRoute(router.routes[0].coordinates, road)
-      //         });
-      //       }
-      //
-      //       calc_routes()
-      //     }
-      //   }
-      // }
 
     })
     .fail(function () {
@@ -322,11 +260,11 @@
           console.log('click fail')
         })
 
-        if (_selectedFeature.properties.repair == "road") {
+        if (_selectedFeature.properties.property == "road") {
 
           editRoute()
         } else {
-          aRepairMap.editRoute([])
+          aPropertyMap.editRoute([])
         }
       }
     }

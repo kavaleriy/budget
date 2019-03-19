@@ -83,7 +83,6 @@
       addMarkers()
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
-      // aRepairMap.addCategoryControl(categories);
 
       $('#category_btns .btn').on("click",function(){
         if($(this).hasClass('active')){
@@ -211,7 +210,6 @@
       }).on("change", function(){
         town = $(this).val();
         addMarkers()
-        //aRepairMap.addTownLayer(town);
       });
     })
     .fail(function () {
