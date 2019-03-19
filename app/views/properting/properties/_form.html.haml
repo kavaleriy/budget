@@ -1,3 +1,5 @@
+
+
 = bootstrap_form_for @properting_property, url: properting_layer_property_path(@properting_property.layer.id, @properting_property.id), remote: true, label_errors: true do |f|
 
   = f.text_field :obj_owner ,label: 'Власник'
@@ -44,9 +46,31 @@
 
   $(document).ready(function(){
     $('.edit_properting_property').on('ajax:success',function(){
-        // alert('Дані успішно збережені');
-        $('#edit_property').modal('hide');
-        location.reload();
+      // alert('Дані успішно збережені');
+      // get @properties for layer
+      function get_property_info_modal(id_property){
+        $.ajax({
+          url: "#{properting_edit_in_modal_path}",
+          dataType: 'script',
+          data: { id: id_property },
+          success: function(data){}
+        })
+      }
+      $('#edit_property').modal('hide');
+
+      $('.edit-property').on('click',function(){
+        var property_id = $(this).attr('data-property-id');
+        get_property_info_modal(property_id);
+      });
+
+      // setting modal window for static page behavior
+      $("#edit_property").on("show.bs.modal", function () {
+        $(".container-fluid").addClass("modal-open");
+      }).on("hidden.bs.modal", function () {
+        $(".container-fluid").removeClass("modal-open");
+      });
+
+        // location.reload();
     });
 
     // Use Bootstrap/JQ/UI DateTimePicker

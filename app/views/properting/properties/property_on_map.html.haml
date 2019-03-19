@@ -48,7 +48,7 @@
     });
 
     function openCurrentProperty(){
-      var repair_id = getPropertyId();
+      var property_id = getPropertyId();
 
       aPropertyMap.map.eachLayer(function (layer) {
         if(layer.feature && layer.feature.properties.id == property_id){
@@ -59,7 +59,6 @@
 
     var Icon = L.Icon.extend({ options: { iconSize: [28, 28] }});
     // REPEAT !!!!!!!!!!!!
-    // Same code in repairing/maps/_iframe.html.haml
     function getIconByCategory(parent_cat, child_cat){
       var iconCategoryUrl = '/assets/properting/default_icon.png';
       if (categories_icons[child_cat]){
