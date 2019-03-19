@@ -89,38 +89,38 @@
 
     var template = $('#sections .section:last').clone();
 
-      //increment
+    //increment
     if(sectionsCount < formLimit){
       sectionsCount++;
       var count = formLimit - sectionsCount;
 
-        //loop through each input
+      //loop through each input
       var section = template.clone().find(':input').each(function(){
 
         myBtn.innerHTML = 'Залишилось форм( ' + count + ' )';
 
-          //set id to store the updated section number
+        //set id to store the updated section number
         var newId = this.id + sectionsCount;
 
-          //update for label
+        //update for label
         $(this).prev().attr('for', newId);
 
-          //update id
+        //update id
         this.id = newId;
       }).end()
 
-        //inject new section
+      //inject new section
       .appendTo('#sections');
     }
     return false;
   });
   //remove section
   $('#sections').on('click', '.remove', function() {
-      //fade out section
+    //fade out section
     if(sectionsCount > 1){
       sectionsCount--;
       $(this).parent().fadeOut(300, function(){
-            //remove parent element (main section)
+        //remove parent element (main section)
         var count = formLimit - sectionsCount;
         myBtn.innerHTML = 'Залишилось форм( ' + count + ' )';
 

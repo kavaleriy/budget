@@ -3,7 +3,7 @@ module DowncaseField
 
   module ClassMethods
     def downcase_str(str)
-      str.mb_chars.downcase.to_s
+      str.mb_chars.downcase.gsub(/[^a-zA-ZА-Яа-я\-]/,"").to_s
     end
   end
 end
