@@ -2,6 +2,7 @@ require 'ext/string'
 module Properting
   class Property
     include Mongoid::Document
+    # include Mongoid::Paranoia
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
     include StatusBtn
@@ -112,9 +113,8 @@ module Properting
           else
             [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
           end
-
+        # binding.pry
         layer_property = create(property_hash)
-
         find_category_by_title_alias =
           layer_property.balance_holder_field.present? ? downcase_str(layer_property.balance_holder_field) : 'нше'
 
@@ -123,10 +123,19 @@ module Properting
 
         status = status_btn(downcase_str(layer_property.legal_status))
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
+        # binding.pry
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
-        layer.save
+        # binding.pry
+        # address = Properting::Property.unscoped.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
+        # # binding.pry
+        # if address.try(:photos)
+        #   binding.pry
+        #   # previous layer should be deleted in future
+        #   layer_property.photos.push[address.photos]
+        # end
 
+        layer.save
         layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
         layer_property.save(validate: false)
@@ -188,7 +197,6 @@ module Properting
 
         propertings.each do |layer, properties|
           last_year_data = layer['year'] if layer['year'].present? && (last_year_data < layer['year'])
-
           properties.each do |property|
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
@@ -199,7 +207,6 @@ module Properting
             property['layer']['year'] = layer['year']
             property['layer']['properting_category_id'] = layer['properting_category_id'].to_s
             property['properting_category_id'] = layer['properting_category_id'].to_s
-
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json
           end
