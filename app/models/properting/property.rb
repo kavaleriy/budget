@@ -2,7 +2,7 @@ require 'ext/string'
 module Properting
   class Property
     include Mongoid::Document
-    # include Mongoid::Paranoia
+    include Mongoid::Paranoia
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
     include StatusBtn
@@ -96,6 +96,7 @@ module Properting
     private
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
+      # binding.pry
       properties_arr = read_table_from_file(filepath)[:rows]
 
       properties_arr.each_with_index do |property, index|
@@ -113,27 +114,34 @@ module Properting
           else
             [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
           end
-        # binding.pry
         layer_property = create(property_hash)
         find_category_by_title_alias =
           layer_property.balance_holder_field.present? ? downcase_str(layer_property.balance_holder_field) : 'нше'
 
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
-
         status = status_btn(downcase_str(layer_property.legal_status))
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
-        # binding.pry
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
-        # binding.pry
-        # address = Properting::Property.unscoped.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
-        # # binding.pry
-        # if address.try(:photos)
-        #   binding.pry
-        #   # previous layer should be deleted in future
-        #   layer_property.photos.push[address.photos]
-        # end
+
+
+
+        address = Properting::Property.unscoped.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
+        if address.present?
+          address.each do |photos|
+            # previous layer should be deleted in future
+            # binding.pry
+            photos.photos.each do |photo|
+              # binding.pry
+              layer_property.photos.push(photo)
+            end
+          end
+        end
+
+
+
+
 
         layer.save
         layer_property.layer = layer if layer.present?
