@@ -137,11 +137,13 @@ module Properting
               layer_property.photos.push(photo)
             end
           end
+          if properties_arr.count == index
+            binding.pry
+            address.really_destroy!
+          end
         end
 
-
-
-
+        # .really_destroy!
 
         layer.save
         layer_property.layer = layer if layer.present?
