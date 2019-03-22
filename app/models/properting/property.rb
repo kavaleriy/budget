@@ -149,7 +149,7 @@ module Properting
 
       {
         obj_owner: property['балансоутримувач'],
-        edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
+        edrpou_balance_holder: property['єдрпоу балансоутримувача'],
         balance_holder_field: property['сфера балансоутримувача'],
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
