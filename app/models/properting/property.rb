@@ -116,7 +116,7 @@ module Properting
           end
         layer_property = create(property_hash)
         find_category_by_title_alias =
-          layer_property.balance_holder_field.present? ? downcase_str(layer_property.balance_holder_field) : 'нше'
+          layer_property.balance_holder_field.present? ? downcase_gsub_str(layer_property.balance_holder_field) : 'нше'
 
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
@@ -169,7 +169,7 @@ module Properting
 
       {
         obj_owner: property['балансоутримувач'],
-        edrpou_balance_holder: property['код єдрпоу балансоутримувача'],
+        edrpou_balance_holder: property['єдрпоу балансоутримувача'],
         balance_holder_field: property['сфера балансоутримувача'],
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],

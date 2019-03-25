@@ -9,15 +9,14 @@
       .col-sm-12.col-md-6
         .odd{class: "#{valid_status(property.obj_address)}"}
           = property.obj_address
-        -#.even
-        -#  = property.obj_address
         .odd.coordinates{class: "#{valid_status(property.coordinates)}"}
           = truncate(property.coordinates.to_s, length: 120)
   .col-sm-3.col-md-4
     .row
       .col-sm-12.col-md-6
+        .odd{class: "#{valid_status(property.renter_name)}"}
+          = property.renter_name
         .odd= strip_tags(property.edrpou_renter)
-        .even= property.edrpou_renter
       .col-sm-12.col-md-6
         .odd= strip_tags(property.obj_characteristic)
         .even= property.purpose
