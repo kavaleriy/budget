@@ -96,7 +96,6 @@ module Properting
     private
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
-      # binding.pry
       properties_arr = read_table_from_file(filepath)[:rows]
 
       properties_arr.each_with_index do |property, index|
@@ -121,36 +120,76 @@ module Properting
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
         status = status_btn(downcase_str(layer_property.legal_status))
+
+        # find or create layer
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
 
-
-
-        address = Properting::Property.unscoped.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
-        if address.present?
-          address.each do |photos|
-            # previous layer should be deleted in future
-            # binding.pry
-            photos.photos.each do |photo|
-              # binding.pry
-              layer_property.photos.push(photo)
-            end
-          end
-          if properties_arr.count == index
-            binding.pry
-            address.really_destroy!
-          end
-        end
-
-        # .really_destroy!
-
         layer.save
         layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
+
+        # photo from paranoia to the same address
+
+        add_photo_from_paranoia(layer_property, properties_arr)
+        # address = Properting::Property.deleted.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
+        # if address.present? && address.count > properties_arr.count
+        #   address.each do |photos|
+        #     if photos.destroyed?
+        #       photos.try(:photos).each do |photo|
+        #         layer_property.photos.push(photo)
+        #         layer_property.save(validate: false)
+        #       end
+        #       photos.destroy!
+        #     end
+        #   end
+        # else
+        #   # add photo only for one icon
+        #   address.each do |photos|
+        #     if photos.destroyed?
+        #       photos.try(:photos).each do |photo|
+        #         layer_property.photos.push(photo)
+        #         layer_property.save(validate: false)
+        #       end
+        #       if properties_arr.count == (index - 1)
+        #         photos.destroy!
+        #       end
+        #     end
+        #   end
+        # end
+
         layer_property.save(validate: false)
       end
       FileUtils.rm(filepath) if filepath.present?
+    end
+
+    def self.add_photo_from_paranoia(layer_property, properties_arr)
+      address = Properting::Property.deleted.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
+      if address.present? && address.count > properties_arr.count
+        address.each do |photos|
+          if photos.destroyed?
+            photos.try(:photos).each do |photo|
+              layer_property.photos.push(photo)
+              layer_property.save(validate: false)
+            end
+            photos.destroy!
+          end
+        end
+      else
+        # add photo only for one icon
+        address.each do |photos|
+          if photos.destroyed?
+            photos.try(:photos).each do |photo|
+              layer_property.photos.push(photo)
+              layer_property.save(validate: false)
+            end
+            if properties_arr.count == (index - 1)
+              photos.destroy!
+            end
+          end
+        end
+      end
     end
 
     def self.expiration_date(d_string)
