@@ -52,6 +52,8 @@ module Properting
 
     before_validation :check_and_emend_edrpou
     before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
+    before_destroy :check_on_photos
+    # before_remove :check_on_photos_present
 
     # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
@@ -95,6 +97,11 @@ module Properting
     end
 
     private
+    def check_on_photos
+      if self.photos.blank?
+        Properting::Property.where(id: self.id).delete
+      end
+    end
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
       properties_arr = read_table_from_file(filepath)[:rows]
