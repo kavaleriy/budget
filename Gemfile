@@ -165,3 +165,4 @@ gem 'selectize-rails'
 
 gem 'cocoon'
 gem 'rubocop', require: false
+gem 'mongoid_paranoia'

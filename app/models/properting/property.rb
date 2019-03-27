@@ -2,10 +2,12 @@ require 'ext/string'
 module Properting
   class Property
     include Mongoid::Document
+    include Mongoid::Paranoia
     include Mongoid::Timestamps
     include Properting::PropertiesHelper
     include StatusBtn
     include DowncaseField
+    extend PropertyParanoiaPhoto
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
@@ -50,6 +52,8 @@ module Properting
 
     before_validation :check_and_emend_edrpou
     before_validation :geocode, on: :update, if: ->(obj) { obj.check_address }
+    before_destroy :check_on_photos
+    # before_remove :check_on_photos_present
 
     # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
@@ -93,6 +97,11 @@ module Properting
     end
 
     private
+    def check_on_photos
+      if self.photos.blank?
+        Properting::Property.where(id: self.id).delete
+      end
+    end
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
       properties_arr = read_table_from_file(filepath)[:rows]
@@ -112,22 +121,25 @@ module Properting
           else
             [coordinates.split(',').map(&:to_f), coordinates1.split(',').map(&:to_f)]
           end
-
         layer_property = create(property_hash)
-
         find_category_by_title_alias =
           layer_property.balance_holder_field.present? ? downcase_gsub_str(layer_property.balance_holder_field) : 'нше'
 
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
         status = status_btn(downcase_str(layer_property.legal_status))
+
+        # find or create layer
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
-        layer.save
 
+        layer.save
         layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
+
+        # photo from paranoia to the same address
+        photo_from_paranoia(layer_property, properties_arr.count, index)
         layer_property.save(validate: false)
       end
       FileUtils.rm(filepath) if filepath.present?
@@ -154,7 +166,6 @@ module Properting
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
         obj_desc: property['опис об\'єкту'],
-        # category: property['категорія'],
         renter_name: property['найменування користувача\\орендаря'],
         edrpou_renter: property['єдрпоу орендаря'],
         legal_status: property['правовий статус'],
@@ -187,7 +198,6 @@ module Properting
 
         propertings.each do |layer, properties|
           last_year_data = layer['year'] if layer['year'].present? && (last_year_data < layer['year'])
-
           properties.each do |property|
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
@@ -198,7 +208,6 @@ module Properting
             property['layer']['year'] = layer['year']
             property['layer']['properting_category_id'] = layer['properting_category_id'].to_s
             property['properting_category_id'] = layer['properting_category_id'].to_s
-
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json
           end
