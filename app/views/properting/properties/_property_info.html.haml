@@ -273,6 +273,17 @@
         - @properting_property.photos[0..4].each do |photo|
           = link_to properting_photos_slider_path(@properting_property.id), target: '_blank' do
             .img{style: "background-image:url(#{ asset_path photo.image.thumb }); "}
+
+  - unless @properting_property.coordinates.blank?
+    .row.photos
+      .col-xs-4.title-key
+        %i.fa.fa-image
+        = link_to 'Переглянути в google maps',
+          "https://www.google.com/maps/?q=#{@properting_property.coordinates[0]},#{@properting_property.coordinates[1]}",
+          target: '_blank',
+          rel: :noopener
+      .col-xs-8.value
+
   %h4.head-desc
     Опис:
     %p

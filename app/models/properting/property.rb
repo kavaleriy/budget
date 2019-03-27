@@ -7,6 +7,7 @@ module Properting
     include Properting::PropertiesHelper
     include StatusBtn
     include DowncaseField
+    extend PropertyParanoiaPhoto
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
     extend RepairingLayerUpload
@@ -131,65 +132,10 @@ module Properting
         layer_property.properting_category = child_category if child_category.present?
 
         # photo from paranoia to the same address
-
-        add_photo_from_paranoia(layer_property, properties_arr)
-        # address = Properting::Property.deleted.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
-        # if address.present? && address.count > properties_arr.count
-        #   address.each do |photos|
-        #     if photos.destroyed?
-        #       photos.try(:photos).each do |photo|
-        #         layer_property.photos.push(photo)
-        #         layer_property.save(validate: false)
-        #       end
-        #       photos.destroy!
-        #     end
-        #   end
-        # else
-        #   # add photo only for one icon
-        #   address.each do |photos|
-        #     if photos.destroyed?
-        #       photos.try(:photos).each do |photo|
-        #         layer_property.photos.push(photo)
-        #         layer_property.save(validate: false)
-        #       end
-        #       if properties_arr.count == (index - 1)
-        #         photos.destroy!
-        #       end
-        #     end
-        #   end
-        # end
-
+        photo_from_paranoia(layer_property, properties_arr.count, index)
         layer_property.save(validate: false)
       end
       FileUtils.rm(filepath) if filepath.present?
-    end
-
-    def self.add_photo_from_paranoia(layer_property, properties_arr)
-      address = Properting::Property.deleted.where(obj_address: layer_property.obj_address) if layer_property.obj_address.present?
-      if address.present? && address.count > properties_arr.count
-        address.each do |photos|
-          if photos.destroyed?
-            photos.try(:photos).each do |photo|
-              layer_property.photos.push(photo)
-              layer_property.save(validate: false)
-            end
-            photos.destroy!
-          end
-        end
-      else
-        # add photo only for one icon
-        address.each do |photos|
-          if photos.destroyed?
-            photos.try(:photos).each do |photo|
-              layer_property.photos.push(photo)
-              layer_property.save(validate: false)
-            end
-            if properties_arr.count == (index - 1)
-              photos.destroy!
-            end
-          end
-        end
-      end
     end
 
     def self.expiration_date(d_string)
@@ -213,7 +159,6 @@ module Properting
         obj_address: property['адреса об\'єкту'],
         obj_name: property['назва об\'єкту'],
         obj_desc: property['опис об\'єкту'],
-        # category: property['категорія'],
         renter_name: property['найменування користувача\\орендаря'],
         edrpou_renter: property['єдрпоу орендаря'],
         legal_status: property['правовий статус'],
