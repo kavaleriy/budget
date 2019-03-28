@@ -17,7 +17,6 @@
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
   = javascript_include_tag 'leaflet/leaflet-routing-machine.min'
-  -#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
@@ -97,6 +96,11 @@
       }
     }
   }
+  .leaflet-popup-content {
+    padding: 10px;
+    overflow: scroll;
+    max-height: 300px;
+  }
 
 #map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
   .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
@@ -156,12 +160,9 @@
           g = svg.append("g").attr("class", "leaflet-zoom-hide");
       }
 
-
       if (options.bounds) map.fitBounds(options.bounds);
 
-
       L.Icon.Default.imagePath = '/assets/leaflet/images'
-
 
       function setBrowserLocation() {
         if (navigator.geolocation) {
@@ -190,7 +191,6 @@
         //Hide left sidebar
         //$('#sidebar').hide('slow');
         // hideSidebar();
-
         if (options.getMapPopupContent) {
           popup
             .setLatLng(e.latlng)
@@ -198,13 +198,10 @@
             .openOn(map);
         }
       }
-
       map.on('click', onMapClick);
     }
 
-
     function addGeoSearch() {
-
        new L.Control.GeoSearch({
           provider: new L.GeoSearch.Provider.OpenStreetMap(),
           showMarker: false,
@@ -239,8 +236,6 @@
 
         places.forEach(function(place) {
           // Create a marker for each place.
-          console.log(places);
-          console.log(place.geometry.location.lat() + " / " + place.geometry.location.lng());
           var marker = L.marker([
             place.geometry.location.lat(),
             place.geometry.location.lng()
@@ -332,7 +327,26 @@
 
       options = options || {};
 
-      markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+      // markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+
+      markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false, }) : new L.layerGroup();
+
+      markers.on('clusterclick', function (a) {
+        var markers = a.layer.getAllChildMarkers();
+        var html = '';
+
+        for (var i = 0; i < markers.length; i++) {
+          var markerLiStr = '<a data-marker_id="'+ markers[i].feature.properties.id.toString() +'" href="#" onclick="testFunction(this)">' + markers[i].feature.properties + '</a><br>';
+          html += markerLiStr
+        }
+        map.openPopup(html, a.layer.getLatLng());
+      });
+
+
+
+
+
+
       map.addLayer(markers);
 
       var layerOptions = {
@@ -351,7 +365,6 @@
       }
 
       function getPointToLayer(feature, latlng) {
-
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -638,3 +651,22 @@
       removeAdditionalLayer: removeAdditionalLayer
     }
   }
+
+  function testFunction(e) {
+    onFeatureClick($(e).data('marker_id'))
+  }
+
+  function onFeatureClick(property_id) {
+      console.log('onFeatureClick(feature, layer)');
+      // var property_id = feature.properties.id;
+      $.ajax({
+        url: "#{properting_show_property_info_path}",
+        dataType: 'script',
+        data: { id: property_id },
+        success: function(data){
+          // stop scroll and drag for map under modal window
+          // aPropertyMap.map.scrollWheelZoom.disable();
+          // aPropertyMap.map.dragging.disable();
+        }
+      })
+    }
