@@ -371,8 +371,8 @@ Rails.application.routes.draw do
 
     get 'visify/visify/:file_id' => 'visify#visify'
     get 'visify/type/:file_id/:type' => 'visify#type', as: 'visify_type'
-    get 'visify/get_bubbletree_data/:file_id' => 'visify#get_bubbletree_data'
-    get 'visify/get_bubbletree_data/:file_id/:levels' => 'visify#get_bubbletree_data'
+    get 'visify/get_bubbletree_data/:file_id' => 'gov_visify#index'
+    get 'visify/get_bubbletree_data/:file_id/:levels' => 'gov_visify#index'
     get 'gov_visify/get_bubbletree_data/:file_id/:levels' => 'gov_visify#index'
     get 'visify/get_bubblesubtree/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree'
     get 'visify/get_bubblesubtree_with_fact/:file_id/:taxonomy/:key' => 'visify#get_bubblesubtree_with_fact'
