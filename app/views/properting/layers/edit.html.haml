@@ -118,7 +118,6 @@
       dataType: 'json',
     })
     .done(function (data) {
-
       aPropertyMap.addGeoJsonPoints(data, getPoint, {
         clustered: true,
         style: {
@@ -131,8 +130,6 @@
         dragCallback: onDrag,
         editInfoContent: true
       })
-
-
     })
     .fail(function () {
     });
@@ -159,29 +156,27 @@
       return point;
     }
 
-    function onMapClick(feature, popup) {
-    }
-
     function getMapPopupContent(e) {
-      var place_for_close_btn = '<span style="color:white">----</span>'
+
+      var place_for_close_btn = '<span style="color:white">----</span>';
       var content = e.latlng.toString() + place_for_close_btn;
       return content
     }
 
-    var _removedFeature
-    var _selectedFeature
+    var _removedFeature;
+    var _selectedFeature;
 
     function onFeatureClick(feature, layer) {
-      selectFeature(feature, layer)
 
-      featureId = feature.properties.id
+      selectFeature(feature, layer);
+
+      featureId = feature.properties.id;
       $.ajax({
         url: '/properting/map/getInfoContentForPopup/' + featureId + "?locale=" + "#{params[:locale]}",
         success:function(data){
           layer.bindPopup(data).openPopup();
         }
       })
-
     }
 
     function getPropertyId(){
@@ -243,7 +238,7 @@
     function selectFeature(feature, target) {
       $('#property').html('');
 
-      _selectedFeature = feature
+      _selectedFeature = feature;
 
       if (_selectedFeature) {
         $.ajax({
@@ -252,25 +247,16 @@
           url: '#{edit_properting_layer_property_path(@properting_layer.id, "%id%")}'.replace("%id%", _selectedFeature.properties.id),
           success: function(){
             $('#remove_property').on('click',function(){
-                aPropertyMap.removeMarker(_selectedFeature);
+              aPropertyMap.removeMarker(_selectedFeature);
             });
           }
         })
         .fail(function () {
-          console.log('click fail')
         })
-
-        if (_selectedFeature.properties.property == "road") {
-
-          editRoute()
-        } else {
-          aPropertyMap.editRoute([])
-        }
       }
     }
 
     function editRoute(feature) {
-
       if (feature == null)
         feature = _selectedFeature
 
@@ -295,11 +281,9 @@
     function updateRoute(route, feature){
       update_feature_coords()
       store_route()
-
       function update_feature_coords() {
         feature.properties.route = []
         $.each(route, function(key,val) {
-
           feature.properties.route.push([val['lat'], val['lng']])
         })
       }
@@ -324,5 +308,4 @@
         })
       }
     }
-
   });

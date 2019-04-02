@@ -183,7 +183,6 @@
       }
     }
 
-
     function initPopup() {
       popup = L.popup();
 
@@ -326,26 +325,43 @@
       setLastPropertyDate(data.last_year_data);
 
       options = options || {};
+      markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
 
-      // markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+      if (window.location.href.indexOf('edit') == (-1)) {
+        markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false, }) : new L.layerGroup();
 
-      markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false, }) : new L.layerGroup();
+        markers.on('clusterclick', function (a) {
+          var markers = a.layer.getAllChildMarkers();
+          var html = '';
+          for (var i = 0; i < markers.length; i++) {
 
-      markers.on('clusterclick', function (a) {
-        var markers = a.layer.getAllChildMarkers();
-        var html = '';
-
-        for (var i = 0; i < markers.length; i++) {
-          var markerLiStr = '<a data-marker_id="'+ markers[i].feature.properties.id.toString() +'" href="#" onclick="testFunction(this)">' + markers[i].feature.properties + '</a><br>';
-          html += markerLiStr
-        }
-        map.openPopup(html, a.layer.getLatLng());
-      });
-
-
-
+            var property_id =  markers[i].feature.properties.id;
+            var marker_title =
+                (markers[i].feature.properties.property_title) ? markers[i].feature.properties.property_title : ' Вільно ';
+            var marker_square =
+                (markers[i].feature.properties.property_square) ? markers[i].feature.properties.property_square : ' - ';
+            var marker_prise =
+                (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
 
 
+            var markerLiStr = '<span>' + (i + 1)
+                + '. </span><a class="property-info" data-property_id="'
+                + property_id.toString()
+                + '" href="#" onclick="callFeaturePopup(this)">'
+                + marker_title
+                + '</a><br>'
+                + '<span>Площа: '
+                + marker_square
+                + ', '
+                + 'Ціна: '
+                + marker_prise
+                + '</span><br><br>';
+
+            html += markerLiStr
+          }
+          map.openPopup(html, a.layer.getLatLng());
+        });
+      }
 
       map.addLayer(markers);
 
@@ -377,7 +393,6 @@
       function onEachFeature(feature, layer) {
         layer.on({
           click: function () {
-
             if (options.featureClickCallback){
               options.featureClickCallback(feature, layer);
             }
@@ -403,7 +418,6 @@
     function layerIsRoad(layer){
       return layer.feature.properties.property == 'road';
     };
-
 
     function addControl() {
       info = L.control();
@@ -627,7 +641,6 @@
       });
     }
 
-
     initMap();
     initPopup();
     addGeoSearch();
@@ -652,21 +665,15 @@
     }
   }
 
-  function testFunction(e) {
-    onFeatureClick($(e).data('marker_id'))
+  function callFeaturePopup(e) {
+    event.preventDefault();
+    $.ajax({
+      url: "#{properting_show_property_info_path}",
+      dataType: 'script',
+      data: { id: $(e).data('property_id') },
+      success: function(data){
+        // stop scroll and drag for map under modal window
+      }
+    })
   }
 
-  function onFeatureClick(property_id) {
-      console.log('onFeatureClick(feature, layer)');
-      // var property_id = feature.properties.id;
-      $.ajax({
-        url: "#{properting_show_property_info_path}",
-        dataType: 'script',
-        data: { id: property_id },
-        success: function(data){
-          // stop scroll and drag for map under modal window
-          // aPropertyMap.map.scrollWheelZoom.disable();
-          // aPropertyMap.map.dragging.disable();
-        }
-      })
-    }

@@ -79,10 +79,10 @@ module Properting
     # not used in town profile
     # used in show, edit layer
     def getInfoContentForPopup
-      # this function have url 'repairing/map/getInfoContentForPopup/:repair_id'
+      # this function have url 'properting/map/getInfoContentForPopup/:property_id'
       # format: *.js
-      # get params[:repair_id]
-      # find Repair object by params[:repair_id]
+      # get params[:property_id]
+      # find Property object by params[:property_id]
       # render partial for popup container
       @property = Properting::Property.find(params[:property_id])
       render partial: 'info_popup'

@@ -476,6 +476,8 @@ Rails.application.routes.draw do
   get 'key_indicate_map/indicators/get/town_profile/:town_id' => 'key_indicate_map/indicators#index', as: 'key_indicate_map_indicators_get_town_profile'
   get 'calendars/calendars/town_profile/:calendar_id' => 'public#calendar_town_profile', as: 'calendar_town_profile'
   get 'sankeys/town_profile/:town_id' => 'sankeys#town_profile'
+  get 'properting/map/town_profile/:town_id' => 'proprting/maps#show'
+  get 'properting/map/getInfoContentForPopup/:property_id' => 'properting/maps#getInfoContentForPopup'
   get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
   get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'
   get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
