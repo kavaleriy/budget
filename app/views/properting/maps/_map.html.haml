@@ -343,7 +343,6 @@
             var marker_prise =
                 (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
 
-
             var markerLiStr = '<span>' + (i + 1)
                 + '. </span><a class="property-info" data-property_id="'
                 + property_id.toString()
@@ -415,9 +414,9 @@
       }
     }
 
-    function layerIsRoad(layer){
-      return layer.feature.properties.property == 'road';
-    };
+    // function layerIsRoad(layer){
+    //   return layer.feature.properties.property == 'road';
+    // };
 
     function addControl() {
       info = L.control();
@@ -491,26 +490,26 @@
             }
           });
           feature.selectedRoute.addTo(map);
-          clearRoadRoute();
+          // clearRoadRoute();
         } else {
           routePoints = route.map(function(item) {
             return new L.LatLng(item[0], item[1]);
           });
 
-          feature.selectedPath = new L.polyline(routePoints, {
-            color: 'red',
-            weight: 6,
-            opacity: 0.5,
-            smoothFactor: 3,
-          });
-
-          feature.selectedPath.addTo(map);
+          // feature.selectedPath = new L.polyline(routePoints, {
+          //   color: 'red',
+          //   weight: 6,
+          //   opacity: 0.5,
+          //   smoothFactor: 3,
+          // });
+          //
+          // feature.selectedPath.addTo(map);
         }
       }
 
-      function clearRoadRoute(){
-        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
-      }
+      // function clearRoadRoute(){
+      //   $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+      // }
     }
 
     function addTownLayer(t) {
@@ -612,20 +611,20 @@
       });
     }
 
-    function addAdditionalLayer(tileName){
-      var additionalTilelayer;
-
-      switch(tileName){
-        case 'uaRoads':
-         additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
-        break;
-        case 'navizor':
-          additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
-        break;
-        default: throw ('Unexpected tile name')
-      }
-      map.addLayer(additionalTilelayer)
-    }
+    // function addAdditionalLayer(tileName){
+    //   var additionalTilelayer;
+    //
+    //   switch(tileName){
+    //     case 'uaRoads':
+    //      additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
+    //     break;
+    //     case 'navizor':
+    //       additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
+    //     break;
+    //     default: throw ('Unexpected tile name')
+    //   }
+    //   map.addLayer(additionalTilelayer)
+    // }
 
     function removeAdditionalLayer(tileName){
       // loop all layers
@@ -660,7 +659,7 @@
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
-      addAdditionalLayer: addAdditionalLayer,
+      // addAdditionalLayer: addAdditionalLayer,
       removeAdditionalLayer: removeAdditionalLayer
     }
   }
