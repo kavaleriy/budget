@@ -128,7 +128,6 @@ module Properting
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
         status = status_btn(downcase_str(layer_property.legal_status))
-
         # find or create layer
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
@@ -137,7 +136,6 @@ module Properting
         layer.save
         layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
-
         # photo from paranoia to the same address
         photo_from_paranoia(layer_property, properties_arr.count, index)
         layer_property.save(validate: false)
@@ -175,7 +173,7 @@ module Properting
         contract_end_date: property['дата закінчення оренди'],
         evaluation_date: property['дата проведення оцінки'],
         purpose: property['цільове призначення'],
-        obj_characteristic: property['характеритиска об\'єкту (площа)'],
+        obj_characteristic: property['характеристика об\'єкту (площа)'],
         expert_obj_cost: property['вартість об\'єкту за експертною оцінкою'],
         rental_rate: property['орендна ставка'],
         last_rent_charge: property['останнє нарахування орендної плати, грн'],
@@ -198,16 +196,23 @@ module Properting
 
         propertings.each do |layer, properties|
           last_year_data = layer['year'] if layer['year'].present? && (last_year_data < layer['year'])
+
           properties.each do |property|
+            property_data = Properting::Property.find(property['_id'].to_s)
             if property['updated_at'].present? && last_updated < property['updated_at']
               last_updated = property['updated_at']
             end
+
             property['layer'] = {}
             property['layer']['town_id'] = layer['town_id'].to_s
             property['layer']['status'] = layer['status'] || :plan
             property['layer']['year'] = layer['year']
             property['layer']['properting_category_id'] = layer['properting_category_id'].to_s
             property['properting_category_id'] = layer['properting_category_id'].to_s
+            property['layer']['property_title'] = property_data.renter_name.to_s if property_data.renter_name.present?
+            property['layer']['property_square'] = property_data.obj_characteristic.to_s if property_data.obj_characteristic.present?
+            property['layer']['property_prise'] = property_data.expert_obj_cost.to_s if property_data.expert_obj_cost.present?
+
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json
           end

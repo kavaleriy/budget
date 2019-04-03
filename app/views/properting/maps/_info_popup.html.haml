@@ -49,15 +49,16 @@
         }
       }
   }
+  .leaflet-popup-content {
+    padding: 10px;
+    overflow: hidden;
+    max-height: 300px;
+  }
+-#- binding.pry
 .new_info_panel{data: { property_id: @property.id.to_s}}
   .header.clearfix
     .amount
-      = "₴"
-      = number_to_human(@property.amount)
-    .start_date
-      = @property.property_start_date
-  .title_property
-    -#%i.fa.fa-graduation-cap
-    = @property.subject.blank? ? @property.work : @property.subject
+      %p ₴ Вартість обʼєкту:
+      = @property.expert_obj_cost
   .more-text
-    =t('.more')
+    = 'Докладніше'

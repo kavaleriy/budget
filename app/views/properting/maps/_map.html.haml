@@ -17,7 +17,6 @@
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
   = javascript_include_tag 'leaflet/leaflet-routing-machine.min'
-  -#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
@@ -97,6 +96,11 @@
       }
     }
   }
+  .leaflet-popup-content {
+    padding: 10px;
+    overflow: scroll;
+    max-height: 300px;
+  }
 
 #map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
   .modal.fade{:id => 'more-info-modal', role: 'dialog', tabindex: '-1',appendTo: '#map'}
@@ -156,12 +160,9 @@
           g = svg.append("g").attr("class", "leaflet-zoom-hide");
       }
 
-
       if (options.bounds) map.fitBounds(options.bounds);
 
-
       L.Icon.Default.imagePath = '/assets/leaflet/images'
-
 
       function setBrowserLocation() {
         if (navigator.geolocation) {
@@ -182,7 +183,6 @@
       }
     }
 
-
     function initPopup() {
       popup = L.popup();
 
@@ -190,7 +190,6 @@
         //Hide left sidebar
         //$('#sidebar').hide('slow');
         // hideSidebar();
-
         if (options.getMapPopupContent) {
           popup
             .setLatLng(e.latlng)
@@ -198,13 +197,10 @@
             .openOn(map);
         }
       }
-
       map.on('click', onMapClick);
     }
 
-
     function addGeoSearch() {
-
        new L.Control.GeoSearch({
           provider: new L.GeoSearch.Provider.OpenStreetMap(),
           showMarker: false,
@@ -239,8 +235,6 @@
 
         places.forEach(function(place) {
           // Create a marker for each place.
-          console.log(places);
-          console.log(place.geometry.location.lat() + " / " + place.geometry.location.lng());
           var marker = L.marker([
             place.geometry.location.lat(),
             place.geometry.location.lng()
@@ -331,8 +325,43 @@
       setLastPropertyDate(data.last_year_data);
 
       options = options || {};
-
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
+
+      if (window.location.href.indexOf('edit') == (-1)) {
+        markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false, }) : new L.layerGroup();
+
+        markers.on('clusterclick', function (a) {
+          var markers = a.layer.getAllChildMarkers();
+          var html = '';
+          for (var i = 0; i < markers.length; i++) {
+
+            var property_id =  markers[i].feature.properties.id;
+            var marker_title =
+                (markers[i].feature.properties.property_title) ? markers[i].feature.properties.property_title : ' Вільно ';
+            var marker_square =
+                (markers[i].feature.properties.property_square) ? markers[i].feature.properties.property_square : ' - ';
+            var marker_prise =
+                (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
+
+            var markerLiStr = '<span>' + (i + 1)
+                + '. </span><a class="property-info" data-property_id="'
+                + property_id.toString()
+                + '" href="#" onclick="callFeaturePopup(this)">'
+                + marker_title
+                + '</a><br>'
+                + '<span>Площа: '
+                + marker_square
+                + ', '
+                + 'Ціна: '
+                + marker_prise
+                + '</span><br><br>';
+
+            html += markerLiStr
+          }
+          map.openPopup(html, a.layer.getLatLng());
+        });
+      }
+
       map.addLayer(markers);
 
       var layerOptions = {
@@ -351,7 +380,6 @@
       }
 
       function getPointToLayer(feature, latlng) {
-
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -364,7 +392,6 @@
       function onEachFeature(feature, layer) {
         layer.on({
           click: function () {
-
             if (options.featureClickCallback){
               options.featureClickCallback(feature, layer);
             }
@@ -387,10 +414,9 @@
       }
     }
 
-    function layerIsRoad(layer){
-      return layer.feature.properties.property == 'road';
-    };
-
+    // function layerIsRoad(layer){
+    //   return layer.feature.properties.property == 'road';
+    // };
 
     function addControl() {
       info = L.control();
@@ -464,26 +490,26 @@
             }
           });
           feature.selectedRoute.addTo(map);
-          clearRoadRoute();
+          // clearRoadRoute();
         } else {
           routePoints = route.map(function(item) {
             return new L.LatLng(item[0], item[1]);
           });
 
-          feature.selectedPath = new L.polyline(routePoints, {
-            color: 'red',
-            weight: 6,
-            opacity: 0.5,
-            smoothFactor: 3,
-          });
-
-          feature.selectedPath.addTo(map);
+          // feature.selectedPath = new L.polyline(routePoints, {
+          //   color: 'red',
+          //   weight: 6,
+          //   opacity: 0.5,
+          //   smoothFactor: 3,
+          // });
+          //
+          // feature.selectedPath.addTo(map);
         }
       }
 
-      function clearRoadRoute(){
-        $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
-      }
+      // function clearRoadRoute(){
+      //   $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
+      // }
     }
 
     function addTownLayer(t) {
@@ -585,20 +611,20 @@
       });
     }
 
-    function addAdditionalLayer(tileName){
-      var additionalTilelayer;
-
-      switch(tileName){
-        case 'uaRoads':
-         additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
-        break;
-        case 'navizor':
-          additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
-        break;
-        default: throw ('Unexpected tile name')
-      }
-      map.addLayer(additionalTilelayer)
-    }
+    // function addAdditionalLayer(tileName){
+    //   var additionalTilelayer;
+    //
+    //   switch(tileName){
+    //     case 'uaRoads':
+    //      additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
+    //     break;
+    //     case 'navizor':
+    //       additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
+    //     break;
+    //     default: throw ('Unexpected tile name')
+    //   }
+    //   map.addLayer(additionalTilelayer)
+    // }
 
     function removeAdditionalLayer(tileName){
       // loop all layers
@@ -613,7 +639,6 @@
         }
       });
     }
-
 
     initMap();
     initPopup();
@@ -634,7 +659,20 @@
       addYearLayer: addYearLayer,
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
-      addAdditionalLayer: addAdditionalLayer,
+      // addAdditionalLayer: addAdditionalLayer,
       removeAdditionalLayer: removeAdditionalLayer
     }
   }
+
+  function callFeaturePopup(e) {
+    event.preventDefault();
+    $.ajax({
+      url: "#{properting_show_property_info_path}",
+      dataType: 'script',
+      data: { id: $(e).data('property_id') },
+      success: function(data){
+        // stop scroll and drag for map under modal window
+      }
+    })
+  }
+

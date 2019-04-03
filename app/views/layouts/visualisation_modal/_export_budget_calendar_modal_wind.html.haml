@@ -53,10 +53,14 @@
 
       .modal-footer
 -# include js for redraw svg for export
-= javascript_include_tag "https://canvg.github.io/canvg/rgbcolor.js"
-= javascript_include_tag "https://canvg.github.io/canvg/StackBlur.js"
-= javascript_include_tag "https://canvg.github.io/canvg/canvg.js"
-= javascript_include_tag 'redrawSvg'
+-#= javascript_include_tag "https://canvg.github.io/canvg/rgbcolor.js"
+-#= javascript_include_tag "https://canvg.github.io/canvg/StackBlur.js"
+-#= javascript_include_tag "https://canvg.github.io/canvg/canvg.js"
+
+-#= javascript_include_tag 'https://cdn.jsdelivr.net/npm/rgbcolor@^1/index.js'
+-#= javascript_include_tag 'https://cdn.jsdelivr.net/npm/stackblur-canvas@^1/dist/stackblur.min.js'
+-#= javascript_include_tag 'https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js'
+-#= javascript_include_tag 'redrawSvg'
 -# end include
 :javascript
   var convert_html_to_canvas = function(panel,input_field){
