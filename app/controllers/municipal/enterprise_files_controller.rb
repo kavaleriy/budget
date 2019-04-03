@@ -54,6 +54,7 @@ module Municipal
       respond_to do |format|
         enterprise_file_params[:form].each_with_index do |form, index|
           # check on existing file
+          #
           @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise_id: enterprise_file_params[:enterprise])
           @municipal_enterprise_file.each do |file|
             if @municipal_enterprise_file.present?
