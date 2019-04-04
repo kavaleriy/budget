@@ -99,7 +99,26 @@
   .leaflet-popup-content {
     padding: 10px;
     overflow: scroll;
-    max-height: 300px;
+    max-height: 500px;
+    width: 980px !important;
+  }
+  @media screen and(max-width: 1200px){
+    .leaflet-popup-content {
+      width: 860px !important;
+      max-height: 400px;
+    }
+  }
+  @media screen and(max-width: 980px){
+    .leaflet-popup-content {
+      width: 480px !important;
+      max-height: 300px;
+    }
+  }
+  @media screen and(max-width: 490px){
+    .leaflet-popup-content {
+      width: 340px !important;
+      max-height: 300px;
+    }
   }
 
 #map{:allowfullscreen => 'true', :mozallowfullscreen => 'true', :webkitallowfullscreen => 'true'}
@@ -325,40 +344,45 @@
       setLastPropertyDate(data.last_year_data);
 
       options = options || {};
+
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
 
+      // check if our cluster not from edit controller
+      // handle a click on a cluster
+      // if click on cluster on map has a maxZooming allow do code and show list of markers
       if (window.location.href.indexOf('edit') == (-1)) {
-        markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false, }) : new L.layerGroup();
-
+        markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: true, }) : new L.layerGroup();
         markers.on('clusterclick', function (a) {
-          var markers = a.layer.getAllChildMarkers();
-          var html = '';
-          for (var i = 0; i < markers.length; i++) {
+          if (map.getZoom() >= 20) {
+            var markers = a.layer.getAllChildMarkers();
+            var html = '';
+            for (var i = 0; i < markers.length; i++) {
 
-            var property_id =  markers[i].feature.properties.id;
-            var marker_title =
-                (markers[i].feature.properties.property_title) ? markers[i].feature.properties.property_title : ' Вільно ';
-            var marker_square =
-                (markers[i].feature.properties.property_square) ? markers[i].feature.properties.property_square : ' - ';
-            var marker_prise =
-                (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
+              var property_id =  markers[i].feature.properties.id;
+              var marker_title =
+                  (markers[i].feature.properties.property_title) ? markers[i].feature.properties.property_title : ' Вільно ';
+              var marker_square =
+                  (markers[i].feature.properties.property_square) ? markers[i].feature.properties.property_square : ' - ';
+              var marker_prise =
+                  (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
 
-            var markerLiStr = '<span>' + (i + 1)
-                + '. </span><a class="property-info" data-property_id="'
-                + property_id.toString()
-                + '" href="#" onclick="callFeaturePopup(this)">'
-                + marker_title
-                + '</a><br>'
-                + '<span>Площа: '
-                + marker_square
-                + ', '
-                + 'Ціна: '
-                + marker_prise
-                + '</span><br><br>';
+              var markerLiStr = '<span>' + (i + 1)
+                  + '. </span><a class="property-info" data-property_id="'
+                  + property_id.toString()
+                  + '" href="#" onclick="callFeaturePopup(this)">'
+                  + marker_title
+                  + '</a><br>'
+                  + '<span>Площа: '
+                  + marker_square
+                  + ', '
+                  + 'Ціна: '
+                  + marker_prise
+                  + '</span><br><br>';
 
-            html += markerLiStr
+              html += markerLiStr
+            }
+            map.openPopup(html, a.layer.getLatLng());
           }
-          map.openPopup(html, a.layer.getLatLng());
         });
       }
 
