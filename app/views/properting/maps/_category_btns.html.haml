@@ -323,6 +323,18 @@
     margin-left: 0;
     margin-bottom: -16px;
   }
+  select.form-control {
+    border-radius: 0px;
+    width: 90px;
+    font-size: 1em;
+    font-weight: 600;
+    position: static;
+    padding: 5px 3px;
+    height: 40px;
+    border: 1px solid #7D94A4;
+    background-color: #A2B2BE;
+    color: #fff;
+  }
 
 .row.map-header{ class: ('road-frame' if @categories.blank?) }
   - if @categories
@@ -339,13 +351,14 @@
       -#- if @town.blank?
       -#  .form-group
       -#    = text_field_tag 'map_town', ''
-      .input-group
+      -#.input-group
         %span.input-group-addon
           %b= t('repairing.maps.map_select.year')
         = select_tag 'year_select',
                       options_for_select([[t('taxonomies.index.multiple_delete.all'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + years_from(2015), selected: "#{@year}"),
                       class: 'form-control'
-    -#.pull-right.road-condition-select
-      = render partial: 'properting/maps/road_condition'
+      = select_tag 'year_select',
+                    options_for_select([[t('year'), nil], [t('repairing.maps.map_select.no_year'), :no_year]] + years_from(2015), selected: "#{@year}"),
+                    class: 'form-control'
     .pull-right.status-btns
       = render partial: 'properting/maps/status_btns'
