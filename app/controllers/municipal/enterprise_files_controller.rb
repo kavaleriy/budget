@@ -62,11 +62,9 @@ module Municipal
                 file_type     = file[:file_type] == enterprise_file_params[:form][index][:file_type]
 
                 file.destroy if file_present && file_year && file_type
-
             end
             enterprise_file = enterprise_file_params[:form][index]
             # enterprise_file[:enterprise] = enterprise_file_params[:enterprise]
-            # enterprise_file.merge!(enterprise:  enterprise_file_params[:enterprise])
             @municipal_enterprise_file = Municipal::EnterpriseFile.new(enterprise_file)
             @municipal_enterprise_file[:file] = enterprise_file[:file]
             @municipal_enterprise_file.owner = current_user
@@ -150,8 +148,7 @@ module Municipal
     end
 
     def enterprise_file_params
-      params.require(:municipal_enterprise_file).permit(:enterprise, form: [:file_type, :year, :file, :enterprise])
-      # params.require(:municipal_enterprise_file).permit(:enterprise, form: [:file_type, :year, :file])
+      params.require(:municipal_enterprise_file).permit(form: [:file_type, :year, :file, :enterprise])
     end
   end
 end
