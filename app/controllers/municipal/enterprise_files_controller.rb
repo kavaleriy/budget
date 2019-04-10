@@ -53,7 +53,6 @@ module Municipal
     def create
       respond_to do |format|
         enterprise_file_params[:form].each_with_index do |form, index|
-          # Municipal::EnterpriseFile.find_or_initialize_by()
           if form[:file].present? && form[:file_type].present? && form[:year].present?
             # check on existing file
             @municipal_enterprise_file = Municipal::EnterpriseFile.where(enterprise_id: enterprise_file_params[:enterprise])
