@@ -30,12 +30,26 @@
     font-size: 28px;
     font-weight: bold;
   }
-
+  .section {
+    border-right: 1px solid grey;
+    padding-right: 15%;
+  }
   .close:hover,
   .close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+  }
+  @media screen and (max-width: 1300px) {
+    .section {
+      padding-right: 15%;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .section {
+      border-right: none;
+      padding-right: 0;
+    }
   }
 
 = simple_form_for(@municipal_enterprise_file) do |f|
@@ -46,40 +60,90 @@
       -# Town forms
       .form-group
         = render 'select_town'
-    -# forms wich we clone
-    #sections
-      .section
-        %fieldset
-          .select-enterprises
-            = render partial: 'select_enterprises'
-          = f.input :file_type, label: 'Тип файлу',
-                    collection: @type_files.map {|type| [ type[:title], type[:id] ] },
-                    input_html: { name: 'municipal_enterprise_file[form][][file_type]' },
-                    prompt: false
-          = f.input :year, label: 'Рік',
-                    collection: select_years(10),
-                    input_html: { name: 'municipal_enterprise_file[form][][year]' },
-                    prompt: false
-          = f.input :file, label: 'Вибір файлу', class: 'form-control', input_html: { name: 'municipal_enterprise_file[form][][file]' }
-          -#%p
-            %a.btn.btn-danger.remove#clickMinus{ href: '#' }= t('delete_form')
+    - (0..5).each do |i|
+      .col-sm-2
+        .section
+          %fieldset
+            .select-enterprises
+              = render partial: 'select_enterprises'
+
+            = f.input :file_type, label: 'Тип файлу',
+                      collection: @type_files.map {|type| [ type[:title], type[:id] ] },
+                      input_html: { id: "municipal_enterprise_file_file_type#{i}", name: 'municipal_enterprise_file[form][][file_type]' },
+                      required: false,
+                      include_blank: true,
+                      prompt: false
+            = f.input :year, label: 'Рік',
+                      collection: select_years(10),
+                      input_html: { id: "municipal_enterprise_file_year#{i}", name: 'municipal_enterprise_file[form][][year]' },
+                      required: false,
+                      include_blank: true,
+                      prompt: false
+            = f.input :file,
+                      label: 'Вибір файлу',
+                      class: 'form-control',
+                      input_html: { id: "municipal_enterprise_file_file#{i}", name: 'municipal_enterprise_file[form][][file]' },
+                      required: false,
+                      prompt: false
+
+    -#      %p
+    -#        %a.btn.btn-danger.remove#clickMinus{ href: '#' }= t('delete_form')
     -#%p
-      %a.btn.btn-info.addsection#clickPlus{ href: '#' } Залишилось форм( 5 )
+    -#  %a.btn.btn-info.addsection#clickPlus{ href: '#' } Залишилось форм( 5 )
   .form-actions
     = f.button :submit, t('save'), class: 'btn btn-success', id: 'myBtn', remote: true
     = link_to t('back'), municipal_enterprise_files_path, class: 'btn btn-info'
 
 / The Modal
--#.row
--#  .col-sm-3
--#    #myModal.modal
--#      / Modal content
--#      .modal-content
--#        %span.close ×
--#        %h3 Час завантаження файлів залежить від їх кількості
--#        %p сторінка перезавантажиться автоматично!
+.row
+  .col-sm-3
+    #myModal.modal
+      / Modal content
+      .modal-content
+        %span.close ×
+        %h3 Час завантаження файлів залежить від їх кількості
+        %p сторінка перезавантажиться автоматично!
+
+:javascript
+  // Get the modal
+  var modal = document.getElementById('myModal');
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the button, open the modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  // span.onclick = function() {
+  //   modal.style.display = "none";
+  // }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+-# trouble with cloning input type="file"
+-#  function inputFile () {
+-#    var x = document.createElement("INPUT");
+-#    x.setAttribute("type", "file");
+-#    x.setAttribute("id", "");
 -#
--#:javascript
+-#    // document.getElementsByClassName(".section").appendChild(x);
+-#    // document.body.appendChild(x);
+-#    document.getElementsByClassName("section")[0].appendChild(x);
+-#  };
+-#
+-#  $(document).ready(function() {
+-#    inputFile ();
+-#  });
 -#  const formLimit = 6;
 -#  var sectionsCount = 1;
 -#
@@ -87,26 +151,48 @@
 -#  //add new section
 -#  $('body').on('click', '.addsection', function() {
 -#
--#    var template = $('#sections .section:last').clone();
+-#  var template = $('#sections .section:last').clone();
+-#
+-#
 -#
 -#    //increment
 -#    if(sectionsCount < formLimit){
 -#      sectionsCount++;
 -#      var count = formLimit - sectionsCount;
 -#
+-#
+-#      //додати іd розібратись з апенд
+-#      //   (function () {
+-#      //     var x = document.createElement("INPUT");
+-#      //     x.setAttribute("type", "file");
+-#      //     x.setAttribute("id", "");
+-#      //
+-#      //
+-#      //     // document.getElementsByClassName(".section").appendChild(x);
+-#      //     document.body.appendChild(x);
+-#      //   }());
+-#      inputFile ();
+-#
+-#
+-#
 -#      //loop through each input
 -#      var section = template.clone().find(':input').each(function(){
 -#
 -#        myBtn.innerHTML = 'Залишилось форм( ' + count + ' )';
 -#
+-#
 -#        //set id to store the updated section number
--#        var newId = this.id + sectionsCount;
+-#        // console.log(sectionsCount);
+-#        var newId   = this.id + sectionsCount;
+-#        // var newName = this.name + sectionsCount;
 -#
 -#        //update for label
 -#        $(this).prev().attr('for', newId);
+-#        // $(this).prev().attr('for', newName);
 -#
--#        //update id
--#        this.id = newId;
+-#        //update id name
+-#        this.id   = newId;
+-#        // this.name = newName;
 -#      }).end()
 -#
 -#      //inject new section
@@ -114,6 +200,7 @@
 -#    }
 -#    return false;
 -#  });
+-#
 -#  //remove section
 -#  $('#sections').on('click', '.remove', function() {
 -#    //fade out section
@@ -130,29 +217,3 @@
 -#    }
 -#    return false;
 -#  });
--#
--#  // Get the modal
--#  var modal = document.getElementById('myModal');
--#
--#  // Get the button that opens the modal
--#  var btn = document.getElementById("myBtn");
--#
--#  // Get the <span> element that closes the modal
--#  var span = document.getElementsByClassName("close")[0];
--#
--#  // When the user clicks the button, open the modal
--#  btn.onclick = function() {
--#    modal.style.display = "block";
--#  }
--#
--#  // When the user clicks on <span> (x), close the modal
--#  span.onclick = function() {
--#    modal.style.display = "none";
--#  }
--#
--#  // When the user clicks anywhere outside of the modal, close it
--#  window.onclick = function(event) {
--#    if (event.target == modal) {
--#      modal.style.display = "none";
--#    }
--#  }
