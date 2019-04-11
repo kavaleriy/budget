@@ -133,8 +133,48 @@
   - unless has_own_referer?
     #developed-eidos-logo
       = link_to image_tag("developed-eidos-#{locale}.png"), 'https://www.openbudget.in.ua/', target: '_blank'
+-#- binding.pry
+.file_upload_by_year
+  -#= render partial: 'properting/maps/file_upload_by_year'
 
 :javascript
+  //доробити скіпт і вивести лінку на скачування
+  var town = "#{@town}";
+  $(document).ready(function() {
+    var find_year = document.getElementById("year_select");
+    var year = find_year.options[find_year.selectedIndex].value;
+    $.ajax({
+      url: "#{properting_file_upload_by_year_path}",
+      data: { year: year,
+              town: town
+            },
+      success:function(data){
+      }
+    });
+  });
+
+  $('#year_select').change(function(){
+    find_year = document.getElementById("year_select");
+    year = find_year.options[find_year.selectedIndex].value;
+    $.ajax({
+      url: "#{properting_file_upload_by_year_path}",
+      data: { year: year,
+              town: town
+            },
+      success:function(data){
+      }
+    });
+  });
+
+
+
+
+
+
+
+
+
+
 
   var PropertyMap
 

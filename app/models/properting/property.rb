@@ -129,6 +129,7 @@ module Properting
         layer_property.properting_category_id = properting_category.id if properting_category.present?
         status = status_btn(downcase_str(layer_property.legal_status))
         # find or create layer
+        # binding.pry should add year
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]

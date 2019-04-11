@@ -1,0 +1,23 @@
+-#- binding.pry
+-#- require 'open-uri'
+-#- @layers.each do |layer|
+-#  - open(layer.properties_file.url) do |u|
+-#    - File.open(dest, 'wb') { |f| f.write(u.read) }
+
+- @layers.each do |layer|
+  - layers << layer.properties_file.url
+.col-sm-5.reset-padding
+  .col-sm-4.hide-overflow
+    %button.btn.btn-default{ onclick: "choosedFiles();" } BATON
+    -#= link_to layer.properties_file.url, class: '' do
+      %i.fa.fa-download.fa.fa-border
+      = layer.properties_file_identifier
+
+:javascript
+  function choosedFiles() {
+    $.ajax({
+      method: 'post',
+      url: "#{properting_choosed_file_upload_by_year_path}",
+      data: { files_arr: "#{layers}"}
+    });
+  }

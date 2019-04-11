@@ -76,6 +76,19 @@ module Properting
       end
     end
 
+    def file_upload_by_year
+      year    = params[:year].present? ? params[:year] : Date.today.year
+      town_id = params[:town]
+
+      layers = Properting::Layer.where(town_id: town_id, year: year)
+      @layers = layers.to_a.uniq{ |x| x.properties_file_identifier }
+    end
+
+    def choosed_file_upload_by_year
+
+      binding.pry
+    end
+
     # not used in town profile
     # used in show, edit layer
     def getInfoContentForPopup
