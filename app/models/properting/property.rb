@@ -211,7 +211,7 @@ module Properting
             property['properting_category_id'] = layer['properting_category_id'].to_s
             property['layer']['property_title'] = property_data.renter_name.to_s if property_data.renter_name.present?
             property['layer']['property_square'] = property_data.obj_characteristic.to_s if property_data.obj_characteristic.present?
-            property['layer']['property_prise'] = property_data.expert_obj_cost.to_s if property_data.expert_obj_cost.present?
+            property['layer']['property_prise'] = property_data.last_rent_charge.to_s if property_data.last_rent_charge.present?
 
             property_json = Properting::GeojsonBuilder.build_property(property)
             geo_jsons << property_json if property_json
