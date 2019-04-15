@@ -77,9 +77,9 @@ module Properting
     end
 
     def file_upload_by_year
-      year    = params[:year].present? ? params[:year] : Date.today.year
+      year    = params[:year].present? ? params[:year] : 2019
       town_id = params[:town]
-
+      # binding.pry
       layers = Properting::Layer.where(town_id: town_id, year: year)
       @layers = layers.to_a.uniq{ |x| x.properties_file_identifier }
     end

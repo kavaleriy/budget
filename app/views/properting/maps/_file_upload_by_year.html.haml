@@ -3,21 +3,24 @@
 -#- @layers.each do |layer|
 -#  - open(layer.properties_file.url) do |u|
 -#    - File.open(dest, 'wb') { |f| f.write(u.read) }
-
-- @layers.each do |layer|
-  - layers << layer.properties_file.url
+- files_path = []
+- if @layers.present?
+  - @layers.each do |layer|
+    - files_path << layer.properties_file.url
 .col-sm-5.reset-padding
   .col-sm-4.hide-overflow
-    %button.btn.btn-default{ onclick: "choosedFiles();" } BATON
+    %button.btn.btn-default#sendFiles BATON
     -#= link_to layer.properties_file.url, class: '' do
       %i.fa.fa-download.fa.fa-border
       = layer.properties_file_identifier
 
 :javascript
-  function choosedFiles() {
+
+  $('#sendFiles').on("click", function() {
+    alert('ddddd')
     $.ajax({
-      method: 'post',
+      method: 'get',
       url: "#{properting_choosed_file_upload_by_year_path}",
-      data: { files_arr: "#{layers}"}
+      data: { files_arr: "#{files_path}"}
     });
-  }
+  });
