@@ -1,26 +1,37 @@
--#- binding.pry
--#- require 'open-uri'
--#- @layers.each do |layer|
--#  - open(layer.properties_file.url) do |u|
--#    - File.open(dest, 'wb') { |f| f.write(u.read) }
-- files_path = []
-- if @layers.present?
-  - @layers.each do |layer|
-    - files_path << layer.properties_file.url
-.col-sm-5.reset-padding
-  .col-sm-4.hide-overflow
-    %button.btn.btn-default#sendFiles BATON
-    -#= link_to layer.properties_file.url, class: '' do
-      %i.fa.fa-download.fa.fa-border
-      = layer.properties_file_identifier
+:scss
+  $button-background: #0c2231;
+  $button-text: black;
+
+    #export_classifier,
+    #embedded-profile {
+      margin: 5px;
+      color: $button-text;
+      font-weight: bold;
+      font-size: 17px;
+      margin: 3px 20px;
+      display: inline;
+      i {
+        padding-right: 5px;
+        color: $button-text;
+        font-size: 1.6rem;
+        font-weight: bold;
+      }
+    }
+
+.col-sm-2.reset-padding.pull-right
+  %a#export_classifier{ href: properting_choosed_file_upload_by_year_path, target: '_blank' }
+    %i.fa.fa-sign-out{"aria-hidden" => "true"}
+    |
+    =t('helpers.links.export')
 
 :javascript
-
-  $('#sendFiles').on("click", function() {
-    alert('ddddd')
+  $('#export_classifier').on("click", function() {
     $.ajax({
-      method: 'get',
+      type: 'get',
       url: "#{properting_choosed_file_upload_by_year_path}",
-      data: { files_arr: "#{files_path}"}
+      data: { year: year,
+              town: "#{params[:town]}",
+              upload: true
+            }
     });
   });

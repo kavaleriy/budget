@@ -3,9 +3,10 @@
     .col-sm-11.reset-padding
       .col-sm-4.reset-padding
         .row
-          .col-sm-5.hide-overflow
-            = check_box_tag '', layer.id, false, class: 'delete_multiple_checkbox  hidden-xs', name: 'layer'
-            = link_to layer.id, properting_layer_path(layer)
+          - unless controller_name == 'maps'
+            .col-sm-5.hide-overflow
+              = check_box_tag '', layer.id, false, class: 'delete_multiple_checkbox  hidden-xs', name: 'layer'
+              = link_to layer.id, properting_layer_path(layer)
           .col-sm-5.hide-overflow
             = layer.title
           .col-sm-2.hide-overflow
@@ -22,15 +23,17 @@
       .col-sm-3.reset-padding
         .col-sm-6.hide-overflow
           = "#{layer.town.title unless layer.town.blank?} "
-        .col-sm-6.hide-overflow
-          = layer.owner.email if layer.owner
-    .col-sm-1.reset-padding.text-center
-      = link_to t('.edit', default: t('helpers.links.edit')),
-                  edit_properting_layer_path(layer),
-                  class: 'btn btn-default btn-xs'
-      = link_to t('.destroy', default: t('helpers.links.destroy')),
-                  properting_layer_path(layer),
-                  class: 'btn btn-xs btn-danger',
-                  method: :delete,
-                  data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) },
-                  style: 'min-width: 78px'
+        - unless controller_name == 'maps'
+          .col-sm-6.hide-overflow
+            = layer.owner.email if layer.owner
+    - unless controller_name == 'maps'
+      .col-sm-1.reset-padding.text-center
+        = link_to t('.edit', default: t('helpers.links.edit')),
+                    edit_properting_layer_path(layer),
+                    class: 'btn btn-default btn-xs'
+        = link_to t('.destroy', default: t('helpers.links.destroy')),
+                    properting_layer_path(layer),
+                    class: 'btn btn-xs btn-danger',
+                    method: :delete,
+                    data: { confirm: t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?')) },
+                    style: 'min-width: 78px'
