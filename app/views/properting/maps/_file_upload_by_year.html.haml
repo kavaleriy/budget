@@ -1,0 +1,37 @@
+:scss
+  $button-background: #0c2231;
+  $button-text: black;
+
+    #export_classifier,
+    #embedded-profile {
+      margin: 5px;
+      color: $button-text;
+      font-weight: bold;
+      font-size: 17px;
+      margin: 3px 20px;
+      display: inline;
+      i {
+        padding-right: 5px;
+        color: $button-text;
+        font-size: 1.6rem;
+        font-weight: bold;
+      }
+    }
+
+.col-sm-2.reset-padding.pull-right
+  %a#export_classifier{ href: properting_choosed_file_upload_by_year_path, target: '_blank' }
+    %i.fa.fa-sign-out{"aria-hidden" => "true"}
+    |
+    =t('helpers.links.export')
+
+:javascript
+  $('#export_classifier').on("click", function() {
+    $.ajax({
+      type: 'get',
+      url: "#{properting_choosed_file_upload_by_year_path}",
+      data: { year: year,
+              town: "#{params[:town]}",
+              upload: true
+            }
+    });
+  });

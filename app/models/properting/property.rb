@@ -128,8 +128,9 @@ module Properting
         properting_category = Properting::Category.find_by(title_alias: find_category_by_title_alias)
         layer_property.properting_category_id = properting_category.id if properting_category.present?
         status = status_btn(downcase_str(layer_property.legal_status))
+        year = properting_layer_params[:year]
         # find or create layer
-        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status).first_or_create(properting_layer_params) if status.present?
+        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status, year: year).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
 
