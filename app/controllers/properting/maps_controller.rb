@@ -79,7 +79,7 @@ module Properting
     def choosed_file_upload_by_year
       @categories = Properting::Category.by_locale.select { |p| p.category.nil? }
 
-      @properting_layers = Properting::Layer.by_locale.visible_to(current_user)
+      # @properting_layers = Properting::Layer.by_locale.visible_to(current_user)
 
       @properting_layers = @properting_layers.by_towns(params['town_select'])   if params['town_select'].present?
       @properting_layers = @properting_layers.find_by(string: params['q'])      if params['q'].present?
@@ -88,9 +88,9 @@ module Properting
       @properting_layers = @properting_layers.by_year(params['year'])           if params['year'].present?
 
       @properting_layers = @properting_layers.page(params[:page]).per(15)
-      
+      # binding.pry
       respond_to do |format|
-        format.html { render 'properting/layers/index' }
+        format.html { render 'files_download' }
       end
     end
 
