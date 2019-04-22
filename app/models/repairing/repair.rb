@@ -21,8 +21,10 @@ module Repairing
     field :amount, type: Float
     # field :repair_date, type: Date
     # field for e-data.gov.ua
-    field :repair_start_date, type: Date
-    field :repair_end_date, type: Date
+    field :repair_start_date, type: String
+    field :repair_end_date, type: String
+    # field :repair_start_date, type: Date
+    # field :repair_end_date, type: Date
     field :edrpou_artist, type: String
     field :spending_units, type: String
     field :edrpou_spending_units, type: String
@@ -152,9 +154,8 @@ module Repairing
       # get two parameters repair hash and coordinates array
       # first of all convert repair start and end date to date
       # after that build and return hash
-
-      start_repair_date = expiration_date(repair['дата початку ремонту'])
-      end_repair_date = expiration_date(repair['дата закінчення ремонту'])
+      # start_repair_date = expiration_date(repair['дата початку ремонту'])
+      # end_repair_date = expiration_date(repair['дата закінчення ремонту'])
 
       {
           spending_units: repair['розпорядник бюджетних коштів'],
@@ -168,8 +169,8 @@ module Repairing
           work: repair['опис робіт'],
           amount: repair['вартість'],
 
-          repair_start_date: start_repair_date,
-          repair_end_date: end_repair_date,
+          repair_start_date: repair['дата початку ремонту'],
+          repair_end_date: repair['дата закінчення ремонту'],
           warranty_date: repair['гарантія'],
 
           prozzoro_id: repair['id закупівлі'],
