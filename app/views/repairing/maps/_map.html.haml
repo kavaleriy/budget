@@ -110,7 +110,6 @@
   - unless has_own_referer?
     #developed-eidos-logo
       = link_to image_tag("developed-eidos-#{locale}.png"), 'https://www.openbudget.in.ua/', target: '_blank'
-
 :javascript
 
   var RepairMap
@@ -281,6 +280,7 @@
       reset();
 
       function projectPoint(x, y) {
+        console.log(x, y);
         var point = map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
       }
