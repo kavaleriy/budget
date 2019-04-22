@@ -280,7 +280,6 @@
       reset();
 
       function projectPoint(x, y) {
-        console.log(x, y);
         var point = map.latLngToLayerPoint(new L.LatLng(y, x));
         this.stream.point(point.x, point.y);
       }
