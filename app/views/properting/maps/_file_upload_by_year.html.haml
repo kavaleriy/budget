@@ -24,14 +24,13 @@
     |
     =t('helpers.links.export')
 
-:javascript
-  $('#export_classifier').on("click", function() {
-    $.ajax({
-      type: 'get',
-      url: "#{properting_choosed_file_upload_by_year_path}",
-      data: { year: year,
-              town: "#{params[:town]}",
-              upload: true
-            }
-    });
-  });
+-#:javascript
+-#  $('#export_classifier').on("click", function() {
+-#    $.ajax({
+-#      type: 'get',
+-#      url: "#{properting_choosed_file_upload_by_year_path}",
+-#      data: {
+-#              town_select: "#{params[:town_id]}"
+-#            }
+-#    });
+-#  });
