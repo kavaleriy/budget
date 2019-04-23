@@ -11,7 +11,8 @@ namespace :find_coord do
     xls.first_column.upto(xls.last_column) { |col|
       cols << xls.cell(1, col).to_s
     }
-
+    # we can check row on presence or validate
+    #
     rows = []
     2.upto(xls.last_row) do |line|
       row = {}
