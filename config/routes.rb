@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'errors/not_found'
+
+  get 'errors/internal_server_error'
+
   resources :funds_managers do
     collection { post :import }
   end
@@ -484,6 +488,8 @@ Rails.application.routes.draw do
   get 'repairing/map/town_profile/:town_id' => 'repairing/maps#show', as: 'repairing_map_profile'
   get 'repairing/map/getInfoContentForPopup/:repair_id' => 'repairing/maps#getInfoContentForPopup', as: 'popup_info_content'
   get 'public/documents/town_profile/:town_id' => 'public/documents#index', as: 'public_documents_town_profile'
+
+  match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
 
   # You can have the root of your site routed with "root"
   root 'public/home#index'
