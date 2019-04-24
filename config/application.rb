@@ -56,6 +56,9 @@ module Budget
     # compress content
     config.middleware.use Rack::Deflater
 
+    require Rails.root.join("lib/custom_public_exceptions")
+    config.exceptions_app = CustomPublicExceptions.new(Rails.public_path)
+
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/presenters)
     config.watchable_dirs['lib'] = [:rb]
