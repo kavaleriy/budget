@@ -8,9 +8,9 @@ class Widgets::GovVisifyController < Widgets::WidgetsController
   MAX_NODES_PER_LEVEL = 100
 
   def index
-    expenses = Budget::GovFiles::Income.where(koatuu: @budget_file.town.koatuu)
-    a = Budget::Files::Builders::Tree.new(expenses, 'income_code').call
-    render json: a.to_json
+    incomes = Budget::GovFiles::Income.where(koatuu: @budget_file.town.koatuu).order('month asc')
+    res = Budget::Files::Builders::Tree.new(incomes, 'income_code', '2017', 'income_code_name', 'budget_plan', 'total_done').call
+    render json: res.to_json
   end
 
 

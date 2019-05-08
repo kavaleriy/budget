@@ -18,7 +18,8 @@ class Budget::GovFiles::IncomesController < AdminController
   end
 
   def create
-    Budget::GovFiles::Income.all.destroy
+    # Budget::GovFiles::Income.all.destroy
+    # binding.pry
     Budget::Files::Parsers::Income.new(params[:budget_gov_files_income][:file], params[:budget_gov_files_income][:koatuu]).parse
     redirect_to budget_gov_files_incomes_path
   end

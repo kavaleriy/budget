@@ -3,33 +3,41 @@ module Budget
     module Builders
       class Tree
 
-        def initialize(files, column)
-          @year = '2019'
+        def initialize(files, column, year, label_field, total_plan_column, total_fact_column)
           @files = files.to_a
           @column = column
+          @year = year
+          @label_field = 'income_code_name'
+          @total_plan_column = 'budget_plan'
+          @total_fact_column = 'total_done'
+          
+          @grouped_files_by_code = files.group_by{|file| file.public_send(@column)}
           @res = build_scelleton
-          @grouped_by_income_files = files.group_by{|a| a.income_code}
         end
 
         def call
           @files.group_by{|a| a.month}.each do |month, values|
-            @res[:amount][:plan][@year][month] = {
-              # total: values.sum{|val| val.budget_plan.to_f},
-              total: 1,
+            month = month - 1
+            @res[:amount][:plan][@year][month + 1] = {
+              total: find_total_plan(month, values),
               fonds:{
-                '1' => values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.budget_plan.to_f},
-                '2' => values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.budget_plan.to_f}
+                '1' => find_plan_total_by_common_fond(month, values),
+                '7' => find_plan_total_by_special_fond(month, values)
               }
+
             } 
-            @res[:amount][:fact][@year][month] = {
-              total: 1,
-              # total: values.select{|val| val.fund_type == 'TOTAL'}.sum{|val| val.total_done.to_f},
+            @res[:amount][:fact][@year][month + 1] = {
+              total: find_total_fact(month, values),
               fonds:{
-                '1' => values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.total_done.to_f},
-                '2' => values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.total_done.to_f}
+                '1' => find_fact_total_by_common_fond(month, values),
+                '7' => find_fact_total_by_special_fond(month, values)
               }
             } 
           end
+          @res[:amount][:plan][@year][0] = @res[:amount][:plan][@year].values.last
+          @res[:amount][:fact][@year][0] = @res[:amount][:fact][@year].values.last
+          @res[:amount][:plan][@year]['_cumulative'] = false
+          # @res[:amount][:fact][@year]['_cumulative'] = true
           @res[:label] = 'Всього'
           @res[:key] = 'Всього'
           @res[:icon] = '/assets/icons/pig.svg'
@@ -55,7 +63,7 @@ module Budget
             label: '',
             key: '',
             children: [],
-            taxonomy: 'kkd_a'
+            taxonomy: '-'
           }
         end
 
@@ -65,20 +73,24 @@ module Budget
           tmp = build_scelleton
           grouped_files_by_month.each do |month, values|
             tmp[:amount][:plan][@year][month] = {
-              total: values.select{|val| val.fund_type == 'TOTAL'}.sum{|val| val.budget_plan.to_f},
-              fonds:{
-                '1' => values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.budget_plan.to_f},
-                '2' => values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.budget_plan.to_f}
+              total: total_values_by_month(month, 'TOTAL', values, 'budget_plan', grouped_files_by_month[month-1]),
+              fonds:{ 
+                '1' => total_values_by_month(month, 'COMMON', values, 'budget_plan', grouped_files_by_month[month-1]),
+                '2' => total_values_by_month(month, 'SPECIAL', values, 'budget_plan', grouped_files_by_month[month-1])
               }
             } 
             tmp[:amount][:fact][@year][month] = {
-              total: values.select{|val| val.fund_type == 'TOTAL'}.sum{|val| val.total_done.to_f},
+              total: total_values_by_month(month, 'TOTAL', values, 'total_done', grouped_files_by_month[month-1]),
               fonds:{
-                '1' => values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.total_done.to_f},
-                '2' => values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.total_done.to_f}
+                '1' => total_values_by_month(month, 'COMMON', values, 'total_done', grouped_files_by_month[month-1]),
+                '2' => total_values_by_month(month, 'SPECIAL', values, 'total_done', grouped_files_by_month[month-1])
               }
             } 
           end
+          tmp[:amount][:plan][@year][0] = tmp[:amount][:plan][@year].values.last
+          tmp[:amount][:fact][@year][0] = tmp[:amount][:fact][@year].values.last
+          tmp[:amount][:plan][@year]['_cumulative'] = false
+          # tmp[:amount][:fact][@year]['_cumulative'] = true
           tmp
         end
 
@@ -101,13 +113,13 @@ module Budget
           grouped_files.group_by{|file| file.public_send(@column)}.each do |key, grouped_by_column|
             file_key = key
             tmp = fill_amount_data(grouped_by_column.group_by{|a| a.month})
-            tmp[:label] = grouped_by_column.first.income_code_name
+            tmp[:label] = grouped_by_column.first.public_send(@label_field)
             tmp[:key] = key
             child_regex = Regexp.new("[0]{#{file_key.size - (level * 2)}}$")
             child_tmp = []
-            children = @grouped_by_income_files.keys.select{|file| file.start_with?(file_key[0...level]) && file =~ child_regex && file != file_key}
+            children = @grouped_files_by_code.keys.select{|file| file.start_with?(file_key[0...level]) && file =~ child_regex && file != file_key}
             children.each do |child_key|
-              child = build_tree(@grouped_by_income_files[child_key], regex[:level], child_key)
+              child = build_tree(@grouped_files_by_code[child_key], regex[:level], child_key)
               child_tmp << child
             end
             tmp[:children] = child_tmp
@@ -115,8 +127,35 @@ module Budget
           tmp
         end
 
+        def find_total_plan(month, values)
+          values.uniq{|a| a.income_code}.select{|a| a.income_code =~ level_regex(0)[:regex]}.sum{|a| a.public_send(@total_plan_column)}
+         end
+
+        def find_total_fact(month, values)
+          values.uniq{|a| a.income_code}.select{|a| a.income_code =~ level_regex(0)[:regex]}.sum{|val| val.public_send(@total_fact_column).to_f}
+        end
+        
+        def find_plan_total_by_common_fond(month, values)
+          values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.public_send(@total_plan_column).to_f}
+        end
+        
+        def find_fact_total_by_common_fond(month, values)
+          values.select{|val| val.fund_type == 'COMMON'}.sum{|val| val.public_send(@total_fact_column).to_f}
+        end
+
+        def find_fact_total_by_special_fond(month, values)
+          values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.public_send(@total_fact_column).to_f}
+        end
+
+        def find_plan_total_by_special_fond(month, values)
+          values.select{|val| val.fund_type == 'SPECIAL'}.sum{|val| val.public_send(@total_plan_column).to_f}
+        end
+
+        def total_values_by_month(month, fund_type, values, sum_column, previous_data)
+          values.select{|val| val.fund_type == fund_type}.sum{|val| val.public_send(sum_column).to_f}
+        end
+      
       end
     end
-    
   end 
 end
