@@ -27,7 +27,6 @@ module Properting
     field :obj_characteristic, type: String
 
     field :balance_holder_field, type: String
-    # field :category, type: String
 
     field :edrpou_balance_holder, type: String
     field :edrpou_renter, type: String
@@ -38,12 +37,13 @@ module Properting
     field :deal_number, type: String
     field :basis_contract, type: String
 
-    field :contract_start_date, type: Date
-    field :contract_end_date, type: Date
+    field :contract_start_date, type: String
+    field :contract_end_date, type: String
 
     field :last_rent_charge, type: String
     field :purpose, type: String
-    field :evaluation_date, type: Date
+
+    field :evaluation_date, type: String
     field :expert_obj_cost, type: String
     field :rental_rate, type: String
     field :prozzoro_id, type: String
@@ -58,19 +58,10 @@ module Properting
     # validates :spending_units, :edrpou_spending_units, :address, :amount, presence: true
     # validate :validate_coords
 
-    before_save :set_end_date
 
     def check_and_emend_edrpou
       self.edrpou_balance_holder  = correct_edrpou(edrpou_balance_holder) if edrpou_length_short?(edrpou_balance_holder)
       self.edrpou_renter          = correct_edrpou(edrpou_renter)         if edrpou_length_short?(edrpou_renter)
-    end
-
-    def set_end_date
-      if contract_start_date.present? && contract_end_date.blank?
-        start_year = contract_start_date.year
-        end_date = Date.new(y = start_year, m = 12, d = 31)
-        self.property_end_date = end_date
-      end
     end
 
     # TODO: Check this concern for properting!!!!!!!!!!!!!!
@@ -105,7 +96,6 @@ module Properting
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
       properties_arr = read_table_from_file(filepath)[:rows]
-
       properties_arr.each_with_index do |property, index|
         property_hash = build_property_hash(property)
         coordinates = property['координати']
@@ -133,7 +123,6 @@ module Properting
         layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status, year: year).first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
-
         layer.save
         layer_property.layer = layer if layer.present?
         layer_property.properting_category = child_category if child_category.present?
@@ -144,19 +133,16 @@ module Properting
       FileUtils.rm(filepath) if filepath.present?
     end
 
-    def self.expiration_date(d_string)
-      d_string.try(:to_date)
-    rescue ArgumentError
-      # ad h
-      # Example: "31.06.2017" - not valid date because June has 30 days
-      # return Sat, 01 Jul 2017 ("30.06.2017")
-      d_string.try(:to_time).try(:to_date).yesterday
-    end
+    # def self.expiration_date(d_string)
+    #   d_string.try(:to_date)
+    # rescue ArgumentError
+    #   # ad h
+    #   # Example: "31.06.2017" - not valid date because June has 30 days
+    #   # return Sat, 01 Jul 2017 ("30.06.2017")
+    #   d_string.try(:to_time).try(:to_date).yesterday
+    # end
 
     def self.build_property_hash(property)
-      contract_start_date = expiration_date(property['дата укладання договору оренди'])
-      contract_end_date = expiration_date(property['дата закінчення договору оренди'])
-      evaluation_date = expiration_date(property['дата проведення оцінки'])
 
       {
         obj_owner: property['балансоутримувач'],
@@ -170,8 +156,8 @@ module Properting
         legal_status: property['правовий статус'],
         deal_number: property['№ договору'],
         basis_contract: property['підстава укладання договору оренди'],
-        contract_start_date: property['дата початку оренди'],
-        contract_end_date: property['дата закінчення оренди'],
+        contract_start_date: property['дата укладання договору оренди'],
+        contract_end_date: property['дата закінчення договору оренди'],
         evaluation_date: property['дата проведення оцінки'],
         purpose: property['цільове призначення'],
         obj_characteristic: property['характеристика об\'єкту (площа)'],
