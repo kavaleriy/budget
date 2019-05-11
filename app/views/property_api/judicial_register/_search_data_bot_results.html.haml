@@ -1,6 +1,6 @@
 - @judicial_decisions.each do |decision|
   %tr{'data-edrpou' => decision['edrpou_renter']}
-    %td= decision['contract_start_date'].to_date.strftime("%d-%m-%Y")
+    %td= decision['contract_start_date']
     %td
       = link_to decision['doc_id'], decision['link'], target: '_blank'
     %td= t("external_api.judicial_register.judgment_code.form_#{decision['judgment_code']}")

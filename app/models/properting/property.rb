@@ -38,12 +38,15 @@ module Properting
     field :deal_number, type: String
     field :basis_contract, type: String
 
-    field :contract_start_date, type: Date
-    field :contract_end_date, type: Date
+    # field :contract_start_date, type: Date
+    # field :contract_end_date, type: Date
+    field :contract_start_date, type: String
+    field :contract_end_date, type: String
 
     field :last_rent_charge, type: String
     field :purpose, type: String
-    field :evaluation_date, type: Date
+    # field :evaluation_date, type: Date
+    field :evaluation_date, type: String
     field :expert_obj_cost, type: String
     field :rental_rate, type: String
     field :prozzoro_id, type: String
@@ -105,7 +108,6 @@ module Properting
 
     def self.import(filepath, child_category, current_user, properting_layer_params)
       properties_arr = read_table_from_file(filepath)[:rows]
-
       properties_arr.each_with_index do |property, index|
         property_hash = build_property_hash(property)
         coordinates = property['координати']
@@ -144,19 +146,27 @@ module Properting
       FileUtils.rm(filepath) if filepath.present?
     end
 
-    def self.expiration_date(d_string)
-      d_string.try(:to_date)
-    rescue ArgumentError
-      # ad h
-      # Example: "31.06.2017" - not valid date because June has 30 days
-      # return Sat, 01 Jul 2017 ("30.06.2017")
-      d_string.try(:to_time).try(:to_date).yesterday
-    end
+    # def self.expiration_date(d_string)
+    #   # binding.pry
+    #   # if d_string.present?
+    #   #   format_str = "%m/%d/" + (d_string =~ /\d{4}/ ? "%Y" : "%y")
+    #   #   Date.parse(d_string) rescue Date.strptime(d_string, format_str)
+    #   # end
+    #   d_string.try(:to_date)
+    # rescue ArgumentError
+    #   # ad h
+    #   # Example: "31.06.2017" - not valid date because June has 30 days
+    #   # return Sat, 01 Jul 2017 ("30.06.2017")
+    #   d_string.try(:to_time).try(:to_date).yesterday
+    # end
 
     def self.build_property_hash(property)
-      contract_start_date = expiration_date(property['дата укладання договору оренди'])
-      contract_end_date = expiration_date(property['дата закінчення договору оренди'])
-      evaluation_date = expiration_date(property['дата проведення оцінки'])
+      # contract_start_date = expiration_date(property['дата укладання договору оренди'])
+      # contract_end_date = expiration_date(property['дата закінчення договору оренди'])
+      # evaluation_date = expiration_date(property['дата проведення оцінки'])
+      contract_start_date = property['дата укладання договору оренди']
+      contract_end_date = property['дата закінчення договору оренди']
+      evaluation_date = property['дата проведення оцінки']
 
       {
         obj_owner: property['балансоутримувач'],
