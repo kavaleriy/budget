@@ -17,7 +17,6 @@
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
   = javascript_include_tag "leaflet/markercluster.js"
   = javascript_include_tag 'leaflet/leaflet-routing-machine.min'
-  -#= javascript_include_tag "leaflet/leaflet-routing-machine.js"
 
   = javascript_include_tag "geosearch/l.control.geosearch.js"
   = javascript_include_tag "geosearch/l.geosearch.provider.openstreetmap.js"
@@ -333,7 +332,6 @@
       setLastRepairDate(data.last_year_data);
 
       options = options || {};
-
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
       map.addLayer(markers);
 
@@ -349,11 +347,16 @@
       geoJson = L.geoJson(data, layerOptions).addTo(markers);
 
       function coordsToLatLng(coords) {
-        return L.latLng(coords)
+        //was added check on present coordinates for correct work
+        var checkCoords = coords.length;
+        if (checkCoords !== 2) {
+          return L.latLng([0,0]);
+        } else {
+          return L.latLng(coords)
+        }
       }
 
       function getPointToLayer(feature, latlng) {
-
         var point = getPoint(feature.properties);
 
         return L.marker(latlng, {
@@ -574,7 +577,6 @@
                 // get marker coordinates
                 var coords = layer.feature.geometry.coordinates;
                 // show marker by coordinates
-
                 map.setView((new L.LatLng(parseFloat(coords[0]), parseFloat(coords[1]))), 16);
                 // emulate click on marker
                 markers.zoomToShowLayer(layer, function() {
@@ -636,13 +638,11 @@
       });
     }
 
-
     initMap();
     initPopup();
     addGeoSearch();
     addGoogleSearch();
     //addControl();
-
     return {
       map: map,
       markers: markers,
