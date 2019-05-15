@@ -1,7 +1,5 @@
 - @inspections.each do |inspection|
-  %h2 Що тут виводити?
-  -# item can be with data(not_planned) or plan(is_planned) hash
-  -#%tr{'data-edrpou' => inspection['id']}
+  %tr{'data-edrpou' => inspection['id']}
     %td
       = link_to inspection['id'], inspection['link'], target: '_blank'
     %td= inspection['regulator']
