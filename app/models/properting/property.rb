@@ -120,7 +120,11 @@ module Properting
         status = status_btn(downcase_str(layer_property.legal_status))
         year = properting_layer_params[:year]
         # find or create layer
-        layer = Properting::Layer.where(properting_category_id: properting_category.id, status: status, year: year).first_or_create(properting_layer_params) if status.present?
+        layer = Properting::Layer.where(town_id: properting_layer_params['town'])
+                  .where(properting_category_id: properting_category.id)
+                  .where(status: status)
+                  .where(year: year)
+                  .first_or_create(properting_layer_params) if status.present?
         layer.owner_id = current_user.id
         layer.properties_file = properting_layer_params[:properties_file]
         layer.save
