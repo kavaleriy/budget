@@ -370,10 +370,8 @@
 
   .copyright_info
     = render partial: 'copyright_info'
-
 :javascript
   $(document).ready(function() {
-
     // use for changing datepicker locale
     moment.locale("#{I18n.locale}");
     // init and setup datepicker
@@ -443,7 +441,7 @@
     // set this code and search transactions
     $('input.select2-input').on('keyup', function(e) {
       var value = e.target.value;
-      if(e.keyCode == 13 && check_edrpou(value)){
+      if(e.keyCode == 13 && check_edrpou(val)){
         // add zero if edrpou short (56789 ~ 00056789)
         var select_value =  value.padStart(8, 0);
 
@@ -477,10 +475,55 @@
       e.preventDefault();
     });
 
+    //put params to url and data to iframe
+    function getParamsForIframe() {
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+
+      var item_payers = url.searchParams.get("item_payers");
+      var item_recipt = url.searchParams.get("item_recipt");
+
+      if(item_payers){
+        selectDataIframe(item_payers, '#_item_payers')
+      }
+      if(item_recipt){
+        selectDataIframe(item_recipt, '#_item_recipt')
+      }
+    }
+    function selectDataIframe(edrpou, id_edrpou){
+      $.ajax({
+          type: 'get',
+          url: "#{modules_classifier_select_collection_path(format: :json)}",
+          quietMillis: 250,
+          data: {
+              query: edrpou // search term
+            },
+          success: function (data) {
+            $(id_edrpou).select2('data', { id: data[0].id, text: data[0].text });
+          }
+      });
+    }
+    var payers = document.getElementById('_item_payers');
+    var recipt = document.getElementById('_item_recipt');
+
+    payers.onchange = function() {
+      share_buttons_set_url('', iframe_src_new());
+    };
+    recipt.onchange = function() {
+      share_buttons_set_url('', iframe_src_new());
+    };
+
+    function iframe_src_new(){
+      var path = "#{modules_classifier_advanced_search_path}";
+      var url = 'https://' + window.location.host + path + '&item_payers=' + payers.value + '&item_recipt=' + recipt.value;
+      return url;
+    }
+
+    getParamsForIframe();
+
     function iframe_src(){
       var path = "#{modules_classifier_advanced_search_path}";
       var url = 'https://' + window.location.host + path;
-
       return url;
     }
 
