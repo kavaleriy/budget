@@ -171,6 +171,11 @@
         border-radius: 0;
       }
     }
+
+  }
+  .explanation {
+    margin-top: 20px;
+    font-size: 14px;
   }
 
 .fond-for-close
@@ -294,7 +299,8 @@
         = link_to property_api_e_data_path(@properting_property),
         remote: true do
           %i.fa.fa-gears.icon
-          = t('repairing.repairs.repair_info.e_data')
+          = t('properting.property.payments')
+          %sup *
         #e-data.api-text
           #edata_payments
             %tbody
@@ -338,6 +344,8 @@
                     target: '_blank' do
             %i.fa.fa-suitcase.icon
             = t('repairing.repairs.repair_info.clarity')
+
+  %p.explanation= t('properting.property.payments_desc')
 
 = javascript_include_tag 'spinner'
 
