@@ -3,13 +3,14 @@ module Budget
     module Builders
       class Tree
 
-        def initialize(files, column, year, label_field, total_plan_column, total_fact_column)
+        def initialize(files, column, year, label_field = 'income_code_name', total_plan_column = 'budget_plan', total_fact_column = 'total_done', bit_depth = 8)
           @files = files.to_a
           @column = column
           @year = year
-          @label_field = 'income_code_name'
-          @total_plan_column = 'budget_plan'
-          @total_fact_column = 'total_done'
+          @bit_depth = bit_depth
+          @label_field = label_field
+          @total_plan_column = total_plan_column
+          @total_fact_column = total_fact_column
           
           @grouped_files_by_code = files.group_by{|file| file.public_send(@column)}
           @res = build_scelleton
@@ -42,7 +43,9 @@ module Budget
           @res[:key] = 'Всього'
           @res[:icon] = '/assets/icons/pig.svg'
           @res[:color] = 'green'
+          binding.pry
           @files.select{|file| file.public_send(@column) =~ level_regex(0)[:regex]}.group_by{|file| file.public_send(@column)}.each do |key, files|
+            binding.pry
             @res[:children] << build_tree(files, 1, key)
           end
           @res
@@ -96,7 +99,7 @@ module Budget
 
         def level_regex(level, file_key='')
           if level == 0
-            regex = '[0]{7}$'
+            regex = "[0]{#{@bit_depth - 1}}$"
           elsif level == 1
             regex = file_key.blank? ? '[0]{7}$' : "[0]{#{file_key.size - level - 1}}$"
             level += 1
@@ -128,11 +131,11 @@ module Budget
         end
 
         def find_total_plan(month, values)
-          values.uniq{|a| a.income_code}.select{|a| a.income_code =~ level_regex(0)[:regex]}.sum{|a| a.public_send(@total_plan_column)}
+          values.uniq{|a| a.public_send(@column)}.select{|a| a.public_send(@column) =~ level_regex(0)[:regex]}.sum{|a| a.public_send(@total_plan_column)}
          end
 
         def find_total_fact(month, values)
-          values.uniq{|a| a.income_code}.select{|a| a.income_code =~ level_regex(0)[:regex]}.sum{|val| val.public_send(@total_fact_column).to_f}
+          values.uniq{|a| a.public_send(@column)}.select{|a| a.public_send(@column) =~ level_regex(0)[:regex]}.sum{|val| val.public_send(@total_fact_column).to_f}
         end
         
         def find_plan_total_by_common_fond(month, values)
