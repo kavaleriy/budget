@@ -306,20 +306,17 @@
             %tbody
       .api
         = link_to property_api_prozzoro_path(@properting_property), remote: true do
-          -#%i.fa.fa-plus-square-o.button
           %i.fa.fa-university.icon
           = t('repairing.repairs.repair_info.prozzoro')
         #prozzoro.api-text
       .api
         = link_to property_api_edr_path(@properting_property), remote: true do
-          -#%i.fa.fa-plus-square-o.button
           %i.fa.fa-money.icon
           = t('repairing.repairs.repair_info.edr_data')
         #edr.api-text
       .api
         -#= link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_balance_holder : @properting_property.prozzoro_id } do
         = link_to '#', id: 'acm-link', data: {erdpou: @properting_property.prozzoro_id.blank? ? @properting_property.edrpou_renter : @properting_property.prozzoro_id } do
-          -#%i.fa.fa-plus-square-o.button
           %i.fa.fa-money.icon
           = t('repairing.repairs.repair_info.acm')
         #acm-api-text.api-text
@@ -345,13 +342,21 @@
             %i.fa.fa-suitcase.icon
             = t('repairing.repairs.repair_info.clarity')
 
+      - if @properting_property.edrpou_balance_holder.present?
+        .api
+          = link_to "https://youcontrol.com.ua/catalog/company_details/#{@properting_property.edrpou_balance_holder}",
+                    id: 'youcontrol',
+                    target: '_blank' do
+            %i.fa.fa-tasks.icon
+            = t('properting.property.youcontrol')
+
   %p.explanation= t('properting.property.payments_desc')
 
 = javascript_include_tag 'spinner'
 
 :javascript
   $(document).ready(function() {
-    $('.api > a').not('#acm-link, #clarity-link').click(function() {
+    $('.api > a').not('#acm-link, #clarity-link, #youcontrol').click(function() {
       $('#spinner-container').trigger('spinner:run')
     })
 
