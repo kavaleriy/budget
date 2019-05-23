@@ -334,6 +334,30 @@
         #inspections.api-text
           #inspections-table
             %tbody
+
+
+
+
+
+
+
+
+      .api
+        = link_to property_api_inspections_path(@properting_property), remote: true do
+          %i.fa.fa-money.icon
+          = 'Кошти отримані з бюджету'
+        #budget-funds.api-text
+          #budget-funds-table
+            %tbody
+
+
+
+
+
+
+
+
+
       - if @properting_property.edrpou_renter.present?
         .api
           = link_to "https://clarity-project.info/edr/#{@properting_property.edrpou_renter}/taxes",
