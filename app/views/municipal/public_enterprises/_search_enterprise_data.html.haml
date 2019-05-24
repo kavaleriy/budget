@@ -103,6 +103,9 @@
   %li
     %a{role: 'tab', 'data-toggle' => 'tab', href: '#cp_info'}
       = t('enterprise.cp_info')
+  %li
+    %a{role: 'tab', 'data-toggle' => 'tab', href: '#cp_budget'}
+      = 'Кошти отримані з бюджету'
 
 .tab-content.charts
   #form_1.tab-pane.fade.in.active
@@ -115,7 +118,10 @@
     = render partial: 'codes_list', locals: { codes: @codes_form_7, code_type: 7 }
 
   #cp_info.tab-pane.fade
-    = render partial: 'municipal/public_enterprises/repair_info'
+    = render partial: 'municipal/public_enterprises/property_info'
+
+  #cp_budget.tab-pane.fade
+    = 'Тут отримувач державних коштів'
 
   -##analysis.tab-pane.fade
     %h4

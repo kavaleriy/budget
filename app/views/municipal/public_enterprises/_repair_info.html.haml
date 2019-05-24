@@ -1,248 +1,248 @@
-:scss
-  $border-color: #0c2231;
-  #more-info-modal {
-    .modal-dialog {
-      margin: 15px;
-      .modal-content {
-        width: 95vw;
-        //height: 93vh;
-        cursor: auto;
-        border-radius: 0;
-        border: 1px solid $border-color;
-        button.close{
-          position: absolute;
-          top: 0;
-          right: 0;
-          margin-top: -4px;
-          padding: 0 0px 0 0;
-          font-weight: normal;
-          color: white;
-          text-shadow: none;
-          opacity: 1;
-        }
-        .fond-for-close{
-          width: 14px;
-          height: 14px;
-          position: absolute;
-          top: 0;
-          right: 0;
-          background: $border-color;
-        }
-        .modal-header {
-          padding: 10px 0;
-          border-bottom: 2px solid $border-color;
-          .modal-title {
-            font-size: 18px;
-          }
-          &:hover,
-          &:focus {
-            color: $border-color;
-          }
-        }
-        .modal-body {
-          padding: 10px 0 0 0;
-          h4.head-desc{
-            text-transform: uppercase;
-          }
-          .row {
-            margin-bottom: 3px;
-            .title-key {
-              font-weight: bold;
-              .fa {
-                margin-right: 7px;
-                margin-left: -5px;
-                width: 25px;
-                text-align: center;
-              }
-            }
-            &.photos{
-              .img{
-                display: inline-block;
-                width: 50px;
-                height: 50px;
-              }
-            }
-          }
-          .row:nth-of-type(4) .value {
-            font-weight: bold;
-          }
-          h4{
-            margin-top: 18px;
-            font-size: 14px;
-            font-weight: bold !important;
-          }
-          .more-data{
-            & > .api{
-              .api-text{
-                display: none;
-              }
-              margin-top: 15px;
-              & > a{
-                display: block;
-                margin-bottom: 5px;
-                text-decoration: none;
-                color: $border-color;
-                font-size: 18px;
-                &:before{
-                  font-family: FontAwesome;
-                  content: '\f196';
-                }
-                .button{
-                  font-size: 25px;
-                  margin-right: 10px;
-                }
-                .icon{
-                  width: 25px;
-                  text-align: center;
-                }
-
-              }
-              &.active{
-                .api-text{
-                  display: block;
-                }
-                & > a{
-                  &:before{
-                    font-family: FontAwesome;
-                    content: '\f147';
-                  }
-                }
-              }
-            }
-
-          }
-          #export_classifier {
-            display: block;
-            margin-left: 85%;
-            font-weight: normal;
-            white-space: nowrap;
-          }
-        }
-      }
-    }
-  }
-  // custom styles for spinner
-  .vis-spinner{
-    #spinner-container{
-      background: none;
-      .spinner{
-        .sk-circle:before{
-          background-color: #ffd304;
-        }
-      }
-    }
-  }
-  .modal-body {
-    .more-data {
-      margin-top: 20px;
-      .api {
-        margin-bottom: 10px;
-      }
-    }
-  }
-
-.fond-for-close
-.modal-header
-  .modal-title
-    %i.fa.fa-graduation-cap
-    = @enterprise.title
-
-.modal-body
-  .row
-    .col-xs-4.title-key
-      %i.fa.fa-map-marker
-      місто:
-    .col-xs-8.value
-      = @municipal.town.title
-      = @municipal.town.area_title
-
-  %h4.head-desc
-  .more-data
-    .vis-spinner
-      = render partial: 'layouts/spinner'
-    .api
-      = link_to municipal_api_e_data_path(@municipal),
-      remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-gears.icon
-        = t('repairing.repairs.repair_info.e_data')
-      #e-data.api-text
-        #edata_payments
-          %tbody
-    -#.api
-      = link_to municipal_api_prozzoro_path(@municipal), remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-university.icon
-        = t('.prozzoro')
-      #prozzoro.api-text
-    -#= link_to external_api_edr_path(@enterprise), remote: true do
-    -#  %i.fa.fa-plus-square-o.button
-    -#  %i.fa.fa-money.icon
-    -#  = t('.court_register')
-    -##court-register
-    .api
-      = link_to municipal_api_edr_path(@municipal), remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-money.icon
-        = t('repairing.repairs.repair_info.edr_data')
-      #edr.api-text
-    - if @municipal.edrpou.present?
-      .api
-        = link_to '#', id: 'acm-link', data: {erdpou: @municipal.edrpou} do
-          -#%i.fa.fa-plus-square-o.button
-          %i.fa.fa-money.icon
-          = t('repairing.repairs.repair_info.acm')
-        #acm-api-text.api-text
-    .api
-      = link_to municipal_api_judicial_register_path(@municipal), remote: true do
-        %i.fa.fa-balance-scale.icon
-        = t('repairing.repairs.repair_info.judicial_register')
-      #judicial-register.api-text
-        #judicial-register-table
-          %tbody
-    .api
-      = link_to municipal_api_inspections_path(@municipal), remote: true do
-        %i.fa.fa-calendar-check-o.icon
-        = t('repairing.repairs.repair_info.inspection_portal')
-      #inspections.api-text
-        #inspections-table
-          %tbody
-    - if @municipal.edrpou.present?
-      .api
-        = link_to "https://clarity-project.info/edr/#{@municipal.edrpou}/taxes",
-                  id: 'clarity-link',
-                  target: '_blank' do
-          %i.fa.fa-suitcase.icon
-          = t('repairing.repairs.repair_info.clarity')
-
-= javascript_include_tag 'spinner'
-
-:javascript
-  $(document).ready(function() {
-    $('.api > a').not('#acm-link, #clarity-link').click(function() {
-      $('#spinner-container').trigger('spinner:run')
-    })
-
-    $('#acm-link').click(function() {
-
-      var spendingEdrpou = $(this).data('erdpou');
-
-      if(spendingEdrpou){
-        // redirect to acm-ua.org
-        window.open("http://acm-ua.org/poshuk.php?poshuk=:edrpou".replace(':edrpou', spendingEdrpou), '_blank');
-      }else{
-        // show external api no data yet partial
-        $.ajax({
-          url: '/municipal_api/no_data_yet',
-          dataType: 'script',
-          data: {
-            selector: '#acm-api-text'
-          }
-        })
-      }
-    })
-  })
-
-  $( document ).ajaxComplete(function() {
-    $('#spinner-container').trigger('spinner:stop')
-  });
+-#:scss
+-#  $border-color: #0c2231;
+-#  #more-info-modal {
+-#    .modal-dialog {
+-#      margin: 15px;
+-#      .modal-content {
+-#        width: 95vw;
+-#        //height: 93vh;
+-#        cursor: auto;
+-#        border-radius: 0;
+-#        border: 1px solid $border-color;
+-#        button.close{
+-#          position: absolute;
+-#          top: 0;
+-#          right: 0;
+-#          margin-top: -4px;
+-#          padding: 0 0px 0 0;
+-#          font-weight: normal;
+-#          color: white;
+-#          text-shadow: none;
+-#          opacity: 1;
+-#        }
+-#        .fond-for-close{
+-#          width: 14px;
+-#          height: 14px;
+-#          position: absolute;
+-#          top: 0;
+-#          right: 0;
+-#          background: $border-color;
+-#        }
+-#        .modal-header {
+-#          padding: 10px 0;
+-#          border-bottom: 2px solid $border-color;
+-#          .modal-title {
+-#            font-size: 18px;
+-#          }
+-#          &:hover,
+-#          &:focus {
+-#            color: $border-color;
+-#          }
+-#        }
+-#        .modal-body {
+-#          padding: 10px 0 0 0;
+-#          h4.head-desc{
+-#            text-transform: uppercase;
+-#          }
+-#          .row {
+-#            margin-bottom: 3px;
+-#            .title-key {
+-#              font-weight: bold;
+-#              .fa {
+-#                margin-right: 7px;
+-#                margin-left: -5px;
+-#                width: 25px;
+-#                text-align: center;
+-#              }
+-#            }
+-#            &.photos{
+-#              .img{
+-#                display: inline-block;
+-#                width: 50px;
+-#                height: 50px;
+-#              }
+-#            }
+-#          }
+-#          .row:nth-of-type(4) .value {
+-#            font-weight: bold;
+-#          }
+-#          h4{
+-#            margin-top: 18px;
+-#            font-size: 14px;
+-#            font-weight: bold !important;
+-#          }
+-#          .more-data{
+-#            & > .api{
+-#              .api-text{
+-#                display: none;
+-#              }
+-#              margin-top: 15px;
+-#              & > a{
+-#                display: block;
+-#                margin-bottom: 5px;
+-#                text-decoration: none;
+-#                color: $border-color;
+-#                font-size: 18px;
+-#                &:before{
+-#                  font-family: FontAwesome;
+-#                  content: '\f196';
+-#                }
+-#                .button{
+-#                  font-size: 25px;
+-#                  margin-right: 10px;
+-#                }
+-#                .icon{
+-#                  width: 25px;
+-#                  text-align: center;
+-#                }
+-#
+-#              }
+-#              &.active{
+-#                .api-text{
+-#                  display: block;
+-#                }
+-#                & > a{
+-#                  &:before{
+-#                    font-family: FontAwesome;
+-#                    content: '\f147';
+-#                  }
+-#                }
+-#              }
+-#            }
+-#
+-#          }
+-#          #export_classifier {
+-#            display: block;
+-#            margin-left: 85%;
+-#            font-weight: normal;
+-#            white-space: nowrap;
+-#          }
+-#        }
+-#      }
+-#    }
+-#  }
+-#  // custom styles for spinner
+-#  .vis-spinner{
+-#    #spinner-container{
+-#      background: none;
+-#      .spinner{
+-#        .sk-circle:before{
+-#          background-color: #ffd304;
+-#        }
+-#      }
+-#    }
+-#  }
+-#  .modal-body {
+-#    .more-data {
+-#      margin-top: 20px;
+-#      .api {
+-#        margin-bottom: 10px;
+-#      }
+-#    }
+-#  }
+-#
+-#.fond-for-close
+-#.modal-header
+-#  .modal-title
+-#    %i.fa.fa-graduation-cap
+-#    = @enterprise.title
+-#
+-#.modal-body
+-#  .row
+-#    .col-xs-4.title-key
+-#      %i.fa.fa-map-marker
+-#      місто:
+-#    .col-xs-8.value
+-#      = @municipal.town.title + ', ' if @municipal.town.title
+-#      = @municipal.town.area_title
+-#
+-#  %h4.head-desc
+-#  .more-data
+-#    .vis-spinner
+-#      = render partial: 'layouts/spinner'
+-#    .api
+-#      = link_to municipal_api_e_data_path(@municipal),
+-#      remote: true do
+-#        -#%i.fa.fa-plus-square-o.button
+-#        %i.fa.fa-gears.icon
+-#        = t('repairing.repairs.repair_info.e_data')
+-#      #e-data.api-text
+-#        #edata_payments
+-#          %tbody
+-#    -#.api
+-#      = link_to municipal_api_prozzoro_path(@municipal), remote: true do
+-#        -#%i.fa.fa-plus-square-o.button
+-#        %i.fa.fa-university.icon
+-#        = t('.prozzoro')
+-#      #prozzoro.api-text
+-#    -#= link_to external_api_edr_path(@enterprise), remote: true do
+-#    -#  %i.fa.fa-plus-square-o.button
+-#    -#  %i.fa.fa-money.icon
+-#    -#  = t('.court_register')
+-#    -##court-register
+-#    .api
+-#      = link_to municipal_api_edr_path(@municipal), remote: true do
+-#        -#%i.fa.fa-plus-square-o.button
+-#        %i.fa.fa-money.icon
+-#        = t('repairing.repairs.repair_info.edr_data')
+-#      #edr.api-text
+-#    - if @municipal.edrpou.present?
+-#      .api
+-#        = link_to '#', id: 'acm-link', data: {erdpou: @municipal.edrpou} do
+-#          -#%i.fa.fa-plus-square-o.button
+-#          %i.fa.fa-money.icon
+-#          = t('repairing.repairs.repair_info.acm')
+-#        #acm-api-text.api-text
+-#    .api
+-#      = link_to municipal_api_judicial_register_path(@municipal), remote: true do
+-#        %i.fa.fa-balance-scale.icon
+-#        = t('repairing.repairs.repair_info.judicial_register')
+-#      #judicial-register.api-text
+-#        #judicial-register-table
+-#          %tbody
+-#    .api
+-#      = link_to municipal_api_inspections_path(@municipal), remote: true do
+-#        %i.fa.fa-calendar-check-o.icon
+-#        = t('repairing.repairs.repair_info.inspection_portal')
+-#      #inspections.api-text
+-#        #inspections-table
+-#          %tbody
+-#    - if @municipal.edrpou.present?
+-#      .api
+-#        = link_to "https://clarity-project.info/edr/#{@municipal.edrpou}/taxes",
+-#                  id: 'clarity-link',
+-#                  target: '_blank' do
+-#          %i.fa.fa-suitcase.icon
+-#          = t('repairing.repairs.repair_info.clarity')
+-#
+-#= javascript_include_tag 'spinner'
+-#
+-#:javascript
+-#  $(document).ready(function() {
+-#    $('.api > a').not('#acm-link, #clarity-link').click(function() {
+-#      $('#spinner-container').trigger('spinner:run')
+-#    })
+-#
+-#    $('#acm-link').click(function() {
+-#
+-#      var spendingEdrpou = $(this).data('erdpou');
+-#
+-#      if(spendingEdrpou){
+-#        // redirect to acm-ua.org
+-#        window.open("http://acm-ua.org/poshuk.php?poshuk=:edrpou".replace(':edrpou', spendingEdrpou), '_blank');
+-#      }else{
+-#        // show external api no data yet partial
+-#        $.ajax({
+-#          url: '/municipal_api/no_data_yet',
+-#          dataType: 'script',
+-#          data: {
+-#            selector: '#acm-api-text'
+-#          }
+-#        })
+-#      }
+-#    })
+-#  })
+-#
+-#  $( document ).ajaxComplete(function() {
+-#    $('#spinner-container').trigger('spinner:stop')
+-#  });
