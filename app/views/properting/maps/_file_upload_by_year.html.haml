@@ -17,10 +17,9 @@
         font-weight: bold;
       }
     }
-
 .col-sm-2.reset-padding.pull-right
-  %a#export_classifier{ href: properting_choosed_file_upload_by_year_path, target: '_blank' }
-    %i.fa.fa-sign-out{"aria-hidden" => "true"}
+  %a#export_classifier{ href: properting_choosed_file_upload_by_year_path(params[:town_id]), target: '_blank' }
+    %i.fa.fa-sign-out{ "aria-hidden" => "true" }
     |
     =t('helpers.links.export')
 
