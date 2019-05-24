@@ -107,7 +107,7 @@ Rails.application.routes.draw do
 
   namespace :properting do
     get 'file_upload_by_year' => 'maps#file_upload_by_year'
-    get 'choosed_file_upload_by_year' => 'maps#choosed_file_upload_by_year'
+    get 'choosed_file_upload_by_year/:town_select', to: 'maps#choosed_file_upload_by_year', as: :choosed_file_upload_by_year
 
     resources :categories
     get 'categories_tree_root' => 'categories#tree_root'
