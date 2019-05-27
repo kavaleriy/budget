@@ -199,6 +199,11 @@
           %i.fa.fa-money.icon
           = t('properting.property.received_funds')
         .results
+      -#.api
+        = link_to property_api_prozzoro_path(@municipal._id), remote: true do
+          %i.fa.fa-university.icon
+          = t('repairing.repairs.repair_info.prozzoro')
+        #prozzoro.api-text
       .api
         = link_to municipal_api_edr_path(@municipal), remote: true do
           %i.fa.fa-gears.icon
@@ -232,6 +237,13 @@
                     target: '_blank' do
             %i.fa.fa-suitcase.icon
             = t('repairing.repairs.repair_info.clarity')
+      - if @municipal.edrpou.present?
+        .api
+          = link_to "https://youcontrol.com.ua/catalog/company_details/#{@municipal.edrpou}",
+                    id: 'youcontrol',
+                    target: '_blank' do
+            %i.fa.fa-tasks.icon
+            = t('properting.property.youcontrol')
 
     %p.explanation= t('properting.property.payments_desc')
 
