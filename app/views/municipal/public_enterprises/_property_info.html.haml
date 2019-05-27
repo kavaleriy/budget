@@ -198,30 +198,23 @@
   .more-data
     .vis-spinner
       = render partial: 'layouts/spinner'
-    Кошти отримані з бюджету
     .api
       = link_to municipal_api_e_data_path(@municipal),
       remote: true do
-        -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-gears.icon
-        = t('repairing.repairs.repair_info.e_data')
+        = t('properting.property.payments')
+        %sup *
       #e-data.api-text
         #edata_payments
           %tbody
-    -#.api
-      = link_to municipal_api_prozzoro_path(@municipal), remote: true do
-        -#%i.fa.fa-plus-square-o.button
-        %i.fa.fa-university.icon
-        = t('.prozzoro')
-      #prozzoro.api-text
-    -#= link_to external_api_edr_path(@enterprise), remote: true do
-    -#  %i.fa.fa-plus-square-o.button
-    -#  %i.fa.fa-money.icon
-    -#  = t('.court_register')
-    -##court-register
+    .api
+      = link_to modules_classifier_search_e_data_path(recipt_edrpous: @municipal.edrpou),
+      remote: true do
+        %i.fa.fa-money.icon
+        = 'Кошти отримані з бюджету'
+      .results
     .api
       = link_to municipal_api_edr_path(@municipal), remote: true do
-        -#%i.fa.fa-plus-square-o.button
         %i.fa.fa-money.icon
         = t('repairing.repairs.repair_info.edr_data')
       #edr.api-text
@@ -253,6 +246,8 @@
                   target: '_blank' do
           %i.fa.fa-suitcase.icon
           = t('repairing.repairs.repair_info.clarity')
+
+  %p.explanation= t('properting.property.payments_desc')
 
 = javascript_include_tag 'spinner'
 
