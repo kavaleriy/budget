@@ -170,6 +170,11 @@ class ExternalApi
     end
   end
 
+  def self.prozorro_clarity_data(status = 'complete', region = 'vn', classification = 45, offset = 0)
+    url = "https://clarity-project.info/api/tender.search?status=#{status}&region=#{region}&classification=#{classification}&offset=#{offset}"
+    get_request(url)
+  end
+
   class << self
     private
 
