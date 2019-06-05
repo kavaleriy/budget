@@ -142,6 +142,10 @@ gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'
 
 gem 'simple_form'
 
+gem 'zip-zip'
+gem 'fast_xs', '~> 0.8.0'
+gem 'simple_xlsx_writer', '~> 0.5.3'
+
 gem 'momentjs-rails', '>= 2.9.0'
 
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
