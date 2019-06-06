@@ -8,7 +8,7 @@
       justify-content: space-between;
     }
     .table-title{
-      padding: 5px 0;
+      padding: 15px 0;
       font-weight: bold;
       border-bottom: solid lightgrey 2px;
       //padding: 5px 0;
@@ -72,8 +72,9 @@
       .new-btn
         %h2
           = link_to t('form.new'), new_municipal_enterprise_file_path, class: 'btn btn-info'
-  .documents_search.clearfix
-    = render partial: 'municipal/enterprise_files/search'
+  - unless controller_name == 'public_enterprises'
+    .documents_search.clearfix
+      = render partial: 'municipal/enterprise_files/search'
 
   .table-title.visible-md.visible-lg
     .row
