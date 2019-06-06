@@ -72,7 +72,6 @@
       .new-btn
         %h2
           = link_to t('form.new'), new_municipal_enterprise_file_path, class: 'btn btn-info'
-  - unless controller_name == 'public_enterprises'
     .documents_search.clearfix
       = render partial: 'municipal/enterprise_files/search'
 

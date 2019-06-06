@@ -92,10 +92,10 @@ module Municipal
 
     def file_upload_by_town
       @municipal_enterprise_files = Municipal::EnterpriseFile.by_town(params['town_select'])          if params['town_select'].present?
-      @municipal_enterprise_files = @municipal_enterprise_files.by_enterprise(params['enterprise'])   unless params['enterprise'].blank?
-      @municipal_enterprise_files = @municipal_enterprise_files.by_file_type(params['file_type'])     unless params['file_type'].blank?
-      @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])               unless params['year'].blank?
-      @municipal_enterprise_files = @municipal_enterprise_files.by_file_name(params['file_name'])     unless params['file_name'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_enterprise(params['enterprise'])   unless params['enterprise'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_file_type(params['file_type'])     unless params['file_type'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])               unless params['year'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_file_name(params['file_name'])     unless params['file_name'].blank?
 
       @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
       @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page]).per(25)
