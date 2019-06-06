@@ -79,6 +79,9 @@
       .show{
         display: block;
       }
+      .file_upload_by_town {
+        padding: 10px;
+      }
     }
   }
 
@@ -123,9 +126,12 @@
 .row.sharing
   -#.col-xs-6
     .social-btns#share_results
-  .col-xs-12.text-left
+  .col-xs-12.col-md-2.text-left
     .embeded-btn
       = render partial: 'embeded_btn', locals: {url: municipal_enterprise_from_town_path(params[:town_id], params[:enterprise_id] )}
+  .col-xs-12.col-md-2.text-left
+    .file_upload_by_town
+      = render partial: 'file_upload_by_town'
 
 :javascript
   unit_chart = new ChartUnit;

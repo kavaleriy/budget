@@ -91,7 +91,6 @@ module Municipal
     end
 
     def file_upload_by_town
-      binding.pry
       @municipal_enterprise_files = Municipal::EnterpriseFile.by_town(params['town_select'])          if params['town_select'].present?
       @municipal_enterprise_files = @municipal_enterprise_files.by_enterprise(params['enterprise'])   unless params['enterprise'].blank?
       @municipal_enterprise_files = @municipal_enterprise_files.by_file_type(params['file_type'])     unless params['file_type'].blank?
