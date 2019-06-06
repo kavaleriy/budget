@@ -1,6 +1,7 @@
 :scss
 
   .enterprises{
+    margin-top: 5px;
     .header{
       display: flex;
       flex-wrap: wrap;
@@ -13,11 +14,15 @@
       //padding: 5px 0;
     }
     .documents_search{
+      display: flex;
+      padding-top: 10px;
       .enterprise_select{
+
         .form-control{
           border-radius: 0;
           border: none;
           .select2-choice{
+            height: 100%;
             border-radius: 0;
             &>.select2-chosen {
               margin-right: 10px;
@@ -60,14 +65,15 @@
   }
 
 .enterprises.col-md-12
-  .header
-    %h2
-      = t('enterprise_files.utilities_files')
-    .new-btn
+  - unless controller_name == 'public_enterprises'
+    .header
       %h2
-        = link_to t('form.new'), new_municipal_enterprise_file_path, class: 'btn btn-info'
+        = t('enterprise_files.utilities_files')
+      .new-btn
+        %h2
+          = link_to t('form.new'), new_municipal_enterprise_file_path, class: 'btn btn-info'
   .documents_search.clearfix
-    = render partial: 'search'
+    = render partial: 'municipal/enterprise_files/search'
 
   .table-title.visible-md.visible-lg
     .row
@@ -83,10 +89,11 @@
         = sortable 'file', t('file')
       .col-sm-2
         = sortable 'owner_id', t('author')
-      .col-sm-1
-        = t('actions')
+      - unless controller_name == 'public_enterprises'
+        .col-sm-1
+          = t('actions')
   #search-results
-    = render partial: 'search_results', locals: { enterprise_files: @municipal_enterprise_files }
+    = render partial: 'municipal/enterprise_files/search_results', locals: { enterprise_files: @municipal_enterprise_files }
 
   .paginator
     = paginate @municipal_enterprise_files
