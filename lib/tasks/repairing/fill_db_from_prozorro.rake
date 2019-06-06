@@ -11,6 +11,8 @@ namespace :fill_db_from_prozorro do
                'Дата закінчення ремонту',	'Гарантія',	'Додаткова інформація']
   CLASSIFICATION = 45
   STATUS = 'complete'
+  CREATED_FROM = '04-05-2019'
+  CREATED_TO = '05-05-2019'
 
   desc 'Filling data base by API from clarity-project.info'
   task set_acount_number: :environment do
@@ -38,20 +40,18 @@ namespace :fill_db_from_prozorro do
         regions[town.title] = region
       end
     end
-
     regions.each do |title, region|
       for_file_name = 0
       get_request = true
       offset = 0
       while get_request do
-        path = "https://clarity-project.info/api/tender.search?status=#{STATUS}&region=#{region}&classification=#{CLASSIFICATION}&offset=#{offset}&more_fields=edrs,items"
+        path = "https://clarity-project.info/api/tender.search?status=#{STATUS}&region=#{region}&classification=#{CLASSIFICATION}&offset=#{offset}&more_fields=edrs,items&created_from=#{CREATED_FROM}&created_to=#{CREATED_TO}"
 
         res = repair_request(path)
         json_data = JSON.parse(res.body)
 
         array_all_files_data = []
         for_file_name += 1
-
         if json_data['tenders'].present?
           if json_data['tenders'].count < 100
             get_request = false
