@@ -6,13 +6,16 @@ namespace :fill_db_from_prozorro do
   require 'clarity_key'
   include ClarityKey
 
-  REPAIR_DOC_TITLE = ['Виконавець',	'ЄДРПОУ виконавця',	'Адреса',	'Координати',	'Адреса1',	'Координати1',	'Розпорядник бюджетних коштів',
-               'ЄДРПОУ розпорядника бюджетних коштів',	'Об\'єкт',	'Опис робіт',	'Вартість',	'Дата початку ремонту',
-               'Дата закінчення ремонту',	'Гарантія',	'Додаткова інформація']
+  # REPAIR_DOC_TITLE = ['Виконавець',	'ЄДРПОУ виконавця',	'Адреса',	'Координати',	'Адреса1',	'Координати1',	'Розпорядник бюджетних коштів',
+  #              'ЄДРПОУ розпорядника бюджетних коштів',	'Об\'єкт',	'Опис робіт',	'Вартість',	'Дата початку ремонту',
+  #              'Дата закінчення ремонту',	'Гарантія',	'Додаткова інформація']
+  REPAIR_DOC_TITLE = ['Розпорядник бюджетних коштів',	'ЄДРПОУ розпорядника бюджетних коштів',	'Назва об\'єкту',	'Адреса',	'Координати',	'Адреса1',	'Координати1',
+               'Опис робіт',	'Вартість',	'Дата початку ремонту',	'Дата закінчення ремонту',	'Гарантія',
+               'ID закупівлі',	'Виконавець',	'ЄДРПОУ виконавця', 'Додаткова інформація']
   CLASSIFICATION = 45
   STATUS = 'complete'
-  CREATED_FROM = '04-05-2019'
-  CREATED_TO = '05-05-2019'
+  CREATED_FROM = '01-01-2019'
+  CREATED_TO = '01-05-2019'
 
   desc 'Filling data base by API from clarity-project.info'
   task set_acount_number: :environment do
@@ -45,6 +48,7 @@ namespace :fill_db_from_prozorro do
       get_request = true
       offset = 0
       while get_request do
+        # path = "https://clarity-project.info/api/tender.search?status=complete&region=vn&classification=45&offset=0&more_fields=edrs,items&created_from=01-01-2019&created_to=01-05-2019"
         path = "https://clarity-project.info/api/tender.search?status=#{STATUS}&region=#{region}&classification=#{CLASSIFICATION}&offset=#{offset}&more_fields=edrs,items&created_from=#{CREATED_FROM}&created_to=#{CREATED_TO}"
 
         res = repair_request(path)
@@ -65,24 +69,31 @@ namespace :fill_db_from_prozorro do
               path = "https://clarity-project.info/api/edr.info/#{repair['buyer_edr']}"
               res = repair_request(path)
               json_buyer = JSON.parse(res.body)
-              performer_name  = repair.try(:[], 'more').try(:[], 'edrs').try(:[], 0).try(:[], 'edr_data').try(:[], 'short_name') || ''
-              performer_edr   = repair.try(:[], 'more').try(:[], 'edrs').try(:[], 0).try(:[], 'edr') || ''
+
+              path = "https://clarity-project.info/api/tender.ids?ids=#{repair.try(:[], 'id')}"
+              res_purchase = repair_request(path)
+              json_purchase = JSON.parse(res_purchase.body)
+
+              budget_manager  = json_buyer.try(:[], 'name') || ''
+              buyer_edr       = json_buyer.try(:[], 'edr_data').try(:[], 'edr') || ''
+              object          = repair.try(:[], 'title') || ''
               repair_addres   = address
               coord           = '49.223164, 28.439736'
               repair_addres_1 = ''
               coord_1         = ''
-              budget_manager  = json_buyer.try(:[], 'name') || ''
-              buyer_edr       = json_buyer.try(:[], 'edr_data').try(:[], 'edr') || ''
-              object          = repair.try(:[], 'title') || ''
               work            = json_data['tenders'].try(:[], index).try(:[], 'more').try(:[], 'items').try(:[], 0).try(:[], 'descr')
               value           = repair.try(:[], 'value').try(:[], 'amount')
               date_start      = ''
               date_end        = ''
               varanty         = ''
+              purchase_id     = json_purchase.try(:[], 'list').try(:[], 0).try(:[], 'tender')
+              performer_name  = repair.try(:[], 'more').try(:[], 'edrs').try(:[], 0).try(:[], 'edr_data').try(:[], 'short_name') || ''
+              performer_edr   = repair.try(:[], 'more').try(:[], 'edrs').try(:[], 0).try(:[], 'edr') || ''
               addition_info   = 'Занесено з допомогою clarity API'
+
               # doc_data = [] масив даних для слоя DONE!!!!!!!!
-              doc_data = [performer_name, performer_edr, repair_addres, coord, repair_addres_1, coord_1, budget_manager, buyer_edr,
-                          object, work, value, date_start, date_end, varanty, addition_info]
+              doc_data = [budget_manager, buyer_edr, object, repair_addres, coord, repair_addres_1, coord_1, work,
+                          value, date_start, date_end, varanty, purchase_id, performer_name, performer_edr, addition_info]
 
               array_all_files_data << doc_data
             end
@@ -118,13 +129,13 @@ namespace :fill_db_from_prozorro do
         end
       end
     end
-
     file_path           = Rails.root.join("repairing_#{town.first.title}_#{index}.xlsx")
+    f = File.open(file_path, "r")
     repairing_category  = Repairing::Category.where(title: 'ремонт з заміною вікон')
     params = ActionController::Parameters.new({ title: 'API test',
                                                                  description: '',
                                                                  town: town.first.id,
-                                                                 repairs_file: file_path,
+                                                                 repairs_file: f,
                                                                  repairing_category: repairing_category.first.id,
                                                                  locale: 'uk',
                                                                  status: 'plan',
@@ -150,6 +161,8 @@ namespace :fill_db_from_prozorro do
         end
       end
     end
+    f.close
+    File.delete(file_path) if File.exist?(file_path)
   end
 
   # запит на АПІ
@@ -173,7 +186,7 @@ namespace :fill_db_from_prozorro do
         break
       end
       sleeper = sleeper + sleep_s
-      if sleeper > 0.4
+      if sleeper > 0.8
         break
       end
       puts "sleeper: #{sleeper}"
