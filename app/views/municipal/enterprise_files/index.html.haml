@@ -77,23 +77,17 @@
 
   .table-title.visible-md.visible-lg
     .row
-      .col-sm-3
-        = sortable 'enterprise_id', t('enterprise_files.municipal_enterprise')
-      .col-sm-1
-        = t('owner')
-      .col-sm-1
-        = sortable 'file_type', t('enterprise_files.accounting')
-      .col-sm-1
-        = sortable 'year', t('lower_year')
-      .col-sm-3
-        = sortable 'file', t('file')
-      .col-sm-2
-        = sortable 'owner_id', t('author')
-      - unless controller_name == 'public_enterprises'
-        .col-sm-1
-          = t('actions')
+      - if controller_name != 'public_enterprises'
+        = render partial: 'municipal/enterprise_files/not_public_enterprise/not_public_enterprise'
+      - else
+        = render partial: 'municipal/enterprise_files/public_enterprise/public_enterprise'
   #search-results
-    = render partial: 'municipal/enterprise_files/search_results', locals: { enterprise_files: @municipal_enterprise_files }
+    - if controller_name != 'public_enterprises'
+      = render partial: 'municipal/enterprise_files/not_public_enterprise/search_result', locals: { enterprise_files: @municipal_enterprise_files }
+    - else
+      = render partial: 'municipal/enterprise_files/public_enterprise/search_result', locals: { enterprise_files: @municipal_enterprise_files }
+
+
 
   .paginator
     = paginate @municipal_enterprise_files
