@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module Modules::BannersHelper - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-get_banner_id">#get_banner_id</a>
+    
+    <li ><a href="#method-i-get_img">#get_img</a>
+    
+    <li ><a href="#method-i-get_item">#get_item</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Modules::BannersHelper">
+  <h1 id="module-Modules::BannersHelper" class="module">
+    module Modules::BannersHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_banner_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_banner_id</span><span
+            class="method-args">(banners, i, move)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_banner_id-source">
+            <pre><span class="ruby-comment"># File app/helpers/modules/banners_helper.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_banner_id</span>(<span class="ruby-identifier">banners</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">move</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">move</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;left&#39;</span>
+      <span class="ruby-identifier">banners</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">banners</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">banners</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;right&#39;</span>
+      <span class="ruby-identifier">banners</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">banners</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">banners</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_img" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_img</span><span
+            class="method-args">(img, title)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_img-source">
+            <pre><span class="ruby-comment"># File app/helpers/modules/banners_helper.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_img</span>(<span class="ruby-identifier">img</span>, <span class="ruby-identifier">title</span>)
+  <span class="ruby-identifier">image_tag</span>(<span class="ruby-identifier">img</span>, <span class="ruby-value">:title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">title</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;img-responsive&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_item" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_item</span><span
+            class="method-args">(item, type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_item-source">
+            <pre><span class="ruby-comment"># File app/helpers/modules/banners_helper.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_item</span>(<span class="ruby-identifier">item</span>, <span class="ruby-identifier">type</span>)
+  <span class="ruby-comment"># use &#39;case&#39; for banners and partners because they have different names fields in DB</span>
+  <span class="ruby-comment"># TODO: in feature improve this method</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;banner&#39;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">item</span>.<span class="ruby-identifier">url?</span>
+      <span class="ruby-identifier">link_to</span> <span class="ruby-identifier">get_img</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">banner_img</span>, <span class="ruby-identifier">item</span>.<span class="ruby-identifier">title</span>), <span class="ruby-identifier">item</span>.<span class="ruby-identifier">url</span>, <span class="ruby-identifier">target</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;_blank&#39;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">get_img</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">banner_img</span>, <span class="ruby-identifier">item</span>.<span class="ruby-identifier">title</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;partner&#39;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">item</span>.<span class="ruby-identifier">url?</span>
+      <span class="ruby-identifier">link_to</span> <span class="ruby-identifier">get_img</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">logo</span>, <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>), <span class="ruby-identifier">item</span>.<span class="ruby-identifier">url</span>, <span class="ruby-identifier">target</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;_blank&#39;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">get_img</span>(<span class="ruby-identifier">item</span>.<span class="ruby-identifier">logo</span>, <span class="ruby-identifier">item</span>.<span class="ruby-identifier">name</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

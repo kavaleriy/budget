@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Modules::ClassifierController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-advanced_search">#advanced_search</a>
+    
+    <li ><a href="#method-i-all_classifier">#all_classifier</a>
+    
+    <li ><a href="#method-i-all_classifier_region">#all_classifier_region</a>
+    
+    <li ><a href="#method-i-by_edrpou">#by_edrpou</a>
+    
+    <li ><a href="#method-i-by_type">#by_type</a>
+    
+    <li ><a href="#method-i-direct_link">#direct_link</a>
+    
+    <li ><a href="#method-i-import_dbf">#import_dbf</a>
+    
+    <li ><a href="#method-i-search_data">#search_data</a>
+    
+    <li ><a href="#method-i-search_data_bot">#search_data_bot</a>
+    
+    <li ><a href="#method-i-search_e_data">#search_e_data</a>
+    
+    <li ><a href="#method-i-search_inspections">#search_inspections</a>
+    
+    <li ><a href="#method-i-select_collection">#select_collection</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Modules::ClassifierController">
+  <h1 id="class-Modules::ClassifierController" class="class">
+    class Modules::ClassifierController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-advanced_search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">advanced_search</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="advanced_search-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">advanced_search</span>
+  <span class="ruby-ivar">@types_payer</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">payer</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-ivar">@types_receipt</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">receipt</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;modules/classifier/advanced_search&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;visify&#39;</span>}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-all_classifier" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">all_classifier</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO: Do refactor in future</p>
+          
+          
+
+          
+          <div class="method-source-code" id="all_classifier-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">all_classifier</span>
+  <span class="ruby-comment"># @towns = Rails.cache.fetch(&quot;all_classifier&quot;, expiries: 1.month) do</span>
+  <span class="ruby-comment">#   Modules::Classifier.all.group_by{|classf| classf.town_id}.transform_keys do |key|</span>
+  <span class="ruby-comment">#     town = Town.where(id: key).first</span>
+  <span class="ruby-comment">#     town_name = town.title unless town.nil?</span>
+  <span class="ruby-comment">#     town_koatuu = town.koatuu unless town.nil?</span>
+  <span class="ruby-comment">#     #binding.pry</span>
+  <span class="ruby-comment">#     [key,town_name, town_koatuu]</span>
+  <span class="ruby-comment">#   end</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-ivar">@classf</span>= <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Classifier</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">town</span><span class="ruby-value">:nil</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">send_data</span> <span class="ruby-ivar">@classf</span>.<span class="ruby-identifier">to_csv</span>, <span class="ruby-identifier">filename</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;users-#{Date.today}.csv&quot;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">csv</span> { <span class="ruby-identifier">send_data</span> <span class="ruby-ivar">@classf</span>.<span class="ruby-identifier">to_csv</span>, <span class="ruby-identifier">filename</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;users-#{Date.today}.csv&quot;</span> }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># classf.save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-all_classifier_region" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">all_classifier_region</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO: Do refactor in future</p>
+          
+          
+
+          
+          <div class="method-source-code" id="all_classifier_region-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">all_classifier_region</span>
+  <span class="ruby-ivar">@regions</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&quot;all_classifier_region&quot;</span>, <span class="ruby-identifier">expiries</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Classifier</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">group_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">classf</span><span class="ruby-operator">|</span> <span class="ruby-identifier">classf</span>.<span class="ruby-identifier">sk_ter</span>}
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># @classf= Modules::Classifier.where(town:nil).all</span>
+  <span class="ruby-comment"># respond_to do |format|</span>
+  <span class="ruby-comment">#   format.html { send_data @classf.to_csv, filename: &quot;users-#{Date.today}.csv&quot; }</span>
+  <span class="ruby-comment">#   format.csv { send_data @classf.to_csv, filename: &quot;users-#{Date.today}.csv&quot; }</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-comment"># classf.save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-by_edrpou" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">by_edrpou</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="by_edrpou-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">by_edrpou</span>
+  <span class="ruby-ivar">@type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:payers_edrpous</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-value">:payers_edrpous</span> <span class="ruby-operator">:</span> <span class="ruby-value">:recipt_edrpous</span>
+  <span class="ruby-ivar">@code</span> = <span class="ruby-identifier">code</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;visify&#39;</span>}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-by_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">by_type</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="by_type-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 129</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">by_type</span>
+  <span class="ruby-comment"># add &#39;where&#39; filter if type was select</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Classifier</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-identifier">items_by_koatuu</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:region</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;payers&#39;</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:k_form</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>])[<span class="ruby-value">:code</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_column</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_direction</span>].<span class="ruby-identifier">eql?</span>(<span class="ruby-string">&#39;asc&#39;</span>) <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-value">-1</span>
+  <span class="ruby-identifier">sort_col</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_column</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_column</span>] <span class="ruby-operator">:</span> <span class="ruby-value">:pnaz</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">sort_col</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">direction</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>)
+
+  <span class="ruby-ivar">@role</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>]
+  <span class="ruby-comment"># switch between &#39;*.js.erb&#39; depend on sorting params</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_column</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/by_type_results&#39;</span> }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># format.json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-direct_link" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">direct_link</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="direct_link-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">direct_link</span>
+  <span class="ruby-comment"># access from direct link (socials networks)</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-identifier">items_by_koatuu</span>.<span class="ruby-identifier">only</span>(<span class="ruby-value">:pnaz</span>, <span class="ruby-value">:edrpou</span>)
+  <span class="ruby-ivar">@types_payer</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">payer</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-ivar">@types_receipt</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">receipt</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-identifier">payer</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">edrpou</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:payers_edrpous</span>]).<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:payers_edrpous</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">recipt</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">edrpou</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:recipt_edrpous</span>]).<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:recipt_edrpous</span>].<span class="ruby-identifier">present?</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:period</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/share_search&#39;</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/share_adv_search&#39;</span>, <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">payer</span><span class="ruby-operator">:</span> <span class="ruby-identifier">payer</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">recipt</span><span class="ruby-operator">:</span> <span class="ruby-identifier">recipt</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span> } }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-import_dbf" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">import_dbf</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO: Do refactor in future</p>
+          
+          
+
+          
+          <div class="method-source-code" id="import_dbf-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">import_dbf</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:file_name</span>].<span class="ruby-identifier">nil?</span>
+
+    <span class="ruby-identifier">file</span> = <span class="ruby-identifier">upload_file</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:file_name</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:file_name</span>].<span class="ruby-identifier">original_filename</span>
+    <span class="ruby-identifier">file_path</span> = <span class="ruby-identifier">file</span>[<span class="ruby-value">:path</span>].<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">table</span> = <span class="ruby-identifier">read_table_from_file</span> <span class="ruby-identifier">file_path</span>
+
+
+    <span class="ruby-identifier">table</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">5</span>
+        <span class="ruby-identifier">attributes</span> = <span class="ruby-identifier">row</span>.<span class="ruby-identifier">attributes</span>
+        <span class="ruby-identifier">web</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Classifier</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">if</span>(<span class="ruby-identifier">web</span>.<span class="ruby-identifier">fill_params</span> <span class="ruby-identifier">attributes</span>, <span class="ruby-identifier">types</span>)
+          <span class="ruby-comment"># i=i+1</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_data</span>
+  <span class="ruby-identifier">items</span> = <span class="ruby-constant">FundsManager</span>.<span class="ruby-identifier">by_town</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:town_id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">items</span>.<span class="ruby-identifier">any?</span>
+    <span class="ruby-ivar">@items</span> = <span class="ruby-identifier">items</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@items</span> = <span class="ruby-identifier">items_by_koatuu</span>.<span class="ruby-identifier">only</span>(<span class="ruby-value">:pnaz</span>, <span class="ruby-value">:edrpou</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;modules/classifier/search_data&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;visify&#39;</span>}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_data_bot" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_data_bot</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_data_bot-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_data_bot</span>
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">sort_data_bot</span>
+  <span class="ruby-ivar">@judicial_decisions</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">data</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@judicial_decisions</span> }
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_col</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;external_api/judicial_register/sort_data_bot&#39;</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_e_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_e_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_e_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_e_data</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;xls_worker&#39;</span>
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">sort_e_data</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:by_purpose</span>]
+    <span class="ruby-identifier">query_str</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:by_purpose</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">data</span>.<span class="ruby-identifier">select!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">transaction</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">purpose_title</span> = <span class="ruby-identifier">transaction</span>[<span class="ruby-string">&#39;payment_details&#39;</span>].<span class="ruby-identifier">mb_chars</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-identifier">purpose_title</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">query_str</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment">#  payer or receipt name for paywatch iframe</span>
+  <span class="ruby-ivar">@payer_name</span> = <span class="ruby-identifier">classifier_name</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:first</span>).<span class="ruby-identifier">try</span>(<span class="ruby-value">:[]</span>, <span class="ruby-identifier">paywatch_name</span>)
+  <span class="ruby-ivar">@payments</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">data</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-comment"># this variable are using for chart</span>
+  <span class="ruby-ivar">@receivers</span> = <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-node">&quot;/edata/most_received/#{params[:payers_edrpous]}/#{params[:recipt_edrpous]}/#{params[:period]}&quot;</span>, <span class="ruby-identifier">expiries_in</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">hours</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">ExternalApi</span><span class="ruby-operator">::</span><span class="ruby-identifier">most_received</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:payers_edrpous</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:recipt_edrpous</span>], (<span class="ruby-identifier">start_date</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:period</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:period</span>].<span class="ruby-identifier">blank?</span>), (<span class="ruby-identifier">end_date</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:period</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:period</span>].<span class="ruby-identifier">blank?</span>)).<span class="ruby-identifier">first</span>(<span class="ruby-value">10</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment"># TODO should be rewrite using as :template</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/_search_e_data&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;visify&#39;</span>}
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@payments</span> }
+    <span class="ruby-comment"># format.csv { send_data Modules::Classifier.to_csv(data) }</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xls</span> { <span class="ruby-identifier">send_data</span> <span class="ruby-constant">XlsWorker</span>.<span class="ruby-identifier">create_xls_with_e_data</span>(<span class="ruby-identifier">data</span>) }
+    <span class="ruby-comment"># switch between &#39;*.js.erb&#39; depend on sorting params</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_col</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/search_e_data&#39;</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;modules/classifier/sort_e_data&#39;</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_inspections" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_inspections</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_inspections-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_inspections</span>
+  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">sort_inspections</span>
+  <span class="ruby-ivar">@inspections</span> = <span class="ruby-constant">Kaminari</span>.<span class="ruby-identifier">paginate_array</span>(<span class="ruby-identifier">data</span>).<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]).<span class="ruby-identifier">per</span>(<span class="ruby-value">10</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@inspections</span> }
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sort_col</span>].<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;external_api/inspections/sort_inspections&#39;</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-select_collection" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">select_collection</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="select_collection-source">
+            <pre><span class="ruby-comment"># File app/controllers/modules/classifier_controller.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">select_collection</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">Classifier</span>.<span class="ruby-identifier">search_part_title</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query</span>])
+  <span class="ruby-ivar">@items</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">by_koatuu</span>(<span class="ruby-identifier">town</span>.<span class="ruby-identifier">koatuu</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:region</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:role</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;payers&#39;</span>
+  <span class="ruby-ivar">@items</span> = <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:k_form</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Modules</span><span class="ruby-operator">::</span><span class="ruby-constant">ClassifierType</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>])[<span class="ruby-value">:code</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@items</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">10</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

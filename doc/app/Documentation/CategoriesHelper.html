@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module Documentation::CategoriesHelper - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-option_groups_from_collection_for_select">#option_groups_from_collection_for_select</a>
+    
+    <li ><a href="#method-i-tree_option_groups_from_collection_for_select">#tree_option_groups_from_collection_for_select</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Documentation::CategoriesHelper">
+  <h1 id="module-Documentation::CategoriesHelper" class="module">
+    module Documentation::CategoriesHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-option_groups_from_collection_for_select" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">option_groups_from_collection_for_select</span><span
+            class="method-args">(collection, group_method, group_label_method, option_key_method, option_value_method, selected_key = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="option_groups_from_collection_for_select-source">
+            <pre><span class="ruby-comment"># File app/helpers/documentation/categories_helper.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">option_groups_from_collection_for_select</span>(<span class="ruby-identifier">collection</span>, <span class="ruby-identifier">group_method</span>, <span class="ruby-identifier">group_label_method</span>, <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-string">&quot;&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options_for_select</span>, <span class="ruby-identifier">group</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">group_label_string</span> = <span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;group.#{group_label_method}&quot;</span>)
+    <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;optgroup label=\&quot;#{html_escape(group_label_string)}\&quot;&gt;&quot;</span>
+    <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_from_collection_for_select</span>(<span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;group.#{group_method}&quot;</span>), <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span>)
+    <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;/optgroup&gt;&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tree_option_groups_from_collection_for_select" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tree_option_groups_from_collection_for_select</span><span
+            class="method-args">(collection, group_method, group_label_method, option_key_method, option_value_method, selected_key = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tree_option_groups_from_collection_for_select-source">
+            <pre><span class="ruby-comment"># File app/helpers/documentation/categories_helper.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tree_option_groups_from_collection_for_select</span>(<span class="ruby-identifier">collection</span>, <span class="ruby-identifier">group_method</span>, <span class="ruby-identifier">group_label_method</span>, <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">group</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">option_tags</span> = <span class="ruby-identifier">options_from_collection_for_select</span>(
+        <span class="ruby-identifier">group</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">group_method</span>), <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span>  )
+
+    <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:optgroup</span>, <span class="ruby-identifier">option_tags</span>, <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">group</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">option_key_method</span>), <span class="ruby-identifier">label</span><span class="ruby-operator">:</span> <span class="ruby-identifier">group</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">group_label_method</span>) )
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>.<span class="ruby-identifier">html_safe</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

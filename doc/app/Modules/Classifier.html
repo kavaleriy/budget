@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Modules::Classifier - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-to_csv">::to_csv</a>
+    
+    <li ><a href="#method-i-encode_fields">#encode_fields</a>
+    
+    <li ><a href="#method-i-fill_params">#fill_params</a>
+    
+    <li ><a href="#method-i-find_town">#find_town</a>
+    
+    <li ><a href="#method-i-incorrect_characters">#incorrect_characters</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Modules::Classifier">
+  <h1 id="class-Modules::Classifier" class="class">
+    class Modules::Classifier
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="K_FORM_STATE_POWER">K_FORM_STATE_POWER
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-to_csv" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_csv</span><span
+            class="method-args">(payments)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_csv-source">
+            <pre><span class="ruby-comment"># File app/models/modules/classifier.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">to_csv</span> <span class="ruby-identifier">payments</span>
+  <span class="ruby-constant">CSV</span>.<span class="ruby-identifier">generate</span>(<span class="ruby-identifier">headers</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>, <span class="ruby-identifier">col_sep</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;\t&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> [
+        <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;modules.classifier.search_e_data.sum&#39;</span>),
+        <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;modules.classifier.search_e_data.payer&#39;</span>),
+        <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;modules.classifier.search_e_data.recipt&#39;</span>),
+        <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;modules.classifier.search_e_data.purpose&#39;</span>),
+        <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;modules.classifier.search_e_data.date&#39;</span>)
+    ]
+    <span class="ruby-identifier">payments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">payment</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> [
+          <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;amount&#39;</span>],
+          <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;payer_name&#39;</span>],
+          <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;recipt_name&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;recipt_edrpou&#39;</span>],
+          <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;payment_details&#39;</span>],
+          <span class="ruby-identifier">payment</span>[<span class="ruby-string">&#39;trans_date&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;T&#39;</span>)[<span class="ruby-value">0</span>]
+      ]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-encode_fields" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">encode_fields</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="encode_fields-source">
+            <pre><span class="ruby-comment"># File app/models/modules/classifier.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">encode_fields</span>
+  <span class="ruby-identifier">attr_array</span> = [<span class="ruby-identifier">pnaz</span>, <span class="ruby-identifier">adp</span>]
+  <span class="ruby-identifier">attr_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">incorrect_characters</span>(<span class="ruby-identifier">attr</span>)
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-fill_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fill_params</span><span
+            class="method-args">(attributes, types)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fill_params-source">
+            <pre><span class="ruby-comment"># File app/models/modules/classifier.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill_params</span> <span class="ruby-identifier">attributes</span>, <span class="ruby-identifier">types</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;K_FORM&quot;</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">sk_ter</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;SK_TER&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">kvk</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;KVK&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">edrpou</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;EDRPOU&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pnaz</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;PNAZ&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">knaz</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;KNAZ&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">k_ter</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;K_TER&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">adp</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;ADP&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tel1</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;TEL1&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tel2</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;TEL2&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">k_form</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;K_FORM&quot;</span>]
+
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">rkrk</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;RKRK&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;STATUS&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">n_form</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;N_FORM&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">edrpou_v</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;EDRPOU_V&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">naz_v</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;NAZ_V&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mtk</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-string">&quot;MTK&quot;</span>]
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_town</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_town-source">
+            <pre><span class="ruby-comment"># File app/models/modules/classifier.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_town</span>
+  <span class="ruby-identifier">k_ter_tmp</span> = <span class="ruby-identifier">k_ter</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">k_form</span> <span class="ruby-operator">==</span> <span class="ruby-constant">K_FORM_STATE_POWER</span>
+    <span class="ruby-identifier">str</span> = <span class="ruby-identifier">k_ter</span>[<span class="ruby-value">5</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>]
+    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">str</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;00000&quot;</span>)
+      <span class="ruby-identifier">k_ter_tmp</span> = <span class="ruby-identifier">k_ter</span>.<span class="ruby-identifier">gsub</span> <span class="ruby-identifier">str</span>, <span class="ruby-string">&quot;00000&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">town</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:koatuu</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">k_ter_tmp</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">town</span> = <span class="ruby-identifier">town</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-incorrect_characters" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">incorrect_characters</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="incorrect_characters-source">
+            <pre><span class="ruby-comment"># File app/models/modules/classifier.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">incorrect_characters</span> <span class="ruby-identifier">text</span>
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-string">&quot;Ў&quot;</span>, <span class="ruby-string">&quot;І&quot;</span>
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-string">&quot;ў&quot;</span>, <span class="ruby-string">&quot;і&quot;</span>
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-string">&quot;∙&quot;</span>, <span class="ruby-string">&quot;ї&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

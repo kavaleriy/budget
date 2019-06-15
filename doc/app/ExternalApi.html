@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class ExternalApi - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-dani_mist_data">::dani_mist_data</a>
+    
+    <li ><a href="#method-c-data_bot_decisions">::data_bot_decisions</a>
+    
+    <li ><a href="#method-c-data_bot_edr">::data_bot_edr</a>
+    
+    <li ><a href="#method-c-e_data_payments">::e_data_payments</a>
+    
+    <li ><a href="#method-c-e_data_payments_request">::e_data_payments_request</a>
+    
+    <li ><a href="#method-c-edr_data">::edr_data</a>
+    
+    <li ><a href="#method-c-financial_indicators">::financial_indicators</a>
+    
+    <li ><a href="#method-c-financial_indicators_per_year">::financial_indicators_per_year</a>
+    
+    <li ><a href="#method-c-financial_scoring">::financial_scoring</a>
+    
+    <li ><a href="#method-c-financial_scoring_per_year">::financial_scoring_per_year</a>
+    
+    <li ><a href="#method-c-inspections">::inspections</a>
+    
+    <li ><a href="#method-c-most_received">::most_received</a>
+    
+    <li ><a href="#method-c-prozzoro_data">::prozzoro_data</a>
+    
+    <li ><a href="#method-c-tax_debt">::tax_debt</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ExternalApi">
+  <h1 id="class-ExternalApi" class="class">
+    class ExternalApi
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-dani_mist_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dani_mist_data</span><span
+            class="method-args">(path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a
+href="http://localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json">localhost:3000/external_api/edata?payer_edrpous=39883094&recipt_edrpous=09334702&format=json</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="dani_mist_data-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">dani_mist_data</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">http</span>.<span class="ruby-identifier">use_ssl</span> = (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;https&quot;</span>)
+
+  <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>).<span class="ruby-identifier">body</span> <span class="ruby-keyword">rescue</span> {}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-data_bot_decisions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">data_bot_decisions</span><span
+            class="method-args">(erdpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="data_bot_decisions-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">data_bot_decisions</span>(<span class="ruby-identifier">erdpou</span>)
+  <span class="ruby-comment"># encode_url = URI.encode(&quot;https://opendatabot.com/api/v1/fullcompany/#{erdpou}?apiKey=#{ENV[&#39;OPEN_DATA_BOT_API_KEY&#39;]}&quot;)</span>
+  <span class="ruby-comment"># encode_url = URI.encode(&quot;https://opendatabot.com/api/v2/company/39043167?apiKey=#{ENV[&#39;OPEN_DATA_BOT_API_KEY&#39;]}&quot;)</span>
+  <span class="ruby-comment"># test request by edrpou without decisions (40796115)</span>
+  <span class="ruby-comment"># encode_url = URI.encode(&quot;https://opendatabot.com/api/v1/fullcompany/39043167?apiKey=#{ENV[&#39;OPEN_DATA_BOT_API_KEY&#39;]}&quot;)</span>
+
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-node">&quot;http://court.opendatabot.com/api/v1/court?text=#{erdpou}&amp;limit=500&amp;apiKey=#{ENV[&#39;OPEN_DATA_BOT_API_KEY&#39;]}&quot;</span>)
+  <span class="ruby-identifier">patch_request</span>(<span class="ruby-identifier">uri</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-data_bot_edr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">data_bot_edr</span><span
+            class="method-args">(erdpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="data_bot_edr-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">data_bot_edr</span>(<span class="ruby-identifier">erdpou</span>)
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-node">&quot;https://opendatabot.com/api/v2/company/#{erdpou}?apiKey=#{ENV[&#39;OPEN_DATA_BOT_API_KEY&#39;]}&quot;</span>)
+  <span class="ruby-identifier">patch_request</span>(<span class="ruby-identifier">uri</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-e_data_payments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">e_data_payments</span><span
+            class="method-args">(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="e_data_payments-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">e_data_payments</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">end_date</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">cache</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-node">&quot;/e_data_payments/#{payer_erdpou}/#{recipt_edrpou}/#{start_date}/#{end_date}}&quot;</span>, <span class="ruby-identifier">expiries_in</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">hours</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-comment"># get transactions by 91 day from 2016-01-01</span>
+      <span class="ruby-identifier">transactions</span> = []
+      <span class="ruby-identifier">today</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>
+      <span class="ruby-identifier">first_date</span> = <span class="ruby-string">&#39;2016-01-01&#39;</span>.<span class="ruby-identifier">to_date</span>
+      <span class="ruby-identifier">dates</span> = [<span class="ruby-identifier">today</span>]
+
+      <span class="ruby-keyword">while</span> <span class="ruby-identifier">dates</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">first_date</span>
+        <span class="ruby-comment"># date_from can be only &gt;= first_date</span>
+        <span class="ruby-identifier">dates</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">dates</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">days_since</span>(<span class="ruby-value">-91</span>)
+        <span class="ruby-identifier">date_from</span> = <span class="ruby-identifier">dates</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">first_date</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">dates</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">days_since</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">first_date</span>
+        <span class="ruby-identifier">date_to</span> = <span class="ruby-identifier">dates</span>[<span class="ruby-value">-2</span>]
+
+        <span class="ruby-identifier">request</span> = <span class="ruby-identifier">e_data_payments_request</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">date_from</span>, <span class="ruby-identifier">date_to</span>)
+        <span class="ruby-identifier">transactions</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">request</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">transactions</span> = <span class="ruby-identifier">e_data_payments_request</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span>, <span class="ruby-identifier">end_date</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">transactions</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-e_data_payments_request" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">e_data_payments_request</span><span
+            class="method-args">(payer_erdpou, recipt_edrpou, start_date = nil, end_date = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="e_data_payments_request-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">e_data_payments_request</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">end_date</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;net/http&#39;</span>
+  <span class="ruby-identifier">start_date</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">default_start_date</span>
+  <span class="ruby-identifier">end_date</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">default_end_date</span>
+  <span class="ruby-comment"># https://confluence.spending.gov.ua/pages/viewpage.action?pageId=5800614</span>
+  <span class="ruby-comment"># https://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html</span>
+
+  <span class="ruby-comment"># # # OLd</span>
+  <span class="ruby-comment"># uri = URI.parse(&#39;http://api.spending.gov.ua/api/v2/api/transactions/&#39;)</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment"># params = params(payer_erdpou, recipt_edrpou, start_date, end_date)</span>
+  <span class="ruby-comment"># uri.query = URI.encode_www_form(params)</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment"># res = Net::HTTP.get_response(uri)</span>
+  <span class="ruby-comment"># # puts res.body if res.is_a?(Net::HTTPSuccess)</span>
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment"># JSON.parse(res.body)</span>
+
+  <span class="ruby-comment"># # # New</span>
+  <span class="ruby-identifier">url</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-string">&#39;http://api.spending.gov.ua/api/v2/api/transactions/&#39;</span>)
+
+  <span class="ruby-identifier">params</span> = <span class="ruby-identifier">params</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span>, <span class="ruby-identifier">end_date</span>)
+  <span class="ruby-identifier">url</span>.<span class="ruby-identifier">query</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">encode_www_form</span>(<span class="ruby-identifier">params</span>)
+
+  <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">url</span>.<span class="ruby-identifier">port</span>)
+  <span class="ruby-identifier">req</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">request_uri</span>, { <span class="ruby-string">&#39;Content-Type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;application/json&#39;</span> })
+
+  <span class="ruby-identifier">tries</span> <span class="ruby-operator">||=</span> <span class="ruby-value">3</span>
+  <span class="ruby-identifier">p</span> <span class="ruby-node">&quot;try # #{tries}&quot;</span>
+  <span class="ruby-identifier">res</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">req</span>)
+<span class="ruby-comment"># Retry query 3 times to api if SocketError</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">SocketError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-keyword">retry</span> <span class="ruby-keyword">unless</span> (<span class="ruby-identifier">tries</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">zero?</span>
+<span class="ruby-keyword">else</span>
+  <span class="ruby-comment"># puts(res.body)</span>
+  <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">res</span>.<span class="ruby-identifier">body</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-edr_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edr_data</span><span
+            class="method-args">(company_edrpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <pre>TODO: del in feature &#39;http://edr.data-gov-ua.org/api&#39;</pre>
+
+<p>because 28.03.2018 this api was not working and now not used in this app</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edr_data-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 154</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">edr_data</span>(<span class="ruby-identifier">company_edrpou</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">company_edrpou</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-node">&quot;http://edr.data-gov-ua.org/api/companies?where={\&quot;edrpou\&quot;:{\&quot;contains\&quot;:\&quot;#{company_edrpou}\&quot;}}&amp;limit=1&quot;</span>)
+
+    <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+
+    <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>, {<span class="ruby-string">&#39;Content-Type&#39;</span> =<span class="ruby-operator">&gt;</span><span class="ruby-string">&#39;application/json&#39;</span>})
+
+    <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>).<span class="ruby-identifier">body</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-financial_indicators" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">financial_indicators</span><span
+            class="method-args">(edrpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="financial_indicators-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">financial_indicators</span>(<span class="ruby-identifier">edrpou</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}?apiKey=#{ENV[&#39;YOU_SCORE_API_KEY&#39;]}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-financial_indicators_per_year" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">financial_indicators_per_year</span><span
+            class="method-args">(edrpou, year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="financial_indicators_per_year-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">financial_indicators_per_year</span>(<span class="ruby-identifier">edrpou</span>, <span class="ruby-identifier">year</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://api.youscore.com.ua/v1/financialIndicators/#{edrpou}/years/#{year}?apiKey=#{ENV[&#39;YOU_SCORE_API_KEY&#39;]}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-financial_scoring" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">financial_scoring</span><span
+            class="method-args">(edrpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="financial_scoring-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">financial_scoring</span>(<span class="ruby-identifier">edrpou</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://api.youscore.com.ua/v1/financialScoring/#{edrpou}?apiKey=#{ENV[&#39;YOU_SCORE_API_KEY&#39;]}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-financial_scoring_per_year" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">financial_scoring_per_year</span><span
+            class="method-args">(edrpou, year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="financial_scoring_per_year-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">financial_scoring_per_year</span>(<span class="ruby-identifier">edrpou</span>, <span class="ruby-identifier">year</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://api.youscore.com.ua/v1/financialScoring/#{edrpou}/years/#{year}?apiKey=#{ENV[&#39;YOU_SCORE_API_KEY&#39;]}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-inspections" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inspections</span><span
+            class="method-args">(erdpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="inspections-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 93</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">inspections</span>(<span class="ruby-identifier">erdpou</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;http://api.ias.brdo.com.ua/v1/inspection?apiKey=#{ENV[&#39;INSPECTIONS_API_KEY&#39;]}&amp;code=#{erdpou}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>) <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-most_received" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">most_received</span><span
+            class="method-args">(payer_erdpou, recipt_edrpou, start_date, end_date)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>end youscore api</p>
+          
+          
+
+          
+          <div class="method-source-code" id="most_received-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">most_received</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span>, <span class="ruby-identifier">end_date</span>)
+  <span class="ruby-identifier">most_received</span> = []
+  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">e_data_payments</span>(<span class="ruby-identifier">payer_erdpou</span>, <span class="ruby-identifier">recipt_edrpou</span>, <span class="ruby-identifier">start_date</span>, <span class="ruby-identifier">end_date</span>)
+
+  <span class="ruby-identifier">role</span> = (<span class="ruby-identifier">payer_erdpou</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">recipt_edrpou</span>.<span class="ruby-identifier">blank?</span>) <span class="ruby-operator">?</span> <span class="ruby-string">&#39;payer&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;recipt&#39;</span>
+  <span class="ruby-identifier">data</span>.<span class="ruby-identifier">group_by</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-node">&quot;#{role}_edrpou&quot;</span>] }.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">edrpou</span>, <span class="ruby-identifier">payment</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">edrpou</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-value">0</span>)
+      <span class="ruby-identifier">payment</span>.<span class="ruby-identifier">group_by</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-node">&quot;#{role}_name&quot;</span>] }.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">entrepreneur</span>, <span class="ruby-identifier">pay</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">most_received</span> <span class="ruby-operator">&lt;&lt;</span> {
+            <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">entrepreneur</span>,
+            <span class="ruby-identifier">edrpou</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;xxxxxxxxxx&#39;</span>,
+            <span class="ruby-identifier">val</span><span class="ruby-operator">:</span> <span class="ruby-identifier">pay</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">item</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sum</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">item</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_f</span> }
+        }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">most_received</span> <span class="ruby-operator">&lt;&lt;</span> {
+          <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">payment</span>.<span class="ruby-identifier">first</span>[<span class="ruby-node">&quot;#{role}_name&quot;</span>],
+          <span class="ruby-identifier">edrpou</span><span class="ruby-operator">:</span> <span class="ruby-identifier">payment</span>.<span class="ruby-identifier">first</span>[<span class="ruby-node">&quot;#{role}_edrpou&quot;</span>],
+          <span class="ruby-identifier">val</span><span class="ruby-operator">:</span> <span class="ruby-identifier">payment</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">item</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sum</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">item</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_f</span> }
+      }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">most_received</span>.<span class="ruby-identifier">sort_by!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-value">:val</span>] }.<span class="ruby-identifier">reverse!</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-prozzoro_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">prozzoro_data</span><span
+            class="method-args">(id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="prozzoro_data-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 166</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">prozzoro_data</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://lb.api.openprocurement.org/api/0/tenders/#{id}&quot;</span>
+    <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)[<span class="ruby-string">&#39;data&#39;</span>] <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-tax_debt" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tax_debt</span><span
+            class="method-args">(edrpou)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>start youscore api</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tax_debt-source">
+            <pre><span class="ruby-comment"># File lib/external_api.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tax_debt</span>(<span class="ruby-identifier">edrpou</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://api.youscore.com.ua/v1/taxDebt/#{edrpou}?apiKey=#{ENV[&#39;YOU_SCORE_API_KEY&#39;]}&quot;</span>
+  <span class="ruby-identifier">get_request</span>(<span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -5,6 +5,7 @@ module Properting
     before_action :set_map_params, only: %i[show frame]
 
     def set_map_params
+      # binding.pry
       @categories = categories
       @zoom = params[:zoom]
       @map_center = [48.5, 31.2] # center of Ukraine
@@ -104,35 +105,6 @@ module Properting
       # render partial for popup container
       @property = Properting::Property.find(params[:property_id])
       render partial: 'info_popup'
-    end
-
-    def get_heapmap_geo_json
-      propertings = Properting::Property.where(:coordinates.ne => nil).entries
-      geo_json = []
-      propertings.each do |property|
-        next if property[:coordinates].nil? || property[:coordinates][0].nil? || property[:coordinates][1].nil?
-
-        geo_json << {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: property[:coordinates]
-          },
-          properties: {
-            id: property[:id],
-            property: 'house',
-            amount: property[:amount]
-          }
-        }
-      end
-      result = {
-        'type' => 'FeatureCollection',
-        'features' => geo_json
-      }
-
-      respond_to do |format|
-        format.json { render json: result }
-      end
     end
 
     def heapmap; end

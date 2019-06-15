@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Repairing::Appeal - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Slug</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Enum</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Timestamps</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-auto_send_appeal-3F">#auto_send_appeal?</a>
+    
+    <li ><a href="#method-i-category_title">#category_title</a>
+    
+    <li ><a href="#method-i-set_account_number">#set_account_number</a>
+    
+    <li ><a href="#method-i-set_town">#set_town</a>
+    
+    <li ><a href="#method-i-town_title">#town_title</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Repairing::Appeal">
+  <h1 id="class-Repairing::Appeal" class="class">
+    class Repairing::Appeal
+  </h1>
+
+  <section class="description">
+    
+<p><a href="Appeal.html">Appeal</a> for repair</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-auto_send_appeal-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">auto_send_appeal?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="auto_send_appeal-3F-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/appeal.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">auto_send_appeal?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair</span>.<span class="ruby-identifier">layer</span>.<span class="ruby-identifier">town</span>.<span class="ruby-identifier">auto_send_appeal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-category_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">category_title</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="category_title-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/appeal.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">category_title</span>
+  <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">layer</span>.<span class="ruby-identifier">repairing_category</span>.<span class="ruby-identifier">title</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_account_number" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_account_number</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_account_number-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/appeal.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_account_number</span>
+  <span class="ruby-identifier">last_account_number</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Appeal</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">created_at</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">account_number</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">account_number</span> = <span class="ruby-identifier">last_account_number</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_town</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_town-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/appeal.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_town</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">town</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">repair</span>.<span class="ruby-identifier">layer</span>.<span class="ruby-identifier">town</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-town_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">town_title</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="town_title-source">
+            <pre><span class="ruby-comment"># File app/models/repairing/appeal.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">town_title</span>
+  <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">layer</span>.<span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class ExportBudget - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-get_export_budgets_by_user">::get_export_budgets_by_user</a>
+    
+    <li ><a href="#method-i-set_default_pages">#set_default_pages</a>
+    
+    <li ><a href="#method-i-user_can_edit-3F">#user_can_edit?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ExportBudget">
+  <h1 id="class-ExportBudget" class="class">
+    class ExportBudget
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-get_export_budgets_by_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_export_budgets_by_user</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_export_budgets_by_user-source">
+            <pre><span class="ruby-comment"># File app/models/export_budget.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_export_budgets_by_user</span> <span class="ruby-identifier">user</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>
+    <span class="ruby-identifier">res</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">is_admin?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">all</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">where</span>(<span class="ruby-identifier">author</span><span class="ruby-value">:user</span>)
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">year</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-set_default_pages" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_default_pages</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_default_pages-source">
+            <pre><span class="ruby-comment"># File app/models/export_budget.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_default_pages</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pages</span> = {
+      <span class="ruby-value">:title_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+      <span class="ruby-value">:content_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+      <span class="ruby-value">:last_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+      <span class="ruby-value">:content</span> =<span class="ruby-operator">&gt;</span> {
+          <span class="ruby-value">:public_budget</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+          <span class="ruby-value">:city_budget</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+          <span class="ruby-value">:where_is_my_money</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+          <span class="ruby-value">:my_price</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+          <span class="ruby-value">:indicates</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>,
+          <span class="ruby-value">:budget_influence</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>
+      }
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-user_can_edit-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">user_can_edit?</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>after_initialize :set_default_pages, :if =&gt; :new_record?</p>
+          
+          
+
+          
+          <div class="method-source-code" id="user_can_edit-3F-source">
+            <pre><span class="ruby-comment"># File app/models/export_budget.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">user_can_edit?</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-comment"># this function return user permissions for this export budget</span>
+  <span class="ruby-comment"># if user nil he don&#39;t have any permissions</span>
+  <span class="ruby-comment"># if user has role admin he have all permissions</span>
+  <span class="ruby-comment"># else user have permissions only if user author this export budget</span>
+  <span class="ruby-identifier">have_permissions</span> = <span class="ruby-keyword">false</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">have_permissions</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">is_admin?</span>
+    <span class="ruby-operator">!</span><span class="ruby-identifier">have_permissions</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">author</span>)
+    <span class="ruby-operator">!</span><span class="ruby-identifier">have_permissions</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

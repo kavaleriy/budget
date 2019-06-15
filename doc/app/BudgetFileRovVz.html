@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class BudgetFileRovVz - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="BudgetFile.html">BudgetFile</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-readline">#readline</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-BudgetFileRovVz">
+  <h1 id="class-BudgetFileRovVz" class="class">
+    class BudgetFileRovVz
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-readline" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">readline</span><span
+            class="method-args">(row)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="readline-source">
+            <pre><span class="ruby-comment"># File app/models/budget_file_rov_vz.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">readline</span> <span class="ruby-identifier">row</span>
+  <span class="ruby-identifier">ktfk</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;KFK&#39;</span>].<span class="ruby-identifier">to_s</span>
+
+  <span class="ruby-identifier">kekv</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;KOD&#39;</span>].<span class="ruby-identifier">to_s</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">kekv</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_grouped_kekv</span> <span class="ruby-identifier">kekv</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ktfk</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/000$/</span>) <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ktfk</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^900/</span>) <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+
+  <span class="ruby-identifier">ktfk_aaa</span> = <span class="ruby-identifier">ktfk</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>, <span class="ruby-identifier">ktfk</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">3</span>) <span class="ruby-comment">#.ljust(3, &#39;0&#39;)</span>
+  <span class="ruby-identifier">ktfk_aaa</span> = <span class="ruby-string">&#39;80&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ktfk_aaa</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;81&#39;</span>
+  <span class="ruby-identifier">ktfk_aaa</span> = <span class="ruby-string">&#39;90&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ktfk_aaa</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;91&#39;</span>
+
+  <span class="ruby-identifier">kvk</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;KVK&#39;</span>].<span class="ruby-identifier">to_s</span>
+
+  [
+      { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;N1&#39;</span>].<span class="ruby-identifier">to_i</span>, <span class="ruby-value">:fond</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, <span class="ruby-value">:amount_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:plan</span> },
+      { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;N4&#39;</span>].<span class="ruby-identifier">to_i</span>, <span class="ruby-value">:fond</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">7</span>, <span class="ruby-value">:amount_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:plan</span> },
+      { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;N3&#39;</span>].<span class="ruby-identifier">to_i</span>, <span class="ruby-value">:fond</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, <span class="ruby-value">:amount_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:fact</span> },
+      { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;N6&#39;</span>].<span class="ruby-identifier">to_i</span>, <span class="ruby-value">:fond</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">7</span>, <span class="ruby-value">:amount_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:fact</span> },
+  ].<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">:amount</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+
+    <span class="ruby-identifier">item</span> = {
+        <span class="ruby-string">&#39;_amount_type&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">:amount_type</span>],
+        <span class="ruby-string">&#39;amount&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">:amount</span>],
+        <span class="ruby-string">&#39;fond&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">line</span>[<span class="ruby-value">:fond</span>],
+        <span class="ruby-string">&#39;ktfk&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ktfk</span>,
+        <span class="ruby-string">&#39;ktfk_aaa&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ktfk_aaa</span>,
+        <span class="ruby-string">&#39;kvk&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">kvk</span>,
+        <span class="ruby-string">&#39;kekv&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">kekv</span>,
+    }
+
+    <span class="ruby-node">%w(_year _month)</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">item</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">row</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+    }
+
+    <span class="ruby-identifier">item</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">c</span>[<span class="ruby-string">&#39;ktfk&#39;</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/000$/</span>) <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

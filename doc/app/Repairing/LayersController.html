@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Repairing::LayersController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-categories">#categories</a>
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-create_repair_by_addr">#create_repair_by_addr</a>
+    
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-geo_json">#geo_json</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-multiple_destroy">#multiple_destroy</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-respond_with_error_message">#respond_with_error_message</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-subcategories">#subcategories</a>
+    
+    <li ><a href="#method-i-subcategories_select">#subcategories_select</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+    <li ><a href="#method-i-update_repairs_category">#update_repairs_category</a>
+    
+    <li ><a href="#method-i-update_subcategory">#update_subcategory</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Repairing::LayersController">
+  <h1 id="class-Repairing::LayersController" class="class">
+    class Repairing::LayersController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-categories" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">categories</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="categories-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">categories</span>
+  <span class="ruby-identifier">categories</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Category</span>.<span class="ruby-identifier">by_locale</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">category</span>.<span class="ruby-identifier">nil?</span>}.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> {<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">title</span>}}
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">categories</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>POST /repairing/layers POST /repairing/layers.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@repairing_layer</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Layer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">repairing_layer_params</span>)
+  <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">owner</span> = <span class="ruby-identifier">current_user</span>
+  <span class="ruby-comment"># @repairing_layer.repairing_category = Repairing::Category.find(repairing_layer_params[&#39;repairing_category&#39;]) unless repairing_layer_params[&#39;repairing_category&#39;].blank?</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs_file</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-comment"># repairs = read_table_from_file(@repairing_layer.repairs_file.path)</span>
+        <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Repair</span>.<span class="ruby-identifier">import</span>(<span class="ruby-ivar">@repairing_layer</span>, <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs_file</span>.<span class="ruby-identifier">path</span>,<span class="ruby-identifier">params</span>[<span class="ruby-value">:child_category</span>])
+
+        <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+          <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">repair</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">coordinates</span> = <span class="ruby-constant">RepairingGeocoder</span>.<span class="ruby-identifier">calc_coordinates</span>(<span class="ruby-identifier">repair</span>.<span class="ruby-identifier">address</span>, <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">address_to</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">coordinates</span>.<span class="ruby-identifier">blank?</span>
+            <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">validate</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@repairing_layer</span>,
+                    <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.import_file_success&#39;</span>, <span class="ruby-identifier">time</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>))
+                  }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@repairing_layer</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Roo</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span><span class="ruby-operator">::</span><span class="ruby-constant">TypeError</span>
+  <span class="ruby-identifier">message</span> = [<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;invalid_format&#39;</span>)]
+  <span class="ruby-identifier">message</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.check_xlsx_format&#39;</span>)
+  <span class="ruby-identifier">respond_with_error_message</span>(<span class="ruby-identifier">message</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">DBF</span><span class="ruby-operator">::</span><span class="ruby-constant">Column</span><span class="ruby-operator">::</span><span class="ruby-constant">NameError</span>
+  <span class="ruby-identifier">message</span> = [<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;invalid_format&#39;</span>)]
+  <span class="ruby-identifier">message</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.correct_formats&#39;</span>)
+  <span class="ruby-identifier">respond_with_error_message</span>(<span class="ruby-identifier">message</span>)
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-node">&quot;#{t(&#39;repairing.layers.update.error&#39;)}&quot;</span>
+  <span class="ruby-identifier">respond_with_error_message</span>(<span class="ruby-identifier">message</span>)
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_repair_by_addr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_repair_by_addr</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_repair_by_addr-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_repair_by_addr</span>
+  <span class="ruby-ivar">@location</span> = <span class="ruby-identifier">coordinate</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:q</span>])
+  <span class="ruby-ivar">@location1</span> = <span class="ruby-identifier">coordinate</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:q1</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q1</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q1</span>]
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@location1</span>
+      <span class="ruby-identifier">repair</span> = <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs</span>.<span class="ruby-identifier">new</span>(
+          <span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{params[:q]} - #{params[:q1]}&quot;</span>,
+          <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> [<span class="ruby-ivar">@location</span>, <span class="ruby-ivar">@location1</span>],
+          <span class="ruby-identifier">address</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q</span>],
+          <span class="ruby-identifier">edrpou_spending_units</span><span class="ruby-operator">:</span> <span class="ruby-value">00000000</span>,
+          <span class="ruby-identifier">spending_units</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Unknown&#39;</span>,
+          <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-value">1.00</span>,
+          <span class="ruby-identifier">address_to</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q1</span>]
+      )
+      <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">save!</span>
+
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">GeojsonBuilder</span>.<span class="ruby-identifier">build_repair</span>(<span class="ruby-identifier">repair</span>) }
+      <span class="ruby-comment"># format.js { render :search_street }</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@location</span>
+      <span class="ruby-identifier">repair</span> = <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs</span>.<span class="ruby-identifier">new</span>(
+          <span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q</span>],
+          <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@location</span>,
+          <span class="ruby-identifier">address</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:q</span>],
+          <span class="ruby-identifier">edrpou_spending_units</span><span class="ruby-operator">:</span> <span class="ruby-value">00000000</span>,
+          <span class="ruby-identifier">spending_units</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Unknown&#39;</span>,
+          <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-value">1.00</span>,
+      )
+      <span class="ruby-identifier">repair</span>.<span class="ruby-identifier">save!</span>
+
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">GeojsonBuilder</span>.<span class="ruby-identifier">build_repair</span>(<span class="ruby-identifier">repair</span>) }
+      <span class="ruby-comment"># format.js { render :search_house }</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>DELETE /repairing/layers/1 DELETE /repairing/layers/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 197</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">repairing_layers_url</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Layer was successfully destroyed.&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /repairing/layers/1/edit</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;show&#39;</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-geo_json" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">geo_json</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="geo_json-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">geo_json</span>
+  <span class="ruby-identifier">result</span> = {
+      <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;FeatureCollection&quot;</span>,
+      <span class="ruby-identifier">features</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">to_geo_json</span>
+  }
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">result</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /repairing/layers GET /repairing/layers.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Layer</span>.<span class="ruby-identifier">by_locale</span>.<span class="ruby-identifier">visible_to</span>(<span class="ruby-identifier">current_user</span>)
+
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">by_towns</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;town_select&#39;</span>])   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;town_select&#39;</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">find_by_string</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;q&#39;</span>])       <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;q&#39;</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">by_category</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;category&#39;</span>])   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;category&#39;</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">by_status</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;status&#39;</span>])       <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;status&#39;</span>].<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">by_year</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;year&#39;</span>])           <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;year&#39;</span>].<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">sort_column</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sort_direction</span>)
+
+  <span class="ruby-ivar">@repairing_layers</span> = <span class="ruby-ivar">@repairing_layers</span>.<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-multiple_destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">multiple_destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="multiple_destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 205</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">multiple_destroy</span>
+  <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Layer</span>.<span class="ruby-identifier">get_by_ids</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:ids</span>]).<span class="ruby-identifier">destroy_all</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:back</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /repairing/layers/new</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@repairing_layer</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Layer</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-respond_with_error_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">respond_with_error_message</span><span
+            class="method-args">(message)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="respond_with_error_message-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">respond_with_error_message</span>(<span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:back</span>, <span class="ruby-identifier">alert</span><span class="ruby-operator">:</span>  <span class="ruby-identifier">message</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /repairing/layers/1 GET /repairing/layers/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subcategories" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subcategories</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subcategories-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 218</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subcategories</span>
+  <span class="ruby-identifier">subcategories</span> = <span class="ruby-constant">Repairing</span><span class="ruby-operator">::</span><span class="ruby-constant">Category</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">category</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairing_category_id</span>).<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> {<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">title</span>}}
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">subcategories</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subcategories_select" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subcategories_select</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subcategories_select-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 239</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subcategories_select</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>PATCH/PUT /repairing/layers/1 PATCH/PUT /repairing/layers/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 179</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">repairing_layer_params</span>)
+      <span class="ruby-identifier">update_subcategory</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">repairing_layer_params</span>[<span class="ruby-value">:repairing_category</span>].<span class="ruby-identifier">present?</span>
+
+      <span class="ruby-identifier">msg</span> = { <span class="ruby-identifier">class_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;success&#39;</span>, <span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.update.success&#39;</span>) }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">msg</span> = { <span class="ruby-identifier">class_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;danger&#39;</span>, <span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.update.error&#39;</span>) }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_repairs_category" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_repairs_category</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_repairs_category-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_repairs_category</span>
+  <span class="ruby-identifier">update_subcategory</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:update_repairs_category</span>][<span class="ruby-value">:repairing_subcategory</span>])
+  <span class="ruby-identifier">msg</span> = { <span class="ruby-identifier">class_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;success&#39;</span>, <span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;repairing.layers.update.success&#39;</span>) }
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_subcategory" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_subcategory</span><span
+            class="method-args">(category = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_subcategory-source">
+            <pre><span class="ruby-comment"># File app/controllers/repairing/layers_controller.rb, line 226</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_subcategory</span>(<span class="ruby-identifier">category</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-ivar">@repairing_layer</span>.<span class="ruby-identifier">repairs</span>.<span class="ruby-identifier">update_all</span>(<span class="ruby-identifier">repairing_category_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">category</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

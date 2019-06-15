@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Taxonomy - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  
+    <li><span class="include">Mongoid::Timestamps</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-active_or_first_by_town">::active_or_first_by_town</a>
+    
+    <li ><a href="#method-c-active_taxonomies_by_town">::active_taxonomies_by_town</a>
+    
+    <li ><a href="#method-c-check_switch_plan_fact">::check_switch_plan_fact</a>
+    
+    <li ><a href="#method-c-fond_codes">::fond_codes</a>
+    
+    <li ><a href="#method-c-get_active_for_all_towns">::get_active_for_all_towns</a>
+    
+    <li ><a href="#method-c-load_from_csv">::load_from_csv</a>
+    
+    <li ><a href="#method-c-visible_to">::visible_to</a>
+    
+    <li ><a href="#method-i-count_budget_files_by_data_type">#count_budget_files_by_data_type</a>
+    
+    <li ><a href="#method-i-create_tree">#create_tree</a>
+    
+    <li ><a href="#method-i-create_tree_item">#create_tree_item</a>
+    
+    <li ><a href="#method-i-create_tree_sceleton">#create_tree_sceleton</a>
+    
+    <li ><a href="#method-i-expense_codes">#expense_codes</a>
+    
+    <li ><a href="#method-i-expense_ekv_codes">#expense_ekv_codes</a>
+    
+    <li ><a href="#method-i-expense_krk_codes">#expense_krk_codes</a>
+    
+    <li ><a href="#method-i-expense_kvk_codes">#expense_kvk_codes</a>
+    
+    <li ><a href="#method-i-explain">#explain</a>
+    
+    <li ><a href="#method-i-get_author">#get_author</a>
+    
+    <li ><a href="#method-i-get_level">#get_level</a>
+    
+    <li ><a href="#method-i-get_level_with_fonds">#get_level_with_fonds</a>
+    
+    <li ><a href="#method-i-get_plan_fact_rows">#get_plan_fact_rows</a>
+    
+    <li ><a href="#method-i-get_range">#get_range</a>
+    
+    <li ><a href="#method-i-get_rows">#get_rows</a>
+    
+    <li ><a href="#method-i-get_subrows">#get_subrows</a>
+    
+    <li ><a href="#method-i-get_subtree">#get_subtree</a>
+    
+    <li ><a href="#method-i-get_taxonomy_info">#get_taxonomy_info</a>
+    
+    <li ><a href="#method-i-get_total_amounts">#get_total_amounts</a>
+    
+    <li ><a href="#method-i-get_tree">#get_tree</a>
+    
+    <li ><a href="#method-i-get_years">#get_years</a>
+    
+    <li ><a href="#method-i-kpk_aa_codes">#kpk_aa_codes</a>
+    
+    <li ><a href="#method-i-ktpvkmb_codes">#ktpvkmb_codes</a>
+    
+    <li ><a href="#method-i-revenue_codes">#revenue_codes</a>
+    
+    <li ><a href="#method-i-revenue_fond_codes">#revenue_fond_codes</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Taxonomy">
+  <h1 id="class-Taxonomy" class="class">
+    class Taxonomy
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-locale" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">locale</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-active_or_first_by_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">active_or_first_by_town</span><span
+            class="method-args">(town)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="active_or_first_by_town-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">active_or_first_by_town</span>(<span class="ruby-identifier">town</span>)
+  <span class="ruby-identifier">res</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">by_town</span>(<span class="ruby-identifier">town</span>).<span class="ruby-identifier">get_active</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">res</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">by_town</span>(<span class="ruby-identifier">town</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">res</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-active_taxonomies_by_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">active_taxonomies_by_town</span><span
+            class="method-args">(town_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def self.get_active_by_town(town)</p>
+
+<pre class="ruby"><span class="ruby-comment"># get active taxonomies belongs to town</span>
+<span class="ruby-keyword">self</span>.<span class="ruby-identifier">owned_by</span>(<span class="ruby-identifier">town</span>).<span class="ruby-identifier">get_active</span>
+</pre>
+
+<p>end</p>
+          
+          
+
+          
+          <div class="method-source-code" id="active_taxonomies_by_town-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">active_taxonomies_by_town</span>(<span class="ruby-identifier">town_id</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">by_town_id</span>(<span class="ruby-identifier">town_id</span>).<span class="ruby-identifier">get_active</span>
+  <span class="ruby-comment"># self.by_town_id(town_id) # for open town programs with old data</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-check_switch_plan_fact" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_switch_plan_fact</span><span
+            class="method-args">(tax_rot_id,tax_rov_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="check_switch_plan_fact-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 87</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">check_switch_plan_fact</span>(<span class="ruby-identifier">tax_rot_id</span>,<span class="ruby-identifier">tax_rov_id</span>)
+  <span class="ruby-comment"># this function chheck if we can switch plan fact data</span>
+  <span class="ruby-comment"># get two params TaxonomyRot id , and TaxonomyRov id</span>
+  <span class="ruby-comment"># first of all we find these taxonomies</span>
+  <span class="ruby-comment"># after that we group budget files for these taxonomies</span>
+  <span class="ruby-comment"># count these group and if these group more than 1</span>
+  <span class="ruby-comment"># return true</span>
+  <span class="ruby-comment"># else return false</span>
+
+  <span class="ruby-identifier">tax_rot</span> = <span class="ruby-constant">TaxonomyRot</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">tax_rot_id</span>)
+  <span class="ruby-identifier">tax_rov</span> = <span class="ruby-constant">TaxonomyRov</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">tax_rov_id</span>)
+
+  <span class="ruby-identifier">tax_rot</span>.<span class="ruby-identifier">count_budget_files_by_data_type</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tax_rov</span>.<span class="ruby-identifier">count_budget_files_by_data_type</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_active_for_all_towns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_active_for_all_towns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_active_for_all_towns-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_active_for_all_towns</span>
+  <span class="ruby-comment"># this function grouped taxonomies by town</span>
+  <span class="ruby-comment"># and return array of hashes active or first taxonomies from town</span>
+  <span class="ruby-identifier">taxonomies_group_by_town</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">group_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">town</span>}.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">compact</span>
+  <span class="ruby-identifier">result</span> = []
+
+  <span class="ruby-identifier">taxonomies_group_by_town</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">taxonomy</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">active_or_first_by_town</span>(<span class="ruby-identifier">town</span>)
+
+    <span class="ruby-comment"># get town blazon if town exist and town have img</span>
+    <span class="ruby-identifier">town_blazon</span> = <span class="ruby-identifier">town</span>.<span class="ruby-identifier">img</span>.<span class="ruby-identifier">url</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">img</span>.<span class="ruby-identifier">nil?</span>
+
+    <span class="ruby-identifier">town_name</span> = <span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">blank?</span>
+
+    <span class="ruby-comment"># push taxonomy with blazon</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town_name</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">result</span> <span class="ruby-operator">&lt;&lt;</span> {
+          <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">taxonomy</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>,
+          <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">taxonomy</span>.<span class="ruby-identifier">title</span>,
+          <span class="ruby-identifier">town_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town_name</span>,
+          <span class="ruby-identifier">img</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town_blazon</span>
+      }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-visible_to" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visible_to</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visible_to-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 107</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">visible_to</span> <span class="ruby-identifier">user</span>
+  <span class="ruby-identifier">files</span> = <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">is_locked?</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">has_role?</span> <span class="ruby-value">:admin</span>
+              <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span>
+            <span class="ruby-keyword">else</span>
+              <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:town</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">town_model</span>,<span class="ruby-value">:author</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">user</span>,<span class="ruby-keyword">nil</span>])
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-keyword">self</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:owner</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;&#39;</span>)
+          <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-fond_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fond_codes</span><span
+            class="method-args">(locale)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fond_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 581</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">fond_codes</span>(<span class="ruby-identifier">locale</span>)
+  <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/revenue_fond_codes.#{locale || I18n.locale.to_s}.csv&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_from_csv" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_from_csv</span><span
+            class="method-args">(file_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="load_from_csv-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 608</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-identifier">file_name</span>
+  <span class="ruby-identifier">items</span> = {}
+  <span class="ruby-constant">CSV</span>.<span class="ruby-identifier">foreach</span>(<span class="ruby-identifier">file_name</span>, {<span class="ruby-value">:headers</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:col_sep</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;;&quot;</span>}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">items</span>[<span class="ruby-identifier">row</span>[<span class="ruby-value">0</span>]] = { <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">row</span>[<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;mongoid.taxonomy.short_title&#39;</span>)], <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-identifier">row</span>[<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;mongoid.taxonomy.color&#39;</span>)], <span class="ruby-identifier">icon</span><span class="ruby-operator">:</span> <span class="ruby-identifier">row</span>[<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;mongoid.taxonomy.icon&#39;</span>)], <span class="ruby-identifier">description</span><span class="ruby-operator">:</span> <span class="ruby-identifier">row</span>[<span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;mongoid.taxonomy.description&#39;</span>)] }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">items</span>
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  {}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-count_budget_files_by_data_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">count_budget_files_by_data_type</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="count_budget_files_by_data_type-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">count_budget_files_by_data_type</span>
+  <span class="ruby-comment"># this function group budget files by data_type and return count of group</span>
+  <span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">group_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">data_type</span>}.<span class="ruby-identifier">count</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_tree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_tree</span><span
+            class="method-args">(rows, filter = [], levels = [])</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_tree-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 343</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_tree</span> <span class="ruby-identifier">rows</span>, <span class="ruby-identifier">filter</span> = [], <span class="ruby-identifier">levels</span> = []
+  <span class="ruby-identifier">tree</span> = <span class="ruby-identifier">create_tree_sceleton</span> <span class="ruby-identifier">rows</span>, <span class="ruby-identifier">filter</span>, <span class="ruby-identifier">levels</span>
+  <span class="ruby-identifier">create_tree_item</span>(<span class="ruby-identifier">tree</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-explain" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">explain</span><span
+            class="method-args">(taxonomy, key)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="explain-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">explain</span> <span class="ruby-identifier">taxonomy</span>, <span class="ruby-identifier">key</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span> = { } <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">taxonomy</span>] = { } <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">taxonomy</span>].<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">taxonomy</span>][<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">taxonomy</span>][<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">get_taxonomy_info</span>(<span class="ruby-identifier">taxonomy</span>, <span class="ruby-identifier">key</span>) <span class="ruby-operator">||</span> {}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_author" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_author</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_author-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 384</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_author</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">author</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">author</span>.<span class="ruby-identifier">organisation</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">author</span>.<span class="ruby-identifier">email</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_level" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_level</span><span
+            class="method-args">(level)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_level-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_level</span> <span class="ruby-identifier">level</span>
+
+  <span class="ruby-identifier">totals</span> = {}
+
+  <span class="ruby-identifier">rows</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_rows</span>
+
+  <span class="ruby-identifier">rows</span>[<span class="ruby-value">:plan</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>] = { } <span class="ruby-keyword">if</span> <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+
+    <span class="ruby-identifier">months</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">month</span>, <span class="ruby-identifier">rows</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+
+      <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">row</span>[<span class="ruby-value">:amount</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>
+    <span class="ruby-identifier">totals</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;quarters&#39;</span>] = [] <span class="ruby-keyword">if</span> <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;quarters&#39;</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">j</span> = <span class="ruby-identifier">i</span><span class="ruby-operator">*</span><span class="ruby-value">3</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">while</span> <span class="ruby-identifier">j</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">i</span><span class="ruby-operator">*</span><span class="ruby-value">3</span> <span class="ruby-operator">+</span> <span class="ruby-value">4</span>
+        <span class="ruby-identifier">totals</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">j</span>.<span class="ruby-identifier">to_s</span>]
+        <span class="ruby-identifier">j</span> = <span class="ruby-identifier">j</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">levels</span> = {}
+  <span class="ruby-identifier">explanation</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">level</span>.<span class="ruby-identifier">to_s</span>]
+  <span class="ruby-identifier">rows</span>[<span class="ruby-value">:plan</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">months</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">month</span>, <span class="ruby-identifier">rows</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">key</span> = <span class="ruby-identifier">row</span>[<span class="ruby-identifier">level</span>]
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>] = {}
+
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;label&#39;</span>] = <span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">key</span>][<span class="ruby-string">&#39;title&#39;</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">key</span>
+          <span class="ruby-node">%w(icon color)</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">key</span>][<span class="ruby-identifier">k</span>]
+          } <span class="ruby-keyword">unless</span> <span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">year</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">row</span>[<span class="ruby-value">:amount</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>
+    <span class="ruby-identifier">levels</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">value</span>[<span class="ruby-value">:amount</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">year</span>] = [] <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">j</span> = <span class="ruby-identifier">i</span><span class="ruby-operator">*</span><span class="ruby-value">3</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">j</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">i</span><span class="ruby-operator">*</span><span class="ruby-value">3</span> <span class="ruby-operator">+</span> <span class="ruby-value">4</span>
+          <span class="ruby-identifier">value</span>[<span class="ruby-string">&#39;quarters&#39;</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">j</span>.<span class="ruby-identifier">to_s</span>]
+          <span class="ruby-identifier">j</span> = <span class="ruby-identifier">j</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  { <span class="ruby-identifier">totals</span><span class="ruby-operator">:</span> <span class="ruby-identifier">totals</span>, <span class="ruby-identifier">levels</span><span class="ruby-operator">:</span> <span class="ruby-identifier">levels</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_level_with_fonds" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_level_with_fonds</span><span
+            class="method-args">(level,type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_level_with_fonds-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 232</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_level_with_fonds</span> <span class="ruby-identifier">level</span>,<span class="ruby-identifier">type</span>
+  <span class="ruby-identifier">levels</span> = {}
+
+  <span class="ruby-identifier">explanation</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">level</span>.<span class="ruby-identifier">to_s</span>]
+
+  <span class="ruby-identifier">test</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_plan_fact_rows</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>]
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">test</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">test</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+
+      <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>] = { } <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+
+      <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-value">:totals</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-value">:totals</span>].<span class="ruby-identifier">nil?</span>
+
+      <span class="ruby-identifier">months</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">month</span>, <span class="ruby-identifier">rows</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-value">:totals</span>][<span class="ruby-identifier">month</span>] = <span class="ruby-value">0</span>
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = { }
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">fond</span> = <span class="ruby-identifier">row</span>[<span class="ruby-value">:fond</span>]
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>] = {}
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-identifier">key</span> = <span class="ruby-identifier">row</span>[<span class="ruby-identifier">level</span>]
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>][<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>][<span class="ruby-identifier">key</span>] = { <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span> }
+            <span class="ruby-node">%w(title icon color)</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+              <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>][<span class="ruby-identifier">key</span>][<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">explanation</span>[<span class="ruby-identifier">key</span>][<span class="ruby-identifier">k</span>]
+            }
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-identifier">fond</span>][<span class="ruby-identifier">key</span>][<span class="ruby-value">:amount</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">row</span>[<span class="ruby-value">:amount</span>]
+          <span class="ruby-identifier">levels</span>[<span class="ruby-identifier">year</span>][<span class="ruby-value">:totals</span>][<span class="ruby-identifier">month</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">row</span>[<span class="ruby-value">:amount</span>]
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">levels</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_plan_fact_rows" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_plan_fact_rows</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_plan_fact_rows-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 305</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_plan_fact_rows</span>
+  <span class="ruby-identifier">rows</span> = {}
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">data_type</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">data_type</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-value">:plan</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">data_type</span>.<span class="ruby-identifier">to_sym</span>
+
+    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">year</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">_data_type</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_amount_type&#39;</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">data_type</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_amount_type&#39;</span>].<span class="ruby-identifier">to_sym</span>
+          <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>][<span class="ruby-identifier">year</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = [] <span class="ruby-keyword">if</span> <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">_data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
+        }
+      }
+    }
+  }
+  <span class="ruby-identifier">rows</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_range" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_range</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_range-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 339</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_range</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">get_range</span> }.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_rows" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_rows</span><span
+            class="method-args">(year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_rows-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 325</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_rows</span> <span class="ruby-identifier">year</span>
+  <span class="ruby-identifier">combined_rows</span> = {}
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">get_rows</span>(<span class="ruby-identifier">year</span>) }.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">rows</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">combined_rows</span>.<span class="ruby-identifier">deep_merge!</span>(<span class="ruby-identifier">rows</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">this_val</span>, <span class="ruby-identifier">other_val</span><span class="ruby-operator">|</span> <span class="ruby-identifier">this_val</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">other_val</span> }
+  }
+
+  <span class="ruby-identifier">combined_rows</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_subrows" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_subrows</span><span
+            class="method-args">(level, key, filter, rows = get_rows)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_subrows-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 287</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_subrows</span> <span class="ruby-identifier">level</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">filter</span>, <span class="ruby-identifier">rows</span> = <span class="ruby-identifier">get_rows</span>
+
+  <span class="ruby-identifier">subrows</span> = {}
+
+  <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">year</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">subrows</span>[<span class="ruby-identifier">year</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">subrows</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">subrows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = [] <span class="ruby-keyword">if</span> <span class="ruby-identifier">subrows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">subrows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">level</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)} <span class="ruby-keyword">if</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">level</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span>
+      }
+    }
+  }
+
+  <span class="ruby-identifier">subrows</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_subtree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_subtree</span><span
+            class="method-args">(level, key, filter)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_subtree-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 281</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_subtree</span> <span class="ruby-identifier">level</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">filter</span>
+  <span class="ruby-identifier">subrows</span> = <span class="ruby-identifier">get_subrows</span> <span class="ruby-identifier">level</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">filter</span>
+
+  <span class="ruby-identifier">create_tree</span> <span class="ruby-identifier">subrows</span>, <span class="ruby-identifier">filter</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_taxonomy_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_taxonomy_info</span><span
+            class="method-args">(taxonomy, key)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_taxonomy_info-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_taxonomy_info</span> <span class="ruby-identifier">taxonomy</span>, <span class="ruby-identifier">key</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">taxonomy</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;fond&#39;</span>
+      <span class="ruby-identifier">revenue_fond_codes</span>[<span class="ruby-identifier">key</span>]
+
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;kkd_a&#39;</span>, <span class="ruby-string">&#39;kkd_b&#39;</span>, <span class="ruby-string">&#39;kkd_cc&#39;</span>, <span class="ruby-string">&#39;kkd_dd&#39;</span>, <span class="ruby-string">&#39;kkd&#39;</span>
+        <span class="ruby-identifier">revenue_codes</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">ljust</span>(<span class="ruby-value">8</span>, <span class="ruby-string">&#39;0&#39;</span>)]
+
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;ktfk&#39;</span>
+      <span class="ruby-identifier">expense_codes</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">expense_codes</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">ljust</span>(<span class="ruby-value">5</span>, <span class="ruby-string">&#39;0&#39;</span>)] <span class="ruby-operator">||</span> <span class="ruby-identifier">expense_codes</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">ljust</span>(<span class="ruby-value">6</span>, <span class="ruby-string">&#39;0&#39;</span>)]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;ktfk_aaa&#39;</span>
+      <span class="ruby-comment"># expense_codes[key.ljust(5, &#39;0&#39;)] || expense_codes[key.ljust(6, &#39;0&#39;)]</span>
+      <span class="ruby-identifier">expense_codes</span>[<span class="ruby-node">&quot;#{key}000&quot;</span>]
+
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;kpk_aa&#39;</span>
+      <span class="ruby-identifier">kpk_aa_codes</span>[<span class="ruby-identifier">key</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;kpk_cccd&#39;</span>
+      <span class="ruby-identifier">ktpvkmb_codes</span>[<span class="ruby-identifier">key</span>]
+
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;kvk&#39;</span>
+      <span class="ruby-identifier">expense_kvk_codes</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)[<span class="ruby-value">0</span>]]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;kekv&#39;</span>
+      <span class="ruby-identifier">expense_ekv_codes</span>[<span class="ruby-identifier">key</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;krk&#39;</span>
+      <span class="ruby-identifier">expense_krk_codes</span>[<span class="ruby-identifier">key</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_total_amounts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_total_amounts</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get only total amounts (without levels and fonds) only for years (0 month)
+used in public/towns profile for revenues_expences view</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_total_amounts-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 350</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_total_amounts</span>
+  <span class="ruby-identifier">rows</span> = { }
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">data_type</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">data_type</span>
+    <span class="ruby-identifier">data_type</span> = <span class="ruby-value">:plan</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">data_type</span>.<span class="ruby-identifier">blank?</span>
+
+    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">year</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">data_type</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">data_type</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;0&#39;</span>]
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;0&#39;</span>].<span class="ruby-identifier">flatten</span>
+      <span class="ruby-keyword">end</span>
+    }
+  }
+
+  <span class="ruby-identifier">node</span> = {}
+
+  <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dt</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">dt</span>].<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">dt</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">data_type</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_amount_type&#39;</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">dt</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;total&#39;</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;total&#39;</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;amount&#39;</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_tree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_tree</span><span
+            class="method-args">(levels, year)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_tree-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 275</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tree</span> <span class="ruby-identifier">levels</span>, <span class="ruby-identifier">year</span>
+  <span class="ruby-identifier">rows</span> = <span class="ruby-identifier">get_rows</span> <span class="ruby-identifier">year</span>
+
+  <span class="ruby-identifier">create_tree</span> <span class="ruby-identifier">rows</span>, [], <span class="ruby-identifier">levels</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_years" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_years</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_years-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_years</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">budget_files</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">get_years</span> }.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create_tree_item" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_tree_item</span><span
+            class="method-args">(items, taxonomy_key = I18n.t('mongoid.taxonomy.in_total'), taxonomy_name = '-')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_tree_item-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 470</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_tree_item</span>(<span class="ruby-identifier">items</span>, <span class="ruby-identifier">taxonomy_key</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;mongoid.taxonomy.in_total&#39;</span>), <span class="ruby-identifier">taxonomy_name</span> = <span class="ruby-string">&#39;-&#39;</span>)
+  <span class="ruby-identifier">node</span> = {
+      <span class="ruby-string">&#39;amount&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">items</span>[<span class="ruby-value">:amount</span>],
+      <span class="ruby-string">&#39;key&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">taxonomy_key</span>,
+      <span class="ruby-string">&#39;taxonomy&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">taxonomy_name</span>
+  }
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:fact</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:fact</span>][<span class="ruby-string">&#39;_cumulative&#39;</span>]
+    <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:fact</span>].<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">year</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;_cumulative&#39;</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">last_month</span> = <span class="ruby-identifier">months</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">max_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>}
+      <span class="ruby-identifier">annual</span> = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">last_month</span>].<span class="ruby-identifier">deep_dup</span>
+      <span class="ruby-constant">Hash</span>[<span class="ruby-identifier">months</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>}.<span class="ruby-identifier">reverse</span>].<span class="ruby-identifier">each_key</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+
+        <span class="ruby-identifier">prev_month</span> = <span class="ruby-node">&quot;#{month.to_i - 1}&quot;</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">prev_month</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;0&#39;</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>]
+          <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">-=</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>][<span class="ruby-string">&#39;total&#39;</span>]
+
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>][<span class="ruby-string">&#39;fonds&#39;</span>]
+            <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>].<span class="ruby-identifier">each_key</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">fond</span><span class="ruby-operator">|</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>]}
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-identifier">months</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">month</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-keyword">end</span>
+      }
+      <span class="ruby-identifier">months</span>[<span class="ruby-string">&#39;0&#39;</span>] = <span class="ruby-identifier">annual</span>
+    }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:plan</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:plan</span>][<span class="ruby-string">&#39;_cumulative&#39;</span>]
+    <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-value">:plan</span>].<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">year</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;_cumulative&#39;</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">last_month</span> = <span class="ruby-identifier">months</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">max_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>}
+      <span class="ruby-identifier">annual</span> = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">last_month</span>].<span class="ruby-identifier">deep_dup</span>
+
+      <span class="ruby-constant">Hash</span>[<span class="ruby-identifier">months</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_i</span>}.<span class="ruby-identifier">reverse</span>].<span class="ruby-identifier">each_key</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">/</span> <span class="ruby-value">12</span>
+        <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>].<span class="ruby-identifier">each_key</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">fond</span><span class="ruby-operator">|</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] <span class="ruby-operator">/</span> <span class="ruby-value">12</span> }
+
+        <span class="ruby-identifier">prev_month</span> = <span class="ruby-node">&quot;#{month.to_i - 1}&quot;</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">prev_month</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;0&#39;</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>]
+          <span class="ruby-comment"># months[month][&#39;total&#39;] -= months[prev_month][&#39;total&#39;]</span>
+          <span class="ruby-comment">#</span>
+          <span class="ruby-comment"># if months[prev_month][&#39;fonds&#39;]</span>
+          <span class="ruby-comment">#   months[month][&#39;fonds&#39;].each_key{ |fond| months[month][&#39;fonds&#39;][fond] = months[month][&#39;fonds&#39;][fond] - months[prev_month][&#39;fonds&#39;][fond] if months[prev_month][&#39;fonds&#39;][fond]}</span>
+          <span class="ruby-comment"># end</span>
+
+          <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">prev_month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">/</span> <span class="ruby-value">12</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">months</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">month</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      }
+      <span class="ruby-identifier">months</span>[<span class="ruby-string">&#39;0&#39;</span>] = <span class="ruby-identifier">annual</span>
+    }
+  <span class="ruby-keyword">end</span>
+
+  [<span class="ruby-value">:plan</span>, <span class="ruby-value">:fact</span>].<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">dt</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-identifier">dt</span>]
+    <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;amount&#39;</span>][<span class="ruby-identifier">dt</span>].<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">year</span>, <span class="ruby-identifier">months</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">year</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;_cumulative&#39;</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">months</span>[<span class="ruby-string">&#39;0&#39;</span>]
+
+      <span class="ruby-identifier">annual</span> = { <span class="ruby-string">&#39;total&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> }
+      <span class="ruby-identifier">months</span>.<span class="ruby-identifier">each_key</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">annual</span>[<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">months</span>[<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>]
+      }
+      <span class="ruby-identifier">months</span>[<span class="ruby-string">&#39;0&#39;</span>] = <span class="ruby-identifier">annual</span>
+    }
+  }
+
+  <span class="ruby-identifier">children</span> = <span class="ruby-identifier">items</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">in?</span>([<span class="ruby-value">:amount</span>]) }
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;children&#39;</span>] = []
+    <span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">item_key</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">items</span>[<span class="ruby-identifier">item_key</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">item</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-string">&#39;children&#39;</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_tree_item</span>(<span class="ruby-identifier">item</span>, <span class="ruby-identifier">key</span>, <span class="ruby-identifier">item_key</span>)
+      }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_tree_sceleton" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_tree_sceleton</span><span
+            class="method-args">(rows, filter = [], levels = [])</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_tree_sceleton-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 392</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_tree_sceleton</span> <span class="ruby-identifier">rows</span>, <span class="ruby-identifier">filter</span> = [], <span class="ruby-identifier">levels</span> = []
+  <span class="ruby-identifier">tree</span> = { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> {} }
+  <span class="ruby-comment"># return nil if rows[year].nil? || rows[year][month].nil?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">levels</span> <span class="ruby-operator">==</span> []
+    <span class="ruby-identifier">columns</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">columns</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)}
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">columns</span> = <span class="ruby-identifier">levels</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>].<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">month</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">rows</span>[<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">node</span> = <span class="ruby-identifier">tree</span>
+
+        <span class="ruby-identifier">amount</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+
+        <span class="ruby-identifier">data_type</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_amount_type&#39;</span>]
+        <span class="ruby-identifier">fond</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;fond&#39;</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;&#39;</span>
+
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-string">&#39;_cumulative&#39;</span>] = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_cumulative&#39;</span>]
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = {}  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] = (<span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">amount</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = (<span class="ruby-identifier">node</span>[<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">amount</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+
+        <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">taxonomy_key</span><span class="ruby-operator">|</span>
+          <span class="ruby-comment"># TODO - need to update levels selection logic</span>
+          <span class="ruby-identifier">taxonomy_key</span> = <span class="ruby-string">&#39;kpk_aa&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">taxonomy_key</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;ktfk_aaa&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;kpk_aa&#39;</span>]
+          <span class="ruby-identifier">taxonomy_key</span> = <span class="ruby-string">&#39;kpk_cccd&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">taxonomy_key</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;ktfk&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;kpk_cccd&#39;</span>]
+
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">taxonomy_key</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">taxonomy_key</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;ktfk_aaa&#39;</span>
+            <span class="ruby-identifier">taxonomy_value</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;ktfk&#39;</span>].<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>, <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;ktfk&#39;</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">3</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;ktfk&#39;</span>].<span class="ruby-identifier">blank?</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">taxonomy_value</span> = <span class="ruby-identifier">row</span>[<span class="ruby-identifier">taxonomy_key</span>]
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_key</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_key</span>] = {}
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-identifier">node</span> = <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_key</span>]
+
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>] = { <span class="ruby-value">:amount</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">data_type</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">year</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">month</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-string">&#39;total&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">amount</span> }}}} }
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>] = {}
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = <span class="ruby-identifier">amount</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">fond</span>.<span class="ruby-identifier">nil?</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>].<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] =
+                (<span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;total&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">amount</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+
+            <span class="ruby-keyword">unless</span> <span class="ruby-identifier">fond</span>.<span class="ruby-identifier">nil?</span>
+              <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>] = {} <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>].<span class="ruby-identifier">nil?</span>
+              <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>].<span class="ruby-identifier">nil?</span>
+              <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] =
+                  (<span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-identifier">year</span>][<span class="ruby-identifier">month</span>][<span class="ruby-string">&#39;fonds&#39;</span>][<span class="ruby-identifier">fond</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">amount</span>).<span class="ruby-identifier">round</span>(<span class="ruby-value">2</span>)
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>][<span class="ruby-value">:amount</span>][<span class="ruby-identifier">data_type</span>][<span class="ruby-string">&#39;_cumulative&#39;</span>] = <span class="ruby-identifier">row</span>[<span class="ruby-string">&#39;_cumulative&#39;</span>]
+          <span class="ruby-identifier">node</span> = <span class="ruby-identifier">node</span>[<span class="ruby-identifier">taxonomy_value</span>]
+        }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tree</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expense_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expense_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="expense_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 566</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expense_codes</span>
+  <span class="ruby-ivar">@ktfk_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/expense_codes.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@ktfk_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@ktfk_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expense_ekv_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expense_ekv_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="expense_ekv_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 590</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expense_ekv_codes</span>
+  <span class="ruby-ivar">@kekv_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/expense_ekv_codes.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@kekv_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@kekv_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expense_krk_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expense_krk_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="expense_krk_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 600</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expense_krk_codes</span>
+  <span class="ruby-identifier">file_name</span> = <span class="ruby-node">&quot;db/expense_krk_codes.#{self.area}.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span>
+  <span class="ruby-ivar">@krk_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-identifier">file_name</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@krk_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@krk_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expense_kvk_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expense_kvk_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="expense_kvk_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 595</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expense_kvk_codes</span>
+  <span class="ruby-ivar">@kvk_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/expense_kvk_codes.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@kvk_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@kvk_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-kpk_aa_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">kpk_aa_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="kpk_aa_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 571</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">kpk_aa_codes</span>
+  <span class="ruby-ivar">@kpk_aa_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/kvk_mistc.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@kpk_aa_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@kpk_aa_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-ktpvkmb_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ktpvkmb_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ktpvkmb_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 576</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ktpvkmb_codes</span>
+  <span class="ruby-ivar">@ktpvkmb_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/ktpvkmb.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@ktpvkmb_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@ktpvkmb_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-revenue_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">revenue_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="revenue_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 561</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">revenue_codes</span>
+  <span class="ruby-ivar">@kkd_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/revenue_codes.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@kkd_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@kkd_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-revenue_fond_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">revenue_fond_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="revenue_fond_codes-source">
+            <pre><span class="ruby-comment"># File app/models/taxonomy.rb, line 585</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">revenue_fond_codes</span>
+  <span class="ruby-ivar">@fond_info</span> = <span class="ruby-constant">Taxonomy</span>.<span class="ruby-identifier">load_from_csv</span> <span class="ruby-node">&quot;db/revenue_fond_codes.#{I18n.locale.to_s || &#39;uk&#39;}.csv&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@fond_info</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-ivar">@fond_info</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

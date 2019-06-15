@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Calendar - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Mongoid::Document</span>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-get_calendar_by_town">::get_calendar_by_town</a>
+    
+    <li ><a href="#method-c-visible_to">::visible_to</a>
+    
+    <li ><a href="#method-i-change_active_status">#change_active_status</a>
+    
+    <li ><a href="#method-i-import">#import</a>
+    
+    <li ><a href="#method-i-to_xls">#to_xls</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Calendar">
+  <h1 id="class-Calendar" class="class">
+    class Calendar
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-get_calendar_by_town" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_calendar_by_town</span><span
+            class="method-args">(town)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get active calendar if it is, otherwise any first</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_calendar_by_town-source">
+            <pre><span class="ruby-comment"># File app/models/calendar.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_calendar_by_town</span>(<span class="ruby-identifier">town</span>)
+  <span class="ruby-identifier">calendar</span> = <span class="ruby-identifier">where</span>(<span class="ruby-identifier">town_model_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>, <span class="ruby-value">:is_active</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">calendar</span> = <span class="ruby-identifier">where</span>(<span class="ruby-identifier">town_model_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-visible_to" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visible_to</span><span
+            class="method-args">(user,locale)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visible_to-source">
+            <pre><span class="ruby-comment"># File app/models/calendar.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">visible_to</span> <span class="ruby-identifier">user</span>,<span class="ruby-identifier">locale</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_calendars</span>(<span class="ruby-identifier">user</span>).<span class="ruby-identifier">get_calendars_by_locale</span>(<span class="ruby-identifier">locale</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-change_active_status" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">change_active_status</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>active status only for one calendar</p>
+          
+          
+
+          
+          <div class="method-source-code" id="change_active_status-source">
+            <pre><span class="ruby-comment"># File app/models/calendar.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">change_active_status</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_active_changed?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">is_active</span>
+    <span class="ruby-constant">Calendar</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:id</span>.<span class="ruby-identifier">ne</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">town_model_id</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">town_model_id</span>, <span class="ruby-identifier">is_active</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">update_all</span>(<span class="ruby-identifier">is_active</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-import" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">import</span><span
+            class="method-args">(path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="import-source">
+            <pre><span class="ruby-comment"># File app/models/calendar.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">import</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;xls_parser&#39;</span>
+  <span class="ruby-identifier">workbook</span> = <span class="ruby-constant">XlsParser</span>.<span class="ruby-identifier">get_workbook</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">worksheet</span> = <span class="ruby-identifier">workbook</span>[<span class="ruby-value">0</span>]
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">table</span> = <span class="ruby-constant">XlsParser</span>.<span class="ruby-identifier">get_table_hash</span>(<span class="ruby-identifier">worksheet</span>)
+
+    <span class="ruby-identifier">table</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">delete_if</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;_id&#39;</span>}
+
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">table</span>.<span class="ruby-identifier">first</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">worksheet</span> = <span class="ruby-identifier">workbook</span>[<span class="ruby-string">&#39;Events&#39;</span>]
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">events_table</span> = <span class="ruby-constant">XlsParser</span>.<span class="ruby-identifier">get_table_hash</span>(<span class="ruby-identifier">worksheet</span>)
+    <span class="ruby-identifier">events_table</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">new_event</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">event</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">new_event</span>)
+      <span class="ruby-identifier">event</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_xls" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_xls</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_xls-source">
+            <pre><span class="ruby-comment"># File app/models/calendar.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_xls</span>()
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;rubyXL&#39;</span>
+  <span class="ruby-identifier">this_calendar</span> = <span class="ruby-constant">Calendar</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">workbook</span> = <span class="ruby-constant">RubyXL</span><span class="ruby-operator">::</span><span class="ruby-constant">Workbook</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">worksheet</span> = <span class="ruby-identifier">workbook</span>[<span class="ruby-value">0</span>]
+  <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">sheet_name</span> = <span class="ruby-string">&#39;Calendar&#39;</span>
+  <span class="ruby-identifier">i</span>=<span class="ruby-value">0</span>
+  <span class="ruby-identifier">this_calendar</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">attr_value</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">attr_name</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;events&#39;</span>)
+      <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">add_cell</span>(<span class="ruby-value">0</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">attr_name</span>)
+      <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">add_cell</span>(<span class="ruby-value">1</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">attr_value</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">i</span>=<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">worksheet</span> = <span class="ruby-identifier">workbook</span>.<span class="ruby-identifier">add_worksheet</span>(<span class="ruby-string">&#39;Events&#39;</span>)
+  <span class="ruby-identifier">events</span> = <span class="ruby-identifier">this_calendar</span>.<span class="ruby-identifier">events</span>
+  <span class="ruby-comment"># j=0</span>
+   <span class="ruby-identifier">event_attributes</span> = [<span class="ruby-string">&quot;_id&quot;</span>, <span class="ruby-string">&quot;holder&quot;</span>, <span class="ruby-string">&quot;title&quot;</span>, <span class="ruby-string">&quot;icon&quot;</span>, <span class="ruby-string">&quot;description&quot;</span>,  <span class="ruby-string">&quot;starts_at&quot;</span>, <span class="ruby-string">&quot;ends_at&quot;</span>, <span class="ruby-string">&quot;all_day&quot;</span>, <span class="ruby-string">&quot;text_color&quot;</span>, <span class="ruby-string">&quot;color&quot;</span>]
+  <span class="ruby-comment"># event_attributes.each do |attribute_name|</span>
+  <span class="ruby-comment">#   worksheet.add_cell(0, j, attribute_name)</span>
+  <span class="ruby-comment">#   j=j+1</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+  <span class="ruby-comment"># event_attributes = [&quot;title&quot;]</span>
+  <span class="ruby-identifier">events</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">event</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">j</span>=<span class="ruby-value">0</span>
+    <span class="ruby-identifier">event_attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attribute_name</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">i</span><span class="ruby-operator">==</span><span class="ruby-value">0</span>)
+        <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">add_cell</span>(<span class="ruby-identifier">i</span>, <span class="ruby-identifier">j</span>, <span class="ruby-identifier">attribute_name</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">worksheet</span>.<span class="ruby-identifier">add_cell</span>(<span class="ruby-identifier">i</span>, <span class="ruby-identifier">j</span>, <span class="ruby-identifier">event</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">attribute_name</span>))
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">j</span>=<span class="ruby-identifier">j</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">i</span>=<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">workbook</span>.<span class="ruby-identifier">stream</span>.<span class="ruby-identifier">read</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -9,9 +9,11 @@
 = stylesheet_link_tag 'leaflet/markercluster.css', :media => 'all'
 -#= stylesheet_link_tag 'leaflet/leaflet-routing-machine.css', :media => 'all'
 = stylesheet_link_tag 'leaflet/leaflet-routing-machine'
-
--#https://github.com/smeijer/L.GeoSearch/tree/develop/src/js
-= stylesheet_link_tag 'geosearch/l.geosearch.css', :media => 'all'
+-#=stylesheet_link_tag 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'
+-#=javascript_include_tag 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'
+-#=javascript_include_tag 'http://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js'
+=javascript_include_tag 'https://cdn.jsdelivr.net/npm/heatmapjs@2.0.2/heatmap.min.js'
+=javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js'
 
 = content_for :head do
   = javascript_include_tag "leaflet/leaflet.js", id: 'leaflet'
@@ -135,7 +137,8 @@
   = render partial: 'properting/maps/file_upload_by_year'
 
 :javascript
-  var PropertyMap
+  var PropertyMap;
+
 
   PropertyMap = function(options) {
     options = options || {}
@@ -144,14 +147,16 @@
     var svg, g;
     var popup;
     var router;
+    var data = {};
     var info;
-
+    var heatMapLayer = undefined;
     var self = this;
 
     function initMap() {
       var mapSettings = { }
       mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
       map = L.map('map', mapSettings);
+      externalMap = map;
       map.doubleClickZoom.disable();
       if (options.center){
         map.setView(options.center, options.zoom)
@@ -384,7 +389,6 @@
           }
         });
       }
-
       map.addLayer(markers);
 
       var layerOptions = {
@@ -434,12 +438,9 @@
             }
           },
         });
+        // heat_map_show(e.target.feature);
       }
     }
-
-    // function layerIsRoad(layer){
-    //   return layer.feature.properties.property == 'road';
-    // };
 
     function addControl() {
       info = L.control();
@@ -561,6 +562,44 @@
       }
     }
 
+
+
+    function addHeatMarkers(inData){
+      var HeatMapMarkers = inData.features.map(function (p) {
+        var heatMapMarker = {
+          lat: undefined,
+          lng: undefined,
+          value: 1
+        }
+          if (p.geometry.coordinates[0] instanceof Array){
+            heatMapMarker.lat = p.geometry.coordinates[0][0]
+            heatMapMarker.lng = p.geometry.coordinates[0][1]
+          }
+          else if(p.geometry.coordinates[0] && p.geometry.coordinates[1]){
+            heatMapMarker.lat = p.geometry.coordinates[0]
+            heatMapMarker.lng = p.geometry.coordinates[1]
+          }
+          return heatMapMarker;
+        });
+        heatMapLayer = L.heatLayer(HeatMapMarkers)
+
+    }
+
+    function showHeatMap(data){
+      if(heatMapLayer){
+        map.removeLayer(heatMapLayer);
+      }
+      map.removeLayer(markers);
+      addHeatMarkers(data);
+
+      heatMapLayer.addTo(map);
+    }
+    function hideHeatMap(){
+      map.addLayer(markers);
+      map.removeLayer(heatMapLayer);
+    }
+
+
     function addYearLayer(y){
       year = y;
       if(category == "all") {
@@ -663,6 +702,17 @@
       });
     }
 
+
+
+
+
+
+
+
+
+
+
+
     initMap();
     initPopup();
     addGeoSearch();
@@ -671,7 +721,11 @@
 
     return {
       map: map,
+      heatMapLayer: heatMapLayer,
       markers: markers,
+      data: data,
+      showHeatMap: showHeatMap,
+      hideHeatMap: hideHeatMap,
       addGeoJsonSvg: addGeoJsonSvg,
       addGeoJsonPoints: addGeoJsonPoints,
       addGeoJsonPoint: addGeoJsonPoint,
@@ -683,10 +737,26 @@
       removeMarker: removeMarker,
       showAdressMarker: showAdressMarker,
       // addAdditionalLayer: addAdditionalLayer,
+      addHeatMarkers: addHeatMarkers,
       removeAdditionalLayer: removeAdditionalLayer
     }
   }
+  function getAllMarkers() {
 
+        var allMarkersObjArray = []; // for marker objects
+        var allMarkersGeoJsonArray = []; // for readable geoJson markers
+
+        $.each(map._layers, function (ml) {
+
+            if (map._layers[ml].feature) {
+
+                allMarkersObjArray.push(this)
+                allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
+            }
+        })
+
+        console.log(allMarkersObjArray);
+    }
   function callFeaturePopup(e) {
     event.preventDefault();
     $.ajax({
@@ -698,4 +768,3 @@
       }
     })
   }
-

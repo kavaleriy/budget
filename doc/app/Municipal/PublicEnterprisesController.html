@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Municipal::PublicEnterprisesController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Widgets/WidgetsController.html">Widgets::WidgetsController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-analysis_chart">#analysis_chart</a>
+    
+    <li ><a href="#method-i-analysis_chart_codes">#analysis_chart_codes</a>
+    
+    <li ><a href="#method-i-analysis_charts">#analysis_charts</a>
+    
+    <li ><a href="#method-i-codes_by_enterprise_type">#codes_by_enterprise_type</a>
+    
+    <li ><a href="#method-i-compare_chart">#compare_chart</a>
+    
+    <li ><a href="#method-i-enterprise_analysis">#enterprise_analysis</a>
+    
+    <li ><a href="#method-i-reporting_charts">#reporting_charts</a>
+    
+    <li ><a href="#method-i-search_enterprise_data">#search_enterprise_data</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Municipal::PublicEnterprisesController">
+  <h1 id="class-Municipal::PublicEnterprisesController" class="class">
+    class Municipal::PublicEnterprisesController
+  </h1>
+
+  <section class="description">
+    
+<p>common logic of municipal enterprises</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-analysis_chart" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">analysis_chart</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="analysis_chart-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analysis_chart</span> <span class="ruby-comment">###</span>
+  <span class="ruby-ivar">@chart_analysis</span> = <span class="ruby-constant">Charts</span><span class="ruby-operator">::</span><span class="ruby-constant">AnalysisChart</span>.<span class="ruby-identifier">data_chart</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enterprise_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:codes</span>])
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;municipal/public_enterprises/_analysis_chart&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@chart_analysis</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-analysis_chart_codes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">analysis_chart_codes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="analysis_chart_codes-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analysis_chart_codes</span> <span class="ruby-comment">###</span>
+  <span class="ruby-ivar">@codes_form_3</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">GuideFilter</span>.<span class="ruby-identifier">by_type</span>(<span class="ruby-ivar">@enterprise</span>.<span class="ruby-identifier">reporting_type</span>, <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">EnterpriseFile</span><span class="ruby-operator">::</span><span class="ruby-constant">OTHER</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">publish_codes</span>.<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:code</span>)
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;municipal/public_enterprises/_analysis_chart&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@codes_form_3</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-analysis_charts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">analysis_charts</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="analysis_charts-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analysis_charts</span>
+  <span class="ruby-ivar">@charts</span> = <span class="ruby-constant">Charts</span><span class="ruby-operator">::</span><span class="ruby-constant">AnalysisChart</span>.<span class="ruby-identifier">data_chart</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enterprise_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:codes</span>])
+  <span class="ruby-ivar">@code_type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:codes</span>][<span class="ruby-value">0</span>].<span class="ruby-identifier">first</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;municipal/public_enterprises/reporting_charts&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@charts</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-codes_by_enterprise_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">codes_by_enterprise_type</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="codes_by_enterprise_type-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">codes_by_enterprise_type</span>
+  <span class="ruby-ivar">@codes_form</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">GuideFilter</span>.<span class="ruby-identifier">by_type</span>(<span class="ruby-ivar">@enterprise</span>.<span class="ruby-identifier">reporting_type</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:code_type</span>]).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">codes</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-compare_chart" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compare_chart</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="compare_chart-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compare_chart</span>
+  <span class="ruby-ivar">@enterprises</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">Enterprise</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">reporting_type</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@enterprise</span>.<span class="ruby-identifier">reporting_type</span>, <span class="ruby-identifier">town</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@enterprise</span>.<span class="ruby-identifier">town</span>, <span class="ruby-value">:id</span>.<span class="ruby-identifier">in</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enterprises</span>])
+  <span class="ruby-ivar">@chart</span> = <span class="ruby-constant">Charts</span><span class="ruby-operator">::</span><span class="ruby-constant">CompareChart</span>.<span class="ruby-identifier">data_chart</span>(<span class="ruby-ivar">@enterprises</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:code</span>])
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@chart</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enterprise_analysis" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enterprise_analysis</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="enterprise_analysis-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enterprise_analysis</span>
+  <span class="ruby-ivar">@enterprises</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">Enterprise</span>.<span class="ruby-identifier">by_town</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:town</span>])
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;visify&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reporting_charts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reporting_charts</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reporting_charts-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reporting_charts</span>
+  <span class="ruby-ivar">@charts</span> = <span class="ruby-constant">Charts</span><span class="ruby-operator">::</span><span class="ruby-constant">ReportingChart</span>.<span class="ruby-identifier">data_charts</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enterprise_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:codes</span>])
+  <span class="ruby-ivar">@code_type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:codes</span>][<span class="ruby-value">0</span>].<span class="ruby-identifier">first</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@charts</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_enterprise_data" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_enterprise_data</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_enterprise_data-source">
+            <pre><span class="ruby-comment"># File app/controllers/municipal/public_enterprises_controller.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_enterprise_data</span>
+  <span class="ruby-comment"># @codes_form_1 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_1).first.codes</span>
+  <span class="ruby-comment"># @codes_form_2 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::FORM_2).first.codes</span>
+  <span class="ruby-comment"># @codes_form_7 = Municipal::GuideFilter.by_type(@enterprise.reporting_type, Municipal::EnterpriseFile::OTHER).first.codes</span>
+
+
+  <span class="ruby-ivar">@codes_form_1</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">CodeStatus</span>.<span class="ruby-identifier">by_type</span>(<span class="ruby-ivar">@enterprise</span>, <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">EnterpriseFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FORM_1</span>)
+  <span class="ruby-ivar">@codes_form_2</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">CodeStatus</span>.<span class="ruby-identifier">by_type</span>(<span class="ruby-ivar">@enterprise</span>, <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">EnterpriseFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FORM_2</span>)
+  <span class="ruby-ivar">@codes_form_7</span> = <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">CodeStatus</span>.<span class="ruby-identifier">by_type</span>(<span class="ruby-ivar">@enterprise</span>, <span class="ruby-constant">Municipal</span><span class="ruby-operator">::</span><span class="ruby-constant">EnterpriseFile</span><span class="ruby-operator">::</span><span class="ruby-constant">OTHER</span>)
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;municipal/public_enterprises/_search_enterprise_data&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Community::CommunitiesController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../ControllerCaching.html">ControllerCaching</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-build_area">#build_area</a>
+    
+    <li ><a href="#method-i-build_community">#build_community</a>
+    
+    <li ><a href="#method-i-build_community_centers">#build_community_centers</a>
+    
+    <li ><a href="#method-i-build_point">#build_point</a>
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-edit_table">#edit_table</a>
+    
+    <li ><a href="#method-i-geo_json">#geo_json</a>
+    
+    <li ><a href="#method-i-get_communities">#get_communities</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-load">#load</a>
+    
+    <li ><a href="#method-i-map">#map</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Community::CommunitiesController">
+  <h1 id="class-Community::CommunitiesController" class="class">
+    class Community::CommunitiesController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-build_area" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build_area</span><span
+            class="method-args">(town)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="build_area-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_area</span>(<span class="ruby-identifier">town</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>[<span class="ruby-value">:coordinates</span>].<span class="ruby-identifier">blank?</span>
+    {
+        <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Feature&quot;</span>,
+        <span class="ruby-identifier">geometry</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>[<span class="ruby-value">:geometry_type</span>],
+            <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>[<span class="ruby-value">:coordinates</span>]
+        },
+        <span class="ruby-identifier">properties</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{town[:id]}&quot;</span>,
+            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span>,
+            <span class="ruby-identifier">level</span><span class="ruby-value">:town</span>.<span class="ruby-identifier">get_level</span>,
+            <span class="ruby-identifier">communities_count</span><span class="ruby-value">:town</span>.<span class="ruby-identifier">community_communities</span>.<span class="ruby-identifier">length</span>,
+            <span class="ruby-identifier">bounds</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">bounds</span>,
+            <span class="ruby-identifier">center</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">center</span>
+        }
+    }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-build_community" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build_community</span><span
+            class="method-args">(community)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="build_community-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_community</span>(<span class="ruby-identifier">community</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">community</span>[<span class="ruby-value">:coordinates</span>].<span class="ruby-identifier">blank?</span>
+    {
+        <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Feature&quot;</span>,
+        <span class="ruby-identifier">geometry</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>[<span class="ruby-value">:geometry_type</span>],
+            <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>[<span class="ruby-value">:coordinates</span>]
+        },
+        <span class="ruby-identifier">properties</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{community[:id]}&quot;</span>,
+            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">title</span>,
+            <span class="ruby-identifier">link</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">link</span>,
+            <span class="ruby-identifier">participants</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">participants</span>,
+            <span class="ruby-identifier">agree</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">agree</span>,
+            <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">color</span>,
+            <span class="ruby-identifier">icon</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">icon</span>,
+            <span class="ruby-identifier">center</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">center</span>
+        }
+    }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-build_community_centers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build_community_centers</span><span
+            class="method-args">(community)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="build_community_centers-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_community_centers</span>(<span class="ruby-identifier">community</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">community</span>[<span class="ruby-value">:center</span>].<span class="ruby-identifier">blank?</span>
+    {
+        <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Feature&quot;</span>,
+        <span class="ruby-identifier">geometry</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Point&#39;</span>,
+            <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>[<span class="ruby-value">:center</span>]
+        },
+        <span class="ruby-identifier">properties</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{community[:id]}&quot;</span>,
+            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">title</span>,
+            <span class="ruby-identifier">link</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">link</span>,
+            <span class="ruby-identifier">participants</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">participants</span>,
+            <span class="ruby-identifier">agree</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">agree</span>,
+            <span class="ruby-identifier">color</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">color</span>,
+            <span class="ruby-identifier">icon</span><span class="ruby-operator">:</span> <span class="ruby-identifier">community</span>.<span class="ruby-identifier">icon</span>
+        }
+    }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-build_point" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build_point</span><span
+            class="method-args">(town)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="build_point-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_point</span>(<span class="ruby-identifier">town</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">town</span>[<span class="ruby-value">:coordinates</span>].<span class="ruby-identifier">blank?</span>
+    {
+        <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Feature&quot;</span>,
+        <span class="ruby-identifier">geometry</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Point&#39;</span>,
+            <span class="ruby-identifier">coordinates</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>[<span class="ruby-value">:coordinates</span>]
+        },
+        <span class="ruby-identifier">properties</span><span class="ruby-operator">:</span> {
+            <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{town[:id]}&quot;</span>,
+            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">title</span>,
+            <span class="ruby-identifier">level</span><span class="ruby-value">:town</span>.<span class="ruby-identifier">get_level</span>,
+            <span class="ruby-identifier">communities_count</span><span class="ruby-value">:town</span>.<span class="ruby-identifier">community_communities</span>.<span class="ruby-identifier">length</span>
+        }
+    }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>POST /community/communities POST /community/communities.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@community_community</span> = <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">community_community_params</span>)
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@community_community</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Community was successfully created.&#39;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@community_community</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>DELETE /community/communities/1 DELETE /community/communities/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit_table" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit_table</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit_table-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit_table</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;edit_table&#39;</span>, <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">community</span><span class="ruby-operator">:</span> <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:feature_id</span>]) }, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-geo_json" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">geo_json</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="geo_json-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">geo_json</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:area_title</span>]
+    <span class="ruby-identifier">areas</span> = []
+    <span class="ruby-identifier">centers</span> = []
+    <span class="ruby-identifier">town_id</span> = <span class="ruby-constant">Town</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:title</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:area_title</span>]).<span class="ruby-identifier">first</span>[<span class="ruby-string">&#39;id&#39;</span>]
+    <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:town_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">town_id</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">community</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">geo</span> = <span class="ruby-identifier">build_community</span>(<span class="ruby-identifier">community</span>)
+      <span class="ruby-identifier">areas</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">geo</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">geo</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">geo</span> = <span class="ruby-identifier">build_community_centers</span>(<span class="ruby-identifier">community</span>)
+      <span class="ruby-identifier">centers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">geo</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">geo</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@geo_json</span> = { <span class="ruby-string">&quot;areas&quot;</span> =<span class="ruby-operator">&gt;</span> {
+                    <span class="ruby-string">&quot;type&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;FeatureCollection&quot;</span>,
+                    <span class="ruby-string">&quot;features&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">areas</span>
+                },
+                  <span class="ruby-string">&quot;centers&quot;</span> =<span class="ruby-operator">&gt;</span> {
+                      <span class="ruby-string">&quot;type&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;FeatureCollection&quot;</span>,
+                      <span class="ruby-string">&quot;features&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">centers</span>
+                }
+    }
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">result</span> = []
+    <span class="ruby-identifier">towns</span> =
+        <span class="ruby-keyword">case</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>]
+          <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;areas&#39;</span>
+            <span class="ruby-constant">Town</span>.<span class="ruby-identifier">areas</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-constant">Town</span>.<span class="ruby-identifier">cities</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Town</span>.<span class="ruby-identifier">towns</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">towns</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">town</span>.<span class="ruby-identifier">level</span> <span class="ruby-operator">!=</span> <span class="ruby-value">13</span>}.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">town</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">geo</span> = <span class="ruby-keyword">case</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>]
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;areas&#39;</span>
+          <span class="ruby-identifier">build_area</span>(<span class="ruby-identifier">town</span>)
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">build_point</span>(<span class="ruby-identifier">town</span>)
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">result</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">geo</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">geo</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@geo_json</span> = {
+        <span class="ruby-string">&quot;type&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;FeatureCollection&quot;</span>,
+        <span class="ruby-string">&quot;features&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">result</span>
+    }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_json</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_communities" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_communities</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_communities-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_communities</span>
+  <span class="ruby-ivar">@community_communities</span> = <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:town_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:area_id</span>])
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;communities&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /community/communities GET /community/communities.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@community_communities</span> = <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">all</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-load" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="load-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-map" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">map</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="map-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">map</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /community/communities/new</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@community_community</span> = <span class="ruby-constant">Community</span><span class="ruby-operator">::</span><span class="ruby-constant">Community</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>GET /community/communities/1 GET /community/communities/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>PATCH/PUT /community/communities/1 PATCH/PUT /community/communities/1.json</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/community/communities_controller.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">community_community_params</span>[<span class="ruby-value">:coordinates</span>].<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:coordinates</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:coordinates</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">community_community_params</span>[<span class="ruby-value">:coordinates</span>]))
+    <span class="ruby-keyword">rescue</span>
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@flash</span> = {<span class="ruby-string">&quot;message&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Помилка збереження даних: перевірте поле Межі громади (геокоординати)&quot;</span>, <span class="ruby-string">&quot;class&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;alert-danger&quot;</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+        <span class="ruby-keyword">return</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">community_community_params</span>[<span class="ruby-value">:center</span>].<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:center</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:center</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">community_community_params</span>[<span class="ruby-value">:center</span>]))
+    <span class="ruby-keyword">rescue</span>
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@flash</span> = {<span class="ruby-string">&quot;message&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Помилка збереження даних: перевірте поле Центр громади (геокоординати)&quot;</span>, <span class="ruby-string">&quot;class&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;alert-danger&quot;</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+        <span class="ruby-keyword">return</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">agree</span> = <span class="ruby-identifier">community_community_params</span>[<span class="ruby-value">:agree</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:agree</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">agree</span>)
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@community_community</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">community_community_params</span>.<span class="ruby-identifier">except!</span>(<span class="ruby-value">:coordinates</span>, <span class="ruby-value">:center</span>, <span class="ruby-value">:agree</span>))
+      <span class="ruby-ivar">@flash</span> = {<span class="ruby-string">&quot;message&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Дані успішно збережені&quot;</span>, <span class="ruby-string">&quot;class&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;alert-success&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@flash</span> = {<span class="ruby-string">&quot;message&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Помилка збереження даних&quot;</span>, <span class="ruby-string">&quot;class&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;alert-danger&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -12,7 +12,7 @@
   = render partial: 'map_ukraine'
 
 :javascript
-
+  var aPropertyMap = {}
   $(document).ready(function() {
     var embed_code = aMapEmbedCode();
     var src = 'https://' + window.location.host + "/properting/maps/frame/6/";
@@ -21,22 +21,22 @@
     var categories, category = "all"
     var categories_icons = #{Properting::Category.get_category_icons}
 
-    var property_status = ''
+    var property_status = '';
 
-    var town = '#{@town}'
+    var town = '#{@town}';
     var selected_year='#{@year}';
 
-    var aPropertyMap = PropertyMap({
+    aPropertyMap = PropertyMap({
       zoom: parseInt('#{@zoom}'),
       minZoom: 3,
       maxZoom: 20,
       center: JSON.parse('#{@map_center.to_json}'),
       scrollWheelZoom: true
-    })
+    });
     $('#map').on('hide.bs.modal', function(){
       aPropertyMap.map.scrollWheelZoom.enable();
       aPropertyMap.map.dragging.enable();
-    })
+    });
     // add markers
     $.ajax({
       method: 'get',
@@ -47,6 +47,8 @@
       dataType: 'json',
     })
     .done(function (data) {
+     aPropertyMap.data = data;
+     aPropertyMap.heatMapLayerActive = false;
 
       function addMarkers() {
         var filtered_data = {
@@ -64,7 +66,6 @@
             filtered_data.features.push(feature)
           }
         })
-
         aPropertyMap.addGeoJsonPoints(filtered_data, getPoint, {
           clustered: true,
           style: {
@@ -78,6 +79,24 @@
           //getInfoContent: getInfoContent,
           selectPath: false,
           getPoint: getPoint
+        })
+
+
+        $(".radio").click(function () {
+          aPropertyMap.heatMapLayerActive = $("input:radio[name='hitmap']:checked").attr("data-value")
+          if (aPropertyMap.heatMapLayerActive == 1){
+            aPropertyMap.showHeatMap(filtered_data);
+          }else{
+            aPropertyMap.hideHeatMap();
+          }
+        });
+        aPropertyMap.map.on('zoomend', function(e){
+          var target = e.target;
+          if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
+            aPropertyMap.hideHeatMap();
+          }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
+            aPropertyMap.showHeatMap(filtered_data);
+          }
         })
       }
 
@@ -147,19 +166,19 @@
         addMarkers()
       });
 
-      $('.road-cond-select a').click(function(){
-        var $this = $(this);
-        var tileName = $this.attr('href').substring(1);
-        $this.toggleClass('active');
-        if($this.hasClass('active')){
-          aPropertyMap.addAdditionalLayer(tileName)
-        }else{
-          aPropertyMap.removeAdditionalLayer(tileName);
-        }
-      });
+      // $('.road-cond-select a').click(function(){
+      //   var $this = $(this);
+      //   var tileName = $this.attr('href').substring(1);
+      //   $this.toggleClass('active');
+      //   if($this.hasClass('active')){
+      //     aPropertyMap.addAdditionalLayer(tileName)
+      //   }else{
+      //     aPropertyMap.removeAdditionalLayer(tileName);
+      //   }
+      // });
 
       $("#year_select").on("change", function(){
-        selected_year = $(this).val()
+        selected_year = $(this).val();
 
         addMarkers()
       });
@@ -253,4 +272,6 @@
       var content = e.latlng.toString()
       return content
     }
+
+
   })
