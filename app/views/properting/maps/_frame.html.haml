@@ -80,16 +80,9 @@
           selectPath: false,
           getPoint: getPoint
         })
-
-
-        $(".radio").click(function () {
-          aPropertyMap.heatMapLayerActive = $("input:radio[name='hitmap']:checked").attr("data-value")
-          if (aPropertyMap.heatMapLayerActive == 1){
-            aPropertyMap.showHeatMap(filtered_data);
-          }else{
-            aPropertyMap.hideHeatMap();
-          }
-        });
+        // if(filtered_data.features.length){
+        //   aPropertyMap.filtered_data = filtered_data
+        // }
         aPropertyMap.map.on('zoomend', function(e){
           var target = e.target;
           if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
@@ -98,9 +91,20 @@
             aPropertyMap.showHeatMap(filtered_data);
           }
         })
+        $(".status-btns [data-status='heatmap']").click(function (e) {
+          aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
+          if (aPropertyMap.heatMapLayerActive){
+            aPropertyMap.showHeatMap(filtered_data);
+          }else{
+            aPropertyMap.hideHeatMap();
+          }
+        });
+
+
       }
 
       addMarkers()
+
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
 

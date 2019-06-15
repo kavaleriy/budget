@@ -565,12 +565,21 @@
 
 
     function addHeatMarkers(inData){
-      var HeatMapMarkers = inData.features.map(function (p) {
-        var heatMapMarker = {
-          lat: undefined,
-          lng: undefined,
-          value: 1
-        }
+      var heatMapMarkers = [];
+
+      inData.features.forEach(function (p) {
+        var properties = p.properties;
+        var square = parseFloat(properties.property_square);
+        var price = parseFloat(properties.property_prise);
+
+        if(!isNaN(square) && !isNaN(price) && price && square){
+          var heatMapMarker = {
+            lat: undefined,
+            lng: undefined,
+            value: price / square,
+            square: square,
+            price: price
+          }
           if (p.geometry.coordinates[0] instanceof Array){
             heatMapMarker.lat = p.geometry.coordinates[0][0]
             heatMapMarker.lng = p.geometry.coordinates[0][1]
@@ -579,9 +588,13 @@
             heatMapMarker.lat = p.geometry.coordinates[0]
             heatMapMarker.lng = p.geometry.coordinates[1]
           }
-          return heatMapMarker;
+          heatMapMarkers.push(heatMapMarker);
+          };
+
         });
-        heatMapLayer = L.heatLayer(HeatMapMarkers)
+        console.log('heatMapLayer', heatMapMarkers);
+        console.log('markers', markers);
+        heatMapLayer = L.heatLayer(heatMapMarkers)
 
     }
 
