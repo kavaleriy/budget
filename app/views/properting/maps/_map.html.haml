@@ -566,35 +566,50 @@
 
     function addHeatMarkers(inData){
       var heatMapMarkers = [];
-
-      inData.features.forEach(function (p) {
-        var properties = p.properties;
-        var square = parseFloat(properties.property_square);
-        var price = parseFloat(properties.property_prise);
-
-        if(!isNaN(square) && !isNaN(price) && price && square){
-          var heatMapMarker = {
-            lat: undefined,
-            lng: undefined,
-            value: price / square,
-            square: square,
-            price: price
+      var maxValue = 1;
+      for(key in inData){
+        var point = inData[key];
+        var price = 0;
+        var square = 0;
+        point.features.forEach(function(item){
+          var tmpPrice = parseFloat(item.properties.property_prise)
+          if(!isNaN(tmpPrice)){
+            price += tmpPrice;
           }
-          if (p.geometry.coordinates[0] instanceof Array){
-            heatMapMarker.lat = p.geometry.coordinates[0][0]
-            heatMapMarker.lng = p.geometry.coordinates[0][1]
+          var tmpSquare = parseFloat(item.properties.property_square)
+          if(!isNaN(tmpSquare)){
+            square += tmpSquare;
           }
-          else if(p.geometry.coordinates[0] && p.geometry.coordinates[1]){
-            heatMapMarker.lat = p.geometry.coordinates[0]
-            heatMapMarker.lng = p.geometry.coordinates[1]
-          }
-          heatMapMarkers.push(heatMapMarker);
-          };
 
-        });
-        console.log('heatMapLayer', heatMapMarkers);
-        console.log('markers', markers);
-        heatMapLayer = L.heatLayer(heatMapMarkers)
+        })
+        var value = price / square;
+
+        if(value > maxValue){
+          maxValue = value;
+        }
+        var heatMapMarker = {
+          lat: 0,
+          lng: 0,
+          value:  value,
+          square: square,
+          price: price
+        }
+
+        if (point.coords[0] instanceof Array){
+            heatMapMarker.lat = point.coords[0][0]
+            heatMapMarker.lng = point.coords[0][1]
+        }
+        else if(point.coords[0] && point.coords[1]){
+          heatMapMarker.lat = point.coords[0]
+          heatMapMarker.lng = point.coords[1]
+        }
+
+        heatMapMarkers.push(heatMapMarker);
+      }
+      heatMapLayer = L.heatLayer(heatMapMarkers, {
+        max: maxValue,
+        minOpacity: 0.6
+      });
 
     }
 

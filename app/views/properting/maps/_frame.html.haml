@@ -58,52 +58,65 @@
           last_year_data: data.last_year_data
         }
 
+        if(property_status == 'heatmap'){
+          property_status = ''
+        }
+        var heatMapdata = {}
         data.features.forEach(function (feature){
           if ((selected_year == '' || feature.properties.year == selected_year)
            && (town == '' || feature.properties.t_id == town)
            && (category == 'all' || category == feature.properties.p_c_id)
            && (property_status == '' || property_status == feature.properties.status)) {
             filtered_data.features.push(feature)
-          }
-        })
-        aPropertyMap.addGeoJsonPoints(filtered_data, getPoint, {
-          clustered: true,
-          style: {
-            opacity: 0.8,
-          },
-          hoverStyle: {
-            opacity: 1,
-          },
-          featureClickCallback: onFeatureClick,
-          getMapPopupContent: getMapPopupContent,
-          //getInfoContent: getInfoContent,
-          selectPath: false,
-          getPoint: getPoint
-        })
-        // if(filtered_data.features.length){
-        //   aPropertyMap.filtered_data = filtered_data
-        // }
-        aPropertyMap.map.on('zoomend', function(e){
-          var target = e.target;
-          if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
-            aPropertyMap.hideHeatMap();
-          }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
-            aPropertyMap.showHeatMap(filtered_data);
-          }
-        })
-        $(".status-btns [data-status='heatmap']").click(function (e) {
-          aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
-          if (aPropertyMap.heatMapLayerActive){
-            aPropertyMap.showHeatMap(filtered_data);
-          }else{
-            aPropertyMap.hideHeatMap();
-          }
-        });
+            if(!heatMapdata[feature.geometry.coordinates]){
+              heatMapdata[feature.geometry.coordinates] = {
+                coords: feature.geometry.coordinates,
+                features: []
+              }
+            }
+            heatMapdata[feature.geometry.coordinates].features.push(feature);
 
+          }
+        })
+        if(!aPropertyMap.heatMapLayerActive){
+          aPropertyMap.addGeoJsonPoints(filtered_data, getPoint, {
+            clustered: true,
+            style: {
+              opacity: 0.8,
+            },
+            hoverStyle: {
+              opacity: 1,
+            },
+            featureClickCallback: onFeatureClick,
+            getMapPopupContent: getMapPopupContent,
+            //getInfoContent: getInfoContent,
+            selectPath: false,
+            getPoint: getPoint
+          })
+        }
+
+        aPropertyMap.heatMapdata = heatMapdata
 
       }
 
       addMarkers()
+
+      aPropertyMap.map.on('zoomend', function(e){
+        var target = e.target;
+        if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
+          aPropertyMap.hideHeatMap();
+        }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
+          aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+        }
+      })
+      $(".status-btns [data-status='heatmap']").click(function (e) {
+        aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
+        if (aPropertyMap.heatMapLayerActive){
+          aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+        }else{
+          aPropertyMap.hideHeatMap();
+        }
+      });
 
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
