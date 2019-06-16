@@ -67,14 +67,17 @@
            && (town == '' || feature.properties.t_id == town)
            && (category == 'all' || category == feature.properties.p_c_id)
            && (property_status == '' || property_status == feature.properties.status)) {
-            filtered_data.features.push(feature)
-            if(!heatMapdata[feature.geometry.coordinates]){
-              heatMapdata[feature.geometry.coordinates] = {
-                coords: feature.geometry.coordinates,
-                features: []
+            if(feature.properties.per_meter > 5){
+              filtered_data.features.push(feature)
+              if(!heatMapdata[feature.geometry.coordinates]){
+                heatMapdata[feature.geometry.coordinates] = {
+                  coords: feature.geometry.coordinates,
+                  features: []
+                }
               }
+              heatMapdata[feature.geometry.coordinates].features.push(feature);
+
             }
-            heatMapdata[feature.geometry.coordinates].features.push(feature);
 
           }
         })
@@ -83,6 +86,7 @@
             clustered: true,
             style: {
               opacity: 0.8,
+
             },
             hoverStyle: {
               opacity: 1,

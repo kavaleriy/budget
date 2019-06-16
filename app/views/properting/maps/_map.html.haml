@@ -91,6 +91,8 @@
         padding: 0;
         .leaflet-popup-content{
           margin: 0;
+          overflow-x: auto;
+          overflow-y: auto;
         }
       }
       .leaflet-popup-tip-container{
@@ -151,6 +153,11 @@
     var info;
     var heatMapLayer = undefined;
     var self = this;
+    var colorScale = d3.scale
+      .linear()
+      .range(['green','green', 'yellow', 'red'])
+      .domain([250 ,100, 27, 5]);
+
 
     function initMap() {
       var mapSettings = { }
@@ -346,6 +353,20 @@
     function addGeoJsonPoint(data, getPoint, options) {
       setLastPropertyUpdate(data.last_update);
       setLastPropertyDate(data.last_year_data);
+      // var minValue = d3.min(
+      //   data.features.map(function(item){
+      //     return item.properties.per_meter;
+      //   })
+      // );
+      //
+      // var maxValue = d3.max(data.features.map(
+      //   function(item){
+      //     return item.properties.per_meter;
+      //   })
+      // );
+
+
+      // colorScale.domain([250 ,100, 27, 5]);
 
       options = options || {};
 
@@ -355,7 +376,29 @@
       // handle a click on a cluster
       // if click on cluster on map has a maxZooming allow do code and show list of markers
       if (window.location.href.indexOf('edit') == (-1)) {
-        markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: true, }) : new L.layerGroup();
+        markers = L.markerClusterGroup({
+          spiderfyOnMaxZoom: false,
+          iconCreateFunction: function(cluster) {
+            var arr = cluster.getAllChildMarkers()
+            var sum = function(){
+               var count = 0;
+               for (var i = arr.length; i--;) {
+                 count += parseInt(arr[i].feature.properties.per_meter) || 0;
+               }
+               return count;
+            }()
+            var clusterIcon = L.divIcon({
+              html: '<div style="background-color: '+ colorScale(sum) +'; border: 1px solid rgba(70,70,70, 0.5)"><span>' + arr
+              .length
+               + '</span></div>',
+              iconSize: 36,
+              className: 'marker-cluster',
+            });
+            return clusterIcon;
+          }
+        });
+
+        // markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30,fillColor: 'black', spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: true, }) : new L.layerGroup();
         markers.on('clusterclick', function (a) {
           if (map.getZoom() >= 20) {
             var markers = a.layer.getAllChildMarkers();
@@ -368,7 +411,7 @@
               var marker_square =
                   (markers[i].feature.properties.property_square) ? markers[i].feature.properties.property_square : ' - ';
               var marker_prise =
-                  (markers[i].feature.properties.property_prise) ? markers[i].feature.properties.property_prise : ' - ';
+                  (markers[i].feature.properties.property_price) ? markers[i].feature.properties.property_price : ' - ';
 
               var markerLiStr = '<span>' + (i + 1)
                   + '. </span><a class="property-info" data-property_id="'
@@ -409,11 +452,22 @@
       function getPointToLayer(feature, latlng) {
         var point = getPoint(feature.properties);
 
-        return L.marker(latlng, {
-          icon: point.icon,
-          opacity: 1,
-          draggable: point.draggable
-        });
+        if(!aPropertyMap.heatMapLayerActive){
+          return L.circleMarker(latlng, {
+            radius: 8,
+            fillColor: colorScale(feature.properties.per_meter),
+            color: colorScale(feature.properties.per_meter),
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+          });
+        }else{
+          return L.marker(latlng, {
+            icon: point.icon,
+            opacity: 1,
+            draggable: point.draggable
+          });
+        }
       }
 
       function onEachFeature(feature, layer) {
@@ -572,7 +626,7 @@
         var price = 0;
         var square = 0;
         point.features.forEach(function(item){
-          var tmpPrice = parseFloat(item.properties.property_prise)
+          var tmpPrice = parseFloat(item.properties.property_price)
           if(!isNaN(tmpPrice)){
             price += tmpPrice;
           }
@@ -587,6 +641,7 @@
         if(value > maxValue){
           maxValue = value;
         }
+
         var heatMapMarker = {
           lat: 0,
           lng: 0,

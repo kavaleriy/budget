@@ -65,9 +65,10 @@ class Properting::GeojsonBuilder
       t_id: (property['layer']['town_id'] if property['layer_id']).to_s, # town_id
       year: year,
       status: (property['layer']['status'] if property['layer_id']).to_s,
-      property_title: (property['layer']['property_title'] if property['layer']['property_title']).to_s,
-      property_square: (property['layer']['property_square'] if property['layer']['property_square']).to_s,
-      property_prise: (property['layer']['property_prise'] if property['layer']['property_prise']).to_s
+      property_title: property['layer']['property_title'],
+      property_square: property['layer']['property_square'],
+      property_price: property['layer']['property_price'],
+      per_meter: property['layer']['per_meter']
     }
   end
 
