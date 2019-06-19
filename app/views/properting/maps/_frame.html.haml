@@ -47,8 +47,8 @@
       dataType: 'json',
     })
     .done(function (data) {
-     aPropertyMap.data = data;
-     aPropertyMap.heatMapLayerActive = false;
+      aPropertyMap.data = data;
+      aPropertyMap.heatMapLayerActive = false;
 
       function addMarkers() {
         var filtered_data = {
@@ -76,34 +76,28 @@
                 }
               }
               heatMapdata[feature.geometry.coordinates].features.push(feature);
-
             }
-
           }
-        })
+        });
         if(!aPropertyMap.heatMapLayerActive){
           aPropertyMap.addGeoJsonPoints(filtered_data, getPoint, {
             clustered: true,
             style: {
               opacity: 0.8,
-
             },
             hoverStyle: {
               opacity: 1,
             },
             featureClickCallback: onFeatureClick,
             getMapPopupContent: getMapPopupContent,
-            //getInfoContent: getInfoContent,
             selectPath: false,
             getPoint: getPoint
           })
         }
-
         aPropertyMap.heatMapdata = heatMapdata
-
       }
 
-      addMarkers()
+      addMarkers();
 
       aPropertyMap.map.on('zoomend', function(e){
         var target = e.target;
@@ -112,7 +106,7 @@
         }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
           aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
         }
-      })
+      });
       $(".status-btns [data-status='heatmap']").click(function (e) {
         aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
         if (aPropertyMap.heatMapLayerActive){
@@ -121,7 +115,6 @@
           aPropertyMap.hideHeatMap();
         }
       });
-
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
 
@@ -138,40 +131,40 @@
         }
 
         //updateCategoryControl()
-        function updateCategoryControl(){
-          if(category == "all") {
-            $('#subcategories').html('');
-          } else {
-            var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
-            $.each(categories[category], function(i,d){
-              content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
-            });
-            $('#subcategories').html(content);
-            var all_work = $('input[value="all"]');
-            all_work.on("change", function(){
-              var subcategories = $('#subcategories input[type="checkbox"]');
-              if($(this).attr('checked')){
-                subcategories.removeAttr('checked');
-                subcategories.prop('checked', false);
-
-              } else {
-                subcategories.attr('checked','checked');
-                subcategories.prop('checked', true);
-              }
-            });
-            $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
-              var checked = $('#subcategories input[type="checkbox"]:checked');
-
-              if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
-                all_work.removeAttr('checked');
-                all_work.prop('checked', false);
-              } else {
-                all_work.attr('checked','checked');
-                all_work.prop('checked', true);
-              }
-            })
-          }
-        }
+        // function updateCategoryControl(){
+        //   if(category == "all") {
+        //     $('#subcategories').html('');
+        //   } else {
+        //     var content = "<div class='checkbox'><label style='font-weight:bold;'><input type='checkbox' value='all' checked='checked'>всі види робіт</label></div>";
+        //     $.each(categories[category], function(i,d){
+        //       content += "<div class='checkbox'><label><input type='checkbox' value='" + d._id.$oid + "' checked='checked'>" + d.title + "</label></div>"
+        //     });
+        //     $('#subcategories').html(content);
+        //     var all_work = $('input[value="all"]');
+        //     all_work.on("change", function(){
+        //       var subcategories = $('#subcategories input[type="checkbox"]');
+        //       if($(this).attr('checked')){
+        //         subcategories.removeAttr('checked');
+        //         subcategories.prop('checked', false);
+        //
+        //       } else {
+        //         subcategories.attr('checked','checked');
+        //         subcategories.prop('checked', true);
+        //       }
+        //     });
+        //     $('#subcategories input[type="checkbox"]:not(input[value="all"])').on("change",function(){
+        //       var checked = $('#subcategories input[type="checkbox"]:checked');
+        //
+        //       if(checked.length < categories[category].length || (checked.length == categories[category].length && all_work.attr('checked'))){
+        //         all_work.removeAttr('checked');
+        //         all_work.prop('checked', false);
+        //       } else {
+        //         all_work.attr('checked','checked');
+        //         all_work.prop('checked', true);
+        //       }
+        //     })
+        //   }
+        // }
         addMarkers()
       });
 
@@ -200,7 +193,6 @@
 
       $("#year_select").on("change", function(){
         selected_year = $(this).val();
-
         addMarkers()
       });
 
@@ -215,16 +207,16 @@
       $('#map_town').select2({
         sortResults: function(results, container, query) {
           if (query.term) {
-              // use the built in javascript sort function
-              return results.sort(function(a, b) {
-                  if (a.text.length > b.text.length) {
-                      return 1;
-                  } else if (a.text.length < b.text.length) {
-                      return -1;
-                  } else {
-                      return 0;
-                  }
-              });
+            // use the built in javascript sort function
+            return results.sort(function(a, b) {
+              if (a.text.length > b.text.length) {
+                  return 1;
+              } else if (a.text.length < b.text.length) {
+                  return -1;
+              } else {
+                  return 0;
+              }
+            });
           }
           return results;
       },
@@ -293,6 +285,4 @@
       var content = e.latlng.toString()
       return content
     }
-
-
   })

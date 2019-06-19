@@ -135,6 +135,11 @@
   - unless has_own_referer?
     #developed-eidos-logo
       = link_to image_tag("developed-eidos-#{locale}.png"), 'https://www.openbudget.in.ua/', target: '_blank'
+
+-#.statistic
+  = link_to 'Statistic', properting_maps_statistic_path(params[:town_id]), target: :_blank
+  -#= render partial: ''
+
 .file_upload_by_year
   = render partial: 'properting/maps/file_upload_by_year'
 
@@ -143,7 +148,7 @@
 
 
   PropertyMap = function(options) {
-    options = options || {}
+    options = options || {};
 
     var map, categories, markers, town = "", category = "all", year;
     var svg, g;
@@ -158,9 +163,8 @@
       .range(['green','green', 'yellow', 'red'])
       .domain([250 ,100, 27, 5]);
 
-
     function initMap() {
-      var mapSettings = { }
+      var mapSettings = { };
       mapSettings.scrollWheelZoom = options.scrollWheelZoom == true
       map = L.map('map', mapSettings);
       externalMap = map;
@@ -331,7 +335,6 @@
         map.removeLayer(markers);
         markers = undefined
       }
-
       addGeoJsonPoint(data, getPoint, options)
     }
 
@@ -364,12 +367,9 @@
       //     return item.properties.per_meter;
       //   })
       // );
-
-
       // colorScale.domain([250 ,100, 27, 5]);
 
       options = options || {};
-
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
 
       // check if our cluster not from edit controller
@@ -388,10 +388,10 @@
                return count;
             }()
             var clusterIcon = L.divIcon({
-              html: '<div style="background-color: '+ colorScale(sum) +'; border: 1px solid rgba(70,70,70, 0.5)"><span>' + arr
+              html: '<div style="background-color: '+ colorScale(sum) +'; border: 1px solid rgba(170,170,170, 0.5)"><span>' + arr
               .length
                + '</span></div>',
-              iconSize: 36,
+              iconSize: 40,
               className: 'marker-cluster',
             });
             return clusterIcon;
@@ -496,25 +496,25 @@
       }
     }
 
-    function addControl() {
-      info = L.control();
-
-      info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info');
-        this.update();
-        return this._div;
-      };
-
-      // method that we will use to update the control based on feature properties passed
-      info.update = function (content) {
-        if (content)
-          this._div.innerHTML = content;
-        else
-          this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
-        };
-
-      info.addTo(map);
-    }
+    // function addControl() {
+    //   info = L.control();
+    //
+    //   info.onAdd = function (map) {
+    //     this._div = L.DomUtil.create('div', 'info');
+    //     this.update();
+    //     return this._div;
+    //   };
+    //
+    //   // method that we will use to update the control based on feature properties passed
+    //   info.update = function (content) {
+    //     if (content)
+    //       this._div.innerHTML = content;
+    //     else
+    //       this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
+    //     };
+    //
+    //   info.addTo(map);
+    // }
 
     function editRoute(waypoints, routeFoundCallback) {
       var line;
@@ -616,8 +616,6 @@
       }
     }
 
-
-
     function addHeatMarkers(inData){
       var heatMapMarkers = [];
       var maxValue = 1;
@@ -634,7 +632,6 @@
           if(!isNaN(tmpSquare)){
             square += tmpSquare;
           }
-
         })
         var value = price / square;
 
@@ -665,7 +662,6 @@
         max: maxValue,
         minOpacity: 0.6
       });
-
     }
 
     function showHeatMap(data){
@@ -681,7 +677,6 @@
       map.addLayer(markers);
       map.removeLayer(heatMapLayer);
     }
-
 
     function addYearLayer(y){
       year = y;
@@ -751,7 +746,7 @@
 
       markers.eachLayer(function(layer){
         if(layer.feature.properties.id == id){
-            map.removeLayer(layer);
+          map.removeLayer(layer);
         }
       });
     }
@@ -785,17 +780,6 @@
       });
     }
 
-
-
-
-
-
-
-
-
-
-
-
     initMap();
     initPopup();
     addGeoSearch();
@@ -825,21 +809,18 @@
     }
   }
   function getAllMarkers() {
+    var allMarkersObjArray = []; // for marker objects
+    var allMarkersGeoJsonArray = []; // for readable geoJson markers
 
-        var allMarkersObjArray = []; // for marker objects
-        var allMarkersGeoJsonArray = []; // for readable geoJson markers
+    $.each(map._layers, function (ml) {
+      if (map._layers[ml].feature) {
+        allMarkersObjArray.push(this)
+        allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
+      }
+    })
+    console.log(allMarkersObjArray);
+  }
 
-        $.each(map._layers, function (ml) {
-
-            if (map._layers[ml].feature) {
-
-                allMarkersObjArray.push(this)
-                allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
-            }
-        })
-
-        console.log(allMarkersObjArray);
-    }
   function callFeaturePopup(e) {
     event.preventDefault();
     $.ajax({

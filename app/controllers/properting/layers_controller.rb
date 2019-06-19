@@ -20,7 +20,7 @@ module Properting
     before_action :set_properties, only: %i[show edit]
 
     def create_property_by_addr
-      binding.pry
+      # binding.pry
       @location = coordinate(params[:q])
       @location1 = coordinate(params[:q1]) unless params[:q1].empty? || params[:q] == params[:q1]
 
@@ -59,7 +59,7 @@ module Properting
     end
 
     def geo_json
-      binding.pry
+      # binding.pry
       result = {
         type: 'FeatureCollection',
         features: @properting_layer.to_geo_json
@@ -71,7 +71,7 @@ module Properting
     end
 
     def index
-      binding.pry
+      # binding.pry
       @properting_layers = Properting::Layer.by_locale.visible_to(current_user)
 
       @properting_layers = @properting_layers.by_towns(params['town_select'])   if params['town_select'].present?

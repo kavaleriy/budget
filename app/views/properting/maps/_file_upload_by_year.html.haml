@@ -3,7 +3,7 @@
   $button-text: black;
 
     #export_classifier,
-    #embedded-profile {
+    #statistic_classifier {
       margin: 5px;
       color: $button-text;
       font-weight: bold;
@@ -17,19 +17,23 @@
         font-weight: bold;
       }
     }
+  .statistic-link {
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 3px 5px;
+    display: inline;
+    &:hover {
+      color: black;
+    }
+  }
 .col-sm-2.reset-padding.pull-right
   %a#export_classifier{ href: properting_choosed_file_upload_by_year_path(params[:town_id]), target: '_blank' }
     %i.fa.fa-sign-out{ "aria-hidden" => "true" }
     |
-    =t('helpers.links.export')
-
--#:javascript
--#  $('#export_classifier').on("click", function() {
--#    $.ajax({
--#      type: 'get',
--#      url: "#{properting_choosed_file_upload_by_year_path}",
--#      data: {
--#              town_select: "#{params[:town_id]}"
--#            }
--#    });
--#  });
+    = t('helpers.links.export')
+.col-sm-2.reset-padding.text-center
+  %a#statistic_classifier{ href: properting_maps_statistic_path(params[:town_id]), target: '_blank' }
+    %i.fa.fa-stack-overflow{ "aria-hidden" => "true" }
+    |
+    = t('helpers.links.statistics')

@@ -5,7 +5,6 @@ module Properting
     before_action :set_map_params, only: %i[show frame]
 
     def set_map_params
-      # binding.pry
       @categories = categories
       @zoom = params[:zoom]
       @map_center = [48.5, 31.2] # center of Ukraine
@@ -78,6 +77,7 @@ module Properting
     end
     # download layer from map like admin
     def choosed_file_upload_by_year
+      # binding.pry
       @categories = Properting::Category.by_locale.select { |p| p.category.nil? }
 
       @properting_layers = Properting::Layer.by_locale
@@ -95,6 +95,21 @@ module Properting
       end
     end
 
+    def statistic
+      # binding.pry
+      # @properting_layers = Properting::Layer.by_towns(params['town_id']) if params['town_id'].present?
+      #
+      # layer_id =
+      #
+      # @properties = Properting::Property.by_layer()
+      # by_layer, ->(layer_id) { where(layer: layer_id) }
+      #
+      # # @properting_layers = @properting_layers.by_towns(params['town_id'])   if params['town_id'].present?
+      # respond_to do |format|
+      #   format.html { render 'properting/maps/statistic' }
+      # end
+    end
+
     # not used in town profile
     # used in show, edit layer
     def getInfoContentForPopup
@@ -107,7 +122,7 @@ module Properting
       render partial: 'info_popup'
     end
 
-    def heapmap; end
+    # def heapmap; end
 
     private
 
