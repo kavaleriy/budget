@@ -1,6 +1,8 @@
 module Municipal
   # common logic of municipal enterprises
   class PublicEnterprisesController < Widgets::WidgetsController
+    helper_method :sort_column, :sort_direction
+    before_action :set_file_types, only: :file_upload_by_town
     before_action :set_enterprise, only: %i[
       search_enterprise_data
       analysis_chart_codes
@@ -88,7 +90,33 @@ module Municipal
       end
     end
 
+    def file_upload_by_town
+      @municipal_enterprise_files = Municipal::EnterpriseFile.by_town(params['town_select'])          if params['town_select'].present?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_enterprise(params['enterprise'])   unless params['enterprise'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_file_type(params['file_type'])     unless params['file_type'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_year(params['year'])               unless params['year'].blank?
+      # @municipal_enterprise_files = @municipal_enterprise_files.by_file_name(params['file_name'])     unless params['file_name'].blank?
+
+      @municipal_enterprise_files = @municipal_enterprise_files.order(sort_column + ' ' + sort_direction)
+      @municipal_enterprise_files = @municipal_enterprise_files.page(params[:page]).per(25)
+
+      respond_to do |format|
+        format.html { render 'municipal/enterprise_files/index', layout: 'application' }
+      end
+    end
+
     private
+    def sort_column
+      Municipal::EnterpriseFile.fields.keys.include?(params[:sort]) ? params[:sort] : 'year'
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    end
+
+    def set_file_types
+      @type_files = Municipal::EnterpriseFile.type_files
+    end
 
     def set_enterprise
       @enterprise = Municipal::Enterprise.find(params[:enterprise_id])

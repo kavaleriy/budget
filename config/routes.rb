@@ -313,6 +313,9 @@ Rails.application.routes.draw do
     get 'enterprises_by_town/:town', to: 'public_enterprises#enterprise_analysis', as: :enterprise_analysis
     get 'enterprise_from_town/:town/:enterprise_id', to: 'public_enterprises#enterprise_analysis', as: :enterprise_from_town
     get 'public_enterprise_files', to: 'public_enterprises#search_enterprise_data', as: :public_enterprise_files
+    # get 'file_upload_by_town' => 'public_enterprises#file_upload_by_town'
+    get 'file_upload_by_town/:town_select', to: 'public_enterprises#file_upload_by_town', as: :file_upload_by_town
+
     get 'reporting_charts', to: 'public_enterprises#reporting_charts', as: :reporting_charts
     get 'analysis_charts', to: 'public_enterprises#analysis_charts', as: :analysis_charts
     get 'analysis_chart', to: 'public_enterprises#analysis_chart', as: :analysis_chart ###

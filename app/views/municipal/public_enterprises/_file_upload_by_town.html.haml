@@ -1,0 +1,25 @@
+:scss
+  $button-background: #0c2231;
+  $button-text: black;
+
+  #export_classifier,
+  #embedded-profile {
+    margin: 5px;
+    color: $button-text;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 3px 20px;
+    display: inline;
+    i {
+      padding-right: 5px;
+      color: $button-text;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+  }
+
+.reset-padding
+  %a#export_classifier{ href: municipal_file_upload_by_town_path(params[:town_id]), target: '_blank' }
+    %i.fa.fa-sign-out{ 'aria-hidden' => 'true' }
+    |
+    =t('helpers.links.export')
