@@ -107,14 +107,6 @@
           aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
         }
       });
-      $(".status-btns [data-status='heatmap']").click(function (e) {
-        aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
-        if (aPropertyMap.heatMapLayerActive){
-          aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
-        }else{
-          aPropertyMap.hideHeatMap();
-        }
-      });
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
 
@@ -177,19 +169,29 @@
           $(this).addClass('active');
           property_status = $(this).data('status');
         }
-        addMarkers()
-      });
 
-      // $('.road-cond-select a').click(function(){
-      //   var $this = $(this);
-      //   var tileName = $this.attr('href').substring(1);
-      //   $this.toggleClass('active');
-      //   if($this.hasClass('active')){
-      //     aPropertyMap.addAdditionalLayer(tileName)
-      //   }else{
-      //     aPropertyMap.removeAdditionalLayer(tileName);
-      //   }
-      // });
+
+
+
+
+
+
+        if($(this).hasClass('active') && property_status == 'heatmap'){
+          aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+        }else{
+          aPropertyMap.hideHeatMap();
+          addMarkers()
+        }
+
+
+
+
+
+
+
+
+
+      });
 
       $("#year_select").on("change", function(){
         selected_year = $(this).val();
