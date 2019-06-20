@@ -15,7 +15,7 @@ namespace :fill_db_from_prozorro do
   CLASSIFICATION = 45
   STATUS = 'complete'
   CREATED_FROM = '01-01-2019'
-  CREATED_TO = '01-05-2019'
+  CREATED_TO = '31-05-2019'
 
   desc 'Filling data base by API from clarity-project.info'
   task set_acount_number: :environment do
@@ -33,16 +33,19 @@ namespace :fill_db_from_prozorro do
     regions = {}
 
     # створюємо хеш з авторизованими містами назва міста: :ключ області
-    towns = authority_towns.reject { |c| c.title.empty? }
-    towns.each do |town|
-      region = ClarityKey::area_title(town.area_title)
-      town_title = town.title.split(' ')
-      if town_title.include?('район') || region == nil
+    # towns = authority_towns.reject { |c| c.title.empty? }
+    # towns.each do |town|
+    #   region = ClarityKey::area_title(town.area_title)
+    #   town_title = town.title.split(' ')
+    #   if town_title.include?('район') || region == nil
+    #
+    #   else
+    #     regions[town.title] = region
+    #   end
+    # end
 
-      else
-        regions[town.title] = region
-      end
-    end
+    regions = {'Вінниця' => 'vn'}
+
     regions.each do |title, region|
       for_file_name = 0
       get_request = true
@@ -63,6 +66,7 @@ namespace :fill_db_from_prozorro do
           json_data.try(:[], 'tenders').each_with_index do |repair, index|
             # json_data['tenders'].try(:[], index).try(:[], 'more').try(:[], 'items').try(:[], 0).try(:[], 'delivery').try(:[], 'address') || '' щоб не валилось DONE!!!!!!!!!!!!
             # https://clarity-project.info/api/edr.info/"#{04326106}" Беремо ЄДРОПОУ замовника DONE!!!!!!!!
+            # в строці делівері також перевіремо Вінницю, виправити на title, region
             address = json_data['tenders'].try(:[], index).try(:[], 'more').try(:[], 'items').try(:[], 0).try(:[], 'delivery').try(:[], 'address') || ''
             arr_title = address.split(' ').delete_if(&:blank?)
             if arr_title.include?("#{title},") || arr_title.include?("м.#{title},")
@@ -162,17 +166,18 @@ namespace :fill_db_from_prozorro do
       end
     end
     f.close
-    File.delete(file_path) if File.exist?(file_path)
+    # File.delete(file_path) if File.exist?(file_path)
   end
 
   # запит на АПІ
   def repair_request(path)
+    retry_attempts = 0
     uri = URI(path)
-    retry_request(uri, 0.2)
+    retry_request(uri, 0.2, retry_attempts)
   end
 
   # Спимо якщо немає відповіді і пробуємо ще
-  def retry_request(uri, sleep_s)
+  def retry_request(uri, sleep_s, retry_attempts=0)
     again = true
     sleeper = sleep_s
     res = nil
@@ -186,12 +191,19 @@ namespace :fill_db_from_prozorro do
         break
       end
       sleeper = sleeper + sleep_s
-      if sleeper > 0.8
+      if sleeper > 10.8
         break
       end
       puts "sleeper: #{sleeper}"
     end
     return res
+  rescue SocketError => error
+    if retry_attempts > 0
+      retry_attempts -= 1
+      sleep 5
+      retry
+    end
+    raise
   end
 
   # Вибірка всіх авторизованих міст
