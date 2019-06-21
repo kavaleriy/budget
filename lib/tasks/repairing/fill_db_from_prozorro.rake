@@ -198,12 +198,9 @@ namespace :fill_db_from_prozorro do
     end
     return res
   rescue SocketError => error
-    if retry_attempts > 0
-      retry_attempts -= 1
-      sleep 5
-      retry
-    end
-    raise
+    sleep 5
+    retry
+    # raise
   end
 
   # Вибірка всіх авторизованих міст
