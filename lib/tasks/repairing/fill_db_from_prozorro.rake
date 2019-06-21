@@ -197,6 +197,9 @@ namespace :fill_db_from_prozorro do
       puts "sleeper: #{sleeper}"
     end
     return res
+  rescue RestClient::ResourceNotFound => e
+    sleep 5
+    retry
   rescue SocketError => error
     sleep 5
     retry
