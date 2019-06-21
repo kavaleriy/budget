@@ -200,6 +200,9 @@ namespace :fill_db_from_prozorro do
   rescue SocketError => error
     sleep 5
     retry
+  rescue Errno::ECONNREFUSED => e
+    sleep 5
+    retry
     # raise
   end
 
