@@ -67,16 +67,32 @@
            && (town == '' || feature.properties.t_id == town)
            && (category == 'all' || category == feature.properties.p_c_id)
            && (property_status == '' || property_status == feature.properties.status)) {
-            if(feature.properties.per_meter > 5){
-              filtered_data.features.push(feature)
-              if(!heatMapdata[feature.geometry.coordinates]){
-                heatMapdata[feature.geometry.coordinates] = {
-                  coords: feature.geometry.coordinates,
-                  features: []
-                }
+
+
+
+
+
+
+
+            // console.log('filtered_data: ', filtered_data);
+            filtered_data.features.push(feature);
+
+            // if(feature.properties.per_meter > 5){
+              // filtered_data.features.push(feature);
+
+              // console.log('feature.properties.per_meter: ', feature.properties.per_meter);
+            if(!heatMapdata[feature.geometry.coordinates]){
+              heatMapdata[feature.geometry.coordinates] = {
+                coords: feature.geometry.coordinates,
+                features: []
               }
+            }
+            if(feature.properties.per_meter > 5){
               heatMapdata[feature.geometry.coordinates].features.push(feature);
             }
+
+
+
           }
         });
         if(!aPropertyMap.heatMapLayerActive){
@@ -94,19 +110,31 @@
             getPoint: getPoint
           })
         }
-        aPropertyMap.heatMapdata = heatMapdata
+        aPropertyMap.heatMapdata = heatMapdata;
+        if($(".status-btns [data-status='heatmap']").hasClass('active')){
+          aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+        }
       }
 
       addMarkers();
 
       aPropertyMap.map.on('zoomend', function(e){
         var target = e.target;
-        if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
+        if($(".status-btns [data-status='heatmap']").hasClass('active') && target.getZoom() >= 15){
           aPropertyMap.hideHeatMap();
-        }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
+        }else if($(".status-btns [data-status='heatmap']").hasClass('active') && target.getZoom() < 15){
           aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
         }
       });
+
+      // $(".status-btns [data-status='heatmap']").click(function (e) {
+      //   aPropertyMap.heatMapLayerActive = !aPropertyMap.heatMapLayerActive;
+      //   if (aPropertyMap.heatMapLayerActive){
+      //     aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+      //   }else{
+      //     aPropertyMap.hideHeatMap();
+      //   }
+      // });
 
       // categories = JSON.parse('#{@categories.to_json(:except => :img)}')
 
@@ -169,29 +197,21 @@
           $(this).addClass('active');
           property_status = $(this).data('status');
         }
-
-
-
-
-
-
-
         if($(this).hasClass('active') && property_status == 'heatmap'){
           aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
         }else{
           aPropertyMap.hideHeatMap();
           addMarkers()
         }
-
-
-
-
-
-
-
-
-
       });
+      // aPropertyMap.map.on('zoomend', function(e){
+      //   var target = e.target;
+      //   if(aPropertyMap.heatMapLayerActive && target.getZoom() >= 15){
+      //     aPropertyMap.hideHeatMap();
+      //   }else if(aPropertyMap.heatMapLayerActive && target.getZoom() < 15){
+      //     aPropertyMap.showHeatMap(aPropertyMap.heatMapdata);
+      //   }
+      // });
 
       $("#year_select").on("change", function(){
         selected_year = $(this).val();

@@ -657,6 +657,7 @@
 
         heatMapMarkers.push(heatMapMarker);
       }
+
       heatMapLayer = L.heatLayer(heatMapMarkers, {
         max: maxValue,
         minOpacity: 0.6
@@ -817,7 +818,7 @@
         allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
       }
     })
-    console.log(allMarkersObjArray);
+    // console.log(allMarkersObjArray);
   }
 
   function callFeaturePopup(e) {
