@@ -191,22 +191,28 @@ namespace :fill_db_from_prozorro do
         break
       end
       sleeper = sleeper + sleep_s
-      if sleeper > 10.8
-        break
-      end
+      # if sleeper > 10.8
+      #   break
+      # end
       puts "sleeper: #{sleeper}"
     end
     return res
   rescue RestClient::ResourceNotFound => e
+    puts "RestClient::ResourceNotFound"
     sleep 5
     retry
-  rescue SocketError => error
+  rescue SocketError => e
+    puts "SocketError"
     sleep 5
     retry
   rescue Errno::ECONNREFUSED => e
+    puts "Errno::ECONNREFUSED"
     sleep 5
     retry
-    # raise
+  rescue Errno::ECONNRESET => e
+    puts "Errno::ECONNRESET"
+    sleep 5
+    retry
   end
 
   # Вибірка всіх авторизованих міст
