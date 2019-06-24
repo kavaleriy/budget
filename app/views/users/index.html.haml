@@ -1,4 +1,7 @@
 :scss
+  .blocks {
+    width: 85%;
+  }
   @media (min-width: 1151px) and (max-width: 1250px){
     .small{
       font-size: x-small;
@@ -27,17 +30,6 @@
       font-size: xx-small;
     }
   }
-
-  //#table_title{
-  //  font-weight: bold;
-  //  text-align: center;
-  //  padding-top: 7px;
-  //  padding-bottom: 7px;
-  //}
-  //.table_border{
-  //  border-bottom: solid lightgrey 1px;
-  //}
-
   .small{
     tbody{
       tr{
@@ -56,39 +48,40 @@
     %i.fa.fa-money
     =t('.title')
 -#= link_to 'Юзера на проверку', not_valid_users_url, class: 'btn btn-danger'
-%table.table.table-striped.small
-  %thead
-    %tr
-      %th
-        =t('devise.form.name')
-      %th.hide-in-small
-        =t('devise.form.organization')
-      %th.hide-in-small
-        =t('devise.form.phone')
-      %th
-        =t('email')
-      %th.hide-in-small
-        =t('users.index.last_sign_in_at')
-      %th.hide-in-small
-        =t('users.index.reference_towns')
-      %th.hide-in-small
-        =t('users.index.roles_head')
-      %th.hide-in-small
-        =t('users.form.locked')
-      %th
-        =t 'form.actions', :default => t("helpers.actions")
-  %tbody
-    - @users.each do |user|
+.blocks
+  %table.table.table-striped.small
+    %thead
       %tr
-        %td= user.name
-        %td.hide-in-small= user.organisation
-        %td.hide-in-small= user.phone
-        %td= user.email
-        %td.hide-in-small= user.last_sign_in_at
-        %td.hide-in-small= user_town(user)
-        %td.hide-in-small= render partial: 'roles', :locals => { roles: user.roles }
-        %td.text-center.hide-in-small= render partial: 'locked', :locals => { locked: user.is_locked? }
+        %th
+          =t('devise.form.name')
+        %th.hide-in-small
+          =t('devise.form.organization')
+        %th.hide-in-small
+          =t('devise.form.phone')
+        %th
+          =t('email')
+        %th.hide-in-small
+          =t('users.index.last_sign_in_at')
+        %th.hide-in-small
+          =t('users.index.reference_towns')
+        %th.hide-in-small
+          =t('users.index.roles_head')
+        %th.hide-in-small
+          =t('users.form.locked')
+        %th
+          =t 'form.actions', :default => t("helpers.actions")
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.name
+          %td.hide-in-small= user.organisation
+          %td.hide-in-small= user.phone
+          %td= user.email
+          %td.hide-in-small= user.last_sign_in_at
+          %td.hide-in-small= user_town(user)
+          %td.hide-in-small= render partial: 'roles', :locals => { roles: user.roles }
+          %td.text-center.hide-in-small= render partial: 'locked', :locals => { locked: user.is_locked? }
 
-        %td
-          =link_to t('form.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
-          =link_to t('form.destroy', :default => t("helpers.links.destroy")), user, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+          %td
+            =link_to t('form.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
+            =link_to t('form.destroy', :default => t("helpers.links.destroy")), user, :method => :delete, :data => { :confirm => t('form.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
