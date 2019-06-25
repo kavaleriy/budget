@@ -213,6 +213,10 @@ namespace :fill_db_from_prozorro do
     puts "Errno::ECONNRESET"
     sleep 5
     retry
+  rescue => e
+    puts "fuuu #{e}"
+    sleep 5
+    retry
   end
 
   # Вибірка всіх авторизованих міст
