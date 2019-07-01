@@ -370,32 +370,36 @@
 
       options = options || {};
       markers = (options.clustered == true) ? new L.MarkerClusterGroup( { maxClusterRadius: 30 }) : new L.layerGroup();
-
+      var checkHeatmapStatus = $(".status-btns [data-status='heatmap']").hasClass('active');
       // check if our cluster not from edit controller
       // handle a click on a cluster
       // if click on cluster on map has a maxZooming allow do code and show list of markers
       if (window.location.href.indexOf('edit') == (-1)) {
-        markers = L.markerClusterGroup({
-          spiderfyOnMaxZoom: false,
-          iconCreateFunction: function(cluster) {
-            var arr = cluster.getAllChildMarkers()
-            var sum = function(){
-               var count = 0;
-               for (var i = arr.length; i--;) {
-                 count += parseInt(arr[i].feature.properties.per_meter) || 0;
-               }
-               return count;
-            }()
-            var clusterIcon = L.divIcon({
-              html: '<div style="background-color: '+ colorScale(sum) +'; border: 1px solid rgba(170,170,170, 0.5)"><span>' + arr
-              .length
-               + '</span></div>',
-              iconSize: 40,
-              className: 'marker-cluster',
-            });
-            return clusterIcon;
-          }
-        });
+        if(checkHeatmapStatus){
+          markers = L.markerClusterGroup({
+            spiderfyOnMaxZoom: false,
+            iconCreateFunction: function(cluster) {
+              var arr = cluster.getAllChildMarkers()
+              var sum = function(){
+                 var count = 0;
+                 for (var i = arr.length; i--;) {
+                   count += parseInt(arr[i].feature.properties.per_meter) || 0;
+                 }
+                 return count;
+              }()
+              var clusterIcon = L.divIcon({
+                html: '<div style="background-color: '+ colorScale(sum) +'; border: 1px solid rgba(170,170,170, 0.5)"><span>' + arr
+                .length
+                 + '</span></div>',
+                iconSize: 40,
+                className: 'marker-cluster',
+              });
+              return clusterIcon;
+            }
+          });
+        } else {
+          markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30, spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: true, }) : new L.layerGroup();
+        }
 
         // markers = (options.clustered == true) ? new L.MarkerClusterGroup({ maxClusterRadius: 30,fillColor: 'black', spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: true, }) : new L.layerGroup();
         markers.on('clusterclick', function (a) {
@@ -451,7 +455,7 @@
       function getPointToLayer(feature, latlng) {
         var point = getPoint(feature.properties);
 
-        if(!aPropertyMap.heatMapLayerActive){
+        if(checkHeatmapStatus){
           return L.circleMarker(latlng, {
             radius: 8,
             fillColor: colorScale(feature.properties.per_meter),
@@ -467,7 +471,30 @@
             draggable: point.draggable
           });
         }
+        // if(aPropertyMap.heatMapLayerActive){
+        //   return L.circleMarker(latlng, {
+        //     radius: 8,
+        //     fillColor: colorScale(feature.properties.per_meter),
+        //     color: colorScale(feature.properties.per_meter),
+        //     weight: 1,
+        //     opacity: 1,
+        //     fillOpacity: 0.8
+        //   });
+        // }else{
+        //   return L.marker(latlng, {
+        //     icon: point.icon,
+        //     opacity: 1,
+        //     draggable: point.draggable
+        //   });
+        // }
       }
+
+
+
+
+
+
+
 
       function onEachFeature(feature, layer) {
         layer.on({
@@ -615,6 +642,21 @@
       }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // console.log('$(".status-btns [data-status=heatmap]").hasClass(active): ', $(".status-btns [data-status='heatmap']").hasClass('active'));
     function addHeatMarkers(inData){
       var heatMapMarkers = [];
       var maxValue = 1;
