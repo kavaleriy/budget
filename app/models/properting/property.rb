@@ -174,7 +174,7 @@ module Properting
 
     def self.property_json_by_town(town)
       # HERE WAS TROUBLE WITH ROUT
-      Rails.cache.fetch("/properting/as_json/#{town}/#{town_updated(town)}///", expires_in: 1.hour) do
+      Rails.cache.fetch("/properting/as_json/#{town}/#{town_updated(town)}", expires_in: 1.hour) do
         propertings = Properting::Layer.valid_layers_with_properties
         geo_jsons = []
 
