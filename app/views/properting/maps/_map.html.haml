@@ -471,30 +471,7 @@
             draggable: point.draggable
           });
         }
-        // if(aPropertyMap.heatMapLayerActive){
-        //   return L.circleMarker(latlng, {
-        //     radius: 8,
-        //     fillColor: colorScale(feature.properties.per_meter),
-        //     color: colorScale(feature.properties.per_meter),
-        //     weight: 1,
-        //     opacity: 1,
-        //     fillOpacity: 0.8
-        //   });
-        // }else{
-        //   return L.marker(latlng, {
-        //     icon: point.icon,
-        //     opacity: 1,
-        //     draggable: point.draggable
-        //   });
-        // }
       }
-
-
-
-
-
-
-
 
       function onEachFeature(feature, layer) {
         layer.on({
@@ -518,29 +495,8 @@
             }
           },
         });
-        // heat_map_show(e.target.feature);
       }
     }
-
-    // function addControl() {
-    //   info = L.control();
-    //
-    //   info.onAdd = function (map) {
-    //     this._div = L.DomUtil.create('div', 'info');
-    //     this.update();
-    //     return this._div;
-    //   };
-    //
-    //   // method that we will use to update the control based on feature properties passed
-    //   info.update = function (content) {
-    //     if (content)
-    //       this._div.innerHTML = content;
-    //     else
-    //       this._div.innerHTML = 'Наведіть курсор на об’єкт на мапі для відображення деталей';
-    //     };
-    //
-    //   info.addTo(map);
-    // }
 
     function editRoute(waypoints, routeFoundCallback) {
       var line;
@@ -599,21 +555,8 @@
           routePoints = route.map(function(item) {
             return new L.LatLng(item[0], item[1]);
           });
-
-          // feature.selectedPath = new L.polyline(routePoints, {
-          //   color: 'red',
-          //   weight: 6,
-          //   opacity: 0.5,
-          //   smoothFactor: 3,
-          // });
-          //
-          // feature.selectedPath.addTo(map);
         }
       }
-
-      // function clearRoadRoute(){
-      //   $(".leaflet-routing-container.leaflet-bar.leaflet-control").remove();
-      // }
     }
 
     function addTownLayer(t) {
@@ -642,21 +585,6 @@
       }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // console.log('$(".status-btns [data-status=heatmap]").hasClass(active): ', $(".status-btns [data-status='heatmap']").hasClass('active'));
     function addHeatMarkers(inData){
       var heatMapMarkers = [];
       var maxValue = 1;
@@ -792,21 +720,6 @@
         }
       });
     }
-
-    // function addAdditionalLayer(tileName){
-    //   var additionalTilelayer;
-    //
-    //   switch(tileName){
-    //     case 'uaRoads':
-    //      additionalTilelayer = L.tileLayer('http://map.uaroads.com/pits/1.0.0/{z}/{x}/{y}.png',{[tileName]: true});
-    //     break;
-    //     case 'navizor':
-    //       additionalTilelayer = L.tileLayer('http://navizor.com:8080/osm/{z}/{x}/{y}.png',{[tileName]: true});
-    //     break;
-    //     default: throw ('Unexpected tile name')
-    //   }
-    //   map.addLayer(additionalTilelayer)
-    // }
 
     function removeAdditionalLayer(tileName){
       // loop all layers

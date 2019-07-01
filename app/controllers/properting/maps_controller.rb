@@ -77,7 +77,6 @@ module Properting
     end
     # download layer from map like admin
     def choosed_file_upload_by_year
-      # binding.pry
       @categories = Properting::Category.by_locale.select { |p| p.category.nil? }
 
       @properting_layers = Properting::Layer.by_locale
@@ -96,18 +95,7 @@ module Properting
     end
 
     def statistic
-      # binding.pry
-      # @properting_layers = Properting::Layer.by_towns(params['town_id']) if params['town_id'].present?
-      #
-      # layer_id =
-      #
-      # @properties = Properting::Property.by_layer()
-      # by_layer, ->(layer_id) { where(layer: layer_id) }
-      #
-      # # @properting_layers = @properting_layers.by_towns(params['town_id'])   if params['town_id'].present?
-      # respond_to do |format|
-      #   format.html { render 'properting/maps/statistic' }
-      # end
+    #   it will be statistic
     end
 
     # not used in town profile
